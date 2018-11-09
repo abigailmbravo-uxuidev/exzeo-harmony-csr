@@ -209,6 +209,7 @@ export class Policy extends React.Component {
                 hideEffectiveDateModal={this.hideEffectiveDatePopUp} />
           }
               <OpenDiariesBar
+                effectiveDate={policy.effectiveDate}
                 resourceId={policy.policyNumber}
                 resourceType="Policy" />
             </React.Fragment>

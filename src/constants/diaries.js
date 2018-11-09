@@ -12,46 +12,46 @@ export const TAGS = [
 
 export const REASONS_DATA = {
   information_needed: {
-    answer: 'information_needed', label: 'Information Needed', daysFromDueDate: 7, assignee: '', message: 'CSR will indicate what it is in the body of diary and what\'s missing: Ex- "Wind Mit Photos" or "Cancellation Signature" or "App Missing Cov C Reject Form"'
+    answer: 'information_needed', label: 'Information Needed', daysFromDueDate: 7, assignee: ''
   },
   estate: {
-    answer: 'estate', label: 'Estate', daysFromDueDate: -145, assignee: 'Underwriting', message: ''
+    answer: 'estate', label: 'Estate', daysFromDueDate: -145, assignee: 'Underwriting'
   },
   death_of_only_NI: {
-    answer: 'death_of_only_NI', label: 'Death of Only NI', daysFromDueDate: 0, assignee: 'Processing', message: ''
+    answer: 'death_of_only_NI', label: 'Death of Only NI', daysFromDueDate: 0, assignee: 'Processing'
   },
   other: {
-    answer: 'other', label: 'Other', daysFromDueDate: 0, assignee: '', message: ''
+    answer: 'other', label: 'Other', daysFromDueDate: 0, assignee: ''
   },
   exception: {
-    answer: 'exception', label: 'Exception', daysFromDueDate: 10, assignee: '', message: 'Could be an auto-generated diary but those are in future release; we don\'t need the assignee to be "New Policy" we can transfer it by looking at the type.'
+    answer: 'exception', label: 'Exception', daysFromDueDate: 10, assignee: ''
   },
   new_policy: {
-    answer: 'new_policy', label: 'New Policy', daysFromDueDate: 0, assignee: 'Processing', message: 'Keeping for future system generated (when pol binds, eliminates the email via No reply box)'
+    answer: 'new_policy', label: 'New Policy', daysFromDueDate: 0, assignee: 'Processing'
   },
   occupancy_Letter: {
-    answer: 'occupancy_Letter', label: 'Occupancy Letter', daysFromDueDate: 30, assignee: 'Underwriting', message: ''
+    answer: 'occupancy_Letter', label: 'Occupancy Letter', daysFromDueDate: 30, assignee: 'Underwriting'
   },
   ownership_Change: {
-    answer: 'ownership_Change', label: 'Ownership Change', daysFromDueDate: 0, assignee: 'Underwriting', message: ''
+    answer: 'ownership_Change', label: 'Ownership Change', daysFromDueDate: 0, assignee: 'Underwriting'
   },
   renewal_processing: {
-    answer: 'renewal_processing', label: 'Renewal Processing', daysFromDueDate: null, assignee: 'Processing', message: 'Can\'t forget to consider "N/A" or any other reason that we now have, that will be deleted.'
+    answer: 'renewal_processing', label: 'Renewal Processing', daysFromDueDate: 365, assignee: 'Processing'
   },
   underwriting_condition_letter: {
-    answer: 'underwriting_condition_letter', label: 'Underwriting Condition Letter', daysFromDueDate: 30, assignee: 'Underwriting', message: 'Keeping for future system generated '
+    answer: 'underwriting_condition_letter', label: 'Underwriting Condition Letter', daysFromDueDate: 30, assignee: 'Underwriting'
   },
   underwriting_review: {
-    answer: 'underwriting_review', label: 'Underwriting Review', daysFromDueDate: 2, assignee: '', message: ''
+    answer: 'underwriting_review', label: 'Underwriting Review', daysFromDueDate: 2, assignee: ''
   },
   vacanut_unoccupied: {
-    answer: 'vacanut_unoccupied', label: 'Vacant/Unoccupied', daysFromDueDate: 0, assignee: 'Underwriting', message: ''
+    answer: 'vacanut_unoccupied', label: 'Vacant/Unoccupied', daysFromDueDate: 0, assignee: 'Underwriting'
   },
   tenant_occupied: {
-    answer: 'tenant_occupied', label: 'Tenant Occupied', daysFromDueDate: 0, assignee: 'Underwriting', message: ''
+    answer: 'tenant_occupied', label: 'Tenant Occupied', daysFromDueDate: 0, assignee: 'Underwriting'
   },
   refund: {
-    answer: 'refund', label: 'Refund', daysFromDueDate: 7, assignee: '', message: 'CSRs will schedule this to ensure refund makes it out'
+    answer: 'refund', label: 'Refund', daysFromDueDate: 7, assignee: ''
   }
 };
 

@@ -70,7 +70,8 @@ export class SideNav extends React.Component {
     const { actions, policy } = this.props;
     actions.uiActions.toggleDiary({
       resourceType: POLICY_RESOURCE_TYPE,
-      resourceId: policy.policyNumber
+      resourceId: policy.policyNumber,
+      effectiveDate: policy.effectiveDate
     });
   };
 

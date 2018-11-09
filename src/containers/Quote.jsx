@@ -46,8 +46,9 @@ export class QuoteBase extends React.Component {
               <UnderwritingValidationBarConnect />
 
               <OpenDiariesBar
-                  resourceId={quoteData._id}
-                  resourceType="Quote" />
+                effectiveDate={quoteData.effectiveDate}
+                resourceId={quoteData._id}
+                resourceType="Quote" />
 
               {(quoteData && quoteData._id) &&
                 <DiaryPolling filter={{ resourceId: quoteData._id, resourceType: 'Quote' }} />

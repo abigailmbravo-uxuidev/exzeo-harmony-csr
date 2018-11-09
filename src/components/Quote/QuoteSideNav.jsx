@@ -23,15 +23,16 @@ import { QUOTE_RESOURCE_TYPE } from '../../constants/diaries';
  */
 
 export const newDiary = (props) => {
-  const { quoteData: { _id } } = props;
+  const { quoteData: { _id, effectiveDate } } = props;
   props.actions.uiActions.toggleDiary({
     resourceType: QUOTE_RESOURCE_TYPE,
-    resourceId: _id
+    resourceId: _id,
+    effectiveDate
   });
 };
 export const newNote = (props) => {
-  props.actions.uiActions.toggleNote({ 
-    noteType: 'Quote Note', 
+  props.actions.uiActions.toggleNote({
+    noteType: 'Quote Note',
     documentId: props.quoteData.quoteNumber,
     resourceType: QUOTE_RESOURCE_TYPE
   });

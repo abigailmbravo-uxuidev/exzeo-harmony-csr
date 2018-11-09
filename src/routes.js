@@ -62,7 +62,7 @@ class Routes extends Component {
           className="card"
           appElement={document.getElementById('root')}>
           <div className="card-header"><h4><i className="fa fa-exclamation-circle" />&nbsp;Error</h4></div>
-          <div className="card-block"><p>{this.props.error.message}</p></div>
+          <div className="card-block"><p>{String(this.props.error.message)}</p></div>
           <div className="card-footer">
             {this.props.error.requestId &&
               <div className="footer-message"><p>Request ID: {this.props.error.requestId}</p></div>
@@ -76,7 +76,8 @@ class Routes extends Component {
             user={userProfile}
             initialValues={diary.selectedDiary}
             resourceType={diary.resourceType}
-            resourceId={diary.resourceId} />
+            resourceId={diary.resourceId}
+            effectiveDate={diary.effectiveDate} />
         }
 
         {note && note.documentId &&
