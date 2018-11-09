@@ -5,7 +5,7 @@ import { DiaryModal } from './DiaryModal';
 
 describe('Test DiaryModal component', () => {
   const props = {
-    effectiveDate: '2018-01-01',
+    entityEndDate: '2018-01-01',
     change() {},
     assigneeAnswers: [{ answer: '1', label: '1', type: 'user' },
       { answer: '2', label: 'Underwriting', type: 'estate' }],

@@ -77,7 +77,7 @@ class Routes extends Component {
             initialValues={diary.selectedDiary}
             resourceType={diary.resourceType}
             resourceId={diary.resourceId}
-            effectiveDate={diary.effectiveDate} />
+            entityEndDate={diary.entityEndDate} />
         }
 
         {note && note.documentId &&

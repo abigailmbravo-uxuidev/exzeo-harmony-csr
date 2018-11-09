@@ -36,7 +36,7 @@ export const REASONS_DATA = {
     answer: 'ownership_Change', label: 'Ownership Change', daysFromDueDate: 0, assignee: 'Underwriting'
   },
   renewal_processing: {
-    answer: 'renewal_processing', label: 'Renewal Processing', daysFromDueDate: 365, assignee: 'Processing'
+    answer: 'renewal_processing', label: 'Renewal Processing', daysFromDueDate: -65, assignee: 'Processing'
   },
   underwriting_condition_letter: {
     answer: 'underwriting_condition_letter', label: 'Underwriting Condition Letter', daysFromDueDate: 30, assignee: 'Underwriting'

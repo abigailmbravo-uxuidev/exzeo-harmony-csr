@@ -69,14 +69,14 @@ export class DiaryTable extends Component {
   openDiaryModal = (cell) => {
     const { toggleDiaryAction } = this.props;
     const {
-      resourceType, resourceId, effectiveDate, ...selectedDiary
+      resourceType, resourceId, entityEndDate, ...selectedDiary
     } = cell;
 
     toggleDiaryAction({
       resourceType,
       resourceId,
       selectedDiary,
-      effectiveDate
+      entityEndDate
     });
   }
 

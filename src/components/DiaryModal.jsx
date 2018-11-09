@@ -47,7 +47,7 @@ export class DiaryModal extends Component {
 
   normalizeDiaryReason = (value, prevVal) => {
     const {
-      change, user: { userId }, assigneeAnswers, effectiveDate
+      change, user: { userId }, assigneeAnswers, entityEndDate
     } = this.props;
     const defaultData = REASONS_DATA[value];
 
@@ -63,7 +63,7 @@ export class DiaryModal extends Component {
 
     if (value === REASONS_DATA.renewal_processing.answer) {
       // need to get next renewal date
-      change('due', moment(effectiveDate).utc().add(defaultData.daysFromDueDate, 'd').format('YYYY-MM-DD'));
+      change('due', moment(entityEndDate).utc().add(defaultData.daysFromDueDate, 'd').format('YYYY-MM-DD'));
     } else {
       change('due', moment().utc().add(defaultData.daysFromDueDate, 'd').format('YYYY-MM-DD'));
     }
@@ -154,6 +154,7 @@ export class DiaryModal extends Component {
 }
 
 DiaryModal.propTypes = {
+  entityEndDate: PropTypes.string,
   change: PropTypes.func.isRequired,
   assigneeAnswers: PropTypes.arrayOf(PropTypes.shape()).isRequired,
   handleSubmit: PropTypes.func.isRequired,

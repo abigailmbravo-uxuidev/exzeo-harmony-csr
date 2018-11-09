@@ -46,7 +46,7 @@ export class QuoteBase extends React.Component {
               <UnderwritingValidationBarConnect />
 
               <OpenDiariesBar
-                effectiveDate={quoteData.effectiveDate}
+                entityEndDate={quoteData.endDate}
                 resourceId={quoteData._id}
                 resourceType="Quote" />
 
