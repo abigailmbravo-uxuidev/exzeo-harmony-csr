@@ -97,3 +97,7 @@ export const sortDiariesByDate = (diaries = []) => {
     return new Date(a.entries[0].due) - new Date(b.entries[0].due);
   });
 };
+
+export const addDate = (days, dateString) => {
+  return moment.utc(dateString).add(days, 'd').format(date.FORMATS.SECONDARY);
+};

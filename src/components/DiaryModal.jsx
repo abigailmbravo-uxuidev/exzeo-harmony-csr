@@ -10,6 +10,7 @@ import { toggleDiary } from '../state/actions/ui.actions';
 import { setAppError } from '../state/actions/error.actions';
 import { getDiaryAssigneeAnswers } from '../state/selectors/questions.selectors';
 import { REASONS, REASONS_DATA } from '../constants/diaries';
+import * as diaryUtilities from '../utilities/diaries';
 
 export class DiaryModal extends Component {
   state = { minimize: false };
@@ -60,12 +61,13 @@ export class DiaryModal extends Component {
       change('assignee.id', selectedAssignee.answer);
     }
     change('reason', defaultData.reason);
+    console.log(entityEndDate, diaryUtilities.addDate(entityEndDate, defaultData.daysFromDueDate));
 
     if (value === REASONS_DATA.renewal_processing.answer) {
       // need to get next renewal date
-      change('due', moment(entityEndDate).utc().add(defaultData.daysFromDueDate, 'd').format('YYYY-MM-DD'));
+      change('due', diaryUtilities.addDate(defaultData.daysFromDueDate, entityEndDate));
     } else {
-      change('due', moment().utc().add(defaultData.daysFromDueDate, 'd').format('YYYY-MM-DD'));
+      change('due', diaryUtilities.addDate(defaultData.daysFromDueDate));
     }
     return value;
   }
