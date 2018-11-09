@@ -56,7 +56,7 @@ describe('Test diaries utilities', () => {
 
       it('should return false if date is 7 days away', () => {
         clock = sinon.useFakeTimers(new Date('2018-01-01'));
-        const dueDate = '2018-01-07';
+        const dueDate = '2018-01-08';
         const result = utils.isUpcoming(dueDate);
 
         expect(result)
@@ -65,7 +65,7 @@ describe('Test diaries utilities', () => {
 
       it('should return true if date is more than 7 days away', () => {
         clock = sinon.useFakeTimers(new Date('2018-01-01'));
-        const dueDate = '2018-01-08';
+        const dueDate = '2018-01-09';
         const result = utils.isUpcoming(dueDate);
 
         expect(result)
