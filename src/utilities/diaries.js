@@ -1,5 +1,5 @@
 import moment from 'moment-timezone';
-import { date } from '@exzeo/core-ui/lib';
+import { date } from '@exzeo/core-ui';
 
 import { REASONS } from '../constants/diaries';
 
@@ -8,20 +8,10 @@ import { REASONS } from '../constants/diaries';
  * @param dateString
  * @returns {boolean | *}
  */
-const isGreaterThanOneWeekAway = (dateString) => {
-  return moment.utc(date.currentDay(date.FORMATS.SECONDARY))
-    .add(7, 'd')
-    .isBefore(moment.utc(dateString));
-};
+export const isUpcoming = (dateString) => {
+  const sevenDaysOut = moment().utc().add(7, 'd');
 
-/**
- * Is date provided past current date
- * @param dateString
- * @returns {boolean}
- */
-const isPastDue = (dateString) => {
-  return moment(date.currentDay(date.FORMATS.SECONDARY))
-    .isAfter(moment.utc(dateString));
+  return moment(dateString).isAfter(sevenDaysOut, 'd');
 };
 
 /**
@@ -29,9 +19,22 @@ const isPastDue = (dateString) => {
  * @param dateString
  * @returns {boolean}
  */
-const isWithinOneWeekAway = (dateString) => {
-  return moment.utc(dateString)
-    .isBetween(date.currentDay(date.FORMATS.SECONDARY), moment.utc().add(7, 'd').format(date.FORMATS.SECONDARY));
+export const isDueSoon = (dateString) => {
+  const today = date.currentDay(date.FORMATS.SECONDARY);
+  const sevenDaysOut = moment.utc().add(7, 'd').format(date.FORMATS.SECONDARY);
+
+  return moment(dateString).isBetween(today, sevenDaysOut, 'd', '[]');
+};
+
+/**
+ * Is date provided past current date
+ * @param dateString
+ * @returns {boolean}
+ */
+export const isPastDue = (dateString) => {
+  const today = date.currentDay(date.FORMATS.SECONDARY);
+
+  return moment(dateString).isBefore(today, 'd');
 };
 
 /**
@@ -45,7 +48,7 @@ export const formatEntry = (entry) => {
   return {
     ...entry,
     reason
-  }
+  };
 };
 
 /**
@@ -56,9 +59,9 @@ export const formatEntry = (entry) => {
  */
 export const getDueStatus = (due, open) => {
   if (!open) return 'closed';
-  else if (isWithinOneWeekAway(due)) return 'dueSoon';
   else if (isPastDue(due)) return 'pastDue';
-  else if (isGreaterThanOneWeekAway(due)) return 'upComing';
+  else if (isDueSoon(due)) return 'dueSoon';
+  else if (isUpcoming(due)) return 'upComing';
   return 'unknown';
 };
 
@@ -77,9 +80,9 @@ export const groupDiaries = (diaries) => {
     };
   }
   return {
-    dueSoon: diaries.filter(e => isWithinOneWeekAway(e.due)),
+    dueSoon: diaries.filter(e => isDueSoon(e.due)),
     pastDue: diaries.filter(e => isPastDue(e.due)),
-    upComing: diaries.filter(e => isGreaterThanOneWeekAway(e.due)),
+    upComing: diaries.filter(e => isUpcoming(e.due)),
     count: diaries.length
   };
 };
