@@ -1,6 +1,6 @@
-import * as utils from './diaries';
 import sinon from 'sinon';
-import { fn as momentProto } from 'moment';
+
+import * as utils from './diaries';
 
 describe('Test diaries utilities', () => {
   describe('Test sortDiariesByDate', () => {

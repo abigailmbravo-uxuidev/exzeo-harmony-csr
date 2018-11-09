@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Field, reduxForm } from 'redux-form';
 import { Date, Select, validation, Loader, TextArea } from '@exzeo/core-ui';
-import moment from 'moment';
 
 import { submitDiary } from '../state/actions/diary.actions';
 import { toggleDiary } from '../state/actions/ui.actions';
@@ -61,7 +60,6 @@ export class DiaryModal extends Component {
       change('assignee.id', selectedAssignee.answer);
     }
     change('reason', defaultData.reason);
-    console.log(entityEndDate, diaryUtilities.addDate(entityEndDate, defaultData.daysFromDueDate));
 
     if (value === REASONS_DATA.renewal_processing.answer) {
       // need to get next renewal date
