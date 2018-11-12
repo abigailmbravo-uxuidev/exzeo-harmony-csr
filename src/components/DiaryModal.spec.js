@@ -7,8 +7,10 @@ describe('Test DiaryModal component', () => {
   const props = {
     entityEndDate: '2018-01-01',
     change() {},
-    assigneeAnswers: [{ answer: '1', label: '1', type: 'user' },
-      { answer: '2', label: 'Underwriting', type: 'estate' }],
+    assigneeAnswers: [
+      { answer: '1', label: '1', type: 'user' },
+      { answer: '2', label: 'Underwriting', type: 'estate' }
+    ],
     submitting: false,
     user: { profile: { given_name: 'test', family_name: 'testing' } },
     handleSubmit: x => x,
