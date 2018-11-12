@@ -44,8 +44,8 @@ export const REASONS_DATA = {
   underwriting_review: {
     answer: 'underwriting_review', label: 'Underwriting Review', daysFromDueDate: 2, assignee: ''
   },
-  vacanut_unoccupied: {
-    answer: 'vacanut_unoccupied', label: 'Vacant/Unoccupied', daysFromDueDate: 0, assignee: 'Underwriting'
+  vacant_unoccupied: {
+    answer: 'vacant_unoccupied', label: 'Vacant/Unoccupied', daysFromDueDate: 0, assignee: 'Underwriting'
   },
   tenant_occupied: {
     answer: 'tenant_occupied', label: 'Tenant Occupied', daysFromDueDate: 0, assignee: 'Underwriting'
