@@ -565,9 +565,14 @@
   }
 }
 
+//need to simplify/standardize all modals
 .modal.quote-summary {
   .card {
     height: calc(90vh - 130px);
+
+    &.unsaved-changes {
+        height: auto;
+    }
   }
 
   .btn-footer.flex-parent {

@@ -377,12 +377,21 @@ main[role="document"] {
 //search
 /*------------------------------------------------------------------------------------*/
 @import "partials/_search"; //search partial
-
+.csr {
+    .search {
+        .survey-wrapper {
+            .results-wrapper {
+                flex-shrink: 1;
+            }
+        }
+    }
+}
 .search {
   .results,
   .results-wrapper {
     flex-basis: 100%;
     flex-grow: 1;
+    flex-shrink: 1;
     width: 100%;
 
     .survey-wrapper {
