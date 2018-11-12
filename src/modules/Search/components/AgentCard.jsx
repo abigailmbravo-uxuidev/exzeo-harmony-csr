@@ -8,6 +8,7 @@ function AgentCard({
   handleClick,
   agent,
 }) {
+  const licenseNumbers = agent.licenses.map(l => l.licenseNumber).join();
   return (
     <div className="agency agent contact card" onKeyPress={handleKeyPress} tabIndex="0">
       <div className="contact-title">
@@ -23,8 +24,8 @@ function AgentCard({
       </div>
       <div className="contact-details">
         <div className="card-name">
-          <h4 id={agent.licenseNumber} data-test={agent.licenseNumber}>
-            <span className="agent-code">{agent.agentCode}</span> | <span className="agent-name">{`${agent.firstName} ${agent.lastName}`}</span> | <span className="agent-license">{agent.licenses.map(l => l.licenseNumber).join()}</span> <span className="btn btn-link btn-sm" onClick={handleClick}><i className="fa fa-address-book" />Open Agency</span>
+          <h4 id={licenseNumbers} data-test={licenseNumbers}>
+            <span className="agent-code">{agent.agentCode}</span> | <span className="agent-name">{`${agent.firstName} ${agent.lastName}`}</span> | <span className="agent-license">{licenseNumbers}</span> <span className="btn btn-link btn-sm" onClick={handleClick}><i className="fa fa-address-book" />Open Agency</span>
           </h4>
 
           <AgencyContactAddress
