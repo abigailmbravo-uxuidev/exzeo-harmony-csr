@@ -4,12 +4,12 @@ import { connect } from 'react-redux';
 import { Field, reduxForm } from 'redux-form';
 import { Date, Select, validation, Loader, TextArea } from '@exzeo/core-ui';
 
+import { REASONS, REASONS_DATA } from '../constants/diaries';
+import { addDate } from '../utilities/diaries';
 import { submitDiary } from '../state/actions/diary.actions';
 import { toggleDiary } from '../state/actions/ui.actions';
 import { setAppError } from '../state/actions/error.actions';
 import { getDiaryAssigneeAnswers } from '../state/selectors/questions.selectors';
-import { REASONS, REASONS_DATA } from '../constants/diaries';
-import * as diaryUtilities from '../utilities/diaries';
 
 export class DiaryModal extends Component {
   state = { minimize: false };
@@ -63,9 +63,9 @@ export class DiaryModal extends Component {
 
     if (value === REASONS_DATA.renewal_processing.answer) {
       // need to get next renewal date
-      change('due', diaryUtilities.addDate(defaultData.daysFromDueDate, entityEndDate));
+      change('due', addDate(defaultData.daysFromDueDate, entityEndDate));
     } else {
-      change('due', diaryUtilities.addDate(defaultData.daysFromDueDate));
+      change('due', addDate(defaultData.daysFromDueDate));
     }
     return value;
   }
