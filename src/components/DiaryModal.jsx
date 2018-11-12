@@ -76,13 +76,13 @@ export class DiaryModal extends Component {
     return (
       <div className={this.state.minimize ? 'new-diary-file minimize' : 'new-diary-file'} >
         <div className="title-bar">
-          <div className="title title-minimize-button" onClick={this.handleMinimize}>Diary</div>
+          <div className="title title-minimize-button" onClick={this.handleMinimize} data-test="diary-minimize-button">Diary</div>
           <div className="controls note-file-header-button-group">
             <button
               className="btn btn-icon minimize-button"
               type="button"
               onClick={this.handleMinimize}>
-              <i className="fa fa-window-minimize" aria-hidden="true" />
+              <i className="fa fa-window-minimize" aria-hidden="true" data-test="diary-window-minimize" />
             </button>
           </div>
         </div>
