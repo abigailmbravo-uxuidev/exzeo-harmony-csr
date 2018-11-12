@@ -119,8 +119,8 @@ export const SideNav = (props) => {
       </ul>
       <div className="plus-button-group">
         <div className="btn btn-round btn-primary btn-lg new-btn" data-test="plus-buttons"><i className="fa fa-plus" /></div>
-        <button aria-label="open-btn form-newDiary" data-test="newDiary" className="btn btn-primary btn-round btn-lg new-diary-btn" onClick={() => newDiary(props)}><i className="fa fa-bookmark" /><span>NEW DIARY</span></button>
-        <button aria-label="open-btn form-newNote" data-test="newNote" className="btn btn-primary btn-round btn-lg new-note-btn" onClick={() => newNote(props)}><i className="fa fa-pencil" /><span>NEW NOTE</span></button>
+        <button aria-label="open-btn form-new-diary" data-test="new-diary" className="btn btn-primary btn-round btn-lg new-diary-btn" onClick={() => newDiary(props)}><i className="fa fa-bookmark" /><span>NEW DIARY</span></button>
+        <button aria-label="open-btn form-new-note" data-test="new-note" className="btn btn-primary btn-round btn-lg new-note-btn" onClick={() => newNote(props)}><i className="fa fa-pencil" /><span>NEW NOTE</span></button>
       </div>
       {props.appState.data.showUWconditions === true &&
         <UWconditions closeButtonHandler={() => closeUWConditions(props)} />
