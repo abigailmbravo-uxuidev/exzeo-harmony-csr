@@ -26,7 +26,7 @@ export class OpenDiariesBar extends React.Component {
 
     return (
       <aside className="open-diaries">
-        <h4 className="open-diaries-header">Open Diaries</h4>
+        <h4 className="open-diaries-header" data-test="open-diaries-header">Open Diaries</h4>
         <div>
 
           {pastDue.length > 0 &&
