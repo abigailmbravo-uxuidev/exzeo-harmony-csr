@@ -76,6 +76,9 @@ export class Contracts extends Component {
         }
         {showContractModal &&
           <ContractModal
+            addendumAnswers={listAnswers.Agency_Addendum}
+            companyCodeAnswers={listAnswers.Company_Code}
+            agencyContractAnswers={listAnswers.Agency_Contract}
             listAnswers={listAnswers}
             saveContract={this.saveContract}
             closeModal={this.toggleContract}
@@ -134,6 +137,10 @@ export class Contracts extends Component {
     );
   }
 }
+
+Contracts.defaultProps = {
+  listAnswers: {}
+};
 
 Contracts.propTypes = {
   agency: PropTypes.object.isRequired

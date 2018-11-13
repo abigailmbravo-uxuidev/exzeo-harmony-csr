@@ -58,7 +58,9 @@ export const ContractModal = (props) => {
     saveContract,
     handleSubmit,
     initialValues,
-    listAnswers
+    addendumAnswers,
+    companyCodeAnswers,
+    agencyContractAnswers
   } = props;
 
   const actionType = initialValues ? 'Edit' : 'Add';
@@ -80,7 +82,7 @@ export const ContractModal = (props) => {
                 optionValue="answer"
                 optionLabel="label"
                 validate={validation.isRequired}
-                answers={listAnswers.Company_Code || []} />
+                answers={companyCodeAnswers} />
               <Field
                 name="contractNumber"
                 label="Contract"
@@ -90,7 +92,7 @@ export const ContractModal = (props) => {
                 optionValue="answer"
                 optionLabel="label"
                 validate={[validation.isRequired, isUnique]}
-                answers={listAnswers.Agency_Contract || []} />
+                answers={agencyContractAnswers} />
               <Field
                 name="addendum"
                 label="Addendum"
@@ -99,7 +101,7 @@ export const ContractModal = (props) => {
                 dataTest="addendum"
                 optionValue="answer"
                 optionLabel="label"
-                answers={listAnswers.Agency_Addendum || []} />
+                answers={addendumAnswers} />
             </section>
             <section className="contract-csp">
               <FieldArray name="stateProducts" component={RenderProducts} />
@@ -119,7 +121,9 @@ export const ContractModal = (props) => {
 
 ContractModal.defaultProps = {
   contractNumbers: [],
-  listAnswers: {}
+  addendumAnswers: [],
+  companyCodeAnswers: [],
+  agencyContractAnswers: []
 };
 
 ContractModal.propTypes = {
