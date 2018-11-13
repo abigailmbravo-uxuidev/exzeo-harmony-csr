@@ -21,8 +21,6 @@ describe('Testing CreateBranch Base component', () => {
     expect(wrapper.exists()).toBeTruthy();
     const wi = wrapper.instance();
     wi.applyOrphanedAgent({ selectedAgentId: '123' });
-    wi.handleSameAsMailing(true, false, { mailingAddress: {} });
-    wi.handleSameAsMailing(false, true, { mailingAddress: {} });
     wi.handleResetForm();
     wi.handleCreateBranch({
       mailingAddress: { country: {} },

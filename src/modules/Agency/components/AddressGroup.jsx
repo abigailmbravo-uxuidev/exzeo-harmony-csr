@@ -160,10 +160,8 @@ AddressGroup.defaultProps = {
   listAnswers: {}
 };
 
-const selector = formValueSelector('CreateBranch');
 
 const mapStateToProps = state => ({
-  sameAsMailingValue: selector(state, 'sameAsMailing'),
   territoryManagers: state.questions.territoryManagers,
   listOfZipCodes: getListOfZipCodes(state),
   listAnswers: getListAnswers(state),

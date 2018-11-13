@@ -11,6 +11,7 @@ import Agent from '../components/FormGroup/Agent';
 import Contact from '../components/FormGroup/Contact';
 import AgencyDetails from '../components/FormGroup/AgencyDetails';
 import Footer from '../../../components/Common/Footer';
+import AddressGroup from '../components/AddressGroup';
 
 export class Create extends Component {
   state = {
@@ -78,14 +79,11 @@ export class Create extends Component {
       handleSubmit,
       licenseValue,
       sameAsMailingValue,
-      physicalStateValue,
-      physicalZipValue,
       submitting,
       pristine,
       change,
       agency,
-      orphans,
-      territoryManagers
+      orphans
     } = this.props;
 
     return (
@@ -103,49 +101,7 @@ export class Create extends Component {
                   {/* web address validaiton */}
                 </section>
                 <h3>Address</h3>
-                <section className="agency-address">
-                  <div className="agency-mailing-address">
-                    <h4>Mailing Address</h4>
-                    <FormSection name="mailingAddress">
-                      <Address
-                        territoryManagers={territoryManagers}
-                        sameAsMailingValue={sameAsMailingValue}
-                        changeField={change}
-                        section="mailingAddress" />
-                    </FormSection>
-                  </div>
-                  <div className="agency-physical-address">
-                    <h4>Physical Address
-                      <Field
-                        name="sameAsMailing"
-                        component="input"
-                        id="sameAsMailing"
-                        type="checkbox"
-                        data-test="sameAsMailing"
-                        normalize={this.handleSameAsMailing} />
-                      <label htmlFor="sameAsMailing">Same as Mailing Address</label>
-                    </h4>
-                    <FormSection name="physicalAddress">
-                      <Address
-                        territoryManagers={territoryManagers}
-                        section="physicalAddress"
-                        showCounty
-                        changeField={change}
-                        stateValue={physicalStateValue}
-                        zipValue={physicalZipValue}
-                        sectionDisabled={sameAsMailingValue} />
-                    </FormSection>
-                    <Field
-                      label="Territory Managers"
-                      name="territoryManagerId"
-                      dataTest="territoryManagerId"
-                      component={SelectTypeAhead}
-                      optionValue="_id"
-                      optionLabel="name"
-                      answers={territoryManagers}
-                      validate={validation.isRequired} />
-                  </div>
-                </section>
+                <AddressGroup sameAsMailingValue={sameAsMailingValue} changeField={change} />
                 <h3>Officer</h3>
                 <section className="agency-principal">
                   <FormSection name="principal" >

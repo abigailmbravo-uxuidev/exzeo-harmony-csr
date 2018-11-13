@@ -59,7 +59,8 @@ export class CreateBranch extends Component {
       submitting,
       pristine,
       change,
-      orphans
+      orphans,
+      sameAsMailingValue
     } = this.props;
 
     return (
@@ -74,7 +75,7 @@ export class CreateBranch extends Component {
                   {/* web address validaiton */}
                 </section>
                 <h3>Address</h3>
-                <AddressGroup changeField={change} />
+                <AddressGroup sameAsMailingValue={sameAsMailingValue} changeField={change} />
                 <h3>Contact</h3>
                 <section className="agency-contact">
                   <FormSection name="contact" >
