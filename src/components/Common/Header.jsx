@@ -16,10 +16,10 @@ const Header = props => (
       <Link to="/" id="logo" className="logo"><img src={logo} alt="Harmony" /></Link>
       <button className="btn-icon btn-ellipsis-v"><i className="fa fa-ellipsis-v" /></button>
       <nav className="fade-in">
-        <NavLink activeClassName="active" exact to="/diaries" >Diaries</NavLink>
-        <NavLink activeClassName="active" exact to="/reports" >Reports</NavLink>
-        <NavLink activeClassName="active" exact to="/agency" >Agency</NavLink>
-        <NavLink activeClassName="active" exact to="/" >Policy</NavLink>
+        <NavLink activeClassName="active" exact to="/diaries" data-test="diaries-link">Diaries</NavLink>
+        <NavLink activeClassName="active" exact to="/reports" data-test="reports-link">Reports</NavLink>
+        <NavLink activeClassName="active" exact to="/agency" data-test="agency-link">Agency</NavLink>
+        <NavLink activeClassName="active" exact to="/" data-test="policy-link">Policy</NavLink>
         {/* <a href="">User Management</a> */}
         <div className="user-name">
           {props.authState && props.authState.userProfile ? props.authState.userProfile.userName : ''}

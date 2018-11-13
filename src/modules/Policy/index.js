@@ -194,7 +194,7 @@ export class Policy extends React.Component {
               }
 
               {initialized &&
-                <DiaryPolling filter={{ resourceId: policy.policyNumber, resourceType: 'Policy' }} />
+                <DiaryPolling filter={{ resourceId: [policy.policyNumber, policy.sourceId], resourceType: 'Policy' }} />
               }
 
               {appState.data.showReinstatePolicyPopUp &&
@@ -209,6 +209,7 @@ export class Policy extends React.Component {
                 hideEffectiveDateModal={this.hideEffectiveDatePopUp} />
           }
               <OpenDiariesBar
+                effectiveDate={policy.effectiveDate}
                 resourceId={policy.policyNumber}
                 resourceType="Policy" />
             </React.Fragment>
@@ -226,7 +227,6 @@ Policy.propTypes = {
   initialized: PropTypes.bool,
   policy: PropTypes.object,
   summaryLedger: PropTypes.object,
-  tasks: PropTypes.object,
   zipCodeSettings: PropTypes.object,
   batchCompleteTask: PropTypes.func,
   createTransaction: PropTypes.func,
@@ -248,7 +248,6 @@ const mapStateToProps = (state) => {
     initialized: !!(state.policyState.policy.policyID && state.policyState.summaryLedger._id),
     policy: state.policyState.policy,
     summaryLedger: state.policyState.summaryLedger,
-    tasks: state.cg,
     zipCodeSettings: state.service.getZipcodeSettings
   };
 };
