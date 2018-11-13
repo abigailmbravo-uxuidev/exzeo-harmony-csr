@@ -6,52 +6,62 @@ export const TAGS = [
   { answer: 'occupancy', label: 'Occupancy', type: 'tag' },
   { answer: 'processing', label: 'Processing', type: 'tag' },
   { answer: 'renewal_processing', label: 'Renewal Processing', type: 'tag' },
-  { answer: 'underwriting', label: 'Underwriting', type: 'tag' },
-  // TODO: PLEASE REMOVE THIS BEFORE MERGING. TESTING PURPOSES ONLY
-  { answer: 'auth0|CSR1234567890', label: 'TEST USER', type: 'user' }
+  { answer: 'underwriting', label: 'Underwriting', type: 'tag' }
 
 ];
 
-export const TYPES = [
-  { answer: 'additional_interest', label: 'Additional Interest' },
-  { answer: 'billing', label: 'Billing' },
-  { answer: 'cancellation', label: 'Cancellation' },
-  { answer: 'coverage_endorsement', label: 'Coverage Endorsement' },
-  { answer: 'estate', label: 'Estate' },
-  { answer: 'follow_up', label: 'Follow-up' },
-  { answer: 'home_location_endorsement', label: 'Home/Location Endorsement' },
-  { answer: 'inspection', label: 'Inspection' },
-  { answer: 'mailing_address', label: 'Mailing Address' },
-  { answer: 'needs_security', label: 'Needs Security' },
-  { answer: 'new_policy', label: 'New Policy' },
-  { answer: 'occupancy', label: 'Occupancy' },
-  { answer: 'ownership_change', label: 'Ownership Change' },
-  { answer: 'policyholder_endorsement', label: 'Policyholder Endorsement' },
-  { answer: 'property_address', label: 'Property Address' },
-  { answer: 'reinstatement', label: 'Reinstatement' },
-  { answer: 'wind_mitigation', label: 'Wind Mitigation' }
-];
+export const REASONS_DATA = {
+  information_needed: {
+    answer: 'information_needed', label: 'Information Needed', daysFromDueDate: 7, assignee: ''
+  },
+  estate: {
+    answer: 'estate', label: 'Estate', daysFromDueDate: -145, assignee: 'Underwriting'
+  },
+  death_of_only_NI: {
+    answer: 'death_of_only_NI', label: 'Death of Only NI', daysFromDueDate: 0, assignee: 'Processing'
+  },
+  other: {
+    answer: 'other', label: 'Other', daysFromDueDate: 0, assignee: ''
+  },
+  exception: {
+    answer: 'exception', label: 'Exception', daysFromDueDate: 10, assignee: ''
+  },
+  new_policy: {
+    answer: 'new_policy', label: 'New Policy', daysFromDueDate: 0, assignee: 'Processing'
+  },
+  occupancy_Letter: {
+    answer: 'occupancy_Letter', label: 'Occupancy Letter', daysFromDueDate: 30, assignee: 'Underwriting'
+  },
+  ownership_Change: {
+    answer: 'ownership_Change', label: 'Ownership Change', daysFromDueDate: 0, assignee: 'Underwriting'
+  },
+  renewal_processing: {
+    answer: 'renewal_processing', label: 'Renewal Processing', daysFromDueDate: -65, assignee: 'Processing'
+  },
+  underwriting_condition_letter: {
+    answer: 'underwriting_condition_letter', label: 'Underwriting Condition Letter', daysFromDueDate: 30, assignee: 'Underwriting'
+  },
+  underwriting_review: {
+    answer: 'underwriting_review', label: 'Underwriting Review', daysFromDueDate: 2, assignee: ''
+  },
+  vacant_unoccupied: {
+    answer: 'vacant_unoccupied', label: 'Vacant/Unoccupied', daysFromDueDate: 0, assignee: 'Underwriting'
+  },
+  tenant_occupied: {
+    answer: 'tenant_occupied', label: 'Tenant Occupied', daysFromDueDate: 0, assignee: 'Underwriting'
+  },
+  refund: {
+    answer: 'refund', label: 'Refund', daysFromDueDate: 7, assignee: ''
+  }
+};
 
-export const REASONS = [
-  { answer: 'none', label: 'N/A' },
-  { answer: 'billing', label: 'Billing' },
-  { answer: 'docusign_exp', label: 'DocuSign Expiring' },
-  { answer: 'estate', label: 'Estate' },
-  { answer: 'follow_up', label: 'Follow-up' },
-  { answer: 'inspection', label: 'Inspection' },
-  { answer: 'needs_security', label: 'Needs Security' },
-  { answer: 'new_policy', label: 'New Policy' },
-  { answer: 'no_response', label: 'No response' },
-  { answer: 'occupancy', label: 'Occupancy' },
-  { answer: 'order_inspection', label: 'Order Inspection' },
-  { answer: 'other', label: 'Other' },
-  { answer: 'ownership_change', label: 'Ownership Change' },
-  { answer: 'reinstatement', label: 'Reinstatement' },
-  { answer: 'underwriting_letter', label: 'Underwriting Condition Letter' },
-  { answer: 'vacant', label: 'Vacant' }
-];
 
 export const STATUS_ANSWERS = [
   { answer: 'true', label: 'Open' },
-  { answer: 'false', label: 'Closed'}
+  { answer: 'false', label: 'Closed' }
 ];
+
+
+export const REASONS = Object.keys(REASONS_DATA).map((key) => {
+  return { answer: REASONS_DATA[key].answer, label: REASONS_DATA[key].label };
+});

@@ -1,70 +1,89 @@
 import { createSelector } from 'reselect';
-import moment from 'moment-timezone';
 import { date } from '@exzeo/core-ui';
 
-import { getDueStatus, groupDiaries } from '../../utilities/diaries';
+import { formatEntry, getDueStatus, groupDiaries, sortDiariesByDate } from '../../utilities/diaries';
 
-import { getDiaries } from './entity.selectors';
+import { getDiaries, getUserProfile } from './entity.selectors';
 
-export const getFormattedDiaries = createSelector(
+export const getSortedDiariesByDueDate = createSelector(
   [getDiaries],
   (diaries) => {
-    return diaries.map(d => ({
-      diaryId: d._id,
-      resourceType: d.resource.type,
-      resourceId: d.resource.id,
-      ...d.entries[0],
-      due: moment.utc(d.entries[0].due).format(date.FORMATS.SECONDARY)
-    }));
+    return sortDiariesByDate(diaries);
   }
 );
 
-export const getFormattedAllDiaries = createSelector(
-  [getDiaries],
+export const getFormattedDiaries = createSelector(
+  [getSortedDiariesByDueDate],
   (diaries) => {
-    return diaries.map(d => ({
-      diaryId: d._id,
-      resourceType: d.resource.type,
-      resourceId: d.resource.id,
-      ...d.entries[0],
-      diaryHistory: d.entries.slice(1),
-      due: moment.utc(d.entries[0].due).format(date.FORMATS.SECONDARY),
-      dueStatus: getDueStatus(d.entries[0].due, d.entries[0].open),
-      action: {
+    if (!Array.isArray(diaries)) return [];
+
+    return diaries.map((d) => {
+      const entry = formatEntry(d.entries[0]);
+      return {
+        ...entry,
         diaryId: d._id,
         resourceType: d.resource.type,
         resourceId: d.resource.id,
-        ...d.entries[0],
-        due: moment.utc(d.entries[0].due).format(date.FORMATS.SECONDARY)
-      }
-    }));
+        createdAt: d.createdAt,
+        due: date.formatDate(d.entries[0].due, date.FORMATS.SECONDARY)
+      };
+    });
   }
 );
 
-export const getFilterOpenDiariesByResource = createSelector(
-  [getFormattedDiaries],
-  (formattedDairies) => {
-    if (!Array.isArray(formattedDairies)) return [];
-    return formattedDairies.filter(d => d.open === true);
-  }
-);
+export const getDiariesForTable = createSelector(
+  [getSortedDiariesByDueDate],
+  (diaries) => {
+    if (!Array.isArray(diaries)) return [];
 
-export const getFilteredAllDiaries = createSelector(
-  [getFormattedAllDiaries],
-  (formattedDairies) => {
-    if (!Array.isArray(formattedDairies)) return [];
-
-    return formattedDairies;
+    return diaries.map((d) => {
+      const entry = formatEntry(d.entries[0]);
+      return ({
+        ...entry,
+        diaryId: d._id,
+        createdAt: d.createdAt,
+        resourceType: d.resource.type,
+        resourceId: d.resource.id,
+        diaryHistory: d.entries.slice(1),
+        due: date.formatDate(d.entries[0].due, date.FORMATS.SECONDARY),
+        dueStatus: getDueStatus(d.entries[0].due, d.entries[0].open),
+        action: {
+          diaryId: d._id,
+          resourceType: d.resource.type,
+          resourceId: d.resource.id,
+          ...d.entries[0],
+          due: date.formatDate(d.entries[0].due, date.FORMATS.SECONDARY)
+        }
+      });
+    });
   }
 );
 
 export const getOpenDiaries = createSelector(
   [getFormattedDiaries],
+  (formattedDairies) => {
+    return formattedDairies.filter(d => d.open === true);
+  }
+);
+
+export const getGroupedOpenDiaries = createSelector(
+  [getOpenDiaries],
   diaries => groupDiaries(diaries)
 );
 
-export const getFilteredOpenDiaries = createSelector(
-  [getFilterOpenDiariesByResource],
-  diaries => groupDiaries(diaries)
+export const isPollingPermitted = createSelector(
+  [getUserProfile],
+  (userProfile) => {
+    const { resources } = userProfile;
+    if (!Array.isArray(resources)) return false;
+
+    const diariesResources = resources.filter((resource) => {
+      const arr = resource.uri.split(':');
+      return arr.includes('Diaries');
+    });
+
+    // user needs all three Diaries resources to to be able to see them.
+    return diariesResources.length === 3;
+  }
 );
 

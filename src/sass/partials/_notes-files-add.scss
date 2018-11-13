@@ -78,6 +78,7 @@
 
     form {
       display: flex;
+      overflow-y: auto;
       flex-direction: column;
       height: 100%;
 
@@ -87,8 +88,40 @@
         overflow-y: hidden;
         flex-direction: column;
         flex-grow: 1;
-        flex-shrink: 1;
+        flex-shrink: 0;
         padding: ($padding*2);
+
+        .note-details {
+          display: flex;
+          flex-direction: row;
+          flex-grow: 0;
+          flex-shrink: 0;
+
+          .form-group {
+            &.contact {
+              flex-grow: 1;
+              flex-shrink: 1;
+              margin-right: $padding;
+            }
+
+            &.diary-checkbox {
+              display: flex;
+              align-items: center;
+              flex-direction: row;
+              flex-grow: 1;
+              flex-shrink: 1;
+              margin-top: 2rem;
+
+              input {
+                margin: 0 $padding;
+              }
+
+              label {
+                margin-bottom: 0;
+              }
+            }
+          }
+        }
 
         label,
         select {
@@ -106,7 +139,7 @@
           flex-grow: 1;
           flex-shrink: 1;
           min-height: 4rem;
-          margin: ($padding*2) 0;
+          margin: 0 0 ($padding*2);
 
           textarea {
             flex-grow: 1;
@@ -302,37 +335,38 @@
     }
 
     .diaries {
-      >.react-bs-table {
-          table {
-              display: flex;
-              flex-direction: column;
-          }
-          > .react-bs-container-body {
-              > .table-striped {
-                  > tbody {
-                      tr:not(hidden), tr:nth-of-type(even) {
-                          background: $white !important;
-                          border-bottom: 1px dotted $warm-gray-03;
+      > .react-bs-table {
+        table {
+          display: flex;
+          flex-direction: column;
+        }
 
-                          &:hover {
-                              background: $white !important;
-                          }
-
-                          > td {
-                              background: $white !important;
-
-                              &:hover {
-                                  background: $white !important;
-                              }
-                          }
-                      }
-                  }
-              }
-          }
-
-
-        > .react-bs-container-header,
         > .react-bs-container-body {
+          > .table-striped {
+            > tbody {
+              tr:not(hidden),
+              tr:nth-of-type(even) {
+                border-bottom: 1px dotted $warm-gray-03;
+                background: $white !important;
+
+                &:hover {
+                  background: $white !important;
+                }
+
+                > td {
+                  background: $white !important;
+
+                  &:hover {
+                    background: $white !important;
+                  }
+                }
+              }
+            }
+          }
+        }
+
+        > .react-bs-container-body,
+        > .react-bs-container-header {
           tbody,
           thead {
             tr {
@@ -346,94 +380,102 @@
                 line-height: 1.5;
 
                 &.due-status {
-                  width: 8rem;
                   flex-grow: 0;
                   flex-shrink: 0;
+                  width: 8rem;
 
                   .status-indicator {
-                      display: flex;
+                    display: flex;
 
-                      span {
-                          min-width: 4px;
-                          min-height: 1rem;
-                          flex-shrink: 0;
-                          flex-grow: 0;
-                          margin-right: $padding/2;
-                          margin-left: -$padding/2;
-                          display: flex;
-                          &.gray {
-                              background: $warm-gray-06;
-                              border-radius: 2px;
-                          }
-                          &.red {
-                              background: $red;
-                              border-radius: 2px;
-                          }
-                          &.yellow {
-                              background: $orange-lighten-01;
-                              border-radius: 2px;
-                          }
-                          &.green {
-                              background: $green-darken-02;
-                              border-radius: 2px;
-                          }
-                          &.status-display {
-                              margin-left: 0;
-                          }
+                    span {
+                      display: flex;
+                      flex-grow: 0;
+                      flex-shrink: 0;
+                      min-width: 4px;
+                      min-height: 1rem;
+                      margin-right: $padding/2;
+                      margin-left: -$padding/2;
+
+                      &.gray {
+                        border-radius: 2px;
+                        background: $warm-gray-06;
                       }
+
+                      &.red {
+                        border-radius: 2px;
+                        background: $red;
+                      }
+
+                      &.yellow {
+                        border-radius: 2px;
+                        background: $orange-lighten-01;
+                      }
+
+                      &.green {
+                        border-radius: 2px;
+                        background: $green-darken-02;
+                      }
+
+                      &.status-display {
+                        margin-left: 0;
+                      }
+                    }
                   }
                 }
 
                 &.due {
-                  width: 5rem;
                   flex-grow: 0;
                   flex-shrink: 0;
+                  width: 5rem;
                 }
 
                 &.assignee {
-                  width: 8rem;
                   flex-grow: 0;
                   flex-shrink: 0;
+                  width: 8rem;
+                  white-space: normal;
                 }
 
                 &.reason {
-                  width: 8rem;
                   flex-grow: 0;
                   flex-shrink: 0;
+                  width: 8rem;
+                  white-space: normal;
                 }
 
                 &.message {
-                    white-space: normal;
+                  white-space: normal;
                 }
 
                 &.updated-at {
-                  width: 5rem;
                   flex-grow: 0;
                   flex-shrink: 0;
+                  width: 5rem;
                 }
 
                 &.created-by {
-                  width: 8rem;
                   flex-grow: 0;
                   flex-shrink: 0;
+                  width: 8rem;
+                  white-space: normal;
                 }
 
                 &.action {
+                  display: flex;
                   overflow: visible;
-                  width: 2rem;
+                  align-items: flex-start;
                   flex-grow: 0;
                   flex-shrink: 0;
-                  display: flex;
-                  align-items: flex-start;
+                  width: 2rem;
                 }
 
                 &.react-bs-table-expand-cell {
-                  order: 1;
-                  width: 2rem;
-                  flex-grow: 0;
-                  flex-shrink: 0;
                   display: flex;
                   align-items: flex-start;
+                  flex-grow: 0;
+                  flex-shrink: 0;
+                  order: 1;
+                  width: 2rem;
 
                   span {
                     display: flex;
@@ -460,15 +502,17 @@
                 }
 
                 .sub-table {
-                    width: 100%;
-                    margin: ($padding*-.5) (4rem + ($padding*-.75)) ($padding*-.5) (8rem + ($padding*-.75));
+                  width: 100%;
+                  margin: ($padding*-.5) (4rem + ($padding*-.75)) ($padding*-.5) (8rem + ($padding*-.75));
 
-                    .table-header-wrapper {
-                        display: none;
-                    }
-                    tr:last-child, tr:nth-of-type(even):last-child {
-                        border-bottom-width: 0;
-                    }
+                  .table-header-wrapper {
+                    display: none;
+                  }
+
+                  tr:last-child,
+                  tr:nth-of-type(even):last-child {
+                    border-bottom-width: 0;
+                  }
                 }
               }
             }

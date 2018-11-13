@@ -4,7 +4,7 @@ import moment from 'moment-timezone';
 import { connect } from 'react-redux';
 
 import { toggleDiary } from '../state/actions/ui.actions';
-import { getFilteredAllDiaries } from '../state/selectors/diary.selectors';
+import { getDiariesForTable } from '../state/selectors/diary.selectors';
 
 // TODO: Move to component
 export const SearchPanel = props => (
@@ -68,12 +68,15 @@ export class DiaryTable extends Component {
 
   openDiaryModal = (cell) => {
     const { toggleDiaryAction } = this.props;
-    const { resourceType, resourceId, ...selectedDiary } = cell;
+    const {
+      resourceType, resourceId, entityEndDate, ...selectedDiary
+    } = cell;
 
     toggleDiaryAction({
       resourceType,
       resourceId,
-      selectedDiary
+      selectedDiary,
+      entityEndDate
     });
   }
 
@@ -120,7 +123,7 @@ export class DiaryTable extends Component {
 
 const mapStateToProps = (state, ownProps) => {
   return {
-    diaries: getFilteredAllDiaries(state) || []
+    diaries: getDiariesForTable(state)
   };
 };
 
