@@ -155,7 +155,7 @@ export class Create extends Component {
                 <h3>Contact</h3>
                 <section className="agency-contact">
                   <FormSection name="contact" >
-                    <Contact testPrefix="contact" />
+                    <Contact testPrefix="contact" showTitle />
                   </FormSection>
                 </section>
                 <h3>Agent Of Record
