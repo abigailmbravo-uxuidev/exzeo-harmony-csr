@@ -62,7 +62,7 @@
           color: $white;
 
           span {
-              font-weight: $font-weight-normal;
+            font-weight: $font-weight-normal;
           }
         }
       }
@@ -1169,6 +1169,7 @@
     .card {
       display: flex;
       overflow: hidden;
+      overflow: visible;
       align-items: center;
       justify-content: center;
       max-height: 90%;
@@ -1182,8 +1183,8 @@
 
         .card-block {
           display: flex;
-          width: 100%;
           overflow: visible;
+          width: 100%;
 
           .contract-details {
             flex-grow: 1;
@@ -1191,6 +1192,21 @@
             margin-right: $padding;
             padding-right: $padding*2;
             border-right: 1px dotted $warm-gray-03;
+
+            .companyCode {
+              position: relative;
+              z-index: 30;
+            }
+
+            .contractNumber {
+              position: relative;
+              z-index: 20;
+            }
+
+            .addendum {
+              position: relative;
+              z-index: 10;
+            }
           }
 
           .contract-csp {
@@ -1592,16 +1608,18 @@
                   input {
                     margin: 0;
                   }
-                .coverage,
-                .discountSurcharge {
-                  width: 60%;
-                  padding: ($padding*1.5) ($padding*2);
-                  white-space: normal;
-                  hyphens: auto;
-                }
 
-                .form-group {
-                  margin-bottom: 0;
+                  .coverage,
+                  .discountSurcharge {
+                    width: 60%;
+                    padding: ($padding*1.5) ($padding*2);
+                    white-space: normal;
+                    hyphens: auto;
+                  }
+
+                  .form-group {
+                    margin-bottom: 0;
+                  }
                 }
               }
             }
@@ -1610,9 +1628,8 @@
       }
     }
   }
-}
 
-.app-wrapper.csr {
+  .app-wrapper.csr {
     main[role="document"] {
       .content-wrapper {
         .route-content {
@@ -1635,22 +1652,23 @@
       }
     }
   }
-//search cards
-.card {
-  &.contact {
-    .contact-details {
-      .contact-address {
-        .additional-data {
-          margin-left: $padding;
-          font-size: $font-size-sm;
+  //search cards
 
-          label {
-            margin-bottom: 0;
-            font-size: $font-size-xs;
+  .card {
+    &.contact {
+      .contact-details {
+        .contact-address {
+          .additional-data {
+            margin-left: $padding;
+            font-size: $font-size-sm;
+
+            label {
+              margin-bottom: 0;
+              font-size: $font-size-xs;
+            }
           }
         }
       }
     }
   }
-}
 }
