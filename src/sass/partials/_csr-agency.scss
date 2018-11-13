@@ -1183,6 +1183,7 @@
         .card-block {
           display: flex;
           width: 100%;
+          overflow: visible;
 
           .contract-details {
             flex-grow: 1;

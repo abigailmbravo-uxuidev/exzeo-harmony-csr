@@ -179,6 +179,7 @@ select {
   &.TypeAhead {
     height: auto;
     min-height: 2rem;
+    z-index: 10;
 
     &:focus {
       outline: none;
@@ -188,6 +189,7 @@ select {
       width: 100%;
       height: auto;
       min-height: 2rem;
+      z-index: 20;
 
       &.react-select__control--is-focused {
         border-width: 1;
@@ -256,18 +258,18 @@ select {
       }
     }
 
-    > div {
-      .react-select__menu {
-        overflow: hidden;
-        margin: 0;
-        border-width: 0 1px 1px 1px;
-        border-style: none solid solid solid;
-        border-color: $warm-gray-06;
-        border-radius: 0 0 $border-radius $border-radius;
+    .react-select__menu {
+      position: absolute;
+      overflow: hidden;
+      margin: 0;
+      border-width: 0 1px 1px 1px;
+      border-style: none solid solid solid;
+      border-color: $warm-gray-06;
+      border-radius: 0 0 $border-radius $border-radius;
+      z-index: 100;
 
-        .react-select__menu-list {
-          padding: 0;
-        }
+      .react-select__menu-list {
+        padding: 0;
       }
     }
   }
