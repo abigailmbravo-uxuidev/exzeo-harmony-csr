@@ -84,7 +84,7 @@ export class AddressGroup extends Component {
 
 
   normalizeState = (value, pv, av) => {
-    this.handleStateAndZip(av.physicalAddress.zip, value);
+    this.handleStateAndZip('', value);
     this.normalizeSameAsMailing('physicalAddress')(value, pv, av);
     return value;
   }
