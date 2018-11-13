@@ -61,6 +61,27 @@ export class Address extends Component {
     }
   }
 
+  handleSameAsMailing = (value, previousValue, allValues) => {
+    const { change } = this.props;
+    const { mailingAddress } = allValues;
+    if (!mailingAddress) return value;
+    if (value) {
+      change('physicalAddress.address1', mailingAddress.address1);
+      change('physicalAddress.address2', mailingAddress.address2);
+      change('physicalAddress.city', mailingAddress.city);
+      change('physicalAddress.state', mailingAddress.state);
+      change('physicalAddress.zip', mailingAddress.zip);
+    } else {
+      change('physicalAddress.address1', '');
+      change('physicalAddress.address2', '');
+      change('physicalAddress.city', '');
+      change('physicalAddress.state', '');
+      change('physicalAddress.zip', '');
+    }
+    return value;
+  };
+
+
   normalizeZipCode = (value, pv, av) => {
     const { section } = this.props;
     this.handleStateAndZip(av[section].zip, value);
@@ -74,76 +95,50 @@ export class Address extends Component {
     } = this.props;
 
     return (
-      <React.Fragment>
-        <Field
-          name="address1"
-          label="Address 1"
-          component={Input}
-          styleName="address1"
-          dataTest="address1"
-          validate={validation.isRequired}
-          normalize={this.normalizeSameAsMailing}
-          disabled={sectionDisabled} />
-        <Field
-          name="address2"
-          label="Address 2"
-          component={Input}
-          styleName="address2"
-          dataTest="address2"
-          normalize={this.normalizeSameAsMailing}
-          disabled={sectionDisabled} />
-        <div className="city-state-zip">
-          <Field
-            name="city"
-            label="City"
-            component={Input}
-            styleName="city"
-            dataTest="city"
-            validate={validation.isRequired}
-            normalize={this.normalizeSameAsMailing}
-            disabled={sectionDisabled} />
-          <Field
-            name="state"
-            label="State"
-            component={Select}
-            styleName="state"
-            dataTest="state"
-            validate={validation.isRequired}
-            normalize={this.normalizeZipCode}
-            answers={listAnswers.US_states}
-            disabled={sectionDisabled} />
-          {section === 'physicalAddress' && <Field
-            name="zip"
-            label="Zip Code"
-            component={SelectTypeAhead}
-            styleName="zip"
-            dataTest="zip"
-            optionValue="answer"
-            optionLabel="label"
-            validate={validation.isRequired}
-            normalize={this.normalizeSameAsMailing}
-            answers={listOfZipCodes}
-            disabled={sectionDisabled} />}
-          {section === 'mailingAddress' && <Field
-            name="zip"
-            label="Zip Code"
-            component={Input}
-            styleName="zip"
-            dataTest="zip"
-            validate={validation.isRequired}
-            normalize={this.normalizeSameAsMailing}
-            disabled={sectionDisabled} />}
+      <section className="agency-address">
+        <div className="agency-mailing-address">
+          <h4>Mailing Address</h4>
+          <FormSection name="mailingAddress">
+            <Address
+              territoryManagers={territoryManagers}
+              sameAsMailingValue={sameAsMailingValue}
+              changeField={change}
+              section="mailingAddress" />
+          </FormSection>
         </div>
-        {showCounty &&
-        <Field
-          name="county"
-          label="County"
-          component={Input}
-          styleName="county"
-          dataTest="county"
-          validate={validation.isRequired} />
-          }
-      </React.Fragment>
+        <div className="agency-physical-address">
+          <h4>Physical Address
+            <Field
+              name="sameAsMailing"
+              component="input"
+              id="sameAsMailing"
+              type="checkbox"
+              data-test="sameAsMailing"
+              normalize={this.handleSameAsMailing} />
+            <label htmlFor="sameAsMailing">Same as Mailing Address</label>
+          </h4>
+          <FormSection name="physicalAddress">
+            <Address
+              section="physicalAddress"
+              showCounty
+              territoryManagers={territoryManagers}
+              changeField={change}
+              stateValue={physicalStateValue}
+              zipValue={physicalZipValue}
+              sectionDisabled={sameAsMailingValue} />
+          </FormSection>
+          <Field
+            label="Territory Managers"
+            name="territoryManagerId"
+            styleName="territoryManagerId"
+            dataTest="territoryManager"
+            component={SelectTypeAhead}
+            optionValue="_id"
+            optionLabel="name"
+            answers={territoryManagers}
+            validate={validation.isRequired} />
+        </div>
+      </section>
     );
   }
 }
