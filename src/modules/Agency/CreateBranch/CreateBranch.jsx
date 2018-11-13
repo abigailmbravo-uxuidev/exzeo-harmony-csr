@@ -11,6 +11,7 @@ import history from '../../../history';
 import Footer from '../../../components/Common/Footer';
 
 import BranchDetails from './BranchDetails';
+import AddressGroup from '../components/AddressGroup';
 
 export class CreateBranch extends Component {
   state = {
@@ -29,26 +30,6 @@ export class CreateBranch extends Component {
   handleToggleExistingAgentModal = () => {
     this.setState({ showAddExistingAgentModal: !this.state.showAddExistingAgentModal });
   }
-
-  handleSameAsMailing = (value, previousValue, allValues) => {
-    const { change } = this.props;
-    const { mailingAddress } = allValues;
-    if (!mailingAddress) return value;
-    if (value) {
-      change('physicalAddress.address1', mailingAddress.address1);
-      change('physicalAddress.address2', mailingAddress.address2);
-      change('physicalAddress.city', mailingAddress.city);
-      change('physicalAddress.state', mailingAddress.state);
-      change('physicalAddress.zip', mailingAddress.zip);
-    } else {
-      change('physicalAddress.address1', '');
-      change('physicalAddress.address2', '');
-      change('physicalAddress.city', '');
-      change('physicalAddress.state', '');
-      change('physicalAddress.zip', '');
-    }
-    return value;
-  };
 
   handleResetForm = () => {
     this.props.reset();
@@ -75,14 +56,10 @@ export class CreateBranch extends Component {
     const {
       handleSubmit,
       licenseValue,
-      sameAsMailingValue,
-      physicalStateValue,
-      physicalZipValue,
       submitting,
       pristine,
       change,
-      orphans,
-      territoryManagers
+      orphans
     } = this.props;
 
     return (
@@ -97,50 +74,7 @@ export class CreateBranch extends Component {
                   {/* web address validaiton */}
                 </section>
                 <h3>Address</h3>
-                <section className="agency-address">
-                  <div className="agency-mailing-address">
-                    <h4>Mailing Address</h4>
-                    <FormSection name="mailingAddress">
-                      <Address
-                        territoryManagers={territoryManagers}
-                        sameAsMailingValue={sameAsMailingValue}
-                        changeField={change}
-                        section="mailingAddress" />
-                    </FormSection>
-                  </div>
-                  <div className="agency-physical-address">
-                    <h4>Physical Address
-                      <Field
-                        name="sameAsMailing"
-                        component="input"
-                        id="sameAsMailing"
-                        type="checkbox"
-                        data-test="sameAsMailing"
-                        normalize={this.handleSameAsMailing} />
-                      <label htmlFor="sameAsMailing">Same as Mailing Address</label>
-                    </h4>
-                    <FormSection name="physicalAddress">
-                      <Address
-                        section="physicalAddress"
-                        showCounty
-                        territoryManagers={territoryManagers}
-                        changeField={change}
-                        stateValue={physicalStateValue}
-                        zipValue={physicalZipValue}
-                        sectionDisabled={sameAsMailingValue} />
-                    </FormSection>
-                    <Field
-                      label="Territory Managers"
-                      name="territoryManagerId"
-                      styleName="territoryManagerId"
-                      dataTest="territoryManager"
-                      component={SelectTypeAhead}
-                      optionValue="_id"
-                      optionLabel="name"
-                      answers={territoryManagers}
-                      validate={validation.isRequired} />
-                  </div>
-                </section>
+                <AddressGroup changeField={change} />
                 <h3>Contact</h3>
                 <section className="agency-contact">
                   <FormSection name="contact" >

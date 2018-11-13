@@ -1,25 +1,27 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Field } from 'redux-form';
-import { Input, validation, Select, SelectTypeAhead } from '@exzeo/core-ui';
+import { Field, FormSection, formValueSelector } from 'redux-form';
+import { validation, SelectTypeAhead } from '@exzeo/core-ui';
 
 import { searchSettingsByCSPAndZip } from '../../../state/actions/zipCodeSettings.actions';
-import { getListOfZipCodes } from '../../../state/selectors/zipCodeSettings.selectors';
+import { getListOfZipCodes, getZipCodeSettings } from '../../../state/selectors/zipCodeSettings.selectors';
 import { getListAnswers } from '../../../state/selectors/questions.selectors';
 
+import Address from './Address';
 
-export class Address extends Component {
+export class AddressGroup extends Component {
   componentDidMount() {
     const { stateValue, zipValue } = this.props;
     if (stateValue && zipValue) {
       this.props.searchSettingsByCSPAndZipAction(zipValue, stateValue);
     }
   }
-  normalizeSameAsMailing = (value) => {
-    const { changeField, section, sameAsMailingValue } = this.props;
+  normalizeSameAsMailing = section => (value, pv, av) => {
+    const { changeField } = this.props;
 
-    if (section === 'physicalAddress' || !sameAsMailingValue) return value;
+    if (section === 'physicalAddress' || !av.sameAsMailing) return value;
     changeField('sameAsMailing', false);
+    this.handleStateAndZip('', av.physicalAddress.state);
     return value;
   };
 
@@ -43,55 +45,64 @@ export class Address extends Component {
     return selectedTerritoryManager;
   }
 
+  setTerritoryManager = (selectedZip) => {
+    this.props.changeField('physicalAddress.county', selectedZip.county);
+    this.props.changeField('physicalAddress.zip', selectedZip.zip);
+    this.props.changeField('physicalAddress.state', selectedZip.state);
+
+    const tm = this.filterTerritoryManager(selectedZip.state, selectedZip.county);
+    if (tm) {
+      this.props.changeField('territoryManagerId', tm._id);
+    }
+  }
+
   handleStateAndZip = async (zip, state) => {
-    const { section } = this.props;
     const zipCodes = await this.props.searchSettingsByCSPAndZipAction(zip, state);
     if (zipCodes.length === 1) {
       const selectedZip = zipCodes[0];
-      this.props.changeField(`${section}.county`, selectedZip.county);
-      this.props.changeField(`${section}.zip`, selectedZip.zip);
-      this.props.changeField(`${section}.state`, selectedZip.state);
-
-      const tm = this.filterTerritoryManager(selectedZip.state, selectedZip.county);
-      if (tm) {
-        this.props.changeField('territoryManagerId', tm._id);
-      }
+      this.setTerritoryManager(selectedZip);
     } else {
-      this.props.changeField(`${section}.county`, '');
+      this.props.changeField('physicalAddress.county', '');
     }
   }
 
   handleSameAsMailing = (value, previousValue, allValues) => {
-    const { change } = this.props;
+    const { changeField } = this.props;
     const { mailingAddress } = allValues;
     if (!mailingAddress) return value;
     if (value) {
-      change('physicalAddress.address1', mailingAddress.address1);
-      change('physicalAddress.address2', mailingAddress.address2);
-      change('physicalAddress.city', mailingAddress.city);
-      change('physicalAddress.state', mailingAddress.state);
-      change('physicalAddress.zip', mailingAddress.zip);
-    } else {
-      change('physicalAddress.address1', '');
-      change('physicalAddress.address2', '');
-      change('physicalAddress.city', '');
-      change('physicalAddress.state', '');
-      change('physicalAddress.zip', '');
+      changeField('physicalAddress.address1', mailingAddress.address1);
+      changeField('physicalAddress.address2', mailingAddress.address2);
+      changeField('physicalAddress.city', mailingAddress.city);
+      changeField('physicalAddress.state', mailingAddress.state);
+      changeField('physicalAddress.zip', mailingAddress.zip);
+
+      this.handleStateAndZip(mailingAddress.zip, mailingAddress.state);
     }
     return value;
   };
 
 
+  normalizeState = (value, pv, av) => {
+    this.handleStateAndZip(av.physicalAddress.zip, value);
+    this.normalizeSameAsMailing('physicalAddress')(value, pv, av);
+    return value;
+  }
+
   normalizeZipCode = (value, pv, av) => {
-    const { section } = this.props;
-    this.handleStateAndZip(av[section].zip, value);
-    this.normalizeSameAsMailing(value);
+    const { zipCodeSettings } = this.props;
+    const mathingZipCodes = zipCodeSettings.filter(z => z.zip === value);
+    if (mathingZipCodes.length === 1) {
+      this.setTerritoryManager(mathingZipCodes[0]);
+    }
+    this.normalizeSameAsMailing('physicalAddress')(value, pv, av);
     return value;
   }
 
   render() {
     const {
-      showCounty, sectionDisabled, listOfZipCodes, section, listAnswers
+      territoryManagers, changeField, sameAsMailingValue
+
     } = this.props;
 
     return (
@@ -100,9 +111,9 @@ export class Address extends Component {
           <h4>Mailing Address</h4>
           <FormSection name="mailingAddress">
             <Address
+              normalizeSameAsMailing={this.normalizeSameAsMailing('mailingAddress')}
               territoryManagers={territoryManagers}
-              sameAsMailingValue={sameAsMailingValue}
-              changeField={change}
+              changeField={changeField}
               section="mailingAddress" />
           </FormSection>
         </div>
@@ -119,13 +130,14 @@ export class Address extends Component {
           </h4>
           <FormSection name="physicalAddress">
             <Address
+              sectionDisabled={sameAsMailingValue === true}
+              normalizeSameAsMailing={this.normalizeSameAsMailing('physicalAddress')}
+              normalizeZipCode={this.normalizeZipCode}
+              normalizeState={this.normalizeState}
               section="physicalAddress"
               showCounty
               territoryManagers={territoryManagers}
-              changeField={change}
-              stateValue={physicalStateValue}
-              zipValue={physicalZipValue}
-              sectionDisabled={sameAsMailingValue} />
+              changeField={changeField} />
           </FormSection>
           <Field
             label="Territory Managers"
@@ -143,21 +155,20 @@ export class Address extends Component {
   }
 }
 
-Address.defaultProps = {
-  showCounty: false,
-  sectionDisabled: false,
+AddressGroup.defaultProps = {
   listOfZipCodes: [],
-  sameAsMailingValue: false,
-  stateValue: '',
-  zipValue: '',
   listAnswers: {}
 };
 
+const selector = formValueSelector('CreateBranch');
 
 const mapStateToProps = state => ({
+  sameAsMailingValue: selector(state, 'sameAsMailing'),
+  territoryManagers: state.questions.territoryManagers,
   listOfZipCodes: getListOfZipCodes(state),
-  listAnswers: getListAnswers(state)
+  listAnswers: getListAnswers(state),
+  zipCodeSettings: getZipCodeSettings(state)
 });
 
-export default connect(mapStateToProps, { searchSettingsByCSPAndZipAction: searchSettingsByCSPAndZip })(Address);
+export default connect(mapStateToProps, { searchSettingsByCSPAndZipAction: searchSettingsByCSPAndZip })(AddressGroup);
 

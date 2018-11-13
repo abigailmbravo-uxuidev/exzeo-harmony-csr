@@ -9,68 +9,9 @@ import { getListAnswers } from '../../../state/selectors/questions.selectors';
 
 
 export class Address extends Component {
-  componentDidMount() {
-    const { stateValue, zipValue } = this.props;
-    if (stateValue && zipValue) {
-      this.props.searchSettingsByCSPAndZipAction(zipValue, stateValue);
-    }
-  }
-  normalizeSameAsMailing = (value) => {
-    const { changeField, section, sameAsMailingValue } = this.props;
-
-    if (section === 'physicalAddress' || !sameAsMailingValue) return value;
-    changeField('sameAsMailing', false);
-    return value;
-  };
-
-  filterTerritoryManager = (state, county) => {
-    const { territoryManagers } = this.props;
-    const selectedTerritoryManager = territoryManagers
-      .find((tm) => {
-        const { states } = tm;
-        if (states && states.some((s) => {
-          const { counties } = s;
-          return s.state.includes(state) &&
-          counties && counties.some((c) => {
-            return c.county.includes(county);
-          });
-        })) {
-          return tm;
-        }
-        return null;
-      });
-
-    return selectedTerritoryManager;
-  }
-
-  handleStateAndZip = async (zip, state) => {
-    const { section } = this.props;
-    const zipCodes = await this.props.searchSettingsByCSPAndZipAction(zip, state);
-    if (zipCodes.length === 1) {
-      const selectedZip = zipCodes[0];
-      this.props.changeField(`${section}.county`, selectedZip.county);
-      this.props.changeField(`${section}.zip`, selectedZip.zip);
-      this.props.changeField(`${section}.state`, selectedZip.state);
-
-      const tm = this.filterTerritoryManager(selectedZip.state, selectedZip.county);
-      if (tm) {
-        this.props.changeField('territoryManagerId', tm._id);
-      }
-    } else {
-      this.props.changeField(`${section}.county`, '');
-    }
-  }
-
-  normalizeZipCode = (value, pv, av) => {
-    const { section } = this.props;
-    this.handleStateAndZip(av[section].zip, value);
-    this.normalizeSameAsMailing(value);
-    return value;
-  }
-
   render() {
     const {
-      showCounty, sectionDisabled, listOfZipCodes, section, listAnswers
+      showCounty, sectionDisabled, listOfZipCodes, section, listAnswers, normalizeSameAsMailing, normalizeZipCode, normalizeState
     } = this.props;
 
     return (
@@ -82,7 +23,7 @@ export class Address extends Component {
           styleName="address1"
           dataTest="address1"
           validate={validation.isRequired}
-          normalize={this.normalizeSameAsMailing}
+          normalize={normalizeSameAsMailing}
           disabled={sectionDisabled} />
         <Field
           name="address2"
@@ -90,7 +31,7 @@ export class Address extends Component {
           component={Input}
           styleName="address2"
           dataTest="address2"
-          normalize={this.normalizeSameAsMailing}
+          normalize={normalizeSameAsMailing}
           disabled={sectionDisabled} />
         <div className="city-state-zip">
           <Field
@@ -100,7 +41,7 @@ export class Address extends Component {
             styleName="city"
             dataTest="city"
             validate={validation.isRequired}
-            normalize={this.normalizeSameAsMailing}
+            normalize={normalizeSameAsMailing}
             disabled={sectionDisabled} />
           <Field
             name="state"
@@ -109,7 +50,7 @@ export class Address extends Component {
             styleName="state"
             dataTest="state"
             validate={validation.isRequired}
-            normalize={this.normalizeZipCode}
+            normalize={section === 'physicalAddress' ? normalizeState : null}
             answers={listAnswers.US_states}
             disabled={sectionDisabled} />
           {section === 'physicalAddress' && <Field
@@ -121,7 +62,7 @@ export class Address extends Component {
             optionValue="answer"
             optionLabel="label"
             validate={validation.isRequired}
-            normalize={this.normalizeSameAsMailing}
+            normalize={normalizeZipCode}
             answers={listOfZipCodes}
             disabled={sectionDisabled} />}
           {section === 'mailingAddress' && <Field
@@ -131,7 +72,7 @@ export class Address extends Component {
             styleName="zip"
             dataTest="zip"
             validate={validation.isRequired}
-            normalize={this.normalizeSameAsMailing}
+            normalize={normalizeSameAsMailing}
             disabled={sectionDisabled} />}
         </div>
         {showCounty &&
