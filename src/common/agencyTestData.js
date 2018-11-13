@@ -15,8 +15,7 @@ const agencyTestData = {
   eoExpirationDate: '2017-07-12T00:00:00.000Z',
   faxNumber: '3525334073',
   legalName: 'TYPTAP MANAGEMENT COMPANY',
-  licenseExpirationDate: '2015-12-08T00:00:00.000Z',
-  licenseNumber: 'L095305',
+  licenses: [{ licenseNumber: 'L095305', licenseExpirationDate: '2015-12-08T00:00:00.000Z' }],
   mailingAddress: {
     address1: '3001 S.E. MARICAMP ROAD',
     address2: null,
