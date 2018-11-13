@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Input, Select, validation, SelectTypeAhead } from '@exzeo/core-ui';
+import { Select, validation, SelectTypeAhead } from '@exzeo/core-ui';
 import { reduxForm, FieldArray, Field } from 'redux-form';
 
 import { isUnique } from '../utilities/validation';
