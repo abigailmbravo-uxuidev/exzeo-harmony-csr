@@ -1,17 +1,16 @@
 import React, { Component } from 'react';
-import { Field, FieldArray, FormSection } from 'redux-form';
-import { validation, Button, SelectTypeAhead } from '@exzeo/core-ui';
+import { FieldArray, FormSection } from 'redux-form';
+import { Button } from '@exzeo/core-ui';
 
 import ExistingAgentModal from '../components/ExistingAgentModal';
 import Agent from '../components/FormGroup/Agent';
 import Contact from '../components/FormGroup/Contact';
-import Address from '../components/Address';
 import License from '../components/License';
 import history from '../../../history';
 import Footer from '../../../components/Common/Footer';
+import AddressGroup from '../components/AddressGroup';
 
 import BranchDetails from './BranchDetails';
-import AddressGroup from '../components/AddressGroup';
 
 export class CreateBranch extends Component {
   state = {

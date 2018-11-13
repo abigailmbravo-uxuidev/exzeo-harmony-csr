@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Field, FormSection, formValueSelector } from 'redux-form';
+import { Field, FormSection } from 'redux-form';
 import { validation, SelectTypeAhead } from '@exzeo/core-ui';
 
 import { searchSettingsByCSPAndZip } from '../../../state/actions/zipCodeSettings.actions';
@@ -10,12 +10,6 @@ import { getListAnswers } from '../../../state/selectors/questions.selectors';
 import Address from './Address';
 
 export class AddressGroup extends Component {
-  componentDidMount() {
-    const { stateValue, zipValue } = this.props;
-    if (stateValue && zipValue) {
-      this.props.searchSettingsByCSPAndZipAction(zipValue, stateValue);
-    }
-  }
   normalizeSameAsMailing = section => (value, pv, av) => {
     const { changeField } = this.props;
 
