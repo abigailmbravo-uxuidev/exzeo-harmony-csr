@@ -201,8 +201,8 @@ export class Create extends Component {
           listOfAgents={orphans}
           onToggleModal={this.handleToggleExistingAgentModal}
           handleSelection={this.applyOrphanedAgent}
-          header={"Choose Exisiting Agent"} />
-      }
+          header="Exisiting Agent" />
+        }
       </div>
     );
   }
