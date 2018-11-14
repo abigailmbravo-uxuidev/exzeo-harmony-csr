@@ -32,7 +32,7 @@ export const Contact = ({ section }) => (
       name="emailAddress"
       dataTest={`${section}.emailAddress`}
       component={Input}
-      validate={validation.isRequired} />
+      validate={[validation.isRequired, validation.isEmail]} />
   </React.Fragment>
 );
 
