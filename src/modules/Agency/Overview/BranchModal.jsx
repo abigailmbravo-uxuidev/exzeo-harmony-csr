@@ -42,9 +42,9 @@ export class BranchModal extends Component {
     } = this.props;
 
     return (
-      <div className="modal agency-crud" style={{ overflow: 'scroll', display: 'block' }}>
+      <div className="modal agency-crud branch-agency-crud">
         <form onSubmit={handleSubmit(this.handleBranchSubmit)}>
-          <div className="card">
+          <div className="card branch">
             <div className="card-header">
               <h4>
                 <i className="fa fa-address-book" /> Update Branch
@@ -52,73 +52,66 @@ export class BranchModal extends Component {
             </div>
             <div className="card-block">
               <section className="agency-details">
-                <div className="agency-contact">
-                  <Field
-                    name="displayName"
-                    dataTest="displayName"
-                    styleName="displayName"
-                    label="Branch Name"
-                    validate={validation.isRequired}
-                    component={Input} />
-                  <Field
-                    id="status"
-                    name="status"
-                    dataTest="status"
-                    styleName="status"
-                    label="Status"
-                    component={Select}
-                    validate={validation.isRequired}
-                    answers={statusAnswers} />
-
-                  <Field
-                    name="primaryPhoneNumber"
-                    label="Primary Phone"
-                    component={Phone}
-                    dataTest="primaryPhoneNumber"
-                    styleName="primaryPhoneNumber"
-                    validate={validation.isRequired} />
-                  <Field
-                    name="secondaryPhoneNumber"
-                    label="Secondary Phone"
-                    component={Phone}
-                    dataTest="secondaryPhoneNumber"
-                    styleName="secondaryPhoneNumber" />
-                  <Field
-                    name="faxNumber"
-                    label="Fax Number"
-                    component={Phone}
-                    dataTest="faxNumber"
-                    validate={[validation.isPhone]}
-                    styleName="faxNumber" />
-                </div>
-                <div className="agency-web-address">
-                  <Field
-                    label="Web Address"
-                    styleName="websiteUrl"
-                    name="websiteUrl"
-                    dataTest="websiteUrl"
-                    component={Input}
-                    validate={[validation.isRequired, validation.isWebAddress]} />
-                </div>
-                <div className="agemcny-mail">
-                  <Field
-                    name="mailCommissionChecksToBranch"
-                    dataTest="mailCommissionChecksToBranch"
-                    styleName="mailCommissionChecksToBranch"
-                    label="Mail Commision Checks to this Branch"
-                    component={Radio}
-                    segmented
-                    answers={mailAnswers} />
-                  <Field
-                    name="mailPolicyDocsToBranch"
-                    dataTest="mailPolicyDocsToBranch"
-                    styleName="mailPolicyDocsToBranch"
-                    label="Mail Policy Docs to this Branch"
-                    component={Radio}
-                    segmented
-                    answers={mailAnswers} />
-
-                </div>
+                <Field
+                  name="displayName"
+                  dataTest="displayName"
+                  styleName="displayName branchName branch"
+                  label="Branch Name"
+                  validate={validation.isRequired}
+                  component={Input} />
+                <Field
+                  id="status"
+                  name="status"
+                  dataTest="status"
+                  styleName="status branch-status"
+                  label="Status"
+                  component={Select}
+                  validate={validation.isRequired}
+                  answers={statusAnswers} />
+                <Field
+                  name="mailCommissionChecksToBranch"
+                  dataTest="mailCommissionChecksToBranch"
+                  styleName="mailCommissionChecksToBranch"
+                  label="Mail Commision Checks to this Branch"
+                  component={Radio}
+                  segmented
+                  answers={mailAnswers} />
+                <Field
+                  name="mailPolicyDocsToBranch"
+                  dataTest="mailPolicyDocsToBranch"
+                  styleName="mailPolicyDocsToBranch"
+                  label="Mail Policy Docs to this Branch"
+                  component={Radio}
+                  segmented
+                  answers={mailAnswers} />
+                <Field
+                  label="Web Address"
+                  styleName="webAddress branch"
+                  name="websiteUrl"
+                  dataTest="websiteUrl"
+                  component={Input}
+                  validate={[validation.isRequired, validation.isWebAddress]} />
+                <hr />
+                <Field
+                  name="primaryPhoneNumber"
+                  label="Primary Phone"
+                  component={Phone}
+                  dataTest="primaryPhoneNumber"
+                  styleName="primaryPhoneNumber"
+                  validate={validation.isRequired} />
+                <Field
+                  name="secondaryPhoneNumber"
+                  label="Secondary Phone"
+                  component={Phone}
+                  dataTest="secondaryPhoneNumber"
+                  styleName="secondaryPhoneNumber" />
+                <Field
+                  name="faxNumber"
+                  label="Fax Number"
+                  component={Phone}
+                  dataTest="faxNumber"
+                  validate={[validation.isPhone]}
+                  styleName="faxNumber" />
               </section>
             </div>
             <div className="card-footer">
