@@ -72,7 +72,7 @@ export class BranchModal extends Component {
                   name="mailCommissionChecksToBranch"
                   dataTest="mailCommissionChecksToBranch"
                   styleName="mailCommissionChecksToBranch"
-                  label="Mail Commision Checks to this Branch"
+                  label="Mail Commission Checks to this Branch"
                   component={Radio}
                   segmented
                   answers={mailAnswers} />

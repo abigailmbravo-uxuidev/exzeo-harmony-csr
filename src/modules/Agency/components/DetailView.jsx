@@ -61,8 +61,8 @@ export const DetailView = ({
       </div>
       }
       {String(agencyBranchData.branchCode) !== '0' &&
-      <div className="mailCommisionChecksToBranch">
-        <label>Mail Commision Checks to this Branch</label>
+      <div className="mailCommissionChecksToBranch">
+        <label>Mail Commission Checks to this Branch</label>
         <div>{agencyBranchData.mailCommissionChecksToBranch ? 'Yes' : 'No'}</div>
       </div>
       }
