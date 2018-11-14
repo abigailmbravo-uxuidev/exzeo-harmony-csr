@@ -5,8 +5,10 @@ const agencyTestData = {
   agencyCode: 20000,
   companyCode: 'TTIC',
   contactEmailAddress: 'test@typtap.com',
-  contactFirstName: 'WALLY',
-  contactLastName: 'WAGONER',
+  contact:{ 
+    firstName: 'WALLY', 
+    lastName: 'WAGONER' 
+  },
   contract: 'Flood 03 16',
   createdAt: '2015-12-23T12:45:30.137Z',
   createdBy: 'tsmith',
