@@ -76,6 +76,8 @@ export class Contracts extends Component {
         }
         {showContractModal &&
           <ContractModal
+            productAnswers={listAnswers.Products}
+            stateAnswers={listAnswers.US_states}
             addendumAnswers={listAnswers.Agency_Addendum}
             companyCodeAnswers={listAnswers.Company_Code}
             agencyContractAnswers={listAnswers.Agency_Contract}

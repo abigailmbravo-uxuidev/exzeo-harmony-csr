@@ -1,21 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Select, validation, SelectTypeAhead } from '@exzeo/core-ui';
+import { Select, validation, SelectTypeAhead, Button, emptyArray } from '@exzeo/core-ui';
 import { reduxForm, FieldArray, Field } from 'redux-form';
 
 import { isUnique } from '../utilities/validation';
 
-export const RenderProducts = ({ fields }) => {
-  const states = [
-    { answer: 'FL', label: 'FL' },
-    { answer: 'TX', label: 'TX' }
-  ];
-
-  const productTypes = [
-    { answer: 'HO3', label: 'HO3' },
-    { answer: 'FL3', label: 'FL3' }
-  ];
-
+export const RenderProducts = ({ fields, stateAnswers, productAnswers }) => {
   if (fields.length === 0) fields.insert(0, {});
 
   return (
@@ -28,7 +18,7 @@ export const RenderProducts = ({ fields }) => {
               styleName="state"
               name={`${product}.state`}
               component={Select}
-              answers={states}
+              answers={stateAnswers}
               dataTest={`state-${index}`}
               validate={validation.isRequired} />
             <Field
@@ -36,7 +26,7 @@ export const RenderProducts = ({ fields }) => {
               styleName="product"
               name={`${product}.product`}
               component={Select}
-              answers={productTypes}
+              answers={productAnswers}
               dataTest={`product-${index}`}
               validate={validation.isRequired} />
             {fields.length > 1 &&
@@ -45,7 +35,12 @@ export const RenderProducts = ({ fields }) => {
           </div>))}
       <div className="add-product">
         <hr />
-        <button className="btn-secondary btn btn-sm" onClick={() => fields.push({})}><i className="fa fa-plus" />Product</button>
+        <Button
+          baseClass="secondary"
+          size="small"
+          dataTest="add-product"
+          onClick={() => fields.push({})}><i className="fa fa-plus" />Product
+        </Button>
         <hr />
       </div>
     </React.Fragment>
@@ -60,7 +55,9 @@ export const ContractModal = (props) => {
     initialValues,
     addendumAnswers,
     companyCodeAnswers,
-    agencyContractAnswers
+    agencyContractAnswers,
+    stateAnswers,
+    productAnswers
   } = props;
 
   const actionType = initialValues ? 'Edit' : 'Add';
@@ -79,8 +76,6 @@ export const ContractModal = (props) => {
                 component={SelectTypeAhead}
                 styleName="companyCode"
                 dataTest="companyCode"
-                optionValue="answer"
-                optionLabel="label"
                 validate={validation.isRequired}
                 answers={companyCodeAnswers} />
               <Field
@@ -89,8 +84,6 @@ export const ContractModal = (props) => {
                 component={SelectTypeAhead}
                 styleName="contractNumber"
                 dataTest="contractNumber"
-                optionValue="answer"
-                optionLabel="label"
                 validate={[validation.isRequired, isUnique]}
                 answers={agencyContractAnswers} />
               <Field
@@ -99,12 +92,13 @@ export const ContractModal = (props) => {
                 component={SelectTypeAhead}
                 styleName="addendum"
                 dataTest="addendum"
-                optionValue="answer"
-                optionLabel="label"
                 answers={addendumAnswers} />
             </section>
             <section className="contract-csp">
-              <FieldArray name="stateProducts" component={RenderProducts} />
+              <FieldArray
+                name="stateProducts"
+                component={fieldProps =>
+                  <RenderProducts {...fieldProps} stateAnswers={stateAnswers} productAnswers={productAnswers} />} />
             </section>
           </div>
           <div className="card-footer">
@@ -120,10 +114,12 @@ export const ContractModal = (props) => {
 };
 
 ContractModal.defaultProps = {
-  contractNumbers: [],
-  addendumAnswers: [],
-  companyCodeAnswers: [],
-  agencyContractAnswers: []
+  contractNumbers: emptyArray,
+  addendumAnswers: emptyArray,
+  companyCodeAnswers: emptyArray,
+  agencyContractAnswers: emptyArray,
+  stateAnswers: emptyArray,
+  productAnswers: emptyArray
 };
 
 ContractModal.propTypes = {
