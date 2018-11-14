@@ -24,14 +24,6 @@ export const ContractCard = ({ contract, editContract, contractIndex }) => (
             <div>{contract.contractNumber}</div>
           </div>
         </span>
-        {contract.addendum &&
-          <span className="additional-contract-info contract">
-            <label>Addendum</label>
-            <div className="contract-number-wrapper">
-              <div>{contract.addendum}</div>
-            </div>
-          </span>
-        }
       </div>
     </div>
     <div className="contract-actions">
