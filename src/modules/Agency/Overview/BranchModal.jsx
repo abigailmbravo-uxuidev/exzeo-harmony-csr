@@ -47,7 +47,7 @@ export class BranchModal extends Component {
           <div className="card branch">
             <div className="card-header">
               <h4>
-                <i className="fa fa-address-book" /> Update Branch
+                <i className="fa fa-address-book" /> Edit Agency Details
               </h4>
             </div>
             <div className="card-block">

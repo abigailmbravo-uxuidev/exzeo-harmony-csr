@@ -61,7 +61,7 @@ export class AgencyAddressModal extends Component {
           <div className="card">
             <div className="card-header">
               <h4>
-                <i className="fa fa-address-book" /> Edit Agency
+                <i className="fa fa-address-book" /> Edit Agency Address
               </h4>
             </div>
             <div className="card-block">
