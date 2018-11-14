@@ -1,5 +1,4 @@
 import React from 'react';
-import { normalize } from '@exzeo/core-ui';
 
 export const ContactView = ({ agency, agencyBranchData, emailType }) => {
   return (
@@ -7,25 +6,25 @@ export const ContactView = ({ agency, agencyBranchData, emailType }) => {
       <div className="primaryPhoneNumber read">
         <label>Phone 1</label>
         <div>
-          <a href={`tel:${agencyBranchData.primaryPhoneNumber}`}>{normalize.phone(agencyBranchData.primaryPhoneNumber)}</a>
+          {agencyBranchData.primaryPhoneNumber}
         </div>
       </div>
       <div className="secondaryPhoneNumber read">
         <label>Phone 2</label>
         <div>
-          <a href={`tel:${agencyBranchData.secondaryPhoneNumber}`}>{normalize.phone(agencyBranchData.secondaryPhoneNumber)}</a>
+          {agencyBranchData.secondaryPhoneNumber}
         </div>
       </div>
       <div className="faxNumber read">
         <label>Fax</label>
         <div>
-          <a href={`tel:${agencyBranchData.faxNumber}`}>{normalize.phone(agencyBranchData.faxNumber)}</a>
+          {agencyBranchData.faxNumber}
         </div>
       </div>
       <div className="customerServiceEmailAddress read">
         <label>{emailType} Email</label>
         <div>
-          <a href={`mailto:${agency.customerServiceEmailAddress}`}>{agency.customerServiceEmailAddress}</a>
+          {agency.customerServiceEmailAddress}
         </div>
       </div>
     </React.Fragment>
