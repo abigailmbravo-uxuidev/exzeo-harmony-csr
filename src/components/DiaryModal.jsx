@@ -91,6 +91,14 @@ export class DiaryModal extends Component {
           <form id="DiaryModal" onSubmit={handleSubmit(this.submitDiary)} >
             <div className="content">
               <Field
+                name="reason"
+                label="Reason"
+                component={Select}
+                answers={REASONS}
+                validate={validation.isRequired}
+                normalize={this.normalizeDiaryReason}
+                dataTest="reason" />
+              <Field
                 name="assignee.id"
                 styleName="assignee"
                 label="Assignee"
@@ -104,14 +112,6 @@ export class DiaryModal extends Component {
                 component={Date}
                 validate={[validation.isRequired, validation.isDate]}
                 dataTest="due" />
-              <Field
-                name="reason"
-                label="Reason"
-                component={Select}
-                answers={REASONS}
-                validate={validation.isRequired}
-                normalize={this.normalizeDiaryReason}
-                dataTest="reason" />
               <Field
                 name="message"
                 label="Message"
@@ -128,7 +128,7 @@ export class DiaryModal extends Component {
                 onClick={handleSubmit((values, dispatch, props) => {
                   this.submitDiary({ ...values, open: false }, dispatch, props);
                 })}>
-                Close Diary
+                Mark as Closed
               </button>
               <button
                 tabIndex="0"
