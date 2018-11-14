@@ -4,7 +4,7 @@ import { Input, Integer, Radio, Select, Phone, validation, Date } from '@exzeo/c
 
 import { STATUS, OK_TO_PAY, TAX_CLASSIFICATION } from '../../../../constants/agency';
 
-const AgencyDetails = (agencyCodeDisabled) => {
+const AgencyDetails = ({ agencyCodeDisabled }) => {
   return (
     <React.Fragment>
       <Field
@@ -120,8 +120,8 @@ const AgencyDetails = (agencyCodeDisabled) => {
   );
 };
 
-AgencyDetails.propTypes = {};
-
-AgencyDetails.defaultProps = {};
+AgencyDetails.defaultProps = {
+  agencyCodeDisabled: false
+};
 
 export default AgencyDetails;

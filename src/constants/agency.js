@@ -16,7 +16,7 @@ export const STATUS = [
   { answer: 'Active', label: 'Active' },
   { answer: 'Service Only', label: 'Service Only' },
   { answer: 'Pending', label: 'Pending' },
-  { answer: 'Cancel', label: 'Cancel' }
+  { answer: 'Terminated', label: 'Terminated' }
 
 ];
 
