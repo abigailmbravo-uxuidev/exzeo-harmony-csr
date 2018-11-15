@@ -74,7 +74,7 @@ class Routes extends Component {
         {diary && diary.resourceType &&
           <DiaryModal
             user={userProfile}
-            diaryId={diary.selectedDiary.diaryId}
+            diaryId={diary.selectedDiary ? diary.selectedDiary.diaryId : null}
             resourceType={diary.resourceType}
             resourceId={diary.resourceId}
             entityEndDate={diary.entityEndDate} />

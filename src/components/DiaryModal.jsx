@@ -173,7 +173,10 @@ const mapStateToProps = (state, ownProps) => {
   const selectedDiary = state.diaries.find(d => d._id === ownProps.diaryId);
   return {
     assigneeAnswers: getDiaryAssigneeAnswers(state),
-    initialValues: selectedDiary ? selectedDiary.entries[0] : {}
+    initialValues: selectedDiary ? {
+      ...selectedDiary.entries[0],
+      due: addDate(0, selectedDiary.entries[0].due)
+    } : {}
   };
 };
 
