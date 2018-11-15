@@ -10,6 +10,7 @@ import { submitDiary } from '../state/actions/diary.actions';
 import { toggleDiary } from '../state/actions/ui.actions';
 import { setAppError } from '../state/actions/error.actions';
 import { getDiaryAssigneeAnswers } from '../state/selectors/questions.selectors';
+import { getInitialValuesForForm } from '../state/selectors/diary.selectors';
 
 export class DiaryModal extends Component {
   state = { minimize: false };
@@ -170,13 +171,9 @@ DiaryModal.propTypes = {
 };
 
 const mapStateToProps = (state, ownProps) => {
-  const selectedDiary = state.diaries.find(d => d._id === ownProps.diaryId);
   return {
     assigneeAnswers: getDiaryAssigneeAnswers(state),
-    initialValues: selectedDiary ? {
-      ...selectedDiary.entries[0],
-      due: date.formatDate(selectedDiary.entries[0].due, date.FORMATS.SECONDARY)
-    } : {}
+    initialValues: getInitialValuesForForm(state, ownProps)
   };
 };
 
