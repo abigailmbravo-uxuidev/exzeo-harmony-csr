@@ -7,6 +7,7 @@ import UnderwritingValidationBarConnect from '../components/Quote/UnderwritingVa
 import App from '../components/AppWrapper';
 import OpenDiariesBar from '../components/OpenDiariesBar';
 import DiaryPolling from '../components/DiaryPolling';
+import { QUOTE_RESOURCE_TYPE } from '../constants/diaries';
 
 export class QuoteBase extends React.Component {
   state = {
@@ -31,7 +32,7 @@ export class QuoteBase extends React.Component {
       <div className="app-wrapper csr quote">
         {(appState.data.submitting || !quoteData.quoteNumber) && <Loader />}
         <App
-          resourceType="Quote"
+          resourceType={QUOTE_RESOURCE_TYPE}
           resourceId={quoteData.quoteNumber}
           pageTitle={`Q: ${quoteData.quoteNumber || ''}`}
           match={match}
@@ -48,10 +49,10 @@ export class QuoteBase extends React.Component {
               <OpenDiariesBar
                 entityEndDate={quoteData.endDate}
                 resourceId={quoteData.quoteNumber}
-                resourceType="Quote" />
+                resourceType={QUOTE_RESOURCE_TYPE} />
 
               {(quoteData && quoteData.quoteNumber) &&
-                <DiaryPolling filter={{ resourceId: quoteData.quoteNumber, resourceType: 'Quote' }} />
+                <DiaryPolling filter={{ resourceId: quoteData.quoteNumber, resourceType: QUOTE_RESOURCE_TYPE }} />
               }
 
             </React.Fragment>
