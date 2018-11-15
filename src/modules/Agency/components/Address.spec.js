@@ -6,6 +6,7 @@ import { Address } from './Address';
 describe('Testing Address component', () => {
   it('should render', () => {
     const props = {
+      listAnswersAsKey: [],
       showCounty: true,
       territoryManagers: [{
         _id: '5b7db9f6ff54fd6a5c619ee8',

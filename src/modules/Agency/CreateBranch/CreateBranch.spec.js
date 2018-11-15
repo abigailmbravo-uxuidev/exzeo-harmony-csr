@@ -15,7 +15,8 @@ describe('Testing CreateBranch Base component', () => {
       pristine: false,
       change() {},
       agency: {},
-      orphans: [{ _id: '123' }]
+      orphans: [{ _id: '123' }],
+      listAnswersAsKey: []
     };
     const wrapper = shallow(<CreateBranch {...props} />);
     expect(wrapper.exists()).toBeTruthy();

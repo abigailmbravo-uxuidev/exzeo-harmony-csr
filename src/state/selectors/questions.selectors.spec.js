@@ -76,12 +76,11 @@ describe('Test questions selectors', () => {
       };
       const result = getListAnswers(state);
       expect(result).toEqual({
-        Agency_Addendum: [
-          { answer: 'TT 03 16', label: 'TT 03 16' },
+        Agency_Addendum:
+        [{ answer: 'HC REV 120115', label: 'HC REV 120115' },
+          { answer: 'HC SAF PACS 05 18', label: 'HC SAF PACS 05 18' },
           { answer: 'TT 02 18', label: 'TT 02 18' },
-          { answer: 'HC REV 120115', label: 'HC REV 120115' },
-          { answer: 'HC SAF PACS 05 18', label: 'HC SAF PACS 05 18' }
-        ]
+          { answer: 'TT 03 16', label: 'TT 03 16' }]
       });
     });
 
@@ -117,9 +116,9 @@ describe('Test questions selectors', () => {
       const result = getListAnswersAsKey(state);
       expect(result).toEqual({
         Agency_Addendum: [
-          { answer: 'WY', label: 'WY' },
           { answer: 'WI', label: 'WI' },
-          { answer: 'WV', label: 'WV' }
+          { answer: 'WV', label: 'WV' },
+          { answer: 'WY', label: 'WY' }
         ]
       });
     });

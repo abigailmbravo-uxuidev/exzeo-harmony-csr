@@ -25,7 +25,7 @@ export class AgentModal extends Component {
       licenseValue,
       change,
       sameAsMailingValue,
-      listAnswers
+      listAnswersAsKey
     } = this.props;
 
     return (
@@ -47,7 +47,7 @@ export class AgentModal extends Component {
                 <h3>Licenses</h3>
                 <FieldArray
                   name="licenses"
-                  stateAnswers={listAnswers.US_states}
+                  stateAnswers={listAnswersAsKey.US_states}
                   component={License}
                   licenseValue={licenseValue}
                   isAgency={false} />
@@ -85,7 +85,7 @@ const defaultArr = [];
 const mapStateToProps = state => ({
   licenseValue: selector(state, 'license') || defaultArr,
   sameAsMailingValue: selector(state, 'sameAsMailing'),
-  listAnswers: getListAnswersAsKey(state)
+  listAnswersAsKey: getListAnswersAsKey(state)
 
 });
 
