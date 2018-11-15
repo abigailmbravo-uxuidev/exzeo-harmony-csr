@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Field, reduxForm } from 'redux-form';
-import { Date, Select, validation, Loader, TextArea, date } from '@exzeo/core-ui';
+import { Date, Select, validation, Loader, TextArea } from '@exzeo/core-ui';
 
 import { REASONS, REASONS_DATA } from '../constants/diaries';
 import { addDate } from '../utilities/diaries';
