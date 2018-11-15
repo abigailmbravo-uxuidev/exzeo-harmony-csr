@@ -29,10 +29,10 @@ export class QuoteBase extends React.Component {
 
     return (
       <div className="app-wrapper csr quote">
-        {(appState.data.submitting || !quoteData._id) && <Loader />}
+        {(appState.data.submitting || !quoteData.quoteNumber) && <Loader />}
         <App
           resourceType="Quote"
-          resourceId={quoteData._id}
+          resourceId={quoteData.quoteNumber}
           pageTitle={`Q: ${quoteData.quoteNumber || ''}`}
           match={match}
           onToggleDiaries={this.handleToggleDiaries}
@@ -50,8 +50,8 @@ export class QuoteBase extends React.Component {
                 resourceId={quoteData._id}
                 resourceType="Quote" />
 
-              {(quoteData && quoteData._id) &&
-                <DiaryPolling filter={{ resourceId: quoteData._id, resourceType: 'Quote' }} />
+              {(quoteData && quoteData.quoteNumber) &&
+                <DiaryPolling filter={{ resourceId: quoteData.quoteNumber, resourceType: 'Quote' }} />
               }
 
             </React.Fragment>
