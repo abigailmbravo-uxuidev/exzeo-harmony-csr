@@ -1,6 +1,8 @@
 import React from 'react';
 import moment from 'moment';
 
+import { formatUrl } from '../../../utilities/format';
+
 export const DetailView = ({
   agency, agencyBranchData
 }) => {
@@ -37,7 +39,7 @@ export const DetailView = ({
       <div className="webAddress">
         <label>Web Address</label>
         <div>
-          <a href={agencyBranchData.websiteUrl} target="_blank">
+          <a href={formatUrl(agencyBranchData.websiteUrl)} target="_blank">
             {agencyBranchData.websiteUrl}
           </a>
         </div>

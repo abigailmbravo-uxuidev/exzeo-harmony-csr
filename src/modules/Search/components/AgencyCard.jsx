@@ -2,6 +2,7 @@ import React from 'react';
 import { normalize } from '@exzeo/core-ui';
 
 import AgencyContactAddress from "../../../components/AgencyContactAddress";
+import { formatUrl } from '../../../utilities/format';
 
 function AgencyCard({
   handleKeyPress,
@@ -30,7 +31,7 @@ function AgencyCard({
               {agency.websiteUrl &&
                 <span className="additional-data website">
                   <label>WEBSITE:&nbsp;</label>
-                  <a href={`${agency.websiteUrl}`} target="_blank">{agency.websiteUrl}</a>
+                  <a href={formatUrl(agency.websiteUrl)} target="_blank">{agency.websiteUrl}</a>
                 </span>
               }
 
