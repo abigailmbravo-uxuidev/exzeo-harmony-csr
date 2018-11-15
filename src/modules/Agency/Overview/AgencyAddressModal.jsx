@@ -63,7 +63,7 @@ export class AgencyAddressModal extends Component {
               </h4>
             </div>
             <div className="card-block">
-              <AddressGroup sameAsMailingValue={sameAsMailingValue} changeField={change} />
+              <AddressGroup sameAsMailingValue={sameAsMailingValue} changeField={change} isAgency showCounty />
             </div>
             <div className="card-footer">
               <div className="btn-footer">

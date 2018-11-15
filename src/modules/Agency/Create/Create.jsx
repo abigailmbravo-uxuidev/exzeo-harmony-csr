@@ -100,7 +100,7 @@ export class Create extends Component {
                   {/* web address validaiton */}
                 </section>
                 <h3>Address</h3>
-                <AddressGroup sameAsMailingValue={sameAsMailingValue} changeField={change} />
+                <AddressGroup sameAsMailingValue={sameAsMailingValue} changeField={change} isAgency showCounty />
                 <h3>Officer</h3>
                 <section className="agency-principal">
                   <FormSection name="principal" >

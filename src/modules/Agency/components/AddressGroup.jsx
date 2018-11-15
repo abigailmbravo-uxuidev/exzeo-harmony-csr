@@ -95,7 +95,7 @@ export class AddressGroup extends Component {
 
   render() {
     const {
-      territoryManagers, changeField, sameAsMailingValue
+      territoryManagers, changeField, sameAsMailingValue, isOptional, isAgency, showCounty
 
     } = this.props;
 
@@ -124,16 +124,17 @@ export class AddressGroup extends Component {
           </h4>
           <FormSection name="physicalAddress">
             <Address
+              isOptional={isOptional}
               sectionDisabled={sameAsMailingValue === true}
               normalizeSameAsMailing={this.normalizeSameAsMailing('physicalAddress')}
               normalizeZipCode={this.normalizeZipCode}
               normalizeState={this.normalizeState}
               section="physicalAddress"
-              showCounty
+              showCounty={showCounty}
               territoryManagers={territoryManagers}
               changeField={changeField} />
           </FormSection>
-          <Field
+          {isAgency && <Field
             label="Territory Managers"
             name="territoryManagerId"
             styleName="territoryManagerId"
@@ -142,7 +143,7 @@ export class AddressGroup extends Component {
             optionValue="_id"
             optionLabel="name"
             answers={territoryManagers}
-            validate={validation.isRequired} />
+            validate={isOptional ? null : validation.isRequired} />}
         </div>
       </section>
     );
@@ -151,7 +152,9 @@ export class AddressGroup extends Component {
 
 AddressGroup.defaultProps = {
   listOfZipCodes: [],
-  listAnswers: {}
+  listAnswers: {},
+  isOptional: false,
+  isAgency: false
 };
 
 

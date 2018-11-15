@@ -74,7 +74,7 @@ export class CreateBranch extends Component {
                   {/* web address validaiton */}
                 </section>
                 <h3>Address</h3>
-                <AddressGroup sameAsMailingValue={sameAsMailingValue} changeField={change} />
+                <AddressGroup sameAsMailingValue={sameAsMailingValue} changeField={change} isAgency showCounty />
                 <h3>Contact</h3>
                 <section className="agency-contact">
                   <FormSection name="contact" >

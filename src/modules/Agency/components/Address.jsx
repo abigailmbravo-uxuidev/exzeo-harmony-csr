@@ -11,7 +11,7 @@ import { getListAnswers } from '../../../state/selectors/questions.selectors';
 export class Address extends Component {
   render() {
     const {
-      showCounty, sectionDisabled, listOfZipCodes, section, listAnswers, normalizeSameAsMailing, normalizeZipCode, normalizeState
+      showCounty, sectionDisabled, listOfZipCodes, section, listAnswers, normalizeSameAsMailing, normalizeZipCode, normalizeState, isOptional
     } = this.props;
 
     return (
@@ -22,7 +22,7 @@ export class Address extends Component {
           component={Input}
           styleName="address1"
           dataTest="address1"
-          validate={validation.isRequired}
+          validate={isOptional ? null : validation.isRequired}
           normalize={normalizeSameAsMailing}
           disabled={sectionDisabled} />
         <Field
@@ -40,7 +40,7 @@ export class Address extends Component {
             component={Input}
             styleName="city"
             dataTest="city"
-            validate={validation.isRequired}
+            validate={isOptional ? null : validation.isRequired}
             normalize={normalizeSameAsMailing}
             disabled={sectionDisabled} />
           <Field
@@ -49,7 +49,7 @@ export class Address extends Component {
             component={Select}
             styleName="state"
             dataTest="state"
-            validate={validation.isRequired}
+            validate={isOptional ? null : validation.isRequired}
             normalize={section === 'physicalAddress' ? normalizeState : null}
             answers={listAnswers.US_states}
             disabled={sectionDisabled} />
@@ -61,7 +61,7 @@ export class Address extends Component {
             dataTest="zip"
             optionValue="answer"
             optionLabel="label"
-            validate={validation.isRequired}
+            validate={isOptional ? null : validation.isRequired}
             normalize={normalizeZipCode}
             answers={listOfZipCodes}
             disabled={sectionDisabled} />}
@@ -71,7 +71,7 @@ export class Address extends Component {
             component={Input}
             styleName="zip"
             dataTest="zip"
-            validate={validation.isRequired}
+            validate={isOptional ? null : validation.isRequired}
             normalize={normalizeSameAsMailing}
             disabled={sectionDisabled} />}
         </div>

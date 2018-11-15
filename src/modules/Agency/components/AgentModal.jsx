@@ -1,24 +1,14 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { reduxForm, FormSection, FieldArray, getFormValues } from 'redux-form';
+import { reduxForm, FieldArray, getFormValues } from 'redux-form';
 import { Button } from '@exzeo/core-ui';
 
 import License from '../components/License';
-import Address from '../components/Address';
+import AddressGroup from '../components/AddressGroup';
 
 import AgentDetails from './FormGroup/AgentDetails';
 
 const FORM_NAME = 'AgentDetails';
-
-// const radioDefaultAnswers = [
-//   {
-//     answer: 'true',
-//     label: 'Yes'
-//   }, {
-//     answer: 'false',
-//     label: 'No'
-//   }
-// ];
 
 export class AgentModal extends Component {
   handleSave = async (data) => {
@@ -32,7 +22,8 @@ export class AgentModal extends Component {
       isEditing,
       submitting,
       licenseValue,
-      change
+      change,
+      sameAsMailingValue
     } = this.props;
 
     return (
@@ -49,16 +40,7 @@ export class AgentModal extends Component {
                 <h3>Details</h3>
                 <AgentDetails isEditing={isEditing} />
               </section>
-
-              <section className="agent-mailing">
-                <h3>Mailing Address</h3>
-                <FormSection
-                  name="mailingAddress">
-                  <Address
-                    changeField={change}
-                    section="mailingAddress" />
-                </FormSection>
-              </section>
+              <AddressGroup sameAsMailingValue={sameAsMailingValue} changeField={change} isOptional />
               <section className="agent-license">
                 <h3>Licenses</h3>
                 <FieldArray
@@ -98,7 +80,9 @@ export class AgentModal extends Component {
 const selector = getFormValues(FORM_NAME);
 const defaultArr = [];
 const mapStateToProps = state => ({
-  licenseValue: selector(state, 'license') || defaultArr
+  licenseValue: selector(state, 'license') || defaultArr,
+  sameAsMailingValue: selector(state, 'sameAsMailing')
+
 });
 
 export default connect(mapStateToProps)(reduxForm({
