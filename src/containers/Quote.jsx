@@ -5,7 +5,7 @@ import { Loader } from '@exzeo/core-ui';
 
 import UnderwritingValidationBarConnect from '../components/Quote/UnderwritingValidationBar';
 import App from '../components/AppWrapper';
-import OpenDiariesBar from '../components//OpenDiariesBar';
+import OpenDiariesBar from '../components/OpenDiariesBar';
 import DiaryPolling from '../components/DiaryPolling';
 
 export class QuoteBase extends React.Component {
@@ -47,7 +47,7 @@ export class QuoteBase extends React.Component {
 
               <OpenDiariesBar
                 entityEndDate={quoteData.endDate}
-                resourceId={quoteData._id}
+                resourceId={quoteData.quoteNumber}
                 resourceType="Quote" />
 
               {(quoteData && quoteData.quoteNumber) &&
