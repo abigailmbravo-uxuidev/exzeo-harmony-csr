@@ -169,9 +169,11 @@ DiaryModal.propTypes = {
   }).isRequired
 };
 
-const mapStateToProps = (state) => {
+const mapStateToProps = (state, ownProps) => {
+  const selectedDiary = state.diaries.find(d => d._id === ownProps.diaryId);
   return {
-    assigneeAnswers: getDiaryAssigneeAnswers(state)
+    assigneeAnswers: getDiaryAssigneeAnswers(state),
+    initialValues: selectedDiary ? selectedDiary.entries[0] : {}
   };
 };
 
