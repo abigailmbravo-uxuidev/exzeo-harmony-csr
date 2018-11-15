@@ -3,6 +3,7 @@ import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 import moment from 'moment-timezone';
 import { connect } from 'react-redux';
 
+import { DUE_STATUS } from '../constants/diaries';
 import { toggleDiary } from '../state/actions/ui.actions';
 import { getDiariesForTable } from '../state/selectors/diary.selectors';
 
@@ -33,9 +34,9 @@ const DiaryExpandColumns = ({ diaries }) => {
 };
 
 const DIARY_STATUS = {
-  pastDue: 'OPEN | Past Due',
-  dueSoon: 'OPEN | Due Soon',
-  upComing: 'OPEN | Upcoming',
+  pastDue: `OPEN | ${DUE_STATUS.pastDue}`,
+  dueSoon: `OPEN | ${DUE_STATUS.dueSoon}`,
+  upComing: `OPEN |${DUE_STATUS.upComing}`,
   closed: 'CLOSED'
 };
 

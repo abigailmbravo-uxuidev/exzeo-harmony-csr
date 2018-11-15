@@ -46,7 +46,7 @@ export const getDiariesForTable = createSelector(
         resourceId: d.resource.id,
         diaryHistory: d.entries.slice(1),
         due: date.formatDate(d.entries[0].due, date.FORMATS.SECONDARY),
-        dueStatus: getDueStatus(d.entries[0].due, d.entries[0].open),
+        dueStatus: getDueStatus(entry.due, entry.open),
         action: {
           diaryId: d._id,
           resourceType: d.resource.type,

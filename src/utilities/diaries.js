@@ -45,8 +45,10 @@ export const isPastDue = (dateString) => {
 export const formatEntry = (entry) => {
   const reasonKeyValue = REASONS.find(r => r.answer === entry.reason);
   const reason = reasonKeyValue ? reasonKeyValue.label : entry.reason;
+  const due = date.formatDate(entry.due);
   return {
     ...entry,
+    due,
     reason
   };
 };

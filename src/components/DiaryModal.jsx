@@ -68,7 +68,7 @@ export class DiaryModal extends Component {
       change('due', addDate(defaultData.daysFromDueDate));
     }
     return value;
-  }
+  };
 
   render() {
     const { assigneeAnswers, handleSubmit, submitting } = this.props;
