@@ -1,14 +1,12 @@
 import React from 'react';
 import { Field } from 'redux-form';
-import { Input, Select, Date, validation } from '@exzeo/core-ui';
+import { Input, Select, validation } from '@exzeo/core-ui';
+
+import { LICENSE_TYPE } from '../../../constants/agency';
 
 const stateAnswers = [
   { answer: 'FL', label: 'FL' },
   { answer: 'TX', label: 'TX' }
-];
-
-const typeAnswers = [
-  { answer: 'Resident', label: 'Resident' }
 ];
 
 const License = ({ fields, isAgency }) => {
@@ -36,17 +34,9 @@ const License = ({ fields, isAgency }) => {
             component={Select}
             styleName="licenseType"
             label="Type"
-            answers={typeAnswers}
+            answers={LICENSE_TYPE}
             dataTest={`${license}.licenseType`}
             validate={validation.isRequired} />
-          {isAgency && <Field
-            name={`${license}.licenseEffectiveDate`}
-            component={Date}
-            styleName="licenseEffectiveDate"
-            label="Effective Date"
-            answers={typeAnswers}
-            dataTest={`${license}.licenseEffectiveDate`}
-            validate={validation.isRequired} />}
           <div className="appointed-wrapper">
             <label htmlFor={`${license}.appointed`}>Appointed</label>
             <Field

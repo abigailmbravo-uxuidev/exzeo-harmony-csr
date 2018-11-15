@@ -24,3 +24,8 @@ export const OK_TO_PAY = [
   { answer: false, label: 'No' },
   { answer: true, label: 'Yes' }
 ];
+
+export const LICENSE_TYPE = [
+  { answer: 'Resident', label: 'Resident' },
+  { answer: 'Non-Resident', label: 'Non-Resident' }
+];
