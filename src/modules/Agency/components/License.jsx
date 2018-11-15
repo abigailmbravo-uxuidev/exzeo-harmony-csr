@@ -3,7 +3,8 @@ import { Field } from 'redux-form';
 import { Input, Select, Date, validation } from '@exzeo/core-ui';
 
 const typeAnswers = [
-  { answer: 'Resident', label: 'Resident' }
+  { answer: 'Resident', label: 'Resident' },
+  { answer: 'Non-Resident', label: 'Non-Resident' }
 ];
 
 const License = ({ fields, isAgency, stateAnswers }) => {
