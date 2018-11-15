@@ -5,6 +5,7 @@ import { Button } from '@exzeo/core-ui';
 
 import License from '../components/License';
 import AddressGroup from '../components/AddressGroup';
+import { getListAnswersAsKey } from '../../../state/selectors/questions.selectors';
 
 import AgentDetails from './FormGroup/AgentDetails';
 
@@ -23,7 +24,8 @@ export class AgentModal extends Component {
       submitting,
       licenseValue,
       change,
-      sameAsMailingValue
+      sameAsMailingValue,
+      listAnswers
     } = this.props;
 
     return (
@@ -45,6 +47,7 @@ export class AgentModal extends Component {
                 <h3>Licenses</h3>
                 <FieldArray
                   name="licenses"
+                  stateAnswers={listAnswers.US_states}
                   component={License}
                   licenseValue={licenseValue}
                   isAgency={false} />
@@ -81,7 +84,8 @@ const selector = getFormValues(FORM_NAME);
 const defaultArr = [];
 const mapStateToProps = state => ({
   licenseValue: selector(state, 'license') || defaultArr,
-  sameAsMailingValue: selector(state, 'sameAsMailing')
+  sameAsMailingValue: selector(state, 'sameAsMailing'),
+  listAnswers: getListAnswersAsKey(state)
 
 });
 

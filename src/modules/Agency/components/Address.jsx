@@ -5,13 +5,13 @@ import { Input, validation, Select, SelectTypeAhead } from '@exzeo/core-ui';
 
 import { searchSettingsByCSPAndZip } from '../../../state/actions/zipCodeSettings.actions';
 import { getListOfZipCodes } from '../../../state/selectors/zipCodeSettings.selectors';
-import { getListAnswers } from '../../../state/selectors/questions.selectors';
+import { getListAnswersAsKey } from '../../../state/selectors/questions.selectors';
 
 
 export class Address extends Component {
   render() {
     const {
-      showCounty, sectionDisabled, listOfZipCodes, section, listAnswers, normalizeSameAsMailing, normalizeZipCode, normalizeState, isOptional
+      showCounty, sectionDisabled, listOfZipCodes, section, listAnswersAsKey, normalizeSameAsMailing, normalizeZipCode, normalizeState, isOptional
     } = this.props;
 
     return (
@@ -51,7 +51,7 @@ export class Address extends Component {
             dataTest="state"
             validate={isOptional ? null : validation.isRequired}
             normalize={section === 'physicalAddress' ? normalizeState : null}
-            answers={listAnswers.US_states}
+            answers={listAnswersAsKey.US_states}
             disabled={sectionDisabled} />
           {section === 'physicalAddress' && <Field
             name="zip"
@@ -102,7 +102,7 @@ Address.defaultProps = {
 
 const mapStateToProps = state => ({
   listOfZipCodes: getListOfZipCodes(state),
-  listAnswers: getListAnswers(state)
+  listAnswersAsKey: getListAnswersAsKey(state)
 });
 
 export default connect(mapStateToProps, { searchSettingsByCSPAndZipAction: searchSettingsByCSPAndZip })(Address);
