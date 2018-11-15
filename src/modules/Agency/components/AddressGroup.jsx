@@ -99,7 +99,7 @@ export class AddressGroup extends Component {
     } = this.props;
 
     return (
-      <section className="agency-address">
+      <section className={`${isAgency ? 'agency-address' : 'agent-address'}`}>
         <div className="agency-mailing-address">
           <h4>Mailing Address</h4>
           <FormSection name="mailingAddress">
@@ -163,4 +163,3 @@ const mapStateToProps = state => ({
 });
 
 export default connect(mapStateToProps, { searchSettingsByCSPAndZipAction: searchSettingsByCSPAndZip })(AddressGroup);
-
