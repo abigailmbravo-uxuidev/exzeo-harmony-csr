@@ -152,7 +152,6 @@ export class AddressGroup extends Component {
 
 AddressGroup.defaultProps = {
   listOfZipCodes: [],
-  listAnswers: {},
   isOptional: false,
   isAgency: false
 };
@@ -161,7 +160,6 @@ AddressGroup.defaultProps = {
 const mapStateToProps = state => ({
   territoryManagers: state.questions.territoryManagers,
   listOfZipCodes: getListOfZipCodes(state),
-  listAnswers: getListAnswers(state),
   zipCodeSettings: getZipCodeSettings(state)
 });
 

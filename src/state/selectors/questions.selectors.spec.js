@@ -1,4 +1,4 @@
-import { getTopAnswers, getListAnswers } from './questions.selectors';
+import { getTopAnswers, getListAnswers, getListAnswersAsKey } from './questions.selectors';
 
 describe('Test questions selectors', () => {
   describe('Test getTopAnswers', () => {
@@ -40,7 +40,7 @@ describe('Test questions selectors', () => {
       expect(result.length).toEqual(1);
     });
 
-    it('should return an empty array if it can\'t find mortgagee questions', () => {
+    it('should return an getListAnswers', () => {
       const state = {
         questions: {
           lists: {
@@ -84,5 +84,45 @@ describe('Test questions selectors', () => {
         ]
       });
     });
+
+    it('should return an getListAnswersAsKey', () => {
+      const state = {
+        questions: {
+          lists: {
+            Agency_Addendum: {
+              displayText: 'Addendum',
+              code: 'Agency_Addendum',
+              isActive: true,
+              extendedProperties: {
+                WY: {
+                  isActive: true,
+                  type: 'string',
+                  displayText: 'Wyoming'
+                },
+                WI: {
+                  isActive: true,
+                  type: 'string',
+                  displayText: 'Wisconsin'
+                },
+                WV: {
+                  isActive: true,
+                  type: 'string',
+                  displayText: 'West Virginia'
+                }
+              }
+            }
+          }
+        }
+      };
+      const result = getListAnswersAsKey(state);
+      expect(result).toEqual({
+        Agency_Addendum: [
+          { answer: 'WY', label: 'WY' },
+          { answer: 'WI', label: 'WI' },
+          { answer: 'WV', label: 'WV' }
+        ]
+      });
+    });
   });
 });
+

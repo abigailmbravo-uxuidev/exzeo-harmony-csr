@@ -59,7 +59,8 @@ export class CreateBranch extends Component {
       pristine,
       change,
       orphans,
-      sameAsMailingValue
+      sameAsMailingValue,
+      listAnswersAsKey
     } = this.props;
 
     return (
@@ -91,6 +92,7 @@ export class CreateBranch extends Component {
                   <div className="agency-license">
                     <FieldArray
                       name="licenses"
+                      stateAnswers={listAnswersAsKey.US_states}
                       component={License}
                       licenseValue={licenseValue}
                       isAgency />

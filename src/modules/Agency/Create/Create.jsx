@@ -82,7 +82,8 @@ export class Create extends Component {
       pristine,
       change,
       agency,
-      orphans
+      orphans,
+      listAnswersAsKey
     } = this.props;
 
     return (
@@ -124,6 +125,7 @@ export class Create extends Component {
                   </div>
                   <div className="agency-license">
                     <FieldArray
+                      stateAnswers={listAnswersAsKey.US_states}
                       name="agentOfRecord.licenses"
                       component={License}
                       licenseValue={licenseValue}

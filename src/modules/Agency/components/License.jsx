@@ -2,16 +2,11 @@ import React from 'react';
 import { Field } from 'redux-form';
 import { Input, Select, Date, validation } from '@exzeo/core-ui';
 
-const stateAnswers = [
-  { answer: 'FL', label: 'FL' },
-  { answer: 'TX', label: 'TX' }
-];
-
 const typeAnswers = [
   { answer: 'Resident', label: 'Resident' }
 ];
 
-const License = ({ fields, isAgency }) => {
+const License = ({ fields, isAgency, stateAnswers }) => {
   return (
     <React.Fragment>
       {fields.map((license, index) => (
@@ -74,7 +69,8 @@ const License = ({ fields, isAgency }) => {
 
 License.defaultProps = {
   fields: [],
-  isAgency: false
+  isAgency: false,
+  stateAnswers: []
 };
 
 export default License;

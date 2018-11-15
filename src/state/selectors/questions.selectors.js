@@ -46,8 +46,27 @@ export const getListAnswers = createSelector(
     const listItems = Object.keys(lists);
 
     listItems.forEach((item) => {
-      mainList[item] = Object.keys(lists[item].extendedProperties || {}).map((key) => {
+      mainList[item] = Object.keys(lists[item].extendedProperties || {}).sort().map((key) => {
         return { answer: key, label: lists[item].extendedProperties[key].displayText };
+      }) || [];
+    });
+    return mainList;
+  }
+);
+
+export const getListAnswersAsKey = createSelector(
+  [getLists],
+  (lists) => {
+    if (!lists) return [];
+
+    const mainList = {};
+
+    const listItems = Object.keys(lists);
+
+    listItems.forEach((item) => {
+      const list = lists[item].extendedProperties || {};
+      mainList[item] = Object.keys(list).sort().map((key) => {
+        return { answer: key, label: key };
       }) || [];
     });
     return mainList;
