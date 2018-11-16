@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
 import { reduxForm } from 'redux-form';
 
-import { updateAgency } from '../../../state/actions/agency.actions';
 import AgencyDetails from '../components/FormGroup/AgencyDetails';
 
 export class AgencyModal extends Component {
@@ -30,7 +28,7 @@ export class AgencyModal extends Component {
             </div>
             <div className="card-block">
               <section className="agency-details">
-                <AgencyDetails />
+                <AgencyDetails agencyCodeDisabled />
               </section>
             </div>
             <div className="card-footer">
@@ -58,12 +56,8 @@ export class AgencyModal extends Component {
   }
 }
 
-const mapStateToProps = state => state;
-
-export default connect(mapStateToProps, {
-  updateAgency
-})(reduxForm({
+export default reduxForm({
   form: 'AgencyModal',
   enableReinitialize: true,
   destroyOnUnmount: false
-})(AgencyModal));
+})(AgencyModal);

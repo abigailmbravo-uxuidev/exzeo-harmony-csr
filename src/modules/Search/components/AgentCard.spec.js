@@ -13,7 +13,7 @@ describe('Test AgentCard component', () => {
       />
     );
 
-    const link = wrapper.find(`#${agentTestData.licenseNumber}`);
+    const link = wrapper.find(`#${agentTestData.licenses[0].licenseNumber}`);
 
     expect(wrapper.exists()).toBeTruthy();
     expect(link).toHaveLength(1);

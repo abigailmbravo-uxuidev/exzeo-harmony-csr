@@ -2,6 +2,7 @@ import React from 'react';
 import { normalize } from '@exzeo/core-ui';
 
 import AgencyContactAddress from "../../../components/AgencyContactAddress";
+import { formatUrl } from '../../../utilities/format';
 
 function AgencyCard({
   handleKeyPress,
@@ -19,18 +20,18 @@ function AgencyCard({
         <div className="contact-details">
           <div className="card-name">
             <h4 onClick={handleClick} className="agency" data-test={agency.agencyCode}>
-              <span className="agency-code">{agency.agencyCode}</span> | <span className="agency-display-name">{agency.displayName}</span> | <span className="agency-legal-name">{agency.legalName}</span> | <span className="agency-license">{agency.licenseNumber}</span>
+              <span className="agency-code">{agency.agencyCode}</span> | <span className="agency-display-name">{agency.displayName}</span> | <span className="agency-legal-name">{agency.legalName}</span> | <span className="agency-license">{agency.licenses.map(l => l.licenseNumber).join()}</span>
             </h4>
 
             <AgencyContactAddress
               mailingAddress={agency.mailingAddress}
               status={agency.status}
             >
-              <span className="additional-data tier"><label>TIER:&nbsp;</label>{agency.tier >= 0 ? agency.tier : ''}</span>
+              
               {agency.websiteUrl &&
                 <span className="additional-data website">
                   <label>WEBSITE:&nbsp;</label>
-                  <a href={`${agency.websiteUrl}`} target="_blank">{agency.websiteUrl}</a>
+                  <a href={formatUrl(agency.websiteUrl)} target="_blank">{agency.websiteUrl}</a>
                 </span>
               }
 
@@ -40,7 +41,7 @@ function AgencyCard({
               <ul>
                 <li>
                   <div>
-                    <h5>{agency.contactFirstName} {agency.contactLastName}</h5>
+                    <h5>{agency.contact.firstName} {agency.contact.lastName}</h5>
                   </div>
                   <div className="contact-methods">
                     {agency.primaryPhoneNumber &&

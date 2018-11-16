@@ -1,4 +1,4 @@
-import { getTopAnswers, getListAnswers } from './questions.selectors';
+import { getTopAnswers, getListAnswers, getListAnswersAsKey } from './questions.selectors';
 
 describe('Test questions selectors', () => {
   describe('Test getTopAnswers', () => {
@@ -40,7 +40,7 @@ describe('Test questions selectors', () => {
       expect(result.length).toEqual(1);
     });
 
-    it('should return an empty array if it can\'t find mortgagee questions', () => {
+    it('should return an getListAnswers', () => {
       const state = {
         questions: {
           lists: {
@@ -76,13 +76,52 @@ describe('Test questions selectors', () => {
       };
       const result = getListAnswers(state);
       expect(result).toEqual({
-        Agency_Addendum: [
-          { answer: 'TT 03 16', label: 'TT 03 16' },
+        Agency_Addendum:
+        [{ answer: 'HC REV 120115', label: 'HC REV 120115' },
+          { answer: 'HC SAF PACS 05 18', label: 'HC SAF PACS 05 18' },
           { answer: 'TT 02 18', label: 'TT 02 18' },
-          { answer: 'HC REV 120115', label: 'HC REV 120115' },
-          { answer: 'HC SAF PACS 05 18', label: 'HC SAF PACS 05 18' }
+          { answer: 'TT 03 16', label: 'TT 03 16' }]
+      });
+    });
+
+    it('should return an getListAnswersAsKey', () => {
+      const state = {
+        questions: {
+          lists: {
+            Agency_Addendum: {
+              displayText: 'Addendum',
+              code: 'Agency_Addendum',
+              isActive: true,
+              extendedProperties: {
+                WY: {
+                  isActive: true,
+                  type: 'string',
+                  displayText: 'Wyoming'
+                },
+                WI: {
+                  isActive: true,
+                  type: 'string',
+                  displayText: 'Wisconsin'
+                },
+                WV: {
+                  isActive: true,
+                  type: 'string',
+                  displayText: 'West Virginia'
+                }
+              }
+            }
+          }
+        }
+      };
+      const result = getListAnswersAsKey(state);
+      expect(result).toEqual({
+        Agency_Addendum: [
+          { answer: 'WI', label: 'WI' },
+          { answer: 'WV', label: 'WV' },
+          { answer: 'WY', label: 'WY' }
         ]
       });
     });
   });
 });
+

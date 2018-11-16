@@ -59,7 +59,7 @@ export class Contracts extends Component {
   };
 
   render() {
-    const { agency, listAnswers } = this.props;
+    const { agency, listAnswers, listAnswersAsKey } = this.props;
     const {
       licenseIndex, showLicenseModal, contractIndex, showContractModal
     } = this.state;
@@ -70,12 +70,15 @@ export class Contracts extends Component {
         {showLicenseModal &&
           <LicenseModal
             saveLicense={this.saveLicense}
+            stateAnswers={listAnswersAsKey.US_states}
             closeModal={this.toggleLicense}
             initialValues={agency.licenses[licenseIndex]}
             licenseNumbers={agency.licenses.map(l => l.licenseNumber)} />
         }
         {showContractModal &&
           <ContractModal
+            productAnswers={listAnswers.Products}
+            stateAnswers={listAnswersAsKey.US_states}
             addendumAnswers={listAnswers.Agency_Addendum}
             companyCodeAnswers={listAnswers.Company_Code}
             agencyContractAnswers={listAnswers.Agency_Contract}
@@ -139,7 +142,8 @@ export class Contracts extends Component {
 }
 
 Contracts.defaultProps = {
-  listAnswers: {}
+  listAnswers: {},
+  listAnswersAsKey: {}
 };
 
 Contracts.propTypes = {

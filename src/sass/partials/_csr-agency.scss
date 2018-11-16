@@ -1492,7 +1492,7 @@
       width: 100%;
 
       .card {
-        width: 80%;
+        width: 90%;
         max-height: 80vh;
 
         .card-block {
@@ -1532,11 +1532,28 @@
               }
             }
 
-            &.agent-mailing {
+            &.agent-address {
+              display: flex;
               flex-grow: 1;
               flex-shrink: 1;
-              max-width: 60%;
+              max-width: 70%;
               margin-right: $padding;
+
+              .agency-mailing-address {
+                width: 50%;
+                margin-right: $padding/2;
+              }
+
+              .agency-physical-address {
+                width: 50%;
+                margin-left: $padding/2;
+
+                h4 {
+                  label {
+                    margin-bottom: 0;
+                  }
+                }
+              }
 
               .city-state-zip {
                 display: flex;
@@ -1567,7 +1584,7 @@
             &.agent-license {
               flex-grow: 1;
               flex-shrink: 1;
-              max-width: 40%;
+              max-width: 30%;
               margin-left: $padding;
               padding-left: $padding*2;
               border-left: 1px dotted $warm-gray-03;
@@ -1582,6 +1599,10 @@
                 grid-template-columns: repeat(12, [col-start] 1fr);
                 grid-auto-rows: min-content;
                 grid-gap: $padding*2;
+
+                .form-group {
+                  margin-bottom: 0;
+                }
 
                 .state {
                   grid-column: span 4;
