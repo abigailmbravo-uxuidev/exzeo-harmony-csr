@@ -117,7 +117,7 @@ const AgencyDetails = ({ agencyCodeDisabled }) => {
         name="customerServiceEmailAddress"
         dataTest="customerServiceEmailAddress"
         component={Input}
-        validate={validation.isRequired} />
+        validate={[validation.isRequired, validation.isEmail]} />
     </React.Fragment>
   );
 };

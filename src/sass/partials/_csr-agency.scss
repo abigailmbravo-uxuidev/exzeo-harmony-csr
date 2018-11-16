@@ -205,11 +205,11 @@
                 }
 
                 .okToPay-wrapper {
-                  grid-column: span 2;
+                  grid-column: span 3;
                 }
 
                 .webAddress {
-                  grid-column: span 6;
+                  grid-column: span 5;
                 }
 
                 .taxId {
@@ -250,11 +250,11 @@
                 }
 
                 .faxNumber {
-                  grid-column: span 2;
+                  grid-column: span 3;
                 }
 
                 .customerServiceEmailAddress {
-                  grid-column: span 6;
+                  grid-column: span 5;
                 }
               }
 
@@ -267,6 +267,12 @@
                 > h4 {
                   width: 100%;
                 }
+
+                .physical-address {
+                    margin-right: $padding;
+                }
+
+                .mailing-address {margin-left: $padding;}
 
                 .agency-mailing-address,
                 .agency-physical-address,
