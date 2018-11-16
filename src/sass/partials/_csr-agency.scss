@@ -1169,6 +1169,7 @@
     .card {
       display: flex;
       overflow: hidden;
+      overflow: visible;
       align-items: center;
       justify-content: center;
       max-height: 90%;
@@ -1182,6 +1183,7 @@
 
         .card-block {
           display: flex;
+          overflow: visible;
           width: 100%;
 
           .contract-details {
@@ -1190,6 +1192,21 @@
             margin-right: $padding;
             padding-right: $padding*2;
             border-right: 1px dotted $warm-gray-03;
+
+            .companyCode {
+              position: relative;
+              z-index: 30;
+            }
+
+            .contractNumber {
+              position: relative;
+              z-index: 20;
+            }
+
+            .addendum {
+              position: relative;
+              z-index: 10;
+            }
           }
 
           .contract-csp {
