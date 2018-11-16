@@ -3,6 +3,7 @@ import { reduxForm, formValueSelector } from 'redux-form';
 
 import { getAgency, updateAgency, createBranch } from '../../../state/actions/agency.actions';
 import { getOrphanedAgentsList } from '../../../state/selectors/agency.selector';
+import { getListAnswersAsKey } from '../../../state/selectors/questions.selectors';
 
 import CreateBranch from './CreateBranch';
 
@@ -19,7 +20,8 @@ const mapStateToProps = state => ({
   licenseValue: selector(state, 'licenses'),
   physicalStateValue: selector(state, 'physicalAddress.state'),
   physicalZipValue: selector(state, 'physicalAddress.zip'),
-  territoryManagers: state.questions.territoryManagers
+  territoryManagers: state.questions.territoryManagers,
+  listAnswersAsKey: getListAnswersAsKey(state)
 });
 
 export default connect(mapStateToProps, {

@@ -4,12 +4,7 @@ import { Input, Select, validation } from '@exzeo/core-ui';
 
 import { LICENSE_TYPE } from '../../../constants/agency';
 
-const stateAnswers = [
-  { answer: 'FL', label: 'FL' },
-  { answer: 'TX', label: 'TX' }
-];
-
-const License = ({ fields, isAgency }) => {
+const License = ({ fields, isAgency, stateAnswers }) => {
   return (
     <React.Fragment>
       {fields.map((license, index) => (
@@ -64,7 +59,8 @@ const License = ({ fields, isAgency }) => {
 
 License.defaultProps = {
   fields: [],
-  isAgency: false
+  isAgency: false,
+  stateAnswers: []
 };
 
 export default License;

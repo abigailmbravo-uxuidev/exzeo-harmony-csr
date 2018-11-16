@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import moment from 'moment';
 import { reduxForm, Field } from 'redux-form';
 import { isUnique } from '../utilities/validation';
 import { Input, Date, Select, validation } from '@exzeo/core-ui';
@@ -10,24 +9,16 @@ export const LicenseModal = (props) => {
     closeModal,
     saveLicense,
     handleSubmit,
-    initialValues
+    initialValues,
+    stateAnswers
   } = props;
-
-  const states = [
-    { answer: 'FL', label: 'FL' },
-    { answer: 'TX', label: 'TX' }
-  ];
 
   const typeAnswers = [
     { answer: 'Resident', label: 'Resident' },
     { answer: 'Non-Resident', label: 'Non-Resident' }
   ];
 
-  if (initialValues && initialValues.licenseEffectiveDate) {
-    initialValues.licenseEffectiveDate = moment.utc(initialValues.licenseEffectiveDate).format('YYYY-MM-DD');
-  };
-
-  const actionType = initialValues ? 'Edit' : "Add";
+  const actionType = initialValues ? 'Edit' : 'Add';
   return (
     <div className="modal license-crud">
       <div className="card">
@@ -41,7 +32,7 @@ export const LicenseModal = (props) => {
                 label="State"
                 styleName="state"
                 name="state"
-                answers={states}
+                answers={stateAnswers}
                 component={Select}
                 dataTest="state"
                 validate={validation.isRequired} />
@@ -82,7 +73,8 @@ export const LicenseModal = (props) => {
 };
 
 LicenseModal.defaultProps = {
-  licenseNumbers: []
+  licenseNumbers: [],
+  stateAnswers: []
 };
 
 LicenseModal.propTypes = {

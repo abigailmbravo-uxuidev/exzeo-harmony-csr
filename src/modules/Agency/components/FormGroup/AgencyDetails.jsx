@@ -1,6 +1,7 @@
 import React from 'react';
 import { Field } from 'redux-form';
-import { Input, Integer, Radio, Select, Phone, validation, Date } from '@exzeo/core-ui';
+import { Input, Integer, Radio, Select, Phone, validation, Date } from '@exzeo/core-ui/lib';
+import { formattedDate } from '@exzeo/core-ui/lib/Utilities';
 
 import { STATUS, OK_TO_PAY, TAX_CLASSIFICATION } from '../../../../constants/agency';
 
@@ -81,6 +82,7 @@ const AgencyDetails = ({ agencyCodeDisabled }) => {
         name="eoExpirationDate"
         dataTest="eoExpirationDate"
         component={Date}
+        format={value => !value ? '' : formattedDate(value, 'YYYY-MM-DD')}
         validate={validation.isRequired} />
       <Field
         label="Branch Name"
