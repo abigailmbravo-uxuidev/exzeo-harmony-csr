@@ -65,3 +65,9 @@ export const STATUS_ANSWERS = [
 export const REASONS = Object.keys(REASONS_DATA).map((key) => {
   return { answer: REASONS_DATA[key].answer, label: REASONS_DATA[key].label };
 });
+
+export const DUE_STATUS = {
+  dueSoon: 'Due Soon',
+  pastDue: 'Past Due',
+  upComing: 'Up Coming'
+};

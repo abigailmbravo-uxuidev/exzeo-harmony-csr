@@ -1,12 +1,14 @@
 import React from 'react';
-
-import { getDueStatus, formattedDate } from '@exzeo/core-ui/lib/Utilities';
+import { date } from '@exzeo/core-ui';
 import Item from '@exzeo/core-ui/lib/List/@components/Item';
 import Header from '@exzeo/core-ui/lib/List/@components/Header';
 import Body from '@exzeo/core-ui/lib/List/@components/Body';
 import Footer from '@exzeo/core-ui/lib/List/@components/Footer';
 import Container from '@exzeo/core-ui/lib/List/@components/Container';
-import { formatEntry } from '../../../utilities/diaries';
+
+import { DUE_STATUS } from '../../../constants/diaries';
+import { formatEntry, getDueStatus } from '../../../utilities/diaries';
+
 
 const DiaryList = ({
   diaries, onItemClick, clickable, handleKeyPress
@@ -29,11 +31,13 @@ const DiaryList = ({
             userName,
              open
           } = entry;
+
+        const dueStatus = getDueStatus(due, open);
         return (
           <Item
             key={_id}
             dataTest={`diaries_${_id}`}
-            styleName={getDueStatus(due, open)}
+            styleName={dueStatus}
             handleClick={() => (clickable ? onItemClick(id, type) : null)}
             handleKeyPress={() => (clickable ? handleKeyPress(id, type) : null)}>
             <Header>
@@ -41,7 +45,7 @@ const DiaryList = ({
               <div className="icon-wrapper">
                 <i className="fa fa-bookmark-o" />
                 <i className="icon-status-indicator fa fa-circle" />
-                <div>{getDueStatus(due, open)}</div>
+                <div>{DUE_STATUS[dueStatus]}</div>
               </div>
             </Header>
             <Body>
@@ -57,11 +61,11 @@ const DiaryList = ({
                   <span className="diary action" />
                 </li>
                 <li>
-                  <span className="diary due-date">{formattedDate(due)}</span>
+                  <span className="diary due-date">{date.formattedDate(due)}</span>
                   <span className="diary assignee">{displayName}</span>
                   <span className="diary reason">{reason}</span>
                   <span className="diary message">{message}</span>
-                  <span className="diary updated">{formattedDate(updatedAt)}</span>
+                  <span className="diary updated">{date.formattedDate(updatedAt)}</span>
                   <span className="diary updated-by">{userName}</span>
                   <span className="diary action" />
                 </li>

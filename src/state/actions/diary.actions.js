@@ -51,7 +51,7 @@ export function submitDiary(data, props) {
       user,
       resourceType,
       resourceId,
-      initialValues
+      diaryId
     } = props;
 
     const userObj = {
@@ -86,17 +86,16 @@ export function submitDiary(data, props) {
     };
 
     // Editing a diary
-    if (initialValues && initialValues.diaryId) {
+    if (diaryId) {
       const {
         _id,
-        diaryId,
         resourceId,  // eslint-disable-line
         resourceType,  // eslint-disable-line
         // this has what we want if we are updating.
         ...entry
       } = data;
 
-      config.path = `update/${initialValues.diaryId}`;
+      config.path = `update/${diaryId}`;
       config.data.entry = { ...entry };
 
     // Creating a diary
