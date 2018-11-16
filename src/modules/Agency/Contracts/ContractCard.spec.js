@@ -25,6 +25,6 @@ describe('Testing ContractsCard component', () => {
       />);
     expect(wrapper.find('.contract-info')).toHaveLength(1);
     expect(wrapper.find('.contract-title')).toHaveLength(1);
-    expect(wrapper.find('h4').text()).toEqual('TTIC | FL • HO3 | FL • FL3');
+    expect(wrapper.find('h4').text()).toEqual('TTIC | FL • HO3 | FL • AF3');
   });
 });

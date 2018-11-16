@@ -12,7 +12,7 @@ export const RenderProducts = ({ fields }) => {
 
   const productTypes = [
     { answer: 'HO3', label: 'HO3' },
-    { answer: 'FL3', label: 'FL3' }
+    { answer: 'AF3', label: 'AF3' }
   ];
   
   if (fields.length === 0) fields.insert(0, {});
