@@ -227,10 +227,10 @@
                 .branchName {
                   grid-column: span 6;
                 }
-
+                
                 .mailCommissionChecksToBranch,
                 .mailPolicyDocsToBranch {
-                  grid-column: span 5;
+                  grid-column: span 2;
                 }
 
                 hr {
@@ -1293,6 +1293,10 @@
         width: 80%;
         max-height: 90%;
 
+        &.branch {
+            width: 70%;
+        }
+
         .card-block {
           overflow: visible;
 
@@ -1356,6 +1360,10 @@
 
           .webAddress {
             grid-column: span 6;
+
+            &.branch {
+                grid-column: span 12;
+            }
           }
 
           .taxId {
@@ -1372,6 +1380,14 @@
 
           .branchName {
             grid-column: span 6;
+
+            &.branch {
+                grid-column: span 12;
+            }
+          }
+
+          .mailCommissionChecksToBranch, .mailPolicyDocsToBranch, .branch-status {
+              grid-column: span 4;
           }
 
           hr {
@@ -1484,6 +1500,16 @@
           }
         }
       }
+    }
+
+    &.branch-agency-crud {
+        form {
+            .card {
+                .agency-details {
+
+                }
+            }
+        }
     }
   }
 

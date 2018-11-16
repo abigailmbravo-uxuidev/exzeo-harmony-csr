@@ -23,7 +23,7 @@ export class AgencyModal extends Component {
           <div className="card">
             <div className="card-header">
               <h4>
-                <i className="fa fa-address-book" /> Edit Agency
+                <i className="fa fa-address-book" /> Edit Agency Details
               </h4>
             </div>
             <div className="card-block">
