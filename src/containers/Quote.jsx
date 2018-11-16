@@ -5,8 +5,9 @@ import { Loader } from '@exzeo/core-ui';
 
 import UnderwritingValidationBarConnect from '../components/Quote/UnderwritingValidationBar';
 import App from '../components/AppWrapper';
-import OpenDiariesBar from '../components//OpenDiariesBar';
+import OpenDiariesBar from '../components/OpenDiariesBar';
 import DiaryPolling from '../components/DiaryPolling';
+import { QUOTE_RESOURCE_TYPE } from '../constants/diaries';
 
 export class QuoteBase extends React.Component {
   state = {
@@ -29,10 +30,10 @@ export class QuoteBase extends React.Component {
 
     return (
       <div className="app-wrapper csr quote">
-        {(appState.data.submitting || !quoteData._id) && <Loader />}
+        {(appState.data.submitting || !quoteData.quoteNumber) && <Loader />}
         <App
-          resourceType="Quote"
-          resourceId={quoteData._id}
+          resourceType={QUOTE_RESOURCE_TYPE}
+          resourceId={quoteData.quoteNumber}
           pageTitle={`Q: ${quoteData.quoteNumber || ''}`}
           match={match}
           onToggleDiaries={this.handleToggleDiaries}
@@ -47,11 +48,11 @@ export class QuoteBase extends React.Component {
 
               <OpenDiariesBar
                 entityEndDate={quoteData.endDate}
-                resourceId={quoteData._id}
-                resourceType="Quote" />
+                resourceId={quoteData.quoteNumber}
+                resourceType={QUOTE_RESOURCE_TYPE} />
 
-              {(quoteData && quoteData._id) &&
-                <DiaryPolling filter={{ resourceId: quoteData._id, resourceType: 'Quote' }} />
+              {(quoteData && quoteData.quoteNumber) &&
+                <DiaryPolling filter={{ resourceId: quoteData.quoteNumber, resourceType: QUOTE_RESOURCE_TYPE }} />
               }
 
             </React.Fragment>

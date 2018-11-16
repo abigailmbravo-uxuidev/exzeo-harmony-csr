@@ -194,7 +194,7 @@ export class Policy extends React.Component {
               }
 
               {initialized &&
-                <DiaryPolling filter={{ resourceId: [policy.policyNumber, policy.sourceId], resourceType: 'Policy' }} />
+                <DiaryPolling filter={{ resourceId: [policy.policyNumber, policy.sourceNumber], resourceType: 'Policy' }} />
               }
 
               {appState.data.showReinstatePolicyPopUp &&

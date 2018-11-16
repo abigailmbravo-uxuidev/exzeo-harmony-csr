@@ -10,6 +10,7 @@ import { submitDiary } from '../state/actions/diary.actions';
 import { toggleDiary } from '../state/actions/ui.actions';
 import { setAppError } from '../state/actions/error.actions';
 import { getDiaryAssigneeAnswers } from '../state/selectors/questions.selectors';
+import { getInitialValuesForForm } from '../state/selectors/diary.selectors';
 
 export class DiaryModal extends Component {
   state = { minimize: false };
@@ -68,7 +69,7 @@ export class DiaryModal extends Component {
       change('due', addDate(defaultData.daysFromDueDate));
     }
     return value;
-  }
+  };
 
   render() {
     const { assigneeAnswers, handleSubmit, submitting } = this.props;
@@ -169,9 +170,10 @@ DiaryModal.propTypes = {
   }).isRequired
 };
 
-const mapStateToProps = (state) => {
+const mapStateToProps = (state, ownProps) => {
   return {
-    assigneeAnswers: getDiaryAssigneeAnswers(state)
+    assigneeAnswers: getDiaryAssigneeAnswers(state),
+    initialValues: getInitialValuesForForm(state, ownProps)
   };
 };
 
