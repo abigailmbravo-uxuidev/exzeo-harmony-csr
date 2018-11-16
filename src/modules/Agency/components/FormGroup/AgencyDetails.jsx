@@ -3,35 +3,9 @@ import { Field } from 'redux-form';
 import { Input, Integer, Radio, Select, Phone, validation, Date } from '@exzeo/core-ui/lib';
 import { formattedDate } from '@exzeo/core-ui/lib/Utilities';
 
-const statusAnswers = [
-  { answer: 'Active', label: 'Active' },
-  { answer: 'Service Only', label: 'Service Only' },
-  { answer: 'Pending', label: 'Pending' },
-  { answer: 'Cancel', label: 'Cancel' }
+import { STATUS, OK_TO_PAY, TAX_CLASSIFICATION } from '../../../../constants/agency';
 
-];
-
-const okToPayAnswers = [
-  { answer: false, label: 'No' },
-  { answer: true, label: 'Yes' }
-];
-
-const taxClassificationAnswers = [
-  { answer: 'LLC', label: 'LLC' },
-  { answer: 'Corporation', label: 'Corporation' },
-  { answer: 'Individual/Sole Proprietor', label: 'Individual/Sole Proprietor' },
-  { answer: 'Partnership', label: 'Partnership' },
-  { answer: 'Disregarded Entity', label: 'Disregarded Entity' },
-  { answer: 'Tax Exempt', label: 'Tax Exempt' },
-  { answer: 'Other', label: 'Other' },
-  { answer: 'LLC - C', label: 'LLC - C' },
-  { answer: 'LLC - P', label: 'LLC - P' },
-  { answer: 'LLC - S', label: 'LLC - S' },
-  { answer: 'S-Corporation', label: 'S-Corporation' },
-  { answer: 'LLC – I/SP', label: 'LLC – I/SP' }
-];
-
-const Details = (agencyCodeDisabled) => {
+const AgencyDetails = ({ agencyCodeDisabled }) => {
   return (
     <React.Fragment>
       <Field
@@ -41,6 +15,7 @@ const Details = (agencyCodeDisabled) => {
         dataTest="agencyCode"
         component={Integer}
         thousandSeparator={false}
+        disabled={agencyCodeDisabled}
         validate={validation.isRequired} />
       <Field
         label="Agency Name"
@@ -64,7 +39,7 @@ const Details = (agencyCodeDisabled) => {
         label="Status"
         component={Select}
         validate={validation.isRequired}
-        answers={statusAnswers} />
+        answers={STATUS} />
       <Field
         label="TPAID"
         styleName="tpaid"
@@ -79,7 +54,7 @@ const Details = (agencyCodeDisabled) => {
         label="Ok to Pay"
         component={Radio}
         segmented
-        answers={okToPayAnswers} />
+        answers={OK_TO_PAY} />
       <Field
         label="Web Address"
         styleName="webAddress"
@@ -101,7 +76,7 @@ const Details = (agencyCodeDisabled) => {
         label="Tax Classification"
         component={Select}
         validate={validation.isRequired}
-        answers={taxClassificationAnswers} />
+        answers={TAX_CLASSIFICATION} />
       <Field
         label="EO Expiration Date"
         name="eoExpirationDate"
@@ -147,8 +122,8 @@ const Details = (agencyCodeDisabled) => {
   );
 };
 
-Details.propTypes = {};
+AgencyDetails.defaultProps = {
+  agencyCodeDisabled: false
+};
 
-Details.defaultProps = {};
-
-export default Details;
+export default AgencyDetails;

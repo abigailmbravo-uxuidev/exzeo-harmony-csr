@@ -28,7 +28,7 @@ export class AgencyModal extends Component {
             </div>
             <div className="card-block">
               <section className="agency-details">
-                <AgencyDetails />
+                <AgencyDetails agencyCodeDisabled />
               </section>
             </div>
             <div className="card-footer">

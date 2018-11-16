@@ -98,7 +98,6 @@ export class Create extends Component {
                 <h3>Details</h3>
                 <section className="agency-details">
                   <AgencyDetails />
-                  {/* web address validaiton */}
                 </section>
                 <h3>Address</h3>
                 <AddressGroup sameAsMailingValue={sameAsMailingValue} changeField={change} isAgency showCounty />
