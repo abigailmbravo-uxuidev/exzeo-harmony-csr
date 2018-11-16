@@ -52,7 +52,7 @@ export default {
       companyCode: 'TTIC',
       stateProducts: [
        { state: 'FL', product: 'HO3'},
-       { state: 'FL', product: 'FL3'}
+       { state: 'FL', product: 'AF3'}
       ],
       contractNumber: 'Flood 03 16',
       addendum: null
@@ -61,7 +61,7 @@ export default {
       companyCode: 'ABC',
       stateProducts: [
        { state: 'FL', product: 'HO3'},
-       { state: 'FL', product: 'FL3'}
+       { state: 'FL', product: 'AF3'}
       ],
       contractNumber: 'Flood 03 16',
       addendum: null

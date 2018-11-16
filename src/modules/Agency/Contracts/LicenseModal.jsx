@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import moment from 'moment';
 import { reduxForm, Field } from 'redux-form';
 import { isUnique } from '../utilities/validation';
 import { Input, Date, Select, validation } from '@exzeo/core-ui';
@@ -18,10 +17,6 @@ export const LicenseModal = (props) => {
     { answer: 'Resident', label: 'Resident' },
     { answer: 'Non-Resident', label: 'Non-Resident' }
   ];
-
-  if (initialValues && initialValues.licenseEffectiveDate) {
-    initialValues.licenseEffectiveDate = moment.utc(initialValues.licenseEffectiveDate).format('YYYY-MM-DD');
-  }
 
   const actionType = initialValues ? 'Edit' : 'Add';
   return (

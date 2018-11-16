@@ -30,16 +30,7 @@ export class SearchResults extends Component {
       <div className="results-wrapper">
 
         {hasSearched && (noResults || error.message) &&
-        <div className="results">
-          <div className="result-cards">
-            <NoResults searchType={searchType} error={error} />
-            {hasSearched && searchType === SEARCH_TYPES.agency &&
-              <div className="btn-divider-wrapper">
-                <NavLink className="btn btn-primary" to="/agency/new/0" activeClassName="active" target="_blank" exact>+ Agency</NavLink>
-              </div>
-            }
-          </div>
-        </div>
+          <NoResults searchType={searchType} error={error} />
         }
 
         {hasSearched && searchType === SEARCH_TYPES.newQuote && !!results.length &&
