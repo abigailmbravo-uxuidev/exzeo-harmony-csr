@@ -69,5 +69,5 @@ export const REASONS = Object.keys(REASONS_DATA).map((key) => {
 export const DUE_STATUS = {
   dueSoon: 'Due Soon',
   pastDue: 'Past Due',
-  upComing: 'Up Coming'
+  upComing: 'Upcoming'
 };
