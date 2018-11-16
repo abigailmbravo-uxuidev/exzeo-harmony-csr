@@ -18,6 +18,7 @@ describe('Testing Agency Base component', () => {
       getAgentsByAgencyCode() {},
       getListOfOrphanedAgents() {},
       searchSettingsByCSPAndZip() {},
+      getLists() {},
       match: { params: { agencyCode: '123', branchCode: '0' } },
       agency: mockAgency
     };
@@ -32,6 +33,7 @@ describe('Testing Agency Base component', () => {
       getAgentsByAgencyCode() {},
       getListOfOrphanedAgents() {},
       searchSettingsByCSPAndZip() {},
+      getLists() {},
       match: { params: { agencyCode: '123', branchCode: '0' } },
       agency: null
     };

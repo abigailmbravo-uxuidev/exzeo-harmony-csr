@@ -1,49 +1,46 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Select, validation, SelectTypeAhead, Button, emptyArray } from '@exzeo/core-ui';
 import { reduxForm, FieldArray, Field } from 'redux-form';
+
 import { isUnique } from '../utilities/validation';
-import { Input, Select, validation } from '@exzeo/core-ui';
 
-export const RenderProducts = ({ fields }) => {
-  const states = [
-    { answer: 'FL', label: 'FL' },
-    { answer: 'TX', label: 'TX' }
-  ];
-
-  const productTypes = [
-    { answer: 'HO3', label: 'HO3' },
-    { answer: 'AF3', label: 'AF3' }
-  ];
-  
+export const RenderProducts = ({ fields, stateAnswers, productAnswers }) => {
   if (fields.length === 0) fields.insert(0, {});
 
   return (
     <React.Fragment>
       {fields.map((product, index) =>
-        (<div className="csp-wrapper" key={product}>
-          <Field
-            label="State"
-            styleName="state"
-            name={`${product}.state`}
-            component={Select}
-            answers={states}
-            dataTest={`state-${index}`}
-            validate={validation.isRequired} />
-          <Field
-            label="Product"
-            styleName="product"
-            name={`${product}.product`}
-            component={Select}
-            answers={productTypes}
-            dataTest={`product-${index}`}
-            validate={validation.isRequired} />
-          {fields.length > 1 &&
+        (
+          <div className="csp-wrapper" key={product}>
+            <Field
+              label="State"
+              styleName="state"
+              name={`${product}.state`}
+              component={Select}
+              answers={stateAnswers}
+              dataTest={`state-${index}`}
+              validate={validation.isRequired} />
+            <Field
+              label="Product"
+              styleName="product"
+              name={`${product}.product`}
+              component={Select}
+              answers={productAnswers}
+              dataTest={`product-${index}`}
+              validate={validation.isRequired} />
+            {fields.length > 1 &&
             <i className="fa fa-times-circle" onClick={() => fields.remove(index)} />
           }
-        </div>))}
+          </div>))}
       <div className="add-product">
         <hr />
-        <button className="btn-secondary btn btn-sm" onClick={() => fields.push({})}><i className="fa fa-plus" />Product</button>
+        <Button
+          baseClass="secondary"
+          size="small"
+          dataTest="add-product"
+          onClick={() => fields.push({})}><i className="fa fa-plus" />Product
+        </Button>
         <hr />
       </div>
     </React.Fragment>
@@ -55,10 +52,15 @@ export const ContractModal = (props) => {
     closeModal,
     saveContract,
     handleSubmit,
-    initialValues
+    initialValues,
+    addendumAnswers,
+    companyCodeAnswers,
+    agencyContractAnswers,
+    stateAnswers,
+    productAnswers
   } = props;
-  
-  const actionType = initialValues ? 'Edit' : "Add";
+
+  const actionType = initialValues ? 'Edit' : 'Add';
   return (
     <div className="modal contract-crud">
       <div className="card">
@@ -69,29 +71,34 @@ export const ContractModal = (props) => {
           <div className="card-block">
             <section className="contract-details">
               <Field
-                label="Company Code"
-                styleName="companyCode"
                 name="companyCode"
+                label="Company Code"
+                component={SelectTypeAhead}
+                styleName="companyCode"
                 dataTest="companyCode"
-                component={Input}
-                validate={validation.isRequired} />
+                validate={validation.isRequired}
+                answers={companyCodeAnswers} />
               <Field
-                label="Contract"
-                styleName="contractNumber"
                 name="contractNumber"
+                label="Contract"
+                component={SelectTypeAhead}
+                styleName="contractNumber"
                 dataTest="contractNumber"
-                component={Input}
                 validate={[validation.isRequired, isUnique]}
-              />
+                answers={agencyContractAnswers} />
               <Field
-                label="Addendum"
-                styleName="addendum"
                 name="addendum"
+                label="Addendum"
+                component={SelectTypeAhead}
+                styleName="addendum"
                 dataTest="addendum"
-                component={Input} />
+                answers={addendumAnswers} />
             </section>
             <section className="contract-csp">
-              <FieldArray name="stateProducts" component={RenderProducts} />
+              <FieldArray
+                name="stateProducts"
+                component={fieldProps =>
+                  <RenderProducts {...fieldProps} stateAnswers={stateAnswers} productAnswers={productAnswers} />} />
             </section>
           </div>
           <div className="card-footer">
@@ -107,7 +114,12 @@ export const ContractModal = (props) => {
 };
 
 ContractModal.defaultProps = {
-  contractNumbers: []
+  contractNumbers: emptyArray,
+  addendumAnswers: emptyArray,
+  companyCodeAnswers: emptyArray,
+  agencyContractAnswers: emptyArray,
+  stateAnswers: emptyArray,
+  productAnswers: emptyArray
 };
 
 ContractModal.propTypes = {

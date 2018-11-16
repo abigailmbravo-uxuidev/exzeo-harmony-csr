@@ -33,9 +33,9 @@ export class Contracts extends Component {
   mergeData = (data, existingArray, index) => {
     let newArray;
     if (index !== null && index !== '') {
-      newArray = existingArray.map((item, i) => i === index ? { ...data } : item);
+      newArray = existingArray.map((item, i) => (i === index ? { ...data } : item));
     } else {
-      newArray = [...existingArray, { ...data } ];
+      newArray = [...existingArray, { ...data }];
     }
     return newArray;
   };
@@ -59,8 +59,10 @@ export class Contracts extends Component {
   };
 
   render() {
-    const { agency } = this.props;
-    const { licenseIndex, showLicenseModal, contractIndex, showContractModal } = this.state;
+    const { agency, listAnswers, listAnswersAsKey } = this.props;
+    const {
+      licenseIndex, showLicenseModal, contractIndex, showContractModal
+    } = this.state;
 
     if (!agency) return <div />;
     return (
@@ -68,18 +70,23 @@ export class Contracts extends Component {
         {showLicenseModal &&
           <LicenseModal
             saveLicense={this.saveLicense}
+            stateAnswers={listAnswersAsKey.US_states}
             closeModal={this.toggleLicense}
             initialValues={agency.licenses[licenseIndex]}
-            licenseNumbers={agency.licenses.map(l => l.licenseNumber)}
-          />
+            licenseNumbers={agency.licenses.map(l => l.licenseNumber)} />
         }
         {showContractModal &&
           <ContractModal
+            productAnswers={listAnswers.Products}
+            stateAnswers={listAnswersAsKey.US_states}
+            addendumAnswers={listAnswers.Agency_Addendum}
+            companyCodeAnswers={listAnswers.Company_Code}
+            agencyContractAnswers={listAnswers.Agency_Contract}
+            listAnswers={listAnswers}
             saveContract={this.saveContract}
             closeModal={this.toggleContract}
             initialValues={agency.contracts[contractIndex]}
-            contractNumbers={agency.contracts.map(c => c.contractNumber)}
-          />
+            contractNumbers={agency.contracts.map(c => c.contractNumber)} />
         }
         <div className="route-content">
           <div className="scroll">
@@ -110,8 +117,7 @@ export class Contracts extends Component {
                   <ContractCard
                     key={contract.contractNumber}
                     contract={contract}
-                    editContract={this.toggleContract(index)}
-                  />
+                    editContract={this.toggleContract(index)} />
                 ))}
                 <div className="create-contract">
                   <hr />
@@ -135,8 +141,13 @@ export class Contracts extends Component {
   }
 }
 
+Contracts.defaultProps = {
+  listAnswers: {},
+  listAnswersAsKey: {}
+};
+
 Contracts.propTypes = {
-  agency: PropTypes.object.isRequired,
+  agency: PropTypes.object.isRequired
 };
 
 export default Contracts;

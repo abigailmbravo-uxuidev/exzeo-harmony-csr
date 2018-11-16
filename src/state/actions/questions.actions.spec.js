@@ -251,4 +251,63 @@ describe('Questions Actions', () => {
         expect(store.getActions()[0].type).toEqual(types.APP_ERROR);
       });
   });
+  it('should pass getLists', () => {
+    const mockAdapter = new MockAdapter(axios);
+
+    const initialState = {};
+    const store = mockStore(initialState);
+
+    const axiosOptions = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      url: `${process.env.REACT_APP_API_URL}/svc`,
+      data: {
+        service: 'list-service',
+        method: 'GET',
+        path: 'v1/lists'
+      }
+    };
+
+    mockAdapter.onPost(axiosOptions.url, axiosOptions.data).reply(200, {
+      data: []
+    });
+    questionsActions.getLists(store.dispatch);
+
+    return questionsActions.getLists()(store.dispatch)
+      .then(() => {
+        expect(store.getActions()[0].type).toEqual(types.SET_LISTS);
+      });
+  });
+
+  it('should fail getLists', () => {
+    const mockAdapter = new MockAdapter(axios);
+
+    const initialState = {};
+    const store = mockStore(initialState);
+
+    const axiosOptions = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      url: `${process.env.REACT_APP_API_URL}/svc`,
+      data: {
+        service: 'list-service',
+        method: 'GET',
+        path: 'v1/some_URL'
+      }
+    };
+
+    mockAdapter.onPost(axiosOptions.url, axiosOptions.data).reply(200, {
+      data: []
+    });
+    questionsActions.getLists(store.dispatch);
+
+    return questionsActions.getLists()(store.dispatch)
+      .then(() => {
+        expect(store.getActions()[0].type).toEqual(types.APP_ERROR);
+      });
+  });
 });
