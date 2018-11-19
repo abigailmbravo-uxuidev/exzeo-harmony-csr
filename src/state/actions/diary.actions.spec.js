@@ -3,19 +3,19 @@ import thunk from 'redux-thunk';
 import sinon from 'sinon';
 
 import * as serviceRunner from '../../utilities/serviceRunner';
+import { POLICY_RESOURCE_TYPE } from '../../constants/diaries';
 
 import * as types from './actionTypes';
 import * as diaryStateActions from './diary.actions';
-import { POLICY_RESOURCE_TYPE } from '../../constants/diaries';
 
 describe('Test diary.actions', () => {
-  const mockStore1 = configureStore([]);
-  let initialState1;
-  let store1;
+  const mockStore = configureStore([]);
+  let initialState;
+  let store;
 
   beforeEach(() => {
-    initialState1 = {};
-    store1 = mockStore1(initialState1);
+    initialState = {};
+    store = mockStore(initialState);
   });
 
   it('should call setDiaries', () => {
@@ -26,9 +26,9 @@ describe('Test diary.actions', () => {
       diaries
     }];
 
-    store1.dispatch(diaryStateActions.setDiaries(diaries));
+    store.dispatch(diaryStateActions.setDiaries(diaries));
 
-    expect(store1.getActions())
+    expect(store.getActions())
       .toEqual(stateObj);
   });
 
