@@ -94,7 +94,7 @@
 
           li {
             .diary-header {
-              i {
+              > i {
                 color: $red-darken-01;
               }
             }
@@ -110,7 +110,7 @@
 
           li {
             .diary-header {
-              i {
+              > i {
                 color: $orange-lighten-01;
               }
             }
@@ -126,12 +126,24 @@
 
           li {
             .diary-header {
-              i {
+              > i {
                 color: $green-darken-02;
               }
             }
           }
         }
+      }
+    }
+
+    &.diary-open {
+      .open-diaries {
+        box-shadow: -1px 0 2rem 0 rgba($black,0.125);
+      }
+    }
+
+    &.diary-closed {
+      .open-diaries {
+        box-shadow: 0 0 0 0 rgba($black,0);
       }
     }
   }

@@ -322,10 +322,11 @@
         span {
           div {
             cursor: pointer;
-            color: $bright-blue-lighten-01;
+            color: $bright-blue;
+            @include transition(all 0.2s ease-in-out);
 
             &:hover {
-              color: $bright-blue-darken-02;
+              color: $bright-blue-darken-04;
             }
           }
         }

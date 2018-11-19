@@ -42,9 +42,9 @@ export class DetailHeader extends Component {
           data={details}
           dataTest="quoteDetails"
           className="quoteDetails">
-          <dd>
+          <dd className="status">
             {status === 'Policy Issued' ?
-              <button className="btn btn-link" data-test="selectPolicy" onClick={this.handleSelectPolicy}>
+              <button className="btn btn-link btn-alt-light" data-test="selectPolicy" onClick={this.handleSelectPolicy}>
                 {status}
               </button>
               :

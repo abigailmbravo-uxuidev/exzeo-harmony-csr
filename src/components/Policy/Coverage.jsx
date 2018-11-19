@@ -35,7 +35,7 @@ export class Coverage extends Component {
         property,
         rating,
         underwritingAnswers
-      },
+      }
     } = this.props;
 
     const monthsOccupied = underwritingAnswers ? underwritingAnswers.monthsOccupied.answer : null;
@@ -262,8 +262,8 @@ export class Coverage extends Component {
                         <a
                           target="_blank"
                           rel="noopener noreferrer"
-                          href={getPropertyAppraisalLink(propertyData.physicalAddress.county, questions).answer}
-                        >{getPropertyAppraisalLink(propertyData.physicalAddress.county, questions).label}</a>
+                          href={getPropertyAppraisalLink(propertyData.physicalAddress.county, questions).answer}>{getPropertyAppraisalLink(propertyData.physicalAddress.county, questions).label}
+                        </a>
                       </dd>
                       <dt className="territory">Territory</dt>
                       <dd className="territory">{_get(rating, 'worksheet.elements.territoryFactors.name') || '-'}</dd>
@@ -356,5 +356,5 @@ const mapStateToProps = state => ({
 });
 
 export default connect(mapStateToProps, {
-  getUIQuestions,
+  getUIQuestions
 })(Coverage);

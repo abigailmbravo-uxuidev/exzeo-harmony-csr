@@ -926,9 +926,9 @@
     }
     //diaries
     .open-diaries {
-      overflow-y: auto;
       position: absolute;
       right: 0;
+      overflow-y: auto;
       align-self: stretch;
       flex-grow: 0;
       flex-shrink: 0;
@@ -970,7 +970,7 @@
         @include transition(all 0.1s ease-in-out);
 
         &.endorsement-content-wrapper {
-          margin-right: 3rem;
+          margin-right: 0;
         }
 
         .route-content {

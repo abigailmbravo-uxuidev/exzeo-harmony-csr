@@ -84,7 +84,7 @@ export class DiaryTable extends Component {
   // TODO: Use button from core-ui
   buttonFormatter = (cell) => {
     return cell.open
-      ? <button type="button" className="btn btn-link btn-grid-row" onClick={() => this.openDiaryModal(cell)}><i className="fa fa-arrow-circle-up" /></button>
+      ? <button type="button" className="btn btn-link btn-grid-row" onClick={() => this.openDiaryModal(cell)}><i className="fa fa-chevron-circle-up" /></button>
       : null;
   };
 

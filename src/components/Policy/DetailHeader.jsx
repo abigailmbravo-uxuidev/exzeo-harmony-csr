@@ -36,6 +36,7 @@ export class DetailHeader extends Component {
 
     const {
       cancellation: { dateLabel, cancellationDate, showReinstatement },
+      finalPayment,
       constructionType,
       county,
       details,
@@ -56,7 +57,17 @@ export class DetailHeader extends Component {
           data={details}
           dataTest="policyDetails"
           className="policyDetails">
-          <dd>{status}</dd>
+          <dd>
+            {policy.policyNumber}
+            <span
+              data-test={sourceNumber}
+              id="source-number"
+              title={sourceNumber}
+              className="btn btn-link btn-white btn-xs no-padding btn-info">
+              <i className="fa fa-info-circle" />Source
+            </span>
+          </dd>
+          <dd className="status">{status}</dd>
         </Details>
 
         <Section
@@ -99,11 +110,6 @@ export class DetailHeader extends Component {
               className="constructionType" />
           </div>
           <div className="wrapping-section">
-            <SectionSingle
-              label="Source Number"
-              value={sourceNumber}
-              dataTest="sourceNumberDetail"
-              className="sourceNumber" />
 
             <SectionSingle
               label="Effective Date"
@@ -132,6 +138,13 @@ export class DetailHeader extends Component {
                   <i className="fa fa-thumbs-up" />Reinstate
                 </button>
               )} />
+
+            {finalPayment.date && <SectionSingle
+              label={finalPayment.label}
+              value={finalPayment.date}
+              dataTest="finalPaymentDate"
+              className="finalPaymentDate" />
+              }
           </div>
         </div>
 
@@ -145,6 +158,10 @@ export class DetailHeader extends Component {
     );
   }
 }
+
+DetailHeader.defaultProps = {
+  finalPayment: {}
+};
 
 const mapStateToProps = state => ({
   appState: state.appState,
