@@ -46,7 +46,7 @@ export const quoteSummaryModal = (props) => {
   );
 };
 
-const checkQuoteState = quoteData => _.some(['Policy Issued', 'Documents Received'], state => state === quoteData.quoteState);
+const checkQuoteState = quoteData => ['Application Sent DocuSign', 'Policy Issued', 'Documents Received'].includes(quoteData);
 
 export class QuoteApplication extends Component {
   componentDidMount() {
@@ -69,6 +69,7 @@ export class QuoteApplication extends Component {
       underwritingExceptions
     } = this.props;
 
+    const uwExceptions = underwritingExceptions.filter(e => !e.overridden).length;
     return (
       <QuoteBaseConnect match={match}>
         <div className="route-content verify workflow">
@@ -96,7 +97,7 @@ export class QuoteApplication extends Component {
               form="Application"
               className="btn btn-primary"
               type="submit"
-              disabled={(underwritingExceptions && _.filter(underwritingExceptions, uw => !uw.overridden).length > 0) || checkQuoteState(quoteData) || appState.data.applicationSent}>Send to DocuSign
+              disabled={(uwExceptions > 0) || checkQuoteState(quoteData.quoteState) || appState.data.applicationSent}>Send to DocuSign
             </button>
           </div>
         </div>

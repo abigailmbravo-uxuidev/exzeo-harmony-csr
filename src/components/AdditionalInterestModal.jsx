@@ -31,11 +31,6 @@ export const checkAdditionalInterestForName = (aiType) => {
 };
 
 export class AdditionalInterestModal extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this.modalStyle = { flexDirection: 'row' };
-  }
 
   setTopValues = (value, answers = []) => {
     const { change } = this.props;
@@ -135,7 +130,7 @@ export class AdditionalInterestModal extends React.Component {
     } = this.props;
 
     return (
-      <div className="modal" style={this.modalStyle}>
+      <div className="modal additional-interest">
         {(submitting || isDeleting) &&
           <Loader />
         }
@@ -344,7 +339,7 @@ const mapStateToProps = state => ({
   mortgageeAnswers: getMortgageeAnswers(state),
   premiumFinanceAnswers: getTopPremiumFinanceAnswers(state),
   questions: state.questions,
-  sortedAdditionalInterests: getSortedAdditionalInterests(state),
+  sortedAdditionalInterests: getSortedAdditionalInterests(state)
 });
 
 export default connect(mapStateToProps, {

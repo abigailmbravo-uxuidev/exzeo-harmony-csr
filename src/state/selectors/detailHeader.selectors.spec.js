@@ -826,15 +826,15 @@ describe('Detail Header selectors', () => {
     const result = detailSelectors.getPolicyDetails(state);
     expect(result).toEqual({
       cancellation: {
-        dateLabel: 'Cancellation Date',
+        dateLabel: 'Cancellation Effective Date',
         cancellationDate: '12/04/2018',
         showReinstatement: false
       },
+      finalPayment: {},
       constructionType: 'SUPERIOR',
       county: 'PALM BEACH',
       currentPremium: '$ 3,055',
       details: {
-        policyNumber: '12-1011068-01',
         product: 'HO3 Homeowners'
       },
       effectiveDate: '12/04/2018',

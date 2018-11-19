@@ -3,8 +3,9 @@ import { normalize } from '@exzeo/core-ui/lib';
 
 import { STANDARD_DATE_FORMAT } from '../constants/dates';
 
-export const CANCELLATION_DATE = 'Cancellation Date';
+export const CANCELLATION_DATE = 'Cancellation Effective Date';
 export const EXPIRATION_DATE = 'Expiration Date';
+export const FINAL_PAYMENT_DATE = 'Final Payment Date';
 
 export const isNonPaymentNotice = (billingStatus, policyStatus) =>
   policyStatus === 'In Force' && billingStatus === 'Non-Payment Notice Issued';
@@ -86,22 +87,43 @@ export function shouldShowReinstatement(status, code) {
  * @returns {string}
  */
 export function getCancellationDate(summaryLedger, policyStatus, endDate, cancelDate) {
-  const { nonPaymentNoticeDueDate, status: { code, displayText } } = summaryLedger;
+  const { equityDate, status: { displayText } } = summaryLedger;
 
-  if (endDate && code === 99) {
+  if (displayText === 'Policy Expired' && endDate) {
     return moment.utc(endDate).format(STANDARD_DATE_FORMAT);
   }
 
   const isCanceled = getEntityDetailsDateLabel(displayText, policyStatus) === CANCELLATION_DATE;
   const isNonPaymentCancellation = isNonPaymentNotice(displayText, policyStatus);
 
-  if (isNonPaymentCancellation && nonPaymentNoticeDueDate) {
-    return moment.utc(nonPaymentNoticeDueDate).format(STANDARD_DATE_FORMAT);
+  if (isNonPaymentCancellation && equityDate) {
+    return moment.utc(equityDate).format(STANDARD_DATE_FORMAT);
   } else if (isCanceled && cancelDate) {
     return moment.utc(cancelDate).format(STANDARD_DATE_FORMAT);
   }
 
   return '';
+}
+
+/**
+ * Determine final Payment date to display
+ * @param {object} summaryLedger
+ * @param {string} [endDate]
+ * @param {string} [cancelDate]
+ * @returns {string}
+ */
+export function getFinalPaymentDate(summaryLedger, policyStatus) {
+  const { invoiceDueDate, status: { displayText } } = summaryLedger;
+
+  const isNonPaymentCancellation = isNonPaymentNotice(displayText, policyStatus);
+
+  if (isNonPaymentCancellation && invoiceDueDate) {
+    return {
+      date: moment.utc(invoiceDueDate).format(STANDARD_DATE_FORMAT),
+      label: FINAL_PAYMENT_DATE
+    };
+  }
+  return {};
 }
 
 export function getEntityDetailsDateLabel(billingStatus, policyStatus) {

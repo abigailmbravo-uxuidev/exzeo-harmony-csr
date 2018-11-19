@@ -1665,7 +1665,7 @@
   height: 30px;
   transition: height 0.2s;
   color: #fff;
-  background-color: $bright-blue-darken-04;
+  background-color: $warm-gray-15;
   box-shadow: 1px 1px 4px 0 rgba(82, 82, 82, 0.3);
   font-size: 12px;
   font-weight: 500;
@@ -1712,7 +1712,7 @@
   z-index: 1001;
   height: 100%;
   transition: background-color, width 0.3s ease-out;
-  background-color: $bright-blue-darken-03 !important;
+  background-color: $bright-blue-darken-02 !important;
 }
 
 .uppy-StatusBar.is-waiting .uppy-StatusBar-progress {

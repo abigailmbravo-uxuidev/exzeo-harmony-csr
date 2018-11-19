@@ -30,11 +30,11 @@
     border-bottom: $card-border-width solid $card-border-color;
     background-color: $card-cap-bg;
 
-    > h1,
     > h2,
-    > h3,
-    > h4,
-    > h5 {
+     > h3,
+     > h4,
+     > h5,
+    > h1 {
       margin: 0;
     }
 
@@ -189,7 +189,7 @@
   align-self: center;
   flex-direction: column;
   min-width: 10rem;
-  margin-left: $padding;
+  margin: 0 $padding;
 
   label {
     margin-bottom: 0;
@@ -204,9 +204,10 @@
   }
 }
 
+.app-wrapper.csr.quote main #AddAdditionalInterestPage .results-wrapper,
 .app-wrapper.csr.policy main .content-wrapper .route-content .form-group section {
   ul {
-    &.additional-interests-list {
+    &.additional-interests-list, &.result-cards {
       li {
         &.card {
           align-items: center;
@@ -280,7 +281,6 @@
     }
   }
 }
-
 // ADDED FROM DIARIES / REUSABLE CARDS
 ul {
   &.results {
@@ -363,8 +363,8 @@ ul {
               flex-grow: 0;
               flex-shrink: 0;
               width: 8px;
-              background: $warm-gray-04;
               border-radius: 2px;
+              background: $warm-gray-04;
             }
 
             .icon-wrapper {
@@ -375,8 +375,8 @@ ul {
               padding: $padding ($padding*3);
 
               i {
-                font-size: $font-size-h2;
                 color: $bright-blue-darken-04;
+                font-size: $font-size-h2;
 
                 &.icon-status-indicator {
                   font-size: $font-size-xs;
@@ -388,8 +388,8 @@ ul {
               }
 
               > div {
-                font-size: $font-size-xs;
                 color: $bright-blue-darken-04;
+                font-size: $font-size-xs;
                 font-weight: $font-weight-bold;
               }
             }
@@ -417,13 +417,12 @@ ul {
 
               &.diary-entry-list {
                 li {
-                  padding: ($padding/4) 0;
                   display: flex;
+                  padding: ($padding/4) 0;
                   color: $warm-gray-08;
                   font-size: $font-size-sm;
 
                   &.header {
-
                     background: $warm-gray-02;
                     font-weight: $font-weight-bold;
                   }

@@ -30,29 +30,47 @@
   }
 
   &.contract-crud {
-      .card  {
-          width: 50rem;
-      }
+    .card {
+      width: 50rem;
+    }
   }
 
   &.add-agent-crud {}
 
   &.existing-agent-modal {
-      .card {
-        max-width: 40rem;
-      }
+    .card {
+      max-width: 40rem;
+    }
   }
 
   &.agent-crud {
-      .card  {
-          //width: 80rem;
-      }
+    .card {
+      //width: 80rem;
+    }
   }
 
   &.agent-remove {
+    .card {
+      width: 40rem;
+    }
+  }
+
+  &.additional-interest {
+    form {
+      height: 90%;
+
       .card {
-        width: 40rem;
+        width: 60rem;
+        height: 90%;
+        max-height: 45rem;
       }
+    }
+  }
+
+  &.license-crud {
+    .card {
+      width: 40rem;
+    }
   }
 
   .card {
@@ -72,9 +90,8 @@
     justify-content: center;
 
     &.AdditionalInterestModal {
-
       .card {
-          height: calc(90vh - 150px);
+        height: calc(90vh - 150px);
       }
     }
   }
