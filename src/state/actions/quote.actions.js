@@ -10,6 +10,12 @@ export function setQuote(quote) {
   };
 }
 
+/**
+ * Get quote via CG model
+ * @param quoteId - can be quote._id or quote.quoteNumber
+ * @param currentPage
+ * @returns {Function}
+ */
 export function getQuote(quoteId, currentPage) {
   return async (dispatch) => {
     try {

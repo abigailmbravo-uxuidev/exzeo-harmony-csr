@@ -53,7 +53,7 @@ export class QuoteApplication extends Component {
     const {
       appState, match, getQuoteAction, setAppStateAction
     } = this.props;
-    getQuoteAction(match.params.quoteId, 'application');
+    getQuoteAction(match.params.quoteNumber, 'application');
     setAppStateAction(
       MODEL_NAME, '',
       { ...appState.data, submitting: false }

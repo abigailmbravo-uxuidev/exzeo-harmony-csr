@@ -180,12 +180,12 @@ export class MailingAddressBilling extends Component {
   componentDidMount() {
     const {
       getQuoteAction, getBillingOptionsAction,
-      match: { params: { quoteId } }
+      match: { params: { quoteNumber } }
     } = this.props;
     this.setPageLoader(true);
 
 
-    getQuoteAction(quoteId, 'mailing')
+    getQuoteAction(quoteNumber, 'mailing')
       .then((quoteData) => {
         if (quoteData && quoteData.rating) {
           const paymentOptions = {

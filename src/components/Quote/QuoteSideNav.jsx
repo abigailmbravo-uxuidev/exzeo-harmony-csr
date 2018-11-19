@@ -38,45 +38,45 @@ export const newNote = (props) => {
   });
 };
 
-const csrLinks = ({ quoteId }) => {
+const csrLinks = ({ quoteNumber }) => {
   return [{
     key: 'customerData',
-    link: `/quote/${quoteId}/coverage`,
+    link: `/quote/${quoteNumber}/coverage`,
     label: 'Coverage / Rating',
     styleName: 'coverage',
     exact: true
   }, {
     key: 'underwriting',
-    link: `/quote/${quoteId}/underwriting`,
+    link: `/quote/${quoteNumber}/underwriting`,
     label: 'Underwriting',
     styleName: 'underwriting',
     exact: true
   }, {
     key: 'additionalInterests',
-    link: `/quote/${quoteId}/additionalInterests`,
+    link: `/quote/${quoteNumber}/additionalInterests`,
     label: 'Additional Interests',
     styleName: 'additionalInterests',
     exact: true
   }, {
     key: 'mailing',
-    link: `/quote/${quoteId}/billing`,
+    link: `/quote/${quoteNumber}/billing`,
     label: 'Mailing / Billing',
     styleName: 'billing',
     exact: true
   }, {
     key: 'notes',
-    link: `/quote/${quoteId}/notes`,
+    link: `/quote/${quoteNumber}/notes`,
     label: 'Notes / Files',
     styleName: 'notes',
     exact: true
   }, {
     key: 'summary',
-    link: `/quote/${quoteId}/summary`,
+    link: `/quote/${quoteNumber}/summary`,
     label: 'Quote Summary',
     styleName: 'quote-summary'
   }, {
     key: 'application',
-    link: `/quote/${quoteId}/application`,
+    link: `/quote/${quoteNumber}/application`,
     label: 'Application',
     styleName: 'application',
     exact: true
@@ -105,7 +105,7 @@ export const SideNav = (props) => {
     <nav className="site-nav">
       {redirect}
       <ul>
-        {csrLinks({ quoteId: quoteData._id, workflowId: match.params.workflowId }).map(link => (
+        {csrLinks({ quoteNumber: quoteData.quoteNumber, workflowId: match.params.workflowId }).map(link => (
           <li key={link.key}>
             <span className={link.styleName}>
               <NavLink to={link.link} activeClassName="active" exact>{link.label}</NavLink>

@@ -1,11 +1,6 @@
-export const SEARCH_TYPES = {
-  newQuote: 'address',
-  quote: 'quote',
-  policy: 'policy',
-  agent: 'agent',
-  agency: 'agency',
-  diaries: 'diaries'
-};
+import RESOURCES from './resources';
+
+export const SEARCH_TYPES = RESOURCES;
 
 export const SEARCH_FORM = 'SEARCH_BAR';
 
