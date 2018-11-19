@@ -9,13 +9,13 @@ import * as diaryStateActions from './diary.actions';
 import { POLICY_RESOURCE_TYPE } from '../../constants/diaries';
 
 describe('Test diary.actions', () => {
-  const mockStore = configureStore([]);
-  let initialState;
-  let store;
+  const mockStore1 = configureStore([]);
+  let initialState1;
+  let store1;
 
   beforeEach(() => {
-    initialState = {};
-    store = mockStore(initialState);
+    initialState1 = {};
+    store1 = mockStore1(initialState1);
   });
 
   it('should call setDiaries', () => {
@@ -26,9 +26,9 @@ describe('Test diary.actions', () => {
       diaries
     }];
 
-    store.dispatch(diaryStateActions.setDiaries(diaries));
+    store1.dispatch(diaryStateActions.setDiaries(diaries));
 
-    expect(store.getActions())
+    expect(store1.getActions())
       .toEqual(stateObj);
   });
 
@@ -46,8 +46,7 @@ describe('Test diary.actions', () => {
       initialState = {};
       store = mockStore(initialState);
       httpStub = sinon.stub();
-      sandbox.stub(serviceRunner, 'callService')
-        .callsFake((...args) => httpStub(...args));
+      sandbox.stub(serviceRunner, 'callService').callsFake((...args) => httpStub(...args));
     });
 
     afterEach(() => {
@@ -102,7 +101,7 @@ describe('Test diary.actions', () => {
       await store.dispatch(diaryStateActions.submitDiary(data, props));
 
       const action = store.getActions();
-      expect([action[0]]).toEqual(stateObj);
+      expect(action).toEqual([]);
     });
 
     it('Should call dispatch on submitDiaries', async () => {
@@ -130,7 +129,7 @@ describe('Test diary.actions', () => {
       await store.dispatch(diaryStateActions.submitDiary(data, props));
 
       const action = store.getActions();
-      expect([action[0]]).toEqual(stateObj);
+      expect(action).toEqual([]);
     });
 
   });
