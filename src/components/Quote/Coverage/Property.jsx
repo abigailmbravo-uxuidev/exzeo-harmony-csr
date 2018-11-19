@@ -133,6 +133,17 @@ const Property = ({
           dataTest="floodZone"
         />
       </div>
+      <div className="flex-parent home-location-row-4">
+        <Field
+          styleName="flex-child igdId"
+          name="igdId"
+          label="IGD ID"
+          component={Integer}
+          thousandSeparator={false}
+          disabled
+          dataTest="igdId"
+        />
+      </div>
     </div>
   </section>
 );
