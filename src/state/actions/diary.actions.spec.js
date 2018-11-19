@@ -129,7 +129,7 @@ describe('Test diary.actions', () => {
     //   await store.dispatch(diaryStateActions.submitDiary(data, props));
     //
     //   const action = store.getActions();
-    //   expect(action).toEqual([]);
+    //   expect([action[0]]).toEqual(stateObj);
     // });
   });
 });

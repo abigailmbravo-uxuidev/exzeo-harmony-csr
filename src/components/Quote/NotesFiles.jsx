@@ -27,7 +27,7 @@ export class NotesFiles extends Component {
       }
     );
 
-    actions.quoteActions.getQuote(match.params.quoteId, 'notes')
+    actions.quoteActions.getQuote(match.params.quoteNumber, 'notes')
       .then((quoteData) => actions.serviceActions.getNotes(quoteData.quoteNumber))
       .then(() => actions.appStateActions.setAppState(
         MODEL_NAME, '', { ...appState.data, submitting: false }
