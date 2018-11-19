@@ -35,11 +35,11 @@ export class AdditionalInterests extends Component {
       setAppStateAction,
       getQuoteAction,
       getUIQuestionsAction,
-      match: { params: { quoteId } }
+      match: { params: { quoteNumber } }
     } = this.props;
 
     getUIQuestionsAction('additionalInterestsCSR');
-    getQuoteAction(quoteId, 'additionalInterests');
+    getQuoteAction(quoteNumber, 'additionalInterests');
     setAppStateAction(MODEL_NAME, '', { ...appState.data, submitting: false });
   }
 
