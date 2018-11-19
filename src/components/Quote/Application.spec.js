@@ -11,8 +11,7 @@ describe('Testing Coverage component', () => {
   it('should test connected app', () => {
     const initialState = {
       service: {
-        transactions: {},
-        quote: { underwritingExceptions: [] }
+        transactions: {}
       },
       cg: {
         bb: {
@@ -47,6 +46,7 @@ describe('Testing Coverage component', () => {
         }
       },
       handleSubmit() {},
+      underwritingExceptions: [],
       fieldQuestions: [],
       quoteData: {},
       dispatch: store.dispatch,
@@ -64,12 +64,10 @@ describe('Testing Coverage component', () => {
   });
   it('should test handleFormSubmit', () => {
     const initialState = {
-      quoteState: {
-        quote: { underwritingExceptions: [] }
-      },
       service: {
         transactions: {}
       },
+      quoteState: { quote: { underwritingExceptions: [] } },
       cg: {
         bb: {
           data: {
