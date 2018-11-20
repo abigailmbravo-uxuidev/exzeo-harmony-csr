@@ -15,7 +15,7 @@ describe('Test getEntityDetailsDateLabel function for Cancellation Effective Dat
   describe('Entity Details Test for Non-Payment Cancellation', () => {
     it('should return Cancellation Effective Date for a Non-Payment Cancellation for a policy status: In Force', () => {
       const result = entityDetails.getEntityDetailsDateLabel('Non-Payment Notice Issued', 'In Force');
-      expect(result).toEqual(entityDetails.CANCELLATION_DATE);
+      expect(result).toEqual(entityDetails.EQUITY_DATE);
     });
 
     it(`should return empty string for Cancellation Effective Date for a Non-Payment Cancellation
