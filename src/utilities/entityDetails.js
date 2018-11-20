@@ -4,6 +4,7 @@ import { normalize } from '@exzeo/core-ui/lib';
 import { STANDARD_DATE_FORMAT } from '../constants/dates';
 
 export const CANCELLATION_DATE = 'Cancellation Effective Date';
+export const EQUITY_DATE ='Equity Date';
 export const EXPIRATION_DATE = 'Expiration Date';
 export const FINAL_PAYMENT_DATE = 'Final Payment Date';
 
@@ -129,9 +130,9 @@ export function getFinalPaymentDate(summaryLedger, policyStatus) {
 export function getEntityDetailsDateLabel(billingStatus, policyStatus) {
   if (expirationPolicyStatuses.some(s => policyStatus.includes(s)) &&
   expirationBillingStatus.some(s => billingStatus.includes(s))) return EXPIRATION_DATE;
-  else if (isNonPaymentNotice(billingStatus, policyStatus) ||
-  (canceledPolicyStatuses.some(s => policyStatus.includes(s)) &&
-  canceledBillingStatuses.some(s => billingStatus.includes(s)))) return CANCELLATION_DATE;
+  else if (isNonPaymentNotice(billingStatus, policyStatus)) return EQUITY_DATE;
+  else if (canceledPolicyStatuses.some(s => policyStatus.includes(s)) &&
+  canceledBillingStatuses.some(s => billingStatus.includes(s))) return CANCELLATION_DATE;
   return '';
 }
 
