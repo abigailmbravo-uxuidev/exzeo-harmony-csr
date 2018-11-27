@@ -41,6 +41,9 @@ describe('Testing Policy component', () => {
           }
         }
       },
+      authState: {
+        userProfile: {}
+      },
       appState: {
         modelName: 'bb',
         data: {

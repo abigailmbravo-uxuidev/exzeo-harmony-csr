@@ -1,6 +1,7 @@
 import moment from 'moment/moment';
 
 import * as serviceRunner from '../../utilities/serviceRunner';
+import { sortDiariesByDate } from '../../utilities/diaries';
 import { SECONDARY_DATE_FORMAT } from '../../constants/dates';
 import {
   DEFAULT_SEARCH_PARAMS,
@@ -600,17 +601,6 @@ export async function fetchDiaries({
   } catch (error) {
     throw error;
   }
-}
-
-/**
- * Sort diaries in ascending order by due date
- * @param diaries
- * @returns {Array}
- */
-export function sortDiariesByDate(diaries = []) {
-  return diaries.filter(d => d).sort((a, b) => {
-    return new Date(a.entries[0].due) - new Date(b.entries[0].due);
-  });
 }
 
 /**

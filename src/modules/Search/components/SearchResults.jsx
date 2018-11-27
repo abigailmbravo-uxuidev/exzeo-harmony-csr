@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { NavLink } from 'react-router-dom';
-import DiaryList from '@exzeo/core-ui/lib/List/DiaryList';
 
 import { handleNewTab, handleNewTabClick, handleKeyPress } from '../../../utilities/handleNewTab';
 import { SEARCH_TYPES } from '../../../constants/search';
@@ -14,6 +13,7 @@ import AddressTip from './AddressTip';
 import AgencyCard from './AgencyCard';
 import AgentCard from './AgentCard';
 import QuoteCard from './QuoteCard';
+import DiaryList from './DiaryList';
 
 export function onKeyPressSubmit(event, data, props) {
   if (event.charCode === 13) {

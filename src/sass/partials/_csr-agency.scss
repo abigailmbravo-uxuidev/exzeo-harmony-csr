@@ -1682,21 +1682,20 @@
     }
   }
 
-  .app-wrapper.csr {
-    main[role="document"] {
-      .content-wrapper {
-        .route-content {
-          .scroll {
-            .card {
-              .contact-address {
-                .additional-data {
-                  margin-left: $padding;
-                  font-size: $font-size-sm;
+.app-wrapper.csr {
+  main[role="document"] {
+    .content-wrapper {
+      .route-content {
+        .scroll {
+          .card {
+            .contact-address {
+              .additional-data {
+                margin-left: $padding;
+                font-size: $font-size-sm;
 
-                  label {
-                    margin: 0;
-                    font-size: $font-size-xs;
-                  }
+                label {
+                  margin: 0;
+                  font-size: $font-size-xs;
                 }
               }
             }
@@ -1705,7 +1704,16 @@
       }
     }
   }
-  //search cards
+}
+//search cards
+
+.card {
+  &.contact {
+    .contact-details {
+      .contact-address {
+        .additional-data {
+          margin-left: $padding;
+          font-size: $font-size-sm;
 
   .card {
     &.contact {

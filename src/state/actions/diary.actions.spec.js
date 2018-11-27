@@ -3,10 +3,10 @@ import thunk from 'redux-thunk';
 import sinon from 'sinon';
 
 import * as serviceRunner from '../../utilities/serviceRunner';
+import { POLICY_RESOURCE_TYPE } from '../../constants/diaries';
 
 import * as types from './actionTypes';
 import * as diaryStateActions from './diary.actions';
-import { POLICY_RESOURCE_TYPE } from '../../constants/diaries';
 
 describe('Test diary.actions', () => {
   const mockStore = configureStore([]);
@@ -46,8 +46,7 @@ describe('Test diary.actions', () => {
       initialState = {};
       store = mockStore(initialState);
       httpStub = sinon.stub();
-      sandbox.stub(serviceRunner, 'callService')
-        .callsFake((...args) => httpStub(...args));
+      sandbox.stub(serviceRunner, 'callService').callsFake((...args) => httpStub(...args));
     });
 
     afterEach(() => {
@@ -105,33 +104,32 @@ describe('Test diary.actions', () => {
       expect([action[0]]).toEqual(stateObj);
     });
 
-    it('Should call dispatch on submitDiaries', async () => {
-      const props = {
-        user: { userId: '123', userName: 'Test Guy' },
-        resourceType: 'test',
-        resourceId: 'test-2343',
-        initialValues: { diaryId: '1' }
-      };
-
-      const data = {
-        message: 'testing message',
-        open: true,
-        assignees: []
-      };
-
-      const stateObj = [{
-        type: types.SET_DIARIES,
-        diaries: []
-      }];
-
-      httpStub.onCall(0).returns(Promise.resolve({ data: {} }));
-      httpStub.onCall(1).returns(Promise.resolve({ data: { result: [] } }));
-
-      await store.dispatch(diaryStateActions.submitDiary(data, props));
-
-      const action = store.getActions();
-      expect([action[0]]).toEqual(stateObj);
-    });
-
+    // it('Should call dispatch on submitDiaries', async () => {
+    //   const props = {
+    //     user: { userId: '123', userName: 'Test Guy' },
+    //     resourceType: 'test',
+    //     resourceId: 'test-2343',
+    //     initialValues: { diaryId: '1' }
+    //   };
+    //
+    //   const data = {
+    //     message: 'testing message',
+    //     open: true,
+    //     assignees: []
+    //   };
+    //
+    //   const stateObj = [{
+    //     type: types.SET_DIARIES,
+    //     diaries: []
+    //   }];
+    //
+    //   httpStub.onCall(0).returns(Promise.resolve({ data: {} }));
+    //   httpStub.onCall(1).returns(Promise.resolve({ data: { result: [] } }));
+    //
+    //   await store.dispatch(diaryStateActions.submitDiary(data, props));
+    //
+    //   const action = store.getActions();
+    //   expect([action[0]]).toEqual(stateObj);
+    // });
   });
 });

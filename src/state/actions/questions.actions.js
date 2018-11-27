@@ -53,11 +53,21 @@ export function getUIQuestions(step) {
 // eslint-disable-next-line max-len
 const TEMP_RESOURCE_QUERY = 'r=TTIC:FL:HO3:Diaries:DiariesService:*|READ,TTIC:FL:HO3:Diaries:DiariesService:*|INSERT,TTIC:FL:HO3:Diaries:DiariesService:*|UPDATE';
 function buildAssigneesList(users) {
-  return users.map(user => ({
+  const activeUsers = users.filter(user => !!user.enabled);
+
+  const userList = activeUsers.map(user => ({
     answer: user.userId,
     label: `${user.firstName} ${user.lastName}`,
     type: 'user'
   }));
+
+  return userList.sort((a, b) => {
+    const userA = a.label.toUpperCase();
+    const userB = b.label.toUpperCase();
+    if (userA > userB) return 1;
+    if (userA < userB) return -1;
+    return 0;
+  });
 }
 
 export function getDiaryAssigneeOptions(userProfile) {

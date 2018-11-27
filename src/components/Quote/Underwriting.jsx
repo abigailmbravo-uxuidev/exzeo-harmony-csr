@@ -70,7 +70,7 @@ export class Underwriting extends Component {
   componentDidMount() {
     const {
       setAppStateAction, getQuoteAction, getUnderwritingQuestionsAction,
-      appState, match: { params: { quoteId } }
+      appState, match: { params: { quoteNumber } }
     } = this.props;
 
     setAppStateAction(
@@ -81,7 +81,7 @@ export class Underwriting extends Component {
       }
     );
 
-    getQuoteAction(quoteId, 'underwriting')
+    getQuoteAction(quoteNumber, 'underwriting')
       .then((quoteData) => {
         getUnderwritingQuestionsAction(quoteData.companyCode, quoteData.state, quoteData.product, quoteData.property);
         setAppStateAction(

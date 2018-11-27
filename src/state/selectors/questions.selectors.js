@@ -29,9 +29,9 @@ export const getTopAnswers = name => createSelector(
 export const getDiaryAssigneeAnswers = createSelector(
   [getQuestions],
   (questions) => {
-    if (!questions || !Array.isArray(questions.diaryAssignees)) return [];
+    if (!questions || !Array.isArray(questions.diaryAssignees)) return TAGS;
 
-    return [...questions.diaryAssignees, ...TAGS];
+    return [...TAGS, ...questions.diaryAssignees];
   }
 );
 

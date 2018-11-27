@@ -23,55 +23,60 @@ import { QUOTE_RESOURCE_TYPE } from '../../constants/diaries';
  */
 
 export const newDiary = (props) => {
-  const { quoteData: { _id } } = props;
+  const { quoteData: { quoteNumber, endDate } } = props;
   props.actions.uiActions.toggleDiary({
     resourceType: QUOTE_RESOURCE_TYPE,
-    resourceId: _id
+    resourceId: quoteNumber,
+    entityEndDate: endDate
   });
 };
 export const newNote = (props) => {
-  props.actions.uiActions.toggleNote({ noteType: 'Quote Note', documentId: props.quoteData.quoteNumber });
+  props.actions.uiActions.toggleNote({
+    noteType: 'Quote Note',
+    documentId: props.quoteData.quoteNumber,
+    resourceType: QUOTE_RESOURCE_TYPE
+  });
 };
 
-const csrLinks = ({ quoteId }) => {
+const csrLinks = ({ quoteNumber }) => {
   return [{
     key: 'customerData',
-    link: `/quote/${quoteId}/coverage`,
+    link: `/quote/${quoteNumber}/coverage`,
     label: 'Coverage / Rating',
     styleName: 'coverage',
     exact: true
   }, {
     key: 'underwriting',
-    link: `/quote/${quoteId}/underwriting`,
+    link: `/quote/${quoteNumber}/underwriting`,
     label: 'Underwriting',
     styleName: 'underwriting',
     exact: true
   }, {
     key: 'additionalInterests',
-    link: `/quote/${quoteId}/additionalInterests`,
+    link: `/quote/${quoteNumber}/additionalInterests`,
     label: 'Additional Interests',
     styleName: 'additionalInterests',
     exact: true
   }, {
     key: 'mailing',
-    link: `/quote/${quoteId}/billing`,
+    link: `/quote/${quoteNumber}/billing`,
     label: 'Mailing / Billing',
     styleName: 'billing',
     exact: true
   }, {
     key: 'notes',
-    link: `/quote/${quoteId}/notes`,
+    link: `/quote/${quoteNumber}/notes`,
     label: 'Notes / Files',
     styleName: 'notes',
     exact: true
   }, {
     key: 'summary',
-    link: `/quote/${quoteId}/summary`,
+    link: `/quote/${quoteNumber}/summary`,
     label: 'Quote Summary',
     styleName: 'quote-summary'
   }, {
     key: 'application',
-    link: `/quote/${quoteId}/application`,
+    link: `/quote/${quoteNumber}/application`,
     label: 'Application',
     styleName: 'application',
     exact: true
@@ -100,7 +105,7 @@ export const SideNav = (props) => {
     <nav className="site-nav">
       {redirect}
       <ul>
-        {csrLinks({ quoteId: quoteData._id, workflowId: match.params.workflowId }).map(link => (
+        {csrLinks({ quoteNumber: quoteData.quoteNumber, workflowId: match.params.workflowId }).map(link => (
           <li key={link.key}>
             <span className={link.styleName}>
               <NavLink to={link.link} activeClassName="active" exact>{link.label}</NavLink>
@@ -113,9 +118,9 @@ export const SideNav = (props) => {
         </li>
       </ul>
       <div className="plus-button-group">
-        <div className="btn btn-round btn-primary btn-lg new-btn"><i className="fa fa-plus" /></div>
-        <button aria-label="open-btn form-newDiary" data-test="newDiary" className="btn btn-primary btn-round btn-lg new-diary-btn" onClick={() => newDiary(props)}><i className="fa fa-bookmark" /><span>NEW DIARY</span></button>
-        <button aria-label="open-btn form-newNote" data-test="newNote" className="btn btn-primary btn-round btn-lg new-note-btn" onClick={() => newNote(props)}><i className="fa fa-pencil" /><span>NEW NOTE</span></button>
+        <div className="btn btn-round btn-primary btn-lg new-btn" data-test="plus-buttons"><i className="fa fa-plus" /></div>
+        <button aria-label="open-btn form-new-diary" data-test="new-diary" className="btn btn-primary btn-round btn-lg new-diary-btn" onClick={() => newDiary(props)}><i className="fa fa-bookmark" /><span>NEW DIARY</span></button>
+        <button aria-label="open-btn form-new-note" data-test="new-note" className="btn btn-primary btn-round btn-lg new-note-btn" onClick={() => newNote(props)}><i className="fa fa-pencil" /><span>NEW NOTE</span></button>
       </div>
       {props.appState.data.showUWconditions === true &&
         <UWconditions closeButtonHandler={() => closeUWConditions(props)} />

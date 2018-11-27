@@ -35,11 +35,11 @@ export class AdditionalInterests extends Component {
       setAppStateAction,
       getQuoteAction,
       getUIQuestionsAction,
-      match: { params: { quoteId } }
+      match: { params: { quoteNumber } }
     } = this.props;
 
     getUIQuestionsAction('additionalInterestsCSR');
-    getQuoteAction(quoteId, 'additionalInterests');
+    getQuoteAction(quoteNumber, 'additionalInterests');
     setAppStateAction(MODEL_NAME, '', { ...appState.data, submitting: false });
   }
 
@@ -81,7 +81,6 @@ export class AdditionalInterests extends Component {
     const { addAdditionalInterestType } = this.state;
 
     try {
-      setAppStateAction(MODEL_NAME, '', { ...appState.data, submitting: true });
       await startWorkflowAction(MODEL_NAME, {
         quoteId: quoteData._id,
         additionalInterests
@@ -91,7 +90,6 @@ export class AdditionalInterests extends Component {
       setAppErrorAction(error);
     } finally {
       this.hideAdditionalInterestModal();
-      setAppStateAction(MODEL_NAME, '', { ...appState.data, submitting: false });
       setAppStateAction(
         MODEL_NAME,
         '', {
@@ -108,15 +106,8 @@ export class AdditionalInterests extends Component {
 
 
   addAdditionalInterest = (type) => {
-    const {
-      appState, setAppStateAction, editingDisabled
-    } = this.props;
+    const { editingDisabled } = this.props;
     if (editingDisabled) return;
-    setAppStateAction(
-      MODEL_NAME,
-      '',
-      { ...appState.data, submitting: false }
-    );
     // For now, hijacking appState calls with local state where we can.
     this.setState({
       showAdditionalInterestModal: true,
@@ -126,13 +117,8 @@ export class AdditionalInterests extends Component {
   };
 
   editAI = (ai) => {
-    const { appState, setAppStateAction, editingDisabled } = this.props;
+    const { editingDisabled } = this.props;
     if (editingDisabled) return;
-    setAppStateAction(
-      MODEL_NAME,
-      '',
-      { ...appState.data }
-    );
     // For now, hijacking appState calls with local state where we can.
     this.setState({
       addAdditionalInterestType: ai.type,
@@ -306,8 +292,7 @@ export class AdditionalInterests extends Component {
                       key={ai._id}
                       ai={ai}
                       editAI={this.editAI}
-                      toggleAIState={this.deleteAdditionalInterest}
-                    />
+                      toggleAIState={this.deleteAdditionalInterest} />
                   ))}
                 </ul>
               </div>
@@ -320,6 +305,7 @@ export class AdditionalInterests extends Component {
               addAdditionalInterestType={this.state.addAdditionalInterestType}
               completeSubmit={this.onHandleAISubmit}
               hideModal={this.hideAdditionalInterestModal}
+              deleteAdditionalInterest={this.deleteAdditionalInterest}
               initialValues={this.initAdditionalInterestModal()}
               isDeleting={this.state.isDeleting}
               isEditing={this.state.isEditingAI}

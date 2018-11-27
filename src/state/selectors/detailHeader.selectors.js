@@ -28,7 +28,6 @@ export const getPolicyDetails = createSelector(
       endDate,
       policyHolders,
       policyHolderMailingAddress: pHMA = {},
-      policyNumber,
       product,
       property,
       sourceNumber,
@@ -50,6 +49,8 @@ export const getPolicyDetails = createSelector(
     const cancellationDate = detailUtils.getCancellationDate(summaryLedger, status, endDate, cancelDate);
     const showReinstatement = detailUtils.shouldShowReinstatement(status, code);
     const dateLabel = detailUtils.getEntityDetailsDateLabel(displayText, status);
+    const finalPayment = detailUtils.getFinalPaymentDate(summaryLedger, status);
+
     return {
       constructionType,
       sourceNumber,
@@ -60,8 +61,7 @@ export const getPolicyDetails = createSelector(
       mapURI: `${baseMapUri}${mapQuery}`,
       status: `${status} / ${displayText}`,
       details: {
-        product: detailUtils.getProductName(product),
-        policyNumber
+        product: detailUtils.getProductName(product)
       },
       policyHolder: detailUtils.getPrimaryPolicyHolder(policyHolders),
       mailingAddress: detailUtils.getMailingAddress(pHMA),
@@ -74,7 +74,8 @@ export const getPolicyDetails = createSelector(
         dateLabel,
         cancellationDate,
         showReinstatement
-      }
+      },
+      finalPayment
     };
   }
 );

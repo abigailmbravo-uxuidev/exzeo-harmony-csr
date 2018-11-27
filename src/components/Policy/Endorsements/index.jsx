@@ -126,7 +126,6 @@ export class Endorsements extends React.Component {
     } catch (error) {
       setAppError(error);
     }
-
   };
 
   clearCalculate = () => {
@@ -136,22 +135,28 @@ export class Endorsements extends React.Component {
     this.setState({ isCalculated: false });
   };
 
+  roundDwellingCoverageAmount = (value) => {
+    return Math.round(value / 1000) * 1000;
+  };
+
   normalizeSinkholeAmount = (value, previousValue, allValues) => {
     const { change } = this.props;
+
     if (value === 'true') {
+      const roundedDwellingAmount = this.roundDwellingCoverageAmount(allValues.coverageLimits.dwelling.amount);
       change('deductibles.sinkhole.amount', 10);
-      change('deductibles.sinkhole.calculatedAmount', endorsementUtils.setPercentageOfValue(allValues.coverageLimits.dwelling.amount, 10));
+      change('deductibles.sinkhole.calculatedAmount', endorsementUtils.setPercentageOfValue(roundedDwellingAmount, 10));
     } else {
       change('deductibles.sinkhole.amount', 0);
       change('deductibles.sinkhole.calculatedAmount', 0);
     }
+
     return value === 'true';
   };
 
   normalizeDwellingAmount = (value, previousValue, allValues) => {
     const { change } = this.props;
-
-    const roundedDwellingAmount = Math.round(value / 1000) * 1000;
+    const roundedDwellingAmount = this.roundDwellingCoverageAmount(value);
 
     if (allValues.coverageLimits.otherStructures.percentage !== 'other') {
       change('coverageLimits.otherStructures.amount', endorsementUtils.setPercentageOfValue(roundedDwellingAmount, allValues.coverageLimits.otherStructures.percentage));
@@ -159,6 +164,7 @@ export class Endorsements extends React.Component {
     if (allValues.coverageLimits.personalProperty.percentage !== 'other') {
       change('coverageLimits.personalProperty.amount', endorsementUtils.setPercentageOfValue(roundedDwellingAmount, allValues.coverageLimits.personalProperty.percentage));
     }
+
     change('deductibles.hurricane.calculatedAmount', endorsementUtils.setPercentageOfValue(roundedDwellingAmount, allValues.deductibles.hurricane.amount));
     change('coverageLimits.lossOfUse.amount', endorsementUtils.setPercentageOfValue(roundedDwellingAmount, 10));
 
@@ -168,13 +174,14 @@ export class Endorsements extends React.Component {
   normalizeIncidentalOccupancies = (value, previousValue, allValues) => {
     const { change } = this.props;
     if (!allValues.coverageOptions.propertyIncidentalOccupanciesMainDwelling.answer &&
-        !allValues.coverageOptions.propertyIncidentalOccupanciesOtherStructures.answer) {
+      !allValues.coverageOptions.propertyIncidentalOccupanciesOtherStructures.answer) {
       change('coverageOptions.liabilityIncidentalOccupancies.answer', false);
     }
     const setLiabilityIncidentalOccupanciesNew =
       allValues.coverageOptions.propertyIncidentalOccupanciesMainDwelling.answer ||
       allValues.coverageOptions.propertyIncidentalOccupanciesOtherStructures.answer;
     change('coverageOptions.liabilityIncidentalOccupancies.answer', setLiabilityIncidentalOccupanciesNew);
+
     return value;
   };
 
@@ -188,7 +195,8 @@ export class Endorsements extends React.Component {
       change('coverageOptions.personalPropertyReplacementCost.answer', initialValues.coverageOptions.personalPropertyReplacementCost.answer || false);
     }
 
-    const fieldValue = endorsementUtils.setPercentageOfValue(allValues.coverageLimits.dwelling.amount, value);
+    const roundedDwellingAmount = this.roundDwellingCoverageAmount(allValues.coverageLimits.dwelling.amount);
+    const fieldValue = endorsementUtils.setPercentageOfValue(roundedDwellingAmount, value);
     change(field, Number.isNaN(fieldValue) ? '' : fieldValue);
     // always return value at the end of 'normalize' functions
     return value;
@@ -197,7 +205,9 @@ export class Endorsements extends React.Component {
   normalizeDwellingDependencies = (value, previousValue, allValues, field) => {
     if (Number.isNaN(value)) return;
     const { change } = this.props;
-    const fieldValue = endorsementUtils.setPercentageOfValue(allValues.coverageLimits.dwelling.amount, value);
+
+    const roundedDwellingAmount = this.roundDwellingCoverageAmount(allValues.coverageLimits.dwelling.amount);
+    const fieldValue = endorsementUtils.setPercentageOfValue(roundedDwellingAmount, value);
 
     change(field, Number.isNaN(fieldValue) ? '' : fieldValue);
     return value;

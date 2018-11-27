@@ -34,48 +34,55 @@
           }
         }
 
-        li {
-          .diary-header {
-            display: flex;
-            align-items: center;
-            color: $warm-gray-08;
-            font-size: $font-size-sm;
-
-            > i {
-              display: flex;
-              align-items: center;
-              justify-content: center;
-              height: 1.125rem;
-            }
-
-            .diary-due-datge {
-              font-weight: $font-weight-bold;
-            }
-
-            a.btn-link {
-                color: $bright-blue;
-                i {
-                    color: $bright-blue;
-                    margin-right: $padding;
-                }
-            }
+        ul {
+          &.diary-list {
+            margin-right: $padding;
           }
 
-          .diary-type {
+          li {
+            .diary-header {
+              display: flex;
+              align-items: center;
+              color: $warm-gray-08;
+              font-size: $font-size-sm;
+
+              > i {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                height: 1.125rem;
+              }
+
+              .diary-due-date {
+                font-weight: $font-weight-bold;
+              }
+
+              a.btn-link {
+                color: $bright-blue;
+
+                i {
+                  margin-right: $padding;
+                  color: $bright-blue;
+                }
+              }
+            }
+
+            .diary-type {
               color: $warm-gray-08;
               font-size: $font-size-sm;
               font-weight: $font-weight-bold;
-          }
+            }
 
-          .diary-reason {
+            .diary-reason {
               font-size: $font-size-sm;
-          }
+            }
 
-          p {
+            p {
               font-size: $font-size-sm;
-          }
+            }
 
-          .diary-assignee {}
+            .diary-assignee {}
+          }
         }
 
         &.diaries-pastDue {
@@ -87,7 +94,7 @@
 
           li {
             .diary-header {
-              i {
+              > i {
                 color: $red-darken-01;
               }
             }
@@ -103,7 +110,7 @@
 
           li {
             .diary-header {
-              i {
+              > i {
                 color: $orange-lighten-01;
               }
             }
@@ -119,12 +126,24 @@
 
           li {
             .diary-header {
-              i {
+              > i {
                 color: $green-darken-02;
               }
             }
           }
         }
+      }
+    }
+
+    &.diary-open {
+      .open-diaries {
+        box-shadow: -1px 0 2rem 0 rgba($black,0.125);
+      }
+    }
+
+    &.diary-closed {
+      .open-diaries {
+        box-shadow: 0 0 0 0 rgba($black,0);
       }
     }
   }

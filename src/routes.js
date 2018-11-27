@@ -62,7 +62,7 @@ class Routes extends Component {
           className="card"
           appElement={document.getElementById('root')}>
           <div className="card-header"><h4><i className="fa fa-exclamation-circle" />&nbsp;Error</h4></div>
-          <div className="card-block"><p>{this.props.error.message}</p></div>
+          <div className="card-block"><p>{String(this.props.error.message)}</p></div>
           <div className="card-footer">
             {this.props.error.requestId &&
               <div className="footer-message"><p>Request ID: {this.props.error.requestId}</p></div>
@@ -74,16 +74,18 @@ class Routes extends Component {
         {diary && diary.resourceType &&
           <DiaryModal
             user={userProfile}
-            initialValues={diary.selectedDiary}
+            diaryId={diary.selectedDiary ? diary.selectedDiary.diaryId : null}
             resourceType={diary.resourceType}
-            resourceId={diary.resourceId} />
+            resourceId={diary.resourceId}
+            entityEndDate={diary.entityEndDate} />
         }
 
         {note && note.documentId &&
           <NoteUploader
             noteType={note.noteType}
             documentId={note.documentId}
-            sourceId={note.sourceNumber} />
+            sourceId={note.sourceNumber}
+            resourceType={note.resourceType} />
         }
         <Router
           getUserConfirmation={(message, callback) => {
@@ -106,13 +108,13 @@ class Routes extends Component {
               <Route path="/policy/:policyNumber" render={props => <PolicyModule auth={auth} {...props} />} />
               <Route path="/agency/:agencyCode/:branchCode" render={props => <Agency auth={auth} {...props} />} />
               <Route exact path="/quote/new/:stateCode/:propertyId" render={props => <QuoteLanding auth={auth} {...props} />} />
-              <Route exact path="/quote/:quoteId/coverage" render={props => <QuoteCoverage auth={auth} {...props} />} />
-              <Route exact path="/quote/:quoteId/billing" render={props => <QuoteMailingAddressBilling auth={auth} {...props} />} />
-              <Route exact path="/quote/:quoteId/notes" render={props => <QuoteNotesFiles auth={auth} {...props} />} />
-              <Route exact path="/quote/:quoteId/summary" render={props => <QuoteSummary auth={auth} {...props} />} />
-              <Route exact path="/quote/:quoteId/additionalInterests" render={props => <AdditionalInterests auth={auth} {...props} />} />
-              <Route exact path="/quote/:quoteId/underwriting" render={props => <QuoteUnderwriting auth={auth} {...props} />} />
-              <Route exact path="/quote/:quoteId/application" render={props => <QuoteApplication auth={auth} {...props} />} />
+              <Route exact path="/quote/:quoteNumber/coverage" render={props => <QuoteCoverage auth={auth} {...props} />} />
+              <Route exact path="/quote/:quoteNumber/billing" render={props => <QuoteMailingAddressBilling auth={auth} {...props} />} />
+              <Route exact path="/quote/:quoteNumber/notes" render={props => <QuoteNotesFiles auth={auth} {...props} />} />
+              <Route exact path="/quote/:quoteNumber/summary" render={props => <QuoteSummary auth={auth} {...props} />} />
+              <Route exact path="/quote/:quoteNumber/additionalInterests" render={props => <AdditionalInterests auth={auth} {...props} />} />
+              <Route exact path="/quote/:quoteNumber/underwriting" render={props => <QuoteUnderwriting auth={auth} {...props} />} />
+              <Route exact path="/quote/:quoteNumber/application" render={props => <QuoteApplication auth={auth} {...props} />} />
               <Route exact path="/reports" render={props => <Reports auth={auth} {...props} />} />
               <Route exact path="/login" render={props => <LoginPage auth={auth} {...props} />} />
               <Route exact path="/accessDenied" render={props => <AccessDenied auth={auth} {...props} />} />

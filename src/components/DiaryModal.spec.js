@@ -5,7 +5,12 @@ import { DiaryModal } from './DiaryModal';
 
 describe('Test DiaryModal component', () => {
   const props = {
-    assigneeAnswers: [{ answer: '1', label: '1', type: 'user' }],
+    entityEndDate: '2018-01-01',
+    change() {},
+    assigneeAnswers: [
+      { answer: '1', label: '1', type: 'user' },
+      { answer: '2', label: 'Underwriting', type: 'estate' }
+    ],
     submitting: false,
     user: { profile: { given_name: 'test', family_name: 'testing' } },
     handleSubmit: x => x,
@@ -30,6 +35,10 @@ describe('Test DiaryModal component', () => {
       .toBeTruthy();
 
     wrapper.instance().componentDidMount();
+
+    expect(wrapper.instance().normalizeDiaryReason('none')).toEqual('none');
+    expect(wrapper.instance().normalizeDiaryReason('additional_interest')).toEqual('additional_interest');
+    expect(wrapper.instance().normalizeDiaryReason('estate')).toEqual('estate');
   });
 });
 
