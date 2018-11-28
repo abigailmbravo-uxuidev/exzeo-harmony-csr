@@ -107,7 +107,7 @@ export class Overview extends React.Component {
               {agencyBranchData.principal && <h3>Officer</h3>}
               {agencyBranchData.principal &&
               <section className="agency-principal">
-                <ContactCard contact={agencyBranchData.principal} handleClick={this.onHandleToggleEditPrincipalModal} />
+                <ContactCard isOfficer contact={agencyBranchData.principal} handleClick={this.onHandleToggleEditPrincipalModal} />
               </section>
               }
               <h3>Contact</h3>
