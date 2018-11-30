@@ -3,7 +3,6 @@ import { FieldArray, FormSection } from 'redux-form';
 import { Button } from '@exzeo/core-ui';
 import { Redirect } from 'react-router-dom';
 
-import history from '../../../history';
 import ExistingAgentModal from '../components/ExistingAgentModal';
 import License from '../components/License';
 import Agent from '../components/FormGroup/Agent';
@@ -54,7 +53,7 @@ export class Create extends Component {
 
   handleResetForm = () => {
     this.props.reset();
-    history.push('/agency');
+    window.close();
   };
 
   // TODO : Move to utilities
