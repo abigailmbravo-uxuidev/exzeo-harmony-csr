@@ -15,14 +15,13 @@ describe('Testing CreateBranch Base component', () => {
       pristine: false,
       change() {},
       agency: {},
-      orphans: [{ _id: '123' }]
+      orphans: [{ _id: '123' }],
+      listAnswersAsKey: []
     };
     const wrapper = shallow(<CreateBranch {...props} />);
     expect(wrapper.exists()).toBeTruthy();
     const wi = wrapper.instance();
     wi.applyOrphanedAgent({ selectedAgentId: '123' });
-    wi.handleSameAsMailing(true, false, { mailingAddress: {} });
-    wi.handleSameAsMailing(false, true, { mailingAddress: {} });
     wi.handleResetForm();
     wi.handleCreateBranch({
       mailingAddress: { country: {} },

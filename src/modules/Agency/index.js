@@ -9,7 +9,7 @@ import { getAgency,
   getListOfOrphanedAgents
 } from '../../state/actions/agency.actions';
 import { searchSettingsByCSPAndZip } from '../../state/actions/zipCodeSettings.actions';
-import { getTerritoryManagers } from '../../state/actions/questions.actions';
+import { getTerritoryManagers, getLists } from '../../state/actions/questions.actions';
 
 import AgencyHeader from './AgencyHeader';
 import AgencySideNav from './AgencySideNav';
@@ -38,6 +38,7 @@ export class Agency extends Component {
     this.props.getListOfOrphanedAgents();
     this.props.searchSettingsByCSPAndZip('', 'FL');
     this.props.getTerritoryManagers('FL');
+    this.props.getLists();
   }
 
   render() {
@@ -78,6 +79,7 @@ export default connect(mapStateToProps, {
   getAgentsByAgencyCode,
   getListOfOrphanedAgents,
   getTerritoryManagers,
-  searchSettingsByCSPAndZip
+  searchSettingsByCSPAndZip,
+  getLists
 })(Agency);
 

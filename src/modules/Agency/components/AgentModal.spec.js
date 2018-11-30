@@ -12,7 +12,8 @@ describe('Testing AgentsModal component', () => {
       initialValues: {},
       toggleModal: () => () => {},
       handleSave() {},
-      handleSaveAgent() {}
+      handleSaveAgent() {},
+      listAnswersAsKey: []
     };
     const wrapper = shallow(<AgentModal {...props} />);
     expect(wrapper.exists()).toBeTruthy();
