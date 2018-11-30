@@ -48,4 +48,25 @@ describe('Questions State Reducer', () => {
 
     expect(questionsReducer(initialState.questions, action)).toEqual(map);
   });
+
+  it('should call questionsReducer SET_LISTS', () => {
+    const lists = [{ code: 'test', extendedProperties: { listItem: { dispalyText: '1', type: 'string', isActive: true } } }];
+    const action = {
+      type: types.SET_LISTS,
+      lists
+    };
+
+    const map = {
+      ...initialState.questions,
+      lists: {
+        test: {
+          code: 'test',
+          extendedProperties:
+      { listItem: { dispalyText: '1', isActive: true, type: 'string' } }
+        }
+      }
+    };
+
+    expect(questionsReducer(initialState.questions, action)).toEqual(map);
+  });
 });

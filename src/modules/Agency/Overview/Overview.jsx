@@ -14,7 +14,6 @@ import AgencyModal from './AgencyModal';
 import BranchModal from './BranchModal';
 import Footer from '../../../components/Common/Footer';
 
-
 export class Overview extends React.Component {
   state = {
     showEditDetailsModal: false,
@@ -69,10 +68,22 @@ export class Overview extends React.Component {
 
   render() {
     const {
-      agency, territoryManagers, agentOfRecord, addressInitialValues, agencyBranchData, branchCode, agentsList
+      agency, 
+      territoryManagers, 
+      agentOfRecord, 
+      addressInitialValues, 
+      agencyBranchData, 
+      branchCode, 
+      agentsList, 
+      updateAgency
     } = this.props;
+    
     const {
-      showEditDetailsModal, showEditAddressModal, showEditContactModal, showEditPrincipalModal, showEditAgentModal
+      showEditDetailsModal, 
+      showEditAddressModal, 
+      showEditContactModal, 
+      showEditPrincipalModal, 
+      showEditAgentModal
     } = this.state;
 
     if (!agencyBranchData || !agencyBranchData.physicalAddress) return <span />;
@@ -124,7 +135,7 @@ export class Overview extends React.Component {
         <div className="basic-footer">
           <Footer />
         </div>
-        {showEditDetailsModal && Number(branchCode) === 0 && <AgencyModal initialValues={agency} closeModal={this.onHandleToggleEditDetailsModal} />}
+        {showEditDetailsModal && Number(branchCode) === 0 && <AgencyModal initialValues={agency} updateAgency={updateAgency} closeModal={this.onHandleToggleEditDetailsModal} />}
         {showEditDetailsModal && Number(branchCode) > 0 && <BranchModal agency={agency} branchCode={branchCode} initialValues={agencyBranchData} closeModal={this.onHandleToggleEditDetailsModal} />}
         {showEditAddressModal && <AgencyAddressModal agency={agency} initialValues={addressInitialValues} closeModal={this.onHandleToggleEditAddressModal} />}
         {showEditContactModal &&

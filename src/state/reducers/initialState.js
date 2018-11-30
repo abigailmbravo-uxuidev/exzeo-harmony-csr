@@ -13,7 +13,8 @@ export default {
   diaries: [],
   questions: {
     diaryAssignees: [],
-    territoryManagers: []
+    territoryManagers: [],
+    lists: {}
   },
   quoteState: {
     quoteId: null,

@@ -29,6 +29,13 @@ export function setTerritoryManagers(territoryManagers) {
   };
 }
 
+export function setLists(lists) {
+  return {
+    type: types.SET_LISTS,
+    lists
+  };
+}
+
 export function getUIQuestions(step) {
   return async (dispatch) => {
     try {
@@ -117,4 +124,38 @@ export async function fetchTerritoryManagers(state) {
   } catch (error) {
     throw error;
   }
+}
+
+
+/**
+ *
+ * @returns {Promise<{}>}
+ */
+export async function fetchLists() {
+  try {
+    const config = {
+      service: 'list-service',
+      method: 'GET',
+      path: 'v1/lists'
+    };
+    const response = await serviceRunner.callService(config);
+    return response.data && response.data.result ? response.data.result.records : [];
+  } catch (error) {
+    throw error;
+  }
+}
+
+/**
+ *
+ * @returns {Function}
+ */
+export function getLists() {
+  return async (dispatch) => {
+    try {
+      const lists = await fetchLists();
+      dispatch(setLists(lists));
+    } catch (error) {
+      dispatch(errorActions.setAppError(error));
+    }
+  };
 }

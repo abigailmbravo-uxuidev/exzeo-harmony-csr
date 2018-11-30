@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { reduxForm, Field, formValueSelector, FormSection } from 'redux-form';
-import { validation, SelectTypeAhead } from '@exzeo/core-ui';
+import { reduxForm, formValueSelector } from 'redux-form';
 
 import { updateAgency } from '../../../state/actions/agency.actions';
-import Address from '../components/Address';
+import AddressGroup from '../components/AddressGroup';
 
 export class AgencyAddressModal extends Component {
   onHandleSaveAgency = async (data, dispatch, props) => {
@@ -49,10 +48,9 @@ export class AgencyAddressModal extends Component {
     const {
       closeModal,
       handleSubmit,
-      sameAsMailingValue,
       submitting,
       change,
-      territoryManagers
+      sameAsMailingValue
     } = this.props;
 
     return (
@@ -61,51 +59,11 @@ export class AgencyAddressModal extends Component {
           <div className="card">
             <div className="card-header">
               <h4>
-                <i className="fa fa-address-book" /> Edit Agency
+                <i className="fa fa-address-book" /> Edit Agency Address
               </h4>
             </div>
             <div className="card-block">
-              <section className="agency-address">
-                <div className="agency-mailing-address">
-                  <h4>Mailing Address</h4>
-                  <FormSection name="mailingAddress">
-                    <Address
-                      territoryManagers={territoryManagers}
-                      sameAsMailingValue={sameAsMailingValue}
-                      changeField={change}
-                      section="mailingAddress" />
-                  </FormSection>
-                </div>
-                <div className="agency-physical-address">
-                  <h4>Physical Address
-                    <Field
-                      normalize={this.onHandleSameAsMailing}
-                      name="sameAsMailing"
-                      data-test="sameAsMailing"
-                      id="sameAsMailing"
-                      component="input"
-                      type="checkbox" />
-                    <label htmlFor="sameAsMailing">Same as Mailing Address</label>
-                  </h4>
-                  <FormSection name="physicalAddress">
-                    <Address
-                      territoryManagers={territoryManagers}
-                      section="physicalAddress"
-                      showCounty
-                      changeField={change}
-                      sectionDisabled={sameAsMailingValue} />
-                  </FormSection>
-                  <Field
-                    label="Territory Managers"
-                    name="territoryManagerId"
-                    dataTest="territoryManagerId"
-                    component={SelectTypeAhead}
-                    optionValue="_id"
-                    optionLabel="name"
-                    answers={territoryManagers}
-                    validate={validation.isRequired} />
-                </div>
-              </section>
+              <AddressGroup sameAsMailingValue={sameAsMailingValue} changeField={change} isAgency showCounty />
             </div>
             <div className="card-footer">
               <div className="btn-footer">

@@ -382,8 +382,12 @@ main[role="document"] {
     flex-grow: 1;
     width: 100%;
 
-    .survey-wrapper {
+    .survey-wrapper, .results {
       padding: $padding*2;
+
+      .card {
+          margin: 0 0 ($padding/2);
+      }
     }
   }
 }

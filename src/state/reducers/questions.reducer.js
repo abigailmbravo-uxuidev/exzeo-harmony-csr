@@ -10,6 +10,8 @@ export default function questionsReducer(state = initialState.questions, action)
       return setAssigneeOptions(state, action);
     case types.SET_TERRITORY_MANAGERS:
       return setTerritoryManagers(state, action);
+    case types.SET_LISTS:
+      return setLists(state, action);
     default:
       return state;
   }
@@ -19,10 +21,11 @@ function setQuestions(state, action) {
   // TODO: 'questions' state will become something like 'enums' or 'list' state. When that happens, we need to namespace the question map so things like 'diaryAssignees' and other lists can more easily be left alone.
   const currentState = {
     diaryAssignees: state.diaryAssignees || initialState.questions.diaryAssignees,
-    territoryManagers: state.territoryManagers || initialState.questions.territoryManagers
+    territoryManagers: state.territoryManagers || initialState.questions.territoryManagers,
+    lists: state.lists || initialState.questions.lists
   };
 
-  if (!action.questions || !Array.isArray(action.questions)) {
+  if (!Array.isArray(action.questions)) {
     return {
       ...currentState
     };
@@ -45,5 +48,18 @@ function setTerritoryManagers(state, action) {
   return {
     ...state,
     territoryManagers: action.territoryManagers
+  };
+}
+
+function setLists(state, action) {
+  if (!Array.isArray(action.lists)) return state;
+
+  return {
+    ...state,
+    lists: action.lists.reduce((listMap, item) => {
+      listMap[item.code] = item;
+      return listMap;
+    }, {})
+
   };
 }

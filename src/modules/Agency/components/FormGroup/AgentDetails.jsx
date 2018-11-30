@@ -1,16 +1,8 @@
 import React from 'react';
 import { Field } from 'redux-form';
-import { Input, Integer, Phone, Radio, validation } from '@exzeo/core-ui';
+import { Input, Integer, Phone, Select, validation } from '@exzeo/core-ui';
 
-const radioStatusAnswers = [
-  {
-    answer: 'Active',
-    label: 'Active'
-  }, {
-    answer: 'Inactive',
-    label: 'Inactive'
-  }
-];
+import { STATUS } from '../../../../constants/agency';
 
 const Details = ({ isEditing }) => {
   return (
@@ -65,12 +57,11 @@ const Details = ({ isEditing }) => {
         <Field
           name="status"
           label="Status"
-          component={Radio}
+          component={Select}
           dataTest="status"
           styleName="status"
           validate={validation.isRequired}
-          answers={radioStatusAnswers}
-          segmented />
+          answers={STATUS} />
         <Field
           name="emailAddress"
           label="Email Address"
@@ -83,8 +74,8 @@ const Details = ({ isEditing }) => {
   );
 };
 
-Details.propTypes = {};
-
-Details.defaultProps = {};
+Details.defaultProps = {
+  isEditing: false
+};
 
 export default Details;
