@@ -227,7 +227,7 @@
                 .branchName {
                   grid-column: span 6;
                 }
-                
+
                 .mailCommissionChecksToBranch,
                 .mailPolicyDocsToBranch {
                   grid-column: span 2;
@@ -269,10 +269,12 @@
                 }
 
                 .physical-address {
-                    margin-right: $padding;
+                  margin-right: $padding;
                 }
 
-                .mailing-address {margin-left: $padding;}
+                .mailing-address {
+                  margin-left: $padding;
+                }
 
                 .agency-mailing-address,
                 .agency-physical-address,
@@ -1300,7 +1302,7 @@
         max-height: 90%;
 
         &.branch {
-            width: 70%;
+          width: 70%;
         }
 
         .card-block {
@@ -1368,7 +1370,7 @@
             grid-column: span 6;
 
             &.branch {
-                grid-column: span 12;
+              grid-column: span 12;
             }
           }
 
@@ -1388,12 +1390,14 @@
             grid-column: span 6;
 
             &.branch {
-                grid-column: span 12;
+              grid-column: span 12;
             }
           }
 
-          .mailCommissionChecksToBranch, .mailPolicyDocsToBranch, .branch-status {
-              grid-column: span 4;
+          .branch-status,
+          .mailCommissionChecksToBranch,
+          .mailPolicyDocsToBranch {
+            grid-column: span 4;
           }
 
           hr {
@@ -1509,13 +1513,11 @@
     }
 
     &.branch-agency-crud {
-        form {
-            .card {
-                .agency-details {
-
-                }
-            }
+      form {
+        .card {
+          .agency-details {}
         }
+      }
     }
   }
 
@@ -1682,20 +1684,21 @@
     }
   }
 
-.app-wrapper.csr {
-  main[role="document"] {
-    .content-wrapper {
-      .route-content {
-        .scroll {
-          .card {
-            .contact-address {
-              .additional-data {
-                margin-left: $padding;
-                font-size: $font-size-sm;
+  .app-wrapper.csr {
+    main[role="document"] {
+      .content-wrapper {
+        .route-content {
+          .scroll {
+            .card {
+              .contact-address {
+                .additional-data {
+                  margin-left: $padding;
+                  font-size: $font-size-sm;
 
-                label {
-                  margin: 0;
-                  font-size: $font-size-xs;
+                  label {
+                    margin: 0;
+                    font-size: $font-size-xs;
+                  }
                 }
               }
             }
@@ -1706,18 +1709,17 @@
   }
 }
 //search cards
-  .card {
-    &.contact {
-      .contact-details {
-        .contact-address {
-          .additional-data {
-            margin-left: $padding;
-            font-size: $font-size-sm;
+.card {
+  &.contact {
+    .contact-details {
+      .contact-address {
+        .additional-data {
+          margin-left: $padding;
+          font-size: $font-size-sm;
 
-            label {
-              margin-bottom: 0;
-              font-size: $font-size-xs;
-            }
+          label {
+            margin-bottom: 0;
+            font-size: $font-size-xs;
           }
         }
       }
