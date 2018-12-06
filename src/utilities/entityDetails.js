@@ -25,23 +25,6 @@ export const expirationBillingStatus = [
   'Policy Expired'
 ];
 
-export const canceledPolicyStatuses = [
-  'Cancelled',
-  'Pending Voluntary Cancellation',
-  'Pending Underwriting Cancellation',
-  'Cancellation',
-  'Pending Underwriting Non-Renewal'
-];
-
-export const canceledBillingStatuses = [
-  'Non-Payment Notice Issued',
-  'No Payment Received',
-  'Full Payment Received',
-  'Over Payment Received',
-  'Partial Payment Received',
-  'Payment Invoice Issued',
-  'Non-Payment Cancellation'
-];
 /**
  * Determine product display name based on type
  * @param {string} product
@@ -127,12 +110,11 @@ export function getFinalPaymentDate(summaryLedger, policyStatus) {
 }
 
 export function getEntityDetailsDateLabel(billingStatus, policyStatus) {
-  if (expirationPolicyStatuses.some(s => policyStatus.includes(s)) &&
-    expirationBillingStatus.some(s => billingStatus.includes(s))) return EXPIRATION_DATE;
-  else if (isNonPaymentNotice(billingStatus, policyStatus) ||
-    (canceledPolicyStatuses.some(s => policyStatus.includes(s)) &&
-    canceledBillingStatuses.some(s => billingStatus.includes(s)))) return CANCELLATION_DATE;
-  return '';
+  if (!expirationPolicyStatuses.includes(policyStatus) && !expirationBillingStatus.includes(billingStatus)) {
+    return CANCELLATION_DATE;
+  } else {
+    return EXPIRATION_DATE;
+  }
 }
 
 /**
