@@ -70,18 +70,17 @@ export function shouldShowReinstatement(status, code) {
  * @returns {string}
  */
 export function getCancellationDate(summaryLedger, policyStatus, endDate, cancelDate) {
-  const { equityDate, status: { displayText } } = summaryLedger;
+  const { equityDate, status: { displayText: billingStatus } } = summaryLedger;
 
-  if (displayText === 'Policy Expired' && endDate) {
-    return moment.utc(endDate).format(STANDARD_DATE_FORMAT);
-  }
+  if (isNonPaymentNotice(billingStatus, policyStatus)) {
+    return endDate ? moment.utc(endDate).format(STANDARD_DATE_FORMAT) : '';
+  } 
 
-  const isCanceled = getEntityDetailsDateLabel(displayText, policyStatus) === CANCELLATION_DATE;
-  const isNonPaymentCancellation = isNonPaymentNotice(displayText, policyStatus);
+  if (expirationPolicyStatuses.includes(policyStatus) && expirationBillingStatus.includes(billingStatus)) {
+    return equityDate ? moment.utc(equityDate).format(STANDARD_DATE_FORMAT) : '';
+  } 
 
-  if (isNonPaymentCancellation && equityDate) {
-    return moment.utc(equityDate).format(STANDARD_DATE_FORMAT);
-  } else if (isCanceled && cancelDate) {
+  if (cancelDate) {
     return moment.utc(cancelDate).format(STANDARD_DATE_FORMAT);
   }
 
@@ -96,9 +95,9 @@ export function getCancellationDate(summaryLedger, policyStatus, endDate, cancel
  * @returns {string}
  */
 export function getFinalPaymentDate(summaryLedger, policyStatus) {
-  const { invoiceDueDate, status: { displayText } } = summaryLedger;
+  const { invoiceDueDate, status: { displayText: billingStatus } } = summaryLedger;
 
-  const isNonPaymentCancellation = isNonPaymentNotice(displayText, policyStatus);
+  const isNonPaymentCancellation = isNonPaymentNotice(billingStatus, policyStatus);
 
   if (isNonPaymentCancellation && invoiceDueDate) {
     return {
@@ -110,11 +109,9 @@ export function getFinalPaymentDate(summaryLedger, policyStatus) {
 }
 
 export function getEntityDetailsDateLabel(billingStatus, policyStatus) {
-  if (!expirationPolicyStatuses.includes(policyStatus) && !expirationBillingStatus.includes(billingStatus)) {
-    return CANCELLATION_DATE;
-  } else {
-    return EXPIRATION_DATE;
-  }
+  return expirationPolicyStatuses.includes(policyStatus) && expirationBillingStatus.includes(billingStatus)
+    ? EXPIRATION_DATE 
+    : CANCELLATION_DATE;
 }
 
 /**
