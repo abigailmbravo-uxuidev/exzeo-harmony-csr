@@ -43,7 +43,7 @@ export const BranchDetails = (agencyCodeDisabled) => {
         name="mailCommissionChecksToBranch"
         dataTest="mailCommissionChecksToBranch"
         styleName="mailCommissionChecksToBranch"
-        label="Mail Commision Checks to this Branch"
+        label="Mail Commission Checks to this Branch"
         component={Radio}
         segmented
         answers={mailAnswers} />
@@ -83,7 +83,7 @@ export const BranchDetails = (agencyCodeDisabled) => {
         name="customerServiceEmailAddress"
         dataTest="customerServiceEmailAddress"
         component={Input}
-        validate={validation.isRequired} />
+        validate={[validation.isRequired, validation.isEmail]} />
     </React.Fragment>
   );
 };

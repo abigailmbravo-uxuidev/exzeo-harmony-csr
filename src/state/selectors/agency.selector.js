@@ -96,3 +96,12 @@ export const getEditModalInitialValues = createSelector(
   }
 );
 
+export const getSortedAgents = createSelector(
+  [getAgents],
+  (agents) => {
+    if (!Array.isArray(agents)) return [];
+    return agents.sort((a, b) => {
+      return a.firstName.localeCompare(b.firstName);
+    });
+  }
+);

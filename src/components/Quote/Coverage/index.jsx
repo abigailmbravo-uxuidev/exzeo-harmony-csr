@@ -9,13 +9,13 @@ import { reduxForm, formValueSelector } from 'redux-form';
 
 import { getAnswers } from '../../../utilities/forms';
 import { setPercentageOfValue } from '../../../utilities/endorsementModel';
-import { getAgentsByAgency, getZipcodeSettings } from '../../../state/actions/service.actions';
+import { getZipcodeSettings } from '../../../state/actions/service.actions';
 import { batchCompleteTask, startWorkflow } from '../../../state/actions/cg.actions';
 import { setAppState } from '../../../state/actions/appState.actions';
 import { setAppError } from '../../../state/actions/error.actions';
 import { getUIQuestions } from '../../../state/actions/questions.actions';
 import { getQuote } from '../../../state/actions/quote.actions';
-import { getAgencies } from '../../../state/actions/agency.actions';
+import { getAgencies, getAgentsByAgencyCode } from '../../../state/actions/agency.actions';
 import { checkQuoteState } from '../../../state/selectors/quote.selectors';
 import QuoteBaseConnect from '../../../containers/Quote';
 import Footer from '../../Common/Footer';
@@ -72,6 +72,7 @@ export const handleInitialize = (quoteData, questions) => {
   values.pH2phone = _.get(quoteData, 'policyHolders[1].primaryPhoneNumber', '');
   values.pH2phone2 = _.get(quoteData, 'policyHolders[1].secondaryPhoneNumber', '');
 
+  values.igdId = _.get(quoteData, 'property.id');
   values.address1 = _.get(quoteData, 'property.physicalAddress.address1');
   values.address2 = _.get(quoteData, 'property.physicalAddress.address2', '');
   values.city = _.get(quoteData, 'property.physicalAddress.city');
@@ -216,15 +217,22 @@ export class Coverage extends Component {
     getUIQuestions('askToCustomizeDefaultQuoteCSR');
 
 
-    this.props.getQuote(match.params.quoteId, 'coverage').then((quoteData) => {
+    this.props.getQuote(match.params.quoteNumber, 'coverage').then((quoteData) => {
       this.props.setAppState(MODEL_NAME, '', { ...this.props.appState.data, submitting: false });
 
       if (quoteData && quoteData.property) {
         this.props.getAgencies(quoteData.companyCode, quoteData.state);
-        this.props.getAgentsByAgency(quoteData.companyCode, quoteData.state, quoteData.agencyCode);
+        this.props.getAgentsByAgencyCode(quoteData.agencyCode);
         this.props.getZipcodeSettings(quoteData.companyCode, quoteData.state, quoteData.product, quoteData.property.physicalAddress.zip);
       }
     });
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    const { agents, change } = this.props;
+    if (prevProps && prevProps.agents && (prevProps.agents !== agents)) {
+      if (agents.length === 1) change('agentCode', agents[0].agentCode);
+    }
   }
 
   setPHToggle = () => {
@@ -234,10 +242,13 @@ export class Coverage extends Component {
     }
   };
 
+  roundDwellingCoverageAmount = (value) => {
+    return Math.round(value / 1000) * 1000;
+  };
+
   normalizeDwellingAmount = (value, previousValue, allValues) => {
     const { change } = this.props;
-
-    const roundedDwellingAmount = Math.round(value / 1000) * 1000;
+    const roundedDwellingAmount = this.roundDwellingCoverageAmount(value);
 
     if (allValues.otherStructures !== 'other') {
       change('otherStructuresAmount', setPercentageOfValue(roundedDwellingAmount, allValues.otherStructures));
@@ -255,29 +266,32 @@ export class Coverage extends Component {
   normalizeDwellingDependencies = (value, previousValue, allValues, field) => {
     if (Number.isNaN(value)) return;
     const { change } = this.props;
-    const fieldValue = setPercentageOfValue(allValues.dwellingAmount, value);
+    const roundedDwellingAmount = this.roundDwellingCoverageAmount(allValues.dwellingAmount);
+    const fieldValue = setPercentageOfValue(roundedDwellingAmount, value);
 
     change(field, Number.isNaN(fieldValue) ? '' : fieldValue);
     return value;
   };
 
   normalizePersonalPropertyPercentage = (value, previousValue, allValues, field) => {
-    const numberValue = Number(value);
-
     const { change } = this.props;
+    const numberValue = Number(value);
+    const roundedDwellingAmount = this.roundDwellingCoverageAmount(allValues.dwellingAmount);
 
     if (numberValue === 0) change('personalPropertyReplacementCostCoverage', false);
 
-    const fieldValue = setPercentageOfValue(allValues.dwellingAmount, numberValue);
+    const fieldValue = setPercentageOfValue(roundedDwellingAmount, numberValue);
     change(field, Number.isNaN(fieldValue) ? '' : fieldValue);
     return numberValue;
   };
 
   normalizeSinkholeAmount = (value, previousValue, allValues) => {
     const { change } = this.props;
+    const roundedDwellingAmount = this.roundDwellingCoverageAmount(allValues.dwellingAmount);
+
     if (String(value) === 'true') {
       change('sinkhole', 10);
-      change('calculatedSinkhole', setPercentageOfValue(allValues.dwellingAmount, 10));
+      change('calculatedSinkhole', setPercentageOfValue(roundedDwellingAmount, 10));
     } else {
       change('sinkhole', 0);
       change('calculatedSinkhole', 0);
@@ -285,20 +299,7 @@ export class Coverage extends Component {
     return value;
   };
 
-  handleAgencyChange = (agencyCode) => {
-    const { change, getAgentsByAgency } = this.props;
-    const agency = _.find(this.props.agencies, a => String(a.agencyCode) === String(agencyCode));
-    if (agency) {
-      getAgentsByAgency(agency.companyCode, agency.state, agencyCode).then((response) => {
-        if (response.data && response.data.agents && response.data.agents.length === 1) {
-          change('agentCode', response.data.agents[0].agentCode);
-        } else {
-          change('agentCode', '');
-        }
-      });
-    }
-    return agencyCode;
-  };
+  handleAgencyChange = (e, agencyCode) => this.props.getAgentsByAgencyCode(agencyCode);
 
   clearSecondaryPolicyholder = (value) => {
     const { quoteData, change } = this.props;
@@ -468,10 +469,9 @@ const mapStateToProps = (state) => {
   const questions = state.questions;
 
   return {
-    getAgents: state.service.getAgents,
     tasks: state.cg,
     appState: state.appState,
-    agents: state.service.agents,
+    agents: state.agencyState.agents,
     agencies: state.agencyState.agencies,
     initialValues: handleInitialize(quoteData, questions),
     quoteData,
@@ -490,7 +490,7 @@ const mapStateToProps = (state) => {
 
 export default connect(mapStateToProps, {
   getAgencies,
-  getAgentsByAgency,
+  getAgentsByAgencyCode,
   batchCompleteTask,
   startWorkflow,
   setAppState,

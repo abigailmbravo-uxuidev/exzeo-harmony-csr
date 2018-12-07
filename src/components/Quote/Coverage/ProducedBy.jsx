@@ -23,7 +23,7 @@ const ProducedBy = ({
           label="Agency"
           component={SelectInteger}
           answers={agencies}
-          normalize={value => handleAgencyChange(value)}
+          onChange={handleAgencyChange}
           validate={validation.isRequired}
           dataTest="agencyCode" />
       </div>

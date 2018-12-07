@@ -34,22 +34,22 @@ const Diaries = ({ diaryLevel, diaries, onToggleDiary }) => {
         <i className={severity.iconClass} aria-hidden="true" /><span> {severity.label}</span>
       </h5>
       <div>
-        <ul className="fa-ul">
+        <ul className="fa-ul diary-list">
           {diaries.map(diary => (
-            <li key={diary.diaryId}>
+            <li key={diary.diaryId} data-test={severity.sectionClass}>
               <div className="diary-header">
                 <i className={severity.listIconClass} aria-hidden="true" />
                 <span className="diary-due-date">{moment.utc(diary.due).format('MM/DD/YYYY')} </span>
-                <a className="btn btn-link btn-sm" onClick={() => onToggleDiary(diary)}>
+                <button className="btn btn-link btn-sm" onClick={() => onToggleDiary(diary)}>
                   <i className="fa fa-chevron-circle-up" />Open
-                </a>
+                </button>
               </div>
               <div className="diary-type">{diary.type}</div>
-              <div className="diary-reason">Follow-up | {diary.reason}
-                <p>{diary.message}</p>
+              <div className="diary-reason">
+                <p>{diary.reason}: {diary.message}</p>
               </div>
               <div className="diary-assignee">
-                {diary.assignee.userName}
+                {diary.assignee.displayName}
               </div>
             </li>
           ))}

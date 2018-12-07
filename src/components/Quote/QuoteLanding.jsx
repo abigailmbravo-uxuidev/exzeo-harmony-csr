@@ -29,7 +29,7 @@ export class QuoteLanding extends Component {
     const { quoteData } = this.props;
     return (
       <React.Fragment>
-        {quoteData && quoteData._id ? <Redirect replace to={`/quote/${quoteData._id}/coverage`} /> : <Loader />}
+        {quoteData && quoteData.quoteNumber ? <Redirect replace to={`/quote/${quoteData.quoteNumber}/coverage`} /> : <Loader />}
       </React.Fragment>
     );
   }

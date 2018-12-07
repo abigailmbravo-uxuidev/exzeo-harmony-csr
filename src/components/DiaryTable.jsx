@@ -3,8 +3,9 @@ import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 import moment from 'moment-timezone';
 import { connect } from 'react-redux';
 
+import { DUE_STATUS } from '../constants/diaries';
 import { toggleDiary } from '../state/actions/ui.actions';
-import { getFilteredAllDiaries } from '../state/selectors/diary.selectors';
+import { getDiariesForTable } from '../state/selectors/diary.selectors';
 
 // TODO: Move to component
 export const SearchPanel = props => (
@@ -33,9 +34,9 @@ const DiaryExpandColumns = ({ diaries }) => {
 };
 
 const DIARY_STATUS = {
-  pastDue: 'OPEN | Past Due',
-  dueSoon: 'OPEN | Due Soon',
-  upComing: 'OPEN | Upcoming',
+  pastDue: `OPEN | ${DUE_STATUS.pastDue}`,
+  dueSoon: `OPEN | ${DUE_STATUS.dueSoon}`,
+  upComing: `OPEN |${DUE_STATUS.upComing}`,
   closed: 'CLOSED'
 };
 
@@ -68,19 +69,22 @@ export class DiaryTable extends Component {
 
   openDiaryModal = (cell) => {
     const { toggleDiaryAction } = this.props;
-    const { resourceType, resourceId, ...selectedDiary } = cell;
+    const {
+      resourceType, resourceId, entityEndDate, ...selectedDiary
+    } = cell;
 
     toggleDiaryAction({
       resourceType,
       resourceId,
-      selectedDiary
+      selectedDiary,
+      entityEndDate
     });
   }
 
   // TODO: Use button from core-ui
   buttonFormatter = (cell) => {
     return cell.open
-      ? <button type="button" className="btn btn-link btn-grid-row" onClick={() => this.openDiaryModal(cell)}><i className="fa fa-arrow-circle-up" /></button>
+      ? <button type="button" className="btn btn-link btn-grid-row" onClick={() => this.openDiaryModal(cell)}><i className="fa fa-chevron-circle-up" /></button>
       : null;
   };
 
@@ -120,7 +124,7 @@ export class DiaryTable extends Component {
 
 const mapStateToProps = (state, ownProps) => {
   return {
-    diaries: getFilteredAllDiaries(state) || []
+    diaries: getDiariesForTable(state)
   };
 };
 

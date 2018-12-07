@@ -35,7 +35,7 @@
       overflow: visible;
       width: 100%;
       height: auto;
-      background-color: $warm-gray-08;
+      background-color: $warm-gray-10;
 
       .search-input-wrapper {
         display: flex;
@@ -46,7 +46,7 @@
         height: auto;
         padding: $padding ($padding*2);
         border-bottom: 2px solid $white;
-        background-color: $warm-gray-08;
+        background-color: $warm-gray-10;
 
         .search-inputs {
           display: flex;
@@ -55,7 +55,7 @@
 
           .form-group {
             position: relative;
-            //align-self: flex-end;
+
             &.error {
               input {
                 border-width: 2px;
@@ -80,18 +80,18 @@
           .input-wrapper {
             display: flex;
             flex-grow: 1;
-            flex-shrink: 1;
-            flex-wrap: wrap;
-            margin-top: 1.25rem;
             flex-grow: 0;
+            flex-shrink: 1;
             flex-shrink: 0;
+            flex-wrap: wrap;
+            margin-top: 0;
           }
 
           .input-wrapper {
-              display: flex;
-              flex-wrap: wrap;
-              flex-grow: 1;
-              flex-shrink: 1;
+            display: flex;
+            flex-grow: 1;
+            flex-shrink: 1;
+            flex-wrap: wrap;
           }
         }
 
@@ -279,8 +279,8 @@
           &.assignees {
             flex-grow: 1;
             flex-shrink: 1;
-            margin-right: $padding;
             margin-top: $padding;
+            margin-right: $padding;
           }
 
           &.reason {
@@ -320,7 +320,7 @@
 
           label {
             margin-bottom: $padding/4;
-            color: $yellow-lighten-06;
+            color: $yellow-lighten-05;
             font-size: $font-size-sm;
             font-weight: $font-weight-normal;
           }

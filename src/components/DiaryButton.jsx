@@ -11,7 +11,7 @@ const DiaryButton = ({ onToggleDiaries, showDiaries, openDiaryCount }) => (
       type="button"
       dataTest="diaryButton">
       {showDiaries && (
-        <div className="diary-btn-wrapper panel-open">
+        <div className="diary-btn-wrapper panel-open" data-test="diary-btn-wrapper">
           <i className="fa fa-bookmark"><span>{openDiaryCount}</span></i>
           <span>
             <i className="fa fa-chevron-circle-right" />Hide
@@ -19,7 +19,7 @@ const DiaryButton = ({ onToggleDiaries, showDiaries, openDiaryCount }) => (
         </div>
       )}
       {!showDiaries && (
-        <div className="diary-btn-wrapper panel-closed">
+        <div className="diary-btn-wrapper panel-closed" data-test="diary-btn-wrapper">
           <i className="fa fa-bookmark"><span>{openDiaryCount}</span></i>
           <span>
             <i className="fa fa-chevron-circle-left" />Show

@@ -1,16 +1,15 @@
 import React, { Component } from 'react';
-import { Field, FieldArray, FormSection } from 'redux-form';
-import { validation, Button, SelectTypeAhead } from '@exzeo/core-ui';
+import { FieldArray, FormSection } from 'redux-form';
+import { Button } from '@exzeo/core-ui';
 import { Redirect } from 'react-router-dom';
 
-import history from '../../../history';
 import ExistingAgentModal from '../components/ExistingAgentModal';
-import Address from '../components/Address';
 import License from '../components/License';
 import Agent from '../components/FormGroup/Agent';
 import Contact from '../components/FormGroup/Contact';
 import AgencyDetails from '../components/FormGroup/AgencyDetails';
 import Footer from '../../../components/Common/Footer';
+import AddressGroup from '../components/AddressGroup';
 
 export class Create extends Component {
   state = {
@@ -23,6 +22,7 @@ export class Create extends Component {
       displayText: 'United States of America'
     };
     data.physicalAddress.country = data.mailingAddress.country;
+    data.agentOfRecord.mailingAddress = data.mailingAddress;
     await this.props.createAgency(data);
   };
 
@@ -53,7 +53,7 @@ export class Create extends Component {
 
   handleResetForm = () => {
     this.props.reset();
-    history.push('/agency');
+    window.close();
   };
 
   // TODO : Move to utilities
@@ -77,14 +77,12 @@ export class Create extends Component {
       handleSubmit,
       licenseValue,
       sameAsMailingValue,
-      physicalStateValue,
-      physicalZipValue,
       submitting,
       pristine,
       change,
       agency,
       orphans,
-      territoryManagers
+      listAnswersAsKey
     } = this.props;
 
     return (
@@ -99,52 +97,9 @@ export class Create extends Component {
                 <h3>Details</h3>
                 <section className="agency-details">
                   <AgencyDetails />
-                  {/* web address validaiton */}
                 </section>
                 <h3>Address</h3>
-                <section className="agency-address">
-                  <div className="agency-mailing-address">
-                    <h4>Mailing Address</h4>
-                    <FormSection name="mailingAddress">
-                      <Address
-                        territoryManagers={territoryManagers}
-                        sameAsMailingValue={sameAsMailingValue}
-                        changeField={change}
-                        section="mailingAddress" />
-                    </FormSection>
-                  </div>
-                  <div className="agency-physical-address">
-                    <h4>Physical Address
-                      <Field
-                        name="sameAsMailing"
-                        component="input"
-                        id="sameAsMailing"
-                        type="checkbox"
-                        data-test="sameAsMailing"
-                        normalize={this.handleSameAsMailing} />
-                      <label htmlFor="sameAsMailing">Same as Mailing Address</label>
-                    </h4>
-                    <FormSection name="physicalAddress">
-                      <Address
-                        territoryManagers={territoryManagers}
-                        section="physicalAddress"
-                        showCounty
-                        changeField={change}
-                        stateValue={physicalStateValue}
-                        zipValue={physicalZipValue}
-                        sectionDisabled={sameAsMailingValue} />
-                    </FormSection>
-                    <Field
-                      label="Territory Managers"
-                      name="territoryManagerId"
-                      dataTest="territoryManagerId"
-                      component={SelectTypeAhead}
-                      optionValue="_id"
-                      optionLabel="name"
-                      answers={territoryManagers}
-                      validate={validation.isRequired} />
-                  </div>
-                </section>
+                <AddressGroup sameAsMailingValue={sameAsMailingValue} changeField={change} isAgency showCounty />
                 <h3>Officer</h3>
                 <section className="agency-principal">
                   <FormSection name="principal" >
@@ -154,7 +109,7 @@ export class Create extends Component {
                 <h3>Contact</h3>
                 <section className="agency-contact">
                   <FormSection name="contact" >
-                    <Contact testPrefix="contact" />
+                    <Contact testPrefix="contact" showTitle />
                   </FormSection>
                 </section>
                 <h3>Agent Of Record
@@ -168,7 +123,8 @@ export class Create extends Component {
                   </div>
                   <div className="agency-license">
                     <FieldArray
-                      name="licenses"
+                      stateAnswers={listAnswersAsKey.US_states}
+                      name="agentOfRecord.licenses"
                       component={License}
                       licenseValue={licenseValue}
                       isAgency />
@@ -199,8 +155,9 @@ export class Create extends Component {
         <ExistingAgentModal
           listOfAgents={orphans}
           onToggleModal={this.handleToggleExistingAgentModal}
-          handleSelection={this.applyOrphanedAgent} />
-      }
+          handleSelection={this.applyOrphanedAgent}
+          header="Exisiting Agent" />
+        }
       </div>
     );
   }

@@ -1,6 +1,7 @@
 import moment from 'moment/moment';
 
 import * as serviceRunner from '../../utilities/serviceRunner';
+import { sortDiariesByDate } from '../../utilities/diaries';
 import { SECONDARY_DATE_FORMAT } from '../../constants/dates';
 import {
   DEFAULT_SEARCH_PARAMS,
@@ -277,7 +278,7 @@ export async function fetchAgents({
   const config = {
     service: 'agency',
     method: 'GET',
-    path: `v1/agents/${companyCode}/${state}?firstName=${firstName}&lastName=${lastName}&agentCode=${agentCode}&mailingAddress=${address}&licenseNumber=${licenseNumber}`
+    path: `agents?companyCode=${companyCode}&state=${state}&firstName=${firstName}&lastName=${lastName}&agentCode=${agentCode}&mailingAddress=${address}&licenseNumber=${licenseNumber}`
   };
 
   try {
@@ -306,7 +307,7 @@ export async function fetchAgencies({
   const config = {
     service: 'agency',
     method: 'GET',
-    path: `v1/agencies/${companyCode}/${state}?displayName=${displayName}&agencyCode=${agencyCode}&mailingAddress=${address}&licenseNumber=${licenseNumber}&taxIdNumber=${fein}&primaryPhoneNumber=${phone}`
+    path: `agencies?companyCode=${companyCode}&state=${state}&displayName=${displayName}&agencyCode=${agencyCode}&mailingAddress=${address}&licenseNumber=${licenseNumber}&taxIdNumber=${fein}&primaryPhoneNumber=${phone}`
   };
 
   try {
@@ -600,17 +601,6 @@ export async function fetchDiaries({
   } catch (error) {
     throw error;
   }
-}
-
-/**
- * Sort diaries in ascending order by due date
- * @param diaries
- * @returns {Array}
- */
-export function sortDiariesByDate(diaries = []) {
-  return diaries.filter(d => d).sort((a, b) => {
-    return new Date(a.entries[0].due) - new Date(b.entries[0].due);
-  });
 }
 
 /**

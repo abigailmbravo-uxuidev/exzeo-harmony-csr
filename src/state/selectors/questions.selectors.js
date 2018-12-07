@@ -4,6 +4,8 @@ import { TAGS } from '../../constants/diaries';
 
 export const getQuestions = state => state.questions;
 
+export const getLists = state => state.questions.lists;
+
 export const getTopAnswers = name => createSelector(
   [getQuestions],
   (questions) => {
@@ -27,8 +29,46 @@ export const getTopAnswers = name => createSelector(
 export const getDiaryAssigneeAnswers = createSelector(
   [getQuestions],
   (questions) => {
-    if (!questions || !Array.isArray(questions.diaryAssignees)) return [];
+    if (!questions || !Array.isArray(questions.diaryAssignees)) return TAGS;
 
-    return [...questions.diaryAssignees, ...TAGS];
+    return [...TAGS, ...questions.diaryAssignees];
+  }
+);
+
+
+export const getListAnswers = createSelector(
+  [getLists],
+  (lists) => {
+    if (!lists) return [];
+
+    const mainList = {};
+
+    const listItems = Object.keys(lists);
+
+    listItems.forEach((item) => {
+      mainList[item] = Object.keys(lists[item].extendedProperties || {}).sort().map((key) => {
+        return { answer: key, label: lists[item].extendedProperties[key].displayText };
+      }) || [];
+    });
+    return mainList;
+  }
+);
+
+export const getListAnswersAsKey = createSelector(
+  [getLists],
+  (lists) => {
+    if (!lists) return [];
+
+    const mainList = {};
+
+    const listItems = Object.keys(lists);
+
+    listItems.forEach((item) => {
+      const list = lists[item].extendedProperties || {};
+      mainList[item] = Object.keys(list).sort().map((key) => {
+        return { answer: key, label: key };
+      }) || [];
+    });
+    return mainList;
   }
 );
