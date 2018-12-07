@@ -150,7 +150,11 @@ input[type="submit"] {
   }
 
   &.btn-alt-light {
+    margin-left: $padding/2;
+    padding: 0;
     color: $bright-blue-lighten-02;
+    border-width: 0;
+    line-height: $headings-line-height;
 
     &:hover {
       text-decoration: none;
@@ -158,10 +162,40 @@ input[type="submit"] {
     }
   }
 
+  &.btn-white {
+    margin-left: $padding/2;
+    color: $white;
+    border-width: 0;
+    line-height: $headings-line-height;
+    @include transition(all 0.2s ease-in-out);
+
+    &:hover {
+      text-decoration: none;
+      color: $yellow-lighten-05;
+    }
+
+    &.btn-info {
+      .fa-info-circle {
+        color: $bright-blue-lighten-02;
+        @include transition(all 0.2s ease-in-out);
+      }
+
+      &:hover {
+        .fa-info-circle {
+          color: $bright-blue-lighten-01;
+        }
+      }
+    }
+  }
+
   &.btn-grid-row {
     display: flex;
     margin: 0;
     padding: 0;
+
+    &:hover {
+      text-decoration: none;
+    }
   }
 }
 // Remove all backgrounds
@@ -330,6 +364,71 @@ input[type="submit"] {
     flex: 0 1 auto;
     order: 0;
     margin-left: $padding;
+  }
+}
+
+.btn-divider-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: $padding;
+
+  &:before {
+    flex-grow: 1;
+    flex-shrink: 1;
+    height: 1px;
+    margin-right: $padding;
+    content: '';
+    background: $warm-gray-03;
+  }
+
+  &:after {
+    flex-grow: 1;
+    flex-shrink: 1;
+    height: 1px;
+    margin-left: $padding;
+    content: '';
+    background: $warm-gray-03;
+  }
+
+  &.align-right {
+    &:after {
+      flex-grow: 0;
+      flex-shrink: 0;
+      width: $padding;
+    }
+  }
+
+  &.in-grid-layout {
+    grid-column: span 12;
+  }
+}
+
+.btn-remove-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  width: 100%;
+
+  &.align-right {
+    position: absolute;
+    right: $padding*2;
+  }
+
+  &.align-bottom {
+    position: absolute;
+    bottom: -$padding*1.25;
+
+    > .btn {
+      background: $white;
+    }
+  }
+
+  &.in-grid-layout {
+    grid-column: span 12;
   }
 }
 

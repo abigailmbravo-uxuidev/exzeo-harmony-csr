@@ -315,7 +315,7 @@ const baseProps = {
   change() {},
   dispatch() {},
   getAgencies() {},
-  getAgentsByAgency() { return Promise.resolve({ data: { agents: [{ agentCode: 123 }] } }); },
+  getAgentsByAgencyCode() { return Promise.resolve({ data: { agents: [{ agentCode: 123 }] } }); },
   getQuote() { return Promise.resolve(() => {}); },
   getUIQuestions() { return Promise.resolve(() => {}); },
   handleSubmit() {},
@@ -475,7 +475,7 @@ describe('Testing Coverage component', () => {
     handleGetZipCodeSettings(initialState);
     wrapper.instance().clearSecondaryPolicyholder(false, props);
     wrapper.instance().clearSecondaryPolicyholder(true, props);
-    wrapper.instance().handleAgencyChange(20000);
+    wrapper.instance().handleAgencyChange(null, 20000);
     wrapper.instance().normalizePersonalPropertyPercentage('50000', '40000', {}, 'property');
     wrapper.instance().normalizeDwellingDependencies('50000', '40000', {}, 'property');
     wrapper.instance().normalizeSinkholeAmount(true, false, {});

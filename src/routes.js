@@ -13,8 +13,6 @@ import SearchAgency from './containers/SearchAgency';
 import SearchPolicy from './containers/SearchPolicy';
 import SearchDiaries from './containers/SearchDiaries';
 import NotFoundPage from './containers/NotFound';
-import Reports from './containers/Reports';
-import PolicyModule from './modules/Policy';
 import QuoteCoverage from './components/Quote/Coverage';
 import QuoteLanding from './components/Quote/QuoteLanding';
 import QuoteUnderwriting from './components/Quote/Underwriting';
@@ -23,7 +21,9 @@ import QuoteMailingAddressBilling from './components/Quote/MailingAddressBilling
 import QuoteNotesFiles from './components/Quote/NotesFiles';
 import QuoteSummary from './components/Quote/Summary';
 import QuoteApplication from './components/Quote/Application';
-import AgencyStaff from './components/Agency/Staff';
+import Reports from './containers/Reports';
+import PolicyModule from './modules/Policy';
+import Agency from './modules/Agency';
 import NoteUploader from './components/Common/NoteUploader';
 import ConfirmPopup from './components/Common/ConfirmPopup';
 import DiaryModal from './components/DiaryModal';
@@ -62,7 +62,7 @@ class Routes extends Component {
           className="card"
           appElement={document.getElementById('root')}>
           <div className="card-header"><h4><i className="fa fa-exclamation-circle" />&nbsp;Error</h4></div>
-          <div className="card-block"><p>{this.props.error.message}</p></div>
+          <div className="card-block"><p>{String(this.props.error.message)}</p></div>
           <div className="card-footer">
             {this.props.error.requestId &&
               <div className="footer-message"><p>Request ID: {this.props.error.requestId}</p></div>
@@ -74,16 +74,18 @@ class Routes extends Component {
         {diary && diary.resourceType &&
           <DiaryModal
             user={userProfile}
-            initialValues={diary.selectedDiary}
+            diaryId={diary.selectedDiary ? diary.selectedDiary.diaryId : null}
             resourceType={diary.resourceType}
-            resourceId={diary.resourceId} />
+            resourceId={diary.resourceId}
+            entityEndDate={diary.entityEndDate} />
         }
 
         {note && note.documentId &&
           <NoteUploader
             noteType={note.noteType}
             documentId={note.documentId}
-            sourceId={note.sourceNumber} />
+            sourceId={note.sourceNumber}
+            resourceType={note.resourceType} />
         }
         <Router
           getUserConfirmation={(message, callback) => {
@@ -104,15 +106,15 @@ class Routes extends Component {
               <Route exact path="/agency" render={props => <SearchAgency auth={auth} {...props} />} />
               <Route exact path="/diaries" render={props => <SearchDiaries auth={auth} {...props} />} />
               <Route path="/policy/:policyNumber" render={props => <PolicyModule auth={auth} {...props} />} />
+              <Route path="/agency/:agencyCode/:branchCode" render={props => <Agency auth={auth} {...props} />} />
               <Route exact path="/quote/new/:stateCode/:propertyId" render={props => <QuoteLanding auth={auth} {...props} />} />
-              <Route exact path="/quote/:quoteId/coverage" render={props => <QuoteCoverage auth={auth} {...props} />} />
-              <Route exact path="/quote/:quoteId/billing" render={props => <QuoteMailingAddressBilling auth={auth} {...props} />} />
-              <Route exact path="/quote/:quoteId/notes" render={props => <QuoteNotesFiles auth={auth} {...props} />} />
-              <Route exact path="/quote/:quoteId/summary" render={props => <QuoteSummary auth={auth} {...props} />} />
-              <Route exact path="/quote/:quoteId/additionalInterests" render={props => <AdditionalInterests auth={auth} {...props} />} />
-              <Route exact path="/quote/:quoteId/underwriting" render={props => <QuoteUnderwriting auth={auth} {...props} />} />
-              <Route exact path="/quote/:quoteId/application" render={props => <QuoteApplication auth={auth} {...props} />} />
-              <Route exact path="/agency/:agencyCode/staff" render={props => <AgencyStaff auth={auth} {...props} />} />
+              <Route exact path="/quote/:quoteNumber/coverage" render={props => <QuoteCoverage auth={auth} {...props} />} />
+              <Route exact path="/quote/:quoteNumber/billing" render={props => <QuoteMailingAddressBilling auth={auth} {...props} />} />
+              <Route exact path="/quote/:quoteNumber/notes" render={props => <QuoteNotesFiles auth={auth} {...props} />} />
+              <Route exact path="/quote/:quoteNumber/summary" render={props => <QuoteSummary auth={auth} {...props} />} />
+              <Route exact path="/quote/:quoteNumber/additionalInterests" render={props => <AdditionalInterests auth={auth} {...props} />} />
+              <Route exact path="/quote/:quoteNumber/underwriting" render={props => <QuoteUnderwriting auth={auth} {...props} />} />
+              <Route exact path="/quote/:quoteNumber/application" render={props => <QuoteApplication auth={auth} {...props} />} />
               <Route exact path="/reports" render={props => <Reports auth={auth} {...props} />} />
               <Route exact path="/login" render={props => <LoginPage auth={auth} {...props} />} />
               <Route exact path="/accessDenied" render={props => <AccessDenied auth={auth} {...props} />} />

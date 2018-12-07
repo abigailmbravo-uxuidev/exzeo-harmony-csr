@@ -16,7 +16,9 @@ export class SearchBase extends Component {
   }
 
   render() {
-    const { loading, auth, location, userProfile } = this.props;
+    const {
+ loading, auth, location, userProfile 
+} = this.props;
     return (
       <div className="app-wrapper csr">
         {loading &&

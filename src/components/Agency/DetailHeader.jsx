@@ -18,7 +18,7 @@ export class DetailHeader extends Component {
           <dl>
             <div>
               <dd className="font-size-base">{agency.agencyCode}</dd>
-              <dd>{agency.displayName}</dd>
+              <dd className="agency-name">{agency.displayName}</dd>
             </div>
           </dl>
         </section>

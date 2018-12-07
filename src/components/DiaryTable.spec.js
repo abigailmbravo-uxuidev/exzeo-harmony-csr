@@ -39,7 +39,8 @@ describe('Testing DetailHeader component', () => {
                 userName: 'TESTUSER'
               },
               createdAt: '2018-10-23T16:30:03.826Z',
-              updatedAt: '2018-10-23T16:30:03.826Z'
+              updatedAt: '2018-10-23T16:30:03.826Z',
+              _id: 1
             }
           ],
           createdAt: '2018-10-23T16:30:03.827Z',
@@ -72,7 +73,8 @@ describe('Testing DetailHeader component', () => {
                 id: 'auth0|59562fcbc2b5082b9e61301a',
                 displayName: 'Mark Eads',
                 type: 'user'
-              }
+              },
+              _id: 1
             },
             {
               open: true,
@@ -90,7 +92,8 @@ describe('Testing DetailHeader component', () => {
                 userName: 'TESTUSER'
               },
               createdAt: '2018-10-23T16:30:23.853Z',
-              updatedAt: '2018-10-23T16:30:23.853Z'
+              updatedAt: '2018-10-23T16:30:23.853Z',
+              _id: 2
             }
           ],
           createdAt: '2018-10-23T16:30:23.853Z',
@@ -123,7 +126,8 @@ describe('Testing DetailHeader component', () => {
                 userName: 'TESTUSER'
               },
               createdAt: '2018-10-23T16:30:40.218Z',
-              updatedAt: '2018-10-23T16:30:40.218Z'
+              updatedAt: '2018-10-23T16:30:40.218Z',
+              _id: 1
             }
           ],
           createdAt: '2018-10-23T16:30:40.218Z',
@@ -156,7 +160,8 @@ describe('Testing DetailHeader component', () => {
                 userName: 'TESTUSER'
               },
               createdAt: '2018-10-23T16:31:16.973Z',
-              updatedAt: '2018-10-23T16:31:16.973Z'
+              updatedAt: '2018-10-23T16:31:16.973Z',
+              _id: 1
             }
           ],
           createdAt: '2018-10-23T16:31:16.973Z',

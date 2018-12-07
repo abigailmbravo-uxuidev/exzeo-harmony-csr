@@ -55,10 +55,10 @@ export const handleFormSubmit = async (data, dispatch, props) => {
 export class Summary extends Component {
   componentDidMount() {
     const {
-      appState, match: { params: { quoteId } }, setAppStateAction, getQuoteAction, getAgentsAction
+      appState, match: { params: { quoteNumber } }, setAppStateAction, getQuoteAction, getAgentsAction
     } = this.props;
     getAgentsAction('TTIC', 'FL');
-    getQuoteAction(quoteId, 'summary');
+    getQuoteAction(quoteNumber, 'summary');
     setAppStateAction(MODEL_NAME, '', { ...appState.data, submitting: false });
   }
 

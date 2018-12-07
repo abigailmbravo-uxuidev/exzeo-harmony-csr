@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import DiaryList from '@exzeo/core-ui/lib/List/DiaryList';
+import { NavLink } from 'react-router-dom';
 
 import { handleNewTab, handleNewTabClick, handleKeyPress } from '../../../utilities/handleNewTab';
 import { SEARCH_TYPES } from '../../../constants/search';
@@ -13,6 +13,7 @@ import AddressTip from './AddressTip';
 import AgencyCard from './AgencyCard';
 import AgentCard from './AgentCard';
 import QuoteCard from './QuoteCard';
+import DiaryList from './DiaryList';
 
 export function onKeyPressSubmit(event, data, props) {
   if (event.charCode === 13) {
@@ -29,7 +30,16 @@ export class SearchResults extends Component {
       <div className="results-wrapper">
 
         {hasSearched && (noResults || error.message) &&
-          <NoResults searchType={searchType} error={error} />
+        <div className="results">
+          <div className="result-cards">
+            <NoResults searchType={searchType} error={error} />
+            {hasSearched && searchType === SEARCH_TYPES.agency &&
+              <div className="btn-divider-wrapper">
+                <NavLink className="btn btn-primary" to="/agency/new/0" activeClassName="active" target="_blank" exact>+ Agency</NavLink>
+              </div>
+            }
+          </div>
+        </div>
         }
 
         {hasSearched && searchType === SEARCH_TYPES.newQuote && !!results.length &&
@@ -82,14 +92,24 @@ export class SearchResults extends Component {
         }
 
         {hasSearched && searchType === SEARCH_TYPES.agency && !!results.length &&
-          <div className="user-list agency-list">
-            {results.map(agency => (
-              <AgencyCard
-                key={agency.agencyCode}
-                agency={agency}
-                handleKeyPress={e => onKeyPressSubmit(e, agency, searchType)}
-                handleClick={() => handleNewTab(agency, searchType)} />
-            ))}
+          <React.Fragment>
+            <div className="user-list agency-list">
+              {results.map(agency => (
+                <AgencyCard
+                  key={agency.agencyCode}
+                  agency={agency}
+                  handleKeyPress={e => onKeyPressSubmit(e, agency, searchType)}
+                  handleClick={() => handleNewTab(agency, searchType)} />
+              ))}
+            </div>
+            <div className="btn-divider-wrapper">
+              <NavLink className="btn btn-primary" to="/agency/new/0" activeClassName="active" target="_blank" exact>+ Agency</NavLink>
+            </div>
+          </React.Fragment>
+        }
+        {!hasSearched && searchType === SEARCH_TYPES.agency &&
+          <div className="btn-divider-wrapper">
+            <NavLink className="btn btn-primary" to="/agency/new/0" activeClassName="active" target="_blank" exact>+ Agency</NavLink>
           </div>
         }
 

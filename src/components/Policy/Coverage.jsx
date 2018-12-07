@@ -35,7 +35,7 @@ export class Coverage extends Component {
         property,
         rating,
         underwritingAnswers
-      },
+      }
     } = this.props;
 
     const monthsOccupied = underwritingAnswers ? underwritingAnswers.monthsOccupied.answer : null;
@@ -116,17 +116,19 @@ export class Coverage extends Component {
       }
     ];
 
-    const premium = [{
-      premium: 'Current Premium',
-      value: `$ ${normalizeNumbers(_get(summaryLedger, 'currentPremium') || 0)}`
-    }, {
-      premium: 'Initial Premium',
-      value: `$ ${normalizeNumbers(_get(summaryLedger, 'initialPremium') || 0)}`
-    },
-    {
-      premium: 'Balance Due',
-      value: `$ ${normalizeNumbers(_get(summaryLedger, 'balance.$numberDecimal') || 0)}`
-    }];
+    const premium = [
+      {
+        premium: 'Current Premium',
+        value: `$ ${normalizeNumbers(_get(summaryLedger, 'currentPremium') || 0)}`
+      }, {
+        premium: 'Initial Premium',
+        value: `$ ${normalizeNumbers(_get(summaryLedger, 'initialPremium') || 0)}`
+      },
+      {
+        premium: 'Balance Due',
+        value: `$ ${normalizeNumbers(_get(summaryLedger, 'balance.$numberDecimal') || 0)}`
+      }
+    ];
 
     const billing = [
       {
@@ -262,11 +264,13 @@ export class Coverage extends Component {
                         <a
                           target="_blank"
                           rel="noopener noreferrer"
-                          href={getPropertyAppraisalLink(propertyData.physicalAddress.county, questions).answer}
-                        >{getPropertyAppraisalLink(propertyData.physicalAddress.county, questions).label}</a>
+                          href={getPropertyAppraisalLink(propertyData.physicalAddress.county, questions).answer}>{getPropertyAppraisalLink(propertyData.physicalAddress.county, questions).label}
+                        </a>
                       </dd>
                       <dt className="territory">Territory</dt>
                       <dd className="territory">{_get(rating, 'worksheet.elements.territoryFactors.name') || '-'}</dd>
+                      <dt className="igdid">IGD ID</dt>
+                      <dd className="igdid">{propertyData.id}</dd>
                     </div>
                   </dl>
                 </div>
@@ -356,5 +360,5 @@ const mapStateToProps = state => ({
 });
 
 export default connect(mapStateToProps, {
-  getUIQuestions,
+  getUIQuestions
 })(Coverage);

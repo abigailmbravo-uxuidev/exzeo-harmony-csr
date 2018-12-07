@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Helmet } from 'react-helmet';
 
-import { getFilteredOpenDiaries } from '../state/selectors/diary.selectors';
+import { getOpenDiaries } from '../state/selectors/diary.selectors';
 import PolicySideNav from '../components/Policy/PolicySideNav';
 import QuoteSideNav from '../components/Quote/QuoteSideNav';
 
@@ -51,11 +51,9 @@ AppWrapper.defaultProps = {
   pageTitle: 'Harmony - CSR Portal'
 };
 
-const mapStateToProps = (state, ownProps) => {
-  const resource = ownProps.resourceType;
-  const { resourceId } = ownProps;
+const mapStateToProps = (state) => {
   return {
-    openDiaryCount: getFilteredOpenDiaries(state, resource, resourceId).count
+    openDiaryCount: getOpenDiaries(state).length
   };
 };
 

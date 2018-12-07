@@ -3,9 +3,11 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 import { fetchDiaries } from '../state/actions/diary.actions';
+import { isPollingPermitted } from '../state/selectors/diary.selectors';
 
 export class DiaryPolling extends Component {
   componentDidMount() {
+    if (!this.props.shouldPoll) return;
     // Set the name of the hidden property and the change event for visibility
     if (typeof document.hidden !== 'undefined') { // Opera 12.10 and Firefox 18 and later support
       this.hidden = 'hidden';
@@ -52,8 +54,14 @@ DiaryPolling.propTypes = {
   filter: PropTypes.shape({
     userId: PropTypes.string,
     resourceType: PropTypes.string,
-    resourceId: PropTypes.string
+    resourceId: PropTypes.oneOfType([PropTypes.string, PropTypes.arrayOf(PropTypes.string)])
   }).isRequired
 };
 
-export default connect(null, { fetchDiaries })(DiaryPolling);
+const mapStateToProps = (state) => {
+  return {
+    shouldPoll: isPollingPermitted(state)
+  };
+};
+
+export default connect(mapStateToProps, { fetchDiaries })(DiaryPolling);
