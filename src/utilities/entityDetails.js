@@ -16,7 +16,7 @@ export const expirationPolicyStatuses = [
   'Not In Force'
 ];
 
-export const expirationBillingStatus = [
+export const expirationBillingStatuses = [
   'No Payment Received',
   'Full Payment Received',
   'Over Payment Received',
@@ -25,6 +25,25 @@ export const expirationBillingStatus = [
   'Policy Expired'
 ];
 
+export const canceledPolicyStatuses = [
+  'Cancelled',
+  'Pending Voluntary Cancellation',
+  'Pending Underwriting Cancellation',
+  'Pending Underwriting Non-Renewal'
+];
+
+export const canceledBillingStatuses = [
+  'Non-Payment Notice Issued',
+  'No Payment Received',
+  'Full Payment Received',
+  'Over Payment Received',
+  'Partial Payment Received',
+  'Payment Invoice Issued',
+  'Non-Payment Cancellation',
+  'Underwriting Cancellation',
+  'Underwriting Non-Renewal',
+  'Voluntary Cancellation'
+];
 /**
  * Determine product display name based on type
  * @param {string} product
@@ -76,12 +95,12 @@ export function getCancellationDate(summaryLedger, policyStatus, endDate, cancel
     return endDate ? moment.utc(endDate).format(STANDARD_DATE_FORMAT) : '';
   } 
 
-  if (expirationPolicyStatuses.includes(policyStatus) && expirationBillingStatus.includes(billingStatus)) {
+  if (expirationPolicyStatuses.includes(policyStatus) && expirationBillingStatuses.includes(billingStatus)) {
     return equityDate ? moment.utc(equityDate).format(STANDARD_DATE_FORMAT) : '';
   } 
 
-  if (cancelDate) {
-    return moment.utc(cancelDate).format(STANDARD_DATE_FORMAT);
+  if (canceledPolicyStatuses.includes(policyStatus) && canceledBillingStatuses.includes(billingStatus)) {
+    return cancelDate ? moment.utc(cancelDate).format(STANDARD_DATE_FORMAT) : '';
   }
 
   return '';
@@ -109,9 +128,15 @@ export function getFinalPaymentDate(summaryLedger, policyStatus) {
 }
 
 export function getEntityDetailsDateLabel(billingStatus, policyStatus) {
-  return expirationPolicyStatuses.includes(policyStatus) && expirationBillingStatus.includes(billingStatus)
-    ? EXPIRATION_DATE 
-    : CANCELLATION_DATE;
+  if (expirationPolicyStatuses.includes(policyStatus) && expirationBillingStatuses.includes(billingStatus)) {
+    return EXPIRATION_DATE;
+  }
+
+  if (canceledPolicyStatuses.includes(policyStatus) && canceledBillingStatuses.includes(billingStatus)) {
+    return CANCELLATION_DATE;
+  }
+
+  return '';
 }
 
 /**
