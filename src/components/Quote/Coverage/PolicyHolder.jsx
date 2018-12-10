@@ -7,6 +7,7 @@ const firstNameDepends = validation.dependsOn(['pH2LastName', 'pH2email', 'pH2ph
 const lastNameDepends = validation.dependsOn(['pH2FirstName', 'pH2email', 'pH2phone']);
 const primaryPhoneDepends = validation.dependsOn(['pH2FirstName', 'pH2LastName', 'pH2email']);
 const emailAddressDepends = validation.dependsOn(['pH2FirstName', 'pH2LastName', 'pH2phone']);
+const secondaryPhoneOptionalDepends = validation.optionalDependsOn(['pH2phone2']);
 
 const PolicyHolder = ({
   name, sectionId, sectionClass, header, headerSecondary, radioAnsers, canSendToDocusign, clearSecondaryPolicyholder, setPHToggle
@@ -21,8 +22,7 @@ const PolicyHolder = ({
             validate={[validation.isAlphaNumeric, validation.isRequired]}
             label="First Name"
             name="pH1FirstName"
-            dataTest="pH1FirstName"
-          />
+            dataTest="pH1FirstName" />
         </div>
         <div className="flex-child policy-holder-a-last-name">
           <Field
@@ -30,8 +30,7 @@ const PolicyHolder = ({
             validate={[validation.isAlphaNumeric, validation.isRequired]}
             label="Last Name"
             name="pH1LastName"
-            dataTest="pH1LastName"
-          />
+            dataTest="pH1LastName" />
         </div>
       </div>
       <div className="flex-parent col2 policy-holder-a-phone">
@@ -41,8 +40,7 @@ const PolicyHolder = ({
             validate={[validation.isRequired, validation.isPhone]}
             label="Primary Phone"
             name="pH1phone"
-            dataTest="pH1phone"
-          />
+            dataTest="pH1phone" />
         </div>
         <div className="flex-child policy-holder-a-secondary-phone">
           <Field
@@ -50,8 +48,7 @@ const PolicyHolder = ({
             validate={validation.isPhone}
             label="Secondary Phone"
             name="pH1phone2"
-            dataTest="pH1phone2"
-          />
+            dataTest="pH1phone2" />
         </div>
       </div>
       <div className="flex-parent policy-holder-a-email">
@@ -61,8 +58,7 @@ const PolicyHolder = ({
             validate={[validation.isRequired, validation.isEmail]}
             label="Email Address"
             name="pH1email"
-            dataTest="pH1email"
-          />
+            dataTest="pH1email" />
         </div>
         <div hidden className="flex-child electronicDelivery">
           <Field
@@ -71,8 +67,7 @@ const PolicyHolder = ({
             label="Electronic Delivery"
             name="electronicDelivery"
             answers={radioAnsers}
-            dataTest="electronicDelivery"
-          />
+            dataTest="electronicDelivery" />
         </div>
       </div>
     </div>
@@ -87,8 +82,7 @@ const PolicyHolder = ({
             type="checkbox"
             disabled={canSendToDocusign}
             normalize={value => clearSecondaryPolicyholder(value)}
-            data-test="clearFields"
-          />
+            data-test="clearFields" />
           <label htmlFor="clearFields"> Remove</label>
         </div>
       </div>
@@ -98,20 +92,18 @@ const PolicyHolder = ({
             name="pH2FirstName"
             label="First Name"
             component={Input}
-            validate={[firstNameDepends, validation.isAlphaNumeric]}
+            validate={[firstNameDepends, secondaryPhoneOptionalDepends, validation.isAlphaNumeric]}
             onChange={setPHToggle}
-            dataTest="pH2FirstName"
-          />
+            dataTest="pH2FirstName" />
         </div>
         <div className="flex-child policy-holder-b-last-name">
           <Field
             name="pH2LastName"
             label="Last Name"
             component={Input}
-            validate={[lastNameDepends, validation.isAlphaNumeric]}
+            validate={[lastNameDepends, secondaryPhoneOptionalDepends, validation.isAlphaNumeric]}
             onChange={setPHToggle}
-            dataTest="pH2LastName"
-          />
+            dataTest="pH2LastName" />
 
         </div>
       </div>
@@ -121,20 +113,18 @@ const PolicyHolder = ({
             name="pH2phone"
             label="Primary Phone"
             component={Phone}
-            validate={[primaryPhoneDepends, validation.isPhone]}
+            validate={[primaryPhoneDepends, secondaryPhoneOptionalDepends, validation.isPhone]}
             onChange={setPHToggle}
-            dataTest="pH2phone"
-          />
+            dataTest="pH2phone" />
         </div>
         <div className="flex-child policy-holder-b-secondary-phone">
           <Field
             name="pH2phone2"
             label="Secondary Phone"
             component={Phone}
-            validate={validation.isPhone}
+            validate={[validation.isPhone]}
             onChange={setPHToggle}
-            dataTest="pH2phone2"
-          />
+            dataTest="pH2phone2" />
         </div>
       </div>
       <div className="flex-parent policy-holder-b-email">
@@ -143,10 +133,9 @@ const PolicyHolder = ({
             name="pH2email"
             label="Email Address"
             component={Input}
-            validate={[emailAddressDepends, validation.isEmail]}
+            validate={[emailAddressDepends, secondaryPhoneOptionalDepends, validation.isEmail]}
             onChange={setPHToggle}
-            dataTest="pH2email"
-          />
+            dataTest="pH2email" />
         </div>
       </div>
     </div>
