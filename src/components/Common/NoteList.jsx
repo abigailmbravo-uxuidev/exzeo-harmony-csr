@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import moment from 'moment-timezone';
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
+import { date } from '@exzeo/core-ui';
 
 import DiaryTable from '../../components/DiaryTable';
 
@@ -29,7 +29,7 @@ export const Notes = (props) => {
   const showCreatedBy = createdBy => (createdBy ? createdBy.userName : '');
   const attachmentCount = attachments => (attachments ? attachments.length : 0);
   const attachmentType = attachments => (attachments.length > 0 ? attachments[0].fileType : '');
-  const formatCreatedDate = createdDate => `${moment.tz(moment.utc(createdDate), 'America/New_York').format('MM/DD/YYYY h:mm A')} EST`;
+  const formatCreatedDate = createdDate => date.formattedLocalDate(createdDate);
   const formatNote = note => (note ? note.replace(/\r|\n/g, '<br>') : '');
   const attachmentFilter = cell => (cell.length > 0 ? cell[0].fileName : null);
   const sortAuthor = (a, b, order) => {

@@ -114,7 +114,7 @@ export const handleInitialize = (quoteData, questions) => {
   values.otherStructures = String(calculatePercentage(otherStructures, dwelling));
   values.personalLiability = _.get(quoteData, 'coverageLimits.personalLiability.amount');
   values.personalPropertyAmount = _.get(quoteData, 'coverageLimits.personalProperty.amount');
-  values.personalProperty = _.map(getAnswers('personalPropertyAmount', questions), 'answer').includes(calculatePercentage(personalProperty, dwelling)) ? String(calculatePercentage(personalProperty, dwelling)) : undefined;
+  values.personalProperty = _.map(getAnswers('personalPropertyAmount', questions), 'answer').includes(calculatePercentage(personalProperty, dwelling)) ? calculatePercentage(personalProperty, dwelling) : undefined;
   values.personalPropertyReplacementCostCoverage = _.get(quoteData, 'coverageOptions.personalPropertyReplacementCost.answer');
 
   values.sinkholePerilCoverage = String(_.get(quoteData, 'coverageOptions.sinkholePerilCoverage.answer'));
@@ -279,6 +279,7 @@ export class Coverage extends Component {
     const roundedDwellingAmount = this.roundDwellingCoverageAmount(allValues.dwellingAmount);
 
     if (numberValue === 0) change('personalPropertyReplacementCostCoverage', false);
+    else change('personalPropertyReplacementCostCoverage', true);
 
     const fieldValue = setPercentageOfValue(roundedDwellingAmount, numberValue);
     change(field, Number.isNaN(fieldValue) ? '' : fieldValue);
