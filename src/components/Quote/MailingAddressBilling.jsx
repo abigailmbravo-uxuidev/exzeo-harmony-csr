@@ -229,9 +229,13 @@ export class MailingAddressBilling extends Component {
       return (
         <QuoteBaseConnect match={match}>
           <div className="route-content">
-            <div className="messages">
-              <div className="message error">
-                <i className="fa fa-exclamation-circle" aria-hidden="true" /> &nbsp;Mailing / Billing cannot be accessed until Premium calculated.
+            <div className="scroll">
+              <div className="detail-wrapper">
+                <div className="messages">
+                  <div className="message error">
+                    <i className="fa fa-exclamation-circle" aria-hidden="true" /> &nbsp;Mailing / Billing cannot be accessed until Premium calculated.
+                  </div>
+                </div>
               </div>
             </div>
           </div>
