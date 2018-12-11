@@ -7,7 +7,7 @@ import Footer from '../components/Common/Footer';
 export class Reports extends Component {
   render() {
     return (
-      <div>
+      <div className="app-wrapper reports">
       <Header {...this.props} />
         <Helmet>
           <title>Harmony - CSR Reports</title>

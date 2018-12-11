@@ -374,15 +374,6 @@ main[role="document"] {
 //search
 /*------------------------------------------------------------------------------------*/
 @import "partials/_search"; //search partial
-.csr {
-    .search {
-        .survey-wrapper {
-            .results-wrapper {
-                flex-shrink: 1;
-            }
-        }
-    }
-}
 .search {
   .results,
   .results-wrapper {
@@ -1205,6 +1196,13 @@ ul.list-cards {
       }
     }
   }
+}
+//Reports page
+/*------------------------------------------------------------------------------------*/
+.reports {
+    .basic-footer {
+        background: $white;
+    }
 }
 //Quote Error
 /*------------------------------------------------------------------------------------*/
