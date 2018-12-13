@@ -126,7 +126,14 @@ describe('Questions Actions', () => {
   });
 
   it('should call setAssigneeOptions', () => {
-    const query = 'r=TTIC:FL:HO3:Diaries:DiariesService:*|READ,TTIC:FL:HO3:Diaries:DiariesService:*|INSERT,TTIC:FL:HO3:Diaries:DiariesService:*|UPDATE';
+    const query = 'TTIC:FL:HO3:Diaries:DiariesService:*|READTTIC:FL:HO3:Diaries:DiariesService:*|INSERTTTIC:FL:HO3:Diaries:DiariesService:*|UPDATE';
+    const userProfile = {
+      resources: [
+        { right:'READ', uri: 'TTIC:FL:HO3:Diaries:DiariesService:*' },
+        { right: 'INSERT', uri: 'TTIC:FL:HO3:Diaries:DiariesService:*' },
+        { right: 'UPDATE', uri: 'TTIC:FL:HO3:Diaries:DiariesService:*' }
+      ]
+    };
 
     const mockAdapter = new MockAdapter(axios);
 
@@ -139,7 +146,7 @@ describe('Questions Actions', () => {
       data: {
         method: 'GET',
         service: 'security-manager-service',
-        path: `/user?${query}`
+        path: `/user?r=${query}`
       }
     };
 
@@ -149,12 +156,11 @@ describe('Questions Actions', () => {
 
     const initialState = {};
     const store = mockStore(initialState);
-    questionsActions.getDiaryAssigneeOptions(store.dispatch);
 
-    return questionsActions.getDiaryAssigneeOptions()(store.dispatch)
-      .then((result) => {
-        expect(store.getActions()[0].type).toEqual(types.SET_ASSIGNEE_OPTIONS);
-      });
+    questionsActions.getDiaryAssigneeOptions(userProfile)(store.dispatch).then(() => {
+      expect(store.getActions()[0].type).toEqual(types.SET_ASSIGNEE_OPTIONS);
+    });
+
   });
 
   it('should call setTerritoryManagers', () => {

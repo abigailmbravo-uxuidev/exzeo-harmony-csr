@@ -9,7 +9,7 @@
     "start": "react-scripts start",
     "start:dev": "npm run css:build && npm start",
     "build": "npm run css:build && react-scripts build",
-    "test": "react-scripts test --env=jsdom --coverage",
+    "test": "react-scripts test --env=jsdom ",
     "test:watch": "react-scripts test --env=jsdom"
   },
   "dependencies": {
