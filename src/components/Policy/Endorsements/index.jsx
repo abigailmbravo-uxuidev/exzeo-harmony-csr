@@ -245,8 +245,9 @@ export class Endorsements extends React.Component {
     });
 
     const canPremiumEndorse = userProfile.resources
-      ? userProfile.resources.some(resource => resource.uri === 'TTIC:FL:HO3:PolicyData:PremiumEndorse' && resource.right === 'UPDATE')
-      : false;
+      ? userProfile.resources.some(
+        resource => resource.uri === `${policy.companyCode}:${policy.state}:${policy.product}:PolicyData:PremiumEndorse` && resource.right === 'UPDATE'
+      ) : false;
 
     if (!canPremiumEndorse) {
       return (

@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import { Field } from 'redux-form';
 import { Input, validation, Select, SelectTypeAhead } from '@exzeo/core-ui';
 
-import { searchSettingsByCSPAndZip } from '../../../state/actions/zipCodeSettings.actions';
 import { getListOfZipCodes } from '../../../state/selectors/zipCodeSettings.selectors';
 import { getListAnswersAsKey } from '../../../state/selectors/questions.selectors';
 
@@ -105,5 +104,5 @@ const mapStateToProps = state => ({
   listAnswersAsKey: getListAnswersAsKey(state)
 });
 
-export default connect(mapStateToProps, { searchSettingsByCSPAndZipAction: searchSettingsByCSPAndZip })(Address);
+export default connect(mapStateToProps)(Address);
 

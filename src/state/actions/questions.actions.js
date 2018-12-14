@@ -49,9 +49,6 @@ export function getUIQuestions(step) {
   };
 }
 
-// TODO: this is in place until the endpoint can filter a little better based on CSP and resources
-// eslint-disable-next-line max-len
-const TEMP_RESOURCE_QUERY = 'r=TTIC:FL:HO3:Diaries:DiariesService:*|READ,TTIC:FL:HO3:Diaries:DiariesService:*|INSERT,TTIC:FL:HO3:Diaries:DiariesService:*|UPDATE';
 function buildAssigneesList(users) {
   const activeUsers = users.filter(user => !!user.enabled);
 
@@ -71,19 +68,21 @@ function buildAssigneesList(users) {
 }
 
 export function getDiaryAssigneeOptions(userProfile) {
-  const query = TEMP_RESOURCE_QUERY;
+  const { resources } = userProfile;
+  const query = resources.filter(r => r.uri.includes('Diaries'))
+    .reduce((acc, val, i) => `${i > 0 ? acc : ''}${val.uri}|${val.right}`, ',');
+
   return async (dispatch) => {
     try {
       const config = {
         method: 'GET',
         service: 'security-manager-service',
-        path: `/user?${query}`
+        path: `/user?r=${query}`
       };
       const response = await serviceRunner.callService(config);
       const users = response.data && Array.isArray(response.data.result) ? response.data.result : [];
 
       const diaryAssignees = buildAssigneesList(users);
-
       dispatch(setAssigneeOptions(diaryAssignees));
     } catch (error) {
       dispatch(errorActions.setAppError);

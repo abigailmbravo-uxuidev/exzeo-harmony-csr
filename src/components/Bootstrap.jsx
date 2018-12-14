@@ -4,11 +4,10 @@ import { connect } from 'react-redux';
 
 import { getDiaryAssigneeOptions } from '../state/actions/questions.actions';
 
-
 export class Bootstrap extends React.Component {
   componentDidMount() {
     const { getAssignees, userProfile } = this.props;
-    getAssignees({ userProfile });
+    getAssignees(userProfile);
   }
 
   render() {

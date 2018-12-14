@@ -9,13 +9,13 @@ import TextField from '../Form/inputs/TextField';
 import { startWorkflow, batchCompleteTask } from '../../state/actions/cg.actions';
 import { setAppState } from '../../state/actions/appState.actions';
 import { setAppError } from '../../state/actions/error.actions';
-import { getAgents } from '../../state/actions/service.actions';
 import { getQuote } from '../../state/actions/quote.actions';
 import QuoteBaseConnect from '../../containers/Quote';
 import normalizePhone from '../Form/normalizePhone';
 import normalizeNumbers from '../Form/normalizeNumbers';
 import Footer from '../Common/Footer';
 import applyRank from '../Common/additionalInterestRank';
+import * as serviceRunner from '../../utilities/serviceRunner';
 
 const MODEL_NAME = 'csrEmailQuoteSummary';
 
@@ -53,12 +53,18 @@ export const handleFormSubmit = async (data, dispatch, props) => {
 
 
 export class Summary extends Component {
-  componentDidMount() {
+  state = { selectedAgent: {} }
+
+  async componentDidMount() {
     const {
-      appState, match: { params: { quoteNumber } }, setAppStateAction, getQuoteAction, getAgentsAction
+      appState, match: { params: { quoteNumber } }, setAppStateAction, getQuoteAction, setAppErrorAction
     } = this.props;
-    getAgentsAction('TTIC', 'FL');
-    getQuoteAction(quoteNumber, 'summary');
+
+    const { agentCode } = await getQuoteAction(quoteNumber, 'summary');
+    const config = { service: 'agency', method: 'GET', path: `agents/${agentCode}` };
+    const response = await serviceRunner.callService(config).catch((err) => setAppErrorAction(err));
+    if (response && response.data) this.setState({ selectedAgent: response.data.result });
+
     setAppStateAction(MODEL_NAME, '', { ...appState.data, submitting: false });
   }
 
@@ -72,16 +78,11 @@ export class Summary extends Component {
     const {
       quoteData,
       handleSubmit,
-      agents,
       match,
       submitting
     } = this.props;
 
-    let selectedAgent = {};
-
-    if (agents && agents.length > 0 && quoteData && quoteData.agencyCode) {
-      selectedAgent = _.find(agents, a => a.agentCode === quoteData.agentCode);
-    }
+    const selectedAgent = this.state.selectedAgent;
 
     if (quoteData) {
       property = quoteData.property;
@@ -150,7 +151,7 @@ export class Summary extends Component {
                     <dl className="agent">
                       <div>
                         <dt>Agent</dt>
-                        <dd>{`${selectedAgent.firstName} ${selectedAgent.lastName}`}</dd>
+                        <dd>{selectedAgent.firstName && `${selectedAgent.firstName} ${selectedAgent.lastName}`}</dd>
                       </div>
                     </dl>
                   </section>
@@ -373,7 +374,6 @@ Summary.propTypes = {
 };
 
 const mapStateToProps = state => ({
-  agents: state.service.agents,
   tasks: state.cg,
   appState: state.appState,
   fieldValues: _.get(state.form, 'Summary.values', {}),
@@ -389,6 +389,5 @@ export default connect(mapStateToProps, {
   startWorkflowAction: startWorkflow,
   setAppStateAction: setAppState,
   setAppErrorAction: setAppError,
-  getAgentsAction: getAgents,
   getQuoteAction: getQuote
 })(reduxForm({ form: 'Summary', enableReinitialize: true })(Summary));

@@ -48,6 +48,9 @@ export function fetchDiaries(filter) {
 export function submitDiary(data, props) {
   return async (dispatch) => {
     const {
+      companyCode,
+      state,
+      product,
       user,
       resourceType,
       resourceId,
@@ -59,15 +62,14 @@ export function submitDiary(data, props) {
       userName: user.userName
     };
 
-    // TODO: remove this when CSP is ready
     let resource = {};
     if (resourceType === POLICY_RESOURCE_TYPE || resourceType === QUOTE_RESOURCE_TYPE) {
       resource = {
         type: resourceType,
         id: resourceId,
-        companyCode: 'TTIC',
-        state: 'FL',
-        product: 'HO3'
+        companyCode,
+        state,
+        product
       };
     } else {
       resource = { type: resourceType, id: resourceId };

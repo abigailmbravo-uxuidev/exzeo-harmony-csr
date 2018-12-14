@@ -211,7 +211,7 @@ export class MortgageBilling extends Component {
   };
 
   handleFormSubmit = async (data) => {
-    const { reset: resetForm, addTransaction } = this.props;
+    const { policy, reset: resetForm, addTransaction } = this.props;
     const submitData = data;
 
     submitData.cashDate = moment.utc(data.cashDate);
@@ -219,8 +219,8 @@ export class MortgageBilling extends Component {
     submitData.amount = Number(String(data.amount).replace(/[^\d.-]/g, ''));
     submitData.cashType = String(data.cashType);
     submitData.cashDescription = String(data.cashDescription);
-    submitData.companyCode = 'TTIC';
-    submitData.policy = this.props.policy;
+    submitData.companyCode = policy.companyCode;
+    submitData.policy = policy;
 
     await addTransaction(submitData);
     resetForm();

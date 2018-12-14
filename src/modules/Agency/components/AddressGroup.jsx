@@ -5,7 +5,6 @@ import { validation, SelectTypeAhead } from '@exzeo/core-ui';
 
 import { searchSettingsByCSPAndZip } from '../../../state/actions/zipCodeSettings.actions';
 import { getListOfZipCodes, getZipCodeSettings } from '../../../state/selectors/zipCodeSettings.selectors';
-
 import Address from './Address';
 
 export class AddressGroup extends Component {
@@ -95,7 +94,6 @@ export class AddressGroup extends Component {
   render() {
     const {
       territoryManagers, changeField, sameAsMailingValue, isOptional, isAgency, showCounty
-
     } = this.props;
 
     return (
@@ -154,7 +152,6 @@ AddressGroup.defaultProps = {
   isOptional: false,
   isAgency: false
 };
-
 
 const mapStateToProps = state => ({
   territoryManagers: state.questions.territoryManagers,
