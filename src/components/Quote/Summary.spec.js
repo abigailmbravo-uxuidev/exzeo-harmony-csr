@@ -381,7 +381,7 @@ describe('Testing Summary component', () => {
       match: { params: {} },
       fieldQuestions: [],
       dispatch: store.dispatch,
-      getQuoteAction() {},
+      getQuoteAction() { return Promise.resolve(() => {}); },
       getAgentsAction() {},
       getLatestQuoteAction() {},
       setAppErrorAction() {},

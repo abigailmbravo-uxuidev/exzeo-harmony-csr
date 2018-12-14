@@ -69,6 +69,9 @@ export class SideNav extends React.Component {
   newDiary = () => {
     const { actions, policy } = this.props;
     actions.uiActions.toggleDiary({
+      companyCode: policy.companyCode,
+      state: policy.state,
+      product: policy.product,
       resourceType: POLICY_RESOURCE_TYPE,
       resourceId: policy.policyNumber,
       entityEndDate: policy.endDate
