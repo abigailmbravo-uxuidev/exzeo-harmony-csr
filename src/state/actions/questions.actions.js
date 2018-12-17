@@ -70,7 +70,7 @@ function buildAssigneesList(users) {
 export function getDiaryAssigneeOptions(userProfile) {
   const { resources } = userProfile;
   const query = resources.filter(r => r.uri.includes('Diaries'))
-    .reduce((acc, val, i) => `${i > 0 ? acc : ''}${val.uri}|${val.right}`, ',');
+    .reduce((acc, val) => `${acc},${val.uri}|${val.right}`, '');
 
   return async (dispatch) => {
     try {

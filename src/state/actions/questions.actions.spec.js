@@ -126,7 +126,7 @@ describe('Questions Actions', () => {
   });
 
   it('should call setAssigneeOptions', () => {
-    const query = 'TTIC:FL:HO3:Diaries:DiariesService:*|READTTIC:FL:HO3:Diaries:DiariesService:*|INSERTTTIC:FL:HO3:Diaries:DiariesService:*|UPDATE';
+    const query = ',TTIC:FL:HO3:Diaries:DiariesService:*|READ,TTIC:FL:HO3:Diaries:DiariesService:*|INSERT,TTIC:FL:HO3:Diaries:DiariesService:*|UPDATE';
     const userProfile = {
       resources: [
         { right:'READ', uri: 'TTIC:FL:HO3:Diaries:DiariesService:*' },
