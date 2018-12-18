@@ -31,6 +31,9 @@ describe('Testing QuoteSideNav component', () => {
     };
     const store = mockStore(initialState);
     const props = {
+      companyCode: 'TTIC',
+      state: 'FL',
+      product: 'HO3',
       match: { params: {} },
       actions: {
         uiActions: {
@@ -44,7 +47,10 @@ describe('Testing QuoteSideNav component', () => {
         }
       },
       fieldQuestions: [],
-      quoteData: {},
+      quoteData: {
+        quoteNumber: 'test',
+        sourceNumber: 'test'
+      },
       dispatch: store.dispatch,
       appState: {
         instanceId: 1,
