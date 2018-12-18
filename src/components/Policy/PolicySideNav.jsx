@@ -67,23 +67,26 @@ export class SideNav extends React.Component {
   };
 
   newDiary = () => {
-    const { actions, policy } = this.props;
+    const { actions, policy: { companyCode, state,  product, policyNumber, endDate } } = this.props;
     actions.uiActions.toggleDiary({
-      companyCode: policy.companyCode,
-      state: policy.state,
-      product: policy.product,
+      companyCode,
+      state,
+      product,
       resourceType: POLICY_RESOURCE_TYPE,
-      resourceId: policy.policyNumber,
-      entityEndDate: policy.endDate
+      resourceId: policyNumber,
+      entityEndDate: endDate
     });
   };
 
   newNote = () => {
-    const { actions, policy } = this.props;
+    const { actions, policy: { companyCode, state,  product, policyNumber, sourceNumber } } = this.props;
     actions.uiActions.toggleNote({
+      companyCode,
+      state,
+      product,
       noteType: 'Policy Note',
-      documentId: policy.policyNumber,
-      sourceNumber: policy.sourceNumber,
+      documentId: policyNumber,
+      sourceNumber,
       resourceType: POLICY_RESOURCE_TYPE
     });
   };

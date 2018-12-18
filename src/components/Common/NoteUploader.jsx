@@ -167,7 +167,15 @@ export class NoteUploader extends Component {
 
   submitNote = (data, dispatch, props) => {
     const {
-      actions, user, noteType, documentId, sourceId, resourceType
+      companyCode,
+      state,
+      product,
+      actions,
+      user,
+      noteType,
+      documentId,
+      sourceId,
+      resourceType
     } = props;
 
     const filelist = Object.values(this.uppy.getState().files);
@@ -180,6 +188,9 @@ export class NoteUploader extends Component {
 
     const noteAttachments = uploads.map(file => ({ ...file.response.body, fileType: data.fileType }));
     const noteData = {
+      companyCode,
+      state,
+      product,
       number: documentId,
       source: sourceId,
       noteType,
@@ -203,7 +214,11 @@ export class NoteUploader extends Component {
 
         if(data.openDiary) {
           actions.uiActions.toggleDiary({
-            resourceType: resourceType, resourceId: documentId
+            companyCode,
+            state,
+            product,
+            resourceType,
+            resourceId: documentId
           });
         };
       })
@@ -265,6 +280,9 @@ export class NoteUploader extends Component {
 }
 
 NoteUploader.propTypes = {
+  companyCode: PropTypes.string.isRequired,
+  state: PropTypes.string.isRequired,
+  product: PropTypes.string.isRequired,
   documentId: PropTypes.string.isRequired,
   noteType: PropTypes.string.isRequired,
   sourceId: PropTypes.string,
