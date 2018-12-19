@@ -85,6 +85,9 @@ class Routes extends Component {
 
         {note && note.documentId &&
           <NoteUploader
+            companyCode={note.companyCode}
+            state={note.state}
+            product={note.product}
             noteType={note.noteType}
             documentId={note.documentId}
             sourceId={note.sourceNumber}

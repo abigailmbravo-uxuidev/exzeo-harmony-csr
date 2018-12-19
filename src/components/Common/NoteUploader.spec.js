@@ -35,6 +35,9 @@ describe('Testing NoteUploader component', () => {
       };
 
       props = {
+        companyCode: 'TTIC',
+        state: 'FL',
+        product: 'HO3',
         documentId: 'testid',
         noteType: 'Policy Note',
         resourceType: 'Policy'
@@ -91,6 +94,9 @@ describe('Testing NoteUploader component', () => {
       };
 
       const props = {
+        companyCode: 'TTIC',
+        state: 'FL',
+        product: 'HO3',
         documentId: 'testid',
         noteType: 'Policy Note',
         resourceType: 'Policy'

@@ -35,9 +35,13 @@ export const newDiary = (props) => {
 };
 
 export const newNote = (props) => {
+  const { quoteData: { companyCode, state, product, quoteNumber} } = props;
   props.actions.uiActions.toggleNote({
+    companyCode,
+    state,
+    product,
     noteType: 'Quote Note',
-    documentId: props.quoteData.quoteNumber,
+    documentId: quoteNumber,
     resourceType: QUOTE_RESOURCE_TYPE
   });
 };
