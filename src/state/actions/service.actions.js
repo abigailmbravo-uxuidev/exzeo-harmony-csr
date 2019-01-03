@@ -221,14 +221,15 @@ export const getUnderwritingQuestions = (companyCode, state, product, property) 
     });
 };
 
-export const saveUnderwritingExceptions = (id, underwritingExceptions) => (dispatch) => {
+export const saveUnderwritingExceptions = (id, underwritingExceptions, quoteState) => (dispatch) => {
   const body = {
     service: 'quote-data',
     method: 'put',
     path: String(' '),
     data: {
       _id: id,
-      underwritingExceptions
+      underwritingExceptions,
+      quoteState
     }
   };
   const axiosConfig = runnerSetup(body);

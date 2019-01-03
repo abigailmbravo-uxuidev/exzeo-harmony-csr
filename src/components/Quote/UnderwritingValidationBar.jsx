@@ -8,9 +8,11 @@ import { saveUnderwritingExceptions } from '../../state/actions/service.actions'
 import { getQuote } from '../../state/actions/quote.actions';
 import CheckField from '../Form/inputs/CheckField';
 import UnderwritingExceptions from './UnderwritingExceptions';
+import { UNDERWRITING_QUOTE_STATE } from '../../constants/quoteState';
 
 export const handleFormSubmit = async (data, dispatch, props) => {
-  const uwExceptions = props.quoteData.underwritingExceptions || [];
+  const { underwritingExceptions } = props.quoteData;
+  const uwExceptions = underwritingExceptions || [];
   for (let i = 0; i < uwExceptions.length; i += 1) {
     const uwException = uwExceptions[i];
     if (uwException.canOverride && data[uwException._id] === true) {
@@ -24,7 +26,14 @@ export const handleFormSubmit = async (data, dispatch, props) => {
       uwException.overridden = false;
     }
   }
-  await props.saveUnderwritingExceptions(props.quoteData._id, uwExceptions);
+  let quoteStateVal;
+
+  if (underwritingExceptions.every(uw => uw.canOverride && uw.overridden) &&
+   !underwritingExceptions.filter(uw => !uw.canOverride).length) {
+    quoteStateVal = UNDERWRITING_QUOTE_STATE.applicationStarted;
+  } else quoteStateVal = UNDERWRITING_QUOTE_STATE.quoteStopped;
+
+  await props.saveUnderwritingExceptions(props.quoteData._id, uwExceptions, quoteStateVal);
   await props.getQuote(props.quoteData._id, 'underwritingValidation');
 };
 
