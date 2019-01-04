@@ -1,3 +1,4 @@
+import Promise from 'bluebird';
 import axios from 'axios';
 import { batchActions } from 'redux-batched-actions';
 import _ from 'lodash';
@@ -155,6 +156,7 @@ export const batchCompleteTask = (modelName, workflowId, stepsWithData, dispatch
     };
     axiosConfigs.push(axiosConfig);
   });
+
   return Promise.reduce(axiosConfigs, (response, axiosConfig) => axios(axiosConfig), 0)
     .then((response) => {
       const responseData = response.data.data;
