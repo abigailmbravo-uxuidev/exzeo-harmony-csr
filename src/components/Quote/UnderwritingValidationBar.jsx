@@ -4,14 +4,16 @@ import { connect } from 'react-redux';
 import { reduxForm, Form, getFormValues } from 'redux-form';
 import orderBy from 'lodash/orderBy';
 import moment from 'moment';
+
 import { saveUnderwritingExceptions } from '../../state/actions/service.actions';
 import { getQuote } from '../../state/actions/quote.actions';
 import CheckField from '../Form/inputs/CheckField';
+import { UNDERWRITING_QUOTE_STATE, QUOTE_STATE_ACTIONS } from '../../constants/quoteState';
+
 import UnderwritingExceptions from './UnderwritingExceptions';
-import { UNDERWRITING_QUOTE_STATE } from '../../constants/quoteState';
 
 export const handleFormSubmit = async (data, dispatch, props) => {
-  const { underwritingExceptions } = props.quoteData;
+  const { quoteState, underwritingExceptions } = props.quoteData;
   const uwExceptions = underwritingExceptions || [];
   for (let i = 0; i < uwExceptions.length; i += 1) {
     const uwException = uwExceptions[i];
@@ -28,11 +30,19 @@ export const handleFormSubmit = async (data, dispatch, props) => {
   }
   let quoteStateVal;
 
-  if (underwritingExceptions.every(uw => uw.canOverride && uw.overridden) &&
-   !underwritingExceptions.filter(uw => !uw.canOverride).length) {
-    quoteStateVal = UNDERWRITING_QUOTE_STATE.applicationStarted;
-  } else quoteStateVal = UNDERWRITING_QUOTE_STATE.quoteStopped;
+  const allUwExceptionsOverridden = uwExceptions.filter(uw => uw.canOverride).every(uw => uw.overridden);
+  const hasMissingInfoUwExceptions = uwExceptions.filter(uw => uw.action === QUOTE_STATE_ACTIONS.missingInfo).length;
+  const hasFatalErrorUwExceptions = uwExceptions.filter(uw => uw.action === QUOTE_STATE_ACTIONS.fatalError).length;
 
+  if (allUwExceptionsOverridden && (!hasMissingInfoUwExceptions && !hasFatalErrorUwExceptions)) {
+    quoteStateVal = UNDERWRITING_QUOTE_STATE.applicationStarted;
+  } else if (allUwExceptionsOverridden && !hasFatalErrorUwExceptions) {
+    quoteStateVal = UNDERWRITING_QUOTE_STATE.quoteStarted;
+  } else if (!allUwExceptionsOverridden) {
+    quoteStateVal = UNDERWRITING_QUOTE_STATE.quoteStopped;
+  } else {
+    quoteStateVal = quoteState;
+  }
   await props.saveUnderwritingExceptions(props.quoteData._id, uwExceptions, quoteStateVal);
   await props.getQuote(props.quoteData._id, 'underwritingValidation');
 };
