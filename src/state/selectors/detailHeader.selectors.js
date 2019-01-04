@@ -28,6 +28,8 @@ export const getPolicyDetails = createSelector(
       endDate,
       policyHolders,
       policyHolderMailingAddress: pHMA = {},
+      policyID,
+      policyNumber,
       product,
       property,
       sourceNumber,
@@ -53,6 +55,8 @@ export const getPolicyDetails = createSelector(
 
     return {
       constructionType,
+      policyID,
+      policyNumber,
       sourceNumber,
       territory,
       county: physicalAddress.county,
@@ -75,7 +79,10 @@ export const getPolicyDetails = createSelector(
         cancellationDate,
         showReinstatement
       },
-      finalPayment
+      finalPayment: {
+        value: finalPayment.date,
+        label: finalPayment.label
+      }
     };
   }
 );
