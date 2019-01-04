@@ -7,11 +7,20 @@ import { Loader } from '@exzeo/core-ui';
 
 import { setAppState } from '../../state/actions/appState.actions';
 import { getZipcodeSettings, getAgents, getAgency, getNotes } from '../../state/actions/service.actions';
-import { createTransaction, getBillingOptionsForPolicy, getPolicy, getPaymentOptionsApplyPayments, getPaymentHistory, getCancelOptions, getEndorsementHistory } from '../../state/actions/policy.actions';
+import { 
+  createTransaction, 
+  getBillingOptionsForPolicy, 
+  getEffectiveDateChangeReasons,
+  getPolicy, 
+  getPaymentOptionsApplyPayments, 
+  getPaymentHistory, 
+  getCancelOptions, 
+  getEndorsementHistory 
+} from '../../state/actions/policy.actions';
 import { startWorkflow, batchCompleteTask } from '../../state/actions/cg.actions';
 
-import EditEffectiveDataPopUp from '../../components/Policy/EditEffectiveDatePopup';
-import ReinstatePolicyPopup from '../../components/Policy/ReinstatePolicyPopup';
+import EditEffectiveDataModal from '../../components/Policy/EditEffectiveDatePopup';
+import ReinstatePolicyModal from '../../components/Policy/ReinstatePolicyPopup';
 import Coverage from '../../components/Policy/Coverage';
 import PolicyHolder from '../../components/Policy/PolicyholderAgent';
 import Billing from '../../components/Policy/MortgageBilling';
@@ -29,6 +38,7 @@ export class Policy extends React.Component {
   // TODO: next step is to make an 'initialize' action that does all of this. Then this component will only need to know about one action.
   componentDidMount() {
     const {
+      getEffectiveDateChangeReasons,
       getCancelOptions,
       getPolicy,
       getPaymentHistory,
@@ -36,6 +46,7 @@ export class Policy extends React.Component {
       getEndorsementHistory,
       match: { params: { policyNumber } }
     } = this.props;
+    getEffectiveDateChangeReasons();
     getPolicy(policyNumber);
     getPaymentHistory(policyNumber);
     getPaymentOptionsApplyPayments();
@@ -78,14 +89,13 @@ export class Policy extends React.Component {
     this.setState({ showDiaries: !this.state.showDiaries });
   }
 
-  hideEffectiveDatePopUp = () => {
-    const { appState, setAppState } = this.props;
-
+  toggleModal = modalName => () => {
+    const { setAppState, appState } = this.props;
     setAppState(
       appState.modelName, appState.instanceId,
-      { ...appState.data, showEffectiveDateChangePopUp: false }
+      { ...appState.data, [modalName]: !appState.data[modalName] }
     );
-  };
+  }
 
   changeEffectiveDate = (data) => {
     const {
@@ -114,24 +124,10 @@ export class Policy extends React.Component {
       setAppState(startResult.modelName, startResult.modelInstanceId, { ...appState.data, submitting: true });
 
       batchCompleteTask(startResult.modelName, startResult.modelInstanceId, steps).then(() => {
-        setAppState(startResult.modelName, startResult.modelInstanceId, { ...appState.data, submitting: false, showEffectiveDateChangePopUp: false });
+        setAppState(startResult.modelName, startResult.modelInstanceId, { ...appState.data, submitting: false, showEffectiveDateChangeModal: false });
         getPolicy(policy.policyNumber);
       });
     });
-  };
-
-  showEffectiveDatePopUp = () => {
-    const { setAppState, appState } = this.props;
-
-    setAppState(
-      appState.modelName, appState.instanceId,
-      { ...appState.data, showEffectiveDateChangePopUp: true }
-    );
-  };
-
-  hideReinstatePolicyPopUp = () => {
-    const { setAppState, appState } = this.props;
-    setAppState(appState.modelName, appState.instanceId, { ...appState.data, showReinstatePolicyPopUp: false, submitting: false });
   };
 
   reinstatePolicySubmit = (data) => {
@@ -152,7 +148,7 @@ export class Policy extends React.Component {
       transactionType: 'Reinstatement'
     };
     createTransaction(submitData).then(() => {
-      this.hideReinstatePolicyPopUp();
+      this.hideReinstatePolicyModal();
       getPolicy(policy.policyNumber);
     });
   };
@@ -166,7 +162,10 @@ export class Policy extends React.Component {
     } = this.props;
 
     const { showDiaries } = this.state;
-
+    const modalHandlers = {
+      showEffectiveDateChangeModal: this.toggleModal('showEffectiveDateChangeModal'),
+      showReinstatePolicyModal: this.toggleModal('showReinstatePolicyModal')
+    };
     return (
       <div className="app-wrapper csr policy">
 
@@ -178,8 +177,10 @@ export class Policy extends React.Component {
           resourceId={policy.policyNumber}
           pageTitle={`P: ${policy.policyNumber || ''}`}
           match={match}
+          context={match.path.split('/')[1]}
           onToggleDiaries={this.handleToggleDiaries}
           showDiaries={showDiaries}
+          modalHandlers={modalHandlers}
           render={() => (
             <React.Fragment>
               {initialized &&
@@ -197,16 +198,16 @@ export class Policy extends React.Component {
                 <DiaryPolling filter={{ resourceId: [policy.policyNumber, policy.sourceNumber], resourceType: 'Policy' }} />
               }
 
-              {appState.data.showReinstatePolicyPopUp &&
-                <ReinstatePolicyPopup
+              {appState.data.showReinstatePolicyModal &&
+                <ReinstatePolicyModal
                   reinstatePolicySubmit={this.reinstatePolicySubmit}
-                  hideReinstatePolicyModal={this.hideReinstatePolicyPopUp} />
+                  hideReinstatePolicyModal={this.toggleModal('showReinstatePolicyModal')} />
               }
 
-              {appState.data.showEffectiveDateChangePopUp &&
-              <EditEffectiveDataPopUp
+              {appState.data.showEffectiveDateChangeModal &&
+              <EditEffectiveDataModal
                 changeEffectiveDateSubmit={this.changeEffectiveDate}
-                hideEffectiveDateModal={this.hideEffectiveDatePopUp} />
+                hideEffectiveDateModal={this.toggleModal('showEffectiveDateChangeModal')} />
           }
               <OpenDiariesBar
                 effectiveDate={policy.effectiveDate}
@@ -257,6 +258,7 @@ export default connect(mapStateToProps, {
   createTransaction,
   getAgents,
   getAgency,
+  getEffectiveDateChangeReasons,
   getBillingOptionsForPolicy,
   getCancelOptions,
   getEndorsementHistory,
