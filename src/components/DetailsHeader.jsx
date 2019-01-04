@@ -19,7 +19,7 @@ const DetailsBlock = ({detailsFields, headerDetails, modalHandlers}) => {
     Section,
     SectionSingle
   };
-  
+
   const toTitleCase = str =>
     str.replace(/([A-Z])/g, (match) => ` ${match}`)
       .replace(/^./, (match) => match.toUpperCase());
@@ -69,7 +69,7 @@ const DetailDescription = ({context, details}) => {
   const handleSelectPolicy = () => {
     return policyNumber 
       ? window.open(`/policy/${policyNumber}/coverage`, '_blank')
-      :  false;
+      : null;
   };
 
   if (isQuote) {
