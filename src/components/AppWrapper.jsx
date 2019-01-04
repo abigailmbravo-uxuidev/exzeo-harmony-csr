@@ -14,11 +14,39 @@ import DetailsHeader from './DetailsHeader';
 const CONFIG = {
   policy: {
     title: 'POLICY',
-    sideNavComponent: PolicySideNav
+    sideNavComponent: PolicySideNav,
+    detailsFields: {
+      showEffectiveDateButton: true,
+      showReinstateButton: true,
+      fields: [
+        { value: 'policyHolder', component: 'Section' },
+        { value: 'mailingAddress', component: 'Section' },
+        { value: 'propertyAddress', component: 'Section' },
+        { value: 'county' },
+        { value: 'territory' },
+        { value: 'constructionType' },
+        { value: 'effectiveDate' },
+        { value: 'cancellationDate' },
+        { label: 'Final Payment', value: 'finalPayment' },
+        { value: 'currentPremium', className:'premium' }
+      ]
+    }
   },
   quote: {
     title: 'QUOTE',
-    sideNavComponent: QuoteSideNav
+    sideNavComponent: QuoteSideNav,
+    detailsFields: {
+      fields: [
+        { value: 'policyHolder', component: 'Section' },
+        { value: 'mailingAddress', component: 'Section' },
+        { value: 'propertyAddress', component: 'Section' },
+        { value: 'county', label: 'Property County' },
+        { value: 'territory' },
+        { value: 'constructionType' },
+        { value: 'effectiveDate', className: 'quoteEffectiveDate'},
+        { value: 'currentPremium', label: 'Premium', className:'premium' }
+      ]
+    }
   }
 };
 
@@ -28,16 +56,21 @@ export class AppWrapper extends Component {
       pageTitle, match, context, onToggleDiaries, showDiaries, openDiaryCount, headerDetails, modalHandlers
     } = this.props;
 
-    const selectedConfig = CONFIG[context];
-    const SideNav = selectedConfig.sideNavComponent;
+    const appConfig = CONFIG[context];
+    const SideNav = appConfig.sideNavComponent;
 
     return (
       <React.Fragment>
         <Helmet><title>{pageTitle}</title></Helmet>
-        <Header title={selectedConfig.title}>
+        <Header title={appConfig.title}>
           <DiaryButton onToggleDiaries={onToggleDiaries} showDiaries={showDiaries} openDiaryCount={openDiaryCount} />
         </Header>
-        <DetailsHeader context={context} modalHandlers={modalHandlers} headerDetails={headerDetails} />
+        <DetailsHeader 
+          context={context}
+          modalHandlers={modalHandlers}
+          detailsFields={appConfig.detailsFields}
+          headerDetails={headerDetails} 
+        />
         <main role="document" className={showDiaries ? 'diary-open' : 'diary-closed'}>
           <aside className="content-panel-left">
             <SideNav match={match} />

@@ -5,42 +5,6 @@ import Section from './DetailSection';
 import SectionSingle from './DetailSectionSingle';
 import MapLink from './MapLink';
 
-var components = {
-  Section,
-  SectionSingle
-};
-
-const detailsFields = {
-  quote: {
-    fields: [
-      { value: 'policyHolder', component: 'Section' },
-      { value: 'mailingAddress', component: 'Section' },
-      { value: 'propertyAddress', component: 'Section' },
-      { value: 'county', label: 'Property County' },
-      { value: 'territory' },
-      { value: 'constructionType' },
-      { value: 'effectiveDate', className: 'quoteEffectiveDate'},
-      { value: 'currentPremium', label: 'Premium', className:'premium' }
-    ]
-  },
-  policy: {
-    showEffectiveDateButton: true,
-    showReinstateButton: true,
-    fields: [
-      { value: 'policyHolder', component: 'Section' },
-      { value: 'mailingAddress', component: 'Section' },
-      { value: 'propertyAddress', component: 'Section' },
-      { value: 'county' },
-      { value: 'territory' },
-      { value: 'constructionType' },
-      { value: 'effectiveDate' },
-      { value: 'cancellationDate' },
-      { label: 'Final Payment', value: 'finalPayment' },
-      { value: 'currentPremium', className:'premium' }
-    ]
-  }
-};
-
 const EditButton = ({ handler }) => (
   <button
     className="btn btn-link btn-xs btn-alt-light no-padding"
@@ -51,7 +15,11 @@ const EditButton = ({ handler }) => (
 
 const DetailsBlock = ({detailsFields, headerDetails, modalHandlers}) => {
   const { fields, showEffectiveDateButton, showReinstateButton } = detailsFields;
-
+  const components = {
+    Section,
+    SectionSingle
+  };
+  
   const toTitleCase = str =>
     str.replace(/([A-Z])/g, (match) => ` ${match}`)
       .replace(/^./, (match) => match.toUpperCase());
@@ -138,7 +106,7 @@ const DetailDescription = ({context, details}) => {
   }
 };
 
-const DetailsHeader = ({ context, modalHandlers, headerDetails }) => {
+const DetailsHeader = ({ context, modalHandlers, detailsFields, headerDetails }) => {
   const testTag = `${context}Details`;
   const { details } = headerDetails;
 
@@ -154,7 +122,7 @@ const DetailsHeader = ({ context, modalHandlers, headerDetails }) => {
       </Details>
 
       <DetailsBlock 
-        detailsFields={detailsFields[context]} 
+        detailsFields={detailsFields} 
         headerDetails={headerDetails}
         modalHandlers={modalHandlers}
       />
