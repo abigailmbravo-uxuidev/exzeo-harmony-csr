@@ -109,10 +109,11 @@ export class Underwriting extends Component {
                 <h3>Underwriting Questions</h3>
                 {underwritingQuestions && _.sortBy(underwritingQuestions, ['order']).map((question, index) =>
                   (<FieldGenerator
+                    key={question.order}
                     data={quoteData.underwritingAnswers}
                     question={question}
-                    values={fieldValues}
-                    key={index} />))}
+                    values={fieldValues} />
+                  ))}
               </div>
             </div>
           </form>
