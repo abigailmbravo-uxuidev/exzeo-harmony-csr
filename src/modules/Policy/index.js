@@ -168,7 +168,6 @@ export class Policy extends React.Component {
     };
     return (
       <div className="app-wrapper csr policy">
-
         {(appState.data.submitting || !initialized) &&
           <Loader />
         }

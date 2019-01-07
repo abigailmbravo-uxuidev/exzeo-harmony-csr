@@ -7,6 +7,7 @@ import { AppWrapper } from './AppWrapper';
 describe('Test the AppWrapper Component', () => {
   it('Should Render', () => {
     const props = {
+      context: 'quote',
       pageTitle: 'Test',
       match: { path: '/quote' },
       showDiaries: false,

@@ -62,63 +62,18 @@ const DetailsBlock = ({detailsFields, headerDetails, modalHandlers}) => {
   })
 };
 
-const DetailDescription = ({context, details}) => {
-  const { policyNumber, sourceNumber, status } = details;
-  const isQuote = context === 'quote';
-
-  const handleSelectPolicy = () => {
-    return policyNumber 
-      ? window.open(`/policy/${policyNumber}/coverage`, '_blank')
-      : null;
-  };
-
-  if (isQuote) {
-    return (
-      <dd className="status">
-      {status === 'Policy Issued' ?
-        <button 
-          className="btn btn-link btn-alt-light" 
-          data-test="selectPolicy" 
-          onClick={handleSelectPolicy}>
-          {status}
-        </button>
-        :
-        status
-      }
-      </dd>
-    )
-  } else {
-    return (
-      <React.Fragment>
-        <dd>
-          {policyNumber}
-          <span
-            data-test={sourceNumber}
-            id="source-number"
-            title={sourceNumber}
-            className="btn btn-link btn-white btn-xs no-padding btn-info">
-            <i className="fa fa-info-circle" />Source
-          </span>
-        </dd>
-        <dd className="status">{status}</dd>
-      </React.Fragment>
-    )
-  }
-};
-
 const DetailsHeader = ({ context, modalHandlers, detailsFields, headerDetails }) => {
   const testTag = `${context}Details`;
-  const { details } = headerDetails;
 
   if (!headerDetails.status) return (<div className="detailHeader" />);
 
   return (
     <div className="detailHeader">
       <Details
-        data={details}
+        context={context}
+        data={headerDetails}
         dataTest={testTag}
         className={testTag}>
-        <DetailDescription context={context} details={headerDetails} />
       </Details>
 
       <DetailsBlock 
