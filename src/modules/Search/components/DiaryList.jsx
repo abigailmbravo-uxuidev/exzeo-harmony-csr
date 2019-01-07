@@ -1,10 +1,5 @@
 import React from 'react';
-import { date } from '@exzeo/core-ui';
-import Item from '@exzeo/core-ui/lib/List/@components/Item';
-import Header from '@exzeo/core-ui/lib/List/@components/Header';
-import Body from '@exzeo/core-ui/lib/List/@components/Body';
-import Footer from '@exzeo/core-ui/lib/List/@components/Footer';
-import Container from '@exzeo/core-ui/lib/List/@components/Container';
+import { date, ListItem, ListHeader, ListBody, ListFooter, ListContainer } from '@exzeo/core-ui';
 
 import { DUE_STATUS } from '../../../constants/diaries';
 import { formatEntry, getDueStatus } from '../../../utilities/diaries';
@@ -14,7 +9,7 @@ const DiaryList = ({
   diaries, onItemClick, clickable, handleKeyPress
 }) => {
   return (
-    <Container>
+    <ListContainer>
       {diaries.map((diary) => {
           const {
             resource: { type, id },
@@ -34,21 +29,21 @@ const DiaryList = ({
 
         const dueStatus = getDueStatus(due, open);
         return (
-          <Item
+          <ListItem
             key={_id}
             dataTest={`diaries_${_id}`}
             styleName={dueStatus}
             handleClick={() => (clickable ? onItemClick(id, type) : null)}
             handleKeyPress={() => (clickable ? handleKeyPress(id, type) : null)}>
-            <Header>
+            <ListHeader>
               <div className="card-status-indicator" />
               <div className="icon-wrapper">
                 <i className="fa fa-bookmark-o" />
                 <i className="icon-status-indicator fa fa-circle" />
                 <div>{DUE_STATUS[dueStatus]}</div>
               </div>
-            </Header>
-            <Body>
+            </ListHeader>
+            <ListBody>
               <h4>{`${type}`} <span>{`${id}`} | {`${displayName}`}</span></h4>
               <ul className="diary-entry-list">
                 <li className="header">
@@ -70,12 +65,13 @@ const DiaryList = ({
                   <span className="diary action" />
                 </li>
               </ul>
-            </Body>
-            <Footer />
-          </Item>);
+            </ListBody>
+            <ListFooter />
+          </ListItem>
+        );
       })}
 
-    </Container>);
+    </ListContainer>);
 };
 
 export default DiaryList;

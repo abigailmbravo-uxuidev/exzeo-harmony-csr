@@ -1,6 +1,6 @@
 import React from 'react';
-import Button from '@exzeo/core-ui/lib/Button/index';
 import PropTypes from 'prop-types';
+import { Button } from '@exzeo/core-ui';
 
 const DiaryButton = ({ onToggleDiaries, showDiaries, openDiaryCount }) => (
   <div className="header-toggle-wrapper">

@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-import { validation } from '@exzeo/core-ui';
-import Button from '@exzeo/core-ui/lib/Button';
+import { validation, Button } from '@exzeo/core-ui';
 
 import AgentModal from '../components/AgentModal';
 import AddExistingAgentModal from '../components/ExistingAgentModal';

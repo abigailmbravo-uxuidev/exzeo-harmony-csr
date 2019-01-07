@@ -2,8 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { reduxForm, Field, formValueSelector } from 'redux-form';
-import Loader from '@exzeo/core-ui/lib/Loader';
-import { Radio, Select, validation } from '@exzeo/core-ui';
+import { Radio, Select, Loader, validation } from '@exzeo/core-ui';
 
 const FORM_NAME = 'BillingEditModal';
 
