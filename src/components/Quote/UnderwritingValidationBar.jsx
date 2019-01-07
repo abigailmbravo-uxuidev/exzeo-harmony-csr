@@ -8,12 +8,11 @@ import moment from 'moment';
 import { saveUnderwritingExceptions } from '../../state/actions/service.actions';
 import { getQuote } from '../../state/actions/quote.actions';
 import CheckField from '../Form/inputs/CheckField';
-import { UNDERWRITING_QUOTE_STATE, QUOTE_STATE_ACTIONS } from '../../constants/quoteState';
 
 import UnderwritingExceptions from './UnderwritingExceptions';
 
 export const handleFormSubmit = async (data, dispatch, props) => {
-  const { quoteState, underwritingExceptions } = props.quoteData;
+  const { underwritingExceptions } = props.quoteData;
   const uwExceptions = underwritingExceptions || [];
   for (let i = 0; i < uwExceptions.length; i += 1) {
     const uwException = uwExceptions[i];
@@ -28,22 +27,7 @@ export const handleFormSubmit = async (data, dispatch, props) => {
       uwException.overridden = false;
     }
   }
-  let quoteStateVal;
-
-  const allUwExceptionsOverridden = uwExceptions.filter(uw => uw.canOverride).every(uw => uw.overridden);
-  const hasMissingInfoUwExceptions = uwExceptions.filter(uw => uw.action === QUOTE_STATE_ACTIONS.missingInfo).length;
-  const hasFatalErrorUwExceptions = uwExceptions.filter(uw => uw.action === QUOTE_STATE_ACTIONS.fatalError).length;
-
-  if (allUwExceptionsOverridden && (!hasMissingInfoUwExceptions && !hasFatalErrorUwExceptions)) {
-    quoteStateVal = UNDERWRITING_QUOTE_STATE.applicationStarted;
-  } else if (allUwExceptionsOverridden && !hasFatalErrorUwExceptions) {
-    quoteStateVal = UNDERWRITING_QUOTE_STATE.quoteStarted;
-  } else if (!allUwExceptionsOverridden) {
-    quoteStateVal = UNDERWRITING_QUOTE_STATE.quoteStopped;
-  } else {
-    quoteStateVal = quoteState;
-  }
-  await props.saveUnderwritingExceptions(props.quoteData._id, uwExceptions, quoteStateVal);
+  await props.saveUnderwritingExceptions(props.quoteData._id, uwExceptions);
   await props.getQuote(props.quoteData._id, 'underwritingValidation');
 };
 
