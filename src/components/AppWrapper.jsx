@@ -26,7 +26,7 @@ const CONFIG = {
         { value: 'territory' },
         { value: 'constructionType' },
         { value: 'effectiveDate' },
-        { value: 'cancellationDate' },
+        { value: 'cancellation' },
         { label: 'Final Payment', value: 'finalPayment' },
         { value: 'currentPremium', className:'premium' }
       ]
