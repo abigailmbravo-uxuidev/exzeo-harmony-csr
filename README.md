@@ -1,7 +1,9 @@
-![exzeo](assets/exzeo_logo.png)
-![harmony](assets/harmony_logo.png)
+# harmony-csr
+Harmony CSR Portal
 
-## Harmony CSR App
+###### This app is bootstrapped with a custom version of Create React App
+[Repo](https://github.com/facebook/create-react-app)  
+[User Guide](https://facebook.github.io/create-react-app/)
 
 ### Getting setup
 clone the repository (requires access rights) from bitbucket
