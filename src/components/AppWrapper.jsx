@@ -22,12 +22,12 @@ const CONFIG = {
         { value: 'policyHolder', component: 'Section' },
         { value: 'mailingAddress', component: 'Section' },
         { value: 'propertyAddress', component: 'Section' },
-        { value: 'county' },
+        { value: 'county', label: 'Property County' },
         { value: 'territory' },
         { value: 'constructionType' },
         { value: 'effectiveDate' },
         { value: 'cancellation' },
-        { label: 'Final Payment', value: 'finalPayment' },
+        { value: 'finalPayment', label: 'Final Payment' },
         { value: 'currentPremium', className:'premium' }
       ]
     }
