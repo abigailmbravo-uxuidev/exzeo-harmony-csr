@@ -3,25 +3,45 @@
 
 ## Harmony CSR App
 
-### Usage
-
-install package
-
-`npm install @exzeo/harmony-csr`  
-*this is a private npm package, so you will need access to @exzeo.*
-
-### Contributing
-
-Clone the repo
-
+### Getting setup
+clone the repository (requires access rights) from bitbucket
 `git clone git@bitbucket.org:exzeo-usa/harmony-csr.git`  
-*you will need the correct permissions to the Exzeo bitbucket account*
+*_its likely you will be cloning multiple projects, we recommend using a common directory for them_
 
-Start dev/local server
+*From the root of the project*
 
-`cd harmony-csr`    - Navigate to Harmony-CSR folder
-`npm install`       - Install components
-`npm run start:dev` - Run project *
+add `.npmrc` file **you will need this file before attempting* `npm install`
+```bash
+//registry.npmjs.org/:_authToken=GET_ACCESS_TOKEN_FROM_DEVOPS
+@exzeo:registry=https://registry.npmjs.org/
+```
+
+add `.env.local` file
+```.bash
+# point to sandbox
+REACT_APP_API_URL=https://api.harmony-ins.com
+
+# running locally using mock-auth0
+#REACT_APP_AUTH0_DOMAIN=mock-auth0:8888
+#REACT_APP_AUTH0_CLIENT_ID=https://mock-auth0:8888
+#REACT_APP_AUTH0_CONNECTION=ashton-sandbox
+#REACT_APP_AUTH0_AUDIENCE=https://mock-auth0:8888
+```
+
+install dependencies
+```bash
+npm install
+```
+
+**Important!**  
+append the following to `/etc/hosts` file on your machine
+```bash
+127.0.0.1               devapi.harmony-ins.com
+127.0.0.1               devlogin.harmony-ins.com
+127.0.0.1               devcsr.harmony-ins.com
+127.0.0.1               devagent.harmony-ins.com
+127.0.0.1               mock-auth0
+```
 
 ### Contributing to Harmony CSR
 
