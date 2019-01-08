@@ -34,13 +34,13 @@ const DetailsBlock = ({detailsFields, headerDetails, modalHandlers}) => {
     if (!props.dataTest) props.dataTest = `${props.value}Detail`;
     props.key = `${props.value}Detail`;
 
-    // Set the value with the headerDetails value
+    // Replace the value with the headerDetails value
     const detailValue = headerDetails[data.value];
     if (props.component === 'Section') {
       props.data = detailValue;
     } else if (typeof detailValue === 'object' && detailValue != null) {
       props.value = detailValue.value;
-      props.label = detailValue.label;
+      if (!props.label) props.label = detailValue.label;
     } else {
       props.value = detailValue;
     }
