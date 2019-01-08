@@ -40,10 +40,13 @@ const DetailsBlock = ({detailsFields, headerDetails, modalHandlers}) => {
       props.data = detailValue;
     } else if (typeof detailValue === 'object' && detailValue != null) {
       props.value = detailValue.value;
-      if (!props.label) props.label = detailValue.label;
+      if (detailValue.label) props.label = detailValue.label;
     } else {
       props.value = detailValue;
     }
+
+    // Edge case: Don't show finalPayment is value is empty
+    if (data.value == 'finalPayment' && !props.value) return null;
 
     // Add the buttons
     if (showEffectiveDateButton && data.value === 'effectiveDate') {

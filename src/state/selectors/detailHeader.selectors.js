@@ -75,8 +75,8 @@ export const getPolicyDetails = createSelector(
         csz: detailUtils.getCityStateZip(physicalAddress)
       },
       cancellation: {
-        dateLabel,
-        cancellationDate,
+        label: dateLabel,
+        value: cancellationDate,
         showReinstatement
       },
       finalPayment: {
