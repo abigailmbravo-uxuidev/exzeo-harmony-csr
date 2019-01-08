@@ -48,37 +48,7 @@ a {
 @import "partials/_buttons"; //inputs & forms
 //icons
 /*------------------------------------------------------------------------------------*/
-.fa {
-  &.Mortgagee {
-    &:before {
-      content: "\f19c";
-    }
-  }
-
-  &.Premium {
-    &:before {
-      content: "\F27E";
-    }
-  }
-
-  &.Interest {
-    &:before {
-      content: "\F2B5";
-    }
-  }
-
-  &.Insured {
-    &:before {
-      content: "\F234";
-    }
-  }
-
-  &.Bill {
-    &:before {
-      content: "\F0D6";
-    }
-  }
-}
+@import "partials/_icons"; //inputs & forms
 //inputs & forms
 /*------------------------------------------------------------------------------------*/
 @import "partials/_form"; //form partial
@@ -188,308 +158,170 @@ html {
     height: 100%;
     margin: 0;
     padding: 0;
-  }
-  //site background
-  div#root {
-    height: 100%;
-    margin: 0;
-    padding: 0;
-    background: $white;
+    //site background
+    div#root {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      background: $white;
+      //app - first div inside app "root"
+      .app-wrapper {
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+        flex-shrink: 0;
+        width: 100%;
+        height: 100vh;
+        min-height: 100vh;
+        margin: 0;
+        padding: 0;
+        background: $warm-gray-10;
+        //main/content - role "document"
+        main[role="document"] {
+          position: relative;
+          z-index: 1;
+          display: flex;
+          overflow-y: hidden;
+          align-items: flex-start;
+          flex-direction: row;
+          flex-grow: 1;
+          flex-shrink: 1;
+          width: 100%;
+          height: auto;
+          min-height: auto;
+          background: $white;
+          @include transition(all 0.2s ease-in-out);
+          //main left panel navigation
+          /*------------------------------------------------------------------------------------*/
+          .content-panel-left {
+            display: flex;
+            overflow-x: hidden;
+            overflow-y: auto;
+            align-self: stretch;
+            flex-basis: 12rem;
+            flex-direction: column;
+            flex-grow: 0;
+            flex-shrink: 0;
+            width: auto;
+            width: 12rem;
+            color: $warm-gray-12;
+            background: $warm-gray-02;
+            @include transition(all 0.2s ease-in-out);
 
-    .app-wrapper {
-      main {
-        .content-wrapper {
-          .workflow {
-            .route {
-              .route-content {
+            .csr {
+              display: flex;
+              flex-direction: column;
+              justify-content: center;
+              width: auto;
+              min-height: 4.75rem;
+              padding: ($padding) ($padding*2);
+              text-align: center;
+              border-bottom: 2px solid $white;
+              background-color: $warm-gray-04;
+
+              h3 {
+                margin: 0;
+                color: $warm-gray-01;
+              }
+            }
+          }
+
+          .content-wrapper {
+            display: flex;
+            overflow: hidden;
+            align-self: stretch;
+            flex-direction: column;
+            flex-grow: 1;
+            flex-shrink: 1;
+            //flex-wrap: wrap;
+            width: 100%;
+
+            > div {
+              width: 100%;
+              height: auto;
+
+              &.login {
+                position: absolute;
+                z-index: 20;
+                top: 0;
+                right: 0;
+                bottom: 0;
+                left: 0;
                 display: flex;
-                overflow: hidden;
-                flex-direction: column;
-                flex-grow: 1;
-                flex-shrink: 1;
-                height: auto;
+                align-content: center;
+                align-items: center;
+                align-items: center;
+                justify-content: center;
+                justify-content: center;
 
-                .main,
-                form {
+                .card {
+                  z-index: 9999999;
+                }
+              }
+
+              > div[role="article"] {
+                display: flex;
+                flex: 1;
+                flex-grow: 0;
+                flex-shrink: 0;
+                width: 100%;
+                background: $white;
+              }
+            }
+
+            .workflow {
+              .route {
+                .route-content {
                   display: flex;
+                  overflow: hidden;
                   flex-direction: column;
                   flex-grow: 1;
+                  flex-shrink: 1;
+                  height: auto;
+
+                  .main,
+                  form {
+                    display: flex;
+                    flex-direction: column;
+                    flex-grow: 1;
+                  }
                 }
-              }
 
-              .search {
-                form {
-                  flex-grow: 0;
-                  flex-shrink: 0;
+                .search {
+                  form {
+                    flex-grow: 0;
+                    flex-shrink: 0;
+                  }
                 }
-              }
 
-              .scroll {
-                display: flex;
-                overflow-y: auto;
-                flex-direction: column;
-                flex-grow: 1;
-                flex-wrap: nowrap;
-                width: 100%;
-
-                ul {
+                .scroll {
+                  display: flex;
+                  overflow-y: auto;
+                  flex-direction: column;
                   flex-grow: 1;
-                }
+                  flex-wrap: nowrap;
+                  width: 100%;
 
-                .workflow-steps {
-                  flex-grow: 1;
-                  flex-shrink: 0;
+                  ul {
+                    flex-grow: 1;
+                  }
 
-                  .btn {
-                    align-self: flex-end;
-                    margin-left: $padding;
+                  .workflow-steps {
+                    flex-grow: 1;
+                    flex-shrink: 0;
+
+                    .btn {
+                      align-self: flex-end;
+                      margin-left: $padding;
+                    }
                   }
                 }
               }
             }
-          }
 
-          .route-content {
-            .modal {
-              z-index: 100;
-            }
-          }
-        }
-      }
-    }
-  }
-}
-//app - first div inside app "root"
-/*------------------------------------------------------------------------------------*/
-.app-wrapper {
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-  flex-shrink: 0;
-  width: 100%;
-  height: 100vh;
-  min-height: 100vh;
-  margin: 0;
-  padding: 0;
-  background: $warm-gray-10;
-}
-//header - includes logo and main navigation
-/*------------------------------------------------------------------------------------*/
-@import "partials/_header"; //modal partial
-//main/content - role "document"
-/*------------------------------------------------------------------------------------*/
-main[role="document"] {
-  position: relative;
-  z-index: 1;
-  display: flex;
-  overflow-y: hidden;
-  align-items: flex-start;
-  flex-direction: row;
-  flex-grow: 1;
-  flex-shrink: 1;
-  width: 100%;
-  height: auto;
-  min-height: auto;
-  background: $white;
-  @include transition(all 0.2s ease-in-out);
-
-  .content-wrapper {
-    display: flex;
-    overflow: hidden;
-    align-self: stretch;
-    flex-direction: column;
-    flex-grow: 1;
-    flex-shrink: 1;
-    flex-wrap: wrap;
-    width: 100%;
-
-    > div {
-      width: 100%;
-      height: auto;
-
-      &.login {
-        position: absolute;
-        z-index: 20;
-        top: 0;
-        right: 0;
-        bottom: 0;
-        left: 0;
-        display: flex;
-        align-content: center;
-        align-items: center;
-        align-items: center;
-        justify-content: center;
-        justify-content: center;
-
-        .card {
-          z-index: 9999999;
-        }
-      }
-
-      > div[role="article"] {
-        display: flex;
-        flex: 1;
-        flex-grow: 0;
-        flex-shrink: 0;
-        width: 100%;
-        background: $white;
-      }
-    }
-  }
-}
-//main left panel navigation
-/*------------------------------------------------------------------------------------*/
-.content-panel-left {
-  display: flex;
-  overflow-x: hidden;
-  overflow-y: auto;
-  align-self: stretch;
-  flex-basis: 12rem;
-  flex-direction: column;
-  flex-grow: 0;
-  flex-shrink: 0;
-  width: auto;
-  width: 12rem;
-  color: $warm-gray-12;
-  background: $warm-gray-02;
-  @include transition(all 0.2s ease-in-out);
-
-  .csr {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    width: auto;
-    min-height: 4.75rem;
-    padding: ($padding) ($padding*2);
-    text-align: center;
-    border-bottom: 2px solid $white;
-    background-color: $warm-gray-04;
-
-    h3 {
-      margin: 0;
-      color: $warm-gray-01;
-    }
-  }
-}
-//search
-/*------------------------------------------------------------------------------------*/
-@import "partials/_search"; //search partial
-.search {
-  .results,
-  .results-wrapper {
-    flex-basis: 100%;
-    flex-grow: 1;
-    flex-shrink: 1;
-    width: 100%;
-
-    .survey-wrapper, .results {
-      padding: $padding*2;
-
-      .card {
-          margin: 0 0 ($padding/2);
-      }
-    }
-  }
-}
-//footer
-/*------------------------------------------------------------------------------------*/
-.basic-footer {
-  align-items: center;
-  flex-grow: 0;
-  flex-shrink: 0;
-  width: 100%;
-  height: auto;
-  margin-bottom: 0;
-  padding: ($padding/2) $padding;
-  border-top: 1px dotted $warm-gray-04;
-
-  &.btn-footer {
-    padding: $padding;
-
-    .btn-wrapper {
-      margin-left: 1rem;
-    }
-
-    footer {
-      align-self: flex-end;
-    }
-  }
-
-  footer {
-    flex-grow: 1;
-    flex-shrink: 0;
-    width: auto;
-
-    div[role="banner"] {
-      display: flex;
-      line-height: $font-size-xs;
-
-      small {
-        font-size: $font-size-xs;
-        line-height: 1;
-
-        &.copyright {
-          flex-grow: 1;
-          flex-shrink: 1;
-          padding-right: 1rem;
-        }
-      }
-    }
-  }
-}
-//ROUTE SPECIFIC STYLES
-/*|||||||||||||||||||||||||||||||||||||||||||||||||
-|||||||||||||||||||||||||||||||||||||||||||||||||*/
-//Home Page
-/*------------------------------------------------------------------------------------*/
-.dashboard {
-  display: flex;
-  overflow: hidden;
-  flex-direction: column;
-  flex-grow: 1;
-  height: auto;
-
-  .route {
-    display: flex;
-    overflow: hidden;
-    flex-direction: column;
-    flex-grow: 1;
-
-    .route-content {
-      overflow: hidden;
-      flex-grow: 1;
-      flex-shrink: 1;
-      height: auto;
-
-      .scroll {
-        display: flex;
-        overflow-y: auto;
-        flex-direction: column;
-        flex-grow: 1;
-
-        .product-wrapper {
-          display: flex;
-          align-items: flex-start;
-          flex-grow: 0;
-          flex-shrink: 0;
-          flex-wrap: wrap;
-          justify-content: space-around;
-
-          .product {
-            align-self: stretch;
-            flex-basis: 0;
-            flex-grow: 1;
-            flex-shrink: 0;
-            margin-bottom: $padding;
-
-            .card-footer {
-              justify-content: space-around;
-
-              .btn {
-                flex-basis: 45%;
-                flex-grow: 0;
-                flex-shrink: 0;
-                margin-left: 0;
+            .route-content {
+              .modal {
+                z-index: 100;
               }
             }
           }
@@ -498,8 +330,21 @@ main[role="document"] {
     }
   }
 }
+//header - includes logo and main navigation
+/*------------------------------------------------------------------------------------*/
+@import "partials/_header"; //modal partial
 //search
 /*------------------------------------------------------------------------------------*/
+@import "partials/_search"; //search partial
+
+//footer
+/*------------------------------------------------------------------------------------*/
+@import "partials/_footer"; //search partial
+
+//ROUTE SPECIFIC STYLES
+/*|||||||||||||||||||||||||||||||||||||||||||||||||
+|||||||||||||||||||||||||||||||||||||||||||||||||*/
+
 //search results
 /*------------------------------------------------------------------------------------*/
 .result-cards,
@@ -1175,34 +1020,14 @@ ul.list-cards {
         }
       }
     }
-
-    .detail-group.property-details {
-      .display-element {
-        dl {
-          div {}
-
-          dt {}
-        }
-      }
-    }
-
-    .detail-group.quote-details {
-      .display-element {
-        dl {
-          div {}
-
-          dt {}
-        }
-      }
-    }
   }
 }
 //Reports page
 /*------------------------------------------------------------------------------------*/
 .reports {
-    .basic-footer {
-        background: $white;
-    }
+  .basic-footer {
+    background: $white;
+  }
 }
 //Quote Error
 /*------------------------------------------------------------------------------------*/
@@ -1493,151 +1318,153 @@ ul.list-cards {
       }
     }
 
-    .detailHeader {
-      position: relative;
-      display: flex;
-      flex-grow: 0;
-      flex-shrink: 0;
-      justify-content: flex-start;
-      height: 4.75rem;
-      color: $white;
-      border-bottom: 2px solid $white;
-      background: $warm-gray-10;
-
-      a {
-        color: $bright-blue-lighten-02;
-
-        &:hover {
-          color: $bright-blue;
-        }
-      }
-
-      section {
-        flex-basis: auto;
+    &.agency {
+      .detailHeader {
+        position: relative;
+        display: flex;
         flex-grow: 0;
         flex-shrink: 0;
-        margin-right: $padding*2;
-        padding: ($padding/2) 0;
+        justify-content: flex-start;
+        height: 4.75rem;
+        color: $white;
+        border-bottom: 2px solid $white;
+        background: $warm-gray-10;
+
+        a {
+          color: $bright-blue-lighten-02;
+
+          &:hover {
+            color: $bright-blue;
+          }
+        }
 
         section {
-          padding-top: 1px;
-        }
+          flex-basis: auto;
+          flex-grow: 0;
+          flex-shrink: 0;
+          margin-right: $padding*2;
+          padding: ($padding/2) 0;
 
-        dl {
-          margin-bottom: 0;
-
-          div {
-            dt {
-              display: flex;
-              align-items: baseline;
-              color: $yellow-lighten-05;
-              font-size: $font-size-sm;
-              font-weight: $font-weight-normal;
-              line-height: $headings-line-height;
-              -webkit-font-smoothing: antialiased;
-            }
-
-            dd {
-              overflow: hidden;
-              margin-bottom: 0;
-              text-transform: uppercase;
-              text-overflow: ellipsis;
-              -webkit-hyphens: auto;
-              hyphens: auto;
-              font-size: 14px;
-              line-height: 1.02;
-              -webkit-font-smoothing: antialiased;
-              -ms-hyphens: auto;
-            }
+          section {
+            padding-top: 1px;
           }
-        }
-
-        &.propertyAddress {
-          max-width: 20rem;
-          @media (max-width: 1440px) {
-            max-width: 14rem;
-          }
-        }
-
-        &.policyHolderMailingAddress {
-          max-width: 20rem;
-          @media (max-width: 1440px) {
-            max-width: 14rem;
-          }
-        }
-
-        &.policyHolder {
-          max-width: 18rem;
-          @media (max-width: 1440px) {
-            max-width: 12rem;
-          }
-        }
-
-        &.agencyDetails,
-        &.policyDetails,
-        &.quoteDetails {
-          display: flex;
-          width: 12rem;
-          max-width: 12rem;
-          padding: ($padding/2) ($padding/2) ($padding/2) ($padding*2);
-          background: rgba($black, .1);
 
           dl {
-            display: flex;
+            margin-bottom: 0;
 
-            > div {
-              display: flex;
-              flex-direction: column;
-              justify-content: space-around;
+            div {
+              dt {
+                display: flex;
+                align-items: baseline;
+                color: $yellow-lighten-05;
+                font-size: $font-size-sm;
+                font-weight: $font-weight-normal;
+                line-height: $headings-line-height;
+                -webkit-font-smoothing: antialiased;
+              }
 
               dd {
-                color: $yellow-lighten-05;
+                overflow: hidden;
+                margin-bottom: 0;
+                text-transform: uppercase;
+                text-overflow: ellipsis;
+                -webkit-hyphens: auto;
+                hyphens: auto;
+                font-size: 14px;
+                line-height: 1.02;
                 -webkit-font-smoothing: antialiased;
+                -ms-hyphens: auto;
+              }
+            }
+          }
 
-                &.font-size-base {
-                  font-size: $font-size-base;
+          &.propertyAddress {
+            max-width: 20rem;
+            @media (max-width: 1440px) {
+              max-width: 14rem;
+            }
+          }
+
+          &.policyHolderMailingAddress {
+            max-width: 20rem;
+            @media (max-width: 1440px) {
+              max-width: 14rem;
+            }
+          }
+
+          &.policyHolder {
+            max-width: 18rem;
+            @media (max-width: 1440px) {
+              max-width: 12rem;
+            }
+          }
+
+          &.agencyDetails,
+          &.policyDetails,
+          &.quoteDetails {
+            display: flex;
+            width: 12rem;
+            max-width: 12rem;
+            padding: ($padding/2) ($padding/2) ($padding/2) ($padding*2);
+            background: rgba($black, .1);
+
+            dl {
+              display: flex;
+
+              > div {
+                display: flex;
+                flex-direction: column;
+                justify-content: space-around;
+
+                dd {
+                  color: $yellow-lighten-05;
+                  -webkit-font-smoothing: antialiased;
+
+                  &.font-size-base {
+                    font-size: $font-size-base;
+                  }
                 }
               }
             }
           }
-        }
 
-        &.quoteEffectiveDate {
-          flex-grow: 1;
-          flex-shrink: 1;
-        }
+          &.quoteEffectiveDate {
+            flex-grow: 1;
+            flex-shrink: 1;
+          }
 
-        &.cancellationDate {
-          flex-grow: 1;
-          flex-shrink: 1;
-        }
+          &.cancellationDate {
+            flex-grow: 1;
+            flex-shrink: 1;
+          }
 
-        &.premium {
-          align-self: flex-start;
-          min-width: 6rem;
-          margin: $padding/2;
-          padding: $padding;
-          color: $warm-gray-12;
-          background: $warm-gray-02;
-
-          dt {
+          &.premium {
+            align-self: flex-start;
+            min-width: 6rem;
+            margin: $padding/2;
+            padding: $padding;
             color: $warm-gray-12;
-          }
+            background: $warm-gray-02;
 
-          dd {
-            font-size: $font-size-h4;
+            dt {
+              color: $warm-gray-12;
+            }
+
+            dd {
+              font-size: $font-size-h4;
+            }
           }
         }
-      }
 
-      .detailHeader-wrapping-sections {
-        display: flex;
-        flex-grow: 1;
-        flex-shrink: 1;
-        flex-wrap: wrap;
-
-        .wrapping-section {
+        .detailHeader-wrapping-sections {
           display: flex;
+          flex-grow: 1;
+          flex-shrink: 1;
+          flex-wrap: wrap;
+
+          .wrapping-section {
+            display: flex;
+          }
         }
       }
     }
@@ -1692,14 +1519,6 @@ ul.list-cards {
     flex-basis: 25%;
     flex-grow: 0;
     flex-shrink: 1;
-  }
-}
-
-.button-group {
-  display: flex;
-
-  .btn {
-    margin: 0 $padding $padding 0;
   }
 }
 
@@ -1764,4 +1583,269 @@ ul.list-cards {
 
 .scroll {
   scroll-behavior: smooth;
+}
+
+#root {
+  .csr {
+    &.policy {
+      .detailHeader {
+        position: relative;
+        display: grid;
+        flex-grow: 0;
+        flex-shrink: 0;
+        height: 5.25rem;
+        color: $white;
+        border-bottom: 2px solid $white;
+        background: $warm-gray-10;
+        column-gap: $padding*2;
+        grid-template-columns: 12rem max-content max-content max-content max-content max-content 1fr 7.5rem;
+
+        section {
+          padding: ($padding/2) 0;
+
+          dl {
+            margin-bottom: 0;
+
+            div {
+              dt {
+                display: flex;
+                align-items: baseline;
+                color: $yellow-lighten-05;
+                font-size: $font-size-sm;
+                font-weight: $font-weight-normal;
+                line-height: $headings-line-height;
+                -webkit-font-smoothing: antialiased;
+              }
+
+              dd {
+                overflow: hidden;
+                margin-bottom: 0;
+                text-transform: uppercase;
+                text-overflow: ellipsis;
+                -webkit-hyphens: auto;
+                hyphens: auto;
+                font-size: 14px;
+                line-height: 1.02;
+                -webkit-font-smoothing: antialiased;
+                -ms-hyphens: auto;
+              }
+            }
+          }
+
+          &.policyDetails {
+            display: flex;
+            width: 12rem;
+            padding: ($padding/2) ($padding/2) ($padding/2) ($padding*2);
+            color: $yellow-lighten-05;
+            background-color: rgba($black, .2);
+
+            dl {
+              display: flex;
+
+              > div {
+                display: flex;
+                flex-direction: column;
+                justify-content: space-around;
+              }
+            }
+          }
+
+          &.policyHolder {
+            min-width: 6rem;
+            max-width: calc((100vw - 45.25rem) * .3);
+          }
+
+          &.propertyAddress {
+            min-width: 8rem;
+            max-width: calc((100vw - 45.25rem) * .35);
+          }
+
+          &.mailingAddress {
+            min-width: 8rem;
+            max-width: calc((100vw - 45.25rem) * .35);
+          }
+
+          &.county {
+            max-width: 10rem;
+            grid-column: 5;
+            grid-row: 1;
+          }
+
+          &.territory {
+            grid-column: 6;
+            grid-row: 1;
+          }
+
+          &.constructionType {
+            min-width: 7rem;
+            grid-column: 7;
+            grid-row: 1;
+          }
+
+          &.effectiveDate {
+            margin-top: 2.625rem;
+            grid-column: 5;
+            grid-row: 1;
+          }
+
+          &.quoteEffectiveDate {
+            grid-column: 8;
+          }
+
+          &.cancellation {
+            max-width: 9.75rem;
+            margin-top: 2.625rem;
+            grid-column: 6;
+            grid-row: 1;
+          }
+
+          &.finalPayment {
+            margin-top: 2.625rem;
+            grid-column: 7;
+            grid-row: 1;
+          }
+
+          &.premium {
+            align-self: flex-start;
+            min-width: 7.5rem;
+            margin: ($padding/2) 0;
+            padding: $padding;
+            color: $warm-gray-12;
+            background: $warm-gray-02;
+            grid-column: 8;
+            grid-row: 1;
+
+            dt {
+              color: $warm-gray-12;
+            }
+
+            dd {
+              font-size: $font-size-h4;
+            }
+          }
+        }
+      }
+    }
+
+    &.quote {
+      .detailHeader {
+        position: relative;
+        display: grid;
+        flex-grow: 0;
+        flex-shrink: 0;
+        height: 5.25rem;
+        color: $white;
+        border-bottom: 2px solid $white;
+        background: $warm-gray-10;
+        column-gap: $padding*2;
+        grid-template-columns: 12rem max-content max-content max-content max-content max-content max-content 1fr 7.5rem;
+
+        section {
+          padding: ($padding/2) 0;
+
+          dl {
+            margin-bottom: 0;
+
+            div {
+              dt {
+                display: flex;
+                align-items: baseline;
+                color: $yellow-lighten-05;
+                font-size: $font-size-sm;
+                font-weight: $font-weight-normal;
+                line-height: $headings-line-height;
+                -webkit-font-smoothing: antialiased;
+              }
+
+              dd {
+                overflow: hidden;
+                margin-bottom: 0;
+                text-transform: uppercase;
+                text-overflow: ellipsis;
+                -webkit-hyphens: auto;
+                hyphens: auto;
+                font-size: 14px;
+                line-height: 1.02;
+                -webkit-font-smoothing: antialiased;
+                -ms-hyphens: auto;
+              }
+            }
+          }
+
+          &.quoteDetails {
+            display: flex;
+            width: 12rem;
+            padding: ($padding/2) ($padding/2) ($padding/2) ($padding*2);
+            color: $yellow-lighten-05;
+            background-color: rgba($black, .2);
+
+            dl {
+              display: flex;
+
+              > div {
+                display: flex;
+                flex-direction: column;
+                justify-content: space-around;
+              }
+            }
+          }
+
+          &.policyHolder {
+            min-width: 6rem;
+            max-width: calc((100vw - 45.25rem) * .3);
+          }
+
+          &.propertyAddress {
+            min-width: 8rem;
+            max-width: calc((100vw - 45.25rem) * .35);
+          }
+
+          &.mailingAddress {
+            min-width: 8rem;
+            max-width: calc((100vw - 45.25rem) * .35);
+          }
+
+          &.county {
+            max-width: 10rem;
+            grid-column: 5;
+            grid-row: 1;
+          }
+
+          &.territory {
+            grid-column: 6;
+            grid-row: 1;
+          }
+
+          &.constructionType {
+            min-width: 7rem;
+            grid-column: 7;
+            grid-row: 1;
+          }
+
+          &.quoteEffectiveDate {
+            grid-column: 8;
+          }
+
+          &.premium {
+            align-self: flex-start;
+            min-width: 7.5rem;
+            margin: ($padding/2) 0;
+            padding: $padding;
+            color: $warm-gray-12;
+            background: $warm-gray-02;
+            grid-column: 9;
+            grid-row: 1;
+
+            dt {
+              color: $warm-gray-12;
+            }
+
+            dd {
+              font-size: $font-size-h4;
+            }
+          }
+        }
+      }
+    }
+  }
 }

@@ -554,6 +554,23 @@
       }
     }
   }
+
+  .results,
+  .results-wrapper {
+    flex-basis: 100%;
+    flex-grow: 1;
+    flex-shrink: 1;
+    width: 100%;
+
+    .results,
+    .survey-wrapper {
+      padding: $padding*2;
+
+      .card {
+        margin: 0 0 ($padding/2);
+      }
+    }
+  }
 }
 
 main[role="document"] {
@@ -576,6 +593,63 @@ main[role="document"] {
           &.property-search-results {
             width: 100%;
             padding: 1rem;
+          }
+        }
+      }
+    }
+  }
+
+  .dashboard {
+    display: flex;
+    overflow: hidden;
+    flex-direction: column;
+    flex-grow: 1;
+    height: auto;
+
+    .route {
+      display: flex;
+      overflow: hidden;
+      flex-direction: column;
+      flex-grow: 1;
+
+      .route-content {
+        overflow: hidden;
+        flex-grow: 1;
+        flex-shrink: 1;
+        height: auto;
+
+        .scroll {
+          display: flex;
+          overflow-y: auto;
+          flex-direction: column;
+          flex-grow: 1;
+
+          .product-wrapper {
+            display: flex;
+            align-items: flex-start;
+            flex-grow: 0;
+            flex-shrink: 0;
+            flex-wrap: wrap;
+            justify-content: space-around;
+
+            .product {
+              align-self: stretch;
+              flex-basis: 0;
+              flex-grow: 1;
+              flex-shrink: 0;
+              margin-bottom: $padding;
+
+              .card-footer {
+                justify-content: space-around;
+
+                .btn {
+                  flex-basis: 45%;
+                  flex-grow: 0;
+                  flex-shrink: 0;
+                  margin-left: 0;
+                }
+              }
+            }
           }
         }
       }
