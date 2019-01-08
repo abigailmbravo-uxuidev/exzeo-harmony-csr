@@ -46,7 +46,7 @@ const DetailsBlock = ({detailsFields, headerDetails, modalHandlers}) => {
     }
 
     // Edge case: Don't show finalPayment is value is empty
-    if (data.value == 'finalPayment' && !props.value) return null;
+    if (data.value === 'finalPayment' && !props.value) return null;
 
     // Add the buttons
     if (showEffectiveDateButton && data.value === 'effectiveDate') {

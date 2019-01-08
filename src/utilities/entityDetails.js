@@ -82,6 +82,7 @@ export function shouldShowReinstatement(status, code) {
 /**
  * Determine cancellation date to display
  * @param {object} summaryLedger
+ * @param {string} policyStatus
  * @param {string} [endDate]
  * @param {string} [cancelDate]
  * @returns {string}
@@ -108,9 +109,8 @@ export function getCancellationDate(summaryLedger, policyStatus, endDate, cancel
 /**
  * Determine final Payment date to display
  * @param {object} summaryLedger
- * @param {string} [endDate]
- * @param {string} [cancelDate]
- * @returns {string}
+ * @param {string} policyStatus
+ * @returns {object}
  */
 export function getFinalPaymentDate(summaryLedger, policyStatus) {
   const { invoiceDueDate, status: { displayText } } = summaryLedger;
@@ -119,7 +119,7 @@ export function getFinalPaymentDate(summaryLedger, policyStatus) {
 
   if (isNonPaymentCancellation && invoiceDueDate) {
     return {
-      date: moment.utc(invoiceDueDate).format(STANDARD_DATE_FORMAT),
+      value: moment.utc(invoiceDueDate).format(STANDARD_DATE_FORMAT),
       label: FINAL_PAYMENT_DATE
     };
   }
