@@ -79,10 +79,7 @@ export const getPolicyDetails = createSelector(
         value: cancellationDate,
         showReinstatement
       },
-      finalPayment: {
-        value: finalPayment.date,
-        label: finalPayment.label
-      }
+      finalPayment
     };
   }
 );
