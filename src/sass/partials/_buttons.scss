@@ -432,6 +432,14 @@ input[type="submit"] {
   }
 }
 
+.button-group {
+  display: flex;
+
+  .btn {
+    margin: 0 $padding $padding 0;
+  }
+}
+
 .plus-button-group {
   position: absolute;
   bottom: $padding*2;
