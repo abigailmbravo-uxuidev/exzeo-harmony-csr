@@ -2,15 +2,15 @@ import * as quoteSelectors from './quote.selectors';
 
 
 describe('Test quote selectors', () => {
-  describe('Test checkQuoteState', () => {
-    it('Should return true if quoteState matches a disabled enum', () => {
+  describe('Test blockQuote', () => {
+    it('Should return true if quoteState is not a valid state to quote', () => {
       const state = {
         quoteState: {
           quote: { status: 'Policy Issued' }
         }
       };
 
-      const result = quoteSelectors.checkQuoteState(state);
+      const result = quoteSelectors.blockQuote(state);
       expect(result).toBeTruthy();
     });
 
@@ -20,11 +20,11 @@ describe('Test quote selectors', () => {
           quote: {}
         },
         service: {
-          quote: { quoteState: 'Testing' }
+          quote: { quoteState: 'Quote Started' }
         }
       };
 
-      const result = quoteSelectors.checkQuoteState(state);
+      const result = quoteSelectors.blockQuote(state);
       expect(result).toBeFalsy();
     });
 
