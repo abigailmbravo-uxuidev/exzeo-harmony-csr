@@ -4,13 +4,16 @@ import { connect } from 'react-redux';
 import { reduxForm, Form, getFormValues } from 'redux-form';
 import orderBy from 'lodash/orderBy';
 import moment from 'moment';
+
 import { saveUnderwritingExceptions } from '../../state/actions/service.actions';
 import { getQuote } from '../../state/actions/quote.actions';
 import CheckField from '../Form/inputs/CheckField';
+
 import UnderwritingExceptions from './UnderwritingExceptions';
 
 export const handleFormSubmit = async (data, dispatch, props) => {
-  const uwExceptions = props.quoteData.underwritingExceptions || [];
+  const { underwritingExceptions } = props.quoteData;
+  const uwExceptions = underwritingExceptions || [];
   for (let i = 0; i < uwExceptions.length; i += 1) {
     const uwException = uwExceptions[i];
     if (uwException.canOverride && data[uwException._id] === true) {
