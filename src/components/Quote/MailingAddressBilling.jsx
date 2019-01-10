@@ -356,7 +356,8 @@ const mapStateToProps = state => ({
   fieldValues: _.get(state.form, 'MailingAddressBilling.values', {}),
   initialValues: handleInitialize(state),
   quoteData: state.quoteState.quote || {},
-  billingOptions: state.service.billingOptions || {}
+  billingOptions: state.service.billingOptions || {},
+  editingDisabled: blockQuote(state)
 });
 
 export default connect(mapStateToProps, {
@@ -364,6 +365,5 @@ export default connect(mapStateToProps, {
   setAppStateAction: setAppState,
   setAppErrorAction: setAppError,
   getBillingOptionsAction: getBillingOptions,
-  getQuoteAction: getQuote,
-  editingDisabled: blockQuote
+  getQuoteAction: getQuote
 })(reduxForm({ form: 'MailingAddressBilling', enableReinitialize: true })(MailingAddressBilling));
