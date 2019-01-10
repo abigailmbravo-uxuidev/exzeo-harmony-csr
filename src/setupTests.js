@@ -16,6 +16,7 @@ const localStorageMock = {
     storage[key] = null;
   }
 };
+
 global.localStorage = localStorageMock;
 
 export default localStorageMock;

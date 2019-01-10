@@ -1,5 +1,5 @@
 import moment from 'moment-timezone';
-import { normalize } from '@exzeo/core-ui/lib';
+import { normalize } from '@exzeo/core-ui';
 
 import { STANDARD_DATE_FORMAT } from '../constants/dates';
 

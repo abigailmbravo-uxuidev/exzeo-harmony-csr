@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { reduxForm } from 'redux-form';
-import Button from '@exzeo/core-ui/lib/Button';
+import { Button } from '@exzeo/core-ui';
 
 export class RemoveAgentModal extends Component {
   render() {

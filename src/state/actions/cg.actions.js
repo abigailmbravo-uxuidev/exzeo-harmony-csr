@@ -156,6 +156,7 @@ export const batchCompleteTask = (modelName, workflowId, stepsWithData, dispatch
     };
     axiosConfigs.push(axiosConfig);
   });
+
   return Promise.reduce(axiosConfigs, (response, axiosConfig) => axios(axiosConfig), 0)
     .then((response) => {
       const responseData = response.data.data;

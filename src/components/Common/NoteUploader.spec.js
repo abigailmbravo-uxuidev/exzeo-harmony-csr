@@ -66,11 +66,6 @@ describe('Testing NoteUploader component', () => {
     });
 
     it('should submit note', () => {
-      Object.defineProperty(window.location, 'pathname', {
-        writable: true,
-        value: '/notes'
-      });
-
       instance.props.actions.cgActions.startWorkflow = jest.fn().mockImplementation(() =>
         Promise.resolve({ result: true }));
 

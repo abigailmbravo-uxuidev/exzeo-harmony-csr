@@ -25,10 +25,8 @@ const props = {
       batchCompleteTask() { return Promise.resolve(); }
     },
     appStateActions: {
+      setAppState() {},
       toggleNote() {}
-    },
-    appStateActions: {
-      setAppState() {}
     }
   },
   fieldQuestions: [],
