@@ -17,9 +17,6 @@ describe('Test quote selectors', () => {
     it('Should return false if quoteState does not match a disabled enum', () => {
       const state = {
         quoteState: {
-          quote: {}
-        },
-        service: {
           quote: { quoteState: 'Quote Started' }
         }
       };
