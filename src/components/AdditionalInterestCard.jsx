@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const AdditionalInterestCard = ({ ai, editAI, toggleAIState }) => {
+const AdditionalInterestCard = ({ ai, editAI, toggleAIState, editingDisabled }) => {
   const { active } = ai;
   return (
     <li key={ai._id} className={`${active ? 'card' : 'card inactive'}`}>
@@ -20,22 +20,23 @@ const AdditionalInterestCard = ({ ai, editAI, toggleAIState }) => {
         <label htmlFor="ref-number">Reference Number</label>
         <span>{` ${ai.referenceNumber || ' - '}`}</span>
       </div>
-      {!active &&
+      {!active && !editingDisabled &&
         <span className="reactivate-btn btn btn-link btn-sm" onClick={() => toggleAIState(ai)}>
           <i className="fa fa-plus-square" />
           <span>Reactivate</span>
         </span>
       }
-      {active &&
+      {active && !editingDisabled &&
         <span className="Delete-btn  btn btn-link btn-sm" onClick={() => toggleAIState(ai)}>
           <i className="fa fa-times-rectangle" />
           <span>Delete</span>
         </span>
       }
-      <span className={`${active ? 'edit-btn  btn btn-link btn-sm' : 'edit-btn  btn btn-link btn-sm disabled'}`} onClick={active ? () => editAI(ai) : null}>
+      {!editingDisabled && <span className={`${active ? 'edit-btn  btn btn-link btn-sm' : 'edit-btn  btn btn-link btn-sm disabled'}`} onClick={active ? () => editAI(ai) : null}>
         <i className="fa fa-pencil-square" />
         <span>Edit</span>
       </span>
+      }
     </li>
   );
 };

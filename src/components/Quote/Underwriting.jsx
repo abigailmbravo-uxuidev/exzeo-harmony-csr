@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import _ from 'lodash';
 import { reduxForm } from 'redux-form';
 
+import { blockQuote } from '../../state/selectors/quote.selectors';
 import { startWorkflow } from '../../state/actions/cg.actions';
 import { setAppState } from '../../state/actions/appState.actions';
 import { setAppError } from '../../state/actions/error.actions';
@@ -36,8 +37,6 @@ export const handleInitialize = (state) => {
 
   return values;
 };
-
-const checkQuoteState = quoteData => _.some(['Policy Issued', 'Documents Received'], state => state === quoteData.quoteState);
 
 export const handleFormSubmit = async (data, dispatch, props) => {
   const {
@@ -96,7 +95,7 @@ export class Underwriting extends Component {
 
   render() {
     const {
-      appState, fieldValues, handleSubmit, pristine, quoteData, underwritingQuestions, dirty, match
+      appState, fieldValues, handleSubmit, pristine, quoteData, underwritingQuestions, dirty, match, editingDisabled
     } = this.props;
     return (
       <QuoteBaseConnect match={match}>
@@ -136,7 +135,7 @@ export class Underwriting extends Component {
               className="btn btn-primary"
               type="submit"
               form="Underwriting"
-              disabled={appState.data.submitting || pristine || checkQuoteState(quoteData)}>Update
+              disabled={appState.data.submitting || pristine || editingDisabled}>Update
             </button>
           </div>
         </div>
@@ -171,6 +170,7 @@ const mapStateToProps = state => ({
   fieldValues: _.get(state.form, 'Underwriting.values', {}),
   quoteData: state.quoteState.quote || {},
   activateRedirect: state.appState.data.activateRedirect,
+  editingDisabled: blockQuote(state),
   underwritingQuestions: state.service.underwritingQuestions
 });
 
