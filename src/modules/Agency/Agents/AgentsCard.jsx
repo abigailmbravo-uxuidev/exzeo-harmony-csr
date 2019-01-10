@@ -1,6 +1,5 @@
 import React from 'react';
-import { normalize } from '@exzeo/core-ui';
-import Button from '@exzeo/core-ui/lib/Button';
+import { normalize, Button } from '@exzeo/core-ui';
 
 export const AgentsCard = ({
   agency,

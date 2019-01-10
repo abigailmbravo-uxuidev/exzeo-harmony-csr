@@ -1,12 +1,14 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import Button from '@exzeo/core-ui/lib/Button';
+import { Button } from '@exzeo/core-ui';
+
+import Footer from '../../../components/Common/Footer';
+
 import TaxDetail from './TaxDetails';
 import LicenseCard from './LicenseCard';
 import LicenseModal from './LicenseModal';
 import ContractCard from './ContractCard';
 import ContractModal from './ContractModal';
-import Footer from '../../../components/Common/Footer';
 
 export class Contracts extends Component {
   state = {

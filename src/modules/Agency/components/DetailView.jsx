@@ -1,5 +1,5 @@
 import React from 'react';
-import { formattedDate } from '@exzeo/core-ui/lib/Utilities';
+import { date } from '@exzeo/core-ui';
 
 import { formatUrl } from '../../../utilities/format';
 
@@ -54,7 +54,7 @@ export const DetailView = ({
       </div>
       <div className="eoExpirationDate">
         <label>EO Expiration Date</label>
-        <div>{formattedDate(agency.eoExpirationDate,'MM/DD/YYYY')}</div>
+        <div>{date.formattedDate(agency.eoExpirationDate,'MM/DD/YYYY')}</div>
       </div>
       {String(agencyBranchData.branchCode) !== '0' &&
       <div className="branchName">
