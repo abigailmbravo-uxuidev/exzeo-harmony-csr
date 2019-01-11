@@ -31,19 +31,7 @@
 @import "partials/_pagination";
 @import "partials/_user-script";
 @import url("https://fonts.googleapis.com/css?family=Roboto:100,300,500"); //base
-//links
-/*------------------------------------------------------------------------------------*/
-a {
-  text-decoration: none;
-  color: $bright-blue-lighten-01;
-  @include transition(all 0.2s ease-in-out);
-
-  &:hover {
-    text-decoration: none;
-    color: $blue-darken-02;
-  }
-}
-//buttons
+//buttons and links
 /*------------------------------------------------------------------------------------*/
 @import "partials/_buttons"; //inputs & forms
 //icons
@@ -160,6 +148,7 @@ html {
     padding: 0;
     //site background
     div#root {
+      overflow-y: hidden;
       height: 100%;
       margin: 0;
       padding: 0;
@@ -336,15 +325,12 @@ html {
 //search
 /*------------------------------------------------------------------------------------*/
 @import "partials/_search"; //search partial
-
 //footer
 /*------------------------------------------------------------------------------------*/
 @import "partials/_footer"; //search partial
-
 //ROUTE SPECIFIC STYLES
 /*|||||||||||||||||||||||||||||||||||||||||||||||||
 |||||||||||||||||||||||||||||||||||||||||||||||||*/
-
 //search results
 /*------------------------------------------------------------------------------------*/
 .result-cards,
@@ -1223,8 +1209,10 @@ ul.list-cards {
     }
   }
 }
-@import "partials/_loader"; //loader
+//Loader
 /*------------------------------------------------------------------------------------*/
+@import "partials/_loader"; //loader
+
 .loader {
   .card {
     .card-block {
@@ -1256,8 +1244,6 @@ ul.list-cards {
 }
 
 #root {
-  overflow-y: hidden;
-
   .csr {
     &.app-wrapper {
       overflow-y: hidden;
