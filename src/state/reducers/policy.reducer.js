@@ -97,5 +97,5 @@ function resetPolicyState(state) {
   return {
     ...state,
     ...initialState.policyState
-  }
+  };
 }

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Route } from 'react-router-dom';
 import moment from 'moment-timezone';
-import Loader from '@exzeo/core-ui/lib/Loader';
+import { Loader } from '@exzeo/core-ui';
 
 import { setAppState } from '../../state/actions/appState.actions';
 import { getZipcodeSettings, getAgents, getAgency, getNotes } from '../../state/actions/service.actions';

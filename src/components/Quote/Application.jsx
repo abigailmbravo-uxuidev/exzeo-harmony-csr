@@ -66,7 +66,8 @@ export class QuoteApplication extends Component {
       handleSubmit,
       match,
       quoteData,
-      underwritingExceptions
+      underwritingExceptions,
+      isUwOverrideSubmitting
     } = this.props;
 
     const uwExceptions = underwritingExceptions.filter(e => !e.overridden).length;
@@ -97,7 +98,7 @@ export class QuoteApplication extends Component {
               form="Application"
               className="btn btn-primary"
               type="submit"
-              disabled={(uwExceptions > 0) || checkQuoteState(quoteData.quoteState) || appState.data.applicationSent}>Send to DocuSign
+              disabled={(uwExceptions > 0) || checkQuoteState(quoteData.quoteState) || appState.data.applicationSent || isUwOverrideSubmitting}>Send to DocuSign
             </button>
           </div>
         </div>
@@ -126,7 +127,8 @@ const mapStateToProps = state => ({
   fieldValues: _.get(state.form, 'Application.values', {}),
   underwritingExceptions: handleGetUnderwritingExceptions(state),
   initialValues: handleInitialize(state),
-  quoteData: state.quoteState.quote || {}
+  quoteData: state.quoteState.quote || {},
+  isUwOverrideSubmitting: state.form.UnderwritingOverride ? state.form.UnderwritingOverride.submitting : false
 });
 
 // ------------------------------------------------
