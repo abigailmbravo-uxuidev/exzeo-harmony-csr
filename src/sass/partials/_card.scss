@@ -30,11 +30,11 @@
     border-bottom: $card-border-width solid $card-border-color;
     background-color: $card-cap-bg;
 
-    > h1,
+    > h2,
      > h3,
      > h4,
      > h5,
-    > h2 {
+    > h1 {
       margin: 0;
     }
 
@@ -245,10 +245,6 @@
             &.edit-btn {
               margin-right: $padding;
             }
-
-            &.delete-btn {}
-
-            &.reactivate-btn {}
           }
 
           &.inactive {
@@ -296,6 +292,7 @@ ul {
         flex-shrink: 1;
         width: 100%;
         margin: 0 0 $padding;
+        @include transition(all 0.2s ease-in-out);
 
         &.pastDue {
           .card-header {
@@ -403,7 +400,7 @@ ul {
             flex-grow: 1;
             flex-shrink: 1;
             width: auto;
-            padding: $padding 0;
+            padding: $padding $padding $padding 0;
             background: $white;
 
             h4 {
@@ -474,10 +471,23 @@ ul {
                       width: 2rem;
                     }
                   }
+                }
+              }
+            }
+          }
+        }
 
-                  &.data-row {
-                    &:hover {
-                      cursor: pointer;
+        &:hover {
+          cursor: pointer;
+          transform: scale(1.004);
+          box-shadow: $card-box-shadow-hover;
+
+          > div {
+            &.card-body {
+              ul {
+                &.diary-entry-list {
+                  li {
+                    &.data-row {
                       background: rgba($bright-blue, .1);
                     }
                   }
@@ -494,6 +504,7 @@ ul {
             width: auto;
             border-width: 0;
             background: $white;
+            padding: 0;
           }
         }
       }
