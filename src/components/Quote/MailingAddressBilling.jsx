@@ -72,7 +72,7 @@ export const InstallmentTerm = ({ paymentPlans, payPlans }) => (
     {payPlans && payPlans.map((payPlan, index) => {
     const paymentPlan = paymentPlans[getSelectedPlan(payPlan)];
     return (
-      <dl className="column-3" key={index}>
+      <dl key={index}>
         <div>
           {paymentPlan && paymentPlan.amount &&
           <div>
@@ -309,14 +309,10 @@ export class MailingAddressBilling extends Component {
                       </div>
                     </div>
                   </div>
-                  <div className="flex-parent">
-                    <div className="flex-child">
-                      <InstallmentTerm
-                        payPlans={_.find(billingOptions.options, ['billToId', this.props.fieldValues.billToId]) ?
-                                   _.find(billingOptions.options, ['billToId', this.props.fieldValues.billToId]).payPlans : []}
-                        paymentPlans={billingOptions.paymentPlans} />
-                    </div>
-                  </div>
+                  <InstallmentTerm
+                    payPlans={_.find(billingOptions.options, ['billToId', this.props.fieldValues.billToId]) ?
+                               _.find(billingOptions.options, ['billToId', this.props.fieldValues.billToId]).payPlans : []}
+                    paymentPlans={billingOptions.paymentPlans} />
                 </section>
               </div>
             </div>
