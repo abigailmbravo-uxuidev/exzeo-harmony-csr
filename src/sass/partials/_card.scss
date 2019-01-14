@@ -30,11 +30,11 @@
     border-bottom: $card-border-width solid $card-border-color;
     background-color: $card-cap-bg;
 
-    > h2,
+    > h1,
      > h3,
      > h4,
      > h5,
-    > h1 {
+    > h2 {
       margin: 0;
     }
 
@@ -502,9 +502,9 @@ ul {
             flex-grow: 0;
             flex-shrink: 0;
             width: auto;
+            padding: 0;
             border-width: 0;
             background: $white;
-            padding: 0;
           }
         }
       }
