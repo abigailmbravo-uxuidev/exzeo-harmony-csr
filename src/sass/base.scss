@@ -165,6 +165,22 @@ html {
         margin: 0;
         padding: 0;
         background: $warm-gray-10;
+        overflow-y: hidden;
+        min-width: $csr-min-width;
+        //header
+        &.agency,
+        &.policy,
+        &.quote {
+          header {
+            div[role="banner"] {
+              > .logo {
+                img {
+                  height: 2.75rem;
+                }
+              }
+            }
+          }
+        }
         //main/content - role "document"
         main[role="document"] {
           position: relative;
@@ -777,23 +793,32 @@ ul.list-cards {
 }
 //Mailing & Billing
 /*------------------------------------------------------------------------------------*/
-#Billing {
+#MailingAddressBilling {
   .installment-term {
-    dl {
-      dt {
-        margin-top: $padding/2;
-        color: $blue-darken-02;
-        font-weight: $font-weight-bold;
+    display: flex;
 
-        &:first-child {
-          margin-top: 0;
-        }
+    dl {
+      flex-grow: 1;
+      flex-shrink: 1;
+      width: 33.33%;
+      margin-right: $padding;
+
+      &:last-child {
+        margin-right: 0;
+      }
+
+      dt {
+        padding: $padding;
+        color: $warm-gray-08;
+        background: $warm-gray-02;
+        font-weight: $font-weight-bold;
       }
 
       dd {
         margin-bottom: 0;
+        padding: $padding;
 
-        &:nth-of-type(odd) {
+        &:nth-of-type(even) {
           background: $warm-gray-01;
         }
       }
@@ -1245,24 +1270,6 @@ ul.list-cards {
 
 #root {
   .csr {
-    &.app-wrapper {
-      overflow-y: hidden;
-      min-width: $csr-min-width;
-
-      &.agency,
-      &.policy,
-      &.quote {
-        header {
-          div[role="banner"] {
-            > .logo {
-              img {
-                height: 44px;
-              }
-            }
-          }
-        }
-      }
-    }
 
     .site-nav {
       //width: 12rem;
@@ -1473,38 +1480,10 @@ ul.list-cards {
     flex-shrink: 1;
     order: 0;
     padding: 0 ($padding*2) 0 0;
-  }
 
-  .flex-child:last-of-type {
-    flex-basis: auto;
-    flex-grow: 1;
-    flex-shrink: 1;
-    padding: 0;
-  }
-
-  .flex-2,
-  .flex-2:last-of-type {
-    flex-basis: 50%;
-    flex-grow: 0;
-    flex-shrink: 1;
-
-    &:last-of-type {}
-  }
-
-  .flex-3,
-  .flex-3:last-of-type {
-    flex-basis: 33.33%;
-    flex-grow: 0;
-    flex-shrink: 1;
-
-    &:last-of-type {}
-  }
-
-  .flex-4,
-  .flex-4:last-of-type {
-    flex-basis: 25%;
-    flex-grow: 0;
-    flex-shrink: 1;
+    &:last-of-type {
+      padding: 0;
+    }
   }
 }
 
@@ -1524,37 +1503,6 @@ ul.list-cards {
       flex-basis: 10rem;
       flex-grow: 0;
       flex-shrink: 0;
-    }
-  }
-}
-
-.installment-term {
-  display: flex;
-
-  dl {
-    &.column-3 {
-      width: 33.33%;
-      margin-right: $padding;
-
-      &:last-child {
-        margin-right: 0;
-      }
-
-      div {
-        dt {
-          padding: $padding;
-          color: $warm-gray-08;
-          background: $warm-gray-02;
-        }
-
-        dd {
-          padding: $padding;
-
-          &:nth-of-type(even) {
-            background: $warm-gray-01;
-          }
-        }
-      }
     }
   }
 }
