@@ -471,6 +471,13 @@ ul {
                       width: 2rem;
                     }
                   }
+
+                  &.data-row {
+                    &:hover {
+                      cursor: pointer;
+                      background: rgba($bright-blue, .1);
+                    }
+                  }
                 }
               }
             }
