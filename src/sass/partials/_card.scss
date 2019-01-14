@@ -30,11 +30,11 @@
     border-bottom: $card-border-width solid $card-border-color;
     background-color: $card-cap-bg;
 
-    > h1,
+    > h2,
      > h3,
      > h4,
      > h5,
-    > h2 {
+    > h1 {
       margin: 0;
     }
 
@@ -471,10 +471,23 @@ ul {
                       width: 2rem;
                     }
                   }
+                }
+              }
+            }
+          }
+        }
 
-                  &.data-row {
-                    &:hover {
-                      cursor: pointer;
+        &:hover {
+          cursor: pointer;
+          transform: scale(1.004);
+          box-shadow: $card-box-shadow-hover;
+
+          > div {
+            &.card-body {
+              ul {
+                &.diary-entry-list {
+                  li {
+                    &.data-row {
                       background: rgba($bright-blue, .1);
                     }
                   }
@@ -512,6 +525,7 @@ ul {
             padding: 0;
             border-width: 0;
             background: $white;
+            padding: 0;
           }
         }
       }
