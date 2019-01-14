@@ -186,6 +186,8 @@ html {
         margin: 0;
         padding: 0;
         background: $warm-gray-10;
+        overflow-y: hidden;
+        min-width: $csr-min-width;
         //header
         &.agency,
         &.policy,
@@ -908,6 +910,7 @@ ul.list-cards {
 /*------------------------------------------------------------------------------------*/
 #root {
   .csr {
+
     .site-nav {
       ul {
         hr.nav-division {
@@ -1119,6 +1122,26 @@ ul.list-cards {
 
     &:last-of-type {
       padding: 0;
+    }
+  }
+}
+
+.mailing-address-details {
+  .flex-form {
+    .city {
+      flex-grow: 1;
+    }
+
+    .state {
+      flex-basis: 10rem;
+      flex-grow: 0;
+      flex-shrink: 0;
+    }
+
+    .zip {
+      flex-basis: 10rem;
+      flex-grow: 0;
+      flex-shrink: 0;
     }
   }
 }
