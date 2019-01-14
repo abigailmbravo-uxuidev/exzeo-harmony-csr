@@ -30,11 +30,11 @@
     border-bottom: $card-border-width solid $card-border-color;
     background-color: $card-cap-bg;
 
-    > h2,
+    > h1,
      > h3,
      > h4,
      > h5,
-    > h1 {
+    > h2 {
       margin: 0;
     }
 
@@ -169,9 +169,9 @@
 }
 
 .edit-btn {
-    margin-left: $padding;
   display: flex;
   align-items: center;
+  margin-left: $padding;
   color: $bright-blue;
   font-size: $font-size-sm;
   font-weight: $font-weight-bold;
@@ -204,10 +204,11 @@
   }
 }
 
-.app-wrapper.csr.quote main #AddAdditionalInterestPage .results-wrapper,
-.app-wrapper.csr.policy main .content-wrapper .route-content .form-group section {
+.app-wrapper.csr.policy main .content-wrapper .route-content .form-group section,
+.app-wrapper.csr.quote main #AddAdditionalInterestPage .results-wrapper {
   ul {
-    &.additional-interests-list, &.result-cards {
+    &.additional-interests-list,
+    &.result-cards {
       li {
         &.card {
           align-items: center;
@@ -282,6 +283,7 @@
   }
 }
 // ADDED FROM DIARIES / REUSABLE CARDS
+
 ul {
   &.results {
     width: 100%;
@@ -421,6 +423,7 @@ ul {
                   padding: ($padding/4) 0;
                   color: $warm-gray-08;
                   font-size: $font-size-sm;
+                  @include transition(all 0.2s ease-in-out);
 
                   &.header {
                     background: $warm-gray-02;
@@ -469,6 +472,13 @@ ul {
                       flex-grow: 0;
                       flex-shrink: 0;
                       width: 2rem;
+                    }
+                  }
+
+                  &.data-row {
+                    &:hover {
+                      cursor: pointer;
+                      background: rgba($bright-blue, .1);
                     }
                   }
                 }
