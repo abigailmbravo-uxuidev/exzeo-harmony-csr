@@ -736,7 +736,7 @@ ul.list-cards {
     display: flex;
     flex-direction: column;
     flex-grow: 1;
-    flex-shrink: 0;
+    flex-shrink: 1;
     width: 100%;
     margin: $padding 0 ($padding*2);
     padding: ($padding*2) 0 $paragraph-margin-bottom;
@@ -1268,11 +1268,12 @@ ul.list-cards {
   }
 }
 
+//Navigation
+/*------------------------------------------------------------------------------------*/
 #root {
   .csr {
 
     .site-nav {
-      //width: 12rem;
       ul {
         hr.nav-division {
           margin: ($padding*2) 0;
