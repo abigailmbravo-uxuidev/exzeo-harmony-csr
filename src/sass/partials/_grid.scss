@@ -752,11 +752,6 @@ table {
     flex-wrap: nowrap;
 
     .results-wrapper {
-      display: flex;
-      flex-basis: 100%;
-      flex-direction: column;
-      flex-grow: 1;
-      flex-shrink: 0;
       //card view styles
       /*------------------------------------------------------------------------------------*/
       .card-view {
