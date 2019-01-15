@@ -269,9 +269,7 @@
             flex-grow: 1;
             flex-shrink: 1;
 
-            .flex-child.col-2 {
-              width: 50%;
-              padding: 0;
+            .col-2 {
 
               .form-group.labels {
                 display: flex;
@@ -458,7 +456,7 @@
               }
             }
 
-            .flex-parent {
+            .flex-row {
               .address {
                 width: 100%;
               }

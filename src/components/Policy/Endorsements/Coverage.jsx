@@ -42,9 +42,9 @@ const Coverage = ({
 }) => (
   <section name="coverage" id="coverage">
     <h3>Coverage</h3>
-    <div className="flex-parent">
+    <div className="flex-row">
       {/* Col1 */}
-      <div className="flex-child col-2">
+      <div className="col-2">
         <div className="form-group labels">
           <label /><label>Current</label><label>New</label>
         </div>
@@ -161,7 +161,7 @@ const Coverage = ({
         />
       </div>
       {/* Col2 */}
-      <div className="flex-child col-2">
+      <div className="col-2">
         <div className="form-group labels">
           <label /><label>Current</label><label>New</label>
         </div>
