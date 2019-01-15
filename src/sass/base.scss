@@ -154,6 +154,25 @@ html {
       padding: 0;
       background: $white;
       //app - first div inside app "root"
+      //left navigation
+      .csr {
+        &.app-wrapper {
+          overflow-y: hidden;
+          min-width: $csr-min-width;
+        }
+
+        .site-nav {
+          ul {
+            hr.quote-hr {
+              margin: ($padding*2)(-$padding);
+              padding: 0;
+              border-width: 0;
+              border-top: 2px dotted $warm-gray-04;
+            }
+          }
+        }
+      }
+
       .app-wrapper {
         display: flex;
         overflow-y: hidden;
@@ -238,7 +257,6 @@ html {
             flex-direction: column;
             flex-grow: 1;
             flex-shrink: 1;
-            //flex-wrap: wrap;
             width: 100%;
 
             > div {
@@ -636,153 +654,7 @@ ul.list-cards {
     }
   }
 }
-//Customize Quote page
-/*------------------------------------------------------------------------------------*/
-#Customize {
-  overflow-y: auto;
-  flex-grow: 1;
-
-  .section-group-header {
-    i {
-      margin-right: $padding;
-
-      &:before {
-        font-family: $font-family-icon;
-      }
-
-      &.Coverage {
-        &.Limits {
-          &:before {
-            content: "\f201";
-          }
-        }
-
-        &.Options {
-          &:before {
-            content: "\f0ae";
-          }
-        }
-      }
-
-      &.Deductibles {
-        &:before {
-          content: "\f0d6";
-        }
-      }
-
-      &.Mitigation {
-        &:before {
-          content: "\f024";
-        }
-      }
-
-      &.Discounts {
-        &:before {
-          content: "\f0c4";
-        }
-      }
-    }
-  }
-
-  .form-group.survey-wrapper {
-    input[readonly] {
-      color: $body-color;
-      border-bottom: 2px solid $warm-gray-01;
-      background-color: rgba($white, 0);
-
-      h3 {
-        flex-basis: $font-size-h3;
-      }
-    }
-
-    .form-group {
-      align-items: center;
-      flex-direction: row;
-      justify-content: space-between;
-
-      &.range-component,
-      &.range-component,
-      &.segmented {
-        align-items: flex-start;
-        flex-direction: column;
-        justify-content: flex-start;
-
-        .range-wrapper,
-        .segmented-answer-wrapper,
-        label {
-          width: 100%;
-        }
-      }
-    }
-  }
-}
-//Additional Interests
-/*------------------------------------------------------------------------------------*/
-#AddAdditionalInterestPage,
-.additional-interests {
-  .detail-wrapper {
-    flex-direction: column;
-  }
-
-  .button-group {
-    display: flex;
-
-    .btn {
-      margin: 0 $padding $padding 0;
-    }
-  }
-
-  .results-wrapper {
-    display: flex;
-    flex-direction: column;
-    flex-grow: 1;
-    flex-shrink: 1;
-    width: 100%;
-    margin: $padding 0 ($padding*2);
-    padding: ($padding*2) 0 $paragraph-margin-bottom;
-    border-top: 1px dashed $green-darken-03;
-
-    ul.results.result-cards {
-      margin: 0;
-      padding: 0;
-      list-style: none;
-
-      li {
-        a {
-          .edit-btn {
-            display: flex;
-            align-items: center;
-            color: $bright-blue;
-            font-size: $font-size-sm;
-            font-weight: $font-weight-bold;
-
-            i {
-              width: auto;
-              margin: 0 ($padding/2) 0 0;
-              color: $bright-blue;
-              font-size: $font-size-sm;
-            }
-          }
-
-          &:hover {
-            .edit-btn {
-              color: $bright-blue-darken-04;
-
-              i {
-                color: $bright-blue-darken-04;
-              }
-
-              span {
-                text-decoration: underline;
-              }
-            }
-          }
-        }
-      }
-    }
-  }
-}
-
+//this may no longer be used
 #BillPayer {
   overflow-y: auto;
   flex-grow: 1;
@@ -791,214 +663,7 @@ ul.list-cards {
     display: none;
   }
 }
-//summary page
-/*------------------------------------------------------------------------------------*/
-.summary {
-  overflow-y: auto;
-  width: 100%;
-
-  dt {
-    color: $warm-gray-08;
-  }
-
-  .detail-wrapper {
-    width: 100%;
-
-    .detail-group {
-      .edit-btn {
-        &:hover {
-          text-decoration: none;
-        }
-      }
-
-      &.edit {
-        border: 2px solid $warm-gray-07;
-
-        .editing {
-          position: absolute;
-          top: $padding;
-          right: $padding;
-          text-transform: uppercase;
-          color: $white;
-        }
-
-        .section-group-header {
-          background: $bright-blue;
-        }
-
-        .display-element {
-          padding: ($padding) 0;
-
-          .workflow-steps {
-            padding: 0;
-          }
-        }
-      }
-
-      &.property-details {
-        margin-bottom: $padding*2;
-
-        .display-element {
-          display: flex;
-          flex-wrap: wrap;
-          padding: $padding 0;
-
-          dl {
-            flex-grow: 1;
-            flex-shrink: 0;
-
-            div {
-              dd {
-                margin-bottom: 0;
-              }
-            }
-          }
-        }
-      }
-
-      &.quote-details {
-        margin-bottom: 1rem;
-
-        .display-element {
-          display: flex;
-          flex-direction: column;
-          flex-wrap: wrap;
-          margin-bottom: $padding;
-
-          dl {
-            display: flex;
-            margin-bottom: 0;
-            padding: ($padding);
-
-            &:nth-of-type(odd) {
-              background: $warm-gray-01;
-            }
-
-            div {
-              display: flex;
-              align-items: center;
-              justify-content: space-between;
-              width: 100%;
-
-              dt {
-                span {
-                  margin-right: $padding;
-                }
-              }
-
-              dd {
-                margin-bottom: 0;
-              }
-            }
-          }
-        }
-      }
-
-      &.policyholder-details {
-        margin-bottom: 1rem;
-
-        .display-element {
-          padding: $padding 0;
-
-          p {
-            padding: $padding*2;
-            color: $red-darken-02;
-            background: $orange-lighten-04;
-          }
-
-          .contact-card {
-            display: flex;
-
-            div {
-              flex-grow: 1;
-              flex-shrink: 0;
-
-              &.contact-name {}
-
-              &.contact-email {}
-
-              dl {
-                margin-right: $padding*2;
-
-                div {
-                  dd {
-                    margin-bottom: 0;
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-
-      &.mailing-address-details {
-        margin-bottom: 1rem;
-
-        .display-element {
-          display: flex;
-          padding: $padding 0;
-
-          dl {
-            flex-grow: 1;
-            flex-shrink: 0;
-          }
-        }
-      }
-
-      &.additional-interests-details {
-        .display-element {
-          padding: $padding 0;
-
-          .card {
-            flex-direction: row;
-            margin: 0 0 $padding;
-            padding: $padding;
-
-            .card-icon {
-              display: flex;
-              align-items: center;
-              flex-direction: column;
-              justify-content: center;
-              margin-right: $padding;
-
-              i {
-                display: flex;
-                align-items: center;
-                flex-grow: 0;
-                flex-shrink: 0;
-                justify-content: center;
-                width: 2rem;
-                height: 2rem;
-                color: $bright-blue-darken-04;
-                font-size: $font-size-h2;
-              }
-
-              label {
-                margin-bottom: 0;
-                background: none;
-                font-size: $font-size-xs;
-                font-weight: $font-weight-normal;
-              }
-            }
-
-            section {
-              flex-grow: 1;
-              flex-shrink: 1;
-
-              h4 {
-                margin-bottom: 0;
-              }
-
-              p {
-                margin-bottom: 0;
-              }
-            }
-          }
-        }
-      }
-    }
-  }
-}
+//this may no longer be used
 //Reports page
 /*------------------------------------------------------------------------------------*/
 .reports {

@@ -103,8 +103,7 @@ export class Summary extends Component {
 
     return (
       <QuoteBaseConnect match={match}>
-        <div className="route-content summary workflow">
-
+        <div id="QuoteSummary"  className="route-content summary workflow">
           <div className="scroll">
             {disablePage &&
             <div className="detail-wrapper">
