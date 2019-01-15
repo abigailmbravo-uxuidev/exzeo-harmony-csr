@@ -10,11 +10,11 @@ const emailAddressDepends = validation.dependsOn(['policyHolders[1].firstName', 
 
 const PolicyHolder = ({ setSecondaryPolicyHolder, policyHolders, setPHToggle }) => (
   <section name="policy" id="policy">
-    <div className="flex-parent col2">
+    <div className="flex-row">
       {/* Col1 */}
-      <div className="flex-child">
+      <div className="col-2">
         <h3>Primary Policyholder</h3>
-        <div className="flex-parent col2">
+        <div className="flex-row">
           <Field
             name="policyHolders[0].firstName"
             label="First Name"
@@ -30,7 +30,7 @@ const PolicyHolder = ({ setSecondaryPolicyHolder, policyHolders, setPHToggle }) 
             dataTest='pH1LastName'
           />
         </div>
-        <div className="flex-parent col2">
+        <div className="flex-row">
           <Field
             name="policyHolders[0].primaryPhoneNumber"
             label="Primary Phone"
@@ -46,7 +46,7 @@ const PolicyHolder = ({ setSecondaryPolicyHolder, policyHolders, setPHToggle }) 
             dataTest='pH1secondaryPhone'
           />
         </div>
-        <div className="flex-parent">
+        <div className="flex-row">
           <Field
             name="policyHolders[0].emailAddress"
             label="Email Address"
@@ -59,7 +59,7 @@ const PolicyHolder = ({ setSecondaryPolicyHolder, policyHolders, setPHToggle }) 
         </div>
       </div>
       {/* Col2 */}
-      <div className="flex-child">
+      <div className="col-2">
         <div className="flex-header-wrap">
           <h3>Secondary Policyholder</h3>
           <div className="check-box-wrapper">
@@ -75,7 +75,7 @@ const PolicyHolder = ({ setSecondaryPolicyHolder, policyHolders, setPHToggle }) 
             <label htmlFor="clearFields">Remove</label>
           </div>
         </div>
-        <div className="flex-parent col2">
+        <div className="flex-row">
           <Field
             name="policyHolders[1].firstName"
             label="First Name"
@@ -94,7 +94,7 @@ const PolicyHolder = ({ setSecondaryPolicyHolder, policyHolders, setPHToggle }) 
             dataTest='pH2LastName'
           />
         </div>
-        <div className="flex-parent col2">
+        <div className="flex-row">
           <Field
             name="policyHolders[1].primaryPhoneNumber"
             label="Primary Phone"
@@ -112,7 +112,7 @@ const PolicyHolder = ({ setSecondaryPolicyHolder, policyHolders, setPHToggle }) 
             dataTest='pH2secondaryPhone'
           />
         </div>
-        <div className="flex-parent">
+        <div className="flex-row">
           <Field
             name="policyHolders[1].emailAddress"
             label="Email Address"

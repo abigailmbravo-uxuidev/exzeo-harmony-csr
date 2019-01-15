@@ -7,9 +7,9 @@ import { getAnswers } from '../../../utilities/forms';
 const HomeLocation = ({ questions }) => (
   <section name="home" id="home">
     <h3>Home / Location</h3>
-    <div className="flex-parent">
+    <div className="flex-row">
       {/* Col1 */}
-      <div className="flex-child col-2">
+      <div className="col-2">
         <div className="form-group labels">
           <label /><label>Current</label><label>New</label>
         </div>
@@ -59,7 +59,7 @@ const HomeLocation = ({ questions }) => (
         />
       </div>
       {/* Col2 */}
-      <div className="flex-child col-2">
+      <div className="col-2">
         <div className="form-group labels">
           <label /><label>Current</label><label>New</label>
         </div>
@@ -107,7 +107,6 @@ const HomeLocation = ({ questions }) => (
           allowNegative={false}
         />
       </div>
-
     </div>
   </section>
 );
