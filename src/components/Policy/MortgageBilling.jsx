@@ -267,67 +267,47 @@ export class MortgageBilling extends Component {
               <section className="add-payment">
                 <h3>Add Payment</h3>
                 <form id="MortgageBilling" onSubmit={handleSubmit(this.handleFormSubmit)} >
-                  <div className="flex-parent">
-                    <div className="flex-child">
-                      <div className="form-group">
-                        <Field
-                          name="cashDate"
-                          dataTest="cashDate"
-                          label="Cash Date"
-                          component={Input}
-                          type="date"
-                          validate={validation.isRequired}
-                          normalize={this.setBatch} />
-                      </div>
-                    </div>
-                    <div className="flex-child">
-                      <div className="form-group">
-                        <Field
-                          name="batchNumber"
-                          dataTest="batchNumber"
-                          label="Batch Number"
-                          component={Input}
-                          validate={validateBatchNumber} />
-                      </div>
-                    </div>
+                  <div className="flex-row">
+                    <Field
+                        name="cashDate"
+                        dataTest="cashDate"
+                        label="Cash Date"
+                        component={Input}
+                        type="date"
+                        validate={validation.isRequired}
+                        normalize={this.setBatch} />
+                    <Field
+                      name="batchNumber"
+                      dataTest="batchNumber"
+                      label="Batch Number"
+                      component={Input}
+                      validate={validateBatchNumber} />
                   </div>
-                  <div className="flex-parent">
-                    <div className="flex-child">
-                      <div className="form-group">
-                        <Field
-                          name="cashType"
-                          dataTest="cashType"
-                          label="Cash Type"
-                          normalize={this.normalizeCashType}
-                          component={Select}
-                          validate={validation.isRequired}
-                          answers={cashTypeAnswers} />
-                      </div>
-                    </div>
-                    <div className="flex-child">
-                      <div className="form-group">
-                        <Field
-                          name="cashDescription"
-                          dataTest="cashDescription"
-                          label="Description"
-                          component={Select}
-                          validate={validation.isRequired}
-                          answers={cashDescriptionAnswers} />
-                      </div>
-                    </div>
-                    <div className="flex-child">
-                      <div className="form-group">
-                        <Field
-                          name="amount"
-                          dataTest="amount"
-                          label="Amount"
-                          component={Currency}
-                          validate={validateAmount}
-                          noDecimal={false}
-                          min={-1000000}
-                          max={1000000} />
-                      </div>
-                    </div>
+                  <div className="flex-row">
+                    <Field
+                      name="cashType"
+                      dataTest="cashType"
+                      label="Cash Type"
+                      normalize={this.normalizeCashType}
+                      component={Select}
+                      validate={validation.isRequired}
+                      answers={cashTypeAnswers} />
+                    <Field
+                      name="cashDescription"
+                      dataTest="cashDescription"
+                      label="Description"
+                      component={Select}
+                      validate={validation.isRequired}
+                      answers={cashDescriptionAnswers} />
+                    <Field
+                      name="amount"
+                      dataTest="amount"
+                      label="Amount"
+                      component={Currency}
+                      validate={validateAmount}
+                      noDecimal={false}
+                      min={-1000000}
+                      max={1000000} />
                   </div>
                   <div className="btn-footer">
                     <button className="btn btn-secondary" type="button" form="MortgageBilling" onClick={resetForm}>Cancel</button>
