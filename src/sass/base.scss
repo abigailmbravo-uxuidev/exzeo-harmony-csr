@@ -1123,26 +1123,6 @@ ul.list-cards {
   }
 }
 
-.mailing-address-details {
-  .flex-form {
-    .city {
-      flex-grow: 1;
-    }
-
-    .state {
-      flex-basis: 10rem;
-      flex-grow: 0;
-      flex-shrink: 0;
-    }
-
-    .zip {
-      flex-basis: 10rem;
-      flex-grow: 0;
-      flex-shrink: 0;
-    }
-  }
-}
-
 #NotesFiles {
   width: 100%;
 }
