@@ -156,17 +156,17 @@ html {
       //app - first div inside app "root"
       .app-wrapper {
         display: flex;
+        overflow-y: hidden;
         align-items: center;
         flex-direction: column;
         flex-shrink: 0;
         width: 100%;
+        min-width: $csr-min-width;
         height: 100vh;
         min-height: 100vh;
         margin: 0;
         padding: 0;
         background: $warm-gray-10;
-        overflow-y: hidden;
-        min-width: $csr-min-width;
         //header
         &.agency,
         &.policy,
@@ -1267,12 +1267,10 @@ ul.list-cards {
     }
   }
 }
-
 //Navigation
 /*------------------------------------------------------------------------------------*/
 #root {
   .csr {
-
     .site-nav {
       ul {
         hr.nav-division {
