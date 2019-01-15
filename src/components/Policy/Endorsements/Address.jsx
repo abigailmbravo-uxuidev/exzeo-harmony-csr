@@ -5,7 +5,7 @@ import { Input, validation } from '@exzeo/core-ui';
 const PropertyAddress = ({ name, sectionId, header, testPrefix }) => (
   <section name={name} id={sectionId}>
     <h3>{header}</h3>
-    <div className="flex-parent wrap">
+    <div className="flex-row wrap">
       <div className="address">
         <Field
           name="address1"
