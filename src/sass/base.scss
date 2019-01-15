@@ -824,6 +824,28 @@ ul.list-cards {
       }
     }
   }
+
+  .mailing-address {
+
+      .city {
+        flex-grow: 1;
+        margin-right: $padding;
+      }
+
+      .state {
+        flex-basis: 10rem;
+        flex-grow: 0;
+        flex-shrink: 0;
+        margin-right: $padding;
+      }
+
+      .zip {
+        flex-basis: 10rem;
+        flex-grow: 0;
+        flex-shrink: 0;
+      }
+
+  }
 }
 //summary page
 /*------------------------------------------------------------------------------------*/
@@ -1482,26 +1504,6 @@ ul.list-cards {
 
     &:last-of-type {
       padding: 0;
-    }
-  }
-}
-
-.mailing-address-details {
-  .flex-form {
-    .city {
-      flex-grow: 1;
-    }
-
-    .state {
-      flex-basis: 10rem;
-      flex-grow: 0;
-      flex-shrink: 0;
-    }
-
-    .zip {
-      flex-basis: 10rem;
-      flex-grow: 0;
-      flex-shrink: 0;
     }
   }
 }
