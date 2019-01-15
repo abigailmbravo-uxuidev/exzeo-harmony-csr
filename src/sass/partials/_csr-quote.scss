@@ -803,10 +803,60 @@
   width: 32%;
 }
 
+//Mailing & Billing
 #MailingAddressBilling {
   .mailing-address {
     .segmented-switch {
       width: 50%;
+    }
+
+    .city {
+      flex-grow: 1;
+      margin-right: $padding;
+    }
+
+    .state {
+      flex-basis: 10rem;
+      flex-grow: 0;
+      flex-shrink: 0;
+      margin-right: $padding;
+    }
+
+    .zip {
+      flex-basis: 10rem;
+      flex-grow: 0;
+      flex-shrink: 0;
+    }
+  }
+
+  .installment-term {
+    display: flex;
+
+    dl {
+      flex-grow: 1;
+      flex-shrink: 1;
+      width: 33.33%;
+      margin-right: $padding;
+
+      &:last-child {
+        margin-right: 0;
+      }
+
+      dt {
+        padding: $padding;
+        color: $warm-gray-08;
+        background: $warm-gray-02;
+        font-weight: $font-weight-bold;
+      }
+
+      dd {
+        margin-bottom: 0;
+        padding: $padding;
+
+        &:nth-of-type(even) {
+          background: $warm-gray-01;
+        }
+      }
     }
   }
 
