@@ -349,7 +349,7 @@ export class Coverage extends Component {
     } = this.props;
 
     if (!quoteData) {
-      return (<QuoteBaseConnect />);
+      return (<React.Fragment />);
     }
 
     const mappedAgents = agents && agents.map(agent => ({
@@ -362,7 +362,7 @@ export class Coverage extends Component {
     }));
 
     return (
-      <QuoteBaseConnect match={match}>
+      <React.Fragment match={match}>
         <Prompt when={dirty} message="Are you sure you want to leave with unsaved changes?" />
         <div className="route-content">
 
@@ -426,7 +426,7 @@ export class Coverage extends Component {
             </button>
           </div>
         </div>
-      </QuoteBaseConnect>
+      </React.Fragment>
     );
   }
 }

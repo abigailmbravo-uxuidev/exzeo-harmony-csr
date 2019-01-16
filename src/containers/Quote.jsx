@@ -18,6 +18,11 @@ export class QuoteBase extends React.Component {
     this.setState({ showDiaries: !this.state.showDiaries });
   };
 
+
+  handleFormSubmit = (data) => {
+    
+  }
+
   render() {
     const {
       appState,
@@ -32,6 +37,7 @@ export class QuoteBase extends React.Component {
       <div className="app-wrapper csr quote">
         {(appState.data.submitting || !quoteData.quoteNumber) && <Loader />}
         <App
+          handleFormSubmit={this.handleFormSubmit}
           resourceType={QUOTE_RESOURCE_TYPE}
           resourceId={quoteData.quoteNumber}
           pageTitle={`Q: ${quoteData.quoteNumber || ''}`}
