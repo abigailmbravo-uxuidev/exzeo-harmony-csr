@@ -14,7 +14,6 @@ import { setAppError } from '../../state/actions/error.actions';
 import { getQuote } from '../../state/actions/quote.actions';
 import { getBillingOptions, saveBillingInfo } from '../../state/actions/service.actions';
 import { getGroupedAdditionalInterests, getSortedAdditionalInterests, checkQuoteState } from '../../state/selectors/quote.selectors';
-import QuoteBaseConnect from '../../containers/Quote';
 import AIModal from '../AdditionalInterestModal';
 import Footer from '../Common/Footer';
 import AdditionalInterestCard from '../AdditionalInterestCard';
@@ -235,7 +234,7 @@ export class AdditionalInterests extends Component {
 
     if (!quoteData.rating) {
       return (
-        <QuoteBaseConnect match={match}>
+        <React.Fragment match={match}>
           <div className="route-content">
             <div className="scroll">
               <div className="detail-wrapper">
@@ -247,12 +246,12 @@ export class AdditionalInterests extends Component {
               </div>
             </div>
           </div>
-        </QuoteBaseConnect>
+        </React.Fragment>
       );
     }
 
     return (
-      <QuoteBaseConnect match={match}>
+      <React.Fragment match={match}>
         <div className="route-content" id="AddAdditionalInterestPage">
           <div className="scroll">
             <div className="form-group survey-wrapper" role="group">
@@ -319,7 +318,7 @@ export class AdditionalInterests extends Component {
         <div className="basic-footer">
           <Footer />
         </div>
-      </QuoteBaseConnect>
+      </React.Fragment>
     );
   }
 }

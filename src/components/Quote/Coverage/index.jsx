@@ -17,7 +17,7 @@ import { getUIQuestions } from '../../../state/actions/questions.actions';
 import { getQuote } from '../../../state/actions/quote.actions';
 import { getAgencies, getAgentsByAgencyCode } from '../../../state/actions/agency.actions';
 import { checkQuoteState } from '../../../state/selectors/quote.selectors';
-import QuoteBaseConnect from '../../../containers/Quote';
+import React.Fragment from '../../../containers/Quote';
 import Footer from '../../Common/Footer';
 
 import ProducedBy from './ProducedBy';

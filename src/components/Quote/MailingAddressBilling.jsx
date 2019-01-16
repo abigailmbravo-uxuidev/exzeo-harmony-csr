@@ -11,7 +11,6 @@ import { setAppState } from '../../state/actions/appState.actions';
 import { setAppError } from '../../state/actions/error.actions';
 import { getBillingOptions } from '../../state/actions/service.actions';
 import { getQuote } from '../../state/actions/quote.actions';
-import QuoteBaseConnect from '../../containers/Quote';
 import CheckField from '../Form/inputs/CheckField';
 import TextField from '../Form/inputs/TextField';
 import { RadioFieldBilling, SelectFieldBilling } from '../Form/inputs';
@@ -227,7 +226,7 @@ export class MailingAddressBilling extends Component {
 
     if (!quoteData.rating || (!options || options.length === 0)) {
       return (
-        <QuoteBaseConnect match={match}>
+        <React.Fragment match={match}>
           <div className="route-content">
             <div className="scroll">
               <div className="detail-wrapper">
@@ -239,11 +238,11 @@ export class MailingAddressBilling extends Component {
               </div>
             </div>
           </div>
-        </QuoteBaseConnect>
+        </React.Fragment>
       );
     }
     return (
-      <QuoteBaseConnect match={match}>
+      <React.Fragment match={match}>
         <Prompt when={dirty} message="Are you sure you want to leave with unsaved changes?" />
         <div className="route-content">
           <form id="MailingAddressBilling" onSubmit={handleSubmit(handleFormSubmit)} >
@@ -336,7 +335,7 @@ export class MailingAddressBilling extends Component {
             </button>
           </div>
         </div>
-      </QuoteBaseConnect>
+      </React.Fragment>
     );
   }
 }

@@ -8,7 +8,6 @@ import { startWorkflow } from '../../state/actions/cg.actions';
 import { setAppState } from '../../state/actions/appState.actions';
 import { setAppError } from '../../state/actions/error.actions';
 import { getQuote } from '../../state/actions/quote.actions';
-import QuoteBaseConnect from '../../containers/Quote';
 import QuoteSummaryModal from '../../components/Common/QuoteSummaryModal';
 import Footer from '../Common/Footer';
 
@@ -72,7 +71,7 @@ export class QuoteApplication extends Component {
 
     const uwExceptions = underwritingExceptions.filter(e => !e.overridden).length;
     return (
-      <QuoteBaseConnect match={match}>
+      <React.Fragment match={match}>
         <div className="route-content verify workflow">
           <form id="Application" onSubmit={handleSubmit(() => quoteSummaryModal(this.props))}>
             <div className="scroll">
@@ -102,7 +101,7 @@ export class QuoteApplication extends Component {
             </button>
           </div>
         </div>
-      </QuoteBaseConnect>
+      </React.Fragment>
     );
   }
 }

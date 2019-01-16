@@ -10,7 +10,6 @@ import { startWorkflow, batchCompleteTask } from '../../state/actions/cg.actions
 import { setAppState } from '../../state/actions/appState.actions';
 import { setAppError } from '../../state/actions/error.actions';
 import { getQuote } from '../../state/actions/quote.actions';
-import QuoteBaseConnect from '../../containers/Quote';
 import normalizePhone from '../Form/normalizePhone';
 import normalizeNumbers from '../Form/normalizeNumbers';
 import Footer from '../Common/Footer';
@@ -96,13 +95,13 @@ export class Summary extends Component {
     const filteredExceptions = _.filter(quoteData.underwritingExceptions, uw => !uw.overridden && uw.code !== '003');
 
     if (!quoteData || !quoteData.underwritingExceptions) {
-      return <QuoteBaseConnect match={match} />;
+      return <React.Fragment match={match} />;
     }
 
     const disablePage = filteredExceptions.length > 0;
 
     return (
-      <QuoteBaseConnect match={match}>
+      <React.Fragment match={match}>
         <div className="route-content summary workflow">
 
           <div className="scroll">
@@ -354,7 +353,7 @@ export class Summary extends Component {
         <div className="basic-footer">
           <Footer />
         </div>
-      </QuoteBaseConnect>
+      </React.Fragment>
     );
   }
 }
