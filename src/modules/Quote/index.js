@@ -72,12 +72,12 @@ export class QuoteBase extends React.Component {
             <React.Fragment>
               <div className="content-wrapper">
                     <Route exact path={`${match.url}/coverage`} render={props => <Coverage {...props} match={match} updateQuote={this.updateQuote} />} />
-                    <Route exact path={`${match.url}/billing`} render={props => <MailingAddressBilling  {...props}  match={match} />} />
-                    <Route exact path={`${match.url}/notes`} render={props => <NotesFiles  {...props}  match={match} />} />
-                    <Route exact path={`${match.url}/summary`} render={props => <Summary  {...props}  match={match} />} />
-                    <Route exact path={`${match.url}/additionalInterests`} render={props => <AdditionalInterests  {...props}  match={match} />} />
-                    <Route exact path={`${match.url}/underwriting`} render={props => <Underwriting  {...props}  match={match} />} />
-                    <Route exact path={`${match.url}/application`} render={props => <Application  {...props}  match={match} />} />
+                    <Route exact path={`${match.url}/billing`} render={props => <MailingAddressBilling  {...props}  match={match} updateQuote={this.updateQuote} />} />
+                    <Route exact path={`${match.url}/notes`} render={props => <NotesFiles {...props} match={match} updateQuote={this.updateQuote} />} />
+                    <Route exact path={`${match.url}/summary`} render={props => <Summary {...props} match={match} updateQuote={this.updateQuote} />} />
+                    <Route exact path={`${match.url}/additionalInterests`} render={props => <AdditionalInterests {...props}  match={match} updateQuote={this.updateQuote} />} />
+                    <Route exact path={`${match.url}/underwriting`} render={props => <Underwriting {...props} match={match} updateQuote={this.updateQuote} />} />
+                    <Route exact path={`${match.url}/application`} render={props => <Application {...props} match={match} updateQuote={this.updateQuote} />} />
                 </div>
 
               <UnderwritingValidationBarConnect />
