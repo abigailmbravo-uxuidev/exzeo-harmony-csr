@@ -4,14 +4,13 @@ import { reduxForm } from 'redux-form';
 import { connect } from 'react-redux';
 import _ from 'lodash';
 
-import { startWorkflow } from '../../state/actions/cg.actions';
 import { setAppState } from '../../state/actions/appState.actions';
-import { setAppError } from '../../state/actions/error.actions';
 import { getQuote } from '../../state/actions/quote.actions';
 import QuoteSummaryModal from '../../components/Common/QuoteSummaryModal';
 import Footer from '../Common/Footer';
 
 const MODEL_NAME = 'csrSubmitApplication';
+const PAGE_NAME = 'application';
 
 const handleInitialize = (state) => {
   return {};
@@ -21,20 +20,14 @@ export const handleGetUnderwritingExceptions = state => (state.quoteState.quote 
 
 export const handleFormSubmit = async (data, dispatch, props) => {
   const {
-    appState, setAppStateAction, startWorkflowAction, setAppErrorAction, getQuoteAction, quoteData
+    appState, setAppStateAction, quoteData
   } = props;
 
-  try {
-    setAppStateAction(MODEL_NAME, '', { ...appState.data, submitting: true, applicationSent: true });
-    await startWorkflowAction(MODEL_NAME, { dsUrl: `${process.env.REACT_APP_API_URL}/ds`, quoteId: quoteData._id });
-    await getQuoteAction(quoteData._id, 'application');
-  } catch (error) {
-    setAppErrorAction(error);
-  } finally {
-    setAppStateAction(MODEL_NAME, '', {
-      ...appState.data, submitting: false, showQuoteSummaryModal: false, applicationSent: true
-    });
-  }
+  await props.updateQuote(MODEL_NAME, { dsUrl: `${process.env.REACT_APP_API_URL}/ds`, quoteId: quoteData._id }, PAGE_NAME);
+
+  setAppStateAction(MODEL_NAME, '', {
+    ...appState.data, submitting: false, showQuoteSummaryModal: false, applicationSent: true
+  });
 };
 
 export const quoteSummaryModal = (props) => {
@@ -134,8 +127,6 @@ const mapStateToProps = state => ({
 // wire up redux form with the redux connect
 // ------------------------------------------------
 export default connect(mapStateToProps, {
-  startWorkflowAction: startWorkflow,
   setAppStateAction: setAppState,
-  setAppErrorAction: setAppError,
   getQuoteAction: getQuote
 })(reduxForm({ form: 'Application', enableReinitialize: true })(QuoteApplication));
