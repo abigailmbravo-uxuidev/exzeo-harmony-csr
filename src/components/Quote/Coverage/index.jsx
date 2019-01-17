@@ -10,7 +10,6 @@ import { reduxForm, formValueSelector } from 'redux-form';
 import { getAnswers } from '../../../utilities/forms';
 import { setPercentageOfValue } from '../../../utilities/endorsementModel';
 import { getZipcodeSettings } from '../../../state/actions/service.actions';
-import { batchCompleteTask, startWorkflow } from '../../../state/actions/cg.actions';
 import { setAppState } from '../../../state/actions/appState.actions';
 import { setAppError } from '../../../state/actions/error.actions';
 import { getUIQuestions } from '../../../state/actions/questions.actions';
@@ -26,6 +25,7 @@ import Coverages from './Coverages';
 import WindMitigation from './WindMitigation';
 
 const MODEL_NAME = 'csrCoverage';
+const PAGE_NAME = 'coverage';
 
 export const handleGetZipCodeSettings = (state) => {
   const taskData = (state.cg && state.appState && state.cg[state.appState.modelName]) ? state.cg[state.appState.modelName].data : null;
@@ -150,10 +150,6 @@ const checkSentToDocusign = state => state === 'Application Sent DocuSign';
 export const handleFormSubmit = async (data, dispatch, props) => {
   const submitData = data;
 
-  props.setAppState(MODEL_NAME, '', {
-    ...props.appState.data,
-    submitting: true
-  });
   submitData.effectiveDate = momentTZ.tz(momentTZ.utc(submitData.effectiveDate).format('YYYY-MM-DD'), props.zipCodeSettings.timezone).utc().format();
 
   submitData.agencyCode = String(data.agencyCode);
@@ -194,18 +190,7 @@ export const handleFormSubmit = async (data, dispatch, props) => {
     ? submitData.pH2phone2.replace(/[^\d]/g, '')
     : submitData.pH2phone2;
 
-  try {
-    await props.startWorkflow(MODEL_NAME, {
-      quoteId: props.quoteData._id,
-      ...submitData
-    });
-
-    await props.getQuote(props.quoteData._id, 'coverage');
-  } catch (error) {
-    props.setAppError(error);
-  } finally {
-    props.setAppState(MODEL_NAME, '', { ...props.appState.data, submitting: false });
-  }
+    await props.updateQuote(MODEL_NAME, submitData, PAGE_NAME);
 };
 
 export class Coverage extends Component {
@@ -216,7 +201,7 @@ export class Coverage extends Component {
     getUIQuestions('askToCustomizeDefaultQuoteCSR');
 
 
-    this.props.getQuote(match.params.quoteNumber, 'coverage').then((quoteData) => {
+    this.props.getQuote(match.params.quoteNumber, PAGE_NAME).then((quoteData) => {
       this.props.setAppState(MODEL_NAME, '', { ...this.props.appState.data, submitting: false });
 
       if (quoteData && quoteData.property) {
@@ -491,8 +476,6 @@ const mapStateToProps = (state) => {
 export default connect(mapStateToProps, {
   getAgencies,
   getAgentsByAgencyCode,
-  batchCompleteTask,
-  startWorkflow,
   setAppState,
   getUIQuestions,
   getQuote,

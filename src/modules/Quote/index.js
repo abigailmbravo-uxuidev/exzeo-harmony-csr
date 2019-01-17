@@ -9,7 +9,10 @@ import App from '../../components/AppWrapper';
 import OpenDiariesBar from '../../components/OpenDiariesBar';
 import DiaryPolling from '../../components/DiaryPolling';
 import { QUOTE_RESOURCE_TYPE } from '../../constants/diaries';
-
+import { startWorkflow } from '../../state/actions/cg.actions';
+import { setAppState } from '../../state/actions/appState.actions';
+import { setAppError } from '../../state/actions/error.actions';
+import { getQuote } from '../../state/actions/quote.actions';
 import Coverage from '../../components/Quote/Coverage';
 import Underwriting from '../../components/Quote/Underwriting';
 import AdditionalInterests from '../../components/Quote/AdditionalInterests';
@@ -28,8 +31,21 @@ export class QuoteBase extends React.Component {
   };
 
 
-  updateQuote = (modelName, data) => {
-    
+  updateQuote = async (modelName, submitData, pageName) => {
+    const { quoteData } = this.props;
+    this.props.setAppState(modelName, '', { ...this.props.appState.data, submitting: true });
+    try {
+      await this.props.startWorkflow(modelName, {
+        quoteId: quoteData._id,
+        ...submitData
+      });
+  
+      await this.props.getQuote(quoteData._id, pageName);
+    } catch (error) {
+      this.props.setAppError(error);
+    } finally {
+      this.props.setAppState(modelName, '', { ...this.props.appState.data, submitting: false });
+    }
   }
 
   render() {
@@ -46,7 +62,6 @@ export class QuoteBase extends React.Component {
       <div className="app-wrapper csr quote">
         {(appState.data.submitting || !quoteData.quoteNumber) && <Loader />}
         <App
-          updateQuote={this.updateQuote}
           resourceType={QUOTE_RESOURCE_TYPE}
           resourceId={quoteData.quoteNumber}
           pageTitle={`Q: ${quoteData.quoteNumber || ''}`}
@@ -56,7 +71,7 @@ export class QuoteBase extends React.Component {
           render={() => (
             <React.Fragment>
               <div className="content-wrapper">
-                    <Route exact path={`${match.url}/coverage`} render={props => <Coverage {...props} match={match} />} />
+                    <Route exact path={`${match.url}/coverage`} render={props => <Coverage {...props} match={match} updateQuote={this.updateQuote} />} />
                     <Route exact path={`${match.url}/billing`} render={props => <MailingAddressBilling  {...props}  match={match} />} />
                     <Route exact path={`${match.url}/notes`} render={props => <NotesFiles  {...props}  match={match} />} />
                     <Route exact path={`${match.url}/summary`} render={props => <Summary  {...props}  match={match} />} />
@@ -97,4 +112,4 @@ const mapStateToProps = state => (
   }
 );
 
-export default connect(mapStateToProps)(QuoteBase);
+export default connect(mapStateToProps, { startWorkflow, setAppState, setAppError, getQuote })(QuoteBase);
