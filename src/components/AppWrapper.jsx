@@ -9,7 +9,7 @@ import QuoteSideNav from '../components/Quote/QuoteSideNav';
 
 import Header from './Header';
 import DiaryButton from './DiaryButton';
-import DetailsHeader from './DetailsHeader';
+import { DetailsHeader } from '@exzeo/core-ui';
 
 const CONFIG = {
   policy: {
@@ -36,6 +36,7 @@ const CONFIG = {
     title: 'QUOTE',
     sideNavComponent: QuoteSideNav,
     detailsFields: {
+      hideDeatailSummary: true,
       fields: [
         { value: 'policyHolder', component: 'Section' },
         { value: 'mailingAddress', component: 'Section' },
