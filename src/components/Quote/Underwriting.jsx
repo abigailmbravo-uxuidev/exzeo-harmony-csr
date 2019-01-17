@@ -14,6 +14,7 @@ import FieldGenerator from '../Form/FieldGenerator';
 import Footer from '../Common/Footer';
 
 const MODEL_NAME = 'csrUnderwriting';
+const PAGE_NAME = 'underwriting';
 
 export const handleInitialize = (state) => {
   const questions = state.service.underwritingQuestions ? state.service.underwritingQuestions : [];
@@ -45,21 +46,13 @@ export const handleFormSubmit = async (data, dispatch, props) => {
 
   const { floodCoverage, noPriorInsuranceSurcharge } = quoteData.underwritingAnswers;
 
-  try {
-    setAppStateAction(MODEL_NAME, appState.data.instanceId, { ...appState.data, submitting: true });
-    await startWorkflowAction(MODEL_NAME, {
-      quoteId: quoteData._id,
-      ...data,
-      floodCoverage,
-      noPriorInsuranceSurcharge
-    });
+  await props.updateQuote(MODEL_NAME, {
+    quoteId: quoteData._id,
+    ...data,
+    floodCoverage,
+    noPriorInsuranceSurcharge
+  }, PAGE_NAME);
 
-    await getQuoteAction(quoteData._id, 'underwriting');
-  } catch (error) {
-    setAppErrorAction(error);
-  } finally {
-    setAppStateAction(MODEL_NAME, appState.data.instanceId, { ...appState.data, submitting: false });
-  }
 };
 
 export const clearForm = (props) => {
@@ -80,7 +73,7 @@ export class Underwriting extends Component {
       }
     );
 
-    getQuoteAction(quoteNumber, 'underwriting')
+    getQuoteAction(quoteNumber, PAGE_NAME)
       .then((quoteData) => {
         getUnderwritingQuestionsAction(quoteData.companyCode, quoteData.state, quoteData.product, quoteData.property);
         setAppStateAction(
