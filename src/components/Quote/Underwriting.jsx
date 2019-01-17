@@ -5,7 +5,6 @@ import { connect } from 'react-redux';
 import _ from 'lodash';
 import { reduxForm } from 'redux-form';
 
-import { startWorkflow } from '../../state/actions/cg.actions';
 import { setAppState } from '../../state/actions/appState.actions';
 import { setAppError } from '../../state/actions/error.actions';
 import { getUnderwritingQuestions } from '../../state/actions/service.actions';
@@ -40,9 +39,7 @@ export const handleInitialize = (state) => {
 const checkQuoteState = quoteData => _.some(['Policy Issued', 'Documents Received'], state => state === quoteData.quoteState);
 
 export const handleFormSubmit = async (data, dispatch, props) => {
-  const {
-    quoteData, startWorkflowAction, setAppErrorAction, setAppStateAction, appState, getQuoteAction
-  } = props;
+  const { quoteData } = props;
 
   const { floodCoverage, noPriorInsuranceSurcharge } = quoteData.underwritingAnswers;
 
@@ -169,7 +166,6 @@ const mapStateToProps = state => ({
 export default connect(
   mapStateToProps,
   {
-    startWorkflowAction: startWorkflow,
     setAppStateAction: setAppState,
     setAppErrorAction: setAppError,
     getQuoteAction: getQuote,

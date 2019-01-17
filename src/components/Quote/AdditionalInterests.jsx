@@ -7,7 +7,6 @@ import { reduxForm, getFormValues } from 'redux-form';
 import { ADDITIONAL_INTERESTS } from '../../constants/additionalInterests';
 import { getAnswers } from '../../utilities/forms';
 import { getMortgageeOrderAnswers } from '../../utilities/additionalInterests';
-import { startWorkflow } from '../../state/actions/cg.actions';
 import { getUIQuestions } from '../../state/actions/questions.actions';
 import { setAppState } from '../../state/actions/appState.actions';
 import { setAppError } from '../../state/actions/error.actions';
@@ -19,6 +18,7 @@ import Footer from '../Common/Footer';
 import AdditionalInterestCard from '../AdditionalInterestCard';
 
 const MODEL_NAME = 'csrAdditionalInterest';
+const PAGE_NAME = 'additionalInterests';
 
 export class AdditionalInterests extends Component {
   state = {
@@ -74,33 +74,28 @@ export class AdditionalInterests extends Component {
 
   onHandleAISubmit = async (additionalInterests) => {
     const {
-      quoteData, startWorkflowAction, setAppErrorAction, setAppStateAction, appState, getQuoteAction
+      quoteData, setAppStateAction, appState
     } = this.props;
 
     const { addAdditionalInterestType } = this.state;
 
-    try {
-      await startWorkflowAction(MODEL_NAME, {
-        quoteId: quoteData._id,
-        additionalInterests
-      });
-      await getQuoteAction(quoteData._id, 'additionalInterests');
-    } catch (error) {
-      setAppErrorAction(error);
-    } finally {
-      this.hideAdditionalInterestModal();
-      setAppStateAction(
-        MODEL_NAME,
-        '', {
-          ...appState.data,
-          selectedMortgageeOption: null,
-          addAdditionalInterestType,
-          deleteAdditionalInterestType: '',
-          submittingAI: false,
-          selectedLink: 'additionalInterests'
-        }
-      );
-    }
+    await this.props.updateQuote(MODEL_NAME, {
+      quoteId: quoteData._id,
+      additionalInterests
+    }, PAGE_NAME);
+    
+    this.hideAdditionalInterestModal();
+    setAppStateAction(
+      MODEL_NAME,
+      '', {
+        ...appState.data,
+        selectedMortgageeOption: null,
+        addAdditionalInterestType,
+        deleteAdditionalInterestType: '',
+        submittingAI: false,
+        selectedLink: 'additionalInterests'
+      }
+    );
   };
 
 
@@ -346,7 +341,6 @@ const mapStateToProps = state => ({
 });
 
 export default connect(mapStateToProps, {
-  startWorkflowAction: startWorkflow,
   getUIQuestionsAction: getUIQuestions,
   setAppStateAction: setAppState,
   getBillingOptionsAction: getBillingOptions,
