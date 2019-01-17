@@ -6,7 +6,6 @@ import { Prompt } from 'react-router-dom';
 import moment from 'moment';
 import { reduxForm, change } from 'redux-form';
 
-import { startWorkflow } from '../../state/actions/cg.actions';
 import { setAppState } from '../../state/actions/appState.actions';
 import { setAppError } from '../../state/actions/error.actions';
 import { getBillingOptions } from '../../state/actions/service.actions';
@@ -18,6 +17,7 @@ import normalizeNumbers from '../Form/normalizeNumbers';
 import Footer from '../Common/Footer';
 
 const MODEL_NAME = 'csrMailingAddressBilling';
+const PAGE_NAME = 'mailing';
 
 export const handleInitialize = (state) => {
   const quoteData = state.quoteState.quote || {};
@@ -126,24 +126,16 @@ export const selectBillTo = (props) => {
 
 export const handleFormSubmit = async (data, dispatch, props) => {
   const {
-    quoteData, startWorkflowAction, setAppErrorAction, setAppStateAction, appState, getQuoteAction, billingOptions
+    quoteData, billingOptions
   } = props;
 
   const billToType = ((billingOptions || {}).options.find(o => o.billToId === data.billToId) || {}).billToType || '';
-  try {
-    setAppStateAction(MODEL_NAME, appState.data.instanceId, { ...appState.data, submitting: true });
-    await startWorkflowAction(MODEL_NAME, {
-      quoteId: quoteData._id,
-      ...data,
-      billToType
-    });
 
-    await getQuoteAction(quoteData._id, 'mailing');
-  } catch (error) {
-    setAppErrorAction(error);
-  } finally {
-    setAppStateAction(MODEL_NAME, appState.data.instanceId, { ...appState.data, submitting: false });
-  }
+  await props.updateQuote(MODEL_NAME, {
+    quoteId: quoteData._id,
+    ...data,
+    billToType
+  }, PAGE_NAME);
 };
 
 export const clearForm = (props) => {
@@ -360,7 +352,6 @@ const mapStateToProps = state => ({
 });
 
 export default connect(mapStateToProps, {
-  startWorkflowAction: startWorkflow,
   setAppStateAction: setAppState,
   setAppErrorAction: setAppError,
   getBillingOptionsAction: getBillingOptions,
