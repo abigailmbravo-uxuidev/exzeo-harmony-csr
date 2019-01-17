@@ -584,7 +584,7 @@ describe('Test getFinalPaymentDate', () => {
       policyStatus
     );
 
-    expect(result.date).toEqual(moment(summaryLedger.invoiceDueDate).format(STANDARD_DATE_FORMAT));
+    expect(result.value).toEqual(moment(summaryLedger.invoiceDueDate).format(STANDARD_DATE_FORMAT));
   });
 
   it('should return no date date for a Non-Payment Notice Issued billing status for a policy: In Force', () => {
