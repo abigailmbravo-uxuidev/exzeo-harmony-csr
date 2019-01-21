@@ -63,8 +63,5 @@ describe('Testing GenerateDocsForm component', () => {
         expect(instance.props.startWorkflow).toBeCalledWith('policyInvoiceGenerator', { documentNumber: '123' }, false);
         expect(instance.props.updateNotes).not.toHaveBeenCalled();
       });
-
-    // TODO: we need to stub out window.location.pathname for this assertion to pass
-    // expect(instance.props.updateNotes).toHaveBeenCalled();
   });
 });
