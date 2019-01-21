@@ -7,17 +7,22 @@ import { Select, Loader, Button, validation } from '@exzeo/core-ui';
 
 
 const validate = values => (!values.documentType ? { documentType: 'Required' } : null);
-const documentTypeAnswers = [{ label: 'Policy Invoice', answer: 'policyInvoice' }];
+const documentTypeAnswers = [
+  { label: 'Full Policy Packet', answer: 'generateFullPolicyPacket' },
+  { label: 'Dec Page', answer: 'generateDecPage' },
+  { label: 'Policy Invoice', answer: 'policyInvoiceGenerator' }
+];
 
 export class GenerateDocsForm extends Component {
   generateDoc = (data, dispatch, props) => {
     const {
-      errorHandler, policyNumber, updateNotes, startWorkflow
+      errorHandler, policyNumber, policyID, updateNotes, startWorkflow
     } = props;
-    return startWorkflow('policyInvoiceGenerator', { documentNumber: policyNumber }, false)
+    const model = data.documentType;
+    return startWorkflow(model, { policyNumber, policyID }, false)
       .then((result) => {
         if (window.location.pathname.includes('/notes')) updateNotes();
-        const fileUrl = result.workflowData.policyInvoiceGenerator.data.previousTask.value.result[0].fileUrl;
+        const fileUrl = result.workflowData[model].data.previousTask.value.result[0].fileUrl;
         const proxyUrl = `${process.env.REACT_APP_API_URL}/download`;
         const params = { url: fileUrl };
         return axios.get(proxyUrl, { responseType: 'blob', params });
@@ -66,6 +71,7 @@ export class GenerateDocsForm extends Component {
 
 GenerateDocsForm.propTypes = {
   policyNumber: PropTypes.string.isRequired,
+  policyID: PropTypes.string.isRequired,
   updateNotes: PropTypes.func.isRequired,
   startWorkflow: PropTypes.func.isRequired,
   errorHandler: PropTypes.func.isRequired
