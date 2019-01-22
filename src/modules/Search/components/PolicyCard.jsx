@@ -25,7 +25,7 @@ function PolicyCard({
           <li className="header">
             <span className="policy-no">Policy No.</span>
             <span className="property-address">Property Address</span>
-            <span className="quote-state">Policy Status</span>
+            <span className="policy-status">Policy Status</span>
             <span className="effective-date">Effective Date</span>
           </li>
           <li>
@@ -41,7 +41,7 @@ function PolicyCard({
                 ${policy.property.physicalAddress.city}, ${policy.property.physicalAddress.state}
                 ${policy.property.physicalAddress.zip}`}
               </span>
-              <span className="quote-state">{policy.status}</span>
+              <span className="policy-status">{policy.status}</span>
               <span className="effective-date">{moment.utc(policy.effectiveDate).format(STANDARD_DATE_FORMAT)}</span>
             </a>
           </li>
