@@ -10,8 +10,8 @@ function PolicyCard({
   return (
     <div tabIndex="0" onKeyPress={handleKeyPress} id={policy.PolicyID} className="card">
       <div className="icon-name">
-        <i className="card-icon fa fa-user-circle" />
-
+        {/*<i className="card-icon fa fa-user-circle" />*/}
+        <i className="card-icon fa fa-file-text" />
       </div>
       <section>
         <div className="card-name">
