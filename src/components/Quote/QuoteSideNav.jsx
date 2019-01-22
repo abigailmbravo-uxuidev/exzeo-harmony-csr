@@ -3,24 +3,14 @@ import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router';
-import { NavLink } from 'react-router-dom';
+import { SideNavigation } from '@exzeo/core-ui/src/@Harmony';
 
 import * as appStateActions from '../../state/actions/appState.actions';
 import * as uiActions from '../../state/actions/ui.actions';
 import * as cgActions from '../../state/actions/cg.actions';
+import PlusButton from '../PlusButton';
 import UWconditions from '../Common/UWconditions';
 import { QUOTE_RESOURCE_TYPE } from '../../constants/diaries';
-
-// Example of a possible schema
-/**
- * {
- *  link,
- *  label,
- *  styleName,
- *  exact,
- *  outside
- * }
- */
 
 export const newDiary = (props) => {
   const { quoteData: { companyCode, state, product, quoteNumber, endDate } } = props;
@@ -46,45 +36,45 @@ export const newNote = (props) => {
   });
 };
 
-const csrLinks = ({ quoteNumber }) => {
+const getNavLinks = ({ quoteNumber }) => {
   return [{
     key: 'customerData',
-    link: `/quote/${quoteNumber}/coverage`,
+    to: `/quote/${quoteNumber}/coverage`,
     label: 'Coverage / Rating',
     styleName: 'coverage',
     exact: true
   }, {
     key: 'underwriting',
-    link: `/quote/${quoteNumber}/underwriting`,
+    to: `/quote/${quoteNumber}/underwriting`,
     label: 'Underwriting',
     styleName: 'underwriting',
     exact: true
   }, {
     key: 'additionalInterests',
-    link: `/quote/${quoteNumber}/additionalInterests`,
+    to: `/quote/${quoteNumber}/additionalInterests`,
     label: 'Additional Interests',
     styleName: 'additionalInterests',
     exact: true
   }, {
     key: 'mailing',
-    link: `/quote/${quoteNumber}/billing`,
+    to: `/quote/${quoteNumber}/billing`,
     label: 'Mailing / Billing',
     styleName: 'billing',
     exact: true
   }, {
     key: 'notes',
-    link: `/quote/${quoteNumber}/notes`,
+    to: `/quote/${quoteNumber}/notes`,
     label: 'Notes / Files',
     styleName: 'notes',
     exact: true
   }, {
     key: 'summary',
-    link: `/quote/${quoteNumber}/summary`,
+    to: `/quote/${quoteNumber}/summary`,
     label: 'Quote Summary',
     styleName: 'quote-summary'
   }, {
     key: 'application',
-    link: `/quote/${quoteNumber}/application`,
+    to: `/quote/${quoteNumber}/application`,
     label: 'Application',
     styleName: 'application',
     exact: true
@@ -106,58 +96,45 @@ export const closeUWConditions = (props) => {
 export const SideNav = (props) => {
   const { quoteData, match } = props;
   const redirect = (props.activateRedirect)
-    ? (<Redirect to={props.activateRedirectLink} />)
+    ? <Redirect to={props.activateRedirectLink} />
     : null;
 
   return (
     <nav className="site-nav">
       {redirect}
-      <ul>
-        {csrLinks({ quoteNumber: quoteData.quoteNumber, workflowId: match.params.workflowId }).map(link => (
-          <li key={link.key}>
-            <span className={link.styleName}>
-              <NavLink to={link.link} activeClassName="active" exact>{link.label}</NavLink>
-            </span>
-          </li>
-        ))}
+      <SideNavigation navLinks={getNavLinks({ quoteNumber: quoteData.quoteNumber })}>
         <hr className="nav-division" />
         <li>
           <button tabIndex="0" aria-label="open-btn form-newNote" className="btn btn-secondary btn-xs btn-block" onClick={() => UWconditionsPopup(props)}>Underwriting Conditions</button>
         </li>
-      </ul>
-      <div className="plus-button-group">
-        <div className="btn btn-round btn-primary btn-lg new-btn" data-test="plus-buttons"><i className="fa fa-plus" /></div>
-        <button aria-label="open-btn form-new-diary" data-test="new-diary" className="btn btn-primary btn-round btn-lg new-diary-btn" onClick={() => newDiary(props)}><i className="fa fa-bookmark" /><span>NEW DIARY</span></button>
-        <button aria-label="open-btn form-new-note" data-test="new-note" className="btn btn-primary btn-round btn-lg new-note-btn" onClick={() => newNote(props)}><i className="fa fa-pencil" /><span>NEW NOTE</span></button>
-      </div>
+      </SideNavigation>
+      <PlusButton newNote={() => newNote(props)} newDiary={() => newDiary(props)} />
+
       {props.appState.data.showUWconditions === true &&
         <UWconditions closeButtonHandler={() => closeUWConditions(props)} />
       }
-    </nav>);
+    </nav>
+  );
 };
 
-// TODO: Needs to be connected to wherever it's gonnna get nav links from
 SideNav.propTypes = {
-  completedTasks: PropTypes.any, // eslint-disable-line
   activateRedirectLink: PropTypes.string,
   activateRedirect: PropTypes.bool,
   appState: PropTypes.shape({
     instanceId: PropTypes.string,
     modelName: PropTypes.string,
     data: PropTypes.shape({
-      showUWconditions: PropTypes.boolean,
+      showUWconditions: PropTypes.bool,
       quote: PropTypes.object,
-      updateUnderwriting: PropTypes.boolean
+      updateUnderwriting: PropTypes.bool
     })
   })
 };
 
 const mapStateToProps = state => ({
   appState: state.appState,
-  completedTasks: state.completedTasks,
   activateRedirectLink: state.appState.data.activateRedirectLink,
   activateRedirect: state.appState.data.activateRedirect,
-  cg: state.cg,
   quoteData: state.quoteState.quote || {}
 });
 
