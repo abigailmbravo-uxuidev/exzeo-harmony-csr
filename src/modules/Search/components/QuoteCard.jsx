@@ -10,17 +10,17 @@ function QuoteCard({
   return (
     <div tabIndex="0" onKeyPress={handleKeyPress} id={quote._id} className="card">
       <div className="icon-name">
-        <i className="card-icon fa fa-user-circle" />
+        {/*<i className="card-icon fa fa-user-circle" />*/}
+        <i className="card-icon fa fa-quote-left" />
+      </div>
+      <section>
         <div className="card-name">
           {(Array.isArray(quote.policyHolders) && quote.policyHolders.length > 0) &&
           <h5 title={`${quote.policyHolders[0].firstName} ${quote.policyHolders[0].lastName}`}>
-            {`${quote.policyHolders[0].firstName.replace(/(^.{20}).*$/, '$1...')}`}<br/>
-            {`${quote.policyHolders[0].lastName.replace(/(^.{20}).*$/, '$1...')}`}
+            {`${quote.policyHolders[0].firstName.replace(/(^.{20}).*$/, '$1...')} ${quote.policyHolders[0].lastName.replace(/(^.{20}).*$/, '$1...')}`}
           </h5>
           }
         </div>
-      </div>
-      <section>
         <ul id="quote-search-results" className="quote-search-results">
           <li className="header">
             <span className="quote-no">Quote No.</span>
