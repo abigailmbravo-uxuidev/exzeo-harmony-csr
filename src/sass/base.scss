@@ -440,7 +440,8 @@ ul.list-cards {
       display: flex;
       overflow: hidden;
       align-items: center;
-      flex-basis: 15rem;
+      justify-content: center;
+      flex-basis: 4rem;
       flex-wrap: wrap;
 
       i {
@@ -488,6 +489,7 @@ ul.list-cards {
       flex-direction: column;
       flex-grow: 1;
       flex-shrink: 0;
+      margin-left: $padding;
 
       ul {
         margin: 0;
