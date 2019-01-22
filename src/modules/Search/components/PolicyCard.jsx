@@ -11,6 +11,9 @@ function PolicyCard({
     <div tabIndex="0" onKeyPress={handleKeyPress} id={policy.PolicyID} className="card">
       <div className="icon-name">
         <i className="card-icon fa fa-user-circle" />
+
+      </div>
+      <section>
         <div className="card-name">
           {(Array.isArray(policy.policyHolders) && policy.policyHolders.length > 0) &&
             <h5 title={`${policy.policyHolders[0].firstName} ${policy.policyHolders[0].lastName}`}>
@@ -18,8 +21,6 @@ function PolicyCard({
             </h5>
           }
         </div>
-      </div>
-      <section>
         <ul id="policy-search-results" className="policy-search-results">
           <li className="header">
             <span className="policy-no">Policy No.</span>
