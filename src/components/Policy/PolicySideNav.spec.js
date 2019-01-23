@@ -56,9 +56,4 @@ describe('Testing PolicySideNav component', () => {
     const wrapper = shallow(<ConnectedApp store={store} {...props} />).dive().instance();
     expect(wrapper.newNote(props));
   });
-
-  it('should have six nav links', () => {
-    const wrapper = shallow(<ConnectedApp store={store} {...props} />).dive();
-    expect(wrapper.find('NavLink').length).toBe(6);
-  });
 });
