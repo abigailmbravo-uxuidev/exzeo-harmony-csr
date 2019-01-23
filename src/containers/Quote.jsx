@@ -30,6 +30,7 @@ export class QuoteBase extends React.Component {
 
     return (
       <div className="app-wrapper csr quote">
+        {quoteData && quoteData.envelopeId && <span data-envelopeid={quoteData.envelopeId} />}
         {(appState.data.submitting || !quoteData.quoteNumber) && <Loader />}
         <App
           resourceType={QUOTE_RESOURCE_TYPE}
@@ -54,7 +55,7 @@ export class QuoteBase extends React.Component {
               {(quoteData && quoteData.quoteNumber) &&
                 <DiaryPolling filter={{ resourceId: quoteData.quoteNumber, resourceType: QUOTE_RESOURCE_TYPE }} />
               }
-
+              
             </React.Fragment>
           )} />
       </div>
