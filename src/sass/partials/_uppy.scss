@@ -164,16 +164,16 @@
   color: $white;
   background-color: $warm-gray-01;
   font-size: $font-size-base !important;
-  line-height: $line-height-base !important;
   font-weight: $font-weight-bold !important;
+  line-height: $line-height-base !important;
   @include transition(all 0.2s ease-in-out);
 }
 
 .uppy-Dashboard--wide .uppy-Informer {
   height: 4rem;
   font-size: $font-size-base !important;
-  line-height: $line-height-base !important;
   font-weight: $font-weight-bold !important;
+  line-height: $line-height-base !important;
 }
 
 .uppy-Informer {
@@ -187,8 +187,8 @@
     display: flex;
     align-items: center;
     font-size: $font-size-base !important;
-    line-height: $line-height-base !important;
     font-weight: $font-weight-bold !important;
+    line-height: $line-height-base !important;
   }
 }
 
@@ -201,14 +201,12 @@
 }
 
 .uppy-Informer span {
-
   &[role='tooltip'] {
     display: none !important;
   }
 }
 
 .uppy-Dashboard--modal {
-
   &[aria-hidden=true] {
     display: none !important;
   }
@@ -1964,4 +1962,8 @@ button.uppy-StatusBar-statusIndicator {
 
 .uppy-Dashboard-progressindicators {
   position: relative !important;
+}
+
+#uppy_uppy-hidden {
+  display: none;
 }

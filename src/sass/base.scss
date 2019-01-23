@@ -24,7 +24,6 @@
 @import "partials/_csr-quote";
 @import "partials/_csr-policy";
 @import "partials/_additional-interests";
-@import "partials/_csr-claim";
 @import "partials/_error";
 @import "partials/_uppy";
 @import "partials/_user-admin";
@@ -440,9 +439,9 @@ ul.list-cards {
       display: flex;
       overflow: hidden;
       align-items: center;
-      justify-content: center;
       flex-basis: 4rem;
       flex-wrap: wrap;
+      justify-content: center;
 
       i {
         display: flex;
@@ -453,34 +452,7 @@ ul.list-cards {
         height: 2rem;
         margin: 0;
         color: $bright-blue-darken-04;
-        font-size: $font-size-h2;
-      }
-
-      .card-name {
-        display: flex;
-        overflow: hidden;
-        align-items: center;
-        flex-basis: 13rem;
-        flex-wrap: wrap;
-        padding-left: $padding;
-
-        h1,
-        h2,
-        h3,
-        h4,
-        h5 {
-          display: block;
-          overflow: hidden;
-          flex-basis: 12rem;
-          flex-grow: 0;
-          flex-shrink: 0;
-          margin: 0;
-          white-space: pre-wrap;
-          text-transform: uppercase;
-          text-overflow: ellipsis;
-          color: $warm-gray-10;
-          line-height: $line-height-base;
-        }
+        font-size: $font-size-h3;
       }
     }
 
@@ -490,6 +462,23 @@ ul.list-cards {
       flex-grow: 1;
       flex-shrink: 0;
       margin-left: $padding;
+
+      .card-name {
+        display: flex;
+        align-items: center;
+        min-height: 1.8125rem;
+
+        h1,
+        h2,
+        h3,
+        h4,
+        h5 {
+          margin: 0;
+          text-transform: uppercase;
+          color: $warm-gray-10;
+          line-height: $line-height-base;
+        }
+      }
 
       ul {
         margin: 0;
@@ -657,6 +646,7 @@ ul.list-cards {
   }
 }
 //this may no longer be used
+
 #BillPayer {
   overflow-y: auto;
   flex-grow: 1;
@@ -669,9 +659,9 @@ ul.list-cards {
 //Reports page
 /*------------------------------------------------------------------------------------*/
 .reports {
-    h3 {
-        width: 100%;
-    }
+  h3 {
+    width: 100%;
+  }
 
   .basic-footer {
     background: $white;
@@ -874,6 +864,7 @@ ul.list-cards {
 //Loader
 /*------------------------------------------------------------------------------------*/
 @import "partials/_loader"; //loader
+//loader theme
 
 .loader {
   .card {
@@ -1125,10 +1116,6 @@ ul.list-cards {
 
 #NotesFiles {
   width: 100%;
-}
-
-#uppy_uppy-hidden {
-  display: none;
 }
 
 .scroll {
