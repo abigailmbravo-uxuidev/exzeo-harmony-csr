@@ -24,6 +24,7 @@
 @import "partials/_csr-agency";
 @import "partials/_csr-quote";
 @import "partials/_csr-policy";
+@import "partials/_csr-reports";
 @import "partials/_additional-interests";
 @import "partials/_error";
 @import "partials/_uppy";
@@ -53,6 +54,15 @@
 //modal
 /*------------------------------------------------------------------------------------*/
 @import "partials/_modal"; //modal partial
+//header - includes logo and main navigation
+/*------------------------------------------------------------------------------------*/
+@import "partials/_header";
+//search
+/*------------------------------------------------------------------------------------*/
+@import "partials/_search";
+//footer
+/*------------------------------------------------------------------------------------*/
+@import "partials/_footer";
 //APP SPECIFIC STYLES
 /*||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||*/
 /*||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||*/
@@ -276,15 +286,7 @@ html {
     }
   }
 }
-//header - includes logo and main navigation
-/*------------------------------------------------------------------------------------*/
-@import "partials/_header"; //modal partial
-//search
-/*------------------------------------------------------------------------------------*/
-@import "partials/_search"; //search partial
-//footer
-/*------------------------------------------------------------------------------------*/
-@import "partials/_footer"; //search partial
+
 //ROUTE SPECIFIC STYLES
 /*||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||*/
 /*||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||*/
@@ -569,28 +571,10 @@ ul.list-cards {
     }
   }
 }
+
 //this may no longer be used
 
-#BillPayer {
-  overflow-y: auto;
-  flex-grow: 1;
 
-  .switch.inactive~.form-group {
-    display: none;
-  }
-}
-//this may no longer be used
-//Reports page
-/*------------------------------------------------------------------------------------*/
-.reports {
-  h3 {
-    width: 100%;
-  }
-
-  .basic-footer {
-    background: $white;
-  }
-}
 //Quote Error
 /*------------------------------------------------------------------------------------*/
 .error-content {
