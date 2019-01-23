@@ -1693,9 +1693,8 @@ ul.list-cards {
           }
 
           &.cancellation {
-            max-width: 9.75rem;
             margin-top: 2.625rem;
-            grid-column: 6;
+            grid-column: 6 / span 2;
             grid-row: 1;
           }
 
