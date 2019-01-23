@@ -15,7 +15,7 @@
 @import "partials/_reset";
 /*Set base typography*/
 @import "partials/_type";
-@import url("https://fonts.googleapis.com/css?family=Roboto:100,300,500"); //base
+@import url("https://fonts.googleapis.com/css?family=Roboto:100,300,500"); //base font
 /*Grid styles*/
 @import "partials/_grid";
 @import "partials/_tabs";
@@ -33,27 +33,25 @@
 @import "partials/_user-script";
 //buttons and links
 /*------------------------------------------------------------------------------------*/
-@import "partials/_buttons"; //inputs & forms
+@import "partials/_buttons";
 //icons
 /*------------------------------------------------------------------------------------*/
-@import "partials/_icons"; //inputs & forms
+@import "partials/_icons";
 //inputs & forms
 /*------------------------------------------------------------------------------------*/
-@import "partials/_form"; //form partial
+@import "partials/_form";
 //vertical tabs
 /*------------------------------------------------------------------------------------*/
-@import "partials/_nav"; //vertical tab partial
-//form elements
-/*------------------------------------------------------------------------------------*/
+@import "partials/_nav";
 //details & surveys
 /*------------------------------------------------------------------------------------*/
 @import "partials/_detail-survey-wrapper";
 //cards
 /*------------------------------------------------------------------------------------*/
-@import "partials/_card"; //card partial
+@import "partials/_card";
 //modal
 /*------------------------------------------------------------------------------------*/
-@import "partials/_modal"; //modal partial
+@import "partials/_modal";
 //header - includes logo and main navigation
 /*------------------------------------------------------------------------------------*/
 @import "partials/_header";
