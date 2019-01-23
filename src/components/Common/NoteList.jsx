@@ -90,28 +90,26 @@ export class NoteList extends Component {
   render() {
     const { historyTab } = this.state;
     return (
-      <div>
-        <form id="NotesFiles" onSubmit={() => null} noValidate>
-          <div className="scroll">
-            <div className="form-group survey-wrapper" role="group">
-              <h3>History</h3>
-              <section>
-                <div className="notes-list">
-                  <div className="note-grid-wrapper btn-tabs">
-                    <div className="filter-tabs">
-                      <button type="button" className={`btn btn-tab ${historyTab === 'notes' ? 'selected' : ''}`} onClick={() => this.setHistoryTab('notes')}>Notes</button>
-                      <button type="button" className={`btn btn-tab ${historyTab === 'files' ? 'selected' : ''}`} onClick={() => this.setHistoryTab('files')}>Files</button>
-                      <button type="button" className={`btn btn-tab ${historyTab === 'diaries' ? 'selected' : ''}`} onClick={() => this.setHistoryTab('diaries')}>Diaries</button>
-                    </div>
-                    {NOTE_TABS.includes(this.state.historyTab) && <Notes {...this.props} attachmentStatus={this.state.historyTab === 'files'} setNoteStatus={this.setNoteStatus} />}
-                    {this.state.historyTab === DIARY_TAB && <DiaryTable {...this.props} />}
+      <form id="NotesFiles" onSubmit={() => null} noValidate>
+        <div className="scroll">
+          <div className="form-group survey-wrapper" role="group">
+            <h3>History</h3>
+            <section>
+              <div className="notes-list">
+                <div className="note-grid-wrapper btn-tabs">
+                  <div className="filter-tabs">
+                    <button type="button" className={`btn btn-tab ${historyTab === 'notes' ? 'selected' : ''}`} onClick={() => this.setHistoryTab('notes')}>Notes</button>
+                    <button type="button" className={`btn btn-tab ${historyTab === 'files' ? 'selected' : ''}`} onClick={() => this.setHistoryTab('files')}>Files</button>
+                    <button type="button" className={`btn btn-tab ${historyTab === 'diaries' ? 'selected' : ''}`} onClick={() => this.setHistoryTab('diaries')}>Diaries</button>
                   </div>
+                  {NOTE_TABS.includes(this.state.historyTab) && <Notes {...this.props} attachmentStatus={this.state.historyTab === 'files'} setNoteStatus={this.setNoteStatus} />}
+                  {this.state.historyTab === DIARY_TAB && <DiaryTable {...this.props} />}
                 </div>
-              </section>
-            </div>
+              </div>
+            </section>
           </div>
-        </form>
-      </div>
+        </div>
+      </form>
     );
   }
 }
