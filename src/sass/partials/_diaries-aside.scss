@@ -79,9 +79,13 @@
 
             p {
               font-size: $font-size-sm;
+              margin: 0;
             }
 
-            .diary-assignee {}
+            .diary-assignee {
+                font-size: $font-size-sm;
+                margin-bottom: $padding*2;
+            }
           }
         }
 
