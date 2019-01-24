@@ -656,3 +656,558 @@ main[role="document"] {
     }
   }
 }
+
+//refactor these when cards are standardized based on core card
+.result-cards,
+ul.list-cards {
+  li {
+    margin-bottom: $padding/2;
+
+    a {
+      align-items: center;
+      padding: $padding $padding*1.5;
+      border: $card-border-width solid $card-border-color;
+      border-radius: $card-border-radius;
+      background: $white;
+
+      section {
+        flex-direction: column;
+        flex-grow: 1;
+
+        h2,
+        h3,
+        h4,
+        h5,
+        p {
+          margin: 0;
+          color: $warm-gray-08;
+        }
+      }
+
+      i {
+        color: $bright-blue-darken-04;
+      }
+
+      &:hover {
+        cursor: pointer;
+
+        section {
+          h2,
+          h3,
+          h4,
+          h5 {
+            color: $bright-blue-darken-04;
+          }
+
+          p {
+            color: $bright-blue-darken-04;
+          }
+        }
+
+        i {
+          color: $bright-blue-darken-04;
+        }
+      }
+    }
+  }
+}
+
+.policy-list,
+.quote-list {
+  flex-grow: 1;
+  width: 100%;
+  margin-bottom: $padding/2;
+  padding: $padding*2;
+
+  .card {
+    display: flex;
+    flex-direction: row;
+    margin: 0 0 ($padding/2);
+    padding: $padding $padding*1.5;
+
+    .icon-name {
+      display: flex;
+      overflow: hidden;
+      align-items: center;
+      flex-basis: 4rem;
+      flex-wrap: wrap;
+      justify-content: center;
+
+      i {
+        display: flex;
+        flex-basis: 2rem;
+        flex-grow: 0;
+        flex-shrink: 0;
+        justify-content: center;
+        height: 2rem;
+        margin: 0;
+        color: $bright-blue-darken-04;
+        font-size: $font-size-h3;
+      }
+    }
+
+    section {
+      display: flex;
+      flex-direction: column;
+      flex-grow: 1;
+      flex-shrink: 0;
+      margin-left: $padding;
+
+      .card-name {
+        display: flex;
+        align-items: center;
+        min-height: 1.8125rem;
+
+        h1,
+        h2,
+        h3,
+        h4,
+        h5 {
+          margin: 0;
+          text-transform: uppercase;
+          color: $warm-gray-10;
+          line-height: $line-height-base;
+        }
+      }
+
+      ul {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+
+        li {
+          display: flex;
+          flex-grow: 1;
+          flex-shrink: 0;
+          justify-content: space-between;
+          padding: 0;
+
+          &.header {
+            padding: ($padding/4) 0;
+            color: $warm-gray-08;
+            background: $warm-gray-02;
+            font-size: $font-size-sm;
+            font-weight: $font-weight-bold;
+          }
+
+          a.row {
+            display: flex;
+            width: 100%;
+            padding: 0;
+            color: $bright-blue;
+            border-width: 0;
+            border-radius: 0;
+
+            &:hover {
+              background: rgba($bright-blue, .1);
+            }
+
+            span {
+              padding: ($padding/4) 0;
+
+              &.quote-no {
+                padding-left: $padding;
+              }
+
+              &.premium {
+                padding-right: $padding;
+              }
+            }
+          }
+
+          .policy-no,
+          .quote-no {
+            flex-basis: 8rem;
+            flex-grow: 0;
+            flex-shrink: 0;
+            padding-left: $padding;
+          }
+
+          .property-address {
+            flex-grow: 1;
+            flex-shrink: 0;
+          }
+
+          .policy-status,
+          .quote-state {
+            flex-basis: 15.5rem;
+            flex-grow: 0;
+            flex-shrink: 0;
+          }
+
+          .effective-date {
+            flex-basis: 5.75rem;
+            flex-grow: 0;
+            flex-shrink: 0;
+          }
+
+          .started-on {
+            flex-basis: 5.75rem;
+            flex-grow: 0;
+            flex-shrink: 0;
+          }
+
+          .premium {
+            flex-basis: 5rem;
+            flex-grow: 0;
+            flex-shrink: 0;
+            padding-right: $padding;
+          }
+        }
+      }
+    }
+  }
+
+  a {
+    align-items: center;
+    align-items: flex-start;
+    padding: $padding $padding*1.5;
+    border: $card-border-width solid $card-border-color;
+    border-radius: $card-border-radius;
+    background: $white;
+
+    section {
+      display: flex;
+      flex-direction: row;
+      flex-grow: 1;
+
+      h2,
+      h3,
+      h4,
+      h5 {
+        display: flex;
+        flex-basis: 20%;
+        flex-grow: 0;
+        flex-shrink: 0;
+        width: 20%;
+        margin: 0;
+      }
+
+      p {
+        margin: 0;
+      }
+
+      ul {
+        display: flex;
+        flex-basis: 80%;
+        flex-direction: column;
+        width: 80%;
+        margin: 0;
+        padding: 0;
+      }
+    }
+
+    i {
+      display: flex;
+      justify-content: center;
+      width: 2rem;
+      height: 2rem;
+      font-size: $font-size-h2;
+
+      &.card-icon {
+        margin-right: $padding;
+      }
+
+      &.fa-map-marker {
+        justify-content: flex-start;
+      }
+    }
+
+    &:hover {
+      cursor: pointer;
+
+      section {
+        h2,
+        h3,
+        h4,
+        h5 {
+          color: $bright-blue-darken-02;
+        }
+
+        p {
+          color: $bright-blue-darken-02;
+        }
+      }
+
+      i {
+        color: $bright-blue-darken-02;
+      }
+    }
+  }
+}.result-cards,
+ul.list-cards {
+  li {
+    margin-bottom: $padding/2;
+
+    a {
+      align-items: center;
+      padding: $padding $padding*1.5;
+      border: $card-border-width solid $card-border-color;
+      border-radius: $card-border-radius;
+      background: $white;
+
+      section {
+        flex-direction: column;
+        flex-grow: 1;
+
+        h2,
+        h3,
+        h4,
+        h5,
+        p {
+          margin: 0;
+          color: $warm-gray-08;
+        }
+      }
+
+      i {
+        color: $bright-blue-darken-04;
+      }
+
+      &:hover {
+        cursor: pointer;
+
+        section {
+          h2,
+          h3,
+          h4,
+          h5 {
+            color: $bright-blue-darken-04;
+          }
+
+          p {
+            color: $bright-blue-darken-04;
+          }
+        }
+
+        i {
+          color: $bright-blue-darken-04;
+        }
+      }
+    }
+  }
+}
+
+.policy-list,
+.quote-list {
+  flex-grow: 1;
+  width: 100%;
+  margin-bottom: $padding/2;
+  padding: $padding*2;
+
+  .card {
+    display: flex;
+    flex-direction: row;
+    margin: 0 0 ($padding/2);
+    padding: $padding $padding*1.5;
+
+    .icon-name {
+      display: flex;
+      overflow: hidden;
+      align-items: center;
+      flex-basis: 4rem;
+      flex-wrap: wrap;
+      justify-content: center;
+
+      i {
+        display: flex;
+        flex-basis: 2rem;
+        flex-grow: 0;
+        flex-shrink: 0;
+        justify-content: center;
+        height: 2rem;
+        margin: 0;
+        color: $bright-blue-darken-04;
+        font-size: $font-size-h3;
+      }
+    }
+
+    section {
+      display: flex;
+      flex-direction: column;
+      flex-grow: 1;
+      flex-shrink: 0;
+      margin-left: $padding;
+
+      .card-name {
+        display: flex;
+        align-items: center;
+        min-height: 1.8125rem;
+
+        h1,
+        h2,
+        h3,
+        h4,
+        h5 {
+          margin: 0;
+          text-transform: uppercase;
+          color: $warm-gray-10;
+          line-height: $line-height-base;
+        }
+      }
+
+      ul {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+
+        li {
+          display: flex;
+          flex-grow: 1;
+          flex-shrink: 0;
+          justify-content: space-between;
+          padding: 0;
+
+          &.header {
+            padding: ($padding/4) 0;
+            color: $warm-gray-08;
+            background: $warm-gray-02;
+            font-size: $font-size-sm;
+            font-weight: $font-weight-bold;
+          }
+
+          a.row {
+            display: flex;
+            width: 100%;
+            padding: 0;
+            color: $bright-blue;
+            border-width: 0;
+            border-radius: 0;
+
+            &:hover {
+              background: rgba($bright-blue, .1);
+            }
+
+            span {
+              padding: ($padding/4) 0;
+
+              &.quote-no {
+                padding-left: $padding;
+              }
+
+              &.premium {
+                padding-right: $padding;
+              }
+            }
+          }
+
+          .policy-no,
+          .quote-no {
+            flex-basis: 8rem;
+            flex-grow: 0;
+            flex-shrink: 0;
+            padding-left: $padding;
+          }
+
+          .property-address {
+            flex-grow: 1;
+            flex-shrink: 0;
+          }
+
+          .policy-status,
+          .quote-state {
+            flex-basis: 15.5rem;
+            flex-grow: 0;
+            flex-shrink: 0;
+          }
+
+          .effective-date {
+            flex-basis: 5.75rem;
+            flex-grow: 0;
+            flex-shrink: 0;
+          }
+
+          .started-on {
+            flex-basis: 5.75rem;
+            flex-grow: 0;
+            flex-shrink: 0;
+          }
+
+          .premium {
+            flex-basis: 5rem;
+            flex-grow: 0;
+            flex-shrink: 0;
+            padding-right: $padding;
+          }
+        }
+      }
+    }
+  }
+
+  a {
+    align-items: center;
+    align-items: flex-start;
+    padding: $padding $padding*1.5;
+    border: $card-border-width solid $card-border-color;
+    border-radius: $card-border-radius;
+    background: $white;
+
+    section {
+      display: flex;
+      flex-direction: row;
+      flex-grow: 1;
+
+      h2,
+      h3,
+      h4,
+      h5 {
+        display: flex;
+        flex-basis: 20%;
+        flex-grow: 0;
+        flex-shrink: 0;
+        width: 20%;
+        margin: 0;
+      }
+
+      p {
+        margin: 0;
+      }
+
+      ul {
+        display: flex;
+        flex-basis: 80%;
+        flex-direction: column;
+        width: 80%;
+        margin: 0;
+        padding: 0;
+      }
+    }
+
+    i {
+      display: flex;
+      justify-content: center;
+      width: 2rem;
+      height: 2rem;
+      font-size: $font-size-h2;
+
+      &.card-icon {
+        margin-right: $padding;
+      }
+
+      &.fa-map-marker {
+        justify-content: flex-start;
+      }
+    }
+
+    &:hover {
+      cursor: pointer;
+
+      section {
+        h2,
+        h3,
+        h4,
+        h5 {
+          color: $bright-blue-darken-02;
+        }
+
+        p {
+          color: $bright-blue-darken-02;
+        }
+      }
+
+      i {
+        color: $bright-blue-darken-02;
+      }
+    }
+  }
+}
