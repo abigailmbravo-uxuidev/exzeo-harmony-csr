@@ -8,6 +8,33 @@
     padding: 0;
     list-style: none;
 
+    hr.nav-division {
+      margin: ($padding*2) 0;
+      padding: 0;
+      border-width: 0;
+      border-top: 1px dotted $warm-gray-04;
+    }
+
+    .btn {
+      &.btn-secondary {
+        border-color: rgba($warm-gray-04, .8);
+        background: rgba($white, 0);
+
+        &:hover {
+          border-color: rgba($warm-gray-04, 1);
+          background: rgba($white, .8);
+        }
+      }
+
+      &.btn-block {
+        margin: 0 ($padding*2) ($padding*2) 0;
+
+        &.btn-branch {
+          margin-bottom: 0;
+        }
+      }
+    }
+
     li {
       display: flex;
       margin: 0;
@@ -18,7 +45,7 @@
           align-items: center;
           flex-grow: 1;
           width: 11rem;
-          padding: ($padding*1.5) 0;
+          padding: ($padding*1.5) 0 ($padding*1.5) ($padding*2);
           cursor: pointer;
           text-decoration: none;
           color: $warm-gray-07;
@@ -108,9 +135,9 @@
       }
 
       .selectedBranch {
-          select {
-              margin-right: $padding*2;
-          }
+        select {
+          margin-right: $padding*2;
+        }
       }
     }
   }

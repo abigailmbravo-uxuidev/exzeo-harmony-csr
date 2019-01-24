@@ -607,44 +607,6 @@ ul.list-cards {
 /*------------------------------------------------------------------------------------*/
 #root {
   .csr {
-    .site-nav {
-      ul {
-        hr.nav-division {
-          margin: ($padding*2) 0;
-          padding: 0;
-          border-width: 0;
-          border-top: 1px dotted $warm-gray-04;
-        }
-
-        .btn {
-          &.btn-secondary {
-            border-color: rgba($warm-gray-04, .8);
-            background: rgba($white, 0);
-
-            &:hover {
-              border-color: rgba($warm-gray-04, 1);
-              background: rgba($white, .8);
-            }
-          }
-
-          &.btn-block {
-            margin: 0 ($padding*2) ($padding*2) 0;
-
-            &.btn-branch {
-              margin-bottom: 0;
-            }
-          }
-        }
-
-        li {
-          span {
-            a {
-              padding-left: $padding*2;
-            }
-          }
-        }
-      }
-    }
 
     &.agency {
       .detailHeader {
