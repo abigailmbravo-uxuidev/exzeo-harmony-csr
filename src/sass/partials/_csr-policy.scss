@@ -911,46 +911,7 @@
       }
     }
     //diaries
-    .open-diaries {
-      position: absolute;
-      right: 0;
-      overflow-y: auto;
-      align-self: stretch;
-      flex-grow: 0;
-      flex-shrink: 0;
-      width: 0;
-      height: calc(100vh - 8.125rem);
-      min-height: calc(100vh - 8.125rem);
-      padding: 0 0 ($padding*2) ($padding*2);
-      border-left: dotted 1px $warm-gray-04;
-      background: $white;
-      @include transition(all 0.1s ease-in-out);
-
-      .open-diaries-header {
-        margin: ($padding*1.5) 0;
-      }
-    }
-
-    &.diary-closed {
-      @include transition(all 0.1s ease-in-out);
-
-      .open-diaries {
-        overflow: hidden;
-        width: 0;
-        margin: 0;
-        padding: 0;
-        border-width: 0;
-      }
-    }
-
     &.diary-open {
-      @include transition(all 0.1s ease-in-out);
-
-      .open-diaries {
-        width: 240px;
-        @include transition(all 0.1s ease-in-out);
-      }
-
       .content-wrapper {
         margin-right: 240px;
         @include transition(all 0.1s ease-in-out);
