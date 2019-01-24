@@ -236,31 +236,56 @@ header {
     &.agency {
       .detailHeader {
         width: 100%;
+        position: relative;
+        display: flex;
+        flex-grow: 0;
+        flex-shrink: 0;
+        justify-content: flex-start;
+        height: 4.75rem;
+        color: $white;
+        border-bottom: 2px solid $white;
+        background: $warm-gray-10;
 
-        .agencyDetails {
-          align-items: center;
-          padding-right: $padding*2;
-          text-align: center;
+        a {
+          color: $bright-blue-lighten-02;
 
-          h4 {
-            margin: 0;
-            color: $yellow-lighten-06;
-            font-weight: $font-weight-normal;
+          &:hover {
+            color: $bright-blue;
           }
         }
 
-        .entityName {
-          display: flex;
-          align-items: center;
+        section {
+            flex-basis: auto;
+            flex-grow: 0;
+            flex-shrink: 0;
+            margin-right: $padding*2;
+            padding: ($padding/2) 0;
 
-          h4 {
-            margin: 0;
-            color: $white;
+            &.agencyDetails {
+              align-items: center;
+              padding-right: $padding*2;
+              text-align: center;
 
-            span {
-              font-weight: $font-weight-normal;
+              h4 {
+                margin: 0;
+                color: $yellow-lighten-06;
+                font-weight: $font-weight-normal;
+              }
             }
-          }
+
+            &.entityName {
+              display: flex;
+              align-items: center;
+
+              h4 {
+                margin: 0;
+                color: $white;
+
+                span {
+                  font-weight: $font-weight-normal;
+                }
+              }
+            }
         }
       }
     }

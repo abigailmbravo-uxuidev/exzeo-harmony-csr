@@ -610,30 +610,8 @@ ul.list-cards {
 
     &.agency {
       .detailHeader {
-        position: relative;
-        display: flex;
-        flex-grow: 0;
-        flex-shrink: 0;
-        justify-content: flex-start;
-        height: 4.75rem;
-        color: $white;
-        border-bottom: 2px solid $white;
-        background: $warm-gray-10;
-
-        a {
-          color: $bright-blue-lighten-02;
-
-          &:hover {
-            color: $bright-blue;
-          }
-        }
 
         section {
-          flex-basis: auto;
-          flex-grow: 0;
-          flex-shrink: 0;
-          margin-right: $padding*2;
-          padding: ($padding/2) 0;
 
           section {
             padding-top: 1px;
