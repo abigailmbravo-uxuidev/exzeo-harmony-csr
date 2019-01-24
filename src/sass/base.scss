@@ -24,6 +24,7 @@
 @import "partials/_csr-agency";
 @import "partials/_csr-quote";
 @import "partials/_csr-policy";
+@import "partials/_diaries-aside";
 @import "partials/_csr-reports";
 @import "partials/_additional-interests";
 @import "partials/_error";
@@ -743,17 +744,6 @@ ul.list-cards {
             dd {
               font-size: $font-size-h4;
             }
-          }
-        }
-
-        .detailHeader-wrapping-sections {
-          display: flex;
-          flex-grow: 1;
-          flex-shrink: 1;
-          flex-wrap: wrap;
-
-          .wrapping-section {
-            display: flex;
           }
         }
       }
