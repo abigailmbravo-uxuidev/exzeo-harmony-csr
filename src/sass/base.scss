@@ -70,31 +70,4 @@
 @import "partials/_app-structure";
 //Loader
 /*------------------------------------------------------------------------------------*/
-@import "partials/_loader"; //loader
-// Generic Global Styles
-
-.flex-parent {
-  display: flex;
-  align-content: space-between;
-  align-items: flex-start;
-  flex-direction: row;
-  flex-wrap: nowrap;
-  justify-content: flex-start;
-  width: 100%;
-
-  .flex-child {
-    flex-basis: auto;
-    flex-grow: 1;
-    flex-shrink: 1;
-    order: 0;
-    padding: 0 ($padding*2) 0 0;
-
-    &:last-of-type {
-      padding: 0;
-    }
-  }
-}
-
-.scroll {
-  scroll-behavior: smooth;
-}
+@import "partials/_loader";
