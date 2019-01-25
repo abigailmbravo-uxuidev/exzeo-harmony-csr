@@ -38,7 +38,7 @@ export const newNote = (props) => {
 
 const getNavLinks = ({ quoteNumber }) => {
   return [{
-    key: 'customerData',
+    key: 'coverage',
     to: `/quote/${quoteNumber}/coverage`,
     label: 'Coverage / Rating',
     styleName: 'coverage',
@@ -56,7 +56,7 @@ const getNavLinks = ({ quoteNumber }) => {
     styleName: 'additionalInterests',
     exact: true
   }, {
-    key: 'mailing',
+    key: 'billing',
     to: `/quote/${quoteNumber}/billing`,
     label: 'Mailing / Billing',
     styleName: 'billing',
