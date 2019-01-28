@@ -58,6 +58,13 @@
           }
 
           li {
+            margin-bottom: $padding;
+            border-bottom: 1px dotted $warm-gray-02;
+
+            &:last-of-type {
+              border-bottom-width: 0;
+            }
+
             .diary-header {
               display: flex;
               align-items: center;
@@ -102,7 +109,7 @@
             }
 
             .diary-assignee {
-              margin-bottom: $padding*2;
+              margin-bottom: $padding;
               color: $warm-gray-08;
               font-size: $font-size-sm;
               font-weight: $font-weight-bold;
