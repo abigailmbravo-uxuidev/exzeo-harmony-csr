@@ -36,6 +36,7 @@ export class QuoteBase extends React.Component {
           resourceId={quoteData.quoteNumber}
           pageTitle={`Q: ${quoteData.quoteNumber || ''}`}
           match={match}
+          context={match.path.split('/')[1]}
           onToggleDiaries={this.handleToggleDiaries}
           showDiaries={showDiaries}
           render={() => (

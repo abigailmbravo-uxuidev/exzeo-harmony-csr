@@ -1,0 +1,44 @@
+.basic-footer {
+  align-items: center;
+  flex-grow: 0;
+  flex-shrink: 0;
+  width: 100%;
+  height: auto;
+  margin-bottom: 0;
+  padding: ($padding/2) $padding;
+  border-top: 1px dotted $warm-gray-04;
+
+  &.btn-footer {
+    padding: $padding;
+
+    .btn-wrapper {
+      margin-left: 1rem;
+    }
+
+    footer {
+      align-self: flex-end;
+    }
+  }
+
+  footer {
+    flex-grow: 1;
+    flex-shrink: 0;
+    width: auto;
+
+    div[role="banner"] {
+      display: flex;
+      line-height: $font-size-xs;
+
+      small {
+        font-size: $font-size-xs;
+        line-height: 1;
+
+        &.copyright {
+          flex-grow: 1;
+          flex-shrink: 1;
+          padding-right: 1rem;
+        }
+      }
+    }
+  }
+}
