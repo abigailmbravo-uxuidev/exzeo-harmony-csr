@@ -28,6 +28,8 @@ export const getPolicyDetails = createSelector(
       endDate,
       policyHolders,
       policyHolderMailingAddress: pHMA = {},
+      policyID,
+      policyNumber,
       product,
       property,
       sourceNumber,
@@ -53,6 +55,8 @@ export const getPolicyDetails = createSelector(
 
     return {
       constructionType,
+      policyID,
+      policyNumber,
       sourceNumber,
       territory,
       county: physicalAddress.county,
@@ -71,8 +75,8 @@ export const getPolicyDetails = createSelector(
         csz: detailUtils.getCityStateZip(physicalAddress)
       },
       cancellation: {
-        dateLabel,
-        cancellationDate,
+        label: dateLabel,
+        value: cancellationDate,
         showReinstatement
       },
       finalPayment

@@ -71,6 +71,7 @@ describe('Testing Policy component', () => {
       getPolicy() {},
       getSummaryLedger() { return Promise.resolve(); },
       getZipCodeSettings() { return Promise.resolve(); },
+      getEffectiveDateChangeReasons() {},
       setAppState() {},
       startWorkflow() { return Promise.resolve({ payload: [{ workflowData: { effectiveDateChangeModel: { data: {} }, endorsePolicyModelCalculate: { data: {} } } }] }); },
       appState: initialState.appState,
@@ -83,18 +84,17 @@ describe('Testing Policy component', () => {
       initialized: true
     };
 
-    const wrapper = shallow(<Policy store={{ dispatch: x => x }} {...props} />);
-    expect(wrapper);
-    const instance = wrapper.instance();
+    const instance = shallow(<Policy store={{ dispatch: x => x }} {...props} />).instance();
+    expect(instance);
     instance.componentDidMount();
     instance.componentDidUpdate(props);
 
-     const wrapper2 = mount(
+     const wrapper = mount(
        <Provider store={store}>
          <Router>
            <Policy {...props} />
          </Router>
        </Provider>);
-    expect(wrapper2);
+    expect(wrapper);
   });
 });
