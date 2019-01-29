@@ -238,12 +238,12 @@
 
           .agencyCode {
             overflow: hidden;
-            width: 40%;
-            flex-shrink: 0;
             flex-grow: 0;
+            flex-shrink: 0;
+            width: 40%;
 
             .agencyCode {
-                width: 100%;
+              width: 100%;
             }
           }
         }
@@ -318,18 +318,18 @@
     #UnderwritingOverride {
       display: flex;
       overflow: hidden;
+      align-self: stretch;
       flex-grow: 0;
       flex-shrink: 0;
-      height: 100%;
 
       .underwriting-validation {
         overflow-y: auto;
         align-self: stretch;
         flex-basis: 240px;
-        flex-shrink: 0;
         flex-grow: 0;
+        flex-shrink: 0;
         width: 240px;
-        height: calc(100vh - 8.125rem);
+        //height: calc(100vh - 8.125rem);
         padding: 0 0 ($padding*2) ($padding*2);
         border-left: dotted 1px $warm-gray-04;
 
@@ -483,9 +483,9 @@
     }
     //diaries
     .open-diaries {
-      overflow-y: auto;
       position: absolute;
       right: 0;
+      overflow-y: auto;
       align-self: stretch;
       flex-grow: 0;
       flex-shrink: 0;
@@ -564,14 +564,13 @@
     }
   }
 }
-
 //need to simplify/standardize all modals
 .modal.quote-summary {
   .card {
     height: calc(90vh - 130px);
 
     &.unsaved-changes {
-        height: auto;
+      height: auto;
     }
   }
 

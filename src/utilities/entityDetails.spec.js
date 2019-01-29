@@ -211,68 +211,6 @@ describe('Test getEntityDetailsDateLabel function for Cancellation Effective Dat
       });
   });
 
-  describe('Entity Details Tests for Policy Status:  Cancellation', () => {
-    it(`should return Cancellation Effective Date when Policy
-    Status is Cancellation and Billing Status is Non-Payment Notice Issued`, () => {
-        const result = entityDetails.getEntityDetailsDateLabel(
-          'Non-Payment Notice Issued',
-          'Cancellation'
-        );
-        expect(result).toEqual(entityDetails.CANCELLATION_DATE);
-      });
-
-    it(`should return Cancellation Effective Date when Policy
-    Status is Cancellation and Billing Status is No Payment Received`, () => {
-        const result = entityDetails.getEntityDetailsDateLabel(
-          'No Payment Received',
-          'Cancellation'
-        );
-        expect(result).toEqual(entityDetails.CANCELLATION_DATE);
-      });
-    it(`should return Cancellation Effective Date when Policy
-    Status is Cancellation and Billing Status is Full Payment Received`, () => {
-        const result = entityDetails.getEntityDetailsDateLabel(
-          'Full Payment Received',
-          'Cancellation'
-        );
-        expect(result).toEqual(entityDetails.CANCELLATION_DATE);
-      });
-    it(`should return Cancellation Effective Date when Policy
-    Status is Cancellation and Billing Status is Over Payment Received`, () => {
-        const result = entityDetails.getEntityDetailsDateLabel(
-          'Over Payment Received',
-          'Cancellation'
-        );
-        expect(result).toEqual(entityDetails.CANCELLATION_DATE);
-      });
-
-    it(`should return Cancellation Effective Date when Policy
-    Status is Cancellation and Billing Status is Partial Payment Received`, () => {
-        const result = entityDetails.getEntityDetailsDateLabel(
-          'Partial Payment Received',
-          'Cancellation'
-        );
-        expect(result).toEqual(entityDetails.CANCELLATION_DATE);
-      });
-
-    it(`should return Cancellation Effective Date when Policy
-    Status is Cancellation and Billing Status is Payment Invoice Issued`, () => {
-        const result = entityDetails.getEntityDetailsDateLabel(
-          'Payment Invoice Issued',
-          'Cancellation'
-        );
-        expect(result).toEqual(entityDetails.CANCELLATION_DATE);
-      });
-    it(`should return Cancellation Effective Date when Policy
-    Status is Cancellation and Billing Status is Non-Payment Cancellation`, () => {
-        const result = entityDetails.getEntityDetailsDateLabel(
-          'Non-Payment Cancellation',
-          'Cancellation'
-        );
-        expect(result).toEqual(entityDetails.CANCELLATION_DATE);
-      });
-  });
-
   describe('Entity Details Tests for Policy Status:  Pending Underwriting Non-Renewal', () => {
     it(`should return Cancellation Effective Date when Policy
     Status is Pending Underwriting Non-Renewal and Billing Status is Non-Payment Notice Issued`, () => {
@@ -584,7 +522,7 @@ describe('Test getFinalPaymentDate', () => {
       policyStatus
     );
 
-    expect(result.date).toEqual(moment(summaryLedger.invoiceDueDate).format(STANDARD_DATE_FORMAT));
+    expect(result.value).toEqual(moment(summaryLedger.invoiceDueDate).format(STANDARD_DATE_FORMAT));
   });
 
   it('should return no date date for a Non-Payment Notice Issued billing status for a policy: In Force', () => {
