@@ -15,6 +15,7 @@ describe('Testing QuoteBase component', () => {
     const props = {
       fieldQuestions: [],
       quoteData: {},
+      match: { path: 'test/quote' },
       dispatch: store.dispatch,
       appState: {
         data: {
