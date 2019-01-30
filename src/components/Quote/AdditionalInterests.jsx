@@ -13,7 +13,7 @@ import { setAppState } from '../../state/actions/appState.actions';
 import { setAppError } from '../../state/actions/error.actions';
 import { getQuote } from '../../state/actions/quote.actions';
 import { getBillingOptions, saveBillingInfo } from '../../state/actions/service.actions';
-import { getGroupedAdditionalInterests, getSortedAdditionalInterests, checkQuoteState } from '../../state/selectors/quote.selectors';
+import { getGroupedAdditionalInterests, getSortedAdditionalInterests, blockQuote } from '../../state/selectors/quote.selectors';
 import QuoteBaseConnect from '../../containers/Quote';
 import AIModal from '../AdditionalInterestModal';
 import Footer from '../Common/Footer';
@@ -293,6 +293,7 @@ export class AdditionalInterests extends Component {
                 <ul className="results result-cards">
                   {sortedAdditionalInterests.map(ai => (
                     <AdditionalInterestCard
+                      editingDisabled={editingDisabled}
                       key={ai._id}
                       ai={ai}
                       editAI={this.editAI}
@@ -337,7 +338,7 @@ const defaultObj = {};
 const mapStateToProps = state => ({
   appState: state.appState,
   billingOptions: state.service.billingOptions,
-  editingDisabled: checkQuoteState(state),
+  editingDisabled: blockQuote(state),
   fieldValues: getFormValues('AdditionalInterests')(state) || defaultObj,
   questions: state.questions,
   quoteData: state.quoteState.quote || defaultObj,

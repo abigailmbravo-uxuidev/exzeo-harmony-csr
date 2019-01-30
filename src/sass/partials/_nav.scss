@@ -39,8 +39,19 @@
       display: flex;
       margin: 0;
 
-      span {
-        a {
+      a {
+        border-left: ($padding/2) solid rgba($bright-blue, 0);
+        text-decoration: none;
+
+        &.btn {
+            border-left-width: 1px;
+
+            &:hover {
+                border-left-width: 1px;
+            }
+        }
+
+        span {
           display: flex;
           align-items: center;
           flex-grow: 1;
@@ -49,66 +60,70 @@
           cursor: pointer;
           text-decoration: none;
           color: $warm-gray-07;
-          border-left: ($padding/2) solid rgba($bright-blue, 0);
-
-          &.disabled {
-            color: $warm-gray-04;
-
-            &:hover {
-              cursor: not-allowed;
-              text-decoration: none;
-              color: $warm-gray-04;
-              border-left: ($padding/2) solid rgba($white, 0);
-              background-color: rgba($white, 0);
-            }
-          }
-
-          &.active {
-            cursor: default;
-            text-decoration: none;
-            color: $bright-blue-darken-04;
-            border-left: ($padding/2) solid $bright-blue-darken-04;
-            background-color: $white;
-
-            &:hover {
-              cursor: default;
-              text-decoration: none;
-              border-left: ($padding/2) solid $bright-blue-darken-04;
-              background-color: $white;
-            }
-          }
-
-          &:hover {
-            cursor: pointer;
-            text-decoration: none;
-            border-left: ($padding/2) solid rgba($bright-blue, .2);
-            background-color: rgba($white, .4);
-
-            span {
-              text-decoration: none;
-              color: $white;
-            }
-          }
-
-          span {
-            text-decoration: none;
-            color: $white;
-          }
         }
 
         &.disabled {
           color: $warm-gray-04;
 
-          a {
-            color: $warm-gray-04;
+          &:hover {
+            cursor: not-allowed;
+            border-left: ($padding/2) solid rgba($white, 0);
+            background-color: rgba($white, 0);
 
-            &:hover {
-              cursor: not-allowed;
-              text-decoration: none;
+            span {
               color: $warm-gray-04;
-              border-left: ($padding/2) solid rgba($white, 0);
-              background-color: rgba($white, 0);
             }
+          }
+        }
+
+        &.active {
+          cursor: default;
+          border-left: ($padding/2) solid $bright-blue-darken-04;
+          background-color: $white;
+
+          &:hover {
+            cursor: default;
+            border-left: ($padding/2) solid $bright-blue-darken-04;
+            background-color: $white;
+
+            span {
+              color: $bright-blue-darken-04;
+            }
+          }
+
+          span {
+            color: $bright-blue-darken-04;
+          }
+        }
+
+        &:hover {
+          cursor: pointer;
+          text-decoration: none;
+          border-left: ($padding/2) solid rgba($bright-blue, .2);
+          background-color: rgba($white, .4);
+
+          span {
+            text-decoration: none;
+          }
+        }
+      }
+
+      &.disabled {
+        color: $warm-gray-04;
+
+        a {
+          color: $warm-gray-04;
+
+          &:hover {
+            cursor: not-allowed;
+            text-decoration: none;
+            color: $warm-gray-04;
+            border-left: ($padding/2) solid rgba($white, 0);
+            background-color: rgba($white, 0);
+          }
+
+          span {
+            text-decoration: none;
           }
         }
       }

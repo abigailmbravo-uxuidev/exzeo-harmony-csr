@@ -6,6 +6,7 @@ import { Prompt } from 'react-router-dom';
 import moment from 'moment';
 import { reduxForm, change } from 'redux-form';
 
+import { blockQuote } from '../../state/selectors/quote.selectors';
 import { startWorkflow } from '../../state/actions/cg.actions';
 import { setAppState } from '../../state/actions/appState.actions';
 import { setAppError } from '../../state/actions/error.actions';
@@ -118,8 +119,6 @@ InstallmentTerm.propTypes = {
   paymentPlans: PropTypes.any // eslint-disable-line
 };
 
-const checkQuoteState = quoteData => _.some(['Policy Issued', 'Documents Received'], state => state === quoteData.quoteState);
-
 export const selectBillTo = (props) => {
   const { dispatch } = props;
   dispatch(change('MailingAddressBilling', 'billPlan', 'Annual'));
@@ -220,7 +219,7 @@ export class MailingAddressBilling extends Component {
 
   render() {
     const {
-      handleSubmit, billingOptions, pristine, quoteData, dirty, match
+      handleSubmit, billingOptions, pristine, quoteData, dirty, match, editingDisabled
     } = this.props;
 
     const { options } = billingOptions;
@@ -318,7 +317,7 @@ export class MailingAddressBilling extends Component {
               className="btn btn-primary"
               type="submit"
               form="MailingAddressBilling"
-              disabled={this.props.appState.data.submitting || pristine || checkQuoteState(quoteData) || !this.props.fieldValues.billToId}>Update
+              disabled={this.props.appState.data.submitting || pristine || editingDisabled || !this.props.fieldValues.billToId}>Update
             </button>
           </div>
         </div>
@@ -343,7 +342,8 @@ const mapStateToProps = state => ({
   fieldValues: _.get(state.form, 'MailingAddressBilling.values', {}),
   initialValues: handleInitialize(state),
   quoteData: state.quoteState.quote || {},
-  billingOptions: state.service.billingOptions || {}
+  billingOptions: state.service.billingOptions || {},
+  editingDisabled: blockQuote(state)
 });
 
 export default connect(mapStateToProps, {

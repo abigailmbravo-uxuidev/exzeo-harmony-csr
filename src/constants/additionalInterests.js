@@ -14,7 +14,7 @@ export const DEFAULT_ADDITIONAL_INTERESTS_MAP = {
   [ADDITIONAL_INTERESTS.premiumFinance]: []
 };
 
-export const DISABLED_AI_STATES = [
+export const AVAILABLE_QUOTE_STATES = [
   'Policy Issued',
   'Documents Recieved'
 ];

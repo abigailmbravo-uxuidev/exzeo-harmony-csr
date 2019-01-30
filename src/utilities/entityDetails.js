@@ -16,7 +16,7 @@ export const expirationPolicyStatuses = [
   'Not In Force'
 ];
 
-export const expirationBillingStatus = [
+export const expirationBillingStatuses = [
   'No Payment Received',
   'Full Payment Received',
   'Over Payment Received',
@@ -29,7 +29,6 @@ export const canceledPolicyStatuses = [
   'Cancelled',
   'Pending Voluntary Cancellation',
   'Pending Underwriting Cancellation',
-  'Cancellation',
   'Pending Underwriting Non-Renewal'
 ];
 
@@ -40,7 +39,10 @@ export const canceledBillingStatuses = [
   'Over Payment Received',
   'Partial Payment Received',
   'Payment Invoice Issued',
-  'Non-Payment Cancellation'
+  'Non-Payment Cancellation',
+  'Underwriting Cancellation',
+  'Underwriting Non-Renewal',
+  'Voluntary Cancellation'
 ];
 /**
  * Determine product display name based on type
@@ -88,19 +90,18 @@ export function shouldShowReinstatement(status, code) {
  * @returns {string}
  */
 export function getCancellationDate(summaryLedger, policyStatus, endDate, cancelDate) {
-  const { equityDate, status: { displayText } } = summaryLedger;
+  const { equityDate, status: { displayText: billingStatus } } = summaryLedger;
 
-  if (displayText === 'Policy Expired' && endDate) {
-    return moment.utc(endDate).format(STANDARD_DATE_FORMAT);
-  }
+  if (isNonPaymentNotice(billingStatus, policyStatus)) {
+    return equityDate ? moment.utc(equityDate).format(STANDARD_DATE_FORMAT) : '';
+  } 
 
-  const isCanceled = getEntityDetailsDateLabel(displayText, policyStatus) === CANCELLATION_DATE;
-  const isNonPaymentCancellation = isNonPaymentNotice(displayText, policyStatus);
+  if (expirationPolicyStatuses.includes(policyStatus) && expirationBillingStatuses.includes(billingStatus)) {
+    return endDate ? moment.utc(endDate).format(STANDARD_DATE_FORMAT) : '';
+  } 
 
-  if (isNonPaymentCancellation && equityDate) {
-    return moment.utc(equityDate).format(STANDARD_DATE_FORMAT);
-  } else if (isCanceled && cancelDate) {
-    return moment.utc(cancelDate).format(STANDARD_DATE_FORMAT);
+  if (canceledPolicyStatuses.includes(policyStatus) && canceledBillingStatuses.includes(billingStatus)) {
+    return cancelDate ? moment.utc(cancelDate).format(STANDARD_DATE_FORMAT) : '';
   }
 
   return '';
@@ -113,9 +114,9 @@ export function getCancellationDate(summaryLedger, policyStatus, endDate, cancel
  * @returns {object}
  */
 export function getFinalPaymentDate(summaryLedger, policyStatus) {
-  const { invoiceDueDate, status: { displayText } } = summaryLedger;
+  const { invoiceDueDate, status: { displayText: billingStatus } } = summaryLedger;
 
-  const isNonPaymentCancellation = isNonPaymentNotice(displayText, policyStatus);
+  const isNonPaymentCancellation = isNonPaymentNotice(billingStatus, policyStatus);
 
   if (isNonPaymentCancellation && invoiceDueDate) {
     return {
@@ -127,11 +128,15 @@ export function getFinalPaymentDate(summaryLedger, policyStatus) {
 }
 
 export function getEntityDetailsDateLabel(billingStatus, policyStatus) {
-  if (expirationPolicyStatuses.some(s => policyStatus.includes(s)) &&
-    expirationBillingStatus.some(s => billingStatus.includes(s))) return EXPIRATION_DATE;
-  else if (isNonPaymentNotice(billingStatus, policyStatus) ||
-    (canceledPolicyStatuses.some(s => policyStatus.includes(s)) &&
-    canceledBillingStatuses.some(s => billingStatus.includes(s)))) return CANCELLATION_DATE;
+  if (expirationBillingStatuses.includes(billingStatus) && expirationPolicyStatuses.includes(policyStatus)) {
+    return EXPIRATION_DATE;
+  }
+
+  if ((canceledBillingStatuses.includes(billingStatus) && canceledPolicyStatuses.includes(policyStatus)) 
+    || isNonPaymentNotice(billingStatus, policyStatus)) {
+    return CANCELLATION_DATE;
+  }
+
   return '';
 }
 
