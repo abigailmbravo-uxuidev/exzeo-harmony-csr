@@ -231,16 +231,17 @@ header {
   }
 }
 //detail header
+
 #root {
   .app-wrapper.csr {
     &.agency {
       .detailHeader {
-        width: 100%;
         position: relative;
         display: flex;
         flex-grow: 0;
         flex-shrink: 0;
         justify-content: flex-start;
+        width: 100%;
         height: 4.75rem;
         color: $white;
         border-bottom: 2px solid $white;
@@ -255,37 +256,39 @@ header {
         }
 
         section {
-            flex-basis: auto;
-            flex-grow: 0;
-            flex-shrink: 0;
-            margin-right: $padding*2;
-            padding: ($padding/2) 0;
+          flex-basis: auto;
+          flex-grow: 0;
+          flex-shrink: 0;
+          margin-right: $padding*2;
+          padding: ($padding/2) 0;
 
-            &.agencyDetails {
-              align-items: center;
-              padding-right: $padding*2;
-              text-align: center;
+          &.agencyDetails {
+            display: flex;
+            align-items: center;
+            width: 12rem;
+            padding-right: 1rem;
+            text-align: center;
 
-              h4 {
-                margin: 0;
-                color: $yellow-lighten-06;
+            h4 {
+              margin: 0;
+              color: $yellow-lighten-06;
+              font-weight: $font-weight-normal;
+            }
+          }
+
+          &.entityName {
+            display: flex;
+            align-items: center;
+
+            h4 {
+              margin: 0;
+              color: $white;
+
+              span {
                 font-weight: $font-weight-normal;
               }
             }
-
-            &.entityName {
-              display: flex;
-              align-items: center;
-
-              h4 {
-                margin: 0;
-                color: $white;
-
-                span {
-                  font-weight: $font-weight-normal;
-                }
-              }
-            }
+          }
         }
       }
     }
