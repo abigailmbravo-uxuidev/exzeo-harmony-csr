@@ -65,12 +65,17 @@
         &.disabled {
           color: $warm-gray-04;
 
+          span {
+              color: $warm-gray-04;
+          }
+
           &:hover {
             cursor: not-allowed;
             border-left: ($padding/2) solid rgba($white, 0);
             background-color: rgba($white, 0);
 
             span {
+                cursor: not-allowed;
               color: $warm-gray-04;
             }
           }
