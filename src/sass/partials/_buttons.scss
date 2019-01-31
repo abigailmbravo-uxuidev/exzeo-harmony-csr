@@ -168,6 +168,7 @@ input[type="submit"] {
     border-width: 0;
     line-height: $headings-line-height;
 
+    &:focus,
     &:hover {
       text-decoration: none;
       color: $bright-blue-lighten-01;

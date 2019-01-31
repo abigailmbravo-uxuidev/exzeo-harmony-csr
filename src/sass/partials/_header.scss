@@ -375,6 +375,7 @@ header {
                     &.btn-white {
                       display: inline-flex;
                       margin-left: $padding/2;
+                      cursor: help;
                       text-decoration: none;
                       color: $white;
                       font-size: $font-size-xs;
@@ -390,18 +391,18 @@ header {
           }
 
           &.policyHolder {
-              min-width: 6rem;
-              max-width: calc(30vw - 13.575rem);
+            min-width: 6rem;
+            max-width: calc(30vw - 13.575rem);
           }
 
           &.propertyAddress {
-              min-width: 8rem;
-              max-width: calc(35vw - 15.8375rem);
+            min-width: 8rem;
+            max-width: calc(35vw - 15.8375rem);
           }
 
           &.mailingAddress {
-              min-width: 8rem;
-              max-width: calc(35vw - 15.8375rem);
+            min-width: 8rem;
+            max-width: calc(35vw - 15.8375rem);
           }
 
           &.county {
