@@ -19,7 +19,7 @@ import { STANDARD_DATE_FORMAT } from '../../../constants/dates';
 import Pagination from '../components/Pagination';
 
 const {
-  isAlphaNumeric,
+  isValidNameFormat,
   isValidChar,
   isNumberDashOnly,
   isValidDateFormat,
@@ -67,7 +67,7 @@ const PolicySearch = ({
         placeholder="First Name Search"
         component={Input}
         styleName="first-name-search"
-        validate={isAlphaNumeric}
+        validate={isValidNameFormat}
         errorHint />
       <Field
         name="lastName"
@@ -76,7 +76,7 @@ const PolicySearch = ({
         placeholder="Last Name Search"
         component={Input}
         styleName="last-name-search"
-        validate={isAlphaNumeric}
+        validate={isValidNameFormat}
         errorHint />
       <Field
         name="address"
