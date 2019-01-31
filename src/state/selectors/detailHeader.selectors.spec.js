@@ -859,6 +859,7 @@ describe('Detail Header selectors', () => {
         csz: 'JUPITER, FL 00019'
       },
       sourceNumber: '12-5148842-01',
+      sourcePath: '/quote/12-5148842-01/coverage',
       status: 'Pending Voluntary Cancellation / No Payment Received',
       territory: '038-0'
     });

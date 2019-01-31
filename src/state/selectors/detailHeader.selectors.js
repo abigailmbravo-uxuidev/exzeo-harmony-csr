@@ -79,7 +79,8 @@ export const getPolicyDetails = createSelector(
         value: cancellationDate,
         showReinstatement
       },
-      finalPayment
+      finalPayment,
+      sourcePath: sourceNumber ? `/quote/${sourceNumber}/coverage` : null
     };
   }
 );
@@ -97,7 +98,8 @@ export const getQuoteDetails = createSelector(
       policyHolderMailingAddress: pHMA = {},
       property,
       effectiveDate,
-      rating = {}
+      rating = {},
+      policyNumber
     } = quote;
 
     const {
@@ -126,7 +128,10 @@ export const getQuoteDetails = createSelector(
         address1: physicalAddress.address1,
         address2: physicalAddress.address2,
         csz: detailUtils.getCityStateZip(physicalAddress)
-      }
+      },
+      policyNumber,
+      sourcePath: policyNumber ? `/policy/${policyNumber}/coverage` : null,
+      showPolicyLink: quoteState === 'Policy Issued'
     };
   }
 );
