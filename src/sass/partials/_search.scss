@@ -656,7 +656,6 @@ main[role="document"] {
     }
   }
 }
-
 //refactor these when cards are standardized based on core card
 .result-cards,
 ul.list-cards {
@@ -934,7 +933,9 @@ ul.list-cards {
       }
     }
   }
-}.result-cards,
+}
+
+.result-cards,
 ul.list-cards {
   li {
     margin-bottom: $padding/2;
