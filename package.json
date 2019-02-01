@@ -10,7 +10,7 @@
     "lint": "./node_modules/.bin/eslint src --ext .jsx --ext .js"
   },
   "dependencies": {
-    "@exzeo/core-ui": "^0.4.4",
+    "@exzeo/core-ui": "^0.4.7",
     "@exzeo/react-scripts": "1.0.4",
     "@fortawesome/fontawesome": "~1.0.0",
     "@fortawesome/react-fontawesome": "~0.0.14",
