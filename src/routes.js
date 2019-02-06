@@ -52,7 +52,7 @@ class Routes extends Component {
 
   /* eslint-disable max-len */
   render() {
-    const { ui: { diary, note }, auth, authState: { userProfile } } = this.props;
+    const { ui: { diary, note }, auth, authState: { userProfile }, policyState: { policy} } = this.props;
     return (
       <div>
         <Modal
@@ -80,6 +80,7 @@ class Routes extends Component {
             diaryId={diary.selectedDiary ? diary.selectedDiary.diaryId : null}
             resourceType={diary.resourceType}
             resourceId={diary.resourceId}
+            sourceNumber={policy && policy.sourceNumber ? policy.sourceNumber : null}
             entityEndDate={diary.entityEndDate} />
         }
 
@@ -149,7 +150,8 @@ const mapStateToProps = state => ({
   error: state.error,
   appState: state.appState,
   authState: state.authState,
-  ui: state.ui
+  ui: state.ui,
+  policyState: state.policyState
 });
 
 const mapDispatchToProps = dispatch => ({
