@@ -114,9 +114,7 @@ export class SideNav extends React.Component {
             }
             {csrLinks(agencyCode, branchCode).map((agentLink, index) => (
               <li key={agentLink.key}>
-                <span className={agentLink.styleName}>
-                  <NavLink to={agentLink.link} activeClassName="active" exact>{agentLink.label}</NavLink>
-                </span>
+                <NavLink className={agentLink.styleName} to={agentLink.link} activeClassName="active" exact><span>{agentLink.label}</span></NavLink>
               </li>))
       }
           </ul>
