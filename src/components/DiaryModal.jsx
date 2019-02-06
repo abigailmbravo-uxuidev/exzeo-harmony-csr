@@ -155,6 +155,7 @@ export class DiaryModal extends Component {
 }
 
 DiaryModal.propTypes = {
+  sourceNumber: PropTypes.string,
   entityEndDate: PropTypes.string,
   change: PropTypes.func.isRequired,
   assigneeAnswers: PropTypes.arrayOf(PropTypes.shape()).isRequired,

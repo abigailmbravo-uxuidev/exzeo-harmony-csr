@@ -54,7 +54,8 @@ export function submitDiary(data, props) {
       user,
       resourceType,
       resourceId,
-      diaryId
+      diaryId,
+      sourceNumber
     } = props;
 
     const userObj = {
@@ -110,7 +111,7 @@ export function submitDiary(data, props) {
       await serviceRunner.callService(config);
       dispatch(fetchDiaries({
         resourceType,
-        resourceId
+        resourceId: resourceType === POLICY_RESOURCE_TYPE ? [resourceId, sourceNumber] : resourceId
       }));
     } catch (error) {
       dispatch(errorActions.setAppError(error));
