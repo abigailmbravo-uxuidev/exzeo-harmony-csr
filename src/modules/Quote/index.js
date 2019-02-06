@@ -62,6 +62,7 @@ export class QuoteBase extends React.Component {
       <div className="app-wrapper csr quote">
         {(appState.data.submitting || !quoteData.quoteNumber) && <Loader />}
         <App
+          context={match.path.split('/')[1]}
           resourceType={QUOTE_RESOURCE_TYPE}
           resourceId={quoteData.quoteNumber}
           pageTitle={`Q: ${quoteData.quoteNumber || ''}`}
