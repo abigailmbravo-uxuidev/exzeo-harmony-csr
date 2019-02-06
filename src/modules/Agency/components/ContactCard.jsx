@@ -1,9 +1,16 @@
 import React from 'react';
 
-export const ContactCard = ({ contact, handleClick }) => (
+export const ContactCard = ({ contact, handleClick, isOfficer }) => (
   <div className="csr contact card">
     <div className="contact-title">
       <i className="fa fa-address-card" />
+      {isOfficer &&
+      <small>
+        <i className="fa fa-certificate" />
+        <label>Officer</label>
+      </small>
+
+      }
     </div>
     <div className="contact-details">
       <div className="card-name">
