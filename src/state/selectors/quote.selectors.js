@@ -7,8 +7,8 @@ import { applyAdditionalInterestRanking } from '../../utilities/additionalIntere
 import {
   ADDITIONAL_INTERESTS,
   DEFAULT_ADDITIONAL_INTERESTS_MAP,
-  DISABLED_AI_STATES
 } from '../../constants/additionalInterests';
+import { CAN_QUOTE_STATES } from '../../constants/quoteState';
 
 import { getQuote, getAppState, getCGState } from './entity.selectors';
 
@@ -45,10 +45,10 @@ export const getGroupedAdditionalInterests = createSelector(
   }
 );
 
-export const checkQuoteState = createSelector(
+export const blockQuote = createSelector(
   [getQuote],
   (quoteData) => {
-    return DISABLED_AI_STATES.some(state => state === quoteData.status);
+    return !CAN_QUOTE_STATES.some(state => state === quoteData.quoteState);
   }
 );
 

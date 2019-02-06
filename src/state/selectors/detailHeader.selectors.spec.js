@@ -826,11 +826,14 @@ describe('Detail Header selectors', () => {
     const result = detailSelectors.getPolicyDetails(state);
     expect(result).toEqual({
       cancellation: {
-        dateLabel: 'Cancellation Effective Date',
-        cancellationDate: '12/04/2018',
+        label: 'Cancellation Effective Date',
+        value: '12/04/2018',
         showReinstatement: false
       },
-      finalPayment: {},
+      finalPayment: {
+        'label': undefined,
+        'value': undefined,
+      },
       constructionType: 'SUPERIOR',
       county: 'PALM BEACH',
       currentPremium: '$ 3,055',
@@ -848,12 +851,15 @@ describe('Detail Header selectors', () => {
         displayName: 'Batman Robin CSR006',
         phone: '(727) 123-1234'
       },
+      policyID: '5bb78613c2793c0012ad5733',
+      policyNumber: '12-1011068-01',
       propertyAddress: {
         address1: '1378 TEST ADDRESS',
         address2: '',
         csz: 'JUPITER, FL 00019'
       },
       sourceNumber: '12-5148842-01',
+      sourcePath: '/quote/12-5148842-01/coverage',
       status: 'Pending Voluntary Cancellation / No Payment Received',
       territory: '038-0'
     });

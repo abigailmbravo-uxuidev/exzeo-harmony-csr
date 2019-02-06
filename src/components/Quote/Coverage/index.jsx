@@ -15,7 +15,7 @@ import { setAppError } from '../../../state/actions/error.actions';
 import { getUIQuestions } from '../../../state/actions/questions.actions';
 import { getQuote } from '../../../state/actions/quote.actions';
 import { getAgencies, getAgentsByAgencyCode } from '../../../state/actions/agency.actions';
-import { checkQuoteState } from '../../../state/selectors/quote.selectors';
+import { blockQuote } from '../../../state/selectors/quote.selectors';
 import Footer from '../../Common/Footer';
 
 import ProducedBy from './ProducedBy';
@@ -462,7 +462,7 @@ const mapStateToProps = (state) => {
     quoteData,
     zipCodeSettings: state.service.getZipcodeSettings,
     questions,
-    editingDisabled: checkQuoteState(state),
+    editingDisabled: blockQuote(state),
     clearFields,
     sinkholePerilCoverage,
     dwellingMin,

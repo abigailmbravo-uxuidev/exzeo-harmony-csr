@@ -28,6 +28,8 @@ export const getPolicyDetails = createSelector(
       endDate,
       policyHolders,
       policyHolderMailingAddress: pHMA = {},
+      policyID,
+      policyNumber,
       product,
       property,
       sourceNumber,
@@ -53,6 +55,8 @@ export const getPolicyDetails = createSelector(
 
     return {
       constructionType,
+      policyID,
+      policyNumber,
       sourceNumber,
       territory,
       county: physicalAddress.county,
@@ -71,11 +75,12 @@ export const getPolicyDetails = createSelector(
         csz: detailUtils.getCityStateZip(physicalAddress)
       },
       cancellation: {
-        dateLabel,
-        cancellationDate,
+        label: dateLabel,
+        value: cancellationDate,
         showReinstatement
       },
-      finalPayment
+      finalPayment,
+      sourcePath: sourceNumber ? `/quote/${sourceNumber}/coverage` : null
     };
   }
 );
@@ -93,7 +98,8 @@ export const getQuoteDetails = createSelector(
       policyHolderMailingAddress: pHMA = {},
       property,
       effectiveDate,
-      rating = {}
+      rating = {},
+      policyNumber
     } = quote;
 
     const {
@@ -122,7 +128,10 @@ export const getQuoteDetails = createSelector(
         address1: physicalAddress.address1,
         address2: physicalAddress.address2,
         csz: detailUtils.getCityStateZip(physicalAddress)
-      }
+      },
+      policyNumber,
+      sourcePath: policyNumber ? `/policy/${policyNumber}/coverage` : null,
+      showPolicyLink: quoteState === 'Policy Issued'
     };
   }
 );

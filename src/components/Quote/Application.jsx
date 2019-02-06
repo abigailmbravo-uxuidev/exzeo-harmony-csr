@@ -4,6 +4,7 @@ import { reduxForm } from 'redux-form';
 import { connect } from 'react-redux';
 import _ from 'lodash';
 
+import { blockQuote } from '../../state/selectors/quote.selectors';
 import { setAppState } from '../../state/actions/appState.actions';
 import { getQuote } from '../../state/actions/quote.actions';
 import QuoteSummaryModal from '../../components/Common/QuoteSummaryModal';
@@ -38,8 +39,6 @@ export const quoteSummaryModal = (props) => {
   );
 };
 
-const checkQuoteState = quoteData => ['Application Sent DocuSign', 'Policy Issued', 'Documents Received'].includes(quoteData);
-
 export class QuoteApplication extends Component {
   componentDidMount() {
     const {
@@ -59,7 +58,8 @@ export class QuoteApplication extends Component {
       match,
       quoteData,
       underwritingExceptions,
-      isUwOverrideSubmitting
+      isUwOverrideSubmitting,
+      editingDisabled
     } = this.props;
 
     const uwExceptions = underwritingExceptions.filter(e => !e.overridden).length;
@@ -90,7 +90,7 @@ export class QuoteApplication extends Component {
               form="Application"
               className="btn btn-primary"
               type="submit"
-              disabled={(uwExceptions > 0) || checkQuoteState(quoteData.quoteState) || appState.data.applicationSent || isUwOverrideSubmitting}>Send to DocuSign
+              disabled={(uwExceptions > 0) || editingDisabled || appState.data.applicationSent || isUwOverrideSubmitting}>Send to DocuSign
             </button>
           </div>
         </div>
@@ -120,6 +120,7 @@ const mapStateToProps = state => ({
   underwritingExceptions: handleGetUnderwritingExceptions(state),
   initialValues: handleInitialize(state),
   quoteData: state.quoteState.quote || {},
+  editingDisabled: blockQuote(state),
   isUwOverrideSubmitting: state.form.UnderwritingOverride ? state.form.UnderwritingOverride.submitting : false
 });
 

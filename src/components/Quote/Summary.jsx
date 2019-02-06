@@ -6,6 +6,11 @@ import _ from 'lodash';
 import moment from 'moment';
 
 import TextField from '../Form/inputs/TextField';
+<<<<<<< HEAD
+=======
+import { blockQuote } from '../../state/selectors/quote.selectors';
+import { startWorkflow, batchCompleteTask } from '../../state/actions/cg.actions';
+>>>>>>> master
 import { setAppState } from '../../state/actions/appState.actions';
 import { setAppError } from '../../state/actions/error.actions';
 import { getQuote } from '../../state/actions/quote.actions';
@@ -70,7 +75,8 @@ export class Summary extends Component {
       quoteData,
       handleSubmit,
       match,
-      submitting
+      submitting,
+      editingDisabled
     } = this.props;
 
     const selectedAgent = this.state.selectedAgent;
@@ -335,7 +341,7 @@ export class Summary extends Component {
             <button
               tabIndex="0"
               aria-label="submit-btn form-share"
-              disabled={submitting || disablePage}
+              disabled={submitting || disablePage || editingDisabled}
               form="Summary"
               className="btn btn-primary"
               type="submit">Share
@@ -371,7 +377,8 @@ const mapStateToProps = state => ({
   initialValues: handleInitialize(state),
   showScheduleDateModal: state.appState.data ? state.appState.data.showScheduleDateModal : false,
   showShareConfirmationModal: state.appState.data ? state.appState.data.showShareConfirmationModal : false,
-  quoteData: state.quoteState.quote || {}
+  quoteData: state.quoteState.quote || {},
+  editingDisabled: blockQuote
 });
 
 
