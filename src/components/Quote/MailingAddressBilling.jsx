@@ -7,12 +7,10 @@ import moment from 'moment';
 import { reduxForm, change } from 'redux-form';
 
 import { blockQuote } from '../../state/selectors/quote.selectors';
-import { startWorkflow } from '../../state/actions/cg.actions';
 import { setAppState } from '../../state/actions/appState.actions';
 import { setAppError } from '../../state/actions/error.actions';
 import { getBillingOptions } from '../../state/actions/service.actions';
 import { getQuote } from '../../state/actions/quote.actions';
-import QuoteBaseConnect from '../../containers/Quote';
 import CheckField from '../Form/inputs/CheckField';
 import TextField from '../Form/inputs/TextField';
 import { RadioFieldBilling, SelectFieldBilling } from '../Form/inputs';
@@ -20,6 +18,7 @@ import normalizeNumbers from '../Form/normalizeNumbers';
 import Footer from '../Common/Footer';
 
 const MODEL_NAME = 'csrMailingAddressBilling';
+const PAGE_NAME = 'mailing';
 
 export const handleInitialize = (state) => {
   const quoteData = state.quoteState.quote || {};
@@ -126,24 +125,16 @@ export const selectBillTo = (props) => {
 
 export const handleFormSubmit = async (data, dispatch, props) => {
   const {
-    quoteData, startWorkflowAction, setAppErrorAction, setAppStateAction, appState, getQuoteAction, billingOptions
+    quoteData, billingOptions
   } = props;
 
   const billToType = ((billingOptions || {}).options.find(o => o.billToId === data.billToId) || {}).billToType || '';
-  try {
-    setAppStateAction(MODEL_NAME, appState.data.instanceId, { ...appState.data, submitting: true });
-    await startWorkflowAction(MODEL_NAME, {
-      quoteId: quoteData._id,
-      ...data,
-      billToType
-    });
 
-    await getQuoteAction(quoteData._id, 'mailing');
-  } catch (error) {
-    setAppErrorAction(error);
-  } finally {
-    setAppStateAction(MODEL_NAME, appState.data.instanceId, { ...appState.data, submitting: false });
-  }
+  await props.updateQuote(MODEL_NAME, {
+    quoteId: quoteData._id,
+    ...data,
+    billToType
+  }, PAGE_NAME);
 };
 
 export const clearForm = (props) => {
@@ -226,7 +217,7 @@ export class MailingAddressBilling extends Component {
 
     if (!quoteData.rating || (!options || options.length === 0)) {
       return (
-        <QuoteBaseConnect match={match}>
+        <React.Fragment match={match}>
           <div className="route-content">
             <div className="scroll">
               <div className="detail-wrapper">
@@ -238,11 +229,11 @@ export class MailingAddressBilling extends Component {
               </div>
             </div>
           </div>
-        </QuoteBaseConnect>
+        </React.Fragment>
       );
     }
     return (
-      <QuoteBaseConnect match={match}>
+      <React.Fragment match={match}>
         <Prompt when={dirty} message="Are you sure you want to leave with unsaved changes?" />
         <div className="route-content">
           <form id="MailingAddressBilling" onSubmit={handleSubmit(handleFormSubmit)} >
@@ -335,7 +326,7 @@ export class MailingAddressBilling extends Component {
             </button>
           </div>
         </div>
-      </QuoteBaseConnect>
+      </React.Fragment>
     );
   }
 }
@@ -361,7 +352,6 @@ const mapStateToProps = state => ({
 });
 
 export default connect(mapStateToProps, {
-  startWorkflowAction: startWorkflow,
   setAppStateAction: setAppState,
   setAppErrorAction: setAppError,
   getBillingOptionsAction: getBillingOptions,

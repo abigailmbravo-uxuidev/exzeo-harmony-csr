@@ -13,14 +13,8 @@ import SearchAgency from './containers/SearchAgency';
 import SearchPolicy from './containers/SearchPolicy';
 import SearchDiaries from './containers/SearchDiaries';
 import NotFoundPage from './containers/NotFound';
-import QuoteCoverage from './components/Quote/Coverage';
+import QuoteModule from './modules/Quote';
 import QuoteLanding from './components/Quote/QuoteLanding';
-import QuoteUnderwriting from './components/Quote/Underwriting';
-import AdditionalInterests from './components/Quote/AdditionalInterests';
-import QuoteMailingAddressBilling from './components/Quote/MailingAddressBilling';
-import QuoteNotesFiles from './components/Quote/NotesFiles';
-import QuoteSummary from './components/Quote/Summary';
-import QuoteApplication from './components/Quote/Application';
 import Reports from './containers/Reports';
 import PolicyModule from './modules/Policy';
 import Agency from './modules/Agency';
@@ -111,16 +105,10 @@ class Routes extends Component {
               <Route exact path="/" render={props => <SearchPolicy auth={auth} {...props} />} />
               <Route exact path="/agency" render={props => <SearchAgency auth={auth} {...props} />} />
               <Route exact path="/diaries" render={props => <SearchDiaries auth={auth} {...props} />} />
+              <Route path="/quote/:quoteNumber" render={props => <QuoteModule auth={auth} {...props} />} />
               <Route path="/policy/:policyNumber" render={props => <PolicyModule auth={auth} {...props} />} />
               <Route path="/agency/:agencyCode/:branchCode" render={props => <Agency auth={auth} {...props} />} />
               <Route exact path="/quote/new/:stateCode/:propertyId" render={props => <QuoteLanding auth={auth} {...props} />} />
-              <Route exact path="/quote/:quoteNumber/coverage" render={props => <QuoteCoverage auth={auth} {...props} />} />
-              <Route exact path="/quote/:quoteNumber/billing" render={props => <QuoteMailingAddressBilling auth={auth} {...props} />} />
-              <Route exact path="/quote/:quoteNumber/notes" render={props => <QuoteNotesFiles auth={auth} {...props} />} />
-              <Route exact path="/quote/:quoteNumber/summary" render={props => <QuoteSummary auth={auth} {...props} />} />
-              <Route exact path="/quote/:quoteNumber/additionalInterests" render={props => <AdditionalInterests auth={auth} {...props} />} />
-              <Route exact path="/quote/:quoteNumber/underwriting" render={props => <QuoteUnderwriting auth={auth} {...props} />} />
-              <Route exact path="/quote/:quoteNumber/application" render={props => <QuoteApplication auth={auth} {...props} />} />
               <Route exact path="/reports" render={props => <Reports auth={auth} {...props} />} />
               <Route exact path="/login" render={props => <LoginPage auth={auth} {...props} />} />
               <Route exact path="/accessDenied" render={props => <AccessDenied auth={auth} {...props} />} />

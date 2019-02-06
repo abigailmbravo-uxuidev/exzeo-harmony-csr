@@ -7,11 +7,9 @@ import moment from 'moment';
 
 import TextField from '../Form/inputs/TextField';
 import { blockQuote } from '../../state/selectors/quote.selectors';
-import { startWorkflow, batchCompleteTask } from '../../state/actions/cg.actions';
 import { setAppState } from '../../state/actions/appState.actions';
 import { setAppError } from '../../state/actions/error.actions';
 import { getQuote } from '../../state/actions/quote.actions';
-import QuoteBaseConnect from '../../containers/Quote';
 import normalizePhone from '../Form/normalizePhone';
 import normalizeNumbers from '../Form/normalizeNumbers';
 import Footer from '../Common/Footer';
@@ -19,6 +17,7 @@ import applyRank from '../Common/additionalInterestRank';
 import * as serviceRunner from '../../utilities/serviceRunner';
 
 const MODEL_NAME = 'csrEmailQuoteSummary';
+const PAGE_NAME = 'summary';
 
 const handlePrimarySecondaryTitles = (type, order) => `${type} ${order + 1}`;
 
@@ -31,25 +30,17 @@ const handleInitialize = () => {
 };
 
 export const handleFormSubmit = async (data, dispatch, props) => {
-  const {
-    quoteData, startWorkflowAction, setAppErrorAction, setAppStateAction, appState
-  } = props;
+  const { quoteData } = props;
 
-  try {
-    setAppStateAction(MODEL_NAME, '', { ...appState.data, submitting: true });
-    await startWorkflowAction(MODEL_NAME, {
-      quoteId: quoteData._id,
-      state: quoteData.state,
-      zip: quoteData.property.physicalAddress.zip,
-      emailAddress: data.emailAddress,
-      toName: data.toName
-    });
-    dispatch(reset('Summary'));
-  } catch (error) {
-    setAppErrorAction(error);
-  } finally {
-    setAppStateAction(MODEL_NAME, '', { ...appState.data, submitting: false });
-  }
+  await props.updateQuote(MODEL_NAME, {
+    quoteId: quoteData._id,
+    state: quoteData.state,
+    zip: quoteData.property.physicalAddress.zip,
+    emailAddress: data.emailAddress,
+    toName: data.toName
+  }, PAGE_NAME);
+
+  dispatch(reset('Summary'));
 };
 
 
@@ -61,7 +52,7 @@ export class Summary extends Component {
       appState, match: { params: { quoteNumber } }, setAppStateAction, getQuoteAction, setAppErrorAction
     } = this.props;
 
-    const { agentCode } = await getQuoteAction(quoteNumber, 'summary');
+    const { agentCode } = await getQuoteAction(quoteNumber, PAGE_NAME);
     const config = { service: 'agency', method: 'GET', path: `agents/${agentCode}` };
     const response = await serviceRunner.callService(config).catch((err) => setAppErrorAction(err));
     if (response && response.data) this.setState({ selectedAgent: response.data.result });
@@ -98,13 +89,13 @@ export class Summary extends Component {
     const filteredExceptions = _.filter(quoteData.underwritingExceptions, uw => !uw.overridden && uw.code !== '003');
 
     if (!quoteData || !quoteData.underwritingExceptions) {
-      return <QuoteBaseConnect match={match} />;
+      return <React.Fragment match={match} />;
     }
 
     const disablePage = filteredExceptions.length > 0;
 
     return (
-      <QuoteBaseConnect match={match}>
+      <React.Fragment match={match}>
         <div className="route-content summary workflow">
 
           <div className="scroll">
@@ -356,7 +347,7 @@ export class Summary extends Component {
         <div className="basic-footer">
           <Footer />
         </div>
-      </QuoteBaseConnect>
+      </React.Fragment>
     );
   }
 }
@@ -388,8 +379,6 @@ const mapStateToProps = state => ({
 
 
 export default connect(mapStateToProps, {
-  batchCompleteTaskAction: batchCompleteTask,
-  startWorkflowAction: startWorkflow,
   setAppStateAction: setAppState,
   setAppErrorAction: setAppError,
   getQuoteAction: getQuote
