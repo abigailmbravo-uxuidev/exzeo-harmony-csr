@@ -17,6 +17,8 @@ const setLink = (key, agencyCode, branchCode) => {
       return `/agency/${agencyCode}/${branchCode}/agents`;
     case 'contracts':
       return `/agency/${agencyCode}/${branchCode}/contracts`;
+    case 'notes':
+      return `/agency/${agencyCode}/${branchCode}/notes`;
     default:
       return '#';
   }
@@ -47,7 +49,7 @@ const csrLinks = (agencyCode, branchCode) => [{
 },
 {
   key: 'notes',
-  link: '#',
+  link: setLink('notes', agencyCode, branchCode),
   label: 'Notes / Files',
   styleName: 'notes disabled',
   exact: true
