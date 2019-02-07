@@ -31,7 +31,7 @@ export function fetchDiaries(filter) {
 
   return async (dispatch) => {
     try {
-      const response = await serviceRunner.callService(config);
+      const response = await serviceRunner.callService(config, 'fetchDiaries');
       dispatch(setDiaries(response.data.result));
     } catch (error) {
       dispatch(errorActions.setAppError(error));
@@ -108,7 +108,7 @@ export function submitDiary(data, props) {
     }
 
     try {
-      await serviceRunner.callService(config);
+      await serviceRunner.callService(config, 'submitDiary');
       dispatch(fetchDiaries({
         resourceType,
         resourceId: resourceType === POLICY_RESOURCE_TYPE ? [resourceId, sourceNumber] : resourceId

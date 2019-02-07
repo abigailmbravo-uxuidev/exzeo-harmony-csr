@@ -152,7 +152,7 @@ describe('Test Agency Actions', () => {
       headers: {
         'Content-Type': 'application/json'
       },
-      url: `${process.env.REACT_APP_API_URL}/svc`,
+      url: `${process.env.REACT_APP_API_URL}/svc?saveNewAgency`,
       data: {
         service: 'agency',
         method: 'POST',
@@ -237,7 +237,7 @@ describe('Test Agency Actions', () => {
       headers: {
         'Content-Type': 'application/json'
       },
-      url: `${process.env.REACT_APP_API_URL}/svc`,
+      url: `${process.env.REACT_APP_API_URL}/svc?fetchOrphanedAgents`,
       data: {
         service: 'agency',
         method: 'GET',
@@ -292,7 +292,7 @@ describe('Test Agency Actions', () => {
       headers: {
         'Content-Type': 'application/json'
       },
-      url: `${process.env.REACT_APP_API_URL}/svc`,
+      url: `${process.env.REACT_APP_API_URL}/svc?fetchAgentList`,
       data: {
         service: 'agency',
         method: 'GET',

@@ -79,7 +79,7 @@ export function getDiaryAssigneeOptions(userProfile) {
         service: 'security-manager-service',
         path: `/user?r=${query}`
       };
-      const response = await serviceRunner.callService(config);
+      const response = await serviceRunner.callService(config, 'getDiaryAssigneeOptions');
       const users = response.data && Array.isArray(response.data.result) ? response.data.result : [];
 
       const diaryAssignees = buildAssigneesList(users);
@@ -118,7 +118,7 @@ export async function fetchTerritoryManagers(state) {
       method: 'GET',
       path: `territoryManagers/${state}`
     };
-    const response = await serviceRunner.callService(config);
+    const response = await serviceRunner.callService(config, 'fetchTerritoryManagers');
     return response.data && response.data.result ? response.data.result : [];
   } catch (error) {
     throw error;
@@ -137,7 +137,7 @@ export async function fetchLists() {
       method: 'GET',
       path: 'v1/lists'
     };
-    const response = await serviceRunner.callService(config);
+    const response = await serviceRunner.callService(config, 'fetchLists');
     return response.data && response.data.result ? response.data.result.records : [];
   } catch (error) {
     throw error;

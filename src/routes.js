@@ -46,7 +46,7 @@ class Routes extends Component {
 
   /* eslint-disable max-len */
   render() {
-    const { ui: { diary, note }, auth, authState: { userProfile }, policyState: { policy} } = this.props;
+    const { ui: { diary, note }, auth, authState: { userProfile }, policyState: { policy } } = this.props;
     return (
       <div>
         <Modal
@@ -101,7 +101,7 @@ class Routes extends Component {
           }}>
 
           <div className="routes">
-            <Bootstrap userProfile={userProfile} />
+            { userProfile && <Bootstrap userProfile={userProfile} />}
             <Switch>
               <Route exact path="/" render={props => <SearchPolicy auth={auth} {...props} />} />
               <Route exact path="/agency" render={props => <SearchAgency auth={auth} {...props} />} />

@@ -68,7 +68,7 @@ export class SearchResults extends Component {
         }
 
         {hasSearched && searchType === SEARCH_TYPES.policy && !!results.length &&
-          <div className="policy-list">
+          <div className="policy-list" data-test="policy-list">
             {results.map(policy => (
               <PolicyCard
                 key={policy.policyID}

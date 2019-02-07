@@ -37,7 +37,7 @@ describe('Zipcode Settings Actions', () => {
       headers: {
         'Content-Type': 'application/json'
       },
-      url: `${process.env.REACT_APP_API_URL}/svc`,
+      url: `${process.env.REACT_APP_API_URL}/svc?fetchZipCodeSettings`,
       data: {
         service: 'zipcodesettings',
         method: 'GET',

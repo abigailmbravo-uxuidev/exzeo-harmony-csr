@@ -36,6 +36,7 @@ function QuoteCard({
               className="row"
               data-test={quote.quoteNumber}
               onClick={handleClick}
+              data-url={`/quote/${quote.quoteNumber}/coverage`}
             >
               <span className="quote-no">{quote.quoteNumber}</span>
               <span className="property-address">{`${quote.property.physicalAddress.address1} ${quote.property.physicalAddress.city}, ${quote.property.physicalAddress.state} ${quote.property.physicalAddress.zip}`}</span>

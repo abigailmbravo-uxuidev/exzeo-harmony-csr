@@ -91,7 +91,7 @@ describe('Service Actions', () => {
       headers: {
         'Content-Type': 'application/json'
       },
-      url: `${process.env.REACT_APP_API_URL}/svc`,
+      url: `${process.env.REACT_APP_API_URL}/svc?fetchNotes`,
       data: {
         service: 'transaction-logs',
         method: 'GET',
@@ -104,7 +104,7 @@ describe('Service Actions', () => {
       headers: {
         'Content-Type': 'application/json'
       },
-      url: `${process.env.REACT_APP_API_URL}/svc`,
+      url: `${process.env.REACT_APP_API_URL}/svc?fetchDocuments`,
       data: {
         service: 'file-index',
         method: 'GET',
@@ -141,7 +141,7 @@ describe('Service Actions', () => {
       headers: {
         'Content-Type': 'application/json'
       },
-      url: `${process.env.REACT_APP_API_URL}/svc`,
+      url: `${process.env.REACT_APP_API_URL}/svc?getAgents`,
       data: {
         service: 'agency',
         method: 'GET',
@@ -266,7 +266,7 @@ describe('Service Actions', () => {
       headers: {
         'Content-Type': 'application/json'
       },
-      url: `${process.env.REACT_APP_API_URL}/svc`,
+      url: `${process.env.REACT_APP_API_URL}/svc?getUnderwritingQuestions`,
       data: {
         service: 'questions',
         method: 'POST',
@@ -437,7 +437,7 @@ describe('Service Actions', () => {
       headers: {
         'Content-Type': 'application/json'
       },
-      url: `${process.env.REACT_APP_API_URL}/svc`,
+      url: `${process.env.REACT_APP_API_URL}/svc?addTransaction`,
       data: {
         service: 'billing',
         method: 'POST',
@@ -479,7 +479,7 @@ describe('Service Actions', () => {
       headers: {
         'Content-Type': 'application/json'
       },
-      url: `${process.env.REACT_APP_API_URL}/svc`,
+      url: `${process.env.REACT_APP_API_URL}/svc?saveUnderwritingExceptions`,
       data: {
         service: 'quote-data',
         method: 'put',
@@ -599,7 +599,7 @@ describe('Service Actions', () => {
       headers: {
         'Content-Type': 'application/json'
       },
-      url: `${process.env.REACT_APP_API_URL}/svc`,
+      url: `${process.env.REACT_APP_API_URL}/svc?getBillingOptions`,
       data: {
         service: 'billing',
         method: 'POST',
@@ -680,7 +680,7 @@ describe('Service Actions', () => {
       headers: {
         'Content-Type': 'application/json'
       },
-      url: `${process.env.REACT_APP_API_URL}/svc`,
+      url: `${process.env.REACT_APP_API_URL}/svc?getQuote`,
       data: {
         service: 'quote-data',
         method: 'GET',
@@ -740,7 +740,7 @@ describe('Service Actions', () => {
       headers: {
         'Content-Type': 'application/json'
       },
-      url: `${process.env.REACT_APP_API_URL}/svc`,
+      url: `${process.env.REACT_APP_API_URL}/svc?getZipcodeSettings`,
       data: {
         service: 'underwriting',
         method: 'GET',
@@ -799,7 +799,7 @@ describe('Service Actions', () => {
       headers: {
         'Content-Type': 'application/json'
       },
-      url: `${process.env.REACT_APP_API_URL}/svc`,
+      url: `${process.env.REACT_APP_API_URL}/svc?getAgencies`,
       data: {
         service: 'agency',
         method: 'GET',
@@ -894,7 +894,7 @@ describe('Service Actions', () => {
       headers: {
         'Content-Type': 'application/json'
       },
-      url: `${process.env.REACT_APP_API_URL}/svc`,
+      url: `${process.env.REACT_APP_API_URL}/svc?getAgency`,
       data: {
         service: 'agency',
         method: 'GET',
@@ -951,7 +951,7 @@ describe('Service Actions', () => {
       headers: {
         'Content-Type': 'application/json'
       },
-      url: `${process.env.REACT_APP_API_URL}/svc`,
+      url: `${process.env.REACT_APP_API_URL}/svc?getAgentsByAgency`,
       data: {
         service: 'agency',
         method: 'GET',

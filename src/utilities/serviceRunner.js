@@ -7,11 +7,12 @@ import handleError from './handleError';
  * @param data
  * @returns {Promise<void>}
  */
-export async function callService(data) {
+export async function callService(data, qs) {
+  const param = qs ? `?${qs}` : '';
   const axiosConfig = {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    url: `${process.env.REACT_APP_API_URL}/svc`,
+    url: `${process.env.REACT_APP_API_URL}/svc${param}`,
     data
   };
 
