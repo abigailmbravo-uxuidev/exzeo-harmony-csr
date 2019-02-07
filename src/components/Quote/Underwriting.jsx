@@ -6,16 +6,15 @@ import _ from 'lodash';
 import { reduxForm } from 'redux-form';
 
 import { blockQuote } from '../../state/selectors/quote.selectors';
-import { startWorkflow } from '../../state/actions/cg.actions';
 import { setAppState } from '../../state/actions/appState.actions';
 import { setAppError } from '../../state/actions/error.actions';
 import { getUnderwritingQuestions } from '../../state/actions/service.actions';
 import { getQuote } from '../../state/actions/quote.actions';
-import QuoteBaseConnect from '../../containers/Quote';
 import FieldGenerator from '../Form/FieldGenerator';
 import Footer from '../Common/Footer';
 
 const MODEL_NAME = 'csrUnderwriting';
+const PAGE_NAME = 'underwriting';
 
 export const handleInitialize = (state) => {
   const questions = state.service.underwritingQuestions ? state.service.underwritingQuestions : [];
@@ -39,27 +38,17 @@ export const handleInitialize = (state) => {
 };
 
 export const handleFormSubmit = async (data, dispatch, props) => {
-  const {
-    quoteData, startWorkflowAction, setAppErrorAction, setAppStateAction, appState, getQuoteAction
-  } = props;
+  const { quoteData } = props;
 
   const { floodCoverage, noPriorInsuranceSurcharge } = quoteData.underwritingAnswers;
 
-  try {
-    setAppStateAction(MODEL_NAME, appState.data.instanceId, { ...appState.data, submitting: true });
-    await startWorkflowAction(MODEL_NAME, {
-      quoteId: quoteData._id,
-      ...data,
-      floodCoverage,
-      noPriorInsuranceSurcharge
-    });
+  await props.updateQuote(MODEL_NAME, {
+    quoteId: quoteData._id,
+    ...data,
+    floodCoverage,
+    noPriorInsuranceSurcharge
+  }, PAGE_NAME);
 
-    await getQuoteAction(quoteData._id, 'underwriting');
-  } catch (error) {
-    setAppErrorAction(error);
-  } finally {
-    setAppStateAction(MODEL_NAME, appState.data.instanceId, { ...appState.data, submitting: false });
-  }
 };
 
 export const clearForm = (props) => {
@@ -80,7 +69,7 @@ export class Underwriting extends Component {
       }
     );
 
-    getQuoteAction(quoteNumber, 'underwriting')
+    getQuoteAction(quoteNumber, PAGE_NAME)
       .then((quoteData) => {
         getUnderwritingQuestionsAction(quoteData.companyCode, quoteData.state, quoteData.product, quoteData.property);
         setAppStateAction(
@@ -98,7 +87,7 @@ export class Underwriting extends Component {
       appState, fieldValues, handleSubmit, pristine, quoteData, underwritingQuestions, dirty, match, editingDisabled
     } = this.props;
     return (
-      <QuoteBaseConnect match={match}>
+      <React.Fragment match={match}>
         <Prompt when={dirty} message="Are you sure you want to leave with unsaved changes?" />
 
         <div className="route-content">
@@ -139,7 +128,7 @@ export class Underwriting extends Component {
             </button>
           </div>
         </div>
-      </QuoteBaseConnect>
+      </React.Fragment>
     );
   }
 }
@@ -177,7 +166,6 @@ const mapStateToProps = state => ({
 export default connect(
   mapStateToProps,
   {
-    startWorkflowAction: startWorkflow,
     setAppStateAction: setAppState,
     setAppErrorAction: setAppError,
     getQuoteAction: getQuote,

@@ -118,7 +118,7 @@ export class SideNav extends React.Component {
                   <span>{agentLink.label}</span>
                 </NavLink>
               </li>))
-      }
+            }
           </ul>
         </nav>
       </form>);

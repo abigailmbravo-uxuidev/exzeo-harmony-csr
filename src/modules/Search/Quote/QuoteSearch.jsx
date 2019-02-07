@@ -6,7 +6,7 @@ import { Input, Select, Button, validation } from '@exzeo/core-ui';
 import { getAnswers } from '../../../utilities/forms';
 import Pagination from '../components/Pagination';
 
-const { isAlphaNumeric, isValidChar, isRequired, isNumberDashOnly } = validation;
+const { isValidNameFormat, isValidChar, isRequired, isNumberDashOnly } = validation;
 
 const QuoteSearch = ({
   submitting,
@@ -38,7 +38,7 @@ const QuoteSearch = ({
         placeholder="First Name Search"
         component={Input}
         styleName="first-name-search"
-        validate={isAlphaNumeric}
+        validate={isValidNameFormat}
         errorHint />
       <Field
         name="lastName"
@@ -47,7 +47,7 @@ const QuoteSearch = ({
         placeholder="Last Name Search"
         component={Input}
         styleName="last-name-search"
-        validate={isAlphaNumeric}
+        validate={isValidNameFormat}
         errorHint />
       <Field
         name="address"

@@ -40,26 +40,28 @@
       margin: 0;
 
       a {
+        display: flex;
+        align-items: center;
+        flex-grow: 1;
+        width: 11rem;
         border-left: ($padding/2) solid rgba($bright-blue, 0);
         text-decoration: none;
+        cursor: pointer;
 
         &.btn {
-            border-left-width: 1px;
-
-            &:hover {
-                border-left-width: 1px;
-            }
+          justify-content: center;
+          border-width: 1px;
         }
 
         span {
           display: flex;
           align-items: center;
           flex-grow: 1;
-          width: 11rem;
           padding: ($padding*1.5) 0 ($padding*1.5) ($padding*2);
-          cursor: pointer;
-          text-decoration: none;
+          width: 11rem;
           color: $warm-gray-07;
+          text-decoration: none;
+          cursor: pointer;
         }
 
         &.disabled {
@@ -70,26 +72,26 @@
           }
 
           &:hover {
-            cursor: not-allowed;
             border-left: ($padding/2) solid rgba($white, 0);
             background-color: rgba($white, 0);
+            cursor: not-allowed;
 
             span {
-                cursor: not-allowed;
               color: $warm-gray-04;
+                cursor: not-allowed;
             }
           }
         }
 
         &.active {
-          cursor: default;
           border-left: ($padding/2) solid $bright-blue-darken-04;
           background-color: $white;
+          cursor: default;
 
           &:hover {
-            cursor: default;
             border-left: ($padding/2) solid $bright-blue-darken-04;
             background-color: $white;
+            cursor: default;
 
             span {
               color: $bright-blue-darken-04;
@@ -102,10 +104,14 @@
         }
 
         &:hover {
-          cursor: pointer;
-          text-decoration: none;
           border-left: ($padding/2) solid rgba($bright-blue, .2);
           background-color: rgba($white, .4);
+          text-decoration: none;
+          cursor: pointer;
+          
+          &.btn {
+            border-width: 1px;
+          }
 
           span {
             text-decoration: none;
@@ -120,11 +126,11 @@
           color: $warm-gray-04;
 
           &:hover {
-            cursor: not-allowed;
-            text-decoration: none;
-            color: $warm-gray-04;
             border-left: ($padding/2) solid rgba($white, 0);
             background-color: rgba($white, 0);
+            color: $warm-gray-04;
+            text-decoration: none;
+            cursor: not-allowed;
           }
 
           span {
@@ -139,16 +145,17 @@
         flex-direction: column;
         margin-left: -1rem;
         background: $warm-gray-03;
+
         @include transition(all 0.2s ease-in-out);
 
         &.hidden {
-          height: 0;
           padding: 0 ($padding*2);
+          height: 0;
         }
 
         &.show {
-          height: 152px;
           padding: ($padding*2) ($padding*2) 0;
+          height: 152px;
           border-top: 1px dotted $warm-gray-04;
           border-bottom: 1px dotted $warm-gray-04;
         }

@@ -7,19 +7,18 @@ import { reduxForm, getFormValues } from 'redux-form';
 import { ADDITIONAL_INTERESTS } from '../../constants/additionalInterests';
 import { getAnswers } from '../../utilities/forms';
 import { getMortgageeOrderAnswers } from '../../utilities/additionalInterests';
-import { startWorkflow } from '../../state/actions/cg.actions';
 import { getUIQuestions } from '../../state/actions/questions.actions';
 import { setAppState } from '../../state/actions/appState.actions';
 import { setAppError } from '../../state/actions/error.actions';
 import { getQuote } from '../../state/actions/quote.actions';
 import { getBillingOptions, saveBillingInfo } from '../../state/actions/service.actions';
 import { getGroupedAdditionalInterests, getSortedAdditionalInterests, blockQuote } from '../../state/selectors/quote.selectors';
-import QuoteBaseConnect from '../../containers/Quote';
 import AIModal from '../AdditionalInterestModal';
 import Footer from '../Common/Footer';
 import AdditionalInterestCard from '../AdditionalInterestCard';
 
 const MODEL_NAME = 'csrAdditionalInterest';
+const PAGE_NAME = 'additionalInterests';
 
 export class AdditionalInterests extends Component {
   state = {
@@ -75,33 +74,28 @@ export class AdditionalInterests extends Component {
 
   onHandleAISubmit = async (additionalInterests) => {
     const {
-      quoteData, startWorkflowAction, setAppErrorAction, setAppStateAction, appState, getQuoteAction
+      quoteData, setAppStateAction, appState
     } = this.props;
 
     const { addAdditionalInterestType } = this.state;
 
-    try {
-      await startWorkflowAction(MODEL_NAME, {
-        quoteId: quoteData._id,
-        additionalInterests
-      });
-      await getQuoteAction(quoteData._id, 'additionalInterests');
-    } catch (error) {
-      setAppErrorAction(error);
-    } finally {
-      this.hideAdditionalInterestModal();
-      setAppStateAction(
-        MODEL_NAME,
-        '', {
-          ...appState.data,
-          selectedMortgageeOption: null,
-          addAdditionalInterestType,
-          deleteAdditionalInterestType: '',
-          submittingAI: false,
-          selectedLink: 'additionalInterests'
-        }
-      );
-    }
+    await this.props.updateQuote(MODEL_NAME, {
+      quoteId: quoteData._id,
+      additionalInterests
+    }, PAGE_NAME);
+    
+    this.hideAdditionalInterestModal();
+    setAppStateAction(
+      MODEL_NAME,
+      '', {
+        ...appState.data,
+        selectedMortgageeOption: null,
+        addAdditionalInterestType,
+        deleteAdditionalInterestType: '',
+        submittingAI: false,
+        selectedLink: 'additionalInterests'
+      }
+    );
   };
 
 
@@ -235,7 +229,7 @@ export class AdditionalInterests extends Component {
 
     if (!quoteData.rating) {
       return (
-        <QuoteBaseConnect match={match}>
+        <React.Fragment match={match}>
           <div className="route-content">
             <div className="scroll">
               <div className="detail-wrapper">
@@ -247,12 +241,12 @@ export class AdditionalInterests extends Component {
               </div>
             </div>
           </div>
-        </QuoteBaseConnect>
+        </React.Fragment>
       );
     }
 
     return (
-      <QuoteBaseConnect match={match}>
+      <React.Fragment match={match}>
         <div className="route-content" id="AddAdditionalInterestPage">
           <div className="scroll">
             <div className="form-group survey-wrapper" role="group">
@@ -320,7 +314,7 @@ export class AdditionalInterests extends Component {
         <div className="basic-footer">
           <Footer />
         </div>
-      </QuoteBaseConnect>
+      </React.Fragment>
     );
   }
 }
@@ -348,7 +342,6 @@ const mapStateToProps = state => ({
 });
 
 export default connect(mapStateToProps, {
-  startWorkflowAction: startWorkflow,
   getUIQuestionsAction: getUIQuestions,
   setAppStateAction: setAppState,
   getBillingOptionsAction: getBillingOptions,
