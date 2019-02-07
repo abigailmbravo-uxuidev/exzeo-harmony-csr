@@ -177,6 +177,7 @@ export class MortgageBilling extends Component {
     };
 
     createTransaction(submitData).then(() => getPolicy(policyNumber));
+    this.hideAdditionalInterestModal();
   };
 
   setBatch = (value) => {
@@ -400,6 +401,7 @@ export class MortgageBilling extends Component {
               isEditing={this.state.isEditingAI}
               selectedAI={this.state.selectedAI}
               validAdditionalInterestTypes={validAdditionalInterestTypes}
+              deleteAdditionalInterest={this.toggleAIState}
               isPolicy />
           }
         </div>
