@@ -49,9 +49,6 @@ export class Authentication extends Component {
   render() {
     const { userProfile } = this.props;
     const authenticated = auth.isAuthenticated();
-    if (authenticated && !userProfile) {
-      return null;
-    }
 
     return (
       <React.Fragment>

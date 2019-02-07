@@ -164,7 +164,7 @@ export function getNewRate(formData, formProps) {
         path: 'endorsement',
         data: rateData
       };
-      const response = await serviceRunner.callService(config);
+      const response = await serviceRunner.callService(config, 'getNewRate');
       const rate = response && response.data && response.data.result ? response.data.result : {};
       return { ...rate };
     } catch (error) {
@@ -231,7 +231,7 @@ export function addTransaction(submitData) {
     };
 
     try {
-      await serviceRunner.callService(config);
+      await serviceRunner.callService(config, 'addTransaction');
     } catch (error) {
       dispatch(errorActions.setAppError(error));
     }
@@ -389,7 +389,7 @@ export async function fetchPolicy(policyNumber) {
   };
 
   try {
-    const response = await serviceRunner.callService(config);
+    const response = await serviceRunner.callService(config, 'fetchPolicy');
     return response ? response.data : {};
   } catch (error) {
     throw error;
@@ -409,7 +409,7 @@ export async function fetchSummaryLedger(policyNumber) {
   };
 
   try {
-    const response = await serviceRunner.callService(config);
+    const response = await serviceRunner.callService(config, 'fetchSummaryLedger');
     return response && response.data && response.data.result ? response.data.result : {};
   } catch (error) {
     throw error;
@@ -428,7 +428,7 @@ export async function fetchEffectiveDateChangeReasons() {
   };
 
   try {
-    const response = await serviceRunner.callService(config);
+    const response = await serviceRunner.callService(config, 'fetchEffectiveDateChangeReasons');
     return response && response.data ? response.data.effectiveDateReasons : [];
   } catch (error) {
     throw error;
@@ -447,7 +447,7 @@ export async function fetchPaymentHistory(policyNumber) {
     path: `payment-history/${policyNumber}`
   };
   try {
-    const response = await serviceRunner.callService(config);
+    const response = await serviceRunner.callService(config, 'fetchPaymentHistory');
     return response.data && response.data.result ? response.data.result : {};
   } catch (error) {
     throw error;
@@ -466,7 +466,7 @@ export async function fetchPaymentOptionsApplyPayments() {
   };
 
   try {
-    const response = await serviceRunner.callService(config);
+    const response = await serviceRunner.callService(config, 'fetchPaymentOptionsApplyPayments');
     return response.data && response.data.paymentOptions ? response.data.paymentOptions : {};
   } catch (error) {
     throw error;
@@ -495,7 +495,7 @@ export async function fetchListOfForms(policy, rating, transactionType) {
   };
 
   try {
-    const response = await serviceRunner.callService(config);
+    const response = await serviceRunner.callService(config, 'fetchListOfForms');
     return response.data && response.data.result && response.data.result.forms ? response.data.result.forms : [];
   } catch (error) {
     throw error;
@@ -516,7 +516,7 @@ export async function fetchBillingOptions(paymentOptions) {
   };
 
   try {
-    const response = await serviceRunner.callService(config);
+    const response = await serviceRunner.callService(config, 'fetchBillingOptions');
     return response.data && response.data.result ? response.data.result : {};
   } catch (error) {
     throw error;
@@ -536,7 +536,7 @@ export async function fetchEndorsementHistory(policyNumber) {
   };
 
   try {
-    const response = await serviceRunner.callService(config);
+    const response = await serviceRunner.callService(config, 'fetchEndorsementHistory');
     return response.data || [];
   } catch (error) {
     throw error;
@@ -557,7 +557,7 @@ export async function postCreatTransation(submitData) {
   };
 
   try {
-    const response = await serviceRunner.callService(config);
+    const response = await serviceRunner.callService(config, 'postCreatTransation');
     return response.data && response.data.result ? response.data.result : {};
   } catch (error) {
     throw error;
@@ -579,7 +579,7 @@ export async function postUpdatedBillPlan(paymentPlan) {
   };
 
   try {
-    const response = await serviceRunner.callService(config);
+    const response = await serviceRunner.callService(config, 'postUpdatedBillPlan');
     return response.data && response.data.result ? response.data.result : {};
   } catch (error) {
     throw error;
@@ -598,7 +598,7 @@ export async function fetchCancelOptions() {
   };
 
   try {
-    const response = await serviceRunner.callService(config);
+    const response = await serviceRunner.callService(config, 'fetchCancelOptions');
     return response && response.data && response.data.cancelOptions ? response.data.cancelOptions : [];
   } catch (error) {
     throw error;

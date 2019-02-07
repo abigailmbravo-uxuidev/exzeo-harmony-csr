@@ -171,6 +171,10 @@ DiaryModal.propTypes = {
   }).isRequired
 };
 
+DiaryModal.defaultProps = {
+  user: { profile: {} }
+};
+
 const mapStateToProps = (state, ownProps) => {
   return {
     assigneeAnswers: getDiaryAssigneeAnswers(state),

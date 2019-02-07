@@ -11,7 +11,12 @@ function AgencyCard({
 }) {
   return (
     <div className="card-wrapper" onKeyPress={handleKeyPress} tabIndex="0">
-      <span className="fa fa-chevron-circle-right" id={`agency-code-${agency.agencyCode}`} onClick={handleClick}/>
+      <span
+        className="fa fa-chevron-circle-right"
+        id={`agency-code-${agency.agencyCode}`}
+        onClick={handleClick}
+        data-url={`/agency/${agency.agencyCode}/0/overview`}
+      />
       <div className="agency contact card">
         <div className="contact-title">
           <i className="fa fa-address-book"/>

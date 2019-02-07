@@ -192,7 +192,7 @@ export async function fetchAgency(agencyCode) {
       method: 'GET',
       path: `agencies/${agencyCode}`
     };
-    const response = await serviceRunner.callService(config);
+    const response = await serviceRunner.callService(config, 'fetchAgency');
     return response.data && response.data.result ? response.data.result : {};
   } catch (error) {
     throw error;
@@ -213,7 +213,7 @@ export async function fetchAgencies(companyCode, state, agencyCode = '') {
   };
 
   try {
-    const response = await serviceRunner.callService(config);
+    const response = await serviceRunner.callService(config, 'fetchAgencies');
     return response.data && response.data.result ? response.data.result : [];
   } catch (error) {
     throw error;
@@ -232,7 +232,7 @@ export async function fetchAgentsByAgencyCode(agencyCode) {
       method: 'GET',
       path: `agencies/${agencyCode}/agents`
     };
-    const response = await serviceRunner.callService(config);
+    const response = await serviceRunner.callService(config, 'fetchAgentsByAgencyCode');
     return response.data && response.data.result ? response.data.result : [];
   } catch (error) {
     throw error;
@@ -252,7 +252,7 @@ export async function fetchAgentList(companyCode, state) {
       method: 'GET',
       path: `v1/agents/${companyCode}/${state}`
     };
-    const response = await serviceRunner.callService(config);
+    const response = await serviceRunner.callService(config, 'fetchAgentList');
     return response.data && response.data.result ? response.data.result : [];
   } catch (error) {
     throw error;
@@ -273,7 +273,7 @@ export async function saveAgency(agencyData) {
       data: agencyData
     };
 
-    const response = await serviceRunner.callService(config);
+    const response = await serviceRunner.callService(config, 'saveAgency');
     return response.data && response.data.result ? response.data.result : {};
   } catch (error) {
     throw error;
@@ -293,7 +293,7 @@ export async function saveAgent(agentData) {
       path: `agents/${agentData.agentCode}`,
       data: agentData
     };
-    const response = await serviceRunner.callService(config);
+    const response = await serviceRunner.callService(config, 'saveAgent');
     return response.data && response.data.result ? response.data.result : {};
   } catch (error) {
     throw error;
@@ -313,7 +313,7 @@ export async function addNewAgent(agentData) {
       path: 'agents',
       data: agentData
     };
-    const response = await serviceRunner.callService(config);
+    const response = await serviceRunner.callService(config, 'addNewAgent');
     return response.data && response.data.result ? response.data.result : {};
   } catch (error) {
     throw error;
@@ -334,7 +334,7 @@ export async function fetchOrphanedAgents() {
       method: 'GET',
       path: 'agents?type=orphaned'
     };
-    const response = await serviceRunner.callService(config);
+    const response = await serviceRunner.callService(config, 'fetchOrphanedAgents');
     return response.data && response.data.result ? response.data.result : [];
   } catch (error) {
     throw error;
@@ -366,7 +366,7 @@ export async function saveNewAgency(agencyData) {
       path: 'agencies',
       data: agencyData
     };
-    const response = await serviceRunner.callService(config);
+    const response = await serviceRunner.callService(config, 'saveNewAgency');
     return response.data && response.data.result ? response.data.result : {};
   } catch (error) {
     throw error;
@@ -400,7 +400,7 @@ export async function saveNewBranch(branchData, agencyCode) {
       path: `agencies/${agencyCode}/branches`,
       data: branchData
     };
-    const response = await serviceRunner.callService(config);
+    const response = await serviceRunner.callService(config, 'saveNewBranch');
     return response.data && response.data.result ? response.data.result : {};
   } catch (error) {
     throw error;
