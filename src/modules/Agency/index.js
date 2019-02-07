@@ -20,7 +20,11 @@ import Create from './Create';
 import Contracts from './Contracts';
 import Agents from './Agents';
 import Overview from './Overview';
+<<<<<<< HEAD
 import Notes from '../../components/Notes';
+=======
+import Notes from '../../components/Common/Notes';
+>>>>>>> Started refactor of NotesFile.
 import CreateBranch from './CreateBranch';
 import Transfer from './Transfer';
 
