@@ -20,6 +20,7 @@ import Create from './Create';
 import Contracts from './Contracts';
 import Agents from './Agents';
 import Overview from './Overview';
+import Notes from '../../components/Common/Notes';
 import CreateBranch from './CreateBranch';
 import Transfer from './Transfer';
 
@@ -31,6 +32,7 @@ export const CreateBranchRender = branchCode => props =>
 
 export const OverviewRender = (branchCode, agencyCode) => props => <Overview branchCode={branchCode} agencyCode={agencyCode} auth={props.auth} {...props} />;
 export const AgentsRender = (branchCode, agencyCode) => props => <Agents branchCode={branchCode} agencyCode={agencyCode} auth={props.auth} {...props} />;
+export const NotesRender = agencyCode => props => <Notes agencyCode={agencyCode} auth={props.auth} {...props} />;
 export const TransferRender = (branchCode, agencyCode) => props => <Transfer branchCode={branchCode} agencyCode={agencyCode} auth={props.auth} {...props} />;
 
 export class Agency extends Component {
@@ -68,7 +70,11 @@ export class Agency extends Component {
             <Route exact path={`/agency/${agencyCode}/${branchCode}/contracts`} render={ContractsRender} />
             <Route exact path={`/agency/${agencyCode}/${branchCode}/agents`} render={AgentsRender(branchCode, agencyCode)} />
             <Route exact path={`/agency/${agencyCode}/${branchCode}/transfer`} render={TransferRender(branchCode, agencyCode)} />
+            <Route exact path={`/agency/${agencyCode}/${branchCode}/notes`} render={NotesRender(agencyCode)} />
             <Route exact path={`/agency/${agencyCode}/0/new`} render={CreateBranchRender(branchCode, agencyCode)} />
+            <Route exact path={`/agency/${agencyCode}/${branchCode}/agents`} render={AgentsRender(branchCode)} />
+            <Route exact path={`/agency/${agencyCode}/${branchCode}/notes`} render={NotesRender(agencyCode)} />
+            <Route exact path={`/agency/${agencyCode}/0/new`} render={CreateBranchRender(branchCode)} />
           </div>
         </main>
       </div>

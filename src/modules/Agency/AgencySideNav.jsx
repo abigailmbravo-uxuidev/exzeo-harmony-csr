@@ -32,7 +32,7 @@ const csrLinks = (agencyCode, branchCode) => [{
 },
 {
   key: 'notes',
-  link: '#',
+  link: `/agency/${agencyCode}/${branchCode}/notes`,
   label: 'Notes / Files',
   styleName: 'notes disabled',
   exact: true
