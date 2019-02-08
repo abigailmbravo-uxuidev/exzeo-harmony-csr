@@ -1,3 +1,5 @@
+import { stub } from './functions';
+
 export const goToNav = name => {
   cy.get('.loader.modal').should('not.exist')
     .findDataTag(`nav-${name}`).find('a').click({ force: true });
@@ -47,12 +49,12 @@ export const _summary = () => goToNav('summary');
 export const _application = () => goToNav('application');
 
 export const _docusign = () => {
+  cy.route('POST', '/cg/start?csrGetQuoteWithUnderwriting', stub('fx:stubs/csrGetQuoteWithUnderwriting')).as('csrGetQuoteWithUnderwriting');
+
   cy.wait('@summary')
     .get('.basic-footer button[data-test="submit"]').click()
     .get('.modal.quote-summary').should('exist')
     .get('.modal.quote-summary button[type="submit"]').click({ force: true })
-    .wait('@csrSubmitApplication');
-  Cypress._.times(3, () => {
-      cy.reload(true);
-  });
+    .wait('@csrGetQuoteWithUnderwriting')
+    .reload().wait('@csrGetQuoteWithUnderwriting');
 };

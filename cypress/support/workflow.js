@@ -12,18 +12,18 @@ import {
   _application,
   _docusign
 } from './navigation.js';
+import { stub } from './functions';
 
 Cypress.Commands.add('workflow', (stop, start = 'login', user = stockUser) => {
   const { address } = user;
   let prev;
 
   if (start === 'login') {
-    // Route stubbing -- if fixtures are off, we use an empty function which Cypress interperets to mean the server response
-    const stub = fx => Cypress.env('FIXTURES') ? fx : () => { };
-
     cy.server()
-      .route('POST', '/cg/start?csrAdditionalInterest').as('csrAdditionalInterest')
       .route('POST', '/cg/start?csrSubmitApplication').as('csrSubmitApplication')
+      .route('POST', '/cg/start?csrGetQuoteWithUnderwriting').as('csrGetQuoteWithUnderwriting')
+      .route('POST', '/cg/start?csrAdditionalInterest').as('csrAdditionalInterest')
+      .route('POST', '/svc?fetchDiaries').as('fetchDiaries')
       .route('POST', '/svc?fetchAddresses', stub('fx:stubs/fetchAddresses')).as('fetchAddresses')
       .route('POST', '/svc?fetchPolicies', stub('fx:stubs/fetchPolicies')).as('fetchPolicies')
       .route('POST', '/svc?summary').as('summary');
@@ -71,7 +71,7 @@ Cypress.Commands.add('workflow', (stop, start = 'login', user = stockUser) => {
     prev = 'application';
   }
 
-  if((stop !== 'docusign' && prev === 'application') || start === 'docusign') {
+  if ((stop !== 'docusign' && prev === 'application') || start === 'docusign') {
     _docusign();
     prev = 'docusign';
   }
