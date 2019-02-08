@@ -1,0 +1,10 @@
+{
+  "address": "4131 TEST ADDRESS",
+  "customerInfo": {
+    "FirstName": "Bruce",
+    "LastName": "Wayne",
+    "EmailAddress": "Batman@gmail.com",
+    "phoneNumber": "123 456 7890"
+  },
+  "agentCode": "60000"
+}

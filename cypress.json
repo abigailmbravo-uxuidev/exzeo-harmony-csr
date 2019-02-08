@@ -1,0 +1,6 @@
+{
+  "chromeWebSecurity": false,
+  "projectId": "71ns45",
+  "testFiles": "**/**.spec.js",
+  "defaultCommandTimeout": 7000
+}

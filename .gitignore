@@ -28,4 +28,7 @@ yarn-error.log*
 # cypress testing artifacts we don't want
 /cypress/screenshots
 /cypress/videos
-/cypress/local
+/cypress/local/**.*
+!/cypress/local/index.js
+!/cypress/local/cypress-theme.js
+!/cypress/local/default.css

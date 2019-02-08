@@ -1,0 +1,13 @@
+{
+  "name": "harmony-web-cypress",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "cypress": "react-scripts cypress"
+  },
+  "dependencies": {
+    "@exzeo/react-scripts": "1.0.7",
+    "auth0-js": "~8.10.1",
+    "cypress": "^3.1.4"
+  }
+}
