@@ -4,6 +4,7 @@ import { reduxForm, Field } from 'redux-form';
 import { Select } from '@exzeo/core-ui';
 import { connect } from 'react-redux';
 
+import { toggleNote } from '../../state/actions/ui.actions';
 import { createBranch } from '../../state/actions/agency.actions';
 import { getBranchesList, getBranchInitialValues } from '../../state/selectors/agency.selector';
 
@@ -66,7 +67,7 @@ export class SideNav extends React.Component {
     branchSelectionRoute: null
   }
 
-  handleBranchSelection =(event) => {
+  handleBranchSelection = (event) => {
     const { target: { value } } = event;
     const { agencyCode } = this.props;
     if (Number(value) > 0) {
@@ -76,6 +77,14 @@ export class SideNav extends React.Component {
     }
     return value;
   }
+
+  newNote = () => {
+    const { toggleNote, agencyCode } = this.props;
+    toggleNote({
+      noteType: 'Agency Note',
+      documentId: agencyCode
+    });
+  };
 
   render() {
     const {
@@ -122,6 +131,15 @@ export class SideNav extends React.Component {
               </li>))
             }
           </ul>
+          <button
+            type="button"
+            aria-label="open-btn form-new-diary"
+            data-test="new-note"
+            className="btn btn-primary btn-round btn-lg new-diary-btn"
+            onClick={this.newNote}>
+            <i className="fa fa-bookmark" />
+            <span>NEW NOTE</span>
+          </button>
         </nav>
       </form>);
   }
@@ -137,7 +155,7 @@ const mapStateToProps = (state, props) => {
   };
 };
 
-export default connect(mapStateToProps, { createBranch })(reduxForm({
+export default connect(mapStateToProps, { createBranch, toggleNote })(reduxForm({
   form: 'SideNav',
   enableReinitialize: true
 })(SideNav));
