@@ -1,5 +1,4 @@
-import { checkFullHeader } from './utils';
-import { goToNav } from '../../support/navigation';
+import { checkFullHeader, goToNav } from '../../helpers';
 
 describe('Policy Header Testing', () => {
   const data = {
@@ -21,12 +20,11 @@ describe('Policy Header Testing', () => {
     expDate: '03/02/2020'
   };
 
-  before(() => {
-    cy.workflow('newQuote')._submit('#SearchBar')
-      .findDataTag('policy-list').find('> div section ul li > a').then($a => {
+  before(() => cy.workflow('newQuote')._submit('#SearchBar')
+    .findDataTag('policy-list').find('> div section ul li > a').then($a => {
       $a.prop('onclick', () => cy.visit($a.prop('dataset').url)).click();
-    });
-  });
+    })
+  );
   
   it('Policy Number and Quote Status', () => {
     checkFullHeader(data, undefined, false);

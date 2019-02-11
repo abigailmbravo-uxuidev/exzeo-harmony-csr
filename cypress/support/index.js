@@ -18,5 +18,3 @@ import './login';
 import './persistLocalStorage';
 import './utils';
 import './workflow';
-// Use this folder if you want any custom cypress stuff that will only be local
-import '../local';

@@ -1,6 +1,6 @@
 import pH1 from '../../fixtures/stockData/pH1.json';
 import user from '../../fixtures/stockData/user.json';
-import { checkHeaderSection, checkFullHeader } from './utils';
+import { checkHeaderSection, checkFullHeader } from '../../helpers';
 
 describe('Quote Header Testing', () => {
   const name = `${pH1.pH1FirstName} ${pH1.pH1LastName}`;
@@ -64,7 +64,7 @@ describe('Quote Header Testing', () => {
 
   it('Application Page', () => {
     cy.workflow(undefined, 'application');
-
-    checkFullHeader(data, options);
+    
+    checkHeaderSection('quoteDetails', ['', '' , 'Application Sent DocuSign']);
   });
 });

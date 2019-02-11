@@ -1,20 +1,30 @@
-export const checkHeaderSection = (name, content) => {
-  cy.findDataTag(name).find('dl > div').children().each(
-    ($child, i) => cy.wrap($child).should('contain', content[i])
-  );
-};
+// Useful functions for checking header details
 
+/**
+ * 
+ * @param {string} name 
+ * @param {string} content 
+ */
+export const checkHeaderSection = (name, content) => cy.findDataTag(name).find('dl > div')
+  .children().each(($child, i) => cy.wrap($child).should('contain', content[i]));
+
+/**
+ * 
+ * @param {Object} data
+ * @param {Object} options 
+ * @param {boolean} quote 
+ */
 export const checkFullHeader = (
   data,
   { premium = true, mailingComplete = true, application = true } = {},
   quote = true
-  ) => {
-  const { 
-    name, 
-    phone, 
+) => {
+  const {
+    name,
+    phone,
     mAddress,
     m2Address = m2Address || '',
-    mCity, 
+    mCity,
     mSt,
     mZip,
     pAddress = pAddress || mAddress || '',

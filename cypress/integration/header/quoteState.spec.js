@@ -1,4 +1,4 @@
-import { goToNav, _underwriting, _mailingBilling } from '../../support/navigation';
+import { _underwriting } from '../../helpers';
 
 describe('Quote State Testing', () => {
   const underwriting = {

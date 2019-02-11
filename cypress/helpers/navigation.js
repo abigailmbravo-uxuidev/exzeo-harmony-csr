@@ -1,15 +1,16 @@
-import { stub } from './functions';
+// Functions used to navigate each tab of the app
 
-export const goToNav = name => {
+import { stub } from '.';
+
+// Function to find and navigate to the next tab
+export const goToNav = name =>
   cy.get('.loader.modal').should('not.exist')
     .findDataTag(`nav-${name}`).find('a').click({ force: true });
-};
 
-export const _newQuote = address => {
+export const _newQuote = (address = ' ') => {
   cy.findDataTag('searchType').select('address');
   cy.findDataTag('address').type(address);
-  cy._submit()
-    .wait('@fetchAddresses');
+  cy._submit().wait('@fetchAddresses');
   // This is going to get rewritten once we refactor this in the app itself
   cy.findDataTag(address).then($a => {
     $a.prop('onclick', () => cy.visit($a.prop('dataset').url)).click();
@@ -18,7 +19,7 @@ export const _newQuote = address => {
 
 export const _coverage = customerInfo => {
   Object.entries(customerInfo).forEach(([field, value]) => {
-    cy.findDataTag(field).type(value);
+    cy.findDataTag(field).type(`{selectall}{backspace}${value}`);
   });
   cy.findDataTag('coverage-submit').click();
 };
@@ -49,12 +50,11 @@ export const _summary = () => goToNav('summary');
 export const _application = () => goToNav('application');
 
 export const _docusign = () => {
-  cy.route('POST', '/cg/start?csrGetQuoteWithUnderwriting', stub('fx:stubs/csrGetQuoteWithUnderwriting')).as('csrGetQuoteWithUnderwriting');
+  cy.server()
+    .route('POST', '/cg/start?csrGetQuoteWithUnderwriting', stub('fx:stubs/csrGetQuoteWithUnderwriting')).as('csrGetQuoteWithUnderwriting');
 
-  cy.wait('@summary')
-    .get('.basic-footer button[data-test="submit"]').click()
+  cy.get('.basic-footer button[data-test="submit"]:not([disabled])').click()
     .get('.modal.quote-summary').should('exist')
-    .get('.modal.quote-summary button[type="submit"]').click({ force: true })
-    .wait('@csrGetQuoteWithUnderwriting')
-    .reload().wait('@csrGetQuoteWithUnderwriting');
+    .get('.modal.quote-summary button[type="submit"]').click({ force: true }).wait('@csrGetQuoteWithUnderwriting')
+    .reload().wait('@csrGetQuoteWithUnderwriting');  
 };

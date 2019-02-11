@@ -1,3 +1,5 @@
+// Basic navigation through the entire app
+
 import stockUser from '../fixtures/stockData/user.json';
 import pH1 from '../fixtures/stockData/pH1.json';
 import underwriting from '../fixtures/stockData/underwriting.json';
@@ -10,9 +12,9 @@ import {
   _notesFiles,
   _summary,
   _application,
-  _docusign
-} from './navigation.js';
-import { stub } from './functions';
+  _docusign,
+  stub
+} from '../helpers';
 
 Cypress.Commands.add('workflow', (stop, start = 'login', user = stockUser) => {
   const { address } = user;
@@ -20,14 +22,10 @@ Cypress.Commands.add('workflow', (stop, start = 'login', user = stockUser) => {
 
   if (start === 'login') {
     cy.server()
-      .route('POST', '/cg/start?csrSubmitApplication').as('csrSubmitApplication')
-      .route('POST', '/cg/start?csrGetQuoteWithUnderwriting').as('csrGetQuoteWithUnderwriting')
       .route('POST', '/cg/start?csrAdditionalInterest').as('csrAdditionalInterest')
-      .route('POST', '/svc?fetchDiaries').as('fetchDiaries')
-      .route('POST', '/svc?fetchAddresses', stub('fx:stubs/fetchAddresses')).as('fetchAddresses')
       .route('POST', '/svc?fetchPolicies', stub('fx:stubs/fetchPolicies')).as('fetchPolicies')
-      .route('POST', '/svc?summary').as('summary');
-    cy.login();
+      .route('POST', '/svc?fetchAddresses', stub('fx:stubs/fetchAddresses')).as('fetchAddresses')
+      .login();
     prev = 'login';
   }
 
