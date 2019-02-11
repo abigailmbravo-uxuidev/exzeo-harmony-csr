@@ -1,3 +1,4 @@
+import merge from 'lodash/merge'; //eslint-disable-line
 // General, small, helpful functions can be added here.
 
 /**
@@ -19,3 +20,14 @@ Cypress.Commands.add('_submit', (form = 'body') =>
  * Navigates to the base route
  */
 Cypress.Commands.add('home', () => cy.visit(''));
+
+/**
+ * @param {string} stubName - String of the stub file name (should also be route name)
+ * @param {Object} modification - What, if anything, to modify in the base stub
+ * @param {string} url - The url to stub, if not using the /svc/{stubName} style
+ */
+Cypress.Commands.add('_fixtureAndStubRoute', (stubName, modification = {}, url) =>
+  cy.fixture(`stubs/${stubName}`).then(fixture => {
+    cy.route('POST', url || `/svc?${stubName}`, merge(fixture, modification));
+  })
+);
