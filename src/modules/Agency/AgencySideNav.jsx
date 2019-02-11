@@ -73,8 +73,12 @@ export class SideNav extends React.Component {
     const { toggleNote, agencyCode } = this.props;
     toggleNote({
       noteType: 'Agency Note',
+<<<<<<< HEAD
       documentId: agencyCode,
       resourceType: AGENCY_RESOURCE_TYPE
+=======
+      documentId: agencyCode
+>>>>>>> Added Notes modal.
     });
   };
 
@@ -123,6 +127,15 @@ export class SideNav extends React.Component {
               </li>))
             }
           </ul>
+          <button
+            type="button"
+            aria-label="open-btn form-new-diary"
+            data-test="new-note"
+            className="btn btn-primary btn-round btn-lg new-diary-btn"
+            onClick={this.newNote}>
+            <i className="fa fa-bookmark" />
+            <span>NEW NOTE</span>
+          </button>
         </nav>
         <div className="plus-button-group">
           <button
