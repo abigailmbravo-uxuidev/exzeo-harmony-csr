@@ -11,7 +11,9 @@ describe('Policy: Policy States + Effective/Cancellation Date', () => {
     { code: 0, displayText: 'No Payment Received' },
     { code: 1, displayText: 'Full Payment Received'},
     { code: 2, displayText: 'Over Payment Received' },
-    { code: 3, displayText: 'Partial Payment Received' }
+    { code: 3, displayText: 'Partial Payment Received' },
+    { code: 6, displayText: 'Payment Invoice Issued' },
+    { code: 9, displayText: 'Non-Payment Notice Issued' }
   ];
   const cancelledBillingCodes = [
     { code: 12, displayText: 'Voluntary Cancellation' },
@@ -36,11 +38,17 @@ describe('Policy: Policy States + Effective/Cancellation Date', () => {
     .get('#MortgageBilling').submit();
 
   const checkPolicyDetail = (policyStatus, billingStatus) => {
-    checkHeaderSection('policyDetails', ['', '', `${policyStatus} / ${billingStatus}`]);
-    if (cancellationPolicyStates.includes(policyStatus)) {
+    // Policy detail check
+    checkHeaderSection('policyDetails', ['', '', `${policyStatus} / ${billingStatus.displayText}`]);
+    // Date checks for different policy/billing combos
+    // TODO: Ask vinny if this is right on final payment detail
+    if (policyStatus === 'In Force' && billingStatus.code === 9) {
+      checkHeaderSection('cancellationDetail', ['Cancellation Effective Date', '']);
+      checkHeaderSection('finalPaymentDetail', ['Final Payment Date', '']);
+    } else if (cancellationPolicyStates.includes(policyStatus) || billingStatus.code === 9) {
       checkHeaderSection('cancellationDetail', ['Cancellation Effective Date', '']);
     } else { checkHeaderSection('cancellationDetail', ['Expiration Date', '']); }
-
+    // Check the cancellation reinstatement modal
     if (policyStatus === 'Cancelled') {
       cy.findDataTag('cancellationDetail').find('dl > div > dt > button')
         .should('contain', 'Reinstate')
@@ -53,7 +61,7 @@ describe('Policy: Policy States + Effective/Cancellation Date', () => {
   const modifyLedgerAndRecheck = (policyStatus, ledgerStatus)  => {
     cy._fixtureAndStubRoute('fetchSummaryLedger', { result: { status: ledgerStatus }});
     applyPayment();
-    checkPolicyDetail(policyStatus, ledgerStatus.displayText);
+    checkPolicyDetail(policyStatus, ledgerStatus);
   };
 
   before(() => cy.workflow('newQuote'));
@@ -69,7 +77,7 @@ describe('Policy: Policy States + Effective/Cancellation Date', () => {
     cy._fixtureAndStubRoute('fetchPolicy');
     goToBilling(false);
 
-    baseBillingCodes.forEach(code => modifyLedgerAndRecheck('Policy Issued', code));
+    baseBillingCodes.slice(0, 4).forEach(code => modifyLedgerAndRecheck('Policy Issued', code));
   });
 
   it('"In Force" Policy State', () => {
@@ -77,7 +85,7 @@ describe('Policy: Policy States + Effective/Cancellation Date', () => {
     goToBilling();
 
     baseBillingCodes.forEach(code => modifyLedgerAndRecheck('In Force', code));
-    // TODO: Non-payment method notice
+
   });
 
   it('"Pending Voluntary Cancellation" Policy State', () => {

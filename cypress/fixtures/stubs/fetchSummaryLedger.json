@@ -52,7 +52,7 @@
     "billPlan": "Annual",
     "billToType": "Policyholder",
     "invoiceDate": null,
-    "invoiceDueDate": null,
+    "invoiceDueDate": "2019-06-18T06:00:00.000Z",
     "nonPaymentNoticeDate": null,
     "nonPaymentNoticeDueDate": null,
     "refundWriteOffDate": null,
