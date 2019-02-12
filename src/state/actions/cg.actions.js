@@ -68,7 +68,7 @@ export const startWorkflow = (modelName, data, dispatchAppState = true) => (disp
       modelName,
       data
     },
-    url: `${process.env.REACT_APP_API_URL}/cg/start`
+    url: `${process.env.REACT_APP_API_URL}/cg/start?${modelName}`
   };
 
   return axios(axiosConfig)

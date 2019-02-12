@@ -7,11 +7,12 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --coverage",
-    "lint": "./node_modules/.bin/eslint src --ext .jsx --ext .js"
+    "lint": "./node_modules/.bin/eslint src --ext .jsx --ext .js",
+    "cypress": "react-scripts cypress"
   },
   "dependencies": {
     "@exzeo/core-ui": "^0.4.7",
-    "@exzeo/react-scripts": "1.0.4",
+    "@exzeo/react-scripts": "1.0.8",
     "@fortawesome/fontawesome": "~1.0.0",
     "@fortawesome/react-fontawesome": "~0.0.14",
     "@uppy/core": "^0.26.0",
@@ -51,6 +52,7 @@
   },
   "devDependencies": {
     "axios-mock-adapter": "~1.10.0",
+    "cypress": "^3.1.5",
     "enzyme": "^3.8.0",
     "enzyme-adapter-react-16": "^1.7.0",
     "istanbul": "~0.4.5",

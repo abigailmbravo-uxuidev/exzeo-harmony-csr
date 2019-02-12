@@ -60,7 +60,7 @@ export async function fetchZipCodeSettings(zipCodePartial, state) {
       method: 'GET',
       path: `graphql?query=${generateSearchSettingsByCSPAndZipQuery(zipCodePartial, state)}`
     };
-    const response = await serviceRunner.callService(config);
+    const response = await serviceRunner.callService(config, 'fetchZipCodeSettings');
     const result = response.data && response.data.data && response.data.data.searchSettingsByCSPAndZip ? response.data.data.searchSettingsByCSPAndZip : [];
     return result;
   } catch (error) {
