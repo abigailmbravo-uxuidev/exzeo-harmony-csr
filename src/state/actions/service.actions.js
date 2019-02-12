@@ -12,14 +12,17 @@ export const handleError = (err) => {
   return { ...error };
 };
 
-export const runnerSetup = data => ({
-  method: 'POST',
-  headers: {
-    'Content-Type': 'application/json'
-  },
-  url: `${process.env.REACT_APP_API_URL}/svc`,
-  data
-});
+export const runnerSetup = (data, qs = '') => {
+  const param = qs ?`?${qs}` : '';
+  return {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    url: `${process.env.REACT_APP_API_URL}/svc${param}`,
+    data
+  }
+};
 
 export const serviceRequest = data => ({
   type: types.SERVICE_REQUEST,
@@ -73,7 +76,7 @@ async function fetchNotes(noteId) {
   };
 
   try {
-    const response = await serviceRunner.callService(notesRequest);
+    const response = await serviceRunner.callService(notesRequest, 'fetchNotes');
     return response.data && response.data.result ? response.data.result : [];
   } catch (error) {
     throw error;
@@ -88,7 +91,7 @@ async function fetchDocuments(sysNoteId) {
   };
 
   try {
-    const response = await serviceRunner.callService(docsRequest);
+    const response = await serviceRunner.callService(docsRequest, 'fetchDocuments');
     return response.data && response.data.result ? response.data.result : [];
   } catch (error) {
     throw error;
@@ -100,7 +103,7 @@ export const getAgents = (companyCode, state) => (dispatch) => {
     service: 'agency',
     method: 'GET',
     path: `v1/agents/${companyCode}/${state}`
-  });
+  }, 'getAgents');
 
   return axios(axiosConfig).then((response) => {
     const data = { agents: response.data.result };
@@ -126,7 +129,7 @@ export const getAgency = (companyCode, state, agencyCode) => (dispatch) => {
     service: 'agency',
     method: 'GET',
     path: `v1/agency/${companyCode}/${state}/${agencyCode}`
-  });
+  }, 'getAgency');
 
   return axios(axiosConfig).then((response) => {
     const data = { agency: response.data.result };
@@ -143,7 +146,7 @@ export const getAgentsByAgency = (companyCode, state, agencyCode) => (dispatch) 
     service: 'agency',
     method: 'GET',
     path: `v1/agents/${companyCode}/${state}?agencyCode=${agencyCode}`
-  });
+  }, 'getAgentsByAgency');
 
   return axios(axiosConfig).then((response) => {
     const data = { agents: response.data.result };
@@ -174,7 +177,7 @@ export const addTransaction = submitData => (dispatch) => {
       amount: submitData.amount
     }
   };
-  const axiosConfig = runnerSetup(body);
+  const axiosConfig = runnerSetup(body, 'addTransaction');
 
   return axios(axiosConfig).then((response) => {
     const data = { transactions: response.data.result };
@@ -205,7 +208,7 @@ export const getUnderwritingQuestions = (companyCode, state, product, property) 
         property
       }
     }
-  });
+  }, 'getUnderwritingQuestions');
 
   return axios(axiosConfig).then((response) => {
     const data = { underwritingQuestions: response.data.result };
@@ -231,7 +234,7 @@ export const saveUnderwritingExceptions = (id, underwritingExceptions) => (dispa
       underwritingExceptions
     }
   };
-  const axiosConfig = runnerSetup(body);
+  const axiosConfig = runnerSetup(body, 'saveUnderwritingExceptions');
 
   return axios(axiosConfig).then((response) => {
     const data = { transactions: response.data.result };
@@ -253,7 +256,7 @@ export const getBillingOptions = paymentOptions => (dispatch) => {
     method: 'POST',
     path: 'payment-options-for-quoting',
     data: paymentOptions
-  });
+  }, 'getBillingOptions');
 
   return axios(axiosConfig).then((response) => {
     const data = { billingOptions: response.data.result };
@@ -278,7 +281,7 @@ export const getQuote = quoteId => (dispatch) => {
     service: 'quote-data',
     method: 'GET',
     path: quoteId
-  });
+  }, 'getQuote');
 
   return axios(axiosConfig).then((response) => {
     const data = { quote: response.data ? response.data.result : {} };
@@ -298,7 +301,7 @@ export const getZipcodeSettings = (companyCode, state, product, zip) => (dispatc
     service: 'underwriting',
     method: 'GET',
     path: `zip-code?companyCode=${companyCode}&state=${state}&product=${product}&zip=${zip}`
-  });
+  }, 'getZipcodeSettings');
 
   return axios(axiosConfig).then((response) => {
     const data = { getZipcodeSettings: response.data && response.data.result ? response.data.result[0] : { timezone: '' } };
@@ -326,7 +329,7 @@ export const saveBillingInfo = (id, billToType, billToId, billPlan) => (dispatch
       billPlan
     }
   };
-  const axiosConfig = runnerSetup(body);
+  const axiosConfig = runnerSetup(body, 'saveBillingInfo');
 
   return axios(axiosConfig).then((response) => {
     const data = { transactions: response.data.result };
@@ -347,7 +350,7 @@ export const getAgencies = (companyCode, state) => (dispatch) => {
     service: 'agency',
     method: 'GET',
     path: `v1/agencies/${companyCode}/${state}?pageSize=1000&sort=displayName&SortDirection=asc`
-  });
+  }, 'getAgencies');
 
   return axios(axiosConfig).then((response) => {
     const result = response.data && response.data.result ? response.data.result : [];

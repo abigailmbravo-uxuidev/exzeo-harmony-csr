@@ -124,7 +124,10 @@ export class Underwriting extends Component {
               className="btn btn-primary"
               type="submit"
               form="Underwriting"
-              disabled={appState.data.submitting || pristine || editingDisabled}>Update
+              disabled={appState.data.submitting || pristine || editingDisabled}
+              data-test="submit"
+            >
+              Update
             </button>
           </div>
         </div>

@@ -289,6 +289,10 @@ NoteUploader.propTypes = {
   resourceType: PropTypes.string
 };
 
+NoteUploader.defaultProps = {
+  user: { profile: {} }
+};
+
 const mapStateToProps = state => ({
   user: state.authState.userProfile
 });

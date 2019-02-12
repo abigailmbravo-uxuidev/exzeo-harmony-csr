@@ -16,7 +16,9 @@
     "expect": true,
     "sinon": true,
     "describe": true,
-    "it": true
+    "it": true,
+    "cy": false,
+    "Cypress": false
   },
   "env": {
     "browser": true,
