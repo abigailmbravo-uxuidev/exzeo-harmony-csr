@@ -75,7 +75,11 @@ export class TransferAOR extends Component {
 }
 
 TransferAOR.propTypes = {
-
+  toggleModal: PropTypes.func.isRequired,
+  companyCode: PropTypes.number.isRequired,
+  state: PropTypes.string.isRequired,
+  agencyCode: PropTypes.array.isRequired, 
+  agentCode: PropTypes.array
 };
 
 const mapStateToProps = (state, { agencyCode, agentCode }) => ({
