@@ -18,4 +18,4 @@ Cypress.Commands.add('_submit', (form = 'body') =>
 /**
  * Navigates to the base route
  */
-Cypress.Commands.add('home', () => cy.visit(Cypress.env('REACT_APP_CYPRESS_URL')));
+Cypress.Commands.add('home', () => cy.visit(''));

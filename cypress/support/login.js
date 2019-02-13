@@ -1,7 +1,7 @@
 import login from '../fixtures/stockData/login.json';
 
 Cypress.Commands.add('login', (loginInfo = login) => {
-  const useMockAuth0 = Cypress.env('REACT_APP_USE_MOCK_AUTH0');
+  const useMockAuth0 = Cypress.env('USE_MOCK_AUTH0');
 
   cy.visit('/logout', {
     onBeforeLoad: win => {

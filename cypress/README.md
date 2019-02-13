@@ -11,7 +11,7 @@ To change this behavior and point to a different environment, see below.
 Confirm that the following ENV variable is in `.env.local`
 ```bash
 # uncomment to test cypress against sandbox environment
-# REACT_APP_CYPRESS_URL=https://agency.harmony-ins.com
+# CYPRESS_BASE_URL=https://agency.harmony-ins.com
 ```
 **This variable can me modified to point to various harmony environments.*
 

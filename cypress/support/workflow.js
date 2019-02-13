@@ -19,7 +19,7 @@ import {
 Cypress.Commands.add('workflow', (stop, start = 'login', user = stockUser) => {
   const { address } = user;
   let prev;
-
+  
   if (start === 'login') {
     cy.server()
       .route('POST', '/cg/start?csrAdditionalInterest').as('csrAdditionalInterest')
