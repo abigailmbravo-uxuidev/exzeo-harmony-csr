@@ -16,7 +16,7 @@ describe('Quote Header Testing', () => {
     .toLocaleDateString('en-US', { day: '2-digit', month: '2-digit' });
   const data = { name, phone, mAddress, mCity, mSt, mZip, territory, effDate };
   
-
+  // Create an options object we udpate as we move through app
   const options = { premium: false, mailingComplete: false, application: false };
 
   before(() => cy.workflow('coverage'));

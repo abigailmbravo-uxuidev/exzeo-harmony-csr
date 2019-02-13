@@ -53,8 +53,8 @@ export const _docusign = () => {
   cy.server()
     .route('POST', '/cg/start?csrGetQuoteWithUnderwriting', stub('fx:stubs/csrGetQuoteWithUnderwriting')).as('csrGetQuoteWithUnderwriting');
 
-  cy.get('.basic-footer button[data-test="submit"]:not([disabled])').click()
-    .get('.modal.quote-summary').should('exist')
+  cy.get('.basic-footer button[data-test="submit"]:not([disabled])').click();
+  cy.get('.modal.quote-summary').should('exist')
     .get('.modal.quote-summary button[type="submit"]').click({ force: true }).wait('@csrGetQuoteWithUnderwriting')
     .reload().wait('@csrGetQuoteWithUnderwriting');  
 };
