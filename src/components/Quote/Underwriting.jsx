@@ -145,7 +145,7 @@ Underwriting.propTypes = {
   appState: PropTypes.shape({
     modelName: PropTypes.string,
     instanceId: PropTypes.string,
-    data: PropTypes.shape({ submitting: PropTypes.boolean })
+    data: PropTypes.shape({ submitting: PropTypes.bool })
   }),
   quoteData: PropTypes.shape(),
   questions: PropTypes.arrayOf(PropTypes.shape())
