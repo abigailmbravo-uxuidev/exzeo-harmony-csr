@@ -1,4 +1,6 @@
 import merge from 'lodash/merge'; //eslint-disable-line
+
+import { stub } from '../helpers';
 // General, small, helpful functions can be added here.
 
 /**
@@ -28,7 +30,7 @@ Cypress.Commands.add('home', () => cy.visit(''));
  * @param {string} url - The url to stub, if not using the /svc/{stubName} style
  */
 Cypress.Commands.add('_fixtureAndStubRoute', (stubName, modification = {}, url) =>
-  cy.fixture(`stubs/${stubName}`).then(fixture => {
-    cy.route('POST', url || `/svc?${stubName}`, merge(fixture, modification));
+  cy.server().fixture(`stubs/${stubName}`).then(fx => {
+    cy.route('POST', stub(url || `/svc?${stubName}`), merge(fx, modification));
   })
 );

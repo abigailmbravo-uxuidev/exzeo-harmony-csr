@@ -66,15 +66,7 @@ describe('Policy: Policy States + Effective/Cancellation Date', () => {
 
   before(() => cy.workflow('newQuote'));
 
-  beforeEach(() => cy.server()
-    .route('POST', '/svc?fetchPolicies', 'fx:stubs/fetchPolicies').as('fetchPolicies')
-    .route('POST', '/svc?addTransaction', 'fx:stubs/addTransaction')
-    .route('POST', '/svc?fetchSummaryLedger', 'fx:stubs/fetchSummaryLedger')
-    .route('POST', '/svc?fetchPaymentHistory', 'fx:stubs/fetchPaymentHistory')
-  );
-
   it('"Policy Issued" Policy State', () => {
-    cy._fixtureAndStubRoute('fetchPolicy');
     goToBilling(false);
 
     baseBillingCodes.slice(0, 4).forEach(code => modifyLedgerAndRecheck('Policy Issued', code));

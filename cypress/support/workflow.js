@@ -12,25 +12,24 @@ import {
   _notesFiles,
   _summary,
   _application,
-  _docusign,
-  stub
+  _docusign
 } from '../helpers';
+import routes from './routes';
 
 Cypress.Commands.add('workflow', (stop, start = 'login', user = stockUser) => {
-  const { address } = user;
+  const { address1, address2, city, zip, country } = user;
   let prev;
+
+  // Remake all stubbed xhr routes every time this function is used
+  routes();
   
   if (start === 'login') {
-    cy.server()
-      .route('POST', '/cg/start?csrAdditionalInterest').as('csrAdditionalInterest')
-      .route('POST', '/svc?fetchPolicies', stub('fx:stubs/fetchPolicies')).as('fetchPolicies')
-      .route('POST', '/svc?fetchAddresses', stub('fx:stubs/fetchAddresses')).as('fetchAddresses')
-      .login();
+    cy.login();
     prev = 'login';
   }
 
   if ((stop !== 'newQuote' && prev === 'login') || start === 'newQuote') {
-    _newQuote(address);
+    _newQuote(address1);
     prev = 'newQuote';
   }
 
@@ -50,7 +49,7 @@ Cypress.Commands.add('workflow', (stop, start = 'login', user = stockUser) => {
   }
 
   if ((stop !== 'mailingBilling' && prev === 'additionalInterests') || start === 'mailingBilling') {
-    _mailingBilling();
+    _mailingBilling({ address1, address2, city, zip, country });
     prev = 'mailingBilling';
   }
 

@@ -13,8 +13,11 @@
 // ** NOTE: Do not write a global after(), it does not execute where you think it will
 // and it's an anti-pattern anyway.
 
-beforeEach('Reset local storage', () => {
+import routes from './routes';
+
+beforeEach('Reset local storage and instantiate routes', () => {
   cy.restoreLocalStorage();
+  routes();
 });
 
 afterEach('Save local storage', () => {
