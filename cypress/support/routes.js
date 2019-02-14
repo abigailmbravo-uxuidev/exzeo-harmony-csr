@@ -32,5 +32,7 @@ export default () => cy.server()
   .route('POST', '/svc?addTransaction', 'fx:stubs/addTransaction')
   .route('POST', '/svc?fetchSummaryLedger', 'fx:stubs/fetchSummaryLedger')
   .route('POST', '/svc?fetchPaymentHistory', 'fx:stubs/fetchPaymentHistory')
+  .route('POST', '/svc?fetchAgentList', 'fx:stubs/fetchAgentList')
+  .route('POST', '/svc?fetchAgency', 'fx:stubs/fetchAgency')
   .route('POST', '/svc?summary', stub('summary'))
   .route('POST', '/cg/start?csrSubmitApplication', stub('csrSubmitApplication'));
