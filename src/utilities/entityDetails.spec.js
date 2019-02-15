@@ -539,4 +539,49 @@ describe('Test getFinalPaymentDate', () => {
 
     expect(result.date).toBeFalsy();
   });
+
+  it('should return invoiceDueDate date for a Non-Payment Notice Issued billing status for a policy: Pending Voluntary Cancellation', () => {
+    const summaryLedger = {
+      invoiceDueDate: '2018-10-23T04:00:00.000Z',
+      status: { displayText: 'Non-Payment Notice Issued' }
+    };
+    const policyStatus = 'Pending Voluntary Cancellation';
+
+    const result = entityDetails.getFinalPaymentDate(
+      summaryLedger,
+      policyStatus
+    );
+
+    expect(result.value).toEqual(moment(summaryLedger.invoiceDueDate).format(STANDARD_DATE_FORMAT));
+  });
+
+  it('should return invoiceDueDate date for a Non-Payment Notice Issued billing status for a policy: Pending Underwriting Cancellation', () => {
+    const summaryLedger = {
+      invoiceDueDate: '2018-10-23T04:00:00.000Z',
+      status: { displayText: 'Non-Payment Notice Issued' }
+    };
+    const policyStatus = 'Pending Underwriting Cancellation';
+
+    const result = entityDetails.getFinalPaymentDate(
+      summaryLedger,
+      policyStatus
+    );
+
+    expect(result.value).toEqual(moment(summaryLedger.invoiceDueDate).format(STANDARD_DATE_FORMAT));
+  });
+
+  it('should return invoiceDueDate date for a Non-Payment Notice Issued billing status for a policy: Pending Underwriting Non-Renewal', () => {
+    const summaryLedger = {
+      invoiceDueDate: '2018-10-23T04:00:00.000Z',
+      status: { displayText: 'Non-Payment Notice Issued' }
+    };
+    const policyStatus = 'Pending Underwriting Non-Renewal';
+
+    const result = entityDetails.getFinalPaymentDate(
+      summaryLedger,
+      policyStatus
+    );
+
+    expect(result.value).toEqual(moment(summaryLedger.invoiceDueDate).format(STANDARD_DATE_FORMAT));
+  });
 });
