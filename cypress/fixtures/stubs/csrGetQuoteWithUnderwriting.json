@@ -452,7 +452,7 @@
               }
             },
             "netPremium": 2640,
-            "totalPremium": 2667
+            "totalPremium": 0
           },
           "createdAt": "2019-02-13T20:21:23.981Z",
           "createdBy": {
@@ -460,7 +460,7 @@
             "userId": "auth0|59419e3a43e76f16f68c3349",
             "userName": "tticcsr"
           },
-          "effectiveDate": "2019-03-15T04:00:00.000Z",
+          "effectiveDate": "2020-02-15T04:00:00.000Z",
           "property": {
             "fireAlarm": false,
             "windMitigation": {
@@ -521,7 +521,7 @@
             "userId": "auth0|59419e3a43e76f16f68c3349",
             "userName": "tticcsr"
           },
-          "quoteState": "Application Started",
+          "quoteState": "Quote Started",
           "product": "HO3"
         },
         "timeTookByEndpoint": 30
@@ -568,7 +568,7 @@
                 "source": "Customer"
               },
               "rented": {
-                "answer": "Never",
+                "answer": "Yes",
                 "question": "Is the home or any structures on the property ever rented?",
                 "source": "Customer"
               },
@@ -1103,7 +1103,7 @@
                 "source": "Customer"
               },
               "rented": {
-                "answer": "Never",
+                "answer": "Yes",
                 "question": "Is the home or any structures on the property ever rented?",
                 "source": "Customer"
               },

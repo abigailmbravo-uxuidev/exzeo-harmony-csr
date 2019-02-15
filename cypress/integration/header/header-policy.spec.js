@@ -1,4 +1,5 @@
 import { checkFullHeader, goToNav } from '../../helpers';
+import routes from '../../support/routes';
 
 describe('Policy Header Testing', () => {
   const data = {
@@ -16,15 +17,22 @@ describe('Policy Header Testing', () => {
     pZip: '00017',
     territory: '033-0',
     county: 'MIAMI-DADE',
-    effDate: '03/02/2019',
+    effectiveDate: '03/02/2019',
     expDate: '03/02/2020'
   };
 
-  before(() => cy.workflow('newQuote')._submit('#SearchBar')
-    .findDataTag('policy-list').find('> div section ul li > a').then($a => {
-      $a.prop('onclick', () => cy.visit($a.prop('dataset').url)).click();
-    })
-  );
+  before(() => {
+    routes();
+    cy.login()
+      ._submit('#SearchBar')
+      .findDataTag('policy-list')
+      .find('> div section ul li > a')
+      .then($a => {
+        $a.prop('onclick', () => cy.visit($a.prop('dataset').url)).click()
+      });
+  });
+
+  beforeEach(() => routes());
   
   it('Policy Number and Quote Status', () => {
     checkFullHeader(data, undefined, false);

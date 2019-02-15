@@ -4,7 +4,6 @@
 const LOCAL_STORAGE_MEMORY = {};
 
 Cypress.Commands.add('saveLocalStorage', () => {
-  // cy.log('aftereachhook');
   const ourKeys = ['access_token', 'id_token'];
 
   Object.keys(localStorage)

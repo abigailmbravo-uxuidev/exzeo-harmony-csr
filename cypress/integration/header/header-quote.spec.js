@@ -1,70 +1,108 @@
+import _ from 'lodash'; //eslint-disable-line
 import pH1 from '../../fixtures/stockData/pH1.json';
 import user from '../../fixtures/stockData/user.json';
-import { checkHeaderSection, checkFullHeader } from '../../helpers';
+import { stubQuoteWithUnderwriting,
+  checkHeaderSection,
+  checkFullHeader,
+  _newQuote,
+  _coverage,
+  _underwriting,
+  _mailingBilling,
+  _additionalInterests,
+  _notesFiles,
+  _summary,
+  _application
+} from '../../helpers';
+import routes from '../../support/routes.js';
 
 describe('Quote Header Testing', () => {
+  // Construct our UI data structure
   const name = `${pH1.pH1FirstName} ${pH1.pH1LastName}`;
   const digits = pH1.pH1phone.replace(/[^\d]/g, '');
   const phone = `(${digits.substr(0, 3)}) ${digits.substr(3, 3)}-${digits.substr(6, 4)}`;
-  const mAddress = user.address;
+  const mAddress = user.address1;
   const mCity = 'SARASOTA';
   const mSt = 'FL';
   const mZip = '00001';
   const territory = '715-51';
   const today = new Date();
-  const effDate = new Date(today.getFullYear(), today.getMonth(), today.getDate() + 30)
-    .toLocaleDateString('en-US', { day: '2-digit', month: '2-digit' });
-  const data = { name, phone, mAddress, mCity, mSt, mZip, territory, effDate };
-  
+  const effectiveDate = new Date(today.getFullYear(), today.getMonth(), today.getDate() + 30)
+    .toLocaleDateString('en-US', { day: '2-digit', month: '2-digit', year: 'numeric' });
+  const quoteData = { name, phone, mAddress, mCity, mSt, mZip, territory, effectiveDate };
+
   // Create an options object we udpate as we move through app
   const options = { premium: false, mailingComplete: false, application: false };
 
-  before(() => cy.workflow('coverage'));
+  // Our current fixture will exist outside tests and be updated from inside so we can track our
+  // current stubbed server response
+  let currentFixture = {};
+
+  before(() => {
+    routes();
+    cy.login();
+    _newQuote();
+  });
+
+  beforeEach(() => routes());
 
   it('Coverage/Rating Page', () => {
-    checkHeaderSection('policyHolderDetail', ['Policy Holder', '', '']);
-    
-    cy.workflow('underwriting', 'coverage');
-    checkFullHeader(data, options);
+    cy.fixture('stubs/csrGetQuoteWithUnderwriting').then(fx => {
+      checkHeaderSection('policyHolderDetail', ['Policy Holder', '', '']);
+
+      const coverageRes = {
+        effectiveDate,
+        policyHolders: [{
+          firstName: pH1.pH1FirstName,
+          lastName: pH1.pH1LastName,
+          primaryPhoneNumber: pH1.pH1phone,
+          emailAddress: pH1.pH1email
+        }]
+      };
+      currentFixture = _.cloneDeep(fx);
+      _coverage(pH1, currentFixture, coverageRes);
+      checkFullHeader(quoteData, options);
+    });
   });
 
   it('Underwriting Page', () => {
-    cy.findDataTag('currentPremiumDetail').find('dl > div > dd').should('contain', '--')
-      .workflow('additionalInterests', 'underwriting');
+    const underwritingRes = {
+      effectiveDate,
+      rating: { totalPremium: 100 } ,
+      underwritingAnswers: { rented: { answer: "Never" } }
+    };
+    _underwriting(undefined, currentFixture, underwritingRes);
     options['premium'] = true;
-
-    checkFullHeader(data, options);
+    checkFullHeader(quoteData, options);
   });
 
   it('Additional Interest Page', () => {
-    cy.workflow('mailingBilling', 'additionalInterests');
-    checkFullHeader(data, options);
+    stubQuoteWithUnderwriting(currentFixture);
+    _additionalInterests();
+    checkFullHeader(quoteData, options);
   });
 
   it('Mailing/Billing Page', () => {
-    checkHeaderSection('mailingAddressDetail', ['Mailing Address']);
-    cy.workflow('notesFiles', 'mailingBilling');
+    _mailingBilling(currentFixture);
     options['mailingComplete'] = true;
-
-    checkFullHeader(data, options);
+    checkFullHeader(quoteData, options);
   });
 
   it('Notes/Files Page', () => {
-    cy.workflow('summary', 'notesFiles');
+    stubQuoteWithUnderwriting(currentFixture, { quoteState: 'Application Started' });
+    _notesFiles();
     options['application'] = true;
-
-    checkFullHeader(data, options);
+    checkFullHeader(quoteData, options);
   });
 
   it('Quote Summary Page', () => {
-    cy.workflow('application', 'summary');
-
-    checkFullHeader(data, options);
+    stubQuoteWithUnderwriting(currentFixture);
+    _summary();
+    checkFullHeader(quoteData, options);
   });
 
-  it('Application Page', () => {
-    cy.workflow(undefined, 'application');
-    
-    checkHeaderSection('quoteDetails', ['', '' , 'Application Sent DocuSign']);
+    it('Application Page', () => {
+    stubQuoteWithUnderwriting(currentFixture);
+    _application();
+    checkFullHeader(quoteData, options);
   });
 });

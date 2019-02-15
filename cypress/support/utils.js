@@ -31,6 +31,6 @@ Cypress.Commands.add('home', () => cy.visit(''));
  */
 Cypress.Commands.add('_fixtureAndStubRoute', (stubName, modification = {}, url) =>
   cy.server().fixture(`stubs/${stubName}`).then(fx => {
-    cy.route('POST', stub(url || `/svc?${stubName}`), merge(fx, modification));
+    cy.route('POST', (url || `/svc?${stubName}`), merge(fx, modification));
   })
 );

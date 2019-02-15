@@ -1,7 +1,9 @@
 import { _newQuote, goToNav, checkHeaderSection } from '../../helpers';
+import routes from '../../support/routes';
 
 describe('Policy: Policy States + Effective/Cancellation Date', () => {
   const cancellationPolicyStates = [
+    'In Force',
     'Pending Voluntary Cancellation',
     'Pending Underwriting Cancellation',
     'Pending Underwriting Non-Renewal',
@@ -40,14 +42,22 @@ describe('Policy: Policy States + Effective/Cancellation Date', () => {
   const checkPolicyDetail = (policyStatus, billingStatus) => {
     // Policy detail check
     checkHeaderSection('policyDetails', ['', '', `${policyStatus} / ${billingStatus.displayText}`]);
-    // Date checks for different policy/billing combos
-    // TODO: Ask vinny if this is right on final payment detail
+
+    // Checks for different policy/billing combos
+    // Waiting on bugfix:
+    // if (cancellationPolicyStates.splice(0, 3).contains(policyStatus) && billingStatus.code === 9) {
+    //   checkHeaderSection('cancellationDetail', ['Cancellation Effective Date', '']);
+    //   checkHeaderSection('finalPaymentDetail', ['Final Payment Date', '']);
+    // }
     if (policyStatus === 'In Force' && billingStatus.code === 9) {
       checkHeaderSection('cancellationDetail', ['Cancellation Effective Date', '']);
       checkHeaderSection('finalPaymentDetail', ['Final Payment Date', '']);
-    } else if (cancellationPolicyStates.includes(policyStatus) || billingStatus.code === 9) {
+    } 
+    // End bugfix await
+    else if (cancellationPolicyStates.includes(policyStatus) || billingStatus.code === 9) {
       checkHeaderSection('cancellationDetail', ['Cancellation Effective Date', '']);
     } else { checkHeaderSection('cancellationDetail', ['Expiration Date', '']); }
+
     // Check the cancellation reinstatement modal
     if (policyStatus === 'Cancelled') {
       cy.findDataTag('cancellationDetail').find('dl > div > dt > button')
@@ -64,7 +74,8 @@ describe('Policy: Policy States + Effective/Cancellation Date', () => {
     checkPolicyDetail(policyStatus, ledgerStatus);
   };
 
-  before(() => cy.workflow('newQuote'));
+  before(() => cy.login());
+  beforeEach(() => routes());
 
   it('"Policy Issued" Policy State', () => {
     goToBilling(false);
@@ -77,7 +88,6 @@ describe('Policy: Policy States + Effective/Cancellation Date', () => {
     goToBilling();
 
     baseBillingCodes.forEach(code => modifyLedgerAndRecheck('In Force', code));
-
   });
 
   it('"Pending Voluntary Cancellation" Policy State', () => {
