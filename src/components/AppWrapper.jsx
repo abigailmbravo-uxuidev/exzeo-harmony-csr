@@ -19,7 +19,7 @@ const CONFIG = {
       showEffectiveDateButton: true,
       showReinstateButton: true,
       fields: [
-        { value: 'policyHolder', component: 'Section' },
+        { value: 'policyHolder', component: 'Section', label: 'Policyholder' },
         { value: 'mailingAddress', component: 'Section' },
         { value: 'propertyAddress', component: 'Section' },
         { value: 'county', label: 'Property County' },
@@ -38,7 +38,7 @@ const CONFIG = {
     detailsFields: {
       hideDeatailSummary: true,
       fields: [
-        { value: 'policyHolder', component: 'Section' },
+        { value: 'policyHolder', component: 'Section', label: 'Policyholder' },
         { value: 'mailingAddress', component: 'Section' },
         { value: 'propertyAddress', component: 'Section' },
         { value: 'county', label: 'Property County' },
