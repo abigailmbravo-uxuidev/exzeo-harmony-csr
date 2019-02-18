@@ -8,10 +8,10 @@ import { getAgencies, getAgentsByAgencyCode } from '../../state/actions/agency.a
 import { getAgencyList, getAgentList } from '../../state/selectors/agency.selector';
 
 export class TransferAOR extends Component {
-  async componentDidMount() {
+  componentDidMount() {
     const { getAgencies, getAgentsByAgencyCode, initialize, companyCode, agencyCode, state } = this.props;
-    await getAgencies(companyCode, state);
-    await getAgentsByAgencyCode(agencyCode);
+    getAgencies(companyCode, state);
+    getAgentsByAgencyCode(agencyCode);
   }
 
   handleAgencyChange = (_, agencyCode) => {
@@ -20,6 +20,7 @@ export class TransferAOR extends Component {
   }
 
   submitTransfer = (data, dispatch, props) => {
+    this.props.toggleModal();
     return true;
   }
 
@@ -76,10 +77,10 @@ export class TransferAOR extends Component {
 
 TransferAOR.propTypes = {
   toggleModal: PropTypes.func.isRequired,
-  companyCode: PropTypes.number.isRequired,
+  companyCode: PropTypes.string.isRequired,
   state: PropTypes.string.isRequired,
-  agencyCode: PropTypes.array.isRequired, 
-  agentCode: PropTypes.array
+  agencyCode: PropTypes.number.isRequired, 
+  agentCode: PropTypes.number
 };
 
 const mapStateToProps = (state, { agencyCode, agentCode }) => ({
