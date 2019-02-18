@@ -15,8 +15,8 @@ export class Transfer extends Component {
     // get policies by agency
   }
 
-  handleToggleTransferModal = () => {
-    this.setState(state => ({ showTransferModal: !state.showTransferModal }));
+  handleToggleTransferModal = (data) => {
+    this.setState(state => ({ showTransferModal: !state.showTransferModal, selectedPolicies: data }));
   }
 
   filterPropertyAddress = (property) => {
@@ -40,12 +40,13 @@ export class Transfer extends Component {
 
     // if (!(agents && agents.length && agency)) return <Loader />;
 
-    const { showTransferModal } = this.state;
+    const { showTransferModal, selectedPolicies } = this.state;
 
     return (
       <React.Fragment>
         {showTransferModal && 
           <TransferModal
+            selectedPolicies={selectedPolicies}
             toggleModal={this.handleToggleTransferModal}
           />
         }
@@ -54,7 +55,7 @@ export class Transfer extends Component {
             <div className="form-group survey-wrapper" role="group">
               <section className="policy-filter"> 
               <TransferFilter policyNumberList={policyNumberList} />
-              <TransferList policyNumberList={policyNumberList} policies={policies} />        
+              <TransferList policyNumberList={policyNumberList} policies={policies} toggleTransferModal={this.handleToggleTransferModal} />        
               </section>
             </div>
           </div>

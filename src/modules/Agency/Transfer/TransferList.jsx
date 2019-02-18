@@ -11,10 +11,10 @@ import TransferFilter from './TransferFilter';
 
 export class TransferList extends Component {
   render() {
-    const { policyNumberList, policies } = this.props;
+    const { policies, handleSubmit, toggleTransferModal } = this.props;
     return (
       <Fragment>
-        <form>
+              <form id="TransferList" onSubmit={handleSubmit(toggleTransferModal)}>
             <ul>
                     <li> 
                         <span>
@@ -55,6 +55,8 @@ export class TransferList extends Component {
                 )})
                 }
             </ul>
+            <button type='button'>Clear Selections</button>
+            <button type='submit'>Stage Selected For Transfer</button>
         </form>
       </Fragment>
     )

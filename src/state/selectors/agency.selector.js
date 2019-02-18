@@ -1,7 +1,8 @@
 import { createSelector } from 'reselect';
 import isEqual from 'lodash/isEqual';
 import sortBy from 'lodash/sortBy';
-import { getAgencies } from '../actions/agency.actions';
+
+const getAgencies = state => state.agencyState.agencies;
 
 const getAgency = state => state.agencyState.agency;
 
@@ -25,8 +26,8 @@ export const getAgentsList = createSelector(
   (agents) => {
     if (!agents || !Array.isArray(agents)) return [];
     return agents.map(o => ({
-      displayText: `${o.firstName} ${o.lastName}`,
-      ...o
+      label: `${o.firstName} ${o.lastName}`,
+      answer: o.agentCode
     }));
   }
 );
@@ -114,6 +115,18 @@ export const getAgencyList = createSelector(
     return agencies.map(o => ({
       displayText: `${o.firstName} ${o.lastName}`,
       ...o
+    }));
+  }
+);
+
+export const getAgenciesList = createSelector(
+  [getAgencies],
+  (agencies) => {
+    console.log(agencies)
+    if (!agencies || !Array.isArray(agencies)) return [];
+    return agencies.map(o => ({
+      answer: o.agencyCode,
+      label: `${o.displayName}`
     }));
   }
 );

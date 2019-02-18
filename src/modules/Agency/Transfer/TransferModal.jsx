@@ -2,21 +2,20 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { reduxForm, Field } from 'redux-form';
-import { SelectTypeAhead, Loader, validation } from '@exzeo/core-ui';
+import { Select, SelectTypeAhead, Loader, validation } from '@exzeo/core-ui';
 
 import { getAgencies, getAgentsByAgencyCode } from '../../../state/actions/agency.actions';
-import { getAgencyList, getAgentsList } from '../../../state/selectors/agency.selector';
+import { getAgenciesList, getAgentsList } from '../../../state/selectors/agency.selector';
 
 export class Transfer extends Component {
   async componentDidMount() {
     const { getAgencies, getAgentsByAgencyCode, companyCode, agencyCode, state } = this.props;
-    await getAgencies(companyCode, state);
-    await getAgentsByAgencyCode(agencyCode);
+    await getAgencies('TTIC', 'FL');
   }
 
-  handleAgencyChange = (_, agencyCode) => {
-    const { getAgentsByAgencyCode } = this.props;
-    getAgentsByAgencyCode(agencyCode);
+  handleAgencyChange = (event, agencyCode) => {
+     const { getAgentsByAgencyCode } = this.props;
+     getAgentsByAgencyCode(agencyCode);
   }
 
   submitTransfer = (data, dispatch, props) => {
@@ -37,7 +36,7 @@ export class Transfer extends Component {
                 label="Agency"
                 name="agencyCode"
                 dataTest="agencyCode"
-                component={SelectTypeAhead}
+                component={Select}
                 answers={agencies}
                 onChange={this.handleAgencyChange}
               />
@@ -45,7 +44,7 @@ export class Transfer extends Component {
                 label="Agent"
                 name="agentCode"
                 dataTest="agentCode"
-                component={SelectTypeAhead}
+                component={Select}
                 answers={agents}
               />
             </div>
@@ -79,7 +78,7 @@ Transfer.propTypes = {
 };
 
 const mapStateToProps = (state, { agencyCode, agentCode }) => ({
-  agencies: getAgencyList(state),
+  agencies: getAgenciesList(state),
   agents: getAgentsList(state),
   initialValues: { agencyCode, agentCode }
 });
