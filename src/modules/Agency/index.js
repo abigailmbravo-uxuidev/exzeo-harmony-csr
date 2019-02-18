@@ -19,14 +19,17 @@ import Contracts from './Contracts';
 import Agents from './Agents';
 import Overview from './Overview';
 import CreateBranch from './CreateBranch';
+import Transfer from './Transfer';
 
 export const CreateRender = props => <Create auth={props.auth} {...props} />;
 export const ContractsRender = props => <Contracts auth={props.auth} {...props} />;
 
 export const CreateBranchRender = branchCode => props =>
   <CreateBranch branchCode={branchCode} auth={props.auth} {...props} />;
+
 export const OverviewRender = branchCode => props => <Overview branchCode={branchCode} auth={props.auth} {...props} />;
 export const AgentsRender = branchCode => props => <Agents branchCode={branchCode} auth={props.auth} {...props} />;
+export const TransferRender = branchCode => props => <Transfer branchCode={branchCode} auth={props.auth} {...props} />;
 
 export class Agency extends Component {
   componentDidMount() {
@@ -60,6 +63,7 @@ export class Agency extends Component {
             <Route exact path={`/agency/${agencyCode}/${branchCode}/overview`} render={OverviewRender(branchCode)} />
             <Route exact path={`/agency/${agencyCode}/${branchCode}/contracts`} render={ContractsRender} />
             <Route exact path={`/agency/${agencyCode}/${branchCode}/agents`} render={AgentsRender(branchCode)} />
+            <Route exact path={`/agency/${agencyCode}/${branchCode}/transfer`} render={TransferRender(branchCode)} />
             <Route exact path={`/agency/${agencyCode}/0/new`} render={CreateBranchRender(branchCode)} />
           </div>
         </main>

@@ -1,6 +1,7 @@
 import { createSelector } from 'reselect';
 import isEqual from 'lodash/isEqual';
 import sortBy from 'lodash/sortBy';
+import { getAgencies } from '../actions/agency.actions';
 
 const getAgency = state => state.agencyState.agency;
 
@@ -103,5 +104,16 @@ export const getSortedAgents = createSelector(
     return agents.sort((a, b) => {
       return a.firstName.localeCompare(b.firstName);
     });
+  }
+);
+
+export const getAgencyList = createSelector(
+  [getAgencies],
+  (agencies) => {
+    if (!agencies || !Array.isArray(agencies)) return [];
+    return agencies.map(o => ({
+      displayText: `${o.firstName} ${o.lastName}`,
+      ...o
+    }));
   }
 );

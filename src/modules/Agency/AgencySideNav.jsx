@@ -17,6 +17,8 @@ const setLink = (key, agencyCode, branchCode) => {
       return `/agency/${agencyCode}/${branchCode}/agents`;
     case 'contracts':
       return `/agency/${agencyCode}/${branchCode}/contracts`;
+    case 'transfer':
+    return `/agency/${agencyCode}/${branchCode}/transfer`;
     default:
       return '#';
   }
@@ -56,6 +58,13 @@ const csrLinks = (agencyCode, branchCode) => [{
   link: '#',
   label: 'Reports',
   styleName: 'reports disabled',
+  exact: true
+},
+{
+  key: 'transfer',
+  link: setLink('transfer', agencyCode, branchCode),
+  label: 'Transfer',
+  styleName: `transfer ${setDisabled(agencyCode)}`,
   exact: true
 }];
 

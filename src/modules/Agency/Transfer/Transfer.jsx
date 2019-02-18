@@ -1,11 +1,7 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
 import { Loader } from '@exzeo/core-ui';
 
-import { getAgency, getAgentList } from '../../state/actions/agency.actions';
-import normalizePhone from '../Form/normalizePhone';
-import Footer from '../Common/Footer';
+import Footer from '../../../components/Common/Footer'
 import TransferModal from './TransferModal';
 
 export class Transfer extends Component {
@@ -26,7 +22,7 @@ export class Transfer extends Component {
       agents,
     } = this.props;
 
-    if (!(agents && agents.length && agency)) return <Loader />;
+    // if (!(agents && agents.length && agency)) return <Loader />;
 
     const { showTransferModal } = this.state;
 
@@ -57,20 +53,4 @@ export class Transfer extends Component {
   }
 }
 
-Transfer.propTypes = {
-  policies: PropTypes.array,
-  agents: PropTypes.array,
-  agency: PropTypes.object
-};
-
-Transfer.defaultProps = {
-  policies: []
-};
-
-const mapStateToProps = state => ({
-  agents: state.service.agents,
-  agency: state.service.agency,
-  policies: []
-});
-
-export default connect(mapStateToProps, {})(Transfer);
+export default Transfer;

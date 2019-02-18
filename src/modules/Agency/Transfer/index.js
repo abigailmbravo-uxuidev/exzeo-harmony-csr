@@ -1,9 +1,9 @@
 import { connect } from 'react-redux';
 import 'react-tagsinput/react-tagsinput.css'; // eslint-disable-line
 
-import { getAgentsList, } from '../../../state/selectors/agency.selector';
+import { getAgentsList } from '../../../state/selectors/agency.selector';
 
-import Transfer from './TransferModal';
+import Transfer from './Transfer';
 
 const mapStateToProps = state => ({
   agency: state.agencyState.agency,
