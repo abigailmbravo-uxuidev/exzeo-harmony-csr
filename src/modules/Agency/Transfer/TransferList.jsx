@@ -47,9 +47,9 @@ export class TransferList extends Component {
                         <span>{p.companyCode}</span>
                         <span>{p.state}</span>
                         <span>{p.product}</span>
-                        <span>{"CREATE AN ADDRESS FILTER IN SELECTOR"}</span>
-                        <span>{"CREATE POLICYHOLDER FILTER IN SELECTOR"}</span>
-                        <span>{"CREATE EFFECTIVE DATE FILTER IN SELECTOR"}</span>
+                        <span>{p.propertyAddress}</span>
+                        <span>{p.policyHolder1}</span>
+                        <span>{p.effectiveDate}</span>
                         <span></span>
                     </li>
                 )})
