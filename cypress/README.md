@@ -10,8 +10,10 @@ To change this behavior and point to a different environment, see below.
 
 Confirm that the following ENV variable is in `.env.local`
 ```bash
-# uncomment to test cypress against sandbox environment
-# CYPRESS_BASE_URL=https://agency.harmony-ins.com
+# Modify Cypress behavior
+# CYPRESS_BASE_URL=http://csr.harmony-ins.com
+# CYPRESS_USE_MOCK_AUTH0=true
+# CYPRESS_FIXTURES=false
 ```
 **This variable can me modified to point to various harmony environments.*
 
