@@ -1,22 +1,23 @@
 import React, { Component } from 'react'
-import { Field, reduxForm, formValueSelector } from 'redux-form';
+import { Field, reduxForm } from 'redux-form';
 import { connect } from 'react-redux';
 
 import {
   Input,
-  SelectTypeAhead,
+  MultiSelectTypeAhead,
   Button,
 } from '@exzeo/core-ui';
-
-import { getPoliciesForAgency } from '../../../state/actions/policy.actions';
 
 const FORM_NAME = 'TransferFilter';
 export class TransferFilter extends Component {
 
-  handleFilterChange = () => {
-    const { formValues } = this.props;
-    console.log(formValues)
-   // this.props.getPoliciesForAgency(...formValues);
+  handleFilterChange = (value, previousValues, allValues) => {
+    const { policyNumber } = allValues;
+    console.log(allValues);
+   // if(policyNumber){
+    // this.props.getPoliciesForAgency({ policyNumber });
+    // }
+    return value;
   }
 
   render() {
@@ -28,17 +29,17 @@ export class TransferFilter extends Component {
             dataTest="policyNumber"
             label="Filter By Policy Number"
             placeholder="Start Typing"
-            component={SelectTypeAhead}
+            component={Input}
             styleName=""
             answers={policyNumberList}
-            onChange={this.handleFilterChange}
+            normalize={this.handleFilterChange}
            />
             <Field
             name="state"
             dataTest="state"
             label="Filter By State"
             placeholder="Start Typing"
-            component={SelectTypeAhead}
+            component={MultiSelectTypeAhead}
             styleName=""
             answers={listAnswersAsKey.US_states}
            />
@@ -47,7 +48,7 @@ export class TransferFilter extends Component {
             dataTest="product"
             label="Filter By Product"
             placeholder="Start Typing"
-            component={SelectTypeAhead}
+            component={MultiSelectTypeAhead}
             styleName=""
             answers={listAnswersAsKey.Products}
            />
@@ -56,7 +57,7 @@ export class TransferFilter extends Component {
             dataTest="agent"
             label="Filter By Agent"
             placeholder="Start Typing"
-            component={SelectTypeAhead}
+            component={MultiSelectTypeAhead}
             styleName=""
             answers={agentsList}
            />
@@ -71,14 +72,6 @@ export class TransferFilter extends Component {
   }
 }  
 
-const selector = formValueSelector(FORM_NAME);
-const mapStateToProps = (state) => ({
-  formValues:  selector(state, 'policyNumber', 'agentCode', 'product', 'state')
-});
-
-export default connect(mapStateToProps, {
-  getPoliciesForAgency
-})(reduxForm({
-  form: FORM_NAME,
-  enableReinitialize: true
-})(TransferFilter));
+export default reduxForm({
+  form: FORM_NAME
+})(TransferFilter);

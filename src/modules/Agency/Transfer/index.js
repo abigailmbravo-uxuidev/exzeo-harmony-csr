@@ -4,6 +4,7 @@ import 'react-tagsinput/react-tagsinput.css'; // eslint-disable-line
 import { getAgentsList } from '../../../state/selectors/agency.selector';
 import { getPoliciesByAgencyCode, getPolicyNumberList } from '../../../state/selectors/policy.selectors';
 import { getListAnswersAsKey } from '../../../state/selectors/questions.selectors';
+import { getPoliciesForAgency } from '../../../state/actions/policy.actions';
 
 import Transfer from './Transfer';
   
@@ -16,4 +17,4 @@ const mapStateToProps = state => ({
   listAnswersAsKey: getListAnswersAsKey(state)
 });
 
-export default connect(mapStateToProps, {})(Transfer);
+export default connect(mapStateToProps, { getPoliciesForAgency })(Transfer);

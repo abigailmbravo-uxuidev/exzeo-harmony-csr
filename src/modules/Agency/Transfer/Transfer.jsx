@@ -37,7 +37,8 @@ export class Transfer extends Component {
       agentsList,
       policies,
       policyNumberList,
-      listAnswersAsKey
+      listAnswersAsKey,
+      getPoliciesForAgency
     } = this.props;
 
     // if (!(agents && agents.length && agency)) return <Loader />;
@@ -56,7 +57,7 @@ export class Transfer extends Component {
           <div className="scroll">
             <div className="form-group survey-wrapper" role="group">
               <section className="policy-filter"> 
-              <TransferFilter policyNumberList={policyNumberList} listAnswersAsKey={listAnswersAsKey} agentsList={agentsList} />
+              <TransferFilter policyNumberList={policyNumberList} listAnswersAsKey={listAnswersAsKey} agentsList={agentsList} getPoliciesForAgency={getPoliciesForAgency} />
               <TransferList policyNumberList={policyNumberList} policies={policies} toggleTransferModal={this.handleToggleTransferModal} />        
               </section>
             </div>

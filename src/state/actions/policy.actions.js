@@ -623,11 +623,11 @@ export async function fetchCancelOptions() {
  * @param agencyCode
  * @returns {Promise<{}>}
  */
-export async function fetchPoliciesForAgency({ agencyCode = '', state = 'FL', product = 'HO3', agentCode = ''}) {
+export async function fetchPoliciesForAgency({ agencyCode = '', state = 'FL', product = 'HO3', agentCode = '', policyNumber = ''}) {
   const config = {
     service: 'policy-data',
     method: 'GET',
-    path: `/transactions?&companyCode=TTIC&state=${state}&product=${product}&agencyCode=${agencyCode}&agentCode=${agentCode}`
+    path: `/transactions?&companyCode=TTIC&state=${state}&product=${product}&agencyCode=${agencyCode}&agentCode=${agentCode}&policyNumber=${policyNumber}`
   };
 
   try {
@@ -643,10 +643,10 @@ export async function fetchPoliciesForAgency({ agencyCode = '', state = 'FL', pr
  * @param agencyCode
  * @returns {Function}
  */
-export function getPoliciesForAgency({ agencyCode, state, product, agentCode}) {
+export function getPoliciesForAgency({ policyNumber, agencyCode, state, product, agentCode}) {
   return async (dispatch) => {
     try {
-      const results = await fetchPoliciesForAgency({ agencyCode, state, product, agentCode});
+      const results = await fetchPoliciesForAgency({ policyNumber, agencyCode, state, product, agentCode});
       dispatch(setPoliciesForAgency(results.policies));
     } catch (error) {
       dispatch(errorActions.setAppError(error));
