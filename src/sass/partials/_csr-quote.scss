@@ -9,13 +9,13 @@
           display: flex;
           align-items: center;
           justify-content: center;
-          width: 12rem;
-          height: 3.25rem;
           margin: (-$padding) ($padding*2) (-$padding) (-$padding*2);
           padding: 0 ($padding*2);
-          color: $white;
+          width: 12rem;
+          height: 3.25rem;
           border-right: 1px dotted $green-darken-03;
           background: $green-darken-04;
+          color: $white;
 
           span {
             font-size: 1.125rem;
@@ -82,8 +82,8 @@
             .responsive-tables {
               display: flex;
               flex-direction: row;
-              width: 100%;
               margin: 0 0 ($padding*2);
+              width: 100%;
 
               .card-view,
               .table-view {
@@ -114,13 +114,13 @@
                 width: 33%;
 
                 .date {
-                  width: 60%;
                   padding: $padding 15px $padding $padding;
+                  width: 60%;
                 }
 
                 .amount {
-                  width: 40%;
                   padding: $padding $padding $padding 15px;
+                  width: 40%;
                 }
               }
             }
@@ -239,8 +239,8 @@
           display: flex;
           flex-grow: 0;
           flex-shrink: 0;
-          width: auto;
           padding: $padding;
+          width: auto;
           border-top: 1px dotted $warm-gray-04;
           background: $warm-gray-01;
 
@@ -302,9 +302,9 @@
           flex-basis: 240px;
           flex-grow: 0;
           flex-shrink: 0;
-          width: 240px;
           //height: calc(100vh - 8.125rem);
           padding: 0 0 ($padding*2) ($padding*2);
+          width: 240px;
           border-left: dotted 1px $warm-gray-04;
 
           .uw-validation-header {
@@ -313,8 +313,8 @@
 
           section {
             h5 {
-              color: $warm-gray-08;
               background: $warm-gray-02;
+              color: $warm-gray-08;
               font-size: 14px;
 
               i.fa {
@@ -352,8 +352,8 @@
                   display: flex;
                   flex-grow: 0;
                   flex-shrink: 0;
-                  height: auto;
                   margin: $padding 0;
+                  height: auto;
 
                   input {
                     display: none;
@@ -361,8 +361,8 @@
                     &:checked {
                       + label {
                         &:before {
-                          content: '\f14a';
                           color: $bright-blue;
+                          content: '\f14a';
                         }
                       }
                     }
@@ -378,10 +378,10 @@
                       top: -1px;
                       left: 0;
                       width: 1.5rem;
-                      content: '\f096';
                       color: $warm-gray-10;
-                      font-family: $font-family-icon;
+                      content: '\f096';
                       font-size: $font-size-h4;
+                      font-family: $font-family-icon;
                     }
                   }
                 }
@@ -429,8 +429,8 @@
             button {
               flex-grow: 0;
               flex-shrink: 0;
-              width: auto;
               margin-right: $padding;
+              width: auto;
             }
           }
 
@@ -471,9 +471,9 @@
       align-items: center;
       flex-grow: 0;
       flex-shrink: 0;
-      height: 3.25rem;
       margin-bottom: 0;
       padding: 0.5rem;
+      height: 3.25rem;
       border-top: 1px dotted $warm-gray-04;
 
       footer {
@@ -537,12 +537,13 @@
           align-self: auto;
           flex: 0 1 auto;
           order: 0;
-          height: 38px;
           margin: 0 2px 0 0;
-          text-transform: capitalize;
+          height: 38px;
           border: 0;
           border-radius: 0;
+          text-transform: capitalize;
           line-height: 1.5;
+
           @include button-variant($warm-gray-08, $warm-gray-02, $warm-gray-02);
         }
 
@@ -569,8 +570,8 @@
   .workflow-steps {
     .btn {
       align-self: flex-start;
-      height: 36px;
       margin-top: 25px;
+      height: 36px;
     }
 
     input {
@@ -611,9 +612,9 @@
     flex-direction: column;
     flex-grow: 1;
     flex-shrink: 1;
-    width: 100%;
     margin: $padding 0 ($padding*2);
     padding: ($padding*2) 0 $paragraph-margin-bottom;
+    width: 100%;
 
     ul.results.result-cards {
       margin: 0;
@@ -678,8 +679,8 @@
     dl {
       flex-grow: 1;
       flex-shrink: 1;
-      width: 33.33%;
       margin-right: $padding;
+      width: 33.33%;
 
       &:last-child {
         margin-right: 0;
@@ -687,8 +688,8 @@
 
       dt {
         padding: $padding;
-        color: $warm-gray-08;
         background: $warm-gray-02;
+        color: $warm-gray-08;
         font-weight: $font-weight-bold;
       }
 
@@ -719,16 +720,45 @@
 }
 //summary page
 /*------------------------------------------------------------------------------------*/
-#QuoteSummary {
+.summary {
+  overflow-y: auto;
+  width: 100%;
+
   dt {
     color: $warm-gray-08;
   }
 
   .detail-wrapper {
+    width: 100%;
+
     .detail-group {
       .edit-btn {
         &:hover {
           text-decoration: none;
+        }
+      }
+
+      &.edit {
+        border: 2px solid $warm-gray-07;
+
+        .editing {
+          position: absolute;
+          top: $padding;
+          right: $padding;
+          color: $white;
+          text-transform: uppercase;
+        }
+
+        .section-group-header {
+          background: $bright-blue;
+        }
+
+        .display-element {
+          padding: ($padding) 0;
+
+          .workflow-steps {
+            padding: 0;
+          }
         }
       }
 
@@ -742,7 +772,7 @@
 
           dl {
             flex-grow: 1;
-            flex-shrink: 1;
+            flex-shrink: 0;
 
             div {
               dd {
@@ -759,6 +789,7 @@
         .display-element {
           display: flex;
           flex-direction: column;
+          flex-wrap: wrap;
           margin-bottom: $padding;
 
           dl {
@@ -796,15 +827,31 @@
         .display-element {
           padding: $padding 0;
 
+          p {
+            padding: $padding*2;
+            background: $orange-lighten-04;
+            color: $red-darken-02;
+          }
+
           .contact-card {
             display: flex;
 
             div {
               flex-grow: 1;
-              flex-shrink: 1;
+              flex-shrink: 0;
 
-              dd {
-                margin-bottom: 0;
+              &.contact-name {}
+
+              &.contact-email {}
+
+              dl {
+                margin-right: $padding*2;
+
+                div {
+                  dd {
+                    margin-bottom: 0;
+                  }
+                }
               }
             }
           }
@@ -820,7 +867,7 @@
 
           dl {
             flex-grow: 1;
-            flex-shrink: 1;
+            flex-shrink: 0;
           }
         }
       }
@@ -835,6 +882,12 @@
             padding: $padding;
 
             .card-icon {
+              display: flex;
+              align-items: center;
+              flex-direction: column;
+              justify-content: center;
+              margin-right: $padding;
+
               i {
                 display: flex;
                 align-items: center;
@@ -848,8 +901,10 @@
               }
 
               label {
+                margin-bottom: 0;
                 background: none;
                 font-weight: $font-weight-normal;
+                font-size: $font-size-xs;
               }
             }
 
