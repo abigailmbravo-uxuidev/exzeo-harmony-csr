@@ -1,6 +1,8 @@
 {
-  "chromeWebSecurity": false,
   "projectId": "71ns45",
+  "chromeWebSecurity": false,
   "testFiles": "**/**.spec.js",
-  "defaultCommandTimeout": 7000
+  "videoUploadOnPasses": false,
+  "defaultCommandTimeout": 12000,
+  "reporter": "teamcity"
 }

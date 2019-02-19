@@ -1,6 +1,6 @@
 import merge from 'lodash/merge'; //eslint-disable-line
 
-import { _newQuote, goToNav, checkHeaderSection } from '../../helpers';
+import { goToNav, checkHeaderSection } from '../../helpers';
 import routes from '../../support/routes';
 
 describe('Policy: Policy States + Effective/Cancellation Date', () => {

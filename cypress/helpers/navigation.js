@@ -26,7 +26,7 @@ export const goToNav = name =>
   cy.get('.loader.modal').should('not.exist')
     .findDataTag(`nav-${name}`).find('a').click({ force: true });
 
-export const _newQuote = (address = user.address1) => {
+export const navNewQuote = (address = user.address1) => {
   cy.findDataTag('searchType').select('address')
     .findDataTag('address').type(address)
     .clickSubmit().wait('@fetchAddresses')
@@ -36,7 +36,7 @@ export const _newQuote = (address = user.address1) => {
   });
 };
 
-export const _coverage = (customerInfo = pH1, fixture, updates, useConfig) => {
+export const navCoverage = (customerInfo = pH1, fixture, updates, useConfig) => {
   if (!fixture) {
     fixture = _.cloneDeep(quoteFx);
   };
@@ -59,7 +59,7 @@ export const _coverage = (customerInfo = pH1, fixture, updates, useConfig) => {
   cy.findDataTag('coverage-submit').click();
 };
 
-export const _underwriting = (underwritingData = underwritingDefault, fixture, updates, useConfig) => {
+export const navUnderwriting = (underwritingData = underwritingDefault, fixture, updates, useConfig) => {
   if (!fixture) {
     fixture = _.cloneDeep(quoteFx);
   };
@@ -74,9 +74,9 @@ export const _underwriting = (underwritingData = underwritingDefault, fixture, u
   cy.clickSubmit();
 };
 
-export const _additionalInterests = () => goToNav('additionalInterests');
+export const navAdditionalInterests = () => goToNav('additionalInterests');
 
-export const _mailingBilling = (fixture, updates, useConfig) => {
+export const navMailingBilling = (fixture, updates, useConfig) => {
   if (!fixture) {
     fixture = _.cloneDeep(quoteFx);
   };
@@ -90,13 +90,13 @@ export const _mailingBilling = (fixture, updates, useConfig) => {
   cy.clickSubmit();
 };
 
-export const _notesFiles = () => goToNav('notes');
+export const navNotesFiles = () => goToNav('notes');
 
-export const _summary = () => goToNav('summary');
+export const navSummary = () => goToNav('summary');
 
-export const _application = () => goToNav('application');
+export const navApplication = () => goToNav('application');
 
-export const _docusign = () => {
+export const navDocusign = () => {
   cy.get('.basic-footer button[data-test="submit"]:not([disabled])').click()
     .wait(1000).get('.modal.quote-summary').should('exist')
     .get('.modal.quote-summary button[type="submit"]').click({ force: true }).wait('@csrGetQuoteWithUnderwriting')

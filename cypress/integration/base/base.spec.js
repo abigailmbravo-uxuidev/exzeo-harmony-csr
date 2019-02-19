@@ -1,14 +1,14 @@
 import _ from 'lodash'; //eslint-disable-line
 import {
-  _newQuote,
-  _coverage,
-  _underwriting,
-  _additionalInterests,
-  _mailingBilling,
-  _notesFiles,
-  _summary,
-  _application,
-  _docusign
+  navNewQuote,
+  navCoverage,
+  navUnderwriting,
+  navAdditionalInterests,
+  navMailingBilling,
+  navNotesFiles,
+  navSummary,
+  navApplication,
+  navDocusign
 } from '../../helpers';
 import routes from '../../support/routes';
 import user from '../../fixtures/stockData/user.json';
@@ -24,7 +24,7 @@ describe('Base Path', () => {
 
   it('Navigate through base app', () => {
     cy.fixture('stubs/csrGetQuoteWithUnderwriting').then(fx => {
-      _newQuote(address1);
+      navNewQuote(address1);
 
       const coverageFx = _.cloneDeep(fx);
       const coverageRes = {
@@ -35,22 +35,22 @@ describe('Base Path', () => {
           emailAddress: pH1.pH1email
         }]
       };
-      _coverage(pH1, coverageFx, coverageRes, true);
+      navCoverage(pH1, coverageFx, coverageRes, true);
 
       const underwritingFx = _.cloneDeep(coverageFx);
       const underwritingRes = { underwritingAnswers: { rented: { answer: "Never" } } };
-      _underwriting(underwritingData, underwritingFx, underwritingRes, true);
+      navUnderwriting(underwritingData, underwritingFx, underwritingRes, true);
 
-      _additionalInterests();
+      navAdditionalInterests();
 
       const mailingBillingFx = _.cloneDeep(underwritingFx);
       const mailingBillingRes = { policyHolderMailingAddress: { address1, address2, city, zip, country }};
-      _mailingBilling(mailingBillingFx, mailingBillingRes, true);
+      navMailingBilling(mailingBillingFx, mailingBillingRes, true);
 
-      _notesFiles();
-      _summary();
-      _application();
-      _docusign();
+      navNotesFiles();
+      navSummary();
+      navApplication();
+      navDocusign();
     });
   });
 });

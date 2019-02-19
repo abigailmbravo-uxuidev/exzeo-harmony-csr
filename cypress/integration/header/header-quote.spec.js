@@ -4,14 +4,14 @@ import user from '../../fixtures/stockData/user.json';
 import { stubQuoteWithUnderwriting,
   checkHeaderSection,
   checkFullHeader,
-  _newQuote,
-  _coverage,
-  _underwriting,
-  _mailingBilling,
-  _additionalInterests,
-  _notesFiles,
-  _summary,
-  _application
+  navNewQuote,
+  navCoverage,
+  navUnderwriting,
+  navAdditionalInterests,
+  navMailingBilling,
+  navNotesFiles,
+  navSummary,
+  navApplication
 } from '../../helpers';
 import routes from '../../support/routes.js';
 
@@ -40,7 +40,7 @@ describe('Quote Header Testing', () => {
   before(() => {
     routes();
     cy.login();
-    _newQuote();
+    navNewQuote();
   });
 
   beforeEach(() => routes());
@@ -60,7 +60,7 @@ describe('Quote Header Testing', () => {
         }]
       };
       currentFixture = _.cloneDeep(fx);
-      _coverage(pH1, currentFixture, coverageRes);
+      navCoverage(pH1, currentFixture, coverageRes);
       checkFullHeader(quoteData, options);
     });
   });
@@ -71,7 +71,7 @@ describe('Quote Header Testing', () => {
       rating: { totalPremium: 100 } ,
       underwritingAnswers: { rented: { answer: "Never" } }
     };
-    _underwriting(undefined, currentFixture, underwritingRes);
+    navUnderwriting(undefined, currentFixture, underwritingRes);
     options['premium'] = true;
     cy.wait('@csrGetQuoteWithUnderwriting');
     checkFullHeader(quoteData, options);
@@ -79,13 +79,13 @@ describe('Quote Header Testing', () => {
 
   it('Additional Interest Page', () => {
     stubQuoteWithUnderwriting(currentFixture);
-    _additionalInterests();
+    navAdditionalInterests();
     cy.wait('@csrGetQuoteWithUnderwriting');
     checkFullHeader(quoteData, options);
   });
 
   it('Mailing/Billing Page', () => {
-    _mailingBilling(currentFixture);
+    navMailingBilling(currentFixture);
     options['mailingComplete'] = true;
     cy.wait('@csrGetQuoteWithUnderwriting');
     checkFullHeader(quoteData, options);
@@ -93,21 +93,21 @@ describe('Quote Header Testing', () => {
 
   it('Notes/Files Page', () => {
     stubQuoteWithUnderwriting(currentFixture, { quoteState: 'Application Started' });
-    _notesFiles();
+    navNotesFiles();
     options['application'] = true;
     checkFullHeader(quoteData, options);
   });
 
   it('Quote Summary Page', () => {
     stubQuoteWithUnderwriting(currentFixture);
-    _summary();
+    navSummary();
     cy.wait('@csrGetQuoteWithUnderwriting');
     checkFullHeader(quoteData, options);
   });
 
     it('Application Page', () => {
     stubQuoteWithUnderwriting(currentFixture);
-    _application();
+    navApplication();
     cy.wait('@csrGetQuoteWithUnderwriting');
     checkFullHeader(quoteData, options);
   });
