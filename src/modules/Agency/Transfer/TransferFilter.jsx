@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
-import { Field, reduxForm } from 'redux-form';
+import { Field, reduxForm, formValueSelector } from 'redux-form';
+import { connect } from 'react-redux';
 
 import {
   Input,
@@ -7,11 +8,21 @@ import {
   Button,
 } from '@exzeo/core-ui';
 
+import { getPoliciesForAgency } from '../../../state/actions/policy.actions';
+
+const FORM_NAME = 'TransferFilter';
 export class TransferFilter extends Component {
+
+  handleFilterChange = () => {
+    const { formValues } = this.props;
+    console.log(formValues)
+   // this.props.getPoliciesForAgency(...formValues);
+  }
+
   render() {
     const { policyNumberList, listAnswersAsKey, agentsList } = this.props;
     return (
-        <div className="search-inputs">
+        <form id={FORM_NAME} className="search-inputs">
           <Field
             name="policyNumber"
             dataTest="policyNumber"
@@ -20,6 +31,7 @@ export class TransferFilter extends Component {
             component={SelectTypeAhead}
             styleName=""
             answers={policyNumberList}
+            onChange={this.handleFilterChange}
            />
             <Field
             name="state"
@@ -40,7 +52,7 @@ export class TransferFilter extends Component {
             answers={listAnswersAsKey.Products}
            />
             <Field
-            name="agent"
+            name="agentCode"
             dataTest="agent"
             label="Filter By Agent"
             placeholder="Start Typing"
@@ -54,11 +66,19 @@ export class TransferFilter extends Component {
             type="button"
             dataTest="clear-fields">Clear Filters
           </Button>
-        </div>
+        </form>
     )
   }
 }  
 
-export default reduxForm({
-  form: 'TransferFilter',
-})(TransferFilter);
+const selector = formValueSelector(FORM_NAME);
+const mapStateToProps = (state) => ({
+  formValues:  selector(state, 'policyNumber', 'agentCode', 'product', 'state')
+});
+
+export default connect(mapStateToProps, {
+  getPoliciesForAgency
+})(reduxForm({
+  form: FORM_NAME,
+  enableReinitialize: true
+})(TransferFilter));

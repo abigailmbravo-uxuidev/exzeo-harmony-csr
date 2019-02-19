@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import { Loader } from '@exzeo/core-ui';
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 
-import Footer from '../../../components/Common/Footer'
+import Footer from '../../../components/Common/Footer';
+
 import TransferModal from './TransferModal';
 import TransferList from './TransferList';
 import TransferFilter from './TransferFilter';
