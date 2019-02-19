@@ -19,6 +19,7 @@ export class Transfer extends Component {
   }
 
   submitTransfer = (data, dispatch, props) => {
+    // TODO: Need to get the Agents for the Agency to reset the agent state
     return true;
   }
 

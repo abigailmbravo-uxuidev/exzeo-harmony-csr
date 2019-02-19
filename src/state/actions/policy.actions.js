@@ -116,6 +116,18 @@ export function setCancelOptions(cancelOptions) {
 
 /**
  *
+ * @param agencyPolices
+ * @returns {{type: string, agencyPolices: *}}
+ */
+export function setPoliciesForAgency(agencyPolices) {
+  return {
+    type: types.SET_POLICIES_FOR_AGENCY,
+    agencyPolices
+  };
+}
+
+/**
+ *
  * @param policyNumber
  * @returns {Function}
  */
@@ -603,4 +615,41 @@ export async function fetchCancelOptions() {
   } catch (error) {
     throw error;
   }
+}
+
+
+/**
+ * Build query string and call policy service
+ * @param agencyCode
+ * @returns {Promise<{}>}
+ */
+export async function fetchPoliciesForAgency({ agencyCode = '', state = 'FL', product = 'HO3', agentCode = ''}) {
+  const config = {
+    service: 'policy-data',
+    method: 'GET',
+    path: `/transactions?&companyCode=TTIC&state=${state}&product=${product}&agencyCode=${agencyCode}&agentCode=${agentCode}`
+  };
+
+  try {
+    const response = await serviceRunner.callService(config, 'fetchPoliciesForAgency');
+    return response ? response.data : {};
+  } catch (error) {
+    throw error;
+  }
+}
+
+/**
+ * Search for policies matching some given criteria, set results as state
+ * @param agencyCode
+ * @returns {Function}
+ */
+export function getPoliciesForAgency({ agencyCode, state, product, agentCode}) {
+  return async (dispatch) => {
+    try {
+      const results = await fetchPoliciesForAgency({ agencyCode, state, product, agentCode});
+      dispatch(setPoliciesForAgency(results.policies));
+    } catch (error) {
+      dispatch(errorActions.setAppError(error));
+    }
+  };
 }
