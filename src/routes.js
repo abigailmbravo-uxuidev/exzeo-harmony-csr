@@ -46,7 +46,7 @@ class Routes extends Component {
 
   /* eslint-disable max-len */
   render() {
-    const { ui: { diary, note }, auth, authState: { userProfile }, policyState: { policy} } = this.props;
+    const { ui: { diary, note }, auth, authState: { userProfile }, policyState: { policy } } = this.props;
     return (
       <div>
         <Modal
@@ -101,15 +101,15 @@ class Routes extends Component {
           }}>
 
           <div className="routes">
-            <Bootstrap userProfile={userProfile} />
+            { userProfile && <Bootstrap userProfile={userProfile} />}
             <Switch>
               <Route exact path="/" render={props => <SearchPolicy auth={auth} {...props} />} />
               <Route exact path="/agency" render={props => <SearchAgency auth={auth} {...props} />} />
               <Route exact path="/diaries" render={props => <SearchDiaries auth={auth} {...props} />} />
+              <Route exact path="/quote/new/:stateCode/:propertyId" render={props => <QuoteLanding auth={auth} {...props} />} />
               <Route path="/quote/:quoteNumber" render={props => <QuoteModule auth={auth} {...props} />} />
               <Route path="/policy/:policyNumber" render={props => <PolicyModule auth={auth} {...props} />} />
               <Route path="/agency/:agencyCode/:branchCode" render={props => <Agency auth={auth} {...props} />} />
-              <Route exact path="/quote/new/:stateCode/:propertyId" render={props => <QuoteLanding auth={auth} {...props} />} />
               <Route exact path="/reports" render={props => <Reports auth={auth} {...props} />} />
               <Route exact path="/login" render={props => <LoginPage auth={auth} {...props} />} />
               <Route exact path="/accessDenied" render={props => <AccessDenied auth={auth} {...props} />} />

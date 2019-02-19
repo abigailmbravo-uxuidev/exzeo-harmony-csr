@@ -54,7 +54,7 @@ export class Summary extends Component {
 
     const { agentCode } = await getQuoteAction(quoteNumber, PAGE_NAME);
     const config = { service: 'agency', method: 'GET', path: `agents/${agentCode}` };
-    const response = await serviceRunner.callService(config).catch((err) => setAppErrorAction(err));
+    const response = await serviceRunner.callService(config, 'summary').catch((err) => setAppErrorAction(err));
     if (response && response.data) this.setState({ selectedAgent: response.data.result });
 
     setAppStateAction(MODEL_NAME, '', { ...appState.data, submitting: false });

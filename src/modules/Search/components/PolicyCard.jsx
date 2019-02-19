@@ -34,6 +34,7 @@ function PolicyCard({
               onClick={handleClick}
               data-test={policy.policyNumber}
               className='row'
+              data-url={`/policy/${policy.policyNumber}/coverage`}
             >
               <span className="quote-no">{policy.policyNumber}</span>
               <span className="property-address">

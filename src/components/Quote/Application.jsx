@@ -90,7 +90,10 @@ export class QuoteApplication extends Component {
               form="Application"
               className="btn btn-primary"
               type="submit"
-              disabled={(uwExceptions > 0) || editingDisabled || appState.data.applicationSent || isUwOverrideSubmitting}>Send to DocuSign
+              disabled={(uwExceptions > 0) || editingDisabled || appState.data.applicationSent || isUwOverrideSubmitting}
+              data-test="submit"
+            >
+                Send to DocuSign
             </button>
           </div>
         </div>

@@ -209,7 +209,7 @@ describe('Questions Actions', () => {
       headers: {
         'Content-Type': 'application/json'
       },
-      url: `${process.env.REACT_APP_API_URL}/svc`,
+      url: `${process.env.REACT_APP_API_URL}/svc?fetchTerritoryManagers`,
       data: {
         service: 'territory-manager-service',
         method: 'GET',
@@ -268,7 +268,7 @@ describe('Questions Actions', () => {
       headers: {
         'Content-Type': 'application/json'
       },
-      url: `${process.env.REACT_APP_API_URL}/svc`,
+      url: `${process.env.REACT_APP_API_URL}/svc?fetchLists`,
       data: {
         service: 'list-service',
         method: 'GET',

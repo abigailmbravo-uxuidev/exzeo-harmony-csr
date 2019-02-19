@@ -25,7 +25,13 @@ function AgentCard({
       <div className="contact-details">
         <div className="card-name">
           <h4 id={licenseNumbers} data-test={licenseNumbers}>
-            <span className="agent-code">{agent.agentCode}</span> | <span className="agent-name">{`${agent.firstName} ${agent.lastName}`}</span> | <span className="agent-license">{licenseNumbers}</span> <span className="btn btn-link btn-sm" onClick={handleClick}><i className="fa fa-address-book" />Open Agency</span>
+            <span className="agent-code">{agent.agentCode}</span>&nbsp;|
+            <span className="agent-name"> {`${agent.firstName} ${agent.lastName}`}</span>&nbsp;|&nbsp;
+            <span className="agent-license">{licenseNumbers}&nbsp;</span>
+            <span className="btn btn-link btn-sm" onClick={handleClick} data-url={`/agency/${agent.agencyCode}/0/overview`}>
+              <i className="fa fa-address-book" />
+              Open Agency
+            </span>
           </h4>
 
           <AgencyContactAddress

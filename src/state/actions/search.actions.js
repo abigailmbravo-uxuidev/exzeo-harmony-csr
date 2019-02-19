@@ -164,7 +164,7 @@ export async function fetchAddresses(address) {
   };
 
   try {
-    const response = await serviceRunner.callService(config);
+    const response = await serviceRunner.callService(config, 'fetchAddresses');
     return response && response.data && response.data.result ? response.data.result : {};
   } catch (error) {
     throw error;
@@ -206,7 +206,7 @@ export async function fetchQuotes({
   };
 
   try {
-    const response = await serviceRunner.callService(config);
+    const response = await serviceRunner.callService(config, 'fetchQuotes');
     return response && response.data && response.data.result ? response.data.result : {};
   } catch (error) {
     throw error;
@@ -254,7 +254,7 @@ export async function fetchPolicies({
   };
 
   try {
-    const response = await serviceRunner.callService(config);
+    const response = await serviceRunner.callService(config, 'fetchPolicies');
     return response ? response.data : {};
   } catch (error) {
     throw error;
@@ -282,7 +282,7 @@ export async function fetchAgents({
   };
 
   try {
-    const response = await serviceRunner.callService(config);
+    const response = await serviceRunner.callService(config, 'fetchAgents');
     return response && response.data && response.data.result ? response.data.result : [];
   } catch (error) {
     throw error;
@@ -311,7 +311,7 @@ export async function fetchAgencies({
   };
 
   try {
-    const response = await serviceRunner.callService(config);
+    const response = await serviceRunner.callService(config, 'fetchAgencies');
     return response && response.data && response.data.result ? response.data.result : [];
   } catch (error) {
     throw error;
@@ -596,7 +596,7 @@ export async function fetchDiaries({
   };
 
   try {
-    const response = await serviceRunner.callService(config);
+    const response = await serviceRunner.callService(config, 'fetchDiaries');
     return response && response.data ? response.data : [];
   } catch (error) {
     throw error;

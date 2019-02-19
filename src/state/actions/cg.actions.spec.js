@@ -112,7 +112,7 @@ describe('CG Actions', () => {
       headers: {
         'Content-Type': 'application/json'
       },
-      url: `${process.env.REACT_APP_API_URL}/cg/start`,
+      url: `${process.env.REACT_APP_API_URL}/cg/start?quoteModel`,
       data
     };
 

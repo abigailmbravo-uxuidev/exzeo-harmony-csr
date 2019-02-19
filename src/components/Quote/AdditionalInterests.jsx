@@ -251,7 +251,7 @@ export class AdditionalInterests extends Component {
           <div className="scroll">
             <div className="form-group survey-wrapper" role="group">
               <h3>Additional Interests</h3>
-              <div className="button-group">
+              <div className="button-group" data-test="add-additional-interests">
                 <button
                   className="btn btn-sm btn-secondary"
                   onClick={() => this.addAdditionalInterest('Mortgagee')}

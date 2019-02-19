@@ -12,7 +12,7 @@ export const startWorkflow = async (modelName, data) => {
       modelName,
       data
     },
-    url: `${process.env.REACT_APP_API_URL}/cg/start`
+    url: `${process.env.REACT_APP_API_URL}/cg/start?${modelName}`
   };
 
   try {

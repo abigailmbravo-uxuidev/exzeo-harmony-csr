@@ -308,7 +308,10 @@ export class MailingAddressBilling extends Component {
               className="btn btn-primary"
               type="submit"
               form="MailingAddressBilling"
-              disabled={this.props.appState.data.submitting || pristine || editingDisabled || !this.props.fieldValues.billToId}>Update
+              disabled={this.props.appState.data.submitting || pristine || editingDisabled || !this.props.fieldValues.billToId}
+              data-test="submit"
+            >
+              Update
             </button>
           </div>
         </div>
