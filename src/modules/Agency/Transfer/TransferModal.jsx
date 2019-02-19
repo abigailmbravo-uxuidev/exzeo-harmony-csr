@@ -20,11 +20,12 @@ export class Transfer extends Component {
 
   submitTransfer = (data, dispatch, props) => {
     // TODO: Need to get the Agents for the Agency to reset the agent state
-    return true;
+    getAgentsByAgencyCode(props.agencyCode);
+    props.toggleModal();
   }
 
   render() {
-    const { handleSubmit, toggleModal, agencies, agents } = this.props;
+    const { handleSubmit, toggleModal, agencies, agents, selectedPolicies, } = this.props;
     return (
       <div className="modal" style={this.modalStyle}>
         <div className="card card-billing-edit-modal">
