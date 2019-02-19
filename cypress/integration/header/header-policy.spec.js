@@ -24,7 +24,7 @@ describe('Policy Header Testing', () => {
   before(() => {
     routes();
     cy.login()
-      ._submit('#SearchBar')
+      .clickSubmit('#SearchBar')
       .findDataTag('policy-list')
       .find('> div section ul li > a')
       .then($a => {
@@ -35,21 +35,25 @@ describe('Policy Header Testing', () => {
   beforeEach(() => routes());
   
   it('Policy Number and Quote Status', () => {
+    cy.wait('@questions');
     checkFullHeader(data, undefined, false);
   });
 
   it('Policyholder / Agent Page', () => {
     goToNav('policyholder');
+    cy.wait('@fetchAgency');
     checkFullHeader(data, undefined, false);
   });
 
   it('Mortgage / Billing Page', () => {
     goToNav('billing');
+    cy.wait('@questions');
     checkFullHeader(data, undefined, false);
   });
 
   it('Notes / Files Page', () => {
     goToNav('notes');
+    cy.wait('@fetchNotes')
     checkFullHeader(data, undefined, false);
   });
 
@@ -60,6 +64,7 @@ describe('Policy Header Testing', () => {
 
   it('Endorsements Page', () => {
     goToNav('endorsements');
+    cy.wait('@questions');
     checkFullHeader(data, undefined, false);
   });
 });

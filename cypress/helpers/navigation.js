@@ -29,7 +29,7 @@ export const goToNav = name =>
 export const _newQuote = (address = user.address1) => {
   cy.findDataTag('searchType').select('address')
     .findDataTag('address').type(address)
-    ._submit().wait('@fetchAddresses')
+    .clickSubmit().wait('@fetchAddresses')
   // This is going to get rewritten once we refactor this in the app itself
     .findDataTag(address).then($a => {
       $a.prop('onclick', () => cy.visit($a.prop('dataset').url)).click();
@@ -71,7 +71,7 @@ export const _underwriting = (underwritingData = underwritingDefault, fixture, u
     cy.get(`input[name="${name}"][value="${value}"] + span`).click();
   });
   stubQuoteWithUnderwriting(fixture, updates, useConfig);
-  cy._submit();
+  cy.clickSubmit();
 };
 
 export const _additionalInterests = () => goToNav('additionalInterests');
@@ -85,9 +85,9 @@ export const _mailingBilling = (fixture, updates, useConfig) => {
     updates = { policyHolderMailingAddress: { address1, address2, city, state, zip, country } };
   };
   goToNav('billing');
-  cy.wait('@getBillingOptions').get('.segmented-switch').click(30, 10);
+  cy.get('.segmented-switch').click(30, 10);
   stubQuoteWithUnderwriting(fixture, updates, useConfig);
-  cy._submit();
+  cy.clickSubmit();
 };
 
 export const _notesFiles = () => goToNav('notes');
@@ -97,9 +97,8 @@ export const _summary = () => goToNav('summary');
 export const _application = () => goToNav('application');
 
 export const _docusign = () => {
-  cy.get('.basic-footer button[data-test="submit"]:not([disabled])').click();
-
-  cy.wait(1000).get('.modal.quote-summary').should('exist')
+  cy.get('.basic-footer button[data-test="submit"]:not([disabled])').click()
+    .wait(1000).get('.modal.quote-summary').should('exist')
     .get('.modal.quote-summary button[type="submit"]').click({ force: true }).wait('@csrGetQuoteWithUnderwriting')
     .reload();
 };

@@ -46,7 +46,8 @@ describe('Quote Header Testing', () => {
   beforeEach(() => routes());
 
   it('Coverage/Rating Page', () => {
-    cy.fixture('stubs/csrGetQuoteWithUnderwriting').then(fx => {
+    cy.wait('@fetchAgencies')
+      .fixture('stubs/csrGetQuoteWithUnderwriting').then(fx => {
       checkHeaderSection('policyHolderDetail', ['Policy Holder', '', '']);
 
       const coverageRes = {
@@ -72,18 +73,21 @@ describe('Quote Header Testing', () => {
     };
     _underwriting(undefined, currentFixture, underwritingRes);
     options['premium'] = true;
+    cy.wait('@csrGetQuoteWithUnderwriting');
     checkFullHeader(quoteData, options);
   });
 
   it('Additional Interest Page', () => {
     stubQuoteWithUnderwriting(currentFixture);
     _additionalInterests();
+    cy.wait('@csrGetQuoteWithUnderwriting');
     checkFullHeader(quoteData, options);
   });
 
   it('Mailing/Billing Page', () => {
     _mailingBilling(currentFixture);
     options['mailingComplete'] = true;
+    cy.wait('@csrGetQuoteWithUnderwriting');
     checkFullHeader(quoteData, options);
   });
 
@@ -97,12 +101,14 @@ describe('Quote Header Testing', () => {
   it('Quote Summary Page', () => {
     stubQuoteWithUnderwriting(currentFixture);
     _summary();
+    cy.wait('@csrGetQuoteWithUnderwriting');
     checkFullHeader(quoteData, options);
   });
 
     it('Application Page', () => {
     stubQuoteWithUnderwriting(currentFixture);
     _application();
+    cy.wait('@csrGetQuoteWithUnderwriting');
     checkFullHeader(quoteData, options);
   });
 });

@@ -1,3 +1,5 @@
+import merge from 'lodash/merge'; //eslint-disable-line
+
 import { _newQuote, goToNav, checkHeaderSection } from '../../helpers';
 import routes from '../../support/routes';
 
@@ -24,10 +26,15 @@ describe('Policy: Policy States + Effective/Cancellation Date', () => {
     { code: 15, displayText: 'Underwriting Non-Renewal Cancellation' }
   ];
 
+  const modFixtureStubRoute = (stubName, modification) =>
+    cy.fixture(`stubs/${stubName}`).then(fx => {
+      cy.route('POST', `/svc?${stubName}`, merge(fx, modification));
+    });
+
   const goToBilling = (home = true) => {
     if (home) { cy.home(); }
 
-    cy._submit('#SearchBar')
+    cy.clickSubmit('#SearchBar')
       .findDataTag('policy-list').find('> div section ul li > a').then($a => {
         $a.prop('onclick', () => cy.visit($a.prop('dataset').url)).click();
       });
@@ -69,7 +76,7 @@ describe('Policy: Policy States + Effective/Cancellation Date', () => {
   };
 
   const modifyLedgerAndRecheck = (policyStatus, ledgerStatus)  => {
-    cy._fixtureAndStubRoute('fetchSummaryLedger', { result: { status: ledgerStatus }});
+    modFixtureStubRoute('fetchSummaryLedger', { result: { status: ledgerStatus }});
     applyPayment();
     checkPolicyDetail(policyStatus, ledgerStatus);
   };
@@ -84,42 +91,42 @@ describe('Policy: Policy States + Effective/Cancellation Date', () => {
   });
 
   it('"In Force" Policy State', () => {
-    cy._fixtureAndStubRoute('fetchPolicy', { status: 'In Force' });
+    modFixtureStubRoute('fetchPolicy', { status: 'In Force' });
     goToBilling();
 
     baseBillingCodes.forEach(code => modifyLedgerAndRecheck('In Force', code));
   });
 
   it('"Pending Voluntary Cancellation" Policy State', () => {
-    cy._fixtureAndStubRoute('fetchPolicy', { status: 'Pending Voluntary Cancellation' });
+    modFixtureStubRoute('fetchPolicy', { status: 'Pending Voluntary Cancellation' });
     goToBilling();
 
     baseBillingCodes.forEach(code => modifyLedgerAndRecheck('Pending Voluntary Cancellation', code));
   });
 
   it('"Pending Underwriting Cancellation" Policy State', () => {
-    cy._fixtureAndStubRoute('fetchPolicy', { status: 'Pending Underwriting Cancellation' });
+    modFixtureStubRoute('fetchPolicy', { status: 'Pending Underwriting Cancellation' });
     goToBilling();
 
     baseBillingCodes.forEach(code => modifyLedgerAndRecheck('Pending Underwriting Cancellation', code));
   });
 
   it('"Pending Underwriting Non-Renewal" Policy State', () => {
-    cy._fixtureAndStubRoute('fetchPolicy', { status: 'Pending Underwriting Non-Renewal' });
+    modFixtureStubRoute('fetchPolicy', { status: 'Pending Underwriting Non-Renewal' });
     goToBilling();
 
     baseBillingCodes.forEach(code => modifyLedgerAndRecheck('Pending Underwriting Non-Renewal', code));
   });
 
   it('"Cancelled" Policy State', () => {
-    cy._fixtureAndStubRoute('fetchPolicy', { status: 'Cancelled' });
+    modFixtureStubRoute('fetchPolicy', { status: 'Cancelled' });
     goToBilling();
 
     cancelledBillingCodes.forEach(code => modifyLedgerAndRecheck('Cancelled', code));
   });
 
   it('"Not In Force" Policy State', () => {
-    cy._fixtureAndStubRoute('fetchPolicy', { status: 'Not In Force' });
+    modFixtureStubRoute('fetchPolicy', { status: 'Not In Force' });
     goToBilling();
 
     modifyLedgerAndRecheck('Not In Force', { code: 99, displayText: 'Policy Expired' });

@@ -26,6 +26,7 @@ describe('Base Path', () => {
     cy.fixture('stubs/csrGetQuoteWithUnderwriting').then(fx => {
       _newQuote(address1);
 
+      const coverageFx = _.cloneDeep(fx);
       const coverageRes = {
         policyHolders: [{
           firstName: pH1.pH1FirstName,
@@ -34,7 +35,6 @@ describe('Base Path', () => {
           emailAddress: pH1.pH1email
         }]
       };
-      const coverageFx = _.cloneDeep(fx);
       _coverage(pH1, coverageFx, coverageRes, true);
 
       const underwritingFx = _.cloneDeep(coverageFx);
