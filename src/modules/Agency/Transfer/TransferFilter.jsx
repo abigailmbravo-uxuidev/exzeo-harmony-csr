@@ -3,13 +3,13 @@ import { Field, reduxForm } from 'redux-form';
 
 import {
   Input,
-  MultiSelectTypeAhead,
+  SelectTypeAhead,
   Button,
 } from '@exzeo/core-ui';
 
 export class TransferFilter extends Component {
   render() {
-    const { policyNumberList } = this.props;
+    const { policyNumberList, listAnswersAsKey, agentsList } = this.props;
     return (
         <div className="search-inputs">
           <Field
@@ -17,7 +17,7 @@ export class TransferFilter extends Component {
             dataTest="policyNumber"
             label="Filter By Policy Number"
             placeholder="Start Typing"
-            component={MultiSelectTypeAhead}
+            component={SelectTypeAhead}
             styleName=""
             answers={policyNumberList}
            />
@@ -26,27 +26,27 @@ export class TransferFilter extends Component {
             dataTest="state"
             label="Filter By State"
             placeholder="Start Typing"
-            component={MultiSelectTypeAhead}
+            component={SelectTypeAhead}
             styleName=""
-            answers={[]}
+            answers={listAnswersAsKey.US_states}
            />
             <Field
             name="product"
             dataTest="product"
             label="Filter By Product"
             placeholder="Start Typing"
-            component={MultiSelectTypeAhead}
+            component={SelectTypeAhead}
             styleName=""
-            answers={[]}
+            answers={listAnswersAsKey.Products}
            />
             <Field
             name="agent"
             dataTest="agent"
             label="Filter By Agent"
             placeholder="Start Typing"
-            component={MultiSelectTypeAhead}
+            component={SelectTypeAhead}
             styleName=""
-            answers={[]}
+            answers={agentsList}
            />
           <Button
             baseClass="secondary"
