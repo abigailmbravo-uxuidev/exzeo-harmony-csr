@@ -1,10 +1,13 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { reduxForm, Field } from 'redux-form';
+import { Field, reduxForm } from 'redux-form';
 import { SelectTypeAhead, Loader, validation } from '@exzeo/core-ui';
 
+import { callService } from '../../utilities/serviceRunner';
 import { getAgencies, getAgentsByAgencyCode } from '../../state/actions/agency.actions';
+import { getPolicy } from '../../state/actions/policy.actions';
+import { setAppError } from '../../state/actions/error.actions';
 import { getAgencyList, getAgentList } from '../../state/selectors/agency.selector';
 
 export class TransferAOR extends Component {
@@ -19,7 +22,19 @@ export class TransferAOR extends Component {
     getAgentsByAgencyCode(agencyCode);
   }
 
-  submitTransfer = (data, dispatch, props) => {
+  submitTransfer = async (data, dispatch, props) => {
+    const { policyNumber, getPolicy, setAppError } = props;
+    const transferData = {
+      service: 'policy-manager',
+      method: 'POST',
+      path: 'update-agent-of-record',
+      data: { ...data, policyNumber: policyNumber }
+    };
+
+    const result = await callService(transferData)
+      .catch(err => setAppError(err));
+    console.log('res: ', result);
+    // policyNumber(policyNumber);
     this.props.toggleModal();
     return true;
   }
@@ -77,6 +92,7 @@ export class TransferAOR extends Component {
 
 TransferAOR.propTypes = {
   toggleModal: PropTypes.func.isRequired,
+  policyNumber: PropTypes.string.isRequired,
   companyCode: PropTypes.string.isRequired,
   state: PropTypes.string.isRequired,
   agencyCode: PropTypes.number.isRequired, 
@@ -91,8 +107,11 @@ const mapStateToProps = (state, { agencyCode, agentCode }) => ({
 
 export default connect(mapStateToProps, {
   getAgencies,
-  getAgentsByAgencyCode
+  getAgentsByAgencyCode,
+  getPolicy,
+  setAppError
 })(reduxForm({
   form: 'TransferAOR',
   enableReinitialize: true
 })(TransferAOR));
+

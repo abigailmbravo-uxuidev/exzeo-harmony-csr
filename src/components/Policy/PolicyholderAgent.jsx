@@ -45,6 +45,7 @@ export class PolicyholderAgent extends Component {
         {showTransferAOR && 
           <TransferAOR 
             toggleModal={this.handleToggleTransferAOR} 
+            policyNumber={policy.policyNumber}
             companyCode={policy.companyCode} 
             state={policy.state}
             agencyCode={policy.agencyCode}
