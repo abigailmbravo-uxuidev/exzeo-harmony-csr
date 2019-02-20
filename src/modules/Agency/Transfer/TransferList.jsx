@@ -59,8 +59,10 @@ export class TransferList extends Component {
             })
             }
           </ul>
-          <button type='button' className="btn btn-link">Clear Selections</button>
-          <button type='submit' className="btn btn-link">Stage Selected For Transfer</button>
+          <div className="button-wrapper">
+            <button type='button' className="btn btn-link"><i className="fa fa-rotate-left" />Clear Selections</button>
+            <button type='submit' className="btn btn-link"><i className="fa fa-random" />Stage Selected For Transfer</button>
+          </div>
         </form>
       </Fragment>
     )

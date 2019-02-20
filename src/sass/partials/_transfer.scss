@@ -13,6 +13,7 @@
                 .form-group {
                   flex-grow: 1;
                   flex-shrink: 1;
+                  margin-bottom: 0;
                   padding: $padding;
                   &.state, &.product {
                     flex-grow: 0;
@@ -87,6 +88,12 @@
                   }
                   //&.data-row {}
                 }
+              }
+              .button-wrapper {
+                display: flex;
+                justify-content: space-between;
+                border-top: 1px dotted $warm-gray-03;
+                border-bottom: 1px solid $warm-gray-04;
               }
             }
           }
