@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { Loader } from '@exzeo/core-ui';
-import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 
 import Footer from '../../../components/Common/Footer';
 
@@ -40,19 +39,40 @@ export class Transfer extends Component {
   }
 
   handleCheckPolicy = (v, pv, av) => {
-     const selectedPolicies = Object.keys(av).map(p => av[p] === true ? p : undefined)
+    const { policies } = this.props;
+    const selectedPolicies = [];
+     Object.keys(av).forEach(p => {
+      if(av[p] === true) {
+        const policy = policies.filter(v => v.policyNumber === p)[0];
+        selectedPolicies.push(policy)
+      }
+        
+     });
      this.setState({ selectedPolicies });
     return v;
   }
 
+  handleUncheckPolicy = (v, pv, av) => {
+    const { selectedPolicies } = this.state;
+    const checkedPolicies =  Object.keys(av).filter(p => av[p] === true);
+    console.log(checkedPolicies);
+    const filterPolicies = selectedPolicies.filter(p => checkedPolicies.includes(p.policyNumber));
+    this.setState({ selectedPolicies: filterPolicies });
+
+   return v;
+ }
+
   handleCheckAllPolicies = (v, pv, av) => {
     const { policies } = this.props;
-    if(Object.keys(av).length === policies.length){
-      this.setState({ selectedPolicies:  [] });
+    console.log(v)
+    if(v){
+      this.setState({ selectedPolicies:  policies });
     }
     else {
-    this.setState({ selectedPolicies:  Object.keys(av) });
+      this.setState({ selectedPolicies:  [] });
     }
+
+    return v;
 
   }
 
@@ -83,7 +103,7 @@ export class Transfer extends Component {
             <div className="form-group survey-wrapper" role="group">
               <section className="policy-filter"> 
               <TransferFilter policyNumberList={policyNumberList} listAnswersAsKey={listAnswersAsKey} agentsList={agentsList} getPoliciesForAgency={getPoliciesForAgency} />
-              <TransferList selectedPolicies={selectedPolicies} checkPolicy={this.handleCheckPolicy} policyNumberList={policyNumberList} policies={policies} toggleTransferModal={this.handleToggleTransferModal} agencyCode={agency.agencyCode} />        
+              <TransferList selectedPolicies={selectedPolicies} checkAllPolicies={this.handleCheckAllPolicies} checkPolicy={this.handleCheckPolicy} uncheckPolicy={this.handleUncheckPolicy} policyNumberList={policyNumberList} policies={policies} toggleTransferModal={this.handleToggleTransferModal} agencyCode={agency.agencyCode} />        
               </section>
             </div>
           </div>

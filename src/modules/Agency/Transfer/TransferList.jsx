@@ -11,7 +11,7 @@ import TransferFilter from './TransferFilter';
 
 export class TransferList extends Component {
   render() {
-    const { policies, handleSubmit, toggleTransferModal, checkPolicy, checkAllPolicies, selectedPolicies } = this.props;
+    const { policies, handleSubmit, toggleTransferModal, checkPolicy, uncheckPolicy, checkAllPolicies, selectedPolicies } = this.props;
     return (
       <Fragment>
         <form id="TransferList" onSubmit={handleSubmit(toggleTransferModal)}>
@@ -36,30 +36,31 @@ export class TransferList extends Component {
 
             </li>
             {selectedPolicies.map(p => {
+              /* CREATE COMPONENT */
               return (
                 <li className="data-row">
                   <span className="checkbox">
                     <Field
-                      name={p}
+                      name={p.policyNumber}
                       component="input"
                       type="checkbox"
-                      normalize={v => v}
-                      data-test={p} />
+                      normalize={uncheckPolicy}
+                      data-test={p.policyNumber} />
                   </span>
-                  <span className="policy-number">{p}</span>
-                  {/* <span className="policy-number">{p.policyNumber}</span>
+                  <span className="policy-number">{p.policyNumber}</span>
                   <span className="company">{p.companyCode}</span>
                   <span className="state">{p.state}</span>
                   <span className="product">{p.product}</span>
                   <span className="property-address">{p.propertyAddress}</span>
                   <span className="primary-policy">{p.policyHolder1}</span>
                   <span className="effective-date">{p.effectiveDate}</span>
-                  <span className="terms"></span> */}
+                  <span className="terms">select</span>
                 </li>
               )
             })
             }
-            {policies.map(p => {
+            {policies.filter(p => !selectedPolicies.includes(p)).map(p => {
+                            /* CREATE COMPONENT */
               return (
                 <li className="data-row">
                   <span className="checkbox">
@@ -95,4 +96,5 @@ export class TransferList extends Component {
 
 export default reduxForm({
   form: 'TransferList',
+  enableReinitialize: true
 })(TransferList);
