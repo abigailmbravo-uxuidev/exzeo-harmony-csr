@@ -24,7 +24,7 @@ export class Transfer extends Component {
   }
 
   handleToggleModal = (data) => {
-    this.setState(state => ({ showTransferModal: !state.showTransferModal, selectedPolicies: data }));
+    this.setState(state => ({ showTransferModal: !state.showTransferModal }));
   }
 
   filterPropertyAddress = (property) => {
@@ -38,41 +38,31 @@ export class Transfer extends Component {
       return policyHolders[0].firstName + ' ' + policyHolders[0].lastName;
   }
 
-  handleCheckPolicy = (v, pv, av) => {
+  handleCheckPolicy = (policyNumber) => () => {
     const { policies } = this.props;
-    const selectedPolicies = [];
-     Object.keys(av).forEach(p => {
-      if(av[p] === true) {
-        const policy = policies.filter(v => v.policyNumber === p)[0];
-        selectedPolicies.push(policy)
-      }
-        
-     });
+    const { selectedPolicies } = this.state;
+    const policy = policies.filter(v => v.policyNumber === policyNumber)[0];
+    selectedPolicies.push(policy);
      this.setState({ selectedPolicies });
-    return v;
   }
 
-  handleUncheckPolicy = (v, pv, av) => {
+  handleUncheckPolicy = (policyNumber) => () => {
     const { selectedPolicies } = this.state;
-    const checkedPolicies =  Object.keys(av).filter(p => av[p] === true);
-    console.log(checkedPolicies);
-    const filterPolicies = selectedPolicies.filter(p => checkedPolicies.includes(p.policyNumber));
-    this.setState({ selectedPolicies: filterPolicies });
+    this.setState({ selectedPolicies: selectedPolicies.filter(p => p.policyNumber !== policyNumber) });
 
-   return v;
+    
  }
 
-  handleCheckAllPolicies = (v, pv, av) => {
+  handleCheckAllPolicies = () => {
     const { policies } = this.props;
-    console.log(v)
-    if(v){
-      this.setState({ selectedPolicies:  policies });
-    }
-    else {
+    const { selectedPolicies } = this.state;
+
+    if(policies.length === selectedPolicies.length){
       this.setState({ selectedPolicies:  [] });
     }
-
-    return v;
+    else {
+      this.setState({ selectedPolicies:  policies });
+    }
 
   }
 

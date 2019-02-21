@@ -14,9 +14,9 @@ export class TransferFilter extends Component {
   handleFilterChange = (value, previousValues, allValues) => {
     const { policyNumber } = allValues;
     console.log(allValues);
-    // if(policyNumber){
-    // this.props.getPoliciesForAgency({ policyNumber });
-    // }
+    if(policyNumber){
+    this.props.getPoliciesForAgency({ policyNumber });
+    }
     return value;
   }
 

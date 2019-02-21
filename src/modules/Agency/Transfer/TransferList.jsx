@@ -9,21 +9,21 @@ import {
 
 import TransferFilter from './TransferFilter';
 
+const filterPolicy = (policy, selectedArray) => {
+  const policyNumber = policy.policyNumber;
+  return !selectedArray.includes(s => s.policyNumber === policyNumber)
+}
+
 export class TransferList extends Component {
   render() {
-    const { policies, handleSubmit, toggleTransferModal, checkPolicy, uncheckPolicy, checkAllPolicies, selectedPolicies } = this.props;
+    const { policies, toggleTransferModal, checkPolicy, uncheckPolicy, checkAllPolicies, selectedPolicies } = this.props;
     return (
       <Fragment>
-        <form id="TransferList" onSubmit={handleSubmit(toggleTransferModal)}>
+        <form id="TransferList">
           <ul className="data-grid">
             <li className="header">
-              <span className="checkbox">
-                <Field
-                  name='selectAll'
-                  component="input"
-                  type="checkbox"
-                  normalize={checkAllPolicies}
-                  data-test='selectAll' />
+              <span className="checkbox" onClick={checkAllPolicies}>
+              [T]
               </span>
               <span className="policy-number">Policy Number</span>
               <span className="company">Company</span>
@@ -39,13 +39,8 @@ export class TransferList extends Component {
               /* CREATE COMPONENT */
               return (
                 <li className="data-row">
-                  <span className="checkbox">
-                    <Field
-                      name={p.policyNumber}
-                      component="input"
-                      type="checkbox"
-                      normalize={uncheckPolicy}
-                      data-test={p.policyNumber} />
+                  <span className="checkbox" onClick={uncheckPolicy(p.policyNumber)}>
+                  X
                   </span>
                   <span className="policy-number">{p.policyNumber}</span>
                   <span className="company">{p.companyCode}</span>
@@ -59,17 +54,12 @@ export class TransferList extends Component {
               )
             })
             }
-            {policies.filter(p => !selectedPolicies.includes(p)).map(p => {
+            {policies.filter(p => !selectedPolicies.some(s => s.policyNumber === p.policyNumber)).map(p => {
                             /* CREATE COMPONENT */
               return (
                 <li className="data-row">
-                  <span className="checkbox">
-                    <Field
-                      name={p.policyNumber}
-                      component="input"
-                      type="checkbox"
-                      normalize={checkPolicy}
-                      data-test={p.policyNumber} />
+                  <span className="checkbox" onClick={checkPolicy(p.policyNumber)}>
+                   -
                   </span>
                   <span className="policy-number">{p.policyNumber}</span>
                   <span className="company">{p.companyCode}</span>
@@ -86,7 +76,7 @@ export class TransferList extends Component {
           </ul>
           <div className="button-wrapper">
             <button type='button' className="btn btn-link"><i className="fa fa-rotate-left" />Clear Selections</button>
-            <button type='submit' className="btn btn-link"><i className="fa fa-random" />Stage Selected For Transfer</button>
+            <button type='button' onClick={toggleTransferModal} className="btn btn-link"><i className="fa fa-random" />Stage Selected For Transfer</button>
           </div>
         </form>
       </Fragment>
@@ -94,7 +84,4 @@ export class TransferList extends Component {
   }
 }
 
-export default reduxForm({
-  form: 'TransferList',
-  enableReinitialize: true
-})(TransferList);
+export default TransferList;
