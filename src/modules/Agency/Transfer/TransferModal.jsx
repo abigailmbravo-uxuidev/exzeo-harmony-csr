@@ -41,14 +41,14 @@ export class Transfer extends Component {
                 component={Select}
                 answers={agencies}
                 onChange={this.handleAgencyChange}
-              />
+                validate={validation.isRequired} />
               <Field
                 label="Agent"
                 name="agentCode"
                 dataTest="agentCode"
                 component={Select}
                 answers={agents}
-              />
+                validate={validation.isRequired} />
             </div>
             <div className="card-footer">
               <div className="btn-group">
