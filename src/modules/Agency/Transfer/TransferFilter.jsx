@@ -24,7 +24,7 @@ export class TransferFilter extends Component {
   }
 
   render() {
-    const { policyNumberList, listAnswersAsKey, agentsList } = this.props;
+    const { policyNumberList, listAnswersAsKey, agentsList, reset } = this.props;
     return (
       <form id={FORM_NAME} className="search-inputs">
         <Field
@@ -44,6 +44,7 @@ export class TransferFilter extends Component {
           placeholder="Start Typing"
           component={SelectTypeAhead}
           styleName=""
+          showPlaceholder
           answers={listAnswersAsKey.US_states}
           normalize={this.handleFilterChange}
 
@@ -55,6 +56,7 @@ export class TransferFilter extends Component {
           placeholder="Start Typing"
           component={SelectTypeAhead}
           styleName=""
+          showPlaceholder
           answers={listAnswersAsKey.Products}
           normalize={this.handleFilterChange}
 
@@ -70,6 +72,7 @@ export class TransferFilter extends Component {
           normalize={this.handleFilterChange}
         />
         <Button
+          onClick={reset}
           baseClass="secondary"
           customClass="multi-input btn-sm"
           type="button"
