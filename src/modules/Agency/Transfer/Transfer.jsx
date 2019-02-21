@@ -9,7 +9,7 @@ import TransferList from './TransferList';
 import TransferFilter from './TransferFilter';
 
 export class Transfer extends Component {
-  state = { showTransferModal: false };
+  state = { showTransferModal: false, selectedPolicies: [] };
 
   componentDidMount() {
     // const { getAgencyAction, getAgentListAction, agency } = this.props;
@@ -39,6 +39,23 @@ export class Transfer extends Component {
       return policyHolders[0].firstName + ' ' + policyHolders[0].lastName;
   }
 
+  handleCheckPolicy = (v, pv, av) => {
+     const selectedPolicies = Object.keys(av).map(p => av[p] === true ? p : undefined)
+     this.setState({ selectedPolicies });
+    return v;
+  }
+
+  handleCheckAllPolicies = (v, pv, av) => {
+    const { policies } = this.props;
+    if(Object.keys(av).length === policies.length){
+      this.setState({ selectedPolicies:  [] });
+    }
+    else {
+    this.setState({ selectedPolicies:  Object.keys(av) });
+    }
+
+  }
+
   render() {
     const {
       agency,
@@ -66,7 +83,7 @@ export class Transfer extends Component {
             <div className="form-group survey-wrapper" role="group">
               <section className="policy-filter"> 
               <TransferFilter policyNumberList={policyNumberList} listAnswersAsKey={listAnswersAsKey} agentsList={agentsList} getPoliciesForAgency={getPoliciesForAgency} />
-              <TransferList policyNumberList={policyNumberList} policies={policies} toggleTransferModal={this.handleToggleTransferModal} agencyCode={agency.agencyCode} />        
+              <TransferList selectedPolicies={selectedPolicies} checkPolicy={this.handleCheckPolicy} policyNumberList={policyNumberList} policies={policies} toggleTransferModal={this.handleToggleTransferModal} agencyCode={agency.agencyCode} />        
               </section>
             </div>
           </div>

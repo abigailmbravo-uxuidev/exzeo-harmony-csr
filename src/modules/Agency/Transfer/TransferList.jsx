@@ -11,7 +11,7 @@ import TransferFilter from './TransferFilter';
 
 export class TransferList extends Component {
   render() {
-    const { policies, handleSubmit, toggleTransferModal } = this.props;
+    const { policies, handleSubmit, toggleTransferModal, checkPolicy, checkAllPolicies, selectedPolicies } = this.props;
     return (
       <Fragment>
         <form id="TransferList" onSubmit={handleSubmit(toggleTransferModal)}>
@@ -22,7 +22,7 @@ export class TransferList extends Component {
                   name='selectAll'
                   component="input"
                   type="checkbox"
-                  normalize={value => value}
+                  normalize={checkAllPolicies}
                   data-test='selectAll' />
               </span>
               <span className="policy-number">Policy Number</span>
@@ -35,6 +35,30 @@ export class TransferList extends Component {
               <span className="terms">Terms</span>
 
             </li>
+            {selectedPolicies.map(p => {
+              return (
+                <li className="data-row">
+                  <span className="checkbox">
+                    <Field
+                      name={p}
+                      component="input"
+                      type="checkbox"
+                      normalize={v => v}
+                      data-test={p} />
+                  </span>
+                  <span className="policy-number">{p}</span>
+                  {/* <span className="policy-number">{p.policyNumber}</span>
+                  <span className="company">{p.companyCode}</span>
+                  <span className="state">{p.state}</span>
+                  <span className="product">{p.product}</span>
+                  <span className="property-address">{p.propertyAddress}</span>
+                  <span className="primary-policy">{p.policyHolder1}</span>
+                  <span className="effective-date">{p.effectiveDate}</span>
+                  <span className="terms"></span> */}
+                </li>
+              )
+            })
+            }
             {policies.map(p => {
               return (
                 <li className="data-row">
@@ -43,7 +67,7 @@ export class TransferList extends Component {
                       name={p.policyNumber}
                       component="input"
                       type="checkbox"
-                      normalize={value => value}
+                      normalize={checkPolicy}
                       data-test={p.policyNumber} />
                   </span>
                   <span className="policy-number">{p.policyNumber}</span>
