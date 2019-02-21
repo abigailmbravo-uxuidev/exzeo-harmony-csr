@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 
 import {
   Input,
-  MultiSelectTypeAhead,
+  SelectTypeAhead,
   Button,
 } from '@exzeo/core-ui';
 
@@ -12,11 +12,14 @@ const FORM_NAME = 'TransferFilter';
 export class TransferFilter extends Component {
 
   handleFilterChange = (value, previousValues, allValues) => {
-    const { policyNumber } = allValues;
+    const { policyNumber, state, product } = allValues;
     console.log(allValues);
-    if(policyNumber){
-    this.props.getPoliciesForAgency({ policyNumber });
-    }
+    this.props.getPoliciesForAgency({ 
+      policyNumber,
+      state,
+      product
+     });
+
     return value;
   }
 
@@ -39,27 +42,32 @@ export class TransferFilter extends Component {
           dataTest="state"
           label="Filter By State"
           placeholder="Start Typing"
-          component={MultiSelectTypeAhead}
+          component={SelectTypeAhead}
           styleName=""
           answers={listAnswersAsKey.US_states}
+          normalize={this.handleFilterChange}
+
         />
         <Field
           name="product"
           dataTest="product"
           label="Filter By Product"
           placeholder="Start Typing"
-          component={MultiSelectTypeAhead}
+          component={SelectTypeAhead}
           styleName=""
           answers={listAnswersAsKey.Products}
+          normalize={this.handleFilterChange}
+
         />
         <Field
           name="agentCode"
           dataTest="agent"
           label="Filter By Agent"
           placeholder="Start Typing"
-          component={MultiSelectTypeAhead}
+          component={SelectTypeAhead}
           styleName=""
           answers={agentsList}
+          normalize={this.handleFilterChange}
         />
         <Button
           baseClass="secondary"
