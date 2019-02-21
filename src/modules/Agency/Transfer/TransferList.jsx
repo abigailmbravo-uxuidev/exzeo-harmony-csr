@@ -76,7 +76,7 @@ export class TransferList extends Component {
           </ul>
           <div className="button-wrapper">
             <button type='button' onClick={clearSelectedPolicies} className="btn btn-link"><i className="fa fa-rotate-left" />Clear Selections</button>
-            <button type='button' onClick={toggleTransferModal} className="btn btn-link"><i className="fa fa-random" />Stage Selected For Transfer</button>
+            <button type='button' disabled={selectedPolicies.length === 0} onClick={toggleTransferModal} className="btn btn-link"><i className="fa fa-random" />Stage Selected For Transfer</button>
           </div>
         </form>
       </Fragment>
