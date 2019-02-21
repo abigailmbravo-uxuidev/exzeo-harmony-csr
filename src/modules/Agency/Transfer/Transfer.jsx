@@ -66,6 +66,10 @@ export class Transfer extends Component {
 
   }
 
+  clearSelectedPolicies = () => {
+    this.setState({ selectedPolicies:  [] });
+  }
+
   render() {
     const {
       agency,
@@ -93,7 +97,7 @@ export class Transfer extends Component {
             <div className="form-group survey-wrapper" role="group">
               <section className="policy-filter"> 
               <TransferFilter policyNumberList={policyNumberList} listAnswersAsKey={listAnswersAsKey} agentsList={agentsList} getPoliciesForAgency={getPoliciesForAgency} />
-              <TransferList selectedPolicies={selectedPolicies} checkAllPolicies={this.handleCheckAllPolicies} checkPolicy={this.handleCheckPolicy} uncheckPolicy={this.handleUncheckPolicy} policyNumberList={policyNumberList} policies={policies} toggleTransferModal={this.handleToggleTransferModal} agencyCode={agency.agencyCode} />        
+              <TransferList clearSelectedPolicies={this.clearSelectedPolicies} selectedPolicies={selectedPolicies} checkAllPolicies={this.handleCheckAllPolicies} checkPolicy={this.handleCheckPolicy} uncheckPolicy={this.handleUncheckPolicy} policyNumberList={policyNumberList} policies={policies} toggleTransferModal={this.handleToggleTransferModal} agencyCode={agency.agencyCode} />        
               </section>
             </div>
           </div>

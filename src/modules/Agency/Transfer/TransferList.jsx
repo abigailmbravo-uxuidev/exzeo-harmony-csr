@@ -16,7 +16,7 @@ const filterPolicy = (policy, selectedArray) => {
 
 export class TransferList extends Component {
   render() {
-    const { policies, toggleTransferModal, checkPolicy, uncheckPolicy, checkAllPolicies, selectedPolicies } = this.props;
+    const { policies, toggleTransferModal, checkPolicy, uncheckPolicy, checkAllPolicies, selectedPolicies, clearSelectedPolicies } = this.props;
     return (
       <Fragment>
         <form id="TransferList">
@@ -75,7 +75,7 @@ export class TransferList extends Component {
             }
           </ul>
           <div className="button-wrapper">
-            <button type='button' className="btn btn-link"><i className="fa fa-rotate-left" />Clear Selections</button>
+            <button type='button' onClick={clearSelectedPolicies} className="btn btn-link"><i className="fa fa-rotate-left" />Clear Selections</button>
             <button type='button' onClick={toggleTransferModal} className="btn btn-link"><i className="fa fa-random" />Stage Selected For Transfer</button>
           </div>
         </form>
