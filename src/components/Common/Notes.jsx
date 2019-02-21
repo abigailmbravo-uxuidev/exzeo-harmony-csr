@@ -29,7 +29,7 @@ export class Notes extends Component {
     const { agencyCode, entity } = this.props;
     await getNotes(agencyCode)
       .catch(err => {
-        throw err.
+        console.log(err)
       });
 
     this.setState({ isLoading: false });
