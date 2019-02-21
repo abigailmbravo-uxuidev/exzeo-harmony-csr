@@ -39,6 +39,7 @@ export class PolicyholderAgent extends Component {
 
     const selectedAgent = agents.find(a => a.agentCode === policy.agentCode);
     const { showTransferAOR } = this.state;
+    const transferDisabled = policy.status === 'Policy Issued';
 
     return (
       <React.Fragment>
@@ -90,7 +91,8 @@ ${policyHolderMailingAddress.city}, ${policyHolderMailingAddress.state} ${policy
                                                                                </div>))}
               </section>
               {agency && selectedAgent && <section className="agency-cards">
-                <h3>Agency / Agent <button className="btn btn-link btn-sm" onClick={this.handleToggleTransferAOR}><i className="fa fa-exchange" />Change AOR</button></h3>
+                <h3>Agency / Agent <button className="btn btn-link btn-sm" 
+                  onClick={this.handleToggleTransferAOR} disabled={transferDisabled} ><i className="fa fa-exchange" />Change AOR</button></h3>
                 <div className="agency contact card">
                   <div className="contact-title"><i className="fa fa-address-book" /><label>Agency</label></div>
                   <div className="contact-details">

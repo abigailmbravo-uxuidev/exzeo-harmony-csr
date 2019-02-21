@@ -11,6 +11,10 @@ import { setAppError } from '../../state/actions/error.actions';
 import { getAgencyList, getAgentList } from '../../state/selectors/agency.selector';
 
 export class TransferAOR extends Component {
+  state = {
+    isLoading: false
+  }
+
   componentDidMount() {
     const { getAgencies, getAgentsByAgencyCode, initialize, companyCode, agencyCode, state } = this.props;
     getAgencies(companyCode, state);
@@ -31,18 +35,26 @@ export class TransferAOR extends Component {
       data: { ...data, policyNumber: policyNumber }
     };
 
-    const result = await callService(transferData)
+    this.setState({ isLoading: true });
+
+    await callService(transferData)
       .catch(err => setAppError(err));
-    console.log('res: ', result);
-    // policyNumber(policyNumber);
+
+    await getPolicy(policyNumber);
+
+    this.setState({ isLoading: false });
     this.props.toggleModal();
-    return true;
   }
 
   render() {
-    const { handleSubmit, toggleModal, agencies, agents } = this.props;
+    const { handleSubmit, toggleModal, agencies, agents, pristine } = this.props;
+    const { isLoading } = this.state;
+
     return (
       <div className="modal" style={this.modalStyle}>
+        {(isLoading) &&
+          <Loader />
+        }
         <div className="card card-billing-edit-modal">
           <form id="TransferAOR" className="TransferAOR" onSubmit={handleSubmit(this.submitTransfer)}>
             <div className="card-header">
@@ -78,6 +90,7 @@ export class TransferAOR extends Component {
                   tabIndex="0"
                   aria-label="submit-btn form-editBilling"
                   className="btn btn-primary"
+                  disabled={pristine}
                   type="submit"
                 >Update
                 </button>
