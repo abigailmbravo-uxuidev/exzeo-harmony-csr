@@ -23,7 +23,10 @@ export class TransferList extends Component {
           <ul className="data-grid">
             <li className="header">
               <span className="checkbox" onClick={checkAllPolicies}>
-              [T]
+              {policies.length === selectedPolicies.length ?
+               <span class="fa fa-check-square" /> : 
+               <span class="fa fa-square" />
+               }
               </span>
               <span className="policy-number">Policy Number</span>
               <span className="company">Company</span>
@@ -38,9 +41,9 @@ export class TransferList extends Component {
             {selectedPolicies.map(p => {
               /* CREATE COMPONENT */
               return (
-                <li className="data-row">
-                  <span className="checkbox" onClick={uncheckPolicy(p.policyNumber)}>
-                  X
+                <li className="data-row" onClick={uncheckPolicy(p.policyNumber)}>
+                  <span className="checkbox" >
+                  <span class="fa fa-check-square" />
                   </span>
                   <span className="policy-number">{p.policyNumber}</span>
                   <span className="company">{p.companyCode}</span>
@@ -49,7 +52,7 @@ export class TransferList extends Component {
                   <span className="property-address">{p.propertyAddress}</span>
                   <span className="primary-policy">{p.policyHolder1}</span>
                   <span className="effective-date">{p.effectiveDate}</span>
-                  <span className="terms">select</span>
+                  <span className="terms"></span>
                 </li>
               )
             })
@@ -57,9 +60,9 @@ export class TransferList extends Component {
             {policies.filter(p => !selectedPolicies.some(s => s.policyNumber === p.policyNumber)).map(p => {
                             /* CREATE COMPONENT */
               return (
-                <li className="data-row">
-                  <span className="checkbox" onClick={checkPolicy(p.policyNumber)}>
-                   -
+                <li className="data-row" onClick={checkPolicy(p.policyNumber)}>
+                  <span className="checkbox" >
+                   <span class="fa fa-square" />
                   </span>
                   <span className="policy-number">{p.policyNumber}</span>
                   <span className="company">{p.companyCode}</span>
