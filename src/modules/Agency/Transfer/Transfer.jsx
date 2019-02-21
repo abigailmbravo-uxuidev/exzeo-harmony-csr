@@ -15,15 +15,7 @@ export class Transfer extends Component {
     // get policies by agency
   }
 
-  handleToggleTransferModal = (data) => { 
-    const checkedPolicies = [];
-    Object.keys(data || {}).forEach(p => {
-      if(data[p] === true) checkedPolicies.push(p)
-    });
-    this.handleToggleModal(checkedPolicies)
-  }
-
-  handleToggleModal = (data) => {
+  handleToggleModal = () => {
     this.setState(state => ({ showTransferModal: !state.showTransferModal }));
   }
 
@@ -97,7 +89,7 @@ export class Transfer extends Component {
             <div className="form-group survey-wrapper" role="group">
               <section className="policy-filter"> 
               <TransferFilter policyNumberList={policyNumberList} listAnswersAsKey={listAnswersAsKey} agentsList={agentsList} getPoliciesForAgency={getPoliciesForAgency} />
-              <TransferList clearSelectedPolicies={this.clearSelectedPolicies} selectedPolicies={selectedPolicies} checkAllPolicies={this.handleCheckAllPolicies} checkPolicy={this.handleCheckPolicy} uncheckPolicy={this.handleUncheckPolicy} policyNumberList={policyNumberList} policies={policies} toggleTransferModal={this.handleToggleTransferModal} agencyCode={agency.agencyCode} />        
+              <TransferList clearSelectedPolicies={this.clearSelectedPolicies} selectedPolicies={selectedPolicies} checkAllPolicies={this.handleCheckAllPolicies} checkPolicy={this.handleCheckPolicy} uncheckPolicy={this.handleUncheckPolicy} policyNumberList={policyNumberList} policies={policies} toggleTransferModal={this.handleToggleModal} agencyCode={agency.agencyCode} />        
               </section>
             </div>
           </div>
