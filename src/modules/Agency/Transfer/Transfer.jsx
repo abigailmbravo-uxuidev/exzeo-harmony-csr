@@ -14,8 +14,8 @@ export class Transfer extends Component {
     this.setState(state => ({ showTransferModal: !state.showTransferModal }));
   }
 
-  handleCheckPolicy = (policyNumber) => () => {
-
+  handleCheckPolicy = (policyNumber) => (e) => {
+    if(e.stopPropagation) e.stopPropagation();
     this.setState({ fadePolicy: policyNumber });
     const self = this;
 
@@ -29,7 +29,8 @@ export class Transfer extends Component {
 
   }
 
-  handleUncheckPolicy = (policyNumber) => () => {
+  handleUncheckPolicy = (policyNumber) => (e) => {
+    if(e.stopPropagation) e.stopPropagation();
     this.setState({ fadePolicy: policyNumber });
     const self = this;
     const { selectedPolicies } = this.state;
