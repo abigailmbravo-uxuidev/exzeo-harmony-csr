@@ -5,7 +5,7 @@ import { reduxForm, Field } from 'redux-form';
 import { SelectTypeAhead, Loader, validation } from '@exzeo/core-ui';
 
 import { getAgencies, getAgentsByAgencyCode } from '../../../state/actions/agency.actions';
-import { getAgenciesList, getAgentsList } from '../../../state/selectors/agency.selector';
+import { getAgenciesList, getAgentsListForTransfer } from '../../../state/selectors/agency.selector';
 
 export class TransferModal extends Component {
   async componentDidMount() {
@@ -83,7 +83,7 @@ TransferModal.propTypes = {
 
 const mapStateToProps = (state, { agencyCode, agentCode }) => ({
   agencies: getAgenciesList(state),
-  agents: getAgentsList(state),
+  agents: getAgentsListForTransfer(state),
   initialValues: { agencyCode, agentCode }
 });
 
