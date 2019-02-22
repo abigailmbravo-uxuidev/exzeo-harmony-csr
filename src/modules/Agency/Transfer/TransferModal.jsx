@@ -14,8 +14,8 @@ export class TransferModal extends Component {
   }
 
   handleAgencyChange = (event, agencyCode) => {
-     const { getAgentsByAgencyCode } = this.props;
-     getAgentsByAgencyCode(agencyCode);
+    const { getAgentsByAgencyCode } = this.props;
+    getAgentsByAgencyCode(agencyCode);
   }
 
   submitTransfer = (data, dispatch, props) => {
@@ -26,11 +26,11 @@ export class TransferModal extends Component {
   render() {
     const { handleSubmit, toggleModal, agencies, agents } = this.props;
 
-    if(agencies.length === 0) return (<Loader />);
+    if (agencies.length === 0) return (<Loader />);
 
     return (
-      <div className="modal" style={this.modalStyle}>
-        <div className="card card-billing-edit-modal">
+      <div className="modal bob-transfer" style={this.modalStyle}>
+        <div className="card ">
           <form id="TransferPolicies" className="Transfer" onSubmit={handleSubmit(this.submitTransfer)}>
             <div className="card-header">
               <h4>Agent Receiving Selected Policy</h4>
