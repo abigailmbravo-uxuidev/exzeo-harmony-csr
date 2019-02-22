@@ -20,6 +20,7 @@ export class TransferModal extends Component {
 
   submitTransfer = (data, dispatch, props) => {
     getAgentsByAgencyCode(props.agencyCode);
+    props.clearSelectedPolicies();
     props.toggleModal();
   }
 

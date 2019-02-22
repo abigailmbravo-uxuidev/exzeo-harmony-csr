@@ -61,6 +61,7 @@ export class Transfer extends Component {
       <React.Fragment>
         {showTransferModal && 
           <TransferModal
+            clearSelectedPolicies={this.clearSelectedPolicies}
             selectedPolicies={selectedPolicies}
             toggleModal={this.handleToggleModal}
           />
