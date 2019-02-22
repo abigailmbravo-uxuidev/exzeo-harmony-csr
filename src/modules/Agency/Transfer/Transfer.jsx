@@ -8,7 +8,7 @@ import TransferList from './TransferList';
 import TransferFilter from './TransferFilter';
 
 export class Transfer extends Component {
-  state = { showTransferModal: false, selectedPolicies: [], fadeOutPolicy: undefined };
+  state = { showTransferModal: false, selectedPolicies: [], fadePolicy: undefined };
 
   handleToggleModal = () => {
     this.setState(state => ({ showTransferModal: !state.showTransferModal }));
@@ -16,7 +16,7 @@ export class Transfer extends Component {
 
   handleCheckPolicy = (policyNumber) => () => {
 
-    this.setState({ fadeOutPolicy: policyNumber });
+    this.setState({ fadePolicy: policyNumber });
     const self = this;
 
     setTimeout(function () {
@@ -24,14 +24,18 @@ export class Transfer extends Component {
       const { selectedPolicies } = self.state;
       const policy = policies.filter(v => v.policyNumber === policyNumber)[0];
       selectedPolicies.push(policy);
-      self.setState({ selectedPolicies, fadeOutPolicy: undefined });
+      self.setState({ selectedPolicies, fadePolicy: undefined });
     }, 500)
 
   }
 
   handleUncheckPolicy = (policyNumber) => () => {
+    this.setState({ fadePolicy: policyNumber });
+    const self = this;
     const { selectedPolicies } = this.state;
-    this.setState({ selectedPolicies: selectedPolicies.filter(p => p.policyNumber !== policyNumber) });
+    setTimeout(function () {
+      self.setState({ selectedPolicies: selectedPolicies.filter(p => p.policyNumber !== policyNumber), fadePolicy: undefined });
+    }, 500);
   }
 
   handleCheckAllPolicies = () => {
@@ -61,7 +65,7 @@ export class Transfer extends Component {
       getPoliciesForAgency
     } = this.props;
 
-    const { showTransferModal, selectedPolicies, fadeOutPolicy } = this.state;
+    const { showTransferModal, selectedPolicies, fadePolicy } = this.state;
     const filteredPolicies = policies.filter(p => !selectedPolicies.some(s => s.policyNumber === p.policyNumber));
 
     return (
@@ -84,7 +88,7 @@ export class Transfer extends Component {
                   getPoliciesForAgency={getPoliciesForAgency}
                 />
                 <TransferList
-                  fadeOutPolicy={fadeOutPolicy}
+                  fadePolicy={fadePolicy}
                   filteredPolicies={filteredPolicies}
                   clearSelectedPolicies={this.clearSelectedPolicies}
                   selectedPolicies={selectedPolicies}
