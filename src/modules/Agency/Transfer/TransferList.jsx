@@ -8,71 +8,55 @@ import {
 } from '@exzeo/core-ui';
 
 import TransferFilter from './TransferFilter';
+import TransferListItem from './TransferListItem';
 
 const filterPolicy = (policy, selectedArray) => {
   const policyNumber = policy.policyNumber;
   return !selectedArray.includes(s => s.policyNumber === policyNumber)
 }
 
+const TRANSFER_LIST_HEADER = {
+  policyNumber: 'Policy Number',
+  companyCode: 'Company', 
+  state: 'State',
+  product: 'Product',
+  propertyAddress: 'Prpoerty Address',
+  policyHolder1: 'Primary Policyholder',
+  effectiveDate: 'Effective Date',
+  terms: 'Terms'
+}
+
 export class TransferList extends Component {
   render() {
     const { policies, toggleTransferModal, checkPolicy, uncheckPolicy, checkAllPolicies, selectedPolicies, clearSelectedPolicies } = this.props;
     return (
-      <Fragment>
-        <form id="TransferList">
+        <div id="TransferList">
           <ul className="data-grid">
-            <li className="header">
-              <span className="checkbox" onClick={checkAllPolicies}>
-              {policies.length === selectedPolicies.length ?
-               <span class="fa fa-check-square" /> : 
-               <span class="fa fa-square" />
-               }
-              </span>
-              <span className="policy-number">Policy Number</span>
-              <span className="company">Company</span>
-              <span className="state">State</span>
-              <span className="product">Product</span>
-              <span className="property-address">Prpoerty Address</span>
-              <span className="primary-policy">Primary Policyholder</span>
-              <span className="effective-date">Effective Date</span>
-              <span className="terms">Terms</span>
-
-            </li>
+            <TransferListItem 
+              listClassName="header"
+              policy={TRANSFER_LIST_HEADER}
+              clickHandler={checkAllPolicies}
+              isChecked={policies.length === selectedPolicies.length} 
+             />
             {selectedPolicies.map(p => {
-              /* CREATE COMPONENT */
               return (
-                <li className="data-row" onClick={uncheckPolicy(p.policyNumber)}>
-                  <span className="checkbox" >
-                  <span class="fa fa-check-square" />
-                  </span>
-                  <span className="policy-number">{p.policyNumber}</span>
-                  <span className="company">{p.companyCode}</span>
-                  <span className="state">{p.state}</span>
-                  <span className="product">{p.product}</span>
-                  <span className="property-address">{p.propertyAddress}</span>
-                  <span className="primary-policy">{p.policyHolder1}</span>
-                  <span className="effective-date">{p.effectiveDate}</span>
-                  <span className="terms"></span>
-                </li>
+                <TransferListItem 
+                listClassName="data-row"
+                policy={p}
+                clickHandler={uncheckPolicy(p.policyNumber)}
+                isChecked={true} 
+               />
               )
             })
             }
             {policies.filter(p => !selectedPolicies.some(s => s.policyNumber === p.policyNumber)).map(p => {
-                            /* CREATE COMPONENT */
               return (
-                <li className="data-row" onClick={checkPolicy(p.policyNumber)}>
-                  <span className="checkbox" >
-                   <span class="fa fa-square" />
-                  </span>
-                  <span className="policy-number">{p.policyNumber}</span>
-                  <span className="company">{p.companyCode}</span>
-                  <span className="state">{p.state}</span>
-                  <span className="product">{p.product}</span>
-                  <span className="property-address">{p.propertyAddress}</span>
-                  <span className="primary-policy">{p.policyHolder1}</span>
-                  <span className="effective-date">{p.effectiveDate}</span>
-                  <span className="terms"></span>
-                </li>
+                <TransferListItem 
+                listClassName="data-row"
+                policy={p}
+                clickHandler={checkPolicy(p.policyNumber)}
+                isChecked={false} 
+               />
               )
             })
             }
@@ -81,8 +65,7 @@ export class TransferList extends Component {
             <button type='button' onClick={clearSelectedPolicies} className="btn btn-link"><i className="fa fa-rotate-left" />Clear Selections</button>
             <button type='button' disabled={selectedPolicies.length === 0} onClick={toggleTransferModal} className="btn btn-link"><i className="fa fa-random" />Stage Selected For Transfer</button>
           </div>
-        </form>
-      </Fragment>
+        </div>
     )
   }
 }

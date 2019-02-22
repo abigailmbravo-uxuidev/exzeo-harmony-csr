@@ -2,12 +2,12 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { reduxForm, Field } from 'redux-form';
-import { Select, SelectTypeAhead, Loader, validation } from '@exzeo/core-ui';
+import { SelectTypeAhead, Loader, validation } from '@exzeo/core-ui';
 
 import { getAgencies, getAgentsByAgencyCode } from '../../../state/actions/agency.actions';
 import { getAgenciesList, getAgentsList } from '../../../state/selectors/agency.selector';
 
-export class Transfer extends Component {
+export class TransferModal extends Component {
   async componentDidMount() {
     const { getAgencies, getAgentsByAgencyCode, companyCode, agencyCode, state } = this.props;
     await getAgencies('TTIC', 'FL');
@@ -19,13 +19,15 @@ export class Transfer extends Component {
   }
 
   submitTransfer = (data, dispatch, props) => {
-    // TODO: Need to get the Agents for the Agency to reset the agent state
     getAgentsByAgencyCode(props.agencyCode);
     props.toggleModal();
   }
 
   render() {
     const { handleSubmit, toggleModal, agencies, agents, selectedPolicies, } = this.props;
+
+    if(agencies.length === 0) return (<Loader />);
+
     return (
       <div className="modal" style={this.modalStyle}>
         <div className="card card-billing-edit-modal">
@@ -38,7 +40,7 @@ export class Transfer extends Component {
                 label="Agency"
                 name="agencyCode"
                 dataTest="agencyCode"
-                component={Select}
+                component={SelectTypeAhead}
                 answers={agencies}
                 onChange={this.handleAgencyChange}
                 validate={validation.isRequired} />
@@ -46,7 +48,7 @@ export class Transfer extends Component {
                 label="Agent"
                 name="agentCode"
                 dataTest="agentCode"
-                component={Select}
+                component={SelectTypeAhead}
                 answers={agents}
                 validate={validation.isRequired} />
             </div>
@@ -75,7 +77,7 @@ export class Transfer extends Component {
   }
 }
 
-Transfer.propTypes = {
+TransferModal.propTypes = {
   toggleModal: PropTypes.func.isRequired
 };
 
@@ -91,4 +93,4 @@ export default connect(mapStateToProps, {
 })(reduxForm({
   form: 'TransferPolicies',
   enableReinitialize: true
-})(Transfer));
+})(TransferModal));
