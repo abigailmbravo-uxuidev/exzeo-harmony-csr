@@ -41,7 +41,7 @@ export class TransferList extends Component {
           {selectedPolicies.map(p => {
             return (
               <TransferListItem
-              listClassName={fadePolicy === p.policyNumber ? "data-row fade-out" : "data-row fade-in"}
+              listClassName={fadePolicy === p.policyNumber ? "data-row fade-out" : "data-row"}
               policy={p}
                 clickHandler={uncheckPolicy(p.policyNumber)}
                 isChecked={true}
