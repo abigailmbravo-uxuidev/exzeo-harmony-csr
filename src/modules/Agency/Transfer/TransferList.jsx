@@ -28,7 +28,7 @@ const TRANSFER_LIST_HEADER = {
 
 export class TransferList extends Component {
   render() {
-    const { policies, toggleTransferModal, checkPolicy, uncheckPolicy, checkAllPolicies, selectedPolicies, clearSelectedPolicies } = this.props;
+    const { policies, filteredPolicies, toggleTransferModal, checkPolicy, uncheckPolicy, checkAllPolicies, selectedPolicies, clearSelectedPolicies } = this.props;
     return (
         <div id="TransferList">
           <ul className="data-grid">
@@ -49,7 +49,7 @@ export class TransferList extends Component {
               )
             })
             }
-            {policies.filter(p => !selectedPolicies.some(s => s.policyNumber === p.policyNumber)).map(p => {
+            {filteredPolicies.map(p => {
               return (
                 <TransferListItem 
                 listClassName="data-row"

@@ -10,24 +10,8 @@ import TransferFilter from './TransferFilter';
 export class Transfer extends Component {
   state = { showTransferModal: false, selectedPolicies: [] };
 
-  componentDidMount() {
-    // const { getAgencyAction, getAgentListAction, agency } = this.props;
-    // get policies by agency
-  }
-
   handleToggleModal = () => {
     this.setState(state => ({ showTransferModal: !state.showTransferModal }));
-  }
-
-  filterPropertyAddress = (property) => {
-      const { physicalAddress } = property || {};
-    if(!physicalAddress) return '';
-    return physicalAddress.address1;
-  }
-
-  filterPrimaryPolicyHolder = (policyHolders) => {
-      if(!Array.isArray(policyHolders)) return '';
-      return policyHolders[0].firstName + ' ' + policyHolders[0].lastName;
   }
 
   handleCheckPolicy = (policyNumber) => () => {
@@ -41,8 +25,6 @@ export class Transfer extends Component {
   handleUncheckPolicy = (policyNumber) => () => {
     const { selectedPolicies } = this.state;
     this.setState({ selectedPolicies: selectedPolicies.filter(p => p.policyNumber !== policyNumber) });
-
-    
  }
 
   handleCheckAllPolicies = () => {
@@ -72,9 +54,8 @@ export class Transfer extends Component {
       getPoliciesForAgency
     } = this.props;
 
-    // if (!(agents && agents.length && agency)) return <Loader />;
-
     const { showTransferModal, selectedPolicies } = this.state;
+    const filteredPolicies = policies.filter(p => !selectedPolicies.some(s => s.policyNumber === p.policyNumber));
 
     return (
       <React.Fragment>
@@ -88,8 +69,24 @@ export class Transfer extends Component {
           <div className="scroll">
             <div className="form-group survey-wrapper" role="group">
               <section className="policy-filter"> 
-              <TransferFilter policyNumberList={policyNumberList} listAnswersAsKey={listAnswersAsKey} agentsList={agentsList} getPoliciesForAgency={getPoliciesForAgency} />
-              <TransferList clearSelectedPolicies={this.clearSelectedPolicies} selectedPolicies={selectedPolicies} checkAllPolicies={this.handleCheckAllPolicies} checkPolicy={this.handleCheckPolicy} uncheckPolicy={this.handleUncheckPolicy} policyNumberList={policyNumberList} policies={policies} toggleTransferModal={this.handleToggleModal} agencyCode={agency.agencyCode} />        
+              <TransferFilter 
+                policyNumberList={policyNumberList} 
+                listAnswersAsKey={listAnswersAsKey} 
+                agentsList={agentsList} 
+                getPoliciesForAgency={getPoliciesForAgency} 
+              />
+              <TransferList 
+                filteredPolicies={filteredPolicies} 
+                clearSelectedPolicies={this.clearSelectedPolicies} 
+                selectedPolicies={selectedPolicies} 
+                checkAllPolicies={this.handleCheckAllPolicies} 
+                checkPolicy={this.handleCheckPolicy} 
+                uncheckPolicy={this.handleUncheckPolicy} 
+                policyNumberList={policyNumberList} 
+                policies={policies} 
+                toggleTransferModal={this.handleToggleModal} 
+                agencyCode={agency.agencyCode} 
+              />        
               </section>
             </div>
           </div>

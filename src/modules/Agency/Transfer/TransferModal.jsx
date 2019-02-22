@@ -24,7 +24,7 @@ export class TransferModal extends Component {
   }
 
   render() {
-    const { handleSubmit, toggleModal, agencies, agents, selectedPolicies, } = this.props;
+    const { handleSubmit, toggleModal, agencies, agents } = this.props;
 
     if(agencies.length === 0) return (<Loader />);
 
