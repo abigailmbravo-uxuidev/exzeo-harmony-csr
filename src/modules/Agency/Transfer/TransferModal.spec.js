@@ -7,6 +7,8 @@ import mockAgency from '../mockAgency';
 describe('Testing Transfer Modal', () => {
   it('should render Transfer Modal', () => {
     const props = {
+      agencyCode: 123,
+      getAgentsByAgencyCode(){},
       handleSubmit(){},
       toggleModal(){},
       agencies: [mockAgency],
@@ -15,5 +17,7 @@ describe('Testing Transfer Modal', () => {
     const wrapper = shallow(<TransferModal {...props} />);
     expect(wrapper).toBeTruthy();
     const wi = wrapper.instance();
+
+    wi.submitTransfer({}, fn => fn, props);
   });
 });
