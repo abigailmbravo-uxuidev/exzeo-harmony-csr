@@ -51,11 +51,11 @@ export class TransferAOR extends Component {
     const { isLoading } = this.state;
 
     return (
-      <div className="modal" style={this.modalStyle}>
+      <div className="modal transfer-AOR-modal" style={this.modalStyle}>
         {(isLoading) &&
           <Loader />
         }
-        <div className="card card-billing-edit-modal">
+        <div className="card">
           <form id="TransferAOR" className="TransferAOR" onSubmit={handleSubmit(this.submitTransfer)}>
             <div className="card-header">
               <h4>Transfer AOR</h4>
@@ -108,7 +108,7 @@ TransferAOR.propTypes = {
   policyNumber: PropTypes.string.isRequired,
   companyCode: PropTypes.string.isRequired,
   state: PropTypes.string.isRequired,
-  agencyCode: PropTypes.number.isRequired, 
+  agencyCode: PropTypes.number.isRequired,
   agentCode: PropTypes.number
 };
 

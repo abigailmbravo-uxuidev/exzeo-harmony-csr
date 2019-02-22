@@ -1,10 +1,10 @@
 .modal {
   position: absolute;
-  z-index: 9999;
   top: 0;
   right: 0;
   bottom: 0;
   left: 0;
+  z-index: 9999;
   display: flex;
   align-items: center;
   flex-direction: column;
@@ -31,17 +31,9 @@
     }
   }
 
-  &.add-agent-crud {}
-
   &.existing-agent-modal {
     .card {
       max-width: 40rem;
-    }
-  }
-
-  &.agent-crud {
-    .card {
-      //width: 80rem;
     }
   }
 
@@ -56,9 +48,9 @@
       height: 90%;
 
       .card {
+        max-height: 45rem;
         width: 60rem;
         height: 90%;
-        max-height: 45rem;
       }
     }
   }
@@ -66,6 +58,29 @@
   &.license-crud {
     .card {
       width: 40rem;
+    }
+  }
+
+  &.transfer-AOR-modal {
+    .card {
+      width: 40rem;
+
+      .card-block {
+        overflow: visible;
+      }
+    }
+    .agencyCode {
+      z-index: 20;      
+      .Select.TypeAhead {
+        z-index: 20;
+      }
+    }
+    
+    .agentCode {
+      z-index: 10;
+      .Select.TypeAhead {
+        z-index: 10;
+      }
     }
   }
 
@@ -120,8 +135,8 @@
 
 .modal.uw-conditions {
   .card {
-    height: 80%;
     max-height: 36rem;
+    height: 80%;
 
     .card-block {
       ul {
