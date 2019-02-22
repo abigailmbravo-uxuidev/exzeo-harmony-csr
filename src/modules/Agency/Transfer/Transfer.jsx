@@ -8,18 +8,25 @@ import TransferList from './TransferList';
 import TransferFilter from './TransferFilter';
 
 export class Transfer extends Component {
-  state = { showTransferModal: false, selectedPolicies: [] };
+  state = { showTransferModal: false, selectedPolicies: [], fadeOutPolicy: undefined };
 
   handleToggleModal = () => {
     this.setState(state => ({ showTransferModal: !state.showTransferModal }));
   }
 
   handleCheckPolicy = (policyNumber) => () => {
-    const { policies } = this.props;
-    const { selectedPolicies } = this.state;
+
+    this.setState({ fadeOutPolicy: policyNumber });
+    const self = this;
+
+    setTimeout(function() {
+    const { policies } = self.props;
+    const { selectedPolicies } = self.state;
     const policy = policies.filter(v => v.policyNumber === policyNumber)[0];
     selectedPolicies.push(policy);
-     this.setState({ selectedPolicies });
+    self.setState({ selectedPolicies, fadeOutPolicy: undefined });
+    }, 1000)
+  
   }
 
   handleUncheckPolicy = (policyNumber) => () => {
@@ -54,7 +61,7 @@ export class Transfer extends Component {
       getPoliciesForAgency
     } = this.props;
 
-    const { showTransferModal, selectedPolicies } = this.state;
+    const { showTransferModal, selectedPolicies, fadeOutPolicy } = this.state;
     const filteredPolicies = policies.filter(p => !selectedPolicies.some(s => s.policyNumber === p.policyNumber));
 
     return (
@@ -77,6 +84,7 @@ export class Transfer extends Component {
                 getPoliciesForAgency={getPoliciesForAgency} 
               />
               <TransferList 
+                fadeOutPolicy={fadeOutPolicy}
                 filteredPolicies={filteredPolicies} 
                 clearSelectedPolicies={this.clearSelectedPolicies} 
                 selectedPolicies={selectedPolicies} 
