@@ -19,36 +19,36 @@ export class Transfer extends Component {
     this.setState({ fadeOutPolicy: policyNumber });
     const self = this;
 
-    setTimeout(function() {
-    const { policies } = self.props;
-    const { selectedPolicies } = self.state;
-    const policy = policies.filter(v => v.policyNumber === policyNumber)[0];
-    selectedPolicies.push(policy);
-    self.setState({ selectedPolicies, fadeOutPolicy: undefined });
-    }, 1000)
-  
+    setTimeout(function () {
+      const { policies } = self.props;
+      const { selectedPolicies } = self.state;
+      const policy = policies.filter(v => v.policyNumber === policyNumber)[0];
+      selectedPolicies.push(policy);
+      self.setState({ selectedPolicies, fadeOutPolicy: undefined });
+    }, 500)
+
   }
 
   handleUncheckPolicy = (policyNumber) => () => {
     const { selectedPolicies } = this.state;
     this.setState({ selectedPolicies: selectedPolicies.filter(p => p.policyNumber !== policyNumber) });
- }
+  }
 
   handleCheckAllPolicies = () => {
     const { policies } = this.props;
     const { selectedPolicies } = this.state;
 
-    if(policies.length === selectedPolicies.length){
-      this.setState({ selectedPolicies:  [] });
+    if (policies.length === selectedPolicies.length) {
+      this.setState({ selectedPolicies: [] });
     }
     else {
-      this.setState({ selectedPolicies:  policies });
+      this.setState({ selectedPolicies: policies });
     }
 
   }
 
   clearSelectedPolicies = () => {
-    this.setState({ selectedPolicies:  [] });
+    this.setState({ selectedPolicies: [] });
   }
 
   render() {
@@ -66,7 +66,7 @@ export class Transfer extends Component {
 
     return (
       <React.Fragment>
-        {showTransferModal && 
+        {showTransferModal &&
           <TransferModal
             clearSelectedPolicies={this.clearSelectedPolicies}
             selectedPolicies={selectedPolicies}
@@ -76,26 +76,26 @@ export class Transfer extends Component {
         <div className="route-content">
           <div className="scroll">
             <div className="form-group survey-wrapper" role="group">
-              <section className="policy-filter"> 
-              <TransferFilter 
-                policyNumberList={policyNumberList} 
-                listAnswersAsKey={listAnswersAsKey} 
-                agentsList={agentsList} 
-                getPoliciesForAgency={getPoliciesForAgency} 
-              />
-              <TransferList 
-                fadeOutPolicy={fadeOutPolicy}
-                filteredPolicies={filteredPolicies} 
-                clearSelectedPolicies={this.clearSelectedPolicies} 
-                selectedPolicies={selectedPolicies} 
-                checkAllPolicies={this.handleCheckAllPolicies} 
-                checkPolicy={this.handleCheckPolicy} 
-                uncheckPolicy={this.handleUncheckPolicy} 
-                policyNumberList={policyNumberList} 
-                policies={policies} 
-                toggleTransferModal={this.handleToggleModal} 
-                agencyCode={agency.agencyCode} 
-              />        
+              <section className="policy-filter">
+                <TransferFilter
+                  policyNumberList={policyNumberList}
+                  listAnswersAsKey={listAnswersAsKey}
+                  agentsList={agentsList}
+                  getPoliciesForAgency={getPoliciesForAgency}
+                />
+                <TransferList
+                  fadeOutPolicy={fadeOutPolicy}
+                  filteredPolicies={filteredPolicies}
+                  clearSelectedPolicies={this.clearSelectedPolicies}
+                  selectedPolicies={selectedPolicies}
+                  checkAllPolicies={this.handleCheckAllPolicies}
+                  checkPolicy={this.handleCheckPolicy}
+                  uncheckPolicy={this.handleUncheckPolicy}
+                  policyNumberList={policyNumberList}
+                  policies={policies}
+                  toggleTransferModal={this.handleToggleModal}
+                  agencyCode={agency.agencyCode}
+                />
               </section>
             </div>
           </div>
