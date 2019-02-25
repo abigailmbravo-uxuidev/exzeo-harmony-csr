@@ -9,7 +9,7 @@ import { getAgenciesList, getAgentsListForTransfer } from '../../../state/select
 
 export class TransferModal extends Component {
   async componentDidMount() {
-    const { getAgencies, getAgentsByAgencyCode, companyCode, agencyCode, state } = this.props;
+    const { getAgencies } = this.props;
     await getAgencies('TTIC', 'FL');
   }
 

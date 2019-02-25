@@ -1,19 +1,5 @@
-import React, { Component, Fragment } from 'react';
-import { Field, reduxForm } from 'redux-form';
-
-import {
-  Input,
-  MultiSelectTypeAhead,
-  Button,
-} from '@exzeo/core-ui';
-
-import TransferFilter from './TransferFilter';
+import React, { Component } from 'react';
 import TransferListItem from './TransferListItem';
-
-const filterPolicy = (policy, selectedArray) => {
-  const policyNumber = policy.policyNumber;
-  return !selectedArray.includes(s => s.policyNumber === policyNumber)
-}
 
 const TRANSFER_LIST_HEADER = {
   policyNumber: 'Policy Number',
@@ -41,8 +27,9 @@ export class TransferList extends Component {
           {selectedPolicies.map(p => {
             return (
               <TransferListItem
-              listClassName={fadePolicy === p.policyNumber ? "data-row fade-out" : "data-row"}
-              policy={p}
+                key={`${p.policyNumber}_selected`}
+                listClassName={fadePolicy === p.policyNumber ? "data-row fade-out" : "data-row"}
+                policy={p}
                 clickHandler={uncheckPolicy(p.policyNumber)}
                 isChecked={true}
               />
@@ -52,6 +39,7 @@ export class TransferList extends Component {
           {filteredPolicies.map(p => {
             return (
               <TransferListItem
+                key={`${p.policyNumber}_filtered`}
                 listClassName={fadePolicy === p.policyNumber ? "data-row fade-out" : "data-row"}
                 policy={p}
                 clickHandler={checkPolicy(p.policyNumber)}

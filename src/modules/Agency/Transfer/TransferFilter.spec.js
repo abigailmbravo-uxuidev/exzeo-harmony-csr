@@ -7,10 +7,13 @@ import mockAgency from '../mockAgency';
 describe('Testing TransferFilter', () => {
   it('should render TransferFilter', () => {
     const props = {
-        listAnswersAsKey: {
-            Products: [{ answer: 'HO3', label: 'HO3'}],
-            US_states : [{ answer: 'FL', label: 'FL'}]
-        }
+      policyNumberList: [{ answer: '12-1014145-01', label: '12-1014145-01'}, { answer: '12-1014144-01', label: '12-1014144-01'}],
+      agentsList: [{ answer: '60000', label: 'WALLY WAGONER'}, { answer: '70000', label: 'AGENT TWO'}],
+      reset(){},
+      listAnswersAsKey: {
+        Products: [{ answer: 'HO3', label: 'HO3'}],
+        US_states : [{ answer: 'FL', label: 'FL'}]
+      }
     };
     const wrapper = shallow(<TransferFilter {...props} />);
     expect(wrapper).toBeTruthy();

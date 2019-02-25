@@ -13,7 +13,6 @@ export class TransferFilter extends Component {
 
   handleFilterChange = (value, previousValues, allValues) => {
     const { policyNumber, state, product } = allValues;
-    console.log(allValues);
     this.props.getPoliciesForAgency({ 
       policyNumber,
       state,

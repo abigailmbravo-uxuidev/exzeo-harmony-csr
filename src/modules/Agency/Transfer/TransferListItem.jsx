@@ -4,7 +4,7 @@ const TransferListItem = ({ policy, clickHandler, isChecked, listClassName }) =>
   return (
     <li className={listClassName} onClick={clickHandler}>
         <span className="checkbox" >
-        {isChecked ? <span class="fa fa-check-square" /> : <span class="fa fa-square" /> }    
+        {isChecked ? <span className="fa fa-check-square" /> : <span className="fa fa-square" /> }    
         </span>
         <span className="policy-number">{policy.policyNumber}</span>
         <span className="company">{policy.companyCode}</span>

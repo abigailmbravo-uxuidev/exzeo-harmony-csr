@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { Loader } from '@exzeo/core-ui';
 
 import Footer from '../../../components/Common/Footer';
 

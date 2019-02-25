@@ -8,6 +8,7 @@ describe('Testing Transfer Modal', () => {
   it('should render Transfer Modal', () => {
     const props = {
       agencyCode: 123,
+      clearSelectedPolicies(){},
       getAgentsByAgencyCode(){},
       handleSubmit(){},
       toggleModal(){},
