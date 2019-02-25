@@ -115,6 +115,22 @@ export function getAgentsByAgencyCode(agencyCode) {
 
 /**
  *
+ * @param agencyCode
+ * @returns {Function}
+ */
+export function getAgentListByAgencyCode(agencyCode) {
+  return async (dispatch) => {
+    try {
+      const agents = await fetchAgentsByAgencyCode(agencyCode);
+      dispatch(setAgentList(agents));
+    } catch (error) {
+      dispatch(errorActions.setAppError(error));
+    }
+  };
+}
+
+/**
+ *
  * @param companyCode
  * @param state
  * @returns {Function}

@@ -10,6 +10,8 @@ const getAgents = state => state.agencyState.agents;
 
 const getOrphanedAgents = state => state.agencyState.orphans;
 
+const getAgentList = state => state.agencyState.agentList;
+
 export const getOrphanedAgentsList = createSelector(
   [getOrphanedAgents],
   (orphans) => {
@@ -22,7 +24,7 @@ export const getOrphanedAgentsList = createSelector(
 );
 
 export const getAgentsListForTransfer = createSelector(
-  [getAgents],
+  [getAgentList],
   (agents) => {
     if (!agents || !Array.isArray(agents)) return [];
     return agents.map(o => ({
