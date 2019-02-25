@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { reduxForm, Field } from 'redux-form';
-import { SelectTypeAhead, Loader, validation } from '@exzeo/core-ui';
+import { SelectTypeAhead, Select, Loader, validation } from '@exzeo/core-ui';
 
 import { getAgencies, getAgentsByAgencyCode } from '../../../state/actions/agency.actions';
 import { getAgenciesList, getAgentsListForTransfer } from '../../../state/selectors/agency.selector';
@@ -14,7 +14,8 @@ export class TransferModal extends Component {
   }
 
   handleAgencyChange = (event, agencyCode) => {
-    const { getAgentsByAgencyCode } = this.props;
+    const { getAgentsByAgencyCode, change, dispatch } = this.props;
+    change('agentCode', '');
     getAgentsByAgencyCode(agencyCode);
   }
 
@@ -49,7 +50,7 @@ export class TransferModal extends Component {
                 label="Agent"
                 name="agentCode"
                 dataTest="agentCode"
-                component={SelectTypeAhead}
+                component={Select}
                 answers={agents}
                 validate={validation.isRequired} />
             </div>
