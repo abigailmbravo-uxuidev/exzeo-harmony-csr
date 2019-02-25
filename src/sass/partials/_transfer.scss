@@ -37,6 +37,7 @@
                 li {
                   display: flex;
                   padding: ($padding/2) $padding;
+                  cursor: pointer;
                   
                   &:nth-of-type(odd) {
                     background: $warm-gray-01;
