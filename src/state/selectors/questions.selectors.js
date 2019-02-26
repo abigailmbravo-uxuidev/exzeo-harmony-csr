@@ -42,14 +42,19 @@ export const getListAnswers = createSelector(
     if (!lists) return [];
 
     const mainList = {};
-
     const listItems = Object.keys(lists);
 
     listItems.forEach((item) => {
-      mainList[item] = Object.keys(lists[item].extendedProperties || {}).sort().map((key) => {
-        return { answer: key, label: lists[item].extendedProperties[key].displayText };
+      const list = lists[item].extendedProperties || {};
+      const filteredListValues = Object.keys(list).sort().map((key) => {
+        const listItem = list[key];
+        if(!listItem.isActive) return {};
+        return { answer: key, label: listItem.displayText };
       }) || [];
+
+      mainList[item] = filteredListValues.filter(i => !!i.answer)
     });
+    
     return mainList;
   }
 );
@@ -60,15 +65,19 @@ export const getListAnswersAsKey = createSelector(
     if (!lists) return [];
 
     const mainList = {};
-
     const listItems = Object.keys(lists);
 
     listItems.forEach((item) => {
       const list = lists[item].extendedProperties || {};
-      mainList[item] = Object.keys(list).sort().map((key) => {
+      const filteredListValues = Object.keys(list).sort().map((key) => {
+        const listItem = list[key];
+        if(!listItem.isActive) return {};
         return { answer: key, label: key };
       }) || [];
+
+      mainList[item] = filteredListValues.filter(i => !!i.answer)
     });
+
     return mainList;
   }
 );
