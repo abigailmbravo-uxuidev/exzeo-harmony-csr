@@ -68,8 +68,7 @@ export const getListAnswersAsKey = createSelector(
     listItems.forEach((item) => {
       const list = lists[item].extendedProperties || {};
       mainList[item] = Object.keys(list).sort().map((key) => {
-        const listItem = list[key];
-        if(!listItem.isActive) return {};
+        if(!list[key].isActive) return {};
         return { answer: key, label: key };
       }).filter(i => !!i.answer) || [];
     });
