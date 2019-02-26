@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Field, reduxForm } from 'redux-form';
-import { SelectTypeAhead, Loader, validation } from '@exzeo/core-ui';
+import { SelectInteger, SelectTypeAhead, Loader, validation } from '@exzeo/core-ui';
 
 import { callService } from '../../utilities/serviceRunner';
 import { getAgencies, getAgentsByAgencyCode } from '../../state/actions/agency.actions';
@@ -22,7 +22,9 @@ export class TransferAOR extends Component {
   }
 
   handleAgencyChange = (_, agencyCode) => {
-    const { getAgentsByAgencyCode } = this.props;
+    const { change, getAgentsByAgencyCode } = this.props;
+    console.log(this.props)
+    change('agentCode', null);
     getAgentsByAgencyCode(agencyCode);
   }
 
@@ -73,7 +75,7 @@ export class TransferAOR extends Component {
                 label="Agent"
                 name="agentCode"
                 dataTest="agentCode"
-                component={SelectTypeAhead}
+                component={SelectInteger}
                 answers={agents}
               />
             </div>
