@@ -59,11 +59,7 @@ describe('Questions State Reducer', () => {
     const map = {
       ...initialState.questions,
       lists: {
-        test: {
-          code: 'test',
-          extendedProperties:
-      { listItem: { dispalyText: '1', isActive: true, type: 'string' } }
-        }
+        test: [{"dispalyText": "1", "isActive": true, "key": "listItem", "type": "string"}]
       }
     };
 
