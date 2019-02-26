@@ -22,7 +22,7 @@ export class TransferAOR extends Component {
     try {
       await getAgencies(companyCode, state);
       await getAgentsByAgencyCode(agencyCode);
-    } catch(err) {
+    } catch (err) {
       console.log('errrr', err)
     } finally {
       this.setState({ isLoading: false });
@@ -62,10 +62,10 @@ export class TransferAOR extends Component {
 
     return (
       <div className="modal transfer-AOR-modal" style={this.modalStyle}>
-        {(isLoading) &&
-          <Loader />
-        }
         <div className="card">
+          {(isLoading) &&
+            <Loader />
+          }
           <form id="TransferAOR" className="TransferAOR" onSubmit={handleSubmit(this.submitTransfer)}>
             <div className="card-header">
               <h4>Transfer AOR</h4>
