@@ -39,7 +39,7 @@ export class PolicyholderAgent extends Component {
 
     const selectedAgent = agents.find(a => a.agentCode === policy.agentCode);
     const { showTransferAOR } = this.state;
-    const transferDisabled = policy.status === 'Policy Issued';
+    const transferDisabled = !['Policy Issued', 'In Force'].includes(policy.status);
 
     return (
       <React.Fragment>

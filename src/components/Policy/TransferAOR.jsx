@@ -20,10 +20,12 @@ export class TransferAOR extends Component {
     this.setState({ isLoading: true });
 
     try {
-      await getAgencies(companyCode, state);
-      await getAgentsByAgencyCode(agencyCode);
+      await Promise.all([
+        getAgencies(companyCode, state),
+        getAgentsByAgencyCode(agencyCode),
+      ]);
     } catch (err) {
-      console.log('errrr', err)
+      setAppError(err);
     } finally {
       this.setState({ isLoading: false });
     }
@@ -31,7 +33,6 @@ export class TransferAOR extends Component {
 
   handleAgencyChange = (_, agencyCode) => {
     const { change, getAgentsByAgencyCode } = this.props;
-    console.log(this.props)
     change('agentCode', null);
     getAgentsByAgencyCode(agencyCode);
   }
@@ -77,6 +78,7 @@ export class TransferAOR extends Component {
                 dataTest="agencyCode"
                 component={SelectTypeAhead}
                 answers={agencies}
+                validate={validation.isRequired}
                 onChange={this.handleAgencyChange}
               />
               <Field
@@ -85,6 +87,7 @@ export class TransferAOR extends Component {
                 dataTest="agentCode"
                 component={SelectInteger}
                 answers={agents}
+                validate={validation.isRequired}
               />
             </div>
             <div className="card-footer">
