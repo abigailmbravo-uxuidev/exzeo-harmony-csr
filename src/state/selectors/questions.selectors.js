@@ -46,13 +46,11 @@ export const getListAnswers = createSelector(
 
     listItems.forEach((item) => {
       const list = lists[item].extendedProperties || {};
-      const filteredListValues = Object.keys(list).sort().map((key) => {
+      mainList[item] = Object.keys(list).sort().map((key) => {
         const listItem = list[key];
         if(!listItem.isActive) return {};
         return { answer: key, label: listItem.displayText };
-      }) || [];
-
-      mainList[item] = filteredListValues.filter(i => !!i.answer)
+      }).filter(i => !!i.answer) || [];
     });
     
     return mainList;
@@ -69,13 +67,11 @@ export const getListAnswersAsKey = createSelector(
 
     listItems.forEach((item) => {
       const list = lists[item].extendedProperties || {};
-      const filteredListValues = Object.keys(list).sort().map((key) => {
+      mainList[item] = Object.keys(list).sort().map((key) => {
         const listItem = list[key];
         if(!listItem.isActive) return {};
         return { answer: key, label: key };
-      }) || [];
-
-      mainList[item] = filteredListValues.filter(i => !!i.answer)
+      }).filter(i => !!i.answer) || [];
     });
 
     return mainList;
