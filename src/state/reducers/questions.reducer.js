@@ -60,7 +60,6 @@ function setLists(state, action) {
       const list = item.extendedProperties || {};
       listMap[item.code] = Object.keys(list).sort().reduce((finalList, key) => {
         const listItem = list[key];
-        console.log(listItem)
         if(listItem.isActive) {
           listItem.key = key;
           finalList.push(listItem)
