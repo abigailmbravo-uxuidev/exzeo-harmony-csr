@@ -43,7 +43,7 @@ export const getListAnswers = createSelector(
     if (!lists || Object.keys(lists).length === 0) return [];
     Object.keys(lists).forEach((key) => {
       const listItem = lists[key];
-      listObject[key] = listItem.map(li => { return { answer: li.key, label: li.displayText } })
+      listObject[key] = listItem.map(li => ({ answer: li.key, label: li.displayText }));
     });
     return listObject;
   }
@@ -56,7 +56,7 @@ export const getListAnswersAsKey = createSelector(
     if (!lists || Object.keys(lists).length === 0) return [];
     Object.keys(lists).forEach((key) => {
       const listItem = lists[key];
-      listObject[key] = listItem.map(li => { return { answer: li.key, label: li.key } })
+      listObject[key] = listItem.map(li => ({ answer: li.key, label: li.key } ));
     });
     return listObject;
   }
