@@ -39,40 +39,25 @@ export const getDiaryAssigneeAnswers = createSelector(
 export const getListAnswers = createSelector(
   [getLists],
   (lists) => {
-    if (!lists) return [];
-
-    const mainList = {};
-    const listItems = Object.keys(lists);
-
-    listItems.forEach((item) => {
-      const list = lists[item].extendedProperties || {};
-      mainList[item] = Object.keys(list).sort().map((key) => {
-        const listItem = list[key];
-        if(!listItem.isActive) return {};
-        return { answer: key, label: listItem.displayText };
-      }).filter(i => !!i.answer) || [];
+    const listObject = {}
+    if (Object.keys(lists).length === 0) return [];
+    Object.keys(lists).forEach((key) => {
+      const listItem = lists[key];
+      listObject[key] = listItem.map(li => { return { answer: li.key, label: li.displayText } })
     });
-    
-    return mainList;
+    return listObject;
   }
 );
 
 export const getListAnswersAsKey = createSelector(
   [getLists],
   (lists) => {
-    if (!lists) return [];
-
-    const mainList = {};
-    const listItems = Object.keys(lists);
-
-    listItems.forEach((item) => {
-      const list = lists[item].extendedProperties || {};
-      mainList[item] = Object.keys(list).sort().map((key) => {
-        if(!list[key].isActive) return {};
-        return { answer: key, label: key };
-      }).filter(i => !!i.answer) || [];
+    const listObject = {}
+    if (Object.keys(lists).length === 0) return [];
+    Object.keys(lists).forEach((key) => {
+      const listItem = lists[key];
+      listObject[key] = listItem.map(li => { return { answer: li.key, label: li.key } })
     });
-
-    return mainList;
+    return listObject;
   }
 );
