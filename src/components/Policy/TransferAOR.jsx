@@ -15,10 +15,18 @@ export class TransferAOR extends Component {
     isLoading: false
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     const { getAgencies, getAgentsByAgencyCode, initialize, companyCode, agencyCode, state } = this.props;
-    getAgencies(companyCode, state);
-    getAgentsByAgencyCode(agencyCode);
+    this.setState({ isLoading: true });
+
+    try {
+      await getAgencies(companyCode, state);
+      await getAgentsByAgencyCode(agencyCode);
+    } catch(err) {
+      console.log('errrr', err)
+    } finally {
+      this.setState({ isLoading: false });
+    }
   }
 
   handleAgencyChange = (_, agencyCode) => {
