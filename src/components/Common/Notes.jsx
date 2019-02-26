@@ -4,18 +4,34 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Loader } from '@exzeo/core-ui';
 import moment from 'moment';
+import axios from 'axios';
 
 import { callService } from '../../utilities/serviceRunner';
 import NoteList from './NoteList';
 import Footer from './Footer';
 
-const getNotes = async (agencyCode) => {
-  const data = { service: 'notes', method: 'GET', path: `v1/notes/?agencyCode=${agencyCode}` }
+const getNotes = async (numbers, type) => {
+
+  const axiosConfig = {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    url: `${process.env.REACT_APP_API_URL}/svc`,
+    data: {
+      exchangeName: 'harmony', 
+      routingKey: 'harmony.note.getNotes', 
+      data: {
+        data: [
+          { number: numbers, numberType: 'agencyCode' }
+        ]
+      }
+    }
+  };
+
   try {
-   const response = await callService(data);
-    return response.data && response.data.result ? response.data.result : [];
+    const response = await axios(axiosConfig);
+    return response.data.result;
   } catch (error) {
-    throw error
+    console.log('e: ', error)
   }
 };
 
@@ -25,12 +41,9 @@ export class Notes extends Component {
     notes: []
   }
 
-  async componentDidMount() {
+  componentDidMount() {
     const { agencyCode, entity } = this.props;
-    await getNotes(agencyCode)
-      .catch(err => {
-        console.log(err)
-      });
+    getNotes(agencyCode)
 
     this.setState({ isLoading: false });
   }
