@@ -97,11 +97,13 @@ export const getEditModalInitialValues = createSelector(
 );
 
 export const getSortedAgents = createSelector(
-  [getAgents],
-  (agents) => {
+  [getAgents, getBranchCode],
+  (agents, branchCode) => {
     if (!Array.isArray(agents)) return [];
-    return agents.sort((a, b) => {
-      return a.firstName.localeCompare(b.firstName);
-    });
+
+    return agents.reduce(( branchAcc, agent) => {
+     if(agent.agencies.some(agency => Number(agency.branchCode) === Number(branchCode))) branchAcc.push(agent)
+    return branchAcc;
+    }, []).sort((a, b) => (a.firstName.localeCompare(b.firstName)));
   }
 );
