@@ -3,7 +3,7 @@ import { normalize, Button } from '@exzeo/core-ui';
 
 export const AgentsCard = ({
   agency,
-  agent: { mailingAddress = {} },
+  agent: { mailingAddress = {}, licenses = [] },
   agent,
   agentIndex,
   handleEditAgent,
@@ -20,7 +20,7 @@ export const AgentsCard = ({
       <div className="card-name">
         <div className="card-name-content">
           <h4><span className="agent-code">{agent.agentCode}</span> | <span className="agent-name">{`${agent.firstName} ${agent.lastName}`}</span>
-          { agent.licenses.map(l =>(<React.Fragment> | <span className="agent-license">{l.licenseNumber}</span></React.Fragment>)) }
+          { licenses.map(l =>(<React.Fragment> | <span className="agent-license">{l.licenseNumber}</span></React.Fragment>)) }
           </h4>
           <div className="contact-address">
             {mailingAddress.address1},&nbsp;
