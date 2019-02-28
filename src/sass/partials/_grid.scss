@@ -27,16 +27,16 @@ $table-border-color: $warm-gray-07 !default; //== Media queries breakpoints
 
 .react-bs-table table {
   margin-bottom: 0;
-  table-layout: fixed;
-  color: $warm-gray-10;
   background-color: transparent;
+  color: $warm-gray-10;
+  table-layout: fixed;
 }
 
 .react-bs-table table td,
 .react-bs-table table th {
   overflow: hidden;
-  white-space: nowrap;
   text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .react-bs-table-pagination {
@@ -65,8 +65,8 @@ $table-border-color: $warm-gray-07 !default; //== Media queries breakpoints
 }
 
 .react-bs-table .table-bordered {
-  border: 0;
   outline: none !important;
+  border: 0;
 }
 
 .react-bs-table {
@@ -86,14 +86,14 @@ $table-border-color: $warm-gray-07 !default; //== Media queries breakpoints
 
 .react-bs-table .table-bordered > thead > tr > td,
 .react-bs-table .table-bordered > thead > tr > th {
-  color: $warm-gray-08;
   border-bottom-width: 1px;
   background: $warm-gray-02;
+  color: $warm-gray-08;
 }
 
 .react-bs-table .table-bordered > tbody > tr > td {
-  color: $warm-gray-10;
   outline: none !important;
+  color: $warm-gray-10;
 }
 
 .react-bs-table .table-bordered > tbody > tr {
@@ -188,8 +188,8 @@ $table-border-color: $warm-gray-07 !default; //== Media queries breakpoints
 .react-bs-table .react-bs-container-header > table > thead > tr > th .date-filter-input,
 .react-bs-table .react-bs-container-header > table > thead > tr > th .number-filter-input {
   float: left;
-  width: calc(100% - 4.5rem - #{$padding});
   margin-left: $padding;
+  width: calc(100% - 4.5rem - #{$padding});
 }
 
 .react-bs-table .react-bs-container-header > table > thead > tr > th .date-filter-comparator,
@@ -213,9 +213,9 @@ $table-border-color: $warm-gray-07 !default; //== Media queries breakpoints
 
 .react-bs-container .textarea-save-btn {
   position: absolute;
-  z-index: 100;
   top: -21px;
   right: 0;
+  z-index: 100;
 }
 
 .react-bs-table-no-data {
@@ -226,15 +226,16 @@ $table-border-color: $warm-gray-07 !default; //== Media queries breakpoints
   z-index: 101;
   overflow-x: hidden;
   overflow-y: auto;
-  opacity: 0;
   background-color: rgba(0, 0, 0, 0.5);
+  opacity: 0;
+
   -webkit-perspective: 600;
   perspective: 600;
 }
 
 .ReactModal__Overlay--after-open {
-  transition: opacity 150ms ease-out;
   opacity: 1;
+  transition: opacity 150ms ease-out;
 }
 
 .ReactModal__Content {
@@ -311,8 +312,8 @@ td.react-bs-table-expand-cell {
   }
 
   0% {
-    transform: scale3d(.3, .3, .3);
     opacity: 0;
+    transform: scale3d(.3, .3, .3);
   }
 
   20% {
@@ -324,8 +325,8 @@ td.react-bs-table-expand-cell {
   }
 
   60% {
-    transform: scale3d(1.03, 1.03, 1.03);
     opacity: 1;
+    transform: scale3d(1.03, 1.03, 1.03);
   }
 
   80% {
@@ -333,8 +334,8 @@ td.react-bs-table-expand-cell {
   }
 
   to {
-    transform: scale3d(1, 1, 1);
     opacity: 1;
+    transform: scale3d(1, 1, 1);
   }
 }
 
@@ -348,13 +349,13 @@ td.react-bs-table-expand-cell {
 
   50%,
   55% {
-    transform: scale3d(1.1, 1.1, 1.1);
     opacity: 1;
+    transform: scale3d(1.1, 1.1, 1.1);
   }
 
   to {
-    transform: scale3d(.3, .3, .3);
     opacity: 0;
+    transform: scale3d(.3, .3, .3);
   }
 }
 
@@ -373,8 +374,8 @@ table {
 caption {
   padding-top: $table-cell-padding;
   padding-bottom: $table-cell-padding;
-  text-align: left;
   color: $text-muted;
+  text-align: left;
 }
 
 th {
@@ -383,9 +384,9 @@ th {
 // Baseline styles
 
 .table {
-  width: 100%;
-  max-width: 100%;
   margin-bottom: $line-height-computed;
+  max-width: 100%;
+  width: 100%;
   // Cells
   > tbody,
    > thead,
@@ -394,16 +395,16 @@ th {
       > td,
       > th {
         padding: $table-cell-padding/4;
-        vertical-align: top;
         border-top: 1px solid $table-border-color;
+        vertical-align: top;
         line-height: $line-height-base;
       }
     }
   }
   // Bottom align for column headings
   > thead > tr > th {
-    vertical-align: bottom;
     border-bottom: 2px solid $table-border-color;
+    vertical-align: bottom;
   }
   // Remove top border from thead by default
   > colgroup + thead,
@@ -519,11 +520,13 @@ table {
 .table-responsive {
   overflow-x: auto;
   min-height: 0.01%; // Workaround for IE9 bug (see https://github.com/twbs/bootstrap/issues/14837)
+
   @include for-phone-only {
     overflow-y: hidden;
-    width: 100%;
     margin-bottom: ($line-height-computed * 0.75);
+    width: 100%;
     border: 1px solid $table-border-color;
+
     -ms-overflow-style: -ms-autohiding-scrollbar;
     // Tighten up spacing
     > .table {
@@ -624,8 +627,8 @@ table {
   .workflow-steps {
     .btn {
       align-self: flex-start;
-      height: 36px;
       margin-top: 25px;
+      height: 36px;
     }
 
     input {
@@ -775,8 +778,8 @@ table {
 
                 &:hover {
                   z-index: 2;
-                  transform: scale(1.004);
                   box-shadow: $card-box-shadow-hover;
+                  transform: scale(1.004);
                 }
 
                 td {
@@ -809,8 +812,8 @@ table {
                   &.address {
                     flex-basis: 100%;
                     order: 0;
-                    width: 100%;
                     padding-bottom: 0;
+                    width: 100%;
                     font-size: $font-size-h4;
                   }
 
@@ -852,9 +855,10 @@ table {
       a {
         &.btn {
           margin-right: 2px;
-          text-transform: none;
           border-radius: 0;
+          text-transform: none;
           font-weight: $font-weight-normal;
+
           @include button-variant($warm-gray-12, $warm-gray-01, $warm-gray-01);
 
           &:hover {
@@ -877,6 +881,7 @@ table {
 
             &:hover {
               cursor: default;
+
               @include button-variant($white, $bright-blue-darken-04, $bright-blue-darken-04);
             }
           }
@@ -914,9 +919,9 @@ table {
       flex-direction: column;
       flex-grow: 0;
       flex-shrink: 0;
+      margin: 0 0 0 0.5rem;
       width: 10px;
       height: 1rem;
-      margin: 0 0 0 0.5rem;
       color: $warm-gray-10;
       line-height: 1rem;
 
@@ -930,8 +935,8 @@ table {
         padding: 0 !important;
 
         &:before {
-          content: "\f0d8";
           color: rgba($warm-gray-07, 1);
+          content: "\f0d8";
           font: normal normal normal 1rem $font-family-icon;
         }
       }
@@ -941,8 +946,8 @@ table {
           top: 0.375rem;
 
           &:before {
-            content: "\f0d7";
             color: rgba($warm-gray-07, 1);
+            content: "\f0d7";
             font: normal normal normal 1rem $font-family-icon;
           }
         }
@@ -950,9 +955,9 @@ table {
 
       > span {
         position: absolute;
-        width: auto;
         margin: 0;
         padding: 0;
+        width: auto;
         text-align: center;
         line-height: 1;
 
@@ -960,8 +965,8 @@ table {
           top: -.125rem;
 
           &:before {
-            content: "\f0d8";
             color: rgba($warm-gray-07, .25);
+            content: "\f0d8";
             font: normal normal normal 1rem $font-family-icon;
           }
 
@@ -975,8 +980,8 @@ table {
           top: 0.375rem;
 
           &:before {
-            content: "\f0d7";
             color: rgba($warm-gray-07, .25);
+            content: "\f0d7";
             font: normal normal normal 1rem $font-family-icon;
           }
         }
