@@ -14,6 +14,12 @@ describe('Testing AgentsCard component', () => {
       {...props}
       agency={mockAgency}
       agent={{
+        licenses: [{
+          appointed: true,
+          licenseNumber: "W180087",
+          licenseType: "Resident",
+          state: "FL"
+        }],
         agentCode: mockAgency.agentOfRecord,
         mailingAddress: {},
         primaryPhoneNumber: '1234567890',
@@ -40,6 +46,12 @@ describe('Testing AgentsCard component', () => {
       {...props}
       agency={mockAgency}
       agent={{
+        licenses: [{
+          appointed: true,
+          licenseNumber: "W180087",
+          licenseType: "Resident",
+          state: "FL"
+        }],
         emailAddress: 'test@typtap.com',
         agentCode: mockAgency.agentOfRecord + 1,
         mailingAddress: { address2: 'test' },
