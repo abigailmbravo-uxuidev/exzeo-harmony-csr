@@ -215,23 +215,9 @@ export class MailingAddressBilling extends Component {
 
     const { options } = billingOptions;
 
-    if (!quoteData.rating || (!options || options.length === 0)) {
-      return (
-        <React.Fragment match={match}>
-          <div className="route-content">
-            <div className="scroll">
-              <div className="detail-wrapper">
-                <div className="messages">
-                  <div className="message error">
-                    <i className="fa fa-exclamation-circle" aria-hidden="true" /> &nbsp;Mailing / Billing cannot be accessed until Premium calculated.
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </React.Fragment>
-      );
-    }
+    const noRatingOrNoBillingOptions = (!quoteData.rating || (!options || options.length === 0))
+
+ 
     return (
       <React.Fragment match={match}>
         <Prompt when={dirty} message="Are you sure you want to leave with unsaved changes?" />
@@ -269,31 +255,48 @@ export class MailingAddressBilling extends Component {
                     <TextField validations={['required']} label="Zip" styleName="zip" name="zip" onChange={() => setPropertyToggle(this.props)} />
                 </div>
                 </section>
-                <section>
-                  <h3>Billing</h3>
-                  <SelectFieldBilling
-                    name="billToId"
-                    component="select"
-                    label="Bill To"
-                    onChange={() => selectBillTo(this.props)}
-                    validations={['required']}
-                    answers={billingOptions.options} />
-                  <div className="bill-plan">
-                    <RadioFieldBilling
+                { noRatingOrNoBillingOptions && 
+                  <section>
+                    <div className="route-content">
+                      <div className="scroll">
+                        <div className="detail-wrapper">
+                          <div className="messages">
+                            <div className="message error">
+                              <i className="fa fa-exclamation-circle" aria-hidden="true" /> &nbsp;Billing cannot be accessed until Premium has been calculated and Coverage Info has been completed.
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </section>
+                }
+                { !noRatingOrNoBillingOptions && 
+                  <section>
+                    <h3>Billing</h3>
+                    <SelectFieldBilling
+                      name="billToId"
+                      component="select"
+                      label="Bill To"
+                      onChange={() => selectBillTo(this.props)}
                       validations={['required']}
-                      name="billPlan"
-                      label="Bill Plan"
-                      validate={[value => (value ? undefined : 'Field Required')]}
-                      segmented
-                      answers={_.find(billingOptions.options, ['billToId', this.props.fieldValues.billToId]) ?
-                     _.find(billingOptions.options, ['billToId', this.props.fieldValues.billToId]).payPlans : []}
+                      answers={billingOptions.options} />
+                    <div className="bill-plan">
+                      <RadioFieldBilling
+                        validations={['required']}
+                        name="billPlan"
+                        label="Bill Plan"
+                        validate={[value => (value ? undefined : 'Field Required')]}
+                        segmented
+                        answers={_.find(billingOptions.options, ['billToId', this.props.fieldValues.billToId]) ?
+                      _.find(billingOptions.options, ['billToId', this.props.fieldValues.billToId]).payPlans : []}
+                        paymentPlans={billingOptions.paymentPlans} />
+                    </div>
+                    <InstallmentTerm
+                      payPlans={_.find(billingOptions.options, ['billToId', this.props.fieldValues.billToId]) ?
+                                _.find(billingOptions.options, ['billToId', this.props.fieldValues.billToId]).payPlans : []}
                       paymentPlans={billingOptions.paymentPlans} />
-                  </div>
-                  <InstallmentTerm
-                    payPlans={_.find(billingOptions.options, ['billToId', this.props.fieldValues.billToId]) ?
-                               _.find(billingOptions.options, ['billToId', this.props.fieldValues.billToId]).payPlans : []}
-                    paymentPlans={billingOptions.paymentPlans} />
-                </section>
+                  </section>
+                }
               </div>
             </div>
           </form>
@@ -308,7 +311,7 @@ export class MailingAddressBilling extends Component {
               className="btn btn-primary"
               type="submit"
               form="MailingAddressBilling"
-              disabled={this.props.appState.data.submitting || pristine || editingDisabled || !this.props.fieldValues.billToId}
+              disabled={this.props.appState.data.submitting || pristine || editingDisabled || !this.props.fieldValues.billToId || noRatingOrNoBillingOptions}
               data-test="submit"
             >
               Update
