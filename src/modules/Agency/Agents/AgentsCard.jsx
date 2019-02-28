@@ -19,7 +19,7 @@ export const AgentsCard = ({
     <div className="contact-details">
       <div className="card-name">
         <div className="card-name-content">
-          <h4><span className="agent-code">{agent.agentCode}</span> | <span className="agent-name">{`${agent.firstName} ${agent.lastName}`}</span> 
+          <h4><span className="agent-code">{agent.agentCode}</span> | <span className="agent-name">{`${agent.firstName} ${agent.lastName}`}</span>
           { agent.licenses.map(l =>(<React.Fragment> | <span className="agent-license">{l.licenseNumber}</span></React.Fragment>)) }
           </h4>
           <div className="contact-address">
