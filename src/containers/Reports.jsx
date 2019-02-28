@@ -18,16 +18,14 @@ export class Reports extends Component {
               <div className="scroll">
                 <div className="form-group survey-wrapper" role="group">
                   <h3>Reports</h3>
-                  <div className="flex-parent">
-                    <ul>
-                      <li>
-                        <a href="http://hci-mongodw/ReportServer/Pages/ReportViewer.aspx?%2fHarmony%2fQuote%2fQuotes&rs:Command=Render" target="_blank" rel="noopener noreferrer">Quotes by Created Date</a>
-                      </li>
-                      <li>
-                        <a href="http://hci-mongodw/ReportServer/Pages/ReportViewer.aspx?%2fHarmony%2fQuote%2fPolicy&rs:Command=Render" target="_blank" rel="noopener noreferrer">Policies by Created Date</a>
-                      </li>
-                    </ul>
-                  </div>
+                  <ul>
+                    <li>
+                      <a href="http://hci-mongodw/ReportServer/Pages/ReportViewer.aspx?%2fHarmony%2fQuote%2fQuotes&rs:Command=Render" target="_blank" rel="noopener noreferrer">Quotes by Created Date</a>
+                    </li>
+                    <li>
+                      <a href="http://hci-mongodw/ReportServer/Pages/ReportViewer.aspx?%2fHarmony%2fQuote%2fPolicy&rs:Command=Render" target="_blank" rel="noopener noreferrer">Policies by Created Date</a>
+                    </li>
+                  </ul>
                 </div>
               </div>
             </div>

@@ -1,6 +1,18 @@
 //
 // Base styles
 //
+//links
+/*------------------------------------------------------------------------------------*/
+a {
+  text-decoration: none;
+  color: $bright-blue-lighten-01;
+  @include transition(all 0.2s ease-in-out);
+
+  &:hover {
+    text-decoration: none;
+    color: $blue-darken-02;
+  }
+}
 
 .btn,
 button,
@@ -156,6 +168,7 @@ input[type="submit"] {
     border-width: 0;
     line-height: $headings-line-height;
 
+    &:focus,
     &:hover {
       text-decoration: none;
       color: $bright-blue-lighten-01;
