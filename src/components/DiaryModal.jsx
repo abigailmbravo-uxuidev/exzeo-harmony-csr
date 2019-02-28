@@ -85,6 +85,12 @@ export class DiaryModal extends Component {
               onClick={this.handleMinimize}>
               <i className="fa fa-window-minimize" aria-hidden="true" data-test="diary-window-minimize" />
             </button>
+            <button
+              className="btn btn-icon close-button"
+              type="button"
+              onClick={this.handleClose}>
+              <i className="fa fa-times-circle" aria-hidden="true" data-test="diary-window-close" />
+            </button>
           </div>
         </div>
         <div className="mainContainer">

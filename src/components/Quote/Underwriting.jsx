@@ -26,7 +26,7 @@ export const handleInitialize = (state) => {
     values[question.name] = val;
 
     const defaultAnswer = question && question.answers &&
-    _.find(question.answers, { default: true }) ?
+      _.find(question.answers, { default: true }) ?
       _.find(question.answers, { default: true }).answer : null;
 
     if (defaultAnswer && question.hidden) {

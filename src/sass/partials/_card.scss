@@ -169,9 +169,9 @@
 }
 
 .edit-btn {
-    margin-left: $padding;
   display: flex;
   align-items: center;
+  margin-left: $padding;
   color: $bright-blue;
   font-size: $font-size-sm;
   font-weight: $font-weight-bold;
@@ -204,10 +204,11 @@
   }
 }
 
-.app-wrapper.csr.quote main #AddAdditionalInterestPage .results-wrapper,
-.app-wrapper.csr.policy main .content-wrapper .route-content .form-group section {
+.app-wrapper.csr.policy main .content-wrapper .route-content .form-group section,
+.app-wrapper.csr.quote main #AddAdditionalInterestPage .results-wrapper {
   ul {
-    &.additional-interests-list, &.result-cards {
+    &.additional-interests-list,
+    &.result-cards {
       li {
         &.card {
           align-items: center;
@@ -244,10 +245,6 @@
             &.edit-btn {
               margin-right: $padding;
             }
-
-            &.delete-btn {}
-
-            &.reactivate-btn {}
           }
 
           &.inactive {
@@ -282,6 +279,7 @@
   }
 }
 // ADDED FROM DIARIES / REUSABLE CARDS
+
 ul {
   &.results {
     width: 100%;
@@ -294,6 +292,7 @@ ul {
         flex-shrink: 1;
         width: 100%;
         margin: 0 0 $padding;
+        @include transition(all 0.2s ease-in-out);
 
         &.pastDue {
           .card-header {
@@ -401,7 +400,7 @@ ul {
             flex-grow: 1;
             flex-shrink: 1;
             width: auto;
-            padding: $padding 0;
+            padding: $padding $padding $padding 0;
             background: $white;
 
             h4 {
@@ -421,6 +420,7 @@ ul {
                   padding: ($padding/4) 0;
                   color: $warm-gray-08;
                   font-size: $font-size-sm;
+                  @include transition(all 0.2s ease-in-out);
 
                   &.header {
                     background: $warm-gray-02;
@@ -477,11 +477,52 @@ ul {
           }
         }
 
+        &:hover {
+          cursor: pointer;
+          transform: scale(1.004);
+          box-shadow: $card-box-shadow-hover;
+
+          > div {
+            &.card-body {
+              ul {
+                &.diary-entry-list {
+                  li {
+                    &.data-row {
+                      background: rgba($bright-blue, .1);
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+
+        &:hover {
+          cursor: pointer;
+          transform: scale(1.004);
+          box-shadow: $card-box-shadow-hover;
+
+          > div {
+            &.card-body {
+              ul {
+                &.diary-entry-list {
+                  li {
+                    &.data-row {
+                      background: rgba($bright-blue, .1);
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+
         footer {
           &.card-footer {
             flex-grow: 0;
             flex-shrink: 0;
             width: auto;
+            padding: 0;
             border-width: 0;
             background: $white;
           }
