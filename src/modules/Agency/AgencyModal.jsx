@@ -4,11 +4,7 @@ import { reduxForm, Field } from 'redux-form';
 import { Select, Radio, Input, Integer, validation, Phone } from '@exzeo/core-ui';
 
 import { updateAgency } from '../../state/actions/agency.actions';
-
-const statusAnswers = [
-  { answer: 'Active', label: 'Active' },
-  { answer: 'InActive', label: 'InActive' }
-];
+import { STATUS } from '../../../constants/agency';
 
 const okToPayAnswers = [
   { answer: false, label: 'No' },
@@ -76,7 +72,7 @@ export class AgencyModal extends Component {
                   label="Status"
                   component={Select}
                   validate={validation.isRequired}
-                  answers={statusAnswers} />
+                  answers={STATUS} />
                 <Field
                   label="TPAID"
                   styleName="tpaid"

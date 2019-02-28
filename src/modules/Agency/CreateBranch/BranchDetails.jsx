@@ -2,10 +2,7 @@ import React from 'react';
 import { Field } from 'redux-form';
 import { Input, Radio, Phone, Select, validation } from '@exzeo/core-ui';
 
-const statusAnswers = [
-  { answer: 'Active', label: 'Active' },
-  { answer: 'InActive', label: 'InActive' }
-];
+import { STATUS } from '../../../constants/agency';
 
 const mailAnswers = [
   { answer: false, label: 'No' },
@@ -38,7 +35,7 @@ export const BranchDetails = (agencyCodeDisabled) => {
         label="Status"
         component={Select}
         validate={validation.isRequired}
-        answers={statusAnswers} />
+        answers={STATUS} />
       <Field
         name="mailCommissionChecksToBranch"
         dataTest="mailCommissionChecksToBranch"
