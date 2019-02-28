@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { reduxForm } from 'redux-form';
 
 import AgencyDetails from '../components/FormGroup/AgencyDetails';
-import { STATUS } from '../../../constants/agency';
 
 export class AgencyModal extends Component {
   saveAgency = async (data, dispatch, props) => {
