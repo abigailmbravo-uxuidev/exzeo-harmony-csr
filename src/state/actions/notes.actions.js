@@ -80,4 +80,3 @@ export function fetchNotes(numbers, numberType) {
   };
 };
 
-

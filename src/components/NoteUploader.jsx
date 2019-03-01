@@ -193,7 +193,7 @@ export class NoteUploader extends Component {
     return updatedFiles;
   })
 
-  submitNote = async (data, dispatch, props) => {
+  submitNote = (data, dispatch, props) => {
     const {
       companyCode,
       state,
@@ -308,7 +308,7 @@ export class NoteUploader extends Component {
                 <div className="form-group diary-checkbox">
                   <Field component="input" name="openDiary" type="checkbox" />
                   <label>Create & Open Diary On Save</label>
-                </div>}
+                </div>
               </div>
               <Field name="noteContent" component={renderNotes} label="Note Content" />
               <Field
@@ -339,6 +339,9 @@ export class NoteUploader extends Component {
 }
 
 NoteUploader.propTypes = {
+  companyCode: PropTypes.string.isRequired,
+  state: PropTypes.string.isRequired,
+  product: PropTypes.string.isRequired,
   documentId: PropTypes.string.isRequired,
   noteType: PropTypes.string.isRequired,
   sourceId: PropTypes.string,
