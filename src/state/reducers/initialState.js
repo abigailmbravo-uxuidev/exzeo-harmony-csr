@@ -10,6 +10,7 @@ export default {
   ui: {},
   cg: {},
   error: {},
+  notes: [],
   diaries: [],
   questions: {
     diaryAssignees: [],
