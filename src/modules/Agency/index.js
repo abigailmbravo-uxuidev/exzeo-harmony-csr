@@ -34,6 +34,7 @@ export const OverviewRender = (branchCode, agencyCode) => props => <Overview bra
 export const AgentsRender = (branchCode, agencyCode) => props => <Agents branchCode={branchCode} agencyCode={agencyCode} auth={props.auth} {...props} />;
 export const NotesRender = agencyCode => props => <Notes agencyCode={agencyCode} auth={props.auth} {...props} />;
 export const TransferRender = (branchCode, agencyCode) => props => <Transfer branchCode={branchCode} agencyCode={agencyCode} auth={props.auth} {...props} />;
+export const NotesRender = agencyCode => props => <Notes numbers={[agencyCode]} numberType="agencyCode" auth={props.auth} {...props} />;
 
 export class Agency extends Component {
   componentDidMount() {

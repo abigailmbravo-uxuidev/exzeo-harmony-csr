@@ -15,6 +15,7 @@ export default {
   },
   cg: {},
   error: {},
+  notes: [],
   diaries: [],
   questions: {
     diaryAssignees: [],

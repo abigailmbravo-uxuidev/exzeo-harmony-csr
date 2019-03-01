@@ -19,7 +19,7 @@ export const SearchPanel = props => (
 
 export const filterNotesByType = (notes, type) => {
   if (!Array.isArray(notes)) return [];
-  return type ? notes.filter(n => n.attachments.length > 0) : notes.filter(n => n.content);
+  return type ? notes.filter(n => n.noteAttachments.length > 0) : notes.filter(n => n.noteContent);
 };
 
 export const Notes = (props) => {
@@ -73,11 +73,11 @@ export const Notes = (props) => {
       <TableHeaderColumn dataField="_id" isKey hidden>ID</TableHeaderColumn>
       <TableHeaderColumn className="created-date" columnClassName="created-date" dataField="createdDate" dataSort dataFormat={formatCreatedDate} filterFormatted >Created</TableHeaderColumn>
       <TableHeaderColumn className="created-by" columnClassName="created-by" dataField="createdBy" dataSort dataFormat={showCreatedBy} sortFunc={sortAuthor}>Author</TableHeaderColumn>
-      <TableHeaderColumn className="note-type" columnClassName="note-type" dataField="contactType" dataSort hidden={attachmentStatus} >Contact</TableHeaderColumn>
-      <TableHeaderColumn className="note" columnClassName="note" dataField="content" dataSort dataFormat={formatNote} hidden={attachmentStatus} >Note</TableHeaderColumn>
-      <TableHeaderColumn className="count" columnClassName="count" dataField="attachments" dataFormat={attachmentCount} hidden />
-      <TableHeaderColumn className="file-type" columnClassName="file-type" dataField="attachments" dataSort dataFormat={attachmentType} >File Type</TableHeaderColumn>
-      <TableHeaderColumn className="attachments" columnClassName="attachments" dataField="attachments" dataSort dataFormat={attachmentUrl} filterValue={attachmentFilter} sortFunc={sortFiles}>File</TableHeaderColumn>
+      <TableHeaderColumn className="note-type" columnClassName="note-type" dataField="noteContactType" dataSort hidden={attachmentStatus} >Contact</TableHeaderColumn>
+      <TableHeaderColumn className="note" columnClassName="note" dataField="noteContent" dataSort dataFormat={formatNote} hidden={attachmentStatus} >Note</TableHeaderColumn>
+      <TableHeaderColumn className="count" columnClassName="count" dataField="noteAttachments" dataFormat={attachmentCount} hidden />
+      <TableHeaderColumn className="file-type" columnClassName="file-type" dataField="noteAttachments" dataSort dataFormat={attachmentType} >File Type</TableHeaderColumn>
+      <TableHeaderColumn className="attachments" columnClassName="attachments" dataField="noteAttachments" dataSort dataFormat={attachmentUrl} filterValue={attachmentFilter} sortFunc={sortFiles}>File</TableHeaderColumn>
     </BootstrapTable>
   );
 };

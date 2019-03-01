@@ -71,29 +71,11 @@ export class NoteUploader extends Component {
 
   // TODO: Pull this from the list service
   contactTypeOptions = {
-    'Agency Note': ['Change name/FEIN', 'Change Agent', 'Change Other', 'Concern', 'Correspondance', 'Other'],
-    'Agent Note': ['Change', 'Concern', 'Correspondance', 'Other'],
     'Quote Note': ['Agent', 'Policyholder', 'Inspector', 'Other'],
     'Policy Note': ['Agent', 'Policyholder', 'Lienholder', 'Internal', 'Inspector', 'Other']
   };
 
   docTypeOptions = {
-    'Agency Note': [
-      'Addendum',
-      'Agreement',
-      'Application',
-      'Book of Business',
-      'Correspondence',
-      'Department of Insurance',
-      'Errors and Omissions',
-      'Finance',
-      'License',
-      'Miscellaneous',
-      'Update Request',
-      'W9',
-      'W9 EIN'
-    ],
-    'Agent Note': [],
     'Quote Note': [
       '4-pt Inspection',
       'Claims Documentation',
@@ -199,7 +181,7 @@ export class NoteUploader extends Component {
     return updatedFiles;
   })
 
-  submitNote = async (data, dispatch, props) => {
+  submitNote = (data, dispatch, props) => {
     const {
       companyCode,
       state,
@@ -225,7 +207,7 @@ export class NoteUploader extends Component {
       companyCode,
       state,
       product,
-      quoteNumber: documentId,
+      number: documentId,
       source: sourceId,
       noteType,
       noteContent: JSON.stringify(data.noteContent),
@@ -238,16 +220,7 @@ export class NoteUploader extends Component {
       })
     };
 
-    const submitData = { service: 'notes', method: 'POST', path: 'v1/note', data: noteData }
-    try {
-
-      const result = await callService(submitData);
-      this.handleClose();
-    } catch (error) {
-      throw error
-    }
-    
-    /*return actions.cgActions.startWorkflow('addNote', noteData, false)
+    return actions.cgActions.startWorkflow('addNote', noteData, false)
       .then((result) => {
         if (window.location.pathname.includes('/notes')) {
           actions.serviceActions.getNotes(noteData.number, noteData.source);
@@ -268,7 +241,7 @@ export class NoteUploader extends Component {
       .catch((err) => {
         actions.errorActions.setAppError({ message: err });
         this.handleClose();
-      });*/
+      });
   };
 
 
@@ -293,11 +266,10 @@ export class NoteUploader extends Component {
                     {this.contactTypes.map(option => <option aria-label={option} value={option} key={option}>{option}</option>)}
                   </Field>
                 </div>
-                { this.props.noteType !== 'Agency Note' &&
                 <div className="form-group diary-checkbox">
                   <Field component="input" name="openDiary" type="checkbox" />
                   <label>Create & Open Diary On Save</label>
-                </div>}
+                </div>
               </div>
               <Field name="noteContent" component={renderNotes} label="Note Content" />
               <label>File Type</label>
@@ -324,11 +296,18 @@ export class NoteUploader extends Component {
 }
 
 NoteUploader.propTypes = {
+  companyCode: PropTypes.string.isRequired,
+  state: PropTypes.string.isRequired,
+  product: PropTypes.string.isRequired,
   documentId: PropTypes.string.isRequired,
   noteType: PropTypes.string.isRequired,
   sourceId: PropTypes.string,
   resourceType: PropTypes.string,
   minimizeNote: PropTypes.bool
+};
+
+NoteUploader.defaultProps = {
+  user: { profile: {} }
 };
 
 NoteUploader.defaultProps = {

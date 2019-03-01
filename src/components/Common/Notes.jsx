@@ -1,65 +1,36 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Loader } from '@exzeo/core-ui';
-import moment from 'moment';
-import axios from 'axios';
+import { Route } from 'react-router-dom';
 
+import { fetchNotes } from '../../state/actions/notes.actions';
+import { setAppError } from '../../state/actions/error.actions';
 import { callService } from '../../utilities/serviceRunner';
 import NoteList from './NoteList';
 import Footer from './Footer';
 
-const getNotes = async (numbers, type) => {
-
-  const axiosConfig = {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    url: `${process.env.REACT_APP_API_URL}/svc`,
-    data: {
-      exchangeName: 'harmony', 
-      routingKey: 'harmony.note.getNotes', 
-      data: {
-        data: [
-          { number: numbers, numberType: 'agencyCode' }
-        ]
-      }
-    }
-  };
-
-  try {
-    const response = await axios(axiosConfig);
-    return response.data.result;
-  } catch (error) {
-    console.log('e: ', error)
-  }
-};
-
 export class Notes extends Component {
   state = {
     isLoading: true,
-    notes: []
   }
 
-  componentDidMount() {
-    const { agencyCode, entity } = this.props;
-    getNotes(agencyCode)
-
+  async componentDidMount() {
+    const { numbers, numberType, fetchNotes } = this.props;
+    const notes = await fetchNotes(numbers, numberType);
     this.setState({ isLoading: false });
   }
 
   render() {
-    const { error } = this.props;
-    const { isLoading, notes } = this.state;
+    const { error, notes } = this.props;
+    const { isLoading } = this.state;
 
     return (
       <React.Fragment>
         <div className="route-content">
-
           {isLoading && <Loader />}
-
           <div className="scroll">
-            <NoteList {...this.props} />
+            <NoteList notes={notes} {...this.props} />
           </div>
         </div>
         <div className="basic-footer">
@@ -71,10 +42,16 @@ export class Notes extends Component {
 }
 
 Notes.propTypes = {
-  errorActions: PropTypes.shape({
-    setAppError: PropTypes.func.isRequired
-  }),
-  query: PropTypes.object
+  numbers: PropTypes.array.isRequired,
+  numberType: PropTypes.string.isRequired
 };
 
-export default Notes;
+const mapStateToProps = state => ({
+  notes: state.notes
+});
+
+export default connect(mapStateToProps, {
+  fetchNotes,
+  setAppError
+})(Notes);
+
