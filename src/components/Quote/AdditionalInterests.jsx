@@ -16,6 +16,7 @@ import { getGroupedAdditionalInterests, getSortedAdditionalInterests, blockQuote
 import AIModal from '../AdditionalInterestModal';
 import Footer from '../Common/Footer';
 import AdditionalInterestCard from '../AdditionalInterestCard';
+import AIDeleteReinstateModal from '../AIDeleteReinstateModal';
 
 const MODEL_NAME = 'csrAdditionalInterest';
 const PAGE_NAME = 'additionalInterests';
@@ -25,7 +26,8 @@ export class AdditionalInterests extends Component {
     addAdditionalInterestType: '',
     isEditingAI: false,
     selectedAI: {},
-    showAdditionalInterestModal: false
+    showAdditionalInterestModal: false,
+    showDeleteAI: false
   };
 
   componentDidMount() {
@@ -180,9 +182,14 @@ export class AdditionalInterests extends Component {
       addAdditionalInterestType: null,
       showAdditionalInterestModal: false,
       selectedAI: {},
-      isEditingAI: false
+      isEditingAI: false,
+      showDeleteAI: false
     });
   };
+
+  toggleDeleteAIModal = (selectedAI) => {
+    this.setState({ showDeleteAI: !this.state.showDeleteAI, selectedAI });
+  }
 
   deleteAdditionalInterest = async (selectedAdditionalInterest) => {
     const {
@@ -291,7 +298,8 @@ export class AdditionalInterests extends Component {
                       key={ai._id}
                       ai={ai}
                       editAI={this.editAI}
-                      toggleAIState={this.deleteAdditionalInterest} />
+                      toggleReactivateAIModal={x => x}
+                      toggleDeleteAIModal={this.toggleDeleteAIModal} />
                   ))}
                 </ul>
               </div>
@@ -310,6 +318,16 @@ export class AdditionalInterests extends Component {
               isEditing={this.state.isEditingAI}
               selectedAI={this.state.selectedAI} />
           }
+
+          {this.state.showDeleteAI && 
+          <AIDeleteReinstateModal
+            actionType="Delete"
+            closeModal={this.hideAdditionalInterestModal}
+            selectedAI={this.state.selectedAI}
+            handleAIAction={() => this.deleteAdditionalInterest(this.state.selectedAI, this.props)}
+          />
+          }
+
         </div>
         <div className="basic-footer">
           <Footer />
