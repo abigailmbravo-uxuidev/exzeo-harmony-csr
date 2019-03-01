@@ -28,7 +28,7 @@ export const CreateBranchRender = branchCode => props =>
   <CreateBranch branchCode={branchCode} auth={props.auth} {...props} />;
 export const OverviewRender = branchCode => props => <Overview branchCode={branchCode} auth={props.auth} {...props} />;
 export const AgentsRender = branchCode => props => <Agents branchCode={branchCode} auth={props.auth} {...props} />;
-export const NotesRender = agencyCode => props => <Notes agencyCode={agencyCode} auth={props.auth} {...props} />;
+export const NotesRender = agencyCode => props => <Notes numbers={[agencyCode]} numberType="agencyCode" auth={props.auth} {...props} />;
 
 export class Agency extends Component {
   componentDidMount() {

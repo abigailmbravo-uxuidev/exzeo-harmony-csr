@@ -6,7 +6,8 @@ import moment from 'moment-timezone';
 import { Loader } from '@exzeo/core-ui';
 
 import { setAppState } from '../../state/actions/appState.actions';
-import { getZipcodeSettings, getAgents, getAgency, getNotes } from '../../state/actions/service.actions';
+import { fetchNotes } from '../../state/actions/notes.actions';
+import { getZipcodeSettings, getAgents, getAgency } from '../../state/actions/service.actions';
 import { 
   createTransaction, 
   getBillingOptionsForPolicy, 
@@ -24,7 +25,7 @@ import ReinstatePolicyModal from '../../components/Policy/ReinstatePolicyPopup';
 import Coverage from '../../components/Policy/Coverage';
 import PolicyHolder from '../../components/Policy/PolicyholderAgent';
 import Billing from '../../components/Policy/MortgageBilling';
-import Notes from '../../components/Policy/NotesFiles';
+import Notes from '../../components/Common/Notes';
 import Cancel from '../../components/Policy/Cancel';
 import Endorsements from '../../components/Policy/Endorsements';
 import OpenDiariesBar from '../../components/OpenDiariesBar';
@@ -60,7 +61,7 @@ export class Policy extends React.Component {
       getAgents,
       getAgency,
       getBillingOptionsForPolicy,
-      getNotes,
+      fetchNotes,
       getZipCodeSettings,
       policy,
       summaryLedger
@@ -70,7 +71,7 @@ export class Policy extends React.Component {
       getZipCodeSettings(policy.companyCode, policy.state, policy.product, policy.property.physicalAddress.zip);
       getAgents(policy.companyCode, policy.state);
       getAgency(policy.companyCode, policy.state, policy.agencyCode);
-      getNotes(policy.policyNumber, policy.sourceNumber);
+      fetchNotes([policy.policyNumber, policy.sourceNumber], 'policyNumber');
 
       if (summaryLedger) {
         const paymentOptions = {
@@ -187,7 +188,7 @@ export class Policy extends React.Component {
                   <Route exact path={`${match.url}/coverage`} render={props => <Coverage {...props} />} />
                   <Route exact path={`${match.url}/policyholder`} render={props => <PolicyHolder {...props} />} />
                   <Route exact path={`${match.url}/billing`} render={props => <Billing {...props} />} />
-                  <Route exact path={`${match.url}/notes`} render={props => <Notes {...props} params={match.params} />} />
+                  <Route exact path={`${match.url}/notes`} render={props => <Notes numbers={[policy.policyNumber, policy.sourceNumber]} numberType="policyNumber" {...props} />} />
                   <Route exact path={`${match.url}/cancel`} render={props => <Cancel {...props} />} />
                   <Route exact path={`${match.url}/endorsements`} render={props => <Endorsements {...props} params={match.params} />} />
                 </div>
@@ -232,7 +233,7 @@ Policy.propTypes = {
   createTransaction: PropTypes.func,
   getCancelOptions: PropTypes.func,
   getEndorsementHistory: PropTypes.func,
-  getNotes: PropTypes.func,
+  fetchNotes: PropTypes.func,
   getPaymentHistory: PropTypes.func,
   getPaymentOptionsApplyPayments: PropTypes.func,
   getPolicy: PropTypes.func,
@@ -261,7 +262,7 @@ export default connect(mapStateToProps, {
   getBillingOptionsForPolicy,
   getCancelOptions,
   getEndorsementHistory,
-  getNotes,
+  fetchNotes,
   getPaymentHistory,
   getPaymentOptionsApplyPayments,
   getPolicy,
