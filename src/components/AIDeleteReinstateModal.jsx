@@ -8,7 +8,7 @@ export class AIDeleteReinstateModal extends React.Component {
   render() {
     const {
         selectedAI,
-        handleAIAction,
+        handleAction,
         handleSubmit,
         closeModal,
         submitting,
@@ -19,7 +19,7 @@ export class AIDeleteReinstateModal extends React.Component {
       <div className="modal">
         <form
           id="AIDeleteReinstateModal"
-          onSubmit={handleSubmit(handleAIAction)}
+          onSubmit={handleSubmit(handleAction)}
           >
           <div className="card">
             <div className="card-header">
@@ -38,7 +38,7 @@ export class AIDeleteReinstateModal extends React.Component {
                 <Button
                   baseClass="primary"
                   type="submit"
-                  label="Delete"
+                  label={actionType}
                   dataTest="ai-modal-submit"
                   disabled={submitting} />
               </div>

@@ -27,7 +27,8 @@ export class AdditionalInterests extends Component {
     isEditingAI: false,
     selectedAI: {},
     showAdditionalInterestModal: false,
-    showDeleteAI: false
+    showDeleteReinstateAI: false,
+    deleteReinstateType: ''
   };
 
   componentDidMount() {
@@ -183,12 +184,12 @@ export class AdditionalInterests extends Component {
       showAdditionalInterestModal: false,
       selectedAI: {},
       isEditingAI: false,
-      showDeleteAI: false
+      showDeleteReinstateAI: false
     });
   };
 
-  toggleDeleteAIModal = (selectedAI) => {
-    this.setState({ showDeleteAI: !this.state.showDeleteAI, selectedAI });
+  toggleDeleteReinstateAIModal = (deleteReinstateType) => (selectedAI) => {
+    this.setState({ showDeleteReinstateAI: !this.state.showDeleteReinstateAI, selectedAI, deleteReinstateType });
   }
 
   deleteAdditionalInterest = async (selectedAdditionalInterest) => {
@@ -298,8 +299,8 @@ export class AdditionalInterests extends Component {
                       key={ai._id}
                       ai={ai}
                       editAI={this.editAI}
-                      toggleReactivateAIModal={x => x}
-                      toggleDeleteAIModal={this.toggleDeleteAIModal} />
+                      toggleReactivateAIModal={this.toggleDeleteReinstateAIModal('Reactivate')}
+                      toggleDeleteAIModal={this.toggleDeleteReinstateAIModal('Delete')} />
                   ))}
                 </ul>
               </div>
@@ -319,12 +320,12 @@ export class AdditionalInterests extends Component {
               selectedAI={this.state.selectedAI} />
           }
 
-          {this.state.showDeleteAI && 
+          {this.state.showDeleteReinstateAI && 
           <AIDeleteReinstateModal
-            actionType="Delete"
+            actionType={this.state.deleteReinstateType}
             closeModal={this.hideAdditionalInterestModal}
             selectedAI={this.state.selectedAI}
-            handleAIAction={() => this.deleteAdditionalInterest(this.state.selectedAI, this.props)}
+            handleAction={() => this.deleteAdditionalInterest(this.state.selectedAI, this.props)}
           />
           }
 
