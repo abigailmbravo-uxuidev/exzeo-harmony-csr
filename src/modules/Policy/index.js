@@ -122,7 +122,7 @@ export class Policy extends React.Component {
 
       await batchCompleteTask(startResult.modelName, startResult.modelInstanceId, steps);
       setAppState(appState.modelName, appState.instanceId, { ...appState.data, submitting: true });
-      //This gets scheduled so the status may not be changed yet when calling getPolicy
+      //This gets scheduled so the status may not be changed yet when calling getPolicy. Reference HAR-5228
       await new Promise(resolve => setTimeout(resolve, 3000));
       await getPolicy(policy.policyNumber);
       setAppState(startResult.modelName, startResult.modelInstanceId, { ...appState.data, submitting: false, showEffectiveDateChangeModal: false });
