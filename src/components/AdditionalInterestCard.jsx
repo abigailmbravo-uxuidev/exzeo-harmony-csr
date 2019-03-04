@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const AdditionalInterestCard = ({ ai, editAI, toggleAIState, editingDisabled }) => {
+const AdditionalInterestCard = ({ ai, editAI, toggleAIState, editingDisabled, disableBillPayerPremiumFinance }) => {
   const { active } = ai;
   return (
     <li key={ai._id} className={`${active ? 'card' : 'card inactive'}`}>
@@ -21,7 +21,7 @@ const AdditionalInterestCard = ({ ai, editAI, toggleAIState, editingDisabled }) 
         <span>{` ${ai.referenceNumber || ' - '}`}</span>
       </div>
       {!active && !editingDisabled &&
-        <span className="reactivate-btn btn btn-link btn-sm" onClick={() => toggleAIState(ai)}>
+        <span className={`${!disableBillPayerPremiumFinance ? 'reactivate-btn btn btn-link btn-sm' : 'reactivate-btn btn btn-link btn-sm disabled'}`} onClick={() => !disableBillPayerPremiumFinance ? toggleAIState(ai): null}>
           <i className="fa fa-plus-square" />
           <span>Reactivate</span>
         </span>

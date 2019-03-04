@@ -25,6 +25,7 @@ import AIModal from '../AdditionalInterestModal';
 import Footer from '../Common/Footer';
 import AdditionalInterestCard from '../AdditionalInterestCard';
 import PaymentHistoryTable from '../PaymentHistoryTable';
+import { PREMIUM_FINANCE_BILL_PAYER_TYPES } from '../../constants/additionalInterests';
 
 const validateBatchNumber = validation.isDateMatchMin10('cashDate', 'YYYYMMDD');
 const validateAmount = validation.isRange(-1000000, 1000000);
@@ -254,6 +255,9 @@ export class MortgageBilling extends Component {
     const selectedBillintOptions = billingOptionsValues.find(opt => opt.billToId === this.props.policy.billToId);
     const billToText = selectedBillintOptions ? selectedBillintOptions.displayText : null;
 
+    const disableBillPayerPremiumFinance = (policy && (policy.additionalInterests.filter(ai => ai.type === 'Bill Payer' && ai.active).length > 0 ||
+     policy.additionalInterests.filter(ai => ai.type === 'Premium Finance' && ai.active).length > 0));
+
     return (
       <React.Fragment>
         <div className="route-content">
@@ -354,8 +358,8 @@ export class MortgageBilling extends Component {
                     <button tabIndex="0" disabled={(policy && policy.additionalInterests.filter(ai => ai.type === 'Mortgagee' && ai.active).length > 2)} onClick={() => this.addAdditionalInterest('Mortgagee')} className="btn btn-sm btn-secondary" type="button"> <div><i className="fa fa-plus" /><span>Mortgagee</span></div></button>
                     <button tabIndex="0" disabled={(policy && policy.additionalInterests.filter(ai => ai.type === 'Additional Insured' && ai.active).length > 1)} onClick={() => this.addAdditionalInterest('Additional Insured')} className="btn btn-sm btn-secondary" type="button"><div><i className="fa fa-plus" /><span>Additional Insured</span></div></button>
                     <button tabIndex="0" disabled={(policy && policy.additionalInterests.filter(ai => ai.type === 'Additional Interest' && ai.active).length > 1)} onClick={() => this.addAdditionalInterest('Additional Interest')} className="btn btn-sm btn-secondary" type="button"><div><i className="fa fa-plus" /><span>Additional Interest</span></div></button>
-                    <button tabIndex="0" disabled={(policy && (policy.additionalInterests.filter(ai => ai.type === 'Premium Finance' && ai.active).length > 0 || policy.additionalInterests.filter(ai => ai.type === 'Bill Payer' && ai.active).length > 0))} onClick={() => this.addAdditionalInterest('Premium Finance')} className="btn btn-sm btn-secondary" type="button"><div><i className="fa fa-plus" /><span>Premium Finance</span></div></button>
-                    <button tabIndex="0" disabled={(policy && (policy.additionalInterests.filter(ai => ai.type === 'Bill Payer' && ai.active).length > 0 || policy.additionalInterests.filter(ai => ai.type === 'Premium Finance' && ai.active).length > 0))} onClick={() => this.addAdditionalInterest('Bill Payer')} className="btn btn-sm btn-secondary" type="button"><div><i className="fa fa-plus" /><span>Bill Payer</span></div></button>
+                    <button tabIndex="0" disabled={disableBillPayerPremiumFinance} onClick={() => this.addAdditionalInterest('Premium Finance')} className="btn btn-sm btn-secondary" type="button"><div><i className="fa fa-plus" /><span>Premium Finance</span></div></button>
+                    <button tabIndex="0" disabled={disableBillPayerPremiumFinance} onClick={() => this.addAdditionalInterest('Bill Payer')} className="btn btn-sm btn-secondary" type="button"><div><i className="fa fa-plus" /><span>Bill Payer</span></div></button>
                   </div>
                   <ul className="results result-cards additional-interests-list">
                     {sortedAdditionalInterests.map(ai => (
@@ -364,6 +368,7 @@ export class MortgageBilling extends Component {
                         ai={ai}
                         editAI={this.editAI}
                         toggleAIState={this.toggleAIState}
+                        disableBillPayerPremiumFinance={PREMIUM_FINANCE_BILL_PAYER_TYPES.includes(ai.type) && disableBillPayerPremiumFinance}
                       />
                     ))}
                   </ul>
