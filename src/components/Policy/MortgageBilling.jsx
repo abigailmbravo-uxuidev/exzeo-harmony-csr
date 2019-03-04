@@ -368,7 +368,7 @@ export class MortgageBilling extends Component {
                         ai={ai}
                         editAI={this.editAI}
                         toggleAIState={this.toggleAIState}
-                        disableBillPayerPremiumFinance={PREMIUM_FINANCE_BILL_PAYER_TYPES.includes(ai.type) && disableBillPayerPremiumFinance}
+                        disableBillPayerPremiumFinance={disableBillPayerPremiumFinance && PREMIUM_FINANCE_BILL_PAYER_TYPES.includes(ai.type)}
                       />
                     ))}
                   </ul>
