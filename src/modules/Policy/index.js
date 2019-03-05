@@ -209,6 +209,7 @@ export class Policy extends React.Component {
                 hideEffectiveDateModal={this.toggleModal('showEffectiveDateChangeModal')} />
           }
               <OpenDiariesBar
+                entityEndDate={policy.endDate}
                 effectiveDate={policy.effectiveDate}
                 resourceId={policy.policyNumber}
                 resourceType="Policy" />

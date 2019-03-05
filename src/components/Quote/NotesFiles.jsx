@@ -34,12 +34,12 @@ export class NotesFiles extends Component {
   }
 
   render() {
-    const { match } = this.props;
+    const { match, quoteData } = this.props;
     return (
       <React.Fragment match={match}>
         <div className="route-content">
           <div className="scroll">
-            <NoteList {...this.props} />
+            <NoteList {...this.props} entityEndDate={quoteData.endDate} />
           </div>
         </div>
         <div className="basic-footer">

@@ -19,7 +19,7 @@ export class NotesFiles extends Component {
   }
 
   render() {
-    const { notes } = this.props;
+    const { notes, policy } = this.props;
     return (
       <React.Fragment>
         <div className="route-content">
@@ -27,7 +27,7 @@ export class NotesFiles extends Component {
           {(!notes) && <Loader />}
 
           <div className="scroll">
-            <NoteList {...this.props} />
+            <NoteList {...this.props} entityEndDate={policy.endDate} />
           </div>
         </div>
         <div className="basic-footer">
