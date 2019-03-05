@@ -2,11 +2,12 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
+<<<<<<< HEAD
 import * as appStateActions from '../../state/actions/appState.actions';
 import * as serviceActions from '../../state/actions/service.actions';
 import * as quoteActions from '../../state/actions/quote.actions';
 import * as errorActions from '../../state/actions/error.actions';
-import Notes from '../Common/Notes';
+import Notes from '../Notes';
 import Footer from '../Common/Footer';
 
 export class NotesFiles extends Component {

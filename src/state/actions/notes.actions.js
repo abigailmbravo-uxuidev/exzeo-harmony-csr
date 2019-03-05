@@ -4,10 +4,10 @@ import { callService } from '../../utilities/serviceRunner';
 import * as types from './actionTypes';
 import { setAppError } from './error.actions';
 
-const removeTerm = id => id.replace(/(\d{2}-\d{7})-\d{2}/g, (_, group) => group);
+const removeTerm = id => id.replace ? id.replace(/(\d{2}-\d{7})-\d{2}/g, (_, group) => group) : id;
 
 const mergeNotes = (notes, files ) => {
-  const fileList = notes.reduce((list, note) => [...list, ...note.attachments], []).map(n => n.fileUrl);
+  const fileList = notes.reduce((list, note) => [...list, ...note.noteAttachments], []).map(n => n.fileUrl);
   const fileNotes = files.reduce((filtered, file) => {
     if (!fileList.includes(file.fileUrl)) {
       const newNote = {
@@ -66,13 +66,19 @@ export function fetchNotes(numbers, numberType) {
   return async dispatch => {
     try {
       const [notes, files] = await Promise.all([
-        callService(notesConfig), 
+        await callService(notesConfig), 
         numberType === 'policyNumber' ? callService(filesConfig) : []
       ]);
-      const allNotes = mergeNotes(notes.data.result, files.data.result);
+      const allNotes = files.data
+        ? mergeNotes(notes.data.result, files.data.result)
+        : notes.data.result;
+
       return dispatch(setNotes(allNotes));
-    } catch (error) {
-      return dispatch(setAppError(error));
+    } catch (err) {
+      console.log(err)
+      return dispatch(setAppError(err));
     }
   };
 };
+
+
