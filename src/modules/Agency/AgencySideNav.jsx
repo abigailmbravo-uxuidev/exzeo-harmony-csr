@@ -7,6 +7,7 @@ import { connect } from 'react-redux';
 import { toggleNote } from '../../state/actions/ui.actions';
 import { createBranch } from '../../state/actions/agency.actions';
 import { getBranchesList, getBranchInitialValues } from '../../state/selectors/agency.selector';
+import { AGENCY_RESOURCE_TYPE } from '../../constants/diaries';
 
 
 const setLink = (key, agencyCode, branchCode) => {
@@ -82,7 +83,8 @@ export class SideNav extends React.Component {
     const { toggleNote, agencyCode } = this.props;
     toggleNote({
       noteType: 'Agency Note',
-      documentId: agencyCode
+      documentId: agencyCode,
+      resourceType: AGENCY_RESOURCE_TYPE
     });
   };
 

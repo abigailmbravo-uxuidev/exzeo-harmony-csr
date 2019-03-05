@@ -3,9 +3,9 @@ import PropTypes from 'prop-types';
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 import { date } from '@exzeo/core-ui';
 
-import DiaryTable from '../../components/DiaryTable';
+import DiaryTable from './DiaryTable';
 
-import Downloader from './Downloader';
+import Downloader from './Common/Downloader';
 
 const NOTE_TABS = ['notes', 'files'];
 const DIARY_TAB = 'diaries';
@@ -48,9 +48,6 @@ export const Notes = (props) => {
       ? fileA > fileB ? 1 : -1
       : fileA < fileB ? 1 : -1;
   };
-  // const sortFiles = (a, b, order) => order === 'desc'
-  //  ? a.attachments[0].fileName > b.attachments[0].fileName ? 1 : -1
-  //  : a.attachments[0].fileName < b.attachments[0].fileName ? 1 : -1;
 
   const attachmentUrl = attachments => (
     <span>

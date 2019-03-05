@@ -1,18 +1,17 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Field, Form, reduxForm } from 'redux-form';
 import Uppy from '@uppy/core';
 import Dashboard from '@uppy/react/lib/Dashboard';
 import XHRUpload from '@uppy/xhr-upload';
 import moment from 'moment';
-import { Loader } from '@exzeo/core-ui';
+import { Select, validation, Loader } from '@exzeo/core-ui';
+import { callService } from '../utilities/serviceRunner';
 
-import * as cgActions from '../../state/actions/cg.actions';
-import * as uiActions from '../../state/actions/ui.actions';
-import * as serviceActions from '../../state/actions/service.actions';
-import * as errorActions from '../../state/actions/error.actions';
+import { toggleNote, toggleDiary} from '../state/actions/ui.actions';
+import { fetchNotes } from '../state/actions/notes.actions';
+import { setAppError } from '../state/actions/error.actions';
 
 import '@uppy/core/dist/style.min.css';
 
@@ -31,49 +30,31 @@ export const validate = (values) => {
   return errors;
 };
 
-export class NoteUploader extends Component {
-  constructor(props) {
-    super(props);
-
-    const idToken = localStorage.getItem('id_token');
-
-    this.uppy = new Uppy({
-      autoProceed: false,
-      restrictions: {
-        maxFileSize: process.env.REACT_APP_REQUEST_SIZE.slice(0, -2) * 1000000
-      },
-      meta: { documentId: this.props.documentId },
-      onBeforeFileAdded: this.validateFile,
-      onBeforeUpload: this.validateUpload
-    }).use(XHRUpload, {
-      endpoint: `${process.env.REACT_APP_API_URL}/upload`,
-      fieldName: 'files[]',
-      headers: {
-        accept: 'application/json',
-        authorization: `bearer ${idToken}`
-      }
-    });
-  }
-
-  state = { minimize: false };
-
-  componentDidMount() {
-    // TODO: not sure this logic should be here. Seems like it should be much further up the tree
-    const { actions, user } = this.props;
-    if (!user.profile || !user.profile.given_name || !user.profile.family_name) {
-      const message = 'There was a problem with your user profile. Please logout of Harmony and try logging in again.';
-      this.handleClose();
-      actions.errorActions.setAppError({ message });
-    }
-  }
-
-  // TODO: Pull this from the list service
-  contactTypeOptions = {
+// TODO: Pull this from the list service
+  const contactTypeOptions = {
+    'Agency Note': ['Change name/FEIN', 'Change Agent', 'Change Other', 'Concern', 'Correspondance', 'Other'],
+    'Agent Note': ['Change', 'Concern', 'Correspondance', 'Other'],
     'Quote Note': ['Agent', 'Policyholder', 'Inspector', 'Other'],
     'Policy Note': ['Agent', 'Policyholder', 'Lienholder', 'Internal', 'Inspector', 'Other']
   };
 
-  docTypeOptions = {
+  const docTypeOptions = {
+    'Agency Note': [
+      'Addendum',
+      'Agreement',
+      'Application',
+      'Book of Business',
+      'Correspondence',
+      'Department of Insurance',
+      'Errors and Omissions',
+      'Finance',
+      'License',
+      'Miscellaneous',
+      'Update Request',
+      'W9',
+      'W9 EIN'
+    ],
+    'Agent Note': [],
     'Quote Note': [
       '4-pt Inspection',
       'Claims Documentation',
@@ -137,13 +118,53 @@ export class NoteUploader extends Component {
     ]
   };
 
-  contactTypes = this.props.noteType ? this.contactTypeOptions[this.props.noteType] : [];
+export class NoteUploader extends Component {
+  constructor(props) {
+    super(props);
 
-  docTypes = this.props.noteType ? this.docTypeOptions[this.props.noteType] : [];
+    const idToken = localStorage.getItem('id_token');
+
+    this.uppy = new Uppy({
+      autoProceed: false,
+      restrictions: {
+        maxFileSize: process.env.REACT_APP_REQUEST_SIZE.slice(0, -2) * 1000000
+      },
+      meta: { documentId: this.props.documentId },
+      onBeforeFileAdded: this.validateFile,
+      onBeforeUpload: this.validateUpload
+    }).use(XHRUpload, {
+      endpoint: `${process.env.REACT_APP_API_URL}/upload`,
+      fieldName: 'files[]',
+      headers: {
+        accept: 'application/json',
+        authorization: `bearer ${idToken}`
+      }
+    });
+  }
+
+  state = { minimize: false };
+
+  componentDidMount() {
+    // TODO: not sure this logic should be here. Seems like it should be much further up the tree
+    const { noteType, user, setAppError } = this.props;
+    if (!user.profile || !user.profile.given_name || !user.profile.family_name) {
+      const message = 'There was a problem with your user profile. Please logout of Harmony and try logging in again.';
+      this.handleClose();
+      setAppError({ message });
+    }
+
+    this.contactTypes = noteType ? contactTypeOptions[noteType] : [];
+    this.docTypes = noteType ? docTypeOptions[noteType] : [];
+
+    this.props.initialize({ 
+      contactType: this.contactTypes[0],
+      fileType: this.docTypes[0]
+    })
+  }
 
   handleMinimize = () => this.setState({ minimize: !this.state.minimize });
 
-  handleClose = () => this.props.actions.uiActions.toggleNote({});
+  handleClose = () => this.props.toggleNote({});
 
   validateFile = (file, currentFiles) => {
     if (file.data.size === 0) {
@@ -165,7 +186,7 @@ export class NoteUploader extends Component {
     }
   })
 
-  submitNote = (data, dispatch, props) => {
+  submitNote = async (data, dispatch, props) => {
     const {
       companyCode,
       state,
@@ -175,8 +196,17 @@ export class NoteUploader extends Component {
       noteType,
       documentId,
       sourceId,
-      resourceType
+      resourceType,
+      fetchNotes,
+      toggleDiary
     } = props;
+
+    const mapResourceToNumber = {
+      Policy: 'policyNumber',
+      Quote: 'quoteNumber',
+      Agency: 'agencyCode',
+      Agent: 'agentCode'
+    };
 
     const filelist = Object.values(this.uppy.getState().files);
     const uploads = filelist.filter(file => file.progress.uploadComplete);
@@ -192,6 +222,7 @@ export class NoteUploader extends Component {
       state,
       product,
       number: documentId,
+      numberType: mapResourceToNumber[resourceType],
       source: sourceId,
       noteType,
       noteContent: JSON.stringify(data.noteContent),
@@ -199,37 +230,49 @@ export class NoteUploader extends Component {
       createdAt: moment().unix(),
       noteAttachments,
       createdBy: JSON.stringify({
-        userId: user.sub,
+        userId: user.userId,
         userName: `${user.profile.given_name} ${user.profile.family_name}`
       })
     };
 
-    return actions.cgActions.startWorkflow('addNote', noteData, false)
-      .then((result) => {
-        if (window.location.pathname.includes('/notes')) {
-          actions.serviceActions.getNotes(noteData.number, noteData.source);
-        }
-
-        this.handleClose();
-
-        if(data.openDiary) {
-          actions.uiActions.toggleDiary({
-            companyCode,
-            state,
-            product,
-            resourceType,
-            resourceId: documentId
-          });
-        };
-      })
-      .catch((err) => {
-        actions.errorActions.setAppError({ message: err });
-        this.handleClose();
-      });
+    const noteConfig = {
+      exchangeName: 'harmony', 
+      routingKey: 'harmony.note.addNote', 
+      data: noteData
+    };
+    try {
+      const { data } = await callService(noteConfig);
+      if (window.location.pathname.includes('/notes')) {
+        const numberType = mapResourceToNumber[resourceType];
+        const numbers = numberType === 'policyNumber'
+          ? [noteData.number, noteData.source] : [noteData.number];
+        fetchNotes(numbers, numberType);
+      }
+      if(data.openDiary) {
+        toggleDiary({
+          companyCode,
+          state,
+          product,
+          resourceType,
+          resourceId: documentId
+        });
+      };
+    } catch (err) {
+      setAppError({ message: err });
+    } finally {
+      this.handleClose();
+    }
   };
 
-
   render() {
+    const { handleSubmit, noteType, submitting } = this.props;
+    
+    const contactTypeAnswers = this.contactTypes
+      ? this.contactTypes.map(c => ({ answer: c, label: c })) : [];
+    
+    const docTypeAnswers = this.docTypes
+      ? this.docTypes.map(d => ({ answer: d, label: d })) : [];
+
     return (
       <div className={this.state.minimize ? 'new-note-file minimize' : 'new-note-file'} >
         <div className="title-bar">
@@ -240,26 +283,35 @@ export class NoteUploader extends Component {
           </div>
         </div>
         <div className="mainContainer">
-          {this.props.submitting && <Loader />}
-          <Form id="NoteUploader" onSubmit={this.props.handleSubmit(this.submitNote)} noValidate>
+          {submitting && <Loader />}
+          <Form id="NoteUploader" onSubmit={handleSubmit(this.submitNote)} noValidate>
             <div className="content">
               <div className="note-details">
                 <div className="form-group contact">
-                  <label>Contact</label>
-                  <Field component="select" name="contactType" disabled={!this.contactTypes.length}>
-                    {this.contactTypes.map(option => <option aria-label={option} value={option} key={option}>{option}</option>)}
-                  </Field>
+                  <Field
+                    name="contactType"
+                    label="Contact"
+                    component={Select}
+                    answers={contactTypeAnswers}
+                    validate={validation.isRequired}
+                    dataTest="contactType"
+                  />
                 </div>
+                {noteType !== 'Agency Note' &&
                 <div className="form-group diary-checkbox">
                   <Field component="input" name="openDiary" type="checkbox" />
                   <label>Create & Open Diary On Save</label>
-                </div>
+                </div>}
               </div>
               <Field name="noteContent" component={renderNotes} label="Note Content" />
-              <label>File Type</label>
-              <Field component="select" name="fileType" disabled={!this.docTypes.length}>
-                {this.docTypes.map(option => <option aria-label={option} value={option} key={option}>{option}</option>)}
-              </Field>
+              <Field
+                name="fileType"
+                label="File Type"
+                component={Select}
+                answers={docTypeAnswers}
+                validate={validation.isRequired}
+                dataTest="fileType"
+              />
               <Dashboard
                 uppy={this.uppy}
                 maxHeight={350}
@@ -280,34 +332,24 @@ export class NoteUploader extends Component {
 }
 
 NoteUploader.propTypes = {
-  companyCode: PropTypes.string.isRequired,
-  state: PropTypes.string.isRequired,
-  product: PropTypes.string.isRequired,
   documentId: PropTypes.string.isRequired,
   noteType: PropTypes.string.isRequired,
   sourceId: PropTypes.string,
   resourceType: PropTypes.string
 };
 
-NoteUploader.defaultProps = {
-  user: { profile: {} }
-};
-
 const mapStateToProps = state => ({
+  notes: state.notes,
   user: state.authState.userProfile
 });
 
-const mapDispatchToProps = dispatch => ({
-  actions: {
-    cgActions: bindActionCreators(cgActions, dispatch),
-    uiActions: bindActionCreators(uiActions, dispatch),
-    serviceActions: bindActionCreators(serviceActions, dispatch),
-    errorActions: bindActionCreators(errorActions, dispatch)
-  }
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(reduxForm({
+export default connect(mapStateToProps, {
+  fetchNotes,
+  toggleNote,
+  toggleDiary,
+  setAppError
+})(reduxForm({
   form: 'NoteUploader',
-  initialValues: { contactType: 'Agent', fileType: 'Other' },
-  validate
+  validate,
+  enableReinitialize : true
 })(NoteUploader));

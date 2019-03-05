@@ -1,113 +1,93 @@
 import configureStore from 'redux-mock-store';
-import axios from 'axios';
-import MockAdapter from 'axios-mock-adapter';
+import thunk from 'redux-thunk';
+import sinon from 'sinon';
+
+import * as serviceRunner from '../../utilities/serviceRunner';
 import * as types from './actionTypes';
-import * as serviceActions from './notes.actions';
+import { setNotes, fetchNotes } from './notes.actions';
 
-const middlewares = [];
-const mockStore = configureStore(middlewares);
+describe('Test notes.actions', () => {
+  const mockStore = configureStore([]);
+  let initialState;
+  let store;
 
-describe('Service Actions', () => {
-  const baseProps = {
-    endorsementDate: '2017-02-02',
-    zipcodeSettings: { timezone: 'America/New_York' },
-    policy: {
-      policyHolders: [{}, {}],
-      property: { windMitigation: {}, physicalAddress: {} },
-      policyHolderMailingAddress: {},
-      coverageLimits: {
-        dwelling: {},
-        otherStructures: {},
-        personalProperty: {},
-        lossOfUse: {},
-        medicalPayments: {},
-        moldProperty: {},
-        personalLiability: {},
-        moldLiability: {},
-        ordinanceOrLaw: {}
-      },
-      deductibles: {
-        allOtherPerils: {},
-        hurricane: {},
-        sinkhole: {}
+  beforeEach(() => {
+    initialState = {};
+    store = mockStore(initialState);
+  });
 
-      },
-      coverageOptions: {
-        sinkholePerilCoverage: {},
-        propertyIncidentalOccupanciesMainDwelling: {},
-        propertyIncidentalOccupanciesOtherStructures: {},
-        liabilityIncidentalOccupancies: {},
-        personalPropertyReplacementCost: {}
-      },
-      underwritingAnswers: {
-        rented: {},
-        monthsOccupied: {},
-        noPriorInsuranceSurcharge: {}
-
-      },
-      rating: {
-        totalPremium: '1',
-        worksheet: {
-          elements: {
-            windMitigationFactors: {
-
-            }
-          }
-        }
-      }
-    },
-    summaryLedger: { currentPremium: '1' }
-  };
-
-  it('should call start getNotes', () => {
-    const mockAdapter = new MockAdapter(axios);
+  it('should call setNotes', () => {
     const notes = [
       {
         noteType: 'test',
         noteContent: 'test',
         contactType: 'Agent',
         createdAt: new Date().getTime(),
-        attachments: [],
+        noteAttachments: [],
         createdBy: {},
         updatedBy: {}
       }
     ];
-    const axiosNotesOptions = {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      url: `${process.env.REACT_APP_API_URL}/svc`,
-      data: {
-        service: 'transaction-logs',
-        method: 'GET',
-        path: 'history?number=test'
-      }
-    };
 
-    const axiosDocsOptions = {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      url: `${process.env.REACT_APP_API_URL}/svc`,
-      data: {
-        service: 'file-index',
-        method: 'GET',
-        path: 'v1/fileindex/test'
-      }
-    };
+    const stateObj = [{
+      type: types.SET_NOTES,
+      notes
+    }];
 
-    mockAdapter
-      .onPost(axiosNotesOptions.url).reply(200, { result: notes })
-      .onPost(axiosDocsOptions.url).reply(200, { result: notes });
+    store.dispatch(setNotes(notes));
 
-    const initialState = {};
-    const store = mockStore(initialState);
+    expect(store.getActions())
+      .toEqual(stateObj);
+  });
 
-    return serviceActions.getNotes('test-01', 'test-01')(store.dispatch)
-      .then(() => {
-        expect(store.getActions()[0].type).toEqual(types.SERVICE_REQUEST);
-      });
+  
+  describe('Test notes.actions async actions', () => {
+    // create sandbox for stubs/mocks/spies
+    const sandbox = sinon.sandbox.create();
+    const middlewares = [thunk];
+    const mockStore = configureStore(middlewares);
+    let initialState;
+    let store;
+    let httpStub;
+
+    beforeEach(() => {
+      initialState = {};
+      store = mockStore(initialState);
+      httpStub = sinon.stub();
+      sandbox.stub(serviceRunner, 'callService').callsFake((...args) => httpStub(...args));
+    });
+
+    afterEach(() => {
+      // restore to original state for next test
+      sandbox.restore();
+      sandbox.reset();
+    });
+
+    it('Should call dispatch on fetchNotes', async () => {
+      const notes = [
+        {
+          noteType: 'test',
+          noteContent: 'test',
+          contactType: 'Agent',
+          createdAt: new Date().getTime(),
+          noteAttachments: [],
+          createdBy: {},
+          updatedBy: {}
+        }
+      ];
+
+      const stateObj = [{
+        type: types.SET_NOTES,
+        notes
+      }];
+
+      httpStub.onCall(0)
+        .returns(Promise.resolve({ data: { result: notes } }));
+
+      await store.dispatch(fetchNotes([12345], 'agencyCode'));
+      const action = store.getActions();
+      expect([action[0]])
+        .toEqual(stateObj);
+    });
   });
 });
