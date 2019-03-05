@@ -75,7 +75,6 @@ export function fetchNotes(numbers, numberType) {
 
       return dispatch(setNotes(allNotes));
     } catch (err) {
-      console.log(err)
       return dispatch(setAppError(err));
     }
   };
