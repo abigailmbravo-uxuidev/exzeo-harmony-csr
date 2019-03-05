@@ -190,11 +190,7 @@ export class Policy extends React.Component {
                   <Route exact path={`${match.url}/coverage`} render={props => <Coverage {...props} />} />
                   <Route exact path={`${match.url}/policyholder`} render={props => <PolicyHolder {...props} />} />
                   <Route exact path={`${match.url}/billing`} render={props => <Billing {...props} />} />
-<<<<<<< HEAD
                   <Route exact path={`${match.url}/notes`} render={props => <Notes numbers={[policy.policyNumber, policy.sourceNumber]} numberType="policyNumber" />} />
-=======
-                  <Route exact path={`${match.url}/notes`} render={props => <Notes numbers={[policy.policyNumber, policy.sourceNumber]} numberType="policyNumber" {...props} />} />
->>>>>>> Added notes actions.
                   <Route exact path={`${match.url}/cancel`} render={props => <Cancel {...props} />} />
                   <Route exact path={`${match.url}/endorsements`} render={props => <Endorsements {...props} params={match.params} />} />
                 </div>

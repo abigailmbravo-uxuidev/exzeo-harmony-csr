@@ -73,12 +73,8 @@ export class SideNav extends React.Component {
     const { toggleNote, agencyCode } = this.props;
     toggleNote({
       noteType: 'Agency Note',
-<<<<<<< HEAD
       documentId: agencyCode,
       resourceType: AGENCY_RESOURCE_TYPE
-=======
-      documentId: agencyCode
->>>>>>> Added Notes modal.
     });
   };
 
