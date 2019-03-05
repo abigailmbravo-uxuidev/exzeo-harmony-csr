@@ -4,5 +4,6 @@
   "testFiles": "**/**.spec.js",
   "videoUploadOnPasses": false,
   "defaultCommandTimeout": 12000,
-  "reporter": "teamcity"
+  "reporter": "teamcity",
+  "numTestsKeptInMemory": 5
 }
