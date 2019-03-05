@@ -4,11 +4,11 @@ import { connect } from 'react-redux';
 import { Loader } from '@exzeo/core-ui';
 import { Route } from 'react-router-dom';
 
-import { fetchNotes } from '../../state/actions/notes.actions';
-import { setAppError } from '../../state/actions/error.actions';
-import { callService } from '../../utilities/serviceRunner';
+import { fetchNotes } from '../state/actions/notes.actions';
+import { setAppError } from '../state/actions/error.actions';
+import { callService } from '../utilities/serviceRunner';
 import NoteList from './NoteList';
-import Footer from './Footer';
+import Footer from './Common/Footer';
 
 export class Notes extends Component {
   state = {
@@ -18,6 +18,7 @@ export class Notes extends Component {
   async componentDidMount() {
     const { numbers, numberType, fetchNotes } = this.props;
     const notes = await fetchNotes(numbers, numberType);
+    console.log('qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq')
     this.setState({ isLoading: false });
   }
 

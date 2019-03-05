@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 
 import QuoteBaseConnect from '../../containers/Quote';
 import { getQuote } from '../../state/actions/quote.actions';
-import Notes from '../Common/Notes';
+import Notes from '../Notes';
 import Footer from '../Common/Footer';
 
 export class NotesFiles extends Component {

@@ -4,6 +4,7 @@ import thunk from 'redux-thunk';
 import { shallow } from 'enzyme';
 
 import NoteUploader, { validate, renderNotes } from './NoteUploader';
+import * as serviceRunner from '../utilities/serviceRunner';
 
 describe('Testing NoteUploader component', () => {
   const middlewares = [thunk];
@@ -66,11 +67,10 @@ describe('Testing NoteUploader component', () => {
     });
 
     it('should submit note', () => {
-      instance.props.actions.cgActions.startWorkflow = jest.fn().mockImplementation(() =>
-        Promise.resolve({ result: true }));
+      serviceRunner.callService = jest.fn();
 
       expect(instance.submitNote(formData, store.dispatch, instance.props));
-      expect(instance.props.actions.cgActions.startWorkflow).toHaveBeenCalled();
+      expect(serviceRunner.callService).toHaveBeenCalled();
     });
   });
 

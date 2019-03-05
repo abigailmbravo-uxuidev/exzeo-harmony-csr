@@ -1,5 +1,7 @@
 export const POLICY_RESOURCE_TYPE = 'Policy';
 export const QUOTE_RESOURCE_TYPE = 'Quote';
+export const AGENCY_RESOURCE_TYPE = 'Agency';
+export const AGENT_RESOURCE_TYPE = 'Agent';
 
 export const TAGS = [
   { answer: 'new_policy', label: 'New Policy', type: 'tag' },
