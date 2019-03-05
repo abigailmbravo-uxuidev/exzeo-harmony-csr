@@ -4,13 +4,15 @@ import { goToNav, checkHeaderSection } from '../../helpers';
 import routes from '../../support/routes';
 
 describe('Policy: Policy States + Effective/Cancellation Date', () => {
-  const cancellationPolicyStates = [
-    'In Force',
+  const expirationPolicyStatuses = ['Policy Issued', 'In Force', 'Not In Force'];
+
+  const canceledPolicyStatuses = [
+    'Cancelled',
     'Pending Voluntary Cancellation',
     'Pending Underwriting Cancellation',
-    'Pending Underwriting Non-Renewal',
-    'Cancelled'
+    'Pending Underwriting Non-Renewal'
   ];
+
   const baseBillingCodes = [
     { code: 0, displayText: 'No Payment Received' },
     { code: 1, displayText: 'Full Payment Received'},
@@ -18,12 +20,6 @@ describe('Policy: Policy States + Effective/Cancellation Date', () => {
     { code: 3, displayText: 'Partial Payment Received' },
     { code: 6, displayText: 'Payment Invoice Issued' },
     { code: 9, displayText: 'Non-Payment Notice Issued' }
-  ];
-  const cancelledBillingCodes = [
-    { code: 12, displayText: 'Voluntary Cancellation' },
-    { code: 13, displayText: 'Non-Payment Cancellation' },
-    { code: 14, displayText: 'Underwriting Cancellation' },
-    { code: 15, displayText: 'Underwriting Non-Renewal Cancellation' }
   ];
 
   const modFixtureStubRoute = (stubName, modification) =>
@@ -49,23 +45,15 @@ describe('Policy: Policy States + Effective/Cancellation Date', () => {
   const checkPolicyDetail = (policyStatus, billingStatus) => {
     // Policy detail check
     checkHeaderSection('policyDetails', ['', '', `${policyStatus} / ${billingStatus.displayText}`]);
-
-    // Checks for different policy/billing combos
-    // Waiting on bugfix:
-    // if (cancellationPolicyStates.splice(0, 3).contains(policyStatus) && billingStatus.code === 9) {
-    //   checkHeaderSection('cancellationDetail', ['Cancellation Effective Date', '']);
-    //   checkHeaderSection('finalPaymentDetail', ['Final Payment Date', '']);
-    // }
-    if (policyStatus === 'In Force' && billingStatus.code === 9) {
-      cy.log('here')
-      checkHeaderSection('cancellationDetail', ['Cancellation Effective Date', '']);
+    if (billingStatus.code === 9) {
       checkHeaderSection('finalPaymentDetail', ['Final Payment Date', '']);
-    } 
-    // End bugfix await
-    else if (cancellationPolicyStates.includes(policyStatus) || billingStatus.code === 9) {
-      cy.log(policyStatus, billingStatus.code)
+    };
+  
+    if (canceledPolicyStatuses.includes(policyStatus) || billingStatus.code === 9) {
       checkHeaderSection('cancellationDetail', ['Cancellation Effective Date', '']);
-    } else { checkHeaderSection('cancellationDetail', ['Expiration Date', '']); }
+    } else if (expirationPolicyStatuses.includes(policyStatus)) {
+      checkHeaderSection('cancellationDetail', ['Expiration Date', '']);
+    };
 
     // Check the cancellation reinstatement modal
     if (policyStatus === 'Cancelled') {
@@ -90,51 +78,58 @@ describe('Policy: Policy States + Effective/Cancellation Date', () => {
 
   beforeEach(() => routes());
 
-  // it('"Policy Issued" Policy State', () => {
-  //   goToBilling(false);
+  it('"Policy Issued" Policy State', () => {
+    goToBilling(false);
 
-  //   baseBillingCodes.slice(0, 4).forEach(code => modifyLedgerAndRecheck('Policy Issued', code));
-  // });
+    baseBillingCodes.slice(0, 4).forEach(code => modifyLedgerAndRecheck('Policy Issued', code));
+  });
 
   it('"In Force" Policy State', () => {
     modFixtureStubRoute('fetchPolicy', { status: 'In Force' });
-    goToBilling(false);
+    goToBilling();
 
     baseBillingCodes.forEach(code => modifyLedgerAndRecheck('In Force', code));
   });
 
-  // it('"Pending Voluntary Cancellation" Policy State', () => {
-  //   modFixtureStubRoute('fetchPolicy', { status: 'Pending Voluntary Cancellation' });
-  //   goToBilling();
+  it('"Pending Voluntary Cancellation" Policy State', () => {
+    modFixtureStubRoute('fetchPolicy', { status: 'Pending Voluntary Cancellation' });
+    goToBilling();
 
-  //   baseBillingCodes.forEach(code => modifyLedgerAndRecheck('Pending Voluntary Cancellation', code));
-  // });
+    baseBillingCodes.forEach(code => modifyLedgerAndRecheck('Pending Voluntary Cancellation', code));
+  });
 
-  // it('"Pending Underwriting Cancellation" Policy State', () => {
-  //   modFixtureStubRoute('fetchPolicy', { status: 'Pending Underwriting Cancellation' });
-  //   goToBilling();
+  it('"Pending Underwriting Cancellation" Policy State', () => {
+    modFixtureStubRoute('fetchPolicy', { status: 'Pending Underwriting Cancellation' });
+    goToBilling();
 
-  //   baseBillingCodes.forEach(code => modifyLedgerAndRecheck('Pending Underwriting Cancellation', code));
-  // });
+    baseBillingCodes.forEach(code => modifyLedgerAndRecheck('Pending Underwriting Cancellation', code));
+  });
 
-  // it('"Pending Underwriting Non-Renewal" Policy State', () => {
-  //   modFixtureStubRoute('fetchPolicy', { status: 'Pending Underwriting Non-Renewal' });
-  //   goToBilling();
+  it('"Pending Underwriting Non-Renewal" Policy State', () => {
+    modFixtureStubRoute('fetchPolicy', { status: 'Pending Underwriting Non-Renewal' });
+    goToBilling();
 
-  //   baseBillingCodes.forEach(code => modifyLedgerAndRecheck('Pending Underwriting Non-Renewal', code));
-  // });
+    baseBillingCodes.forEach(code => modifyLedgerAndRecheck('Pending Underwriting Non-Renewal', code));
+  });
 
-  // it('"Cancelled" Policy State', () => {
-  //   modFixtureStubRoute('fetchPolicy', { status: 'Cancelled' });
-  //   goToBilling();
+  it('"Cancelled" Policy State', () => {
+    const cancelledBillingCodes = [
+      { code: 12, displayText: 'Voluntary Cancellation' },
+      { code: 13, displayText: 'Non-Payment Cancellation' },
+      { code: 14, displayText: 'Underwriting Cancellation' },
+      { code: 15, displayText: 'Underwriting Non-Renewal' }
+    ];
 
-  //   cancelledBillingCodes.forEach(code => modifyLedgerAndRecheck('Cancelled', code));
-  // });
+    modFixtureStubRoute('fetchPolicy', { status: 'Cancelled' });
+    goToBilling();
 
-  // it('"Not In Force" Policy State', () => {
-  //   modFixtureStubRoute('fetchPolicy', { status: 'Not In Force' });
-  //   goToBilling();
+    cancelledBillingCodes.forEach(code => modifyLedgerAndRecheck('Cancelled', code));
+  });
 
-  //   modifyLedgerAndRecheck('Not In Force', { code: 99, displayText: 'Policy Expired' });
-  // });
+  it('"Not In Force" Policy State', () => {
+    modFixtureStubRoute('fetchPolicy', { status: 'Not In Force' });
+    goToBilling();
+
+    modifyLedgerAndRecheck('Not In Force', { code: 99, displayText: 'Policy Expired' });
+  });
 });

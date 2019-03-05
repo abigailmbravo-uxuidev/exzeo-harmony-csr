@@ -45,7 +45,7 @@ export const checkFullHeader = (
     checkHeaderSection('cancellationDetail', ['Expiration Date', expDate]);
     cy.findDataTag('effectiveDateDetail').find('dl div dt button').should('contain', 'Edit');
   }
-  checkHeaderSection('policyHolderDetail', ['Policy Holder', name, phone]);
+  checkHeaderSection('policyHolderDetail', ['Policyholder', name, phone]);
   checkHeaderSection('mailingAddressDetail', mailingComplete ? ['Mailing Address', mAddress, m2Address, `${mCity}, ${mSt} ${mZip}`] : ['Mailing Address']);
   checkHeaderSection('propertyAddressDetail', ['Property Address', pAddress, p2Address, `${pCity}, ${pSt} ${pZip}`]);
   checkHeaderSection('countyDetail', ['Property County', county]);

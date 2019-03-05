@@ -48,7 +48,7 @@ describe('Quote Header Testing', () => {
   it('Coverage/Rating Page', () => {
     cy.wait('@fetchAgencies')
       .fixture('stubs/csrGetQuoteWithUnderwriting').then(fx => {
-      checkHeaderSection('policyHolderDetail', ['Policy Holder', '', '']);
+      checkHeaderSection('policyHolderDetail', ['Policyholder', '', '']);
 
       const coverageRes = {
         effectiveDate,
