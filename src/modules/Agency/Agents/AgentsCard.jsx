@@ -32,11 +32,14 @@ export const AgentsCard = ({
           </div>
           <div className="contact-methods">
             {agent.primaryPhoneNumber &&
-              <p className="phone">
-                <i className="fa fa-phone-square" />
-                <a href={`tel:${agent.primaryPhoneNumber}`}>{normalize.phone(agent.primaryPhoneNumber)}</a>
-              </p>
-            }
+                <p className="phone">
+                  <i className="fa fa-phone-square" />
+                  <a href={`tel:${agent.primaryPhoneNumber}${agent.primaryPhoneNumberExtension ? `+${agent.primaryPhoneNumberExtension}` : ''}`}>
+                  {normalize.phone(agent.primaryPhoneNumber)} 
+                  {agent.primaryPhoneNumberExtension ? ` ext. ${agent.primaryPhoneNumberExtension}` : '' }
+                  </a>
+                </p>
+              }
             {agent.secondaryPhoneNumber &&
               <p className="phone">
                 <small>2<sup>ND</sup><i className="fa fa-phone" /></small>
