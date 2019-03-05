@@ -10,6 +10,8 @@ export const TAGS = [
 
 ];
 
+export const USE_ENITY_END_DATE = ["renewal_processing", "estate"];
+
 export const REASONS_DATA = {
   information_needed: {
     answer: 'information_needed', label: 'Information Needed', daysFromDueDate: 7, assignee: ''
