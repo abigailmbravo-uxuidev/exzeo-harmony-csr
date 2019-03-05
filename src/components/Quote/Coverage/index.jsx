@@ -190,7 +190,7 @@ export const handleFormSubmit = async (data, dispatch, props) => {
     ? submitData.pH2phone2.replace(/[^\d]/g, '')
     : submitData.pH2phone2;
 
-    await props.updateQuote(MODEL_NAME, submitData, PAGE_NAME);
+  await props.updateQuote(MODEL_NAME, submitData, PAGE_NAME);
 };
 
 export class Coverage extends Component {

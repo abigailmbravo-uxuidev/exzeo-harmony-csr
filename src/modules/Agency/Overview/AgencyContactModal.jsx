@@ -43,7 +43,7 @@ export class AgencyContactModal extends Component {
             <div className="card-block">
               <section className="agency-details">
                 <FormSection name={section} >
-                  <Contact section={section} />
+                  <Contact section={section} showTitle />
                 </FormSection>
               </section>
             </div>

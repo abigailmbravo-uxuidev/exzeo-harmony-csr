@@ -10,7 +10,10 @@ function PolicyCard({
   return (
     <div tabIndex="0" onKeyPress={handleKeyPress} id={policy.PolicyID} className="card">
       <div className="icon-name">
-        <i className="card-icon fa fa-user-circle" />
+        {/*<i className="card-icon fa fa-user-circle" />*/}
+        <i className="card-icon fa fa-file-text" />
+      </div>
+      <section>
         <div className="card-name">
           {(Array.isArray(policy.policyHolders) && policy.policyHolders.length > 0) &&
             <h5 title={`${policy.policyHolders[0].firstName} ${policy.policyHolders[0].lastName}`}>
@@ -18,13 +21,11 @@ function PolicyCard({
             </h5>
           }
         </div>
-      </div>
-      <section>
         <ul id="policy-search-results" className="policy-search-results">
           <li className="header">
             <span className="policy-no">Policy No.</span>
             <span className="property-address">Property Address</span>
-            <span className="quote-state">Policy Status</span>
+            <span className="policy-status">Policy Status</span>
             <span className="effective-date">Effective Date</span>
           </li>
           <li>
@@ -41,7 +42,7 @@ function PolicyCard({
                 ${policy.property.physicalAddress.city}, ${policy.property.physicalAddress.state}
                 ${policy.property.physicalAddress.zip}`}
               </span>
-              <span className="quote-state">{policy.status}</span>
+              <span className="policy-status">{policy.status}</span>
               <span className="effective-date">{moment.utc(policy.effectiveDate).format(STANDARD_DATE_FORMAT)}</span>
             </a>
           </li>

@@ -37,36 +37,6 @@
         }
       }
     }
-    //detail header
-    .detailHeader {
-      width: 100%;
-
-      .agencyDetails {
-        align-items: center;
-        padding-right: $padding*2;
-        text-align: center;
-
-        h4 {
-          margin: 0;
-          color: $yellow-lighten-06;
-          font-weight: $font-weight-normal;
-        }
-      }
-
-      .entityName {
-        display: flex;
-        align-items: center;
-
-        h4 {
-          margin: 0;
-          color: $white;
-
-          span {
-            font-weight: $font-weight-normal;
-          }
-        }
-      }
-    }
     //content wrapper
     main[role="document"] {
       height: calc(100vh - 8.5rem);
@@ -635,7 +605,6 @@
                         font-size: 70%;
 
                         sup {
-                          top: -.5em;
                           font-size: 50%;
                         }
 
@@ -713,11 +682,6 @@
                             border-radius: 2px;
                             background: $warm-gray-08;
                             font-size: 70%;
-
-                            sup {
-                              top: -.5em;
-                              font-size: 50%;
-                            }
 
                             i {
                               margin-right: 0;
@@ -1709,6 +1673,7 @@
   }
 }
 //search cards
+
 .card {
   &.contact {
     .contact-details {
