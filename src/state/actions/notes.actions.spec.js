@@ -39,7 +39,6 @@ describe('Test notes.actions', () => {
       .toEqual(stateObj);
   });
 
-  
   describe('Test fetchNotes action', () => {
     const middlewares = [thunk];
     const mockStore = configureStore(middlewares);
