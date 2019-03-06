@@ -17,11 +17,7 @@ describe('Testing NotesFiles component', () => {
       }
     ],
     attachmentStatus: false,
-    actions: {
-      errorActions: {
-        setAppError() { }
-      }
-    }
+    setAppError() {}
   };
 
   it('should render', () => {

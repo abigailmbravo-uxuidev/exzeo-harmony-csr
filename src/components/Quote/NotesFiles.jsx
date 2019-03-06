@@ -16,7 +16,7 @@ export class NotesFiles extends Component {
   render() {
     const { match, quoteData } = this.props;
     return (
-      <React.Fragment match={match}>
+      <React.Fragment>
         <div className="route-content">
           <div className="scroll">
             {quoteData.quoteNumber && <Notes numbers={[quoteData.quoteNumber]} numberType="quoteNumber" />}
