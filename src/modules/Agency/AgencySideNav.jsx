@@ -95,55 +95,59 @@ export class SideNav extends React.Component {
 
     const { branchSelectionRoute } = this.state;
     return (
-      <form>
+      <React.Fragment>
         {branchSelectionRoute && !branchSelectionRoute.includes(url) && <Redirect replace to={branchSelectionRoute} />}
         <nav className="site-nav">
           <ul>
             {(String(branchCode) === '0' && agencyCode !== 'new') &&
-            <React.Fragment>
-              <li key="newBranch" >
-                <NavLink
-                  to={`/agency/${agencyCode}/${branchCode}/new`}
-                  tabIndex="0"
-                  className="btn btn-secondary btn-block btn-xs btn-branch">
-                  <i className="fa fa-plus" />Branch
+              <React.Fragment>
+                <li key="newBranch" >
+                  <NavLink
+                    to={`/agency/${agencyCode}/${branchCode}/new`}
+                    tabIndex="0"
+                    className="btn btn-secondary btn-block btn-xs btn-branch">
+                    <i className="fa fa-plus" />Branch
                 </NavLink>
-              </li>
-              <hr className="nav-division" />
-            </React.Fragment>
+                </li>
+                <hr className="nav-division" />
+              </React.Fragment>
             }
             {(branchesList.length > 1 && agencyCode !== 'new') &&
-            <li key="branch">
-              <Field
-                dataTest="selectedBranch"
-                name="selectedBranch"
-                label="Branch"
-                component={Select}
-                styleName="flex-child"
-                answers={branchesList}
-                showPlaceholder={false}
-                onChange={event => this.handleBranchSelection(event)} />
-            </li>
+              <li key="branch">
+                <form>
+                  <Field
+                    dataTest="selectedBranch"
+                    name="selectedBranch"
+                    label="Branch"
+                    component={Select}
+                    styleName="flex-child"
+                    answers={branchesList}
+                    showPlaceholder={false}
+                    onChange={event => this.handleBranchSelection(event)} />
+                </form>
+              </li>
             }
             {csrLinks(agencyCode, branchCode).map((agentLink, index) => (
               <li key={agentLink.key}>
                 <span className={agentLink.styleName}>
-                  <NavLink to={agentLink.link} activeClassName="active" exact>{agentLink.label}</NavLink>
+                  <NavLink to={agentLink.link} activeClassName="active" exact><span>{agentLink.label}</span></NavLink>
                 </span>
               </li>))
             }
           </ul>
+        </nav>
+        <div className="plus-button-group">
           <button
             type="button"
-            aria-label="open-btn form-new-diary"
+            aria-label="open-btn form-new-note"
             data-test="new-note"
-            className="btn btn-primary btn-round btn-lg new-diary-btn"
+            className="btn btn-primary btn-round btn-lg new-note-btn"
             onClick={this.newNote}>
-            <i className="fa fa-bookmark" />
+            <i className="fa fa-pencil" />
             <span>NEW NOTE</span>
           </button>
-        </nav>
-      </form>);
+        </div>
+      </React.Fragment >);
   }
 }
 

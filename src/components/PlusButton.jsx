@@ -4,7 +4,6 @@ import { func } from 'prop-types';
 const PlusButton = ({ newDiary, newNote }) => {
   return (
     <div className="plus-button-group">
-      <div className="btn btn-round btn-primary btn-lg new-btn" data-test="plus-buttons"><i className="fa fa-plus" /></div>
       <button
         aria-label="open-btn form-new-diary"
         data-test="new-diary"
