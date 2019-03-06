@@ -60,7 +60,7 @@ export class SideNav extends React.Component {
   };
 
   newDiary = () => {
-    const { actions, policy: { companyCode, state,  product, policyNumber, endDate } } = this.props;
+    const { actions, policy: { companyCode, state, product, policyNumber, endDate } } = this.props;
     actions.uiActions.toggleDiary({
       companyCode,
       state,
@@ -72,7 +72,7 @@ export class SideNav extends React.Component {
   };
 
   newNote = () => {
-    const { actions, policy: { companyCode, state,  product, policyNumber, sourceNumber } } = this.props;
+    const { actions, policy: { companyCode, state, product, policyNumber, sourceNumber } } = this.props;
     actions.uiActions.toggleNote({
       companyCode,
       state,
@@ -98,17 +98,19 @@ export class SideNav extends React.Component {
   render() {
     const { actions, policy } = this.props;
     return (
-      <nav className="site-nav">
-        <SideNavigation navLinks={getNavLinks({ policyNumber: policy.policyNumber })}>
-          <hr className="nav-division" />
-          <li>
-            <button
-              aria-label="open-btn"
-              className="btn btn-primary btn-sm btn-block"
-              onClick={this.generateDoc}>
-              <i className="fa fa-plus" />
-              Document
+      <React.Fragment>
+        <nav className="site-nav">
+          <SideNavigation navLinks={getNavLinks({ policyNumber: policy.policyNumber })}>
+            <hr className="nav-division" />
+            <li>
+              <button
+                aria-label="open-btn"
+                className="btn btn-primary btn-sm btn-block"
+                onClick={this.generateDoc}>
+                <i className="fa fa-plus" />
+                Document
             </button>
+<<<<<<< HEAD
           </li>
           <li className={this.state.showDocsForm ? 'document-panel show' : 'document-panel hidden'}>
             {this.state.showDocsForm &&
@@ -122,8 +124,22 @@ export class SideNav extends React.Component {
           </li>
         </SideNavigation>
 
+=======
+            </li>
+            <li className={this.state.showDocsForm ? 'document-panel show' : 'document-panel hidden'}>
+              {this.state.showDocsForm &&
+                <GenerateDocsForm
+                  policyNumber={policy.policyNumber}
+                  updateNotes={this.updateNotes(this.props)}
+                  startWorkflow={actions.cgActions.startWorkflow}
+                  errorHandler={actions.errorActions.setAppError} />
+              }
+            </li>
+          </SideNavigation>
+        </nav>
+>>>>>>> update side nav buttons for overall consitency
         <PlusButton newNote={this.newNote} newDiary={this.newDiary} />
-      </nav>
+      </React.Fragment>
     );
   }
 }

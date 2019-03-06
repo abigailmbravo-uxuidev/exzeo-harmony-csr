@@ -25,7 +25,7 @@ export const newDiary = (props) => {
 };
 
 export const newNote = (props) => {
-  const { quoteData: { companyCode, state, product, quoteNumber} } = props;
+  const { quoteData: { companyCode, state, product, quoteNumber } } = props;
   props.actions.uiActions.toggleNote({
     companyCode,
     state,
@@ -100,20 +100,21 @@ export const SideNav = (props) => {
     : null;
 
   return (
-    <nav className="site-nav">
-      {redirect}
-      <SideNavigation navLinks={getNavLinks({ quoteNumber: quoteData.quoteNumber })}>
-        <hr className="nav-division" />
-        <li>
-          <button tabIndex="0" aria-label="open-btn form-newNote" className="btn btn-secondary btn-xs btn-block" onClick={() => UWconditionsPopup(props)}>Underwriting Conditions</button>
-        </li>
-      </SideNavigation>
+    <React.Fragment>
+      <nav className="site-nav">
+        {redirect}
+        <SideNavigation navLinks={getNavLinks({ quoteNumber: quoteData.quoteNumber })}>
+          <hr className="nav-division" />
+          <li>
+            <button tabIndex="0" aria-label="open-btn form-newNote" className="btn btn-secondary btn-xs btn-block" onClick={() => UWconditionsPopup(props)}>Underwriting Conditions</button>
+          </li>
+        </SideNavigation>
+        {props.appState.data.showUWconditions === true &&
+          <UWconditions closeButtonHandler={() => closeUWConditions(props)} />
+        }
+      </nav>
       <PlusButton newNote={() => newNote(props)} newDiary={() => newDiary(props)} />
-
-      {props.appState.data.showUWconditions === true &&
-        <UWconditions closeButtonHandler={() => closeUWConditions(props)} />
-      }
-    </nav>
+    </React.Fragment>
   );
 };
 
