@@ -22,7 +22,7 @@ export class Notes extends Component {
   }
 
   render() {
-    const { error, notes } = this.props;
+    const { error, notes,  setAppError } = this.props;
     const { isLoading } = this.state;
 
     return (
@@ -30,7 +30,7 @@ export class Notes extends Component {
         <div className="route-content">
           {isLoading && <Loader />}
           <div className="scroll">
-            <NoteList notes={notes} {...this.props} />
+            <NoteList notes={notes} setAppError={setAppError} />
           </div>
         </div>
         <div className="basic-footer">
