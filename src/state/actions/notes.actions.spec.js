@@ -1,6 +1,5 @@
 import configureStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
-import sinon from 'sinon';
 
 import * as serviceRunner from '../../utilities/serviceRunner';
 import * as types from './actionTypes';
@@ -41,7 +40,7 @@ describe('Test notes.actions', () => {
   });
 
   
-  describe('Test notes.actions async actions', () => {
+  describe('Test fetchNotes action', () => {
     const middlewares = [thunk];
     const mockStore = configureStore(middlewares);
     const initialState = {};
