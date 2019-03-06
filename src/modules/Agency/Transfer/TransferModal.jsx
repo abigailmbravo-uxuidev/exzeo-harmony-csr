@@ -33,19 +33,16 @@ export class TransferModal extends Component {
   submitTransfer = async (data, dispatch, props) => {
     const { agentCodeTo, agencyCodeTo } = data;
     const { selectedPolicies } = props;
-    // create an array of tranfers that filter policies by agentCode
-    // loop over array of transfers to send to the server 
-    const transfers = this.groupPolicyByAgentCode(selectedPolicies);
-    console.log(transfers);
-    Object.keys(transfers).forEach(t => {
-      const policies = transfers[t] || [];
 
-      if(policies.length  > 0){
-        const { agencyCode, agentCode } = policies[0];
-        props.transferPoliciesToAgent({ policyNumbers: policies.map(p => p.policyNumber), agencyCodeTo, agentCodeTo, agencyCode, agentCode});
-      }
+    const groupedPolices = this.groupPolicyByAgentCode(selectedPolicies);
+    const transfers = [];
+    Object.keys(groupedPolices).forEach(p => {
+      const policies = groupedPolices[p] || [];
+        const { agencyCode = 60000, agentCode = 20000 } = policies[0];
+        transfers.push({ policyNumbers: policies.map(p => p.policyNumber), agencyCodeTo, agentCodeTo: Number(agentCodeTo), agencyCodeFrom: agencyCode, agentCodeFrom: agentCode})
     });
 
+    props.transferPoliciesToAgent(transfers);
     getAgentListByAgencyCode(props.agencyCode);
     props.clearSelectedPolicies();
     props.toggleModal();

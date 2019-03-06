@@ -84,9 +84,7 @@ export const getPoliciesByAgencyCode = createSelector(
       propertyAddress: `${address1}, ${address2 ? `${address2},` : ''} ${city}, ${state} ${zip}`,
       policyHolder1: `${policyHolders[0].firstName} ${policyHolders[0].lastName}` ,
       effectiveDate: formattedDate(p.effectiveDate),
-      policyVersion: p.policyVersion,
-      agentCode: p.agentCode || 60000,
-      agencyCode: p.agencyCode || 20000
+      policyVersion: p.policyVersion
       }
     });
   }

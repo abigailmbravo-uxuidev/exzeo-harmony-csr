@@ -483,15 +483,48 @@ export function transormAgencyToBranch(agencyData) {
 
 /**
  *
- * @param companyCode
- * @param state
- * @returns {Promise<Array>}
+ * @param policies
+ * @param agentCodeTo
+ * @param agencyCodeTo
+ * @param agencyCode
+ * @param agentCode
+ * @returns {Promise<{}>}
  */
-export async function transferPoliciesToAgent({ policies, agentCodeTo, agencyCodeTo, agencyCode, agentCode }) {
+export async function transferPoliciesRequest(transfers) {
   try {
-    return Promise.resolve({});
-  } catch (error) {
-    return Promise.reject(error);
 
+    const transferConfig = {
+      exchangeName: 'harmony',
+      routingKey: 'harmony.agency.startBoBTransfers',
+      data: {
+        transfers
+      }
+    };
+
+    const response = await serviceRunner.callService(transferConfig, 'transferPoliciesToAgent');
+    return response.data && response.data.result ? response.data.result : {};
+  } catch (error) {
+    throw error;
   }
+}
+
+/**
+ *
+ * @param policies
+ * @param agentCodeTo
+ * @param agencyCodeTo
+ * @param agencyCode
+ * @param agentCode
+ * @returns {Promise<{}>}
+ */
+export function transferPoliciesToAgent(transfers) {
+  return async (dispatch) => {
+    try {
+      await transferPoliciesRequest(transfers);
+      return null;
+    } catch (error) {
+      dispatch(errorActions.setAppError(error));
+      return null;
+    }
+  };
 }
