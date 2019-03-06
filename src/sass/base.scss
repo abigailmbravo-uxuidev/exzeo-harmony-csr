@@ -420,7 +420,6 @@ ul.list-cards {
       display: flex;
       overflow: hidden;
       align-items: center;
-      flex-basis: 15rem;
       flex-wrap: wrap;
 
       i {
@@ -1315,6 +1314,7 @@ ul.list-cards {
 
         li {
           span {
+            
             a {
               padding-left: $padding*2;
             }
