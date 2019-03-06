@@ -6,7 +6,7 @@
     "server": "./replace-dotenv.sh && exframe-web",
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test",
+    "test": "react-scripts test --coverage",
     "lint": "./node_modules/.bin/eslint src --ext .jsx --ext .js"
   },
   "dependencies": {
