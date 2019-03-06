@@ -6,7 +6,8 @@ import { connect } from 'react-redux';
 import { getAgency,
   getAgentList,
   getAgentsByAgencyCode,
-  getListOfOrphanedAgents
+  getListOfOrphanedAgents,
+  getAgentListByAgencyCode
 } from '../../state/actions/agency.actions';
 import { searchSettingsByCSPAndZip } from '../../state/actions/zipCodeSettings.actions';
 import { getTerritoryManagers, getLists } from '../../state/actions/questions.actions';
@@ -38,6 +39,7 @@ export class Agency extends Component {
     if (agencyCode !== 'new') {
       this.props.getAgency(agencyCode);
       this.props.getAgentsByAgencyCode(agencyCode);
+      this.props.getAgentListByAgencyCode(agencyCode);
     }
     this.props.getListOfOrphanedAgents();
     this.props.searchSettingsByCSPAndZip('', 'FL');
@@ -82,6 +84,7 @@ const mapStateToProps = state => ({
 export default connect(mapStateToProps, {
   getAgency,
   getAgentList,
+  getAgentListByAgencyCode,
   getAgentsByAgencyCode,
   getListOfOrphanedAgents,
   getTerritoryManagers,

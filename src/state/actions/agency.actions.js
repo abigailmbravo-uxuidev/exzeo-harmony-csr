@@ -479,3 +479,19 @@ export function transormAgencyToBranch(agencyData) {
   });
   return agencyData;
 }
+
+
+/**
+ *
+ * @param companyCode
+ * @param state
+ * @returns {Promise<Array>}
+ */
+export async function transferPoliciesToAgent({ policies, agentCode, agencyCode }) {
+  try {
+    return Promise.resolve({});
+  } catch (error) {
+    return Promise.reject(error);
+
+  }
+}

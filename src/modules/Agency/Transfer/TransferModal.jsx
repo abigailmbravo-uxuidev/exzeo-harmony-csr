@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { reduxForm, Field } from 'redux-form';
 import { SelectTypeAhead, Select, Loader, validation } from '@exzeo/core-ui';
 
-import { getAgencies, getAgentListByAgencyCode } from '../../../state/actions/agency.actions';
+import { getAgencies, getAgentListByAgencyCode, transferPoliciesToAgent } from '../../../state/actions/agency.actions';
 import { getAgenciesList, getAgentsListForTransfer } from '../../../state/selectors/agency.selector';
 
 export class TransferModal extends Component {
@@ -19,7 +19,10 @@ export class TransferModal extends Component {
     getAgentListByAgencyCode(agencyCode);
   }
 
-  submitTransfer = (data, dispatch, props) => {
+  submitTransfer = async (data, dispatch, props) => {
+    const { agencyCode, agentCode } = data;
+    const { selectedPolicies } = props;
+    await transferPoliciesToAgent({ policies: selectedPolicies, agencyCode, agentCode})
     getAgentListByAgencyCode(props.agencyCode);
     props.clearSelectedPolicies();
     props.toggleModal();
@@ -91,7 +94,8 @@ const mapStateToProps = (state, { agencyCode, agentCode }) => ({
 
 export default connect(mapStateToProps, {
   getAgencies,
-  getAgentListByAgencyCode
+  getAgentListByAgencyCode,
+  transferPoliciesToAgent
 })(reduxForm({
   form: 'TransferPolicies',
   enableReinitialize: true
