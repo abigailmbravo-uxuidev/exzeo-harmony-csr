@@ -16,7 +16,7 @@ describe('Test the Notes Component', () => {
 
   it('Should Render NoteList', () => {
     const props = { 
-      numbers: ['test']},
+      numbers: ['test'],
       numberType: 'policyNumber',
       setAppError: jest.fn() 
     };
