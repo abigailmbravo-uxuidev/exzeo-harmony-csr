@@ -32,14 +32,14 @@ export class TransferModal extends Component {
 
   submitTransfer = async (data, dispatch, props) => {
     const { agentCodeTo, agencyCodeTo } = data;
-    const { selectedPolicies } = props;
+    const { selectedPolicies, agentCode } = props;
 
     const groupedPolices = this.groupPolicyByAgentCode(selectedPolicies);
     const transfers = [];
     Object.keys(groupedPolices).forEach(p => {
       const policies = groupedPolices[p] || [];
-        const { agencyCode = 60000, agentCode = 20000 } = policies[0];
-        transfers.push({ policyNumbers: policies.map(p => p.policyNumber), agencyCodeTo, agentCodeTo: Number(agentCodeTo), agencyCodeFrom: agencyCode, agentCodeFrom: agentCode})
+        const { agencyCode: agencyCodeFrom, agentCode: agentCodeFrom } = policies[0];
+        transfers.push({ policyNumbers: policies.map(p => p.policyNumber), agencyCodeTo, agentCodeTo: Number(agentCodeTo), agencyCodeFrom, agentCodeFrom})
     });
 
     props.transferPoliciesToAgent(transfers);
