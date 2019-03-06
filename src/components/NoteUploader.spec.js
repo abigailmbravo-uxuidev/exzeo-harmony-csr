@@ -75,41 +75,6 @@ describe('Testing NoteUploader component', () => {
     });
   });
 
-  describe('component should close if profile is missing', () => {
-    it('note should be valid', () => {
-      const initialState = {
-        authState: {
-          userProfile: { }
-        },
-        appState: {
-          data: {
-            minimize: false
-          }
-        },
-        error: {}
-      };
-
-      const props = {
-        companyCode: 'TTIC',
-        state: 'FL',
-        product: 'HO3',
-        documentId: 'testid',
-        noteType: 'Policy Note',
-        resourceType: 'Policy'
-      };
-
-      const store = mockStore(initialState);
-      const wrapper = shallow(<NoteUploader store={store} {...props} />);
-      const instance = wrapper.dive().dive().dive().dive()
-        .instance();
-      const spy = jest.spyOn(instance, 'handleClose');
-
-      instance.componentDidMount();
-
-      expect(instance.handleClose).toHaveBeenCalled();
-    });
-  });
-
   describe('Testing NoteUploader functions', () => {
     it('note should be valid', () => {
       const valid = validate({ noteContent: 'Test Content' });
