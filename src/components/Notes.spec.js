@@ -6,7 +6,7 @@ import { Notes } from './Notes';
 describe('Test the Notes Component', () => {
   it('Should Render Notes', () => {
     const props = { 
-      numbers: ['test']},
+      numbers: ['test'],
       numberType: 'policyNumber',
       setAppError: jest.fn() 
     };
