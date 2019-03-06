@@ -27,7 +27,7 @@ export const handleInitialize = (state) => {
     values[question.name] = val;
 
     const defaultAnswer = question && question.answers &&
-    _.find(question.answers, { default: true }) ?
+      _.find(question.answers, { default: true }) ?
       _.find(question.answers, { default: true }).answer : null;
 
     if (defaultAnswer && question.hidden) {
@@ -153,7 +153,7 @@ Underwriting.propTypes = {
   appState: PropTypes.shape({
     modelName: PropTypes.string,
     instanceId: PropTypes.string,
-    data: PropTypes.shape({ submitting: PropTypes.boolean })
+    data: PropTypes.shape({ submitting: PropTypes.bool })
   }),
   quoteData: PropTypes.shape(),
   questions: PropTypes.arrayOf(PropTypes.shape())
