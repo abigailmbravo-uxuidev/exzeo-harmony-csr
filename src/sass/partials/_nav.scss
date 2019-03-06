@@ -38,6 +38,11 @@
     li {
       display: flex;
       margin: 0;
+
+      form {
+        width: 100%;
+      }
+
       a {
         display: flex;
         align-items: center;
