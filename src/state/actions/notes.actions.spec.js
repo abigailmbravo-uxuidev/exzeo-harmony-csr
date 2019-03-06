@@ -42,26 +42,10 @@ describe('Test notes.actions', () => {
 
   
   describe('Test notes.actions async actions', () => {
-    // create sandbox for stubs/mocks/spies
-    const sandbox = sinon.sandbox.create();
     const middlewares = [thunk];
     const mockStore = configureStore(middlewares);
-    let initialState;
-    let store;
-    let httpStub;
-
-    beforeEach(() => {
-      initialState = {};
-      store = mockStore(initialState);
-      httpStub = sinon.stub();
-      sandbox.stub(serviceRunner, 'callService').callsFake((...args) => httpStub(...args));
-    });
-
-    afterEach(() => {
-      // restore to original state for next test
-      sandbox.restore();
-      sandbox.reset();
-    });
+    const initialState = {};
+    const store = mockStore(initialState);
 
     it('Should call dispatch on fetchNotes', async () => {
       const notes = [
@@ -81,8 +65,7 @@ describe('Test notes.actions', () => {
         notes
       }];
 
-      httpStub.onCall(0)
-        .returns(Promise.resolve({ data: { result: notes } }));
+      serviceRunner.callService = jest.fn().mockReturnValue(Promise.resolve({ data: { result: notes } }));
 
       await store.dispatch(fetchNotes([12345], 'agencyCode'));
       const action = store.getActions();

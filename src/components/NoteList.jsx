@@ -55,7 +55,7 @@ export const Notes = (props) => {
         (<Downloader
           fileName={attachment.fileName}
           fileUrl={attachment.fileUrl}
-          errorHandler={err => props.actions.errorActions.setAppError(err)}
+          errorHandler={err => props.setAppError(err)}
           key={i} />))}
     </span>
   );
@@ -113,11 +113,7 @@ export class NoteList extends Component {
 
 NoteList.propTypes = {
   notes: PropTypes.array,
-  actions: PropTypes.shape({
-    errorActions: PropTypes.shape({
-      setAppError: PropTypes.func.isRequired
-    })
-  })
+  setAppError: PropTypes.func.isRequired
 };
 
 export default NoteList;

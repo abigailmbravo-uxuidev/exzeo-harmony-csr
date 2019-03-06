@@ -18,7 +18,6 @@ export class Notes extends Component {
   async componentDidMount() {
     const { numbers, numberType, fetchNotes } = this.props;
     const notes = await fetchNotes(numbers, numberType);
-    console.log('qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq')
     this.setState({ isLoading: false });
   }
 
