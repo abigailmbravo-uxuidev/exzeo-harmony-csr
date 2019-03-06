@@ -110,7 +110,6 @@ export class SideNav extends React.Component {
                 <i className="fa fa-plus" />
                 Document
             </button>
-<<<<<<< HEAD
           </li>
           <li className={this.state.showDocsForm ? 'document-panel show' : 'document-panel hidden'}>
             {this.state.showDocsForm &&
@@ -123,21 +122,6 @@ export class SideNav extends React.Component {
             }
           </li>
         </SideNavigation>
-
-=======
-            </li>
-            <li className={this.state.showDocsForm ? 'document-panel show' : 'document-panel hidden'}>
-              {this.state.showDocsForm &&
-                <GenerateDocsForm
-                  policyNumber={policy.policyNumber}
-                  updateNotes={this.updateNotes(this.props)}
-                  startWorkflow={actions.cgActions.startWorkflow}
-                  errorHandler={actions.errorActions.setAppError} />
-              }
-            </li>
-          </SideNavigation>
-        </nav>
->>>>>>> update side nav buttons for overall consitency
         <PlusButton newNote={this.newNote} newDiary={this.newDiary} />
       </React.Fragment>
     );

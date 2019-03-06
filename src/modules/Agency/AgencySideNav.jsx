@@ -117,19 +117,21 @@ export class SideNav extends React.Component {
             }
             {csrLinks(agencyCode, branchCode).map((agentLink, index) => (
               <li key={agentLink.key}>
-                <NavLink className={agentLink.styleName} to={agentLink.link} activeClassName="active" exact>
-                  <span>{agentLink.label}</span>
-                </NavLink>
+                <span className={agentLink.styleName}>
+                  <NavLink to={agentLink.link} activeClassName="active" exact><span>{agentLink.label}</span></NavLink>
+                </span>
               </li>))
             }
           </ul>
+        </nav>
+        <div className="plus-button-group">
           <button
             type="button"
-            aria-label="open-btn form-new-diary"
+            aria-label="open-btn form-new-note"
             data-test="new-note"
-            className="btn btn-primary btn-round btn-lg new-diary-btn"
+            className="btn btn-primary btn-round btn-lg new-note-btn"
             onClick={this.newNote}>
-            <i className="fa fa-bookmark" />
+            <i className="fa fa-pencil" />
             <span>NEW NOTE</span>
           </button>
         </nav>
