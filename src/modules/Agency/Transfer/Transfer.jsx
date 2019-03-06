@@ -58,11 +58,13 @@ export class Transfer extends Component {
   render() {
     const {
       agency,
+      agencyCode,
       agentsList,
       policies,
       policyNumberList,
       listAnswersAsKey,
-      getPoliciesForAgency
+      getPoliciesForAgency,
+      getAgentListByAgencyCode
     } = this.props;
 
     const { showTransferModal, selectedPolicies, fadePolicy } = this.state;
@@ -72,6 +74,8 @@ export class Transfer extends Component {
       <React.Fragment>
         {showTransferModal &&
           <TransferModal
+            activeAgencyCode={agencyCode}
+            getAgentListByAgencyCode={getAgentListByAgencyCode}
             clearSelectedPolicies={this.clearSelectedPolicies}
             selectedPolicies={selectedPolicies}
             toggleModal={this.handleToggleModal}

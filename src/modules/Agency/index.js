@@ -29,9 +29,9 @@ export const ContractsRender = props => <Contracts auth={props.auth} {...props} 
 export const CreateBranchRender = branchCode => props =>
   <CreateBranch branchCode={branchCode} auth={props.auth} {...props} />;
 
-export const OverviewRender = branchCode => props => <Overview branchCode={branchCode} auth={props.auth} {...props} />;
-export const AgentsRender = branchCode => props => <Agents branchCode={branchCode} auth={props.auth} {...props} />;
-export const TransferRender = branchCode => props => <Transfer branchCode={branchCode} auth={props.auth} {...props} />;
+export const OverviewRender = (branchCode, agencyCode) => props => <Overview branchCode={branchCode} agencyCode={agencyCode} auth={props.auth} {...props} />;
+export const AgentsRender = (branchCode, agencyCode) => props => <Agents branchCode={branchCode} agencyCode={agencyCode} auth={props.auth} {...props} />;
+export const TransferRender = (branchCode, agencyCode) => props => <Transfer branchCode={branchCode} agencyCode={agencyCode} auth={props.auth} {...props} />;
 
 export class Agency extends Component {
   componentDidMount() {
@@ -64,11 +64,11 @@ export class Agency extends Component {
           </aside>
           <div className="content-wrapper">
             <Route exact path="/agency/new/0" render={CreateRender} />
-            <Route exact path={`/agency/${agencyCode}/${branchCode}/overview`} render={OverviewRender(branchCode)} />
+            <Route exact path={`/agency/${agencyCode}/${branchCode}/overview`} render={OverviewRender(branchCode, agencyCode)} />
             <Route exact path={`/agency/${agencyCode}/${branchCode}/contracts`} render={ContractsRender} />
-            <Route exact path={`/agency/${agencyCode}/${branchCode}/agents`} render={AgentsRender(branchCode)} />
-            <Route exact path={`/agency/${agencyCode}/${branchCode}/transfer`} render={TransferRender(branchCode)} />
-            <Route exact path={`/agency/${agencyCode}/0/new`} render={CreateBranchRender(branchCode)} />
+            <Route exact path={`/agency/${agencyCode}/${branchCode}/agents`} render={AgentsRender(branchCode, agencyCode)} />
+            <Route exact path={`/agency/${agencyCode}/${branchCode}/transfer`} render={TransferRender(branchCode, agencyCode)} />
+            <Route exact path={`/agency/${agencyCode}/0/new`} render={CreateBranchRender(branchCode, agencyCode)} />
           </div>
         </main>
       </div>

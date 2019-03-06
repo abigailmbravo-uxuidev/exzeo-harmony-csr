@@ -32,7 +32,7 @@ export class TransferModal extends Component {
 
   submitTransfer = async (data, dispatch, props) => {
     const { agentCodeTo, agencyCodeTo } = data;
-    const { selectedPolicies, agentCode } = props;
+    const { selectedPolicies, activeAgencyCode } = props;
 
     const groupedPolices = this.groupPolicyByAgentCode(selectedPolicies);
     const transfers = [];
@@ -43,9 +43,15 @@ export class TransferModal extends Component {
     });
 
     props.transferPoliciesToAgent(transfers);
-    getAgentListByAgencyCode(props.agencyCode);
+    props.getAgentListByAgencyCode(activeAgencyCode);
     props.clearSelectedPolicies();
     props.toggleModal();
+  }
+
+  closeModal = () => {
+    const { activeAgencyCode } = this.props;
+    this.props.getAgentListByAgencyCode(activeAgencyCode);
+    this.props.toggleModal();
   }
 
   render() {
@@ -84,7 +90,7 @@ export class TransferModal extends Component {
                   aria-label="reset-btn form-editBilling"
                   className="btn btn-secondary"
                   type="button"
-                  onClick={toggleModal}>Cancel
+                  onClick={this.closeModal}>Cancel
                 </button>
                 <button
                   tabIndex="0"

@@ -5,6 +5,7 @@ import { getAgentsListForTransfer } from '../../../state/selectors/agency.select
 import { getPoliciesByAgencyCode, getPolicyNumberList } from '../../../state/selectors/policy.selectors';
 import { getListAnswersAsKey } from '../../../state/selectors/questions.selectors';
 import { getPoliciesForAgency } from '../../../state/actions/policy.actions';
+import { getAgentListByAgencyCode } from '../../../state/actions/agency.actions';
 
 import Transfer from './Transfer';
   
@@ -17,4 +18,4 @@ const mapStateToProps = state => ({
   listAnswersAsKey: getListAnswersAsKey(state)
 });
 
-export default connect(mapStateToProps, { getPoliciesForAgency })(Transfer);
+export default connect(mapStateToProps, { getPoliciesForAgency, getAgentListByAgencyCode })(Transfer);
