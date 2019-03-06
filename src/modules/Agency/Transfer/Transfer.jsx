@@ -67,7 +67,7 @@ export class Transfer extends Component {
 
     const { showTransferModal, selectedPolicies, fadePolicy } = this.state;
     const filteredPolicies = policies.filter(p => !selectedPolicies.some(s => s.policyNumber === p.policyNumber));
-
+    const defaultSelectedAgent = (Array.isArray(agentsList) && agentsList.length > 0) ? agentsList[0].answer : '';
     return (
       <React.Fragment>
         {showTransferModal &&
@@ -82,6 +82,7 @@ export class Transfer extends Component {
             <div className="form-group survey-wrapper" role="group">
               <section className="policy-filter">
                 <TransferFilter
+                  clearSelectedPolicies={this.clearSelectedPolicies}
                   policyNumberList={policyNumberList}
                   listAnswersAsKey={listAnswersAsKey}
                   agentsList={agentsList}

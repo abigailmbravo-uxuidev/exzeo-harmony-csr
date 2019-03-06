@@ -73,6 +73,7 @@ export const getPoliciesByAgencyCode = createSelector(
   [getAgencyPolicies], 
   policies => {
     if (!Array.isArray(policies) || !policies.length) return defaultArr;
+
     return policies.map(p => { 
       const { policyHolders, property: { physicalAddress: { address1,address2, state, city, zip} } } = p;
       return { 
@@ -83,7 +84,9 @@ export const getPoliciesByAgencyCode = createSelector(
       propertyAddress: `${address1}, ${address2 ? `${address2},` : ''} ${city}, ${state} ${zip}`,
       policyHolder1: `${policyHolders[0].firstName} ${policyHolders[0].lastName}` ,
       effectiveDate: formattedDate(p.effectiveDate),
-      policyVersion: p.policyVersion
+      policyVersion: p.policyVersion,
+      agentCode: p.agentCode || 60000,
+      agencyCode: p.agencyCode || 20000
       }
     });
   }

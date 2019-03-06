@@ -487,7 +487,7 @@ export function transormAgencyToBranch(agencyData) {
  * @param state
  * @returns {Promise<Array>}
  */
-export async function transferPoliciesToAgent({ policies, agentCode, agencyCode }) {
+export async function transferPoliciesToAgent({ policies, agentCodeTo, agencyCodeTo, agencyCode, agentCode }) {
   try {
     return Promise.resolve({});
   } catch (error) {

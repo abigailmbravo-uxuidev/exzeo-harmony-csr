@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 
 import {
   Input,
-  SelectTypeAhead,
+  Select,
   Button,
 } from '@exzeo/core-ui';
 
@@ -12,6 +12,7 @@ const FORM_NAME = 'TransferFilter';
 export class TransferFilter extends Component {
 
   handleFilterChange = (value, previousValues, allValues) => {
+
     const { policyNumber, state, product, agentCode } = allValues;
     this.props.getPoliciesForAgency({ 
       policyNumber,
@@ -31,7 +32,6 @@ export class TransferFilter extends Component {
           name="policyNumber"
           dataTest="policyNumber"
           label="Filter By Policy Number"
-          placeholder="Start Typing"
           component={Input}
           styleName=""
           answers={policyNumberList}
@@ -41,8 +41,7 @@ export class TransferFilter extends Component {
           name="state"
           dataTest="state"
           label="Filter By State"
-          placeholder="Start Typing"
-          component={SelectTypeAhead}
+          component={Select}
           styleName=""
           showPlaceholder
           answers={listAnswersAsKey.US_states}
@@ -53,8 +52,7 @@ export class TransferFilter extends Component {
           name="product"
           dataTest="product"
           label="Filter By Product"
-          placeholder="Start Typing"
-          component={SelectTypeAhead}
+          component={Select}
           styleName=""
           showPlaceholder
           answers={listAnswersAsKey.Products}
@@ -63,10 +61,9 @@ export class TransferFilter extends Component {
         />
         <Field
           name="agentCode"
-          dataTest="agent"
+          dataTest="agentCode"
           label="Filter By Agent"
-          placeholder="Start Typing"
-          component={SelectTypeAhead}
+          component={Select}
           styleName=""
           answers={agentsList}
           normalize={this.handleFilterChange}
@@ -84,5 +81,6 @@ export class TransferFilter extends Component {
 }
 
 export default reduxForm({
-  form: FORM_NAME
+  form: FORM_NAME,
+  enableReinitialize: true
 })(TransferFilter);

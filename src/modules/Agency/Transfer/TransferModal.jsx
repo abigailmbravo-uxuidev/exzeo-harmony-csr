@@ -19,10 +19,33 @@ export class TransferModal extends Component {
     getAgentListByAgencyCode(agencyCode);
   }
 
+  groupPolicyByAgentCode(array) {
+    var sorted = {};
+    for( var i = 0, max = array.length; i < max ; i++ ){
+        if( sorted[array[i].agentCode] === undefined ){
+         sorted[array[i].agentCode] = [];
+        }
+        sorted[array[i].agentCode].push(array[i]);
+    }
+    return sorted;
+}
+
   submitTransfer = async (data, dispatch, props) => {
-    const { agencyCode, agentCode } = data;
+    const { agentCodeTo, agencyCodeTo } = data;
     const { selectedPolicies } = props;
-    await transferPoliciesToAgent({ policies: selectedPolicies, agencyCode, agentCode})
+    // create an array of tranfers that filter policies by agentCode
+    // loop over array of transfers to send to the server 
+    const transfers = this.groupPolicyByAgentCode(selectedPolicies);
+    console.log(transfers);
+    Object.keys(transfers).forEach(t => {
+      const policies = transfers[t] || [];
+
+      if(policies.length  > 0){
+        const { agencyCode, agentCode } = policies[0];
+        props.transferPoliciesToAgent({ policyNumbers: policies.map(p => p.policyNumber), agencyCodeTo, agentCodeTo, agencyCode, agentCode});
+      }
+    });
+
     getAgentListByAgencyCode(props.agencyCode);
     props.clearSelectedPolicies();
     props.toggleModal();
@@ -43,16 +66,16 @@ export class TransferModal extends Component {
             <div className="card-block">
               <Field
                 label="Agency"
-                name="agencyCode"
-                dataTest="agencyCode"
+                name="agencyCodeTo"
+                dataTest="agencyCodeTo"
                 component={SelectTypeAhead}
                 answers={agencies}
                 onChange={this.handleAgencyChange}
                 validate={validation.isRequired} />
               <Field
                 label="Agent"
-                name="agentCode"
-                dataTest="agentCode"
+                name="agentCodeTo"
+                dataTest="agentCodeTo"
                 component={Select}
                 answers={agents}
                 validate={validation.isRequired} />
