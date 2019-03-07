@@ -52,8 +52,7 @@ describe('Testing NoteUploader component', () => {
 
       store = mockStore(initialState);
       wrapper = shallow(<NoteUploader store={store} {...props} />);
-      instance = wrapper.dive().dive().dive().dive()
-        .instance();
+      instance = wrapper.dive().dive().dive().dive().instance();
     });
 
     it('should map state to props', () => {
@@ -64,6 +63,21 @@ describe('Testing NoteUploader component', () => {
       expect(instance.state.minimize).toEqual(false);
       instance.handleMinimize();
       expect(instance.state.minimize).toEqual(true);
+    });
+
+    it('note should test file', () => {
+      const file = { name: 'test.pdf', data: { size: 200000 } };
+      const zeroSizeFile = { name: 'test.pdf', data: { size: 0 } };
+      const badNameFile = { name: 'testpdf', data: { size: 0 } };
+
+      const validFile = instance.validateFile(file, [file]);
+      expect(validFile).toBe(true);
+
+      const emptyFile = instance.validateFile(zeroSizeFile, [zeroSizeFile]);
+      expect(emptyFile).toBe(false);
+
+      const invalidNameFile = instance.validateFile(badNameFile, [badNameFile]);
+      expect(invalidNameFile).toBe(false);
     });
 
     it('should submit note', () => {
