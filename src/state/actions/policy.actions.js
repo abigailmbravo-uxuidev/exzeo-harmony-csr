@@ -646,7 +646,7 @@ export async function fetchPoliciesForAgency({ agencyCode = '', state = 'FL', pr
 export function getPoliciesForAgency({ policyNumber, agencyCode, state, product, agentCode}) {
   return async (dispatch) => {
     try {
-      const results = await fetchPoliciesForAgency({ policyNumber, state, product, agentCode});
+      const results = await fetchPoliciesForAgency({ policyNumber, state, product, agentCode, agencyCode});
       dispatch(setPoliciesForAgency(results.policies));
     } catch (error) {
       dispatch(errorActions.setAppError(error));

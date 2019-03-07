@@ -497,7 +497,7 @@ export async function transferPoliciesRequest(transfers) {
       exchangeName: 'harmony',
       routingKey: 'harmony.agency.startBoBTransfers',
       data: {
-        transfers
+        transfers,
       }
     };
 

@@ -38,12 +38,13 @@ export class TransferModal extends Component {
     const transfers = [];
     Object.keys(groupedPolices).forEach(p => {
       const policies = groupedPolices[p] || [];
-        const { agencyCode: agencyCodeFrom, agentCode: agentCodeFrom } = policies[0];
+        const { agencyCode: agencyCodeFrom = 20000, agentCode: agentCodeFrom = 60000 } = policies[0];
         transfers.push({ policyNumbers: policies.map(p => p.policyNumber), agencyCodeTo, agentCodeTo: Number(agentCodeTo), agencyCodeFrom, agentCodeFrom})
     });
 
-    props.transferPoliciesToAgent(transfers);
-    props.getAgentListByAgencyCode(activeAgencyCode);
+    await props.transferPoliciesToAgent(transfers);
+    await props.getAgentListByAgencyCode(activeAgencyCode);
+    await props.getPoliciesForAgency({ agencyCode: activeAgencyCode } );
     props.clearSelectedPolicies();
     props.toggleModal();
   }
@@ -55,9 +56,9 @@ export class TransferModal extends Component {
   }
 
   render() {
-    const { handleSubmit, toggleModal, agencies, agents } = this.props;
+    const { handleSubmit, agencies, agents, submitting } = this.props;
 
-    if (agencies.length === 0) return (<Loader />);
+    if (agencies.length === 0 || submitting) return (<Loader />);
 
     return (
       <div className="modal bob-transfer" style={this.modalStyle}>
@@ -86,6 +87,7 @@ export class TransferModal extends Component {
             <div className="card-footer">
               <div className="btn-group">
                 <button
+                  disabled={submitting}
                   tabIndex="0"
                   aria-label="reset-btn form-editBilling"
                   className="btn btn-secondary"
@@ -93,6 +95,7 @@ export class TransferModal extends Component {
                   onClick={this.closeModal}>Cancel
                 </button>
                 <button
+                  disabled={submitting}
                   tabIndex="0"
                   aria-label="submit-btn form-editBilling"
                   className="btn btn-primary"

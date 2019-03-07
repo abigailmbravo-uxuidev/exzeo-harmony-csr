@@ -69,11 +69,11 @@ export class Transfer extends Component {
 
     const { showTransferModal, selectedPolicies, fadePolicy } = this.state;
     const filteredPolicies = policies.filter(p => !selectedPolicies.some(s => s.policyNumber === p.policyNumber));
-    const defaultSelectedAgent = (Array.isArray(agentsList) && agentsList.length > 0) ? agentsList[0].answer : '';
     return (
       <React.Fragment>
         {showTransferModal &&
           <TransferModal
+            getPoliciesForAgency={getPoliciesForAgency}
             activeAgencyCode={agencyCode}
             getAgentListByAgencyCode={getAgentListByAgencyCode}
             clearSelectedPolicies={this.clearSelectedPolicies}
