@@ -4,7 +4,6 @@ import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 import { date } from '@exzeo/core-ui';
 
 import DiaryTable from './DiaryTable';
-
 import Downloader from './Common/Downloader';
 
 const NOTE_TABS = ['notes', 'files'];
@@ -78,7 +77,6 @@ export const Notes = (props) => {
     </BootstrapTable>
   );
 };
-
 
 export class NoteList extends Component {
   state = { historyTab: 'notes' };
