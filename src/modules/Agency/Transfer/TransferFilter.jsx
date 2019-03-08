@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 
 import {
   Input,
-  Select,
+  SelectTypeAhead,
   Button,
 } from '@exzeo/core-ui';
 
@@ -41,7 +41,7 @@ export class TransferFilter extends Component {
           name="state"
           dataTest="state"
           label="Filter By State"
-          component={Select}
+          component={SelectTypeAhead}
           styleName=""
           showPlaceholder
           answers={listAnswersAsKey.US_states}
@@ -52,7 +52,7 @@ export class TransferFilter extends Component {
           name="product"
           dataTest="product"
           label="Filter By Product"
-          component={Select}
+          component={SelectTypeAhead}
           styleName=""
           showPlaceholder
           answers={listAnswersAsKey.Products}
@@ -63,7 +63,7 @@ export class TransferFilter extends Component {
           name="agentCode"
           dataTest="agentCode"
           label="Filter By Agent"
-          component={Select}
+          component={SelectTypeAhead}
           styleName=""
           answers={agentsList}
           normalize={this.handleFilterChange}

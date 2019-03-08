@@ -502,7 +502,7 @@ export async function transferPoliciesRequest(transfers) {
     };
 
     const response = await serviceRunner.callService(transferConfig, 'transferPoliciesToAgent');
-    return response.data && response.data.result ? response.data.result : {};
+    return response.data;
   } catch (error) {
     throw error;
   }
@@ -520,11 +520,11 @@ export async function transferPoliciesRequest(transfers) {
 export function transferPoliciesToAgent(transfers) {
   return async (dispatch) => {
     try {
-      await transferPoliciesRequest(transfers);
-      return null;
+      const result = await transferPoliciesRequest(transfers);
+      return result;
     } catch (error) {
       dispatch(errorActions.setAppError(error));
-      return null;
+      return error;
     }
   };
 }
