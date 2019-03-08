@@ -172,6 +172,7 @@ export function addAgent(agentData, agencyCode) {
     try {
       await addNewAgent(agentData);
       dispatch(getAgentsByAgencyCode(agencyCode));
+      dispatch(getAgentListByAgencyCode(agencyCode))
       dispatch(getListOfOrphanedAgents());
     } catch (error) {
       dispatch(errorActions.setAppError(error));
@@ -189,6 +190,7 @@ export function updateAgent(agentData, agencyCode) {
     try {
       await saveAgent(agentData);
       dispatch(getAgentsByAgencyCode(agencyCode));
+      dispatch(getAgentListByAgencyCode(agencyCode))
       dispatch(getListOfOrphanedAgents());
     } catch (error) {
       dispatch(errorActions.setAppError(error));
@@ -396,6 +398,7 @@ export function createAgency(agencyData) {
       const agency = await saveNewAgency(agencyData);
       dispatch(setAgency(agency));
       dispatch(getAgentsByAgencyCode(agency.agencyCode));
+      dispatch(getAgentListByAgencyCode(agency.agencyCode))
       dispatch(getListOfOrphanedAgents());
     } catch (error) {
       dispatch(errorActions.setAppError(error));
@@ -430,6 +433,7 @@ export function createBranch(branchData, agencyCode) {
       const branch = await saveNewBranch(branchData, agencyCode);
       dispatch(getAgency(agencyCode));
       dispatch(getAgentsByAgencyCode(agencyCode));
+      dispatch(getAgentListByAgencyCode(agencyCode))
       dispatch(getListOfOrphanedAgents());
       return branch;
     } catch (error) {
