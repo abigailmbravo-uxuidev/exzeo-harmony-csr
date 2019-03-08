@@ -351,5 +351,15 @@ describe('Test Agency Actions', () => {
         expect(result.data.message).toEqual('Ok');
       });
   });
+
+
+  it('should call clearAgentList', () => {
+    return agencyActions.clearAgentList()(store.dispatch)
+      .then(() => {
+        expect(store.getActions()[0].type).toEqual(types.SET_AGENTS_LIST);
+        expect(store.getActions()[0].agentList).toEqual([]);
+      });
+  });
+  
 });
 

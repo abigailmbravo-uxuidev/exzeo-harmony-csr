@@ -4,13 +4,15 @@ import { connect } from 'react-redux';
 import { reduxForm, Field } from 'redux-form';
 import { SelectTypeAhead, Loader, validation } from '@exzeo/core-ui';
 
-import { getAgencies, getAgentListByAgencyCode, transferPoliciesToAgent } from '../../../state/actions/agency.actions';
+import { getAgencies, getAgentListByAgencyCode, clearAgentList, transferPoliciesToAgent } from '../../../state/actions/agency.actions';
 import { getAgenciesList, getAgentsListForTransfer } from '../../../state/selectors/agency.selector';
 
 export class TransferModal extends Component {
   async componentDidMount() {
-    const { getAgencies } = this.props;
+    const { getAgencies, clearAgentList } = this.props;
     await getAgencies('TTIC', 'FL');
+    clearAgentList();
+
   }
 
   handleAgencyChange = (event, agencyCode) => {
@@ -124,6 +126,7 @@ const mapStateToProps = (state, { agencyCode, agentCode }) => ({
 export default connect(mapStateToProps, {
   getAgencies,
   getAgentListByAgencyCode,
+  clearAgentList,
   transferPoliciesToAgent
 })(reduxForm({
   form: 'TransferPolicies',

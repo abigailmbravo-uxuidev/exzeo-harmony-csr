@@ -131,6 +131,18 @@ export function getAgentListByAgencyCode(agencyCode) {
 
 /**
  *
+ * @returns {Function}
+ */
+export function clearAgentList() {
+  return async (dispatch) => {
+    dispatch(setAgentList([]));
+  };
+}
+
+
+
+/**
+ *
  * @param companyCode
  * @param state
  * @returns {Function}
