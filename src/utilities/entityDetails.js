@@ -7,8 +7,15 @@ export const CANCELLATION_DATE = 'Cancellation Effective Date';
 export const EXPIRATION_DATE = 'Expiration Date';
 export const FINAL_PAYMENT_DATE = 'Final Payment Date';
 
+export const nonPaymentNoticePolicyStatus = [
+  'Pending Voluntary Cancellation',
+  'Pending Underwriting Cancellation',
+  'Pending Underwriting Non-Renewal',
+  'In Force'
+];
+
 export const isNonPaymentNotice = (billingStatus, policyStatus) =>
-  policyStatus === 'In Force' && billingStatus === 'Non-Payment Notice Issued';
+nonPaymentNoticePolicyStatus.includes(policyStatus) && billingStatus === 'Non-Payment Notice Issued';
 
 export const expirationPolicyStatuses = [
   'Policy Issued',

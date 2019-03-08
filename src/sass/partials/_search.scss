@@ -7,10 +7,11 @@
   flex-direction: column;
   flex-grow: 0;
   flex-shrink: 0;
-  width: 100%;
-  height: auto;
   margin-top: 0;
   margin-bottom: 0;
+  width: 100%;
+  height: auto;
+
   @include transition(all 0.2s ease-in-out);
 
   #SearchBar {
@@ -21,10 +22,10 @@
     flex-direction: column;
     flex-grow: 0;
     flex-shrink: 0;
-    width: 100%;
-    height: auto;
     margin-top: 0;
     margin-bottom: 0;
+    width: 100%;
+    height: auto;
 
     .advanced-search {
       overflow: hidden;
@@ -43,8 +44,8 @@
         flex-grow: 1;
         flex-shrink: 1;
         flex-wrap: nowrap;
-        height: auto;
         padding: $padding ($padding*2);
+        height: auto;
         border-bottom: 2px solid $white;
         background-color: $warm-gray-10;
 
@@ -103,17 +104,17 @@
             height: 2.375rem;
 
             &.TypeAhead {
-              height: auto;
               min-height: 2.375rem;
+              height: auto;
 
               &:focus {
                 outline: none;
               }
 
               .react-select__control {
+                min-height: 2.375rem;
                 width: 100%;
                 height: auto;
-                min-height: 2.375rem;
 
                 &.react-select__control--is-focused {
                   border-color: $warm-gray-08;
@@ -124,9 +125,9 @@
                 .react-select__value-container {
                   align-items: flex-start;
                   justify-content: flex-start;
-                  height: auto;
                   margin: 0;
                   padding: 0 0 0 $padding;
+                  height: auto;
 
                   > div {
                     display: flex;
@@ -152,11 +153,11 @@
                   }
 
                   .react-select__multi-value {
-                    width: auto;
                     margin: $padding/4;
-                    color: $white;
+                    width: auto;
                     border-radius: $border-radius;
                     background: $warm-gray-08;
+                    color: $white;
 
                     .react-select__multi-value__label {
                       color: $white;
@@ -164,11 +165,12 @@
 
                     .react-select__multi-value__remove {
                       border-radius: 0 $border-radius $border-radius 0;
+
                       @include transition(all 0.2s ease-in-out);
 
                       &:hover {
-                        cursor: pointer;
                         background: $red-lighten-04;
+                        cursor: pointer;
                       }
                     }
                   }
@@ -230,8 +232,8 @@
             flex-basis: auto;
             flex-grow: 1;
             flex-shrink: 0;
-            width: auto;
             margin-right: $padding;
+            width: auto;
           }
 
           &.policy-no-search {
@@ -286,8 +288,8 @@
           &.reason {
             flex-grow: 1;
             flex-shrink: 1;
-            width: 15rem;
             margin-right: $padding;
+            width: 15rem;
 
             select {
               width: 100%;
@@ -299,8 +301,8 @@
           &.dateRange {
             flex-grow: 0;
             flex-shrink: 0;
-            width: 22.25rem;
             margin-right: $padding;
+            width: 22.25rem;
 
             .date-range-inputs {
               display: flex;
@@ -321,8 +323,8 @@
           label {
             margin-bottom: $padding/4;
             color: $yellow-lighten-05;
-            font-size: $font-size-sm;
             font-weight: $font-weight-normal;
+            font-size: $font-size-sm;
           }
 
           input {
@@ -337,8 +339,8 @@
         }
 
         input {
-          height: 2.375rem;
           padding: ($padding/2) $padding;
+          height: 2.375rem;
           line-height: 1.75;
         }
 
@@ -359,11 +361,12 @@
             flex-grow: 0;
             flex-shrink: 0;
             justify-content: center;
-            width: 2rem;
-            height: 2rem;
             margin: ($padding*3) 0 0 $padding;
             padding: 0;
+            width: 2rem;
+            height: 2rem;
             border-radius: 50%;
+
             @include button-variant($bright-blue-darken-03, $warm-gray-01, $warm-gray-01);
 
             &:hover {
@@ -379,8 +382,8 @@
       overflow-y: auto;
       flex-grow: 0;
       flex-shrink: 1;
-      width: 100%;
       padding: 0;
+      width: 100%;
 
       ul.results {
         padding: $padding*2;
@@ -434,18 +437,18 @@
         .advanced-search {
           display: flex;
           overflow: visible;
+          padding: $padding 10rem 0 0;
           width: 100%;
           height: auto;
-          padding: $padding 10rem 0 0;
           animation-duration: 0.8s;
 
           input {
             -ms-flex-preferred-size: 1.75rem;
             flex-grow: 0;
             flex-shrink: 0;
+            padding: $padding;
             width: 100%;
             height: 2.375rem;
-            padding: $padding;
             line-height: 1.75;
           }
 
@@ -458,9 +461,9 @@
               margin-right: $padding;
 
               .Select {
+                margin-bottom: 0;
                 width: 100%;
                 height: 2.375rem;
-                margin-bottom: 0;
 
                 .Select-control {
                   width: 100%;
@@ -510,15 +513,15 @@
             &.effectiveDate {
               flex-grow: 0;
               flex-shrink: 0;
-              width: 12rem;
               margin-right: $padding;
+              width: 12rem;
             }
 
             &.policy-status {
               flex-grow: 0;
               flex-shrink: 0;
-              width: 20rem;
               margin-right: $padding;
+              width: 20rem;
 
               select {
                 width: 100%;
@@ -558,8 +561,6 @@
   .results,
   .results-wrapper {
     flex-basis: 100%;
-    flex-grow: 1;
-    flex-shrink: 1;
     width: 100%;
 
     .results,
@@ -575,24 +576,24 @@
 
 main[role="document"] {
   &.policy-advanced {
+    min-height: auto;
     //height: calc(100vh - 12.375rem);
     //min-height: calc(100vh - 12.375rem);
     height: auto;
-    min-height: auto;
   }
 
   .survey-wrapper {
     &.scroll {
       flex-grow: 1;
       flex-shrink: 1;
-      width: 100%;
       padding: 0;
+      width: 100%;
 
       .results-wrapper {
         ul {
           &.property-search-results {
-            width: 100%;
             padding: 1rem;
+            width: 100%;
           }
         }
       }
@@ -652,6 +653,562 @@ main[role="document"] {
             }
           }
         }
+      }
+    }
+  }
+}
+//refactor these when cards are standardized based on core card
+.result-cards,
+ul.list-cards {
+  li {
+    margin-bottom: $padding/2;
+
+    a {
+      align-items: center;
+      padding: $padding $padding*1.5;
+      border: $card-border-width solid $card-border-color;
+      border-radius: $card-border-radius;
+      background: $white;
+
+      section {
+        flex-direction: column;
+        flex-grow: 1;
+
+        h2,
+        h3,
+        h4,
+        h5,
+        p {
+          margin: 0;
+          color: $warm-gray-08;
+        }
+      }
+
+      i {
+        color: $bright-blue-darken-04;
+      }
+
+      &:hover {
+        cursor: pointer;
+
+        section {
+          h2,
+          h3,
+          h4,
+          h5 {
+            color: $bright-blue-darken-04;
+          }
+
+          p {
+            color: $bright-blue-darken-04;
+          }
+        }
+
+        i {
+          color: $bright-blue-darken-04;
+        }
+      }
+    }
+  }
+}
+
+.policy-list,
+.quote-list {
+  flex-grow: 1;
+  width: 100%;
+  margin-bottom: $padding/2;
+  padding: $padding*2;
+
+  .card {
+    display: flex;
+    flex-direction: row;
+    margin: 0 0 ($padding/2);
+    padding: $padding $padding*1.5;
+
+    .icon-name {
+      display: flex;
+      overflow: hidden;
+      align-items: center;
+      flex-basis: 4rem;
+      flex-wrap: wrap;
+      justify-content: center;
+
+      i {
+        display: flex;
+        flex-basis: 2rem;
+        flex-grow: 0;
+        flex-shrink: 0;
+        justify-content: center;
+        height: 2rem;
+        margin: 0;
+        color: $bright-blue-darken-04;
+        font-size: $font-size-h3;
+      }
+    }
+
+    section {
+      display: flex;
+      flex-direction: column;
+      flex-grow: 1;
+      flex-shrink: 0;
+      margin-left: $padding;
+
+      .card-name {
+        display: flex;
+        align-items: center;
+        min-height: 1.8125rem;
+
+        h1,
+        h2,
+        h3,
+        h4,
+        h5 {
+          margin: 0;
+          text-transform: uppercase;
+          color: $warm-gray-10;
+          line-height: $line-height-base;
+        }
+      }
+
+      ul {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+
+        li {
+          display: flex;
+          flex-grow: 1;
+          flex-shrink: 0;
+          justify-content: space-between;
+          padding: 0;
+
+          &.header {
+            padding: ($padding/4) 0;
+            color: $warm-gray-08;
+            background: $warm-gray-02;
+            font-size: $font-size-sm;
+            font-weight: $font-weight-bold;
+          }
+
+          a.row {
+            display: flex;
+            width: 100%;
+            padding: 0;
+            color: $bright-blue;
+            border-width: 0;
+            border-radius: 0;
+
+            &:hover {
+              background: rgba($bright-blue, .1);
+            }
+
+            span {
+              padding: ($padding/4) 0;
+
+              &.quote-no {
+                padding-left: $padding;
+              }
+
+              &.premium {
+                padding-right: $padding;
+              }
+            }
+          }
+
+          .policy-no,
+          .quote-no {
+            flex-basis: 8rem;
+            flex-grow: 0;
+            flex-shrink: 0;
+            padding-left: $padding;
+          }
+
+          .property-address {
+            flex-grow: 1;
+            flex-shrink: 0;
+          }
+
+          .policy-status,
+          .quote-state {
+            flex-basis: 15.5rem;
+            flex-grow: 0;
+            flex-shrink: 0;
+          }
+
+          .effective-date {
+            flex-basis: 5.75rem;
+            flex-grow: 0;
+            flex-shrink: 0;
+          }
+
+          .started-on {
+            flex-basis: 5.75rem;
+            flex-grow: 0;
+            flex-shrink: 0;
+          }
+
+          .premium {
+            flex-basis: 5rem;
+            flex-grow: 0;
+            flex-shrink: 0;
+            padding-right: $padding;
+          }
+        }
+      }
+    }
+  }
+
+  a {
+    align-items: center;
+    align-items: flex-start;
+    padding: $padding $padding*1.5;
+    border: $card-border-width solid $card-border-color;
+    border-radius: $card-border-radius;
+    background: $white;
+
+    section {
+      display: flex;
+      flex-direction: row;
+      flex-grow: 1;
+
+      h2,
+      h3,
+      h4,
+      h5 {
+        display: flex;
+        flex-basis: 20%;
+        flex-grow: 0;
+        flex-shrink: 0;
+        width: 20%;
+        margin: 0;
+      }
+
+      p {
+        margin: 0;
+      }
+
+      ul {
+        display: flex;
+        flex-basis: 80%;
+        flex-direction: column;
+        width: 80%;
+        margin: 0;
+        padding: 0;
+      }
+    }
+
+    i {
+      display: flex;
+      justify-content: center;
+      width: 2rem;
+      height: 2rem;
+      font-size: $font-size-h2;
+
+      &.card-icon {
+        margin-right: $padding;
+      }
+
+      &.fa-map-marker {
+        justify-content: flex-start;
+      }
+    }
+
+    &:hover {
+      cursor: pointer;
+
+      section {
+        h2,
+        h3,
+        h4,
+        h5 {
+          color: $bright-blue-darken-02;
+        }
+
+        p {
+          color: $bright-blue-darken-02;
+        }
+      }
+
+      i {
+        color: $bright-blue-darken-02;
+      }
+    }
+  }
+}
+
+.result-cards,
+ul.list-cards {
+  li {
+    margin-bottom: $padding/2;
+
+    a {
+      align-items: center;
+      padding: $padding $padding*1.5;
+      border: $card-border-width solid $card-border-color;
+      border-radius: $card-border-radius;
+      background: $white;
+
+      section {
+        flex-direction: column;
+        flex-grow: 1;
+
+        h2,
+        h3,
+        h4,
+        h5,
+        p {
+          margin: 0;
+          color: $warm-gray-08;
+        }
+      }
+
+      i {
+        color: $bright-blue-darken-04;
+      }
+
+      &:hover {
+        cursor: pointer;
+
+        section {
+          h2,
+          h3,
+          h4,
+          h5 {
+            color: $bright-blue-darken-04;
+          }
+
+          p {
+            color: $bright-blue-darken-04;
+          }
+        }
+
+        i {
+          color: $bright-blue-darken-04;
+        }
+      }
+    }
+  }
+}
+
+.policy-list,
+.quote-list {
+  flex-grow: 1;
+  width: 100%;
+  margin-bottom: $padding/2;
+  padding: $padding*2;
+
+  .card {
+    display: flex;
+    flex-direction: row;
+    margin: 0 0 ($padding/2);
+    padding: $padding $padding*1.5;
+
+    .icon-name {
+      display: flex;
+      overflow: hidden;
+      align-items: center;
+      flex-basis: 4rem;
+      flex-wrap: wrap;
+      justify-content: center;
+
+      i {
+        display: flex;
+        flex-basis: 2rem;
+        flex-grow: 0;
+        flex-shrink: 0;
+        justify-content: center;
+        height: 2rem;
+        margin: 0;
+        color: $bright-blue-darken-04;
+        font-size: $font-size-h3;
+      }
+    }
+
+    section {
+      display: flex;
+      flex-direction: column;
+      flex-grow: 1;
+      flex-shrink: 0;
+      margin-left: $padding;
+
+      .card-name {
+        display: flex;
+        align-items: center;
+        min-height: 1.8125rem;
+
+        h1,
+        h2,
+        h3,
+        h4,
+        h5 {
+          margin: 0;
+          text-transform: uppercase;
+          color: $warm-gray-10;
+          line-height: $line-height-base;
+        }
+      }
+
+      ul {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+
+        li {
+          display: flex;
+          flex-grow: 1;
+          flex-shrink: 0;
+          justify-content: space-between;
+          padding: 0;
+
+          &.header {
+            padding: ($padding/4) 0;
+            color: $warm-gray-08;
+            background: $warm-gray-02;
+            font-size: $font-size-sm;
+            font-weight: $font-weight-bold;
+          }
+
+          a.row {
+            display: flex;
+            width: 100%;
+            padding: 0;
+            color: $bright-blue;
+            border-width: 0;
+            border-radius: 0;
+
+            &:hover {
+              background: rgba($bright-blue, .1);
+            }
+
+            span {
+              padding: ($padding/4) 0;
+
+              &.quote-no {
+                padding-left: $padding;
+              }
+
+              &.premium {
+                padding-right: $padding;
+              }
+            }
+          }
+
+          .policy-no,
+          .quote-no {
+            flex-basis: 8rem;
+            flex-grow: 0;
+            flex-shrink: 0;
+            padding-left: $padding;
+          }
+
+          .property-address {
+            flex-grow: 1;
+            flex-shrink: 0;
+          }
+
+          .policy-status,
+          .quote-state {
+            flex-basis: 15.5rem;
+            flex-grow: 0;
+            flex-shrink: 0;
+          }
+
+          .effective-date {
+            flex-basis: 5.75rem;
+            flex-grow: 0;
+            flex-shrink: 0;
+          }
+
+          .started-on {
+            flex-basis: 5.75rem;
+            flex-grow: 0;
+            flex-shrink: 0;
+          }
+
+          .premium {
+            flex-basis: 5rem;
+            flex-grow: 0;
+            flex-shrink: 0;
+            padding-right: $padding;
+          }
+        }
+      }
+    }
+  }
+
+  a {
+    align-items: center;
+    align-items: flex-start;
+    padding: $padding $padding*1.5;
+    border: $card-border-width solid $card-border-color;
+    border-radius: $card-border-radius;
+    background: $white;
+
+    section {
+      display: flex;
+      flex-direction: row;
+      flex-grow: 1;
+
+      h2,
+      h3,
+      h4,
+      h5 {
+        display: flex;
+        flex-basis: 20%;
+        flex-grow: 0;
+        flex-shrink: 0;
+        width: 20%;
+        margin: 0;
+      }
+
+      p {
+        margin: 0;
+      }
+
+      ul {
+        display: flex;
+        flex-basis: 80%;
+        flex-direction: column;
+        width: 80%;
+        margin: 0;
+        padding: 0;
+      }
+    }
+
+    i {
+      display: flex;
+      justify-content: center;
+      width: 2rem;
+      height: 2rem;
+      font-size: $font-size-h2;
+
+      &.card-icon {
+        margin-right: $padding;
+      }
+
+      &.fa-map-marker {
+        justify-content: flex-start;
+      }
+    }
+
+    &:hover {
+      cursor: pointer;
+
+      section {
+        h2,
+        h3,
+        h4,
+        h5 {
+          color: $bright-blue-darken-02;
+        }
+
+        p {
+          color: $bright-blue-darken-02;
+        }
+      }
+
+      i {
+        color: $bright-blue-darken-02;
       }
     }
   }

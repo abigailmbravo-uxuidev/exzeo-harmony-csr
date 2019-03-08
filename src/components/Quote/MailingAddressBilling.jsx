@@ -72,7 +72,7 @@ export const InstallmentTerm = ({ paymentPlans, payPlans }) => (
     {payPlans && payPlans.map((payPlan, index) => {
     const paymentPlan = paymentPlans[getSelectedPlan(payPlan)];
     return (
-      <dl className="column-3" key={index}>
+      <dl key={index}>
         <div>
           {paymentPlan && paymentPlan.amount &&
           <div>
@@ -240,7 +240,7 @@ export class MailingAddressBilling extends Component {
             <div className="scroll">
               <div className="form-group survey-wrapper" role="group">
                 <h3>Mailing Address</h3>
-                <section className="mailing-address-details">
+                <section className="mailing-address">
                   <CheckField
                     styleName="segmented-switch"
                     label="Is the mailing address the same as the property address?"
@@ -257,56 +257,42 @@ export class MailingAddressBilling extends Component {
                     ]} />
                   <TextField validations={['required']} label="Address 1" styleName="address-1" name="address1" onChange={() => setPropertyToggle(this.props)} />
                   <TextField label="Address 2" styleName="address-2" name="address2" onChange={() => setPropertyToggle(this.props)} />
-                  <div className="flex-parent flex-form">
-                    <div className="flex-child city">
-                      <TextField validations={['required']} label="City" styleName="" name="city" onChange={() => setPropertyToggle(this.props)} />
-                    </div>
-                    <div className="flex-child state">
-                      <TextField
-                        onChange={() => setPropertyToggle(this.props)}
-                        name="state"
-                        component="select"
-                        styleName=""
-                        label="State"
-                        validations={['required']} />
-                    </div>
-                    <div className="flex-child zip">
-                      <TextField validations={['required']} label="Zip" styleName="" name="zip" onChange={() => setPropertyToggle(this.props)} />
-                    </div>
-                  </div>
+                  <div className="flex-row">
+                    <TextField validations={['required']} label="City" styleName="city" name="city" onChange={() => setPropertyToggle(this.props)} />
+                    <TextField
+                      onChange={() => setPropertyToggle(this.props)}
+                      name="state"
+                      component="select"
+                      styleName="state"
+                      label="State"
+                      validations={['required']} />
+                    <TextField validations={['required']} label="Zip" styleName="zip" name="zip" onChange={() => setPropertyToggle(this.props)} />
+                </div>
                 </section>
                 <section>
                   <h3>Billing</h3>
-                  <div className="flex-parent">
-                    <div className="flex-child">
-                      <SelectFieldBilling
-                        name="billToId"
-                        component="select"
-                        label="Bill To"
-                        onChange={() => selectBillTo(this.props)}
-                        validations={['required']}
-                        answers={billingOptions.options} />
-                      <div className="flex-child bill-plan">
-                        <RadioFieldBilling
-                          validations={['required']}
-                          name="billPlan"
-                          label="Bill Plan"
-                          validate={[value => (value ? undefined : 'Field Required')]}
-                          segmented
-                          answers={_.find(billingOptions.options, ['billToId', this.props.fieldValues.billToId]) ?
-                         _.find(billingOptions.options, ['billToId', this.props.fieldValues.billToId]).payPlans : []}
-                          paymentPlans={billingOptions.paymentPlans} />
-                      </div>
-                    </div>
+                  <SelectFieldBilling
+                    name="billToId"
+                    component="select"
+                    label="Bill To"
+                    onChange={() => selectBillTo(this.props)}
+                    validations={['required']}
+                    answers={billingOptions.options} />
+                  <div className="bill-plan">
+                    <RadioFieldBilling
+                      validations={['required']}
+                      name="billPlan"
+                      label="Bill Plan"
+                      validate={[value => (value ? undefined : 'Field Required')]}
+                      segmented
+                      answers={_.find(billingOptions.options, ['billToId', this.props.fieldValues.billToId]) ?
+                     _.find(billingOptions.options, ['billToId', this.props.fieldValues.billToId]).payPlans : []}
+                      paymentPlans={billingOptions.paymentPlans} />
                   </div>
-                  <div className="flex-parent">
-                    <div className="flex-child">
-                      <InstallmentTerm
-                        payPlans={_.find(billingOptions.options, ['billToId', this.props.fieldValues.billToId]) ?
-                                   _.find(billingOptions.options, ['billToId', this.props.fieldValues.billToId]).payPlans : []}
-                        paymentPlans={billingOptions.paymentPlans} />
-                    </div>
-                  </div>
+                  <InstallmentTerm
+                    payPlans={_.find(billingOptions.options, ['billToId', this.props.fieldValues.billToId]) ?
+                               _.find(billingOptions.options, ['billToId', this.props.fieldValues.billToId]).payPlans : []}
+                    paymentPlans={billingOptions.paymentPlans} />
                 </section>
               </div>
             </div>

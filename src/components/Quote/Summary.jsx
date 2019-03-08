@@ -97,16 +97,15 @@ export class Summary extends Component {
     return (
       <React.Fragment match={match}>
         <div className="route-content summary workflow">
-
           <div className="scroll">
             {disablePage &&
-            <div className="detail-wrapper">
-              <div className="messages">
-                <div className="message error">
-                  <i className="fa fa-exclamation-circle" aria-hidden="true" />&nbsp;Quote Summary cannot be sent due to Underwriting Validations.
+              <div className="detail-wrapper">
+                <div className="messages">
+                  <div className="message error">
+                    <i className="fa fa-exclamation-circle" aria-hidden="true" />&nbsp;Quote Summary cannot be sent due to Underwriting Validations.
+                </div>
                 </div>
               </div>
-            </div>
             }
             {!disablePage &&
               <div className="detail-wrapper">
@@ -125,7 +124,7 @@ export class Summary extends Component {
                         <dd>{property.physicalAddress.address1}</dd>
                         <dd>{property.physicalAddress.address2}</dd>
                         <dd>{`${property.physicalAddress.city}, ${property.physicalAddress.state} ${
-                        property.physicalAddress.zip}`}
+                          property.physicalAddress.zip}`}
                         </dd>
                       </div>
                     </dl>
@@ -243,42 +242,42 @@ export class Summary extends Component {
                           <dd>{deductibles.sinkhole.amount}%</dd>
                         </div>
                       </dl>
-                }
+                    }
                     {deductibles.sinkhole &&
-                    <dl>
-                      <div>
-                        <dt>Calculated Sinkhole Deductible</dt>
-                        <dd>$ {normalizeNumbers(deductibles.sinkhole.calculatedAmount)}</dd>
-                      </div>
-                    </dl>
-                }
+                      <dl>
+                        <div>
+                          <dt>Calculated Sinkhole Deductible</dt>
+                          <dd>$ {normalizeNumbers(deductibles.sinkhole.calculatedAmount)}</dd>
+                        </div>
+                      </dl>
+                    }
                   </section>
                 </div>
                 <div className="detail-group policyholder-details">
                   <section className="display-element">
                     {(quoteData.policyHolders && quoteData.policyHolders.length > 0) ?
-                         quoteData.policyHolders.map((policyHolder, index) => (_.trim(policyHolder.firstName).length > 0 &&
-                         <dl key={`ph${index}`}>
-                           <h3>{index === 0 ? 'Primary' : 'Secondary'} {'Policyholder'}</h3>
-                           <div className="contact-card">
-                             <div className="contact-name">
-                               <dt>Policyholder Name</dt>
-                               <dd>{`${policyHolder.firstName} ${policyHolder.lastName}`}</dd>
-                             </div>
-                             <div className="contact-phone">
-                               <dt>Phone Number</dt>
-                               <dd>{normalizePhone(policyHolder.primaryPhoneNumber)}</dd>
-                             </div>
-                             <div className="contact-email">
-                               <dt>Email</dt>
-                               <dd>{policyHolder.emailAddress}</dd>
-                             </div>
-                             <div className="contact-email">
-                               <dt>Electronic Delivery</dt>
-                               <dd>{policyHolder.electronicDelivery ? 'Yes' : 'No'}</dd>
-                             </div>
-                           </div>
-                         </dl>)) : null}
+                      quoteData.policyHolders.map((policyHolder, index) => (_.trim(policyHolder.firstName).length > 0 &&
+                        <dl key={`ph${index}`}>
+                          <h3>{index === 0 ? 'Primary' : 'Secondary'} {'Policyholder'}</h3>
+                          <div className="contact-card">
+                            <div className="contact-name">
+                              <dt>Policyholder Name</dt>
+                              <dd>{`${policyHolder.firstName} ${policyHolder.lastName}`}</dd>
+                            </div>
+                            <div className="contact-phone">
+                              <dt>Phone Number</dt>
+                              <dd>{normalizePhone(policyHolder.primaryPhoneNumber)}</dd>
+                            </div>
+                            <div className="contact-email">
+                              <dt>Email</dt>
+                              <dd>{policyHolder.emailAddress}</dd>
+                            </div>
+                            <div className="contact-email">
+                              <dt>Electronic Delivery</dt>
+                              <dd>{policyHolder.electronicDelivery ? 'Yes' : 'No'}</dd>
+                            </div>
+                          </div>
+                        </dl>)) : null}
                   </section>
                 </div>
                 <h3>Mailing Address</h3>

@@ -1027,7 +1027,6 @@ label {
           &:checked {
             ~ span {
               &:before {
-                //content: '\f14a';
                 color: $green;
                 background: $warm-gray-02;
               }
@@ -1134,7 +1133,6 @@ label {
           &:checked {
             ~ span {
               &:before {
-                //content: '\f14a';
                 color: $green;
                 background: $warm-gray-02;
               }
@@ -1288,21 +1286,7 @@ label {
     margin-left: 1rem;
   }
 }
-/*
-  &.disabled,
-  &.disabled.invalid,
-  &[disabled="disabled"] {
-    cursor: $cursor-disabled;
-    color: $text-muted;
 
-    input,
-    select,
-    textarea {
-      cursor: $cursor-disabled;
-      color: $text-muted;
-    }
-  }
-*/
 ul.list,
 ul.results {
   z-index: 1;
@@ -1442,21 +1426,12 @@ ul.results {
           &.card-icon {
             margin-right: $padding;
           }
-
-          &.fa-map-marker {
-            justify-content: flex-start;
-          }
         }
 
         &:hover {
           z-index: 2;
           transform: scale(1.004);
           box-shadow: $card-box-shadow-hover;
-
-          h2,
-          h3,
-          h4,
-          h5 {}
         }
       }
     }

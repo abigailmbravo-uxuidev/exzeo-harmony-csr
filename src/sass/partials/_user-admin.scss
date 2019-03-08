@@ -56,41 +56,44 @@
   display: flex;
   flex-direction: column;
   flex-grow: 1;
-  width: 100%;
   margin-bottom: $padding/2;
   padding: $padding*2;
+  width: 100%;
 
   &.agency-list {
     .card-wrapper {
       position: relative;
       display: flex;
       align-items: center;
+      flex-grow: 0;
+      flex-shrink: 0;
       margin-bottom: $padding;
 
       span.fa-chevron-circle-right {
         position: absolute;
-        z-index: 11;
         right: 0;
+        z-index: 11;
         display: flex;
         align-items: center;
         justify-content: center;
         width: 4rem;
         height: 100%;
-        cursor: pointer;
         color: $bright-blue-darken-01;
         font-size: $font-size-h2;
+        cursor: pointer;
+
         @include transition(all 0.2s ease-in-out);
 
         &:hover {
           right: -.04rem;
-          transform: scale(1.004);
           color: $bright-blue-darken-04;
           font-size: 1.96rem;
+          transform: scale(1.004);
 
           ~ .contact.card {
             z-index: 2;
-            transform: scale(1.004);
             box-shadow: $card-box-shadow-hover;
+            transform: scale(1.004);
           }
         }
       }
@@ -98,17 +101,18 @@
       .contact.card {
         flex-grow: 1;
         flex-shrink: 1;
-        width: 100%;
         margin-bottom: 0;
         padding-right: 4rem;
+        width: 100%;
+
         @include transition(all 0.2s ease-in-out);
 
         h4.agency {
           @include transition(all 0.2s ease-in-out);
 
           &:hover {
-            cursor: pointer;
             color: $bright-blue;
+            cursor: pointer;
           }
         }
       }
@@ -131,8 +135,8 @@
           width: 6rem;
 
           i {
-            text-align: center;
             color: $bright-blue-darken-04;
+            text-align: center;
             font-size: $font-size-h2;
           }
 
@@ -215,8 +219,8 @@
               small {
                 label {
                   margin: 0 0 0 $padding;
-                  font-size: $font-size-xs;
                   font-weight: $font-weight-bold;
+                  font-size: $font-size-xs;
                 }
               }
             }
@@ -254,9 +258,9 @@
                   small {
                     margin-right: $padding;
                     padding: 0 0.2rem;
-                    color: $white;
                     border-radius: 2px;
                     background: $warm-gray-08;
+                    color: $white;
                     font-size: 70%;
 
                     sup {
@@ -319,8 +323,8 @@
 
   .btn.agency {
     align-self: center;
-    width: 12rem;
     margin: 1rem;
+    width: 12rem;
   }
 }
 //end results list cards
