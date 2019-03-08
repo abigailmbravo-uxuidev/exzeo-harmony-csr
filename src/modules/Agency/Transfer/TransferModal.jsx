@@ -22,10 +22,10 @@ export class TransferModal extends Component {
   groupPolicyByAgentCode(array) {
     var sorted = {};
     for( var i = 0, max = array.length; i < max ; i++ ){
-        if( sorted[array[i].agentCode] === undefined ){
-         sorted[array[i].agentCode] = [];
+        if(sorted[String(array[i].agentCode)] === undefined ){
+         sorted[String(array[i].agentCode)] = [];
         }
-        sorted[array[i].agentCode].push(array[i]);
+        sorted[String(array[i].agentCode)].push(array[i]);
     }
     return sorted;
 }
@@ -38,7 +38,7 @@ export class TransferModal extends Component {
     const transfers = [];
     Object.keys(groupedPolices).forEach(p => {
       const policies = groupedPolices[p] || [];
-        const { agencyCode: agencyCodeFrom = 20000, agentCode: agentCodeFrom = 60000 } = policies[0];
+        const { agencyCode: agencyCodeFrom, agentCode: agentCodeFrom } = policies[0];
         transfers.push({ policyNumbers: policies.map(p => p.policyNumber), agencyCodeTo, agentCodeTo: Number(agentCodeTo), agencyCodeFrom, agentCodeFrom})
     });
 
