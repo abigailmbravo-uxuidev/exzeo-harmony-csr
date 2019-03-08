@@ -15,7 +15,7 @@ export class TransferModal extends Component {
 
   handleAgencyChange = (event, agencyCode) => {
     const { getAgentListByAgencyCode, change, dispatch } = this.props;
-    change('agentCode', '');
+    change('agentCodeTo', '');
     getAgentListByAgencyCode(agencyCode);
   }
 
