@@ -24,6 +24,12 @@ export class TransferFilter extends Component {
     return value;
   }
 
+  resetFilter = async () => {
+    const { reset } = this.props;
+    await this.props.getPoliciesForAgency({});
+    reset();
+  }
+
   render() {
     const { policyNumberList, listAnswersAsKey, agentsList, reset } = this.props;
     return (
@@ -69,7 +75,7 @@ export class TransferFilter extends Component {
           normalize={this.handleFilterChange}
         />
         <Button
-          onClick={reset}
+          onClick={this.resetFilter}
           baseClass="secondary"
           customClass="multi-input btn-sm"
           type="button"
