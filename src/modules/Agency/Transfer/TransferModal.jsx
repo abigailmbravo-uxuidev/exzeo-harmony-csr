@@ -100,7 +100,7 @@ export class TransferModal extends Component {
                   aria-label="submit-btn form-editBilling"
                   className="btn btn-primary"
                   type="submit"
-                >Update
+                >Transfer
                 </button>
               </div>
             </div>
