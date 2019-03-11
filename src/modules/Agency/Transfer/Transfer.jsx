@@ -40,7 +40,7 @@ export class Transfer extends Component {
     const { selectedPolicies } = this.state;
 
     if (policies.length === selectedPolicies.length) {
-      this.setState({ selectedPolicies: [] });
+      this.clearSelectedPolicies();
     }
     else {
       this.setState({ selectedPolicies: policies });
