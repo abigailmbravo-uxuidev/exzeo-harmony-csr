@@ -21,13 +21,13 @@ describe('Testing Transfer', () => {
     const instance = wrapper.instance();
 
     instance.handleToggleModal();
-    instance.handleCheckPolicy('12-2333344-01')({});
-    instance.handleUncheckPolicy('12-2333344-01')({});
+    instance.handleCheckPolicy('12-2333344-01', {});
+    instance.handleUncheckPolicy('12-2333344-01', {});
     instance.handleCheckAllPolicies();
     instance.clearSelectedPolicies();
 
-    instance.unCheckPolicy('12-2333344-01')({});
-    instance.checkPolicy('12-2333344-01')({});
+    instance.unCheckPolicy('12-2333344-01');
+    instance.checkPolicy('12-2333344-01');
 
   });
 });
