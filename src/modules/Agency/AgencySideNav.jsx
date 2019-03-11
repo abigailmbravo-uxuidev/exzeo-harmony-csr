@@ -7,42 +7,25 @@ import { connect } from 'react-redux';
 import { createBranch } from '../../state/actions/agency.actions';
 import { getBranchesList, getBranchInitialValues } from '../../state/selectors/agency.selector';
 
-
-const setLink = (key, agencyCode, branchCode) => {
-  if (agencyCode === 'new') return '#';
-  switch (key) {
-    case 'overview':
-      return `/agency/${agencyCode}/${branchCode}/overview`;
-    case 'agents':
-      return `/agency/${agencyCode}/${branchCode}/agents`;
-    case 'contracts':
-      return `/agency/${agencyCode}/${branchCode}/contracts`;
-    case 'transfer':
-    return `/agency/${agencyCode}/${branchCode}/transfer`;
-    default:
-      return '#';
-  }
-};
-
 const setDisabled = agencyCode => (agencyCode === 'new' ? 'disabled' : '');
 
 const csrLinks = (agencyCode, branchCode) => [{
   key: 'overview',
-  link: setLink('overview', agencyCode, branchCode),
+  link: `/agency/${agencyCode}/${branchCode}/overview`,
   label: 'Overview',
   styleName: `overview ${setDisabled(agencyCode)}`,
   exact: true
 },
 {
   key: 'agents',
-  link: setLink('agents', agencyCode, branchCode),
+  link: `/agency/${agencyCode}/${branchCode}/agents`,
   label: 'Agents',
   styleName: `agents ${setDisabled(agencyCode)}`,
   exact: true
 },
 {
   key: 'contracts',
-  link: setLink('contracts', agencyCode, branchCode),
+  link: `/agency/${agencyCode}/${branchCode}/contracts`,
   label: 'Contracts',
   styleName: `contracts ${setDisabled(agencyCode)}`,
   exact: true
@@ -62,7 +45,7 @@ const csrLinks = (agencyCode, branchCode) => [{
 },
 {
   key: 'transfer',
-  link: setLink('transfer', agencyCode, branchCode),
+  link: `/agency/${agencyCode}/${branchCode}/transfer`,
   label: 'Transfer',
   styleName: `transfer ${setDisabled(agencyCode)}`,
   exact: true

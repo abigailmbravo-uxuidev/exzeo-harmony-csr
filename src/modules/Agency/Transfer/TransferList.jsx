@@ -27,10 +27,11 @@ export class TransferList extends Component {
           {selectedPolicies.map(p => {
             return (
               <TransferListItem
-                key={`${p.policyNumber}_selected`}
+                key={`${p.policyNumber}`}
+                dataTest={`${p.policyNumber}_selected`}
                 listClassName={fadePolicy === p.policyNumber ? "data-row fade-out" : "data-row"}
                 policy={p}
-                clickHandler={uncheckPolicy(p.policyNumber)}
+                clickHandler={(e) => uncheckPolicy(p.policyNumber, e)}
                 isChecked={true}
               />
             )
@@ -39,10 +40,11 @@ export class TransferList extends Component {
           {filteredPolicies.map(p => {
             return (
               <TransferListItem
-                key={`${p.policyNumber}_filtered`}
+                key={`${p.policyNumber}`}
+                dataTest={`${p.policyNumber}_filtered`}
                 listClassName={fadePolicy === p.policyNumber ? "data-row fade-out" : "data-row"}
                 policy={p}
-                clickHandler={checkPolicy(p.policyNumber)}
+                clickHandler={(e) => checkPolicy(p.policyNumber, e)}
                 isChecked={false}
               />
             )

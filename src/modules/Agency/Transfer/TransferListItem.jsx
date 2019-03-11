@@ -1,8 +1,8 @@
 import React from 'react'
 
-const TransferListItem = ({ policy, clickHandler, isChecked, listClassName }) => {
+const TransferListItem = ({ policy, clickHandler, isChecked, listClassName, dataTest }) => {
   return (
-    <li className={listClassName} onClick={clickHandler}>
+    <li className={listClassName} onClick={clickHandler} data-test={dataTest}>
       <span className="checkbox" >
         {isChecked ? <span className="fa fa-check-square" /> : <span className="fa fa-square-o" />}
       </span>

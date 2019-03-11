@@ -13,29 +13,26 @@ export class Transfer extends Component {
     this.setState(state => ({ showTransferModal: !state.showTransferModal }));
   }
 
-  checkPolicy = (policyNumber) => () => {
+  checkPolicy = (policyNumber) => {
     const { policies } = this.props;
     const { selectedPolicies } = this.state;
-    const policy = policies.filter(v => v.policyNumber === policyNumber)[0];
-    selectedPolicies.push(policy);
-    this.setState({ selectedPolicies, fadePolicy: undefined });
+    const policy = policies.find(v => v.policyNumber === policyNumber);
+    this.setState({ selectedPolicies: [...selectedPolicies, policy], fadePolicy: undefined });
   }
 
-  unCheckPolicy = (policyNumber) => () => {
+  unCheckPolicy = (policyNumber) => {
     const { selectedPolicies } = this.state;
     this.setState({ selectedPolicies: selectedPolicies.filter(p => p.policyNumber !== policyNumber), fadePolicy: undefined });
   }
 
-  handleCheckPolicy = (policyNumber) => (e) => {
+  handleCheckPolicy = (policyNumber, e) => {
     if(e && e.stopPropagation) e.stopPropagation();
-    this.setState({ fadePolicy: policyNumber });
-    setTimeout(this.checkPolicy(policyNumber), 500)
+    this.setState({ fadePolicy: policyNumber },() => setTimeout(() => this.checkPolicy(policyNumber), 500));
   }
 
-  handleUncheckPolicy = (policyNumber) => (e) => {
+  handleUncheckPolicy = (policyNumber, e) => {
     if(e && e.stopPropagation) e.stopPropagation();
-    this.setState({ fadePolicy: policyNumber });
-    setTimeout(this.unCheckPolicy(policyNumber), 500);
+    this.setState({ fadePolicy: policyNumber }, () => setTimeout(() => this.unCheckPolicy(policyNumber), 500));
   }
 
   handleCheckAllPolicies = () => {
