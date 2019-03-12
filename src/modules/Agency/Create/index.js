@@ -16,12 +16,14 @@ const mapStateToProps = state => ({
     mailingAddress: {},
     physicalAddress: {},
     agentOfRecord: {
+      sameAsMailing: false,
       licenses: [{
         state: '', license: '', licenseType: '', licenseEffectiveDate: ''
       }]
     }
   },
   sameAsMailingValue: selector(state, 'sameAsMailing'),
+  sameAsMailingAORValue: selector(state, 'agentOfRecord.sameAsMailing'),
   licenseValue: selector(state, 'licenses'),
   physicalStateValue: selector(state, 'physicalAddress.state'),
   physicalZipValue: selector(state, 'physicalAddress.zip'),
