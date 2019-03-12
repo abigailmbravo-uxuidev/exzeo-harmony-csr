@@ -31,17 +31,9 @@
     }
   }
 
-  &.add-agent-crud {}
-
   &.existing-agent-modal {
     .card {
       max-width: 40rem;
-    }
-  }
-
-  &.agent-crud {
-    .card {
-      //width: 80rem;
     }
   }
 
@@ -138,6 +130,76 @@
       width: 40rem;
     }
   }
+
+  &.bob-transfer{
+    .card {
+     width: 40rem;
+     #TransferPolicies {
+       .card-block {
+        overflow: visible;
+       }
+     }
+  
+     .card-block {
+      overflow: visible;
+     }
+    }
+    .agencyCode {
+     z-index: 20;   
+     .Select.TypeAhead {
+      z-index: 20;
+      .react-select__menu {
+       .react-select__menu-list {
+        max-height: 200px;
+       }
+      }
+     }
+    }
+    
+    .agentCode {
+     z-index: 10;
+     .Select.TypeAhead {
+      z-index: 10;
+      .react-select__menu {
+       .react-select__menu-list {
+        max-height: 140px;
+       }
+      }
+     }
+    }
+   }
+   &.transfer-AOR-modal {
+    > .card {
+     width: 40rem;
+  
+     .card-block {
+      overflow: visible;
+     }
+    }
+    .agencyCode {
+     z-index: 20;   
+     .Select.TypeAhead {
+      z-index: 20;
+      .react-select__menu {
+       .react-select__menu-list {
+        max-height: 200px;
+       }
+      }
+     }
+    }
+    
+    .agentCode {
+     z-index: 10;
+     .Select.TypeAhead {
+      z-index: 10;
+      .react-select__menu {
+       .react-select__menu-list {
+        max-height: 140px;
+       }
+      }
+     }
+    }
+   }
 
   .card {
     display: flex;

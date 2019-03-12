@@ -10,7 +10,31 @@ const getAgents = state => state.agencyState.agents;
 
 const getOrphanedAgents = state => state.agencyState.orphans;
 
-const getAgentList = state => state.agencyState.agentList;
+const getAgentListData = state => state.agencyState.agentList;
+
+export const getAgencyList = createSelector(
+  [getAgencies],
+  (agencies) => {
+    if (!agencies || !Array.isArray(agencies)) return [];
+    const list = agencies.filter(a => a.status !== 'Cancel').map(a => ({
+      answer: a.agencyCode,
+      label: `${a.agencyCode}: ${a.displayName}`
+    }));
+    return list;
+  }
+);
+
+export const getAgentList = createSelector(
+  [getAgents],
+  (agents) => {
+    if (!agents || !Array.isArray(agents)) return [];
+    const list = agents.filter(a => a.status === 'Active').map(a => ({
+      answer: a.agentCode,
+      label: `${a.agentCode}: ${a.firstName} ${a.lastName}`
+    }));
+    return list;
+  }
+);
 
 export const getOrphanedAgentsList = createSelector(
   [getOrphanedAgents],
@@ -24,7 +48,7 @@ export const getOrphanedAgentsList = createSelector(
 );
 
 export const getAgentsListForTransfer = createSelector(
-  [getAgentList],
+  [getAgentListData],
   (agents) => {
     if (!agents || !Array.isArray(agents)) return [];
     return agents.map(o => ({
@@ -118,17 +142,6 @@ export const getSortedAgents = createSelector(
     return agents.sort((a, b) => {
       return a.firstName.localeCompare(b.firstName);
     });
-  }
-);
-
-export const getAgencyList = createSelector(
-  [getAgencies],
-  (agencies) => {
-    if (!agencies || !Array.isArray(agencies)) return [];
-    return agencies.map(o => ({
-      displayText: `${o.firstName} ${o.lastName}`,
-      ...o
-    }));
   }
 );
 
