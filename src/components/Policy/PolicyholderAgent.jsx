@@ -6,8 +6,11 @@ import { Loader } from '@exzeo/core-ui';
 import { getAgency, getAgentList } from '../../state/actions/agency.actions';
 import normalizePhone from '../Form/normalizePhone';
 import Footer from '../Common/Footer';
+import TransferAOR from './TransferAOR';
 
 export class PolicyholderAgent extends Component {
+  state = { showTransferAOR: false };
+
   componentDidMount() {
     const { getAgencyAction, getAgentListAction, policy } = this.props;
 
@@ -15,6 +18,10 @@ export class PolicyholderAgent extends Component {
       getAgentListAction(policy.companyCode, policy.state);
       getAgencyAction(policy.agencyCode);
     }
+  }
+
+  handleToggleTransferAOR = () => {
+    this.setState(state => ({ showTransferAOR: !state.showTransferAOR }));
   }
 
   render() {
@@ -31,9 +38,21 @@ export class PolicyholderAgent extends Component {
     if (!(agents && agents.length && agency)) return <Loader />;
 
     const selectedAgent = agents.find(a => a.agentCode === policy.agentCode);
+    const { showTransferAOR } = this.state;
+    const transferDisabled = !['Policy Issued', 'In Force'].includes(policy.status);
 
     return (
       <React.Fragment>
+        {showTransferAOR && 
+          <TransferAOR 
+            toggleModal={this.handleToggleTransferAOR} 
+            policyNumber={policy.policyNumber}
+            companyCode={policy.companyCode} 
+            state={policy.state}
+            agencyCode={policy.agencyCode}
+            agentCode={policy.agentCode}
+          />
+        }
         <div className="route-content">
           <div className="scroll">
             <div className="form-group survey-wrapper" role="group">
@@ -44,6 +63,7 @@ export class PolicyholderAgent extends Component {
                   <div className="contact-details">
                     <h4>{`${policyHolder.firstName} ${policyHolder.lastName}`}</h4>
                     <div className="contact-address">{`${policyHolderMailingAddress.address1} ${policyHolderMailingAddress.address2 ? policyHolderMailingAddress.address2 : ''}
+        }
 ${policyHolderMailingAddress.city}, ${policyHolderMailingAddress.state} ${policyHolderMailingAddress.zip}`}
                     </div>
                     <div className="additional-contacts">
@@ -71,7 +91,8 @@ ${policyHolderMailingAddress.city}, ${policyHolderMailingAddress.state} ${policy
                                                                                </div>))}
               </section>
               {agency && selectedAgent && <section className="agency-cards">
-                <h3>Agency / Agent</h3>
+                <h3>Agency / Agent <button className="btn btn-link btn-sm" 
+                  onClick={this.handleToggleTransferAOR} disabled={transferDisabled} ><i className="fa fa-exchange" />Change AOR</button></h3>
                 <div className="agency contact card">
                   <div className="contact-title"><i className="fa fa-address-book" /><label>Agency</label></div>
                   <div className="contact-details">
