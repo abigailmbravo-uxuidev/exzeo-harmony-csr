@@ -30,7 +30,7 @@ export default class Auth {
     const csrLoggedOut = localStorage.getItem('csr_loggedOut');
     // check if the user is actually logged out from another sso site
     if (!csrLoggedOut) {
-      this.renewInterval = setInterval(() => { this.checkAuth(); }, 5000);
+      this.renewInterval = setInterval(() => { this.checkAuth(); }, process.env.REACT_APP_AUTH_WAIT);
     }
   }
 

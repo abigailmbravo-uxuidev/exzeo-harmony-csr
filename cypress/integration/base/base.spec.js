@@ -10,15 +10,16 @@ import {
   navApplication,
   navDocusign
 } from '../../helpers';
-import routes from '../../support/routes';
+import stubAllRoutes from '../../support/stubAllRoutes';
 import user from '../../fixtures/stockData/user.json';
 import pH1 from '../../fixtures/stockData/pH1.json';
 import underwritingData from '../../fixtures/stockData/underwriting.json';
 
 describe('Base Path', () => {
   const { address1, address2, city, zip, country } = user;
+
   before(() => {
-    routes(true);
+    stubAllRoutes(true);
     cy.login();
   });
 

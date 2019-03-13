@@ -1,5 +1,5 @@
 import { checkFullHeader, goToNav } from '../../helpers';
-import routes from '../../support/routes';
+import stubAllRoutes from '../../support/stubAllRoutes';
 
 describe('Policy Header Testing', () => {
   const data = {
@@ -22,7 +22,7 @@ describe('Policy Header Testing', () => {
   };
 
   before(() => {
-    routes();
+    stubAllRoutes();
     cy.login()
       .clickSubmit('#SearchBar')
       .findDataTag('policy-list')
@@ -32,7 +32,7 @@ describe('Policy Header Testing', () => {
       });
   });
 
-  beforeEach(() => routes());
+  beforeEach(() => stubAllRoutes());
   
   it('Policy Number and Quote Status', () => {
     cy.wait('@questions');

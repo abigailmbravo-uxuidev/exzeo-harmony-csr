@@ -13,7 +13,7 @@ import { stubQuoteWithUnderwriting,
   navSummary,
   navApplication
 } from '../../helpers';
-import routes from '../../support/routes.js';
+import stubAllRoutes from '../../support/stubAllRoutes';
 
 describe('Quote Header Testing', () => {
   // Construct our UI data structure
@@ -38,12 +38,12 @@ describe('Quote Header Testing', () => {
   let currentFixture = {};
 
   before(() => {
-    routes();
+    stubAllRoutes();
     cy.login();
     navNewQuote();
   });
 
-  beforeEach(() => routes());
+  beforeEach(() => stubAllRoutes());
 
   it('Coverage/Rating Page', () => {
     cy.wait('@fetchAgencies')

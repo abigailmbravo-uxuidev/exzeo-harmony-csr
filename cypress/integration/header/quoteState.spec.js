@@ -1,12 +1,12 @@
 import _ from 'lodash'; //eslint-disable-line
 import { stubQuoteWithUnderwriting, navNewQuote } from '../../helpers';
-import routes from '../../support/routes';
+import stubAllRoutes from '../../support/stubAllRoutes';
 
 describe('Quote State Testing', () => {
   const checkQuoteState = content => cy.findDataTag('quoteDetails').find('.status').should('contain', content);
 
   before(() => {
-    routes();
+    stubAllRoutes();
     cy.login();
     navNewQuote();
   })
