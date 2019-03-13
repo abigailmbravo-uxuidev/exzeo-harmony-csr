@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { reduxForm } from 'redux-form';
-import { Button } from '@exzeo/core-ui';
+import PropTypes from 'prop-types';
 import SmallModal from '../../../components/SmallModal';
 
 export class DeleteContractModal extends Component {
@@ -28,6 +28,23 @@ export class DeleteContractModal extends Component {
 DeleteContractModal.defaultProps = {
     contract: {}
 }
+
+DeleteContractModal.propTypes = {
+  contract: PropTypes.shape({
+    companyCode: PropTypes.string,
+    contractNumber: PropTypes.string,
+    addendum: PropTypes.string,
+    stateProducts: PropTypes.arrayOf(
+      PropTypes.shape({
+        state: PropTypes.string,
+        product: PropTypes.string,
+      })
+    )
+  }),
+  handleConfirm: PropTypes.func,
+  handleCancel: PropTypes.func,
+  handleSubmit: PropTypes.func
+};
 
 export default reduxForm({
   form: 'DeleteContract'

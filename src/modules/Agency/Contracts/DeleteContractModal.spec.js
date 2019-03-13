@@ -1,9 +1,14 @@
 import React from 'react';
-import { shallow } from 'enzyme';
+import { mount } from 'enzyme';
+import configureStore from 'redux-mock-store';
 
 import DeleteContractModal from './DeleteContractModal';
 
 describe('Testing DeleteContractModal component', () => {
+
+  const mockStore = configureStore([]);
+  const store = mockStore({});
+
   it('should render', () => {
     const props = {
         contracts: {
@@ -21,7 +26,7 @@ describe('Testing DeleteContractModal component', () => {
         handleOnSubmit() {},
         handleCancel() {}
     };
-    const wrapper = shallow(<DeleteContractModal {...props} />);
+    const wrapper = mount(<DeleteContractModal store={store} {...props} />);
     expect(wrapper.exists()).toBeTruthy();
   });
 });

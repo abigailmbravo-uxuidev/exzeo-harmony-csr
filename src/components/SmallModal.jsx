@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { reduxForm } from 'redux-form';
+import PropTypes from 'prop-types';
 import { Button } from '@exzeo/core-ui';
 
 export class SmallModal extends Component {
@@ -54,5 +54,16 @@ export class SmallModal extends Component {
 SmallModal.defaultProps = {
   headerIcon: 'fa-circle'
 }
+
+SmallModal.propTypes = {
+  modalClassName: PropTypes.string,
+  disabled: PropTypes.bool,
+  handleCancel: PropTypes.func,
+  handleOnSubmit: PropTypes.func,
+  submitting: PropTypes.bool,
+  header: PropTypes.string,
+  headerIcon: PropTypes.string,
+  text: PropTypes.string
+};
 
 export default SmallModal;

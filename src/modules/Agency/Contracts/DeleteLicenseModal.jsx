@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { reduxForm } from 'redux-form';
-import { Button } from '@exzeo/core-ui';
+import PropTypes from 'prop-types';
 import SmallModal from '../../../components/SmallModal';
 
 export class DeleteLicenseModal extends Component {
@@ -28,6 +28,18 @@ export class DeleteLicenseModal extends Component {
 DeleteLicenseModal.defaultProps = {
     license: {}
 }
+
+DeleteLicenseModal.propTypes = {
+  license: PropTypes.shape({
+    state: PropTypes.string,
+    licenseNumber: PropTypes.string,
+    licenseType: PropTypes.string,
+    licenseEffectiveDate: PropTypes.string,
+  }),
+  handleConfirm: PropTypes.func,
+  handleCancel: PropTypes.func,
+  handleSubmit: PropTypes.func
+};
 
 export default reduxForm({
   form: 'DeleteLicense'

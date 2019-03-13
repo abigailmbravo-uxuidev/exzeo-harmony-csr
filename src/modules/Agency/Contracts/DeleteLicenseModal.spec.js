@@ -1,9 +1,15 @@
 import React from 'react';
-import { shallow } from 'enzyme';
+import { mount } from 'enzyme';
+import configureStore from 'redux-mock-store';
+
 
 import DeleteLicenseModal from './DeleteLicenseModal';
 
 describe('Testing DeleteLicenseModal component', () => {
+
+  const mockStore = configureStore([]);
+  const store = mockStore({});
+
   it('should render', () => {
     const props = {
         license: {
@@ -16,7 +22,7 @@ describe('Testing DeleteLicenseModal component', () => {
         handleOnSubmit() {},
         handleCancel() {}
     };
-    const wrapper = shallow(<DeleteLicenseModal {...props} />);
+    const wrapper = mount(<DeleteLicenseModal store={store} {...props} />);
     expect(wrapper.exists()).toBeTruthy();
   });
 });

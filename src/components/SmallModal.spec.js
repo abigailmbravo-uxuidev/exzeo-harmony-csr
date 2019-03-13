@@ -1,5 +1,5 @@
 import React from 'react';
-import { shallow } from 'enzyme';
+import { mount } from 'enzyme';
 
 import SmallModal from './SmallModal';
 
@@ -14,7 +14,7 @@ describe('Testing SmallModal component', () => {
       text: 'Save Data',
       modalClassName: 'Save'
     };
-    const wrapper = shallow(<SmallModal {...props} />);
+    const wrapper = mount(<SmallModal {...props} />);
     expect(wrapper.exists()).toBeTruthy();
     wrapper.find('Button').everyWhere((x) => {
       x.simulate('click');
