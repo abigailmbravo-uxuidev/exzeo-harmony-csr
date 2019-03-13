@@ -10,11 +10,13 @@ import LicenseModal from './LicenseModal';
 import ContractCard from './ContractCard';
 import ContractModal from './ContractModal';
 import DeleteLicenseModal from './DeleteLicenseModal';
+import DeleteContractModal from './DeleteContractModal';
 
 export class Contracts extends Component {
   state = {
     showLicenseModal: false,
     showDeleteLicenseModal: false,
+    showDeleteContractModal: false,
     licenseIndex: null,
     showContractModal: false,
     contractIndex: null
@@ -41,6 +43,13 @@ export class Contracts extends Component {
     }));
   };
 
+  toggleDeleteContract = contractIndex => () => {
+    this.setState(prevState => ({
+      showDeleteContractModal: !prevState.showDeleteContractModal,
+      contractIndex
+    }));
+  };
+
   mergeData = (data, existingArray, index) => {
     let newArray;
     if (index !== null && index !== '') {
@@ -58,6 +67,15 @@ export class Contracts extends Component {
     newLicenses.splice(licenseIndex, 1);
     await updateAgency({ agencyCode, licenses: newLicenses });
     this.toggleDeleteLicense()();
+  };
+
+  deleteContract = async (data, dispatch, props) => {
+    const { agency: { agencyCode, contracts }, updateAgency } = this.props;
+    const { contractIndex } = this.state;
+    const newContracts = [...contracts];
+    newContracts.splice(contractIndex, 1);
+    await updateAgency({ agencyCode, contracts: newContracts });
+    this.toggleDeleteContract()();
   };
 
   saveLicense = async (data, dispatch, props) => {
@@ -81,7 +99,7 @@ export class Contracts extends Component {
   render() {
     const { agency, listAnswers, listAnswersAsKey } = this.props;
     const {
-      licenseIndex, showLicenseModal, contractIndex, showContractModal, showDeleteLicenseModal
+      licenseIndex, showLicenseModal, contractIndex, showContractModal, showDeleteLicenseModal, showDeleteContractModal
     } = this.state;
 
     if (!agency) return <div />;
@@ -90,8 +108,14 @@ export class Contracts extends Component {
         {showDeleteLicenseModal &&
           <DeleteLicenseModal
             handleConfirm={this.deleteLicense}
-            handleCancel={this.toggleLicense()}
+            handleCancel={this.toggleDeleteLicense()}
             license={agency.licenses[licenseIndex]} />
+        }
+        {showDeleteContractModal &&
+          <DeleteContractModal
+            handleConfirm={this.deleteContract}
+            handleCancel={this.toggleDeleteContract()}
+            contract={agency.contracts[contractIndex]} />
         }
         {showLicenseModal &&
           <LicenseModal
@@ -143,8 +167,10 @@ export class Contracts extends Component {
                 <h3>Contracts</h3>
                 {Array.isArray(agency.contracts) && agency.contracts.map((contract, index) => (
                   <ContractCard
+                    canDelete={agency.contracts.length > 1}
                     key={contract.contractNumber}
                     contract={contract}
+                    deleteContract={this.toggleDeleteContract(index)}
                     editContract={this.toggleContract(index)} />
                 ))}
                 <div className="create-contract">

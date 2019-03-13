@@ -1,6 +1,6 @@
 import React from 'react';
 
-export const ContractCard = ({ contract, editContract, contractIndex }) => (
+export const ContractCard = ({ contract, editContract, contractIndex, deleteContract, canDelete }) => (
   <div className="contract card">
     <div className="contract-title">
       <i className="fa fa-file-text" />
@@ -35,11 +35,19 @@ export const ContractCard = ({ contract, editContract, contractIndex }) => (
       </div>
     </div>
     <div className="contract-actions">
+      {canDelete &&
+        <button
+        className="btn btn-link btn-sm"
+        onClick={deleteContract}
+        >
+        <i className="fa fa-trash" />Delete
+      </button>
+      }
       <button
         className="btn btn-link btn-sm"
         onClick={editContract}
       >
-      <i className="fa fa-pencil-square" />Edit
+        <i className="fa fa-pencil-square" />Edit
       </button>
     </div>
   </div>);

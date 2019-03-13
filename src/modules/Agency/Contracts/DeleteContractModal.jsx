@@ -3,10 +3,10 @@ import { reduxForm } from 'redux-form';
 import { Button } from '@exzeo/core-ui';
 import SmallModal from '../../../components/SmallModal';
 
-export class DeleteLicenseModal extends Component {
+export class DeleteContractModal extends Component {
   render() {
     const {
-      license,
+      contract,
       handleCancel,
       handleConfirm,
       handleSubmit,
@@ -14,21 +14,21 @@ export class DeleteLicenseModal extends Component {
 
     return (
         <SmallModal
-            modalClassName="license-remove"
+            modalClassName="contract-remove"
             handleCancel={handleCancel}
             handleOnSubmit={handleSubmit(handleConfirm)}
-            header="Delete License"
+            header="Delete Contract"
             headerIcon="fa-trash"
-            text={`Are you sure you want to delete license: ${license.state} - ${license.licenseNumber}`}
+            text={`Are you sure you want to delete contract: ${contract.companyCode} | ${contract.contractNumber} | ${contract.addendum}`}
         />
     );
   }
 }
 
-DeleteLicenseModal.defaultProps = {
-    license: {}
+DeleteContractModal.defaultProps = {
+    contract: {}
 }
 
 export default reduxForm({
-  form: 'DeleteLicense'
-})(DeleteLicenseModal);
+  form: 'DeleteContract'
+})(DeleteContractModal);
