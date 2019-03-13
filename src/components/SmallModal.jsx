@@ -52,7 +52,7 @@ export class SmallModal extends Component {
 };
 
 SmallModal.defaultProps = {
-    headerIcon: 'fa-circle'
+  headerIcon: 'fa-circle'
 }
 
 export default SmallModal;
