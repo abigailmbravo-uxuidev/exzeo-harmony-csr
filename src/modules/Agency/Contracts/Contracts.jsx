@@ -9,10 +9,12 @@ import LicenseCard from './LicenseCard';
 import LicenseModal from './LicenseModal';
 import ContractCard from './ContractCard';
 import ContractModal from './ContractModal';
+import DeleteLicenseModal from './DeleteLicenseModal';
 
 export class Contracts extends Component {
   state = {
     showLicenseModal: false,
+    showDeleteLicenseModal: false,
     licenseIndex: null,
     showContractModal: false,
     contractIndex: null
@@ -21,6 +23,13 @@ export class Contracts extends Component {
   toggleLicense = licenseIndex => () => {
     this.setState(prevState => ({
       showLicenseModal: !prevState.showLicenseModal,
+      licenseIndex
+    }));
+  };
+
+  toggleDeleteLicense = licenseIndex => () => {
+    this.setState(prevState => ({
+      showDeleteLicenseModal: !prevState.showDeleteLicenseModal,
       licenseIndex
     }));
   };
@@ -40,6 +49,15 @@ export class Contracts extends Component {
       newArray = [...existingArray, { ...data }];
     }
     return newArray;
+  };
+
+  deleteLicense = async (data, dispatch, props) => {
+    const { agency: { agencyCode, licenses }, updateAgency } = this.props;
+    const { licenseIndex } = this.state;
+    const newLicenses = [...licenses];
+    newLicenses.splice(licenseIndex, 1);
+    await updateAgency({ agencyCode, licenses: newLicenses });
+    this.toggleDeleteLicense()();
   };
 
   saveLicense = async (data, dispatch, props) => {
@@ -63,12 +81,18 @@ export class Contracts extends Component {
   render() {
     const { agency, listAnswers, listAnswersAsKey } = this.props;
     const {
-      licenseIndex, showLicenseModal, contractIndex, showContractModal
+      licenseIndex, showLicenseModal, contractIndex, showContractModal, showDeleteLicenseModal
     } = this.state;
 
     if (!agency) return <div />;
     return (
       <div id="agency-contracts" className="agency-contracts">
+        {showDeleteLicenseModal &&
+          <DeleteLicenseModal
+            handleConfirm={this.deleteLicense}
+            handleCancel={this.toggleLicense()}
+            license={agency.licenses[licenseIndex]} />
+        }
         {showLicenseModal &&
           <LicenseModal
             saveLicense={this.saveLicense}
@@ -98,8 +122,10 @@ export class Contracts extends Component {
                 <h3>Licenses</h3>
                 {Array.isArray(agency.licenses) && agency.licenses.map((license, index) => (
                   <LicenseCard
+                    canDelete={agency.licenses.length > 1}
                     key={license.licenseNumber}
                     license={license}
+                    deleteLicense={this.toggleDeleteLicense(index)}
                     editLicense={this.toggleLicense(index)} />
                 ))}
                 <div className="create-contract">

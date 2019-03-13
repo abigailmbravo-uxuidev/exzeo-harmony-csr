@@ -1,7 +1,7 @@
 import React from 'react';
 import moment from 'moment';
 
-export const LicenseCard = ({ license, editLicense }) => (
+export const LicenseCard = ({ license, editLicense, deleteLicense, canDelete }) => (
   <div className="license card">
     <div className="license-title">
       <i className="fa fa-file-text-o" />
@@ -16,6 +16,14 @@ export const LicenseCard = ({ license, editLicense }) => (
       </div>
     </div>
     <div className="license-actions">
+      {canDelete && 
+        <button
+          className="btn btn-link btn-sm"
+          onClick={deleteLicense}
+        >
+          <i className="fa fa-trash" />Delete
+        </button>
+      }
       <button
         className="btn btn-link btn-sm"
         onClick={editLicense}
