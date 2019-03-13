@@ -14,17 +14,9 @@ describe('Testing DeleteLicenseModal component', () => {
         },
         handleSubmit() {},
         handleOnSubmit() {},
-        handleCancel() {},
-        header: 'Save',
-        headerIcon: 'fa-circle',
-        text: 'Save Data',
-        modalClassName: 'Save'
+        handleCancel() {}
     };
     const wrapper = shallow(<DeleteLicenseModal {...props} />);
     expect(wrapper.exists()).toBeTruthy();
-    wrapper.find('Button').everyWhere((x) => {
-      x.simulate('click');
-      return x;
-    });
   });
 });
