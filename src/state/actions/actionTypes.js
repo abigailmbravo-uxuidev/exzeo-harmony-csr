@@ -3,8 +3,13 @@ export const AUTH = 'AUTH';
 /* APP STATE ACTIONS */
 export const APPSTATE_SET = 'APPSTATE_SET';
 export const APPSTATE_ERROR = 'APPSTATE_ERROR';
+
+/* UI Actions */ 
 export const TOGGLE_NOTE = 'TOGGLE_NOTE';
 export const TOGGLE_DIARY = 'TOGGLE_DIARY';
+export const TOGGLE_MINIMIZE_DIARY = 'TOGGLE_MINIMIZE_DIARY';
+export const TOGGLE_MINIMIZE_NOTE = 'TOGGLE_MINIMIZE_NOTE';
+
 /* ERROR */
 export const APP_ERROR = 'APP_ERROR';
 export const APP_ERROR_CLEAR = 'APP_ERROR_CLEAR';

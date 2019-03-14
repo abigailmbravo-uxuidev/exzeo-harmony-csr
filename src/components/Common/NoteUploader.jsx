@@ -141,7 +141,7 @@ export class NoteUploader extends Component {
 
   docTypes = this.props.noteType ? this.docTypeOptions[this.props.noteType] : [];
 
-  handleMinimize = () => this.setState({ minimize: !this.state.minimize });
+  handleMinimize = (minimizeNote) => this.props.actions.uiActions.toggleMinimizeNote(!minimizeNote);
 
   handleClose = () => this.props.actions.uiActions.toggleNote({});
 
@@ -218,7 +218,7 @@ export class NoteUploader extends Component {
             state,
             product,
             resourceType,
-            resourceId: documentId
+            resourceId: documentId,
           });
         };
       })
@@ -231,11 +231,11 @@ export class NoteUploader extends Component {
 
   render() {
     return (
-      <div className={this.state.minimize ? 'new-note-file minimize' : 'new-note-file'} >
+      <div className={this.props.minimizeNote ? 'new-note-file minimize' : 'new-note-file'} >
         <div className="title-bar">
-          <div className="title title-minimze-button" onClick={() => this.handleMinimize(this.props)}>Note / File</div>
+          <div className="title title-minimze-button" onClick={() => this.handleMinimize(this.props.minimizeNote)}>Note / File</div>
           <div className="controls note-file-header-button-group">
-            <button className="btn btn-icon minimize-button" onClick={() => this.handleMinimize(this.props)}><i className="fa fa-window-minimize" aria-hidden="true" /></button>
+            <button className="btn btn-icon minimize-button" onClick={() => this.handleMinimize(this.props.minimizeNote)}><i className="fa fa-window-minimize" aria-hidden="true" /></button>
             <button className="btn btn-icon header-cancel-button" onClick={this.handleClose} type="submit"><i className="fa fa-times-circle" aria-hidden="true" /></button>
           </div>
         </div>
@@ -286,7 +286,8 @@ NoteUploader.propTypes = {
   documentId: PropTypes.string.isRequired,
   noteType: PropTypes.string.isRequired,
   sourceId: PropTypes.string,
-  resourceType: PropTypes.string
+  resourceType: PropTypes.string,
+  minimizeNote: PropTypes.bool
 };
 
 NoteUploader.defaultProps = {
