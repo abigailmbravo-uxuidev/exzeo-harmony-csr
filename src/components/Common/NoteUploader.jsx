@@ -159,7 +159,6 @@ export class NoteUploader extends Component {
   }
 
   validateUpload = (files => {
-    console.log(files)
     if(Object.keys(files).some(id => (!files[id].data.name.includes('.')))) {
       this.uppy.info('The file name must have a file extension.');
       return false;
