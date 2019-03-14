@@ -10,7 +10,6 @@ export class SmallModal extends Component {
       disabled,
       handleCancel,
       handleSubmit,
-      submitting,
       header,
       headerIcon,
       text
@@ -18,7 +17,6 @@ export class SmallModal extends Component {
 
     return (
       <div className={classNames('modal', modalClassName)}>
-         <form onSubmit={handleSubmit}>
           <div className="card">
             <div className="card-header">
               <h4><i className={classNames('fa', headerIcon)} /> {header}</h4>
@@ -40,13 +38,12 @@ export class SmallModal extends Component {
                 <Button
                   baseClass="primary"
                   dataTest="modal-submit"
-                  type="submit"
-                  disabled={disabled || submitting}>Yes
+                  onClick={handleSubmit}
+                  disabled={disabled}>Yes
                 </Button>
               </div>
             </div>
           </div>
-        </form>
       </div>
     );
   }

@@ -9,17 +9,16 @@ import LicenseCard from './LicenseCard';
 import LicenseModal from './LicenseModal';
 import ContractCard from './ContractCard';
 import ContractModal from './ContractModal';
-import DeleteLicenseModal from './DeleteLicenseModal';
-import DeleteContractModal from './DeleteContractModal';
+import SmallModal from '../../../components/SmallModal';
 
 export class Contracts extends Component {
   state = {
     showLicenseModal: false,
     showDeleteLicenseModal: false,
     showDeleteContractModal: false,
-    licenseIndex: null,
+    licenseIndex: '',
     showContractModal: false,
-    contractIndex: null
+    contractIndex: ''
   };
 
   toggleLicense = (licenseIndex) => {
@@ -102,18 +101,26 @@ export class Contracts extends Component {
       licenseIndex, showLicenseModal, contractIndex, showContractModal, showDeleteLicenseModal, showDeleteContractModal
     } = this.state;
 
+    const activeContract =  (agency.contracts || [])[contractIndex || 0] 
+    const activeLicense =  (agency.licenses || [])[licenseIndex || 0] 
+
     if (!agency) return <div />;
     return (
       <div id="agency-contracts" className="agency-contracts">
-        {showDeleteLicenseModal &&
-          <DeleteLicenseModal
-            handleConfirm={this.deleteLicense}
-            handleCancel={this.toggleDeleteLicense}
-            license={agency.licenses[licenseIndex]} />
+        {showDeleteLicenseModal && 
+          <SmallModal
+            header="Delete License"
+            headerIcon="fa-trash"
+            text={`Are you sure you want to delete license: ${activeLicense.state} - ${activeLicense.licenseNumber}`}
+            handleSubmit={this.deleteLicense}
+            handleCancel={this.toggleDeleteLicense} />
         }
-        {showDeleteContractModal &&
-          <DeleteContractModal
-            handleConfirm={this.deleteContract}
+        {showDeleteContractModal && 
+          <SmallModal
+            header="Delete Contract"
+            headerIcon="fa-trash"
+            text={`Are you sure you want to delete contract: ${activeContract.companyCode} | ${activeContract.contractNumber} | ${activeContract.addendum}`}
+            handleSubmit={this.deleteContract}
             handleCancel={this.toggleDeleteContract}
             contract={agency.contracts[contractIndex]} />
         }
