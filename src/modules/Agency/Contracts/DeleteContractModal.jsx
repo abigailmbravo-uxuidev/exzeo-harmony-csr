@@ -3,6 +3,7 @@ import { reduxForm } from 'redux-form';
 import PropTypes from 'prop-types';
 import SmallModal from '../../../components/SmallModal';
 
+// TODO: look at this to consider converting to a genric modal
 export class DeleteContractModal extends Component {
   render() {
     const {
