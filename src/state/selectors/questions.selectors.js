@@ -39,36 +39,25 @@ export const getDiaryAssigneeAnswers = createSelector(
 export const getListAnswers = createSelector(
   [getLists],
   (lists) => {
-    if (!lists) return [];
-
-    const mainList = {};
-
-    const listItems = Object.keys(lists);
-
-    listItems.forEach((item) => {
-      mainList[item] = Object.keys(lists[item].extendedProperties || {}).sort().map((key) => {
-        return { answer: key, label: lists[item].extendedProperties[key].displayText };
-      }) || [];
+    const listObject = {}
+    if (!lists || Object.keys(lists).length === 0) return [];
+    Object.keys(lists).forEach((key) => {
+      const listItem = lists[key];
+      listObject[key] = listItem.map(li => ({ answer: li.key, label: li.displayText }));
     });
-    return mainList;
+    return listObject;
   }
 );
 
 export const getListAnswersAsKey = createSelector(
   [getLists],
   (lists) => {
-    if (!lists) return [];
-
-    const mainList = {};
-
-    const listItems = Object.keys(lists);
-
-    listItems.forEach((item) => {
-      const list = lists[item].extendedProperties || {};
-      mainList[item] = Object.keys(list).sort().map((key) => {
-        return { answer: key, label: key };
-      }) || [];
+    const listObject = {}
+    if (!lists || Object.keys(lists).length === 0) return [];
+    Object.keys(lists).forEach((key) => {
+      const listItem = lists[key];
+      listObject[key] = listItem.map(li => ({ answer: li.key, label: li.key } ));
     });
-    return mainList;
+    return listObject;
   }
 );

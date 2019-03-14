@@ -50,7 +50,7 @@ describe('Questions State Reducer', () => {
   });
 
   it('should call questionsReducer SET_LISTS', () => {
-    const lists = [{ code: 'test', extendedProperties: { listItem: { dispalyText: '1', type: 'string', isActive: true } } }];
+    const lists = [{ code: 'test', extendedProperties: { listItem: { displayText: '1', type: 'string', isActive: true } } }];
     const action = {
       type: types.SET_LISTS,
       lists
@@ -59,11 +59,7 @@ describe('Questions State Reducer', () => {
     const map = {
       ...initialState.questions,
       lists: {
-        test: {
-          code: 'test',
-          extendedProperties:
-      { listItem: { dispalyText: '1', isActive: true, type: 'string' } }
-        }
+        test: [{"displayText": "1", "isActive": true, "key": "listItem", "type": "string"}]
       }
     };
 

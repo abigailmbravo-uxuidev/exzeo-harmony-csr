@@ -44,43 +44,80 @@ describe('Test questions selectors', () => {
       const state = {
         questions: {
           lists: {
-            Agency_Addendum: {
-              displayText: 'Addendum',
-              code: 'Agency_Addendum',
-              isActive: true,
-              extendedProperties: {
-                'TT 03 16': {
-                  displayText: 'TT 03 16',
-                  type: 'string',
-                  isActive: true
-                },
-                'TT 02 18': {
-                  displayText: 'TT 02 18',
-                  type: 'string',
-                  isActive: true
-                },
-                'HC REV 120115': {
-                  displayText: 'HC REV 120115',
-                  type: 'string',
-                  isActive: true
-                },
-                'HC SAF PACS 05 18': {
-                  displayText: 'HC SAF PACS 05 18',
-                  type: 'string',
-                  isActive: true
-                }
+            US_States: [
+              {
+                displayText: 'Florida',
+                key: 'FL',
+                type: 'string',
+                isActive: true
+              },
+              {
+                displayText: 'Georgia',
+                key: 'GA',
+                type: 'string',
+                isActive: true
               }
+            ],
+            Agency_Addendum: [
+              {
+                displayText: 'TT 03 16',
+                key: 'TT 03 16',
+                type: 'string',
+                isActive: true
+              },
+              {
+                displayText: 'TT 02 18',
+                key: 'TT 02 18',
+                type: 'string',
+                isActive: true
+              },
+              {
+                displayText: 'HC REV 120115',
+                key: 'HC REV 120115',
+                type: 'string',
+                isActive: true
+              },
+              {
+                displayText: 'HC SAF PACS 05 18',
+                key: 'HC SAF PACS 05 18',
+                type: 'string',
+                isActive: true
+              }
+            ]
             }
           }
-        }
       };
+
       const result = getListAnswers(state);
       expect(result).toEqual({
-        Agency_Addendum:
-        [{ answer: 'HC REV 120115', label: 'HC REV 120115' },
-          { answer: 'HC SAF PACS 05 18', label: 'HC SAF PACS 05 18' },
-          { answer: 'TT 02 18', label: 'TT 02 18' },
-          { answer: 'TT 03 16', label: 'TT 03 16' }]
+        "Agency_Addendum": [
+          {
+            "answer": "TT 03 16",
+            "label": "TT 03 16"
+          },
+          {
+            "answer": "TT 02 18",
+            "label": "TT 02 18"
+          },
+          {
+            "answer": "HC REV 120115",
+            "label": "HC REV 120115"
+          },
+          {
+            "answer": "HC SAF PACS 05 18",
+            "label": "HC SAF PACS 05 18"
+          }
+        ],
+        "US_States": [
+          {
+            "answer": "FL",
+            "label": "Florida"
+          },
+          {
+            "answer": "GA",
+            "label": "Georgia"
+          }
+        ]
       });
     });
 
@@ -88,37 +125,78 @@ describe('Test questions selectors', () => {
       const state = {
         questions: {
           lists: {
-            Agency_Addendum: {
-              displayText: 'Addendum',
-              code: 'Agency_Addendum',
-              isActive: true,
-              extendedProperties: {
-                WY: {
-                  isActive: true,
-                  type: 'string',
-                  displayText: 'Wyoming'
-                },
-                WI: {
-                  isActive: true,
-                  type: 'string',
-                  displayText: 'Wisconsin'
-                },
-                WV: {
-                  isActive: true,
-                  type: 'string',
-                  displayText: 'West Virginia'
-                }
+            US_States: [
+              {
+                displayText: 'Florida',
+                key: 'FL',
+                type: 'string',
+                isActive: true
+              },
+              {
+                displayText: 'Georgia',
+                key: 'GA',
+                type: 'string',
+                isActive: true
               }
+            ],
+            Agency_Addendum: [
+              {
+                displayText: 'TT 03 16',
+                key: 'TT 03 16',
+                type: 'string',
+                isActive: true
+              },
+              {
+                displayText: 'TT 02 18',
+                key: 'TT 02 18',
+                type: 'string',
+                isActive: true
+              },
+              {
+                displayText: 'HC REV 120115',
+                key: 'HC REV 120115',
+                type: 'string',
+                isActive: true
+              },
+              {
+                displayText: 'HC SAF PACS 05 18',
+                key: 'HC SAF PACS 05 18',
+                type: 'string',
+                isActive: true
+              }
+            ]
             }
-          }
         }
       };
       const result = getListAnswersAsKey(state);
       expect(result).toEqual({
-        Agency_Addendum: [
-          { answer: 'WI', label: 'WI' },
-          { answer: 'WV', label: 'WV' },
-          { answer: 'WY', label: 'WY' }
+        "Agency_Addendum": [
+          {
+            "answer": "TT 03 16",
+            "label": "TT 03 16"
+          },
+          {
+            "answer": "TT 02 18",
+            "label": "TT 02 18"
+          },
+          {
+            "answer": "HC REV 120115",
+            "label": "HC REV 120115"
+          },
+          {
+            "answer": "HC SAF PACS 05 18",
+            "label": "HC SAF PACS 05 18"
+          }
+        ],
+        "US_States": [
+          {
+            "answer": "FL",
+            "label": "FL"
+          },
+          {
+            "answer": "GA",
+            "label": "GA"
+          }
         ]
       });
     });
