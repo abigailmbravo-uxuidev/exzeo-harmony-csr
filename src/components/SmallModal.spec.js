@@ -7,7 +7,6 @@ describe('Testing SmallModal component', () => {
   it('should render', () => {
     const props = {
       handleSubmit() {},
-      handleOnSubmit() {},
       handleCancel() {},
       header: 'Save',
       headerIcon: 'fa-circle',

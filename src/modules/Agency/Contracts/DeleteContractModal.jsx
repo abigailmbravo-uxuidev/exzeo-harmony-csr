@@ -16,7 +16,7 @@ export class DeleteContractModal extends Component {
         <SmallModal
             modalClassName="contract-remove"
             handleCancel={handleCancel}
-            handleOnSubmit={handleSubmit(handleConfirm)}
+            handleSubmit={handleSubmit(handleConfirm)}
             header="Delete Contract"
             headerIcon="fa-trash"
             text={`Are you sure you want to delete contract: ${contract.companyCode} | ${contract.contractNumber} | ${contract.addendum}`}

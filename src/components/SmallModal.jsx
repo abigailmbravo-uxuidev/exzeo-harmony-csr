@@ -8,7 +8,7 @@ export class SmallModal extends Component {
       modalClassName,
       disabled,
       handleCancel,
-      handleOnSubmit,
+      handleSubmit,
       submitting,
       header,
       headerIcon,
@@ -17,7 +17,7 @@ export class SmallModal extends Component {
 
     return (
       <div className={`modal ${modalClassName}`}>
-         <form onSubmit={handleOnSubmit}>
+         <form onSubmit={handleSubmit}>
           <div className="card">
             <div className="card-header">
               <h4><i className={`fa ${headerIcon}`} /> {header}</h4>
@@ -34,7 +34,7 @@ export class SmallModal extends Component {
                 <Button
                   baseClass="secondary"
                   dataTest="modal-cancel"
-                  onClick={() => handleCancel()}>No
+                  onClick={handleCancel}>No
                 </Button>
                 <Button
                   baseClass="primary"
@@ -59,7 +59,7 @@ SmallModal.propTypes = {
   modalClassName: PropTypes.string,
   disabled: PropTypes.bool,
   handleCancel: PropTypes.func,
-  handleOnSubmit: PropTypes.func,
+  handleSubmit: PropTypes.func,
   submitting: PropTypes.bool,
   header: PropTypes.string,
   headerIcon: PropTypes.string,

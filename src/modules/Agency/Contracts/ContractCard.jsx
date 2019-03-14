@@ -1,4 +1,5 @@
 import React from 'react';
+import { Button } from '@exzeo/core-ui';
 
 export const ContractCard = ({ contract, editContract, contractIndex, deleteContract, canDelete }) => (
   <div className="contract card">
@@ -36,19 +37,19 @@ export const ContractCard = ({ contract, editContract, contractIndex, deleteCont
     </div>
     <div className="contract-actions">
       {canDelete &&
-        <button
-        className="btn btn-link btn-sm"
+        <Button
+        customClass="btn btn-link btn-sm"
         onClick={deleteContract}
-        >
-        <i className="fa fa-trash" />Delete
-      </button>
+        dataTest="delete-contract">
+          <i className="fa fa-trash" />Delete
+        </Button>
       }
-      <button
-        className="btn btn-link btn-sm"
-        onClick={editContract}
-      >
-        <i className="fa fa-pencil-square" />Edit
-      </button>
+        <Button
+          customClass="btn btn-link btn-sm"
+          onClick={editContract}
+          dataTest="delete-contract">
+            <i className="fa fa-pencil-square" />Edit
+        </Button>
     </div>
   </div>);
 

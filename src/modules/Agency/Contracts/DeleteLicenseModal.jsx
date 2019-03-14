@@ -16,7 +16,7 @@ export class DeleteLicenseModal extends Component {
         <SmallModal
             modalClassName="license-remove"
             handleCancel={handleCancel}
-            handleOnSubmit={handleSubmit(handleConfirm)}
+            handleSubmit={handleSubmit(handleConfirm)}
             header="Delete License"
             headerIcon="fa-trash"
             text={`Are you sure you want to delete license: ${license.state} - ${license.licenseNumber}`}

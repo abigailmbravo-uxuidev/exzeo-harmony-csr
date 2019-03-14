@@ -22,28 +22,28 @@ export class Contracts extends Component {
     contractIndex: null
   };
 
-  toggleLicense = licenseIndex => () => {
+  toggleLicense = (licenseIndex) => {
     this.setState(prevState => ({
       showLicenseModal: !prevState.showLicenseModal,
       licenseIndex
     }));
   };
 
-  toggleDeleteLicense = licenseIndex => () => {
+  toggleDeleteLicense = (licenseIndex) => {
     this.setState(prevState => ({
       showDeleteLicenseModal: !prevState.showDeleteLicenseModal,
       licenseIndex
     }));
   };
 
-  toggleContract = contractIndex => () => {
+  toggleContract = (contractIndex) => {
     this.setState(prevState => ({
       showContractModal: !prevState.showContractModal,
       contractIndex
     }));
   };
 
-  toggleDeleteContract = contractIndex => () => {
+  toggleDeleteContract = (contractIndex) => {
     this.setState(prevState => ({
       showDeleteContractModal: !prevState.showDeleteContractModal,
       contractIndex
@@ -66,7 +66,7 @@ export class Contracts extends Component {
     const newLicenses = [...licenses];
     newLicenses.splice(licenseIndex, 1);
     await updateAgency({ agencyCode, licenses: newLicenses });
-    this.toggleDeleteLicense()();
+    this.toggleDeleteLicense(null);
   };
 
   deleteContract = async (data, dispatch, props) => {
@@ -75,7 +75,7 @@ export class Contracts extends Component {
     const newContracts = [...contracts];
     newContracts.splice(contractIndex, 1);
     await updateAgency({ agencyCode, contracts: newContracts });
-    this.toggleDeleteContract()();
+    this.toggleDeleteContract(null);
   };
 
   saveLicense = async (data, dispatch, props) => {
@@ -84,7 +84,7 @@ export class Contracts extends Component {
     const newLicenses = this.mergeData(data, licenses, licenseIndex);
 
     await updateAgency({ agencyCode, licenses: newLicenses });
-    this.toggleLicense()();
+    this.toggleLicense(null);
   };
 
   saveContract = async (data, dispatch, props) => {
@@ -93,7 +93,7 @@ export class Contracts extends Component {
     const newContracts = this.mergeData(data, contracts, contractIndex);
 
     await updateAgency({ agencyCode, contracts: newContracts });
-    this.toggleContract()();
+    this.toggleContract(null);
   };
 
   render() {
@@ -108,13 +108,13 @@ export class Contracts extends Component {
         {showDeleteLicenseModal &&
           <DeleteLicenseModal
             handleConfirm={this.deleteLicense}
-            handleCancel={this.toggleDeleteLicense()}
+            handleCancel={this.toggleDeleteLicense}
             license={agency.licenses[licenseIndex]} />
         }
         {showDeleteContractModal &&
           <DeleteContractModal
             handleConfirm={this.deleteContract}
-            handleCancel={this.toggleDeleteContract()}
+            handleCancel={this.toggleDeleteContract}
             contract={agency.contracts[contractIndex]} />
         }
         {showLicenseModal &&
@@ -149,15 +149,15 @@ export class Contracts extends Component {
                     canDelete={agency.licenses.length > 1}
                     key={license.licenseNumber}
                     license={license}
-                    deleteLicense={this.toggleDeleteLicense(index)}
-                    editLicense={this.toggleLicense(index)} />
+                    deleteLicense={() => this.toggleDeleteLicense(index)}
+                    editLicense={() => this.toggleLicense(index)} />
                 ))}
                 <div className="create-contract">
                   <hr />
                   <Button
                     baseClass="primary"
                     size="small"
-                    onClick={this.toggleLicense(null)}
+                    onClick={() => this.toggleLicense(null)}
                     dataTest="addLicense"><i className="fa fa-plus" />License
                   </Button>
                   <hr />
@@ -170,15 +170,15 @@ export class Contracts extends Component {
                     canDelete={agency.contracts.length > 1}
                     key={contract.contractNumber}
                     contract={contract}
-                    deleteContract={this.toggleDeleteContract(index)}
-                    editContract={this.toggleContract(index)} />
+                    deleteContract={() => this.toggleDeleteContract(index)}
+                    editContract={() => this.toggleContract(index)} />
                 ))}
                 <div className="create-contract">
                   <hr />
                   <Button
                     baseClass="primary"
                     size="small"
-                    onClick={this.toggleContract(null)}
+                    onClick={() => this.toggleContract(null)}
                     dataTest="addContract"><i className="fa fa-plus" />Contract
                   </Button>
                   <hr />

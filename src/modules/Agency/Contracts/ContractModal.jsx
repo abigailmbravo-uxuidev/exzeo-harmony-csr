@@ -103,7 +103,7 @@ export const ContractModal = (props) => {
           </div>
           <div className="card-footer">
             <div className="btn-footer">
-              <button tabIndex="0" className="btn btn-secondary" type="button" onClick={closeModal()}>Cancel</button>
+              <button tabIndex="0" className="btn btn-secondary" type="button" onClick={closeModal}>Cancel</button>
               <button tabIndex="0" className="btn btn-primary" type="submit">Save</button>
             </div>
           </div>
