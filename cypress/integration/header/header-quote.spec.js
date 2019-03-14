@@ -48,8 +48,8 @@ describe('Quote Header Testing', () => {
       checkHeaderSection('policyHolderDetail', ['Policyholder', '', '']);
 
     currentStub = [
-        ['data.previousTask.value.result.effectiveDate', effectiveDate],
-        ['data.previousTask.value.result.policyHolders', [{
+        ['effectiveDate', effectiveDate],
+        ['policyHolders', [{
           firstName: pH1.pH1FirstName,
           lastName: pH1.pH1LastName,
           primaryPhoneNumber: pH1.pH1phone,
@@ -62,36 +62,33 @@ describe('Quote Header Testing', () => {
 
   it('Underwriting Page', () => {
     currentStub = [...currentStub,
-      ['data.previousTask.value.result.effectiveDate', effectiveDate],
-      ['data.previousTask.value.result.rating', { totalPremium: 100 }],
-      ['data.previousTask.value.result.underwritingAnswers', { rented: { answer: "Never" } }]
+      ['effectiveDate', effectiveDate],
+      ['rating', { totalPremium: 100 }],
+      ['underwritingAnswers', { rented: { answer: "Never" } }]
     ];
     navUnderwriting(undefined, currentStub);
     options['premium'] = true;
-    cy.wait('@csrGetQuoteWithUnderwriting');
     checkFullHeader(quoteData, options);
   });
 
   it('Additional Interest Page', () => {
     cy.setFx('stubs/start/csrGetQuoteWithUnderwriting', currentStub);
     navAdditionalInterests();
-    cy.wait('@csrGetQuoteWithUnderwriting');
     checkFullHeader(quoteData, options);
   });
 
   it('Mailing/Billing Page', () => {
     const { address1, address2, city, state, zip, country } = user;
     currentStub = [...currentStub,
-      ['data.previousTask.value.result.policyHolderMailingAddress', { address1, address2, city, state, zip, country }]
+      ['policyHolderMailingAddress', { address1, address2, city, state, zip, country }]
     ];
     navMailingBilling(currentStub);
     options['mailingComplete'] = true;
-    cy.wait('@csrGetQuoteWithUnderwriting');
     checkFullHeader(quoteData, options);
   });
 
   it('Notes/Files Page', () => {
-    currentStub = [...currentStub, ['data.previousTask.value.result.quoteState', 'Application Started']];
+    currentStub = [...currentStub, ['quoteState', 'Application Started']];
     navNotesFiles(currentStub);
     options['application'] = true;
     checkFullHeader(quoteData, options);

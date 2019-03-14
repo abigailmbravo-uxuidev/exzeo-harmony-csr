@@ -5,8 +5,6 @@ import stubAllRoutes from '../../support/stubAllRoutes';
 describe('Quote State Testing', () => {
   const checkQuoteState = content => cy.findDataTag('quoteDetails').find('.status').should('contain', content);
 
-  const createRes = value => ['data.previousTask.value.result.quoteState', value];
-
   before(() => {
     stubAllRoutes();
     cy.login();
@@ -16,16 +14,16 @@ describe('Quote State Testing', () => {
   it('Quote State', () => {
     checkQuoteState('Quote Started');
 
-    cy.setFx('stubs/start/csrGetQuoteWithUnderwriting', createRes('Quote Stopped'));
-    cy.reload();
+    cy.setFx('stubs/start/csrGetQuoteWithUnderwriting', ['quoteState', 'Quote Stopped'])
+      .reload();
     checkQuoteState('Quote Stopped');
 
-    cy.setFx('stubs/start/csrGetQuoteWithUnderwriting', createRes('Application Started'));
-    cy.reload();
+    cy.setFx('stubs/start/csrGetQuoteWithUnderwriting', ['quoteState', 'Application Started'])
+      .reload();
     checkQuoteState('Application Started');
 
-    cy.setFx('stubs/start/csrGetQuoteWithUnderwriting', createRes('Application Sent DocuSign'));
-    cy.reload();
+    cy.setFx('stubs/start/csrGetQuoteWithUnderwriting', ['quoteState', 'Application Sent DocuSign'])
+      .reload();
     checkQuoteState('Application Sent DocuSign');
   });
 });

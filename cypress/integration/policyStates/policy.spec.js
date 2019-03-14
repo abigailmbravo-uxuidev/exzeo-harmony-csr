@@ -99,7 +99,7 @@ describe('Policy: Policy States + Effective/Cancellation Date', () => {
   });
 
   it('"Pending Underwriting Non-Renewal" Policy State', () => {
-    cy.setFx('stubs/fetchPolicy', ['status', 'Pending Undewriting Non-Renewal']);
+    cy.setFx('stubs/fetchPolicy', ['status', 'Pending Underwriting Non-Renewal']);
     goToBilling();
 
     baseBillingCodes.forEach(code => modifyLedgerAndRecheck('Pending Underwriting Non-Renewal', code));

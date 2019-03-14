@@ -24,11 +24,15 @@ Cypress.Commands.add('setFx', (filePath, values, useConfig = false, url) => {
     // Clone our fixture -- do not modify in place
     const response = _.cloneDeep(fx);
 
+    // If the value path does not have extra object route info, and we are in the most commonly
+    // stubbed route, we prepend it.
+    const addPathPrefix = path => routes[1] === 'csrGetQuoteWithUnderwriting' && !path.includes('.') ? `data.previousTask.value.result.${path}` : path;
+
     // Check if we have one value in our array or multiple (array of arrays)
     if (typeof values[0] === 'string') {
-      _.set(response, values[0], values[1]);
+      _.set(response, addPathPrefix(values[0]), values[1]);
     } else {
-      values.forEach(([path, value]) => _.set(response, path, value));
+      values.forEach(([path, value]) => _.set(response, addPathPrefix(path), value));
     };
 
     // Stub our new route optionally using the config variable to toggle stubbing
