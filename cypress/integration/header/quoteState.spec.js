@@ -16,15 +16,15 @@ describe('Quote State Testing', () => {
   it('Quote State', () => {
     checkQuoteState('Quote Started');
 
-    cy.setFx('stubs/csrGetQuoteWithUnderwriting', createRes('Quote Stopped'), false, '/cg/start?csrGetQuoteWithUnderwriting');
+    cy.setFx('stubs/start/csrGetQuoteWithUnderwriting', createRes('Quote Stopped'));
     cy.reload();
     checkQuoteState('Quote Stopped');
 
-    cy.setFx('stubs/csrGetQuoteWithUnderwriting', createRes('Application Started'), false, '/cg/start?csrGetQuoteWithUnderwriting');
+    cy.setFx('stubs/start/csrGetQuoteWithUnderwriting', createRes('Application Started'));
     cy.reload();
     checkQuoteState('Application Started');
 
-    cy.setFx('stubs/csrGetQuoteWithUnderwriting', createRes('Application Sent DocuSign'), false, '/cg/start?csrGetQuoteWithUnderwriting');
+    cy.setFx('stubs/start/csrGetQuoteWithUnderwriting', createRes('Application Sent DocuSign'));
     cy.reload();
     checkQuoteState('Application Sent DocuSign');
   });

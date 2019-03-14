@@ -35,7 +35,7 @@ export const navCoverage = (customerInfo = pH1, updates, useConfig) => {
   Object.entries(customerInfo).forEach(([field, value]) =>
     cy.findDataTag(field).type(`{selectall}{backspace}${value}`)
   );
-  cy.setFx('stubs/csrGetQuoteWithUnderwriting', updates, useConfig, '/cg/start?csrGetQuoteWithUnderwriting');
+  cy.setFx('stubs/start/csrGetQuoteWithUnderwriting', updates, useConfig);
   cy.findDataTag('coverage-submit').click();
 };
 
@@ -47,7 +47,7 @@ export const navUnderwriting = (data = underwritingDefault, updates, useConfig) 
   Object.entries(data).forEach(([name, value]) => {
     cy.get(`input[name="${name}"][value="${value}"] + span`).click();
   });
-  cy.setFx('stubs/csrGetQuoteWithUnderwriting', updates, useConfig, '/cg/start?csrGetQuoteWithUnderwriting');
+  cy.setFx('stubs/start/csrGetQuoteWithUnderwriting', updates, useConfig);
   cy.clickSubmit();
 };
 
@@ -60,23 +60,23 @@ export const navMailingBilling = (updates, useConfig) => {
   };
   goToNav('billing');
   cy.get('.segmented-switch').click(30, 10);
-  cy.setFx('stubs/csrGetQuoteWithUnderwriting', updates, useConfig, '/cg/start?csrGetQuoteWithUnderwriting');
+  cy.setFx('stubs/start/csrGetQuoteWithUnderwriting', updates, useConfig);
   cy.clickSubmit();
 };
 
 export const navNotesFiles = (updates, useConfig) => {
-  cy.setFx('stubs/csrGetQuoteWithUnderwriting', updates, useConfig, '/cg/start?csrGetQuoteWithUnderwriting');
+  cy.setFx('stubs/start/csrGetQuoteWithUnderwriting', updates, useConfig);
   goToNav('notes');
 };
 
 export const navSummary = (updates, useConfig) => {
-  cy.setFx('stubs/csrGetQuoteWithUnderwriting', updates, useConfig, '/cg/start?csrGetQuoteWithUnderwriting');
+  cy.setFx('stubs/start/csrGetQuoteWithUnderwriting', updates, useConfig);
   goToNav('summary');
   cy.wait('@csrGetQuoteWithUnderwriting');
 };
 
 export const navApplication = (updates, useConfig) => {
-  cy.setFx('stubs/csrGetQuoteWithUnderwriting', updates, useConfig, '/cg/start?csrGetQuoteWithUnderwriting');
+  cy.setFx('stubs/start/csrGetQuoteWithUnderwriting', updates, useConfig);
   goToNav('application');
   cy.wait('@csrGetQuoteWithUnderwriting');
 }

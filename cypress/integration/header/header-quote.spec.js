@@ -73,7 +73,7 @@ describe('Quote Header Testing', () => {
   });
 
   it('Additional Interest Page', () => {
-    cy.setFx('stubs/csrGetQuoteWithUnderwriting', currentStub, false, '/cg/start?csrGetQuoteWithUnderwriting');
+    cy.setFx('stubs/start/csrGetQuoteWithUnderwriting', currentStub);
     navAdditionalInterests();
     cy.wait('@csrGetQuoteWithUnderwriting');
     checkFullHeader(quoteData, options);
