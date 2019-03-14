@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Button } from '@exzeo/core-ui';
+import classNames from 'classnames';
 
 export class SmallModal extends Component {
   render() {
@@ -16,11 +17,11 @@ export class SmallModal extends Component {
     } = this.props;
 
     return (
-      <div className={`modal ${modalClassName}`}>
+      <div className={classNames('modal', modalClassName)}>
          <form onSubmit={handleSubmit}>
           <div className="card">
             <div className="card-header">
-              <h4><i className={`fa ${headerIcon}`} /> {header}</h4>
+              <h4><i className={classNames('fa', headerIcon)} /> {header}</h4>
             </div>
             <div className="card-block">
               <section>
