@@ -151,7 +151,7 @@ export class NoteUploader extends Component {
       return false;
     }
 
-    if (!file.name.includes('.')) {
+    if (!file.data.name.includes('.')) {
       this.uppy.info('Uploads must have a file extension.');
       return false;
     }
@@ -159,7 +159,8 @@ export class NoteUploader extends Component {
   }
 
   validateUpload = (files => {
-    if(Object.keys(files).some(id => (!files[id].meta.name.includes('.')))) {
+    console.log(files)
+    if(Object.keys(files).some(id => (!files[id].data.name.includes('.')))) {
       this.uppy.info('The file name must have a file extension.');
       return false;
     }
