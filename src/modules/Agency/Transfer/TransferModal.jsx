@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { reduxForm, Field } from 'redux-form';
-import { SelectTypeAhead, Loader, validation } from '@exzeo/core-ui';
+import { SelectTypeAhead, Loader, validation, Button } from '@exzeo/core-ui';
 
 import { getAgencies, getAgentListByAgencyCode, clearAgentList, transferPoliciesToAgent } from '../../../state/actions/agency.actions';
 import { getAgenciesList, getAgentsListForTransfer } from '../../../state/selectors/agency.selector';
@@ -63,7 +63,7 @@ export class TransferModal extends Component {
     if (agencies.length === 0 || submitting) return (<Loader />);
 
     return (
-      <div className="modal bob-transfer" style={this.modalStyle}>
+      <div className="modal bob-transfer">
         <div className="card ">
           <form id="TransferPolicies" className="Transfer" onSubmit={handleSubmit(this.submitTransfer)}>
             <div className="card-header">
@@ -88,22 +88,19 @@ export class TransferModal extends Component {
             </div>
             <div className="card-footer">
               <div className="btn-group">
-                <button
-                  disabled={submitting}
+                <Button
                   tabIndex="0"
-                  aria-label="reset-btn form-editBilling"
-                  className="btn btn-secondary"
+                  baseClass="secondary"
                   type="button"
-                  onClick={this.closeModal}>Cancel
-                </button>
-                <button
-                  disabled={submitting}
+                  label="Cancel"
+                  onClick={this.closeModal}
+                  disabled={submitting} />
+                <Button
                   tabIndex="0"
-                  aria-label="submit-btn form-editBilling"
-                  className="btn btn-primary"
+                  baseClass="primary"
                   type="submit"
-                >Transfer
-                </button>
+                  label="Transfer"
+                  disabled={submitting} />
               </div>
             </div>
           </form>

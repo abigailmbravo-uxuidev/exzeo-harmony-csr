@@ -1,5 +1,4 @@
 import { connect } from 'react-redux';
-import 'react-tagsinput/react-tagsinput.css'; // eslint-disable-line
 
 import { getAgentsListForTransfer } from '../../../state/selectors/agency.selector';
 import { getPoliciesByAgencyCode, getPolicyNumberList } from '../../../state/selectors/policy.selectors';
