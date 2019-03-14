@@ -20,6 +20,9 @@ describe('Testing NoteUploader component', () => {
     beforeEach(() => {
       initialState = {
         ui: {
+          diary: {},
+          note: {},
+          minimizeDiary: false,
           minimizeNote: false
         },
         authState: {
