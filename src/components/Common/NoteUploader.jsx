@@ -8,6 +8,7 @@ import Dashboard from '@uppy/react/lib/Dashboard';
 import XHRUpload from '@uppy/xhr-upload';
 import moment from 'moment';
 import { Loader } from '@exzeo/core-ui';
+import classNames from 'classnames';
 
 import * as cgActions from '../../state/actions/cg.actions';
 import * as uiActions from '../../state/actions/ui.actions';
@@ -231,7 +232,7 @@ export class NoteUploader extends Component {
 
   render() {
     return (
-      <div className={this.props.minimizeNote ? 'new-note-file minimize' : 'new-note-file'} >
+      <div className={classNames('new-note-file', {'minimize': this.props.minimizeNote })} >
         <div className="title-bar">
           <div className="title title-minimze-button" onClick={() => this.handleMinimize(this.props.minimizeNote)}>Note / File</div>
           <div className="controls note-file-header-button-group">

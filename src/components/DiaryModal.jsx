@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Field, reduxForm } from 'redux-form';
 import { Date, Select, validation, Loader, TextArea } from '@exzeo/core-ui';
+import classNames from 'classnames';
 
 import { REASONS, REASONS_DATA } from '../constants/diaries';
 import { addDate } from '../utilities/diaries';
@@ -76,7 +77,7 @@ export class DiaryModal extends Component {
     const { assigneeAnswers, handleSubmit, submitting, minimizeDiary } = this.props;
 
     return (
-      <div className={minimizeDiary ? 'new-diary-file minimize' : 'new-diary-file'} >
+      <div className={classNames('new-diary-file', {'minimize': minimizeDiary })} >
         <div className="title-bar">
           <div className="title title-minimize-button" onClick={this.handleMinimize} data-test="diary-minimize-button">Diary</div>
           <div className="controls note-file-header-button-group">
