@@ -1,7 +1,6 @@
-import _ from 'lodash'; //eslint-disable-line
 import pH1 from '../../fixtures/stockData/pH1.json';
 import user from '../../fixtures/stockData/user.json';
-import { stubQuoteWithUnderwriting,
+import {
   checkHeaderSection,
   checkFullHeader,
   navNewQuote,
@@ -33,9 +32,8 @@ describe('Quote Header Testing', () => {
   // Create an options object we udpate as we move through app
   const options = { premium: false, mailingComplete: false, application: false };
 
-  // Our current fixture will exist outside tests and be updated from inside so we can track our
-  // current stubbed server response
-  let currentFixture = {};
+  // Create a track of our current stub state so it is saved
+  let currentStub;
 
   before(() => {
     stubAllRoutes();
@@ -46,69 +44,66 @@ describe('Quote Header Testing', () => {
   beforeEach(() => stubAllRoutes());
 
   it('Coverage/Rating Page', () => {
-    cy.wait('@fetchAgencies')
-      .fixture('stubs/csrGetQuoteWithUnderwriting').then(fx => {
+    cy.wait('@fetchAgencies');
       checkHeaderSection('policyHolderDetail', ['Policyholder', '', '']);
 
-      const coverageRes = {
-        effectiveDate,
-        policyHolders: [{
+    currentStub = [
+        ['data.previousTask.value.result.effectiveDate', effectiveDate],
+        ['data.previousTask.value.result.policyHolders', [{
           firstName: pH1.pH1FirstName,
           lastName: pH1.pH1LastName,
           primaryPhoneNumber: pH1.pH1phone,
           emailAddress: pH1.pH1email
-        }]
-      };
-      currentFixture = _.cloneDeep(fx);
-      navCoverage(pH1, currentFixture, coverageRes);
-      checkFullHeader(quoteData, options);
-    });
+        }]]
+      ];
+    navCoverage(pH1, currentStub);
+    checkFullHeader(quoteData, options);
   });
 
   it('Underwriting Page', () => {
-    const underwritingRes = {
-      effectiveDate,
-      rating: { totalPremium: 100 } ,
-      underwritingAnswers: { rented: { answer: "Never" } }
-    };
-    navUnderwriting(undefined, currentFixture, underwritingRes);
+    currentStub = [...currentStub,
+      ['data.previousTask.value.result.effectiveDate', effectiveDate],
+      ['data.previousTask.value.result.rating', { totalPremium: 100 }],
+      ['data.previousTask.value.result.underwritingAnswers', { rented: { answer: "Never" } }]
+    ];
+    navUnderwriting(undefined, currentStub);
     options['premium'] = true;
     cy.wait('@csrGetQuoteWithUnderwriting');
     checkFullHeader(quoteData, options);
   });
 
   it('Additional Interest Page', () => {
-    stubQuoteWithUnderwriting(currentFixture);
+    cy.setFx('stubs/csrGetQuoteWithUnderwriting', currentStub, false, '/cg/start?csrGetQuoteWithUnderwriting');
     navAdditionalInterests();
     cy.wait('@csrGetQuoteWithUnderwriting');
     checkFullHeader(quoteData, options);
   });
 
   it('Mailing/Billing Page', () => {
-    navMailingBilling(currentFixture);
+    const { address1, address2, city, state, zip, country } = user;
+    currentStub = [...currentStub,
+      ['data.previousTask.value.result.policyHolderMailingAddress', { address1, address2, city, state, zip, country }]
+    ];
+    navMailingBilling(currentStub);
     options['mailingComplete'] = true;
     cy.wait('@csrGetQuoteWithUnderwriting');
     checkFullHeader(quoteData, options);
   });
 
   it('Notes/Files Page', () => {
-    stubQuoteWithUnderwriting(currentFixture, { quoteState: 'Application Started' });
-    navNotesFiles();
+    currentStub = [...currentStub, ['data.previousTask.value.result.quoteState', 'Application Started']];
+    navNotesFiles(currentStub);
     options['application'] = true;
     checkFullHeader(quoteData, options);
   });
 
   it('Quote Summary Page', () => {
-    stubQuoteWithUnderwriting(currentFixture);
-    navSummary();
-    cy.wait('@csrGetQuoteWithUnderwriting');
+    navSummary(currentStub);
     checkFullHeader(quoteData, options);
   });
 
-    it('Application Page', () => {
-    stubQuoteWithUnderwriting(currentFixture);
-    navApplication();
-    cy.wait('@csrGetQuoteWithUnderwriting');
+  it('Application Page', () => {
+    navApplication(currentStub);
     checkFullHeader(quoteData, options);
   });
 });

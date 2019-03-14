@@ -1,7 +1,5 @@
-import merge from 'lodash/merge'; //eslint-disable-line
-
 import { goToNav, checkHeaderSection } from '../../helpers';
-import routes from '../../support/routes';
+import stubAllRoutes from '../../support/stubAllRoutes';
 
 describe('Policy: Policy States + Effective/Cancellation Date', () => {
   const expirationPolicyStatuses = ['Policy Issued', 'In Force', 'Not In Force'];
@@ -21,11 +19,6 @@ describe('Policy: Policy States + Effective/Cancellation Date', () => {
     { code: 6, displayText: 'Payment Invoice Issued' },
     { code: 9, displayText: 'Non-Payment Notice Issued' }
   ];
-
-  const modFixtureStubRoute = (stubName, modification) =>
-    cy.fixture(`stubs/${stubName}`).then(fx => {
-      cy.route('POST', `/svc?${stubName}`, merge(fx, modification));
-    });
 
   const goToBilling = (home = true) => {
     if (home) { cy.home(); }
@@ -66,17 +59,17 @@ describe('Policy: Policy States + Effective/Cancellation Date', () => {
   };
 
   const modifyLedgerAndRecheck = (policyStatus, ledgerStatus)  => {
-    modFixtureStubRoute('fetchSummaryLedger', { result: { status: ledgerStatus }});
+    cy.setFx('stubs/fetchSummaryLedger', ['result.status', ledgerStatus]);
     applyPayment();
     checkPolicyDetail(policyStatus, ledgerStatus);
   };
 
   before(() => {
-    routes();
+    stubAllRoutes();
     cy.login();
   });
 
-  beforeEach(() => routes());
+  beforeEach(() => stubAllRoutes());
 
   it('"Policy Issued" Policy State', () => {
     goToBilling(false);
@@ -85,28 +78,28 @@ describe('Policy: Policy States + Effective/Cancellation Date', () => {
   });
 
   it('"In Force" Policy State', () => {
-    modFixtureStubRoute('fetchPolicy', { status: 'In Force' });
+    cy.setFx('stubs/fetchPolicy', ['status', 'In Force']);
     goToBilling();
 
     baseBillingCodes.forEach(code => modifyLedgerAndRecheck('In Force', code));
   });
 
   it('"Pending Voluntary Cancellation" Policy State', () => {
-    modFixtureStubRoute('fetchPolicy', { status: 'Pending Voluntary Cancellation' });
+    cy.setFx('stubs/fetchPolicy', ['status', 'Pending Voluntary Cancellation']);
     goToBilling();
 
     baseBillingCodes.forEach(code => modifyLedgerAndRecheck('Pending Voluntary Cancellation', code));
   });
 
   it('"Pending Underwriting Cancellation" Policy State', () => {
-    modFixtureStubRoute('fetchPolicy', { status: 'Pending Underwriting Cancellation' });
+    cy.setFx('stubs/fetchPolicy', ['status', 'Pending Underwriting Cancellation']);
     goToBilling();
 
     baseBillingCodes.forEach(code => modifyLedgerAndRecheck('Pending Underwriting Cancellation', code));
   });
 
   it('"Pending Underwriting Non-Renewal" Policy State', () => {
-    modFixtureStubRoute('fetchPolicy', { status: 'Pending Underwriting Non-Renewal' });
+    cy.setFx('stubs/fetchPolicy', ['status', 'Pending Undewriting Non-Renewal']);
     goToBilling();
 
     baseBillingCodes.forEach(code => modifyLedgerAndRecheck('Pending Underwriting Non-Renewal', code));
@@ -120,14 +113,14 @@ describe('Policy: Policy States + Effective/Cancellation Date', () => {
       { code: 15, displayText: 'Underwriting Non-Renewal' }
     ];
 
-    modFixtureStubRoute('fetchPolicy', { status: 'Cancelled' });
+    cy.setFx('stubs/fetchPolicy', ['status', 'Cancelled']);
     goToBilling();
 
     cancelledBillingCodes.forEach(code => modifyLedgerAndRecheck('Cancelled', code));
   });
 
   it('"Not In Force" Policy State', () => {
-    modFixtureStubRoute('fetchPolicy', { status: 'Not In Force' });
+    cy.setFx('stubs/fetchPolicy', ['status', 'Not In Force']);
     goToBilling();
 
     modifyLedgerAndRecheck('Not In Force', { code: 99, displayText: 'Policy Expired' });

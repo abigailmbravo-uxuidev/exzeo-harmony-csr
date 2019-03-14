@@ -28,12 +28,12 @@ describe('Policy Header Testing', () => {
       .findDataTag('policy-list')
       .find('> div section ul li > a')
       .then($a => {
-        $a.prop('onclick', () => cy.visit($a.prop('dataset').url)).click()
+        $a.prop('onclick', () => cy.visit($a.prop('dataset').url)).click();
       });
   });
 
   beforeEach(() => stubAllRoutes());
-  
+
   it('Policy Number and Quote Status', () => {
     cy.wait('@questions');
     checkFullHeader(data, undefined, false);
@@ -53,7 +53,7 @@ describe('Policy Header Testing', () => {
 
   it('Notes / Files Page', () => {
     goToNav('notes');
-    cy.wait('@fetchNotes')
+    cy.wait('@fetchNotes');
     checkFullHeader(data, undefined, false);
   });
 
