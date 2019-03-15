@@ -7,7 +7,7 @@ import { getOrphanedAgentsList, getAgentsList, getSortedAgents } from '../../../
 import Agents from './Agents';
 
 const mapStateToProps = (state, ownProps) => {
-  const { branchCode } = ownProps
+  const { branchCode } = ownProps;
   return  {
   agency: state.agencyState.agency,
   agents: getSortedAgents(state, branchCode),
