@@ -1,7 +1,6 @@
 import React from 'react';
 import { reduxForm } from 'redux-form';
 import { Button } from '@exzeo/core-ui';
-import { connect } from 'react-redux';
 
 export class AIDeleteReinstateModal extends React.Component {
 

@@ -1,7 +1,6 @@
 import React from 'react';
 import configureStore from 'redux-mock-store';
-import { propTypes } from 'redux-form';
-import { shallow } from 'enzyme';
+import { mount } from 'enzyme';
 
 import AIDeleteReinstateModal from './AIDeleteReinstateModal';
 
@@ -45,8 +44,8 @@ describe('Testing AIDeleteReinstateModal component', () => {
         selectedAI: mockAI,
         handleAction() { return Promise.resolve({})}
     };
-    const wrapper = shallow(<AIDeleteReinstateModal store={store} {...props} />);
-    expect(wrapper);
+    const wrapper = mount(<AIDeleteReinstateModal store={store} {...props} />);
+    expect(wrapper.exists()).toBeTruthy();
   });
 
   it('should test AIDeleteReinstateModal Reinstate', () => {
@@ -58,7 +57,7 @@ describe('Testing AIDeleteReinstateModal component', () => {
         selectedAI: mockAI,
         handleAction() { return Promise.resolve({})}
     };
-    const wrapper = shallow(<AIDeleteReinstateModal store={store}  {...props} />);
-    expect(wrapper);
+    const wrapper = mount(<AIDeleteReinstateModal store={store}  {...props} />);
+    expect(wrapper.exists()).toBeTruthy();
   });
 });
