@@ -34,8 +34,7 @@ export class AddressGroup extends Component {
 
   filterTerritoryManager = (state, county) => {
     const { territoryManagers } = this.props;
-    const selectedTerritoryManager = territoryManagers;
-      .find((tm) => {
+    const selectedTerritoryManager = territoryManagers.find((tm) => {
         const { states } = tm;
         if (states && states.some((s) => {
           const { counties } = s;
