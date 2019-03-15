@@ -24,7 +24,7 @@ export class AddressGroup extends Component {
   normalizeSameAsMailing = section => (value, pv, av) => {
     const { changeField, parentFormGroup } = this.props;
 
-    const formValues = this.getFormGroupPath(av)
+    const formValues = this.getFormGroupPath(av);
 
     if (section === 'physicalAddress' || !formValues.sameAsMailing) return value;
     changeField(this.getFieldPath('sameAsMailing'), false);
@@ -34,7 +34,7 @@ export class AddressGroup extends Component {
 
   filterTerritoryManager = (state, county) => {
     const { territoryManagers } = this.props;
-    const selectedTerritoryManager = territoryManagers
+    const selectedTerritoryManager = territoryManagers;
       .find((tm) => {
         const { states } = tm;
         if (states && states.some((s) => {
@@ -75,7 +75,7 @@ export class AddressGroup extends Component {
 
   handleSameAsMailing = (value, previousValue, allValues) => {
     const { changeField } = this.props;
-    const { mailingAddress } = this.getFormGroupPath(allValues)
+    const { mailingAddress } = this.getFormGroupPath(allValues);
     if (!mailingAddress) return value;
     if (value) {
       changeField(this.getFieldPath('physicalAddress.address1'), mailingAddress.address1);
