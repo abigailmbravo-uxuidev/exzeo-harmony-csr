@@ -127,9 +127,7 @@ export const getSortedAgents = createSelector(
   (agents, branchCode) => {
     if (!Array.isArray(agents)) return [];
 
-    return agents.reduce(( branchAcc, agent) => {
-     if(agent.agencies.some(agency => Number(agency.branchCode) === Number(branchCode))) branchAcc.push(agent)
-    return branchAcc;
-    }, []).sort((a, b) => (a.firstName.localeCompare(b.firstName)));
+    return agents.filter(agent => agent.agencies.some(agency => Number(agency.branchCode) === Number(branchCode)))
+    .sort((a, b) => (a.firstName.localeCompare(b.firstName)));
   }
 );
