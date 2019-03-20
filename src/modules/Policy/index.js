@@ -7,6 +7,7 @@ import { Loader } from '@exzeo/core-ui';
 
 import { setAppState } from '../../state/actions/appState.actions';
 import { getZipcodeSettings, getAgents, getAgency, getNotes } from '../../state/actions/service.actions';
+import { getAgentsByAgencyCode } from '../../state/actions/agency.actions';
 import { 
   createTransaction, 
   getBillingOptionsForPolicy, 
@@ -71,6 +72,7 @@ export class Policy extends React.Component {
       getAgents(policy.companyCode, policy.state);
       getAgency(policy.companyCode, policy.state, policy.agencyCode);
       getNotes(policy.policyNumber, policy.sourceNumber);
+      getAgentsByAgencyCode(policy.agencyCode)
 
       if (summaryLedger) {
         const paymentOptions = {
@@ -267,5 +269,6 @@ export default connect(mapStateToProps, {
   getPolicy,
   getZipCodeSettings: getZipcodeSettings,
   setAppState,
-  startWorkflow
+  startWorkflow,
+  getAgentsByAgencyCode
 })(Policy);

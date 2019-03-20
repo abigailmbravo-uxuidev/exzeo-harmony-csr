@@ -14,6 +14,8 @@ export default function agencyReducer(state = initialState.agencyState, action) 
       return setAgentList(state, action);
     case types.SET_ORPHANED_AGENTS:
       return setOrphanedAgents(state, action);
+    case types.SET_AOR_AGENTS:
+      return setAORAgents(state, action);
     default:
       return state;
   }
@@ -41,6 +43,12 @@ function setAgents(state, action) {
 }
 
 
+function setAORAgents(state, action) {
+  return {
+    ...state,
+    aorAgents: action.aorAgents
+  };
+}
 function setAgentList(state, action) {
   return {
     ...state,

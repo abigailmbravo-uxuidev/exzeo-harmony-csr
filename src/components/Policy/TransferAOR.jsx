@@ -5,7 +5,7 @@ import { Field, reduxForm } from 'redux-form';
 import { SelectInteger, SelectTypeAhead, Loader, validation } from '@exzeo/core-ui';
 
 import { callService } from '../../utilities/serviceRunner';
-import { getAgencies, getAgentsByAgencyCode } from '../../state/actions/agency.actions';
+import { getAgencies, getAgentsForAORTransfer } from '../../state/actions/agency.actions';
 import { getPolicy } from '../../state/actions/policy.actions';
 import { setAppError } from '../../state/actions/error.actions';
 import { getAgencyList, getAgentList } from '../../state/selectors/agency.selector';
@@ -16,13 +16,13 @@ export class TransferAOR extends Component {
   }
 
   async componentDidMount() {
-    const { getAgencies, getAgentsByAgencyCode, initialize, companyCode, agencyCode, state } = this.props;
+    const { getAgencies, getAgentsForAORTransfer, initialize, companyCode, agencyCode, state } = this.props;
     this.setState({ isLoading: true });
 
     try {
       await Promise.all([
         getAgencies(companyCode, state),
-        getAgentsByAgencyCode(agencyCode),
+        getAgentsForAORTransfer(agencyCode),
       ]);
     } catch (err) {
       setAppError(err);
@@ -32,9 +32,9 @@ export class TransferAOR extends Component {
   }
 
   handleAgencyChange = (_, agencyCode) => {
-    const { change, getAgentsByAgencyCode } = this.props;
+    const { change, getAgentsForAORTransfer } = this.props;
     change('agentCode', null);
-    getAgentsByAgencyCode(agencyCode);
+    getAgentsForAORTransfer(agencyCode);
   }
 
   submitTransfer = async (data, dispatch, props) => {
@@ -133,7 +133,7 @@ const mapStateToProps = (state, { agencyCode, agentCode }) => ({
 
 export default connect(mapStateToProps, {
   getAgencies,
-  getAgentsByAgencyCode,
+  getAgentsForAORTransfer,
   getPolicy,
   setAppError
 })(reduxForm({

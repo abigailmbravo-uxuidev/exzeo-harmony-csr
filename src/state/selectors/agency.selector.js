@@ -8,6 +8,8 @@ const getAgency = state => state.agencyState.agency;
 
 const getAgents = state => state.agencyState.agents;
 
+const getAORAgents = state => state.agencyState.aorAgents;
+
 const getOrphanedAgents = state => state.agencyState.orphans;
 
 export const getAgencyList = createSelector(
@@ -23,7 +25,7 @@ export const getAgencyList = createSelector(
 );
 
 export const getAgentList = createSelector(
-  [getAgents],
+  [getAORAgents],
   (agents) => {
     if (!agents || !Array.isArray(agents)) return [];
     const list = agents.filter(a => a.status === 'Active').map(a => ({

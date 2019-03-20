@@ -11,7 +11,7 @@ describe('Testing TransferAOR component', () => {
     toggleModal: jest.fn(),
     handleSubmit: jest.fn(),
     getAgencies: jest.fn(), 
-    getAgentsByAgencyCode: jest.fn()
+    getAgentsForAORTransfer: jest.fn()
   };
 
   it('renders without crashing', () => {
@@ -25,6 +25,6 @@ describe('Testing TransferAOR component', () => {
     const instance = shallow(<TransferAOR {...props} />).instance();
 
     expect(instance.props.getAgencies).toHaveBeenCalled();
-    expect(instance.props.getAgentsByAgencyCode).toHaveBeenCalled();
+    expect(instance.props.getAgentsForAORTransfer).toHaveBeenCalled();
   });
 });
