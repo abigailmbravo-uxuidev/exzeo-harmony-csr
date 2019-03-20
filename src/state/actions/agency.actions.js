@@ -42,8 +42,8 @@ export function setAgents(agents) {
 
 /**
  *
- * @param agents
- * @returns {{type: string, agents: *}}
+ * @param aorAgents
+ * @returns {{type: string, aorAgents: *}}
  */
 export function setAgentsForAOR(aorAgents) {
   return {
