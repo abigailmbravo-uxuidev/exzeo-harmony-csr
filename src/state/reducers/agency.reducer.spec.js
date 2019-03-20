@@ -59,4 +59,15 @@ describe('Agency State Reducer', () => {
 
     expect(agencyStateReducer(state, action)).toEqual({ ...initialState.agencyState, orphans: inputProps });
   });
+
+  it('should call agencyStateReducer SET_AOR_AGENTS', () => {
+    const state = initialState.agencyState;
+    const inputProps = [{ id: '1234' }, { id: '4321' }];
+    const action = {
+      type: types.SET_AOR_AGENTS,
+      aorAgents: inputProps
+    };
+
+    expect(agencyStateReducer(state, action)).toEqual({ ...initialState.agencyState, aorAgents: inputProps });
+  });
 });
