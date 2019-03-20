@@ -4,7 +4,8 @@ import { getEditModalInitialValues,
   getAgentsList,
   getAgentOfRecord,
   getBranchesList,
-  getBranchInitialValues
+  getBranchInitialValues,
+  getAgentListForAORTransfer
 } from './agency.selector';
 
 describe('Testing Agency Selectors', () => {
@@ -42,6 +43,20 @@ describe('Testing Agency Selectors', () => {
     }];
     expect(result).toEqual(res);
   });
+
+  it('should test getAgentListForAORTransfer', () => {
+    const state = {
+      agencyState: {
+        aorAgents: [{
+          agentCode: 234, displayText: 'TestFirst AOR', firstName: 'TestFirst', lastName: 'AOR'
+        }]
+      }
+    };
+    const result = getAgentListForAORTransfer(state);
+    const res = [{"answer": 234, "label": "234: TestFirst AOR"}];
+    expect(result).toEqual(res);
+  });
+
 
   it('should test getListOfAgents without agent', () => {
     const state = {

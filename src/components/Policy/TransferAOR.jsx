@@ -8,7 +8,7 @@ import { callService } from '../../utilities/serviceRunner';
 import { getAgencies, getAgentsForAORTransfer } from '../../state/actions/agency.actions';
 import { getPolicy } from '../../state/actions/policy.actions';
 import { setAppError } from '../../state/actions/error.actions';
-import { getAgencyList, getAgentList } from '../../state/selectors/agency.selector';
+import { getAgencyList, getAgentListForAORTransfer } from '../../state/selectors/agency.selector';
 
 export class TransferAOR extends Component {
   state = {
@@ -127,7 +127,7 @@ TransferAOR.propTypes = {
 
 const mapStateToProps = (state, { agencyCode, agentCode }) => ({
   agencies: getAgencyList(state),
-  agents: getAgentList(state),
+  agents: getAgentListForAORTransfer(state),
   initialValues: { agencyCode, agentCode }
 });
 
