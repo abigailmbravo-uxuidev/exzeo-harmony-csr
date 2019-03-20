@@ -48,7 +48,10 @@ describe('Testing Agency Selectors', () => {
     const state = {
       agencyState: {
         aorAgents: [{
-          agentCode: 234, displayText: 'TestFirst AOR', firstName: 'TestFirst', lastName: 'AOR'
+          agentCode: 234, displayText: 'TestFirst AOR', firstName: 'TestFirst', lastName: 'AOR', status: 'Active'
+        },
+        {
+          agentCode: 567, displayText: 'TestSecond AOR', firstName: 'TestSecond', lastName: 'AOR', status: 'Terminated'
         }]
       }
     };

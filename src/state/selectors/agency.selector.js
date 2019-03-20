@@ -28,7 +28,7 @@ export const getAgentListForAORTransfer = createSelector(
   [getAORAgents],
   (agents) => {
     if (!agents || !Array.isArray(agents)) return [];
-    const list = agents.map(a => ({
+    const list = agents.filter(a => a.status === 'Active').map(a => ({
       answer: a.agentCode,
       label: `${a.agentCode}: ${a.firstName} ${a.lastName}`
     }));
