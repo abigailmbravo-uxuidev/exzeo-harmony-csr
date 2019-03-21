@@ -1,7 +1,7 @@
 import React from 'react';
 import { normalize } from '@exzeo/core-ui';
 
-import AgencyContactAddress from '../../../components/AgencyContactAddress';
+import ContactAddress from '../../../components/ContactAddress';
 
 export const AgentCard = ({ agent, handleSecondaryClick, handlePrimaryClick }) => (
   <div className="agency agent contact card" tabIndex="0">
@@ -22,7 +22,7 @@ export const AgentCard = ({ agent, handleSecondaryClick, handlePrimaryClick }) =
           <span className="agent-code">{agent.agentCode}</span> | <span className="agent-name">{`${agent.firstName} ${agent.lastName}`}</span> | <span className="agent-license">{agent.licenseNumber}</span>
         </h4>
 
-        <AgencyContactAddress
+        <ContactAddress
           mailingAddress={agent.mailingAddress}
           status={agent.status} />
 

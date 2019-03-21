@@ -1,9 +1,9 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import AgencyContactAddress from './AgencyContactAddress';
+import ContactAddress from './ContactAddress';
 
 
-describe('Test the AgencyContactAddress Component', () => {
+describe('Test the ContactAddress Component', () => {
   it('Should Render', () => {
     const mailingAddress = {
       address1: '123 Some Way',
@@ -11,7 +11,7 @@ describe('Test the AgencyContactAddress Component', () => {
       state: 'FL',
       zip: '33600'
     };
-    const wrapper = shallow(<AgencyContactAddress mailingAddress={mailingAddress} />);
+    const wrapper = shallow(<ContactAddress mailingAddress={mailingAddress} />);
 
     expect(wrapper.exists()).toBeTruthy();
   });

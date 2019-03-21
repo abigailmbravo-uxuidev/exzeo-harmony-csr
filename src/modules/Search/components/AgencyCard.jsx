@@ -1,7 +1,7 @@
 import React from 'react';
 import { normalize } from '@exzeo/core-ui';
 
-import AgencyContactAddress from "../../../components/AgencyContactAddress";
+import ContactAddress from "../../../components/ContactAddress";
 import { formatUrl } from '../../../utilities/format';
 
 function AgencyCard({
@@ -28,7 +28,7 @@ function AgencyCard({
               <span className="agency-code">{agency.agencyCode}</span> | <span className="agency-display-name">{agency.displayName}</span> | <span className="agency-legal-name">{agency.legalName}</span> | <span className="agency-license">{agency.licenses.map(l => l.licenseNumber).join()}</span>
             </h4>
 
-            <AgencyContactAddress
+            <ContactAddress
               mailingAddress={agency.mailingAddress}
               status={agency.status}
             >
@@ -40,7 +40,7 @@ function AgencyCard({
                 </span>
               }
 
-            </AgencyContactAddress>
+            </ContactAddress>
 
             <div className="additional-contacts">
               <ul>

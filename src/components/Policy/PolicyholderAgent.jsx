@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Loader } from '@exzeo/core-ui';
 
+import ContactAddress from '../ContactAddress';
 import { getAgency, getAgentList } from '../../state/actions/agency.actions';
 import normalizePhone from '../Form/normalizePhone';
 import Footer from '../Common/Footer';
@@ -62,12 +63,7 @@ export class PolicyholderAgent extends Component {
                   <div className="contact-title"><i className="fa fa-address-card-o" /><label>Policyholder {index + 1}</label></div>
                   <div className="contact-details">
                     <h4>{`${policyHolder.firstName} ${policyHolder.lastName}`}</h4>
-                    <div className="contact-address">
-                        {`${policyHolderMailingAddress.address1},
-                        ${policyHolderMailingAddress.address2 ? `${policyHolderMailingAddress.address2},` : ''} ${policyHolderMailingAddress.city},
-                        ${policyHolderMailingAddress.state}
-                        ${policyHolderMailingAddress.zip}`}
-                    </div>
+                    <ContactAddress mailingAddress={policyHolderMailingAddress} />
                     <div className="additional-contacts">
                       <ul>
                         <li>
@@ -99,11 +95,10 @@ export class PolicyholderAgent extends Component {
                   <div className="contact-title"><i className="fa fa-address-book" /><label>Agency</label></div>
                   <div className="contact-details">
                     <h4 className="agency"><span className="agency-code">{agency.agencyCode}</span> | <span className="agency-display-name">{agency.displayName}</span> | <span className="agency-legal-name">{agency.legalName}</span> | <span className="agency-license">{agency.licenseNumber}</span></h4>
-                    <div className="contact-address">{agency.mailingAddress.address1}{agency.mailingAddress.address2 ? ` ,${agency.mailingAddress.address2}` : ''}, {agency.mailingAddress.city}, {agency.mailingAddress.state} {agency.mailingAddress.zip}
-                      {agency.status ? <span className="additional-data status"><label>STATUS:&nbsp;</label>{agency.status}</span> : null}
+                    <ContactAddress mailingAddress={agency.mailingAddress} status={agency.status} >
                       <span className="additional-data tier"><label>TIER:&nbsp;</label>{agency.tier >= 0 ? agency.tier : ''}</span>
                       {agency.websiteUrl ? <span className="additional-data website"><label>WEBSITE:&nbsp;</label><a href={`${agency.websiteUrl}`} target="_blank">{agency.websiteUrl}</a></span> : null}
-                    </div>
+                    </ContactAddress>
                     <div className="additional-contacts">
                       <ul>
                         <li>
@@ -143,12 +138,7 @@ export class PolicyholderAgent extends Component {
                   <div className="contact-title"><i className="fa fa-address-card" /><label>Agent</label></div>
                   <div className="contact-details">
                     <h4><span className="agent-code">{selectedAgent.agentCode}</span> | <span className="agent-name">{`${selectedAgent.firstName} ${selectedAgent.lastName}`}</span> | <span className="agent-license">{selectedAgent.licenseNumber}</span></h4>
-                    <div className="contact-address">
-                    {`${selectedAgent.mailingAddress.address1},
-                        ${selectedAgent.mailingAddress.address2 ? `${selectedAgent.mailingAddress.address2},` : ''} ${selectedAgent.mailingAddress.city},
-                        ${selectedAgent.mailingAddress.state}
-                        ${selectedAgent.mailingAddress.zip}`}
-                    </div>
+                      <ContactAddress mailingAddress={selectedAgent.mailingAddress} />
                     <div className="additional-contacts">
                       <ul>
                         <li>

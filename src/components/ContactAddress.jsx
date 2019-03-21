@@ -1,11 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const AgencyContactAddress = ({ mailingAddress, status, children }) => {
+const ContactAddress = ({ mailingAddress, status, children }) => {
   return (
     <div className="contact-address">
       {mailingAddress.address1},&nbsp;
-      {mailingAddress.address2}{mailingAddress.address2 ? ', ' : ' '}
+      {mailingAddress.address2}{mailingAddress.address2 ? ', ' : ''}
       {mailingAddress.city},&nbsp;
       {mailingAddress.state}&nbsp;
       {mailingAddress.zip}
@@ -19,7 +19,7 @@ const AgencyContactAddress = ({ mailingAddress, status, children }) => {
   );
 };
 
-AgencyContactAddress.propTypes = {
+ContactAddress.propTypes = {
   mallingAddress: PropTypes.shape({
     address1: PropTypes.string.isRequired,
     address2: PropTypes.string,
@@ -30,8 +30,8 @@ AgencyContactAddress.propTypes = {
   status: PropTypes.string
 };
 
-AgencyContactAddress.defaultProps = {
+ContactAddress.defaultProps = {
   mailingAddress: {}
 };
 
-export default AgencyContactAddress;
+export default ContactAddress;
