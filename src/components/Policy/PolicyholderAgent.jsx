@@ -62,8 +62,11 @@ export class PolicyholderAgent extends Component {
                   <div className="contact-title"><i className="fa fa-address-card-o" /><label>Policyholder {index + 1}</label></div>
                   <div className="contact-details">
                     <h4>{`${policyHolder.firstName} ${policyHolder.lastName}`}</h4>
-                    <div className="contact-address">{`${policyHolderMailingAddress.address1} ${policyHolderMailingAddress.address2 ? policyHolderMailingAddress.address2 : ''}
-${policyHolderMailingAddress.city}, ${policyHolderMailingAddress.state} ${policyHolderMailingAddress.zip}`}
+                    <div className="contact-address">
+                        {`${policyHolderMailingAddress.address1},
+                        ${policyHolderMailingAddress.address2 ? `${policyHolderMailingAddress.address2},` : ''} ${policyHolderMailingAddress.city},
+                        ${policyHolderMailingAddress.state}
+                        ${policyHolderMailingAddress.zip}`}
                     </div>
                     <div className="additional-contacts">
                       <ul>
@@ -140,7 +143,12 @@ ${policyHolderMailingAddress.city}, ${policyHolderMailingAddress.state} ${policy
                   <div className="contact-title"><i className="fa fa-address-card" /><label>Agent</label></div>
                   <div className="contact-details">
                     <h4><span className="agent-code">{selectedAgent.agentCode}</span> | <span className="agent-name">{`${selectedAgent.firstName} ${selectedAgent.lastName}`}</span> | <span className="agent-license">{selectedAgent.licenseNumber}</span></h4>
-                    <div className="contact-address">{selectedAgent.mailingAddress.address1}{selectedAgent.mailingAddress.address2 ? ` ,${selectedAgent.mailingAddress.address2}` : ''}, {selectedAgent.mailingAddress.city}, {selectedAgent.mailingAddress.state} {selectedAgent.mailingAddress.zip}</div>
+                    <div className="contact-address">
+                    {`${selectedAgent.mailingAddress.address1},
+                        ${selectedAgent.mailingAddress.address2 ? `${selectedAgent.mailingAddress.address2},` : ''} ${selectedAgent.mailingAddress.city},
+                        ${selectedAgent.mailingAddress.state}
+                        ${selectedAgent.mailingAddress.zip}`}
+                    </div>
                     <div className="additional-contacts">
                       <ul>
                         <li>
