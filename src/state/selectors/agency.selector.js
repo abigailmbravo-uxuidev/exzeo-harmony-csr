@@ -8,9 +8,15 @@ const getAgency = state => state.agencyState.agency;
 
 const getAgents = state => state.agencyState.agents;
 
-const getAORAgents = state => state.agencyState.aorAgents;
-
 const getOrphanedAgents = state => state.agencyState.orphans;
+
+export const filterActiveAgentsList = agents => {
+  return (agents || []).filter(a => a.status === 'Active').map(a => ({
+    answer: a.agentCode,
+    label: `${a.agentCode}: ${a.firstName} ${a.lastName}`
+  }));
+}
+
 
 export const getAgencyList = createSelector(
   [getAgencies],
@@ -24,26 +30,11 @@ export const getAgencyList = createSelector(
   }
 );
 
-export const getAgentListForAORTransfer = createSelector(
-  [getAORAgents],
-  (agents) => {
-    if (!agents || !Array.isArray(agents)) return [];
-    const list = agents.filter(a => a.status === 'Active').map(a => ({
-      answer: a.agentCode,
-      label: `${a.agentCode}: ${a.firstName} ${a.lastName}`
-    }));
-    return list;
-  }
-);
-
 export const getAgentList = createSelector(
   [getAgents],
   (agents) => {
     if (!agents || !Array.isArray(agents)) return [];
-    const list = agents.filter(a => a.status === 'Active').map(a => ({
-      answer: a.agentCode,
-      label: `${a.agentCode}: ${a.firstName} ${a.lastName}`
-    }));
+    const list = filterActiveAgentsList(agents);
     return list;
   }
 );

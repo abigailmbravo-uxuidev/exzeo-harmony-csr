@@ -42,18 +42,6 @@ export function setAgents(agents) {
 
 /**
  *
- * @param aorAgents
- * @returns {{type: string, aorAgents: *}}
- */
-export function setAgentsForAOR(aorAgents) {
-  return {
-    type: types.SET_AOR_AGENTS,
-    aorAgents
-  };
-}
-
-/**
- *
  * @param agentList
  * @returns {{type: string, agencyAgents: *}}
  */
@@ -119,22 +107,6 @@ export function getAgentsByAgencyCode(agencyCode) {
     try {
       const agents = await fetchAgentsByAgencyCode(agencyCode);
       dispatch(setAgents(agents));
-    } catch (error) {
-      dispatch(errorActions.setAppError(error));
-    }
-  };
-}
-
-/**
- *
- * @param agencyCode
- * @returns {Function}
- */
-export function getAgentsForAORTransfer(agencyCode) {
-  return async (dispatch) => {
-    try {
-      const agents = await fetchAgentsByAgencyCode(agencyCode);
-      dispatch(setAgentsForAOR(agents));
     } catch (error) {
       dispatch(errorActions.setAppError(error));
     }
