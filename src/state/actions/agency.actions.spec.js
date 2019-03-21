@@ -127,18 +127,6 @@ describe('Test Agency Actions', () => {
       expect(store.getActions()).toEqual(stateObj);
     });
 
-    it('Should call dispatch on getAgentsForAORTransfer', async () => {
-      const aorAgents = [{ agentCode: '12345' }];
-  
-      const stateObj = [{
-        type: types.SET_AOR_AGENTS,
-        aorAgents
-      }];
-  
-      httpStub.onCall(0).returns(Promise.resolve({ data: { result: aorAgents } }));
-      await store.dispatch(agencyActions.getAgentsForAORTransfer('12345'));
-      expect(store.getActions()).toEqual(stateObj);
-    });
 
     it('Should call dispatch on addAgent', async () => {
       const agent = { agentCode: '1234' };
