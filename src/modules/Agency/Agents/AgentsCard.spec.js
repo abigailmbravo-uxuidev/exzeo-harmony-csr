@@ -19,7 +19,15 @@ describe('Testing AgentsCard component', () => {
         primaryPhoneNumber: '1234567890',
         secondaryPhoneNumber: '1234567890',
         faxNumber: '1234567890',
-        status: 'ACTIVE'
+        status: 'ACTIVE',
+        licenses: [
+          {
+            state: 'TX',
+            licenseNumber: 'test040b',
+            licenseType: 'Non-Resident',
+            licenseEffectiveDate: '2018-10-27T00:00:00.000Z'
+          }
+        ]
 }} />);
     expect(wrapper.exists()).toBeTruthy();
 
@@ -46,7 +54,15 @@ describe('Testing AgentsCard component', () => {
         primaryPhoneNumber: '1234567890',
         secondaryPhoneNumber: '1234567890',
         faxNumber: '1234567890',
-        status: 'ACTIVE'
+        status: 'ACTIVE',
+        licenses: [
+          {
+            state: 'TX',
+            licenseNumber: 'test040b',
+            licenseType: 'Non-Resident',
+            licenseEffectiveDate: '2018-10-27T00:00:00.000Z'
+          }
+        ]
 }} />);
     expect(wrapper.exists()).toBeTruthy();
 

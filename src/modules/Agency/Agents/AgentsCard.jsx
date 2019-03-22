@@ -19,8 +19,8 @@ export const AgentsCard = ({
     <div className="contact-details">
       <div className="card-name">
         <div className="card-name-content">
-          <h4><span className="agent-code">{agent.agentCode}</span> | <span className="agent-name">{`${agent.firstName} ${agent.lastName}`}</span> | <span className="agent-license">{agent.licenseNumber}</span></h4>
-          <div className="contact-address">
+          <h4><span className="agent-code">{agent.agentCode}</span> | <span className="agent-name">{`${agent.firstName} ${agent.lastName}`}</span> | <span className="agent-license">{agent.licenses[0] ? agent.licenses[0].licenseNumber : ''}</span></h4>
+          <div className="contact-address" data-test="agent-address">
             {mailingAddress.address1},&nbsp;
             {mailingAddress.address2}{mailingAddress.address2 ? ', ' : ' '}
             {mailingAddress.city},&nbsp;
@@ -30,7 +30,7 @@ export const AgentsCard = ({
               <span className="additional-data status"><label>STATUS:&nbsp;</label>{agent.status}</span>
             }
           </div>
-          <div className="contact-methods">
+          <div className="contact-methods" data-test="agent-contact">
             {agent.primaryPhoneNumber &&
               <p className="phone">
                 <i className="fa fa-phone-square" />

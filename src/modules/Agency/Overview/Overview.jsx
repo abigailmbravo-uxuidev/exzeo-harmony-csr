@@ -93,7 +93,7 @@ export class Overview extends React.Component {
         <div className="route-content">
           <div className="scroll">
             <div className="form-group survey-wrapper" role="group">
-              <h3>Details
+              <h3 data-test="agency-details">Details
                 <button
                   className="btn btn-link btn-sm"
                   onClick={this.onHandleToggleEditDetailsModal}>
@@ -105,7 +105,7 @@ export class Overview extends React.Component {
                 <hr />
                 <ContactView agency={agency} agencyBranchData={agencyBranchData} emailType="CSR" />
               </section>
-              <h3>Address
+              <h3 data-test="agency-address">Address
                 <button
                   className="btn btn-link btn-sm"
                   onClick={this.onHandleToggleEditAddressModal}>
@@ -115,17 +115,17 @@ export class Overview extends React.Component {
               <section className="agency-address">
                 <AddressView agencyBranchData={agencyBranchData} territoryManagers={territoryManagers} />
               </section>
-              {agencyBranchData.principal && <h3>Officer</h3>}
+              {agencyBranchData.principal && <h3 data-test="agency-officer">Officer</h3>}
               {agencyBranchData.principal &&
               <section className="agency-principal">
                 <ContactCard isOfficer contact={agencyBranchData.principal} handleClick={this.onHandleToggleEditPrincipalModal} />
               </section>
               }
-              <h3>Contact</h3>
+              <h3 data-test="agency-contact">Contact</h3>
               <section className="agency-contact">
                 <ContactCard contact={agencyBranchData.contact} handleClick={this.onHandleToggleEditContactModal} />
               </section>
-              <h3>Agent Of Record</h3>
+              <h3 data-test="agency-aor">Agent Of Record</h3>
               <section name="agentOfRecord" className="agency-aor">
                 {agentOfRecord && agentOfRecord.agentCode && <AgentCard agent={agentOfRecord} handleSecondaryClick={this.onHandleToggleSwitchAgentOfRecordModal} handlePrimaryClick={this.onHandleToggleEditAgentModal} />}
               </section>

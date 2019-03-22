@@ -11,7 +11,7 @@ const DetailHeader = ({ agency }) => {
     );
   }
   return (
-    <div className="detailHeader">
+    <div className="detailHeader" data-test="detail-header">
       <section id="agencyDetails" className="agencyDetails">
         <h4 className="agency-code">{agency.agencyCode}</h4>
       </section>
