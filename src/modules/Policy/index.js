@@ -88,15 +88,21 @@ export class Policy extends React.Component {
   }
 
   handleToggleDiaries = () => {
-    this.setState({ showDiaries: !this.state.showDiaries });
+    this.setState(state => ({
+      showDiaries: !state.showDiaries
+      }));  
   }
 
   handleToggleReinstateModal = () => {
-    this.setState({ showReinstatePolicyModal: !this.state.showReinstatePolicyModal });
+    this.setState(state => ({
+      showReinstatePolicyModal: !state.showReinstatePolicyModal
+      }));  
   }
 
   handleToggleEffectiveDateChangeModal = () => {
-    this.setState({ showEffectiveDateChangeModal: !this.state.showEffectiveDateChangeModal });
+    this.setState(state => ({
+      showEffectiveDateChangeModal: !state.showEffectiveDateChangeModal
+      }));  
   }
 
   changeEffectiveDate = async (data) => {
