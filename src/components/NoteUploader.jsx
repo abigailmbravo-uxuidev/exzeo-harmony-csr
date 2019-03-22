@@ -155,7 +155,9 @@ export class NoteUploader extends Component {
     })
   }
 
-  handleMinimize = (minimizeNote) => this.props.actions.uiActions.toggleMinimizeNote(!minimizeNote);
+  handleMinimize = () => this.setState(state => ({ 
+    minimize: !state.minimize 
+  }));
 
   handleClose = () => this.props.toggleNote({});
 

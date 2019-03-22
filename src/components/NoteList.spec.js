@@ -1,5 +1,5 @@
 import React from 'react';
-import { mount, shallow } from 'enzyme';
+import { mount } from 'enzyme';
 import NoteList, { filterNotesByType, Notes } from './NoteList';
 
 describe('Testing NotesFiles component', () => {
@@ -36,7 +36,7 @@ describe('Testing NotesFiles component', () => {
   });
 
   it('should render Notes', () => {
-    const wrapper = shallow(<Notes {...props} />);
+    const wrapper = mount(<Notes {...props} />);
     expect(wrapper.exists()).toBeTruthy();
   });
 
