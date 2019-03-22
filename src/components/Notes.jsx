@@ -11,9 +11,7 @@ import NoteList from './NoteList';
 import Footer from './Common/Footer';
 
 export class Notes extends Component {
-  state = {
-    isLoading: true,
-  }
+  state = { isLoading: true }
 
   async componentDidMount() {
     const { numbers, numberType, fetchNotes } = this.props;
