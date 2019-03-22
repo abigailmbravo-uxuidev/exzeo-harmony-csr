@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { reduxForm } from 'redux-form';
 import moment from 'moment-timezone';
+import { Loader } from '@exzeo/core-ui';
 
 import DateField from '../Form/inputs/DateField';
 import SelectField from '../Form/inputs/SelectField';
@@ -23,6 +24,7 @@ export const EditEffectiveDatePopup = ({
   pristine
 }) => (
   <div id="effective-date" className="modal effective-date">
+    {submitting && <Loader />}
     <div className="card unsaved-changes">
       <form id="EditEffectiveDatePopup" onSubmit={handleSubmit(changeEffectiveDateSubmit)}>
         <div className="card-header">
