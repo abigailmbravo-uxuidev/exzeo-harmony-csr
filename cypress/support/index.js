@@ -14,7 +14,9 @@
 // ***********************************************************
 
 import './globalHooks';
+import './inputs';
 import './login';
 import './persistLocalStorage';
+import './positiveCheckHelpers';
 import './stubbing';
 import './utils';
