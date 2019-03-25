@@ -1,9 +1,9 @@
 import policy from '../../fixtures/stockData/policy.json';
 import quote from '../../fixtures/stockData/quote.json';
+import agency from '../../fixtures/stockData/agency.json';
 
 export default (type, num = 1, currentPage = 1) => {
   const updatedResults = Array(num > 25 ? 25 : num);
-  let updates
   switch (type) {
     case 'policies':
     updatedResults.fill(policy);
@@ -19,7 +19,11 @@ export default (type, num = 1, currentPage = 1) => {
       ['result.quotes', updatedResults],
       ['result.totalNumberOfRecords', num],
       ['result.currentPage', currentPage]
-    ])
+    ]);
+    break;
+  case 'agencies':
+    updatedResults.fill(agency);
+    cy.setFx('stubs/fetchAgencies', ['result', updatedResults]);
     break;
   default:
     return;

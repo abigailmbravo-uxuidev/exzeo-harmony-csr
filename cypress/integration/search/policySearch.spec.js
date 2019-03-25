@@ -33,7 +33,7 @@ describe('Policy Search testing', () => {
       );
   });
 
-  it('POS:Policy Search Button Text', () =>
+  it('POS:Policy Search Button', () =>
     cy.findDataTag('submit').should('have.attr', 'type', 'submit')
       .checkHeader({ name: 'submit', text: 'Search', icon: 'fa fa-search' })
   );

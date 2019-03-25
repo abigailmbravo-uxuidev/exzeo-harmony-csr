@@ -121,7 +121,7 @@ Cypress.Commands.add('checkSlider', tag =>
  * @param {array} data.cardData - Array of string data for each section
 */
 
-Cypress.Commands.add('checkResultsCard', (card, { icon, cardName = '', headerData, cardData }) => {
+Cypress.Commands.add('checkResultsCard', (card, { icon, cardName = '', headerData, cardData }) =>
   cy.wrap(card).find('div.icon-name > i').should('have.attr', 'class', icon)
     .parent().next().find('.card-name').should('contain', cardName)
     .next().find('li').first().children().then($els => {
@@ -132,4 +132,28 @@ Cypress.Commands.add('checkResultsCard', (card, { icon, cardName = '', headerDat
       expect($spans).to.have.length(cardData.length);
       cy.wrap($spans).each(($span, i) => cy.wrap($span).should('contain', cardData[i]));
     })
-  });
+  );
+
+Cypress.Commands.add('checkAgencyCard', (card, { icon, cardData, status, address, website, additionalContacts }) =>
+  cy.wrap(card).find('.contact-title > i').should('have.attr', 'class', icon)
+    .next().should('contain', 'Agency')
+    .parent().next().find('.card-name').children().first().find('span').then($spans => {
+      expect($spans).to.have.length(cardData.length);
+      cy.wrap($spans).each(($span, i) => cy.wrap($span).should('contain', cardData[i]));
+    }).parent().next().should('contain', address)
+    .find('span.additional-data.status').should('contain', status)
+    .find('label').should('contain', 'STATUS')
+    .parent().next().children().first().should('contain', 'WEBSITE:')
+    .next().should('contain', website)
+    .parent().parent().next().find('li').each(($li, i) =>
+      cy.wrap($li).children().first().should('contain', additionalContacts[i].name)
+        .next().find('p').first().should('contain', additionalContacts[i].primaryPhone)
+        .find('i').should('have.attr', 'class', 'fa fa-phone-square')
+        .parent().next().should('contain', additionalContacts[i].secondaryPhone)
+        .find('i').should('have.attr', 'class', 'fa fa-phone')
+        .parent().parent().next().should('contain', additionalContacts[i].fax)
+        .find('i').should('have.attr', 'class', 'fa fa-fax')
+        .parent().next().should('contain', additionalContacts[i].email)
+        .find('i').should('have.attr', 'class', 'fa fa-envelope')
+    )
+  );
