@@ -5,5 +5,5 @@
   "videoUploadOnPasses": false,
   "defaultCommandTimeout": 12000,
   "reporter": "teamcity",
-  "numTestsKeptInMemory": 0
+  "numTestsKeptInMemory": 10
 }

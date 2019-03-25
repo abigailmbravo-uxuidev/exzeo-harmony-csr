@@ -66,6 +66,18 @@ Cypress.Commands.add('checkSwitch', ({ name, defaultValue }) =>
 Cypress.Commands.add('checkSubmitButton', ((form = 'body') =>
   cy.get(form).findDataTag('submit').should('exist').and('have.attr', 'type', 'button')));
 
+  /**
+   * Confirms each option in a select contains given data.
+   * @param {Object} field - A select field
+   * @param {string} field.name - Name of the wrapping data-test tag
+   * @param {array} field.options - Array of strings containng the expected data
+   */
+Cypress.Commands.add('checkSelect', ({ name, options }) =>
+  cy.findDataTag(name).find('option').then($els => {
+    expect($els, `${name} options`).to.have.length(options.length);
+    cy.wrap($els).each(($el, i) => cy.wrap($el).should('contain', options[i]));
+  }));
+
 /**
  * @param {string} tag - Name of the data test tag wrapping the select
  * @param {number} option - Index of the option to select
@@ -98,3 +110,25 @@ Cypress.Commands.add('checkSlider', tag =>
       .nativeSetSliderValue($slider[0], max)
       .findDataTag(tag).find('span.range-value > input').should('have.attr', 'value', `$ ${max.toLocaleString()}`);
   }));
+
+/**
+ * Checks all values on a search result card
+ * @param {Object} card - The DOM element of the whole card
+ * @param {Object} data - Data object to check against
+ * @param {string} data.cardName - Top name of card
+ * @param {array} data.headerData - Array of string labels for the headers
+ * @param {array} data.cardData - Array of string data for each section
+*/
+
+Cypress.Commands.add('checkResultsCard', (card, { cardName, headerData, cardData }) =>
+  cy.wrap(card).find('div.icon-name > i').should('have.attr', 'class', 'card-icon fa fa-file-text')
+    .parent().next().find('.card-name > h5').should('contain', cardName)
+    .parent().next().find('li').first().children().then($els => {
+      expect($els).to.have.length(headerData.length);
+      cy.wrap($els).each(($el, i) => cy.wrap($el).should('contain', headerData[i]));
+    })
+    .parent().next().find('span').then($spans => {
+      expect($spans).to.have.length(cardData.length);
+      cy.wrap($spans).each(($span, i) => cy.wrap($span).should('contain', cardData[i]));
+    })
+);
