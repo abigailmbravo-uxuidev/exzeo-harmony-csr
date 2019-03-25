@@ -35,6 +35,7 @@
     "react-app-polyfill": "^0.2.0",
     "react-bootstrap-table": "~4.3.1",
     "react-dom": "16.6.x",
+    "react-final-form": "^4.1.0",
     "react-helmet": "~5.2.0",
     "react-modal": "~3.1.7",
     "react-number-format": "~3.0.3",
