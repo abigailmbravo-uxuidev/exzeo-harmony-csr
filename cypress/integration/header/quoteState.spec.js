@@ -1,5 +1,5 @@
 import _ from 'lodash'; //eslint-disable-line
-import { navNewQuote } from '../../helpers';
+import { navigateThroughNewQuote } from '../../helpers';
 import stubAllRoutes from '../../support/stubAllRoutes';
 
 describe('Quote State Testing', () => {
@@ -8,7 +8,7 @@ describe('Quote State Testing', () => {
   before(() => {
     stubAllRoutes();
     cy.login();
-    navNewQuote();
+    navigateThroughNewQuote();
   });
 
   it('Quote State', () => {

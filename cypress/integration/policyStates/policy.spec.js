@@ -41,7 +41,7 @@ describe('Policy: Policy States + Effective/Cancellation Date', () => {
     if (billingStatus.code === 9) {
       checkHeaderSection('finalPaymentDetail', ['Final Payment Date', '']);
     };
-  
+
     if (canceledPolicyStatuses.includes(policyStatus) || billingStatus.code === 9) {
       checkHeaderSection('cancellationDetail', ['Cancellation Effective Date', '']);
     } else if (expirationPolicyStatuses.includes(policyStatus)) {
