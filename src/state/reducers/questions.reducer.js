@@ -57,7 +57,16 @@ function setLists(state, action) {
   return {
     ...state,
     lists: action.lists.reduce((listMap, item) => {
-      listMap[item.code] = item;
+      const list = item.extendedProperties || {};
+      listMap[item.code] = Object.keys(list).sort().reduce((finalList, key) => {
+        const listItem = list[key];
+        if(listItem.isActive) {
+          listItem.key = key;
+          finalList.push(listItem)
+        }
+          return finalList;
+      }, []);
+
       return listMap;
     }, {})
 
