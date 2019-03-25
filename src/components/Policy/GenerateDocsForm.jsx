@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import axios from 'axios';
-import { reduxForm, Field } from 'redux-form';
+import { Form, Field, FormSpy } from 'react-final-form';
 import moment from 'moment-timezone';
 import { Select, Loader, Button, validation } from '@exzeo/core-ui';
 
@@ -13,11 +13,11 @@ const documentTypeAnswers = [
 ];
 
 export class GenerateDocsForm extends Component {
-  generateDoc = (data, dispatch, props) => {
+  generateDoc = (values) => {
     const {
       errorHandler, policyNumber, policyID, updateNotes, startWorkflow
-    } = props;
-    const model = data.documentType;
+    } = this.props;
+    const model = values.documentType;
     return startWorkflow(model, { policyNumber, policyID }, false)
       .then((result) => {
         if (window.location.pathname.includes('/notes')) updateNotes();
@@ -45,24 +45,29 @@ export class GenerateDocsForm extends Component {
     const { handleSubmit, submitting } = this.props;
     return (
       <div className="fade-in">
-        {submitting && <Loader />}
-        <form onSubmit={handleSubmit(this.generateDoc)}>
-          <Field
-            name="documentType"
-            label="Document"
-            component={Select}
-            answers={documentTypeAnswers}
-            validate={validation.isRequired}
-            dataTest="documentType" />
+        <Form
+          onSubmit={this.generateDoc}
+          render={({ handleSubmit, submitting }) => (
+            <form onSubmit={handleSubmit}>
+              {submitting && <Loader />}
+              <Field
+                name="documentType"
+                label="Document"
+                component={Select}
+                answers={documentTypeAnswers}
+                validate={validation.isRequired}
+                dataTest="documentType" />
 
-          <Button
-            baseClass="primary"
-            size="small"
-            customClass="btn-block"
-            type="submit"
-            dataTest="doc-submit">Generate Doc
-          </Button>
-        </form>
+              <Button
+                baseClass="primary"
+                size="small"
+                customClass="btn-block"
+                type="submit"
+                dataTest="doc-submit">Generate Doc
+              </Button>
+            </form>
+          )}
+        />
       </div>
     );
   }
@@ -76,12 +81,4 @@ GenerateDocsForm.propTypes = {
   errorHandler: PropTypes.func.isRequired
 };
 
-export default reduxForm({
-  form: 'GenerateDocsForm',
-  initialValues: {
-    effectiveDate: moment.utc().format('YYYY-MM-DD')
-  },
-  validate,
-  enableReinitialize: true,
-  keepDirtyOnReinitialize: true
-})(GenerateDocsForm);
+export default GenerateDocsForm;
