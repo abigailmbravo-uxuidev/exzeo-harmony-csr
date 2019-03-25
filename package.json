@@ -23,6 +23,7 @@
     "bluebird": "^3.5.3",
     "classnames": "~2.2.5",
     "exframe-web": "~1.0.0",
+    "final-form": "^4.12.0",
     "font-awesome": "~4.7.0",
     "history": "~4.6.2",
     "jwt-decode": "~2.2.0",
