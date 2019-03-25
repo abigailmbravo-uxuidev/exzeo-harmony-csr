@@ -5,7 +5,6 @@ import { reduxForm, Field } from 'redux-form';
 import moment from 'moment-timezone';
 import { Select, Loader, Button, validation } from '@exzeo/core-ui';
 
-
 const validate = values => (!values.documentType ? { documentType: 'Required' } : null);
 const documentTypeAnswers = [
   { label: 'Full Policy Packet', answer: 'generateFullPolicyPacket' },
