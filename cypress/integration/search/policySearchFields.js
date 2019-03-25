@@ -69,6 +69,7 @@ export const advancedSearchFields = [
 ];
 
 export const resultsCard = {
+  icon: 'card-icon fa fa-file-text',
   cardName: 'Batman Robin',
   headerData: ['Policy No.', 'Property Address', 'Policy Status', 'Effective Date'],
   cardData: [

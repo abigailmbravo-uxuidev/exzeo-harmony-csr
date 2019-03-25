@@ -1,5 +1,5 @@
 import stubAllRoutes from '../../support/stubAllRoutes';
-import dummyPolicy from '../../fixtures/stockData/policy.json';
+import createResults from './utils';
 import { searchFields, advancedSearchFields, resultsCard } from './policySearchFields';
 
 describe('Policy Search testing', () => {
@@ -12,18 +12,9 @@ describe('Policy Search testing', () => {
 
   const toggleAdvancedSearch = (dir = 'on') => {
     cy.findDataTag('policy-advanced-search').find('i').then($i => {
-      if (($i.hasClass('fa-chevron-down') && dir === 'on') || ($i.hasClass('fa-chevron-up') && dir === 'down')) {
-        $i.click()
-      }
-    })
-  }
-  const createResults = (num = 1, currentPage = 1) => {
-    const policies = Array(num > 25 ? 25 : num).fill(dummyPolicy);
-    cy.setFx('stubs/fetchPolicies', [
-      ['policies', policies],
-      ['totalNumberOfRecords', num],
-      ['currentPage', currentPage]
-    ]);
+      if (($i.hasClass('fa-chevron-down') && dir === 'on')
+      || ($i.hasClass('fa-chevron-up') && dir === 'down')) { $i.click(); }
+    });
   };
 
   const selectFields = searchFields.filter(({ type }) => type === 'select');
@@ -72,7 +63,7 @@ describe('Policy Search testing', () => {
   );
 
   it('POS:Policy Search', () => {
-    createResults(25);
+    createResults('policies', 25);
     cy.findDataTag('submit').click()
       .findDataTag('policy-list').children().each($card =>
         cy.checkResultsCard($card, resultsCard)
