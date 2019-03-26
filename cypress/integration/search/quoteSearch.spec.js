@@ -38,10 +38,15 @@ describe('Policy Search testing', () => {
   );
 
   it('POS:Quote Search', () => {
-    createResults('quotes', 25);
+    createResults('quotes', 30, 1);
     cy.findDataTag('submit').click()
       .get('.quote-list').children().each($card =>
         cy.checkResultsCard($card, resultsCard)  
-      );
+    ).then(() => {
+      createResults('quotes', 30, 2);
+      cy.findDataTag('page-forward').click()
+        .get('.quote-list').children().should('have.length', 5)
+        .get('[data-test="pageNumber"]').should('have.attr', 'value', '2')
+    });
   });
 });

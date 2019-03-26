@@ -63,11 +63,16 @@ describe('Policy Search testing', () => {
   );
 
   it('POS:Policy Search', () => {
-    createResults('policies', 25);
+    createResults('policies', 30, 1);
     cy.findDataTag('submit').click()
       .findDataTag('policy-list').children().each($card =>
         cy.checkResultsCard($card, resultsCard)
-      );
+      ).then(() => {
+        createResults('policies', 30, 2);
+        cy.findDataTag('page-forward').click()
+          .findDataTag('policy-list').children().should('have.length', 5)
+          .get('[data-test="pageNumber"]').should('have.attr', 'value', '2')
+      });
   });
 
   it('POS:Policy Advanced Search Close Arrow', () => {
