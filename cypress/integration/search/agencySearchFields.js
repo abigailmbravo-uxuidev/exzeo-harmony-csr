@@ -1,4 +1,4 @@
-export const searchFields = [
+export const fields = [
   {
     name: 'searchType',
     type: 'select',

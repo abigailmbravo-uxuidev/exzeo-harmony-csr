@@ -1,4 +1,4 @@
-export const searchFields = [
+export const fields = [
   {
     name: 'firstName',
     type: 'text',

@@ -1,6 +1,6 @@
 import stubAllRoutes from '../../support/stubAllRoutes';
 import createResults from './utils';
-import { searchFields, resultsCard } from './quoteSearchFields';
+import { fields, resultsCard } from './quoteSearchFields';
 
 describe('Policy Search testing', () => {
   const selectQuoteSearch = () => cy.findDataTag('searchType').select('quote');
@@ -15,11 +15,11 @@ describe('Policy Search testing', () => {
     selectQuoteSearch();
   });
 
-  const textFields = searchFields.filter(({ type }) => type === 'text');
-  const selectFields = searchFields.filter(({ type }) => type === 'select');
+  const textFields = fields.filter(({ type }) => type === 'text');
+  const selectFields = fields.filter(({ type }) => type === 'select');
 
   it('POS:Quote Search Input Text / Label', () => {
-    cy.wrap(searchFields).each(({ name, label }) =>
+    cy.wrap(fields).each(({ name, label }) =>
       cy.findDataTag(`${name}_label`).should('contain', label)
     ).wrap(textFields).each(({ name, placeholder }) =>
       cy.findDataTag(name).should('have.attr', 'placeholder', placeholder)

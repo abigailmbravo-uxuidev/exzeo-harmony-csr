@@ -1,5 +1,5 @@
 import stubAllRoutes from '../../support/stubAllRoutes';
-import { searchFields, agentCard } from './agentSearchFields';
+import { fields, agentCard } from './agentSearchFields';
 
 describe('Agent Search Testing', () => {
   const selectAgencySearch = () =>
@@ -16,8 +16,8 @@ describe('Agent Search Testing', () => {
     selectAgencySearch();
   });
 
-  const selectFields = searchFields.filter(({ type }) => type === 'select');
-  const textFields = searchFields.filter(({ type }) => type === 'text');
+  const selectFields = fields.filter(({ type }) => type === 'select');
+  const textFields = fields.filter(({ type }) => type === 'text');
 
   it('POS:Agent Search Input Text / Label', () =>
     cy.wrap(selectFields).each(({ name, label, selected }) =>

@@ -78,20 +78,30 @@ Cypress.Commands.add('checkSelect', ({ name, options }) =>
     cy.wrap($els).each(($el, i) => cy.wrap($el).should('contain', options[i]));
   }));
 
+  /**
+   * Check the basics of a React select Typeahead
+   * @param {Object} field - A select field
+   * @param {string} field.name - Name of the wrapping data-test tag
+   */
+Cypress.Commands.add('checkSelectTypeahead', ({ name, placeholder }) =>
+  cy.get(`.${name}`).find('.react-select__placeholder').should('contain', placeholder));
+
 /**
+ * Choose an option in a React select Typeahead
  * @param {string} tag - Name of the data test tag wrapping the select
  * @param {number} option - Index of the option to select
  */
-Cypress.Commands.add('chooseSelectOption', (tag, option = 0) =>
+Cypress.Commands.add('chooseSelectTypeaheadOption', (tag, option = 0) =>
   cy.findDataTag(tag).find('input')
     .type(' ', { force: true })
     .get('div.Select-menu div[role="option"]').then($arr => cy.wrap($arr[option]).click()));
 
 /**
+ * Reset the React select Typeahead to the placeholder option
  * @param {string} tag - Name of the data test tag wrapping the select
  * @param {string} placeholder - Placeholder text
  */
-Cypress.Commands.add('resetSelectOption', (tag, placeholder = 'Select...') =>
+Cypress.Commands.add('resetSelectTypeaheadOption', (tag, placeholder = 'Select...') =>
   cy.findDataTag(tag).find('span.Select-clear').click()
     .findDataTag(tag).find('.Select-control .Select-placeholder').should('contain', placeholder));
 
@@ -112,7 +122,7 @@ Cypress.Commands.add('checkSlider', tag =>
   }));
 
 /**
- * Checks all values on a search result card
+ * Checks all values on a policy or quote search result card
  * @param {Object} card - The DOM element of the whole card
  * @param {Object} data - Data object to check against
  * @param {string} data.icon - Full classname of the icon
@@ -134,6 +144,17 @@ Cypress.Commands.add('checkResultsCard', (card, { icon, cardName = '', headerDat
     })
   );
 
+/**
+* Checks all values on an agency search result card
+* @param {Object} card - The DOM element of the whole card
+* @param {Object} data - Data object to check against
+* @param {string} data.icon - Full classname of the icon
+* @param {array} data.cardData - Array of string data for each section
+* @param {string} data.status
+* @param {string} data.address
+* @param {string} data.website
+* @param {array} data.additionalContacts - Array of objects containing additional contact info
+*/
 Cypress.Commands.add('checkAgencyCard', (card, { icon, cardData, status, address, website, additionalContacts }) =>
   cy.wrap(card).find('.contact-title > i').should('have.attr', 'class', icon)
     .next().should('contain', 'Agency')
@@ -158,6 +179,16 @@ Cypress.Commands.add('checkAgencyCard', (card, { icon, cardData, status, address
     )
   );
 
+/**
+* Checks all values on an agent search result card
+* @param {Object} card - The DOM element of the whole card
+* @param {Object} data - Data object to check against
+* @param {string} data.icon - Full classname of the icon
+* @param {array} data.cardData - Array of string data for each section
+* @param {string} data.status
+* @param {string} data.address
+* @param {array} data.additionalContacts - Array of objects containing additional contact info
+*/
 Cypress.Commands.add('checkAgentCard', (card, { icon, cardData, status, address, additionalContacts }) =>
   cy.wrap(card).find('.contact-title > i').should('have.attr', 'class', icon)
     .next().should('contain', 'Appointed')
@@ -177,4 +208,30 @@ Cypress.Commands.add('checkAgentCard', (card, { icon, cardData, status, address,
         .parent().next().should('contain', additionalContacts[i].email)
         .find('i').should('have.attr', 'class', 'fa fa-envelope')
     )
+  );
+
+/**
+* Checks all values on an agent search result card
+* @param {Object} card - The DOM element of the whole card
+* @param {Object} data - Data object to check against
+* @param {string} data.status
+* @param {string} data.id
+* @param {string} data.type
+* @param {array} data.cardData - Array of string data for each section
+*/
+Cypress.Commands.add('checkDiaryCard', (card, { status, id, type, cardData }) =>
+  cy.wrap(card).find('.card-header > .icon-wrapper > i').first().should('have.attr', 'class', 'fa fa-bookmark-o')
+    .next().should('have.attr', 'class', 'icon-status-indicator fa fa-circle')
+    .next().should('contain', status)
+    .parent().parent().next().children().first().should('contain', id).and('contain', type)
+    .next().find('.header').children().first().should('contain', 'Due')
+    .next().should('contain', 'Assignee')
+    .next().should('contain', 'Reason')
+    .next().should('contain', 'Message')
+    .next().should('contain', 'Updated')
+    .next().should('contain', 'Updated By')
+    .parent().next().find('span').then($spans => {
+      expect($spans).to.have.length(cardData.length);
+      cy.wrap($spans).each(($span, i) => cy.wrap($span).should('contain', cardData[i]));
+    })
   );

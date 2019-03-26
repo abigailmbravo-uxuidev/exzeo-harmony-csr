@@ -1,4 +1,4 @@
-export const searchFields = [
+export const fields = [
   {
     name: 'searchType',
     type: 'select',
@@ -36,11 +36,12 @@ export const searchFields = [
   }
 ];
 
-export const advancedSearchFields = [
+export const advancedFields = [
   {
     name: 'agencyCode',
+    type: 'select-typeahead',
     label: 'Agency Name',
-    type: 'select-typeahead'
+    placeholder: 'Select...'
   },
   {
     name: 'effectiveDate',

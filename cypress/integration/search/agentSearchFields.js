@@ -1,4 +1,4 @@
-export const searchFields = [
+export const fields = [
   {
     name: 'searchType',
     type: 'select',
@@ -41,8 +41,8 @@ export const searchFields = [
 export const agentCard = {
   icon: 'fa fa-address-card margin bottom',
   cardData: ['60033', 'BRIAN GLENN CHAPMAN JR', 'E079822', 'Open Agency'],
-  address: '2455 TAMIAMI TRAIL',
   status: 'Active',
+  address: '2455 TAMIAMI TRAIL',
   additionalContacts: [{
     primaryPhone: '(941) 979-8426',
     secondaryPhone: '(123) 456-7890',

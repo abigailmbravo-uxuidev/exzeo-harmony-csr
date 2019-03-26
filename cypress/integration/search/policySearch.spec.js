@@ -1,6 +1,6 @@
 import stubAllRoutes from '../../support/stubAllRoutes';
 import createResults from './utils';
-import { searchFields, advancedSearchFields, resultsCard } from './policySearchFields';
+import { fields, advancedFields, resultsCard } from './policySearchFields';
 
 describe('Policy Search testing', () => {
   before(() => {
@@ -17,11 +17,10 @@ describe('Policy Search testing', () => {
     });
   };
 
-  const selectFields = searchFields.filter(({ type }) => type === 'select');
-  const advancedSelectFields = advancedSearchFields.filter(({ type }) => type === 'select');
+  const selectFields = fields.filter(({ type }) => type === 'select');
 
   it('POS:Policy Search Input Text / Label', () => {
-    const textFields = searchFields.filter(({ type }) => type === 'text');
+    const textFields = fields.filter(({ type }) => type === 'text');
 
     cy.get('div[role="banner"] > nav').find('a[aria-current="true"]').should('contain', 'Policy')
       .wrap(selectFields).each(({ name, label, selected }) =>
@@ -50,7 +49,7 @@ describe('Policy Search testing', () => {
 
   it('POS:Advanced Search Input / Label', () => {
     toggleAdvancedSearch();
-    cy.wrap(advancedSearchFields).each(field => {
+    cy.wrap(advancedFields).each(field => {
       cy.findDataTag(`${field.name}_label`).should('contain', field.label);
       if (field.type === 'text') {
         cy.findDataTag(field.name).should('have.attr', 'placeholder', field.placeholder);
@@ -58,9 +57,13 @@ describe('Policy Search testing', () => {
     });
   });
 
-  it('POS:Policy Advanced Search Dropdown', () =>
+  it('POS:Policy Advanced Search Dropdown', () => {
+    const advancedSelectFields = advancedFields.filter(({ type }) => type === 'select');
+    const typeAheadFields = advancedFields.filter(({ type }) => type === 'select-typeahead');
+
     cy.wrap(advancedSelectFields).each(field => cy.checkSelect(field))
-  );
+      .wrap(typeAheadFields).each(field => cy.checkSelectTypeahead(field));
+  });
 
   it('POS:Policy Search', () => {
     createResults('policies', 30, 1);

@@ -1,5 +1,5 @@
 import stubAllRoutes from '../../support/stubAllRoutes';
-import { searchFields, agencyCard } from './agencySearchFields';
+import { fields, agencyCard } from './agencySearchFields';
 
 describe('Policy Search testing', () => {
   const selectAgencySearch = () => cy.findDataTag('agency-link').click();
@@ -14,8 +14,8 @@ describe('Policy Search testing', () => {
     selectAgencySearch();
   });
 
-  const selectFields = searchFields.filter(({ type }) => type === 'select');
-  const textFields = searchFields.filter(({ type }) => type === 'text');
+  const selectFields = fields.filter(({ type }) => type === 'select');
+  const textFields = fields.filter(({ type }) => type === 'text');
 
   it('POS:Agency Search Input Text / Label', () =>
     cy.get('div[role="banner"] > nav').find('a[aria-current="true"]').should('contain', 'Agency')
