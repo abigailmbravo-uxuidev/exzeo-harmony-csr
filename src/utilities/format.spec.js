@@ -19,6 +19,11 @@ describe('Test removeTerm', () => {
     expect(result).toEqual(undefined);
   });
 
+  it('should return the value if undefined', () => {
+    const result = format.removeTerm();
+    expect(result).toEqual(undefined);
+  });
+
   it('should return the value if 0', () => {
     const result = format.removeTerm(0);
     expect(result).toEqual(0);
