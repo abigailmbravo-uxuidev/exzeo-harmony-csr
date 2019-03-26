@@ -1,5 +1,4 @@
 import stubAllRoutes from '../../support/stubAllRoutes';
-import createResults from './utils';
 import { searchFields, agencyCard } from './agencySearchFields';
 
 describe('Policy Search testing', () => {

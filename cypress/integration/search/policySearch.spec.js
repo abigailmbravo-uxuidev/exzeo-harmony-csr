@@ -71,7 +71,7 @@ describe('Policy Search testing', () => {
         createResults('policies', 30, 2);
         cy.findDataTag('page-forward').click()
           .findDataTag('policy-list').children().should('have.length', 5)
-          .get('[data-test="pageNumber"]').should('have.attr', 'value', '2')
+          .get('[data-test="pageNumber"]').should('have.attr', 'value', '2');
       });
   });
 

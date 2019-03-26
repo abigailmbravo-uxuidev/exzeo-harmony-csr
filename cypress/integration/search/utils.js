@@ -7,7 +7,8 @@ export default (type, totalResults = 1, currentPage) => {
   if (!currentPage) currentPage = Math.ceil(totalResults / 25);
 
   // Determine if we are on the last page or not, and either give remainder or 25
-  const updatedResults = Array(currentPage === Math.ceil(totalResults / 25) ? totalResults - (currentPage - 1)*25 : 25)
+  const updatedResults = Array(currentPage === Math.ceil(totalResults / 25) ? totalResults - (currentPage - 1)*25 : 25);
+
   switch (type) {
     case 'policies':
     updatedResults.fill(policy);

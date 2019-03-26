@@ -4,7 +4,7 @@ export const searchFields = [
     type: 'select',
     label: 'Search Context',
     selected: 'agency',
-    options: ['Agenct Search', 'Agency Search']
+    options: ['Agent Search', 'Agency Search']
   },
   {
     name: 'agencyCode',
@@ -57,5 +57,4 @@ export const agencyCard = {
     fax: '(727) 824-7976',
     email: 'test@typtap.com'
   }]
-
-}
+};

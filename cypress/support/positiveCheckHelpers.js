@@ -157,3 +157,24 @@ Cypress.Commands.add('checkAgencyCard', (card, { icon, cardData, status, address
         .find('i').should('have.attr', 'class', 'fa fa-envelope')
     )
   );
+
+Cypress.Commands.add('checkAgentCard', (card, { icon, cardData, status, address, additionalContacts }) =>
+  cy.wrap(card).find('.contact-title > i').should('have.attr', 'class', icon)
+    .next().should('contain', 'Appointed')
+    .parent().next().find('.card-name').children().first().find('span').then($spans => {
+      expect($spans).to.have.length(cardData.length);
+      cy.wrap($spans).each(($span, i) => cy.wrap($span).should('contain', cardData[i]));
+    }).parent().next().should('contain', address)
+    .find('span.additional-data.status').should('contain', status)
+    .find('label').should('contain', 'STATUS')
+    .parent().parent().next().find('li').each(($li, i) =>
+      cy.wrap($li).children().first().should('contain', additionalContacts[i].primaryPhone)
+        .find('i').should('have.attr', 'class', 'fa fa-phone-square')
+        .parent().next().should('contain', additionalContacts[i].secondaryPhone)
+        .find('i').should('have.attr', 'class', 'fa fa-phone')
+        .parent().parent().next().should('contain', additionalContacts[i].fax)
+        .find('i').should('have.attr', 'class', 'fa fa-fax')
+        .parent().next().should('contain', additionalContacts[i].email)
+        .find('i').should('have.attr', 'class', 'fa fa-envelope')
+    )
+  );
