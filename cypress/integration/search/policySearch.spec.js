@@ -23,12 +23,11 @@ describe('Policy Search testing', () => {
     const textFields = fields.filter(({ type }) => type === 'text');
 
     cy.get('div[role="banner"] > nav').find('a[aria-current="true"]').should('contain', 'Policy')
-      .wrap(selectFields).each(({ name, label, selected }) =>
-        cy.findDataTag(`${name}_label`).should('contain', label)
-          .findDataTag(name).should('have.attr', 'data-selected', selected)
-      ).wrap(textFields).each(({ name, label, placeholder }) =>
-        cy.findDataTag(`${name}_label`).should('contain', label)
-          .findDataTag(name).should('have.attr', 'placeholder', placeholder)
+      .wrap(fields).each(({ name, label }) => cy.findDataTag(`${name}_label`).should('contain', label))
+      .wrap(selectFields).each(({ name, selected }) =>
+        cy.findDataTag(name).should('have.attr', 'data-selected', selected)
+      ).wrap(textFields).each(({ name, placeholder }) =>
+        cy.findDataTag(name).should('have.attr', 'placeholder', placeholder)
       );
   });
 

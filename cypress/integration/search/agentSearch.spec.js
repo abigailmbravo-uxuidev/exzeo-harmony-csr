@@ -20,12 +20,11 @@ describe('Agent Search Testing', () => {
   const textFields = fields.filter(({ type }) => type === 'text');
 
   it('POS:Agent Search Input Text / Label', () =>
-    cy.wrap(selectFields).each(({ name, label, selected }) =>
-      cy.findDataTag(`${name}_label`).should('contain', label)
-        .findDataTag(name).should('have.attr', 'data-selected', selected)
-    ).wrap(textFields).each(({ name, label, placeholder }) =>
-      cy.findDataTag(`${name}_label`).should('contain', label)
-        .findDataTag(name).should('have.attr', 'placeholder', placeholder)
+    cy.wrap(fields).each(({ name, label }) => cy.findDataTag(`${name}_label`).should('contain', label))
+      .wrap(selectFields).each(({ name, selected }) =>
+        cy.findDataTag(name).should('have.attr', 'data-selected', selected)
+    ).wrap(textFields).each(({ name, placeholder }) =>
+      cy.findDataTag(name).should('have.attr', 'placeholder', placeholder)
     )
   );
 
