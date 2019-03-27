@@ -16,6 +16,7 @@ import { getGroupedAdditionalInterests, getSortedAdditionalInterests, blockQuote
 import AIModal from '../AdditionalInterestModal';
 import Footer from '../Common/Footer';
 import AdditionalInterestCard from '../AdditionalInterestCard';
+import AIDeleteReinstateModal from '../AIDeleteReinstateModal';
 
 const MODEL_NAME = 'csrAdditionalInterest';
 const PAGE_NAME = 'additionalInterests';
@@ -25,7 +26,9 @@ export class AdditionalInterests extends Component {
     addAdditionalInterestType: '',
     isEditingAI: false,
     selectedAI: {},
-    showAdditionalInterestModal: false
+    showAdditionalInterestModal: false,
+    showDeleteReinstateAI: false,
+    deleteReinstateType: ''
   };
 
   componentDidMount() {
@@ -180,9 +183,14 @@ export class AdditionalInterests extends Component {
       addAdditionalInterestType: null,
       showAdditionalInterestModal: false,
       selectedAI: {},
-      isEditingAI: false
+      isEditingAI: false,
+      showDeleteReinstateAI: false
     });
   };
+
+  toggleDeleteReinstateAIModal = (deleteReinstateType) => (selectedAI) => {
+    this.setState({ showDeleteReinstateAI: !this.state.showDeleteReinstateAI, selectedAI, deleteReinstateType });
+  }
 
   deleteAdditionalInterest = async (selectedAdditionalInterest) => {
     const {
@@ -291,7 +299,8 @@ export class AdditionalInterests extends Component {
                       key={ai._id}
                       ai={ai}
                       editAI={this.editAI}
-                      toggleAIState={this.deleteAdditionalInterest} />
+                      toggleReactivateAIModal={this.toggleDeleteReinstateAIModal('Reactivate')}
+                      toggleDeleteAIModal={this.toggleDeleteReinstateAIModal('Delete')} />
                   ))}
                 </ul>
               </div>
@@ -310,6 +319,16 @@ export class AdditionalInterests extends Component {
               isEditing={this.state.isEditingAI}
               selectedAI={this.state.selectedAI} />
           }
+
+          {this.state.showDeleteReinstateAI && 
+          <AIDeleteReinstateModal
+            actionType={this.state.deleteReinstateType}
+            closeModal={this.hideAdditionalInterestModal}
+            selectedAI={this.state.selectedAI}
+            handleAction={() => this.deleteAdditionalInterest(this.state.selectedAI, this.props)}
+          />
+          }
+
         </div>
         <div className="basic-footer">
           <Footer />

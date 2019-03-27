@@ -25,6 +25,7 @@ import AIModal from '../AdditionalInterestModal';
 import Footer from '../Common/Footer';
 import AdditionalInterestCard from '../AdditionalInterestCard';
 import PaymentHistoryTable from '../PaymentHistoryTable';
+import AIDeleteReinstateModal from '../../components/AIDeleteReinstateModal';
 
 const validateBatchNumber = validation.isDateMatchMin10('cashDate', 'YYYYMMDD');
 const validateAmount = validation.isRange(-1000000, 1000000);
@@ -46,7 +47,8 @@ export class MortgageBilling extends Component {
     isEditingAI: false,
     selectedAI: {},
     showAdditionalInterestModal: false,
-    showBillingEditModal: false
+    showBillingEditModal: false,
+    showDeleteReinstateAI: false
   };
 
   componentDidMount() {
@@ -81,7 +83,7 @@ export class MortgageBilling extends Component {
     };
 
     await createTransaction(submitData);
-    getPolicy(policy.policyNumber);
+    await getPolicy(policy.policyNumber);
 
     this.setState({
       showAdditionalInterestModal: false,
@@ -163,11 +165,16 @@ export class MortgageBilling extends Component {
   hideAdditionalInterestModal = () => {
     this.setState({
       showAdditionalInterestModal: false,
-      isEditingAI: false
+      isEditingAI: false,
+      showDeleteReinstateAI: false,
+      isDeleting: false
     });
   };
 
-  toggleAIState = (ai) => {
+  toggleAIState = async (ai) => {
+
+    this.setState({ isDeleting: true })
+
     const { createTransaction, getPolicy, policy: { policyID, policyNumber } } = this.props;
     const submitData = {
       policyID,
@@ -176,7 +183,7 @@ export class MortgageBilling extends Component {
       transactionType: ai.active ? 'AI Removal' : 'AI Reinstatement'
     };
 
-    createTransaction(submitData).then(() => getPolicy(policyNumber));
+    await createTransaction(submitData).then(() => getPolicy(policyNumber));
     this.hideAdditionalInterestModal();
   };
 
@@ -230,6 +237,10 @@ export class MortgageBilling extends Component {
   amountFormatter = cell => (cell ? Number(cell).toLocaleString('en-US', { style: 'currency', currency: 'USD' }) : '');
 
   dateFormatter = cell => `${cell.substring(0, 10)}`;
+
+  toggleDeleteReinstateAIModal = (deleteReinstateType) => (selectedAI) => {
+    this.setState({ showDeleteReinstateAI: !this.state.showDeleteReinstateAI, selectedAI, deleteReinstateType });
+  }
 
   render() {
     const {
@@ -363,7 +374,8 @@ export class MortgageBilling extends Component {
                         key={ai._id}
                         ai={ai}
                         editAI={this.editAI}
-                        toggleAIState={this.toggleAIState}
+                        toggleReactivateAIModal={this.toggleDeleteReinstateAIModal('Reactivate')}
+                        toggleDeleteAIModal={this.toggleDeleteReinstateAIModal('Delete')}
                       />
                     ))}
                   </ul>
@@ -379,10 +391,19 @@ export class MortgageBilling extends Component {
               hideModal={this.hideAdditionalInterestModal}
               initialValues={this.initAdditionalInterestModal()}
               isEditing={this.state.isEditingAI}
+              isDeleting={this.state.isDeleting}
               selectedAI={this.state.selectedAI}
               validAdditionalInterestTypes={validAdditionalInterestTypes}
               deleteAdditionalInterest={this.toggleAIState}
               isPolicy />
+          }
+          {this.state.showDeleteReinstateAI && 
+          <AIDeleteReinstateModal
+            actionType={this.state.deleteReinstateType}
+            closeModal={this.hideAdditionalInterestModal}
+            selectedAI={this.state.selectedAI}
+            handleAction={() => this.toggleAIState(this.state.selectedAI, this.props)}
+          />
           }
         </div>
         {this.state.showBillingEditModal &&
