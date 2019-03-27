@@ -23,6 +23,8 @@ export default function policyStateReducer(state = initialState.policyState, act
       return setPaymentOptions(state, action);
     case types.RESET_POLICY:
       return resetPolicyState(state, action);
+    case types.SET_POLICIES_FOR_AGENCY:
+      return setPoliciesForAgency(state, action)
     default:
       return state;
   }
@@ -90,6 +92,13 @@ function setPaymentOptions(state, action) {
   return {
     ...state,
     paymentOptions: action.paymentOptions
+  };
+}
+
+function setPoliciesForAgency(state, action) {
+  return {
+    ...state,
+    agencyPolices: action.agencyPolices
   };
 }
 

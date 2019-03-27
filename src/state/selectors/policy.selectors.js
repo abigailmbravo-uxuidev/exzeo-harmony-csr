@@ -5,7 +5,10 @@ import orderBy from 'lodash/orderBy';
 
 import { applyAdditionalInterestRanking } from '../../utilities/additionalInterests';
 
-import { getPaymentHistory, getPaymentOptions, getPolicy } from './entity.selectors';
+import { getPaymentHistory, getPaymentOptions, getPolicy, getAgencyPolicies } from './entity.selectors';
+import { formattedDate } from '@exzeo/core-ui/src/Utilities';
+
+
 
 export const getCashDescriptionOptions = createSelector(
   [getPaymentOptions],
@@ -65,4 +68,37 @@ export const getFormattedPaymentHistory = createSelector(
     }));
   }
 );
+
+export const getPoliciesByAgencyCode = createSelector(
+  [getAgencyPolicies], 
+  policies => {
+    if (!Array.isArray(policies) || !policies.length) return defaultArr;
+
+    return policies.map(p => { 
+      const { policyHolders, property: { physicalAddress: { address1,address2, state, city, zip} } } = p;
+      return { 
+        policyNumber: p.policyNumber,
+        companyCode: p.companyCode,
+        state: p.state,
+        product: p.product,
+        propertyAddress: `${address1}, ${address2 ? `${address2},` : ''} ${city}, ${state} ${zip}`,
+        policyHolder1: `${policyHolders[0].firstName} ${policyHolders[0].lastName}` ,
+        effectiveDate: formattedDate(p.effectiveDate),
+        policyVersion: p.policyVersion,
+        agencyCode: p.agencyCode,
+        agentCode: p.agentCode
+      }
+    });
+  }
+);
+
+export const getPolicyNumberList = createSelector(
+  [getAgencyPolicies], 
+  policies => {
+    if (!Array.isArray(policies) || !policies.length) return defaultArr;
+    return policies.map(p => { return { answer: p.policyNumber, label: p.policyNumber }})
+    ; 
+  }
+);
+
 

@@ -10,6 +10,8 @@ const getAgents = state => state.agencyState.agents;
 
 const getOrphanedAgents = state => state.agencyState.orphans;
 
+const getAgentListData = state => state.agencyState.agentList;
+
 export const getAgencyList = createSelector(
   [getAgencies],
   (agencies) => {
@@ -41,6 +43,17 @@ export const getOrphanedAgentsList = createSelector(
     return orphans.map(o => ({
       displayText: `${o.firstName} ${o.lastName}`,
       ...o
+    }));
+  }
+);
+
+export const getAgentsListForTransfer = createSelector(
+  [getAgentListData],
+  (agents) => {
+    if (!agents || !Array.isArray(agents)) return [];
+    return agents.map(o => ({
+      label: `${o.firstName} ${o.lastName}`,
+      answer: o.agentCode
     }));
   }
 );
@@ -129,5 +142,17 @@ export const getSortedAgents = createSelector(
 
     return agents.filter(agent => agent.agencies.some(agency => Number(agency.branchCode) === Number(branchCode)))
     .sort((a, b) => (a.firstName.localeCompare(b.firstName)));
+  }
+);
+
+export const getAgenciesList = createSelector(
+  [getAgencies],
+  (agencies) => {
+    console.log(agencies)
+    if (!agencies || !Array.isArray(agencies)) return [];
+    return agencies.map(o => ({
+      answer: o.agencyCode,
+      label: `${o.displayName}`
+    }));
   }
 );

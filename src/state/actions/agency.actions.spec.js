@@ -310,5 +310,56 @@ describe('Test Agency Actions', () => {
         expect(store.getActions()[0].type).toEqual(types.SET_AGENTS_LIST);
       });
   });
+
+  it('should call transferPoliciesRequest', () => {
+    const mockAdapter = new MockAdapter(axios);
+    const transfers = [
+        {
+          "policyNumbers": [
+            "12-1014449-01"
+          ],
+          "agencyCodeTo": 20423,
+          "agentCodeTo": 60447,
+          "agencyCodeFrom": 20000,
+          "agentCodeFrom": 60000
+        }
+      ];
+
+    const transferConfig = {
+      "exchangeName": "harmony",
+      "routingKey": "harmony.agency.startBoBTransfers",
+      "data": {
+        transfers
+      }
+    };
+
+    const axiosOptions = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      url: `${process.env.REACT_APP_API_URL}/svc?transferPoliciesToAgent`,
+      data: transferConfig
+    };
+
+    mockAdapter.onPost(axiosOptions.url, axiosOptions.data).reply(200, {
+      data: { message: 'Ok'}
+    });
+
+    return agencyActions.transferPoliciesToAgent(transfers)(store.dispatch)
+      .then((result) => {
+        expect(result.data.message).toEqual('Ok');
+      });
+  });
+
+
+  it('should call clearAgentList', () => {
+    return agencyActions.clearAgentList()(store.dispatch)
+      .then(() => {
+        expect(store.getActions()[0].type).toEqual(types.SET_AGENTS_LIST);
+        expect(store.getActions()[0].agentList).toEqual([]);
+      });
+  });
+  
 });
 

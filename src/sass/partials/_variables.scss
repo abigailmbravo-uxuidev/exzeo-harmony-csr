@@ -24,6 +24,15 @@
     @include animation('fade-in .5s 1');
 }
 
+//fade out animation
+@include keyframes(fade-out) {
+  0% { opacity: 1; }
+  100% { opacity: 0; }
+}
+.fade-out {
+    @include animation('fade-out .5s 1');
+}
+
 @mixin _assert-ascending($map, $map-name) {
   $prev-key: null;
   $prev-num: null;
@@ -673,6 +682,6 @@ textarea:-webkit-autofill:focus,
 select:-webkit-autofill,
 select:-webkit-autofill:hover,
 select:-webkit-autofill:focus {
-  transition: background-color 5000s ease-in-out 0s;
   -webkit-box-shadow: 0 0 0px 1000px $yellow-lighten-06 inset;
+  transition: background-color 5000s ease-in-out 0s;
 }
