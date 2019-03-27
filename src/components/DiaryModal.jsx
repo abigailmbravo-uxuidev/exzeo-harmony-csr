@@ -5,7 +5,7 @@ import { Field, reduxForm } from 'redux-form';
 import { Date, Select, validation, Loader, TextArea } from '@exzeo/core-ui';
 import classNames from 'classnames';
 
-import { REASONS, REASONS_DATA } from '../constants/diaries';
+import { REASONS, REASONS_DATA, USE_ENITY_END_DATE } from '../constants/diaries';
 import { addDate } from '../utilities/diaries';
 import { submitDiary } from '../state/actions/diary.actions';
 import { toggleDiary, toggleMinimizeDiary } from '../state/actions/ui.actions';
@@ -64,7 +64,7 @@ export class DiaryModal extends Component {
     }
     change('reason', defaultData.reason);
 
-    if (value === REASONS_DATA.renewal_processing.answer) {
+    if (USE_ENITY_END_DATE.includes(value)) {
       // need to get next renewal date
       change('due', addDate(defaultData.daysFromDueDate, entityEndDate));
     } else {

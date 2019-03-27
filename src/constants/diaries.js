@@ -55,6 +55,7 @@ export const REASONS_DATA = {
   }
 };
 
+export const USE_ENITY_END_DATE = [REASONS_DATA.renewal_processing.answer, REASONS_DATA.estate.answer];
 
 export const STATUS_ANSWERS = [
   { answer: 'true', label: 'Open' },
