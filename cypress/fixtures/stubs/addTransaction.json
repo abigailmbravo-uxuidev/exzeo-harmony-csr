@@ -1,0 +1,10 @@
+{
+  "status": 200,
+  "message": "Success",
+  "result": {
+    "status": {
+      "code": 1,
+      "displayText": "Full Payment Received"
+    }
+  }
+}

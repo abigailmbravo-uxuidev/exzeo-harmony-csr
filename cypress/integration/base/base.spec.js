@@ -1,5 +1,45 @@
+import _ from 'lodash'; //eslint-disable-line
+import {
+  navNewQuote,
+  navCoverage,
+  navUnderwriting,
+  navAdditionalInterests,
+  navMailingBilling,
+  navNotesFiles,
+  navSummary,
+  navApplication,
+  navDocusign
+} from '../../helpers';
+import stubAllRoutes from '../../support/stubAllRoutes';
+import user from '../../fixtures/stockData/user.json';
+import pH1 from '../../fixtures/stockData/pH1.json';
+import underwritingData from '../../fixtures/stockData/underwriting.json';
+
 describe('Base Path', () => {
+  const { address1, address2, city, zip, country, state } = user;
+
+  before(() => {
+    stubAllRoutes(true);
+    cy.login();
+  });
+
   it('Navigate through base app', () => {
-    cy.workflow();
+    navNewQuote(address1);
+    const coverageRes = [
+      'data.previousTask.value.result.policyHolders', [{
+        firstName: pH1.pH1FirstName,
+        lastName: pH1.pH1LastName,
+        primaryPhoneNumber: pH1.pH1phone,
+        emailAddress: pH1.pH1email
+      }]
+    ];
+    navCoverage(pH1, coverageRes, true);
+    navUnderwriting(underwritingData, undefined, true);
+    navAdditionalInterests();
+    navMailingBilling(undefined, true);
+    navNotesFiles();
+    navSummary();
+    navApplication();
+    navDocusign();
   });
 });
