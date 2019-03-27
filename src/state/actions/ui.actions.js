@@ -13,3 +13,17 @@ export function toggleDiary(diaryMeta = {}) {
     diaryMeta
   };
 }
+
+export function toggleMinimizeNote(minimizeNote = false) {
+  return {
+    type: types.TOGGLE_MINIMIZE_NOTE,
+    minimizeNote
+  };
+}
+
+export function toggleMinimizeDiary(minimizeDiary = false) {
+  return {
+    type: types.TOGGLE_MINIMIZE_DIARY,
+    minimizeDiary
+  };
+}

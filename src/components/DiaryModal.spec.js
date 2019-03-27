@@ -14,9 +14,10 @@ describe('Test DiaryModal component', () => {
     submitting: false,
     user: { profile: { given_name: 'test', family_name: 'testing' } },
     handleSubmit: x => x,
-    setAppErrorAction: x => x,
-    toggleDiaryAction: x => x,
-    submitDiaryAction: x => x
+    setAppError: x => x,
+    toggleDiary: x => x,
+    submitDiary: x => x,
+    toggleMinimizeDiary: x => x
   };
   it('renders without crashing', () => {
     const wrapper = shallow(<DiaryModal {...props} />);
