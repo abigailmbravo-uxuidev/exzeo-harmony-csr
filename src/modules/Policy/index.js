@@ -97,7 +97,7 @@ export class Policy extends React.Component {
     );
   }
 
-  changeEffectiveDate = (data) => {
+  changeEffectiveDate = async (data) => {
     const {
       zipCodeSettings,
       appState,
@@ -108,11 +108,10 @@ export class Policy extends React.Component {
       startWorkflow
     } = this.props;
 
+    setAppState(appState.modelName, appState.instanceId, { ...appState.data, submitting: true });
     const effectiveDateUTC = moment.tz(moment.utc(data.effectiveDate).format('YYYY-MM-DD'), zipCodeSettings.timezone).format();
-    const workflowId = appState.instanceId;
-    setAppState(appState.modelName, workflowId, { ...appState.data, isSubmitting: true });
+    const result = await startWorkflow('effectiveDateChangeModel', { policyNumber: policy.policyNumber, policyID: policy.policyID });
 
-    startWorkflow('effectiveDateChangeModel', { policyNumber: policy.policyNumber, policyID: policy.policyID }).then((result) => {
       const steps = [{
         name: 'saveEffectiveDate',
         data: {
@@ -121,13 +120,12 @@ export class Policy extends React.Component {
       }];
       const startResult = result.payload ? result.payload[0].workflowData.effectiveDateChangeModel.data : {};
 
-      setAppState(startResult.modelName, startResult.modelInstanceId, { ...appState.data, submitting: true });
-
-      batchCompleteTask(startResult.modelName, startResult.modelInstanceId, steps).then(() => {
-        setAppState(startResult.modelName, startResult.modelInstanceId, { ...appState.data, submitting: false, showEffectiveDateChangeModal: false });
-        getPolicy(policy.policyNumber);
-      });
-    });
+      await batchCompleteTask(startResult.modelName, startResult.modelInstanceId, steps);
+      setAppState(appState.modelName, appState.instanceId, { ...appState.data, submitting: true });
+      //This gets scheduled so the status may not be changed yet when calling getPolicy. Reference HAR-5228
+      await new Promise(resolve => setTimeout(resolve, 3000));
+      await getPolicy(policy.policyNumber);
+      setAppState(startResult.modelName, startResult.modelInstanceId, { ...appState.data, submitting: false, showEffectiveDateChangeModal: false });
   };
 
   reinstatePolicySubmit = (data) => {
