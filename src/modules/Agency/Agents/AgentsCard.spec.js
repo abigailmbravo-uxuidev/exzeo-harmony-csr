@@ -8,7 +8,8 @@ describe('Testing AgentsCard component', () => {
     const props = {
       getAgency: x => x,
       handleSwitchAOR() {},
-      handleEditAgent() {}
+      handleEditAgent() {},
+      handleRemoveAgent() {}
     };
     const wrapper = shallow(<AgentsCard
       {...props}
