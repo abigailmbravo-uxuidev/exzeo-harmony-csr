@@ -8,19 +8,33 @@ import { getListOfZipCodes, getZipCodeSettings } from '../../../state/selectors/
 import Address from './Address';
 
 export class AddressGroup extends Component {
-  normalizeSameAsMailing = section => (value, pv, av) => {
-    const { changeField } = this.props;
 
-    if (section === 'physicalAddress' || !av.sameAsMailing) return value;
-    changeField('sameAsMailing', false);
-    this.handleStateAndZip('', av.physicalAddress.state);
+  getFieldPath = (path) => {
+    const { parentFormGroup } = this.props;
+    if(!parentFormGroup) return path;
+    return `${parentFormGroup}.${path}`;
+  }
+
+  getFormGroupPath = (allValues) => {
+    const { parentFormGroup } = this.props;
+    if(!parentFormGroup) return allValues;
+    return allValues[parentFormGroup];
+  }
+
+  normalizeSameAsMailing = section => (value, pv, av) => {
+    const { changeField, parentFormGroup } = this.props;
+
+    const formValues = this.getFormGroupPath(av);
+
+    if (section === 'physicalAddress' || !formValues.sameAsMailing) return value;
+    changeField(this.getFieldPath('sameAsMailing'), false);
+    this.handleStateAndZip('', formValues.physicalAddress.state);
     return value;
   };
 
   filterTerritoryManager = (state, county) => {
     const { territoryManagers } = this.props;
-    const selectedTerritoryManager = territoryManagers
-      .find((tm) => {
+    const selectedTerritoryManager = territoryManagers.find((tm) => {
         const { states } = tm;
         if (states && states.some((s) => {
           const { counties } = s;
@@ -38,9 +52,9 @@ export class AddressGroup extends Component {
   }
 
   setTerritoryManager = (selectedZip) => {
-    this.props.changeField('physicalAddress.county', selectedZip.county);
-    this.props.changeField('physicalAddress.zip', selectedZip.zip);
-    this.props.changeField('physicalAddress.state', selectedZip.state);
+    this.props.changeField(this.getFieldPath('physicalAddress.county'), selectedZip.county);
+    this.props.changeField(this.getFieldPath('physicalAddress.zip'), selectedZip.zip);
+    this.props.changeField(this.getFieldPath('physicalAddress.state'), selectedZip.state);
 
     const tm = this.filterTerritoryManager(selectedZip.state, selectedZip.county);
     if (tm) {
@@ -54,20 +68,20 @@ export class AddressGroup extends Component {
       const selectedZip = zipCodes[0];
       this.setTerritoryManager(selectedZip);
     } else {
-      this.props.changeField('physicalAddress.county', '');
+      this.props.changeField(this.getFieldPath('physicalAddress.county'), '');
     }
   }
 
   handleSameAsMailing = (value, previousValue, allValues) => {
     const { changeField } = this.props;
-    const { mailingAddress } = allValues;
+    const { mailingAddress } = this.getFormGroupPath(allValues);
     if (!mailingAddress) return value;
     if (value) {
-      changeField('physicalAddress.address1', mailingAddress.address1);
-      changeField('physicalAddress.address2', mailingAddress.address2);
-      changeField('physicalAddress.city', mailingAddress.city);
-      changeField('physicalAddress.state', mailingAddress.state);
-      changeField('physicalAddress.zip', mailingAddress.zip);
+      changeField(this.getFieldPath('physicalAddress.address1'), mailingAddress.address1);
+      changeField(this.getFieldPath('physicalAddress.address2'), mailingAddress.address2);
+      changeField(this.getFieldPath('physicalAddress.city'), mailingAddress.city);
+      changeField(this.getFieldPath('physicalAddress.state'), mailingAddress.state);
+      changeField(this.getFieldPath('physicalAddress.zip'), mailingAddress.zip);
 
       this.handleStateAndZip(mailingAddress.zip, mailingAddress.state);
     }
@@ -150,7 +164,8 @@ export class AddressGroup extends Component {
 AddressGroup.defaultProps = {
   listOfZipCodes: [],
   isOptional: false,
-  isAgency: false
+  isAgency: false,
+  parentFormGroup: ''
 };
 
 const mapStateToProps = state => ({
