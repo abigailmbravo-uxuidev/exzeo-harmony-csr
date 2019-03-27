@@ -127,6 +127,7 @@ describe('Test Agency Actions', () => {
       expect(store.getActions()).toEqual(stateObj);
     });
 
+
     it('Should call dispatch on addAgent', async () => {
       const agent = { agentCode: '1234' };
       await store.dispatch(agencyActions.addAgent(agent));
