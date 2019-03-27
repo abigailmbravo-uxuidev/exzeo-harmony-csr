@@ -40,7 +40,6 @@ function setAgents(state, action) {
   };
 }
 
-
 function setAgentList(state, action) {
   return {
     ...state,

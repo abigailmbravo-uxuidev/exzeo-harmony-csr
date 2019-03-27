@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { Loader } from '@exzeo/core-ui';
 
 import ContactAddress from '../ContactAddress';
-import { getAgency, getAgentList } from '../../state/actions/agency.actions';
+import { getAgency, getAgentsByAgencyCode } from '../../state/actions/agency.actions';
 import normalizePhone from '../Form/normalizePhone';
 import Footer from '../Common/Footer';
 import TransferAOR from './TransferAOR';
@@ -13,10 +13,10 @@ export class PolicyholderAgent extends Component {
   state = { showTransferAOR: false };
 
   componentDidMount() {
-    const { getAgencyAction, getAgentListAction, policy } = this.props;
+    const { getAgencyAction, getAgentsByAgencyCode, policy } = this.props;
 
     if (policy && policy.companyCode && policy.state && policy.agencyCode) {
-      getAgentListAction(policy.companyCode, policy.state);
+      getAgentsByAgencyCode(policy.agencyCode);
       getAgencyAction(policy.agencyCode);
     }
   }
@@ -191,5 +191,5 @@ const mapStateToProps = state => ({
 
 export default connect(mapStateToProps, {
   getAgencyAction: getAgency,
-  getAgentListAction: getAgentList
+  getAgentsByAgencyCode
 })(PolicyholderAgent);
