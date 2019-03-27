@@ -62,7 +62,7 @@ export class Agency extends Component {
           <aside className="content-panel-left">
             <AgencySideNav agencyCode={agencyCode} location={location} branchCode={branchCode} match={match} />
           </aside>
-          <div className="content-wrapper">
+          <div className="content-wrapper" data-test="agency-links">
             <Route exact path="/agency/new/0" render={CreateRender} />
             <Route exact path={`/agency/${agencyCode}/${branchCode}/overview`} render={OverviewRender(branchCode, agencyCode)} />
             <Route exact path={`/agency/${agencyCode}/${branchCode}/contracts`} render={ContractsRender} />

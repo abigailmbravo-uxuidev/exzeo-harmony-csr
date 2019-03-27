@@ -94,7 +94,7 @@ export class Contracts extends Component {
           <div className="scroll">
             <div className="form-group survey-wrapper" role="group">
               <TaxDetail agency={agency} />
-              <section>
+              <section data-test="licenses">
                 <h3>Licenses</h3>
                 {Array.isArray(agency.licenses) && agency.licenses.map((license, index) => (
                   <LicenseCard
@@ -113,7 +113,7 @@ export class Contracts extends Component {
                   <hr />
                 </div>
               </section>
-              <section>
+              <section data-test="contracts">
                 <h3>Contracts</h3>
                 {Array.isArray(agency.contracts) && agency.contracts.map((contract, index) => (
                   <ContractCard

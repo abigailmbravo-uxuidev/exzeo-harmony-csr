@@ -22,7 +22,7 @@ export const AgentsCard = ({
           <h4><span className="agent-code">{agent.agentCode}</span> | <span className="agent-name">{`${agent.firstName} ${agent.lastName}`}</span>
           { licenses.map(l =>(<React.Fragment> | <span className="agent-license">{l.licenseNumber}</span></React.Fragment>)) }
           </h4>
-          <div className="contact-address">
+          <div className="contact-address" data-test="agent-address">
             {mailingAddress.address1},&nbsp;
             {mailingAddress.address2}{mailingAddress.address2 ? ', ' : ' '}
             {mailingAddress.city},&nbsp;
@@ -32,7 +32,7 @@ export const AgentsCard = ({
               <span className="additional-data status"><label>STATUS:&nbsp;</label>{agent.status}</span>
             }
           </div>
-          <div className="contact-methods">
+          <div className="contact-methods" data-test="agent-contact">
             {agent.primaryPhoneNumber &&
               <p className="phone">
                 <i className="fa fa-phone-square" />

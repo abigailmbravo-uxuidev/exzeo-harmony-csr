@@ -80,7 +80,7 @@ export class SideNav extends React.Component {
           <ul>
             {(String(branchCode) === '0' && agencyCode !== 'new') &&
             <React.Fragment>
-              <li key="newBranch" >
+              <li key="newBranch" data-test="new-branch">
                 <NavLink
                   to={`/agency/${agencyCode}/${branchCode}/new`}
                   tabIndex="0"
@@ -92,7 +92,7 @@ export class SideNav extends React.Component {
             </React.Fragment>
             }
             {(branchesList.length > 1 && agencyCode !== 'new') &&
-            <li key="branch">
+            <li key="branch" data-test="branch">
               <Field
                 dataTest="selectedBranch"
                 name="selectedBranch"

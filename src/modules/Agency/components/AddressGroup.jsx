@@ -112,7 +112,7 @@ export class AddressGroup extends Component {
 
     return (
       <section className={`${isAgency ? 'agency-address' : 'agent-address'}`}>
-        <div className="agency-mailing-address">
+        <div className="agency-mailing-address" data-test="agency-mailing-address">
           <h4>Mailing Address</h4>
           <FormSection name="mailingAddress">
             <Address
@@ -122,14 +122,14 @@ export class AddressGroup extends Component {
               section="mailingAddress" />
           </FormSection>
         </div>
-        <div className="agency-physical-address">
+        <div className="agency-physical-address" data-test="agency-physical-address">
           <h4>Physical Address
             <Field
               name="sameAsMailing"
               component="input"
               id="sameAsMailing"
               type="checkbox"
-              data-test="sameAsMailing"
+              dataTest="sameAsMailing"
               normalize={this.handleSameAsMailing} />
             <label htmlFor="sameAsMailing">Same as Mailing Address</label>
           </h4>
