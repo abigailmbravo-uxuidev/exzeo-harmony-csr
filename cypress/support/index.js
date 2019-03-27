@@ -15,6 +15,7 @@
 
 import './globalHooks';
 import './login';
+import './overwrites';
 import './persistLocalStorage';
 import './stubbing';
 import './utils';

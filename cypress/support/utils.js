@@ -15,8 +15,3 @@ Cypress.Commands.add('findDataTag', (name, { timeout = 15000, ...rest } = {}) =>
  */
 Cypress.Commands.add('clickSubmit', (form = 'body') =>
   cy.get(form).within(() => cy.get('[data-test="submit"]:not([disabled])').click({ force: true })));
-
-/**
- * Navigates to the base route
- */
-Cypress.Commands.add('home', () => cy.visit(''));

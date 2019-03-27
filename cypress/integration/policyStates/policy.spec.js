@@ -21,7 +21,7 @@ describe('Policy: Policy States + Effective/Cancellation Date', () => {
   ];
 
   const goToBilling = (home = true) => {
-    if (home) { cy.home(); }
+    if (home) { cy.visit(''); }
 
     cy.clickSubmit('#SearchBar')
       .findDataTag('policy-list').find('> div section ul li > a').then($a => {
