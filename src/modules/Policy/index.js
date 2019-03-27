@@ -114,7 +114,6 @@ export class Policy extends React.Component {
       startWorkflow
     } = this.props;
 
-    setAppState(appState.modelName, appState.instanceId, { ...appState.data, submitting: true });
     const effectiveDateUTC = moment.tz(moment.utc(data.effectiveDate).format('YYYY-MM-DD'), zipCodeSettings.timezone).format();
 
     const result = await startWorkflow('effectiveDateChangeModel', { policyNumber: policy.policyNumber, policyID: policy.policyID });
