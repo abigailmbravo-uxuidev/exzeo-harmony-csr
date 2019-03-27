@@ -23,17 +23,17 @@ describe('Testing Contracts component', () => {
     const wrapper = shallow(<Contracts {...props} agency={mockAgency} />);
     const instance = wrapper.instance();
     
-    instance.toggleLicense(1)();
+    instance.toggleLicense(1);
     expect(instance.state.licenseIndex).toBe(1);
 
-    instance.toggleLicense()();
-    expect(instance.state.licenseIndex).toBe(undefined);
+    instance.toggleLicense(null);
+    expect(instance.state.licenseIndex).toBe(null);
 
-    instance.toggleContract(1)();
+    instance.toggleContract(1);
     expect(instance.state.contractIndex).toBe(1);
 
-    instance.toggleContract()();
-    expect(instance.state.contractIndex).toBe(undefined);
+    instance.toggleContract(null);
+    expect(instance.state.contractIndex).toBe(null);
   });
 
   it('mergeData should add', () => {

@@ -1,7 +1,8 @@
 import React from 'react';
 import moment from 'moment';
+import { Button } from '@exzeo/core-ui';
 
-export const LicenseCard = ({ license, editLicense }) => (
+export const LicenseCard = ({ license, editLicense, deleteLicense, canDelete }) => (
   <div className="license card">
     <div className="license-title" data-test="license-title">
       <i className="fa fa-file-text-o" />
@@ -16,13 +17,20 @@ export const LicenseCard = ({ license, editLicense }) => (
       </div>
     </div>
     <div className="license-actions">
-      <button
-        className="btn btn-link btn-sm"
-        dataTest="edit-license"
+      {canDelete && 
+        <Button
+        customClass="btn btn-link btn-sm"
+        onClick={deleteLicense}
+        dataTest="delete-contract">
+          <i className="fa fa-trash" />Delete
+        </Button>
+      }
+      <Button
+        customClass="btn btn-link btn-sm"
         onClick={editLicense}
-      >
-      <i className="fa fa-pencil-square" />Edit
-      </button>
+        dataTest="delete-contract">
+          <i className="fa fa-pencil-square" />Edit
+      </Button>
     </div>
   </div>);
 
