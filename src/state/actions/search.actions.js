@@ -225,7 +225,6 @@ export async function fetchQuotes({
  * @param policyStatus
  * @param currentPage
  * @param pageSize
- * @param resultStart
  * @param sortBy
  * @param sortDirection
  * @param state
@@ -242,7 +241,6 @@ export async function fetchPolicies({
   policyStatus,
   currentPage,
   pageSize,
-  resultStart,
   sortBy,
   sortDirection,
   state
@@ -250,7 +248,7 @@ export async function fetchPolicies({
   const config = {
     service: 'policy-data',
     method: 'GET',
-    path: `/transactions?companyCode=${companyCode}&state=${state}&product=HO3&policyNumber=${policyNumber}&firstName=${firstName}&lastName=${lastName}&propertyAddress=${address}&page=${currentPage}&pageSize=${pageSize}&resultStart=${resultStart}&sort=${sortBy}&sortDirection=${sortDirection}&effectiveDate=${effectiveDate}&agencyCode=${agencyCode}&status=${policyStatus}`
+    path: `/transactions?companyCode=${companyCode}&state=${state}&product=HO3&policyNumber=${policyNumber}&firstName=${firstName}&lastName=${lastName}&propertyAddress=${address}&page=${currentPage}&pageSize=${pageSize}&sort=${sortBy}&sortDirection=${sortDirection}&effectiveDate=${effectiveDate}&agencyCode=${agencyCode}&status=${policyStatus}`
   };
 
   try {
@@ -477,7 +475,6 @@ export function handlePolicySearch(data) {
       currentPage: setPageNumber(data.currentPage, data.isNext),
       sortBy: data.sortBy,
       sortDirection: data.sortBy === 'policyNumber' ? 'desc' : 'asc',
-      resultStart: 60,
       pageSize: RESULTS_PAGE_SIZE,
       companyCode: DEFAULT_SEARCH_PARAMS.companyCode,
       state: DEFAULT_SEARCH_PARAMS.state
