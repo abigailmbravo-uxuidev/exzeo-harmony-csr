@@ -36,7 +36,7 @@ const DiaryExpandColumns = ({ diaries }) => {
 const DIARY_STATUS = {
   pastDue: `OPEN | ${DUE_STATUS.pastDue}`,
   dueSoon: `OPEN | ${DUE_STATUS.dueSoon}`,
-  upComing: `OPEN |${DUE_STATUS.upComing}`,
+  upComing: `OPEN | ${DUE_STATUS.upComing}`,
   closed: 'CLOSED'
 };
 
