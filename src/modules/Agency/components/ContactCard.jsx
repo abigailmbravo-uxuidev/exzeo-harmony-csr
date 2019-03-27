@@ -1,4 +1,5 @@
 import React from 'react';
+import { normalize } from '@exzeo/core-ui';
 
 export const ContactCard = ({ contact, handleClick, isOfficer }) => (
   <div className="csr contact card">
@@ -26,6 +27,15 @@ export const ContactCard = ({ contact, handleClick, isOfficer }) => (
                   {contact.emailAddress}
                 </a>
               </p>
+              {contact.primaryPhoneNumber &&
+                <p className="phone">
+                  <i className="fa fa-phone-square" />
+                  <a href={`tel:${contact.primaryPhoneNumber}${contact.primaryPhoneNumberExtension ? `+${contact.primaryPhoneNumberExtension}` : ''}`}>
+                  {normalize.phone(contact.primaryPhoneNumber)} 
+                  {contact.primaryPhoneNumberExtension ? ` ext. ${contact.primaryPhoneNumberExtension}` : '' }
+                  </a>
+                </p>
+              }
             </div>
           </li>
         </ul>

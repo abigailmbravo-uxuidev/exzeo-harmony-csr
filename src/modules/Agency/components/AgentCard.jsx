@@ -33,7 +33,10 @@ export const AgentCard = ({ agent, handleSecondaryClick, handlePrimaryClick }) =
                 {agent.primaryPhoneNumber &&
                 <p className="phone" data-test="phone">
                   <i className="fa fa-phone-square" />
-                  <a href={`tel:${agent.primaryPhoneNumber}`}>{normalize.phone(agent.primaryPhoneNumber)}</a>
+                  <a href={`tel:${agent.primaryPhoneNumber}${agent.primaryPhoneNumberExtension ? `+${agent.primaryPhoneNumberExtension}` : ''}`}>
+                  {normalize.phone(agent.primaryPhoneNumber)} 
+                  {agent.primaryPhoneNumberExtension ? ` ext. ${agent.primaryPhoneNumberExtension}` : '' }
+                  </a>
                 </p>
               }
 
