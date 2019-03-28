@@ -6,28 +6,30 @@ import { Field, reduxForm } from 'redux-form';
 import { SelectInteger, SelectTypeAhead, Loader, validation } from '@exzeo/core-ui';
 
 import { callService } from '../../utilities/serviceRunner';
-import { getAgencies, fetchAgentsByAgencyCode } from '../../state/actions/agency.actions';
+import { fetchAgenciesByAgencyCodeOrName, fetchAgentsByAgencyCode } from '../../state/actions/agency.actions';
 import { getPolicy } from '../../state/actions/policy.actions';
 import { setAppError } from '../../state/actions/error.actions';
-import { getAgencyList, filterActiveAgentsList } from '../../state/selectors/agency.selector';
+import { filterAgenciesList, filterActiveAgentsList } from '../../state/selectors/agency.selector';
 
 export class TransferAOR extends Component {
   constructor(props) {
     super(props);
     this.filterActiveAgentsList = defaultMemoize(filterActiveAgentsList);
+    this.filterAgenciesList = defaultMemoize(filterAgenciesList);
   }
 
   state = {
     isLoading: false,
-    agents: []
+    agents: [],
+    agencies: []
   }
 
   async componentDidMount() {
-    const { getAgencies, initialize, companyCode, agencyCode, state } = this.props;
+    const { agencyCode } = this.props;
 
     try {
       this.setState({ isLoading: true });
-      await getAgencies(companyCode, state);
+      await this.getAgenciesForAORTransfer(agencyCode);
       await this.getAgentsForAORTransfer(agencyCode);
 
     } catch (err) {
@@ -37,9 +39,21 @@ export class TransferAOR extends Component {
     }
   }
 
+
+  getAgenciesForAORTransfer = async (searchParam = '') => {
+    const { companyCode, state } = this.props;
+    const agencies = await fetchAgenciesByAgencyCodeOrName(companyCode, state, searchParam);
+    this.setState({ agencies: this.filterAgenciesList(agencies) });
+  }
+
   getAgentsForAORTransfer = async (agencyCode) => {
     const agents = await fetchAgentsByAgencyCode(agencyCode);
     this.setState({ agents: this.filterActiveAgentsList(agents) });
+  }
+
+  handleAgenciesFilter = (value) => {
+    this.getAgenciesForAORTransfer(value);
+    return value;
   }
 
   handleAgencyChange = (_, agencyCode) => {
@@ -69,8 +83,8 @@ export class TransferAOR extends Component {
   }
 
   render() {
-    const { handleSubmit, toggleModal, agencies, pristine } = this.props;
-    const { isLoading, agents } = this.state;
+    const { handleSubmit, toggleModal, pristine } = this.props;
+    const { isLoading, agents, agencies } = this.state;
 
     return (
       <div className="modal transfer-AOR-modal" style={this.modalStyle}>
@@ -91,6 +105,7 @@ export class TransferAOR extends Component {
                 answers={agencies}
                 validate={validation.isRequired}
                 onChange={this.handleAgencyChange}
+                onInputChange={this.handleAgenciesFilter}
               />
               <Field
                 label="Agent"
@@ -137,12 +152,10 @@ TransferAOR.propTypes = {
 };
 
 const mapStateToProps = (state, { agencyCode, agentCode }) => ({
-  agencies: getAgencyList(state),
   initialValues: { agencyCode, agentCode }
 });
 
 export default connect(mapStateToProps, {
-  getAgencies,
   getPolicy,
   setAppError
 })(reduxForm({
