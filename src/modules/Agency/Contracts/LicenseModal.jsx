@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { reduxForm, Field } from 'redux-form';
 import { isUnique } from '../utilities/validation';
-import { Input, Date, Select, validation, date } from '@exzeo/core-ui';
+import { Input, Date, Select, validation } from '@exzeo/core-ui';
 
 export const LicenseModal = (props) => {
   const {
@@ -56,9 +56,8 @@ export const LicenseModal = (props) => {
                 styleName="licenseEffectiveDate"
                 name="licenseEffectiveDate"
                 component={Date}
-                format={v => date.formatDate(v, date.FORMATS.SECONDARY)}
                 dataTest="licenseEffectiveDate"
-                validate={validation.isRequired} />
+                validate={[validation.isRequired, validation.isDate]} />
             </section>
           </div>
           <div className="card-footer">
@@ -88,4 +87,4 @@ LicenseModal.propTypes = {
   })
 };
 
-export default reduxForm({ form: 'LicenseModal' })(LicenseModal);
+export default reduxForm({ form: 'LicenseModal', enableReinitialize: true })(LicenseModal);

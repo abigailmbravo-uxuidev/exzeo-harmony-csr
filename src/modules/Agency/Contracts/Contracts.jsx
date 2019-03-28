@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Button } from '@exzeo/core-ui';
+import { Button, date } from '@exzeo/core-ui';
 
 import Footer from '../../../components/Common/Footer';
 
@@ -95,6 +95,10 @@ export class Contracts extends Component {
     this.toggleContract(null);
   };
 
+  getLicenseInitialValues = (agency) => {
+    
+  }
+
   render() {
     const { agency, listAnswers, listAnswersAsKey } = this.props;
     const {
@@ -129,7 +133,7 @@ export class Contracts extends Component {
             saveLicense={this.saveLicense}
             stateAnswers={listAnswersAsKey.US_states}
             closeModal={this.toggleLicense}
-            initialValues={agency.licenses[licenseIndex]}
+            initialValues={{ ...agency.licenses[licenseIndex], licenseEffectiveDate: date.formatDate(agency.licenses[licenseIndex] ? agency.licenses[licenseIndex].licenseEffectiveDate : '', date.FORMATS.SECONDARY)}}
             licenseNumbers={agency.licenses.map(l => l.licenseNumber)} />
         }
         {showContractModal &&
