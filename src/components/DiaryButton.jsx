@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Button } from '@exzeo/core-ui';
 
 const DiaryButton = ({ onToggleDiaries, showDiaries, openDiaryCount }) => (
-  <div className="header-toggle-wrapper">
+  <div className={openDiaryCount > 0 ? 'header-toggle-wrapper active-diaries' : 'header-toggle-wrapper'}>
     <Button
       onClick={onToggleDiaries}
       baseClass="link"

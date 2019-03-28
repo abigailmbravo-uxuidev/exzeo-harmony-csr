@@ -3,10 +3,10 @@ header {
   flex-grow: 0;
   flex-shrink: 0;
   justify-content: center;
+  padding: $padding $padding*2;
+  min-height: auto;
   width: 100%;
   height: auto;
-  min-height: auto;
-  padding: $padding $padding*2;
   border-bottom: 2px solid $white;
   background: $bright-blue-darken-04;
 
@@ -48,12 +48,13 @@ header {
         display: flex;
         align-items: center;
         flex-direction: column;
-        width: 3.5rem;
-        height: 3.75rem;
         margin-top: -($padding*2);
         margin-left: $padding;
         padding: 0;
+        width: 3.5rem;
+        height: 3.75rem;
         border-width: 0;
+
         @include transition(all 0.2s ease-in-out);
 
         .diary-btn-wrapper {
@@ -71,6 +72,7 @@ header {
           border-bottom: 1px solid $bright-blue;
           border-left: 1px solid $bright-blue;
           border-radius: 0 0 $btn-border-radius $btn-border-radius;
+
           @include transition(all 0.2s ease-in-out);
 
           &.panel-closed {
@@ -94,10 +96,11 @@ header {
             display: flex;
             align-items: center;
             justify-content: center;
+            margin-right: 0;
             width: 2rem;
             height: 2rem;
-            margin-right: 0;
             font-size: $font-size-h2;
+
             @include transition(all 0.2s ease-in-out);
 
             > span {
@@ -136,6 +139,29 @@ header {
           }
         }
       }
+
+      &.active-diaries {
+        button {
+          .diary-btn-wrapper {
+            &.panel-closed {
+              border-color: $red-darken-01;
+              background-color: $red-darken-01;
+
+              > i {
+                color: $white;
+
+                > span {
+                  color: $red-darken-01;
+                }
+              }
+
+              > span {
+                color: $white;
+              }
+            }
+          }
+        }
+      }
     }
 
     > nav {
@@ -147,8 +173,8 @@ header {
       flex: 1;
       flex-direction: row;
       justify-content: flex-end;
-      width: auto;
       padding: 0;
+      width: auto;
       border-width: 0;
       border-top-width: 0;
       background-color: transparent;
@@ -158,27 +184,28 @@ header {
         display: flex;
         align-items: center;
         justify-content: center;
-        height: 3.375rem;
         margin-left: 1rem;
         padding: 0 $padding;
-        white-space: nowrap;
-        text-decoration: none;
+        height: 3.375rem;
         color: $bright-blue;
-        font-size: $font-size-h6;
+        text-decoration: none;
+        white-space: nowrap;
         font-weight: $font-weight-bold;
+        font-size: $font-size-h6;
+
         @include transition(all 0.2s ease-in-out);
 
         &:hover {
-          text-decoration: none;
           color: $bright-blue-lighten-01;
+          text-decoration: none;
         }
 
         &.active {
           padding-top: 5px;
-          cursor: default;
-          color: $white;
-          color: $white;
           border-bottom: 5px solid $white;
+          color: $white;
+          color: $white;
+          cursor: default;
 
           &:hover {
             color: $white;
@@ -212,6 +239,7 @@ header {
         i {
           margin: 0;
           color: $white;
+
           @include transition(all 0.2s ease-in-out);
         }
 
@@ -243,9 +271,9 @@ header {
         justify-content: flex-start;
         width: 100%;
         height: 4.75rem;
-        color: $white;
         border-bottom: 2px solid $white;
         background: $warm-gray-10;
+        color: $white;
 
         a {
           color: $bright-blue-lighten-02;
@@ -265,8 +293,8 @@ header {
           &.agencyDetails {
             display: flex;
             align-items: center;
-            width: 12rem;
             padding-right: 1rem;
+            width: 12rem;
             text-align: center;
 
             h4 {
@@ -302,10 +330,11 @@ header {
         flex-shrink: 0;
         width: 100%;
         height: 5.25rem;
-        color: $white;
         border-bottom: 2px solid $white;
         background: $warm-gray-10;
+        color: $white;
         column-gap: $padding*2;
+
         grid-template-columns: 12rem max-content max-content max-content max-content max-content max-content 1fr 7.5rem;
 
         section {
@@ -319,9 +348,10 @@ header {
                 display: flex;
                 align-items: baseline;
                 color: $yellow-lighten-05;
-                font-size: $font-size-sm;
                 font-weight: $font-weight-normal;
+                font-size: $font-size-sm;
                 line-height: $headings-line-height;
+
                 -webkit-font-smoothing: antialiased;
               }
 
@@ -334,6 +364,7 @@ header {
                 hyphens: auto;
                 font-size: 14px;
                 line-height: 1.02;
+
                 -webkit-font-smoothing: antialiased;
                 -ms-hyphens: auto;
               }
@@ -343,10 +374,10 @@ header {
           &.policyDetails,
           &.quoteDetails {
             display: flex;
-            width: 12rem;
             padding: ($padding/2) ($padding/2) ($padding/2) ($padding*2);
-            color: $yellow-lighten-05;
+            width: 12rem;
             background-color: rgba($black, .2);
+            color: $yellow-lighten-05;
 
             dl {
               display: flex;
@@ -361,10 +392,11 @@ header {
                     display: flex;
                     margin: 0;
                     padding: 0;
-                    text-decoration: underline;
                     color: $bright-blue-lighten-02;
+                    text-decoration: underline;
                     font-size: $font-size-sm;
                     line-height: 1;
+
                     @include hover {
                       color: $bright-blue-lighten-01;
                     }
@@ -375,10 +407,10 @@ header {
                     &.btn-white {
                       display: inline-flex;
                       margin-left: $padding/2;
-                      cursor: help;
-                      text-decoration: none;
                       color: $white;
+                      text-decoration: none;
                       font-size: $font-size-xs;
+                      cursor: help;
 
                       i {
                         color: $bright-blue;
@@ -407,6 +439,7 @@ header {
 
           &.county {
             max-width: 10rem;
+
             grid-column: 5;
             grid-row: 1;
           }
@@ -418,23 +451,27 @@ header {
 
           &.constructionType {
             min-width: 7rem;
+
             grid-column: 7;
             grid-row: 1;
           }
 
           &.effectiveDate {
             margin-top: 2.625rem;
+
             grid-column: 5;
             grid-row: 1;
           }
 
           &.quoteEffectiveDate {
             min-width: 5rem;
+
             grid-column: 8;
           }
 
           &.cancellation {
             margin-top: 2.625rem;
+
             grid-column: 6 / span 2;
             grid-row: 1;
           }
@@ -442,17 +479,19 @@ header {
           &.finalPayment {
             margin-top: 2.625rem;
             margin-left: 6.375rem;
+
             grid-column: 7;
             grid-row: 1;
           }
 
           &.premium {
             align-self: flex-start;
-            min-width: 7.5rem;
             margin: ($padding/2) 0;
             padding: $padding;
-            color: $warm-gray-12;
+            min-width: 7.5rem;
             background: $warm-gray-02;
+            color: $warm-gray-12;
+
             grid-column: 9;
             grid-row: 1;
 
