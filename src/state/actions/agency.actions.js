@@ -233,7 +233,7 @@ export async function fetchAgenciesByAgencyCodeOrName(companyCode, state, search
 
   const onlyNumbers = new RegExp('^[0-9]+$');
   if(onlyNumbers.test(searchParam)) agencyCode = searchParam;
-  else displayName = searchParam;
+  else displayName = encodeURI(searchParam);
 
   const config = {
     service: 'agency',
