@@ -18,7 +18,6 @@ export const filterActiveAgentsList = agents => {
 }
 
 export const filterAgenciesList = agencies => {
-  console.log(agencies)
   return (agencies || []).filter(a => a.status !== 'Cancel').map(a => ({
     answer: a.agencyCode,
     label: `${a.agencyCode}: ${a.displayName}`
@@ -30,10 +29,7 @@ export const getAgencyList = createSelector(
   [getAgencies],
   (agencies) => {
     if (!agencies || !Array.isArray(agencies)) return [];
-    const list = agencies.filter(a => a.status !== 'Cancel').map(a => ({
-      answer: a.agencyCode,
-      label: `${a.agencyCode}: ${a.displayName}`
-    }));
+    const list = filterAgenciesList(agencies);
     return list;
   }
 );
