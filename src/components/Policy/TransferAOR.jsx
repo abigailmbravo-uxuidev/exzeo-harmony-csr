@@ -3,7 +3,7 @@ import { defaultMemoize } from 'reselect';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Field, reduxForm } from 'redux-form';
-import { SelectInteger, SelectTypeAhead, Loader, validation } from '@exzeo/core-ui';
+import { SelectInteger, SelectTypeAhead, Loader, validation, Button } from '@exzeo/core-ui';
 
 import { callService } from '../../utilities/serviceRunner';
 import { fetchAgenciesByAgencyCodeOrName, fetchAgentsByAgencyCode } from '../../state/actions/agency.actions';
@@ -118,21 +118,19 @@ export class TransferAOR extends Component {
             </div>
             <div className="card-footer">
               <div className="btn-group">
-                <button
+                <Button
                   tabIndex="0"
-                  aria-label="reset-btn form-editBilling"
                   className="btn btn-secondary"
-                  type="button"
-                  onClick={toggleModal}>Cancel
-                </button>
-                <button
+                  label="Cancel"
+                  onClick={toggleModal}
+                  dataTest="aor-modal-cancel" />
+                <Button
                   tabIndex="0"
-                  aria-label="submit-btn form-editBilling"
                   className="btn btn-primary"
-                  disabled={pristine}
                   type="submit"
-                >Update
-                </button>
+                  label="Update"
+                  dataTest="aor-modal-submit"
+                  disabled={pristine} />
               </div>
             </div>
           </form>
