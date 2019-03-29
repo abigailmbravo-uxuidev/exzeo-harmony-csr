@@ -331,8 +331,6 @@ describe('Test Agency Actions', () => {
     mockAdapter.onPost(axiosOptions.url, axiosOptions.data).reply(200, {
       result: [mockAgency]
     });
-    agencyActions.getAgentList(store.dispatch);
-
     const response =  await agencyActions.fetchAgenciesByAgencyCodeOrName('TTIC', 'FL', '60000');
     expect(response).toEqual([mockAgency]);
   });
@@ -356,8 +354,6 @@ describe('Test Agency Actions', () => {
     mockAdapter.onPost(axiosOptions.url, axiosOptions.data).reply(200, {
       result: [mockAgency]
     });
-    agencyActions.getAgentList(store.dispatch);
-
     const response =  await agencyActions.fetchAgenciesByAgencyCodeOrName('TTIC', 'FL', 'TypTap');
     expect(response).toEqual([mockAgency]);
   });
@@ -381,8 +377,6 @@ describe('Test Agency Actions', () => {
     mockAdapter.onPost(axiosOptions.url, axiosOptions.data).reply(200, {
       result: [mockAgency]
     });
-    agencyActions.getAgentList(store.dispatch);
-
     const response =  await agencyActions.fetchAgenciesByAgencyCodeOrName('TTIC', 'FL', '123 Agency');
     expect(response).toEqual([mockAgency]);
   });
