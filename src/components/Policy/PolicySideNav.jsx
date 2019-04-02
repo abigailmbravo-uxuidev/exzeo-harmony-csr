@@ -114,6 +114,7 @@ export class SideNav extends React.Component {
             {this.state.showDocsForm &&
               <GenerateDocsForm
                 policyNumber={policy.policyNumber}
+                policyID={policy.policyID}
                 updateNotes={this.updateNotes(this.props)}
                 startWorkflow={actions.cgActions.startWorkflow}
                 errorHandler={actions.errorActions.setAppError} />

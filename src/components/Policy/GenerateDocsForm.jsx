@@ -1,23 +1,27 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import axios from 'axios';
-import { reduxForm, Field } from 'redux-form';
+import { Form, Field } from 'react-final-form';
 import moment from 'moment-timezone';
 import { Select, Loader, Button, validation } from '@exzeo/core-ui';
 
-
 const validate = values => (!values.documentType ? { documentType: 'Required' } : null);
-const documentTypeAnswers = [{ label: 'Policy Invoice', answer: 'policyInvoice' }];
+const documentTypeAnswers = [
+  { label: 'Full Policy Packet', answer: 'generateFullPolicyPacket' },
+  { label: 'Dec Page', answer: 'generateDecPage' },
+  { label: 'Policy Invoice', answer: 'policyInvoiceGenerator' }
+];
 
 export class GenerateDocsForm extends Component {
-  generateDoc = (data, dispatch, props) => {
+  generateDoc = (values) => {
     const {
-      errorHandler, policyNumber, updateNotes, startWorkflow
-    } = props;
-    return startWorkflow('policyInvoiceGenerator', { documentNumber: policyNumber }, false)
+      errorHandler, policyNumber, policyID, updateNotes, startWorkflow
+    } = this.props;
+    const model = values.documentType;
+    return startWorkflow(model, { policyNumber, policyID }, false)
       .then((result) => {
         if (window.location.pathname.includes('/notes')) updateNotes();
-        const fileUrl = result.workflowData.policyInvoiceGenerator.data.previousTask.value.result[0].fileUrl;
+        const fileUrl = result.workflowData[model].data.previousTask.value.result[0].fileUrl;
         const proxyUrl = `${process.env.REACT_APP_API_URL}/download`;
         const params = { url: fileUrl };
         return axios.get(proxyUrl, { responseType: 'blob', params });
@@ -41,24 +45,29 @@ export class GenerateDocsForm extends Component {
     const { handleSubmit, submitting } = this.props;
     return (
       <div className="fade-in">
-        {submitting && <Loader />}
-        <form onSubmit={handleSubmit(this.generateDoc)}>
-          <Field
-            name="documentType"
-            label="Document"
-            component={Select}
-            answers={documentTypeAnswers}
-            validate={validation.isRequired}
-            dataTest="documentType" />
+        <Form
+          onSubmit={this.generateDoc}
+          render={({ handleSubmit, submitting }) => (
+            <form onSubmit={handleSubmit}>
+              {submitting && <Loader />}
+              <Field
+                name="documentType"
+                label="Document"
+                component={Select}
+                answers={documentTypeAnswers}
+                validate={validation.isRequired}
+                dataTest="documentType" />
 
-          <Button
-            baseClass="primary"
-            size="small"
-            customClass="btn-block"
-            type="submit"
-            dataTest="doc-submit">Generate Doc
-          </Button>
-        </form>
+              <Button
+                baseClass="primary"
+                size="small"
+                customClass="btn-block"
+                type="submit"
+                dataTest="doc-submit">Generate Doc
+              </Button>
+            </form>
+          )}
+        />
       </div>
     );
   }
@@ -66,17 +75,10 @@ export class GenerateDocsForm extends Component {
 
 GenerateDocsForm.propTypes = {
   policyNumber: PropTypes.string.isRequired,
+  policyID: PropTypes.string.isRequired,
   updateNotes: PropTypes.func.isRequired,
   startWorkflow: PropTypes.func.isRequired,
   errorHandler: PropTypes.func.isRequired
 };
 
-export default reduxForm({
-  form: 'GenerateDocsForm',
-  initialValues: {
-    effectiveDate: moment.utc().format('YYYY-MM-DD')
-  },
-  validate,
-  enableReinitialize: true,
-  keepDirtyOnReinitialize: true
-})(GenerateDocsForm);
+export default GenerateDocsForm;
