@@ -265,7 +265,6 @@ export class NoteUploader extends Component {
                 uppy={this.uppy}
                 maxHeight={350}
                 proudlyDisplayPoweredByUppy={false}
-                metaFields={[{ id: 'name', name: 'Name', placeholder: 'file name' }]}
                 showProgressDetails
                 hideProgressAfterFinish />
             </div>
