@@ -12,11 +12,15 @@ const mapStateToProps = state => ({
   orphans: getOrphanedAgentsList(state),
   agency: state.agencyState.agency,
   initialValues: {
-    licenses: [{
-      state: '', license: '', licenseType: '', licenseEffectiveDate: '', appointed: false
-    }]
+    agentOfRecord: {
+      sameAsMailing: false,
+      licenses: [{
+        state: '', license: '', licenseType: '', licenseEffectiveDate: '', appointed: false
+      }]
+    }
   },
   sameAsMailingValue: selector(state, 'sameAsMailing'),
+  sameAsMailingAORValue: selector(state, 'agentOfRecord.sameAsMailing'),
   licenseValue: selector(state, 'licenses'),
   physicalStateValue: selector(state, 'physicalAddress.state'),
   physicalZipValue: selector(state, 'physicalAddress.zip'),

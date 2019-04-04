@@ -11,17 +11,16 @@ import Footer from '../../../components/Common/Footer';
 import AddressGroup from '../components/AddressGroup';
 
 import BranchDetails from './BranchDetails';
+import { DEFAULT_COUNTRY } from '../../../constants/address';
 
 export class CreateBranch extends Component {
   state = {
     showAddExistingAgentModal: false
   }
   handleCreateBranch = async (data, dispatch, props) => {
-    data.mailingAddress.country = {
-      code: 'USA',
-      displayText: 'United States of America'
-    };
-    data.agentOfRecord = this.props.agency.agentOfRecord;
+    data.mailingAddress.country = DEFAULT_COUNTRY;
+     data.agentOfRecord.status = 'Active';
+     data.agentOfRecord.mailingAddress.country = DEFAULT_COUNTRY;
     const branch = await this.props.createBranch(data, this.props.agency.agencyCode);
     history.push(`/agency/${this.props.agency.agencyCode}/${branch.branchCode}/overview`);
   };
@@ -60,6 +59,7 @@ export class CreateBranch extends Component {
       change,
       orphans,
       sameAsMailingValue,
+      sameAsMailingAORValue,
       listAnswersAsKey
     } = this.props;
 
@@ -87,11 +87,12 @@ export class CreateBranch extends Component {
                   <div className="agent-of-record">
                     <FormSection name="agentOfRecord">
                       <Agent />
+                      <AddressGroup parentFormGroup="agentOfRecord" sameAsMailingValue={sameAsMailingAORValue} changeField={change} isOptional />
                     </FormSection>
                   </div>
                   <div className="agency-license">
                     <FieldArray
-                      name="licenses"
+                      name="agentOfRecord.licenses"
                       stateAnswers={listAnswersAsKey.US_states}
                       component={License}
                       licenseValue={licenseValue}

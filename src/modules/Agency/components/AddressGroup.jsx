@@ -127,11 +127,11 @@ export class AddressGroup extends Component {
             <Field
               name="sameAsMailing"
               component="input"
-              id="sameAsMailing"
+              id={this.getFieldPath('sameAsMailing')}
               type="checkbox"
-              dataTest="sameAsMailing"
+              dataTest={this.getFieldPath('sameAsMailing')}
               normalize={this.handleSameAsMailing} />
-            <label htmlFor="sameAsMailing">Same as Mailing Address</label>
+            <label htmlFor={this.getFieldPath('sameAsMailing')}>Same as Mailing Address</label>
           </h4>
           <FormSection name="physicalAddress">
             <Address
