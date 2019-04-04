@@ -13,7 +13,7 @@ const mapStateToProps = state => ({
   agency: state.agencyState.agency,
   initialValues: {
     licenses: [{
-      state: '', license: '', licenseType: '', licenseEffectiveDate: ''
+      state: '', license: '', licenseType: '', licenseEffectiveDate: '', appointed: false
     }]
   },
   sameAsMailingValue: selector(state, 'sameAsMailing'),
