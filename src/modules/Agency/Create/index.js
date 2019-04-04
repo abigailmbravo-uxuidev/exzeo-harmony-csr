@@ -19,7 +19,7 @@ const mapStateToProps = state => ({
     agentOfRecord: {
       sameAsMailing: false,
       licenses: [{
-        state: '', license: '', licenseType: '', licenseEffectiveDate: ''
+        state: '', license: '', licenseType: '', licenseEffectiveDate: '', appointed: false
       }]
     }
   },
