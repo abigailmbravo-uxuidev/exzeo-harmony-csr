@@ -19,13 +19,12 @@ export class GenerateDocsForm extends Component {
     } = this.props;
     const model = values.documentType;
 
-     const label = documentTypeAnswers.find(doc => doc.answer === values.documentType)//.label;
-     console.log(label)
     return startWorkflow(model, { policyNumber, policyID }, false)
       .then((result) => {
         if (window.location.pathname.includes('/notes')) updateNotes();
         if (!result.workflowData && result.workflowData[model] && result.workflowData[model].data) {
-          errorHandler({ message: 'There was an error genrating the document' });
+          const documentName = documentTypeAnswers.find(doc => doc.answer === values.documentType).label;
+          errorHandler({ message: `There was an error genrating the ${documentName}` });
         }
         const fileUrl = result.workflowData[model].data.previousTask.value.result[0].fileUrl;
         const proxyUrl = `${process.env.REACT_APP_API_URL}/download`;
