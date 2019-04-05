@@ -53,8 +53,14 @@ export class Overview extends React.Component {
   }
 
   handleSwitchAOR = async (data) => {
-    const { agency: { agencyCode }, updateAgency } = this.props;
-    await updateAgency({ agencyCode, agentOfRecord: data.selectedAgentCode });
+    const { agency: { agencyCode, branches }, updateAgency, branchCode } = this.props;
+    if(branchCode > 0){
+      const branchData = [ ...branches ];
+      const branchIndex = branchData.findIndex(b => Number(b.branchCode) === Number(branchCode))
+      branchData[branchIndex].agentOfRecord = data.selectedAgentCode;
+      await updateAgency({ agencyCode, branches: branchData });
+    } 
+    else await updateAgency({ agencyCode, agentOfRecord: data.selectedAgentCode });
     this.onHandleToggleSwitchAgentOfRecordModal(null)();
   }
 
