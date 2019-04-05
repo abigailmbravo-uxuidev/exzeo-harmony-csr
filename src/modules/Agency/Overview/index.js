@@ -13,7 +13,7 @@ const mapStateToProps = (state, props) => {
   return {
     agencyBranchData: getAgencyBranchData(state, props.branchCode),
     agency: state.agencyState.agency,
-    agentOfRecord: getAgentOfRecord(state),
+    agentOfRecord: getAgentOfRecord(state, props.branchCode),
     addressInitialValues: getEditModalInitialValues(state, props.branchCode),
     agentsList: getAgentsList(state),
     territoryManagers: state.questions.territoryManagers

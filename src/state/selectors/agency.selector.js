@@ -74,16 +74,6 @@ export const getAgentsList = createSelector(
   }
 );
 
-
-export const getAgentOfRecord = createSelector(
-  [getAgency, getAgents],
-  (agency, agents) => {
-    if (!agency || !agency.agencyCode || !agents || !Array.isArray(agents)) return {};
-    const agentOfRecord = agents.filter(a => String(a.agentCode) === String(agency.agentOfRecord));
-    return Array.isArray(agentOfRecord) && agentOfRecord.length > 0 ? agentOfRecord[0] : {};
-  }
-);
-
 export const getBranchesList = createSelector(
   [getAgency],
   (agency) => {
@@ -137,6 +127,16 @@ export const getEditModalInitialValues = createSelector(
       ...branch,
       sameAsMailing: isEqual(physicalAddress, mailingAddress)
     };
+  }
+);
+
+export const getAgentOfRecord = createSelector(
+  [getAgencyBranchData, getAgents],
+  (agencyBranchData, agents) => {
+    console.log(agencyBranchData)
+    if (!agencyBranchData || !agencyBranchData.agentOfRecord || !agents || !Array.isArray(agents)) return {};
+    const agentOfRecord = agents.filter(a => String(a.agentCode) === String(agencyBranchData.agentOfRecord));
+    return Array.isArray(agentOfRecord) && agentOfRecord.length > 0 ? agentOfRecord[0] : {};
   }
 );
 
