@@ -57,7 +57,7 @@ export const LicenseModal = (props) => {
                 name="licenseEffectiveDate"
                 component={Date}
                 dataTest="licenseEffectiveDate"
-                validate={validation.isRequired} />
+                validate={[validation.isRequired, validation.isDateRange('1900','10000')]} />
             </section>
           </div>
           <div className="card-footer">

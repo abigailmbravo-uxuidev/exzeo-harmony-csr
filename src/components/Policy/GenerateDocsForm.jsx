@@ -22,7 +22,7 @@ export class GenerateDocsForm extends Component {
     return startWorkflow(model, { policyNumber, policyID }, false)
       .then((result) => {
         if (window.location.pathname.includes('/notes')) updateNotes();
-        if (!result.workflowData && result.workflowData[model] && result.workflowData[model].data) {
+        if (!result.workflowData || !result.workflowData[model] || !result.workflowData[model].data) {
           const documentName = documentTypeAnswers.find(doc => doc.answer === values.documentType).label;
           errorHandler({ message: `There was an error genrating the ${documentName}` });
         }
