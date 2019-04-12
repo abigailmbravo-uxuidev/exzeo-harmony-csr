@@ -80,6 +80,7 @@ const AgencyDetails = ({ agencyCodeDisabled }) => {
         label="EO Expiration Date"
         name="eoExpirationDate"
         dataTest="eoExpirationDate"
+        styleName="eoExpirationDate"
         component={Date}
         format={value => !value ? '' : date.formattedDate(value, 'YYYY-MM-DD')}
         validate={validation.isRequired} />
@@ -87,6 +88,7 @@ const AgencyDetails = ({ agencyCodeDisabled }) => {
         label="Branch Name"
         name="branchName"
         dataTest="branchName"
+        styleName="branchName"
         component={Input} />
       <hr />
       <Field
