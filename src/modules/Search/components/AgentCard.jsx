@@ -1,7 +1,7 @@
 import React from 'react';
 import { normalize } from '@exzeo/core-ui';
 
-import AgencyContactAddress from "../../../components/AgencyContactAddress";
+import ContactAddress from "../../../components/ContactAddress";
 
 function AgentCard({
   handleKeyPress,
@@ -34,7 +34,7 @@ function AgentCard({
             </span>
           </h4>
 
-          <AgencyContactAddress
+          <ContactAddress
             mailingAddress={agent.mailingAddress}
             status={agent.status}
           />

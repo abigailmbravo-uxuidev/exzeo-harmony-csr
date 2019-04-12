@@ -1,0 +1,105 @@
+#root {
+  .app-wrapper.csr.agency {
+    main[role="document"] {
+      .content-wrapper {
+        .route-content {
+          .scroll {
+            #TransferFilter {
+              &.search-inputs {
+              display: flex;
+              overflow: visible;
+              flex-direction: row;
+          
+                .form-group {
+                  flex-grow: 1;
+                  flex-shrink: 1;
+                  margin-bottom: 0;
+                  padding: $padding;
+                  &.state, &.product {
+                    flex-grow: 0;
+                    flex-shrink: 0;
+                    width: 10rem;
+                  }
+                }
+                
+                button {
+                  align-self: flex-start;
+                  margin-top: 2.3785rem;
+                  width: auto;
+                }
+              }
+            }
+            #TransferList {
+              .data-grid {
+                margin: 0;
+                padding: 0;
+                list-style: none;
+                li {
+                  display: flex;
+                  padding: ($padding/2) $padding;
+                  cursor: pointer;
+                  
+                  &:nth-of-type(odd) {
+                    background: $warm-gray-01;
+                  }
+                  span {
+                    flex-grow: 0;
+                    flex-shrink: 0;
+                    
+                    &.checkbox {
+                      width: 1.5rem;
+                      input[type="checkbox"] {
+                        margin: 0;
+                      }
+                    }
+                    &.policy-number {
+                      width: 8rem;
+                    }
+                    &.company {
+                      width: 4rem;
+                    }
+                    &.state {
+                      width: 3rem;
+                    }
+                    &.product {
+                      width: 3.5rem;
+                    }
+                    &.property-address {
+                      flex-grow: 1;
+                      flex-shrink: 1;
+                    }
+                    &.primary-policy {
+                      width: 15rem;
+                    }
+                    &.effective-date {
+                      width: 7rem;
+                    }
+                    &.terms {
+                      width: 3rem;
+                    }
+                  }
+
+                  &.header {
+                    background: $warm-gray-02;
+
+                    span {
+                      font-weight: $font-weight-bold;
+                      font-size: $font-size-sm;
+                    }
+                  }
+                  //&.data-row {}
+                }
+              }
+              .button-wrapper {
+                display: flex;
+                justify-content: space-between;
+                border-top: 1px dotted $warm-gray-03;
+                border-bottom: 1px solid $warm-gray-04;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -51,7 +51,7 @@ const License = ({ fields, isAgency, stateAnswers }) => {
         </div>
           ))}
       <div className="btn-divider-wrapper">
-        <button className="btn btn-secondary btn-sm add-license" type="button" onClick={() => fields.push({})}><i className="fa fa-plus" />License</button>
+        <button className="btn btn-secondary btn-sm add-license" type="button" onClick={() => fields.push({ appointed: false})}><i className="fa fa-plus" />License</button>
       </div>
     </React.Fragment>
   );

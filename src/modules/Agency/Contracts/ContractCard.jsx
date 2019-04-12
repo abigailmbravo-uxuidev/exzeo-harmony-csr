@@ -1,8 +1,9 @@
 import React from 'react';
+import { Button } from '@exzeo/core-ui';
 
-export const ContractCard = ({ contract, editContract, contractIndex }) => (
+export const ContractCard = ({ contract, editContract, deleteContract, canDelete }) => (
   <div className="contract card">
-    <div className="contract-title">
+    <div className="contract-title" data-test="contract-title">
       <i className="fa fa-file-text" />
       <label>Contract</label>
     </div>
@@ -17,7 +18,7 @@ export const ContractCard = ({ contract, editContract, contractIndex }) => (
           </span>
         </h4>
       </div>
-      <div className="contract-info">
+      <div className="contract-info" data-test="contract-info">
         <span className="additional-contract-info contract">
           <label>Contract</label>
           <div className="contract-number-wrapper">
@@ -35,12 +36,20 @@ export const ContractCard = ({ contract, editContract, contractIndex }) => (
       </div>
     </div>
     <div className="contract-actions">
-      <button
-        className="btn btn-link btn-sm"
-        onClick={editContract}
-      >
-      <i className="fa fa-pencil-square" />Edit
-      </button>
+      {canDelete &&
+        <Button
+        customClass="btn btn-link btn-sm"
+        onClick={deleteContract}
+        dataTest="delete-contract">
+          <i className="fa fa-trash" />Delete
+        </Button>
+      }
+        <Button
+          customClass="btn btn-link btn-sm"
+          onClick={editContract}
+          dataTest="delete-contract">
+            <i className="fa fa-pencil-square" />Edit
+        </Button>
     </div>
   </div>);
 

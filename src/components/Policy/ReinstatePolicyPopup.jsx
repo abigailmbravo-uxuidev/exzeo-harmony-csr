@@ -12,7 +12,7 @@ export const handleInitialize = () => {
 };
 
 export const ReinstatePolicyPopup = ({
-  appState,
+  submitting,
   handleSubmit,
   hideReinstatePolicyModal,
   latestPolicy,
@@ -22,7 +22,7 @@ export const ReinstatePolicyPopup = ({
 }) => {
   return (
     <div id="reinstate-policy" className="modal reinstate-policy">
-      {appState.data.submitting && <Loader />}
+      {submitting && <Loader />}
       <div className="card unsaved-changes">
         <form id="ReinstatePolicyPopup" onSubmit={handleSubmit(reinstatePolicySubmit)}>
           <div className="card-header">
@@ -46,7 +46,7 @@ export const ReinstatePolicyPopup = ({
                 onClick={hideReinstatePolicyModal}
               >Cancel</button>
               <button
-                disabled={appState.data.submitting || pristine || !reinstatePolicyValue}
+                disabled={submitting || pristine || !reinstatePolicyValue}
                 className="btn btn-primary"
                 type="submit"
               >Update</button>

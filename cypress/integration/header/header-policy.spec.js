@@ -1,4 +1,5 @@
 import { checkFullHeader, goToNav } from '../../helpers';
+import stubAllRoutes from '../../support/stubAllRoutes';
 
 describe('Policy Header Testing', () => {
   const data = {
@@ -16,32 +17,43 @@ describe('Policy Header Testing', () => {
     pZip: '00017',
     territory: '033-0',
     county: 'MIAMI-DADE',
-    effDate: '03/02/2019',
+    effectiveDate: '03/02/2019',
     expDate: '03/02/2020'
   };
 
-  before(() => cy.workflow('newQuote')._submit('#SearchBar')
-    .findDataTag('policy-list').find('> div section ul li > a').then($a => {
-      $a.prop('onclick', () => cy.visit($a.prop('dataset').url)).click();
-    })
-  );
-  
+  before(() => {
+    stubAllRoutes();
+    cy.login()
+      .clickSubmit('#SearchBar')
+      .findDataTag('policy-list')
+      .find('> div section ul li > a')
+      .then($a => {
+        $a.prop('onclick', () => cy.visit($a.prop('dataset').url)).click();
+      });
+  });
+
+  beforeEach(() => stubAllRoutes());
+
   it('Policy Number and Quote Status', () => {
+    cy.wait('@questions');
     checkFullHeader(data, undefined, false);
   });
 
   it('Policyholder / Agent Page', () => {
     goToNav('policyholder');
+    cy.wait('@fetchAgency');
     checkFullHeader(data, undefined, false);
   });
 
   it('Mortgage / Billing Page', () => {
     goToNav('billing');
+    cy.wait('@questions');
     checkFullHeader(data, undefined, false);
   });
 
   it('Notes / Files Page', () => {
     goToNav('notes');
+    cy.wait('@fetchNotes');
     checkFullHeader(data, undefined, false);
   });
 
@@ -52,6 +64,7 @@ describe('Policy Header Testing', () => {
 
   it('Endorsements Page', () => {
     goToNav('endorsements');
+    cy.wait('@questions');
     checkFullHeader(data, undefined, false);
   });
 });

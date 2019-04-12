@@ -7,6 +7,7 @@ import { Loader } from '@exzeo/core-ui';
 
 import { setAppState } from '../../state/actions/appState.actions';
 import { getZipcodeSettings, getAgents, getAgency, getNotes } from '../../state/actions/service.actions';
+import { getAgentsByAgencyCode } from '../../state/actions/agency.actions';
 import { 
   createTransaction, 
   getBillingOptionsForPolicy, 
@@ -33,7 +34,9 @@ import DiaryPolling from '../../components/DiaryPolling';
 
 export class Policy extends React.Component {
   state = {
-    showDiaries: false
+    showDiaries: false,
+    showReinstatePolicyModal: false,
+    showEffectiveDateChangeModal: false
   };
   // TODO: next step is to make an 'initialize' action that does all of this. Then this component will only need to know about one action.
   componentDidMount() {
@@ -71,6 +74,7 @@ export class Policy extends React.Component {
       getAgents(policy.companyCode, policy.state);
       getAgency(policy.companyCode, policy.state, policy.agencyCode);
       getNotes(policy.policyNumber, policy.sourceNumber);
+      getAgentsByAgencyCode(policy.agencyCode)
 
       if (summaryLedger) {
         const paymentOptions = {
@@ -86,60 +90,59 @@ export class Policy extends React.Component {
   }
 
   handleToggleDiaries = () => {
-    this.setState({ showDiaries: !this.state.showDiaries });
+    this.setState(state => ({
+      showDiaries: !state.showDiaries
+      }));  
   }
 
-  toggleModal = modalName => () => {
-    const { setAppState, appState } = this.props;
-    setAppState(
-      appState.modelName, appState.instanceId,
-      { ...appState.data, [modalName]: !appState.data[modalName] }
-    );
+  handleToggleReinstateModal = () => {
+    this.setState(state => ({
+      showReinstatePolicyModal: !state.showReinstatePolicyModal
+      }));  
   }
 
-  changeEffectiveDate = (data) => {
+  handleToggleEffectiveDateChangeModal = () => {
+    this.setState(state => ({
+      showEffectiveDateChangeModal: !state.showEffectiveDateChangeModal
+      }));  
+  }
+
+  changeEffectiveDate = async (data) => {
     const {
       zipCodeSettings,
-      appState,
       policy,
-      setAppState,
       batchCompleteTask,
       getPolicy,
       startWorkflow
     } = this.props;
 
     const effectiveDateUTC = moment.tz(moment.utc(data.effectiveDate).format('YYYY-MM-DD'), zipCodeSettings.timezone).format();
-    const workflowId = appState.instanceId;
-    setAppState(appState.modelName, workflowId, { ...appState.data, isSubmitting: true });
 
-    startWorkflow('effectiveDateChangeModel', { policyNumber: policy.policyNumber, policyID: policy.policyID }).then((result) => {
-      const steps = [{
-        name: 'saveEffectiveDate',
-        data: {
-          policyNumber: policy.policyNumber, policyID: policy.policyID, effectiveDateChangeReason: data.effectiveDateChangeReason, effectiveDate: effectiveDateUTC
-        }
-      }];
-      const startResult = result.payload ? result.payload[0].workflowData.effectiveDateChangeModel.data : {};
+    const result = await startWorkflow('effectiveDateChangeModel', { policyNumber: policy.policyNumber, policyID: policy.policyID });
 
-      setAppState(startResult.modelName, startResult.modelInstanceId, { ...appState.data, submitting: true });
+    const steps = [{
+      name: 'saveEffectiveDate',
+      data: {
+        policyNumber: policy.policyNumber, policyID: policy.policyID, effectiveDateChangeReason: data.effectiveDateChangeReason, effectiveDate: effectiveDateUTC
+      }
+    }];
+    const startResult = result.payload ? result.payload[0].workflowData.effectiveDateChangeModel.data : {};
 
-      batchCompleteTask(startResult.modelName, startResult.modelInstanceId, steps).then(() => {
-        setAppState(startResult.modelName, startResult.modelInstanceId, { ...appState.data, submitting: false, showEffectiveDateChangeModal: false });
-        getPolicy(policy.policyNumber);
-      });
-    });
+    await batchCompleteTask(startResult.modelName, startResult.modelInstanceId, steps);
+    //This gets scheduled so the status may not be changed yet when calling getPolicy. Reference HAR-5228
+    await new Promise(resolve => setTimeout(resolve, 3000));
+    await getPolicy(policy.policyNumber);
+    this.handleToggleEffectiveDateChangeModal();
+
   };
 
-  reinstatePolicySubmit = (data) => {
+  reinstatePolicySubmit = async (data) => {
     const {
-      setAppState,
-      appState,
       policy,
       summaryLedger,
       createTransaction,
       getPolicy
     } = this.props;
-    setAppState(appState.modelName, appState.instanceId, { ...appState.data, submitting: true });
 
     const submitData = {
       policyID: policy.policyID,
@@ -147,10 +150,10 @@ export class Policy extends React.Component {
       billingStatus: summaryLedger.status.code,
       transactionType: 'Reinstatement'
     };
-    createTransaction(submitData).then(() => {
-      this.hideReinstatePolicyModal();
-      getPolicy(policy.policyNumber);
-    });
+    await createTransaction(submitData);
+    await getPolicy(policy.policyNumber);
+    this.handleToggleReinstateModal();
+
   };
 
   render() {
@@ -161,10 +164,10 @@ export class Policy extends React.Component {
       initialized
     } = this.props;
 
-    const { showDiaries } = this.state;
+    const { showDiaries, showReinstatePolicyModal, showEffectiveDateChangeModal } = this.state;
     const modalHandlers = {
-      showEffectiveDateChangeModal: this.toggleModal('showEffectiveDateChangeModal'),
-      showReinstatePolicyModal: this.toggleModal('showReinstatePolicyModal')
+      showEffectiveDateChangeModal: this.handleToggleEffectiveDateChangeModal,
+      showReinstatePolicyModal: this.handleToggleReinstateModal
     };
     return (
       <div className="app-wrapper csr policy">
@@ -197,16 +200,16 @@ export class Policy extends React.Component {
                 <DiaryPolling filter={{ resourceId: [policy.policyNumber, policy.sourceNumber], resourceType: 'Policy' }} />
               }
 
-              {appState.data.showReinstatePolicyModal &&
+              {showReinstatePolicyModal &&
                 <ReinstatePolicyModal
                   reinstatePolicySubmit={this.reinstatePolicySubmit}
-                  hideReinstatePolicyModal={this.toggleModal('showReinstatePolicyModal')} />
+                  hideReinstatePolicyModal={this.handleToggleReinstateModal} />
               }
 
-              {appState.data.showEffectiveDateChangeModal &&
+              {showEffectiveDateChangeModal &&
               <EditEffectiveDataModal
                 changeEffectiveDateSubmit={this.changeEffectiveDate}
-                hideEffectiveDateModal={this.toggleModal('showEffectiveDateChangeModal')} />
+                hideEffectiveDateModal={this.handleToggleEffectiveDateChangeModal} />
           }
               <OpenDiariesBar
                 effectiveDate={policy.effectiveDate}
@@ -267,5 +270,6 @@ export default connect(mapStateToProps, {
   getPolicy,
   getZipCodeSettings: getZipcodeSettings,
   setAppState,
-  startWorkflow
+  startWorkflow,
+  getAgentsByAgencyCode
 })(Policy);

@@ -3,11 +3,12 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Field, reduxForm } from 'redux-form';
 import { Date, Select, validation, Loader, TextArea } from '@exzeo/core-ui';
+import classNames from 'classnames';
 
-import { REASONS, REASONS_DATA } from '../constants/diaries';
+import { REASONS, REASONS_DATA, USE_ENITY_END_DATE } from '../constants/diaries';
 import { addDate } from '../utilities/diaries';
 import { submitDiary } from '../state/actions/diary.actions';
-import { toggleDiary } from '../state/actions/ui.actions';
+import { toggleDiary, toggleMinimizeDiary } from '../state/actions/ui.actions';
 import { setAppError } from '../state/actions/error.actions';
 import { getDiaryAssigneeAnswers } from '../state/selectors/questions.selectors';
 import { getInitialValuesForForm } from '../state/selectors/diary.selectors';
@@ -17,20 +18,21 @@ export class DiaryModal extends Component {
 
   componentDidMount() {
     // TODO: not sure this logic should be here. Seems like it should be much further up the tree
-    const { setAppErrorAction, user } = this.props;
+    const { setAppError, user } = this.props;
     if (!user.profile || !user.profile.given_name || !user.profile.family_name) {
       const message = 'There was a problem with your user profile. Please logout of Harmony and try logging in again.';
-      setAppErrorAction({ message });
+      setAppError({ message });
       this.handleClose();
     }
   }
 
   handleMinimize = () => {
-    this.setState({ minimize: !this.state.minimize });
+    const { minimizeDiary } = this.props;
+    this.props.toggleMinimizeDiary(!minimizeDiary);
   };
 
   handleClose = () => {
-    this.props.toggleDiaryAction();
+    this.props.toggleDiary();
   };
 
   submitDiary = async (data, dispatch, props) => {
@@ -38,9 +40,9 @@ export class DiaryModal extends Component {
       const { assignee: { id }, ...submitData } = data;
       const assigneeObj = props.assigneeAnswers.find(u => String(u.answer) === String(id));
       const assignee = { id: assigneeObj.answer, displayName: assigneeObj.label, type: assigneeObj.type };
-      await props.submitDiaryAction({ ...submitData, assignee }, props);
+      await props.submitDiary({ ...submitData, assignee }, props);
     } catch (error) {
-      props.setAppErrorAction({ message: error });
+      props.setAppError({ message: error });
     } finally {
       this.handleClose();
     }
@@ -62,7 +64,7 @@ export class DiaryModal extends Component {
     }
     change('reason', defaultData.reason);
 
-    if (value === REASONS_DATA.renewal_processing.answer) {
+    if (USE_ENITY_END_DATE.includes(value)) {
       // need to get next renewal date
       change('due', addDate(defaultData.daysFromDueDate, entityEndDate));
     } else {
@@ -72,10 +74,10 @@ export class DiaryModal extends Component {
   };
 
   render() {
-    const { assigneeAnswers, handleSubmit, submitting } = this.props;
+    const { assigneeAnswers, handleSubmit, submitting, minimizeDiary } = this.props;
 
     return (
-      <div className={this.state.minimize ? 'new-diary-file minimize' : 'new-diary-file'} >
+      <div className={classNames('new-diary-file', {'minimize': minimizeDiary })} >
         <div className="title-bar">
           <div className="title title-minimize-button" onClick={this.handleMinimize} data-test="diary-minimize-button">Diary</div>
           <div className="controls note-file-header-button-group">
@@ -166,9 +168,9 @@ DiaryModal.propTypes = {
   change: PropTypes.func.isRequired,
   assigneeAnswers: PropTypes.arrayOf(PropTypes.shape()).isRequired,
   handleSubmit: PropTypes.func.isRequired,
-  setAppErrorAction: PropTypes.func.isRequired,
+  setAppError: PropTypes.func.isRequired,
   submitting: PropTypes.bool.isRequired,
-  toggleDiaryAction: PropTypes.func.isRequired,
+  toggleDiary: PropTypes.func.isRequired,
   user: PropTypes.shape({
     profile: PropTypes.shape({
       given_name: PropTypes.string,
@@ -189,9 +191,10 @@ const mapStateToProps = (state, ownProps) => {
 };
 
 export default connect(mapStateToProps, {
-  setAppErrorAction: setAppError,
-  submitDiaryAction: submitDiary,
-  toggleDiaryAction: toggleDiary
+  setAppError,
+  submitDiary,
+  toggleDiary,
+  toggleMinimizeDiary
 })(reduxForm({
   form: 'DiaryModal',
   enableReinitialize: true

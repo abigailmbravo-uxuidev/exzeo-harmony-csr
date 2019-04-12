@@ -32,7 +32,8 @@ const AgentSearch = ({
           component={Integer}
           placeholder="Agent ID Search"
           label="Agent ID"
-          styleName="agency-id-search" />
+          styleName="agency-id-search"
+          thousandSeparator={false} />
         <Field
           name="firstName"
           dataTest="firstName"

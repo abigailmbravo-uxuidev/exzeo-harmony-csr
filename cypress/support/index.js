@@ -16,5 +16,5 @@
 import './globalHooks';
 import './login';
 import './persistLocalStorage';
+import './stubbing';
 import './utils';
-import './workflow';

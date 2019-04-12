@@ -3,12 +3,13 @@ import login from '../fixtures/stockData/login.json';
 Cypress.Commands.add('login', (loginInfo = login) => {
   const useMockAuth0 = Cypress.env('USE_MOCK_AUTH0');
 
-  cy.visit('/logout', {
-    onBeforeLoad: win => {
-      win.sessionStorage.clear();
-      win.localStorage.clear();
-    }
-  }).get('.fa-sign-in').click({ force: true });
+  cy.visit('/logout')
+    .visit('/', {
+      onBeforeLoad: win => {
+        win.sessionStorage.clear();
+        win.localStorage.clear();
+      }
+    });
 
   if (useMockAuth0) {
     cy.get('#userType').select(loginInfo.userType)

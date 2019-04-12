@@ -7,7 +7,12 @@ export default {
       submitting: false
     }
   },
-  ui: {},
+  ui: {
+    diary: {},
+    note: {},
+    minimizeDiary: false,
+    minimizeNote: false
+  },
   cg: {},
   error: {},
   diaries: [],

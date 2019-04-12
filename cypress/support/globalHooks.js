@@ -13,10 +13,8 @@
 // ** NOTE: Do not write a global after(), it does not execute where you think it will
 // and it's an anti-pattern anyway.
 
-beforeEach('Reset local storage', () => {
-  cy.restoreLocalStorage();
-});
+import { AUTH_TOKENS } from '../support/constants';
 
-afterEach('Save local storage', () => {
-  cy.saveLocalStorage();
-});
+beforeEach('Reset local storage', () => cy.restoreSession(AUTH_TOKENS));
+
+afterEach('Save local storage', () => cy.persistSession(AUTH_TOKENS));

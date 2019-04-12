@@ -115,6 +115,34 @@ export function getAgentsByAgencyCode(agencyCode) {
 
 /**
  *
+ * @param agencyCode
+ * @returns {Function}
+ */
+export function getAgentListByAgencyCode(agencyCode) {
+  return async (dispatch) => {
+    try {
+      const agents = await fetchAgentsByAgencyCode(agencyCode);
+      dispatch(setAgentList(agents));
+    } catch (error) {
+      dispatch(errorActions.setAppError(error));
+    }
+  };
+}
+
+/**
+ *
+ * @returns {Function}
+ */
+export function clearAgentList() {
+  return async (dispatch) => {
+    dispatch(setAgentList([]));
+  };
+}
+
+
+
+/**
+ *
  * @param companyCode
  * @param state
  * @returns {Function}
@@ -156,6 +184,7 @@ export function addAgent(agentData, agencyCode) {
     try {
       await addNewAgent(agentData);
       dispatch(getAgentsByAgencyCode(agencyCode));
+      dispatch(getAgentListByAgencyCode(agencyCode))
       dispatch(getListOfOrphanedAgents());
     } catch (error) {
       dispatch(errorActions.setAppError(error));
@@ -173,6 +202,7 @@ export function updateAgent(agentData, agencyCode) {
     try {
       await saveAgent(agentData);
       dispatch(getAgentsByAgencyCode(agencyCode));
+      dispatch(getAgentListByAgencyCode(agencyCode))
       dispatch(getListOfOrphanedAgents());
     } catch (error) {
       dispatch(errorActions.setAppError(error));
@@ -380,6 +410,7 @@ export function createAgency(agencyData) {
       const agency = await saveNewAgency(agencyData);
       dispatch(setAgency(agency));
       dispatch(getAgentsByAgencyCode(agency.agencyCode));
+      dispatch(getAgentListByAgencyCode(agency.agencyCode))
       dispatch(getListOfOrphanedAgents());
     } catch (error) {
       dispatch(errorActions.setAppError(error));
@@ -414,6 +445,7 @@ export function createBranch(branchData, agencyCode) {
       const branch = await saveNewBranch(branchData, agencyCode);
       dispatch(getAgency(agencyCode));
       dispatch(getAgentsByAgencyCode(agencyCode));
+      dispatch(getAgentListByAgencyCode(agencyCode))
       dispatch(getListOfOrphanedAgents());
       return branch;
     } catch (error) {
@@ -462,4 +494,53 @@ export function transormAgencyToBranch(agencyData) {
 
   });
   return agencyData;
+}
+
+
+/**
+ *
+ * @param policies
+ * @param agentCodeTo
+ * @param agencyCodeTo
+ * @param agencyCode
+ * @param agentCode
+ * @returns {Promise<{}>}
+ */
+export async function transferPoliciesRequest(transfers) {
+  try {
+
+    const transferConfig = {
+      exchangeName: 'harmony',
+      routingKey: 'harmony.agency.startBoBTransfers',
+      data: {
+        transfers,
+      }
+    };
+
+    const response = await serviceRunner.callService(transferConfig, 'transferPoliciesToAgent');
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+}
+
+/**
+ *
+ * @param policies
+ * @param agentCodeTo
+ * @param agencyCodeTo
+ * @param agencyCode
+ * @param agentCode
+ * @returns {Promise<{}>}
+ */
+export function transferPoliciesToAgent(transfers) {
+  return async (dispatch) => {
+    try {
+      const result = await transferPoliciesRequest(transfers);
+      return result;
+    } catch (error) {
+      dispatch(errorActions.setAppError(error));
+      return error;
+    }
+  };
 }

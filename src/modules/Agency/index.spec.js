@@ -12,12 +12,15 @@ import { Agency,
 
 describe('Testing Agency Base component', () => {
   it('should render', () => {
+
     const props = {
       getTerritoryManagers() {},
       getAgency() {},
       getAgentsByAgencyCode() {},
       getListOfOrphanedAgents() {},
       searchSettingsByCSPAndZip() {},
+      getPoliciesForAgency(){},
+      getAgentListByAgencyCode(){},
       getLists() {},
       match: { params: { agencyCode: '123', branchCode: '0' } },
       agency: mockAgency
@@ -33,7 +36,9 @@ describe('Testing Agency Base component', () => {
       getAgentsByAgencyCode() {},
       getListOfOrphanedAgents() {},
       searchSettingsByCSPAndZip() {},
+      getPoliciesForAgency(){},
       getLists() {},
+      getAgentListByAgencyCode(){},
       match: { params: { agencyCode: '123', branchCode: '0' } },
       agency: null
     };

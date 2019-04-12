@@ -4,7 +4,7 @@ import logo from '../../img/Harmony.svg';
 
 export const AgencyHeader = ({ toggleDiaries, showDiaries }) => (
   <header>
-    <div role="banner">
+    <div role="banner" data-test="agency-header">
       <div className="tab-tag">
         <span>AGENCY</span>
       </div>

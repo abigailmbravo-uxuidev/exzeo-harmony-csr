@@ -77,6 +77,7 @@ export class Create extends Component {
       handleSubmit,
       licenseValue,
       sameAsMailingValue,
+      sameAsMailingAORValue,
       submitting,
       pristine,
       change,
@@ -119,6 +120,7 @@ export class Create extends Component {
                   <div className="agent-of-record">
                     <FormSection name="agentOfRecord">
                       <Agent />
+                      <AddressGroup parentFormGroup="agentOfRecord" sameAsMailingValue={sameAsMailingAORValue} changeField={change} isOptional />
                     </FormSection>
                   </div>
                   <div className="agency-license">
