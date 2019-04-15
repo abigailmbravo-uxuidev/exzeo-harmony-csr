@@ -30,7 +30,7 @@ const mock = {
               data: {
                 component: 'date',
                 label: 'Effective Date',
-                size: '6',
+                size: '4',
                 extendedProperties: {
                   min: 'zipCodeSettings.minEffectiveDate',
                   max: 'zipCodeSettings.maxEffectiveDate',
@@ -56,7 +56,7 @@ const mock = {
               data: {
                 component: 'select',
                 label: 'Agencies',
-                size: '6',
+                size: '4',
                 dataSource: 'agencies'
               },
               formData: {
@@ -75,7 +75,7 @@ const mock = {
               data: {
                 component: 'select',
                 label: 'Agent',
-                size: '6',
+                size: '4',
                 dataSource: 'agents'
               },
               formData: {
@@ -392,7 +392,7 @@ const mock = {
           data: {
             component: 'text',
             label: 'Year Home Built',
-            size: '4',
+            size: '3',
             disabled: true
           },
           formData: {},
@@ -406,7 +406,7 @@ const mock = {
           data: {
             component: 'text',
             label: 'Protection Class',
-            size: '4',
+            size: '3',
             disabled: true
           },
           formData: {},
@@ -420,7 +420,7 @@ const mock = {
           data: {
             component: 'text',
             label: 'Tidal Waters Dist.',
-            size: '4',
+            size: '3',
             disabled: true
           },
           formData: {},
@@ -434,7 +434,7 @@ const mock = {
           data: {
             component: 'text',
             label: 'Residence Type',
-            size: '4',
+            size: '3',
             disabled: true
           },
           formData: {},
@@ -448,7 +448,7 @@ const mock = {
           data: {
             component: 'select',
             label: 'Construction',
-            size: '4',
+            size: '3',
             disabled: true,
             dataSource: [
               {
@@ -480,6 +480,194 @@ const mock = {
                 "answer" : "SUPERIOR"
               },
             ]
+          },
+          formData: {},
+          children: [],
+        },
+        {
+          id: 26,
+          type: '$INPUT',
+          path: 'property.buildingCodeEffectivenessGrading',
+          dependencies: [],
+          data: {
+            component: 'select',
+            label: 'BCEG',
+            size: '3',
+            disabled: true,
+            dataSource: [
+              {
+                "label" : "01",
+                "answer" : "1"
+              },
+              {
+                "label" : "02",
+                "answer" : "2"
+              },
+              {
+                "label" : "03",
+                "answer" : "3"
+              },
+              {
+                "label" : "04",
+                "answer" : "4"
+              },
+              {
+                "label" : "05",
+                "answer" : "5"
+              },
+              {
+                "label" : "06",
+                "answer" : "6"
+              },
+              {
+                "label" : "07",
+                "answer" : "7"
+              },              {
+                "label" : "08",
+                "answer" : "8"
+              },              {
+                "label" : "09",
+                "answer" : "9"
+              },              {
+                "label" : "98",
+                "answer" : "98"
+              },              {
+                "label" : "99",
+                "answer" : "99"
+              },
+            ]
+          },
+          formData: {},
+          children: [],
+        },
+        {
+          id: 27,
+          type: '$INPUT',
+          path: 'property.distanceToFireHydrant',
+          dependencies: [],
+          data: {
+            component: 'text',
+            label: 'Fire Hydrant Dist.',
+            size: '3',
+            disabled: true
+          },
+          formData: {},
+          children: [],
+        },
+        {
+          id: 28,
+          type: '$INPUT',
+          path: 'property.squareFeet',
+          dependencies: [],
+          data: {
+            component: 'text',
+            label: 'Sq. Ft. of Home',
+            size: '3',
+            disabled: true
+          },
+          formData: {},
+          children: [],
+        },
+        {
+          id: 29,
+          type: '$INPUT',
+          path: 'property.yearOfRoof',
+          dependencies: [],
+          data: {
+            component: 'text',
+            label: 'Year Roof Built',
+            size: '3',
+            disabled: true
+          },
+          formData: {},
+          children: [],
+        },
+        {
+          id: 30,
+          type: '$INPUT',
+          path: 'property.familyUnits',
+          dependencies: [],
+          data: {
+            component: 'select',
+            label: 'Family Units',
+            size: '3',
+            disabled: true,
+            dataSource: [
+              {
+                "answer" : "1-2"
+              },              
+              {
+                "answer" : "3-4"
+              },
+              {
+                "answer" : "5-8"
+              },
+              {
+                "answer" : "9+"
+              }
+            ]
+          },
+          formData: {},
+          children: [],
+        },
+        {
+          id: 31,
+          type: '$INPUT',
+          path: 'property.distanceToFireStation',
+          dependencies: [],
+          data: {
+            component: 'text',
+            label: 'Fire Station Dist.',
+            size: '3',
+            disabled: true
+          },
+          formData: {},
+          children: [],
+        },
+        {
+          id: 32,
+          type: '$INPUT',
+          path: 'property.floodZone',
+          dependencies: [],
+          data: {
+            component: 'select',
+            label: 'Flood Zone',
+            size: '3',
+            disabled: true,
+            dataSource: [
+              {
+                "answer" : "V"
+              },              
+              {
+                "answer" : "A"
+              },
+              {
+                "answer" : "B"
+              },
+              {
+                "answer" : "C"
+              },
+              {
+                "answer" : "X"
+              },
+              {
+                "answer" : "U"
+              }
+            ]
+          },
+          formData: {},
+          children: [],
+        },
+        {
+          id: 33,
+          type: '$INPUT',
+          path: 'property.id',
+          dependencies: [],
+          data: {
+            component: 'text',
+            label: 'IGD ID',
+            size: '12',
+            disabled: true
           },
           formData: {},
           children: [],
