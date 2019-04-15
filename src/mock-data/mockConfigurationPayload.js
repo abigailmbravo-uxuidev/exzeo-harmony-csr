@@ -17,7 +17,7 @@ const mock = {
               type: '$TITLE',
               dependencies: [],
               data: {
-                text: 'Poduced By',
+                text: 'Produced By',
               },
               formData: {},
               children: [],
@@ -55,7 +55,7 @@ const mock = {
               dependencies: [],
               data: {
                 component: 'select',
-                label: 'Agencies',
+                label: 'Agency',
                 size: '4',
                 dataSource: 'agencies'
               },
