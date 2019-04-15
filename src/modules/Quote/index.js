@@ -20,6 +20,9 @@ import MailingAddressBilling from '../../components/Quote/MailingAddressBilling'
 import NotesFiles from '../../components/Quote/NotesFiles';
 import Summary from '../../components/Quote/Summary';
 import Application from '../../components/Quote/Application';
+import MOCK_CONFIG_DATA from '../../mock-data/mockConfigurationPayload';
+
+import { ROUTES_NOT_HANDLED_BY_GANDALF } from './constants/workflowNavigation';
 
 export class QuoteBase extends React.Component {
   state = {
@@ -53,10 +56,15 @@ export class QuoteBase extends React.Component {
       appState,
       quoteData,
       match,
-      children
+      children,
+      location
     } = this.props;
 
     const { showDiaries } = this.state;
+
+    const currentStep = location.pathname.split('/')[3];
+    const shouldUseGandalf = ROUTES_NOT_HANDLED_BY_GANDALF.indexOf(currentStep) === -1;
+
 
     return (
       <div className="app-wrapper csr quote">
