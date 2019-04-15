@@ -7,40 +7,25 @@ import { connect } from 'react-redux';
 import { createBranch } from '../../state/actions/agency.actions';
 import { getBranchesList, getBranchInitialValues } from '../../state/selectors/agency.selector';
 
-
-const setLink = (key, agencyCode, branchCode) => {
-  if (agencyCode === 'new') return '#';
-  switch (key) {
-    case 'overview':
-      return `/agency/${agencyCode}/${branchCode}/overview`;
-    case 'agents':
-      return `/agency/${agencyCode}/${branchCode}/agents`;
-    case 'contracts':
-      return `/agency/${agencyCode}/${branchCode}/contracts`;
-    default:
-      return '#';
-  }
-};
-
 const setDisabled = agencyCode => (agencyCode === 'new' ? 'disabled' : '');
 
 const csrLinks = (agencyCode, branchCode) => [{
   key: 'overview',
-  link: setLink('overview', agencyCode, branchCode),
+  link: `/agency/${agencyCode}/${branchCode}/overview`,
   label: 'Overview',
   styleName: `overview ${setDisabled(agencyCode)}`,
   exact: true
 },
 {
   key: 'agents',
-  link: setLink('agents', agencyCode, branchCode),
+  link: `/agency/${agencyCode}/${branchCode}/agents`,
   label: 'Agents',
   styleName: `agents ${setDisabled(agencyCode)}`,
   exact: true
 },
 {
   key: 'contracts',
-  link: setLink('contracts', agencyCode, branchCode),
+  link: `/agency/${agencyCode}/${branchCode}/contracts`,
   label: 'Contracts',
   styleName: `contracts ${setDisabled(agencyCode)}`,
   exact: true
@@ -56,6 +41,13 @@ const csrLinks = (agencyCode, branchCode) => [{
   link: '#',
   label: 'Reports',
   styleName: 'reports disabled',
+  exact: true
+},
+{
+  key: 'transfer',
+  link: `/agency/${agencyCode}/${branchCode}/transfer`,
+  label: 'Transfer',
+  styleName: `transfer ${setDisabled(agencyCode)}`,
   exact: true
 }];
 
@@ -88,7 +80,7 @@ export class SideNav extends React.Component {
           <ul>
             {(String(branchCode) === '0' && agencyCode !== 'new') &&
             <React.Fragment>
-              <li key="newBranch" >
+              <li key="newBranch" data-test="new-branch">
                 <NavLink
                   to={`/agency/${agencyCode}/${branchCode}/new`}
                   tabIndex="0"
@@ -100,7 +92,7 @@ export class SideNav extends React.Component {
             </React.Fragment>
             }
             {(branchesList.length > 1 && agencyCode !== 'new') &&
-            <li key="branch">
+            <li key="branch" data-test="branch">
               <Field
                 dataTest="selectedBranch"
                 name="selectedBranch"

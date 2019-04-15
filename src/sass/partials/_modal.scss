@@ -53,7 +53,77 @@
         height: 90%;
       }
     }
-  }
+  } 
+  &.bob-transfer{
+    .card {
+     width: 40rem;
+
+     #TransferPolicies {
+       .card-block {
+        overflow: visible;
+       }
+     }
+  ​
+     .card-block {
+      overflow: visible;
+     }
+    }
+    .agencyCodeTo {
+     z-index: 20;   
+     .Select.TypeAhead {
+      z-index: 20;
+      .react-select__menu {
+       .react-select__menu-list {
+        max-height: 200px;
+       }
+      }
+     }
+    }
+    
+    .agentCodeTo {
+     z-index: 10;
+     .Select.TypeAhead {
+      z-index: 10;
+      .react-select__menu {
+       .react-select__menu-list {
+        max-height: 140px;
+       }
+      }
+     }
+    }
+   }
+   &.transfer-AOR-modal {
+    .card {
+     width: 40rem;
+  ​
+     .card-block {
+      overflow: visible;
+     }
+    }
+    .agencyCode {
+     z-index: 20;   
+     .Select.TypeAhead {
+      z-index: 20;
+      .react-select__menu {
+       .react-select__menu-list {
+        max-height: 200px;
+       }
+      }
+     }
+    }
+    
+    .agentCode {
+     z-index: 10;
+     .Select.TypeAhead {
+      z-index: 10;
+      .react-select__menu {
+       .react-select__menu-list {
+        max-height: 140px;
+       }
+      }
+     }
+    }
+   }
 
   &.license-crud {
     .card {

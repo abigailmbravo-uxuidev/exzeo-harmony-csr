@@ -8,6 +8,7 @@ import Dashboard from '@uppy/react/lib/Dashboard';
 import XHRUpload from '@uppy/xhr-upload';
 import moment from 'moment';
 import { Loader } from '@exzeo/core-ui';
+import classNames from 'classnames';
 
 import * as cgActions from '../../state/actions/cg.actions';
 import * as uiActions from '../../state/actions/ui.actions';
@@ -55,7 +56,7 @@ export class NoteUploader extends Component {
     });
   }
 
-  state = { minimize: false };
+  state = { minimize: false, fileExtensions: {} };
 
   componentDidMount() {
     // TODO: not sure this logic should be here. Seems like it should be much further up the tree
@@ -141,7 +142,7 @@ export class NoteUploader extends Component {
 
   docTypes = this.props.noteType ? this.docTypeOptions[this.props.noteType] : [];
 
-  handleMinimize = () => this.setState({ minimize: !this.state.minimize });
+  handleMinimize = (minimizeNote) => this.props.actions.uiActions.toggleMinimizeNote(!minimizeNote);
 
   handleClose = () => this.props.actions.uiActions.toggleNote({});
 
@@ -151,18 +152,32 @@ export class NoteUploader extends Component {
       return false;
     }
 
-    if (!file.name.includes('.')) {
+    if (!file.data.name.includes('.')) {
       this.uppy.info('Uploads must have a file extension.');
       return false;
     }
-    return true;
+    // removing file extension for meta name
+    const parsedFile = { ...file };
+    const fileExtension = parsedFile.name.split('.').pop();
+    this.setState(state => {
+      if(fileExtension && !state.fileExtensions[parsedFile.type]){
+        state.fileExtensions[parsedFile.type] = fileExtension;
+      }
+      return state;
+    });
+    parsedFile.name = parsedFile.name.replace(/\.[^/.]+$/, '')
+    return parsedFile;
   }
 
   validateUpload = (files => {
-    if(Object.keys(files).some(id => (!files[id].meta.name.includes('.')))) {
-      this.uppy.info('The file name must have a file extension.');
-      return false;
-    }
+    const updatedFiles = { ...files }
+    const { fileExtensions } = this.state;
+    Object.keys(updatedFiles).forEach((id) => {
+    const file = updatedFiles[id];
+    // adding back file extension for meta name
+    file.meta.name = `${files[id].meta.name}.${fileExtensions[files[id].type]}`;
+    });
+    return updatedFiles;
   })
 
   submitNote = (data, dispatch, props) => {
@@ -218,7 +233,7 @@ export class NoteUploader extends Component {
             state,
             product,
             resourceType,
-            resourceId: documentId
+            resourceId: documentId,
           });
         };
       })
@@ -231,11 +246,11 @@ export class NoteUploader extends Component {
 
   render() {
     return (
-      <div className={this.state.minimize ? 'new-note-file minimize' : 'new-note-file'} >
+      <div className={classNames('new-note-file', {'minimize': this.props.minimizeNote })} >
         <div className="title-bar">
-          <div className="title title-minimze-button" onClick={() => this.handleMinimize(this.props)}>Note / File</div>
+          <div className="title title-minimze-button" onClick={() => this.handleMinimize(this.props.minimizeNote)}>Note / File</div>
           <div className="controls note-file-header-button-group">
-            <button className="btn btn-icon minimize-button" onClick={() => this.handleMinimize(this.props)}><i className="fa fa-window-minimize" aria-hidden="true" /></button>
+            <button className="btn btn-icon minimize-button" onClick={() => this.handleMinimize(this.props.minimizeNote)}><i className="fa fa-window-minimize" aria-hidden="true" /></button>
             <button className="btn btn-icon header-cancel-button" onClick={this.handleClose} type="submit"><i className="fa fa-times-circle" aria-hidden="true" /></button>
           </div>
         </div>
@@ -286,7 +301,8 @@ NoteUploader.propTypes = {
   documentId: PropTypes.string.isRequired,
   noteType: PropTypes.string.isRequired,
   sourceId: PropTypes.string,
-  resourceType: PropTypes.string
+  resourceType: PropTypes.string,
+  minimizeNote: PropTypes.bool
 };
 
 NoteUploader.defaultProps = {

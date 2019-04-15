@@ -3,7 +3,7 @@ import { normalize, Button } from '@exzeo/core-ui';
 
 export const AgentsCard = ({
   agency,
-  agent: { mailingAddress = {} },
+  agent: { mailingAddress = {}, licenses = [] },
   agent,
   agentIndex,
   handleEditAgent,
@@ -19,8 +19,10 @@ export const AgentsCard = ({
     <div className="contact-details">
       <div className="card-name">
         <div className="card-name-content">
-          <h4><span className="agent-code">{agent.agentCode}</span> | <span className="agent-name">{`${agent.firstName} ${agent.lastName}`}</span> | <span className="agent-license">{agent.licenseNumber}</span></h4>
-          <div className="contact-address">
+          <h4><span className="agent-code">{agent.agentCode}</span> | <span className="agent-name">{`${agent.firstName} ${agent.lastName}`}</span>
+          { licenses.map(l =>(<React.Fragment> | <span className="agent-license">{l.licenseNumber}</span></React.Fragment>)) }
+          </h4>
+          <div className="contact-address" data-test="agent-address">
             {mailingAddress.address1},&nbsp;
             {mailingAddress.address2}{mailingAddress.address2 ? ', ' : ' '}
             {mailingAddress.city},&nbsp;
@@ -30,13 +32,16 @@ export const AgentsCard = ({
               <span className="additional-data status"><label>STATUS:&nbsp;</label>{agent.status}</span>
             }
           </div>
-          <div className="contact-methods">
+          <div className="contact-methods" data-test="agent-contact">
             {agent.primaryPhoneNumber &&
-              <p className="phone">
-                <i className="fa fa-phone-square" />
-                <a href={`tel:${agent.primaryPhoneNumber}`}>{normalize.phone(agent.primaryPhoneNumber)}</a>
-              </p>
-            }
+                <p className="phone">
+                  <i className="fa fa-phone-square" />
+                  <a href={`tel:${agent.primaryPhoneNumber}${agent.primaryPhoneNumberExtension ? `+${agent.primaryPhoneNumberExtension}` : ''}`}>
+                  {normalize.phone(agent.primaryPhoneNumber)} 
+                  {agent.primaryPhoneNumberExtension ? ` ext. ${agent.primaryPhoneNumberExtension}` : '' }
+                  </a>
+                </p>
+              }
             {agent.secondaryPhoneNumber &&
               <p className="phone">
                 <small>2<sup>ND</sup><i className="fa fa-phone" /></small>
@@ -65,13 +70,12 @@ export const AgentsCard = ({
             size="small"
             onClick={() => handleSwitchAOR(agent.agentCode)}><i className="fa fa-exchange" />Switch AOR
           </Button>}
-          {String(agency.agentOfRecord) !== String(agent.agentCode) &&
           <Button
             dataTest="removeAgent"
             baseClass="link"
             size="small"
             onClick={() => handleRemoveAgent(agentIndex)}><i className="fa fa-times-circle" />Remove
-          </Button>}
+          </Button>
           <Button
             dataTest="editAgent"
             baseClass="link"

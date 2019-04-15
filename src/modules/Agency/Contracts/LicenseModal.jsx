@@ -57,12 +57,12 @@ export const LicenseModal = (props) => {
                 name="licenseEffectiveDate"
                 component={Date}
                 dataTest="licenseEffectiveDate"
-                validate={validation.isRequired} />
+                validate={[validation.isRequired, validation.isDate]} />
             </section>
           </div>
           <div className="card-footer">
             <div className="btn-footer">
-              <button tabIndex="0" className="btn btn-secondary" type="button" onClick={closeModal()}>Cancel</button>
+              <button tabIndex="0" className="btn btn-secondary" type="button" onClick={closeModal}>Cancel</button>
               <button tabIndex="0" className="btn btn-primary" type="submit">Save</button>
             </div>
           </div>
@@ -87,4 +87,4 @@ LicenseModal.propTypes = {
   })
 };
 
-export default reduxForm({ form: 'LicenseModal' })(LicenseModal);
+export default reduxForm({ form: 'LicenseModal', enableReinitialize: true })(LicenseModal);

@@ -19,6 +19,12 @@ describe('Testing NoteUploader component', () => {
 
     beforeEach(() => {
       initialState = {
+        ui: {
+          diary: {},
+          note: {},
+          minimizeDiary: false,
+          minimizeNote: false
+        },
         authState: {
           userProfile: {
             profile: {
@@ -35,6 +41,7 @@ describe('Testing NoteUploader component', () => {
       };
 
       props = {
+        minimizeNote: false,
         companyCode: 'TTIC',
         state: 'FL',
         product: 'HO3',
@@ -57,12 +64,6 @@ describe('Testing NoteUploader component', () => {
 
     it('should map state to props', () => {
       expect(wrapper.props().user).toEqual({ profile: { given_name: 'Test', family_name: 'Test' } });
-    });
-
-    it('test minimzeButtonHandler', () => {
-      expect(instance.state.minimize).toEqual(false);
-      instance.handleMinimize();
-      expect(instance.state.minimize).toEqual(true);
     });
 
     it('should submit note', () => {

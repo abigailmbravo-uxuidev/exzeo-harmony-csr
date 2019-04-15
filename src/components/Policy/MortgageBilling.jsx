@@ -25,6 +25,8 @@ import AIModal from '../AdditionalInterestModal';
 import Footer from '../Common/Footer';
 import AdditionalInterestCard from '../AdditionalInterestCard';
 import PaymentHistoryTable from '../PaymentHistoryTable';
+import AIDeleteReinstateModal from '../../components/AIDeleteReinstateModal';
+import { PREMIUM_FINANCE_BILL_PAYER_TYPES } from '../../constants/additionalInterests';
 
 const validateBatchNumber = validation.isDateMatchMin10('cashDate', 'YYYYMMDD');
 const validateAmount = validation.isRange(-1000000, 1000000);
@@ -46,7 +48,8 @@ export class MortgageBilling extends Component {
     isEditingAI: false,
     selectedAI: {},
     showAdditionalInterestModal: false,
-    showBillingEditModal: false
+    showBillingEditModal: false,
+    showDeleteReinstateAI: false
   };
 
   componentDidMount() {
@@ -81,7 +84,7 @@ export class MortgageBilling extends Component {
     };
 
     await createTransaction(submitData);
-    getPolicy(policy.policyNumber);
+    await getPolicy(policy.policyNumber);
 
     this.setState({
       showAdditionalInterestModal: false,
@@ -163,11 +166,16 @@ export class MortgageBilling extends Component {
   hideAdditionalInterestModal = () => {
     this.setState({
       showAdditionalInterestModal: false,
-      isEditingAI: false
+      isEditingAI: false,
+      showDeleteReinstateAI: false,
+      isDeleting: false
     });
   };
 
-  toggleAIState = (ai) => {
+  toggleAIState = async (ai) => {
+
+    this.setState({ isDeleting: true })
+
     const { createTransaction, getPolicy, policy: { policyID, policyNumber } } = this.props;
     const submitData = {
       policyID,
@@ -176,7 +184,7 @@ export class MortgageBilling extends Component {
       transactionType: ai.active ? 'AI Removal' : 'AI Reinstatement'
     };
 
-    createTransaction(submitData).then(() => getPolicy(policyNumber));
+    await createTransaction(submitData).then(() => getPolicy(policyNumber));
     this.hideAdditionalInterestModal();
   };
 
@@ -231,6 +239,10 @@ export class MortgageBilling extends Component {
 
   dateFormatter = cell => `${cell.substring(0, 10)}`;
 
+  toggleDeleteReinstateAIModal = (deleteReinstateType) => (selectedAI) => {
+    this.setState({ showDeleteReinstateAI: !this.state.showDeleteReinstateAI, selectedAI, deleteReinstateType });
+  }
+
   render() {
     const {
       cashDescriptionOptions,
@@ -253,6 +265,9 @@ export class MortgageBilling extends Component {
     const billingOptionsValues = billingOptions.options || [];
     const selectedBillintOptions = billingOptionsValues.find(opt => opt.billToId === this.props.policy.billToId);
     const billToText = selectedBillintOptions ? selectedBillintOptions.displayText : null;
+
+    const disableBillPayerPremiumFinance = (policy && (policy.additionalInterests.filter(ai => ai.type === 'Bill Payer' && ai.active).length > 0 ||
+     policy.additionalInterests.filter(ai => ai.type === 'Premium Finance' && ai.active).length > 0));
 
     return (
       <React.Fragment>
@@ -354,8 +369,8 @@ export class MortgageBilling extends Component {
                     <button tabIndex="0" disabled={(policy && policy.additionalInterests.filter(ai => ai.type === 'Mortgagee' && ai.active).length > 2)} onClick={() => this.addAdditionalInterest('Mortgagee')} className="btn btn-sm btn-secondary" type="button"> <div><i className="fa fa-plus" /><span>Mortgagee</span></div></button>
                     <button tabIndex="0" disabled={(policy && policy.additionalInterests.filter(ai => ai.type === 'Additional Insured' && ai.active).length > 1)} onClick={() => this.addAdditionalInterest('Additional Insured')} className="btn btn-sm btn-secondary" type="button"><div><i className="fa fa-plus" /><span>Additional Insured</span></div></button>
                     <button tabIndex="0" disabled={(policy && policy.additionalInterests.filter(ai => ai.type === 'Additional Interest' && ai.active).length > 1)} onClick={() => this.addAdditionalInterest('Additional Interest')} className="btn btn-sm btn-secondary" type="button"><div><i className="fa fa-plus" /><span>Additional Interest</span></div></button>
-                    <button tabIndex="0" disabled={(policy && (policy.additionalInterests.filter(ai => ai.type === 'Premium Finance' && ai.active).length > 0 || policy.additionalInterests.filter(ai => ai.type === 'Bill Payer' && ai.active).length > 0))} onClick={() => this.addAdditionalInterest('Premium Finance')} className="btn btn-sm btn-secondary" type="button"><div><i className="fa fa-plus" /><span>Premium Finance</span></div></button>
-                    <button tabIndex="0" disabled={(policy && (policy.additionalInterests.filter(ai => ai.type === 'Bill Payer' && ai.active).length > 0 || policy.additionalInterests.filter(ai => ai.type === 'Premium Finance' && ai.active).length > 0))} onClick={() => this.addAdditionalInterest('Bill Payer')} className="btn btn-sm btn-secondary" type="button"><div><i className="fa fa-plus" /><span>Bill Payer</span></div></button>
+                    <button tabIndex="0" disabled={disableBillPayerPremiumFinance} onClick={() => this.addAdditionalInterest('Premium Finance')} className="btn btn-sm btn-secondary" type="button"><div><i className="fa fa-plus" /><span>Premium Finance</span></div></button>
+                    <button tabIndex="0" disabled={disableBillPayerPremiumFinance} onClick={() => this.addAdditionalInterest('Bill Payer')} className="btn btn-sm btn-secondary" type="button"><div><i className="fa fa-plus" /><span>Bill Payer</span></div></button>
                   </div>
                   <ul className="results result-cards additional-interests-list">
                     {sortedAdditionalInterests.map(ai => (
@@ -363,7 +378,9 @@ export class MortgageBilling extends Component {
                         key={ai._id}
                         ai={ai}
                         editAI={this.editAI}
-                        toggleAIState={this.toggleAIState}
+                        toggleReactivateAIModal={this.toggleDeleteReinstateAIModal('Reactivate')}
+                        toggleDeleteAIModal={this.toggleDeleteReinstateAIModal('Delete')}
+                        disableBillPayerPremiumFinance={disableBillPayerPremiumFinance && PREMIUM_FINANCE_BILL_PAYER_TYPES.includes(ai.type)}
                       />
                     ))}
                   </ul>
@@ -379,10 +396,19 @@ export class MortgageBilling extends Component {
               hideModal={this.hideAdditionalInterestModal}
               initialValues={this.initAdditionalInterestModal()}
               isEditing={this.state.isEditingAI}
+              isDeleting={this.state.isDeleting}
               selectedAI={this.state.selectedAI}
               validAdditionalInterestTypes={validAdditionalInterestTypes}
               deleteAdditionalInterest={this.toggleAIState}
               isPolicy />
+          }
+          {this.state.showDeleteReinstateAI && 
+          <AIDeleteReinstateModal
+            actionType={this.state.deleteReinstateType}
+            closeModal={this.hideAdditionalInterestModal}
+            selectedAI={this.state.selectedAI}
+            handleAction={() => this.toggleAIState(this.state.selectedAI, this.props)}
+          />
           }
         </div>
         {this.state.showBillingEditModal &&

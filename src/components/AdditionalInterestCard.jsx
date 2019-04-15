@@ -1,10 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import classNames from 'classnames'
 
-const AdditionalInterestCard = ({ ai, editAI, toggleAIState, editingDisabled }) => {
+const AdditionalInterestCard = ({ ai, editAI, editingDisabled, toggleReactivateAIModal, toggleDeleteAIModal, disableBillPayerPremiumFinance }) => {
   const { active } = ai;
   return (
-    <li key={ai._id} className={`${active ? 'card' : 'card inactive'}`}>
+    <li key={ai._id} className={classNames('card', { 'inactive': !active} )}>
       {/* add className based on type - i.e. mortgagee could have class of mortgagee */}
       <div className="card-icon"><i className={`fa fa-circle ${ai.type}`} /><label>{ai.type} {active ? (ai.order + 1) : 'Inactive'}</label></div>
 
@@ -21,18 +22,18 @@ const AdditionalInterestCard = ({ ai, editAI, toggleAIState, editingDisabled }) 
         <span>{` ${ai.referenceNumber || ' - '}`}</span>
       </div>
       {!active && !editingDisabled &&
-        <span className="reactivate-btn btn btn-link btn-sm" onClick={() => toggleAIState(ai)}>
+        <span className={classNames('reactivate-btn btn btn-link btn-sm', { 'disabled': disableBillPayerPremiumFinance })} onClick={() => !disableBillPayerPremiumFinance ? toggleReactivateAIModal(ai): null}>
           <i className="fa fa-plus-square" />
           <span>Reactivate</span>
         </span>
       }
       {active && !editingDisabled &&
-        <span className="Delete-btn  btn btn-link btn-sm" onClick={() => toggleAIState(ai)}>
+        <span className="Delete-btn  btn btn-link btn-sm" onClick={() => toggleDeleteAIModal(ai)}>
           <i className="fa fa-times-rectangle" />
           <span>Delete</span>
         </span>
       }
-      {!editingDisabled && <span className={`${active ? 'edit-btn  btn btn-link btn-sm' : 'edit-btn  btn btn-link btn-sm disabled'}`} onClick={active ? () => editAI(ai) : null}>
+      {!editingDisabled && <span className={classNames('edit-btn btn btn-link btn-sm', { 'disabled': !active })} onClick={active ? () => editAI(ai) : null}>
         <i className="fa fa-pencil-square" />
         <span>Edit</span>
       </span>

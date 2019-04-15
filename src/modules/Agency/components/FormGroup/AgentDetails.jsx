@@ -41,6 +41,12 @@ const Details = ({ isEditing }) => {
           styleName="primaryPhoneNumber"
           validate={validation.isRequired} />
         <Field
+          name="primaryPhoneNumberExtension"
+          label="Primary Phone Extension"
+          component={Input}
+          dataTest="primaryPhoneNumberExtension"
+          styleName="primaryPhoneNumberExtension" />
+        <Field
           name="secondaryPhoneNumber"
           label="Secondary Phone"
           component={Phone}

@@ -5,10 +5,8 @@ import { Select, Radio, Input, validation, Phone } from '@exzeo/core-ui';
 
 import { updateAgency } from '../../../state/actions/agency.actions';
 
-const statusAnswers = [
-  { answer: 'Active', label: 'Active' },
-  { answer: 'InActive', label: 'InActive' }
-];
+import { STATUS } from '../../../constants/agency';
+
 
 const mailAnswers = [
   { answer: false, label: 'No' },
@@ -67,7 +65,7 @@ export class BranchModal extends Component {
                   label="Status"
                   component={Select}
                   validate={validation.isRequired}
-                  answers={statusAnswers} />
+                  answers={STATUS} />
                 <Field
                   name="mailCommissionChecksToBranch"
                   dataTest="mailCommissionChecksToBranch"

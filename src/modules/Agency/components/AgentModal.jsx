@@ -39,12 +39,12 @@ export class AgentModal extends Component {
             </div>
             <div className="card-block">
               <section className="agent-details">
-                <h3>Details</h3>
+                <h3 data-test="agent-details">Details</h3>
                 <AgentDetails isEditing={isEditing} />
               </section>
               <AddressGroup sameAsMailingValue={sameAsMailingValue} changeField={change} isOptional />
               <section className="agent-license">
-                <h3>Licenses</h3>
+                <h3 data-test="agent-license">Licenses</h3>
                 <FieldArray
                   name="licenses"
                   stateAnswers={listAnswersAsKey.US_states}

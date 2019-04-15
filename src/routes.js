@@ -46,7 +46,7 @@ class Routes extends Component {
 
   /* eslint-disable max-len */
   render() {
-    const { ui: { diary, note }, auth, authState: { userProfile }, policyState: { policy } } = this.props;
+    const { ui: { diary, note, minimizeNote, minimizeDiary }, auth, authState: { userProfile }, policyState: { policy } } = this.props;
     return (
       <div>
         <Modal
@@ -67,6 +67,7 @@ class Routes extends Component {
 
         {diary && diary.resourceType &&
           <DiaryModal
+            minimizeDiary={minimizeDiary}
             companyCode={diary.companyCode}
             state={diary.state}
             product={diary.product}
@@ -80,6 +81,7 @@ class Routes extends Component {
 
         {note && note.documentId &&
           <NoteUploader
+            minimizeNote={minimizeNote}
             companyCode={note.companyCode}
             state={note.state}
             product={note.product}

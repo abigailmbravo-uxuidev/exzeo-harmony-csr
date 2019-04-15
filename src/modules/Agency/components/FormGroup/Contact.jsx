@@ -1,6 +1,6 @@
 import React from 'react';
 import { Field } from 'redux-form';
-import { Input, validation } from '@exzeo/core-ui';
+import { Input, Phone, validation } from '@exzeo/core-ui';
 
 export const Contact = ({ showTitle, testPrefix }) => (
   <React.Fragment>
@@ -26,13 +26,28 @@ export const Contact = ({ showTitle, testPrefix }) => (
         component={Input}
         validate={validation.isRequired} />
     </div>
-    <Field
-      label="Email Address"
-      styleName="emailAddress"
-      name="emailAddress"
-      dataTest={`${testPrefix}.emailAddress`}
-      component={Input}
-      validate={[validation.isRequired, validation.isEmail]} />
+    <div className="contact-name">
+      <Field
+        label="Email Address"
+        styleName=""
+        name="emailAddress"
+        dataTest={`${testPrefix}.emailAddress`}
+        component={Input}
+        validate={[validation.isRequired, validation.isEmail]} />
+      <Field
+        label="Phone Number"
+        styleName=""
+        name="primaryPhoneNumber"
+        dataTest={`${testPrefix}.primaryPhoneNumber`}
+        component={Phone}
+        validate={[validation.isPhone]} />
+      <Field
+        label="Phone Number Extension"
+        styleName=""
+        name="primaryPhoneNumberExtension"
+        dataTest={`${testPrefix}.primaryPhoneNumberExtension`}
+        component={Input} />
+    </div>
   </React.Fragment>
 );
 
