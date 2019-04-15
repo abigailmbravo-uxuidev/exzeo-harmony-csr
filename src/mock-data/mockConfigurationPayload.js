@@ -293,7 +293,7 @@ const mock = {
           ]
         },
         {
-          id: 12,
+          id: 17,
           type: '$TITLE',
           dependencies: [],
           data: {
@@ -304,7 +304,7 @@ const mock = {
           children: [],
         },
         {
-          id: 15,
+          id: 18,
           type: '$INPUT',
           path: 'property.physicalAddress.address1',
           dependencies: [],
@@ -313,6 +313,173 @@ const mock = {
             label: 'Address 1',
             size: '4',
             disabled: true
+          },
+          formData: {},
+          children: [],
+        },
+        {
+          id: 19,
+          type: '$INPUT',
+          path: 'property.physicalAddress.address2',
+          dependencies: [],
+          data: {
+            component: 'text',
+            label: 'Address 2',
+            size: '4',
+            disabled: true
+          },
+          formData: {},
+          children: [],
+        },
+        {
+          id: 20,
+          type: '$INPUT',
+          path: 'property.physicalAddress.city',
+          dependencies: [],
+          data: {
+            component: 'text',
+            label: 'City',
+            size: '4',
+            disabled: true
+          },
+          formData: {},
+          children: [],
+        },
+        {
+          id: 21,
+          type: '$INPUT',
+          path: 'property.physicalAddress.state',
+          dependencies: [],
+          data: {
+            component: 'text',
+            label: 'State',
+            size: '6',
+            disabled: true
+          },
+          formData: {},
+          children: [],
+        },
+        {
+          id: 19,
+          type: '$INPUT',
+          path: 'property.physicalAddress.zip',
+          dependencies: [],
+          data: {
+            component: 'text',
+            label: 'Zip',
+            size: '6',
+            disabled: true
+          },
+          formData: {},
+          children: [],
+        },
+        {
+          id: 20,
+          type: '$TITLE',
+          dependencies: [],
+          data: {
+            text: 'Home and Location',
+            children: []
+          },
+          formData: {},
+          children: [],
+        },
+        {
+          id: 21,
+          type: '$INPUT',
+          path: 'property.yearBuilt',
+          dependencies: [],
+          data: {
+            component: 'text',
+            label: 'Year Home Built',
+            size: '4',
+            disabled: true
+          },
+          formData: {},
+          children: [],
+        },
+        {
+          id: 22,
+          type: '$INPUT',
+          path: 'property.protectionClass',
+          dependencies: [],
+          data: {
+            component: 'text',
+            label: 'Protection Class',
+            size: '4',
+            disabled: true
+          },
+          formData: {},
+          children: [],
+        },
+        {
+          id: 23,
+          type: '$INPUT',
+          path: 'property.distanceToTidalWater',
+          dependencies: [],
+          data: {
+            component: 'text',
+            label: 'Tidal Waters Dist.',
+            size: '4',
+            disabled: true
+          },
+          formData: {},
+          children: [],
+        },
+        {
+          id: 24,
+          type: '$INPUT',
+          path: 'property.residenceType',
+          dependencies: [],
+          data: {
+            component: 'text',
+            label: 'Residence Type',
+            size: '4',
+            disabled: true
+          },
+          formData: {},
+          children: [],
+        },
+        {
+          id: 25,
+          type: '$INPUT',
+          path: 'property.constructionType',
+          dependencies: [],
+          data: {
+            component: 'select',
+            label: 'Construction',
+            size: '4',
+            disabled: true,
+            dataSource: [
+              {
+                "label" : "Masonry",
+                "answer" : "MASONRY"
+              },
+              {
+                "label" : "Frame",
+                "answer" : "FRAME"
+              },
+              {
+                "label" : "Masonry",
+                "answer" : "MASONRY"
+              },
+              {
+                "label" : "Plastic Siding",
+                "answer" : "PLASTIC SIDING"
+              },
+              {
+                "label" : "Aluminum Siding",
+                "answer" : "ALUMINUM SIDING"
+              },
+              {
+                "label" : "Masonry Veneer",
+                "answer" : "MASONRY VENEER"
+              },
+              {
+                "label" : "Superior",
+                "answer" : "SUPERIOR"
+              },
+            ]
           },
           formData: {},
           children: [],

@@ -331,6 +331,9 @@ describe('Testing Quote component', () => {
     };
     const store = mockStore(initialState);
     const props = {
+      location: {
+        pathname: '/policy/12-1015383-01/policyHolder'
+      },
       quoteData: mockQuote,
       match: { params: {}, path: '/quote', url: '/test' },
       getQuote() { return Promise.resolve(mockQuote); },
