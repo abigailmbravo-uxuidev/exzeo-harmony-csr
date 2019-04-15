@@ -47,53 +47,51 @@ const mock = {
                 },
               },
               children: [],
+            },
+            {
+              id: 4,
+              type: '$INPUT',
+              path: 'agencyCode',
+              dependencies: [],
+              data: {
+                component: 'select',
+                label: 'Agencies',
+                size: '6',
+                dataSource: 'agencies'
+              },
+              formData: {
+                path: 'agencyCode',
+                type: 'integer',
+                required: true,
+                metaData: {},
+              },
+              children: [],
+            },
+            {
+              id: 5,
+              type: '$INPUT',
+              path: 'agentCode',
+              dependencies: [],
+              data: {
+                component: 'select',
+                label: 'Agent',
+                size: '6',
+                dataSource: 'agents'
+              },
+              formData: {
+                path: 'agentCode',
+                type: 'integer',
+                required: true,
+                metaData: {},
+              },
+              children: [],
             }
         ]
       },
         {
-          id: 4,
-          type: '$INPUT',
-          path: 'agencyCode',
-          dependencies: [],
-          data: {
-            component: 'select',
-            label: 'Agencies',
-            size: '6',
-            dataSource: 'agencies'
-          },
-          formData: {
-            path: 'agencyCode',
-            type: 'integer',
-            required: true,
-            metaData: {},
-          },
-          children: [],
-        },
-        {
-          id: 5,
-          type: '$INPUT',
-          path: 'agentCode',
-          dependencies: [],
-          data: {
-            component: 'select',
-            label: 'Agent',
-            size: '6',
-            dataSource: 'agents'
-          },
-          formData: {
-            path: 'agentCode',
-            type: 'integer',
-            required: true,
-            metaData: {},
-          },
-          children: [],
-        },
-        {
           id: 6,
           type: '$SECTION',
-          dependencies: [
-            { path: 'additionalPolicyholder', value: true }
-          ],
+          dependencies: [],
           data: {},
           formData: {},
           children: [

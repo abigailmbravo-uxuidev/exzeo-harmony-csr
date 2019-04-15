@@ -14,4 +14,6 @@ export const ROUTES_NOT_HANDLED_BY_GANDALF = [
   'additionalInterests',
   'underwriting',
   'application'
-]
+];
+
+export const ROUTES_NOT_USING_FOOTER = [];

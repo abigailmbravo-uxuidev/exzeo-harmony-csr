@@ -13,7 +13,7 @@
   },
   "dependencies": {
     "@exzeo/core-ui": "^0.5.7",
-    "@exzeo/react-scripts": "^1.0.12",
+    "@exzeo/react-scripts": "^1.0.14",
     "@fortawesome/fontawesome": "~1.0.0",
     "@fortawesome/react-fontawesome": "~0.0.14",
     "@uppy/core": "^0.26.0",
@@ -75,7 +75,7 @@
     ],
     "coverageThreshold": {
       "global": {
-        "statements": 70
+        "statements": 80
       }
     }
   },
