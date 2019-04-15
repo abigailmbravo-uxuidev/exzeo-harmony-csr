@@ -6,8 +6,8 @@ import moment from 'moment-timezone';
 import { Loader } from '@exzeo/core-ui';
 
 import { setAppState } from '../../state/actions/appState.actions';
-import { getZipcodeSettings, getAgents, getAgency, getNotes } from '../../state/actions/service.actions';
-import { getAgentsByAgencyCode } from '../../state/actions/agency.actions';
+import { getZipcodeSettings, getNotes } from '../../state/actions/service.actions';
+import { getAgentsByAgencyCode, getAgency } from '../../state/actions/agency.actions';
 import { 
   createTransaction, 
   getBillingOptionsForPolicy, 
@@ -60,7 +60,6 @@ export class Policy extends React.Component {
   componentDidUpdate(prevProps) {
     const { policy: prevPolicy } = prevProps;
     const {
-      getAgents,
       getAgency,
       getBillingOptionsForPolicy,
       getNotes,
@@ -71,8 +70,7 @@ export class Policy extends React.Component {
 
     if (prevPolicy !== policy && !!policy) {
       getZipCodeSettings(policy.companyCode, policy.state, policy.product, policy.property.physicalAddress.zip);
-      getAgents(policy.companyCode, policy.state);
-      getAgency(policy.companyCode, policy.state, policy.agencyCode);
+      getAgency(policy.agencyCode);
       getNotes(policy.policyNumber, policy.sourceNumber);
       getAgentsByAgencyCode(policy.agencyCode)
 
@@ -258,7 +256,6 @@ const mapStateToProps = (state) => {
 export default connect(mapStateToProps, {
   batchCompleteTask,
   createTransaction,
-  getAgents,
   getAgency,
   getEffectiveDateChangeReasons,
   getBillingOptionsForPolicy,
