@@ -14,8 +14,10 @@
 // ***********************************************************
 
 import './globalHooks';
+import './inputs';
 import './login';
 import './overwrites';
 import './persistLocalStorage';
+import './positiveCheckHelpers';
 import './stubbing';
 import './utils';

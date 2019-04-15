@@ -1,0 +1,99 @@
+{
+  "status": 200,
+  "message": "success",
+  "result": {
+    "totalNumberOfRecords": 150284,
+    "currentPage": 1,
+    "pageSize": 25,
+    "sort": "quoteNumber",
+    "sortDirection": -1,
+    "quotes": [
+      {
+        "_id": "5c98e650d7bd33000ea35a14",
+        "companyCode": "TTIC",
+        "state": "FL",
+        "product": "HO3",
+        "quoteNumber": "12-5161240-01",
+        "effectiveDate": "2019-04-04T04:00:00.000Z",
+        "quoteState": "Application Sent DocuSign",
+        "createdAt": "2019-03-25T14:31:44.940Z",
+        "updatedAt": "2019-03-25T14:34:10.148Z",
+        "createdBy": {
+          "_id": "5c98e650d7bd33000ea35a15",
+          "userId": "auth0|594199c30b874417c3157ae1",
+          "userName": "ttic-20000"
+        },
+        "updatedBy": {
+          "_id": "5c98e6e2d9fac4000eec6056",
+          "userId": "auth0|594199c30b874417c3157ae1",
+          "userName": "ttic-20000"
+        },
+        "property": {
+          "townhouseRowhouse": false,
+          "pool": false,
+          "poolSecured": false,
+          "divingBoard": false,
+          "trampoline": false,
+          "fireAlarm": false,
+          "burglarAlarm": false,
+          "gatedCommunity": false,
+          "_id": "5c98e67cd7bd33000ea35a94",
+          "buildingCodeEffectivenessGrading": 3,
+          "constructionType": "MASONRY",
+          "distanceToFireHydrant": 264.052744,
+          "distanceToFireStation": 0.79,
+          "distanceToTidalWater": 17740.8,
+          "familyUnits": "1-2",
+          "floodZone": "X",
+          "id": "12000000000000001",
+          "physicalAddress": {
+            "_id": "5c98e650d7bd33000ea35a18",
+            "address1": "4131 TEST ADDRESS",
+            "address2": "",
+            "city": "SARASOTA",
+            "county": "SARASOTA",
+            "latitude": 27.27967,
+            "longitude": -82.47786,
+            "state": "FL",
+            "zip": "00001"
+          },
+          "protectionClass": 3,
+          "residenceType": "SINGLE FAMILY",
+          "source": "CasaClue",
+          "sprinkler": "N",
+          "squareFeet": 2640,
+          "territory": "715-51",
+          "windMitigation": {
+            "_id": "5c98e67cd7bd33000ea35a96",
+            "floridaBuildingCodeWindSpeed": 130,
+            "floridaBuildingCodeWindSpeedDesign": 130,
+            "internalPressureDesign": "Other",
+            "openingProtection": "Basic",
+            "roofCovering": "Other",
+            "roofDeckAttachment": "Other",
+            "roofGeometry": "Hip",
+            "roofToWallConnection": "Other",
+            "secondaryWaterResistance": "No",
+            "terrain": "B",
+            "windBorneDebrisRegion": "Yes"
+          },
+          "yearBuilt": 1998,
+          "yearOfRoof": null
+        },
+        "policyHolders": [{
+          "electronicDelivery": false,
+          "_id": "5c98e65dd9fac4000eec5d60",
+          "emailAddress": "exzeoqa@exzeo.com",
+          "entityType": "Person",
+          "firstName": "BATMAN",
+          "lastName": "ROBIN A001",
+          "order": 0,
+          "primaryPhoneNumber": "7271231234"
+        }],
+        "rating": {
+          "totalPremium": 1462
+        }
+      }
+    ]
+  }
+}
