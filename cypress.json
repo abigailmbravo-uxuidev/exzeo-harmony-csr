@@ -4,6 +4,9 @@
   "testFiles": "**/**.spec.js",
   "videoUploadOnPasses": false,
   "defaultCommandTimeout": 12000,
+  "requestTimeout": 120000,
+  "responseTimeout": 180000,
+  "pageLoadTimeout": 180000,
   "reporter": "teamcity",
   "numTestsKeptInMemory": 0
 }
