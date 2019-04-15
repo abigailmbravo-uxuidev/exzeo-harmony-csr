@@ -97,6 +97,18 @@ const mock = {
           children: [
             {
               id: 7,
+              type: '$TITLE',
+              dependencies: [],
+              data: {
+                text: 'Primary Policyholder',
+                icon: 'fa fa-user-circle',
+                children: []
+              },
+              formData: {},
+              children: [],
+            },
+            {
+              id: 8,
               type: '$INPUT',
               dependencies: [],
               path: 'policyHolders[0].firstName',
@@ -115,7 +127,7 @@ const mock = {
               children: [],
             },
             {
-              id: 8,
+              id: 9,
               type: '$INPUT',
               path: 'policyHolders[0].lastName',
               dependencies: [],
@@ -137,7 +149,7 @@ const mock = {
               children: [],
             },
             {
-              id: 9,
+              id: 10,
               type: '$INPUT',
               path: 'policyHolders[0].emailAddress',
               dependencies: [],
@@ -159,7 +171,7 @@ const mock = {
               children: [],
             },
             {
-              id: 10,
+              id: 11,
               type: '$INPUT',
               path: 'policyHolders[0].primaryPhoneNumber',
               dependencies: [],
@@ -180,7 +192,7 @@ const mock = {
               children: [],
             },
             {
-              id: 11,
+              id: 12,
               type: '$TITLE',
               dependencies: [],
               data: {
@@ -192,7 +204,7 @@ const mock = {
               children: [],
             },
             {
-              id: 12,
+              id: 13,
               type: '$INPUT',
               path: 'policyHolders[1].firstName',
               dependencies: [],
@@ -214,7 +226,7 @@ const mock = {
               children: [],
             },
             {
-              id: 13,
+              id: 14,
               type: '$INPUT',
               path: 'policyHolders[1].lastName',
               dependencies: [],
@@ -236,7 +248,7 @@ const mock = {
               children: [],
             },
             {
-              id: 14,
+              id: 15,
               type: '$INPUT',
               path: 'policyHolders[1].emailAddress',
               dependencies: [],
@@ -258,7 +270,7 @@ const mock = {
               children: [],
             },
             {
-              id: 15,
+              id: 16,
               type: '$INPUT',
               path: 'policyHolders[1].primaryPhoneNumber',
               dependencies: [],
@@ -279,7 +291,32 @@ const mock = {
               children: [],
             }
           ]
-        }
+        },
+        {
+          id: 12,
+          type: '$TITLE',
+          dependencies: [],
+          data: {
+            text: 'Property Address',
+            children: []
+          },
+          formData: {},
+          children: [],
+        },
+        {
+          id: 15,
+          type: '$INPUT',
+          path: 'property.physicalAddress.address1',
+          dependencies: [],
+          data: {
+            component: 'text',
+            label: 'Address 1',
+            size: '4',
+            disabled: true
+          },
+          formData: {},
+          children: [],
+        },
       ],
     }
   ]
