@@ -689,17 +689,12 @@ const mock = {
           path: 'coverageLimits.dwelling.amount',
           dependencies: [],
           data: {
-            component: 'text',
+            component: 'currency',
             label: 'Dwelling Limit',
             size: '4',
             hint : "This is the dollar amount of coverage for the structure of your home. This amount should represent the total cost to rebuild your home to its current state in the event of a loss. If you have a Declarations Page from your current  policy it may be listed as Coverage A.  (Based on basic information of your home, we provide you a guide for a recommended value. You can move this number up or down based on more detailed information. For example, if you have an upgraded kitchen and bathroom, you may want to increase this number to ensure that you have adequate coverage in the event of a loss.)  ",
             validation: ['isDwellingRange'],
-            extendedProperties: {
-              format: 'currency',
-              min: 'coverageLimits.dwelling.minAmount',
-              max: 'coverageLimits.dwelling.maxAmount',
-              step: 1000,
-            },
+
           },
           formData: {
             path: 'coverageLimits.dwelling.value',
