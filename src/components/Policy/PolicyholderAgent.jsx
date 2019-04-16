@@ -41,8 +41,7 @@ export class PolicyholderAgent extends Component {
     const selectedAgent = agents.find(a => a.agentCode === policy.agentCode);
     const { showTransferAOR } = this.state;
     const transferDisabled = !['Policy Issued', 'In Force'].includes(policy.status);
-    const  { contact = {} } = agency;
-    const  { licenses = [] } = agency;
+    const  { contact = {}, licenses = [] } = agency;
     const  { licenses: agentLicenses = [] } = selectedAgent;
 
     return (
