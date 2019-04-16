@@ -12,21 +12,22 @@ const FORM_NAME = 'TransferFilter';
 export class TransferFilter extends Component {
 
   handleFilterChange = (value, previousValues, allValues) => {
-
+    const { agencyCode } = this.props;
     const { policyNumber, state, product, agentCode } = allValues;
     this.props.getPoliciesForAgency({ 
       policyNumber,
       state,
       product,
-      agentCode
+      agentCode,
+      agencyCode
      });
 
     return value;
   }
 
   resetFilter = async () => {
-    const { reset } = this.props;
-    await this.props.getPoliciesForAgency({});
+    const { reset, agencyCode } = this.props;
+    await this.props.getPoliciesForAgency({ agencyCode });
     reset();
   }
 
