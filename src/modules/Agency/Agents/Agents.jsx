@@ -81,7 +81,8 @@ export class Agents extends Component {
       showAgentDetailEditModal: true,
       activeIndex,
       agentDetailInitialValues: {
-        ...agent
+        ...agent,
+        status: 'Active'
       }
     });
   };
@@ -90,6 +91,7 @@ export class Agents extends Component {
     this.setState({
       showAgentDetailNewModal: true,
       agentDetailInitialValues: {
+        status: 'Active',
         agencies: [],
         mailingAddress: {
           country: {
