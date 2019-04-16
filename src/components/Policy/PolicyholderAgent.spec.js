@@ -113,8 +113,10 @@ describe('Testing Coverage component', () => {
         principalEmailAddress: 'principal@abcagency.com',
         customerServiceEmailAddress: 'customerservice@abcagency.com',
         websiteUrl: 'www.abcagency.com',
-        licenseNumber: 'A50922',
-        licenseExpirationDate: '2018-02-02T00:00:00Z',
+        licenses: {
+          licenseNumber: 'A50922',
+          licenseExpirationDate: '2018-02-02T00:00:00Z'
+        },
         contract: 'STD REV 06-01-15',
         addendum: 'STD REV 12-01-15',
         eoExpirationDate: '2017-02-02T00:00:00Z',
@@ -145,7 +147,7 @@ describe('Testing Coverage component', () => {
           secondaryPhoneNumber: '8137777777',
           faxNumber: '8135551234',
           emailAddress: 'john.smith@abcagency.com',
-          licenseNumber: 'A000010',
+          licenses: { licenseNumber: 'A000010' },
           appointed: true,
           agentOfRecord: true,
           status: 'Active',

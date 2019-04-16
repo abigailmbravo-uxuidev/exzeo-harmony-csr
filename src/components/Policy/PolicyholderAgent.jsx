@@ -42,6 +42,8 @@ export class PolicyholderAgent extends Component {
     const { showTransferAOR } = this.state;
     const transferDisabled = !['Policy Issued', 'In Force'].includes(policy.status);
     const  { contact = {} } = agency;
+    const  { licenses = [] } = agency;
+    const  { licenses: agentLicenses = [] } = selectedAgent;
 
     return (
       <React.Fragment>
@@ -95,7 +97,11 @@ export class PolicyholderAgent extends Component {
                 <div className="agency contact card">
                   <div className="contact-title"><i className="fa fa-address-book" /><label>Agency</label></div>
                   <div className="contact-details">
-                    <h4 className="agency"><span className="agency-code">{agency.agencyCode}</span> | <span className="agency-display-name">{agency.displayName}</span> | <span className="agency-legal-name">{agency.legalName}</span> | <span className="agency-license">{agency.licenseNumber}</span></h4>
+                    <h4 className="agency"><span className="agency-code">{agency.agencyCode} </span> 
+                      | <span className="agency-display-name">{agency.displayName} </span> 
+                      | <span className="agency-legal-name">{agency.legalName}</span>
+                      { licenses.map(l =>(<React.Fragment key={l.licenseNumber}> | <span className="agency-license">{l.licenseNumber}</span></React.Fragment>)) }
+                    </h4>
                     <ContactAddress mailingAddress={agency.mailingAddress} status={agency.status} >
                       <span className="additional-data tier"><label>TIER:&nbsp;</label>{agency.tier >= 0 ? agency.tier : ''}</span>
                       {agency.websiteUrl ? <span className="additional-data website"><label>WEBSITE:&nbsp;</label><a href={`${agency.websiteUrl}`} target="_blank">{agency.websiteUrl}</a></span> : null}
@@ -138,7 +144,10 @@ export class PolicyholderAgent extends Component {
                 <div className="agent contact card">
                   <div className="contact-title"><i className="fa fa-address-card" /><label>Agent</label></div>
                   <div className="contact-details">
-                    <h4><span className="agent-code">{selectedAgent.agentCode}</span> | <span className="agent-name">{`${selectedAgent.firstName} ${selectedAgent.lastName}`}</span> | <span className="agent-license">{selectedAgent.licenseNumber}</span></h4>
+                    <h4><span className="agent-code">{selectedAgent.agentCode} </span> 
+                      | <span className="agent-name">{`${selectedAgent.firstName} ${selectedAgent.lastName}`}</span> 
+                      { agentLicenses.map(l =>(<React.Fragment key={l.licenseNumber}> | <span className="agent-license">{l.licenseNumber}</span></React.Fragment>)) }
+                    </h4>
                       <ContactAddress mailingAddress={selectedAgent.mailingAddress} />
                     <div className="additional-contacts">
                       <ul>
