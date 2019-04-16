@@ -41,6 +41,7 @@ export class PolicyholderAgent extends Component {
     const selectedAgent = agents.find(a => a.agentCode === policy.agentCode);
     const { showTransferAOR } = this.state;
     const transferDisabled = !['Policy Issued', 'In Force'].includes(policy.status);
+    const  { contact = {} } = agency;
 
     return (
       <React.Fragment>
@@ -103,7 +104,7 @@ export class PolicyholderAgent extends Component {
                       <ul>
                         <li>
                           <div>
-                            <h5>{agency.contactFirstName} {agency.contactLastName}</h5>
+                            <h5>{contact.firstName} {contact.lastName}</h5>
                           </div>
                           <div className="contact-methods">
                             {agency.primaryPhoneNumber && <p className="primary-phone">
@@ -118,10 +119,10 @@ export class PolicyholderAgent extends Component {
                               <i className="fa fa-fax" />
                               <a href={`tel:${agency.faxNumber}`}>{normalizePhone(agency.faxNumber)}</a>
                                                   </p>}
-                            {agency.contactEmailAddress ?
+                            {contact.emailAddress && policyHolders[0] ?
                               <p>
                                 <i className="fa fa-envelope" />
-                                <a href={`mailto:${agency.contactEmailAddress}?subject=${policy.policyNumber}%20${policyHolders[0].firstName}%20${policyHolders[0].lastName}`}>{agency.contactEmailAddress}</a>
+                                <a href={`mailto:${contact.emailAddress}?subject=${policy.policyNumber}%20${policyHolders[0].firstName}%20${policyHolders[0].lastName}`}>{contact.emailAddress}</a>
                               </p> : null}
                             {agency.customerServiceEmailAddress && <p className="phone csr-phone">
                               <span className="contact-divider">|</span>
