@@ -691,7 +691,7 @@ const mock = {
           data: {
             component: 'currency',
             label: 'Dwelling Limit',
-            size: '4',
+            size: '3',
             hint : "This is the dollar amount of coverage for the structure of your home. This amount should represent the total cost to rebuild your home to its current state in the event of a loss. If you have a Declarations Page from your current  policy it may be listed as Coverage A.  (Based on basic information of your home, we provide you a guide for a recommended value. You can move this number up or down based on more detailed information. For example, if you have an upgraded kitchen and bathroom, you may want to increase this number to ensure that you have adequate coverage in the event of a loss.)  ",
             validation: ['isDwellingRange'],
             extendedProperties: {
@@ -706,6 +706,49 @@ const mock = {
             type: 'integer',
             required: true,
             metaData: {},
+          },
+          children: [],
+        },
+        {
+          id: 3,
+          type: '$INPUT',
+          path: 'coverageLimits.otherStructures.value',
+          dependencies: [],
+          data: {
+            segmented: true,
+            component: 'select',
+            label: 'Other Structures Limit',
+            size: '12',
+            hint : "This is the dollar amount of coverage for the other structures on your property not attached to your home. This might include a fence, shed, or unattached garage. If you have a Declarations Page from your current  policy it may be listed as Coverage B.",
+            dataSource: [
+              {
+                "label" : "0%",
+                "answer" : 0
+              },
+              {
+                "label" : "2%",
+                "answer" : 2
+              },
+              {
+                "label" : "5%",
+                "answer" : 5
+              },
+              {
+                "label" : "10%",
+                "answer" : 10
+              }
+            ],
+            extendedProperties: {
+                output: 'currency',
+            },
+          },
+          formData: {
+            path: 'coverageLimits.otherStructures.value',
+            type: 'integer',
+            required: true,
+            metaData: {
+              target: '${Math.ceil(((it.coverageLimits.otherStructures.value / 100) * it.coverageLimits.dwelling.amount))}',
+            },
           },
           children: [],
         },
