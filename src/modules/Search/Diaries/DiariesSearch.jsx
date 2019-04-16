@@ -6,7 +6,7 @@ import { Select, MultiSelectTypeAhead, DateRange, Button, validation, emptyObjec
 import { REASONS, STATUS_ANSWERS } from '../../../constants/diaries';
 
 class DiariesSearch extends Component {
-  
+
   /*
     TODO: redux-form initialize has a bug. We need to check back with this.
     For now we won't initialize a value for the current user.

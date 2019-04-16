@@ -372,6 +372,10 @@
             &:hover {
               @include button-variant($bright-blue-darken-04, $warm-gray-00, $warm-gray-00);
             }
+
+            > i {
+              margin-right: 0;
+            }
           }
         }
       }
