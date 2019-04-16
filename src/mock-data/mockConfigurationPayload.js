@@ -691,7 +691,7 @@ const mock = {
           data: {
             component: 'currency',
             label: 'Dwelling Limit',
-            size: '3',
+            size: '4',
             hint : "This is the dollar amount of coverage for the structure of your home. This amount should represent the total cost to rebuild your home to its current state in the event of a loss. If you have a Declarations Page from your current  policy it may be listed as Coverage A.  (Based on basic information of your home, we provide you a guide for a recommended value. You can move this number up or down based on more detailed information. For example, if you have an upgraded kitchen and bathroom, you may want to increase this number to ensure that you have adequate coverage in the event of a loss.)  ",
             validation: ['isDwellingRange'],
             extendedProperties: {
@@ -710,15 +710,14 @@ const mock = {
           children: [],
         },
         {
-          id: 3,
+          id: 36,
           type: '$INPUT',
           path: 'coverageLimits.otherStructures.value',
           dependencies: [],
           data: {
-            segmented: true,
             component: 'select',
             label: 'Other Structures Limit',
-            size: '12',
+            size: '4',
             hint : "This is the dollar amount of coverage for the other structures on your property not attached to your home. This might include a fence, shed, or unattached garage. If you have a Declarations Page from your current  policy it may be listed as Coverage B.",
             dataSource: [
               {
@@ -752,6 +751,121 @@ const mock = {
           },
           children: [],
         },
+        {
+          id: 37,
+          type: '$INPUT',
+          path: 'coverageLimits.personalProperty.value',
+          dependencies: [],
+          data: {
+            component: 'select',
+            label: 'Personal Property Limit',
+            size: '4',
+            hint : "This is your personal belongings, or items located inside the home. This could include your furniture, clothing, bedding, dishes, etc. If you choose to have replacement cost coverage on Personal Property, you will be required to carry Personal Property limits at a minimum of 25% of your Dwelling limit.",
+            extendedProperties: {
+                output: 'currency'
+            },
+            dataSource: [
+              {
+                "label" : "0%",
+                "answer" : 0
+              },
+              {
+                "label" : "25%",
+                "answer" : 25
+              },
+              {
+                "label" : "53%",
+                "answer" : 35
+              },
+              {
+                "label" : "50%",
+                "answer" : 50
+              }
+            ]
+          },
+          formData: {
+            path: 'coverageLimits.personalProperty.value',
+            type: 'integer',
+            required: true,
+            metaData: {
+              target: '${Math.ceil(((it.coverageLimits.personalProperty.value / 100) * it.coverageLimits.dwelling.amount))}',
+            },
+          },
+          children: [],
+        },
+        {
+          id: 38,
+          type: '$INPUT',
+          path: 'coverageLimits.lossOfUse.value',
+          dependencies: [],
+          data: {
+            component: 'display',
+            label: 'Loss of Use Limit',
+            size: '4',
+            hint : "This is your personal belongings, or items located inside the home. This could include your furniture, clothing, bedding, dishes, etc. If you choose to have replacement cost coverage on Personal Property, you will be required to carry Personal Property limits at a minimum of 25% of your Dwelling limit.",
+            extendedProperties: {
+              output: 'currency'
+            },
+          },
+          formData: {
+            path: 'coverageLimits.lossOfUse.value',
+            type: 'integer',
+            required: true,
+            metaData: {
+              target: '${Math.ceil(((it.coverageLimits.lossOfUse.value / 100) * it.coverageLimits.dwelling.amount))}',
+            },
+          },
+          children: [],
+        },
+        {
+          id: 39,
+          type: '$INPUT',
+          path: 'coverageLimits.personalLiability.amount',
+          dependencies: [],
+          data: {
+            component: 'select',
+            label: 'Personal Liability Limit',
+            size: '4',
+            segmented: true,
+          },
+          formData: {
+            path: 'coverageLimits.personalLiability.value',
+            type: 'integer',
+            required: true,
+            metaData: {
+              enum: [
+                { label: '$ 100,000', answer: 100000 },
+                { label: '$ 300,000', answer: 300000 }
+              ]
+            },
+          },
+          children: [],
+        },
+        {
+          id: 40,
+          type: '$INPUT',
+          path: 'coverageLimits.medicalPayments.amount',
+          dependencies: [],
+          data: {
+            component: 'display',
+            label: 'Medical Payments to Others Limit',
+            size: '4',
+            segmented: true,
+            extendedProperties: {
+              output: 'currency',
+            },
+            dataSource: []
+          },
+          formData: {
+            path: 'coverageLimits.medicalPayments.value',
+            type: 'integer',
+            required: true,
+            metaData: {
+              target: '${2000}'
+            },
+          },
+          children: [],
+        }
       ],
     }
   ]
