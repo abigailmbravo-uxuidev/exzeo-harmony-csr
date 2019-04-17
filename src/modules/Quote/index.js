@@ -29,6 +29,7 @@ import MOCK_CONFIG_DATA from '../../mock-data/mockConfigurationPayload';
 
 import { ROUTES_NOT_HANDLED_BY_GANDALF, ROUTES_NOT_USING_FOOTER, PAGE_ROUTING } from './constants/workflowNavigation';
 import { getAgentList, getAgencyList } from '../../state/selectors/agency.selector';
+import { handleCGSubmit } from '../../utilities/choreographer';
 
 const FORM_ID = 'QuoteWorkflowCSR';
 
@@ -119,12 +120,23 @@ export class QuoteBase extends React.Component {
     }
   }
 
+    primaryClickHandler = () => {
+    // ie11 does not handle customEvents the same way as other browsers. So here we have to check before creating
+    // this custom submit event - this is being used to submit the form from outside of the form.
+    const form = document.getElementById(FORM_ID);
+    if (typeof(Event) === 'function') {
+      form.dispatchEvent(new Event('submit', { cancelable: true }));
+    } else {
+      const event = document.createEvent('Event');
+      event.initEvent('submit', true, true);
+      form.dispatchEvent(event);
+    }
+  };
+
   handleGandalfSubmit = async ({ shouldNav, ...values}) => {
-    // const { zipCodeSettings, quote, history, updateQuote, location, workflowState, options } = this.props;
-    // const { isRecalc } = this.state;
-    // await updateQuote({ data: { ...values, recalc: isRecalc }, quoteNumber: quote.quoteNumber, options: { underwritingQuestions: options.underwritingQuestions, timezone: (zipCodeSettings|| {}).timezone || 'America/New_York' } });
-    //     // TODO: Figure out a routing solution
-    // if(!(isRecalc || workflowState.isHardStop || shouldNav === 'false')) history.replace(NEXT_PAGE_ROUTING[location.pathname.split('/')[3]]);
+    const currentStep = this.props.location.pathname.split('/')[3];
+    const {modelName, submitData, pageName } = handleCGSubmit(values, currentStep, this.props);
+    await this.updateQuote(modelName, submitData, pageName);
   };
 
   getLocalState = () => {
@@ -206,7 +218,7 @@ export class QuoteBase extends React.Component {
                   path={location.pathname}
                   customHandlers={customHandlers}
                   customComponents={this.customComponents}
-                  renderFooter={({ submitting, form }) => (
+                  renderFooter={({ submitting, form, pristine }) => (
                     <React.Fragment>
                       {shouldRenderFooter &&
                         <div className="btn-group">
@@ -214,8 +226,8 @@ export class QuoteBase extends React.Component {
                             data-test="submit"
                             className={Button.constants.classNames.primary}
                             onClick={this.primaryClickHandler}
-                            disabled={submitting || needsConfirmation}
-                            label={this.state.isRecalc ? 'recalculate' : 'next'}
+                            disabled={submitting || needsConfirmation || pristine}
+                            label={this.state.isRecalc ? 'recalculate' : 'Save'}
                           />
 
                           {this.state.isRecalc &&
@@ -286,5 +298,5 @@ export default connect(mapStateToProps, {
   getQuote,
   getAgencies,
   getAgentsByAgencyCode,
-  getZipcodeSettings
+  getZipcodeSettings,
 })(QuoteBase);
