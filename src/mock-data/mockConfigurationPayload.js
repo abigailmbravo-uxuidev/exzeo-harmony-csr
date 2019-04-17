@@ -88,207 +88,19 @@ const mock = {
             }
         ]
       },
-        {
-          id: 6,
-          type: '$SECTION',
-          dependencies: [],
-          data: {},
-          formData: {},
-          children: [
-            {
-              id: 7,
-              type: '$TITLE',
-              dependencies: [],
-              data: {
-                text: 'Primary Policyholder',
-                children: []
-              },
-              formData: {},
-              children: [],
-            },
-            {
-              id: 8,
-              type: '$INPUT',
-              dependencies: [],
-              path: 'policyHolders[0].firstName',
-              data: {
-                component: 'text',
-                label: 'First Name',
-                size: '5',
-                validation: ['isValidNameFormat'],
-              },
-              formData:  {
-                path: 'policyHolders.policyHolder.firstName',
-                type: 'string',
-                required: true,
-                metaData: { minLength: 1, maxLength: 255 },
-              },
-              children: [],
-            },
-            {
-              id: 9,
-              type: '$INPUT',
-              path: 'policyHolders[0].lastName',
-              dependencies: [],
-              data: {
-                component: 'text',
-                label: 'Last Name',
-                size: '7',
-                validation: ['isValidNameFormat'],
-              },
-              formData:  {
-                path: 'policyHolders.policyHolder.lastName',
-                type: 'string',
-                required: true,
-                metaData: {
-                  minLength: 1,
-                  maxLength: 255
-                },
-              },
-              children: [],
-            },
-            {
-              id: 10,
-              type: '$INPUT',
-              path: 'policyHolders[0].emailAddress',
-              dependencies: [],
-              data: {
-                component: 'text',
-                label: 'Email Address',
-                size: '8',
-                validation: ['isEmail'],
-              },
-              formData:  {
-                path: 'policyHolders.policyHolder.emailAddress',
-                type: 'string',
-                required: true,
-                metaData: {
-                  minLength: 1,
-                  maxLength: 255
-                },
-              },
-              children: [],
-            },
-            {
-              id: 11,
-              type: '$INPUT',
-              path: 'policyHolders[0].primaryPhoneNumber',
-              dependencies: [],
-              data: {
-                component: 'phone',
-                label: 'Contact Phone',
-                size: '4',
-                validation: ['isPhone'],
-              },
-              formData:  {
-                path: 'policyHolders.policyHolder.primaryPhoneNumber',
-                type: 'string',
-                required: true,
-                metaData: {
-                  pattern: '^(\+\d{1,2}\s)?\(?\d{3}\)?[\s.-]\d{3}[\s.-]\d{4}$'
-                },
-              },
-              children: [],
-            },
-            {
-              id: 12,
-              type: '$TITLE',
-              dependencies: [],
-              data: {
-                text: 'Secondary Policyholder',
-                children: []
-              },
-              formData: {},
-              children: [],
-            },
-            {
-              id: 13,
-              type: '$INPUT',
-              path: 'policyHolders[1].firstName',
-              dependencies: [],
-              data: {
-                component: 'text',
-                label: 'First Name',
-                size: '5',
-                validation: ['isValidNameFormat'],
-              },
-              formData:  {
-                path: 'policyHolders.policyHolder.firstName',
-                type: 'string',
-                required: true,
-                metaData: {
-                  minLength: 1,
-                  maxLength: 255
-                },
-              },
-              children: [],
-            },
-            {
-              id: 14,
-              type: '$INPUT',
-              path: 'policyHolders[1].lastName',
-              dependencies: [],
-              data: {
-                component: 'text',
-                label: 'Last Name',
-                size: '7',
-                validation: ['isValidNameFormat'],
-              },
-              formData:  {
-                path: 'policyHolders.policyHolder.lastName',
-                type: 'string',
-                required: true,
-                metaData: {
-                  minLength: 1,
-                  maxLength: 255
-                },
-              },
-              children: [],
-            },
-            {
-              id: 15,
-              type: '$INPUT',
-              path: 'policyHolders[1].emailAddress',
-              dependencies: [],
-              data: {
-                component: 'text',
-                label: 'Email Address',
-                size: '8',
-                validation: ['isEmail'],
-              },
-              formData:  {
-                path: 'policyHolders.policyHolder.emailAddress',
-                type: 'string',
-                required: true,
-                metaData: {
-                  minLength: 1,
-                  maxLength: 255
-                },
-              },
-              children: [],
-            },
-            {
-              id: 16,
-              type: '$INPUT',
-              path: 'policyHolders[1].primaryPhoneNumber',
-              dependencies: [],
-              data: {
-                component: 'phone',
-                label: 'Contact Phone',
-                size: '4',
-                validation: ['isPhone'],
-              },
-              formData:  {
-                path: 'policyHolders.policyHolder.primaryPhoneNumber',
-                type: 'string',
-                required: true,
-                metaData: {
-                  pattern: '^(\+\d{1,2}\s)?\(?\d{3}\)?[\s.-]\d{3}[\s.-]\d{4}$'
-                },
-              },
-              children: [],
-            }
-          ]
+      {
+        id: 1,
+        type: '$CUSTOM',
+        dependencies: [],
+        data: {
+          component: '$POLICYHOLDER',
+          extendedProperties: {
+            subscribe: true,
+            watchField: 'removeSecondary',
+          }
+        },
+        formData: {},
+        children: [],
         },
         {
           id: 17,
@@ -1231,6 +1043,375 @@ const mock = {
                 {
                   "label" : "B",
                   "answer" : "B"
+                }
+              ]
+            },
+            children: [],
+          },
+          children: [],
+        },
+        {
+          id: 54,
+          type: '$TITLE',
+          dependencies: [],
+          data: {
+            text: 'Wind Mitigation',
+          },
+          formData: {},
+          children: [],
+        },
+        {
+          id: 55,
+          component: '$INPUT',
+          path: 'property.windMitigation.roofCovering',
+          dependencies: [],
+          data: {
+            component: 'select',
+            label: 'Roof Covering',
+            size: '6',
+          },
+          formData:  {
+            path: 'property.windMitigation.roofCovering',
+            type: 'string',
+            required: true,
+            metaData: {
+              enum: [
+                {
+                  "label" : "Non-FBC",
+                  "answer" : "Non-FBC"
+                },
+                {
+                  "label" : "FBC",
+                  "answer" : "FBC"
+                },
+                {
+                  "label" : "Other",
+                  "answer" : "Other"
+                }
+              ]
+            },
+          },
+          children: [],
+        },
+        {
+          id: 56,
+          type: '$INPUT',
+          path: 'property.windMitigation.floridaBuildingCodeWindSpeed',
+          dependencies: [],
+          data: {
+            component: 'text',
+            label: 'FBC Wind Speed',
+            size: '6',
+          },
+          formData: {},
+          children: [],
+        },
+        {
+          id: 57,
+          type: '$INPUT',
+          path: 'property.windMitigation.roofDeckAttachment',
+          dependencies: [],
+          data: {
+            component: 'select',
+            label: 'Roof Deck Attachment',
+            size: '6',
+          },
+          formData:  {
+            path: 'property.windMitigation.roofDeckAttachment',
+            type: 'integer',
+            required: true,
+            metaData: {
+              enum: [
+                {
+                  "label": "A",
+                  "answer" : "A"
+                },
+                {
+                  "label": "B",
+                  "answer" : "B"
+                },
+                {
+                  "label": "C",
+                  "answer" : "C"
+                },
+                {
+                  "label": "D",
+                  "answer" : "D"
+                },
+                {
+                  "label": "Concrete",
+                  "answer" : "Concrete"
+                },
+                {
+                  "label": "Other",
+                  "answer" : "Other"
+                }
+              ]
+            },
+          },
+          children: [],
+        },
+        {
+          id: 58,
+          type: '$INPUT',
+          path: 'property.windMitigation.floridaBuildingCodeWindSpeedDesign',
+          dependencies: [],
+          data: {
+            component: 'text',
+            label: 'FBC Wind Speed Design',
+            size: '6',
+          },
+          formData: {},
+          children: [],
+        },
+        {
+          id: 59,
+          type: '$INPUT',
+          path: 'property.windMitigation.roofToWallConnection',
+          dependencies: [],
+          data: {
+            component: 'select',
+            label: 'Roof to Wall Attachment',
+            size: '6',
+          },
+          formData:  {
+            path: 'property.windMitigation.roofToWallConnection',
+            type: 'string',
+            required: true,
+            metaData: {
+              enum: [
+                {
+                  "label" : "Toe Nails",
+                  "answer" : "Toe Nails"
+                },
+                {
+                  "label" : "Clips",
+                  "answer" : "Clips"
+                },
+                {
+                  "label" : "Single Wraps",
+                  "answer" : "Single Wraps"
+                },
+                {
+                  "label" : "Double Wraps",
+                  "answer" : "Double Wraps"
+                },
+                {
+                  "label" : "Other",
+                  "answer" : "Other"
+                }
+              ]
+            },
+          },
+          children: [],
+        },
+        {
+          id: 60,
+          type: '$INPUT',
+          path: 'property.windMitigation.terrain',
+          dependencies: [],
+          data: {
+            component: 'select',
+            label: 'Terrain',
+            size: '6',
+            segmented: true,
+          },
+          formData:  {
+            path: 'property.windMitigation.terrain',
+            type: 'string',
+            required: true,
+            metaData: {
+              enum: [
+                {
+                  "label" : "B",
+                  "answer" : "B"
+                },
+                {
+                  "label" : "C",
+                  "answer" : "C"
+                },
+                {
+                  "label" : "HVHZ",
+                  "answer" : "HVHZ"
+                },
+                {
+                  "label" : "Other",
+                  "answer" : "Other"
+                }
+              ]
+            },
+          },
+          children: [],
+        },
+        {
+          id: 61,
+          type: '$INPUT',
+          path: 'property.windMitigation.roofGeometry',
+          dependencies: [],
+          data: {
+            component: 'select',
+            label: 'Roof Geometry',
+            size: '6',
+          },
+          formData:  {
+            path: 'property.windMitigation.roofGeometry',
+            type: 'string',
+            required: true,
+            metaData: {
+              enum: [
+                {
+                  "label" : "Flat",
+                  "answer" : "Flat"
+                },
+                {
+                  "label" : "Gable",
+                  "answer" : "Gable"
+                },
+                {
+                  "label" : "Hip",
+                  "answer" : "Hip"
+                },
+                {
+                  "label" : "Other",
+                  "answer" : "Other"
+                }
+              ]
+            },
+          },
+          children: [],
+        },
+        {
+          id: 62,
+          type: '$INPUT',
+          path: 'property.windMitigation.internalPressureDesign',
+          dependencies: [],
+          data: {
+            component: 'select',
+            label: 'Internal Pressure Design',
+            size: '6',
+          },
+          formData:  {
+            path: 'property.windMitigation.internalPressureDesign',
+            type: 'string',
+            required: true,
+            metaData: {
+              enum: [
+                {
+                  "label" : "Enclosed",
+                  "answer" : "Enclosed"
+                },
+                {
+                  "label" : "Partial",
+                  "answer" : "Partial"
+                },
+                {
+                  "label" : "Other",
+                  "answer" : "Other"
+                }
+              ]
+            },
+          },
+          children: [],
+        },
+        {
+          id: 63,
+          type: '$INPUT',
+          path: 'property.windMitigation.secondaryWaterResistance',
+          dependencies: [],
+          data: {
+            component: 'radio',
+            label: 'Secondary Water Resistance (SWR)',
+            size: '6',
+            segmented: true,
+          },
+          formData:  {
+            path: 'property.windMitigation.secondaryWaterResistance',
+            type: 'string',
+            required: true,
+            metaData: {
+              enum: [
+                {
+                  "label" : "Yes",
+                  "answer" : "Yes"
+                },
+                {
+                  "label" : "No",
+                  "answer" : "No"
+                },
+                {
+                  "label" : "Other",
+                  "answer" : "Other"
+                }
+              ]
+            },
+          },
+          children: [],
+        },
+        {
+          id: 64,
+          type: '$INPUT',
+          path: 'property.windMitigation.windBorneDebrisRegion',
+          dependencies: [],
+          data: {
+            component: 'radio',
+            label: 'Wind Borne Debris Region (WBDR)',
+            size: '6',
+            segmented: true,
+          },
+          formData:  {
+            path: 'property.windMitigation.windBorneDebrisRegion',
+            type: 'string',
+            required: true,
+            metaData: {
+              enum: [
+                {
+                  "label" : "Yes",
+                  "answer" : "Yes"
+                },
+                {
+                  "label" : "No",
+                  "answer" : "No"
+                },
+                {
+                  "label" : "Other",
+                  "answer" : "Other"
+                }
+              ]
+            },
+          },
+          children: [],
+        },
+        {
+          id: 27,
+          type: '$INPUT',
+          dependencies: [],
+          path: 'property.windMitigation.openingProtection',
+          data: {
+            component: 'select',
+            label: 'Opening Protection:',
+            size: '6',
+          },
+          formData:  {
+            path: 'property.windMitigation.openingProtection',
+            type: 'string',
+            required: true,
+            metaData: {
+              enum: [
+                {
+                  "label" : "None",
+                  "answer" : "None"
+                },
+                {
+                  "label" : "Basic",
+                  "answer" : "Basic"
+                },
+                {
+                  "label" : "Hurricane",
+                  "answer" : "Hurricane"
+                },
+                {
+                  "label" : "Other",
+                  "answer" : "Other"
                 }
               ]
             },
