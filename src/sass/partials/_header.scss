@@ -36,127 +36,106 @@ header {
       }
     }
 
-    .header-toggle-wrapper {
+    .header-toggle-wrapper { 
       position: relative;
-      display: flex;
+      display: none;
       flex-direction: row-reverse;
       flex-grow: 1;
       flex-shrink: 1;
-
-      button {
-        position: relative;
+      
+      &.active-diaries {
         display: flex;
-        align-items: center;
-        flex-direction: column;
-        margin-top: -($padding*2);
-        margin-left: $padding;
-        padding: 0;
-        width: 3.5rem;
-        height: 3.75rem;
-        border-width: 0;
-
-        @include transition(all 0.2s ease-in-out);
-
-        .diary-btn-wrapper {
-          position: absolute;
-          top: 0;
-          right: 0;
-          bottom: 0;
-          left: 0;
+        button {
+          position: relative;
           display: flex;
           align-items: center;
           flex-direction: column;
-          justify-content: center;
-          padding-top: $padding;
-          border-right: 1px solid $bright-blue;
-          border-bottom: 1px solid $bright-blue;
-          border-left: 1px solid $bright-blue;
-          border-radius: 0 0 $btn-border-radius $btn-border-radius;
+          margin-top: -($padding*2);
+          margin-left: $padding;
+          padding: 0;
+          width: 3.5rem;
+          height: 3.75rem;
+          border-width: 0;
 
-          @include transition(all 0.2s ease-in-out);
 
-          &.panel-closed {
-            background-color: $bright-blue-darken-04;
-          }
-
-          &.panel-open {
-            background-color: $white;
-
-            > i {
-              color: $bright-blue-darken-04;
-            }
-
-            > span {
-              color: $bright-blue-darken-04;
-            }
-          }
-
-          > i {
-            position: relative;
+          .diary-btn-wrapper { 
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
             display: flex;
             align-items: center;
+            flex-direction: column;
             justify-content: center;
-            margin-right: 0;
-            width: 2rem;
-            height: 2rem;
-            font-size: $font-size-h2;
+            padding-top: $padding;
+            border-right: 1px solid $bright-blue;
+            border-bottom: 1px solid $bright-blue;
+            border-left: 1px solid $bright-blue;
+            border-radius: 0 0 $btn-border-radius $btn-border-radius;
 
-            @include transition(all 0.2s ease-in-out);
 
-            > span {
-              position: absolute;
-              top: 0.5rem;
-              color: $white;
-              font-family: $font-family-base;
-            }
-          }
-
-          span {
-            font-size: $font-size-xs;
-
-            i {
-              margin-right: $padding/4;
-            }
-          }
-        }
-
-        &:focus,
-        &:hover {
-          color: $bright-blue;
-
-          .dairy-btn-wrapper {
             &.panel-closed {
-              > i {
-                color: $white !important;
-              }
+              background-color: $bright-blue-darken-04;
             }
 
             &.panel-open {
-              > i {
-                color: $bright-blue-darken-04 !important;
-              }
-            }
-          }
-        }
-      }
-
-      &.active-diaries {
-        button {
-          .diary-btn-wrapper {
-            &.panel-closed {
-              border-color: $red-darken-01;
-              background-color: $red-darken-01;
+              background-color: $white;
 
               > i {
-                color: $white;
-
-                > span {
-                  color: $red-darken-01;
-                }
+                color: $bright-blue-darken-04;
               }
 
               > span {
+                color: $bright-blue-darken-04;
+              }
+            }
+
+            > i {
+              position: relative;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              margin-right: 0;
+              width: 2rem;
+              height: 2rem;
+              color: $bright-blue;
+              font-size: $font-size-h2;
+
+              > span {
+                position: absolute;
+                top: 0.5rem;
                 color: $white;
+                font-family: $font-family-base;
+              }
+            }
+
+            span {
+              color: $bright-blue;
+              font-size: $font-size-xs;
+
+              i {
+                margin-right: $padding/4;
+                color: $bright-blue;
+              }
+            }
+          }
+
+          &:focus,
+          &:hover {
+            color: $bright-blue;
+
+            .dairy-btn-wrapper {
+              &.panel-closed {
+                > i {
+                  color: $white !important;
+                }
+              }
+
+              &.panel-open {
+                > i {
+                  color: $bright-blue-darken-04 !important;
+                }
               }
             }
           }
