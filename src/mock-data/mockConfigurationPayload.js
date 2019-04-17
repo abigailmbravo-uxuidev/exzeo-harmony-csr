@@ -965,6 +965,7 @@ const mock = {
           path: 'coverageOptions.personalPropertyReplacementCost.answer',
           dependencies: [],
           data: {
+            disabled: { path: 'coverageLimits.personalProperty.value' , value: '0', defaultValue: '' },
             component: 'radio',
             segmented: true,
             label: 'Personal Property Replacement Cost',
