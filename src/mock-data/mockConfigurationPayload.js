@@ -101,7 +101,6 @@ const mock = {
               dependencies: [],
               data: {
                 text: 'Primary Policyholder',
-                icon: 'fa fa-user-circle',
                 children: []
               },
               formData: {},
@@ -197,7 +196,6 @@ const mock = {
               dependencies: [],
               data: {
                 text: 'Secondary Policyholder',
-                icon: 'fa fa-user-circle',
                 children: []
               },
               formData: {},
@@ -678,7 +676,6 @@ const mock = {
           dependencies: [],
           data: {
             text: 'Coverages',
-            icon: 'fa fa-line-chart',
           },
           formData: {},
           children: [],
@@ -762,7 +759,31 @@ const mock = {
             size: '4',
             hint : "This is your personal belongings, or items located inside the home. This could include your furniture, clothing, bedding, dishes, etc. If you choose to have replacement cost coverage on Personal Property, you will be required to carry Personal Property limits at a minimum of 25% of your Dwelling limit.",
             extendedProperties: {
-                output: 'currency'
+                output: 'currency',
+                renderWatchFields: [{
+                  "field": 'coverageLimits.personalProperty.value',
+                  "becomes": "0",
+                  "set": 'coverageOptions.personalPropertyReplacementCost.answer',
+                  "to": false
+                },
+                {
+                  "field": 'coverageLimits.personalProperty.value',
+                  "becomes": "25",
+                  "set": 'coverageOptions.personalPropertyReplacementCost.answer',
+                  "to": true
+                },
+                {
+                  "field": 'coverageLimits.personalProperty.value',
+                  "becomes": "35",
+                  "set": 'coverageOptions.personalPropertyReplacementCost.answer',
+                  "to": true
+                },
+                {
+                  "field": 'coverageLimits.personalProperty.value',
+                  "becomes": "50",
+                  "set": 'coverageOptions.personalPropertyReplacementCost.answer',
+                  "to": true
+                }],
             },
             dataSource: [
               {
@@ -774,7 +795,7 @@ const mock = {
                 "answer" : 25
               },
               {
-                "label" : "53%",
+                "label" : "35%",
                 "answer" : 35
               },
               {
@@ -865,7 +886,110 @@ const mock = {
             },
           },
           children: [],
-        }
+        },
+        {
+          id: 41,
+          type: '$TITLE',
+          dependencies: [],
+          data: {
+            text: 'Other Coverages',
+          },
+          formData: {},
+          children: [],
+        },
+        {
+          id: 41,
+          type: '$INPUT',
+          path: 'coverageLimits.moldProperty.amount',
+          dependencies: [],
+          data: {
+            component: 'select',
+            label: 'Mold Property',
+            size: '4',
+          },
+          formData: {
+            path: 'coverageLimits.moldProperty.value',
+            type: 'integer',
+            required: true,
+            metaData: {
+              enum: [
+                {
+                  "label" : "$ 10,000",
+                  "answer" : 10000
+                },
+                {
+                  "label" : "$ 25,000",
+                  "answer" : 25000
+                },
+                {
+                  "label" : "$ 50,000",
+                  "answer" : 50000
+                }
+              ]
+            },
+          },
+          children: [],
+        },
+        {
+          id: 42,
+          type: '$INPUT',
+          path: 'coverageLimits.moldLiability.amount',
+          dependencies: [],
+          data: {
+            component: 'select',
+            label: 'Mold Liability Limit',
+            size: '4',
+          },
+          formData: {
+            path: 'coverageLimits.moldLiability.value',
+            type: 'integer',
+            required: true,
+            metaData: {
+              enum: [
+                {
+                  "label" : "$ 50,000",
+                  "answer" : 50000
+                },
+                {
+                  "label" : "$ 100,000",
+                  "answer" : 100000
+                }
+              ]
+            },
+          },
+          children: [],
+        },
+        {
+          id: 6,
+          type: '$INPUT',
+          path: 'coverageOptions.personalPropertyReplacementCost.answer',
+          dependencies: [],
+          data: {
+            component: 'radio',
+            segmented: true,
+            label: 'Personal Property Replacement Cost',
+            size: '4',
+            hint : "Replacement Cost Coverage replaces your damaged possessions at today's prices without deducting for depreciation. If you choose not to select this coverage, your loss for personal property will be paid out at Actual Cash Value.",
+          },
+          formData: {
+            path: 'coverageOptions.personalPropertyReplacementCost.answer',
+            type: 'boolean',
+            required: true,
+            metaData: {
+              enum: [
+                {
+                  "label" : "No",
+                  "answer" : false
+                },
+                {
+                  "label" : "Yes",
+                  "answer" : true
+                }
+              ]
+            }
+          },
+          children: [],
+        },
       ],
     }
   ]
