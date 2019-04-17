@@ -898,7 +898,7 @@ const mock = {
           children: [],
         },
         {
-          id: 41,
+          id: 42,
           type: '$INPUT',
           path: 'coverageLimits.moldProperty.amount',
           dependencies: [],
@@ -931,7 +931,7 @@ const mock = {
           children: [],
         },
         {
-          id: 42,
+          id: 43,
           type: '$INPUT',
           path: 'coverageLimits.moldLiability.amount',
           dependencies: [],
@@ -960,7 +960,7 @@ const mock = {
           children: [],
         },
         {
-          id: 6,
+          id: 44,
           type: '$INPUT',
           path: 'coverageOptions.personalPropertyReplacementCost.answer',
           dependencies: [],
@@ -988,6 +988,253 @@ const mock = {
                 }
               ]
             }
+          },
+          children: [],
+        },
+        {
+          id: 45,
+          type: '$INPUT',
+          path: 'coverageLimits.ordinanceOrLaw.amount',
+          dependencies: [],
+          data: {
+            component: 'select',
+            label: 'Ordinance or Law Coverage Limit',
+            size: '4',
+          },
+          formData: {
+            path: 'coverageLimits.ordinanceOrLaw.value',
+            type: 'integer',
+            required: true,
+            metaData: {
+              enum: [
+                {
+                  "label" : "25% of Dwelling Limit",
+                  "answer" : 25
+                },
+                {
+                  "label" : "50% of Dwelling Limit",
+                  "answer" : 50
+                }
+              ]
+            },
+          },
+          children: [],
+        },
+        {
+          id: 46,
+          type: '$TITLE',
+          dependencies: [],
+          data: {
+            text: 'Deductibles',
+          },
+          formData: {},
+          children: [],
+        },
+        {
+          id: 47,
+          component: '$INPUT',
+          path: 'deductibles.allOtherPerils.amount',
+          dependencies: [],
+          data: {
+            component: 'select',
+            label: 'All Other Perils',
+            size: '4',
+          },
+          formData:  {
+            path: 'deductibles.allOtherPerils.value',
+            type: 'integer',
+            required: true,
+            metaData: {
+              enum: [
+                {
+                  "label" : "$ 500",
+                  "answer" : 500
+                },
+                {
+                  "label" : "$ 1,000",
+                  "answer" : 1000
+                },
+                {
+                  "label" : "$ 2,500",
+                  "answer" : 2500
+                }
+              ]
+            },
+          },
+          children: [],
+        },
+        {
+          id: 48,
+          type: '$INPUT',
+          path: 'deductibles.hurricane.amount',
+          dependencies: [],
+          data: {
+            component: 'select',
+            label: 'Hurricane Deductible',
+            size: '4',
+            extendedProperties: {
+              output: 'currency',
+            },
+          },
+          formData:  {
+            path: 'deductibles.hurricane.value',
+            type: 'integer',
+            required: true,
+            metaData: {
+              enum: [
+                {
+                  "label" : "2% of Dewlling Limit",
+                  "answer" : 2
+                },
+                {
+                  "label" : "5% of Dewlling Limit",
+                  "answer" : 5
+                },
+                {
+                  "label" : "10% of Dewlling Limit",
+                  "answer" : 10
+                }
+              ],
+              target: '${Math.ceil(((it.deductibles.hurricane.amount / 100) * it.coverageLimits.dwelling.amount))}',
+            },
+          },
+          children: [],
+        },
+        {
+          id: 49,
+          type: '$INPUT',
+          path: 'deductibles.sinkhole.amount',
+          dependencies: [],
+          data: {
+            component: 'select',
+            label: 'Sinkhole Deductible',
+            size: '4',
+            dataSource: [
+              {
+                "answer" : 0,
+                "label" : "Coverage Excluded"
+              },
+              {
+                "answer" : 10,
+                "label" : "10% of Dwelling Limit"
+              }
+            ],
+            extendedProperties: {
+              output: 'currency',
+            }
+          },
+          formData:  {
+            path: 'deductibles.sinkhole.value',
+            type: 'integer',
+            required: true,
+            metaData: {
+              target: '${Math.ceil(((it.deductibles.sinkhole.amount / 100) * it.coverageLimits.dwelling.amount))}',
+            },
+          },
+          children: [],
+        },
+        {
+          id: 50,
+          type: '$TITLE',
+          dependencies: [],
+          data: {
+            text: 'Discounts',
+          },
+          formData: {},
+          children: [],
+        },
+        {
+          id: 51,
+          type: '$INPUT',
+          path: 'property.burglarAlarm',
+          dependencies: [],
+          data: {
+            segmented: true,
+            component: 'radio',
+            label: 'Does the property have a burglar alarm?',
+            size: '4',
+          },
+          formData:  {
+            path: 'property.burglarAlarm',
+            type: 'boolean',
+            metaData: {
+              enum: [
+                {
+                  "label" : "No",
+                  "answer" : false
+                },
+                {
+                  "label" : "Yes",
+                  "answer" : true
+                }
+              ]
+            },
+            children: [],
+          },
+          children: [],
+        },
+        {
+          id: 52,
+          type: '$INPUT',
+          path: 'property.fireAlarm',
+          dependencies: [],
+          data: {
+            segmented: true,
+            component: 'radio',
+            label: 'Does the property have a fire alarm?',
+            size: '4',
+          },
+          formData:  {
+            path: 'property.fireAlarm',
+            type: 'boolean',
+            metaData: {
+              enum: [
+                {
+                  "label" : "No",
+                  "answer" : false
+                },
+                {
+                  "label" : "Yes",
+                  "answer" : true
+                }
+              ]
+            },
+            children: [],
+          },
+          children: [],
+        },
+        {
+          id: 53,
+          type: '$INPUT',
+          path: 'property.sprinkler',
+          dependencies: [],
+          data: {
+            segmented: true,
+            component: 'radio',
+            label: 'Sprinkler',
+            size: '4',
+          },
+          formData:  {
+            path: 'property.sprinkler',
+            type: 'string',
+            required: true,
+            metaData: {
+              enum: [
+                {
+                  "label" : "N",
+                  "answer" : "N"
+                },
+                {
+                  "label" : "A",
+                  "answer" : "A"
+                },
+                {
+                  "label" : "B",
+                  "answer" : "B"
+                }
+              ]
+            },
+            children: [],
           },
           children: [],
         },
