@@ -140,6 +140,10 @@ export class QuoteBase extends React.Component {
   setShowEmailPopup = (showEmailPopup) => {
     this.setState(() => ({ showEmailPopup }));
   };
+
+  handleAgencyChange = (agencyCode) => {
+    this.props.getAgentsByAgencyCode(agencyCode);
+  }
   
   render() {
     const {
@@ -169,7 +173,8 @@ export class QuoteBase extends React.Component {
       getState: this.getLocalState,
       handleSubmit: this.handleGandalfSubmit,
       history: history,
-      updateQuote: this.handleUpdateQuote
+      updateQuote: this.handleUpdateQuote,
+      handleAgencyChange: this.handleAgencyChange
     };
 
     return (
