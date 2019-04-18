@@ -41,7 +41,8 @@ export class QuoteBase extends React.Component {
       isRecalc: false,
       showEmailPopup: false,
       gandalfTemplate: MOCK_CONFIG_DATA,
-      showDiaries: false
+      showDiaries: false,
+      isDirty: false
     };
 
     this.getConfigForJsonTransform = defaultMemoize(this.getConfigForJsonTransform.bind(this));
@@ -160,10 +161,15 @@ export class QuoteBase extends React.Component {
     return this.state;
   };
 
+  setPristine = (pristine) => {
+    this.setState(() => ({ pristine }));
+  }
+
   handleDirtyForm = (isDirty, currentPage) => {
-    this.setState({
-      isRecalc: currentPage === 2 && isDirty,
-    })
+    this.setState(() => ({ 
+      isDirty,
+      isRecalc: currentPage === 2 && isDirty
+     }));
   };
 
   setShowEmailPopup = (showEmailPopup) => {
@@ -244,7 +250,7 @@ export class QuoteBase extends React.Component {
                           data-test="submit"
                           className={Button.constants.classNames.primary}
                           onClick={this.primaryClickHandler}
-                          disabled={needsConfirmation}
+                          disabled={needsConfirmation || !this.state.isDirty}
                           label={this.state.isRecalc ? 'recalculate' : 'Save'}
                         />
 
