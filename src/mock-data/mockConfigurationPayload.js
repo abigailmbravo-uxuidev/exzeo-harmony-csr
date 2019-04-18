@@ -513,7 +513,7 @@ const mock = {
           dependencies: [],
           data: {
             className: 'coverages',
-            size: '4',
+            size: '5',
           },
           formData: {},
           className: 'test',
@@ -537,6 +537,7 @@ const mock = {
                 component: 'currency',
                 label: 'Dwelling Limit',
                 size: '12',
+                className: '',
                 validation: ['isDwellingRange'],
                 extendedProperties: {
                   format: 'currency',
@@ -669,6 +670,7 @@ const mock = {
                 component: 'display',
                 label: 'Loss of Use Limit',
                 size: '12',
+                className: 'side-by-side',
                 extendedProperties: {
                   output: 'currency'
                 },
@@ -692,6 +694,7 @@ const mock = {
                 component: 'select',
                 label: 'Personal Liability Limit',
                 size: '12',
+                className: 'side-by-side',
                 segmented: true,
               },
               formData: {
@@ -716,6 +719,7 @@ const mock = {
                 component: 'display',
                 label: 'Medical Payments to Others Limit',
                 size: '12',
+                className: 'side-by-side',
                 segmented: true,
                 extendedProperties: {
                   output: 'currency',
@@ -740,7 +744,7 @@ const mock = {
           dependencies: [],
           data: {
             className: 'other-coverages',
-            size: '4',
+            size: '3',
           },
           formData: {},
           className: 'test',

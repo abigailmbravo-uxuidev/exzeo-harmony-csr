@@ -71,6 +71,7 @@
             flex-shrink: 0;
 
             > section {
+              align-content: flex-start;
               margin-bottom: $padding;
               border-bottom: 1px dashed $green-darken-04;
 
@@ -79,7 +80,53 @@
                 border-bottom-width: 0;
               }
 
+              .form-group {
+                &.has-output-label {
+                  flex-direction: row-reverse;
+                  flex-wrap: wrap;
+                  > * {
+                    width: calc(50% - .5rem);
+                  }
+
+                  select, input {
+                    order: 1;
+                  }
+
+                  label {
+                    margin-right: $padding;
+                    
+                    &:first-of-type {
+                      margin-right: 0;
+                      margin-left: $padding;
+                    }
+                  }
+
+                  select, input {
+                    margin-left: $padding;
+                  }
+
+                  output {
+                    order: 3;
+                    margin-right: $padding;
+                    border-radius: $border-radius;
+                  }
+                  
+                }
+
+                output {
+                  padding: ($padding/2);
+                  height: 2rem;
+                  border: 1px solid $warm-gray-02;
+                  background-color: $input-bg-disabled;
+                  opacity: 1;
+                }
+              }
+
               &.policyholder-component {
+                
+              }
+
+              &.coverages {
                 
               }
             }
