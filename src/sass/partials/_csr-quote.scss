@@ -123,11 +123,14 @@
               }
 
               &.policyholder-component {
-                
-              }
-
-              &.coverages {
-                
+                section {
+                  align-content: flex-start;
+                  padding: 0;
+                  
+                  .form-group {
+                    width: 50%;
+                  }
+                }
               }
             }
           }
