@@ -48,7 +48,7 @@ export class QuoteBase extends React.Component {
   }
 
   componentDidMount() {
-     const { match } = this.props;
+    const { match } = this.props;
 
     this.props.getQuote(match.params.quoteNumber, '').then((quoteData) => {
       if (quoteData && quoteData.property) {
@@ -81,7 +81,7 @@ export class QuoteBase extends React.Component {
   };
 
   getConfigForJsonTransform(gandalfTemplate) {
-    if(!gandalfTemplate) return {};
+    if (!gandalfTemplate) return {};
 
     return gandalfTemplate.pages.reduce((pageComponentsMap, page) => {
       const pageComponents = page.components.reduce((componentMap, component) => {
@@ -111,7 +111,7 @@ export class QuoteBase extends React.Component {
         quoteId: quoteData._id,
         ...submitData
       });
-  
+
       await this.props.getQuote(quoteData._id, pageName);
     } catch (error) {
       this.props.setAppError(error);
@@ -120,11 +120,11 @@ export class QuoteBase extends React.Component {
     }
   }
 
-    primaryClickHandler = () => {
+  primaryClickHandler = () => {
     // ie11 does not handle customEvents the same way as other browsers. So here we have to check before creating
     // this custom submit event - this is being used to submit the form from outside of the form.
     const form = document.getElementById(FORM_ID);
-    if (typeof(Event) === 'function') {
+    if (typeof (Event) === 'function') {
       form.dispatchEvent(new Event('submit', { cancelable: true }));
     } else {
       const event = document.createEvent('Event');
@@ -133,16 +133,16 @@ export class QuoteBase extends React.Component {
     }
   };
 
-  handleGandalfSubmit = async ({ shouldNav, ...values}) => {
+  handleGandalfSubmit = async ({ shouldNav, ...values }) => {
     const currentStep = this.props.location.pathname.split('/')[3];
-    const {modelName, submitData, pageName } = handleCGSubmit(values, currentStep, this.props);
+    const { modelName, submitData, pageName } = handleCGSubmit(values, currentStep, this.props);
     await this.updateQuote(modelName, submitData, pageName);
   };
 
   getLocalState = () => {
     return this.state;
   };
-  
+
   handleDirtyForm = (isDirty, currentPage) => {
     this.setState({
       isRecalc: currentPage === 2 && isDirty,
@@ -156,7 +156,7 @@ export class QuoteBase extends React.Component {
   handleAgencyChange = (agencyCode) => {
     this.props.getAgentsByAgencyCode(agencyCode);
   }
-  
+
   render() {
     const {
       appState,
@@ -166,10 +166,10 @@ export class QuoteBase extends React.Component {
       location,
       history,
       agencies,
-       agents
+      agents
     } = this.props;
 
-    const { showDiaries, needsConfirmation, gandalfTemplate  } = this.state;
+    const { showDiaries, needsConfirmation, gandalfTemplate } = this.state;
 
     const currentStep = location.pathname.split('/')[3];
     const shouldUseGandalf = ROUTES_NOT_HANDLED_BY_GANDALF.indexOf(currentStep) === -1;
@@ -204,57 +204,53 @@ export class QuoteBase extends React.Component {
             <React.Fragment>
 
               <div className="content-wrapper">
-              {shouldUseGandalf &&
-              <React.Fragment>
-                <Gandalf
-                  formId={FORM_ID}
-                  className="route-content"
-                  currentPage={currentPage}
-                  handleSubmit={this.handleGandalfSubmit}
-                  initialValues={quoteData}
-                  template={gandalfTemplate}
-                  options={{ agents, agencies}} // enums for select/radio fields
-                  transformConfig={transformConfig}
-                  path={location.pathname}
-                  customHandlers={customHandlers}
-                  customComponents={this.customComponents}
-                  renderFooter={({ submitting, form, pristine }) => (
-                    <React.Fragment>
-                      {shouldRenderFooter &&
-                        <div className="btn-group">
+                {shouldUseGandalf &&
+                  <React.Fragment>
+                    <Gandalf
+                      formId={FORM_ID}
+                      className="route-content"
+                      currentPage={currentPage}
+                      handleSubmit={this.handleGandalfSubmit}
+                      initialValues={quoteData}
+                      template={gandalfTemplate}
+                      options={{ agents, agencies }} // enums for select/radio fields
+                      transformConfig={transformConfig}
+                      path={location.pathname}
+                      customHandlers={customHandlers}
+                      customComponents={this.customComponents}
+                      renderFooter={x =>
+                        <React.Fragment />}
+                    />
+                    <div className="basic-footer btn-footer">
+                      <div className="btn-group basic-footer btn-footer">
+                        <Button
+                          data-test="submit"
+                          className={Button.constants.classNames.primary}
+                          onClick={this.primaryClickHandler}
+                          disabled={needsConfirmation}
+                          label={this.state.isRecalc ? 'recalculate' : 'Save'}
+                        />
+
+                        {this.state.isRecalc &&
                           <Button
-                            data-test="submit"
-                            className={Button.constants.classNames.primary}
-                            onClick={this.primaryClickHandler}
-                            disabled={submitting || needsConfirmation || pristine}
-                            label={this.state.isRecalc ? 'recalculate' : 'Save'}
+                            data-test="reset"
+                            className={Button.constants.classNames.secondary}
+                            label="reset"
                           />
-
-                          {this.state.isRecalc &&
-                            <Button
-                              data-test="reset"
-                              className={Button.constants.classNames.secondary}
-                              onClick={form.reset}
-                              label="reset"
-                            />
-                          }
-                        </div>
-                      }
-                    </React.Fragment>
-                  )}
-                />
-
-                <Footer />
-              </React.Fragment>
-              }
-                    {/* <Route exact path={`${match.url}/coverage`} render={props => <Coverage {...props} match={match} updateQuote={this.updateQuote} />} /> */}
-                    <Route exact path={`${match.url}/billing`} render={props => <MailingAddressBilling  {...props}  match={match} updateQuote={this.updateQuote} />} />
-                    <Route exact path={`${match.url}/notes`} render={props => <NotesFiles {...props} match={match} updateQuote={this.updateQuote} />} />
-                    <Route exact path={`${match.url}/summary`} render={props => <Summary {...props} match={match} updateQuote={this.updateQuote} />} />
-                    <Route exact path={`${match.url}/additionalInterests`} render={props => <AdditionalInterests {...props}  match={match} updateQuote={this.updateQuote} />} />
-                    <Route exact path={`${match.url}/underwriting`} render={props => <Underwriting {...props} match={match} updateQuote={this.updateQuote} />} />
-                    <Route exact path={`${match.url}/application`} render={props => <Application {...props} match={match} updateQuote={this.updateQuote} />} />
-                </div>
+                        }
+                      </div>
+                      <Footer />
+                    </div>
+                  </React.Fragment>
+                }
+                {/* <Route exact path={`${match.url}/coverage`} render={props => <Coverage {...props} match={match} updateQuote={this.updateQuote} />} /> */}
+                <Route exact path={`${match.url}/billing`} render={props => <MailingAddressBilling  {...props} match={match} updateQuote={this.updateQuote} />} />
+                <Route exact path={`${match.url}/notes`} render={props => <NotesFiles {...props} match={match} updateQuote={this.updateQuote} />} />
+                <Route exact path={`${match.url}/summary`} render={props => <Summary {...props} match={match} updateQuote={this.updateQuote} />} />
+                <Route exact path={`${match.url}/additionalInterests`} render={props => <AdditionalInterests {...props} match={match} updateQuote={this.updateQuote} />} />
+                <Route exact path={`${match.url}/underwriting`} render={props => <Underwriting {...props} match={match} updateQuote={this.updateQuote} />} />
+                <Route exact path={`${match.url}/application`} render={props => <Application {...props} match={match} updateQuote={this.updateQuote} />} />
+              </div>
 
               <UnderwritingValidationBarConnect />
 
@@ -291,7 +287,7 @@ const mapStateToProps = state => {
   }
 };
 
-export default connect(mapStateToProps, { 
+export default connect(mapStateToProps, {
   startWorkflow,
   setAppState,
   setAppError,
