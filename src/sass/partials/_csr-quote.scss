@@ -66,16 +66,8 @@
           }
 
           form {
-            display: flex;
             flex-grow: 0;
             flex-shrink: 0;
-          }
-
-          .scroll {
-            overflow-y: auto;
-            flex-grow: 1;
-            flex-shrink: 0;
-            width: 100%;
           }
 
           .survey-wrapper {
