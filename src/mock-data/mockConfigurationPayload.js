@@ -53,6 +53,7 @@ const mock = {
               type: '$CUSTOM',
               dependencies: [],
               data: {
+                size:'5',
                 component: '$AGENCY',
                 dataSource: 'agencies',
                 extendedProperties: {
