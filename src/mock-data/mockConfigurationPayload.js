@@ -582,6 +582,7 @@ const mock = {
                 ],
                 extendedProperties: {
                   output: 'currency',
+                  outputLabel: 'Other Structures Limit'
                 },
               },
               formData: {
@@ -590,7 +591,6 @@ const mock = {
                 required: true,
                 metaData: {
                   target: '${Math.ceil(((it.coverageLimits.otherStructures.value / 100) * it.coverageLimits.dwelling.amount))}',
-                  targetLabel: 'Other Structures Limit'
                 },
               },
               children: [],
