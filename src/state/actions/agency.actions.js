@@ -239,7 +239,7 @@ export async function fetchAgencies(companyCode, state, agencyCode = '') {
   const config = {
     service: 'agency',
     method: 'GET',
-    path: `agencies?companyCode=${companyCode}&state=${state}?&pageSize=1000&sort=displayName&SortDirection=asc?agencyCode=${agencyCode}`
+    path: `agencies?companyCode=${companyCode}&state=${state}&pageSize=1000&sort=displayName&SortDirection=asc&agencyCode=${agencyCode}`
   };
 
   try {

@@ -35,12 +35,12 @@ const handleCoverageSubmit = (values, props) => {
   submitData.agencyCode = String(values.agencyCode);
   submitData.agentCode = String(values.agentCode);
   submitData.dwellingAmount = Math.round(Number(String(values.coverageLimits.dwelling.amount).replace(/[^\d]/g, '')) / 1000) * 1000;
-  submitData.otherStructuresAmount = Number(values.coverageLimits.otherStructures.amount);
+  submitData.personalPropertyAmount = Math.ceil(((values.coverageLimits.personalProperty.value / 100) * submitData.dwellingAmount));
+  submitData.lossOfUse = Math.ceil(((values.coverageLimits.lossOfUse.value / 100) * submitData.dwellingAmount));
+  submitData.otherStructuresAmount = Math.ceil(((values.coverageLimits.otherStructures.value / 100) * submitData.dwellingAmount));
+  submitData.calculatedHurricane = Math.ceil(((values.deductibles.hurricane.value / 100) * submitData.dwellingAmount));
 
-  submitData.personalPropertyAmount = Number(values.coverageLimits.personalProperty.amount);
   submitData.hurricane = Number(values.deductibles.hurricane.value);
-  submitData.calculatedHurricane = Number(values.deductibles.hurricane.calculatedAmount);
-  submitData.lossOfUse = Number(values.coverageLimits.lossOfUse.amount);
   submitData.medicalPayments = Number(values.coverageLimits.medicalPayments.amount);
   submitData.floridaBuildingCodeWindSpeedDesign = Number(values.property.windMitigation.floridaBuildingCodeWindSpeedDesign);
   submitData.floridaBuildingCodeWindSpeed = Number(values.property.windMitigation.floridaBuildingCodeWindSpeed);
@@ -77,7 +77,7 @@ const handleCoverageSubmit = (values, props) => {
 
   submitData.otherStructures = Number(values.coverageLimits.otherStructures.value);
   submitData.personalProperty = Number(values.coverageLimits.personalProperty.value);
-  submitData.personalPropertyReplacementCostCoverage = submitData.personalProperty > 0 ? true : false;
+  submitData.personalPropertyReplacementCostCoverage = values.coverageOptions.personalPropertyReplacementCost.answer
 
   submitData.burglarAlarm = values.property.burglarAlarm;
   submitData.constructionType = values.property.constructionType;
