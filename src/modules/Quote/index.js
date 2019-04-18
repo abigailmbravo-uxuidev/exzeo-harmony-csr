@@ -80,11 +80,15 @@ export class QuoteBase extends React.Component {
     // this.setState(() => ({ gandalfTemplate: response.data.result }));
   };
 
+  setTemplatePath(component, componentMap) {
+    if ((component.formData.metaData || {}).target || (component.data.extendedProperties || {}).target) {
+      componentMap[component.path] = (component.formData.metaData || {}).target || (component.data.extendedProperties || {}).target;
+    }
+  }
+
   getConfigForChildren(children, componentMap) {
     children.map((childComponent) => {
-      if ((childComponent.formData.metaData || {}).target || (childComponent.data.extendedProperties || {}).target) {
-        componentMap[childComponent.path] = (childComponent.formData.metaData || {}).target || (childComponent.data.extendedProperties || {}).target;
-      }
+      this.setTemplatePath(childComponent, componentMap);
       if(Array.isArray(childComponent.children)) {
         this.getConfigForChildren(childComponent.children, componentMap)
       }
@@ -97,9 +101,7 @@ export class QuoteBase extends React.Component {
 
     return gandalfTemplate.pages.reduce((pageComponentsMap, page) => {
       const pageComponents = page.components.reduce((componentMap, component) => {
-        if ((component.formData.metaData || {}).target || (component.data.extendedProperties || {}).target) {
-          componentMap[component.path] = (component.formData.metaData || {}).target || (component.data.extendedProperties || {}).target;
-        }
+        this.setTemplatePath(component, componentMap);
         if(Array.isArray(component.children)) {
           this.getConfigForChildren(component.children, componentMap)
         }

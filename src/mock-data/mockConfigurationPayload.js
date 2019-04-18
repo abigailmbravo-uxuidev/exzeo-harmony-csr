@@ -537,7 +537,6 @@ const mock = {
                 component: 'currency',
                 label: 'Dwelling Limit',
                 size: '12',
-                hint: "This is the dollar amount of coverage for the structure of your home. This amount should represent the total cost to rebuild your home to its current state in the event of a loss. If you have a Declarations Page from your current  policy it may be listed as Coverage A.  (Based on basic information of your home, we provide you a guide for a recommended value. You can move this number up or down based on more detailed information. For example, if you have an upgraded kitchen and bathroom, you may want to increase this number to ensure that you have adequate coverage in the event of a loss.)  ",
                 validation: ['isDwellingRange'],
                 extendedProperties: {
                   format: 'currency',
@@ -563,7 +562,6 @@ const mock = {
                 component: 'select',
                 label: 'Other Structures Limit',
                 size: '12',
-                hint: "This is the dollar amount of coverage for the other structures on your property not attached to your home. This might include a fence, shed, or unattached garage. If you have a Declarations Page from your current  policy it may be listed as Coverage B.",
                 dataSource: [
                   {
                     "label": "0%",
@@ -605,7 +603,6 @@ const mock = {
                 component: 'select',
                 label: 'Personal Property Limit',
                 size: '12',
-                hint: "This is your personal belongings, or items located inside the home. This could include your furniture, clothing, bedding, dishes, etc. If you choose to have replacement cost coverage on Personal Property, you will be required to carry Personal Property limits at a minimum of 25% of your Dwelling limit.",
                 extendedProperties: {
                   output: 'currency',
                   renderWatchFields: [{
@@ -671,7 +668,6 @@ const mock = {
                 component: 'display',
                 label: 'Loss of Use Limit',
                 size: '12',
-                hint: "This is your personal belongings, or items located inside the home. This could include your furniture, clothing, bedding, dishes, etc. If you choose to have replacement cost coverage on Personal Property, you will be required to carry Personal Property limits at a minimum of 25% of your Dwelling limit.",
                 extendedProperties: {
                   output: 'currency'
                 },
@@ -831,7 +827,6 @@ const mock = {
                 segmented: true,
                 label: 'Personal Property Replacement Cost',
                 size: '12',
-                hint: "Replacement Cost Coverage replaces your damaged possessions at today's prices without deducting for depreciation. If you choose not to select this coverage, your loss for personal property will be paid out at Actual Cash Value.",
               },
               formData: {
                 path: 'coverageOptions.personalPropertyReplacementCost.answer',
