@@ -560,7 +560,7 @@ const mock = {
               dependencies: [],
               data: {
                 component: 'select',
-                label: 'Other Structures Limit',
+                label: 'Percentage',
                 size: '12',
                 dataSource: [
                   {
@@ -590,6 +590,7 @@ const mock = {
                 required: true,
                 metaData: {
                   target: '${Math.ceil(((it.coverageLimits.otherStructures.value / 100) * it.coverageLimits.dwelling.amount))}',
+                  targetLabel: 'Other Structures Limit'
                 },
               },
               children: [],
