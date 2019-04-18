@@ -46,16 +46,14 @@
       //NEED TO REFACTOR AND ADD TO POLICY FOR GANDALF
 
       .content-wrapper {
-        overflow-y: auto;
-        flex-wrap: nowrap;
-        height: auto;
 
         .route-content {
           display: flex;
-          overflow: hidden;
+          overflow-x: hidden;
+          overflow-y: auto;
           flex-direction: column;
-          flex-grow: 0;
-          flex-shrink: 0;
+          flex-grow: 1;
+          flex-shrink: 1;
           flex-wrap: nowrap;
           width: 100%;
 
@@ -69,9 +67,8 @@
 
           form {
             display: flex;
-            overflow: hidden;
-            flex-grow: 1;
-            flex-shrink: 1;
+            flex-grow: 0;
+            flex-shrink: 0;
           }
 
           .scroll {
