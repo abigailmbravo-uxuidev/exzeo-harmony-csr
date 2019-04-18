@@ -53,7 +53,7 @@ const mock = {
               type: '$CUSTOM',
               dependencies: [],
               data: {
-                size:'5',
+                size: '5',
                 component: '$AGENCY',
                 size: '5',
                 dataSource: 'agencies',
@@ -1122,377 +1122,386 @@ const mock = {
             },
           ]
         },
-
-
-
         {
-          id: 54,
-          type: '$TITLE',
+          id: 105,
+          type: '$SECTION',
           dependencies: [],
           data: {
-            text: 'Wind Mitigation',
+            className: 'wind-mit',
           },
           formData: {},
-          children: [],
-        },
-        {
-          id: 55,
-          component: '$INPUT',
-          path: 'property.windMitigation.roofCovering',
-          dependencies: [],
-          data: {
-            component: 'select',
-            label: 'Roof Covering',
-            size: '6',
-          },
-          formData: {
-            path: 'property.windMitigation.roofCovering',
-            type: 'string',
-            required: true,
-            metaData: {
-              enum: [
-                {
-                  "label": "Non-FBC",
-                  "answer": "Non-FBC"
-                },
-                {
-                  "label": "FBC",
-                  "answer": "FBC"
-                },
-                {
-                  "label": "Other",
-                  "answer": "Other"
-                }
-              ]
+          className: 'test',
+          children: [
+            {
+              id: 54,
+              type: '$TITLE',
+              dependencies: [],
+              data: {
+                text: 'Wind Mitigation',
+              },
+              formData: {},
+              children: [],
             },
-          },
-          children: [],
-        },
-        {
-          id: 56,
-          type: '$INPUT',
-          path: 'property.windMitigation.floridaBuildingCodeWindSpeed',
-          dependencies: [],
-          data: {
-            component: 'text',
-            label: 'FBC Wind Speed',
-            size: '6',
-          },
-          formData: {},
-          children: [],
-        },
-        {
-          id: 57,
-          type: '$INPUT',
-          path: 'property.windMitigation.roofDeckAttachment',
-          dependencies: [],
-          data: {
-            component: 'select',
-            label: 'Roof Deck Attachment',
-            size: '6',
-          },
-          formData: {
-            path: 'property.windMitigation.roofDeckAttachment',
-            type: 'integer',
-            required: true,
-            metaData: {
-              enum: [
-                {
-                  "label": "A",
-                  "answer": "A"
+            {
+              id: 55,
+              component: '$INPUT',
+              path: 'property.windMitigation.roofCovering',
+              dependencies: [],
+              data: {
+                component: 'select',
+                label: 'Roof Covering',
+                size: '6',
+              },
+              formData: {
+                path: 'property.windMitigation.roofCovering',
+                type: 'string',
+                required: true,
+                metaData: {
+                  enum: [
+                    {
+                      "label": "Non-FBC",
+                      "answer": "Non-FBC"
+                    },
+                    {
+                      "label": "FBC",
+                      "answer": "FBC"
+                    },
+                    {
+                      "label": "Other",
+                      "answer": "Other"
+                    }
+                  ]
                 },
-                {
-                  "label": "B",
-                  "answer": "B"
-                },
-                {
-                  "label": "C",
-                  "answer": "C"
-                },
-                {
-                  "label": "D",
-                  "answer": "D"
-                },
-                {
-                  "label": "Concrete",
-                  "answer": "Concrete"
-                },
-                {
-                  "label": "Other",
-                  "answer": "Other"
-                }
-              ]
+              },
+              children: [],
             },
-          },
-          children: [],
-        },
-        {
-          id: 58,
-          type: '$INPUT',
-          path: 'property.windMitigation.floridaBuildingCodeWindSpeedDesign',
-          dependencies: [],
-          data: {
-            component: 'text',
-            label: 'FBC Wind Speed Design',
-            size: '6',
-          },
-          formData: {},
-          children: [],
-        },
-        {
-          id: 59,
-          type: '$INPUT',
-          path: 'property.windMitigation.roofToWallConnection',
-          dependencies: [],
-          data: {
-            component: 'select',
-            label: 'Roof to Wall Attachment',
-            size: '6',
-          },
-          formData: {
-            path: 'property.windMitigation.roofToWallConnection',
-            type: 'string',
-            required: true,
-            metaData: {
-              enum: [
-                {
-                  "label": "Toe Nails",
-                  "answer": "Toe Nails"
-                },
-                {
-                  "label": "Clips",
-                  "answer": "Clips"
-                },
-                {
-                  "label": "Single Wraps",
-                  "answer": "Single Wraps"
-                },
-                {
-                  "label": "Double Wraps",
-                  "answer": "Double Wraps"
-                },
-                {
-                  "label": "Other",
-                  "answer": "Other"
-                }
-              ]
+            {
+              id: 56,
+              type: '$INPUT',
+              path: 'property.windMitigation.floridaBuildingCodeWindSpeed',
+              dependencies: [],
+              data: {
+                component: 'text',
+                label: 'FBC Wind Speed',
+                size: '6',
+              },
+              formData: {},
+              children: [],
             },
-          },
-          children: [],
-        },
-        {
-          id: 60,
-          type: '$INPUT',
-          path: 'property.windMitigation.terrain',
-          dependencies: [],
-          data: {
-            component: 'select',
-            label: 'Terrain',
-            size: '6',
-            segmented: true,
-          },
-          formData: {
-            path: 'property.windMitigation.terrain',
-            type: 'string',
-            required: true,
-            metaData: {
-              enum: [
-                {
-                  "label": "B",
-                  "answer": "B"
+            {
+              id: 57,
+              type: '$INPUT',
+              path: 'property.windMitigation.roofDeckAttachment',
+              dependencies: [],
+              data: {
+                component: 'select',
+                label: 'Roof Deck Attachment',
+                size: '6',
+              },
+              formData: {
+                path: 'property.windMitigation.roofDeckAttachment',
+                type: 'integer',
+                required: true,
+                metaData: {
+                  enum: [
+                    {
+                      "label": "A",
+                      "answer": "A"
+                    },
+                    {
+                      "label": "B",
+                      "answer": "B"
+                    },
+                    {
+                      "label": "C",
+                      "answer": "C"
+                    },
+                    {
+                      "label": "D",
+                      "answer": "D"
+                    },
+                    {
+                      "label": "Concrete",
+                      "answer": "Concrete"
+                    },
+                    {
+                      "label": "Other",
+                      "answer": "Other"
+                    }
+                  ]
                 },
-                {
-                  "label": "C",
-                  "answer": "C"
-                },
-                {
-                  "label": "HVHZ",
-                  "answer": "HVHZ"
-                },
-                {
-                  "label": "Other",
-                  "answer": "Other"
-                }
-              ]
+              },
+              children: [],
             },
-          },
-          children: [],
-        },
-        {
-          id: 61,
-          type: '$INPUT',
-          path: 'property.windMitigation.roofGeometry',
-          dependencies: [],
-          data: {
-            component: 'select',
-            label: 'Roof Geometry',
-            size: '6',
-          },
-          formData: {
-            path: 'property.windMitigation.roofGeometry',
-            type: 'string',
-            required: true,
-            metaData: {
-              enum: [
-                {
-                  "label": "Flat",
-                  "answer": "Flat"
-                },
-                {
-                  "label": "Gable",
-                  "answer": "Gable"
-                },
-                {
-                  "label": "Hip",
-                  "answer": "Hip"
-                },
-                {
-                  "label": "Other",
-                  "answer": "Other"
-                }
-              ]
+            {
+              id: 58,
+              type: '$INPUT',
+              path: 'property.windMitigation.floridaBuildingCodeWindSpeedDesign',
+              dependencies: [],
+              data: {
+                component: 'text',
+                label: 'FBC Wind Speed Design',
+                size: '6',
+              },
+              formData: {},
+              children: [],
             },
-          },
-          children: [],
-        },
-        {
-          id: 62,
-          type: '$INPUT',
-          path: 'property.windMitigation.internalPressureDesign',
-          dependencies: [],
-          data: {
-            component: 'select',
-            label: 'Internal Pressure Design',
-            size: '6',
-          },
-          formData: {
-            path: 'property.windMitigation.internalPressureDesign',
-            type: 'string',
-            required: true,
-            metaData: {
-              enum: [
-                {
-                  "label": "Enclosed",
-                  "answer": "Enclosed"
+            {
+              id: 59,
+              type: '$INPUT',
+              path: 'property.windMitigation.roofToWallConnection',
+              dependencies: [],
+              data: {
+                component: 'select',
+                label: 'Roof to Wall Attachment',
+                size: '6',
+              },
+              formData: {
+                path: 'property.windMitigation.roofToWallConnection',
+                type: 'string',
+                required: true,
+                metaData: {
+                  enum: [
+                    {
+                      "label": "Toe Nails",
+                      "answer": "Toe Nails"
+                    },
+                    {
+                      "label": "Clips",
+                      "answer": "Clips"
+                    },
+                    {
+                      "label": "Single Wraps",
+                      "answer": "Single Wraps"
+                    },
+                    {
+                      "label": "Double Wraps",
+                      "answer": "Double Wraps"
+                    },
+                    {
+                      "label": "Other",
+                      "answer": "Other"
+                    }
+                  ]
                 },
-                {
-                  "label": "Partial",
-                  "answer": "Partial"
-                },
-                {
-                  "label": "Other",
-                  "answer": "Other"
-                }
-              ]
+              },
+              children: [],
             },
-          },
-          children: [],
-        },
-        {
-          id: 63,
-          type: '$INPUT',
-          path: 'property.windMitigation.secondaryWaterResistance',
-          dependencies: [],
-          data: {
-            component: 'radio',
-            label: 'Secondary Water Resistance (SWR)',
-            size: '6',
-            segmented: true,
-          },
-          formData: {
-            path: 'property.windMitigation.secondaryWaterResistance',
-            type: 'string',
-            required: true,
-            metaData: {
-              enum: [
-                {
-                  "label": "Yes",
-                  "answer": "Yes"
+            {
+              id: 60,
+              type: '$INPUT',
+              path: 'property.windMitigation.terrain',
+              dependencies: [],
+              data: {
+                component: 'select',
+                label: 'Terrain',
+                size: '6',
+                segmented: true,
+              },
+              formData: {
+                path: 'property.windMitigation.terrain',
+                type: 'string',
+                required: true,
+                metaData: {
+                  enum: [
+                    {
+                      "label": "B",
+                      "answer": "B"
+                    },
+                    {
+                      "label": "C",
+                      "answer": "C"
+                    },
+                    {
+                      "label": "HVHZ",
+                      "answer": "HVHZ"
+                    },
+                    {
+                      "label": "Other",
+                      "answer": "Other"
+                    }
+                  ]
                 },
-                {
-                  "label": "No",
-                  "answer": "No"
-                },
-                {
-                  "label": "Other",
-                  "answer": "Other"
-                }
-              ]
+              },
+              children: [],
             },
-          },
-          children: [],
-        },
-        {
-          id: 64,
-          type: '$INPUT',
-          path: 'property.windMitigation.windBorneDebrisRegion',
-          dependencies: [],
-          data: {
-            component: 'radio',
-            label: 'Wind Borne Debris Region (WBDR)',
-            size: '6',
-            segmented: true,
-          },
-          formData: {
-            path: 'property.windMitigation.windBorneDebrisRegion',
-            type: 'string',
-            required: true,
-            metaData: {
-              enum: [
-                {
-                  "label": "Yes",
-                  "answer": "Yes"
+            {
+              id: 61,
+              type: '$INPUT',
+              path: 'property.windMitigation.roofGeometry',
+              dependencies: [],
+              data: {
+                component: 'select',
+                label: 'Roof Geometry',
+                size: '6',
+              },
+              formData: {
+                path: 'property.windMitigation.roofGeometry',
+                type: 'string',
+                required: true,
+                metaData: {
+                  enum: [
+                    {
+                      "label": "Flat",
+                      "answer": "Flat"
+                    },
+                    {
+                      "label": "Gable",
+                      "answer": "Gable"
+                    },
+                    {
+                      "label": "Hip",
+                      "answer": "Hip"
+                    },
+                    {
+                      "label": "Other",
+                      "answer": "Other"
+                    }
+                  ]
                 },
-                {
-                  "label": "No",
-                  "answer": "No"
-                },
-                {
-                  "label": "Other",
-                  "answer": "Other"
-                }
-              ]
+              },
+              children: [],
             },
-          },
-          children: [],
-        },
-        {
-          id: 27,
-          type: '$INPUT',
-          dependencies: [],
-          path: 'property.windMitigation.openingProtection',
-          data: {
-            component: 'select',
-            label: 'Opening Protection:',
-            size: '6',
-          },
-          formData: {
-            path: 'property.windMitigation.openingProtection',
-            type: 'string',
-            required: true,
-            metaData: {
-              enum: [
-                {
-                  "label": "None",
-                  "answer": "None"
+            {
+              id: 62,
+              type: '$INPUT',
+              path: 'property.windMitigation.internalPressureDesign',
+              dependencies: [],
+              data: {
+                component: 'select',
+                label: 'Internal Pressure Design',
+                size: '6',
+              },
+              formData: {
+                path: 'property.windMitigation.internalPressureDesign',
+                type: 'string',
+                required: true,
+                metaData: {
+                  enum: [
+                    {
+                      "label": "Enclosed",
+                      "answer": "Enclosed"
+                    },
+                    {
+                      "label": "Partial",
+                      "answer": "Partial"
+                    },
+                    {
+                      "label": "Other",
+                      "answer": "Other"
+                    }
+                  ]
                 },
-                {
-                  "label": "Basic",
-                  "answer": "Basic"
-                },
-                {
-                  "label": "Hurricane",
-                  "answer": "Hurricane"
-                },
-                {
-                  "label": "Other",
-                  "answer": "Other"
-                }
-              ]
+              },
+              children: [],
             },
-            children: [],
-          },
-          children: [],
+            {
+              id: 63,
+              type: '$INPUT',
+              path: 'property.windMitigation.secondaryWaterResistance',
+              dependencies: [],
+              data: {
+                component: 'radio',
+                label: 'Secondary Water Resistance (SWR)',
+                size: '6',
+                segmented: true,
+              },
+              formData: {
+                path: 'property.windMitigation.secondaryWaterResistance',
+                type: 'string',
+                required: true,
+                metaData: {
+                  enum: [
+                    {
+                      "label": "Yes",
+                      "answer": "Yes"
+                    },
+                    {
+                      "label": "No",
+                      "answer": "No"
+                    },
+                    {
+                      "label": "Other",
+                      "answer": "Other"
+                    }
+                  ]
+                },
+              },
+              children: [],
+            },
+            {
+              id: 64,
+              type: '$INPUT',
+              path: 'property.windMitigation.windBorneDebrisRegion',
+              dependencies: [],
+              data: {
+                component: 'radio',
+                label: 'Wind Borne Debris Region (WBDR)',
+                size: '6',
+                segmented: true,
+              },
+              formData: {
+                path: 'property.windMitigation.windBorneDebrisRegion',
+                type: 'string',
+                required: true,
+                metaData: {
+                  enum: [
+                    {
+                      "label": "Yes",
+                      "answer": "Yes"
+                    },
+                    {
+                      "label": "No",
+                      "answer": "No"
+                    },
+                    {
+                      "label": "Other",
+                      "answer": "Other"
+                    }
+                  ]
+                },
+              },
+              children: [],
+            },
+            {
+              id: 27,
+              type: '$INPUT',
+              dependencies: [],
+              path: 'property.windMitigation.openingProtection',
+              data: {
+                component: 'select',
+                label: 'Opening Protection:',
+                size: '6',
+              },
+              formData: {
+                path: 'property.windMitigation.openingProtection',
+                type: 'string',
+                required: true,
+                metaData: {
+                  enum: [
+                    {
+                      "label": "None",
+                      "answer": "None"
+                    },
+                    {
+                      "label": "Basic",
+                      "answer": "Basic"
+                    },
+                    {
+                      "label": "Hurricane",
+                      "answer": "Hurricane"
+                    },
+                    {
+                      "label": "Other",
+                      "answer": "Other"
+                    }
+                  ]
+                },
+                children: [],
+              },
+              children: [],
+            },
+          ]
         },
       ],
     }

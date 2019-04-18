@@ -98,7 +98,7 @@
   width: 100%;
   color: $bright-blue-darken-04;
   font-weight: $font-weight-bold;
-  font-size: $font-size-h2;
+  font-size: $font-size-h3;
 
   @include for-phone-only {
     font-size: $font-size-h3;
@@ -124,6 +124,10 @@
 @include for-tablet-landscape-up {
   .view-grid,
   .view-grid section {
+
+    &:last-of-type {
+      border-bottom-width: 0;
+    }
 
     > * {
       flex-grow: 0;
@@ -196,63 +200,5 @@
       flex-shrink: 0;
       width: 91.667%;
     }
-  }
-}
-// responsize styles
-@supports (display: grid) {
-  @include for-phone-only {
-    .view-grid,
-    .view-grid section {
-
-      .view-col-1,
-      .view-col-10,
-      .view-col-11,
-      .view-col-2,
-      .view-col-3,
-      .view-col-4,
-      .view-col-5,
-      .view-col-6,
-      .view-col-7,
-      .view-col-8,
-      .view-col-9 {
-
-      }
-    }
-    .view-grid {
-      > div {
-        padding: $padding*2;
-      }
-      > section > dl {
-        padding: 0 ($padding*2);
-      }
-    }
-  }
-  @include for-tablet-portrait-up {
-    .view-grid,
-    .view-grid section {
-
-      .view-col-1,
-      .view-col-2,
-      .view-col-3,
-      .view-col-4 {
-
-      }
-
-      .view-col-5,
-      .view-col-6,
-      .view-col-7,
-      .view-col-8 {
-
-      }
-
-      .view-col-10,
-      .view-col-11,
-      .view-col-9 {
-
-      }
-    }
-  }
-  @include for-tablet-landscape-up {
-
   }
 }

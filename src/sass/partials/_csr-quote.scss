@@ -43,7 +43,7 @@
     main[role="document"] {
       position: relative;
 
-      //NEED TO REFACTOR AND ADD TO POLICY FOR GANDALF
+      //NEED TO REFACTOR AND CLEAN UP GANDALF ADDITION
 
       .content-wrapper {
 
@@ -55,6 +55,7 @@
           flex-grow: 1;
           flex-shrink: 1;
           flex-wrap: nowrap;
+          padding: $padding;
           width: 100%;
 
           .modal.quote-summary {
@@ -68,6 +69,20 @@
           form {
             flex-grow: 0;
             flex-shrink: 0;
+
+            > section {
+              margin-bottom: $padding;
+              border-bottom: 1px dashed $green-darken-04;
+
+              &:last-of-type {
+                margin-bottom: 0;
+                border-bottom-width: 0;
+              }
+
+              &.policyholder-component {
+                
+              }
+            }
           }
 
           .survey-wrapper {
