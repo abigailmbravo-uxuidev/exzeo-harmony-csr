@@ -80,6 +80,18 @@ export class QuoteBase extends React.Component {
     // this.setState(() => ({ gandalfTemplate: response.data.result }));
   };
 
+  getConfigForChildren(children, componentMap) {
+    children.map((childComponent) => {
+      if ((childComponent.formData.metaData || {}).target || (childComponent.data.extendedProperties || {}).target) {
+        componentMap[childComponent.path] = (childComponent.formData.metaData || {}).target || (childComponent.data.extendedProperties || {}).target;
+      }
+      if(Array.isArray(childComponent.children)) {
+        this.getConfigForChildren(childComponent.children, componentMap)
+      }
+      return childComponent;
+    });
+  }
+
   getConfigForJsonTransform(gandalfTemplate) {
     if (!gandalfTemplate) return {};
 
@@ -87,6 +99,9 @@ export class QuoteBase extends React.Component {
       const pageComponents = page.components.reduce((componentMap, component) => {
         if ((component.formData.metaData || {}).target || (component.data.extendedProperties || {}).target) {
           componentMap[component.path] = (component.formData.metaData || {}).target || (component.data.extendedProperties || {}).target;
+        }
+        if(Array.isArray(component.children)) {
+          this.getConfigForChildren(component.children, componentMap)
         }
         return componentMap;
       }, {});
