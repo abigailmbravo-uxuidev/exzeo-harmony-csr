@@ -38,9 +38,10 @@ const handleCoverageSubmit = (values, props) => {
   submitData.personalPropertyAmount = Math.ceil(((values.coverageLimits.personalProperty.value / 100) * submitData.dwellingAmount));
   submitData.lossOfUse = Math.ceil(((values.coverageLimits.lossOfUse.value / 100) * submitData.dwellingAmount));
   submitData.otherStructuresAmount = Math.ceil(((values.coverageLimits.otherStructures.value / 100) * submitData.dwellingAmount));
-  submitData.calculatedHurricane = Math.ceil(((values.deductibles.hurricane.value / 100) * submitData.dwellingAmount));
 
-  submitData.hurricane = Number(values.deductibles.hurricane.value);
+  submitData.calculatedHurricane = Math.ceil(((Number(values.deductibles.hurricane.amount) / 100) * submitData.dwellingAmount));
+  submitData.hurricane = Number(values.deductibles.hurricane.amount);
+
   submitData.medicalPayments = Number(values.coverageLimits.medicalPayments.amount);
   submitData.floridaBuildingCodeWindSpeedDesign = Number(values.property.windMitigation.floridaBuildingCodeWindSpeedDesign);
   submitData.floridaBuildingCodeWindSpeed = Number(values.property.windMitigation.floridaBuildingCodeWindSpeed);
@@ -50,7 +51,7 @@ const handleCoverageSubmit = (values, props) => {
   submitData.moldProperty = Number(values.coverageLimits.moldProperty.amount);
   submitData.personalLiability = Number(values.coverageLimits.personalLiability.amount);
 
-  submitData.sinkholePerilCoverage = (String(values.coverageOptions.sinkholePerilCoverage.answer) === 'true');
+  submitData.sinkholePerilCoverage = Number(values.deductibles.sinkhole.amount) > 0
 
 
   submitData.address1 = values.property.physicalAddress.address1;
@@ -99,7 +100,7 @@ const handleCoverageSubmit = (values, props) => {
   
   submitData.quoteId = values._id;
 
-  submitData.calculatedSinkhole = (values.deductibles.sinkhole.amount * submitData.dwellingAmount) / 100;
+  submitData.calculatedSinkhole = (Number(values.deductibles.sinkhole.amount) * submitData.dwellingAmount) / 100;
 
   if (submitData.sinkholePerilCoverage) {
     submitData.sinkhole = 10;
