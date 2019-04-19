@@ -38,11 +38,12 @@ export class QuoteBase extends React.Component {
     super(props);
 
     this.state = {
-      isRecalc: false,
       showEmailPopup: false,
       gandalfTemplate: MOCK_CONFIG_DATA,
       showDiaries: false,
-      isDirty: false
+      form: {
+        pristine: true
+      }
     };
 
     this.getConfigForJsonTransform = defaultMemoize(this.getConfigForJsonTransform.bind(this));
@@ -165,10 +166,9 @@ export class QuoteBase extends React.Component {
     this.setState(() => ({ pristine }));
   }
 
-  handleDirtyForm = (isDirty, currentPage) => {
+  handleFormState = (formState) => {
     this.setState(() => ({ 
-      isDirty,
-      isRecalc: currentPage === 2 && isDirty
+      form: formState
      }));
   };
 
@@ -203,7 +203,7 @@ export class QuoteBase extends React.Component {
     // TODO going to use Context to pass these directly to custom components,
     //  so Gandalf does not need to know about these.
     const customHandlers = {
-      onDirtyCallback: this.handleDirtyForm,
+      formStateCallback: this.handleFormState,
       setEmailPopup: this.setShowEmailPopup,
       getState: this.getLocalState,
       handleSubmit: this.handleGandalfSubmit,
@@ -211,6 +211,8 @@ export class QuoteBase extends React.Component {
       updateQuote: this.handleUpdateQuote,
       handleAgencyChange: this.handleAgencyChange
     };
+
+    console.log(this.state.form)
 
     return (
       <div className="app-wrapper csr quote">
@@ -250,17 +252,14 @@ export class QuoteBase extends React.Component {
                           data-test="submit"
                           className={Button.constants.classNames.primary}
                           onClick={this.primaryClickHandler}
-                          disabled={needsConfirmation || !this.state.isDirty}
-                          label={this.state.isRecalc ? 'recalculate' : 'Save'}
+                          disabled={needsConfirmation || this.state.form.pristine}
+                          label={'Save'}
                         />
-
-                        {this.state.isRecalc &&
                           <Button
                             data-test="reset"
                             className={Button.constants.classNames.secondary}
                             label="reset"
                           />
-                        }
                       </div>
                       <Footer />
                     </div>
