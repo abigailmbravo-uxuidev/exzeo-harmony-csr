@@ -253,7 +253,7 @@ export class QuoteBase extends React.Component {
                           data-test="submit"
                           className={Button.constants.classNames.primary}
                           onClick={this.primaryClickHandler}
-                          disabled={needsConfirmation || this.state.form.pristine}
+                          disabled={needsConfirmation || this.state.form.pristine || this.state.form.submitting}
                           label={'Save'}
                         />
                           <Button
