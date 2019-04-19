@@ -692,7 +692,7 @@ const mock = {
               path: 'coverageLimits.personalLiability.amount',
               dependencies: [],
               data: {
-                component: 'select',
+                component: 'selectInteger',
                 label: 'Personal Liability Limit',
                 size: '12',
                 className: 'side-by-side',
@@ -859,7 +859,7 @@ const mock = {
               path: 'coverageLimits.ordinanceOrLaw.amount',
               dependencies: [],
               data: {
-                component: 'select',
+                component: 'selectInteger',
                 label: 'Ordinance or Law Coverage Limit',
                 size: '12',
               },
@@ -911,7 +911,7 @@ const mock = {
               path: 'deductibles.allOtherPerils.amount',
               dependencies: [],
               data: {
-                component: 'select',
+                component: 'selectInteger',
                 label: 'All Other Perils',
                 size: '12',
               },
@@ -944,7 +944,7 @@ const mock = {
               path: 'deductibles.hurricane.amount',
               dependencies: [],
               data: {
-                component: 'select',
+                component: 'selectInteger',
                 label: 'Hurricane Deductible',
                 size: '12',
                 extendedProperties: {
@@ -982,7 +982,7 @@ const mock = {
               path: 'deductibles.sinkhole.amount',
               dependencies: [],
               data: {
-                component: 'select',
+                component: 'selectInteger',
                 label: 'Sinkhole',
                 size: '12',
                 dataSource: [
@@ -1189,7 +1189,7 @@ const mock = {
               path: 'property.windMitigation.floridaBuildingCodeWindSpeed',
               dependencies: [],
               data: {
-                component: 'text',
+                component: 'number',
                 label: 'FBC Wind Speed',
                 size: '6',
               },
@@ -1247,7 +1247,7 @@ const mock = {
               path: 'property.windMitigation.floridaBuildingCodeWindSpeedDesign',
               dependencies: [],
               data: {
-                component: 'text',
+                component: 'number',
                 label: 'FBC Wind Speed Design',
                 size: '6',
               },
