@@ -12,7 +12,6 @@ export const ROUTES_NOT_HANDLED_BY_GANDALF = [
   'notes',
   'summary',
   'additionalInterests',
-  'underwriting',
   'application'
 ];
 

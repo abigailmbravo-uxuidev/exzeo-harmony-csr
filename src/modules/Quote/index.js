@@ -16,10 +16,9 @@ import { setAppState } from '../../state/actions/appState.actions';
 import { setAppError } from '../../state/actions/error.actions';
 import { getQuote } from '../../state/actions/quote.actions';
 import { getAgencies, getAgentsByAgencyCode } from '../../state/actions/agency.actions';
-import { getZipcodeSettings } from '../../state/actions/service.actions';
+import { getZipcodeSettings, getUnderwritingQuestions } from '../../state/actions/service.actions';
 import { getQuoteSelector } from '../../state/selectors/choreographer.selectors';
 import Footer from '../../components/Common/Footer';
-import Underwriting from '../../components/Quote/Underwriting';
 import AdditionalInterests from '../../components/Quote/AdditionalInterests';
 import MailingAddressBilling from '../../components/Quote/MailingAddressBilling';
 import NotesFiles from '../../components/Quote/NotesFiles';
@@ -59,7 +58,9 @@ export class QuoteBase extends React.Component {
         this.props.getAgencies(quoteData.companyCode, quoteData.state);
         this.props.getAgentsByAgencyCode(quoteData.agencyCode);
         this.props.getZipcodeSettings(quoteData.companyCode, quoteData.state, quoteData.product, quoteData.property.physicalAddress.zip);
+        this.props.getUnderwritingQuestions(quoteData.companyCode, quoteData.state, quoteData.product, quoteData.property);
       }
+
     });
     this.getTemplate();
   }
@@ -207,7 +208,8 @@ export class QuoteBase extends React.Component {
       location,
       history,
       agencies,
-      agents
+      agents,
+      underwritingQuestions
     } = this.props;
 
     const { showDiaries, needsConfirmation, gandalfTemplate } = this.state;
@@ -230,8 +232,6 @@ export class QuoteBase extends React.Component {
       updateQuote: this.handleUpdateQuote,
       handleAgencyChange: this.handleAgencyChange
     };
-
-    console.log(this.state.form)
 
     return (
       <div className="app-wrapper csr quote">
@@ -257,7 +257,7 @@ export class QuoteBase extends React.Component {
                       handleSubmit={this.handleGandalfSubmit}
                       initialValues={quoteData}
                       template={gandalfTemplate}
-                      options={{ agents, agencies }} // enums for select/radio fields
+                      options={{ agents, agencies, underwritingQuestions }} // enums for select/radio fields
                       transformConfig={transformConfig}
                       path={location.pathname}
                       customHandlers={customHandlers}
@@ -290,7 +290,7 @@ export class QuoteBase extends React.Component {
                 <Route exact path={`${match.url}/notes`} render={props => <NotesFiles {...props} match={match} updateQuote={this.updateQuote} />} />
                 <Route exact path={`${match.url}/summary`} render={props => <Summary {...props} match={match} updateQuote={this.updateQuote} />} />
                 <Route exact path={`${match.url}/additionalInterests`} render={props => <AdditionalInterests {...props} match={match} updateQuote={this.updateQuote} />} />
-                <Route exact path={`${match.url}/underwriting`} render={props => <Underwriting {...props} match={match} updateQuote={this.updateQuote} />} />
+                {/* <Route exact path={`${match.url}/underwriting`} render={props => <Underwriting {...props} match={match} updateQuote={this.updateQuote} />} /> */}
                 <Route exact path={`${match.url}/application`} render={props => <Application {...props} match={match} updateQuote={this.updateQuote} />} />
               </div>
 
@@ -326,6 +326,7 @@ const mapStateToProps = state => {
     agents: getAgentList(state),
     agencies: getAgencyList(state),
     zipCodeSettings: state.service.getZipcodeSettings,
+    underwritingQuestions: state.service.underwritingQuestions
   }
 };
 
@@ -337,4 +338,5 @@ export default connect(mapStateToProps, {
   getAgencies,
   getAgentsByAgencyCode,
   getZipcodeSettings,
+  getUnderwritingQuestions
 })(QuoteBase);

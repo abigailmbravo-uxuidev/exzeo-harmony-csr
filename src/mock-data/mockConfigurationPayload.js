@@ -1512,7 +1512,23 @@ const mock = {
           ]
         },
       ],
-    }
+    },
+    {
+      name: 'underwriting',
+      step: {},
+      components: [
+        {
+          id: 1,
+          type: '$CUSTOM',
+          dependencies: [],
+          data: {
+            component: '$UNDERWRITING',
+          },
+          formData: {},
+          children: [],
+        },
+      ],
+    },
   ]
 };
 
