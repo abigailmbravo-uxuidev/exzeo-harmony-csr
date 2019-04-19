@@ -43,12 +43,10 @@ export class QuoteBase extends React.Component {
       showDiaries: false,
       form: {
         pristine: true
-      },
-      formReset: null
+      }
     };
 
     this.getConfigForJsonTransform = defaultMemoize(this.getConfigForJsonTransform.bind(this));
-    this.handleFormReset = defaultMemoize(this.handleFormReset.bind(this));
   }
 
   componentDidMount() {
@@ -154,12 +152,6 @@ export class QuoteBase extends React.Component {
     }
   };
 
-  handleReset = () => {
-    if(typeof this.state.formReset === 'function'){
-      this.state.formReset();
-    }
-  }
-
   handleGandalfSubmit = async ({ shouldNav, ...values }) => {
     const currentStep = this.props.location.pathname.split('/')[3];
     const { modelName, submitData, pageName } = handleCGSubmit(values, currentStep, this.props);
@@ -179,15 +171,6 @@ export class QuoteBase extends React.Component {
       form: formState
      }));
   };
-
-
-  handleFormReset = (reset) => {
-    if(typeof this.state.formReset === 'function') return;
-    this.setState(() => ({ 
-      formReset: reset
-     }));
-  };
-
 
   setShowEmailPopup = (showEmailPopup) => {
     this.setState(() => ({ showEmailPopup }));
@@ -222,7 +205,6 @@ export class QuoteBase extends React.Component {
     //  so Gandalf does not need to know about these.
     const customHandlers = {
       formStateCallback: this.handleFormState,
-      formResetCallback: this.handleFormReset,
       setEmailPopup: this.setShowEmailPopup,
       getState: this.getLocalState,
       handleSubmit: this.handleGandalfSubmit,
@@ -266,22 +248,21 @@ export class QuoteBase extends React.Component {
                         <React.Fragment />}
                     />
                     <div className="basic-footer btn-footer">
-                      <div className="btn-group basic-footer btn-footer">
+                      <Footer />
+                      <div className="btn-wrapper">
+                        <Button
+                          data-test="reset"
+                          className={Button.constants.classNames.secondary}
+                          label="Reset"
+                        />
                         <Button
                           data-test="submit"
                           className={Button.constants.classNames.primary}
                           onClick={this.primaryClickHandler}
                           disabled={needsConfirmation || this.state.form.pristine || this.state.form.submitting}
-                          label={'Save'}
+                          label={'Update'}
                         />
-                          <Button
-                            onClick={this.handleReset}
-                            data-test="reset"
-                            className={Button.constants.classNames.secondary}
-                            label="reset"
-                          />
                       </div>
-                      <Footer />
                     </div>
                   </React.Fragment>
                 }
