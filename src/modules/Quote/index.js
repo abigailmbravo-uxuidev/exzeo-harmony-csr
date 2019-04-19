@@ -43,10 +43,12 @@ export class QuoteBase extends React.Component {
       showDiaries: false,
       form: {
         pristine: true
-      }
+      },
+      formReset: null
     };
 
     this.getConfigForJsonTransform = defaultMemoize(this.getConfigForJsonTransform.bind(this));
+    this.setFormReset = defaultMemoize(this.setFormReset.bind(this));
   }
 
   componentDidMount() {
@@ -152,6 +154,12 @@ export class QuoteBase extends React.Component {
     }
   };
 
+  handleReset = () => {
+    if(typeof this.state.formReset === 'function'){
+      this.state.formReset();
+    }
+  }
+
   handleGandalfSubmit = async ({ shouldNav, ...values }) => {
     const currentStep = this.props.location.pathname.split('/')[3];
     const { modelName, submitData, pageName } = handleCGSubmit(values, currentStep, this.props);
@@ -171,6 +179,15 @@ export class QuoteBase extends React.Component {
       form: formState
      }));
   };
+
+
+  setFormReset = (reset) => {
+    if(typeof this.state.formReset === 'function') return;
+    this.setState(() => ({ 
+      formReset: reset
+     }));
+  };
+
 
   setShowEmailPopup = (showEmailPopup) => {
     this.setState(() => ({ showEmailPopup }));
@@ -205,6 +222,7 @@ export class QuoteBase extends React.Component {
     //  so Gandalf does not need to know about these.
     const customHandlers = {
       formStateCallback: this.handleFormState,
+      formResetCallback: this.setFormReset,
       setEmailPopup: this.setShowEmailPopup,
       getState: this.getLocalState,
       handleSubmit: this.handleGandalfSubmit,
@@ -251,6 +269,7 @@ export class QuoteBase extends React.Component {
                       <Footer />
                       <div className="btn-wrapper">
                         <Button
+                          onClick={this.handleReset}
                           data-test="reset"
                           className={Button.constants.classNames.secondary}
                           label="Reset"
