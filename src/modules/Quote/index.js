@@ -176,8 +176,9 @@ export class QuoteBase extends React.Component {
     this.setState(() => ({ showEmailPopup }));
   };
 
-  handleAgencyChange = (agencyCode) => {
+  handleAgencyChange = (agencyCode, onChange) =>  {
     this.props.getAgentsByAgencyCode(agencyCode);
+    return onChange(agencyCode);
   }
 
   render() {
