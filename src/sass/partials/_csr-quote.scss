@@ -71,8 +71,6 @@
             flex-shrink: 0;
 
             > section {
-              align-content: flex-start;
-              margin-bottom: $padding;
               border-bottom: 1px dashed $green-darken-04;
 
               &:last-of-type {
@@ -80,55 +78,76 @@
                 border-bottom-width: 0;
               }
 
-              .form-group {
-                &.has-output-label {
-                  flex-direction: row-reverse;
-                  flex-wrap: wrap;
-                  > * {
-                    width: calc(50% - .5rem);
-                  }
-
-                  select, input {
-                    order: 1;
-                  }
-
-                  label {
-                    margin-right: $padding;
-                    
-                    &:first-of-type {
-                      margin-right: 0;
-                      margin-left: $padding;
-                    }
-                  }
-
-                  select, input {
-                    margin-left: $padding;
-                  }
-
-                  output {
-                    order: 3;
-                    margin-right: $padding;
-                    border-radius: $border-radius;
-                  }
-                  
-                }
-
-                output {
-                  padding: ($padding/2);
-                  height: 2rem;
-                  border: 1px solid $warm-gray-02;
-                  background-color: $input-bg-disabled;
-                  opacity: 1;
-                }
-              }
-
               &.policyholder-component {
                 section {
-                  align-content: flex-start;
                   padding: 0;
+
+                  .title-check-box-wrapper {
+                    display: flex;
+                    align-items: flex-end;
+                    padding: 0;
+                    
+                    .title {
+                      flex-grow: 0;
+                      flex-shrink: 0;
+                      width: auto;
+                    }
+                    .check-box-wrapper {
+                      margin-bottom: 10px;
+
+                      input {
+                        margin-right: $padding/2;
+                        margin-left: 0;
+                      }
+                    }
+                  }
                   
                   .form-group {
                     width: 50%;
+                  }
+                }
+              }
+
+              &.coverages {
+                .form-group {
+                  &.has-output-label {
+                    flex-direction: row-reverse;
+                    flex-wrap: wrap;
+                    > * {
+                      width: calc(50% - .5rem);
+                    }
+  
+                    select, input {
+                      order: 1;
+                    }
+  
+                    label {
+                      margin-right: $padding;
+                      
+                      &:first-of-type {
+                        margin-right: 0;
+                        margin-left: $padding;
+                      }
+                    }
+  
+                    select, input {
+                      margin-left: $padding;
+                    }
+  
+                    output {
+                      order: 3;
+                      margin-right: $padding;
+                    }
+                  }
+                }
+              }
+
+              &.deductibles {
+                .form-group {
+                  &.has-output-label {
+                    input, select {
+                      margin-bottom: $padding*2;
+                    }
                   }
                 }
               }
@@ -191,8 +210,6 @@
             }
 
             > section {
-              margin-bottom: $padding*2;
-              padding-bottom: $padding*2;
               border-bottom: 1px dashed $green-darken-04;
             }
 

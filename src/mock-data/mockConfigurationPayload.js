@@ -560,7 +560,7 @@ const mock = {
               path: 'coverageLimits.otherStructures.value',
               dependencies: [],
               data: {
-                component: 'selectInteger',
+                component: 'select',
                 label: 'Percentage',
                 size: '12',
                 dataSource: [
@@ -602,7 +602,7 @@ const mock = {
               path: 'coverageLimits.personalProperty.value',
               dependencies: [],
               data: {
-                component: 'selectInteger',
+                component: 'select',
                 label: 'Percentage',
                 size: '12',
                 extendedProperties: {
@@ -766,7 +766,7 @@ const mock = {
               path: 'coverageLimits.moldProperty.amount',
               dependencies: [],
               data: {
-                component: 'selectInteger',
+                component: 'select',
                 label: 'Mold Property',
                 size: '12',
               },
@@ -799,7 +799,7 @@ const mock = {
               path: 'coverageLimits.moldLiability.amount',
               dependencies: [],
               data: {
-                component: 'selectInteger',
+                component: 'select',
                 label: 'Mold Liability Limit',
                 size: '12',
               },
@@ -948,6 +948,7 @@ const mock = {
                 label: 'Hurricane Deductible',
                 size: '12',
                 extendedProperties: {
+                  outputLabel: 'Calculated Hurricane',
                   output: 'currency',
                 },
               },
@@ -982,7 +983,7 @@ const mock = {
               dependencies: [],
               data: {
                 component: 'select',
-                label: 'Sinkhole Deductible',
+                label: 'Sinkhole',
                 size: '12',
                 dataSource: [
                   {
@@ -995,6 +996,7 @@ const mock = {
                   }
                 ],
                 extendedProperties: {
+                  outputLabel: 'Calculated Sinkhole',
                   output: 'currency',
                 }
               },
