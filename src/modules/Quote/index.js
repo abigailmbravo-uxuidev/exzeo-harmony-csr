@@ -18,6 +18,7 @@ import { getQuote } from '../../state/actions/quote.actions';
 import { getAgencies, getAgentsByAgencyCode } from '../../state/actions/agency.actions';
 import { getZipcodeSettings, getUnderwritingQuestions } from '../../state/actions/service.actions';
 import { getQuoteSelector } from '../../state/selectors/choreographer.selectors';
+import { getFormattedUWQuestions } from '../../state/selectors/underwritingQuestions.selectors';
 import Footer from '../../components/Common/Footer';
 import AdditionalInterests from '../../components/Quote/AdditionalInterests';
 import MailingAddressBilling from '../../components/Quote/MailingAddressBilling';
@@ -235,7 +236,7 @@ export class QuoteBase extends React.Component {
 
     return (
       <div className="app-wrapper csr quote">
-        {/* {(appState.data.submitting || !quoteData.quoteNumber) && <Loader />} */}
+        {/* {(this.state.form.submitting || !quoteData.quoteNumber) && <Loader />} */}
         <App
           context={match.path.split('/')[1]}
           resourceType={QUOTE_RESOURCE_TYPE}
@@ -250,6 +251,7 @@ export class QuoteBase extends React.Component {
               <div className="content-wrapper">
                 {shouldUseGandalf &&
                   <React.Fragment>
+                    {(!quoteData.quoteNumber || this.state.form.submitting ) && <Loader />}
                     <Gandalf
                       formId={FORM_ID}
                       className="route-content"
@@ -326,7 +328,7 @@ const mapStateToProps = state => {
     agents: getAgentList(state),
     agencies: getAgencyList(state),
     zipCodeSettings: state.service.getZipcodeSettings,
-    underwritingQuestions: state.service.underwritingQuestions
+    underwritingQuestions: getFormattedUWQuestions(state)
   }
 };
 
