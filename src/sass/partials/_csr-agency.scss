@@ -7,13 +7,13 @@
           display: flex;
           align-items: center;
           justify-content: center;
-          width: 12rem;
-          height: 3.25rem;
           margin: (-$padding) ($padding*2) (-$padding) (-$padding*2);
           padding: 0 ($padding*2);
-          color: $white;
+          width: 12rem;
+          height: 3.25rem;
           border-right: 1px dotted mix($bright-blue-darken-02, $green, 40%);
           background: mix($bright-blue-darken-02, $green, 80%);
+          color: $white;
 
           span {
             font-size: 1.125rem;
@@ -39,8 +39,8 @@
     }
     //content wrapper
     main[role="document"] {
-      height: calc(100vh - 8.5rem);
       min-height: calc(100vh - 8.5rem);
+      height: calc(100vh - 8.5rem);
 
       .content-wrapper {
         overflow: hidden;
@@ -90,6 +90,7 @@
 
               h3 {
                 width: 100%;
+
                 grid-column: span 12;
               }
 
@@ -147,6 +148,7 @@
                 display: grid;
                 margin-bottom: $padding*2;
                 padding-bottom: $padding*4;
+
                 grid-template-columns: repeat(12, [col-start] 1fr);
                 grid-gap: $padding*2;
 
@@ -208,6 +210,7 @@
                   border-top: 1px dashed mix($bright-blue-darken-02, $green, 80%);
                   border-bottom-width: 0;
                   background: $white;
+
                   grid-column: span 12;
                 }
 
@@ -231,8 +234,8 @@
               &.agency-address {
                 display: flex;
                 flex-wrap: wrap;
-                width: 100%;
                 padding-bottom: $padding*2;
+                width: 100%;
 
                 > h4 {
                   width: 100%;
@@ -252,8 +255,8 @@
                 .physical-address {
                   flex-grow: 0;
                   flex-shrink: 0;
-                  width: calc(50% - .5rem);
                   margin-bottom: $padding*2;
+                  width: calc(50% - .5rem);
 
                   h4 {
                     font-weight: $font-weight-normal;
@@ -365,8 +368,8 @@
               &.agency-aor {
                 display: flex;
                 flex-wrap: wrap;
-                width: 100%;
                 margin-bottom: 0;
+                width: 100%;
                 border-bottom-width: 0;
 
                 > h3 {
@@ -380,9 +383,9 @@
                   flex-direction: column;
                   flex-grow: 1;
                   flex-shrink: 1;
-                  max-width: 60%;
                   margin-right: $padding;
                   margin-bottom: $padding*2;
+                  max-width: 60%;
 
                   .agent-id,
                   .agent-phone {
@@ -409,8 +412,8 @@
                 .agency-license {
                   flex-grow: 1;
                   flex-shrink: 1;
-                  max-width: 40%;
                   margin-bottom: $padding*2;
+                  max-width: 40%;
 
                   .license-wrapper {
                     position: relative;
@@ -419,6 +422,7 @@
                     padding: $padding ($padding*2) ($padding*2);
                     border: 1px solid $warm-gray-03;
                     border-radius: $btn-border-radius;
+
                     grid-template-columns: repeat(12, [col-start] 1fr);
                     grid-auto-rows: min-content;
                     grid-gap: $padding*2;
@@ -443,6 +447,7 @@
                       display: flex;
                       align-items: center;
                       flex-direction: column;
+
                       grid-column: span 3;
 
                       input {
@@ -526,8 +531,8 @@
                   width: 4rem;
 
                   i {
-                    text-align: center;
                     color: $bright-blue-darken-04;
+                    text-align: center;
                     font-size: $font-size-h2;
 
                     &.fa-address-card {
@@ -599,9 +604,9 @@
                       small {
                         margin-right: $padding;
                         padding: 0 0.2rem;
-                        color: $white;
                         border-radius: 2px;
                         background: $warm-gray-08;
+                        color: $white;
                         font-size: 70%;
 
                         sup {
@@ -678,9 +683,9 @@
                           small {
                             margin-right: $padding;
                             padding: 0 0.2rem;
-                            color: $white;
                             border-radius: 2px;
                             background: $warm-gray-08;
+                            color: $white;
                             font-size: 70%;
 
                             i {
@@ -737,8 +742,8 @@
                     flex-wrap: wrap;
 
                     h4 {
-                      width: 100%;
                       margin-bottom: 0;
+                      width: 100%;
                     }
 
                     .card-name-content {
@@ -845,8 +850,8 @@
                       }
 
                       &.header {
-                        color: $warm-gray-08;
                         background: $warm-gray-02;
+                        color: $warm-gray-08;
                       }
 
                       span {
@@ -859,8 +864,8 @@
                         }
 
                         &.is-primary {
-                          width: 3.5rem;
                           margin-right: $padding*2;
+                          width: 3.5rem;
                           text-align: center;
                         }
 
@@ -919,8 +924,8 @@
                   align-items: center;
                   flex-grow: 0;
                   flex-shrink: 0;
-                  width: auto;
                   margin-left: $padding;
+                  width: auto;
 
                   .btn-link {
                     padding: 0;
@@ -946,29 +951,29 @@
         .route-content-wrapper {
           &.new-branch {
             position: absolute;
-            z-index: 1;
             top: 0;
             right: 0;
             bottom: 0;
             left: 0;
+            z-index: 1;
             padding-left: 12rem;
             background: rgba($warm-gray-03, .75);
 
             &:before {
               position: absolute;
-              z-index: -1;
               top: 0.5rem;
               left: 1rem;
+              z-index: -1;
               display: flex;
               align-items: center;
+              padding-left: $padding*2;
               width: 11rem;
               height: 47px;
-              padding-left: $padding*2;
-              content: 'Create Branch';
-              color: $warm-gray-12;
               border-left: 0.25rem solid $bright-blue-darken-04;
               background-color: $white;
               box-shadow: $card-box-shadow;
+              color: $warm-gray-12;
+              content: 'Create Branch';
             }
 
             .route-content {
@@ -1101,8 +1106,8 @@
       width: 100%;
 
       .card {
-        width: 30rem;
         max-height: 80vh;
+        width: 30rem;
 
         .card-block {
           .license-details {
@@ -1114,8 +1119,8 @@
               flex-shrink: 0;
 
               &.state {
-                width: 30%;
                 margin-right: $padding;
+                width: 30%;
               }
 
               &.licenseNumber {
@@ -1123,8 +1128,8 @@
               }
 
               &.licenseType {
-                width: calc(60% - .5rem);
                 margin-right: $padding;
+                width: calc(60% - .5rem);
               }
 
               &.licenseEffectiveDate {
@@ -1184,8 +1189,8 @@
           .contract-csp {
             flex-grow: 0;
             flex-shrink: 0;
-            width: 20rem;
             margin-left: $padding;
+            width: 20rem;
 
             .csp-wrapper {
               display: flex;
@@ -1194,23 +1199,24 @@
               .state {
                 flex-grow: 0;
                 flex-shrink: 0;
-                width: 6rem;
                 margin-right: $padding;
+                width: 6rem;
               }
 
               i {
                 display: flex;
                 align-items: center;
                 justify-content: center;
+                margin-top: 1.875rem;
                 width: 3rem;
                 height: 2rem;
-                margin-top: 1.875rem;
                 color: $bright-blue;
+
                 @include transition(all 0.2s ease-in-out);
 
                 &:hover {
-                  cursor: pointer;
                   color: $bright-blue-darken-04;
+                  cursor: pointer;
                 }
 
                 &.fa-times-circle {
@@ -1258,19 +1264,21 @@
 
   &.agency-crud {
     form {
-      width: 100%;
+      overflow: hidden;
       max-height: 90%;
+      width: 100%;
 
       .card {
+        overflow: hidden;
+        max-height: 100%;
         width: 80%;
-        max-height: 90%;
 
         &.branch {
           width: 70%;
         }
 
         .card-block {
-          overflow: visible;
+          overflow-y: auto;
 
           .zip {
             .TypeAhead {
@@ -1303,6 +1311,7 @@
           display: grid;
           margin-bottom: 0;
           padding-bottom: 0;
+
           grid-template-columns: repeat(12, [col-start] 1fr);
           grid-gap: 0 ($padding*2);
 
@@ -1369,6 +1378,7 @@
             border-top: 1px dashed mix($bright-blue-darken-02, $green, 80%);
             border-bottom-width: 0;
             background: $white;
+
             grid-column: span 12;
           }
 
@@ -1390,13 +1400,14 @@
 
           .agency-contact-details {
             display: flex;
+
             grid-column: span 12;
 
             > div {
               flex-grow: 0;
               flex-shrink: 0;
-              width: 9rem;
               margin-right: $padding*2;
+              width: 9rem;
 
               &:last-child {
                 flex-grow: 1;
@@ -1490,8 +1501,8 @@
       width: 100%;
 
       .card {
-        width: 90%;
         max-height: 80vh;
+        width: 90%;
 
         .card-block {
           display: flex;
@@ -1534,17 +1545,17 @@
               display: flex;
               flex-grow: 1;
               flex-shrink: 1;
-              max-width: 70%;
               margin-right: $padding;
+              max-width: 70%;
 
               .agency-mailing-address {
-                width: 50%;
                 margin-right: $padding/2;
+                width: 50%;
               }
 
               .agency-physical-address {
-                width: 50%;
                 margin-left: $padding/2;
+                width: 50%;
 
                 h4 {
                   label {
@@ -1582,9 +1593,9 @@
             &.agent-license {
               flex-grow: 1;
               flex-shrink: 1;
-              max-width: 30%;
               margin-left: $padding;
               padding-left: $padding*2;
+              max-width: 30%;
               border-left: 1px dotted $warm-gray-03;
 
               .license-wrapper {
@@ -1594,6 +1605,7 @@
                 padding: $padding ($padding*2) ($padding*2);
                 border: 1px solid $warm-gray-03;
                 border-radius: $btn-border-radius;
+
                 grid-template-columns: repeat(12, [col-start] 1fr);
                 grid-auto-rows: min-content;
                 grid-gap: $padding*2;
@@ -1622,6 +1634,7 @@
                   display: flex;
                   align-items: center;
                   flex-direction: column;
+
                   grid-column: span 3;
 
                   input {
@@ -1630,8 +1643,8 @@
 
                   .coverage,
                   .discountSurcharge {
-                    width: 60%;
                     padding: ($padding*1.5) ($padding*2);
+                    width: 60%;
                     white-space: normal;
                     hyphens: auto;
                   }
