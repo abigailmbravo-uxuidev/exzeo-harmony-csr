@@ -80,7 +80,7 @@ describe('Test diary.actions', () => {
       const props = {
         user: { userId: '123', userName: 'Test Guy' },
         resourceType: POLICY_RESOURCE_TYPE,
-        resourceId: 'test-2343',
+        resourceId: '12-1005269-02',
         initialValues: {}
       };
 

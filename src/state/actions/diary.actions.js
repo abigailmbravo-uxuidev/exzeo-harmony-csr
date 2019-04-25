@@ -1,9 +1,9 @@
 import * as serviceRunner from '../../utilities/serviceRunner';
 import { POLICY_RESOURCE_TYPE, QUOTE_RESOURCE_TYPE } from '../../constants/diaries';
+import { removeTerm } from '../../utilities/format';
 
 import * as types from './actionTypes';
 import * as errorActions from './error.actions';
-
 /**
  * Set Diaries
  * @param {array} diaries
@@ -22,11 +22,22 @@ export function setDiaries(diaries) {
  * @returns {Function}
  */
 export function fetchDiaries(filter) {
+
+  const { resourceId, ...filterData } = filter;
+  let resourceData;
+
+  if(Array.isArray(resourceId)){
+    resourceData = resourceId.map(id => removeTerm(id));
+  }
+  else if (resourceId){
+    resourceData = removeTerm(resourceId);
+  }
+
   const config = {
     service: 'diaries',
     method: 'POST',
     path: '/read',
-    data: { ...filter }
+    data: { ...filterData, resourceId: resourceData }
   };
 
   return async (dispatch) => {
