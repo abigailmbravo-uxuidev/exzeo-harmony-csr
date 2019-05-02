@@ -9,7 +9,7 @@ import QuoteSideNav from '../components/Quote/QuoteSideNav';
 
 import Header from './Header';
 import DiaryButton from './DiaryButton';
-import { DetailsHeader } from '@exzeo/core-ui';
+import { DetailsHeader } from '@exzeo/core-ui/@Harmony';
 
 const CONFIG = {
   policy: {
@@ -66,11 +66,11 @@ export class AppWrapper extends Component {
         <Header title={appConfig.title}>
           <DiaryButton onToggleDiaries={onToggleDiaries} showDiaries={showDiaries} openDiaryCount={openDiaryCount} />
         </Header>
-        <DetailsHeader 
+        <DetailsHeader
           context={context}
           modalHandlers={modalHandlers}
           detailsFields={appConfig.detailsFields}
-          headerDetails={headerDetails} 
+          headerDetails={headerDetails}
         />
         <main role="document" className={showDiaries ? 'diary-open' : 'diary-closed'}>
           <aside className="content-panel-left">
