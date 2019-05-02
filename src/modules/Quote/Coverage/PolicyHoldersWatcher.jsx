@@ -4,7 +4,7 @@ import _get from 'lodash/get';
 
 const PolicyHoldersWatcher = ({ fieldPrefix, watchField, values }) => {
   return (
-    <React.Component>
+    <React.Fragment>
         <Field name={`${fieldPrefix}.firstName`} subscription={{}}>
           {({ input: { onChange } }) => (
             <OnChangeListener name={watchField}>
@@ -74,7 +74,7 @@ const PolicyHoldersWatcher = ({ fieldPrefix, watchField, values }) => {
             </OnChangeListener>
           )}
         </Field>
-    </React.Component>
+    </React.Fragment>
   )
 }
 

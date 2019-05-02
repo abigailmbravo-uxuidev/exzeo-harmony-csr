@@ -36,11 +36,11 @@ const PolicyHolders = ({
           )}
         />
       </section>
-        {/* <PolicyHoldersWatcher
+        <PolicyHoldersWatcher
           values={initialValues}
           fieldPrefix="policyHolders[1]"
           watchField={watchField}
-        /> */}
+        />
     </section>
   );
 };
