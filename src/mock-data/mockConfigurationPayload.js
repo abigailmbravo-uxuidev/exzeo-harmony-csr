@@ -1529,6 +1529,138 @@ const mock = {
         },
       ],
     },
+    {
+      name: 'summary',
+      step: {},
+      components: [
+        {
+          id: 673334,
+          type: '$CUSTOM',
+          dependencies: [],
+          data: {
+            component: '$SUMMARY',
+            extendedProperties: {
+              header: "Property Details",
+              className :"property-details",
+              type: "propertyDetails",
+            }
+          },
+          formData: {},
+          children: [],
+        },
+        {
+          id: 673334,
+          type: '$CUSTOM',
+          dependencies: [],
+          data: {
+            component: '$SUMMARY',
+            extendedProperties: {
+              header: "Quote Details",
+              className :"quote-details",
+              type: "entityDetails",
+              details: [
+                { format: 'currency', path: 'rating.totalPremium', label: 'Yearly Premium'},
+                { format: 'currency', path: 'coverageLimits.dwelling.amount', label: 'A. Dwelling'},
+                { format: 'currency', path: 'coverageLimits.otherStructures.amount', label: 'B. Other Structures'},
+                { format: 'currency', path: 'coverageLimits.personalProperty.amount', label: 'C. Personal Property'},
+                { format: 'currency', path: 'coverageLimits.lossOfUse.amount', label: 'D. Loss Of Use'},
+                { format: 'currency', path: 'coverageLimits.personalLiability.amount', label: 'E. Personal Liability'},
+                { format: 'currency', path: 'coverageLimits.medicalPayments.amount', label: 'F. Medical Payments'},
+                { format: 'bool', path: 'coverageOptions.personalPropertyReplacementCost.answer', label: 'Personal Property Replacement Cost'},
+                { format: 'currency', path: 'coverageLimits.moldProperty.amount', label: 'Mold Property'},
+                { format: 'currency', path: 'coverageLimits.moldLiability.amount', label: 'Mold Liability'},
+                { format: 'percent', path: 'coverageLimits.ordinanceOrLaw.amount', label: 'Ordinance or Law'},
+                { format: 'currency', path: 'deductibles.allOtherPerils.amount', label: 'All Other Perils Deductible'},
+                { format: 'percent', path: 'deductibles.hurricane.amount', label: 'Hurricane Deductible'},
+                { format: 'currency', path: 'deductibles.hurricane.calculatedAmount', label: 'Calculated Hurricane Deductible'},
+                { format: 'percent', path: 'deductibles.sinkhole.amount', label: 'Sinkhole Deductible', hideNoValue: true},
+                { format: 'currency', path: 'deductibles.sinkhole.calculatedAmount', label: 'Calculated Sinkhole Deductible', hideNoValue: true}
+              ]
+            }
+          },
+          formData: {},
+          children: [],
+        },
+        {
+          id: 673334,
+          type: '$CUSTOM',
+          dependencies: [],
+          data: {
+            component: '$SUMMARY',
+            extendedProperties: {
+              header: "Property Details",
+              className :"property-details",
+              type: "propertyDetails",
+            }
+          },
+          formData: {},
+          children: [],
+        },
+        {
+          id: 673334,
+          type: '$CUSTOM',
+          dependencies: [],
+          data: {
+            component: '$SUMMARY',
+            extendedProperties: {
+              secondaryHeader: "Primary Policyholder",
+              className :"policyHolder-details",
+              type: "policyHolderDetails",
+              fieldPrefix: "policyHolders[0]"
+            }
+          },
+          formData: {},
+          children: [],
+        },
+        {
+          id: 673334,
+          type: '$CUSTOM',
+          dependencies: [],
+          data: {
+            component: '$SUMMARY',
+            extendedProperties: {
+              secondaryHeader: "Secondary Policyholder",
+              className :"policyHolder-details",
+              type: "policyHolderDetails",
+              fieldPrefix: "policyHolders[1]"
+            }
+          },
+          formData: {},
+          children: [],
+        },
+        {
+          id: 673334,
+          type: '$CUSTOM',
+          dependencies: [],
+          data: {
+            component: '$SUMMARY',
+            extendedProperties: {
+              header: "Mailing Address",
+              className :"mailing-address-details",
+              type: "addressDetails",
+              fieldPrefix: "policyHolderMailingAddress"
+            }
+          },
+          formData: {},
+          children: [],
+        },
+        {
+          id: 673334,
+          type: '$CUSTOM',
+          dependencies: [],
+          data: {
+            component: '$SUMMARY',
+            extendedProperties: {
+              header: "Additional Interests",
+              className :"additional-interests-details",
+              type: "additionalInterestDetails"
+            }
+          },
+          formData: {},
+          children: [],
+        },
+      ],
+    },
   ]
 };
 
