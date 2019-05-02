@@ -30,6 +30,7 @@ import MOCK_CONFIG_DATA from '../../mock-data/mockConfigurationPayload';
 import { ROUTES_NOT_HANDLED_BY_GANDALF, ROUTES_NOT_USING_FOOTER, PAGE_ROUTING } from './constants/workflowNavigation';
 import { getAgentList, getAgencyList } from '../../state/selectors/agency.selector';
 import { handleCGSubmit } from '../../utilities/choreographer';
+import CSRPolicyHolder from './Coverage/CSRPolicyHolder';
 
 const FORM_ID = 'QuoteWorkflowCSR';
 
@@ -45,6 +46,10 @@ export class QuoteBase extends React.Component {
         pristine: true
       },
       formReset: null
+    };
+
+    this.customComponents = {
+      $CSRPOLICYHOLDER: CSRPolicyHolder
     };
 
     this.getConfigForJsonTransform = defaultMemoize(this.getConfigForJsonTransform.bind(this));
