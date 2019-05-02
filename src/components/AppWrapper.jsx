@@ -9,7 +9,7 @@ import QuoteSideNav from '../components/Quote/QuoteSideNav';
 
 import Header from './Header';
 import DiaryButton from './DiaryButton';
-import { DetailsHeader } from '@exzeo/core-ui/@Harmony';
+import DetailsHeader from '@exzeo/core-ui/src/@Harmony/DetailsHeader/DetailsHeader'
 
 const CONFIG = {
   policy: {
