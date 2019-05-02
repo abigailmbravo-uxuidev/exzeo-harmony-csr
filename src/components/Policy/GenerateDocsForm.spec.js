@@ -11,7 +11,7 @@ describe('Testing GenerateDocsForm component', () => {
       policyID: '12345',
       errorHandler: jest.fn(),
       handleSubmit: jest.fn(),
-      startWorkflow: jest.fn(() => Promise.resolve(result.result)),
+      startWorkflow: jest.fn(() => Promise.resolve({})),
       updateNotes: jest.fn()
     };
 

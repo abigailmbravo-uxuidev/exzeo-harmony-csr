@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import axios from 'axios';
 import { Form, Field } from 'react-final-form';
-import moment from 'moment-timezone';
 import { Select, Loader, Button, validation } from '@exzeo/core-ui';
 
 const validate = values => (!values.documentType ? { documentType: 'Required' } : null);
@@ -13,7 +12,7 @@ const documentTypeAnswers = [
 ];
 
 export class GenerateDocsForm extends Component {
-  generateDoc = (values, form) => {
+  generateDoc = (values) => {
     const {
       errorHandler, policyNumber, policyID, updateNotes, startWorkflow
     } = this.props;
