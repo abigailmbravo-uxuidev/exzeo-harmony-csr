@@ -92,7 +92,7 @@ const mock = {
           type: '$CUSTOM',
           dependencies: [],
           data: {
-            component: '$POLICYHOLDER',
+            component: '$CSRPolicyHolder',
             extendedProperties: {
               subscribe: true,
               watchField: 'removeSecondary',
