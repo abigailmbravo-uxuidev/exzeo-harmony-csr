@@ -55,7 +55,6 @@ const mock = {
               data: {
                 size: '5',
                 component: '$AGENCY',
-                size: '5',
                 dataSource: 'agencies',
                 extendedProperties: {
                   subscribe: true,
