@@ -25,7 +25,7 @@ import MailingAddressBilling from '../../components/Quote/MailingAddressBilling'
 import NotesFiles from '../../components/Quote/NotesFiles';
 import Summary from '../../components/Quote/Summary';
 import Application from '../../components/Quote/Application';
-import MOCK_CONFIG_DATA from '../../mock-data/mockConfigurationPayload';
+import MOCK_CONFIG_DATA from '../../mock-data/mockHO3';
 
 import { ROUTES_NOT_HANDLED_BY_GANDALF, ROUTES_NOT_USING_FOOTER, PAGE_ROUTING } from './constants/workflowNavigation';
 import { getAgentList, getAgencyList } from '../../state/selectors/agency.selector';
@@ -252,7 +252,7 @@ export class QuoteBase extends React.Component {
                         <Footer />
                         <div className="btn-wrapper">
                           <Button
-                            onClick={() => this.handleReset(form)}
+                            onClick={form.reset}
                             data-test="reset"
                             className={Button.constants.classNames.secondary}
                             label="Reset"
