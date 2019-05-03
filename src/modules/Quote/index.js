@@ -249,7 +249,6 @@ export class QuoteBase extends React.Component {
                       customComponents={this.customComponents}
                       renderFooter={({ form, pristine, submitting }) =>
                         <div className="basic-footer btn-footer">
-                        {console.log(pristine, submitting)}
                         <Footer />
                         <div className="btn-wrapper">
                           <Button
