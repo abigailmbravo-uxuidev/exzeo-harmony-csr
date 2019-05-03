@@ -6,7 +6,7 @@ const mock = {
       step: {},
       components: [
         {
-          id: 1,
+          id: 100100,
           type: '$SECTION',
           dependencies: [],
           data: { className: 'produced-by' },
@@ -88,7 +88,7 @@ const mock = {
           ]
         },
         {
-          id: 1,
+          id: 6,
           type: '$CUSTOM',
           dependencies: [],
           data: {
@@ -102,7 +102,7 @@ const mock = {
           children: [],
         },
         {
-          id: 100,
+          id: 10007,
           type: '$SECTION',
           dependencies: [],
           data: {
@@ -113,7 +113,7 @@ const mock = {
           className: 'test',
           children: [
             {
-              id: 17,
+              id: 8,
               type: '$TITLE',
               dependencies: [],
               data: {
@@ -180,7 +180,7 @@ const mock = {
               children: [],
             },
             {
-              id: 19,
+              id: 22,
               type: '$INPUT',
               path: 'property.physicalAddress.zip',
               dependencies: [],
@@ -196,7 +196,7 @@ const mock = {
           ]
         },
         {
-          id: 101,
+          id: 100001,
           type: '$SECTION',
           dependencies: [],
           data: {
@@ -207,7 +207,7 @@ const mock = {
           className: 'test',
           children: [
             {
-              id: 20,
+              id: 120,
               type: '$TITLE',
               dependencies: [],
               data: {
@@ -218,7 +218,7 @@ const mock = {
               children: [],
             },
             {
-              id: 21,
+              id: 121,
               type: '$INPUT',
               path: 'property.yearBuilt',
               dependencies: [],
@@ -232,7 +232,7 @@ const mock = {
               children: [],
             },
             {
-              id: 22,
+              id: 122,
               type: '$INPUT',
               path: 'property.protectionClass',
               dependencies: [],
@@ -246,7 +246,7 @@ const mock = {
               children: [],
             },
             {
-              id: 23,
+              id: 123,
               type: '$INPUT',
               path: 'property.distanceToTidalWater',
               dependencies: [],
@@ -260,7 +260,7 @@ const mock = {
               children: [],
             },
             {
-              id: 24,
+              id: 124,
               type: '$INPUT',
               path: 'property.residenceType',
               dependencies: [],
@@ -274,7 +274,7 @@ const mock = {
               children: [],
             },
             {
-              id: 25,
+              id: 125,
               type: '$INPUT',
               path: 'property.constructionType',
               dependencies: [],
@@ -291,10 +291,6 @@ const mock = {
                   {
                     "label": "Frame",
                     "answer": "FRAME"
-                  },
-                  {
-                    "label": "Masonry",
-                    "answer": "MASONRY"
                   },
                   {
                     "label": "Plastic Siding",
@@ -318,7 +314,7 @@ const mock = {
               children: [],
             },
             {
-              id: 26,
+              id: 126,
               type: '$INPUT',
               path: 'property.buildingCodeEffectivenessGrading',
               dependencies: [],
@@ -374,7 +370,7 @@ const mock = {
               children: [],
             },
             {
-              id: 27,
+              id: 127,
               type: '$INPUT',
               path: 'property.distanceToFireHydrant',
               dependencies: [],
@@ -388,7 +384,7 @@ const mock = {
               children: [],
             },
             {
-              id: 28,
+              id: 128,
               type: '$INPUT',
               path: 'property.squareFeet',
               dependencies: [],
@@ -402,7 +398,7 @@ const mock = {
               children: [],
             },
             {
-              id: 29,
+              id: 129,
               type: '$INPUT',
               path: 'property.yearOfRoof',
               dependencies: [],
@@ -416,7 +412,7 @@ const mock = {
               children: [],
             },
             {
-              id: 30,
+              id: 130,
               type: '$INPUT',
               path: 'property.familyUnits',
               dependencies: [],
@@ -444,7 +440,7 @@ const mock = {
               children: [],
             },
             {
-              id: 31,
+              id: 131,
               type: '$INPUT',
               path: 'property.distanceToFireStation',
               dependencies: [],
@@ -458,7 +454,7 @@ const mock = {
               children: [],
             },
             {
-              id: 32,
+              id: 132,
               type: '$INPUT',
               path: 'property.floodZone',
               dependencies: [],
@@ -492,7 +488,7 @@ const mock = {
               children: [],
             },
             {
-              id: 33,
+              id: 133,
               type: '$INPUT',
               path: 'property.id',
               dependencies: [],
@@ -508,7 +504,7 @@ const mock = {
           ]
         },
         {
-          id: 102,
+          id: 100034,
           type: '$SECTION',
           dependencies: [],
           data: {
@@ -519,7 +515,7 @@ const mock = {
           className: 'test',
           children: [
             {
-              id: 34,
+              id: 135,
               type: '$TITLE',
               dependencies: [],
               data: {
@@ -529,7 +525,7 @@ const mock = {
               children: [],
             },
             {
-              id: 35,
+              id: 136,
               type: '$INPUT',
               path: 'coverageLimits.dwelling.amount',
               dependencies: [],
@@ -555,7 +551,7 @@ const mock = {
               children: [],
             },
             {
-              id: 36,
+              id: 137,
               type: '$INPUT',
               path: 'coverageLimits.otherStructures.value',
               dependencies: [],
@@ -597,7 +593,7 @@ const mock = {
               children: [],
             },
             {
-              id: 37,
+              id: 138,
               type: '$INPUT',
               path: 'coverageLimits.personalProperty.value',
               dependencies: [],
@@ -663,7 +659,7 @@ const mock = {
               children: [],
             },
             {
-              id: 38,
+              id: 139,
               type: '$INPUT',
               path: 'coverageLimits.lossOfUse.value',
               dependencies: [],
@@ -687,7 +683,7 @@ const mock = {
               children: [],
             },
             {
-              id: 39,
+              id: 140,
               type: '$INPUT',
               path: 'coverageLimits.personalLiability.amount',
               dependencies: [],
@@ -712,7 +708,7 @@ const mock = {
               children: [],
             },
             {
-              id: 40,
+              id: 141,
               type: '$INPUT',
               path: 'coverageLimits.medicalPayments.amount',
               dependencies: [],
@@ -740,7 +736,7 @@ const mock = {
           ]
         },
         {
-          id: 103,
+          id: 1000042,
           type: '$SECTION',
           dependencies: [],
           data: {
@@ -751,7 +747,7 @@ const mock = {
           className: 'test',
           children: [
             {
-              id: 41,
+              id: 143,
               type: '$TITLE',
               dependencies: [],
               data: {
@@ -761,7 +757,7 @@ const mock = {
               children: [],
             },
             {
-              id: 42,
+              id: 144,
               type: '$INPUT',
               path: 'coverageLimits.moldProperty.amount',
               dependencies: [],
@@ -794,7 +790,7 @@ const mock = {
               children: [],
             },
             {
-              id: 43,
+              id: 145,
               type: '$INPUT',
               path: 'coverageLimits.moldLiability.amount',
               dependencies: [],
@@ -823,7 +819,7 @@ const mock = {
               children: [],
             },
             {
-              id: 44,
+              id: 146,
               type: '$INPUT',
               path: 'coverageOptions.personalPropertyReplacementCost.answer',
               dependencies: [],
@@ -854,7 +850,7 @@ const mock = {
               children: [],
             },
             {
-              id: 45,
+              id: 147,
               type: '$INPUT',
               path: 'coverageLimits.ordinanceOrLaw.amount',
               dependencies: [],
@@ -885,7 +881,7 @@ const mock = {
           ]
         },
         {
-          id: 104,
+          id: 1000048,
           type: '$SECTION',
           dependencies: [],
           data: {
@@ -896,7 +892,7 @@ const mock = {
           className: 'test',
           children: [
             {
-              id: 46,
+              id: 149,
               type: '$TITLE',
               dependencies: [],
               data: {
@@ -906,7 +902,7 @@ const mock = {
               children: [],
             },
             {
-              id: 47,
+              id: 150,
               component: '$INPUT',
               path: 'deductibles.allOtherPerils.amount',
               dependencies: [],
@@ -939,7 +935,7 @@ const mock = {
               children: [],
             },
             {
-              id: 48,
+              id: 151,
               type: '$INPUT',
               path: 'deductibles.hurricane.amount',
               dependencies: [],
@@ -977,7 +973,7 @@ const mock = {
               children: [],
             },
             {
-              id: 49,
+              id: 152,
               type: '$INPUT',
               path: 'deductibles.sinkhole.amount',
               dependencies: [],
@@ -1013,7 +1009,7 @@ const mock = {
           ]
         },
         {
-          id: 104,
+          id: 1000053,
           type: '$SECTION',
           dependencies: [],
           data: {
@@ -1024,7 +1020,7 @@ const mock = {
           className: 'test',
           children: [
             {
-              id: 50,
+              id: 154,
               type: '$TITLE',
               dependencies: [],
               data: {
@@ -1034,7 +1030,7 @@ const mock = {
               children: [],
             },
             {
-              id: 51,
+              id: 155,
               type: '$INPUT',
               path: 'property.burglarAlarm',
               dependencies: [],
@@ -1064,7 +1060,7 @@ const mock = {
               children: [],
             },
             {
-              id: 52,
+              id: 156,
               type: '$INPUT',
               path: 'property.fireAlarm',
               dependencies: [],
@@ -1094,7 +1090,7 @@ const mock = {
               children: [],
             },
             {
-              id: 53,
+              id: 157,
               type: '$INPUT',
               path: 'property.sprinkler',
               dependencies: [],
@@ -1131,7 +1127,7 @@ const mock = {
           ]
         },
         {
-          id: 105,
+          id: 1000058,
           type: '$SECTION',
           dependencies: [],
           data: {
@@ -1141,7 +1137,7 @@ const mock = {
           className: 'test',
           children: [
             {
-              id: 54,
+              id: 159,
               type: '$TITLE',
               dependencies: [],
               data: {
@@ -1151,7 +1147,7 @@ const mock = {
               children: [],
             },
             {
-              id: 55,
+              id: 160,
               component: '$INPUT',
               path: 'property.windMitigation.roofCovering',
               dependencies: [],
@@ -1184,7 +1180,7 @@ const mock = {
               children: [],
             },
             {
-              id: 56,
+              id: 161,
               type: '$INPUT',
               path: 'property.windMitigation.floridaBuildingCodeWindSpeed',
               dependencies: [],
@@ -1197,7 +1193,7 @@ const mock = {
               children: [],
             },
             {
-              id: 57,
+              id: 162,
               type: '$INPUT',
               path: 'property.windMitigation.roofDeckAttachment',
               dependencies: [],
@@ -1242,7 +1238,7 @@ const mock = {
               children: [],
             },
             {
-              id: 58,
+              id: 163,
               type: '$INPUT',
               path: 'property.windMitigation.floridaBuildingCodeWindSpeedDesign',
               dependencies: [],
@@ -1255,7 +1251,7 @@ const mock = {
               children: [],
             },
             {
-              id: 59,
+              id: 164,
               type: '$INPUT',
               path: 'property.windMitigation.roofToWallConnection',
               dependencies: [],
@@ -1296,7 +1292,7 @@ const mock = {
               children: [],
             },
             {
-              id: 60,
+              id: 165,
               type: '$INPUT',
               path: 'property.windMitigation.terrain',
               dependencies: [],
@@ -1334,7 +1330,7 @@ const mock = {
               children: [],
             },
             {
-              id: 61,
+              id: 166,
               type: '$INPUT',
               path: 'property.windMitigation.roofGeometry',
               dependencies: [],
@@ -1371,7 +1367,7 @@ const mock = {
               children: [],
             },
             {
-              id: 62,
+              id: 167,
               type: '$INPUT',
               path: 'property.windMitigation.internalPressureDesign',
               dependencies: [],
@@ -1404,7 +1400,7 @@ const mock = {
               children: [],
             },
             {
-              id: 63,
+              id: 168,
               type: '$INPUT',
               path: 'property.windMitigation.secondaryWaterResistance',
               dependencies: [],
@@ -1438,7 +1434,7 @@ const mock = {
               children: [],
             },
             {
-              id: 64,
+              id: 169,
               type: '$INPUT',
               path: 'property.windMitigation.windBorneDebrisRegion',
               dependencies: [],
@@ -1472,7 +1468,7 @@ const mock = {
               children: [],
             },
             {
-              id: 27,
+              id: 170,
               type: '$INPUT',
               dependencies: [],
               path: 'property.windMitigation.openingProtection',
@@ -1518,7 +1514,7 @@ const mock = {
       step: {},
       components: [
         {
-          id: 1,
+          id: 200,
           type: '$CUSTOM',
           dependencies: [],
           data: {
@@ -1534,7 +1530,7 @@ const mock = {
       step: {},
       components: [
         {
-          id: 673334,
+          id: 1000,
           type: '$CUSTOM',
           dependencies: [],
           data: {
@@ -1549,7 +1545,7 @@ const mock = {
           children: [],
         },
         {
-          id: 673334,
+          id: 1001,
           type: '$CUSTOM',
           dependencies: [],
           data: {
@@ -1582,7 +1578,7 @@ const mock = {
           children: [],
         },
         {
-          id: 673334,
+          id: 1002,
           type: '$CUSTOM',
           dependencies: [],
           data: {
@@ -1597,7 +1593,7 @@ const mock = {
           children: [],
         },
         {
-          id: 673334,
+          id: 1003,
           type: '$CUSTOM',
           dependencies: [],
           data: {
@@ -1613,7 +1609,7 @@ const mock = {
           children: [],
         },
         {
-          id: 673334,
+          id: 1004,
           type: '$CUSTOM',
           dependencies: [],
           data: {
@@ -1629,7 +1625,7 @@ const mock = {
           children: [],
         },
         {
-          id: 673334,
+          id: 1005,
           type: '$CUSTOM',
           dependencies: [],
           data: {
@@ -1645,7 +1641,7 @@ const mock = {
           children: [],
         },
         {
-          id: 673334,
+          id: 1006,
           type: '$CUSTOM',
           dependencies: [],
           data: {
