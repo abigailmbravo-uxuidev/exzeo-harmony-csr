@@ -1,6 +1,6 @@
 import React from 'react';
-import { Field } from 'react-final-form';
 import classNames from 'classnames';
+import { Field } from '@exzeo/core-ui';
 import PolicyHolder from '@exzeo/core-ui/src/@Harmony/Components/PolicyHolder';
 import PolicyHoldersWatcher from './PolicyHoldersWatcher';
 
