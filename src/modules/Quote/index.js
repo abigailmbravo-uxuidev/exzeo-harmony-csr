@@ -42,9 +42,6 @@ export class QuoteBase extends React.Component {
       showEmailPopup: false,
       gandalfTemplate: MOCK_CONFIG_DATA,
       showDiaries: false,
-      form: {
-        pristine: true
-      },
       formReset: null
     };
 
@@ -53,7 +50,6 @@ export class QuoteBase extends React.Component {
     };
 
     this.getConfigForJsonTransform = defaultMemoize(this.getConfigForJsonTransform.bind(this));
-    this.setFormReset = defaultMemoize(this.setFormReset.bind(this));
   }
 
   componentDidMount() {
@@ -161,10 +157,8 @@ export class QuoteBase extends React.Component {
     }
   };
 
-  handleReset = () => {
-    if(typeof this.state.formReset === 'function'){
-      this.state.formReset();
-    }
+  handleReset = (form) => {
+    form.reset();
   }
 
   handleGandalfSubmit = async ({ shouldNav, ...values }) => {
@@ -180,20 +174,6 @@ export class QuoteBase extends React.Component {
   setPristine = (pristine) => {
     this.setState(() => ({ pristine }));
   }
-
-  handleFormState = (formState) => {
-    this.setState(() => ({ 
-      form: formState
-     }));
-  };
-
-
-  setFormReset = (reset) => {
-    if(typeof this.state.formReset === 'function') return;
-    this.setState(() => ({ 
-      formReset: reset
-     }));
-  };
 
 
   setShowEmailPopup = (showEmailPopup) => {
@@ -229,8 +209,6 @@ export class QuoteBase extends React.Component {
     // TODO going to use Context to pass these directly to custom components,
     //  so Gandalf does not need to know about these.
     const customHandlers = {
-      formStateCallback: this.handleFormState,
-      formResetCallback: this.setFormReset,
       setEmailPopup: this.setShowEmailPopup,
       getState: this.getLocalState,
       handleSubmit: this.handleGandalfSubmit,
@@ -256,7 +234,7 @@ export class QuoteBase extends React.Component {
               <div className="content-wrapper">
                 {shouldUseGandalf &&
                   <React.Fragment>
-                    {(!quoteData.quoteNumber || this.state.form.submitting ) && <Loader />}
+                    {/* {(!quoteData.quoteNumber || form.submitting ) && <Loader />} */}
                     <Gandalf
                       formId={FORM_ID}
                       className="route-content"
@@ -269,27 +247,28 @@ export class QuoteBase extends React.Component {
                       path={location.pathname}
                       customHandlers={customHandlers}
                       customComponents={this.customComponents}
-                      renderFooter={x =>
-                        <React.Fragment />}
+                      renderFooter={({ form, pristine, submitting }) =>
+                        <div className="basic-footer btn-footer">
+                        {console.log(pristine, submitting)}
+                        <Footer />
+                        <div className="btn-wrapper">
+                          <Button
+                            onClick={() => this.handleReset(form)}
+                            data-test="reset"
+                            className={Button.constants.classNames.secondary}
+                            label="Reset"
+                          />
+                          <Button
+                            data-test="submit"
+                            className={Button.constants.classNames.primary}
+                            onClick={this.primaryClickHandler}
+                            disabled={needsConfirmation || pristine || submitting}
+                            label={'Update'}
+                          />
+                        </div>
+                      </div>}
                     />
-                    <div className="basic-footer btn-footer">
-                      <Footer />
-                      <div className="btn-wrapper">
-                        <Button
-                          onClick={this.handleReset}
-                          data-test="reset"
-                          className={Button.constants.classNames.secondary}
-                          label="Reset"
-                        />
-                        <Button
-                          data-test="submit"
-                          className={Button.constants.classNames.primary}
-                          onClick={this.primaryClickHandler}
-                          disabled={needsConfirmation || this.state.form.pristine || this.state.form.submitting}
-                          label={'Update'}
-                        />
-                      </div>
-                    </div>
+
                   </React.Fragment>
                 }
                 {/* <Route exact path={`${match.url}/coverage`} render={props => <Coverage {...props} match={match} updateQuote={this.updateQuote} />} /> */}
