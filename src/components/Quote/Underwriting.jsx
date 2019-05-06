@@ -87,7 +87,7 @@ export class Underwriting extends Component {
       appState, fieldValues, handleSubmit, pristine, quoteData, underwritingQuestions, dirty, match, editingDisabled
     } = this.props;
     return (
-      <React.Fragment match={match}>
+      <React.Fragment>
         <Prompt when={dirty} message="Are you sure you want to leave with unsaved changes?" />
 
         <div className="route-content">

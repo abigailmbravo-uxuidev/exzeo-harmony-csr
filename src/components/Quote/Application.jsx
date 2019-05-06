@@ -64,7 +64,7 @@ export class QuoteApplication extends Component {
 
     const uwExceptions = underwritingExceptions.filter(e => !e.overridden).length;
     return (
-      <React.Fragment match={match}>
+      <React.Fragment>
         <div className="route-content verify workflow">
           <form id="Application" onSubmit={handleSubmit(() => quoteSummaryModal(this.props))}>
             <div className="scroll">

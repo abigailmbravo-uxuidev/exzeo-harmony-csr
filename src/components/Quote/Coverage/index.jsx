@@ -346,7 +346,7 @@ export class Coverage extends Component {
     }));
 
     return (
-      <React.Fragment match={match}>
+      <React.Fragment>
         <Prompt when={dirty} message="Are you sure you want to leave with unsaved changes?" />
         <div className="route-content">
 

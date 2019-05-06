@@ -86,7 +86,7 @@ export class AdditionalInterests extends Component {
       quoteId: quoteData._id,
       additionalInterests
     }, PAGE_NAME);
-    
+
     this.hideAdditionalInterestModal();
     setAppStateAction(
       MODEL_NAME,
@@ -237,7 +237,7 @@ export class AdditionalInterests extends Component {
 
     if (!quoteData.rating) {
       return (
-        <React.Fragment match={match}>
+        <React.Fragment>
           <div className="route-content">
             <div className="scroll">
               <div className="detail-wrapper">
@@ -254,7 +254,7 @@ export class AdditionalInterests extends Component {
     }
 
     return (
-      <React.Fragment match={match}>
+      <React.Fragment>
         <div className="route-content" id="AddAdditionalInterestPage">
           <div className="scroll">
             <div className="form-group survey-wrapper" role="group">
@@ -320,7 +320,7 @@ export class AdditionalInterests extends Component {
               selectedAI={this.state.selectedAI} />
           }
 
-          {this.state.showDeleteReinstateAI && 
+          {this.state.showDeleteReinstateAI &&
           <AIDeleteReinstateModal
             actionType={this.state.deleteReinstateType}
             closeModal={this.hideAdditionalInterestModal}

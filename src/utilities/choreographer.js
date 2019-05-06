@@ -51,7 +51,7 @@ const handleCoverageSubmit = (values, props) => {
   submitData.moldProperty = Number(values.coverageLimits.moldProperty.amount);
   submitData.personalLiability = Number(values.coverageLimits.personalLiability.amount);
 
-  submitData.sinkholePerilCoverage = Number(values.deductibles.sinkhole.amount) > 0
+  submitData.sinkholePerilCoverage = Number(values.deductibles.sinkhole.amount) > 0;
 
 
   submitData.address1 = values.property.physicalAddress.address1;
@@ -78,7 +78,7 @@ const handleCoverageSubmit = (values, props) => {
 
   submitData.otherStructures = Number(values.coverageLimits.otherStructures.value);
   submitData.personalProperty = Number(values.coverageLimits.personalProperty.value);
-  submitData.personalPropertyReplacementCostCoverage = values.coverageOptions.personalPropertyReplacementCost.answer
+  submitData.personalPropertyReplacementCostCoverage = values.coverageOptions.personalPropertyReplacementCost.answer;
 
   submitData.burglarAlarm = values.property.burglarAlarm;
   submitData.constructionType = values.property.constructionType;
@@ -97,7 +97,7 @@ const handleCoverageSubmit = (values, props) => {
   submitData.yearOfRoof = values.property.yearOfRoof;
   submitData.floodZone = values.property.floodZone;
   submitData.buildingCodeEffectivenessGrading = values.property.buildingCodeEffectivenessGrading;
-  
+
   submitData.quoteId = values._id;
 
   submitData.calculatedSinkhole = (Number(values.deductibles.sinkhole.amount) * submitData.dwellingAmount) / 100;
@@ -108,26 +108,26 @@ const handleCoverageSubmit = (values, props) => {
     submitData.sinkhole = 0;
   }
 
-  submitData.electronicDelivery =  _.get(values, 'policyHolders[0].electronicDelivery', false)
+  submitData.electronicDelivery =  _.get(values, 'policyHolders[0].electronicDelivery', false);
 
   submitData.pH1phone = _.get(values, 'policyHolders[0].primaryPhoneNumber', '').replace(/[^\d]/g, '');
-  submitData.pH1phone2 = _.get(values, 'policyHolders[0].secondaryPhoneNumber', '').replace(/[^\d]/g, '');    
-  submitData.pH1email = _.get(values, 'policyHolders[0].emailAddress', '')
-  submitData.pH1FirstName = _.get(values, 'policyHolders[0].firstName', '')
-  submitData.pH1LastName = _.get(values, 'policyHolders[0].lastName', '')
+  submitData.pH1phone2 = _.get(values, 'policyHolders[0].secondaryPhoneNumber', '').replace(/[^\d]/g, '');
+  submitData.pH1email = _.get(values, 'policyHolders[0].emailAddress', '');
+  submitData.pH1FirstName = _.get(values, 'policyHolders[0].firstName', '');
+  submitData.pH1LastName = _.get(values, 'policyHolders[0].lastName', '');
 
 
   submitData.pH2phone = _.get(values, 'policyHolders[1].primaryPhoneNumber', '').replace(/[^\d]/g, '');
   submitData.pH2phone2 = _.get(values, 'policyHolders[1].secondaryPhoneNumber', '').replace(/[^\d]/g, '');
-  submitData.pH2email = _.get(values, 'policyHolders[1].emailAddress', '')
-  submitData.pH2FirstName = _.get(values, 'policyHolders[1].firstName', '')
-  submitData.pH2LastName = _.get(values, 'policyHolders[1].lastName', '')
+  submitData.pH2email = _.get(values, 'policyHolders[1].emailAddress', '');
+  submitData.pH2FirstName = _.get(values, 'policyHolders[1].firstName', '');
+  submitData.pH2LastName = _.get(values, 'policyHolders[1].lastName', '');
   return {
     submitData,
     modelName: 'csrCoverage',
     pageName: 'coverage'
   }
-}
+};
 
 const handleUnderwritingSubmit = (values, props) => {
   const { quoteData } = props;
@@ -146,21 +146,21 @@ const handleUnderwritingSubmit = (values, props) => {
   const submitData = {
     quoteId: quoteData._id,
     ...taskData
-  }
+  };
 
   return {
     submitData,
     modelName: 'csrUnderwriting',
     pageName: 'underwriting'
   }
-}
+};
 
 export const handleCGSubmit = (values, page, props) => {
-  if(page === 'coverage') return handleCoverageSubmit(values, props);
+  if (page === 'coverage') return handleCoverageSubmit(values, props);
   else if (page === 'underwriting') return handleUnderwritingSubmit(values, props);
 
   return null;
 
-}
+};
 
 export default { startWorkflow , handleCGSubmit};
