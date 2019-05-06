@@ -1619,10 +1619,33 @@ const mock = {
               className :"property-details",
               hideNoValuePath: 'policyHolders[1]', 
               details: [
-                { hideNoValuePath: 'policyHolders[1]', label: 'Policyholder Name', items: [{ format: 'name', path: 'policyHolders[1]'}] },
-                { hideNoValuePath: 'policyHolders[1]', label: 'Phone Number', items: [{ format: 'phone', path: 'policyHolders[1].primaryPhoneNumber'}]},
-                { hideNoValuePath: 'policyHolders[1]', label: 'Email', items: [{ format: '', path: 'policyHolders[1].emailAddress'}]},
-                { hideNoValuePath: 'policyHolders[1]', label: 'Electronic Delivery', items: [{ format: 'bool', path: 'policyHolders[1].electronicDelivery'}]},
+                { label: 'Policyholder Name', items: [{ format: 'name', path: 'policyHolders[1]'}] },
+                { label: 'Phone Number', items: [{ format: 'phone', path: 'policyHolders[1].primaryPhoneNumber'}]},
+                { label: 'Email', items: [{ format: '', path: 'policyHolders[1].emailAddress'}]},
+                { label: 'Electronic Delivery', items: [{ format: 'bool', path: 'policyHolders[1].electronicDelivery'}]},
+              ]
+            }
+          },
+          formData: {},
+          children: [],
+        },
+        {
+          id: 1003,
+          type: '$CUSTOM',
+          dependencies: [],
+          data: {
+            component: '$SUMMARY',
+            extendedProperties: {
+              header: "Mailing Address",
+              className :"property-details",
+              hideNoValuePath: 'policyHolderMailingAddress', 
+              details: [
+                { label: 'Address', items: [
+                  { format: '', path: 'policyHolderMailingAddress.address1'},
+                  { hideNoValuePath: 'policyHolderMailingAddress.address2', format: '', path: 'policyHolderMailingAddress.address2'}
+                ] },
+                { label: 'City/State/Zip', items: [{ format: 'cityStateZip', path: 'policyHolderMailingAddress'}]},
+                { label: 'Country', items: [{ format: '', path: 'policyHolderMailingAddress.country.displayText'}]}
               ]
             }
           },
