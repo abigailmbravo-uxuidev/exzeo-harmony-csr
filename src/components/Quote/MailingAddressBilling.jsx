@@ -217,9 +217,9 @@ export class MailingAddressBilling extends Component {
 
     const noRatingOrNoBillingOptions = (!quoteData.rating || (!options || options.length === 0))
 
- 
+
     return (
-      <React.Fragment match={match}>
+      <React.Fragment>
         <Prompt when={dirty} message="Are you sure you want to leave with unsaved changes?" />
         <div className="route-content">
           <form id="MailingAddressBilling" onSubmit={handleSubmit(handleFormSubmit)} >
@@ -255,7 +255,7 @@ export class MailingAddressBilling extends Component {
                     <TextField validations={['required']} label="Zip" styleName="zip" name="zip" onChange={() => setPropertyToggle(this.props)} />
                 </div>
                 </section>
-                { noRatingOrNoBillingOptions && 
+                { noRatingOrNoBillingOptions &&
                   <section>
                     <div className="route-content">
                       <div className="scroll">
@@ -270,7 +270,7 @@ export class MailingAddressBilling extends Component {
                     </div>
                   </section>
                 }
-                { !noRatingOrNoBillingOptions && 
+                { !noRatingOrNoBillingOptions &&
                   <section>
                     <h3>Billing</h3>
                     <SelectFieldBilling
