@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Loader, Button } from '@exzeo/core-ui';
 import { Route } from 'react-router-dom';
-import { Gandalf } from '@exzeo/core-ui/src/@Harmony';
+import { Loader, Button } from '@exzeo/core-ui';
+import { Gandalf, getConfigForJsonTransform } from '@exzeo/core-ui/src/@Harmony';
 import { defaultMemoize } from 'reselect';
 
 import UnderwritingValidationBarConnect from '../../components/Quote/UnderwritingValidationBar';
@@ -35,22 +35,18 @@ import PolicyHolders from './Coverage/PolicyHolders';
 const FORM_ID = 'QuoteWorkflowCSR';
 
 export class QuoteBase extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
+  state = {
       showEmailPopup: false,
-      gandalfTemplate: MOCK_CONFIG_DATA,
+      gandalfTemplate: null,
       showDiaries: false,
       formReset: null
     };
 
-    this.customComponents = {
+  customComponents = {
       $POLICYHOLDERS: PolicyHolders
     };
 
-    this.getConfigForJsonTransform = defaultMemoize(this.getConfigForJsonTransform.bind(this));
-  }
+  getConfigForJsonTransform = defaultMemoize(getConfigForJsonTransform);
 
   componentDidMount() {
     const { match } = this.props;
@@ -84,48 +80,12 @@ export class QuoteBase extends React.Component {
     // };
 
     // const response = await serviceRunner.callService(transferConfig, 'retrieveDocumentTemplate');
-    // this.setState(() => ({ gandalfTemplate: response.data.result }));
-  };
-
-  setTemplatePath(component, componentMap) {
-    if ((component.formData.metaData || {}).target || (component.data.extendedProperties || {}).target) {
-      componentMap[component.path] = (component.formData.metaData || {}).target || (component.data.extendedProperties || {}).target;
-    }
-  }
-
-  getConfigForChildren(children, componentMap) {
-    children.map((childComponent) => {
-      this.setTemplatePath(childComponent, componentMap);
-      if(Array.isArray(childComponent.children)) {
-        this.getConfigForChildren(childComponent.children, componentMap)
-      }
-      return childComponent;
-    });
-  }
-
-  getConfigForJsonTransform(gandalfTemplate) {
-    if (!gandalfTemplate) return {};
-
-    return gandalfTemplate.pages.reduce((pageComponentsMap, page) => {
-      const pageComponents = page.components.reduce((componentMap, component) => {
-        this.setTemplatePath(component, componentMap);
-        if(Array.isArray(component.children)) {
-          this.getConfigForChildren(component.children, componentMap)
-        }
-        return componentMap;
-      }, {});
-
-      return {
-        ...pageComponentsMap,
-        ...pageComponents
-      }
-    }, {});
+    this.setState(() => ({ gandalfTemplate: MOCK_CONFIG_DATA }));
   };
 
   handleToggleDiaries = () => {
     this.setState({ showDiaries: !this.state.showDiaries });
   };
-
 
   updateQuote = async (modelName, submitData, pageName) => {
     const { quoteData } = this.props;
