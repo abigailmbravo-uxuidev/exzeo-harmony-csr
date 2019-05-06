@@ -1562,7 +1562,7 @@ const mock = {
             component: '$SUMMARY',
             extendedProperties: {
               header: "Coverage / Rating",
-              className :"quote-details",
+              className :"coverage-rating",
               details: [
                 { items: [{ format: 'currency', path: 'rating.totalPremium'}], label: 'Yearly Premium'},
                 { items: [{ format: 'currency', path: 'coverageLimits.dwelling.amount'}], label: 'A. Dwelling'},
@@ -1594,7 +1594,7 @@ const mock = {
             component: '$SUMMARY',
             extendedProperties: {
               header: "Primary PolicyHolder",
-              className :"property-details",
+              className :"policyholder-details",
               hideNoValue: 'policyHolders[1]',
               details: [
                 { label: 'Policyholder Name', items: [{ format: 'name', path: 'policyHolders[0]'}] 

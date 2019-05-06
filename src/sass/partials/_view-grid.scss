@@ -146,6 +146,7 @@
 .detail-group {
   display: flex;
   flex-direction: column;
+  padding: 0 ($padding*2) 0;
 
   section {
     padding: $padding 0;
@@ -165,8 +166,11 @@
       }
     }
   }
-
   &.property-details {
+    padding-top: $padding;
+  }
+
+  &.property-details, &.policyholder-details {
     section {
       display: flex;
       align-content: space-around;
@@ -177,6 +181,37 @@
         padding: 0;
         width: auto;
       } 
+    }
+  }
+
+  &.coverage-rating {
+    section {
+      display: flex;
+      flex-direction: column;
+
+      dl {
+        margin-bottom: 0;
+        padding: $padding;
+        
+        &:nth-child(odd) {
+          background: $warm-gray-01;
+        }
+
+        > div {
+          display: flex;
+
+          dt {
+            flex-grow: 1;
+            flex-shrink: 1;
+          }
+
+          dd {
+            flex-grow: 1;
+            flex-shrink: 1;
+            text-align: right;
+          }
+        }
+      }
     }
   }
 }
