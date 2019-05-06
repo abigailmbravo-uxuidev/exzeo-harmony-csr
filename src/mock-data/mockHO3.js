@@ -1619,6 +1619,16 @@ const mock = {
               children: [],
             }
           ]
+        },
+        {
+          id: 1007,
+          type: '$CUSTOM',
+          dependencies: [],
+          data: {
+            component: '$SHARE'
+          },
+          formData: {},
+          children: [],
         }
         // },
         // {
