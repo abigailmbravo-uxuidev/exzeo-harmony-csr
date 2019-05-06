@@ -161,7 +161,7 @@ export class QuoteBase extends React.Component {
     const { showDiaries, needsConfirmation, gandalfTemplate } = this.state;
 
     const currentStep = location.pathname.split('/')[3];
-    const shouldUseGandalf = ROUTES_NOT_HANDLED_BY_GANDALF.indexOf(currentStep) === -1;
+    const shouldUseGandalf = (gandalfTemplate && ROUTES_NOT_HANDLED_BY_GANDALF.indexOf(currentStep) === -1);
     const shouldRenderFooter = ROUTES_NOT_USING_FOOTER.indexOf(currentStep) === -1;
     const currentPage = PAGE_ROUTING[currentStep];
     const transformConfig = this.getConfigForJsonTransform(gandalfTemplate);
