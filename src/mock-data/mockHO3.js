@@ -1535,7 +1535,7 @@ const mock = {
           data: {
             component: '$SUMMARY',
             extendedProperties: {
-              header: "Property Details",
+              header: "Quote Details",
               className :"property-details",
               type: "propertyDetails",
             }
@@ -1550,7 +1550,7 @@ const mock = {
           data: {
             component: '$SUMMARY',
             extendedProperties: {
-              header: "Quote Details",
+              header: "Coverage / Rating",
               className :"quote-details",
               type: "entityDetails",
               details: [
@@ -1577,28 +1577,13 @@ const mock = {
           children: [],
         },
         {
-          id: 1002,
-          type: '$CUSTOM',
-          dependencies: [],
-          data: {
-            component: '$SUMMARY',
-            extendedProperties: {
-              header: "Property Details",
-              className :"property-details",
-              type: "propertyDetails",
-            }
-          },
-          formData: {},
-          children: [],
-        },
-        {
           id: 1003,
           type: '$CUSTOM',
           dependencies: [],
           data: {
             component: '$SUMMARY',
             extendedProperties: {
-              secondaryHeader: "Primary Policyholder",
+              header: "Primary Policyholder",
               className :"policyHolder-details",
               type: "policyHolderDetails",
               fieldPrefix: "policyHolders[0]"
