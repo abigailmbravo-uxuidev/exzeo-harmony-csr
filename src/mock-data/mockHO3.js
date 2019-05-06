@@ -1652,21 +1652,35 @@ const mock = {
           formData: {},
           children: [],
         },
-        // {
-        //   id: 1005,
-        //   type: '$CUSTOM',
-        //   dependencies: [],
-        //   data: {
-        //     component: '$SUMMARY',
-        //     extendedProperties: {
-        //       header: "Mailing Address",
-        //       className :"mailing-address-details",
-        //       type: "addressDetails",
-        //       fieldPrefix: "policyHolderMailingAddress"
-        //     }
-        //   },
-        //   formData: {},
-        //   children: [],
+        {
+          id: 1005,
+          type: '$SECTION',
+          dependencies: [],
+          data: { className: '', size: '' },
+          formData: {},
+          children: [
+            {
+              id: 1006,
+              type: '$TITLE',
+              dependencies: [],
+              data: {
+                text: 'Additional Interests',
+              },
+              formData: {},
+              children: [],
+            },
+            {
+              id: 1007,
+              type: '$CUSTOM',
+              dependencies: [],
+              data: {
+                component: '$ADDITIONAL_INTEREST_DETAILS'
+              },
+              formData: {},
+              children: [],
+            }
+          ]
+        }
         // },
         // {
         //   id: 1006,
