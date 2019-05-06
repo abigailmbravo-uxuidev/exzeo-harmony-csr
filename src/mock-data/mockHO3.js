@@ -1546,7 +1546,7 @@ const mock = {
                   ]
                 },
                 { label: 'Year Built', items: [{ format: '', path: 'property.yearBuilt'}] },
-                { label: 'Effective Date', items: [{ format: '', path: 'effectiveDate'}] },
+                { label: 'Effective Date', items: [{ format: 'date', path: 'effectiveDate'}] },
                 { label: 'Agent', items: [{ format: 'name', optionKey: 'agents', compareField: 'answer', valuePath: 'agentCode'}] }
               ]
             }
@@ -1578,46 +1578,57 @@ const mock = {
                 { items: [{ format: 'currency', path: 'deductibles.allOtherPerils.amount'}], label: 'All Other Perils Deductible'},
                 { items: [{ format: 'percent', path: 'deductibles.hurricane.amount'}], label: 'Hurricane Deductible'},
                 { items: [{ format: 'currency', path: 'deductibles.hurricane.calculatedAmount'}], label: 'Calculated Hurricane Deductible'},
-                { items: [{ format: 'percent', path: 'deductibles.sinkhole.amount'}], label: 'Sinkhole Deductible'},
-                { items: [{ format: 'currency', path: 'deductibles.sinkhole.calculatedAmount'}], label: 'Calculated Sinkhole Deductible'}
+                { items: [{ hideNoValuePath: 'deductibles.sinkhole.amount', format: 'percent', path: 'deductibles.sinkhole.amount'}], label: 'Sinkhole Deductible'},
+                { items: [{ hideNoValuePath: 'deductibles.sinkhole.calculatedAmount', format: 'currency', path: 'deductibles.sinkhole.calculatedAmount'}], label: 'Calculated Sinkhole Deductible'}
               ]
             }
           },
           formData: {},
           children: [],
         },
-        // {
-        //   id: 1003,
-        //   type: '$CUSTOM',
-        //   dependencies: [],
-        //   data: {
-        //     component: '$SUMMARY',
-        //     extendedProperties: {
-        //       header: "Primary Policyholder",
-        //       className :"policyHolder-details",
-        //       type: "policyHolderDetails",
-        //       fieldPrefix: "policyHolders[0]"
-        //     }
-        //   },
-        //   formData: {},
-        //   children: [],
-        // },
-        // {
-        //   id: 1004,
-        //   type: '$CUSTOM',
-        //   dependencies: [],
-        //   data: {
-        //     component: '$SUMMARY',
-        //     extendedProperties: {
-        //       secondaryHeader: "Secondary Policyholder",
-        //       className :"policyHolder-details",
-        //       type: "policyHolderDetails",
-        //       fieldPrefix: "policyHolders[1]"
-        //     }
-        //   },
-        //   formData: {},
-        //   children: [],
-        // },
+        {
+          id: 1003,
+          type: '$CUSTOM',
+          dependencies: [],
+          data: {
+            component: '$SUMMARY',
+            extendedProperties: {
+              header: "Primary PolicyHolder",
+              className :"property-details",
+              hideNoValue: 'policyHolders[1]',
+              details: [
+                { label: 'Policyholder Name', items: [{ format: 'name', path: 'policyHolders[0]'}] 
+                },
+                { label: 'Phone Number', items: [{ format: 'phone', path: 'policyHolders[0].primaryPhoneNumber'}]},
+                { label: 'Email', items: [{ format: '', path: 'policyHolders[0].emailAddress'}]},
+                { label: 'Electronic Delivery', items: [{ format: 'bool', path: 'policyHolders[0].electronicDelivery'}]},
+              ]
+            }
+          },
+          formData: {},
+          children: [],
+        },
+        {
+          id: 1003,
+          type: '$CUSTOM',
+          dependencies: [],
+          data: {
+            component: '$SUMMARY',
+            extendedProperties: {
+              header: "Secondary PolicyHolder",
+              className :"property-details",
+              hideNoValuePath: 'policyHolders[1]', 
+              details: [
+                { hideNoValuePath: 'policyHolders[1]', label: 'Policyholder Name', items: [{ format: 'name', path: 'policyHolders[1]'}] },
+                { hideNoValuePath: 'policyHolders[1]', label: 'Phone Number', items: [{ format: 'phone', path: 'policyHolders[1].primaryPhoneNumber'}]},
+                { hideNoValuePath: 'policyHolders[1]', label: 'Email', items: [{ format: '', path: 'policyHolders[1].emailAddress'}]},
+                { hideNoValuePath: 'policyHolders[1]', label: 'Electronic Delivery', items: [{ format: 'bool', path: 'policyHolders[1].electronicDelivery'}]},
+              ]
+            }
+          },
+          formData: {},
+          children: [],
+        },
         // {
         //   id: 1005,
         //   type: '$CUSTOM',
