@@ -109,7 +109,7 @@ const mock = {
             size: '4',
           },
           formData: {},
-          className: 'test',
+          className: '',
           children: [
             {
               id: 8,
@@ -203,7 +203,7 @@ const mock = {
             size: '8',
           },
           formData: {},
-          className: 'test',
+          className: '',
           children: [
             {
               id: 120,
@@ -323,46 +323,17 @@ const mock = {
                 size: '3',
                 disabled: true,
                 dataSource: [
-                  {
-                    "label": "01",
-                    "answer": "1"
-                  },
-                  {
-                    "label": "02",
-                    "answer": "2"
-                  },
-                  {
-                    "label": "03",
-                    "answer": "3"
-                  },
-                  {
-                    "label": "04",
-                    "answer": "4"
-                  },
-                  {
-                    "label": "05",
-                    "answer": "5"
-                  },
-                  {
-                    "label": "06",
-                    "answer": "6"
-                  },
-                  {
-                    "label": "07",
-                    "answer": "7"
-                  }, {
-                    "label": "08",
-                    "answer": "8"
-                  }, {
-                    "label": "09",
-                    "answer": "9"
-                  }, {
-                    "label": "98",
-                    "answer": "98"
-                  }, {
-                    "label": "99",
-                    "answer": "99"
-                  },
+                  { "label": "01", "answer": "1" },
+                  { "label": "02", "answer": "2" },
+                  { "label": "03", "answer": "3" },
+                  { "label": "04", "answer": "4" },
+                  { "label": "05", "answer": "5" },
+                  { "label": "06", "answer": "6" },
+                  { "label": "07", "answer": "7" },
+                  { "label": "08", "answer": "8" },
+                  { "label": "09", "answer": "9" },
+                  { "label": "98", "answer": "98" },
+                  { "label": "99", "answer": "99" },
                 ]
               },
               formData: {},
@@ -421,18 +392,10 @@ const mock = {
                 size: '3',
                 disabled: true,
                 dataSource: [
-                  {
-                    "answer": "1-2"
-                  },
-                  {
-                    "answer": "3-4"
-                  },
-                  {
-                    "answer": "5-8"
-                  },
-                  {
-                    "answer": "9+"
-                  }
+                  { "answer": "1-2" },
+                  { "answer": "3-4" },
+                  { "answer": "5-8" },
+                  { "answer": "9+" }
                 ]
               },
               formData: {},
@@ -463,24 +426,12 @@ const mock = {
                 size: '3',
                 disabled: true,
                 dataSource: [
-                  {
-                    "answer": "V"
-                  },
-                  {
-                    "answer": "A"
-                  },
-                  {
-                    "answer": "B"
-                  },
-                  {
-                    "answer": "C"
-                  },
-                  {
-                    "answer": "X"
-                  },
-                  {
-                    "answer": "U"
-                  }
+                  { "answer": "V" },
+                  { "answer": "A" },
+                  { "answer": "B" },
+                  { "answer": "C" },
+                  { "answer": "X" },
+                  { "answer": "U" }
                 ]
               },
               formData: {},
@@ -559,22 +510,10 @@ const mock = {
                 label: 'Percentage',
                 size: '12',
                 dataSource: [
-                  {
-                    "label": "0%",
-                    "answer": 0
-                  },
-                  {
-                    "label": "2%",
-                    "answer": 2
-                  },
-                  {
-                    "label": "5%",
-                    "answer": 5
-                  },
-                  {
-                    "label": "10%",
-                    "answer": 10
-                  }
+                  { "label": "0%", "answer": 0 },
+                  { "label": "2%", "answer": 2 },
+                  { "label": "5%", "answer": 5 },
+                  { "label": "10%", "answer": 10 }
                 ],
                 extendedProperties: {
                   output: 'currency',
@@ -603,30 +542,6 @@ const mock = {
                 extendedProperties: {
                   output: 'currency',
                   outputLabel: 'Personal Property Limit',
-                  renderWatchFields: [{
-                    "field": 'coverageLimits.personalProperty.value',
-                    "becomes": "0",
-                    "set": 'coverageOptions.personalPropertyReplacementCost.answer',
-                    "to": false
-                  },
-                  {
-                    "field": 'coverageLimits.personalProperty.value',
-                    "becomes": "25",
-                    "set": 'coverageOptions.personalPropertyReplacementCost.answer',
-                    "to": true
-                  },
-                  {
-                    "field": 'coverageLimits.personalProperty.value',
-                    "becomes": "35",
-                    "set": 'coverageOptions.personalPropertyReplacementCost.answer',
-                    "to": true
-                  },
-                  {
-                    "field": 'coverageLimits.personalProperty.value',
-                    "becomes": "50",
-                    "set": 'coverageOptions.personalPropertyReplacementCost.answer',
-                    "to": true
-                  }],
                 },
                 dataSource: [
                   {
@@ -828,6 +743,30 @@ const mock = {
                 segmented: true,
                 label: 'Personal Property Replacement Cost',
                 size: '12',
+                extendedProperties: {
+                  watchFields: [
+                    {
+                      "field": 'coverageLimits.personalProperty.value',
+                      "becomes": 0,
+                      "to": false
+                    },
+                    {
+                      "field": 'coverageLimits.personalProperty.value',
+                      "becomes": 25,
+                      "to": true
+                    },
+                    {
+                      "field": 'coverageLimits.personalProperty.value',
+                      "becomes": 35,
+                      "to": true
+                    },
+                    {
+                      "field": 'coverageLimits.personalProperty.value',
+                      "becomes": 50,
+                      "to": true
+                    }
+                  ]
+                }
               },
               formData: {
                 path: 'coverageOptions.personalPropertyReplacementCost.answer',
@@ -1597,7 +1536,7 @@ const mock = {
               className :"policyholder-details",
               hideNoValue: 'policyHolders[1]',
               details: [
-                { label: 'Policyholder Name', items: [{ format: 'name', path: 'policyHolders[0]'}] 
+                { label: 'Policyholder Name', items: [{ format: 'name', path: 'policyHolders[0]'}]
                 },
                 { label: 'Phone Number', items: [{ format: 'phone', path: 'policyHolders[0].primaryPhoneNumber'}]},
                 { label: 'Email', items: [{ format: '', path: 'policyHolders[0].emailAddress'}]},
@@ -1617,7 +1556,7 @@ const mock = {
             extendedProperties: {
               header: "Secondary PolicyHolder",
               className :"property-details",
-              hideNoValuePath: 'policyHolders[1]', 
+              hideNoValuePath: 'policyHolders[1]',
               details: [
                 { label: 'Policyholder Name', items: [{ format: 'name', path: 'policyHolders[1]'}] },
                 { label: 'Phone Number', items: [{ format: 'phone', path: 'policyHolders[1].primaryPhoneNumber'}]},
@@ -1638,7 +1577,7 @@ const mock = {
             extendedProperties: {
               header: "Mailing Address",
               className :"property-details",
-              hideNoValuePath: 'policyHolderMailingAddress', 
+              hideNoValuePath: 'policyHolderMailingAddress',
               details: [
                 { label: 'Address', items: [
                   { format: '', path: 'policyHolderMailingAddress.address1'},

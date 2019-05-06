@@ -117,10 +117,6 @@ export class QuoteBase extends React.Component {
     }
   };
 
-  handleReset = (form) => {
-    form.reset();
-  }
-
   handleGandalfSubmit = async ({ shouldNav, ...values }) => {
     const currentStep = this.props.location.pathname.split('/')[3];
     const { modelName, submitData, pageName } = handleCGSubmit(values, currentStep, this.props);
@@ -131,10 +127,6 @@ export class QuoteBase extends React.Component {
     return this.state;
   };
 
-  setPristine = (pristine) => {
-    this.setState(() => ({ pristine }));
-  }
-
 
   setShowEmailPopup = (showEmailPopup) => {
     this.setState(() => ({ showEmailPopup }));
@@ -143,7 +135,7 @@ export class QuoteBase extends React.Component {
   handleAgencyChange = (agencyCode, onChange) =>  {
     this.props.getAgentsByAgencyCode(agencyCode);
     return onChange(agencyCode);
-  }
+  };
 
   render() {
     const {
@@ -173,7 +165,6 @@ export class QuoteBase extends React.Component {
       getState: this.getLocalState,
       handleSubmit: this.handleGandalfSubmit,
       history: history,
-      updateQuote: this.handleUpdateQuote,
       handleAgencyChange: this.handleAgencyChange
     };
 

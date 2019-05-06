@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import axios from 'axios';
-import { Form, Field } from 'react-final-form';
-import { Select, Loader, Button, validation } from '@exzeo/core-ui';
+import { Select, Loader, Button, Form, Field, validation } from '@exzeo/core-ui';
 
 const validate = values => (!values.documentType ? { documentType: 'Required' } : null);
 const documentTypeAnswers = [
