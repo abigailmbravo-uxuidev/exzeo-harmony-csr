@@ -1494,7 +1494,7 @@ const mock = {
           children: [],
         },
         {
-          id: 1001,
+          id: 9001,
           type: '$CUSTOM',
           dependencies: [],
           data: {
@@ -1526,7 +1526,7 @@ const mock = {
           children: [],
         },
         {
-          id: 1003,
+          id: 9002,
           type: '$CUSTOM',
           dependencies: [],
           data: {
@@ -1548,7 +1548,7 @@ const mock = {
           children: [],
         },
         {
-          id: 1003,
+          id: 9003,
           type: '$CUSTOM',
           dependencies: [],
           data: {
@@ -1569,7 +1569,7 @@ const mock = {
           children: [],
         },
         {
-          id: 1003,
+          id: 9004,
           type: '$CUSTOM',
           dependencies: [],
           data: {
@@ -1592,14 +1592,14 @@ const mock = {
           children: [],
         },
         {
-          id: 1005,
+          id: 9005,
           type: '$SECTION',
           dependencies: [],
           data: { className: '', size: '' },
           formData: {},
           children: [
             {
-              id: 1006,
+              id: 9006,
               type: '$TITLE',
               dependencies: [],
               data: {
@@ -1609,7 +1609,7 @@ const mock = {
               children: [],
             },
             {
-              id: 1007,
+              id: 9007,
               type: '$CUSTOM',
               dependencies: [],
               data: {
@@ -1621,7 +1621,7 @@ const mock = {
           ]
         },
         {
-          id: 1007,
+          id: 9008,
           type: '$CUSTOM',
           dependencies: [],
           data: {
