@@ -189,7 +189,7 @@ export class QuoteBase extends React.Component {
       getBillingOptions: this.getBillingOptions,
       onDirtyCallback: this.setFormToDirty
     };
-    const { isDirty } = this.state;
+    const { submitting, pristine } = this.formRef.current ? this.formRef.current.form.getState() : {};
     return (
       <div className="app-wrapper csr quote">
         {/* {(this.state.form.submitting || !quoteData.quoteNumber) && <Loader />} */}
@@ -207,7 +207,7 @@ export class QuoteBase extends React.Component {
               <div className="content-wrapper">
                 {shouldUseGandalf &&
                   <React.Fragment>
-                    {/* {(!quoteData.quoteNumber || form.submitting ) && <Loader />} */}
+                    {(!quoteData.quoteNumber || submitting ) && <Loader />}
                     <Gandalf
                       ref={this.formRef}
                       formId={FORM_ID}
@@ -221,9 +221,7 @@ export class QuoteBase extends React.Component {
                       path={location.pathname}
                       customHandlers={customHandlers}
                       customComponents={this.customComponents}
-                      renderFooter={({ submitting }) => (<React.Fragment>
-                        {(!quoteData.quoteNumber || submitting ) && <Loader />}
-                        </React.Fragment>)
+                      renderFooter={() => (<React.Fragment></React.Fragment>)
                       }
                     />
 
@@ -240,7 +238,7 @@ export class QuoteBase extends React.Component {
                             data-test="submit"
                             className={Button.constants.classNames.primary}
                             onClick={this.primaryClickHandler}
-                            disabled={needsConfirmation || !isDirty}
+                            disabled={needsConfirmation || pristine || submitting}
                             label="Update"
                           />
                         </div>
