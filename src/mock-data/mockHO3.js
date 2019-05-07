@@ -1630,22 +1630,6 @@ const mock = {
           formData: {},
           children: [],
         }
-        // },
-        // {
-        //   id: 1006,
-        //   type: '$CUSTOM',
-        //   dependencies: [],
-        //   data: {
-        //     component: '$SUMMARY',
-        //     extendedProperties: {
-        //       header: "Additional Interests",
-        //       className :"additional-interests-details",
-        //       type: "additionalInterestDetails"
-        //     }
-        //   },
-        //   formData: {},
-        //   children: [],
-        // },
       ],
     },
   ]
