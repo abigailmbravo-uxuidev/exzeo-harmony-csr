@@ -199,7 +199,7 @@ export class QuoteBase extends React.Component {
                       customHandlers={customHandlers}
                       customComponents={this.customComponents}
                       renderFooter={({ form, pristine, submitting }) =>
-                        <div className="basic-footer btn-footer">
+                        (shouldRenderFooter &&<div className="basic-footer btn-footer">
                         <Footer />
                         <div className="btn-wrapper">
                           <Button
@@ -216,7 +216,7 @@ export class QuoteBase extends React.Component {
                             label={'Update'}
                           />
                         </div>
-                      </div>}
+                        </div>)}
                     />
 
                   </React.Fragment>
