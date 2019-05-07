@@ -143,7 +143,7 @@ export class QuoteBase extends React.Component {
     this.setState(() => ({ showEmailPopup }));
   };
 
-  setFormToDirty = (isDirty) => {
+  setIsDirty = (isDirty) => {
     this.setState(() => ({ isDirty }));
   }
 
@@ -187,7 +187,7 @@ export class QuoteBase extends React.Component {
       history: history,
       handleAgencyChange: this.handleAgencyChange,
       getBillingOptions: this.getBillingOptions,
-      onDirtyCallback: this.setFormToDirty
+      onDirtyCallback: this.setIsDirty
     };
     const { submitting, pristine } = this.formRef.current ? this.formRef.current.form.getState() : {};
     return (
