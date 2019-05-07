@@ -34,16 +34,23 @@ import PolicyHolders from './Coverage/PolicyHolders';
 const FORM_ID = 'QuoteWorkflowCSR';
 
 export class QuoteBase extends React.Component {
-  state = {
-      showEmailPopup: false,
-      gandalfTemplate: null,
-      showDiaries: false,
-      formReset: null
-    };
+  constructor(props) {
+    super(props);
+    this.state = {
+        showEmailPopup: false,
+        gandalfTemplate: null,
+        showDiaries: false,
+        formReset: null,
+        isDirty: false
+      };
 
-  customComponents = {
-      $POLICYHOLDERS: PolicyHolders
-    };
+    this.formRef = React.createRef();
+
+    this.customComponents = {
+        $POLICYHOLDERS: PolicyHolders
+      };
+
+  }
 
   getConfigForJsonTransform = defaultMemoize(getConfigForJsonTransform);
 
@@ -136,10 +143,18 @@ export class QuoteBase extends React.Component {
     this.setState(() => ({ showEmailPopup }));
   };
 
+  setFormToDirty = (isDirty) => {
+    this.setState(() => ({ isDirty }));
+  }
+
   handleAgencyChange = (agencyCode, onChange) =>  {
     this.props.getAgentsByAgencyCode(agencyCode);
     return onChange(agencyCode);
   };
+
+  resetForm = () => {
+    this.formRef.current.form.reset();
+  }
 
   render() {
     const {
@@ -172,8 +187,9 @@ export class QuoteBase extends React.Component {
       history: history,
       handleAgencyChange: this.handleAgencyChange,
       getBillingOptions: this.getBillingOptions,
+      onDirtyCallback: this.setFormToDirty
     };
-
+    const { isDirty } = this.state;
     return (
       <div className="app-wrapper csr quote">
         {/* {(this.state.form.submitting || !quoteData.quoteNumber) && <Loader />} */}
@@ -193,6 +209,7 @@ export class QuoteBase extends React.Component {
                   <React.Fragment>
                     {/* {(!quoteData.quoteNumber || form.submitting ) && <Loader />} */}
                     <Gandalf
+                      ref={this.formRef}
                       formId={FORM_ID}
                       className="route-content"
                       currentPage={currentPage}
@@ -204,12 +221,17 @@ export class QuoteBase extends React.Component {
                       path={location.pathname}
                       customHandlers={customHandlers}
                       customComponents={this.customComponents}
-                      renderFooter={({ form, pristine, submitting }) =>
-                        (shouldRenderFooter &&<div className="basic-footer btn-footer">
+                      renderFooter={({ submitting }) => (<React.Fragment>
+                        {(!quoteData.quoteNumber || submitting ) && <Loader />}
+                        </React.Fragment>)
+                      }
+                    />
+
+                    {shouldRenderFooter && <div className="basic-footer btn-footer">
                         <Footer />
                         <div className="btn-wrapper">
                           <Button
-                            onClick={form.reset}
+                            onClick={this.resetForm}
                             data-test="reset"
                             className={Button.constants.classNames.secondary}
                             label="Reset"
@@ -218,12 +240,12 @@ export class QuoteBase extends React.Component {
                             data-test="submit"
                             className={Button.constants.classNames.primary}
                             onClick={this.primaryClickHandler}
-                            disabled={needsConfirmation || pristine || submitting}
-                            label={'Update'}
+                            disabled={needsConfirmation || !isDirty}
+                            label="Update"
                           />
                         </div>
-                        </div>)}
-                    />
+                    </div>}
+
 
                   </React.Fragment>
                 }

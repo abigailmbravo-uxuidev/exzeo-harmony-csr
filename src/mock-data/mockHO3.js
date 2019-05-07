@@ -1486,6 +1486,7 @@ const mock = {
           data: {
             component: '$ADDRESS',
             extendedProperties: {
+              watchFieldCustomClass: 'segmented-switch',
               watchField: 'sameAsPropertyAddress',
               fieldPrefix: 'policyHolderMailingAddress',
               matchPrefix: 'property.physicalAddress'
