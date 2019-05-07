@@ -1464,6 +1464,66 @@ const mock = {
       ],
     },
     {
+      name: 'mailingBilling',
+      step: {},
+      meta: {},
+      components: [
+        {
+          id: 34576,
+          type: '$TITLE',
+          dependencies: [],
+          data: {
+            text: 'Mailing Address',
+            icon: 'fa fa-envelope'
+          },
+          formData: {},
+          children: [],
+        },
+        {
+          id: 1,
+          type: '$CUSTOM',
+          dependencies: [],
+          data: {
+            component: '$ADDRESS',
+            extendedProperties: {
+              watchField: 'sameAsPropertyAddress',
+              fieldPrefix: 'policyHolderMailingAddress',
+              matchPrefix: 'property.physicalAddress'
+            }
+          },
+          formData: {},
+          children: [],
+        },
+        {
+          id: 340933,
+          type: '$TITLE',
+          dependencies: [],
+          data: {
+            text: 'Billing Information',
+            icon: 'fa fa-dollar'
+          },
+          formData: {},
+          children: [],
+        },
+        {
+          id: 348833,
+          type: '$CUSTOM',
+          dependencies: [],
+          data: {
+            component: '$BILLING',
+            dataSource: 'billPlans',
+            extendedProperties: {
+              subscribe: true,
+            }
+          },
+          formData: {
+            required: true,
+          },
+          children: [],
+        },
+      ],
+    },
+    {
       name: 'summary',
       step: {},
       components: [

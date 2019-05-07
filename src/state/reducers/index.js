@@ -16,6 +16,7 @@ import agencyState from './agency.reducer';
 import zipCodeSettingsState from './zipCodeSettings.reducer';
 import notes from './notes.reducer';
 import diaries from './diaryReducer';
+import list from './list.reducer';
 
 const rootReducer = combineReducers({
   form: formReducer,
@@ -32,7 +33,8 @@ const rootReducer = combineReducers({
   agencyState,
   zipCodeSettingsState,
   notes,
-  diaries
+  diaries,
+  list
 });
 
 export default rootReducer;

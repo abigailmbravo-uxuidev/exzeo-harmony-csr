@@ -59,5 +59,17 @@ export default {
   },
   zipCodeSettingsState: {
     zipCodeSettings: []
+  },
+  list: {
+    zipCodeSettings: {},
+    uiQuestions: {},
+    underwritingQuestions: [],
+    agents: [],
+    billingConfig: {
+      billToConfig: {},
+      billingOptions: [],
+      defaultBillToId: '',
+      paymentPlans: {},},
+
   }
 };

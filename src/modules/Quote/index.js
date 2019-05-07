@@ -17,13 +17,12 @@ import { setAppError } from '../../state/actions/error.actions';
 import { getQuote } from '../../state/actions/quote.actions';
 import { getAgencies, getAgentsByAgencyCode } from '../../state/actions/agency.actions';
 import { getZipcodeSettings, getUnderwritingQuestions } from '../../state/actions/service.actions';
+import { getEnumsForQuoteWorkflow, getBillingOptions } from '../../state/actions/list.actions';
 import { getQuoteSelector } from '../../state/selectors/choreographer.selectors';
 import { getFormattedUWQuestions } from '../../state/selectors/underwritingQuestions.selectors';
 import Footer from '../../components/Common/Footer';
 import AdditionalInterests from '../../components/Quote/AdditionalInterests';
-import MailingAddressBilling from '../../components/Quote/MailingAddressBilling';
 import NotesFiles from '../../components/Quote/NotesFiles';
-import Summary from '../../components/Quote/Summary';
 import Application from '../../components/Quote/Application';
 import MOCK_CONFIG_DATA from '../../mock-data/mockHO3';
 
@@ -81,6 +80,11 @@ export class QuoteBase extends React.Component {
 
     // const response = await serviceRunner.callService(transferConfig, 'retrieveDocumentTemplate');
     this.setState(() => ({ gandalfTemplate: MOCK_CONFIG_DATA }));
+  };
+
+  getBillingOptions = () => {
+    const { quoteData } = this.props;
+    this.props.getBillingOptions(quoteData);
   };
 
   handleToggleDiaries = () => {
@@ -147,7 +151,8 @@ export class QuoteBase extends React.Component {
       history,
       agencies,
       agents,
-      underwritingQuestions
+      underwritingQuestions,
+      billingConfig
     } = this.props;
 
     const { showDiaries, needsConfirmation, gandalfTemplate } = this.state;
@@ -165,7 +170,8 @@ export class QuoteBase extends React.Component {
       getState: this.getLocalState,
       handleSubmit: this.handleGandalfSubmit,
       history: history,
-      handleAgencyChange: this.handleAgencyChange
+      handleAgencyChange: this.handleAgencyChange,
+      getBillingOptions: this.getBillingOptions,
     };
 
     return (
@@ -193,7 +199,7 @@ export class QuoteBase extends React.Component {
                       handleSubmit={this.handleGandalfSubmit}
                       initialValues={quoteData}
                       template={gandalfTemplate}
-                      options={{ agents, agencies, underwritingQuestions }} // enums for select/radio fields
+                      options={{ agents, agencies, underwritingQuestions, billingConfig }} // enums for select/radio fields
                       transformConfig={transformConfig}
                       path={location.pathname}
                       customHandlers={customHandlers}
@@ -222,7 +228,7 @@ export class QuoteBase extends React.Component {
                   </React.Fragment>
                 }
                 {/* <Route exact path={`${match.url}/coverage`} render={props => <Coverage {...props} match={match} updateQuote={this.updateQuote} />} /> */}
-                <Route exact path={`${match.url}/billing`} render={props => <MailingAddressBilling  {...props} match={match} updateQuote={this.updateQuote} />} />
+                {/* <Route exact path={`${match.url}/billing`} render={props => <MailingAddressBilling  {...props} match={match} updateQuote={this.updateQuote} />} /> */}
                 <Route exact path={`${match.url}/notes`} render={props => <NotesFiles {...props} match={match} updateQuote={this.updateQuote} />} />
                 {/* <Route exact path={`${match.url}/summary`} render={props => <Summary {...props} match={match} updateQuote={this.updateQuote} />} /> */}
                 <Route exact path={`${match.url}/additionalInterests`} render={props => <AdditionalInterests {...props} match={match} updateQuote={this.updateQuote} />} />
@@ -262,7 +268,8 @@ const mapStateToProps = state => {
     agents: getAgentList(state),
     agencies: getAgencyList(state),
     zipCodeSettings: state.service.getZipcodeSettings,
-    underwritingQuestions: getFormattedUWQuestions(state)
+    underwritingQuestions: getFormattedUWQuestions(state),
+    billingConfig: state.list.billingConfig
   }
 };
 
@@ -274,5 +281,6 @@ export default connect(mapStateToProps, {
   getAgencies,
   getAgentsByAgencyCode,
   getZipcodeSettings,
-  getUnderwritingQuestions
+  getUnderwritingQuestions,
+  getBillingOptions
 })(QuoteBase);
