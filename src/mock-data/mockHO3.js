@@ -1655,7 +1655,7 @@ const mock = {
           id: 9005,
           type: '$SECTION',
           dependencies: [],
-          data: { className: '', size: '' },
+          data: { className: 'detail-group additional-interests', size: '' },
           formData: {},
           children: [
             {
