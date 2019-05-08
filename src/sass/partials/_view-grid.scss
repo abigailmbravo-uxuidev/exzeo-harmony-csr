@@ -23,8 +23,9 @@
     font-size: $font-size-h3;
   }
 }
-// SECTION componet
 
+//section component
+/*------------------------------------------------------------------------------------*/
 .view-grid {
 
   section {
@@ -133,8 +134,11 @@
     width: 91.667%;
   }
 }
+//end section component
+/*------------------------------------------------------------------------------------*/
 
-//SUMMARY COMPONENT
+//summary page specific styles
+/*------------------------------------------------------------------------------------*/
 .section-group-header {
   flex-basis: auto;
   flex-grow: 0;
@@ -147,6 +151,8 @@
   display: flex;
   flex-direction: column;
   padding: 0 ($padding*2);
+  min-height: 4rem;
+  width: 100%;
 
   > section {
     padding: $padding 0;
@@ -166,6 +172,7 @@
       }
     }
   }
+  
   &.property-details {
     padding-top: $padding;
   }
@@ -216,13 +223,15 @@
   }
 
   &.additional-interests {
+ 
     .title {
       padding: 0;
     }
 
     section {
+      border-width: 0;
       ul {
-        margin: 0 0 ($padding*2);
+        margin: 0;
         padding: 0;
         li {
           margin-bottom: $padding;
@@ -258,3 +267,5 @@
     }
   }
 }
+//end summary page specific styles
+/*------------------------------------------------------------------------------------*/
