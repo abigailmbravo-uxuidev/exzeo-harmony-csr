@@ -2,13 +2,13 @@
 export const PAGE_ROUTING = {
   'coverage': 0,
   'underwriting': 1,
-  'billing': 2,
-  'summary': 3
+  'additionalInterests': 2,
+  'billing': 3,
+  'summary': 4
 };
 
 export const ROUTES_NOT_HANDLED_BY_GANDALF = [
   'notes',
-  'additionalInterests',
   'application'
 ];
 

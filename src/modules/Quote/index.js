@@ -57,8 +57,11 @@ export class QuoteBase extends React.Component {
   componentDidMount() {
     const { match } = this.props;
 
+
     this.props.getQuote(match.params.quoteNumber, '').then((quoteData) => {
       if (quoteData && quoteData.property) {
+        const { companyCode, state, product, property } = quoteData;
+        this.props.getEnumsForQuoteWorkflow({ companyCode, state, product, property });
         this.props.getAgencies(quoteData.companyCode, quoteData.state);
         this.props.getAgentsByAgencyCode(quoteData.agencyCode);
         this.props.getZipcodeSettings(quoteData.companyCode, quoteData.state, quoteData.product, quoteData.property.physicalAddress.zip);
@@ -163,7 +166,8 @@ export class QuoteBase extends React.Component {
       agencies,
       agents,
       underwritingQuestions,
-      billingConfig
+      billingConfig,
+      options
     } = this.props;
 
     const { showDiaries, needsConfirmation, gandalfTemplate } = this.state;
@@ -209,7 +213,7 @@ export class QuoteBase extends React.Component {
                       handleSubmit={this.handleGandalfSubmit}
                       initialValues={quoteData}
                       template={gandalfTemplate}
-                      options={{ agents, agencies, underwritingQuestions, billingConfig }} // enums for select/radio fields
+                      options={{ agencies, ...options}} // enums for select/radio fields
                       transformConfig={transformConfig}
                       path={location.pathname}
                       customHandlers={customHandlers}
@@ -235,7 +239,7 @@ export class QuoteBase extends React.Component {
                 {/* <Route exact path={`${match.url}/billing`} render={props => <MailingAddressBilling  {...props} match={match} updateQuote={this.updateQuote} />} /> */}
                 <Route exact path={`${match.url}/notes`} render={props => <NotesFiles {...props} match={match} updateQuote={this.updateQuote} />} />
                 {/* <Route exact path={`${match.url}/summary`} render={props => <Summary {...props} match={match} updateQuote={this.updateQuote} />} /> */}
-                <Route exact path={`${match.url}/additionalInterests`} render={props => <AdditionalInterests {...props} match={match} updateQuote={this.updateQuote} />} />
+                {/* <Route exact path={`${match.url}/additionalInterests`} render={props => <AdditionalInterests {...props} match={match} updateQuote={this.updateQuote} />} /> */}
                 {/* <Route exact path={`${match.url}/underwriting`} render={props => <Underwriting {...props} match={match} updateQuote={this.updateQuote} />} /> */}
                 <Route exact path={`${match.url}/application`} render={props => <Application {...props} match={match} updateQuote={this.updateQuote} />} />
               </div>
@@ -273,7 +277,8 @@ const mapStateToProps = state => {
     agencies: getAgencyList(state),
     zipCodeSettings: state.service.getZipcodeSettings,
     underwritingQuestions: getFormattedUWQuestions(state),
-    billingConfig: state.list.billingConfig
+    billingConfig: state.list.billingConfig,
+    options: state.list,
   }
 };
 
@@ -286,5 +291,6 @@ export default connect(mapStateToProps, {
   getAgentsByAgencyCode,
   getZipcodeSettings,
   getUnderwritingQuestions,
-  getBillingOptions
+  getBillingOptions,
+  getEnumsForQuoteWorkflow
 })(QuoteBase);
