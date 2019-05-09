@@ -1453,6 +1453,16 @@ const mock = {
       components: [
         {
           id: 200,
+          type: '$TITLE',
+          dependencies: [],
+          data: {
+            text: 'Underwriting Questions',
+          },
+          formData: {},
+          children: [],
+        },
+        {
+          id: 201,
           type: '$CUSTOM',
           dependencies: [],
           data: {
@@ -1474,7 +1484,6 @@ const mock = {
           dependencies: [],
           data: {
             text: 'Mailing Address',
-            icon: 'fa fa-envelope'
           },
           formData: {},
           children: [],
@@ -1500,8 +1509,7 @@ const mock = {
           type: '$TITLE',
           dependencies: [],
           data: {
-            text: 'Billing Information',
-            icon: 'fa fa-dollar'
+            text: 'Billing',
           },
           formData: {},
           children: [],

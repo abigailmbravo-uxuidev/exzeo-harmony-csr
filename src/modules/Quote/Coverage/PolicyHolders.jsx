@@ -16,7 +16,8 @@ const PolicyHolders = ({
       <PolicyHolder
         fieldPrefix="policyHolders[0]"
         title="Primary Policyholder"
-        isPrimary={true}
+        isPrimary
+        showSecondaryPhone
       />
       </section>
       <section className="secondary-policy view-col-6">
@@ -24,6 +25,7 @@ const PolicyHolders = ({
           fieldPrefix="policyHolders[1]"
           title="Secondary Policyholder"
           isPrimary={false}
+          showSecondaryPhone
           renderWatchField={() => (
             <div className="check-box-wrapper">
                   <Field
