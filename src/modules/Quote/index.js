@@ -40,8 +40,7 @@ export class QuoteBase extends React.Component {
         showEmailPopup: false,
         gandalfTemplate: null,
         showDiaries: false,
-        formReset: null,
-        isDirty: false
+        formReset: null
       };
 
     this.formRef = React.createRef();
@@ -143,10 +142,6 @@ export class QuoteBase extends React.Component {
     this.setState(() => ({ showEmailPopup }));
   };
 
-  setIsDirty = (isDirty) => {
-    this.setState(() => ({ isDirty }));
-  }
-
   handleAgencyChange = (agencyCode, onChange) =>  {
     this.props.getAgentsByAgencyCode(agencyCode);
     return onChange(agencyCode);
@@ -187,9 +182,7 @@ export class QuoteBase extends React.Component {
       history: history,
       handleAgencyChange: this.handleAgencyChange,
       getBillingOptions: this.getBillingOptions,
-      onDirtyCallback: this.setIsDirty
     };
-    const { submitting, pristine } = this.formRef.current ? this.formRef.current.form.getState() : {};
     return (
       <div className="app-wrapper csr quote">
         {/* {(this.state.form.submitting || !quoteData.quoteNumber) && <Loader />} */}
@@ -207,7 +200,6 @@ export class QuoteBase extends React.Component {
               <div className="content-wrapper">
                 {shouldUseGandalf &&
                   <React.Fragment>
-                    {(!quoteData.quoteNumber || submitting ) && <Loader />}
                     <Gandalf
                       ref={this.formRef}
                       formId={FORM_ID}
@@ -221,28 +213,29 @@ export class QuoteBase extends React.Component {
                       path={location.pathname}
                       customHandlers={customHandlers}
                       customComponents={this.customComponents}
-                      renderFooter={() => (<React.Fragment></React.Fragment>)
-                      }
+                      stickyFooter={true}
+                      renderFooter={({ pristine, submitting }) => shouldRenderFooter && 
+                      <div className="basic-footer btn-footer">
+                        <Footer />
+                          <div className="btn-wrapper">
+                            <Button
+                              onClick={this.resetForm}
+                              data-test="reset"
+                              className={Button.constants.classNames.secondary}
+                              label="Reset"
+                            />
+                            <Button
+                              data-test="submit"
+                              className={Button.constants.classNames.primary}
+                              onClick={this.primaryClickHandler}
+                              disabled={needsConfirmation || pristine || submitting}
+                              label="Update"
+                            />
+                          </div>
+                      </div>}
                     />
 
-                    {shouldRenderFooter && <div className="basic-footer btn-footer">
-                        <Footer />
-                        <div className="btn-wrapper">
-                          <Button
-                            onClick={this.resetForm}
-                            data-test="reset"
-                            className={Button.constants.classNames.secondary}
-                            label="Reset"
-                          />
-                          <Button
-                            data-test="submit"
-                            className={Button.constants.classNames.primary}
-                            onClick={this.primaryClickHandler}
-                            disabled={needsConfirmation || pristine || submitting}
-                            label="Update"
-                          />
-                        </div>
-                    </div>}
+                    
 
 
                   </React.Fragment>
