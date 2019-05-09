@@ -49,254 +49,262 @@
 
         .route-content {
           display: flex;
-          overflow-x: hidden;
-          overflow-y: auto;
+          overflow: hidden;
           flex-direction: column;
           flex-grow: 1;
           flex-shrink: 1;
-          flex-wrap: nowrap;
-          padding: $padding;
-          width: 100%;
 
-          .modal.quote-summary {
+          .scroll {
+            display: flex;
+            overflow-x: hidden;
+            overflow-y: auto;
+            flex-direction: column;
+            flex-grow: 1;
+            flex-shrink: 1;
+            flex-wrap: nowrap;
+            padding: $padding;
+            width: 100%;
+
+            .modal.quote-summary {
+              form {
+                flex-basis: auto;
+                flex-grow: 0;
+                flex-shrink: 0;
+              }
+            }
+
             form {
-              flex-basis: auto;
               flex-grow: 0;
               flex-shrink: 0;
-            }
-          }
 
-          form {
-            flex-grow: 0;
-            flex-shrink: 0;
+              > section {
+                border-bottom: 1px dashed $green-darken-04;
 
-            > section {
-              border-bottom: 1px dashed $green-darken-04;
+                &:last-of-type {
+                  margin-bottom: 0;
+                  border-bottom-width: 0;
+                }
 
-              &:last-of-type {
-                margin-bottom: 0;
-                border-bottom-width: 0;
-              }
-
-              &.policyholder-component {
-                section {
-                  padding: 0;
-
-                  .title-check-box-wrapper {
-                    display: flex;
-                    align-items: flex-end;
+                &.policyholder-component {
+                  section {
                     padding: 0;
-                    
-                    .title {
-                      flex-grow: 0;
-                      flex-shrink: 0;
-                      max-width: fit-content;
-                    }
-                    .check-box-wrapper {
-                      flex-grow: 1;
-                      flex-shrink: 1;
-                      margin-bottom: $padding/4;
 
-                      input {
-                        margin-right: $padding/2;
+                    .title-check-box-wrapper {
+                      display: flex;
+                      align-items: flex-end;
+                      padding: 0;
+                      
+                      .title {
+                        flex-grow: 0;
+                        flex-shrink: 0;
+                        max-width: fit-content;
+                      }
+                      .check-box-wrapper {
+                        flex-grow: 1;
+                        flex-shrink: 1;
+                        margin-bottom: $padding/4;
+
+                        input {
+                          margin-right: $padding/2;
+                        }
                       }
                     }
-                  }
-                  
-                  .form-group {
-                    width: 50%;
+                    
+                    .form-group {
+                      width: 50%;
+                    }
                   }
                 }
-              }
 
-              &.coverages {
-                .form-group {
-                  &.has-output-label {
-                    flex-direction: row-reverse;
-                    flex-wrap: wrap;
-                    > * {
-                      width: calc(50% - .5rem);
-                    }
-  
-                    select, input {
-                      order: 1;
-                    }
-  
-                    label {
-                      margin-right: $padding;
-                      
-                      &:first-of-type {
-                        margin-right: 0;
+                &.coverages {
+                  .form-group {
+                    &.has-output-label {
+                      flex-direction: row-reverse;
+                      flex-wrap: wrap;
+                      > * {
+                        width: calc(50% - .5rem);
+                      }
+    
+                      select, input {
+                        order: 1;
+                      }
+    
+                      label {
+                        margin-right: $padding;
+                        
+                        &:first-of-type {
+                          margin-right: 0;
+                          margin-left: $padding;
+                        }
+                      }
+    
+                      select, input {
                         margin-left: $padding;
                       }
-                    }
-  
-                    select, input {
-                      margin-left: $padding;
-                    }
-  
-                    output {
-                      order: 3;
-                      margin-right: $padding;
+    
+                      output {
+                        order: 3;
+                        margin-right: $padding;
+                      }
                     }
                   }
                 }
-              }
 
-              &.deductibles {
-                .form-group {
-                  &.has-output-label {
-                    input, select {
-                      margin-bottom: $padding*2;
+                &.deductibles {
+                  .form-group {
+                    &.has-output-label {
+                      input, select {
+                        margin-bottom: $padding*2;
+                      }
                     }
                   }
                 }
               }
             }
-          }
 
-          .survey-wrapper {
-            flex-direction: column;
-          }
+            .survey-wrapper {
+              flex-direction: column;
+            }
 
-          .form-group {
-            .responsive-tables {
-              display: flex;
-              flex-direction: row;
-              margin: 0 0 ($padding*2);
-              width: 100%;
+            .form-group {
+              .responsive-tables {
+                display: flex;
+                flex-direction: row;
+                margin: 0 0 ($padding*2);
+                width: 100%;
 
-              .card-view,
-              .table-view {
-                margin: 0 ($padding*2);
+                .card-view,
+                .table-view {
+                  margin: 0 ($padding*2);
 
-                &:first-child {
-                  margin-left: 0;
+                  &:first-child {
+                    margin-left: 0;
 
-                  .react-bs-table-container {
-                    .react-bs-table {
-                      margin-left: 0;
+                    .react-bs-table-container {
+                      .react-bs-table {
+                        margin-left: 0;
+                      }
+                    }
+                  }
+
+                  &:last-child {
+                    margin-right: 0;
+
+                    .react-bs-table-container {
+                      .react-bs-table {
+                        margin-right: 0;
+                      }
                     }
                   }
                 }
 
-                &:last-child {
-                  margin-right: 0;
+                .table-view {
+                  width: 33%;
 
-                  .react-bs-table-container {
-                    .react-bs-table {
-                      margin-right: 0;
-                    }
+                  .date {
+                    padding: $padding 15px $padding $padding;
+                    width: 60%;
+                  }
+
+                  .amount {
+                    padding: $padding $padding $padding 15px;
+                    width: 40%;
                   }
                 }
               }
 
-              .table-view {
-                width: 33%;
-
-                .date {
-                  padding: $padding 15px $padding $padding;
-                  width: 60%;
-                }
-
-                .amount {
-                  padding: $padding $padding $padding 15px;
-                  width: 40%;
-                }
-              }
-            }
-
-            h4 {
-              font-weight: normal;
-            }
-
-            > section {
-              border-bottom: 1px dashed $green-darken-04;
-            }
-
-            > section:last-of-type {
-              margin-bottom: 0;
-              border: 0;
-            }
-
-            .producer {
-              .flex-parent {
-                .flex-child:first-child {
-                  flex-basis: auto;
-                  flex-grow: 0;
-                  flex-shrink: 0;
-                }
-              }
-            }
-
-            .property {
-              .property-address {
-                width: 30%;
-
-                .state {
-                  flex-basis: 4rem;
-                  flex-grow: 0;
-                  flex-shrink: 0;
-                }
-
-                .zip {
-                  flex-basis: 8rem;
-                  flex-grow: 0;
-                  flex-shrink: 0;
-                }
+              h4 {
+                font-weight: normal;
               }
 
-              .property-details {
-                width: 70%;
+              > section {
+                border-bottom: 1px dashed $green-darken-04;
+              }
 
+              > section:last-of-type {
+                margin-bottom: 0;
+                border: 0;
+              }
+
+              .producer {
                 .flex-parent {
-                  .flex-child {
-                    width: 25%;
+                  .flex-child:first-child {
+                    flex-basis: auto;
+                    flex-grow: 0;
+                    flex-shrink: 0;
                   }
                 }
               }
-            }
 
-            .coverage-options {
-              > .flex-child {
-                width: 25%;
+              .property {
+                .property-address {
+                  width: 30%;
+
+                  .state {
+                    flex-basis: 4rem;
+                    flex-grow: 0;
+                    flex-shrink: 0;
+                  }
+
+                  .zip {
+                    flex-basis: 8rem;
+                    flex-grow: 0;
+                    flex-shrink: 0;
+                  }
+                }
+
+                .property-details {
+                  width: 70%;
+
+                  .flex-parent {
+                    .flex-child {
+                      width: 25%;
+                    }
+                  }
+                }
               }
 
-              .coverages {
-                width: 35%;
+              .coverage-options {
+                > .flex-child {
+                  width: 25%;
+                }
+
+                .coverages {
+                  width: 35%;
+                }
+
+                .other-coverages {
+                  width: 30%;
+                }
+
+                .deductibles {
+                  width: 20%;
+                }
+
+                .discounts {
+                  width: 15%;
+                }
               }
 
-              .other-coverages {
-                width: 30%;
-              }
+              .wind {
+                .wind-col1 {
+                  width: 50%;
+                }
 
-              .deductibles {
-                width: 20%;
+                .wind-col2 {
+                  width: 50%;
+                }
               }
-
-              .discounts {
-                width: 15%;
-              }
-            }
-
-            .wind {
-              .wind-col1 {
-                width: 50%;
-              }
-
-              .wind-col2 {
-                width: 50%;
-              }
-            }
-
-            .agencyCode {
-              overflow: hidden;
-              flex-grow: 0;
-              flex-shrink: 0;
-              width: 40%;
 
               .agencyCode {
-                width: 100%;
+                overflow: hidden;
+                flex-grow: 0;
+                flex-shrink: 0;
+                width: 40%;
+
+                .agencyCode {
+                  width: 100%;
+                }
               }
             }
           }
