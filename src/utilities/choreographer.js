@@ -157,17 +157,6 @@ const handleUnderwritingSubmit = (values, props) => {
 
 const handleShareSubmit = (values, props) => {
   const { quoteData } = props;
-  const taskData = {
-    floodCoverage: values.underwritingAnswers.floodCoverage,
-    noPriorInsuranceSurcharge: values.underwritingAnswers.noPriorInsuranceSurcharge
-  };
-
-  Object.keys(values.underwritingAnswers).map(uw => {
-    if (values.underwritingAnswers[uw].answer && !taskData[uw]) {
-    taskData[uw] = values.underwritingAnswers[uw].answer;
-    }
-    return uw;
-  });
 
   const submitData = {
     quoteId: quoteData._id,
@@ -184,10 +173,34 @@ const handleShareSubmit = (values, props) => {
   }
 };
 
+const handleMailingBillingSubmit = (values, props) => {
+  const { quoteData } = props;
+
+  const submitData = {
+    quoteId: quoteData._id,
+    address1: values.policyHolderMailingAddress.address1,
+    address2: values.policyHolderMailingAddress.address2 || '',
+    city: values.policyHolderMailingAddress.city,
+    state: values.policyHolderMailingAddress.state,
+    zip: values.policyHolderMailingAddress.zip,
+    billPlan: values.billPlan,
+    billToId: values.billToId,
+    billToType: values.billToType,
+  };
+
+  return {
+    submitData,
+    modelName: 'csrMailingAddressBilling',
+    pageName: 'mailing'
+  }
+};
+
 export const handleCGSubmit = (values, page, props) => {
   if (page === 'coverage') return handleCoverageSubmit(values, props);
   else if (page === 'underwriting') return handleUnderwritingSubmit(values, props);
   else if (page === 'summary') return handleShareSubmit(values, props);
+  else if (page === 'billing') return handleMailingBillingSubmit(values, props);
+
 
   return null;
 
