@@ -155,9 +155,39 @@ const handleUnderwritingSubmit = (values, props) => {
   }
 };
 
+const handleShareSubmit = (values, props) => {
+  const { quoteData } = props;
+  const taskData = {
+    floodCoverage: values.underwritingAnswers.floodCoverage,
+    noPriorInsuranceSurcharge: values.underwritingAnswers.noPriorInsuranceSurcharge
+  };
+
+  Object.keys(values.underwritingAnswers).map(uw => {
+    if (values.underwritingAnswers[uw].answer && !taskData[uw]) {
+    taskData[uw] = values.underwritingAnswers[uw].answer;
+    }
+    return uw;
+  });
+
+  const submitData = {
+    quoteId: quoteData._id,
+    state: quoteData.state,
+    zip: quoteData.property.physicalAddress.zip,
+    emailAddress: values.emailAddress,
+    toName: values.toName  
+  };
+
+  return {
+    submitData,
+    modelName: 'csrEmailQuoteSummary',
+    pageName: 'summary'
+  }
+};
+
 export const handleCGSubmit = (values, page, props) => {
   if (page === 'coverage') return handleCoverageSubmit(values, props);
   else if (page === 'underwriting') return handleUnderwritingSubmit(values, props);
+  else if (page === 'summary') return handleShareSubmit(values, props);
 
   return null;
 

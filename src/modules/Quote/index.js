@@ -30,6 +30,7 @@ import { ROUTES_NOT_HANDLED_BY_GANDALF, ROUTES_NOT_USING_FOOTER, PAGE_ROUTING } 
 import { getAgentList, getAgencyList } from '../../state/selectors/agency.selector';
 import { handleCGSubmit } from '../../utilities/choreographer';
 import PolicyHolders from './Coverage/PolicyHolders';
+import QuoteFooter from './QuoteFooter';
 
 const FORM_ID = 'QuoteWorkflowCSR';
 
@@ -214,25 +215,15 @@ export class QuoteBase extends React.Component {
                       customHandlers={customHandlers}
                       customComponents={this.customComponents}
                       stickyFooter={true}
-                      renderFooter={({ pristine, submitting }) => shouldRenderFooter && 
-                      <div className="basic-footer btn-footer">
-                        <Footer />
-                          <div className="btn-wrapper">
-                            <Button
-                              onClick={this.resetForm}
-                              data-test="reset"
-                              className={Button.constants.classNames.secondary}
-                              label="Reset"
-                            />
-                            <Button
-                              data-test="submit"
-                              className={Button.constants.classNames.primary}
-                              onClick={this.primaryClickHandler}
-                              disabled={needsConfirmation || pristine || submitting}
-                              label="Update"
-                            />
-                          </div>
-                      </div>}
+                      renderFooter={({ pristine, submitting, form }) => shouldRenderFooter && 
+                        <QuoteFooter
+                          handlePrimaryClick={this.primaryClickHandler}
+                          handlResetForm={form.reset}
+                          isSummary={currentStep === 'summary'}
+                          submitting={submitting}
+                          isPrimaryDisabled={needsConfirmation || pristine || submitting}
+                         />
+                      }
                     />
 
                     
