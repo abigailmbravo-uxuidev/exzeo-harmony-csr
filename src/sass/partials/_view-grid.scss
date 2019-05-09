@@ -197,11 +197,15 @@
   &.coverage-rating {
     section {
       display: flex;
+      align-content: space-between;
       flex-direction: column;
+      flex-wrap: wrap;
+      height: 21.5rem;
 
       dl {
         margin-bottom: 0;
         padding: $padding;
+        width: calc(50% - .5rem);
         
         &:nth-child(odd) {
           background: $warm-gray-01;
