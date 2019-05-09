@@ -186,7 +186,7 @@ export class QuoteBase extends React.Component {
     return (
       <div className="app-wrapper csr quote">
         {/* {(this.state.form.submitting || !quoteData.quoteNumber) && <Loader />} */}
-        <App
+        {quoteData.quoteNumber && <App
           context={match.path.split('/')[1]}
           resourceType={QUOTE_RESOURCE_TYPE}
           resourceId={quoteData.quoteNumber}
@@ -261,7 +261,7 @@ export class QuoteBase extends React.Component {
               }
 
             </React.Fragment>
-          )} />
+          )} />}
       </div>
     );
   }
