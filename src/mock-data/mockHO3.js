@@ -1496,6 +1496,7 @@ const mock = {
                 'billPayer',
               ],
               subscribe: true,
+              displayReferenceNumber: true,
             }
           },
           formData: {},
