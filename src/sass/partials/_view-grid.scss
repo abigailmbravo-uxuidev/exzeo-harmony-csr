@@ -193,6 +193,61 @@
               width: auto;
               border-width: 0;
               box-shadow: 0 0 0 rgba(0, 0, 0, 0);
+              font-size: $font-size-sm;
+              color: $bright-blue;
+
+              i {
+                font-size: $font-size-sm;
+                color: $bright-blue;
+                width: auto;
+                margin-right: $padding/2;
+                @include transition(all 0.2s ease-in-out);
+              }
+
+              &:after {
+                font-family: $font-family-base;
+                font-weight: $font-weight-bold;
+              }
+
+              &:hover {
+                border-width: 0;
+                box-shadow: 0 0 0 rgba(0, 0, 0, 0);
+                transform: scale(1);
+
+                &:after {
+                  color: $bright-blue-darken-04;
+                  text-decoration: underline;
+                }
+
+                i {
+                  color: $bright-blue-darken-04;
+                }
+              }
+            }
+
+            &.edit {
+
+              i {
+                &:after {
+                  content: '\f14b';
+                }
+              }
+
+              &:after {
+                content: 'EDIT'
+              }
+            }
+            &.remove {
+
+              i {
+                &:after {
+                  content: '\f2d3';
+                }
+              }
+
+              &:after {
+                content: 'DELETE'
+              }
             }
           }
         }
