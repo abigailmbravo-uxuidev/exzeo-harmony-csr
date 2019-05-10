@@ -1687,7 +1687,7 @@ const mock = {
               type: '$CUSTOM',
               dependencies: [],
               data: {
-                component: '$ADDITIONAL_INTEREST_DETAILS',
+                component: '$ADDITIONAL_INTEREST_LIST',
                 extendedProperties: {
                   displayReferenceNumber: true
                 }
