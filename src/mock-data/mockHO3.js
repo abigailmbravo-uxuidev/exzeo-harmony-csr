@@ -1587,7 +1587,7 @@ const mock = {
                 },
                 { label: 'Year Built', items: [{ format: '', path: 'property.yearBuilt'}] },
                 { label: 'Effective Date', items: [{ format: 'date', path: 'effectiveDate'}] },
-                { label: 'Agent', items: [{ format: 'name', optionKey: 'agents', compareField: 'answer', valuePath: 'agentCode'}] }
+                { label: 'Agent', items: [{ format: '', optionKey: 'agents', compareField: 'answer', valuePath: 'agentCode', selectField: 'label'}] }
               ]
             }
           },
