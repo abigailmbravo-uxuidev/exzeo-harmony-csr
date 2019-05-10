@@ -1569,30 +1569,48 @@ const mock = {
       step: {},
       components: [
         {
-          id: 1000,
-          type: '$CUSTOM',
+          id: 100100,
+          type: '$SECTION',
           dependencies: [],
-          data: {
-            component: '$SUMMARY',
-            extendedProperties: {
-              header: "Quote Details",
-              className :"property-details",
-              details: [
-                { label: 'Quote Number', items: [{ format: '', path: 'quoteNumber'}] },
-                { label: 'Property Address', items: [
-                    { format: '', path: 'property.physicalAddress.address1'},
-                    { format: '', path: 'property.physicalAddress.address2'},
-                    { format: 'cityStateZip', path: 'property.physicalAddress'}
-                  ]
-                },
-                { label: 'Year Built', items: [{ format: '', path: 'property.yearBuilt'}] },
-                { label: 'Effective Date', items: [{ format: 'date', path: 'effectiveDate'}] },
-                { label: 'Agent', items: [{ format: '', optionKey: 'agents', compareField: 'answer', valuePath: 'agentCode', selectField: 'label'}] }
-              ]
-            }
-          },
+          data: { className: 'produced-by' },
           formData: {},
-          children: [],
+          children: [
+            {
+              id: 9006,
+              type: '$TITLE',
+              dependencies: [],
+              data: {
+                text: 'Quote Details',
+              },
+              formData: {},
+              children: [],
+            },
+            {
+              id: 1000,
+              type: '$CUSTOM',
+              dependencies: [],
+              data: {
+                component: '$SUMMARY',
+                extendedProperties: {
+                  className :"property-details",
+                  details: [
+                    { label: 'Quote Number', items: [{ format: '', path: 'quoteNumber'}] },
+                    { label: 'Property Address', items: [
+                        { format: '', path: 'property.physicalAddress.address1'},
+                        { format: '', path: 'property.physicalAddress.address2'},
+                        { format: 'cityStateZip', path: 'property.physicalAddress'}
+                      ]
+                    },
+                    { label: 'Year Built', items: [{ format: '', path: 'property.yearBuilt'}] },
+                    { label: 'Effective Date', items: [{ format: 'date', path: 'effectiveDate'}] },
+                    { label: 'Agent', items: [{ format: '', optionKey: 'agents', compareField: 'answer', valuePath: 'agentCode', selectField: 'label'}] }
+                  ]
+                }
+              },
+              formData: {},
+              children: [],
+            },
+          ]
         },
         {
           id: 9001,
