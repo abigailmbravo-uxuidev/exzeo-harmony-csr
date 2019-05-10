@@ -1569,7 +1569,7 @@ const mock = {
       step: {},
       components: [
         {
-          id: 103150,
+          id: 1023211113150,
           type: '$SECTION',
           dependencies: [],
           data: {
@@ -1578,7 +1578,7 @@ const mock = {
           formData: {},
           children: [
             {
-              id: 9006,
+              id: 90339239393906,
               type: '$TITLE',
               dependencies: [],
               data: {
@@ -1588,13 +1588,13 @@ const mock = {
               children: [],
             },
             {
-              id: 1000,
+              id: 102345224900,
               type: '$CUSTOM',
               dependencies: [],
               data: {
                 component: '$SUMMARY',
                 extendedProperties: {
-                  className :"property-details",
+                  className: "property-details",
                   details: [
                     { label: 'Quote Number', items: [{ format: '', path: 'quoteNumber'}] },
                     { label: 'Property Address', items: [
@@ -1615,7 +1615,7 @@ const mock = {
           ]
         },
         {
-          id: 100140,
+          id: 1005140,
           type: '$SECTION',
           dependencies: [],
           data: {
@@ -1624,7 +1624,7 @@ const mock = {
           formData: {},
           children: [
             {
-              id: 9006,
+              id: 9008264856,
               type: '$TITLE',
               dependencies: [],
               data: {
@@ -1634,7 +1634,7 @@ const mock = {
               children: [],
             },
             {
-              id: 9001,
+              id: 90854493201,
               type: '$CUSTOM',
               dependencies: [],
               data: {
@@ -1667,7 +1667,7 @@ const mock = {
           ]
         },
         {
-          id: 100140,
+          id: 100233140,
           type: '$SECTION',
           dependencies: [
             { path: 'policyHolders[0].firstName', value: true }
@@ -1678,7 +1678,7 @@ const mock = {
           formData: {},
           children: [
             {
-              id: 9006,
+              id: 903382406,
               type: '$TITLE',
               dependencies: [],
               data: {
@@ -1688,7 +1688,7 @@ const mock = {
               children: [],
             },
             {
-              id: 9002,
+              id: 9000448302,
               type: '$CUSTOM',
               dependencies: [],
               data: {
@@ -1709,7 +1709,7 @@ const mock = {
           ]
         },
         {
-          id: 100140,
+          id: 10022140,
           type: '$SECTION',
           dependencies: [
             { path: 'policyHolders[1].firstName', value: true }
@@ -1720,7 +1720,7 @@ const mock = {
           formData: {},
           children: [
             {
-              id: 9006,
+              id: 905839506,
               type: '$TITLE',
               dependencies: [],
               data: {
@@ -1730,7 +1730,7 @@ const mock = {
               children: [],
             },
             {
-              id: 9003,
+              id: 909939503,
               type: '$CUSTOM',
               dependencies: [],
               data: {
@@ -1762,7 +1762,7 @@ const mock = {
           formData: {},
           children: [
             {
-              id: 9006,
+              id: 900623456,
               type: '$TITLE',
               dependencies: [],
               data: {
@@ -1772,7 +1772,7 @@ const mock = {
               children: [],
             },
             {
-              id: 9004,
+              id: 9004434,
               type: '$CUSTOM',
               dependencies: [],
               data: {
@@ -1796,7 +1796,7 @@ const mock = {
           ]
         },
         {
-          id: 9005,
+          id: 90053453,
           type: '$SECTION',
           dependencies: [],
           data: {
@@ -1805,7 +1805,7 @@ const mock = {
           formData: {},
           children: [
             {
-              id: 9006,
+              id: 90644206,
               type: '$TITLE',
               dependencies: [],
               data: {
@@ -1815,7 +1815,7 @@ const mock = {
               children: [],
             },
             {
-              id: 9007,
+              id: 90456207,
               type: '$CUSTOM',
               dependencies: [],
               data: {
