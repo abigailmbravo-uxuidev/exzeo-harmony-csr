@@ -14,47 +14,18 @@ import DetailsHeader from '@exzeo/core-ui/src/@Harmony/DetailsHeader/DetailsHead
 const CONFIG = {
   policy: {
     title: 'POLICY',
-    sideNavComponent: PolicySideNav,
-    detailsFields: {
-      showEffectiveDateButton: true,
-      showReinstateButton: true,
-      fields: [
-        { value: 'policyHolder', component: 'Section', label: 'Policyholder' },
-        { value: 'mailingAddress', component: 'Section' },
-        { value: 'propertyAddress', component: 'Section' },
-        { value: 'county', label: 'Property County' },
-        { value: 'territory' },
-        { value: 'constructionType' },
-        { value: 'effectiveDate' },
-        { value: 'cancellation' },
-        { value: 'finalPayment', label: 'Final Payment' },
-        { value: 'currentPremium', className:'premium' }
-      ]
-    }
+    sideNavComponent: PolicySideNav
   },
   quote: {
     title: 'QUOTE',
-    sideNavComponent: QuoteSideNav,
-    detailsFields: {
-      hideDeatailSummary: true,
-      fields: [
-        { value: 'policyHolder', component: 'Section', label: 'Policyholder' },
-        { value: 'mailingAddress', component: 'Section' },
-        { value: 'propertyAddress', component: 'Section' },
-        { value: 'county', label: 'Property County' },
-        { value: 'territory' },
-        { value: 'constructionType' },
-        { value: 'effectiveDate', className: 'quoteEffectiveDate'},
-        { value: 'currentPremium', label: 'Premium', className:'premium' }
-      ]
-    }
+    sideNavComponent: QuoteSideNav
   }
 };
 
 export class AppWrapper extends Component {
   render() {
     const {
-      pageTitle, match, context, onToggleDiaries, showDiaries, openDiaryCount, headerDetails, modalHandlers
+      header, pageTitle, match, context, onToggleDiaries, showDiaries, openDiaryCount, headerDetails, modalHandlers
     } = this.props;
 
     const appConfig = CONFIG[context];
@@ -69,7 +40,7 @@ export class AppWrapper extends Component {
         <DetailsHeader
           context={context}
           modalHandlers={modalHandlers}
-          detailsFields={appConfig.detailsFields}
+          detailsFields={header}
           headerDetails={headerDetails}
         />
         <main role="document" className={showDiaries ? 'diary-open' : 'diary-closed'}>

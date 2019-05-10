@@ -8,7 +8,7 @@ const mock = {
       { "value": 'propertyAddress', "component": 'Section' },
       { "value": 'county', "label": 'Property County' },
       { "value": 'territory' },
-      { "value": 'constructionType' },
+      { "value": 'floodZone' },
       { "value": 'effectiveDate', "className": 'quoteEffectiveDate'},
       { "value": 'currentPremium', "label": 'Premium', "className":'premium' }
     ]
@@ -519,7 +519,7 @@ const mock = {
               path: 'coverageLimits.otherStructures.value',
               dependencies: [],
               data: {
-                component: 'select',
+                component: 'selectInteger',
                 label: 'Percentage',
                 size: '12',
                 dataSource: [
@@ -549,7 +549,7 @@ const mock = {
               path: 'coverageLimits.personalProperty.value',
               dependencies: [],
               data: {
-                component: 'select',
+                component: 'selectInteger',
                 label: 'Percentage',
                 size: '12',
                 extendedProperties: {
@@ -689,7 +689,7 @@ const mock = {
               path: 'coverageLimits.moldProperty.amount',
               dependencies: [],
               data: {
-                component: 'select',
+                component: 'selectInteger',
                 label: 'Mold Property',
                 size: '12',
               },
@@ -722,7 +722,7 @@ const mock = {
               path: 'coverageLimits.moldLiability.amount',
               dependencies: [],
               data: {
-                component: 'select',
+                component: 'selectInteger',
                 label: 'Mold Liability Limit',
                 size: '12',
               },
