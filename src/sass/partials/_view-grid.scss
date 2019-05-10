@@ -140,6 +140,70 @@
 //end section component
 /*------------------------------------------------------------------------------------*/
 
+//additional interests component
+/*------------------------------------------------------------------------------------*/
+
+.view-grid {
+  .additional-interests {
+
+    &.results-wrapper {
+      padding: 0;
+    }
+ 
+    .title {
+      padding: 0;
+    }
+
+    ul {
+      margin: 0;
+      padding: 0;
+      li {
+        margin-bottom: $padding;
+        .card {
+          display: flex;
+          flex-direction: row;
+          margin: 0;
+          width: 100%;
+
+          > div {
+            flex-grow: 1;
+            flex-shrink: 1;
+            padding: $padding $padding $padding 0;
+
+            &.card-icon {
+              flex-grow: 0;
+              flex-shrink: 0;
+              padding: $padding;
+
+              i {
+                color: $bright-blue-darken-04;
+                font-size: $font-size-h2;
+              }
+            }
+
+            h4 {
+              margin: 0;
+            }
+          }
+
+          > a {
+            &.edit, &.remove {
+              flex-grow: 0;
+              flex-shrink: 0;
+              width: auto;
+              border-width: 0;
+              box-shadow: 0 0 0 rgba(0, 0, 0, 0);
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+//end additional interests component
+/*------------------------------------------------------------------------------------*/
+
 //summary page specific styles
 /*------------------------------------------------------------------------------------*/
 .section-group-header {
@@ -230,47 +294,8 @@
   }
 
   &.additional-interests {
- 
-    .title {
-      padding: 0;
-    }
-
     section {
       border-width: 0;
-      ul {
-        margin: 0;
-        padding: 0;
-        li {
-          margin-bottom: $padding;
-          .card {
-            display: flex;
-            flex-direction: row;
-            margin: 0;
-            width: 100%;
-
-            > div {
-              flex-grow: 1;
-              flex-shrink: 1;
-              padding: $padding $padding $padding 0;
-
-              &.card-icon {
-                flex-grow: 0;
-                flex-shrink: 0;
-                padding: $padding;
-
-                i {
-                  color: $bright-blue-darken-04;
-                  font-size: $font-size-h2;
-                }
-              }
-
-              h4 {
-                margin: 0;
-              }
-            }
-          }
-        }
-      }
     }
   }
 }

@@ -623,27 +623,44 @@
 
   .button-group {
     display: flex;
+    margin-bottom: $padding;
 
     .btn {
       margin: 0 $padding $padding 0;
     }
   }
 
-  .results-wrapper {
-    display: flex;
-    flex-direction: column;
-    flex-grow: 1;
-    flex-shrink: 1;
-    margin: $padding 0 ($padding*2);
-    padding: ($padding*2) 0 $paragraph-margin-bottom;
-    width: 100%;
+  ul.results.result-cards {
+    margin: 0;
+    padding: 0;
+    list-style: none;
 
-    ul.results.result-cards {
-      margin: 0;
-      padding: 0;
-      list-style: none;
+    li {
+      .card {
+        flex-direction: row;
+        margin: 0;
+        padding: $padding 0;
+        width: 100%;
 
-      li {
+        > div {
+          flex-grow: 1;
+          flex-shrink: 1;
+
+          h4 {
+            margin: 0;
+          }
+
+          &.card-icon {
+            flex-grow: 0;
+            flex-shrink: 0;
+          }
+
+          &.ref-number {
+            flex-grow: 0;
+            flex-shrink: 0;
+          }
+        }
+
         .edit-btn {
           &:hover {
             color: $bright-blue-darken-04;
@@ -661,10 +678,12 @@
       }
     }
   }
+
 }
 
 #AddAdditionalInterestPage {
   .results-wrapper {
+    padding-top: $padding*2;
     border-top: 1px dashed $green-darken-03;
   }
 }
