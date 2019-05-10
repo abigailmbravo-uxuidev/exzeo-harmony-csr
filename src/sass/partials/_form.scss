@@ -1224,6 +1224,13 @@ label {
         @include transition(all 0.2s ease-in-out);
       }
 
+      &:hover {
+        &:before {
+          background: lighten($warm-gray-02, 5%);
+          border-color: lighten($warm-gray-02, 6%);
+        }
+      }
+
       &.active {
         &:before {
           background: $bright-blue-darken-04;
@@ -1235,9 +1242,12 @@ label {
           background: $warm-gray-02;
           color: $warm-gray-14;
           cursor: pointer;
-  
-          &:hover {
-            background: $warm-gray-01;
+        }
+
+        &:hover {
+          &:after {
+            background: lighten($warm-gray-02, 5%);
+            border-color: lighten($warm-gray-02, 6%);
           }
         }
   

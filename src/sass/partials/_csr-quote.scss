@@ -502,8 +502,6 @@
         flex-grow: 1;
         flex-shrink: 0;
         width: auto;
-
-        div[role="banner"] {}
       }
     }
   }
@@ -617,20 +615,10 @@
 /*------------------------------------------------------------------------------------*/
 #AddAdditionalInterestPage,
 .additional-interests {
-  .detail-wrapper {
+/*   .detail-wrapper {
     flex-direction: column;
-  }
-
-  .button-group {
-    display: flex;
-    margin-bottom: $padding;
-
-    .btn {
-      margin: 0 $padding $padding 0;
-    }
-  }
-
-  ul.results.result-cards {
+  } */
+/*   ul.results.result-cards {
     margin: 0;
     padding: 0;
     list-style: none;
@@ -677,14 +665,22 @@
         }
       }
     }
-  }
-
+  } */
 }
 
 #AddAdditionalInterestPage {
   .results-wrapper {
     padding-top: $padding*2;
     border-top: 1px dashed $green-darken-03;
+  }
+
+  .button-group {
+    display: flex;
+    margin-bottom: $padding;
+
+    .btn {
+      margin: 0 $padding $padding 0;
+    }
   }
 }
 //Mailing & Billing
