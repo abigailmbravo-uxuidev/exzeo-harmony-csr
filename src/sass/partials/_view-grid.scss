@@ -142,7 +142,6 @@
 
 //additional interests component
 /*------------------------------------------------------------------------------------*/
-
 .view-grid {
   .additional-interests {
 
@@ -193,20 +192,21 @@
               width: auto;
               border-width: 0;
               box-shadow: 0 0 0 rgba(0, 0, 0, 0);
-              font-size: $font-size-sm;
               color: $bright-blue;
+              font-size: $font-size-sm;
 
               i {
-                font-size: $font-size-sm;
-                color: $bright-blue;
-                width: auto;
                 margin-right: $padding/2;
+                width: auto;
+                color: $bright-blue;
+                font-size: $font-size-sm;
+
                 @include transition(all 0.2s ease-in-out);
               }
 
               &:after {
-                font-family: $font-family-base;
                 font-weight: $font-weight-bold;
+                font-family: $font-family-base;
               }
 
               &:hover {
@@ -255,7 +255,6 @@
     }
   }
 }
-
 //end additional interests component
 /*------------------------------------------------------------------------------------*/
 
