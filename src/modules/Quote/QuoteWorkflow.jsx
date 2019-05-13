@@ -41,7 +41,8 @@ export class QuoteBase extends React.Component {
       showEmailPopup: false,
       gandalfTemplate: null,
       showDiaries: false,
-      formReset: null
+      formReset: null,
+      submitting: false
     };
 
     this.formRef = React.createRef();
@@ -103,7 +104,7 @@ export class QuoteBase extends React.Component {
 
   updateQuote = async (modelName, submitData, pageName) => {
     const { quoteData } = this.props;
-    this.props.setAppState(modelName, '', { ...this.props.appState.data, submitting: true });
+    this.setState({ submitting: true });
     try {
       await this.props.startWorkflow(modelName, {
         quoteId: quoteData._id,
@@ -114,7 +115,7 @@ export class QuoteBase extends React.Component {
     } catch (error) {
       this.props.setAppError(error);
     } finally {
-      this.props.setAppState(modelName, '', { ...this.props.appState.data, submitting: false });
+      this.setState({ submitting: false });
     }
   }
 
@@ -151,22 +152,13 @@ export class QuoteBase extends React.Component {
     return onChange(agencyCode);
   };
 
-  resetForm = () => {
-    this.formRef.current.form.reset();
-  }
-
   render() {
     const {
-      appState,
       quoteData,
       match,
-      children,
       location,
       history,
       agencies,
-      agents,
-      underwritingQuestions,
-      billingConfig,
       options
     } = this.props;
 
@@ -190,7 +182,7 @@ export class QuoteBase extends React.Component {
     };
     return (
       <div className="app-wrapper csr quote">
-        {/* {(this.state.form.submitting || !quoteData.quoteNumber) && <Loader />} */}
+        {(this.state.submitting || !quoteData.quoteNumber) && <Loader />}
         {quoteData.quoteNumber && <App
           context={match.path.split('/')[1]}
           resourceType={QUOTE_RESOURCE_TYPE}
