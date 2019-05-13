@@ -3,13 +3,6 @@
   flex-wrap: wrap;
 }
 
-.view-grid {
-  > * {
-    padding: $padding;
-    width: 100%;
-  }
-}
-
 //title component
 /*------------------------------------------------------------------------------------*/
 .title {
@@ -260,31 +253,10 @@
 
 //summary page specific styles
 /*------------------------------------------------------------------------------------*/
-.section-group-header {
-  flex-basis: auto;
-  flex-grow: 0;
-  flex-shrink: 0;
-  margin: 0 0 $padding;
-  width: 100%;
-}
-
-.detail-group {
-  display: flex;
-  flex-direction: column;
-  padding: 0 ($padding*2);
-  min-height: 4rem;
-  width: 100%;
-
-  > section {
-    padding: $padding 0;
-    border-bottom: 1px dashed $green-darken-04;
-
-    &:last-of-type {
-      border-bottom: 1px dashed $green-darken-04;
-    }
-
+section {
+  .detail-group {
     dl {
-      margin-bottom: 1rem;
+      //margin-bottom: 1rem;
       dt {
         color: $warm-gray-08;
       }
@@ -293,27 +265,18 @@
       }
     }
   }
-  
-  &.property-details {
-    padding-top: $padding;
-  }
-
-  &.property-details, &.policyholder-details {
-    section {
-      display: flex;
-      align-content: space-around;
-
+  &.produced-by, &.property-details, &.policyholder-details {
+    .detail-group {
+      flex-direction: row;
+      
       dl {
         flex-grow: 1;
         flex-shrink: 1;
-        padding: 0;
-        width: auto;
-      } 
+      }
     }
   }
-
   &.coverage-rating {
-    section {
+    .detail-group {
       display: flex;
       align-content: space-between;
       flex-direction: column;
@@ -344,6 +307,32 @@
           }
         }
       }
+    }
+  }
+}
+
+.detail-group {
+  display: flex;
+  flex-direction: column;
+  padding: 0 ($padding*2);
+  min-height: 4rem;
+  width: 100%;
+  
+  &.property-details {
+    padding-top: $padding;
+  }
+
+  &.property-details, &.policyholder-details {
+    section {
+      display: flex;
+      align-content: space-around;
+
+      dl {
+        flex-grow: 1;
+        flex-shrink: 1;
+        padding: 0;
+        width: auto;
+      } 
     }
   }
 
