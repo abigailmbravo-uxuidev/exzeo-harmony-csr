@@ -1536,7 +1536,6 @@ const mock = {
           dependencies: [],
           data: {
             text: 'Mailing Address',
-            icon: 'fa fa-envelope'
           },
           formData: {},
           children: [],
@@ -1563,7 +1562,6 @@ const mock = {
           dependencies: [],
           data: {
             text: 'Billing Information',
-            icon: 'fa fa-dollar'
           },
           formData: {},
           children: [],
