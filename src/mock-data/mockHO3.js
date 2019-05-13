@@ -1465,35 +1465,14 @@ const mock = {
       step: {},
       components: [
         {
-          id: 51320191033,
-          type: '$SECTION',
+          id: 200,
+          type: '$CUSTOM',
           dependencies: [],
           data: {
-            className: ''
+            component: '$UNDERWRITING',
           },
           formData: {},
-          children: [
-            {
-              id: 51320191034,
-              type: '$TITLE',
-              dependencies: [],
-              data: {
-                text: 'Underwriting Questions',
-              },
-              formData: {},
-              children: [],
-            },
-            {
-              id: 51320191035,
-              type: '$CUSTOM',
-              dependencies: [],
-              data: {
-                component: '$UNDERWRITING',
-              },
-              formData: {},
-              children: [],
-            },
-          ]
+          children: [],
         },
       ],
     },
@@ -1695,7 +1674,7 @@ const mock = {
             { path: 'policyHolders[0].firstName', value: true }
           ],
           data: {
-            className: 'coverage-rating'
+            className: 'policyholder-details'
           },
           formData: {},
           children: [
