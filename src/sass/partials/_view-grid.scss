@@ -251,10 +251,30 @@
 //end additional interests component
 /*------------------------------------------------------------------------------------*/
 
+//notes/files page specific styles
+/*------------------------------------------------------------------------------------*/
+.app-wrapper.csr.quote {
+  #NotesFiles {
+    .scroll {
+      .form-group.survey-wrapper {
+        padding: 0;
+      }
+    }
+  }
+}
+//end notes/files page specific styles
+/*------------------------------------------------------------------------------------*/
+
 //summary page specific styles
 /*------------------------------------------------------------------------------------*/
 section {
   .detail-group {
+    display: flex;
+    flex-direction: column;
+    padding: 0 ($padding*2);
+    min-height: 4rem;
+    width: 100%;
+
     dl {
       //margin-bottom: 1rem;
       dt {
@@ -307,38 +327,6 @@ section {
           }
         }
       }
-    }
-  }
-}
-
-.detail-group {
-  display: flex;
-  flex-direction: column;
-  padding: 0 ($padding*2);
-  min-height: 4rem;
-  width: 100%;
-  
-  &.property-details {
-    padding-top: $padding;
-  }
-
-  &.property-details, &.policyholder-details {
-    section {
-      display: flex;
-      align-content: space-around;
-
-      dl {
-        flex-grow: 1;
-        flex-shrink: 1;
-        padding: 0;
-        width: auto;
-      } 
-    }
-  }
-
-  &.additional-interests {
-    section {
-      border-width: 0;
     }
   }
 }
