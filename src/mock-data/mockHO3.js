@@ -1465,14 +1465,35 @@ const mock = {
       step: {},
       components: [
         {
-          id: 200,
-          type: '$CUSTOM',
+          id: 51320191033,
+          type: '$SECTION',
           dependencies: [],
           data: {
-            component: '$UNDERWRITING',
+            className: ''
           },
           formData: {},
-          children: [],
+          children: [
+            {
+              id: 51320191034,
+              type: '$TITLE',
+              dependencies: [],
+              data: {
+                text: 'Underwriting Questions',
+              },
+              formData: {},
+              children: [],
+            },
+            {
+              id: 51320191035,
+              type: '$CUSTOM',
+              dependencies: [],
+              data: {
+                component: '$UNDERWRITING',
+              },
+              formData: {},
+              children: [],
+            },
+          ]
         },
       ],
     },
