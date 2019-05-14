@@ -12,6 +12,8 @@ export default function appStateReducer(state = initialState.ui, action) {
       return { ...state, minimizeNote: action.minimizeNote }; 
     case types.TOGGLE_MINIMIZE_DIARY:
       return { ...state, minimizeDiary: action.minimizeDiary };  
+    case types.TOGGLE_LOADING:
+      return { ...state, isLoading: action.isLoading };
     default:
       return state;
   }

@@ -161,7 +161,7 @@ export class QuoteBase extends React.Component {
     const disableForApplication = (Array.isArray(quoteData.underwritingExceptions) && 
     quoteData.underwritingExceptions.filter(uw => !uw.overridden).length > 0 && 
     PAGE_ROUTING.application === currentPage);
-    const checkApplicationSent = quoteData.quoteState = 'Application Sent DocuSign' || this.state.applicationSent
+    const checkApplicationSent = quoteData.quoteState ==='Application Sent DocuSign' || this.state.applicationSent
     const notOnApplication = PAGE_ROUTING.application !== currentPage;
 
     // TODO going to use Context to pass these directly to custom components,
@@ -176,7 +176,7 @@ export class QuoteBase extends React.Component {
     };
     return (
       <div className="app-wrapper csr quote">
-        {(this.state.submitting || !quoteData.quoteNumber) && <Loader />}
+        {(this.props.isLoading || !quoteData.quoteNumber) && <Loader />}
         {quoteData.quoteNumber && <App
           header={gandalfTemplate ? gandalfTemplate.header : {}}
           context={match.path.split('/')[1]}
@@ -266,6 +266,7 @@ const mapStateToProps = state => {
     underwritingQuestions: getFormattedUWQuestions(state),
     billingConfig: state.list.billingConfig,
     options: state.list,
+    isLoading: state.ui.isLoading
   }
 };
 

@@ -126,7 +126,7 @@ export function updateQuote({ data = {}, modelName, options, quoteData, pageName
       return null;
 
     } finally {
-      dispatch(getQuote(quoteData._id, pageName));        
+      await dispatch(getQuote(quoteData._id, pageName));        
       dispatch(toggleLoading(false));
     }
   };
