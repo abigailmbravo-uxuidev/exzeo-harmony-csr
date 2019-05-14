@@ -181,6 +181,18 @@ export class Policy extends React.Component {
           onToggleDiaries={this.handleToggleDiaries}
           showDiaries={showDiaries}
           modalHandlers={modalHandlers}
+          header={{
+            "fields": [
+              { "value": 'policyHolder', "component": 'Section', "label": 'Policyholder' },
+              { "value": 'mailingAddress', "component": 'Section' },
+              { "value": 'propertyAddress', "component": 'Section' },
+              { "value": 'county', "label": 'Property County' },
+              { "value": 'territory' },
+              { "value": 'constructionType' },
+              { "value": 'effectiveDate', "className": 'quoteEffectiveDate'},
+              { "value": 'currentPremium', "label": 'Premium', "className":'premium' }
+            ]
+          }}
           render={() => (
             <React.Fragment>
               {initialized &&
