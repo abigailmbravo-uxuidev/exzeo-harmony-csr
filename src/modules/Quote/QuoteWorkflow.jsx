@@ -41,7 +41,8 @@ export class QuoteBase extends React.Component {
       gandalfTemplate: null,
       showDiaries: false,
       formReset: null,
-      submitting: false
+      submitting: false,
+      applicationSent: false
     };
 
     this.formRef = React.createRef();
@@ -120,6 +121,10 @@ export class QuoteBase extends React.Component {
     const currentStep = this.props.location.pathname.split('/')[3];
     const { modelName, submitData, pageName } = formatForSubmit(values, currentStep, this.props);
     await this.props.updateQuote({ data: submitData, modelName, pageName, quoteData, options });
+    if(currentStep === 'application'){
+      this.setState({ applicationSent: true });
+
+    }
   };
 
   getLocalState = () => {
@@ -153,9 +158,10 @@ export class QuoteBase extends React.Component {
     const shouldRenderFooter = ROUTES_NOT_USING_FOOTER.indexOf(currentStep) === -1;
     const currentPage = PAGE_ROUTING[currentStep];
     const transformConfig = this.getConfigForJsonTransform(gandalfTemplate);
-    const disableForUnderwritingExceptions = (Array.isArray(quoteData.underwritingExceptions) && 
+    const disableForApplication = (Array.isArray(quoteData.underwritingExceptions) && 
     quoteData.underwritingExceptions.filter(uw => !uw.overridden).length > 0 && 
     PAGE_ROUTING.application === currentPage);
+    const checkApplicationSent = quoteData.quoteState = 'Application Sent DocuSign' || this.state.applicationSent
     const notOnApplication = PAGE_ROUTING.application !== currentPage;
 
     // TODO going to use Context to pass these directly to custom components,
@@ -206,7 +212,7 @@ export class QuoteBase extends React.Component {
                         handlResetForm={form.reset}
                         currentStep={currentStep}
                         submitting={submitting}
-                        isPrimaryDisabled={(notOnApplication && (pristine || submitting)) || disableForUnderwritingExceptions}
+                        isPrimaryDisabled={(notOnApplication && (pristine || submitting)) || disableForApplication || checkApplicationSent}
                       />
                     }
                   />

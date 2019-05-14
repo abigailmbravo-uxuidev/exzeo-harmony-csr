@@ -195,11 +195,27 @@ const formatForMailingBillingSubmit = (values, props) => {
   }
 };
 
+const formatForApplicationSubmit = (values, props) => {
+  const { quoteData } = props;
+
+  const submitData = {
+    dsUrl: `${process.env.REACT_APP_API_URL}/ds`,
+    quoteId: quoteData._id 
+  };
+
+  return {
+    submitData,
+    modelName: 'csrSubmitApplication',
+    pageName: 'application'
+  }
+};
+
 export const formatForSubmit = (values, page, props) => {
   // if (page === 'coverage') return formatForCoverageSubmit(values, props);
   // if (page === 'underwriting') return formatForUnderwritingSubmit(values, props);
   if (page === 'summary') return formatForShareSubmit(values, props);
   // if (page === 'billing') return formatForMailingBillingSubmit(values, props);
+  if (page === 'application') return formatForApplicationSubmit(values, props);
 
 
   return { submitData: values };
