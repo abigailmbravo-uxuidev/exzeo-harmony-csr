@@ -100,7 +100,7 @@ function formatQuoteForSubmit(data) {
   return quote;
 }
 
-export function updateQuote({ data = {}, modelName, options, quoteData }) {
+export function updateQuote({ data = {}, modelName, options, quoteData, pageName = '' }) {
   return async function(dispatch) {
 
     dispatch(toggleLoading(true));
@@ -119,19 +119,14 @@ export function updateQuote({ data = {}, modelName, options, quoteData }) {
           data: updatedQuote,
         };
 
-        const response = await serviceRunner.callService(config, 'quoteManager.updateQuote');
-        const quote = response.data.result;
-        if (!quote) {
-          dispatch(errorActions.setAppError(response.data));
-        }
-        dispatch(setQuote(quote));
-        return quote;
+        await serviceRunner.callService(config, 'quoteManager.updateQuote');
       }
     } catch (error) {
       dispatch(errorActions.setAppError(error));
       return null;
 
     } finally {
+      dispatch(getQuote(quoteData._id, pageName));        
       dispatch(toggleLoading(false));
     }
   };
