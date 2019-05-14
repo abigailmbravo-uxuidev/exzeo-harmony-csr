@@ -1531,9 +1531,21 @@ const mock = {
       meta: {},
       components: [
         {
+          id: 340933,
+          type: '$TITLE',
+          dependencies: [{ path: 'rating.worksheet', value: undefined }],
+          data: {
+            customClass: 'messages',
+            icon: 'fa fa-exclamation-circle',
+            text: 'Billing cannot be accessed until there is a rating on the quote.',
+          },
+          formData: {},
+          children: [],
+        },
+        {
           id: 34576,
           type: '$TITLE',
-          dependencies: [],
+          dependencies: [{ path: 'rating.worksheet', value: true }],
           data: {
             text: 'Mailing Address',
           },
@@ -1543,7 +1555,7 @@ const mock = {
         {
           id: 1,
           type: '$CUSTOM',
-          dependencies: [],
+          dependencies: [{ path: 'rating.worksheet', value: true }],
           data: {
             component: '$ADDRESS',
             extendedProperties: {
@@ -1559,7 +1571,7 @@ const mock = {
         {
           id: 340933,
           type: '$TITLE',
-          dependencies: [],
+          dependencies: [{ path: 'rating.worksheet', value: true }],
           data: {
             text: 'Billing Information',
           },
@@ -1569,7 +1581,7 @@ const mock = {
         {
           id: 348833,
           type: '$CUSTOM',
-          dependencies: [],
+          dependencies: [{ path: 'rating.worksheet', value: true }],
           data: {
             component: '$BILLING',
             dataSource: 'billPlans',
