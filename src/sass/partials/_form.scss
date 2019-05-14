@@ -156,18 +156,6 @@ select {
         width: auto;
       }
     }
-
-    &.react-select__control--is-focused {}
-  }
-
-  > div {
-    .react-select__menu {
-      .react-select__menu-list {
-        .react-select__option {
-          &.react-select__option--is-focused {}
-        }
-      }
-    }
   }
 }
 
@@ -501,13 +489,6 @@ label {
   label {
     @include transition(all 0.2s ease-in-out);
   }
-
-  &.disabled,
-  &.disabled.error {
-    label {}
-  }
-
-  input[type="tel"] {}
 
   &.segmented {
     label {
@@ -1194,12 +1175,12 @@ label {
         height: 2rem;
         border: 1px solid $warm-gray-02;
         border-radius: $border-radius 0 0 $border-radius;
-        content: 'YES';
-        font-weight: $font-weight-bold;
         background: $warm-gray-02;
         color: $warm-gray-14;
+        content: 'YES';
+        font-weight: $font-weight-bold;
         cursor: pointer;
-  
+
         @include transition(all 0.2s ease-in-out);
       }
   
@@ -1215,19 +1196,19 @@ label {
         height: 2rem;
         border: 1px solid $warm-gray-02;
         border-radius: 0 $border-radius $border-radius 0;
-        content: 'NO';
-        font-weight: $font-weight-bold;
         background: $bright-blue-darken-04;
         color: $white;
+        content: 'NO';
+        font-weight: $font-weight-bold;
         cursor: default;
-  
+
         @include transition(all 0.2s ease-in-out);
       }
 
       &:hover {
         &:before {
-          background: lighten($warm-gray-02, 5%);
           border-color: lighten($warm-gray-02, 6%);
+          background: lighten($warm-gray-02, 5%);
         }
       }
 
@@ -1246,8 +1227,8 @@ label {
 
         &:hover {
           &:after {
-            background: lighten($warm-gray-02, 5%);
             border-color: lighten($warm-gray-02, 6%);
+            background: lighten($warm-gray-02, 5%);
           }
         }
   

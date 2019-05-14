@@ -145,8 +145,6 @@ body {
   justify-content: center;
 }
 
-.auth0-lock.auth0-lock .auth0-lock-submit span {}
-
 .auth0-lock.auth0-lock img.auth0-lock-header-logo {
   display: none !important;
 }
