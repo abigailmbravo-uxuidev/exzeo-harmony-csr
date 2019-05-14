@@ -88,6 +88,9 @@ function formatQuoteForSubmit(data) {
   if (!data.coverageLimits.personalProperty.value) {
     quote.coverageOptions.personalPropertyReplacementCost.answer = false;
   }
+  if(!data.deductibles.sinkhole.value) quote.coverageOptions.sinkholePerilCoverage.answer = false;
+  else quote.coverageOptions.sinkholePerilCoverage.answer = true;
+
 
   // AF3 specific rules
   if (data.product === PRODUCT_TYPES.flood) {
