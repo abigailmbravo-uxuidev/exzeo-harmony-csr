@@ -14,12 +14,12 @@ function QuoteFooter({ submitting, isPrimaryDisabled, handlePrimaryClick, handlR
     <div className="basic-footer btn-footer">
       <Footer />
         <div className="btn-wrapper">
-          <Button
+          {currentStep !== 'application' && <Button
             onClick={handlResetForm}
             data-test="reset"
             className={Button.constants.classNames.secondary}
             label="Reset"
-          />
+          />}
           <Button
             data-test="submit"
             className={Button.constants.classNames.primary}
