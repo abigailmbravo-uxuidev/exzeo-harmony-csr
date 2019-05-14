@@ -141,7 +141,10 @@ export class NoteUploader extends Component {
     });
   }
 
-  state = { minimize: false };
+  state = { 
+    minimize: false, 
+    fileExtensions: {} 
+  };
 
   componentDidMount() {
     const { noteType, user } = this.props;
