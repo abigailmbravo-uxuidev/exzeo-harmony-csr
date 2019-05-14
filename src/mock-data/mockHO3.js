@@ -1863,6 +1863,30 @@ const mock = {
         },
       ],
     },
+    {
+      name: 'application',
+      step: {},
+      components: [
+        {
+          id: 5142019254,
+          type: '$SECTION',
+          dependencies: [],
+          data: {
+            className: 'application'
+          },
+          formData: {},
+          children: [
+            {
+              id: 5142019255,
+              type: '$APPLICATION',
+              dependencies: [],
+              data: {},
+              formData: {},
+              children: [],
+            },
+          ]
+        }]
+      }
   ]
 };
 

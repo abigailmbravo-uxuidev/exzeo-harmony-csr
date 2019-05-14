@@ -22,7 +22,7 @@ import { getFormattedUWQuestions } from '../../state/selectors/underwritingQuest
 // import Footer from '../../components/Common/Footer';
 // import AdditionalInterests from '../../components/Quote/AdditionalInterests';
 import NotesFiles from '../../components/Quote/NotesFiles';
-import Application from '../../components/Quote/Application';
+import Application from './Application'
 import MOCK_CONFIG_DATA from '../../mock-data/mockHO3';
 
 import { ROUTES_NOT_HANDLED_BY_GANDALF, ROUTES_NOT_USING_FOOTER, PAGE_ROUTING } from './constants/workflowNavigation';
@@ -47,7 +47,8 @@ export class QuoteBase extends React.Component {
     this.formRef = React.createRef();
 
     this.customComponents = {
-      $POLICYHOLDERS: PolicyHolders
+      $POLICYHOLDERS: PolicyHolders,
+      $APPLICATION: Application
     };
 
   }
@@ -152,6 +153,10 @@ export class QuoteBase extends React.Component {
     const shouldRenderFooter = ROUTES_NOT_USING_FOOTER.indexOf(currentStep) === -1;
     const currentPage = PAGE_ROUTING[currentStep];
     const transformConfig = this.getConfigForJsonTransform(gandalfTemplate);
+    const disableForUnderwritingExceptions = (Array.isArray(quoteData.underwritingExceptions) && 
+    quoteData.underwritingExceptions.filter(uw => !uw.overridden).length > 0 && 
+    PAGE_ROUTING.application === currentPage);
+    const notOnApplication = PAGE_ROUTING.application !== currentPage;
 
     // TODO going to use Context to pass these directly to custom components,
     //  so Gandalf does not need to know about these.
@@ -199,9 +204,9 @@ export class QuoteBase extends React.Component {
                       <QuoteFooter
                         handlePrimaryClick={this.primaryClickHandler}
                         handlResetForm={form.reset}
-                        isSummary={currentStep === 'summary'}
+                        currentStep={currentStep}
                         submitting={submitting}
-                        isPrimaryDisabled={needsConfirmation || pristine || submitting}
+                        isPrimaryDisabled={(notOnApplication && (pristine || submitting)) || disableForUnderwritingExceptions}
                       />
                     }
                   />
@@ -217,7 +222,7 @@ export class QuoteBase extends React.Component {
                 {/* <Route exact path={`${match.url}/summary`} render={props => <Summary {...props} match={match} updateQuote={this.updateQuote} />} /> */}
                 {/* <Route exact path={`${match.url}/additionalInterests`} render={props => <AdditionalInterests {...props} match={match} updateQuote={this.updateQuote} />} /> */}
                 {/* <Route exact path={`${match.url}/underwriting`} render={props => <Underwriting {...props} match={match} updateQuote={this.updateQuote} />} /> */}
-                <Route exact path={`${match.url}/application`} render={props => <Application {...props} match={match} updateQuote={this.updateQuote} />} />
+                {/* <Route exact path={`${match.url}/application`} render={props => <Application {...props} match={match} updateQuote={this.updateQuote} />} /> */}
               </div>
 
               <UnderwritingValidationBarConnect />
