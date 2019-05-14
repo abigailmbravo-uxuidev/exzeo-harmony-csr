@@ -196,7 +196,7 @@ const formatForMailingBillingSubmit = (values, props) => {
 };
 
 export const formatForSubmit = (values, page, props) => {
-  if (page === 'coverage') return formatForCoverageSubmit(values, props);
+  //if (page === 'coverage') return formatForCoverageSubmit(values, props);
   if (page === 'underwriting') return formatForUnderwritingSubmit(values, props);
   else if (page === 'summary') return formatForShareSubmit(values, props);
   else if (page === 'billing') return formatForMailingBillingSubmit(values, props);
