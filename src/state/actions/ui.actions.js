@@ -27,3 +27,13 @@ export function toggleMinimizeDiary(minimizeDiary = false) {
     minimizeDiary
   };
 }
+
+/**
+ *
+ * @param isLoading
+ * @returns {{type: string, isLoading: boolean}}
+ */
+export const toggleLoading = isLoading => ({
+  type: types.TOGGLE_LOADING,
+  isLoading
+});

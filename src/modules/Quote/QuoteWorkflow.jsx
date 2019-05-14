@@ -11,24 +11,23 @@ import App from '../../components/AppWrapper';
 import OpenDiariesBar from '../../components/OpenDiariesBar';
 import DiaryPolling from '../../components/DiaryPolling';
 import { QUOTE_RESOURCE_TYPE } from '../../constants/diaries';
-import { startWorkflow } from '../../state/actions/cg.actions';
 import { setAppState } from '../../state/actions/appState.actions';
 import { setAppError } from '../../state/actions/error.actions';
-import { getQuote } from '../../state/actions/quote.actions';
+import { getQuote, updateQuote } from '../../state/actions/quote.actions';
 import { getAgencies, getAgentsByAgencyCode } from '../../state/actions/agency.actions';
 import { getZipcodeSettings, getUnderwritingQuestions } from '../../state/actions/service.actions';
 import { getEnumsForQuoteWorkflow, getBillingOptions } from '../../state/actions/list.actions';
 import { getQuoteSelector } from '../../state/selectors/choreographer.selectors';
 import { getFormattedUWQuestions } from '../../state/selectors/underwritingQuestions.selectors';
-import Footer from '../../components/Common/Footer';
-import AdditionalInterests from '../../components/Quote/AdditionalInterests';
+// import Footer from '../../components/Common/Footer';
+// import AdditionalInterests from '../../components/Quote/AdditionalInterests';
 import NotesFiles from '../../components/Quote/NotesFiles';
 import Application from '../../components/Quote/Application';
 import MOCK_CONFIG_DATA from '../../mock-data/mockHO3';
 
 import { ROUTES_NOT_HANDLED_BY_GANDALF, ROUTES_NOT_USING_FOOTER, PAGE_ROUTING } from './constants/workflowNavigation';
 import { getAgentList, getAgencyList } from '../../state/selectors/agency.selector';
-import { handleCGSubmit } from '../../utilities/choreographer';
+import choreographer, { startWorkflow, formatForSubmit } from '../../utilities/choreographer';
 import PolicyHolders from './Coverage/PolicyHolders';
 import QuoteFooter from './QuoteFooter';
 
@@ -102,23 +101,6 @@ export class QuoteBase extends React.Component {
     this.setState({ showDiaries: !this.state.showDiaries });
   };
 
-  updateQuote = async (modelName, submitData, pageName) => {
-    const { quoteData } = this.props;
-    this.setState({ submitting: true });
-    try {
-      await this.props.startWorkflow(modelName, {
-        quoteId: quoteData._id,
-        ...submitData
-      });
-
-      await this.props.getQuote(quoteData._id, pageName);
-    } catch (error) {
-      this.props.setAppError(error);
-    } finally {
-      this.setState({ submitting: false });
-    }
-  }
-
   primaryClickHandler = () => {
     // ie11 does not handle customEvents the same way as other browsers. So here we have to check before creating
     // this custom submit event - this is being used to submit the form from outside of the form.
@@ -132,10 +114,11 @@ export class QuoteBase extends React.Component {
     }
   };
 
-  handleGandalfSubmit = async ({ shouldNav, ...values }) => {
+  handleGandalfSubmit = async ({ shouldNav, options, ...values }) => {
+    const { quoteData } = this.props;
     const currentStep = this.props.location.pathname.split('/')[3];
-    const { modelName, submitData, pageName } = handleCGSubmit(values, currentStep, this.props);
-    await this.updateQuote(modelName, submitData, pageName);
+    const { modelName, submitData, pageName } = formatForSubmit(values, currentStep, this.props);
+    await this.props.updateQuote({ data: submitData, modelName, pageName, quoteData, options });
   };
 
   getLocalState = () => {
@@ -184,6 +167,7 @@ export class QuoteBase extends React.Component {
       <div className="app-wrapper csr quote">
         {(this.state.submitting || !quoteData.quoteNumber) && <Loader />}
         {quoteData.quoteNumber && <App
+          header={gandalfTemplate ? gandalfTemplate.header : {}}
           context={match.path.split('/')[1]}
           resourceType={QUOTE_RESOURCE_TYPE}
           resourceId={quoteData.quoteNumber}
@@ -284,5 +268,6 @@ export default connect(mapStateToProps, {
   getZipcodeSettings,
   getUnderwritingQuestions,
   getBillingOptions,
-  getEnumsForQuoteWorkflow
+  getEnumsForQuoteWorkflow,
+  updateQuote
 })(QuoteBase);

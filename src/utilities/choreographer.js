@@ -26,7 +26,7 @@ export const startWorkflow = async (modelName, data) => {
 };
 
 
-const handleCoverageSubmit = (values, props) => {
+const formatForCoverageSubmit = (values, props) => {
 
   const submitData = {};
 
@@ -129,7 +129,7 @@ const handleCoverageSubmit = (values, props) => {
   }
 };
 
-const handleUnderwritingSubmit = (values, props) => {
+const formatForUnderwritingSubmit = (values, props) => {
   const { quoteData } = props;
   const taskData = {
     floodCoverage: values.underwritingAnswers.floodCoverage,
@@ -155,7 +155,7 @@ const handleUnderwritingSubmit = (values, props) => {
   }
 };
 
-const handleShareSubmit = (values, props) => {
+const formatForShareSubmit = (values, props) => {
   const { quoteData } = props;
 
   const submitData = {
@@ -173,7 +173,7 @@ const handleShareSubmit = (values, props) => {
   }
 };
 
-const handleMailingBillingSubmit = (values, props) => {
+const formatForMailingBillingSubmit = (values, props) => {
   const { quoteData } = props;
 
   const submitData = {
@@ -195,15 +195,15 @@ const handleMailingBillingSubmit = (values, props) => {
   }
 };
 
-export const handleCGSubmit = (values, page, props) => {
-  if (page === 'coverage') return handleCoverageSubmit(values, props);
-  else if (page === 'underwriting') return handleUnderwritingSubmit(values, props);
-  else if (page === 'summary') return handleShareSubmit(values, props);
-  else if (page === 'billing') return handleMailingBillingSubmit(values, props);
+export const formatForSubmit = (values, page, props) => {
+  // if (page === 'coverage') return formatForCoverageSubmit(values, props);
+  if (page === 'underwriting') return formatForUnderwritingSubmit(values, props);
+  else if (page === 'summary') return formatForShareSubmit(values, props);
+  else if (page === 'billing') return formatForMailingBillingSubmit(values, props);
 
 
-  return null;
+  return { submitData: values };
 
 };
 
-export default { startWorkflow , handleCGSubmit};
+export default { startWorkflow , formatForSubmit };

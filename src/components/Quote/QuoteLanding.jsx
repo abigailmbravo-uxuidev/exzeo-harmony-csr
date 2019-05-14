@@ -3,21 +3,23 @@ import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 import { Loader } from '@exzeo/core-ui';
 
-import { startWorkflow } from '../../state/actions/cg.actions';
 import { setAppState } from '../../state/actions/appState.actions';
 import { setAppError } from '../../state/actions/error.actions';
-import { getQuoteForCreate } from '../../state/selectors/quote.selectors';
+import { createQuote } from '../../state/actions/quote.actions';
+import { getQuoteSelector } from '../../state/selectors/quote.selectors';
 
 export class QuoteLanding extends Component {
   async componentDidMount() {
     const {
-      match: { params }, startWorkflow, appState, setAppState
+      match: { params }, appState, setAppState,
+      userProfile
     } = this.props;
 
     try {
       const { stateCode, propertyId } = params;
-
-      await startWorkflow('csrCreateQuote', { stateCode, igdId: propertyId });
+      //TODO: fix user profile to match harmony-web 
+      // userProfile.entity.companyCode
+      this.props.createQuote('0', propertyId, stateCode, 'TTIC' , 'HO3' );    
     } catch (error) {
       setAppError(error);
     } finally {
@@ -37,11 +39,12 @@ export class QuoteLanding extends Component {
 
 const mapStateToProps = state => ({
   appState: state.appState,
-  quoteData: getQuoteForCreate(state)
+  quoteData: getQuoteSelector(state),
+  userProfile: state.authState.userProfile,
 });
 
 export default connect(mapStateToProps, {
-  startWorkflow,
+  createQuote,
   setAppState,
   setAppError
 })(QuoteLanding);
