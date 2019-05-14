@@ -109,20 +109,21 @@ export class SideNav extends React.Component {
                 onClick={this.generateDoc}>
                 <i className="fa fa-plus" />
                 Document
-            </button>
-          </li>
-          <li className={this.state.showDocsForm ? 'document-panel show' : 'document-panel hidden'}>
-            {this.state.showDocsForm &&
-              <GenerateDocsForm
-                policyNumber={policy.policyNumber}
-                policyID={policy.policyID}
-                updateNotes={this.updateNotes(this.props)}
-                startWorkflow={actions.cgActions.startWorkflow}
-                errorHandler={actions.errorActions.setAppError} />
-            }
-          </li>
-        </SideNavigation>
-        <PlusButton newNote={this.newNote} newDiary={this.newDiary} />
+              </button>
+            </li>
+            <li className={this.state.showDocsForm ? 'document-panel show' : 'document-panel hidden'}>
+              {this.state.showDocsForm &&
+                <GenerateDocsForm
+                  policyNumber={policy.policyNumber}
+                  policyID={policy.policyID}
+                  updateNotes={this.updateNotes(this.props)}
+                  startWorkflow={actions.cgActions.startWorkflow}
+                  errorHandler={actions.errorActions.setAppError} />
+              }
+            </li>
+          </SideNavigation>
+          <PlusButton newNote={this.newNote} newDiary={this.newDiary} />
+        </nav>
       </React.Fragment>
     );
   }

@@ -134,17 +134,6 @@ export class SideNav extends React.Component {
             <i className="fa fa-pencil" />
             <span>NEW NOTE</span>
           </button>
-        </nav>
-        <div className="plus-button-group">
-          <button
-            type="button"
-            aria-label="open-btn form-new-note"
-            data-test="new-note"
-            className="btn btn-primary btn-round btn-lg new-note-btn"
-            onClick={this.newNote}>
-            <i className="fa fa-pencil" />
-            <span>NEW NOTE</span>
-          </button>
         </div>
       </React.Fragment >);
   }

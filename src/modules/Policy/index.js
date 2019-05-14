@@ -72,7 +72,6 @@ export class Policy extends React.Component {
     if (prevPolicy !== policy && !!policy) {
       getZipCodeSettings(policy.companyCode, policy.state, policy.product, policy.property.physicalAddress.zip);
       getAgency(policy.agencyCode);
-      getNotes(policy.policyNumber, policy.sourceNumber);
       getAgentsByAgencyCode(policy.agencyCode);
       fetchNotes([policy.policyNumber, policy.sourceNumber], 'policyNumber');
 

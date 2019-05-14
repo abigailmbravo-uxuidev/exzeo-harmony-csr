@@ -1,10 +1,10 @@
 //vertical tabs
 
 .site-nav {
-  padding: $padding 0 $padding ($padding*2);
+  margin: $padding 0 $padding ($padding*2);
   //main left navigation
   ul {
-    margin: 0 0 $padding;
+    margin: 0 0 5rem;
     padding: 0;
     list-style: none;
 
@@ -38,15 +38,6 @@
     li {
       display: flex;
       margin: 0;
-      cursor: pointer;
-
-      &:hover {
-        cursor: pointer;
-      }
-
-      form {
-        width: 100%;
-      }
 
       a {
         display: flex;
@@ -56,6 +47,11 @@
         border-left: ($padding/2) solid rgba($bright-blue, 0);
         text-decoration: none;
         cursor: pointer;
+
+        &.btn {
+          justify-content: center;
+          border-width: 1px;
+        }
 
         span {
           display: flex;
@@ -90,12 +86,12 @@
         &.active {
           border-left: ($padding/2) solid $bright-blue-darken-04;
           background-color: $white;
-          //cursor: default;
+          cursor: default;
 
           &:hover {
             border-left: ($padding/2) solid $bright-blue-darken-04;
             background-color: $white;
-            //cursor: default;
+            cursor: default;
 
             span {
               color: $bright-blue-darken-04;
@@ -112,9 +108,13 @@
           background-color: rgba($white, .4);
           text-decoration: none;
           cursor: pointer;
+          
+          &.btn {
+            border-width: 1px;
+          }
+
           span {
             text-decoration: none;
-            cursor: pointer;
           }
         }
       }

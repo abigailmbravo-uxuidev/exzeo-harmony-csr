@@ -50,12 +50,17 @@ export const Notes = (props) => {
 
   const attachmentUrl = attachments => (
     <span>
-      {attachments.map((attachment, i) =>
-        (<Downloader
-          fileName={attachment.fileName}
-          fileUrl={attachment.fileUrl}
-          errorHandler={err => props.setAppError(err)}
-          key={i} />))}
+      {attachments.map((attachment, i) => {
+        const url = attachment.fileUrl;
+        const fileName = attachment.fileName ? attachment.fileName : url.substring(url.lastIndexOf("/") + 1);
+        return (
+            <Downloader
+            fileName={fileName}
+            fileUrl={attachment.fileUrl}
+            errorHandler={err => props.setAppError(err)}
+            key={i} />
+        );
+      })}
     </span>
   );
 

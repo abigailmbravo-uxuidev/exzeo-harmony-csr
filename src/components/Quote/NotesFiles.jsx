@@ -2,10 +2,8 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
-import * as appStateActions from '../../state/actions/appState.actions';
-import * as serviceActions from '../../state/actions/service.actions';
-import * as quoteActions from '../../state/actions/quote.actions';
-import * as errorActions from '../../state/actions/error.actions';
+import QuoteBaseConnect from '../../containers/Quote';
+import { getQuote } from '../../state/actions/quote.actions';
 import Notes from '../Notes';
 import Footer from '../Common/Footer';
 
