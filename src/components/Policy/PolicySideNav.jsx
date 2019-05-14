@@ -98,33 +98,31 @@ export class SideNav extends React.Component {
   render() {
     const { actions, policy } = this.props;
     return (
-      <React.Fragment>
-        <nav className="site-nav">
-          <SideNavigation navLinks={getNavLinks({ policyNumber: policy.policyNumber })}>
-            <hr className="nav-division" />
-            <li>
-              <button
-                aria-label="open-btn"
-                className="btn btn-primary btn-sm btn-block"
-                onClick={this.generateDoc}>
-                <i className="fa fa-plus" />
-                Document
-              </button>
-            </li>
-            <li className={this.state.showDocsForm ? 'document-panel show' : 'document-panel hidden'}>
-              {this.state.showDocsForm &&
-                <GenerateDocsForm
-                  policyNumber={policy.policyNumber}
-                  policyID={policy.policyID}
-                  updateNotes={this.updateNotes(this.props)}
-                  startWorkflow={actions.cgActions.startWorkflow}
-                  errorHandler={actions.errorActions.setAppError} />
-              }
-            </li>
-          </SideNavigation>
-          <PlusButton newNote={this.newNote} newDiary={this.newDiary} />
-        </nav>
-      </React.Fragment>
+      <nav className="site-nav">
+        <SideNavigation navLinks={getNavLinks({ policyNumber: policy.policyNumber })}>
+          <hr className="nav-division" />
+          <li>
+            <button
+              aria-label="open-btn"
+              className="btn btn-primary btn-sm btn-block"
+              onClick={this.generateDoc}>
+              <i className="fa fa-plus" />
+              Document
+            </button>
+          </li>
+          <li className={this.state.showDocsForm ? 'document-panel show' : 'document-panel hidden'}>
+            {this.state.showDocsForm &&
+              <GenerateDocsForm
+                policyNumber={policy.policyNumber}
+                policyID={policy.policyID}
+                updateNotes={this.updateNotes(this.props)}
+                startWorkflow={actions.cgActions.startWorkflow}
+                errorHandler={actions.errorActions.setAppError} />
+            }
+          </li>
+        </SideNavigation>
+        <PlusButton newNote={this.newNote} newDiary={this.newDiary} />
+      </nav>
     );
   }
 }
