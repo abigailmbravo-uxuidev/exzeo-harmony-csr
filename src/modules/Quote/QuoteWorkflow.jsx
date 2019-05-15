@@ -179,7 +179,7 @@ export class QuoteBase extends React.Component {
         {(this.props.isLoading || !quoteData.quoteNumber) && <Loader />}
         {quoteData.quoteNumber && gandalfTemplate &&
         <App
-          header={gandalfTemplate}
+          header={gandalfTemplate.header}
           context={match.path.split('/')[1]}
           resourceType={QUOTE_RESOURCE_TYPE}
           resourceId={quoteData.quoteNumber}
