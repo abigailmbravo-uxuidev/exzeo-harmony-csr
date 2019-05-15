@@ -152,21 +152,25 @@
         display: flex;
         overflow: hidden;
         flex-direction: column;
-        margin-left: -1rem;
+        padding: ($padding*2) ($padding*2) 0 0;
         background: $warm-gray-03;
 
         @include transition(all 0.2s ease-in-out);
 
         &.hidden {
-          padding: 0 ($padding*2);
+          padding: 0 ($padding*2) 0 0;
           height: 0;
         }
 
         &.show {
-          padding: ($padding*2) ($padding*2) 0;
-          height: 152px;
+          height: auto;
           border-top: 1px dotted $warm-gray-04;
           border-bottom: 1px dotted $warm-gray-04;
+          border-left: 1px dotted $warm-gray-04;
+        }
+
+        > div {
+          padding-left: $padding*2;
         }
       }
 
