@@ -495,20 +495,10 @@ input[type="submit"] {
       border-color: $green;
       background-color: $green;
     }
-    
-    &:hover {
-      box-shadow: 0 4px 0.75rem 0 rgba(0,0,0,0.25);
-
-      span {
-        opacity: 1;
-
-        @include transition(all 0.3s 0.2s ease-in-out);
-      }
-    }
 
     span {
       position: absolute;
-      top: -2rem;
+      top: 0;
       display: flex;
       padding: $padding;
       border-radius: $btn-border-radius;
@@ -516,8 +506,45 @@ input[type="submit"] {
       box-shadow: 0 3px 0.75rem 0 rgba(0,0,0,0.25);
       font-size: $font-size-xs;
       opacity: 0;
+      transform: scale(.5);
 
-      @include transition(all 0.2s ease-in-out);
+      @include transition(position 0.2s ease-in-out);
+      @include transition(opacity 0.01s ease-in-out);
+      @include transition(scale 0.1s ease-in-out);
+
+      &:before {
+        position:absolute;
+        bottom:-8px;
+        left: calc(50% - 8px);
+        width: 0;
+        height: 0;  border-top: 8px solid $bright-blue-darken-04;
+        border-right: 8px solid transparent;
+        border-left: 8px solid transparent;
+        content:'';
+      }
+    }
+    
+    &:hover {
+      box-shadow: 0 4px 0.75rem 0 rgba(0,0,0,0.25);
+
+      span {
+        top: -2.75rem;
+        opacity: 1;
+        transform: scale(1);
+
+        @include transition(opacity 0.4s ease-in-out);
+
+        &:before {
+          position:absolute;
+          bottom:-8px;
+          left: calc(50% - 8px);
+          width: 0;
+          height: 0;  border-top: 8px solid $bright-blue-darken-04;
+          border-right: 8px solid transparent;
+          border-left: 8px solid transparent;
+          content:'';
+        }
+      }
     }
   }
 }
