@@ -62,8 +62,8 @@ export class GenerateDocsForm extends Component {
                 dataTest="documentType" />
 
               <Button
-                baseClass="primary"
-                size="small"
+                className={Button.constants.classNames.primary}
+                size={Button.constants.sizes.small}
                 customClass="btn-block"
                 type="submit"
                 dataTest="doc-submit">Generate Doc

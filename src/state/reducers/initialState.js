@@ -69,7 +69,6 @@ export default {
     billingConfig: {
       billToConfig: {},
       billingOptions: [],
-      defaultBillToId: '',
       paymentPlans: {},},
 
   }

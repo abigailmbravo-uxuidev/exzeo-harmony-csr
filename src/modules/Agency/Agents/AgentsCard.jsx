@@ -37,7 +37,7 @@ export const AgentsCard = ({
                 <p className="phone">
                   <i className="fa fa-phone-square" />
                   <a href={`tel:${agent.primaryPhoneNumber}${agent.primaryPhoneNumberExtension ? `+${agent.primaryPhoneNumberExtension}` : ''}`}>
-                  {normalize.phone(agent.primaryPhoneNumber)} 
+                  {normalize.phone(agent.primaryPhoneNumber)}
                   {agent.primaryPhoneNumberExtension ? ` ext. ${agent.primaryPhoneNumberExtension}` : '' }
                   </a>
                 </p>
@@ -65,24 +65,21 @@ export const AgentsCard = ({
         <div className="card-actions">
           {String(agency.agentOfRecord) === String(agent.agentCode) &&
           <Button
-            dataTest="switchAOR"
-            baseClass="link"
-            size="small"
-            className="btn-link btn-sm"
+            className={Button.constants.classNames.link}
+            size={Button.constants.sizes.small}
+            data-test="switchAOR"
             onClick={() => handleSwitchAOR(agent.agentCode)}><i className="fa fa-exchange" />Switch AOR
           </Button>}
           <Button
-            dataTest="removeAgent"
-            baseClass="link"
-            size="small"
-            className="btn-link btn-sm"
+            className={Button.constants.classNames.link}
+            size={Button.constants.sizes.small}
+            data-test="removeAgent"
             onClick={() => handleRemoveAgent(agentIndex)}><i className="fa fa-times-circle" />Remove
           </Button>
           <Button
-            dataTest="editAgent"
-            baseClass="link"
-            size="small"
-            className="btn-link btn-sm"
+            className={Button.constants.classNames.link}
+            size={Button.constants.sizes.small}
+            data-test="editAgent"
             onClick={() => handleEditAgent(agentIndex)}><i className="fa fa-pencil-square" />Edit
           </Button>
         </div>
@@ -92,10 +89,10 @@ export const AgentsCard = ({
         <h5><span className="agency-code">{agency.agencyCode}</span> | <span className="agency">{agency.displayName}</span></h5>
         <div className="footer-actions">
           <Button
-            baseClass="link"
-            dataTest="agent-book"
-            size="small"
-            className="btn-link btn-sm"><i className="fa fa-download" />Agent Book
+            className={Button.constants.classNames.link}
+            size={Button.constants.sizes.small}
+            data-test="agent-book">
+            <i className="fa fa-download" />Agent Book
           </Button>
         </div>
       </footer>

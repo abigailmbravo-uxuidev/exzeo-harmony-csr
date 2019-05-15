@@ -36,9 +36,9 @@ export const RenderProducts = ({ fields, stateAnswers, productAnswers }) => {
       <div className="add-product">
         <hr />
         <Button
-          baseClass="secondary"
-          size="small"
-          dataTest="add-product"
+          className={Button.constants.classNames.secondary}
+          size={Button.constants.classNames.small}
+          data-test="add-product"
           onClick={() => fields.push({})}><i className="fa fa-plus" />Product
         </Button>
         <hr />

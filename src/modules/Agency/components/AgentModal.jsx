@@ -56,18 +56,15 @@ export class AgentModal extends Component {
             <div className="card-footer">
               <div className="btn-footer">
                 <Button
-                  tabIndex="0"
-                  className="btn btn-secondary"
-                  type="button"
-                  dataTest="cancel-modal"
+                  className={Button.constants.classNames.secondary}
+                  data-test="cancel-modal"
                   onClick={closeModal}>
                 Cancel
                 </Button>
                 <Button
-                  tabIndex="0"
-                  className="btn btn-primary"
+                  className={Button.constants.classNames.primary}
                   type="submit"
-                  dataTest="submit-modal"
+                  data-test="submit-modal"
                   disabled={submitting}>
                 Save
                 </Button>

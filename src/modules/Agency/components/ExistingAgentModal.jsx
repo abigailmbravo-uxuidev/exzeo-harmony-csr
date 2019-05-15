@@ -39,12 +39,12 @@ export class ExistingAgentModal extends Component {
             <div className="card-footer">
               <div className="btn-footer">
                 <Button
-                  baseClass="secondary"
+                  className={Button.constants.classNames.secondary}
                   dataTest="modal-cancel"
                   onClick={onToggleModal}>Cancel
                 </Button>
                 <Button
-                  baseClass="primary"
+                  className={Button.constants.classNames.primary}
                   type="submit"
                   dataTest="modal-submit"
                   disabled={submitting}>Select

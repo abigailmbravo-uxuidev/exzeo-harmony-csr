@@ -106,8 +106,16 @@ export class CreateBranch extends Component {
         <div className="basic-footer btn-footer">
           <Footer />
           <div className="btn-wrapper">
-            <Button dataTest="resetButton" baseClass="secondary" onClick={this.handleResetForm}>Cancel</Button>
-            <Button form="createBranch" dataTest="submitButton" baseClass="primary" type="submit" disabled={submitting || pristine}>Save</Button>
+            <Button
+              className={Button.constants.classNames.secondary}
+              data-test="resetButton"
+              onClick={this.handleResetForm}>Cancel</Button>
+            <Button
+              className={Button.constants.classNames.primary}
+              form="createBranch"
+              type="submit"
+              data-test="submitButton"
+              disabled={submitting || pristine}>Save</Button>
           </div>
         </div>
         {this.state.showAddExistingAgentModal &&

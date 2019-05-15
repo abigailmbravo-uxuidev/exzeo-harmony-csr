@@ -96,7 +96,7 @@ export class Contracts extends Component {
   };
 
   getLicenseInitialValues = (agency) => {
-    
+
   }
 
   render() {
@@ -105,13 +105,13 @@ export class Contracts extends Component {
       licenseIndex, showLicenseModal, contractIndex, showContractModal, showDeleteLicenseModal, showDeleteContractModal
     } = this.state;
 
-    const activeContract =  (agency.contracts || [])[contractIndex || 0] 
-    const activeLicense =  (agency.licenses || [])[licenseIndex || 0] 
+    const activeContract =  (agency.contracts || [])[contractIndex || 0]
+    const activeLicense =  (agency.licenses || [])[licenseIndex || 0]
 
     if (!agency) return <div />;
     return (
       <div id="agency-contracts" className="agency-contracts">
-        {showDeleteLicenseModal && 
+        {showDeleteLicenseModal &&
           <SmallModal
             header="Delete License"
             headerIcon="fa-trash"
@@ -119,7 +119,7 @@ export class Contracts extends Component {
             handleSubmit={this.deleteLicense}
             handleCancel={this.toggleDeleteLicense} />
         }
-        {showDeleteContractModal && 
+        {showDeleteContractModal &&
           <SmallModal
             header="Delete Contract"
             headerIcon="fa-trash"
@@ -166,8 +166,8 @@ export class Contracts extends Component {
                 <div className="create-contract">
                   <hr />
                   <Button
-                    baseClass="primary"
-                    size="small"
+                    className={Button.constants.classNames.primary}
+                    size={Button.constants.sizes.small}
                     onClick={() => this.toggleLicense(null)}
                     dataTest="addLicense"><i className="fa fa-plus" />License
                   </Button>
@@ -187,8 +187,8 @@ export class Contracts extends Component {
                 <div className="create-contract">
                   <hr />
                   <Button
-                    baseClass="primary"
-                    size="small"
+                    className={Button.constants.classNames.primary}
+                    size={Button.constants.sizes.small}
                     onClick={() => this.toggleContract(null)}
                     dataTest="addContract"><i className="fa fa-plus" />Contract
                   </Button>

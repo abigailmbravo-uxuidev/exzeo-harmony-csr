@@ -37,8 +37,8 @@ const NewQuoteSearch = ({
           errorHint />
 
         <Button
-          baseClass="success"
-          customClass="multi-input btn-success"
+          className={Button.constants.classNames.success}
+          customClass="multi-input"
           type="submit"
           disabled={submitting}
           dataTest="submit" ><i className="fa fa-search" />Search

@@ -60,8 +60,6 @@ export class QuoteBase extends React.Component {
 
   componentDidMount() {
     const { match } = this.props;
-
-
     this.props.getQuote(match.params.quoteNumber, '').then((quoteData) => {
       if (quoteData && quoteData.property) {
         const { companyCode, state, product, property } = quoteData;
@@ -133,7 +131,6 @@ export class QuoteBase extends React.Component {
     return this.state;
   };
 
-
   setShowEmailPopup = (showEmailPopup) => {
     this.setState(() => ({ showEmailPopup }));
   };
@@ -170,7 +167,7 @@ export class QuoteBase extends React.Component {
     const disableForApplication = (Array.isArray(quoteData.underwritingExceptions) &&
     quoteData.underwritingExceptions.filter(uw => !uw.overridden).length > 0 &&
     PAGE_ROUTING.application === currentPage);
-    const checkApplicationSent = quoteData.quoteState ==='Application Sent DocuSign' || this.state.applicationSent
+    const checkApplicationSent = quoteData.quoteState ==='Application Sent DocuSign' || this.state.applicationSent;
     const notOnApplication = PAGE_ROUTING.application !== currentPage;
 
     // TODO going to use Context to pass these directly to custom components,
@@ -216,8 +213,8 @@ export class QuoteBase extends React.Component {
                     path={location.pathname}
                     customHandlers={customHandlers}
                     customComponents={this.customComponents}
-                    stickyFooter={true}
-                    renderFooter={({ pristine, submitting, form }) => shouldRenderFooter &&
+                    stickyFooter
+                    renderFooter={({ pristine, submitting, dirty, form }) => shouldRenderFooter &&
                       <QuoteFooter
                         handlePrimaryClick={this.primaryClickHandler}
                         handlResetForm={form.reset}

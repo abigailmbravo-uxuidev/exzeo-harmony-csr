@@ -270,23 +270,23 @@ export class AdditionalInterestModal extends React.Component {
 
               <div className="btn-group">
                 <Button
-                  baseClass="secondary"
+                  className={Button.constants.classNames.secondary}
                   label="Cancel"
                   onClick={hideModal}
-                  dataTest="ai-modal-cancel" />
+                  data-test="ai-modal-cancel" />
                 {isEditing &&
                   <Button
-                    baseClass="secondary"
+                    className={Button.constants.classNames.secondary}
                     label="Delete"
                     disabled={submitting || isDeleting}
-                    dataTest="ai-modal-delete"
+                    data-test="ai-modal-delete"
                     onClick={() => deleteAdditionalInterest(selectedAI, this.props)} />
                 }
                 <Button
-                  baseClass="primary"
+                  className={Button.constants.classNames.primary}
                   type="submit"
                   label="Save"
-                  dataTest="ai-modal-submit"
+                  data-test="ai-modal-submit"
                   disabled={pristine || submitting || isDeleting} />
               </div>
             </div>

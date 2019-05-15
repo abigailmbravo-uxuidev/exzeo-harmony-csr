@@ -11,7 +11,7 @@ class DiariesSearch extends Component {
     TODO: redux-form initialize has a bug. We need to check back with this.
     For now we won't initialize a value for the current user.
     Link: https://github.com/erikras/redux-form/issues/2818
-    
+
     componentDidMount() {
     const {
       assigneeAnswers,
@@ -76,11 +76,11 @@ class DiariesSearch extends Component {
           </div>
 
           <Button
-            baseClass="success"
-            customClass="multi-input btn-success"
+            className={Button.constants.classNames.success}
+            customClass="multi-input"
             type="submit"
             disabled={submitting}
-            dataTest="submit"><i className="fa fa-search" />Search
+            data-test="submit"><i className="fa fa-search" />Search
           </Button>
         </div>
       </React.Fragment>

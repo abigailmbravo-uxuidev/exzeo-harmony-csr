@@ -151,15 +151,15 @@ export class Agents extends Component {
               <div className="agent-actions">
                 <hr />
                 <Button
-                  baseClass="primary"
-                  size="small"
+                  className={Button.constants.classNames.primary}
+                  size={Button.constants.sizes.small}
                   customClass="margin right"
                   dataTest="add-existing-agent"
                   onClick={this.toggleExistingAgentModal}><i className="fa fa-plus" />Existing Agent
                 </Button>
                 <Button
-                  baseClass="primary"
-                  size="small"
+                  className={Button.constants.classNames.primary}
+                  size={Button.constants.sizes.small}
                   dataTest="add-new-agent"
                   onClick={this.openAgentDetailNewModal}><i className="fa fa-plus" />New Agent
                 </Button>

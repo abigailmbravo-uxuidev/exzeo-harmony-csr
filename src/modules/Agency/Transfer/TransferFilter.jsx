@@ -14,7 +14,7 @@ export class TransferFilter extends Component {
   handleFilterChange = (value, previousValues, allValues) => {
     const { agencyCode } = this.props;
     const { policyNumber, state, product, agentCode } = allValues;
-    this.props.getPoliciesForAgency({ 
+    this.props.getPoliciesForAgency({
       policyNumber,
       state,
       product,
@@ -76,10 +76,10 @@ export class TransferFilter extends Component {
           normalize={this.handleFilterChange}
         />
         <Button
+          className={Button.constants.classNames.secondary}
+          size={Button.constants.sizes.small}
+          customClass="multi-input"
           onClick={this.resetFilter}
-          baseClass="secondary"
-          customClass="multi-input btn-sm"
-          type="button"
           dataTest="clear-fields">Clear Filters
           </Button>
       </form>

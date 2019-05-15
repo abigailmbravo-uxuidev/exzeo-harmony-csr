@@ -25,17 +25,17 @@ export class AIDeleteReinstateModal extends React.Component {
               <h4><i className="fa fa-trash" /> {actionType} {selectedAI.type}</h4>
             </div>
             <div className="card-block">
-            {`Are you sure that you want to ${actionType} ${selectedAI.type}: ${selectedAI.name1}?`} 
+            {`Are you sure that you want to ${actionType} ${selectedAI.type}: ${selectedAI.name1}?`}
             </div>
             <div className="card-footer">
               <div className="btn-group">
                 <Button
-                  baseClass="secondary"
+                  className={Button.constants.classNames.secondary}
                   label="Cancel"
                   onClick={closeModal}
                   dataTest="ai-modal-cancel" />
                 <Button
-                  baseClass="primary"
+                  className={Button.constants.classNames.primary}
                   type="submit"
                   label={actionType}
                   dataTest="ai-modal-submit"
@@ -52,4 +52,3 @@ export class AIDeleteReinstateModal extends React.Component {
 export default reduxForm({
     form: 'AIDeleteReinstateModal'
   })(AIDeleteReinstateModal);
-  

@@ -97,17 +97,17 @@ const PolicySearch = ({
           validate={isNumberDashOnly}
           errorHint />
         <Button
-          baseClass="success"
-          customClass="multi-input btn-success"
+          className={Button.constants.classNames.success}
+          customClass="multi-input"
           type="submit"
           disabled={submitting}
-          dataTest="submit"><i className="fa fa-search" />Search
+          data-test="submit"><i className="fa fa-search" />Search
       </Button>
         <Button
-          baseClass="icon"
+          className={Button.constants.classNames.icon}
+          size={Button.constants.sizes.small}
           customClass="advanced-search-btn"
-          size="small"
-          dataTest="policy-advanced-search"
+          data-test="policy-advanced-search"
           onClick={toggleAdvancedSearch}>
           <i className={classNames(advancedSearch ? 'fa fa-chevron-up' : 'fa fa-chevron-down')} />
         </Button>
