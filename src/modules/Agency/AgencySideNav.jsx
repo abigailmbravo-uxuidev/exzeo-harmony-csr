@@ -88,7 +88,7 @@ export class SideNav extends React.Component {
       <React.Fragment>
         {branchSelectionRoute && !branchSelectionRoute.includes(url) && <Redirect replace to={branchSelectionRoute} />}
         <nav className="site-nav">
-          <ul>
+          <ul className="side-navigation">
             {(String(branchCode) === '0' && agencyCode !== 'new') &&
             <React.Fragment>
               <li key="newBranch" data-test="new-branch">
@@ -109,7 +109,7 @@ export class SideNav extends React.Component {
                 name="selectedBranch"
                 label="Branch"
                 component={Select}
-                styleName="flex-child"
+                styleName="flex-child selectedBranch"
                 answers={branchesList}
                 showPlaceholder={false}
                 onChange={event => this.handleBranchSelection(event)} />
@@ -123,18 +123,18 @@ export class SideNav extends React.Component {
               </li>))
             }
           </ul>
+          <div className="plus-button-group">
+            <button
+              type="button"
+              aria-label="open-btn form-new-note"
+              data-test="new-note"
+              className="btn btn-primary btn-round btn-lg new-note-btn"
+              onClick={this.newNote}>
+              <i className="fa fa-pencil" />
+              <span>NEW NOTE</span>
+            </button>
+          </div>
         </nav>
-        <div className="plus-button-group">
-          <button
-            type="button"
-            aria-label="open-btn form-new-note"
-            data-test="new-note"
-            className="btn btn-primary btn-round btn-lg new-note-btn"
-            onClick={this.newNote}>
-            <i className="fa fa-pencil" />
-            <span>NEW NOTE</span>
-          </button>
-        </div>
       </React.Fragment >);
   }
 }

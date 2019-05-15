@@ -4,13 +4,14 @@
 //links
 /*------------------------------------------------------------------------------------*/
 a {
-  text-decoration: none;
   color: $bright-blue-lighten-01;
+  text-decoration: none;
+
   @include transition(all 0.2s ease-in-out);
 
   &:hover {
-    text-decoration: none;
     color: $blue-darken-02;
+    text-decoration: none;
   }
 }
 
@@ -20,15 +21,16 @@ input[type="button"],
 input[type="reset"],
 input[type="submit"] {
   display: inline-block;
-  cursor: pointer;
-  user-select: none;
-  text-align: center;
-  vertical-align: middle;
-  white-space: nowrap;
-  text-transform: uppercase;
   border: $input-btn-border-width solid transparent;
+  vertical-align: middle;
+  text-align: center;
+  text-transform: uppercase;
+  white-space: nowrap;
   font-weight: $btn-font-weight;
   line-height: $btn-line-height;
+  cursor: pointer;
+
+  user-select: none;
   @include button-size($btn-padding-y, $btn-padding-x, $font-size-base, $btn-border-radius);
   @include transition(all 0.2s ease-in-out);
   @include hover-focus {
@@ -92,14 +94,16 @@ input[type="submit"] {
   &:active {
     outline: 0;
     background-image: none;
+
     @include box-shadow($btn-active-box-shadow);
   }
 
   &.disabled,
   &.disabled,
   &:disabled {
-    cursor: $cursor-disabled;
     opacity: 0.65;
+    cursor: $cursor-disabled;
+
     @include box-shadow(none);
   }
 
@@ -164,32 +168,34 @@ input[type="submit"] {
   &.btn-alt-light {
     margin-left: $padding/2;
     padding: 0;
-    color: $bright-blue-lighten-02;
     border-width: 0;
+    color: $bright-blue-lighten-02;
     line-height: $headings-line-height;
 
     &:focus,
     &:hover {
-      text-decoration: none;
       color: $bright-blue-lighten-01;
+      text-decoration: none;
     }
   }
 
   &.btn-white {
     margin-left: $padding/2;
-    color: $white;
     border-width: 0;
+    color: $white;
     line-height: $headings-line-height;
+
     @include transition(all 0.2s ease-in-out);
 
     &:hover {
-      text-decoration: none;
       color: $yellow-lighten-05;
+      text-decoration: none;
     }
 
     &.btn-info {
       .fa-info-circle {
         color: $bright-blue-lighten-02;
+
         @include transition(all 0.2s ease-in-out);
       }
 
@@ -277,16 +283,17 @@ input[type="submit"] {
 // Make a button look and behave like a link
 
 .btn-link {
-  color: $link-color;
   border-radius: 0;
+  color: $link-color;
   font-weight: normal;
+
   @include hover {
     border-color: transparent;
   }
   @include hover-focus {
-    text-decoration: $link-hover-decoration;
-    color: $link-hover-color;
     background-color: transparent;
+    color: $link-hover-color;
+    text-decoration: $link-hover-decoration;
   }
 
   &,
@@ -294,6 +301,7 @@ input[type="submit"] {
   &:active,
   &:disabled {
     background-color: transparent;
+
     @include box-shadow(none);
   }
 
@@ -306,8 +314,8 @@ input[type="submit"] {
   &.disabled,
   &:disabled {
     @include hover-focus {
-      text-decoration: none;
       color: $btn-link-disabled-color;
+      text-decoration: none;
     }
   }
 }
@@ -330,15 +338,16 @@ input[type="submit"] {
     bottom: 0.25rem;
     left: 0.25rem;
     display: inline-block;
-    content: 'Choose file';
-    cursor: pointer;
-    user-select: none;
-    text-align: center;
-    vertical-align: middle;
-    white-space: nowrap;
     border: $input-btn-border-width solid transparent;
+    content: 'Choose file';
+    vertical-align: middle;
+    text-align: center;
+    white-space: nowrap;
     font-weight: $btn-font-weight;
     line-height: ($btn-line-height*0.4333);
+    cursor: pointer;
+
+    user-select: none;
     @include button-variant($btn-primary-color, $btn-primary-bg, $btn-primary-border);
     @include button-size($btn-padding-y, ($btn-padding-x*.9), $font-size-base, $btn-border-radius);
     @include transition(all 0.2s ease-in-out);
@@ -346,15 +355,15 @@ input[type="submit"] {
 }
 
 .btn-icon {
-  color: $body-color;
   border-width: 0;
   background: rgba($bright-blue, 0.1);
   box-shadow: none;
+  color: $body-color;
 
   &:hover {
-    color: $body-color;
     border-width: 0;
     background: rgba($bright-blue, 0.2);
+    color: $body-color;
   }
 
   i {
@@ -385,25 +394,25 @@ input[type="submit"] {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 100%;
   padding: $padding;
+  width: 100%;
 
   &:before {
     flex-grow: 1;
     flex-shrink: 1;
-    height: 1px;
     margin-right: $padding;
-    content: '';
+    height: 1px;
     background: $warm-gray-03;
+    content: '';
   }
 
   &:after {
     flex-grow: 1;
     flex-shrink: 1;
-    height: 1px;
     margin-left: $padding;
-    content: '';
+    height: 1px;
     background: $warm-gray-03;
+    content: '';
   }
 
   &.align-right {
@@ -454,103 +463,61 @@ input[type="submit"] {
 }
 
 .plus-button-group {
-  position: absolute;
-  bottom: $padding*2;
   display: flex;
-  flex-direction: column;
+  flex-grow: 0;
+  flex-shrink: 0;
   justify-content: flex-end;
-  width: 10rem;
+  padding: $padding $padding 0 0;
+  width: 10.875rem;
   height: 4rem;
+  border-top: 1px dotted $warm-gray-05;
+
   @include transition(all 0.4s ease-in-out);
 
-  .new-btn {
-    z-index: 10;
-    opacity: 1;
-    box-shadow: 0 2px 3px 0 rgba(0,0,0,0.25);
-  }
-
   button {
-    position: absolute;
-    z-index: 1;
+    position: relative;
     display: flex;
-    opacity: 0;
+    margin: 0 ($padding * 2.5) 0;
+    box-shadow: 0 2px 3px 0 rgba(0,0,0,0.25);
+
     @include transition(all 0.2s ease-in-out);
 
+    &:focus {
+      outline: none;
+    }
+
     &.new-diary-btn {
-      bottom: 0;
+      border-color: $bright-blue;
+      background-color: $bright-blue;
     }
 
     &.new-note-btn {
-      bottom: 0;
+      border-color: $green;
+      background-color: $green;
+    }
+    
+    &:hover {
+      box-shadow: 0 4px 0.75rem 0 rgba(0,0,0,0.25);
+
+      span {
+        opacity: 1;
+
+        @include transition(all 0.3s 0.2s ease-in-out);
+      }
     }
 
     span {
       position: absolute;
-      left: 2.75rem;
+      top: -2rem;
       display: flex;
       padding: $padding;
-      opacity: 0;
       border-radius: $btn-border-radius;
       background-color: $bright-blue-darken-04;
       box-shadow: 0 3px 0.75rem 0 rgba(0,0,0,0.25);
       font-size: $font-size-xs;
-      @include transition(all 0.2s ease-in-out);
-    }
-  }
-
-  &:hover {
-    padding: 0;
-    border-width: 0;
-    border-color: transparent;
-    background-color: transparent;
-
-    .new-btn {
-      z-index: 1;
       opacity: 0;
-    }
 
-    button {
-      z-index: 10;
-      opacity: 1;
-      box-shadow: 0 2px 3px 0 rgba(0,0,0,0.25);
-
-      &:focus {
-        outline: none;
-      }
-
-      &.new-diary-btn {
-        z-index: 9;
-        bottom: 2.875rem;
-        border-color: $bright-blue;
-        background-color: $bright-blue;
-      }
-
-      &.new-note-btn {
-        bottom: 0;
-        border-color: $green;
-        background-color: $green;
-      }
-
-      &:hover {
-        box-shadow: 0 4px 0.75rem 0 rgba(0,0,0,0.25);
-
-        span {
-          opacity: 1;
-          @include transition(all 0.3s 0.2s ease-in-out);
-        }
-      }
-    }
-  }
-}
-
-.agency {
-  .plus-button-group {
-    &:hover {
-      button {
-        &.new-diary-btn {
-          bottom: 0;
-        }
-      }
+      @include transition(all 0.2s ease-in-out);
     }
   }
 }

@@ -112,8 +112,8 @@ export const SideNav = (props) => {
         {props.appState.data.showUWconditions === true &&
           <UWconditions closeButtonHandler={() => closeUWConditions(props)} />
         }
+        <PlusButton newNote={() => newNote(props)} newDiary={() => newDiary(props)} />
       </nav>
-      <PlusButton newNote={() => newNote(props)} newDiary={() => newDiary(props)} />
     </React.Fragment>
   );
 };

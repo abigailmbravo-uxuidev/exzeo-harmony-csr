@@ -1,20 +1,29 @@
 //vertical tabs
 
 .site-nav {
-  margin: $padding 0 $padding ($padding*2);
-  //main left navigation
-  ul {
-    margin: 0 0 5rem;
+  display: flex;
+  overflow: hidden;
+  flex-direction: column;
+  flex-grow: 1;
+  flex-shrink: 1;
+  margin: 0 0 $padding ($padding*2);
+
+  hr.nav-division {
+    margin: ($padding*2) 0;
     padding: 0;
+    border-width: 0;
+    border-top: 1px dotted $warm-gray-04;
+  }
+
+  ul {
+    overflow-x: hidden;
+    overflow-y: auto;
+    flex-grow: 1;
+    flex-shrink: 1;
+    margin: 0;
+    padding: ($padding*2) 0;
     list-style: none;
-
-    hr.nav-division {
-      margin: ($padding*2) 0;
-      padding: 0;
-      border-width: 0;
-      border-top: 1px dotted $warm-gray-04;
-    }
-
+    
     .btn {
       &.btn-secondary {
         border-color: rgba($warm-gray-04, .8);
