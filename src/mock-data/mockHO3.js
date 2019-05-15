@@ -130,7 +130,6 @@ const mock = {
               dependencies: [],
               data: {
                 text: 'Property Address',
-                children: []
               },
               formData: {},
               children: [],
@@ -224,7 +223,6 @@ const mock = {
               dependencies: [],
               data: {
                 text: 'Home and Location',
-                children: []
               },
               formData: {},
               children: [],
@@ -1528,14 +1526,13 @@ const mock = {
     {
       name: 'mailingBilling',
       step: {},
-      meta: {},
       components: [
         {
           id: 340933,
           type: '$TITLE',
-          dependencies: [{ path: 'rating.worksheet', value: undefined }],
+          dependencies: [{ path: 'rating.worksheet', value: false }],
           data: {
-            customClass: 'messages',
+            className: 'messages',
             icon: 'fa fa-exclamation-circle',
             text: 'Billing cannot be accessed until there is a rating on the quote.',
           },
