@@ -66,8 +66,8 @@ export function fetchNotes(numbers, numberType) {
   return async dispatch => {
     try {
       const [notes, files] = await Promise.all([
-        await callService(notesConfig), 
-        numberType === 'policyNumber' ? callService(filesConfig) : []
+        await callService(notesConfig, 'fetchNotes'), 
+        numberType === 'policyNumber' ? callService(filesConfig, 'fetchFiles') : []
       ]);
       const allNotes = files.data
         ? mergeNotes(notes.data.result, files.data.result)

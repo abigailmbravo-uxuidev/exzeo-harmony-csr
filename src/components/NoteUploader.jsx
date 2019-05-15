@@ -253,7 +253,7 @@ export class NoteUploader extends Component {
       data: noteData
     };
     try {
-      const { data } = await callService(noteConfig);
+      const { data } = await callService(noteConfig, 'addNote');
       if (window.location.pathname.includes('/notes')) {
         const numberType = mapResourceToNumber[resourceType];
         const numbers = numberType === 'policyNumber'

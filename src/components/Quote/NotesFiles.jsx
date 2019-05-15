@@ -17,14 +17,7 @@ export class NotesFiles extends Component {
     const { match, quoteData } = this.props;
     return (
       <React.Fragment>
-        <div className="route-content">
-          <div className="scroll">
-            {quoteData.quoteNumber && <Notes numbers={[quoteData.quoteNumber]} numberType="quoteNumber" />}
-          </div>
-        </div>
-        <div className="basic-footer">
-          <Footer />
-        </div>
+        {quoteData.quoteNumber && <Notes numbers={[quoteData.quoteNumber]} numberType="quoteNumber" />}
       </React.Fragment>
     );
   }
