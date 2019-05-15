@@ -21,7 +21,6 @@ import { getQuoteSelector } from '../../state/selectors/choreographer.selectors'
 import { getFormattedUWQuestions } from '../../state/selectors/underwritingQuestions.selectors';
 // import Footer from '../../components/Common/Footer';
 // import AdditionalInterests from '../../components/Quote/AdditionalInterests';
-import NotesFiles from '../../components/Quote/NotesFiles';
 import Application from './Application'
 import MOCK_CONFIG_DATA from '../../mock-data/mockHO3';
 
@@ -31,6 +30,7 @@ import choreographer, { startWorkflow, formatForSubmit } from '../../utilities/c
 import PolicyHolders from './Coverage/PolicyHolders';
 import QuoteFooter from './QuoteFooter';
 import { getDiariesForTable } from '../../state/selectors/diary.selectors';
+import NotesFiles from '../NotesFiles/NotesFiles';
 
 const FORM_ID = 'QuoteWorkflowCSR';
 
@@ -50,7 +50,8 @@ export class QuoteBase extends React.Component {
 
     this.customComponents = {
       $POLICYHOLDERS: PolicyHolders,
-      $APPLICATION: Application
+      $APPLICATION: Application,
+      $NOTESFILES: NotesFiles
     };
 
   }
