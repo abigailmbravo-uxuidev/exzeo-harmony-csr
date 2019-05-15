@@ -72,7 +72,6 @@ export class Agency extends Component {
             <Route exact path={`/agency/${agencyCode}/${branchCode}/transfer`} render={TransferRender(branchCode, agencyCode)} />
             <Route exact path={`/agency/${agencyCode}/${branchCode}/notes`} render={NotesRender(agencyCode)} />
             <Route exact path={`/agency/${agencyCode}/0/new`} render={CreateBranchRender(branchCode, agencyCode)} />
-            <Route exact path={`/agency/${agencyCode}/${branchCode}/agents`} render={AgentsRender(branchCode)} />
             <Route exact path={`/agency/${agencyCode}/0/new`} render={CreateBranchRender(branchCode)} />
           </div>
         </main>
