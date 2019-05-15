@@ -177,7 +177,7 @@ export class QuoteBase extends React.Component {
     return (
       <div className="app-wrapper csr quote">
         {(this.props.isLoading || !quoteData.quoteNumber) && <Loader />}
-        {quoteData.quoteNumber &&
+        {quoteData.quoteNumber && gandalfTemplate &&
         <App
           header={gandalfTemplate}
           context={match.path.split('/')[1]}
