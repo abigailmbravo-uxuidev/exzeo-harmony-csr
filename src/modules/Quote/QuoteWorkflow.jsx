@@ -158,8 +158,8 @@ export class QuoteBase extends React.Component {
     const shouldRenderFooter = ROUTES_NOT_USING_FOOTER.indexOf(currentStep) === -1;
     const currentPage = PAGE_ROUTING[currentStep];
     const transformConfig = this.getConfigForJsonTransform(gandalfTemplate);
-    const disableForApplication = (Array.isArray(quoteData.underwritingExceptions) && 
-    quoteData.underwritingExceptions.filter(uw => !uw.overridden).length > 0 && 
+    const disableForApplication = (Array.isArray(quoteData.underwritingExceptions) &&
+    quoteData.underwritingExceptions.filter(uw => !uw.overridden).length > 0 &&
     PAGE_ROUTING.application === currentPage);
     const checkApplicationSent = quoteData.quoteState ==='Application Sent DocuSign' || this.state.applicationSent
     const notOnApplication = PAGE_ROUTING.application !== currentPage;
@@ -177,8 +177,9 @@ export class QuoteBase extends React.Component {
     return (
       <div className="app-wrapper csr quote">
         {(this.props.isLoading || !quoteData.quoteNumber) && <Loader />}
-        {quoteData.quoteNumber && <App
-          header={gandalfTemplate ? gandalfTemplate.header : {}}
+        {quoteData.quoteNumber &&
+        <App
+          header={gandalfTemplate}
           context={match.path.split('/')[1]}
           resourceType={QUOTE_RESOURCE_TYPE}
           resourceId={quoteData.quoteNumber}
