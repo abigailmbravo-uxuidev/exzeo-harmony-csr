@@ -15,7 +15,7 @@ import { setAppState } from '../../state/actions/appState.actions';
 import { setAppError } from '../../state/actions/error.actions';
 import { getQuote, updateQuote } from '../../state/actions/quote.actions';
 import { getAgencies, getAgentsByAgencyCode } from '../../state/actions/agency.actions';
-import { getZipcodeSettings, getUnderwritingQuestions } from '../../state/actions/service.actions';
+import { getZipcodeSettings, getUnderwritingQuestions, getNotes } from '../../state/actions/service.actions';
 import { getEnumsForQuoteWorkflow, getBillingOptions } from '../../state/actions/list.actions';
 import { getQuoteSelector } from '../../state/selectors/choreographer.selectors';
 import { getFormattedUWQuestions } from '../../state/selectors/underwritingQuestions.selectors';
@@ -30,6 +30,7 @@ import { getAgentList, getAgencyList } from '../../state/selectors/agency.select
 import choreographer, { startWorkflow, formatForSubmit } from '../../utilities/choreographer';
 import PolicyHolders from './Coverage/PolicyHolders';
 import QuoteFooter from './QuoteFooter';
+import { getDiariesForTable } from '../../state/selectors/diary.selectors';
 
 const FORM_ID = 'QuoteWorkflowCSR';
 
@@ -141,6 +142,11 @@ export class QuoteBase extends React.Component {
     return onChange(agencyCode);
   };
 
+  getNotes = () => {
+    const { quoteData } = this.props;
+    this.props.getNotes(quoteData.quoteNumber);
+  }
+
   render() {
     const {
       quoteData,
@@ -148,7 +154,9 @@ export class QuoteBase extends React.Component {
       location,
       history,
       agencies,
-      options
+      options,
+      diaries,
+      notes
     } = this.props;
 
     const { showDiaries, needsConfirmation, gandalfTemplate } = this.state;
@@ -173,6 +181,7 @@ export class QuoteBase extends React.Component {
       history: history,
       handleAgencyChange: this.handleAgencyChange,
       getBillingOptions: this.getBillingOptions,
+      getNotes: this.getNotes
     };
     return (
       <div className="app-wrapper csr quote">
@@ -201,7 +210,7 @@ export class QuoteBase extends React.Component {
                     handleSubmit={this.handleGandalfSubmit}
                     initialValues={quoteData}
                     template={gandalfTemplate}
-                    options={{ agencies, ...options}} // enums for select/radio fields
+                    options={{ agencies, diaries, notes, ...options}} // enums for select/radio fields
                     transformConfig={transformConfig}
                     path={location.pathname}
                     customHandlers={customHandlers}
@@ -225,7 +234,7 @@ export class QuoteBase extends React.Component {
                 }
                 {/* <Route exact path={`${match.url}/coverage`} render={props => <Coverage {...props} match={match} updateQuote={this.updateQuote} />} /> */}
                 {/* <Route exact path={`${match.url}/billing`} render={props => <MailingAddressBilling  {...props} match={match} updateQuote={this.updateQuote} />} /> */}
-                <Route exact path={`${match.url}/notes`} render={props => <NotesFiles {...props} match={match} updateQuote={this.updateQuote} />} />
+                {/* <Route exact path={`${match.url}/notes`} render={props => <NotesFiles {...props} match={match} updateQuote={this.updateQuote} />} /> */}
                 {/* <Route exact path={`${match.url}/summary`} render={props => <Summary {...props} match={match} updateQuote={this.updateQuote} />} /> */}
                 {/* <Route exact path={`${match.url}/additionalInterests`} render={props => <AdditionalInterests {...props} match={match} updateQuote={this.updateQuote} />} /> */}
                 {/* <Route exact path={`${match.url}/underwriting`} render={props => <Underwriting {...props} match={match} updateQuote={this.updateQuote} />} /> */}
@@ -267,7 +276,9 @@ const mapStateToProps = state => {
     underwritingQuestions: getFormattedUWQuestions(state),
     billingConfig: state.list.billingConfig,
     options: state.list,
-    isLoading: state.ui.isLoading
+    isLoading: state.ui.isLoading,
+    diaries: getDiariesForTable(state),
+    notes: state.service.notes
   }
 };
 
@@ -282,5 +293,6 @@ export default connect(mapStateToProps, {
   getUnderwritingQuestions,
   getBillingOptions,
   getEnumsForQuoteWorkflow,
-  updateQuote
+  updateQuote,
+  getNotes
 })(QuoteBase);

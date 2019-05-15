@@ -1594,6 +1594,30 @@ const mock = {
       ],
     },
     {
+      name: 'notes',
+      step: {},
+      components: [
+        {
+          id: 5152019254,
+          type: '$SECTION',
+          dependencies: [],
+          data: {
+            className: 'application'
+          },
+          formData: {},
+          children: [
+            {
+              id: 5152019255,
+              type: '$NOTESFILES',
+              dependencies: [],
+              data: {},
+              formData: {},
+              children: [],
+            },
+          ]
+        }]
+    },
+    {
       name: 'summary',
       step: {},
       components: [

@@ -4,12 +4,11 @@ export const PAGE_ROUTING = {
   'underwriting': 1,
   'additionalInterests': 2,
   'billing': 3,
-  'summary': 4,
-  'application': 5
+  'notes': 4,
+  'summary': 5,
+  'application': 6
 };
 
-export const ROUTES_NOT_HANDLED_BY_GANDALF = [
-  'notes',
-];
+export const ROUTES_NOT_HANDLED_BY_GANDALF = [];
 
-export const ROUTES_NOT_USING_FOOTER = ['additionalInterests'];
+export const ROUTES_NOT_USING_FOOTER = ['additionalInterests', 'notes'];
