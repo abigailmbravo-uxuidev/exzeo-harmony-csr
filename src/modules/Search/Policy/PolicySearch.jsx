@@ -98,14 +98,14 @@ const PolicySearch = ({
         errorHint />
       <Button
         baseClass="success"
-        customClass="multi-input"
+        customClass="multi-input btn-success"
         type="submit"
         disabled={submitting}
         dataTest="submit"><i className="fa fa-search" />Search
       </Button>
       <Button
         baseClass="icon"
-        customClass="advanced-search-btn"
+        customClass="advanced-search-btn btn-icon"
         size="small"
         dataTest="policy-advanced-search"
         onClick={toggleAdvancedSearch}>
@@ -141,13 +141,15 @@ const PolicySearch = ({
             component={Select}
             answers={getAnswers('policyStatus', questions)} />
         </div>
-        <Field
-          name="sortBy"
-          dataTest="sortBy"
-          label="Sort By"
-          component={Select}
-          answers={sortByOptions}
-          showPlaceholder={false} />
+        <div className="form-group sortBy">
+          <Field
+            name="sortBy"
+            dataTest="sortBy"
+            label="Sort By"
+            component={Select}
+            answers={sortByOptions}
+            showPlaceholder={false} />
+        </div>
       </div>
     }
     {!!search.results.length && search.totalPages > 1 &&

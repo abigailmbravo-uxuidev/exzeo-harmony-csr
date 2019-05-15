@@ -46,32 +46,38 @@ class DiariesSearch extends Component {
                 showPlaceholder={false}
                 errorHint />
             </div>
-            <Field
-              name="reason"
-              dataTest="reason"
-              component={Select}
-              answers={REASONS}
-              placeholder="Please choose"
-              label="Reason"
-              errorHint />
-            <Field
-              name="dateRange"
-              dataTest="date-range"
-              component={DateRange}
-              label="Date Range"
-              errorHint />
-            <Field
-              name="assignees"
-              dataTest="assignees"
-              component={MultiSelectTypeAhead}
-              label="Assigned To"
-              answers={assigneeAnswers}
-              errorHint />
+            <div className="form-group reason">
+              <Field
+                name="reason"
+                dataTest="reason"
+                component={Select}
+                answers={REASONS}
+                placeholder="Please choose"
+                label="Reason"
+                errorHint />
+            </div>
+            <div className="form-group dateRange">
+              <Field
+                name="dateRange"
+                dataTest="date-range"
+                component={DateRange}
+                label="Date Range"
+                errorHint />
+            </div>
+            <div className="form-group assignees">
+              <Field
+                name="assignees"
+                dataTest="assignees"
+                component={MultiSelectTypeAhead}
+                label="Assigned To"
+                answers={assigneeAnswers}
+                errorHint />
+            </div>
           </div>
 
           <Button
             baseClass="success"
-            customClass="multi-input"
+            customClass="multi-input btn-success"
             type="submit"
             disabled={submitting}
             dataTest="submit"><i className="fa fa-search" />Search
