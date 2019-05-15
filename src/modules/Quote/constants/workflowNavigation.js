@@ -12,4 +12,4 @@ export const ROUTES_NOT_HANDLED_BY_GANDALF = [
   'notes',
 ];
 
-export const ROUTES_NOT_USING_FOOTER = [];
+export const ROUTES_NOT_USING_FOOTER = ['additionalInterests'];
