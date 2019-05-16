@@ -33,8 +33,8 @@ export const validate = (values) => {
 
 // TODO: Pull this from the list service
   const contactTypeOptions = {
-    'Agency': ['Change name/FEIN', 'Change Agent', 'Change Other', 'Concern', 'Correspondance', 'Other'],
-    'Agent': ['Change', 'Concern', 'Correspondance', 'Other'],
+    'Agency': ['Change name/FEIN', 'Change Agent', 'Change Other', 'Concern', 'Correspondence', 'Other'],
+    'Agent': ['Change', 'Concern', 'Correspondence', 'Other'],
     'Quote': ['Agent', 'Policyholder', 'Inspector', 'Other'],
     'Policy': ['Agent', 'Policyholder', 'Lienholder', 'Internal', 'Inspector', 'Other']
   };
