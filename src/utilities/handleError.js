@@ -1,4 +1,4 @@
-export default function handleError(err) {
+export default function whandleError(err) {
   // return default error message if non exists
   if (!err) return { message: 'An error occurred that was not handled properly.' };
 
