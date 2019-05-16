@@ -74,3 +74,6 @@ export const DUE_STATUS = {
   pastDue: 'Past Due',
   upComing: 'Upcoming'
 };
+
+
+export const DIARY_TAB = 'diaries';
