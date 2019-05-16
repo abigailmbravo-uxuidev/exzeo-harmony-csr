@@ -3,7 +3,6 @@ import { batchActions } from 'redux-batched-actions';
 import * as serviceRunner from '../../utilities/serviceRunner';
 import * as types from './actionTypes';
 import * as errorActions from './error.actions';
-import handleError from '../../utilities/handleError';
 
 
 export const serviceRequest = data => ({
@@ -92,8 +91,7 @@ export const getAgents = (companyCode, state) => async (dispatch) => {
     const data = { agents: response.data.result };
     return dispatch(serviceRequest(data));
   } catch(error) {
-    const message = handleError(error);
-    return dispatch(errorActions.setAppError(message));
+    return dispatch(errorActions.setAppError(error));
   }
 };
 
@@ -114,8 +112,7 @@ export const getAgency = (companyCode, state, agencyCode) => async (dispatch) =>
     const data = { agency: response.data.result };
     return dispatch(serviceRequest(data));
   } catch(error) {
-    const message = handleError(error);
-    return dispatch(errorActions.setAppError(message));
+    return dispatch(errorActions.setAppError(error));
   }
 };
 
@@ -131,8 +128,7 @@ export const getAgentsByAgency = (companyCode, state, agencyCode) => async (disp
     const data = { agents: response.data.result };
     return dispatch(serviceRequest(data));
   } catch(error) {
-    const message = handleError(error);
-    return dispatch(errorActions.setAppError(message));
+    return dispatch(errorActions.setAppError(error));
   }
 };
 
@@ -161,8 +157,7 @@ export const addTransaction = submitData => async (dispatch) => {
     const data = { transactions: response.data.result };
     return dispatch(serviceRequest(data));
   } catch(error) {
-    const message = handleError(error);
-    return dispatch(errorActions.setAppError(message));
+    return dispatch(errorActions.setAppError(error));
   }
 };
 
@@ -188,8 +183,7 @@ export const getUnderwritingQuestions = (companyCode, state, product, property) 
     const data = { underwritingQuestions: response.data.result };
     return dispatch(serviceRequest(data));
   } catch(error) {
-    const message = handleError(error);
-    return dispatch(errorActions.setAppError(message));
+    return dispatch(errorActions.setAppError(error));
   }
 };
 
@@ -209,8 +203,7 @@ export const saveUnderwritingExceptions = (id, underwritingExceptions) => async 
     const data = { transactions: response.data.result };
     return dispatch(serviceRequest(data));
   } catch(error) {
-    const message = handleError(error);
-    return dispatch(errorActions.setAppError(message));
+    return dispatch(errorActions.setAppError(error));
   }
 };
 
@@ -227,8 +220,7 @@ export const getBillingOptions = paymentOptions => async (dispatch) => {
     const data = { billingOptions: response.data.result };
     return dispatch(serviceRequest(data));
   } catch(error) {
-    const message = handleError(error);
-    return dispatch(errorActions.setAppError(message));
+    return dispatch(errorActions.setAppError(error));
   }
 };
 
@@ -249,8 +241,7 @@ export const getQuote = quoteId => async (dispatch) => {
     dispatch(serviceRequest(data));
     return data.quote;
   } catch(error) {
-    const message = handleError(error);
-    return dispatch(errorActions.setAppError(message));
+    return dispatch(errorActions.setAppError(error));
   }
 };
 
@@ -266,8 +257,7 @@ export const getZipcodeSettings = (companyCode, state, product, zip) => async (d
     const data = { getZipcodeSettings: response.data && response.data.result ? response.data.result[0] : { timezone: '' } };
     return dispatch(serviceRequest(data));
   } catch(error) {
-    const message = handleError(error);
-    return dispatch(errorActions.setAppError(message));
+    return dispatch(errorActions.setAppError(error));
   }
 };
 
@@ -290,8 +280,7 @@ export const saveBillingInfo = (id, billToType, billToId, billPlan) => async (di
     dispatch(serviceRequest(data));
     return data.quote;
   } catch(error) {
-    const message = handleError(error);
-    return dispatch(errorActions.setAppError(message));
+    return dispatch(errorActions.setAppError(error));
   }
 };
 
@@ -308,7 +297,6 @@ export const getAgencies = (companyCode, state) => async (dispatch) => {
     const data = { agencies: result };
     return dispatch(serviceRequest(data));
   } catch(error) {
-    const message = handleError(error);
-    return dispatch(errorActions.setAppError(message));
+    return dispatch(errorActions.setAppError(error));
   }
 };
