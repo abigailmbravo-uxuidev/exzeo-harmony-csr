@@ -4,8 +4,8 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Field, reduxForm } from 'redux-form';
 import { SelectInteger, SelectTypeAhead, Loader, validation } from '@exzeo/core-ui';
+import { callService } from '@exzeo/core-ui/src/@Harmony';
 
-import { callService } from '../../utilities/serviceRunner';
 import { getAgencies, fetchAgentsByAgencyCode, getAgency, getAgentsByAgencyCode } from '../../state/actions/agency.actions';
 import { getPolicy } from '../../state/actions/policy.actions';
 import { setAppError } from '../../state/actions/error.actions';
@@ -20,7 +20,7 @@ export class TransferAOR extends Component {
   state = {
     isLoading: false,
     agents: []
-  }
+  };
 
   async componentDidMount() {
     const { getAgencies, initialize, companyCode, agencyCode, state } = this.props;
@@ -40,13 +40,13 @@ export class TransferAOR extends Component {
   getAgentsForAORTransfer = async (agencyCode) => {
     const agents = await fetchAgentsByAgencyCode(agencyCode);
     this.setState({ agents: this.filterActiveAgentsList(agents) });
-  }
+  };
 
   handleAgencyChange = (_, agencyCode) => {
     const { change } = this.props;
     change('agentCode', null);
     this.getAgentsForAORTransfer(agencyCode);
-  }
+  };
 
   submitTransfer = async (data, dispatch, props) => {
     const { policyNumber, getPolicy, setAppError } = props;
@@ -68,7 +68,7 @@ export class TransferAOR extends Component {
 
     this.setState({ isLoading: false });
     this.props.toggleModal();
-  }
+  };
 
   render() {
     const { handleSubmit, toggleModal, agencies, pristine } = this.props;

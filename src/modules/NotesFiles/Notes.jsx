@@ -45,7 +45,7 @@ const attachmentUrl = ({ attachments, setAppError}) => (
 );
 
 const Notes = (props) => {
-  const { notes, attachmentStatus, customHandlers: { setAppError} } = props;
+  const { notes, attachmentStatus, customHandlers: { setAppError } } = props;
   const options = { searchPanel: props => (<SearchPanel {...props} />) };
   return (
     <BootstrapTable

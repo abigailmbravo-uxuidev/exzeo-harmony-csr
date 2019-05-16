@@ -1,7 +1,6 @@
-
 import { date } from '@exzeo/core-ui';
+import * as serviceRunner from '@exzeo/core-ui/src/@Harmony/Domain/serviceRunner';
 import choreographer from '../../utilities/choreographer';
-import * as serviceRunner from '../../utilities/serviceRunner';
 
 import * as types from './actionTypes';
 import * as errorActions from './error.actions';
@@ -76,7 +75,6 @@ export function getQuote(quoteId, currentPage) {
 function formatQuoteForSubmit(data) {
   const quote = { ...data };
   quote.effectiveDate = date.formatToUTC(date.formatDate(data.effectiveDate, date.FORMATS.SECONDARY), data.property.timezone);
-  // quote.effectiveDate = formattedDate(formatDate(data.effectiveDate, FORMATS.SECONDARY),FORMATS.PRIMARY_LOCALE, data.property.timezone);
   quote.policyHolders[0].electronicDelivery = data.policyHolders[0].electronicDelivery || false;
   quote.policyHolders[0].order = data.policyHolders[0].order || 0;
   quote.policyHolders[0].entityType = data.policyHolders[0].entityType || "Person";
@@ -108,8 +106,8 @@ export function updateQuote({ data = {}, modelName, options, quoteData, pageName
 
     dispatch(toggleLoading(true));
     try {
-       if(modelName) {
-        await choreographer.startWorkflow(modelName, 
+       if (modelName) {
+        await choreographer.startWorkflow(modelName,
           {
             quoteId: quoteData._id,
             ...data
@@ -129,7 +127,7 @@ export function updateQuote({ data = {}, modelName, options, quoteData, pageName
       return null;
 
     } finally {
-      await dispatch(getQuote(quoteData._id, pageName));        
+      await dispatch(getQuote(quoteData._id, pageName));
       dispatch(toggleLoading(false));
     }
   };

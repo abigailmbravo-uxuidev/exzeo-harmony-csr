@@ -1,8 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Route } from 'react-router-dom';
-import { Loader, Button } from '@exzeo/core-ui';
+import { Loader } from '@exzeo/core-ui';
 import { Gandalf, getConfigForJsonTransform } from '@exzeo/core-ui/src/@Harmony';
 import { defaultMemoize } from 'reselect';
 
@@ -23,15 +22,15 @@ import { getQuoteSelector } from '../../state/selectors/choreographer.selectors'
 import { getFormattedUWQuestions } from '../../state/selectors/underwritingQuestions.selectors';
 // import Footer from '../../components/Common/Footer';
 // import AdditionalInterests from '../../components/Quote/AdditionalInterests';
-import Application from './Application'
-import MOCK_CONFIG_DATA from '../../mock-data/mockHO3';
-
-import { ROUTES_NOT_HANDLED_BY_GANDALF, ROUTES_NOT_USING_FOOTER, PAGE_ROUTING } from './constants/workflowNavigation';
 import { getAgentList, getAgencyList } from '../../state/selectors/agency.selector';
-import choreographer, { startWorkflow, formatForSubmit } from '../../utilities/choreographer';
+import { getDiariesForTable } from '../../state/selectors/diary.selectors';
+import MOCK_CONFIG_DATA from '../../mock-data/mockHO3';
+import { ROUTES_NOT_HANDLED_BY_GANDALF, ROUTES_NOT_USING_FOOTER, PAGE_ROUTING } from './constants/workflowNavigation';
+import { startWorkflow, formatForSubmit } from '../../utilities/choreographer';
+
+import Application from './Application'
 import PolicyHolders from './Coverage/PolicyHolders';
 import QuoteFooter from './QuoteFooter';
-import { getDiariesForTable } from '../../state/selectors/diary.selectors';
 import NotesFiles from '../NotesFiles/NotesFiles';
 
 const FORM_ID = 'QuoteWorkflowCSR';
@@ -150,14 +149,15 @@ export class QuoteBase extends React.Component {
 
   render() {
     const {
-      quoteData,
-      match,
-      location,
-      history,
       agencies,
-      options,
       diaries,
-      notes
+      history,
+      isLoading,
+      location,
+      match,
+      notes,
+      options,
+      quoteData,
     } = this.props;
 
     const { showDiaries, needsConfirmation, gandalfTemplate } = this.state;
@@ -188,60 +188,53 @@ export class QuoteBase extends React.Component {
     };
     return (
       <div className="app-wrapper csr quote">
-        {(this.props.isLoading || !quoteData.quoteNumber) && <Loader />}
+        {(isLoading || !quoteData.quoteNumber) && <Loader />}
         {quoteData.quoteNumber && gandalfTemplate &&
-        <App
-          header={gandalfTemplate.header}
-          context={match.path.split('/')[1]}
-          resourceType={QUOTE_RESOURCE_TYPE}
-          resourceId={quoteData.quoteNumber}
-          pageTitle={`Q: ${quoteData.quoteNumber || ''}`}
-          match={match}
-          onToggleDiaries={this.handleToggleDiaries}
-          showDiaries={showDiaries}
-          render={() => (
-            <React.Fragment>
+          <App
+            header={gandalfTemplate.header}
+            context={match.path.split('/')[1]}
+            resourceType={QUOTE_RESOURCE_TYPE}
+            resourceId={quoteData.quoteNumber}
+            pageTitle={`Q: ${quoteData.quoteNumber || ''}`}
+            match={match}
+            onToggleDiaries={this.handleToggleDiaries}
+            showDiaries={showDiaries}
+            render={() => (
+              <React.Fragment>
 
-              <div className="content-wrapper">
-                {shouldUseGandalf &&
-                <React.Fragment>
-                  <Gandalf
-                    ref={this.formRef}
-                    formId={FORM_ID}
-                    className="route-content"
-                    currentPage={currentPage}
-                    handleSubmit={this.handleGandalfSubmit}
-                    initialValues={quoteData}
-                    template={gandalfTemplate}
-                    options={{ agencies, diaries, notes, ...options}} // enums for select/radio fields
-                    transformConfig={transformConfig}
-                    path={location.pathname}
-                    customHandlers={customHandlers}
-                    customComponents={this.customComponents}
-                    stickyFooter
-                    renderFooter={({ pristine, submitting, dirty, form }) => shouldRenderFooter &&
-                      <QuoteFooter
-                        handlePrimaryClick={this.primaryClickHandler}
-                        handlResetForm={form.reset}
-                        currentStep={currentStep}
-                        submitting={submitting}
-                        isPrimaryDisabled={(notOnApplication && (pristine || submitting)) || disableForApplication || checkApplicationSent}
-                      />
-                    }
-                  />
-
-
+                <div className="content-wrapper">
+                  {shouldUseGandalf &&
+                  <React.Fragment>
+                    <Gandalf
+                      ref={this.formRef}
+                      formId={FORM_ID}
+                      className="route-content"
+                      currentPage={currentPage}
+                      handleSubmit={this.handleGandalfSubmit}
+                      initialValues={quoteData}
+                      template={gandalfTemplate}
+                      options={{ agencies, diaries, notes, ...options}} // enums for select/radio fields
+                      transformConfig={transformConfig}
+                      path={location.pathname}
+                      customHandlers={customHandlers}
+                      customComponents={this.customComponents}
+                      stickyFooter
+                      renderFooter={({ pristine, submitting, dirty, form }) => shouldRenderFooter &&
+                        <QuoteFooter
+                          handlePrimaryClick={this.primaryClickHandler}
+                          handlResetForm={form.reset}
+                          currentStep={currentStep}
+                          submitting={submitting}
+                          isPrimaryDisabled={(notOnApplication && (pristine || submitting)) || disableForApplication || checkApplicationSent}
+                        />
+                      }
+                    />
 
 
-                </React.Fragment>
+
+
+                  </React.Fragment>
                 }
-                {/* <Route exact path={`${match.url}/coverage`} render={props => <Coverage {...props} match={match} updateQuote={this.updateQuote} />} /> */}
-                {/* <Route exact path={`${match.url}/billing`} render={props => <MailingAddressBilling  {...props} match={match} updateQuote={this.updateQuote} />} /> */}
-                {/* <Route exact path={`${match.url}/notes`} render={props => <NotesFiles {...props} match={match} updateQuote={this.updateQuote} />} /> */}
-                {/* <Route exact path={`${match.url}/summary`} render={props => <Summary {...props} match={match} updateQuote={this.updateQuote} />} /> */}
-                {/* <Route exact path={`${match.url}/additionalInterests`} render={props => <AdditionalInterests {...props} match={match} updateQuote={this.updateQuote} />} /> */}
-                {/* <Route exact path={`${match.url}/underwriting`} render={props => <Underwriting {...props} match={match} updateQuote={this.updateQuote} />} /> */}
-                {/* <Route exact path={`${match.url}/application`} render={props => <Application {...props} match={match} updateQuote={this.updateQuote} />} /> */}
               </div>
 
               <UnderwritingValidationBarConnect />

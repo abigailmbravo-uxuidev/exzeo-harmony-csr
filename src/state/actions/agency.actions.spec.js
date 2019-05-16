@@ -1,7 +1,7 @@
 import configureStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import sinon from 'sinon';
-import axios from 'axios';
+import { http as axios } from '@exzeo/core-ui';
 import MockAdapter from 'axios-mock-adapter';
 
 import * as serviceRunner from '../../utilities/serviceRunner';
@@ -361,6 +361,6 @@ describe('Test Agency Actions', () => {
         expect(store.getActions()[0].agentList).toEqual([]);
       });
   });
-  
+
 });
 

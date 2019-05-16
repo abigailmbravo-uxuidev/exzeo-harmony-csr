@@ -24,11 +24,11 @@ export const downloadFile = (fileUrl, fileName, errorHandler) => {
 const Downloader = props => {
   const { fileName, fileUrl, errorHandler } = props;
   return (
-    <div className="attachment-wrapper" onClick={ () => downloadFile(fileUrl, fileName, errorHandler) }>
+    <div className="attachment-wrapper" onClick={() => downloadFile(fileUrl, fileName, errorHandler)}>
       <i title={fileName} className="fa" />
       <div className="btn btn-link btn-sm">{ fileName }</div>
     </div>
   )
-}
+};
 
 export default Downloader;
