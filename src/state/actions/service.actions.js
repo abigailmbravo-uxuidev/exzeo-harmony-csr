@@ -1,4 +1,3 @@
-import axios from 'axios';
 import moment from 'moment';
 import { batchActions } from 'redux-batched-actions';
 import * as serviceRunner from '../../utilities/serviceRunner';
@@ -248,7 +247,7 @@ export const getQuote = quoteId => async (dispatch) => {
     const response = await serviceRunner.callService(axiosConfig, 'getQuote');
     const data = { quote: response.data ? response.data.result : {} };
     dispatch(serviceRequest(data));
-    return data.quote; 
+    return data.quote;
   } catch(error) {
     const message = handleError(error);
     return dispatch(errorActions.setAppError(message));
@@ -289,7 +288,7 @@ export const saveBillingInfo = (id, billToType, billToId, billPlan) => async (di
     const response = await serviceRunner.callService(axiosConfig, 'saveBillingInfo');
     const data = { transactions: response.data.result };
     dispatch(serviceRequest(data));
-    return data.quote; 
+    return data.quote;
   } catch(error) {
     const message = handleError(error);
     return dispatch(errorActions.setAppError(message));

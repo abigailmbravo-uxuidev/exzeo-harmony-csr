@@ -1,10 +1,11 @@
-import axios from 'axios';
+import { http } from '@exzeo/core-ui/src/Utilities';
 
 import handleError from './handleError';
 
 /**
  *
  * @param data
+ * @param qs
  * @returns {Promise<void>}
  */
 export async function callService(data, qs) {
@@ -17,7 +18,7 @@ export async function callService(data, qs) {
   };
 
   try {
-    const response = await axios(axiosConfig);
+    const response = await http(axiosConfig);
     return response;
   } catch (error) {
     throw handleError(error);
@@ -38,7 +39,7 @@ export async function callQuestions(data) {
   };
 
   try {
-    const response = await axios(axiosConfig);
+    const response = await http(axiosConfig);
     return response;
   } catch (error) {
     throw handleError(error);

@@ -1,4 +1,4 @@
-import axios from 'axios';
+import { http } from '@exzeo/core-ui/src/Utilities';
 import momentTZ from 'moment-timezone';
 import _ from 'lodash';
 
@@ -18,7 +18,7 @@ export const startWorkflow = async (modelName, data) => {
   };
 
   try {
-    const result = await axios(axiosConfig);
+    const result = await http(axiosConfig);
     return result.data.data.previousTask.value.result;
   } catch (error) {
     throw handleError(error);
@@ -163,7 +163,7 @@ const formatForShareSubmit = (values, props) => {
     state: quoteData.state,
     zip: quoteData.property.physicalAddress.zip,
     emailAddress: values.emailAddress,
-    toName: values.toName  
+    toName: values.toName
   };
 
   return {
@@ -200,7 +200,7 @@ const formatForApplicationSubmit = (values, props) => {
 
   const submitData = {
     dsUrl: `${process.env.REACT_APP_API_URL}/ds`,
-    quoteId: quoteData._id 
+    quoteId: quoteData._id
   };
 
   return {

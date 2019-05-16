@@ -2,8 +2,6 @@ import 'react-app-polyfill/ie11';
 import React from 'react';
 import { render } from 'react-dom';
 import { Provider } from 'react-redux';
-import axios from 'axios';
-import { retry } from '@exzeo/core-ui';
 
 import configureStore from './state/store/configureStore';
 import Authentication from './components/Authentication';
@@ -11,8 +9,6 @@ import Routes from './routes';
 
 import '../node_modules/font-awesome/scss/font-awesome.scss';
 import './sass/base.scss';
-
-retry(axios);
 
 const AUTH_CONFIG = {
   publicPaths: ['/login', '/logout', '/accessDenied', '/loggedOut', '/callback'],

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import axios from 'axios';
+import { http } from '@exzeo/core-ui';
 import { Select, Loader, Button, Form, Field, validation } from '@exzeo/core-ui';
 
 const validate = values => (!values.documentType ? { documentType: 'Required' } : null);
@@ -27,7 +27,7 @@ export class GenerateDocsForm extends Component {
         const fileUrl = result.workflowData[model].data.previousTask.value.result[0].fileUrl;
         const proxyUrl = `${process.env.REACT_APP_API_URL}/download`;
         const params = { url: fileUrl };
-        return axios.get(proxyUrl, { responseType: 'blob', params });
+        return http.get(proxyUrl, { responseType: 'blob', params });
       })
       .then((res) => {
         const contentDisposition = res.headers['content-disposition'];
