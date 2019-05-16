@@ -237,7 +237,7 @@ export class NoteUploader extends Component {
       numberType: mapResourceToNumber[resourceType],
       source: sourceId,
       noteType,
-      noteContent: JSON.stringify(data.noteContent),
+      noteContent: data.noteContent,
       contactType: data.contactType,
       createdAt: moment().unix(),
       noteAttachments,
