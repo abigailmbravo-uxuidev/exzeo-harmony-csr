@@ -15,7 +15,6 @@ export class NoteList extends Component {
     const { historyTab } = this.state;
     const { customHandlers, diaries, notes } = this.props;
     return (
-      <form id="NotesFiles" onSubmit={() => null} noValidate>
         <div className="scroll">
           <div className="form-group survey-wrapper" role="group">
             <h3>History</h3>
@@ -27,15 +26,13 @@ export class NoteList extends Component {
                     <button type="button" className={`btn btn-tab ${historyTab === 'files' ? 'selected' : ''}`} onClick={() => this.setHistoryTab('files')}>Files</button>
                     <button type="button" className={`btn btn-tab ${historyTab === 'diaries' ? 'selected' : ''}`} onClick={() => this.setHistoryTab('diaries')}>Diaries</button>
                   </div>
-                  {/* TODO: Turn Notes and DiariesTable into dynamic driven component */}
-                  {NOTE_TABS.includes(this.state.historyTab) && <Notes notes={notes} attachmentStatus={this.state.historyTab === 'files'} />}
+                  {NOTE_TABS.includes(this.state.historyTab) && <Notes notes={notes} customHandlers={customHandlers} attachmentStatus={this.state.historyTab === 'files'} />}
                   {this.state.historyTab === DIARY_TAB && <DiaryTable customHandlers={customHandlers} diaries={diaries} />}
                 </div>
               </div>
             </section>
           </div>
         </div>
-      </form>
     );
   }
 }

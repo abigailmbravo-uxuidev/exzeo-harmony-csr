@@ -11,11 +11,13 @@ import App from '../../components/AppWrapper';
 import OpenDiariesBar from '../../components/OpenDiariesBar';
 import DiaryPolling from '../../components/DiaryPolling';
 import { QUOTE_RESOURCE_TYPE } from '../../constants/diaries';
+import { toggleDiary } from '../../state/actions/ui.actions';
 import { setAppState } from '../../state/actions/appState.actions';
 import { setAppError } from '../../state/actions/error.actions';
 import { getQuote, updateQuote } from '../../state/actions/quote.actions';
 import { getAgencies, getAgentsByAgencyCode } from '../../state/actions/agency.actions';
 import { getZipcodeSettings, getUnderwritingQuestions, getNotes } from '../../state/actions/service.actions';
+import { fetchDiaries } from '../../state/actions/diary.actions';
 import { getEnumsForQuoteWorkflow, getBillingOptions } from '../../state/actions/list.actions';
 import { getQuoteSelector } from '../../state/selectors/choreographer.selectors';
 import { getFormattedUWQuestions } from '../../state/selectors/underwritingQuestions.selectors';
@@ -68,6 +70,7 @@ export class QuoteBase extends React.Component {
         this.props.getAgentsByAgencyCode(quoteData.agencyCode);
         this.props.getZipcodeSettings(quoteData.companyCode, quoteData.state, quoteData.product, quoteData.property.physicalAddress.zip);
         this.props.getUnderwritingQuestions(quoteData.companyCode, quoteData.state, quoteData.product, quoteData.property);
+        this.props.fetchDiaries({ resourceId: quoteData.quoteNumber, resourceType: QUOTE_RESOURCE_TYPE });
       }
 
     });
@@ -179,7 +182,9 @@ export class QuoteBase extends React.Component {
       history: history,
       handleAgencyChange: this.handleAgencyChange,
       getBillingOptions: this.getBillingOptions,
-      getNotes: this.getNotes
+      getNotes: this.getNotes,
+      setAppError: this.props.setAppError,
+      toggleDiary: this.props.toggleDiary
     };
     return (
       <div className="app-wrapper csr quote">
@@ -292,5 +297,7 @@ export default connect(mapStateToProps, {
   getBillingOptions,
   getEnumsForQuoteWorkflow,
   updateQuote,
-  getNotes
+  getNotes,
+  toggleDiary,
+  fetchDiaries
 })(QuoteBase);
