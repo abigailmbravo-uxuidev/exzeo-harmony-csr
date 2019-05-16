@@ -40,8 +40,8 @@ export const Notes = (props) => {
   };
 
   const sortFiles = (a, b, order) => {
-    const fileA = (a.attachments.length > 0) ? a.attachments[0].fileName : '';
-    const fileB = (b.attachments.length > 0) ? b.attachments[0].fileName : '';
+    const fileA = (a.noteAttachments.length > 0) ? a.noteAttachments[0].fileName : '';
+    const fileB = (b.noteAttachments.length > 0) ? b.noteAttachments[0].fileName : '';
 
     return order === 'desc'
       ? fileA > fileB ? 1 : -1
@@ -72,7 +72,7 @@ export const Notes = (props) => {
       search
       multiColumnSearch>
       <TableHeaderColumn dataField="_id" isKey hidden>ID</TableHeaderColumn>
-      <TableHeaderColumn className="created-date" columnClassName="created-date" dataField="createdDate" dataSort dataFormat={formatCreatedDate} filterFormatted >Created</TableHeaderColumn>
+      <TableHeaderColumn className="created-date" columnClassName="created-date" dataField="createdAt" dataSort dataFormat={formatCreatedDate} filterFormatted >Created</TableHeaderColumn>
       <TableHeaderColumn className="created-by" columnClassName="created-by" dataField="createdBy" dataSort dataFormat={showCreatedBy} sortFunc={sortAuthor}>Author</TableHeaderColumn>
       <TableHeaderColumn className="note-type" columnClassName="note-type" dataField="noteContactType" dataSort hidden={attachmentStatus} >Contact</TableHeaderColumn>
       <TableHeaderColumn className="note" columnClassName="note" dataField="noteContent" dataSort dataFormat={formatNote} hidden={attachmentStatus} >Note</TableHeaderColumn>

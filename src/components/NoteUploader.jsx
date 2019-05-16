@@ -154,7 +154,7 @@ export class NoteUploader extends Component {
 
     this.props.initialize({ 
       contactType: this.contactTypes[0],
-      fileType: this.docTypes[0]
+      fileType: this.docTypes[18]
     })
   }
 
