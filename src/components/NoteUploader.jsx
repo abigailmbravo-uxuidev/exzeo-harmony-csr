@@ -241,10 +241,10 @@ export class NoteUploader extends Component {
       contactType: data.contactType,
       createdAt: moment().unix(),
       noteAttachments,
-      createdBy: JSON.stringify({
+      createdBy: {
         userId: user.userId,
         userName: `${user.profile.given_name} ${user.profile.family_name}`
-      })
+      }
     };
 
     const noteConfig = {
