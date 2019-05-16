@@ -74,7 +74,7 @@
   .mainContainer {
     display: flex;
     flex-direction: column;
-    height: calc(100% - 2.4375rem;);
+    height: calc(100% - 2.4375rem);
 
     form {
       display: flex;
@@ -138,8 +138,8 @@
           flex-direction: column;
           flex-grow: 1;
           flex-shrink: 1;
-          min-height: 4rem;
           margin: 0 0 ($padding*2);
+          min-height: 4rem;
 
           textarea {
             flex-grow: 1;
@@ -181,13 +181,13 @@
 
 .new-diary-file {
   position: absolute;
-  z-index: 1000;
   top: 9rem;
   bottom: 0;
   left: 12.5rem;
+  z-index: 1000;
   overflow: hidden;
-  width: 40%;
   min-width: 34rem;
+  width: 40%;
   background: $white;
   box-shadow: 0 0 30px 0 rgba($black, .3);
 
@@ -202,8 +202,8 @@
         .assignee {
           flex-grow: 0;
           flex-shrink: 0;
-          width: calc(100% - 10.5rem);
           margin-right: $padding;
+          width: calc(100% - 10.5rem);
         }
 
         .due {
@@ -219,9 +219,9 @@
         }
 
         .text-area-wrapper {
-          height: calc(100vh - 26.75rem);
-          min-height: 10rem;
           margin-bottom: 0;
+          min-height: 10rem;
+          height: calc(100vh - 26.75rem);
         }
       }
     }
@@ -230,15 +230,16 @@
 
 .new-note-file {
   position: absolute;
-  z-index: 1000;
   top: 9rem;
   right: 2.5rem;
   bottom: 0;
+  z-index: 1000;
   overflow: hidden;
-  width: 40%;
   min-width: 34rem;
+  width: 40%;
   background: $white;
   box-shadow: 0 0 30px 0 rgba($black, .3);
+
   @include transition(all 0.1s ease-in-out);
 }
 
@@ -254,8 +255,8 @@
         flex-shrink: 0;
 
         .btn-files {
-          color: $white;
           background: $bright-blue-darken-04;
+          color: $white;
         }
       }
     }
@@ -288,25 +289,25 @@
 
     .react-bs-table {
       .created-date {
-        width: 16%;
         min-width: 9.75rem;
+        width: 16%;
         white-space: normal;
       }
 
       .created-by {
-        width: 16%;
         min-width: 9.75rem;
+        width: 16%;
         white-space: normal;
       }
 
       .note-type {
-        width: 9%;
         min-width: 6rem;
+        width: 9%;
       }
 
       .file-type {
-        width: 16%;
         min-width: 12rem;
+        width: 16%;
         white-space: normal;
       }
 
@@ -315,14 +316,15 @@
       }
 
       .attachments {
-        width: 10%;
         min-width: 7rem;
+        width: 10%;
         white-space: normal;
 
         span {
           div {
-            cursor: pointer;
             color: $bright-blue;
+            cursor: pointer;
+
             @include transition(all 0.2s ease-in-out);
 
             &:hover {
@@ -390,10 +392,10 @@
                       display: flex;
                       flex-grow: 0;
                       flex-shrink: 0;
-                      min-width: 4px;
-                      min-height: 1rem;
                       margin-right: $padding/2;
                       margin-left: -$padding/2;
+                      min-width: 4px;
+                      min-height: 1rem;
 
                       &.gray {
                         border-radius: 2px;
@@ -481,17 +483,19 @@
                     align-items: center;
                     justify-content: center;
                     font-size: $font-size-base;
+
                     @include transition(all 0.1s ease-in-out);
 
                     i {
                       color: $bright-blue;
                       font-size: $font-size-base;
+
                       @include transition(all 0.1s ease-in-out);
                     }
 
                     &:hover {
-                      cursor: pointer;
                       color: $bright-blue-darken-04;
+                      cursor: pointer;
 
                       i {
                         color: $bright-blue-darken-04;
@@ -501,8 +505,8 @@
                 }
 
                 .sub-table {
-                  width: 100%;
                   margin: ($padding*-.5) (4rem + ($padding*-.75)) ($padding*-.5) (8rem + ($padding*-.75));
+                  width: 100%;
 
                   .table-header-wrapper {
                     display: none;
@@ -547,6 +551,7 @@
             border-radius: 0;
             background: none;
             font-weight: $font-weight-normal;
+
             @include button-variant($warm-gray-10, $white, rgba($bright-blue-darken-04, 0));
 
             &:hover {
@@ -558,9 +563,9 @@
           input[type="radio"] {
             &:checked {
               + span {
-                color: $warm-gray-14;
                 border-bottom: 5px solid $bright-blue-darken-04;
                 background: none;
+                color: $warm-gray-14;
               }
             }
           }
@@ -597,15 +602,15 @@
         tr {
           th {
             &.attachments {
-              width: 6%;
               min-width: 3rem;
+              width: 6%;
             }
           }
 
           td {
             &.attachments {
-              width: 6%;
               min-width: 3rem;
+              width: 6%;
               white-space: normal;
 
               span {
@@ -678,23 +683,23 @@
         }
 
         .created-date {
-          width: 16%;
           min-width: 9.75rem;
+          width: 16%;
         }
 
         .created-by {
-          width: 16%;
           min-width: 9.75rem;
+          width: 16%;
         }
 
         .file-type {
-          width: 20%;
           min-width: 10rem;
+          width: 20%;
         }
 
         .attachments {
-          width: 48%;
           min-width: 26.5rem;
+          width: 48%;
         }
       }
     }
