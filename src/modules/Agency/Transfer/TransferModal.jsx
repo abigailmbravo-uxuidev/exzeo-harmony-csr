@@ -73,6 +73,7 @@ export class TransferModal extends Component {
               <Field
                 label="Agency"
                 name="agencyCodeTo"
+                styleName="agencyCode"
                 dataTest="agencyCodeTo"
                 component={SelectTypeAhead}
                 answers={agencies}
@@ -80,6 +81,7 @@ export class TransferModal extends Component {
                 validate={validation.isRequired} />
               <Field
                 label="Agent"
+                styleName="agentCode"
                 name="agentCodeTo"
                 dataTest="agentCodeTo"
                 component={SelectTypeAhead}
