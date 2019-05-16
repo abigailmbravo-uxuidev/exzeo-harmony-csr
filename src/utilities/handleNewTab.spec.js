@@ -1,6 +1,5 @@
-import sinon from 'sinon';
 
-import { handleNewTab, handleNewTabClick, handleKeyPress }  from './handleNewTab';
+import { handleNewTab, handleDiaryClick }  from './handleNewTab';
 
   describe('test handleNewTab', () => {
     window.open = x => x;
@@ -48,36 +47,37 @@ import { handleNewTab, handleNewTabClick, handleKeyPress }  from './handleNewTab
     
   });
 
-  describe('test handleNewTabClick', () => {
+  describe('test handleDiaryClick', () => {
     window.open = x => x;
-    it('should handleNewTabClick for quote', () => {
-      const result = handleNewTabClick("12-44567878-01", 'Quote');
-      expect(result);
-    });
-    it('should handleNewTabClick for Policy', () => {
-      const result = handleNewTabClick("12-44567878-01", 'Policy');
+    it('should handleDiaryClick Quote', () => {
+      const result = handleDiaryClick("12-44567878-01", 'Quote');
       expect(result);
     });
 
-    it('should handleNewTabClick for Agent', () => {
-      const result = handleNewTabClick("60000", 'Agent');
+    it('should handleDiaryClick Policy', () => {
+      const result = handleDiaryClick("12-44567878-01", 'Policy');
       expect(result);
     });
 
-    it('should handleNewTabClick for Agency', () => {
-      const result = handleNewTabClick("20000", 'Agency');
+    it('should handleDiaryClick Agency', () => {
+      const result = handleDiaryClick("12-44567878-01", 'Agency');
+      expect(result);
+    });
+
+    it('should handleDiaryClick Agent', () => {
+      const result = handleDiaryClick("12-44567878-01", 'Agent');
       expect(result);
     });
   });
 
-  describe('test handleKeyPress', () => {
-    window.open = x => x;
-    it('should handleKeyPress for event 13', () => {
+  describe('test handleDiaryKeyPress', () => {
+    it('should handleDiaryKeyPress Quote', () => {
       const event = {
         charCode: 13
       }
-      const result = handleKeyPress(event, "12-44567878-01", 'Quote');
+      const result = handleDiaryClick(event, "12-44567878-01", 'Quote');
       expect(result);
     });
-  });
+
+  })
   
