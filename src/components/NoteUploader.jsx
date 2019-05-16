@@ -33,14 +33,14 @@ export const validate = (values) => {
 
 // TODO: Pull this from the list service
   const contactTypeOptions = {
-    'Agency Note': ['Change name/FEIN', 'Change Agent', 'Change Other', 'Concern', 'Correspondance', 'Other'],
-    'Agent Note': ['Change', 'Concern', 'Correspondance', 'Other'],
-    'Quote Note': ['Agent', 'Policyholder', 'Inspector', 'Other'],
-    'Policy Note': ['Agent', 'Policyholder', 'Lienholder', 'Internal', 'Inspector', 'Other']
+    'Agency': ['Change name/FEIN', 'Change Agent', 'Change Other', 'Concern', 'Correspondance', 'Other'],
+    'Agent': ['Change', 'Concern', 'Correspondance', 'Other'],
+    'Quote': ['Agent', 'Policyholder', 'Inspector', 'Other'],
+    'Policy': ['Agent', 'Policyholder', 'Lienholder', 'Internal', 'Inspector', 'Other']
   };
 
   const docTypeOptions = {
-    'Agency Note': [
+    'Agency': [
       'Addendum',
       'Agreement',
       'Application',
@@ -55,8 +55,8 @@ export const validate = (values) => {
       'W9',
       'W9 EIN'
     ],
-    'Agent Note': [],
-    'Quote Note': [
+    'Agent': [],
+    'Quote': [
       '4-pt Inspection',
       'Claims Documentation',
       'Consent To Rate Form',
@@ -80,7 +80,7 @@ export const validate = (values) => {
       'Wind Exclusion',
       'Wind Mitigation'
     ],
-    'Policy Note': [
+    'Policy': [
       '4-pt Inspection',
       'AI Change',
       'AOR Change',
@@ -147,14 +147,20 @@ export class NoteUploader extends Component {
   };
 
   componentDidMount() {
-    const { noteType, user } = this.props;
+    const { initialize, resourceType, user } = this.props;
 
-    this.contactTypes = noteType ? contactTypeOptions[noteType] : [];
-    this.docTypes = noteType ? docTypeOptions[noteType] : [];
+    this.contactTypes = resourceType ? contactTypeOptions[resourceType] : [];
+    this.docTypes = resourceType ? docTypeOptions[resourceType] : [];
 
-    this.props.initialize({ 
+    const defaultValues = {
+      Agency: 0,
+      Quote: 9,
+      Policy: 17
+    };
+    
+    initialize({ 
       contactType: this.contactTypes[0],
-      fileType: this.docTypes[18]
+      fileType: this.docTypes[defaultValues[resourceType]]
     })
   }
 
@@ -252,15 +258,19 @@ export class NoteUploader extends Component {
       routingKey: 'harmony.note.addNote', 
       data: noteData
     };
+
+    const { openDiary } = data;
     try {
       const { data } = await callService(noteConfig, 'addNote');
+      
       if (window.location.pathname.includes('/notes')) {
         const numberType = mapResourceToNumber[resourceType];
         const numbers = numberType === 'policyNumber'
           ? [noteData.number, noteData.source] : [noteData.number];
         fetchNotes(numbers, numberType);
       }
-      if(data.openDiary) {
+
+      if(openDiary) {
         toggleDiary({
           companyCode,
           state,
