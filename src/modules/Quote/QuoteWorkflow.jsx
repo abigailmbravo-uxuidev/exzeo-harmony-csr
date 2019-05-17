@@ -216,9 +216,10 @@ export class QuoteBase extends React.Component {
                       customComponents={this.customComponents}
                       stickyFooter
                       renderFooter={({ pristine, submitting, dirty, form }) => shouldRenderFooter &&
+
                         <QuoteFooter
                           handlePrimaryClick={this.primaryClickHandler}
-                          handlResetForm={form.reset}
+                          handleResetForm={form.reset}
                           currentStep={currentStep}
                           submitting={submitting}
                           isPrimaryDisabled={(notOnApplication && (pristine || submitting)) || disableForApplication || checkApplicationSent}

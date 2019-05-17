@@ -4,7 +4,7 @@ import Footer from '../../components/Common/Footer';
 import { Button } from '@exzeo/core-ui/src';
 import Share from '@exzeo/core-ui/src/@Harmony/Summary/Share';
 
-function QuoteFooter({ submitting, isPrimaryDisabled, handlePrimaryClick, handlResetForm, currentStep }) {
+function QuoteFooter({ submitting, isPrimaryDisabled, handlePrimaryClick, handleResetForm, currentStep }) {
 
   if(currentStep === 'summary'){
     return (<Share submitting={submitting} handleShare={handlePrimaryClick} />)
@@ -16,7 +16,7 @@ function QuoteFooter({ submitting, isPrimaryDisabled, handlePrimaryClick, handlR
         <div className="btn-wrapper">
           {currentStep !== 'application' &&
             <Button
-              onClick={handlResetForm}
+              onClick={handleResetForm}
               data-test="reset"
               className={Button.constants.classNames.secondary}
               label="Reset"
