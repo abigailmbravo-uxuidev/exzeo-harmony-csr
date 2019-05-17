@@ -25,7 +25,15 @@ const CONFIG = {
 export class AppWrapper extends Component {
   render() {
     const {
-      header, pageTitle, match, context, onToggleDiaries, showDiaries, openDiaryCount, headerDetails, modalHandlers
+      header,
+      pageTitle,
+      match,
+      context,
+      onToggleDiaries,
+      showDiaries,
+      openDiaryCount,
+      headerDetails,
+      modalHandlers,
     } = this.props;
 
     const appConfig = CONFIG[context];
@@ -47,7 +55,7 @@ export class AppWrapper extends Component {
           <aside className="content-panel-left">
             <SideNav match={match} />
           </aside>
-          {this.props.render()}
+          {this.props.children || this.props.render()}
         </main>
       </React.Fragment>
     );
@@ -59,7 +67,7 @@ AppWrapper.defaultProps = {
 };
 
 const mapStateToProps = (state, ownProps) => {
-  const selectors = {policy: getPolicyDetails, quote: getQuoteDetails}
+  const selectors = { policy: getPolicyDetails, quote: getQuoteDetails };
   return {
     headerDetails: selectors[ownProps.context](state),
     openDiaryCount: getOpenDiaries(state).length

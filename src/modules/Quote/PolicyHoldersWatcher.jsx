@@ -1,5 +1,5 @@
 import React from 'react';
-import { OnChangeListener, Field } from '@exzeo/core-ui';
+import { OnChangeListener, Field } from '@exzeo/core-ui/src';
 import _get from 'lodash/get';
 
 const PolicyHoldersWatcher = ({ fieldPrefix, watchField, values }) => {

@@ -19,18 +19,17 @@ import { getZipcodeSettings, getNotes } from '../../state/actions/service.action
 import { fetchDiaries } from '../../state/actions/diary.actions';
 import { getEnumsForQuoteWorkflow, getBillingOptions } from '../../state/actions/list.actions';
 import { getQuoteSelector } from '../../state/selectors/choreographer.selectors';
-// import Footer from '../../components/Common/Footer';
-// import AdditionalInterests from '../../components/Quote/AdditionalInterests';
 import { getAgentList, getAgencyList } from '../../state/selectors/agency.selector';
 import { getDiariesForTable } from '../../state/selectors/diary.selectors';
+
 import MOCK_CONFIG_DATA from '../../mock-data/mockHO3';
 import { ROUTES_NOT_HANDLED_BY_GANDALF, ROUTES_NOT_USING_FOOTER, PAGE_ROUTING } from './constants/workflowNavigation';
 import { formatForSubmit } from '../../utilities/choreographer';
 
 import Application from './Application'
-import PolicyHolders from './Coverage/PolicyHolders';
+import PolicyHolders from './PolicyHolders';
+import NotesFiles from '../NotesFiles';
 import QuoteFooter from './QuoteFooter';
-import NotesFiles from '../NotesFiles/NotesFiles';
 
 const FORM_ID = 'QuoteWorkflowCSR';
 
@@ -121,9 +120,8 @@ export class QuoteBase extends React.Component {
     const currentStep = this.props.location.pathname.split('/')[3];
     const { modelName, submitData, pageName } = formatForSubmit(values, currentStep, this.props);
     await this.props.updateQuote({ data: submitData, modelName, pageName, quoteData, options });
-    if(currentStep === 'application'){
+    if (currentStep === 'application'){
       this.setState({ applicationSent: true });
-
     }
   };
 
