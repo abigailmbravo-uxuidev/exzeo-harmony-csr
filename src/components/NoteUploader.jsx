@@ -59,7 +59,6 @@ export const validate = (values) => {
     'Quote': [
       '4-pt Inspection',
       'Claims Documentation',
-      'Consent To Rate Form',
       'Correspondence',
       'Elevation Certificate',
       'Flood Selection Form',
