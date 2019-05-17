@@ -14,7 +14,7 @@ const mergeNotes = (notes, files ) => {
         _id: file.envelopeId ? file.envelopeId : file.fileUrl,
         contactType: 'system',
         createdBy: { userName: 'System', userId: file.createdBy },
-        createdDate: moment.unix(file.createdDate),
+        createdAt: moment.unix(file.createdDate),
         noteAttachments: [
           {
             fileType: 'System',

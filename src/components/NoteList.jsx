@@ -28,9 +28,7 @@ export const Notes = (props) => {
   const showCreatedBy = createdBy => (createdBy ? createdBy.userName : '');
   const attachmentCount = attachments => (attachments ? attachments.length : 0);
   const attachmentType = attachments => (attachments.length > 0 ? attachments[0].fileType : '');
-  const formatCreatedDate = createdDate => {
-    console.log(createdDate)
-    return date.formattedLocalDate(createdDate);}
+  const formatCreatedDate = createdDate => date.formattedLocalDate(createdDate);
   const formatNote = note => (note ? note.replace(/\r|\n/g, '<br>') : '');
   const attachmentFilter = cell => (cell.length > 0 ? cell[0].fileName : null);
   const sortAuthor = (a, b, order) => {
