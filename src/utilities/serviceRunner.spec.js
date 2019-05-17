@@ -1,7 +1,7 @@
 import sinon from 'sinon';
 
 import handleError from './handleError';
-import { callService } from './serviceRunner';
+import { callService } from '@exzeo/core-ui/src/@Harmony/Domain/Api/serviceRunner';
 
 describe('Service runner tests', () => {
 

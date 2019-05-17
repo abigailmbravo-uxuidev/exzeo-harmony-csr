@@ -1,6 +1,6 @@
 import moment from 'moment/moment';
 
-import * as serviceRunner from '../../utilities/serviceRunner';
+import * as serviceRunner from '@exzeo/core-ui/src/@Harmony/Domain/Api/serviceRunner';
 import { sortDiariesByDate } from '../../utilities/diaries';
 import { SECONDARY_DATE_FORMAT } from '../../constants/dates';
 import {

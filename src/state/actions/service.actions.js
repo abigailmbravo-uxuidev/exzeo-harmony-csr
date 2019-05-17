@@ -1,6 +1,6 @@
 import moment from 'moment';
 import { batchActions } from 'redux-batched-actions';
-import * as serviceRunner from '../../utilities/serviceRunner';
+import * as serviceRunner from '@exzeo/core-ui/src/@Harmony/Domain/Api/serviceRunner';
 import * as types from './actionTypes';
 import * as errorActions from './error.actions';
 

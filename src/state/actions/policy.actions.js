@@ -1,5 +1,5 @@
 // temporary full path import until we can find a better way to mock network requests
-import * as serviceRunner from '@exzeo/core-ui/src/@Harmony/Domain/serviceRunner';
+import * as serviceRunner from '@exzeo/core-ui/src/@Harmony/Domain/Api/serviceRunner';
 
 import { convertToRateData } from '../../utilities/endorsementModel';
 import * as types from './actionTypes';

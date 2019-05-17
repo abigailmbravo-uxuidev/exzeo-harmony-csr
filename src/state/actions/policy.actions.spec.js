@@ -1,7 +1,7 @@
 import configureStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import sinon from 'sinon';
-import * as serviceRunner from '@exzeo/core-ui/src/@Harmony/Domain/serviceRunner';
+import * as serviceRunner from '@exzeo/core-ui/src/@Harmony/Domain/Api/serviceRunner';
 import * as types from './actionTypes';
 import * as endorsementUtil from '../../utilities/endorsementModel';
 import * as policyStateActions from './policy.actions';

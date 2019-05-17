@@ -1,4 +1,4 @@
-import * as serviceRunner from '../../utilities/serviceRunner';
+import * as serviceRunner from '@exzeo/core-ui/src/@Harmony/Domain/Api/serviceRunner';
 import { POLICY_RESOURCE_TYPE, QUOTE_RESOURCE_TYPE } from '../../constants/diaries';
 import { removeTerm } from '../../utilities/format';
 

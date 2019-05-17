@@ -15,18 +15,17 @@ import { setAppState } from '../../state/actions/appState.actions';
 import { setAppError } from '../../state/actions/error.actions';
 import { getQuote, updateQuote } from '../../state/actions/quote.actions';
 import { getAgencies, getAgentsByAgencyCode } from '../../state/actions/agency.actions';
-import { getZipcodeSettings, getUnderwritingQuestions, getNotes } from '../../state/actions/service.actions';
+import { getZipcodeSettings, getNotes } from '../../state/actions/service.actions';
 import { fetchDiaries } from '../../state/actions/diary.actions';
 import { getEnumsForQuoteWorkflow, getBillingOptions } from '../../state/actions/list.actions';
 import { getQuoteSelector } from '../../state/selectors/choreographer.selectors';
-import { getFormattedUWQuestions } from '../../state/selectors/underwritingQuestions.selectors';
 // import Footer from '../../components/Common/Footer';
 // import AdditionalInterests from '../../components/Quote/AdditionalInterests';
 import { getAgentList, getAgencyList } from '../../state/selectors/agency.selector';
 import { getDiariesForTable } from '../../state/selectors/diary.selectors';
 import MOCK_CONFIG_DATA from '../../mock-data/mockHO3';
 import { ROUTES_NOT_HANDLED_BY_GANDALF, ROUTES_NOT_USING_FOOTER, PAGE_ROUTING } from './constants/workflowNavigation';
-import { startWorkflow, formatForSubmit } from '../../utilities/choreographer';
+import { formatForSubmit } from '../../utilities/choreographer';
 
 import Application from './Application'
 import PolicyHolders from './Coverage/PolicyHolders';
@@ -68,7 +67,6 @@ export class QuoteBase extends React.Component {
         this.props.getAgencies(quoteData.companyCode, quoteData.state);
         this.props.getAgentsByAgencyCode(quoteData.agencyCode);
         this.props.getZipcodeSettings(quoteData.companyCode, quoteData.state, quoteData.product, quoteData.property.physicalAddress.zip);
-        this.props.getUnderwritingQuestions(quoteData.companyCode, quoteData.state, quoteData.product, quoteData.property);
         this.props.fetchDiaries({ resourceId: quoteData.quoteNumber, resourceType: QUOTE_RESOURCE_TYPE });
       }
 
@@ -145,7 +143,7 @@ export class QuoteBase extends React.Component {
   getNotes = () => {
     const { quoteData } = this.props;
     this.props.getNotes(quoteData.quoteNumber);
-  }
+  };
 
   render() {
     const {
@@ -229,10 +227,6 @@ export class QuoteBase extends React.Component {
                         />
                       }
                     />
-
-
-
-
                   </React.Fragment>
                 }
               </div>
@@ -268,9 +262,6 @@ const mapStateToProps = state => {
     quoteData: getQuoteSelector(state),
     agents: getAgentList(state),
     agencies: getAgencyList(state),
-    zipCodeSettings: state.service.getZipcodeSettings,
-    underwritingQuestions: getFormattedUWQuestions(state),
-    billingConfig: state.list.billingConfig,
     options: state.list,
     isLoading: state.ui.isLoading,
     diaries: getDiariesForTable(state),
@@ -279,14 +270,12 @@ const mapStateToProps = state => {
 };
 
 export default connect(mapStateToProps, {
-  startWorkflow,
   setAppState,
   setAppError,
   getQuote,
   getAgencies,
   getAgentsByAgencyCode,
   getZipcodeSettings,
-  getUnderwritingQuestions,
   getBillingOptions,
   getEnumsForQuoteWorkflow,
   updateQuote,
