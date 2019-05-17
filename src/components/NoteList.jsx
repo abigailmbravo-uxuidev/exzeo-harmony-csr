@@ -23,11 +23,16 @@ export const filterNotesByType = (notes, type) => {
 
 export const Notes = (props) => {
   const { notes, attachmentStatus } = props;
+  
+  const toTitleCase = str =>
+    str.toLowerCase().split(' ').map(s => s.replace(s[0], s[0].toUpperCase())).join(' ');
+  
+  const getFileName = a => a.fileName ? a.fileName : a.fileUrl.substring(a.fileUrl.lastIndexOf("/") + 1);
 
   const options = { searchPanel: props => (<SearchPanel {...props} />) };
   const showCreatedBy = createdBy => (createdBy ? createdBy.userName : '');
   const attachmentCount = attachments => (attachments ? attachments.length : 0);
-  const attachmentType = attachments => (attachments.length > 0 ? attachments[0].fileType : '');
+  const attachmentType = attachments => (attachments.length > 0 ? toTitleCase(attachments[0].fileType) : '');
   const formatCreatedDate = createdDate => date.formattedLocalDate(createdDate);
   const formatNote = note => (note ? note.replace(/\r|\n/g, '<br>') : '');
   const attachmentFilter = cell => (cell.length > 0 ? cell[0].fileName : null);
@@ -38,8 +43,6 @@ export const Notes = (props) => {
       ? a.createdBy.userName > b.createdBy.userName ? 1 : -1
       : a.createdBy.userName < b.createdBy.userName ? 1 : -1;
   };
-
-  const getFileName = a => a.fileName ? a.fileName : a.fileUrl.substring(a.fileUrl.lastIndexOf("/") + 1);
 
   const sortFiles = (a, b, order) => {
     const fileA = (a.noteAttachments.length > 0) ? getFileName(a.noteAttachments[0]) : '';
