@@ -48,7 +48,11 @@ export function setNotes(notes) {
  * @returns {Function}
  */
 export function fetchNotes(numbers, numberType) {
-  const notesQuery = numbers.map(number => ({ number: removeTerm(number), numberType }));
+  const notesQuery = numbers.map((number, i) => {
+    const noteType = i === 0 ? numberType : 'quoteNumber';
+    return { number: removeTerm(number), numberType: noteType };
+  });
+
   const filesQuesry = numbers.map(number => number).join(',');
 
   const notesConfig = {
