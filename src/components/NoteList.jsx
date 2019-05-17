@@ -39,9 +39,11 @@ export const Notes = (props) => {
       : a.createdBy.userName < b.createdBy.userName ? 1 : -1;
   };
 
+  const getFileName = a => a.fileName ? a.fileName : a.fileUrl.substring(a.fileUrl.lastIndexOf("/") + 1);
+
   const sortFiles = (a, b, order) => {
-    const fileA = (a.noteAttachments.length > 0) ? a.noteAttachments[0].fileName : '';
-    const fileB = (b.noteAttachments.length > 0) ? b.noteAttachments[0].fileName : '';
+    const fileA = (a.noteAttachments.length > 0) ? getFileName(a.noteAttachments[0]) : '';
+    const fileB = (b.noteAttachments.length > 0) ? getFileName(b.noteAttachments[0]) : '';
 
     return order === 'desc'
       ? fileA > fileB ? 1 : -1
@@ -51,8 +53,7 @@ export const Notes = (props) => {
   const attachmentUrl = attachments => (
     <span>
       {attachments.map((attachment, i) => {
-        const url = attachment.fileUrl;
-        const fileName = attachment.fileName ? attachment.fileName : url.substring(url.lastIndexOf("/") + 1);
+        const fileName = getFileName(attachment);
         return (
             <Downloader
             fileName={fileName}
