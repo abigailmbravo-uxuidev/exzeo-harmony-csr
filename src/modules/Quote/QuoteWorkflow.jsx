@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Loader } from '@exzeo/core-ui';
+import { Prompt } from 'react-router-dom';
 import { Gandalf, getConfigForJsonTransform } from '@exzeo/core-ui/src/@Harmony';
 import { defaultMemoize } from 'reselect';
 
@@ -205,7 +206,7 @@ export class QuoteBase extends React.Component {
             showDiaries={showDiaries}
             render={() => (
               <React.Fragment>
-
+                <Prompt when={this.state.isDirty} message="Are you sure you want to leave with unsaved changes?" />
                 <div className="content-wrapper">
                   {shouldUseGandalf &&
                   <React.Fragment>
@@ -223,6 +224,7 @@ export class QuoteBase extends React.Component {
                       customHandlers={customHandlers}
                       customComponents={this.customComponents}
                       stickyFooter
+                      promptUnsavedChanges
                       renderFooter={({ pristine, submitting, dirty, form }) => shouldRenderFooter &&
                         <QuoteFooter
                           handlePrimaryClick={this.primaryClickHandler}
