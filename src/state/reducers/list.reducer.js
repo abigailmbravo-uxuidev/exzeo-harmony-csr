@@ -6,8 +6,6 @@ export default function listReducer(state = initialState.list, action) {
   switch (action.type) {
     case types.SET_AGENTS:
       return setAgents(state, action);
-    case listTypes.SET_BILLING_OPTIONS:
-      return setBillingOptions(state, action);
     case listTypes.SET_ZIP_SETTINGS:
       return setZipCodeSettings(state, action);
     case listTypes.SET_ENUMS:
@@ -86,38 +84,5 @@ function setZipCodeSettings(state, action) {
   return {
     ...state,
     zipCodeSettings: action.zipCodeSettings,
-  };
-}
-
-function getBillingInfo(billingData = {}) {
-  const { options = [], paymentPlans = {} } = billingData;
-
-
-  const billingOptions = [];
-  const billToConfig = {};
-
-  options.forEach(option => {
-    billingOptions.push(({ label: option.displayText, answer: option.billToId }));
-    billToConfig[`${option.billToId}`] = {
-      billToType:option.billToType,
-      availablePlans: option.payPlans,
-      payPlanOptions: option.payPlans.map(p => ({ label: p, answer: p })),
-    };
-  });
-
-  return {
-    billingOptions,
-    billToConfig,
-    paymentPlans,
-  };
-}
-
-function setBillingOptions(state, action) {
-  // may move this out into a selector... (maybe)
-  const billingData = getBillingInfo(action.billingOptions, action.quote);
-
-  return {
-    ...state,
-    billingConfig: billingData || initialState.list.billingConfig,
   };
 }

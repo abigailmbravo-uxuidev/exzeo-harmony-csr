@@ -18,7 +18,7 @@ import { getQuote, updateQuote } from '../../state/actions/quote.actions';
 import { getAgencies, getAgentsByAgencyCode } from '../../state/actions/agency.actions';
 import { getZipcodeSettings, getNotes } from '../../state/actions/service.actions';
 import { fetchDiaries } from '../../state/actions/diary.actions';
-import { getEnumsForQuoteWorkflow, getBillingOptions } from '../../state/actions/list.actions';
+import { getEnumsForQuoteWorkflow } from '../../state/actions/list.actions';
 import { getQuoteSelector } from '../../state/selectors/choreographer.selectors';
 import { getAgentList, getAgencyList } from '../../state/selectors/agency.selector';
 import { getDiariesForTable } from '../../state/selectors/diary.selectors';
@@ -96,11 +96,6 @@ export class QuoteBase extends React.Component {
 
     // const response = await serviceRunner.callService(transferConfig, 'retrieveDocumentTemplate');
     this.setState(() => ({ gandalfTemplate: MOCK_CONFIG_DATA }));
-  };
-
-  getBillingOptions = () => {
-    const { quoteData } = this.props;
-    this.props.getBillingOptions(quoteData);
   };
 
   handleToggleDiaries = () => {
@@ -203,7 +198,7 @@ export class QuoteBase extends React.Component {
     const shouldRenderFooter = ROUTES_NOT_USING_FOOTER.indexOf(currentStep) === -1;
     const currentPage = PAGE_ROUTING[currentStep];
     const transformConfig = this.getConfigForJsonTransform(gandalfTemplate);
-  
+
     const checkApplicationSent = quoteData.quoteState ==='Application Sent DocuSign' || this.state.applicationSent;
     const onApplication = PAGE_ROUTING.application === currentPage;
 
@@ -219,7 +214,6 @@ export class QuoteBase extends React.Component {
       handleSubmit: this.handleGandalfSubmit,
       history: history,
       handleAgencyChange: this.handleAgencyChange,
-      getBillingOptions: this.getBillingOptions,
       getNotes: this.getNotes,
       setAppError: this.props.setAppError,
       toggleDiary: this.props.toggleDiary,
@@ -334,7 +328,6 @@ export default connect(mapStateToProps, {
   getAgencies,
   getAgentsByAgencyCode,
   getZipcodeSettings,
-  getBillingOptions,
   getEnumsForQuoteWorkflow,
   updateQuote,
   getNotes,

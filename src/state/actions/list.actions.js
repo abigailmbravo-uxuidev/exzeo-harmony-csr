@@ -94,37 +94,3 @@ export async function fetchMortgagees() {
   return response;
 }
 
-/**
- *
- * @param quote
- * @returns {Function}
- */
-export function getBillingOptions(quote) {
-  return async dispatch => {
-
-    try {
-      const config = {
-        service: 'billing',
-        method: 'POST',
-        path: 'payment-options-for-quoting',
-        data: {
-          effectiveDate: date.formatToUTC(quote.effectiveDate, quote.property.timezone),
-          policyHolders: quote.policyHolders,
-          additionalInterests: quote.additionalInterests,
-          netPremium: quote.rating.netPremium,
-          totalPremium: quote.rating.totalPremium,
-          fees: {
-            empTrustFee: quote.rating.worksheet.fees.empTrustFee,
-            mgaPolicyFee: quote.rating.worksheet.fees.mgaPolicyFee
-          }
-        }
-      };
-
-      const response = await serviceRunner.callService(config, 'getBillingOptions');
-      dispatch(setBillingOptions(response.data.result, quote));
-    } catch (error) {
-      dispatch(setAppError(error));
-    }
-  };
-}
-
