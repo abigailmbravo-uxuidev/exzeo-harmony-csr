@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Loader } from '@exzeo/core-ui';
 import { Prompt } from 'react-router-dom';
-import { Gandalf, getConfigForJsonTransform } from '@exzeo/core-ui/src/@Harmony';
+import { Loader, Alert, Button } from '@exzeo/core-ui';
+import { getConfigForJsonTransform, Gandalf } from '@exzeo/core-ui/src/@Harmony';
 import { defaultMemoize } from 'reselect';
 
 import UnderwritingValidationBarConnect from '../../components/Quote/UnderwritingValidationBar';
@@ -44,7 +44,10 @@ export class QuoteBase extends React.Component {
       formReset: null,
       submitting: false,
       applicationSent: false,
-      isDirty: false
+      isDirty: false,
+      hasUnsavedChanges: false,
+      nextLocation: null,
+      confirmedNavigation: false
     };
 
     this.formRef = React.createRef();
@@ -149,6 +152,37 @@ export class QuoteBase extends React.Component {
     this.setState(() => ({ isDirty }));
   };
 
+  handleBlockedNavigation = (nextLocation) => {
+    const { confirmedNavigation } = this.state;
+    if(!confirmedNavigation) {
+    this.toggleUnsavedChanges();
+    this.setState(() => ({ nextLocation }));
+    return false;
+    } 
+    // TODO: Need to reset the form instead of using confirmedNavigation state 
+    this.setState(() => ({ confirmedNavigation: false }));
+    return true;
+  }
+
+  toggleUnsavedChanges = () => {
+    const { hasUnsavedChanges } = this.state;
+    this.setState(() => ({ hasUnsavedChanges: !hasUnsavedChanges }));
+  }
+
+  handleConfirmNavigationClick = () => {
+    const { history } = this.props;
+    const { nextLocation } = this.state;
+    this.setState({
+      confirmedNavigation: true
+   }, () => {
+      //this.formRef.current.form.reset();
+      this.toggleUnsavedChanges();
+      history.push(nextLocation.pathname);
+   })
+
+
+  }
+
   render() {
     const {
       agencies,
@@ -162,7 +196,7 @@ export class QuoteBase extends React.Component {
       quoteData,
     } = this.props;
 
-    const { showDiaries, needsConfirmation, gandalfTemplate } = this.state;
+    const { showDiaries, gandalfTemplate } = this.state;
 
     const currentStep = location.pathname.split('/')[3];
     const shouldUseGandalf = (gandalfTemplate && ROUTES_NOT_HANDLED_BY_GANDALF.indexOf(currentStep) === -1);
@@ -206,7 +240,23 @@ export class QuoteBase extends React.Component {
             showDiaries={showDiaries}
             render={() => (
               <React.Fragment>
-                <Prompt when={this.state.isDirty} message="Are you sure you want to leave with unsaved changes?" />
+                <Prompt when={this.state.isDirty} message={this.handleBlockedNavigation} />
+                {this.state.hasUnsavedChanges && 
+                  <Alert
+                    modalClassName="unsaved-changes"
+                    headerIcon="fa fa-exclamation-circle"
+                    header="Unsaved Changes"
+                    text="Are you sure you want to leave with unsaved changes?"
+                    handleConfirm={this.handleConfirmNavigationClick}
+                    confirmLabel="Yes"
+                    renderSecondary={() => (
+                      <Button
+                      className={Button.constants.classNames.seconday}
+                      dataTest="modal-confirm"
+                      onClick={this.toggleUnsavedChanges}>No</Button>
+                    )}
+                  />
+                 }
                 <div className="content-wrapper">
                   {shouldUseGandalf &&
                   <React.Fragment>
