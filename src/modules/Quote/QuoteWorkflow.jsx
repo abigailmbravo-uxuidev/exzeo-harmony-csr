@@ -168,9 +168,9 @@ export class QuoteBase extends React.Component {
     const onApplication = PAGE_ROUTING.application === currentPage;
 
     const disableForApplication = onApplication && (Array.isArray(quoteData.underwritingExceptions) &&
-    quoteData.underwritingExceptions.filter(uw => !uw.overridden).length > 0 &&
-    PAGE_ROUTING.application === currentPage);
+    quoteData.underwritingExceptions.filter(uw => !uw.overridden).length > 0 && onApplication);
 
+    const disableForShare = PAGE_ROUTING.summary === currentPage && !['Qualified','Ready'].includes(quoteData.quoteInputState);
     // TODO going to use Context to pass these directly to custom components,
     //  so Gandalf does not need to know about these.
     const customHandlers = {
@@ -223,7 +223,7 @@ export class QuoteBase extends React.Component {
                           handleResetForm={form.reset}
                           currentStep={currentStep}
                           submitting={submitting}
-                          isPrimaryDisabled={pristine || submitting || disableForApplication || checkApplicationSent}
+                          isPrimaryDisabled={pristine || submitting || disableForApplication || checkApplicationSent || disableForShare}
                         />
                       }
                     />
