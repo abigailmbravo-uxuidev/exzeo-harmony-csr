@@ -44,13 +44,12 @@ export class QuoteBase extends React.Component {
       formReset: null,
       submitting: false,
       applicationSent: false,
-      isDirty: false,
       hasUnsavedChanges: false,
       nextLocation: null,
       confirmedNavigation: false
     };
 
-    this.formRef = React.createRef();
+    this.formInstance = null;
 
     this.customComponents = {
       $POLICYHOLDERS: PolicyHolders,
@@ -143,8 +142,8 @@ export class QuoteBase extends React.Component {
     this.props.getNotes(quoteData.quoteNumber);
   };
 
-  setOnDirty = (isDirty) => {
-    this.setState(() => ({ isDirty }));
+  setFormInstance = (formInstance) => {
+    this.formInstance = formInstance;
   };
 
   handleBlockedNavigation = (nextLocation) => {
@@ -170,12 +169,10 @@ export class QuoteBase extends React.Component {
     this.setState({
       confirmedNavigation: true
    }, () => {
-      //this.formRef.current.form.reset();
+      this.formInstance.reset();
       this.toggleUnsavedChanges();
       history.push(nextLocation.pathname);
    })
-
-
   }
 
   render() {
@@ -206,6 +203,9 @@ export class QuoteBase extends React.Component {
     quoteData.underwritingExceptions.filter(uw => !uw.overridden).length > 0 && onApplication);
 
     const disableForShare = PAGE_ROUTING.summary === currentPage && !['Qualified','Ready'].includes(quoteData.quoteInputState);
+
+    const formState =this.formInstance ? this.formInstance.getState() : {}
+    const { dirty } = formState;
     // TODO going to use Context to pass these directly to custom components,
     //  so Gandalf does not need to know about these.
     const customHandlers = {
@@ -217,7 +217,7 @@ export class QuoteBase extends React.Component {
       getNotes: this.getNotes,
       setAppError: this.props.setAppError,
       toggleDiary: this.props.toggleDiary,
-      onDirtyCallback: this.setOnDirty
+      setFormInstance: this.setFormInstance
     };
     return (
       <div className="app-wrapper csr quote">
@@ -234,7 +234,7 @@ export class QuoteBase extends React.Component {
             showDiaries={showDiaries}
             render={() => (
               <React.Fragment>
-                <Prompt when={this.state.isDirty} message={this.handleBlockedNavigation} />
+                <Prompt when={dirty} message={this.handleBlockedNavigation} />
                 {this.state.hasUnsavedChanges && 
                   <Alert
                     modalClassName="unsaved-changes"
@@ -269,7 +269,7 @@ export class QuoteBase extends React.Component {
                       customComponents={this.customComponents}
                       stickyFooter
                       promptUnsavedChanges
-                      renderFooter={({ pristine, submitting, dirty, form }) => shouldRenderFooter &&
+                      renderFooter={({ pristine, submitting, form }) => shouldRenderFooter &&
                         <QuoteFooter
                           handlePrimaryClick={this.primaryClickHandler}
                           handleResetForm={form.reset}
