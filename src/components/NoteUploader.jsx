@@ -153,7 +153,7 @@ export class NoteUploader extends Component {
 
     const defaultValues = {
       Agency: 0,
-      Quote: 9,
+      Quote: 8,
       Policy: 17
     };
     
