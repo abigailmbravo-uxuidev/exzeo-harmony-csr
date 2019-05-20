@@ -75,10 +75,14 @@ export function getQuote(quoteId, currentPage) {
 function formatQuoteForSubmit(data) {
   const quote = { ...data };
   quote.effectiveDate = date.formatToUTC(date.formatDate(data.effectiveDate, date.FORMATS.SECONDARY), data.property.timezone);
-  quote.policyHolders[0].electronicDelivery = data.policyHolders[0].electronicDelivery || false;
-  quote.policyHolders[0].order = data.policyHolders[0].order || 0;
-  quote.policyHolders[0].entityType = data.policyHolders[0].entityType || "Person";
-  if (data.policyHolders[1]) {
+
+  if (data.policyHolders.length > 0) {
+    quote.policyHolders[0].electronicDelivery = data.policyHolders[0].electronicDelivery || false;
+    quote.policyHolders[0].order = data.policyHolders[0].order || 0;
+    quote.policyHolders[0].entityType = data.policyHolders[0].entityType || "Person";
+  }
+  
+  if (data.policyHolders.length > 1) {
     quote.policyHolders[1].order = data.policyHolders[1].order || 1;
     quote.policyHolders[1].entityType = data.policyHolders[1].entityType || "Person";
   }
