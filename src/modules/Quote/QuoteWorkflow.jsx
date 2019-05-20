@@ -42,7 +42,8 @@ export class QuoteBase extends React.Component {
       showDiaries: false,
       formReset: null,
       submitting: false,
-      applicationSent: false
+      applicationSent: false,
+      isDirty: false
     };
 
     this.formRef = React.createRef();
@@ -143,6 +144,10 @@ export class QuoteBase extends React.Component {
     this.props.getNotes(quoteData.quoteNumber);
   };
 
+  setOnDirty = (isDirty) => {
+    this.setState(() => ({ isDirty }));
+  };
+
   render() {
     const {
       agencies,
@@ -182,7 +187,8 @@ export class QuoteBase extends React.Component {
       getBillingOptions: this.getBillingOptions,
       getNotes: this.getNotes,
       setAppError: this.props.setAppError,
-      toggleDiary: this.props.toggleDiary
+      toggleDiary: this.props.toggleDiary,
+      onDirtyCallback: this.setOnDirty
     };
     return (
       <div className="app-wrapper csr quote">
