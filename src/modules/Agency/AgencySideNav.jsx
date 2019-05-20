@@ -4,8 +4,10 @@ import { reduxForm, Field } from 'redux-form';
 import { Select } from '@exzeo/core-ui';
 import { connect } from 'react-redux';
 
+import { toggleNote } from '../../state/actions/ui.actions';
 import { createBranch } from '../../state/actions/agency.actions';
 import { getBranchesList, getBranchInitialValues } from '../../state/selectors/agency.selector';
+import { AGENCY_RESOURCE_TYPE } from '../../constants/diaries';
 
 const setDisabled = agencyCode => (agencyCode === 'new' ? 'disabled' : '');
 
@@ -32,7 +34,7 @@ const csrLinks = (agencyCode, branchCode) => [{
 },
 {
   key: 'notes',
-  link: '#',
+  link: `/agency/${agencyCode}/${branchCode}/notes`,
   label: 'Notes / Files',
   styleName: 'notes disabled',
   exact: true
@@ -56,7 +58,7 @@ export class SideNav extends React.Component {
     branchSelectionRoute: null
   }
 
-  handleBranchSelection =(event) => {
+  handleBranchSelection = (event) => {
     const { target: { value } } = event;
     const { agencyCode } = this.props;
     if (Number(value) > 0) {
@@ -67,6 +69,15 @@ export class SideNav extends React.Component {
     return value;
   }
 
+  newNote = () => {
+    const { toggleNote, agencyCode } = this.props;
+    toggleNote({
+      noteType: 'Agency Note',
+      documentId: agencyCode,
+      resourceType: AGENCY_RESOURCE_TYPE
+    });
+  };
+
   render() {
     const {
       agencyCode, branchCode, branchesList, match: { url }
@@ -74,10 +85,10 @@ export class SideNav extends React.Component {
 
     const { branchSelectionRoute } = this.state;
     return (
-      <form>
+      <React.Fragment>
         {branchSelectionRoute && !branchSelectionRoute.includes(url) && <Redirect replace to={branchSelectionRoute} />}
         <nav className="site-nav">
-          <ul>
+          <ul className="side-navigation">
             {(String(branchCode) === '0' && agencyCode !== 'new') &&
             <React.Fragment>
               <li key="newBranch" data-test="new-branch">
@@ -87,9 +98,9 @@ export class SideNav extends React.Component {
                   className="btn btn-secondary btn-block btn-xs btn-branch">
                   <i className="fa fa-plus" />Branch
                 </NavLink>
-              </li>
-              <hr className="nav-division" />
-            </React.Fragment>
+                </li>
+                <hr className="nav-division" />
+              </React.Fragment>
             }
             {(branchesList.length > 1 && agencyCode !== 'new') &&
             <li key="branch" data-test="branch">
@@ -98,7 +109,7 @@ export class SideNav extends React.Component {
                 name="selectedBranch"
                 label="Branch"
                 component={Select}
-                styleName="flex-child"
+                styleName="flex-child selectedBranch"
                 answers={branchesList}
                 showPlaceholder={false}
                 onChange={event => this.handleBranchSelection(event)} />
@@ -106,14 +117,25 @@ export class SideNav extends React.Component {
             }
             {csrLinks(agencyCode, branchCode).map((agentLink, index) => (
               <li key={agentLink.key}>
-                <NavLink className={agentLink.styleName} to={agentLink.link} activeClassName="active" exact>
-                  <span>{agentLink.label}</span>
-                </NavLink>
+                <span className={agentLink.styleName}>
+                  <NavLink to={agentLink.link} activeClassName="active" exact><span>{agentLink.label}</span></NavLink>
+                </span>
               </li>))
             }
           </ul>
+          <div className="plus-button-group">
+            <button
+              type="button"
+              aria-label="open-btn form-new-note"
+              data-test="new-note"
+              className="btn btn-primary btn-round btn-lg new-note-btn"
+              onClick={this.newNote}>
+              <i className="fa fa-pencil" />
+              <span>NEW NOTE</span>
+            </button>
+          </div>
         </nav>
-      </form>);
+      </React.Fragment >);
   }
 }
 
@@ -127,7 +149,7 @@ const mapStateToProps = (state, props) => {
   };
 };
 
-export default connect(mapStateToProps, { createBranch })(reduxForm({
+export default connect(mapStateToProps, { createBranch, toggleNote })(reduxForm({
   form: 'SideNav',
   enableReinitialize: true
 })(SideNav));

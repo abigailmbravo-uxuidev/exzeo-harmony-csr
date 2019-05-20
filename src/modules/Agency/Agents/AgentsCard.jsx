@@ -68,18 +68,21 @@ export const AgentsCard = ({
             dataTest="switchAOR"
             baseClass="link"
             size="small"
+            className="btn-link btn-sm"
             onClick={() => handleSwitchAOR(agent.agentCode)}><i className="fa fa-exchange" />Switch AOR
           </Button>}
           <Button
             dataTest="removeAgent"
             baseClass="link"
             size="small"
+            className="btn-link btn-sm"
             onClick={() => handleRemoveAgent(agentIndex)}><i className="fa fa-times-circle" />Remove
           </Button>
           <Button
             dataTest="editAgent"
             baseClass="link"
             size="small"
+            className="btn-link btn-sm"
             onClick={() => handleEditAgent(agentIndex)}><i className="fa fa-pencil-square" />Edit
           </Button>
         </div>
@@ -91,7 +94,8 @@ export const AgentsCard = ({
           <Button
             baseClass="link"
             dataTest="agent-book"
-            size="small"><i className="fa fa-download" />Agent Book
+            size="small"
+            className="btn-link btn-sm"><i className="fa fa-download" />Agent Book
           </Button>
         </div>
       </footer>

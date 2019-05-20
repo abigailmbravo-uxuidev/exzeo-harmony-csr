@@ -1,20 +1,20 @@
 html {
   overflow: hidden;
-  height: 100%;
   margin: 0;
   padding: 0;
+  height: 100%;
   //site body
   body {
-    width: 100%;
-    height: 100%;
     margin: 0;
     padding: 0;
+    width: 100%;
+    height: 100%;
     //site background
     div#root {
       overflow-y: hidden;
-      height: 100%;
       margin: 0;
       padding: 0;
+      height: 100%;
       background: $white;
       //app - first div inside app "root"
       //left navigation
@@ -42,12 +42,12 @@ html {
         align-items: center;
         flex-direction: column;
         flex-shrink: 0;
-        width: 100%;
-        min-width: $csr-min-width;
-        height: 100vh;
-        min-height: 100vh;
         margin: 0;
         padding: 0;
+        min-width: $csr-min-width;
+        min-height: 100vh;
+        width: 100%;
+        height: 100vh;
         background: $warm-gray-10;
         //header
         &.agency,
@@ -73,10 +73,11 @@ html {
           flex-direction: row;
           flex-grow: 1;
           flex-shrink: 1;
+          min-height: auto;
           width: 100%;
           height: auto;
-          min-height: auto;
           background: $white;
+
           @include transition(all 0.2s ease-in-out);
           //main left panel navigation
           /*------------------------------------------------------------------------------------*/
@@ -89,22 +90,22 @@ html {
             flex-direction: column;
             flex-grow: 0;
             flex-shrink: 0;
-            width: auto;
             width: 12rem;
-            color: $warm-gray-12;
             background: $warm-gray-02;
+            color: $warm-gray-12;
+
             @include transition(all 0.2s ease-in-out);
 
             .csr {
               display: flex;
               flex-direction: column;
               justify-content: center;
-              width: auto;
-              min-height: 4.75rem;
               padding: ($padding) ($padding*2);
-              text-align: center;
+              min-height: 4.75rem;
+              width: auto;
               border-bottom: 2px solid $white;
               background-color: $warm-gray-04;
+              text-align: center;
 
               h3 {
                 margin: 0;
@@ -128,11 +129,11 @@ html {
 
               &.login {
                 position: absolute;
-                z-index: 20;
                 top: 0;
                 right: 0;
                 bottom: 0;
                 left: 0;
+                z-index: 20;
                 display: flex;
                 align-content: center;
                 align-items: center;

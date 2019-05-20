@@ -3,9 +3,8 @@ import PropTypes from 'prop-types';
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 import { date } from '@exzeo/core-ui';
 
-import DiaryTable from '../../components/DiaryTable';
-
-import Downloader from './Downloader';
+import DiaryTable from './DiaryTable';
+import Downloader from './Common/Downloader';
 
 const NOTE_TABS = ['notes', 'files'];
 const DIARY_TAB = 'diaries';
@@ -19,16 +18,21 @@ export const SearchPanel = props => (
 
 export const filterNotesByType = (notes, type) => {
   if (!Array.isArray(notes)) return [];
-  return type ? notes.filter(n => n.attachments.length > 0) : notes.filter(n => n.content);
+  return type ? notes.filter(n => n.noteAttachments.length > 0) : notes.filter(n => n.noteContent);
 };
 
 export const Notes = (props) => {
   const { notes, attachmentStatus } = props;
+  
+  const toTitleCase = str =>
+    str.toLowerCase().split(' ').map(s => s.replace(s[0], s[0].toUpperCase())).join(' ');
+  
+  const getFileName = a => a.fileName ? a.fileName : a.fileUrl.substring(a.fileUrl.lastIndexOf("/") + 1);
 
   const options = { searchPanel: props => (<SearchPanel {...props} />) };
   const showCreatedBy = createdBy => (createdBy ? createdBy.userName : '');
   const attachmentCount = attachments => (attachments ? attachments.length : 0);
-  const attachmentType = attachments => (attachments.length > 0 ? attachments[0].fileType : '');
+  const attachmentType = attachments => (attachments.length > 0 ? toTitleCase(attachments[0].fileType) : '');
   const formatCreatedDate = createdDate => date.formattedLocalDate(createdDate);
   const formatNote = note => (note ? note.replace(/\r|\n/g, '<br>') : '');
   const attachmentFilter = cell => (cell.length > 0 ? cell[0].fileName : null);
@@ -41,25 +45,26 @@ export const Notes = (props) => {
   };
 
   const sortFiles = (a, b, order) => {
-    const fileA = (a.attachments.length > 0) ? a.attachments[0].fileName : '';
-    const fileB = (b.attachments.length > 0) ? b.attachments[0].fileName : '';
+    const fileA = (a.noteAttachments.length > 0) ? getFileName(a.noteAttachments[0]) : '';
+    const fileB = (b.noteAttachments.length > 0) ? getFileName(b.noteAttachments[0]) : '';
 
     return order === 'desc'
       ? fileA > fileB ? 1 : -1
       : fileA < fileB ? 1 : -1;
   };
-  // const sortFiles = (a, b, order) => order === 'desc'
-  //  ? a.attachments[0].fileName > b.attachments[0].fileName ? 1 : -1
-  //  : a.attachments[0].fileName < b.attachments[0].fileName ? 1 : -1;
 
   const attachmentUrl = attachments => (
     <span>
-      {attachments.map((attachment, i) =>
-        (<Downloader
-          fileName={attachment.fileName}
-          fileUrl={attachment.fileUrl}
-          errorHandler={err => props.actions.errorActions.setAppError(err)}
-          key={i} />))}
+      {attachments.map((attachment, i) => {
+        const fileName = getFileName(attachment);
+        return (
+            <Downloader
+            fileName={fileName}
+            fileUrl={attachment.fileUrl}
+            errorHandler={err => props.setAppError(err)}
+            key={i} />
+        );
+      })}
     </span>
   );
 
@@ -71,17 +76,16 @@ export const Notes = (props) => {
       search
       multiColumnSearch>
       <TableHeaderColumn dataField="_id" isKey hidden>ID</TableHeaderColumn>
-      <TableHeaderColumn className="created-date" columnClassName="created-date" dataField="createdDate" dataSort dataFormat={formatCreatedDate} filterFormatted >Created</TableHeaderColumn>
+      <TableHeaderColumn className="created-date" columnClassName="created-date" dataField="createdAt" dataSort dataFormat={formatCreatedDate} filterFormatted >Created</TableHeaderColumn>
       <TableHeaderColumn className="created-by" columnClassName="created-by" dataField="createdBy" dataSort dataFormat={showCreatedBy} sortFunc={sortAuthor}>Author</TableHeaderColumn>
-      <TableHeaderColumn className="note-type" columnClassName="note-type" dataField="contactType" dataSort hidden={attachmentStatus} >Contact</TableHeaderColumn>
-      <TableHeaderColumn className="note" columnClassName="note" dataField="content" dataSort dataFormat={formatNote} hidden={attachmentStatus} >Note</TableHeaderColumn>
-      <TableHeaderColumn className="count" columnClassName="count" dataField="attachments" dataFormat={attachmentCount} hidden />
-      <TableHeaderColumn className="file-type" columnClassName="file-type" dataField="attachments" dataSort dataFormat={attachmentType} >File Type</TableHeaderColumn>
-      <TableHeaderColumn className="attachments" columnClassName="attachments" dataField="attachments" dataSort dataFormat={attachmentUrl} filterValue={attachmentFilter} sortFunc={sortFiles}>File</TableHeaderColumn>
+      <TableHeaderColumn className="note-type" columnClassName="note-type" dataField="noteContactType" dataSort hidden={attachmentStatus} >Contact</TableHeaderColumn>
+      <TableHeaderColumn className="note" columnClassName="note" dataField="noteContent" dataSort dataFormat={formatNote} hidden={attachmentStatus} >Note</TableHeaderColumn>
+      <TableHeaderColumn className="count" columnClassName="count" dataField="noteAttachments" dataFormat={attachmentCount} hidden />
+      <TableHeaderColumn className="file-type" columnClassName="file-type" dataField="noteAttachments" dataSort dataFormat={attachmentType} >File Type</TableHeaderColumn>
+      <TableHeaderColumn className="attachments" columnClassName="attachments" dataField="noteAttachments" dataSort dataFormat={attachmentUrl} filterValue={attachmentFilter} sortFunc={sortFiles}>File</TableHeaderColumn>
     </BootstrapTable>
   );
 };
-
 
 export class NoteList extends Component {
   state = { historyTab: 'notes' };
@@ -116,11 +120,7 @@ export class NoteList extends Component {
 
 NoteList.propTypes = {
   notes: PropTypes.array,
-  actions: PropTypes.shape({
-    errorActions: PropTypes.shape({
-      setAppError: PropTypes.func.isRequired
-    })
-  })
+  setAppError: PropTypes.func.isRequired
 };
 
 export default NoteList;

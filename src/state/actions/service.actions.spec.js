@@ -73,58 +73,6 @@ describe('Service Actions', () => {
     expect(store.getActions()).toEqual(stateObj);
   });
 
-  it('should call start getNotes', () => {
-    const mockAdapter = new MockAdapter(axios);
-    const notes = [
-      {
-        noteType: 'test',
-        noteContent: 'test',
-        contactType: 'Agent',
-        createdAt: new Date().getTime(),
-        attachments: [],
-        createdBy: {},
-        updatedBy: {}
-      }
-    ];
-    const axiosNotesOptions = {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      url: `${process.env.REACT_APP_API_URL}/svc?fetchNotes`,
-      data: {
-        service: 'transaction-logs',
-        method: 'GET',
-        path: 'history?number=test'
-      }
-    };
-
-    const axiosDocsOptions = {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      url: `${process.env.REACT_APP_API_URL}/svc?fetchDocuments`,
-      data: {
-        service: 'file-index',
-        method: 'GET',
-        path: 'v1/fileindex/test'
-      }
-    };
-
-    mockAdapter
-      .onPost(axiosNotesOptions.url).reply(200, { result: notes })
-      .onPost(axiosDocsOptions.url).reply(200, { result: notes });
-
-    const initialState = {};
-    const store = mockStore(initialState);
-
-    return serviceActions.getNotes('test-01', 'test-01')(store.dispatch)
-      .then(() => {
-        expect(store.getActions()[0].type).toEqual(types.SERVICE_REQUEST);
-      });
-  });
-
   it('should clear agent', () => {
     const initialState = { service: { agents: ['Test Agent'] } };
     const store = mockStore(initialState);

@@ -38,7 +38,7 @@ const NewQuoteSearch = ({
 
       <Button
         baseClass="success"
-        customClass="multi-input"
+        customClass="multi-input btn-success"
         type="submit"
         disabled={submitting}
         dataTest="submit" ><i className="fa fa-search" />Search

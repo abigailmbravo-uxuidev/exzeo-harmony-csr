@@ -117,6 +117,7 @@ export class DiaryModal extends Component {
                 dataTest="assignee" />
               <Field
                 name="due"
+                styleName="due"
                 label="Due Date"
                 component={Date}
                 validate={[validation.isRequired, validation.isDate]}
