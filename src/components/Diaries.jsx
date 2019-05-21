@@ -2,6 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment-timezone';
 
+import ShortenText from './ShortenText';
+
 const DIARY_LEVELS = {
   upComing: {
     sectionClass: 'diaries-upcoming',
@@ -46,7 +48,7 @@ const Diaries = ({ diaryLevel, diaries, onToggleDiary }) => {
               </div>
               <div className="diary-type">{diary.type}</div>
               <div className="diary-reason">
-                <p>{diary.reason}: {diary.message}</p>
+                <p>{diary.reason}: <ShortenText text={diary.message} /></p>
               </div>
               <div className="diary-assignee">
                 {diary.assignee.displayName}

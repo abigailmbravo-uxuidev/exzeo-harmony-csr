@@ -114,11 +114,11 @@ export class SearchResults extends Component {
         }
 
         {hasSearched && searchType === SEARCH_TYPES.diaries && !!results.length &&
-        <DiaryList
-          handleKeyPress={handleKeyPress}
-          onItemClick={handleNewTabClick}
-          clickable
-          diaries={results} />
+          <DiaryList
+            handleKeyPress={handleKeyPress}
+            onItemClick={handleNewTabClick}
+            clickable
+            diaries={results} />
         }
       </div>
     );

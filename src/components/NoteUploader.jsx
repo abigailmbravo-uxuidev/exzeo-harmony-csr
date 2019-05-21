@@ -179,28 +179,13 @@ export class NoteUploader extends Component {
       this.uppy.info('Uploads must have a file extension.');
       return false;
     }
-    // removing file extension for meta name
-    const parsedFile = { ...file };
-    const fileExtension = parsedFile.name.split('.').pop();
-    this.setState(state => {
-      if(fileExtension && !state.fileExtensions[parsedFile.type]){
-        state.fileExtensions[parsedFile.type] = fileExtension;
-      }
-      return state;
-    });
-    parsedFile.name = parsedFile.name.replace(/\.[^/.]+$/, '')
-    return parsedFile;
   }
 
   validateUpload = (files => {
-    const updatedFiles = { ...files }
-    const { fileExtensions } = this.state;
-    Object.keys(updatedFiles).forEach((id) => {
-    const file = updatedFiles[id];
-    // adding back file extension for meta name
-    file.meta.name = `${files[id].meta.name}.${fileExtensions[files[id].type]}`;
-    });
-    return updatedFiles;
+    if(Object.keys(files).some(id => (!files[id].data.name.includes('.')))) {
+      this.uppy.info('The file name must have a file extension.');
+      return false;
+    }
   })
 
   submitNote = async (data, dispatch, props) => {
