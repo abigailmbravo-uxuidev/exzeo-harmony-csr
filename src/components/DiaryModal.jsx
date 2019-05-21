@@ -94,7 +94,7 @@ export class DiaryModal extends Component {
       <Draggable handle=".title-bar">
         <div className={classNames('new-diary-file', {'minimize': minimizeDiary })} >
           <div className="title-bar">
-            <div className="title" data-test="diary-minimize-button"><i className="fa fa-th"/>Diary</div>
+            <div className="title title-minimize-button" data-test="diary-minimize-button">Diary</div>
             <div className="controls note-file-header-button-group">
               <button
                 className="btn btn-icon minimize-button"
@@ -105,21 +105,8 @@ export class DiaryModal extends Component {
               <button
                 className="btn btn-icon close-button"
                 type="button"
-                data-test="note-cancel"
-                className="btn btn-secondary cancel-button"
-                onClick={this.handleClose}
-              >
-                Cancel
-              </button>
-              <button
-                tabIndex="0"
-                type="submit"
-                data-test="note-submit"
-                className="btn btn-primary submit-button"
-              >
-                Save
                 onClick={this.handleClose}>
-                <i className="fa fa-times" aria-hidden="true" data-test="diary-window-close" />
+                <i className="fa fa-times-circle" aria-hidden="true" data-test="diary-window-close" />
               </button>
             </div>
           </div>

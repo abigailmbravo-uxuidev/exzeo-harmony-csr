@@ -310,10 +310,10 @@ export class NoteUploader extends Component {
       <Draggable handle=".title-bar">
         <div className={this.state.minimize ? 'new-note-file minimize' : 'new-note-file'} >
           <div className="title-bar">
-            <div className="title"><i className="fa fa-th"/>Note / File</div>
+            <div className="title title-minimze-button">Note / File</div>
             <div className="controls note-file-header-button-group">
               <button className="btn btn-icon minimize-button" onClick={this.handleMinimize}><i className="fa fa-window-minimize" aria-hidden="true" /></button>
-              <button className="btn btn-icon header-cancel-button" onClick={this.handleClose} type="submit"><i className="fa fa-times" aria-hidden="true" /></button>
+              <button className="btn btn-icon header-cancel-button" onClick={this.handleClose} type="submit"><i className="fa fa-times-circle" aria-hidden="true" /></button>
             </div>
           </div>
           <div className="mainContainer">
