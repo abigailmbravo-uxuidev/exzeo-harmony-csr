@@ -208,9 +208,7 @@ export class QuoteBase extends React.Component {
     quoteData.underwritingExceptions.filter(uw => !uw.overridden).length > 0 && onApplication);
 
     const disableForShare = PAGE_ROUTING.summary === currentPage && !['Qualified','Ready'].includes(quoteData.quoteInputState);
-
-    const formState =this.formInstance ? this.formInstance.getState() : {}
-    const { dirty } = formState;
+    
     // TODO going to use Context to pass these directly to custom components,
     //  so Gandalf does not need to know about these.
     const customHandlers = {
@@ -222,8 +220,8 @@ export class QuoteBase extends React.Component {
       getNotes: this.getNotes,
       setAppError: this.props.setAppError,
       toggleDiary: this.props.toggleDiary,
-      setFormInstance: this.setFormInstance,
-      onDirtyCallback: this.setIsDirty
+      setFormInstance: this.setFormInstance, // needed for reset() in handleBlockedNavigation
+      onDirtyCallback: this.setIsDirty // needed for Prompt "when"
     };
     return (
       <div className="app-wrapper csr quote">
