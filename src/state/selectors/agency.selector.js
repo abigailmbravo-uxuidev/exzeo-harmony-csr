@@ -137,7 +137,6 @@ export const getEditModalInitialValues = createSelector(
 export const getAgentOfRecord = createSelector(
   [getAgencyBranchData, getAgents],
   (agencyBranchData, agents) => {
-    console.log(agencyBranchData)
     if (!agencyBranchData || !agencyBranchData.agentOfRecord || !agents || !Array.isArray(agents)) return {};
     const agentOfRecord = agents.filter(a => String(a.agentCode) === String(agencyBranchData.agentOfRecord));
     return Array.isArray(agentOfRecord) && agentOfRecord.length > 0 ? agentOfRecord[0] : {};
@@ -157,7 +156,6 @@ export const getSortedAgents = createSelector(
 export const getAgenciesList = createSelector(
   [getAgencies],
   (agencies) => {
-    console.log(agencies)
     if (!agencies || !Array.isArray(agencies)) return [];
     return agencies.map(o => ({
       answer: o.agencyCode,

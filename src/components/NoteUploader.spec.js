@@ -4,6 +4,7 @@ import thunk from 'redux-thunk';
 import { shallow } from 'enzyme';
 
 import NoteUploader, { validate, renderNotes } from './NoteUploader';
+import * as serviceRunner from '../utilities/serviceRunner';
 
 describe('Testing NoteUploader component', () => {
   const middlewares = [thunk];
@@ -58,8 +59,7 @@ describe('Testing NoteUploader component', () => {
 
       store = mockStore(initialState);
       wrapper = shallow(<NoteUploader store={store} {...props} />);
-      instance = wrapper.dive().dive().dive().dive()
-        .instance();
+      instance = wrapper.dive().dive().dive().dive().instance();
     });
 
     it('should map state to props', () => {
@@ -67,46 +67,10 @@ describe('Testing NoteUploader component', () => {
     });
 
     it('should submit note', () => {
-      instance.props.actions.cgActions.startWorkflow = jest.fn().mockImplementation(() =>
-        Promise.resolve({ result: true }));
+      serviceRunner.callService = jest.fn();
 
       expect(instance.submitNote(formData, store.dispatch, instance.props));
-      expect(instance.props.actions.cgActions.startWorkflow).toHaveBeenCalled();
-    });
-  });
-
-  describe('component should close if profile is missing', () => {
-    it('note should be valid', () => {
-      const initialState = {
-        authState: {
-          userProfile: { }
-        },
-        appState: {
-          data: {
-            minimize: false
-          }
-        },
-        error: {}
-      };
-
-      const props = {
-        companyCode: 'TTIC',
-        state: 'FL',
-        product: 'HO3',
-        documentId: 'testid',
-        noteType: 'Policy Note',
-        resourceType: 'Policy'
-      };
-
-      const store = mockStore(initialState);
-      const wrapper = shallow(<NoteUploader store={store} {...props} />);
-      const instance = wrapper.dive().dive().dive().dive()
-        .instance();
-      const spy = jest.spyOn(instance, 'handleClose');
-
-      instance.componentDidMount();
-
-      expect(instance.handleClose).toHaveBeenCalled();
+      expect(serviceRunner.callService).toHaveBeenCalled();
     });
   });
 

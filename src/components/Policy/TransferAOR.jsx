@@ -6,7 +6,7 @@ import { Field, reduxForm } from 'redux-form';
 import { SelectInteger, SelectTypeAhead, Loader, validation, Button } from '@exzeo/core-ui';
 
 import { callService } from '../../utilities/serviceRunner';
-import { fetchAgenciesByAgencyCodeOrName, fetchAgentsByAgencyCode } from '../../state/actions/agency.actions';
+import { getAgencies, fetchAgentsByAgencyCode, getAgency, getAgentsByAgencyCode } from '../../state/actions/agency.actions';
 import { getPolicy } from '../../state/actions/policy.actions';
 import { setAppError } from '../../state/actions/error.actions';
 import { filterAgenciesList, filterActiveAgentsList } from '../../state/selectors/agency.selector';
@@ -77,6 +77,8 @@ export class TransferAOR extends Component {
       .catch(err => setAppError(err));
 
     await getPolicy(policyNumber);
+    await props.getAgency(data.agencyCode);
+    await props.getAgentsByAgencyCode(data.agencyCode);
 
     this.setState({ isLoading: false });
     this.props.toggleModal();
@@ -154,6 +156,9 @@ const mapStateToProps = (state, { agencyCode, agentCode }) => ({
 });
 
 export default connect(mapStateToProps, {
+  getAgency,
+  getAgentsByAgencyCode,
+  getAgencies,
   getPolicy,
   setAppError
 })(reduxForm({

@@ -38,9 +38,11 @@ export class PolicyholderAgent extends Component {
 
     if (!(agents && agents.length && agency)) return <Loader />;
 
-    const selectedAgent = agents.find(a => a.agentCode === policy.agentCode);
+    const selectedAgent = agents.find(a => a.agentCode === policy.agentCode) || {};
     const { showTransferAOR } = this.state;
     const transferDisabled = !['Policy Issued', 'In Force'].includes(policy.status);
+    const  { contact = {}, licenses = [] } = agency;
+    const  { licenses: agentLicenses = [] } = selectedAgent;
 
     return (
       <React.Fragment>
@@ -94,7 +96,11 @@ export class PolicyholderAgent extends Component {
                 <div className="agency contact card">
                   <div className="contact-title"><i className="fa fa-address-book" /><label>Agency</label></div>
                   <div className="contact-details">
-                    <h4 className="agency"><span className="agency-code">{agency.agencyCode}</span> | <span className="agency-display-name">{agency.displayName}</span> | <span className="agency-legal-name">{agency.legalName}</span> | <span className="agency-license">{agency.licenseNumber}</span></h4>
+                    <h4 className="agency"><span className="agency-code">{agency.agencyCode} </span> 
+                      | <span className="agency-display-name">{agency.displayName} </span> 
+                      | <span className="agency-legal-name">{agency.legalName}</span>
+                      { licenses.map(l =>(<React.Fragment key={l.licenseNumber}> | <span className="agency-license">{l.licenseNumber}</span></React.Fragment>)) }
+                    </h4>
                     <ContactAddress mailingAddress={agency.mailingAddress} status={agency.status} >
                       <span className="additional-data tier"><label>TIER:&nbsp;</label>{agency.tier >= 0 ? agency.tier : ''}</span>
                       {agency.websiteUrl ? <span className="additional-data website"><label>WEBSITE:&nbsp;</label><a href={`${agency.websiteUrl}`} target="_blank">{agency.websiteUrl}</a></span> : null}
@@ -103,7 +109,7 @@ export class PolicyholderAgent extends Component {
                       <ul>
                         <li>
                           <div>
-                            <h5>{agency.contactFirstName} {agency.contactLastName}</h5>
+                            <h5>{contact.firstName} {contact.lastName}</h5>
                           </div>
                           <div className="contact-methods">
                             {agency.primaryPhoneNumber && <p className="primary-phone">
@@ -118,10 +124,10 @@ export class PolicyholderAgent extends Component {
                               <i className="fa fa-fax" />
                               <a href={`tel:${agency.faxNumber}`}>{normalizePhone(agency.faxNumber)}</a>
                                                   </p>}
-                            {agency.contactEmailAddress ?
+                            {contact.emailAddress && policyHolders[0] ?
                               <p>
                                 <i className="fa fa-envelope" />
-                                <a href={`mailto:${agency.contactEmailAddress}?subject=${policy.policyNumber}%20${policyHolders[0].firstName}%20${policyHolders[0].lastName}`}>{agency.contactEmailAddress}</a>
+                                <a href={`mailto:${contact.emailAddress}?subject=${policy.policyNumber}%20${policyHolders[0].firstName}%20${policyHolders[0].lastName}`}>{contact.emailAddress}</a>
                               </p> : null}
                             {agency.customerServiceEmailAddress && <p className="phone csr-phone">
                               <span className="contact-divider">|</span>
@@ -137,7 +143,10 @@ export class PolicyholderAgent extends Component {
                 <div className="agent contact card">
                   <div className="contact-title"><i className="fa fa-address-card" /><label>Agent</label></div>
                   <div className="contact-details">
-                    <h4><span className="agent-code">{selectedAgent.agentCode}</span> | <span className="agent-name">{`${selectedAgent.firstName} ${selectedAgent.lastName}`}</span> | <span className="agent-license">{selectedAgent.licenseNumber}</span></h4>
+                    <h4><span className="agent-code">{selectedAgent.agentCode} </span> 
+                      | <span className="agent-name">{`${selectedAgent.firstName} ${selectedAgent.lastName}`}</span> 
+                      { agentLicenses.map(l =>(<React.Fragment key={l.licenseNumber}> | <span className="agent-license">{l.licenseNumber}</span></React.Fragment>)) }
+                    </h4>
                       <ContactAddress mailingAddress={selectedAgent.mailingAddress} />
                     <div className="additional-contacts">
                       <ul>
@@ -184,8 +193,8 @@ PolicyholderAgent.defaultProps = {
 };
 
 const mapStateToProps = state => ({
-  agents: state.service.agents,
-  agency: state.service.agency,
+  agents: state.agencyState.agents,
+  agency: state.agencyState.agency,
   policy: state.policyState.policy || {}
 });
 

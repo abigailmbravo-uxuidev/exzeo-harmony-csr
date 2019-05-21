@@ -60,7 +60,7 @@ export class SideNav extends React.Component {
   };
 
   newDiary = () => {
-    const { actions, policy: { companyCode, state,  product, policyNumber, endDate } } = this.props;
+    const { actions, policy: { companyCode, state, product, policyNumber, endDate } } = this.props;
     actions.uiActions.toggleDiary({
       companyCode,
       state,
@@ -72,7 +72,7 @@ export class SideNav extends React.Component {
   };
 
   newNote = () => {
-    const { actions, policy: { companyCode, state,  product, policyNumber, sourceNumber } } = this.props;
+    const { actions, policy: { companyCode, state, product, policyNumber, sourceNumber } } = this.props;
     actions.uiActions.toggleNote({
       companyCode,
       state,
@@ -121,7 +121,6 @@ export class SideNav extends React.Component {
             }
           </li>
         </SideNavigation>
-
         <PlusButton newNote={this.newNote} newDiary={this.newDiary} />
       </nav>
     );

@@ -86,7 +86,6 @@ const mapStateToProps = state => ({
   licenseValue: selector(state, 'license') || defaultArr,
   sameAsMailingValue: selector(state, 'sameAsMailing'),
   listAnswersAsKey: getListAnswersAsKey(state)
-
 });
 
 export default connect(mapStateToProps)(reduxForm({

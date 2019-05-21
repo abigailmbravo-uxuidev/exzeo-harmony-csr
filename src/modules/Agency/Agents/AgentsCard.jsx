@@ -20,7 +20,7 @@ export const AgentsCard = ({
       <div className="card-name">
         <div className="card-name-content">
           <h4><span className="agent-code">{agent.agentCode}</span> | <span className="agent-name">{`${agent.firstName} ${agent.lastName}`}</span>
-          { licenses.map(l =>(<React.Fragment> | <span className="agent-license">{l.licenseNumber}</span></React.Fragment>)) }
+          { licenses.map(l =>(<React.Fragment key={l.licenseNumber}> | <span className="agent-license">{l.licenseNumber}</span></React.Fragment>)) }
           </h4>
           <div className="contact-address" data-test="agent-address">
             {mailingAddress.address1},&nbsp;
@@ -68,18 +68,21 @@ export const AgentsCard = ({
             dataTest="switchAOR"
             baseClass="link"
             size="small"
+            className="btn-link btn-sm"
             onClick={() => handleSwitchAOR(agent.agentCode)}><i className="fa fa-exchange" />Switch AOR
           </Button>}
           <Button
             dataTest="removeAgent"
             baseClass="link"
             size="small"
+            className="btn-link btn-sm"
             onClick={() => handleRemoveAgent(agentIndex)}><i className="fa fa-times-circle" />Remove
           </Button>
           <Button
             dataTest="editAgent"
             baseClass="link"
             size="small"
+            className="btn-link btn-sm"
             onClick={() => handleEditAgent(agentIndex)}><i className="fa fa-pencil-square" />Edit
           </Button>
         </div>
@@ -91,7 +94,8 @@ export const AgentsCard = ({
           <Button
             baseClass="link"
             dataTest="agent-book"
-            size="small"><i className="fa fa-download" />Agent Book
+            size="small"
+            className="btn-link btn-sm"><i className="fa fa-download" />Agent Book
           </Button>
         </div>
       </footer>

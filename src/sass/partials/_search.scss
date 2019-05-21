@@ -715,9 +715,9 @@ ul.list-cards {
 .policy-list,
 .quote-list {
   flex-grow: 1;
-  width: 100%;
   margin-bottom: $padding/2;
   padding: $padding*2;
+  width: 100%;
 
   .card {
     display: flex;
@@ -739,8 +739,8 @@ ul.list-cards {
         flex-grow: 0;
         flex-shrink: 0;
         justify-content: center;
-        height: 2rem;
         margin: 0;
+        height: 2rem;
         color: $bright-blue-darken-04;
         font-size: $font-size-h3;
       }
@@ -764,8 +764,8 @@ ul.list-cards {
         h4,
         h5 {
           margin: 0;
-          text-transform: uppercase;
           color: $warm-gray-10;
+          text-transform: uppercase;
           line-height: $line-height-base;
         }
       }
@@ -784,19 +784,19 @@ ul.list-cards {
 
           &.header {
             padding: ($padding/4) 0;
-            color: $warm-gray-08;
             background: $warm-gray-02;
-            font-size: $font-size-sm;
+            color: $warm-gray-08;
             font-weight: $font-weight-bold;
+            font-size: $font-size-sm;
           }
 
           a.row {
             display: flex;
-            width: 100%;
             padding: 0;
-            color: $bright-blue;
+            width: 100%;
             border-width: 0;
             border-radius: 0;
+            color: $bright-blue;
 
             &:hover {
               background: rgba($bright-blue, .1);
@@ -879,8 +879,8 @@ ul.list-cards {
         flex-basis: 20%;
         flex-grow: 0;
         flex-shrink: 0;
-        width: 20%;
         margin: 0;
+        width: 20%;
       }
 
       p {
@@ -891,9 +891,9 @@ ul.list-cards {
         display: flex;
         flex-basis: 80%;
         flex-direction: column;
-        width: 80%;
         margin: 0;
         padding: 0;
+        width: 80%;
       }
     }
 
@@ -993,9 +993,9 @@ ul.list-cards {
 .policy-list,
 .quote-list {
   flex-grow: 1;
-  width: 100%;
   margin-bottom: $padding/2;
   padding: $padding*2;
+  width: 100%;
 
   .card {
     display: flex;
@@ -1017,8 +1017,8 @@ ul.list-cards {
         flex-grow: 0;
         flex-shrink: 0;
         justify-content: center;
-        height: 2rem;
         margin: 0;
+        height: 2rem;
         color: $bright-blue-darken-04;
         font-size: $font-size-h3;
       }
@@ -1042,8 +1042,8 @@ ul.list-cards {
         h4,
         h5 {
           margin: 0;
-          text-transform: uppercase;
           color: $warm-gray-10;
+          text-transform: uppercase;
           line-height: $line-height-base;
         }
       }
@@ -1062,19 +1062,19 @@ ul.list-cards {
 
           &.header {
             padding: ($padding/4) 0;
-            color: $warm-gray-08;
             background: $warm-gray-02;
-            font-size: $font-size-sm;
+            color: $warm-gray-08;
             font-weight: $font-weight-bold;
+            font-size: $font-size-sm;
           }
 
           a.row {
             display: flex;
-            width: 100%;
             padding: 0;
-            color: $bright-blue;
+            width: 100%;
             border-width: 0;
             border-radius: 0;
+            color: $bright-blue;
 
             &:hover {
               background: rgba($bright-blue, .1);
@@ -1157,8 +1157,8 @@ ul.list-cards {
         flex-basis: 20%;
         flex-grow: 0;
         flex-shrink: 0;
-        width: 20%;
         margin: 0;
+        width: 20%;
       }
 
       p {
@@ -1169,9 +1169,9 @@ ul.list-cards {
         display: flex;
         flex-basis: 80%;
         flex-direction: column;
-        width: 80%;
         margin: 0;
         padding: 0;
+        width: 80%;
       }
     }
 

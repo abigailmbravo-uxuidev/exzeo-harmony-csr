@@ -80,13 +80,15 @@ const AgencyDetails = ({ agencyCodeDisabled }) => {
         label="EO Expiration Date"
         name="eoExpirationDate"
         dataTest="eoExpirationDate"
+        styleName="eoExpirationDate"
         component={Date}
         format={value => !value ? '' : date.formattedDate(value, 'YYYY-MM-DD')}
-        validate={validation.isRequired} />
+        validate={[validation.isRequired, validation.isDateRange('1900','10000')]} />
       <Field
         label="Branch Name"
         name="branchName"
         dataTest="branchName"
+        styleName="branchName"
         component={Input} />
       <hr />
       <Field

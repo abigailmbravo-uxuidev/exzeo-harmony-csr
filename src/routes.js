@@ -18,7 +18,7 @@ import QuoteLanding from './components/Quote/QuoteLanding';
 import Reports from './containers/Reports';
 import PolicyModule from './modules/Policy';
 import Agency from './modules/Agency';
-import NoteUploader from './components/Common/NoteUploader';
+import NoteUploader from './components/NoteUploader';
 import ConfirmPopup from './components/Common/ConfirmPopup';
 import DiaryModal from './components/DiaryModal';
 import Bootstrap from './components/Bootstrap';

@@ -13,14 +13,19 @@ const documentTypeAnswers = [
 ];
 
 export class GenerateDocsForm extends Component {
-  generateDoc = (values) => {
+  generateDoc = (values, form) => {
     const {
       errorHandler, policyNumber, policyID, updateNotes, startWorkflow
     } = this.props;
     const model = values.documentType;
+
     return startWorkflow(model, { policyNumber, policyID }, false)
       .then((result) => {
         if (window.location.pathname.includes('/notes')) updateNotes();
+        if (!result.workflowData || !result.workflowData[model] || !result.workflowData[model].data) {
+          const documentName = documentTypeAnswers.find(doc => doc.answer === values.documentType).label;
+          errorHandler({ message: `There was an error generating the ${documentName}` });
+        }
         const fileUrl = result.workflowData[model].data.previousTask.value.result[0].fileUrl;
         const proxyUrl = `${process.env.REACT_APP_API_URL}/download`;
         const params = { url: fileUrl };
