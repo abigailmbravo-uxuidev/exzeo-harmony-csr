@@ -210,7 +210,7 @@ export class MailingAddressBilling extends Component {
 
   render() {
     const {
-      handleSubmit, billingOptions, pristine, quoteData, dirty, match, editingDisabled
+      handleSubmit, billingOptions, pristine, quoteData, dirty, editingDisabled
     } = this.props;
 
     const { options } = billingOptions;
@@ -219,7 +219,7 @@ export class MailingAddressBilling extends Component {
 
  
     return (
-      <React.Fragment match={match}>
+      <React.Fragment>
         <Prompt when={dirty} message="Are you sure you want to leave with unsaved changes?" />
         <div className="route-content">
           <form id="MailingAddressBilling" onSubmit={handleSubmit(handleFormSubmit)} >

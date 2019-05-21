@@ -7,7 +7,12 @@ import ConnectedApp, { SideNav } from './PolicySideNav';
 const middlewares = [];
 const mockStore = configureStore(middlewares);
 const initialState = {
-  policyState: {},
+  policyState: {
+    policy: {
+      policyNumber: 'test-123',
+      policyID: 'test12345'
+    }
+  },
   appState: {
     data: {}
   },
@@ -17,9 +22,6 @@ const initialState = {
 };
 const store = mockStore(initialState);
 const props = {
-  policy: {
-
-  },
   actions: {
     cgActions: {
       batchCompleteTask() { return Promise.resolve(); }

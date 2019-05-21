@@ -39,6 +39,7 @@ class DiariesSearch extends Component {
                 name="open"
                 dataTest="status"
                 label="Diary Status"
+                styleName="open"
                 component={Select}
                 id="status"
                 validate={validation.isRequired}
@@ -76,7 +77,6 @@ class DiariesSearch extends Component {
           </div>
 
           <Button
-            baseClass="success"
             customClass="multi-input btn-success"
             type="submit"
             disabled={submitting}

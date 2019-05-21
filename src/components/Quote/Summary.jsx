@@ -89,13 +89,13 @@ export class Summary extends Component {
     const filteredExceptions = _.filter(quoteData.underwritingExceptions, uw => !uw.overridden && uw.code !== '003');
 
     if (!quoteData || !quoteData.underwritingExceptions) {
-      return <React.Fragment match={match} />;
+      return <React.Fragment />;
     }
 
     const disablePage = filteredExceptions.length > 0;
 
     return (
-      <React.Fragment match={match}>
+      <React.Fragment>
         <div className="route-content summary workflow">
           <div className="scroll">
             {disablePage &&
@@ -373,7 +373,7 @@ const mapStateToProps = state => ({
   showScheduleDateModal: state.appState.data ? state.appState.data.showScheduleDateModal : false,
   showShareConfirmationModal: state.appState.data ? state.appState.data.showShareConfirmationModal : false,
   quoteData: state.quoteState.quote || {},
-  editingDisabled: blockQuote
+  editingDisabled: blockQuote(state)
 });
 
 
