@@ -64,7 +64,6 @@ export class GenerateDocsForm extends Component {
                 dataTest="documentType" />
 
               <Button
-                baseClass="primary"
                 size="small"
                 customClass="btn-block"
                 type="submit"

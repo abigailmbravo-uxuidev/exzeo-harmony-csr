@@ -97,14 +97,12 @@ const PolicySearch = ({
         validate={isNumberDashOnly}
         errorHint />
       <Button
-        baseClass="success"
         customClass="multi-input btn-success"
         type="submit"
         disabled={submitting}
         dataTest="submit"><i className="fa fa-search" />Search
       </Button>
       <Button
-        baseClass="icon"
         customClass="advanced-search-btn btn-icon"
         size="small"
         dataTest="policy-advanced-search"

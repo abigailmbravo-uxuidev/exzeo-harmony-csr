@@ -84,12 +84,11 @@ export class Underwriting extends Component {
 
   render() {
     const {
-      appState, fieldValues, handleSubmit, pristine, quoteData, underwritingQuestions, dirty, match, editingDisabled
+      appState, fieldValues, handleSubmit, pristine, quoteData, underwritingQuestions, dirty, editingDisabled
     } = this.props;
     return (
-      <React.Fragment match={match}>
+      <React.Fragment>
         <Prompt when={dirty} message="Are you sure you want to leave with unsaved changes?" />
-
         <div className="route-content">
           <form id="Underwriting" onSubmit={handleSubmit(handleFormSubmit)}>
             <div className="scroll">

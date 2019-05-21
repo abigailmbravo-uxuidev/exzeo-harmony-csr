@@ -60,7 +60,6 @@ class DiariesSearch extends Component {
             </div>
           </div>
           <Button
-            baseClass="success"
             customClass="multi-input btn-success"
             type="submit"
             disabled={submitting}

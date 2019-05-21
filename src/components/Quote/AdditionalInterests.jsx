@@ -231,30 +231,28 @@ export class AdditionalInterests extends Component {
 
   render() {
     const {
-      quoteData, groupedAdditionalInterests, sortedAdditionalInterests, editingDisabled, match
+      quoteData, groupedAdditionalInterests, sortedAdditionalInterests, editingDisabled
     } = this.props;
     const { showAdditionalInterestModal } = this.state;
 
     if (!quoteData.rating) {
       return (
-        <React.Fragment match={match}>
-          <div className="route-content">
-            <div className="scroll">
-              <div className="detail-wrapper">
-                <div className="messages">
-                  <div className="message error">
-                    <i className="fa fa-exclamation-circle" aria-hidden="true" /> &nbsp;Additional Interests cannot be accessed until Premium calculated.
-                  </div>
+        <div className="route-content">
+          <div className="scroll">
+            <div className="detail-wrapper">
+              <div className="messages">
+                <div className="message error">
+                  <i className="fa fa-exclamation-circle" aria-hidden="true" /> &nbsp;Additional Interests cannot be accessed until Premium calculated.
                 </div>
               </div>
             </div>
           </div>
-        </React.Fragment>
+        </div>
       );
     }
 
     return (
-      <React.Fragment match={match}>
+      <React.Fragment>
         <div className="route-content" id="AddAdditionalInterestPage">
           <div className="scroll">
             <div className="form-group survey-wrapper" role="group">

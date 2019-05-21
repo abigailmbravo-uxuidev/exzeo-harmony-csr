@@ -77,7 +77,6 @@ const QuoteSearch = ({
       </div>
 
       <Button
-        baseClass="success"
         customClass="multi-input btn-success"
         type="submit"
         disabled={submitting}
