@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Field, reduxForm } from 'redux-form';
-import { Date, Select, validation, Loader, TextArea } from '@exzeo/core-ui';
+import { Date, Draggable, Select, validation, Loader, TextArea } from '@exzeo/core-ui';
 import classNames from 'classnames';
 
 import {
@@ -91,100 +91,19 @@ export class DiaryModal extends Component {
     } = this.props;
 
     return (
-      <div
-        className={classNames('new-diary-file', { minimize: minimizeDiary })}
-      >
-        <div className="title-bar">
-          <div
-            className="title title-minimize-button"
-            onClick={this.handleMinimize}
-            data-test="diary-minimize-button"
-          >
-            Diary
-          </div>
-          <div className="controls note-file-header-button-group">
-            <button
-              className="btn btn-icon minimize-button"
-              type="button"
-              onClick={this.handleMinimize}
-            >
-              <i
-                className="fa fa-window-minimize"
-                aria-hidden="true"
-                data-test="diary-window-minimize"
-              />
-            </button>
-            <button
-              className="btn btn-icon close-button"
-              type="button"
-              onClick={this.handleClose}
-            >
-              <i
-                className="fa fa-times-circle"
-                aria-hidden="true"
-                data-test="diary-window-close"
-              />
-            </button>
-          </div>
-        </div>
-        <div className="mainContainer">
-          {submitting && <Loader />}
-          <form id="DiaryModal" onSubmit={handleSubmit(this.submitDiary)}>
-            <div className="content">
-              <Field
-                name="reason"
-                label="Reason"
-                component={Select}
-                answers={REASONS}
-                validate={validation.isRequired}
-                normalize={this.normalizeDiaryReason}
-                dataTest="reason"
-              />
-              <Field
-                name="assignee.id"
-                styleName="assignee"
-                label="Assignee"
-                component={Select}
-                answers={assigneeAnswers}
-                validate={validation.isRequired}
-                dataTest="assignee"
-              />
-              <Field
-                name="due"
-                styleName="due"
-                label="Due Date"
-                component={Date}
-                validate={[validation.isRequired, validation.isDate]}
-                dataTest="due"
-              />
-              <Field
-                name="message"
-                label="Message"
-                dataTest="message"
-                component={TextArea}
-                validate={validation.isRequired}
-              />
-            </div>
-            <div className="buttons note-file-footer-button-group">
-              {diaryId && (
-                <button
-                  tabIndex="0"
-                  type="button"
-                  data-test="note-close-diary"
-                  className="btn btn-primary close-diary-button"
-                  onClick={handleSubmit((values, dispatch, props) => {
-                    this.submitDiary(
-                      { ...values, open: false },
-                      dispatch,
-                      props
-                    );
-                  })}
-                >
-                  Mark as Closed
-                </button>
-              )}
+      <Draggable handle=".title-bar">
+        <div className={classNames('new-diary-file', {'minimize': minimizeDiary })} >
+          <div className="title-bar">
+            <div className="title title-minimize-button" data-test="diary-minimize-button">Diary</div>
+            <div className="controls note-file-header-button-group">
               <button
-                tabIndex="0"
+                className="btn btn-icon minimize-button"
+                type="button"
+                onClick={this.handleMinimize}>
+                <i className="fa fa-window-minimize" aria-hidden="true" data-test="diary-window-minimize" />
+              </button>
+              <button
+                className="btn btn-icon close-button"
                 type="button"
                 data-test="note-cancel"
                 className="btn btn-secondary cancel-button"
@@ -199,11 +118,76 @@ export class DiaryModal extends Component {
                 className="btn btn-primary submit-button"
               >
                 Save
+                onClick={this.handleClose}>
+                <i className="fa fa-times-circle" aria-hidden="true" data-test="diary-window-close" />
               </button>
             </div>
-          </form>
+          </div>
+          <div className="mainContainer">
+            {submitting && <Loader />}
+            <form id="DiaryModal" onSubmit={handleSubmit(this.submitDiary)} >
+              <div className="content">
+                <Field
+                  name="reason"
+                  label="Reason"
+                  component={Select}
+                  answers={REASONS}
+                  validate={validation.isRequired}
+                  normalize={this.normalizeDiaryReason}
+                  dataTest="reason" />
+                <Field
+                  name="assignee.id"
+                  styleName="assignee"
+                  label="Assignee"
+                  component={Select}
+                  answers={assigneeAnswers}
+                  validate={validation.isRequired}
+                  dataTest="assignee" />
+                <Field
+                  name="due"
+                  styleName="due"
+                  label="Due Date"
+                  component={Date}
+                  validate={[validation.isRequired, validation.isDate]}
+                  dataTest="due" />
+                <Field
+                  name="message"
+                  label="Message"
+                  dataTest="message"
+                  component={TextArea}
+                  validate={validation.isRequired} />
+              </div>
+              <div className="buttons note-file-footer-button-group">
+                <button
+                  tabIndex="0"
+                  type="button"
+                  data-test="note-close-diary"
+                  className="btn btn-primary close-diary-button"
+                  onClick={handleSubmit((values, dispatch, props) => {
+                    this.submitDiary({ ...values, open: false }, dispatch, props);
+                  })}>
+                  Mark as Closed
+                </button>
+                <button
+                  tabIndex="0"
+                  type="button"
+                  data-test="note-cancel"
+                  className="btn btn-secondary cancel-button"
+                  onClick={this.handleClose}>
+                  Cancel
+                </button>
+                <button
+                  tabIndex="0"
+                  type="submit"
+                  data-test="note-submit"
+                  className="btn btn-primary submit-button">
+                  Save
+                </button>
+              </div>
+            </form>
+          </div>
         </div>
-      </div>
+      </Draggable>
     );
   }
 }

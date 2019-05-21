@@ -17,6 +17,7 @@ describe('Testing TransferAOR component', () => {
   });
 
   const props = {
+    policyNumber: 'test-123',
     companyCode: 'test',
     state: 'FL',
     agencyCode: 1234,

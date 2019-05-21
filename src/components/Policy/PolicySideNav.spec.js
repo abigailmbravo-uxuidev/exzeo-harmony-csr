@@ -9,8 +9,8 @@ const mockStore = configureStore(middlewares);
 const initialState = {
   policyState: {
     policy: {
-      policyNumber: '1',
-      policyID: '1'
+      policyNumber: 'test-123',
+      policyID: 'test12345'
     }
   },
   appState: {
@@ -22,11 +22,15 @@ const initialState = {
 };
 const store = mockStore(initialState);
 const props = {
-  startWorkflow() {},
-  toggleNote() {},
-  toggleDiary() {},
-  fetchNotes() {},
-  setAppError() {},
+  actions: {
+    cgActions: {
+      batchCompleteTask() { return Promise.resolve(); }
+    },
+    appStateActions: {
+      setAppState() {},
+      toggleNote() {}
+    }
+  },
   fieldQuestions: [],
   quoteData: {},
   dispatch: store.dispatch,
