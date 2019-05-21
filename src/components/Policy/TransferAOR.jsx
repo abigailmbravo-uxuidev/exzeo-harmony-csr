@@ -6,7 +6,7 @@ import { Field, reduxForm } from 'redux-form';
 import { SelectInteger, SelectTypeAhead, Loader, validation, Button } from '@exzeo/core-ui';
 
 import { callService } from '../../utilities/serviceRunner';
-import { getAgencies, fetchAgentsByAgencyCode, getAgency, getAgentsByAgencyCode } from '../../state/actions/agency.actions';
+import { getAgencies, fetchAgentsByAgencyCode, getAgency, getAgentsByAgencyCode, fetchAgenciesByAgencyCodeOrName } from '../../state/actions/agency.actions';
 import { getPolicy } from '../../state/actions/policy.actions';
 import { setAppError } from '../../state/actions/error.actions';
 import { filterAgenciesList, filterActiveAgentsList } from '../../state/selectors/agency.selector';
