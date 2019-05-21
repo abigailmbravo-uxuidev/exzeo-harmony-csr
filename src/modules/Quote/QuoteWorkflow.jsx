@@ -175,6 +175,11 @@ export class QuoteBase extends React.Component {
    })
   }
 
+  setIsDirty = (isDirty) => {
+    this.setState(() => ({ isDirty }));
+  };
+
+
   render() {
     const {
       agencies,
@@ -217,7 +222,8 @@ export class QuoteBase extends React.Component {
       getNotes: this.getNotes,
       setAppError: this.props.setAppError,
       toggleDiary: this.props.toggleDiary,
-      setFormInstance: this.setFormInstance
+      setFormInstance: this.setFormInstance,
+      onDirtyCallback: this.setIsDirty
     };
     return (
       <div className="app-wrapper csr quote">
@@ -234,7 +240,7 @@ export class QuoteBase extends React.Component {
             showDiaries={showDiaries}
             render={() => (
               <React.Fragment>
-                <Prompt when={dirty} message={this.handleBlockedNavigation} />
+                <Prompt when={this.state.isDirty} message={this.handleBlockedNavigation} />
                 {this.state.hasUnsavedChanges && 
                   <Alert
                     modalClassName="unsaved-changes"
