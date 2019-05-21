@@ -11,8 +11,13 @@
     "cypress": "react-scripts cypress"
   },
   "dependencies": {
+<<<<<<< HEAD
     "@exzeo/core-ui": "^0.8.0",
     "@exzeo/react-scripts": "^2.0.3",
+=======
+    "@exzeo/core-ui": "^0.6.5",
+    "@exzeo/react-scripts": "^1.0.12",
+>>>>>>> Upgraded core-ui.
     "@fortawesome/fontawesome": "~1.0.0",
     "@fortawesome/react-fontawesome": "~0.0.14",
     "@uppy/core": "^0.26.0",
