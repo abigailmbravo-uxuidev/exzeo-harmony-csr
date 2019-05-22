@@ -177,6 +177,12 @@
           }
         }
 
+        .file-type {
+          flex-grow: 0;
+          flex-shrink: 0;
+          height: auto;
+        }
+
         > div {
           display: flex;
           overflow: hidden;
