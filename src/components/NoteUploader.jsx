@@ -314,6 +314,7 @@ export class NoteUploader extends Component {
                 <Field
                   name="fileType"
                   label="File Type"
+                  styleName="file-type"
                   component={Select}
                   answers={docTypeAnswers}
                   validate={validation.isRequired}
