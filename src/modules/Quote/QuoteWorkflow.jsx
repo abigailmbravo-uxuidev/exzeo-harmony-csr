@@ -32,6 +32,7 @@ import Application from './Application'
 import PolicyHolders from './PolicyHolders';
 import NotesFiles from '../NotesFiles';
 import QuoteFooter from './QuoteFooter';
+import { QUOTE_INPUT_STATE, QUOTE_STATE, VALID_SHARE_STATE } from '../../utilities/quoteState';
 
 const FORM_ID = 'QuoteWorkflowCSR';
 
@@ -42,7 +43,7 @@ export class QuoteBase extends React.Component {
       showEmailPopup: false,
       gandalfTemplate: null,
       showDiaries: false,
-      formReset: null,
+      formState: null,
       submitting: false,
       applicationSent: false,
       hasUnsavedChanges: false,
@@ -138,11 +139,6 @@ export class QuoteBase extends React.Component {
     return onChange(agencyCode);
   };
 
-  getNotes = () => {
-    const { quoteData } = this.props;
-    this.props.fetchNotes([quoteData.quoteNumber], 'quoteNumber');
-  };
-
   setFormInstance = (formInstance) => {
     this.formInstance = formInstance;
   };
@@ -176,9 +172,29 @@ export class QuoteBase extends React.Component {
    })
   }
 
-  setIsDirty = (isDirty) => {
-    this.setState(() => ({ isDirty }));
+  getFormState = (formState) => {
+    this.setState(() => ({ formState }));
   };
+
+  isSubmitDisabled = (pristine, submitting) => {
+    const { location, quoteData } = this.props;
+    if(quoteData.quoteState ==='Application Sent DocuSign' || this.state.applicationSent) return true;
+
+    const currentStep = location.pathname.split('/')[3];
+    const currentPage = PAGE_ROUTING[currentStep];
+
+    if(currentPage === PAGE_ROUTING.application){
+      return (Array.isArray(quoteData.underwritingExceptions) &&
+       quoteData.underwritingExceptions.filter(uw => !uw.overridden).length > 0);
+    }
+
+    if(currentPage === PAGE_ROUTING.summary) {
+      return !VALID_SHARE_STATE.includes(quoteData.quoteState) &&
+      (QUOTE_STATE.QuoteStarted && quoteData.quoteInputState !== QUOTE_INPUT_STATE.Qualified);
+    }
+
+    return pristine || submitting;
+  }
 
 
   render() {
@@ -192,6 +208,7 @@ export class QuoteBase extends React.Component {
       notes,
       options,
       quoteData,
+      fetchNotes
     } = this.props;
 
     const { showDiaries, gandalfTemplate } = this.state;
@@ -202,14 +219,6 @@ export class QuoteBase extends React.Component {
     const currentPage = PAGE_ROUTING[currentStep];
     const transformConfig = this.getConfigForJsonTransform(gandalfTemplate);
 
-    const checkApplicationSent = quoteData.quoteState ==='Application Sent DocuSign' || this.state.applicationSent;
-    const onApplication = PAGE_ROUTING.application === currentPage;
-
-    const disableForApplication = onApplication && (Array.isArray(quoteData.underwritingExceptions) &&
-    quoteData.underwritingExceptions.filter(uw => !uw.overridden).length > 0 && onApplication);
-
-    const disableForShare = PAGE_ROUTING.summary === currentPage && !['Qualified','Ready'].includes(quoteData.quoteInputState);
-    
     // TODO going to use Context to pass these directly to custom components,
     //  so Gandalf does not need to know about these.
     const customHandlers = {
@@ -218,11 +227,10 @@ export class QuoteBase extends React.Component {
       handleSubmit: this.handleGandalfSubmit,
       history: history,
       handleAgencyChange: this.handleAgencyChange,
-      getNotes: this.getNotes,
+      fetchNotes: fetchNotes,
       setAppError: this.props.setAppError,
       toggleDiary: this.props.toggleDiary,
       setFormInstance: this.setFormInstance, // needed for reset() in handleBlockedNavigation
-      onDirtyCallback: this.setIsDirty // needed for Prompt "when"
     };
     return (
       <div className="app-wrapper csr quote">
@@ -239,7 +247,7 @@ export class QuoteBase extends React.Component {
             showDiaries={showDiaries}
             render={() => (
               <React.Fragment>
-                <Prompt when={this.state.isDirty} message={this.handleBlockedNavigation} />
+                
                 {this.state.hasUnsavedChanges && 
                   <Alert
                     modalClassName="unsaved-changes"
@@ -260,7 +268,6 @@ export class QuoteBase extends React.Component {
                   {shouldUseGandalf &&
                   <React.Fragment>
                     <Gandalf
-                      ref={this.formRef}
                       formId={FORM_ID}
                       className="route-content"
                       currentPage={currentPage}
@@ -274,14 +281,17 @@ export class QuoteBase extends React.Component {
                       customComponents={this.customComponents}
                       stickyFooter
                       promptUnsavedChanges
-                      renderFooter={({ pristine, submitting, form }) => shouldRenderFooter &&
-                        <QuoteFooter
-                          handlePrimaryClick={this.primaryClickHandler}
-                          handleResetForm={form.reset}
-                          currentStep={currentStep}
-                          submitting={submitting}
-                          isPrimaryDisabled={((!onApplication) && (pristine || submitting)) || disableForApplication || checkApplicationSent || disableForShare}
-                        />
+                      renderFooter={({ pristine, submitting, form, dirty }) => shouldRenderFooter &&
+                        <React.Fragment>
+                          <Prompt when={dirty} message={this.handleBlockedNavigation} />
+                          <QuoteFooter
+                            handlePrimaryClick={this.primaryClickHandler}
+                            handleResetForm={form.reset}
+                            currentStep={currentStep}
+                            submitting={submitting}
+                            isPrimaryDisabled={this.isSubmitDisabled(pristine, submitting)}
+                          />
+                        </React.Fragment>
                       }
                     />
                   </React.Fragment>

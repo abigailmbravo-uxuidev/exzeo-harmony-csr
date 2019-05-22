@@ -7,12 +7,12 @@ import { NOTE_TABS, NOTE_TYPE } from '../../constants/notes';
 import { DIARY_TAB } from '../../constants/diaries';
 
 
-function NotesFiles ({ options, customHandlers }) {
+function NotesFiles ({ options, customHandlers, formValues }) {
   const [historyTab, setHistoryTab] = useState(NOTE_TYPE.notes);
 
   const { notes, diaries } = options;
   useEffect(() => {
-    customHandlers.getNotes();
+    customHandlers.fetchNotes([formValues.quoteNumber], 'quoteNumber')
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
   return (

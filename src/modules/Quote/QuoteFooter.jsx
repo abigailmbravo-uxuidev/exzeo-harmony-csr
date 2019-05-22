@@ -7,7 +7,7 @@ import Share from '@exzeo/core-ui/src/@Harmony/Summary/Share';
 function QuoteFooter({ submitting, isPrimaryDisabled, handlePrimaryClick, handleResetForm, currentStep }) {
 
   if(currentStep === 'summary'){
-    return (<Share handleShare={handlePrimaryClick} disabled={isPrimaryDisabled || submitting} />)
+    return (<Share handleShare={handlePrimaryClick} disabled={isPrimaryDisabled} />)
   }
 
   return (
