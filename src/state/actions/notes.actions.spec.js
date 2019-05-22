@@ -1,7 +1,7 @@
 import configureStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
+import * as serviceRunner from '@exzeo/core-ui/src/@Harmony/Domain/Api/serviceRunner';
 
-import * as serviceRunner from '../../utilities/serviceRunner';
 import * as types from './actionTypes';
 import { setNotes, fetchNotes } from './notes.actions';
 

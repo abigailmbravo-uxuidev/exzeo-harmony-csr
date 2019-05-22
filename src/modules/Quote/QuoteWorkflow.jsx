@@ -16,7 +16,8 @@ import { setAppState } from '../../state/actions/appState.actions';
 import { setAppError } from '../../state/actions/error.actions';
 import { getQuote, updateQuote } from '../../state/actions/quote.actions';
 import { getAgencies, getAgentsByAgencyCode } from '../../state/actions/agency.actions';
-import { getZipcodeSettings, getNotes } from '../../state/actions/service.actions';
+import { getZipcodeSettings } from '../../state/actions/service.actions';
+import { fetchNotes } from '../../state/actions/notes.actions';
 import { fetchDiaries } from '../../state/actions/diary.actions';
 import { getEnumsForQuoteWorkflow } from '../../state/actions/list.actions';
 import { getQuoteSelector } from '../../state/selectors/choreographer.selectors';
@@ -139,7 +140,7 @@ export class QuoteBase extends React.Component {
 
   getNotes = () => {
     const { quoteData } = this.props;
-    this.props.getNotes(quoteData.quoteNumber);
+    this.props.fetchNotes([quoteData.quoteNumber], 'quoteNumber');
   };
 
   setFormInstance = (formInstance) => {
@@ -279,7 +280,7 @@ export class QuoteBase extends React.Component {
                           handleResetForm={form.reset}
                           currentStep={currentStep}
                           submitting={submitting}
-                          isPrimaryDisabled={pristine || submitting || disableForApplication || checkApplicationSent || disableForShare}
+                          isPrimaryDisabled={((!onApplication) && (pristine || submitting)) || disableForApplication || checkApplicationSent || disableForShare}
                         />
                       }
                     />
@@ -321,7 +322,7 @@ const mapStateToProps = state => {
     options: state.list,
     isLoading: state.ui.isLoading,
     diaries: getDiariesForTable(state),
-    notes: state.service.notes
+    notes: state.notes
   }
 };
 
@@ -334,7 +335,7 @@ export default connect(mapStateToProps, {
   getZipcodeSettings,
   getEnumsForQuoteWorkflow,
   updateQuote,
-  getNotes,
+  fetchNotes,
   toggleDiary,
   fetchDiaries
 })(QuoteBase);

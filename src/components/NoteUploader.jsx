@@ -8,7 +8,7 @@ import XHRUpload from '@uppy/xhr-upload';
 import moment from 'moment';
 import { Select, validation, Loader } from '@exzeo/core-ui';
 import classNames from 'classnames';
-import { callService } from '../utilities/serviceRunner';
+import { callService } from '@exzeo/core-ui/src/@Harmony/Domain/Api/serviceRunner';
 
 import { toggleNote, toggleDiary} from '../state/actions/ui.actions';
 import { fetchNotes } from '../state/actions/notes.actions';

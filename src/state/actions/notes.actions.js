@@ -1,6 +1,6 @@
 import moment from 'moment';
 
-import { callService } from '../../utilities/serviceRunner';
+import { callService } from '@exzeo/core-ui/src/@Harmony/Domain/Api/serviceRunner';
 import * as types from './actionTypes';
 import { setAppError } from './error.actions';
 

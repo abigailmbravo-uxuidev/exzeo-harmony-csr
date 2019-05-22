@@ -2,11 +2,9 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Loader } from '@exzeo/core-ui';
-import { Route } from 'react-router-dom';
 
 import { fetchNotes } from '../state/actions/notes.actions';
 import { setAppError } from '../state/actions/error.actions';
-import { callService } from '../utilities/serviceRunner';
 import NoteList from './NoteList';
 import Footer from './Common/Footer';
 
