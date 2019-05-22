@@ -45,7 +45,6 @@ class DiariesSearch extends Component {
               <Field
                 name="reason"
                 dataTest="reason"
-                styleName="reason"
                 component={Select}
                 answers={REASONS}
                 placeholder="Please choose"
