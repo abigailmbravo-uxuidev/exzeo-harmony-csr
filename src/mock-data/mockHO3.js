@@ -22,7 +22,9 @@ const mock = {
           id: 100100,
           type: '$SECTION',
           dependencies: [],
-          data: { className: 'produced-by' },
+          data: {
+            className: 'produced-by'
+          },
           formData: {},
           children: [
             {
@@ -69,9 +71,6 @@ const mock = {
                 size: '5',
                 component: '$AGENCY',
                 dataSource: 'agencies',
-                extendedProperties: {
-                  subscribe: true,
-                }
               },
               formData: {
                 required: true,
@@ -106,7 +105,6 @@ const mock = {
           data: {
             component: '$POLICYHOLDERS',
             extendedProperties: {
-              subscribe: true,
               watchField: 'removeSecondary',
             }
           },
