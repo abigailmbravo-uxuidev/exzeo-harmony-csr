@@ -663,12 +663,8 @@ ul.list-cards {
   li {
     margin-bottom: $padding/2;
 
-    div {
-      align-items: center;
-      padding: $padding $padding*1.5;
-      border: $card-border-width solid $card-border-color;
-      border-radius: $card-border-radius;
-      background: $white;
+    > div {
+
 
       section {
         flex-direction: column;
@@ -856,18 +852,18 @@ ul.list-cards {
         }
       }
     }
-  }
 
-  &:hover {
-    box-shadow: $card-box-shadow-hover;
-    cursor: pointer;
-    transform: scale(1.004);
-
-    ul {
-      &.quote-search-results, &.policy-search-results {
-        div {
-          &.row {
-            background: rgba($bright-blue, .1);
+    &:hover {
+      box-shadow: $card-box-shadow-hover;
+      cursor: pointer;
+      transform: scale(1.004);
+  
+      ul {
+        &.quote-search-results, &.policy-search-results {
+          div {
+            &.row {
+              background: rgba($bright-blue, .1);
+            }
           }
         }
       }
