@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Prompt } from 'react-router-dom';
-import { Loader, Alert, Button } from '@exzeo/core-ui';
+import { Loader, Alert, Button, FormSpy } from '@exzeo/core-ui';
 import { getConfigForJsonTransform, Gandalf } from '@exzeo/core-ui/src/@Harmony';
 import { defaultMemoize } from 'reselect';
 
@@ -32,6 +32,7 @@ import Application from './Application'
 import PolicyHolders from './PolicyHolders';
 import NotesFiles from '../NotesFiles';
 import QuoteFooter from './QuoteFooter';
+import NavigationPrompt from './NavigationPrompt';
 import { QUOTE_INPUT_STATE, QUOTE_STATE, VALID_SHARE_STATE } from '../../utilities/quoteState';
 
 const FORM_ID = 'QuoteWorkflowCSR';
@@ -46,7 +47,7 @@ export class QuoteBase extends React.Component {
       formState: null,
       submitting: false,
       applicationSent: false,
-      hasUnsavedChanges: false,
+      blockNavigation: false,
       nextLocation: null,
       confirmedNavigation: false
     };
@@ -143,35 +144,6 @@ export class QuoteBase extends React.Component {
     this.formInstance = formInstance;
   };
 
-  handleBlockedNavigation = (nextLocation) => {
-    const { confirmedNavigation } = this.state;
-    if(!confirmedNavigation) {
-    this.toggleUnsavedChanges();
-    this.setState(() => ({ nextLocation }));
-    return false;
-    } 
-    // TODO: Need to reset the form instead of using confirmedNavigation state 
-    this.setState(() => ({ confirmedNavigation: false }));
-    return true;
-  }
-
-  toggleUnsavedChanges = () => {
-    const { hasUnsavedChanges } = this.state;
-    this.setState(() => ({ hasUnsavedChanges: !hasUnsavedChanges }));
-  }
-
-  handleConfirmNavigationClick = () => {
-    const { history } = this.props;
-    const { nextLocation } = this.state;
-    this.setState({
-      confirmedNavigation: true
-   }, () => {
-      this.formInstance.reset();
-      this.toggleUnsavedChanges();
-      history.push(nextLocation.pathname);
-   })
-  }
-
   getFormState = (formState) => {
     this.setState(() => ({ formState }));
   };
@@ -194,7 +166,7 @@ export class QuoteBase extends React.Component {
     }
 
     return pristine || submitting;
-  }
+  };
 
 
   render() {
@@ -212,13 +184,11 @@ export class QuoteBase extends React.Component {
     } = this.props;
 
     const { showDiaries, gandalfTemplate } = this.state;
-
     const currentStep = location.pathname.split('/')[3];
+    const currentPage = PAGE_ROUTING[currentStep];
     const shouldUseGandalf = (gandalfTemplate && ROUTES_NOT_HANDLED_BY_GANDALF.indexOf(currentStep) === -1);
     const shouldRenderFooter = ROUTES_NOT_USING_FOOTER.indexOf(currentStep) === -1;
-    const currentPage = PAGE_ROUTING[currentStep];
     const transformConfig = this.getConfigForJsonTransform(gandalfTemplate);
-
     // TODO going to use Context to pass these directly to custom components,
     //  so Gandalf does not need to know about these.
     const customHandlers = {
@@ -247,23 +217,6 @@ export class QuoteBase extends React.Component {
             showDiaries={showDiaries}
             render={() => (
               <React.Fragment>
-                
-                {this.state.hasUnsavedChanges && 
-                  <Alert
-                    modalClassName="unsaved-changes"
-                    headerIcon="fa fa-exclamation-circle"
-                    header="Unsaved Changes"
-                    text="Are you sure you want to leave with unsaved changes?"
-                    handleConfirm={this.handleConfirmNavigationClick}
-                    confirmLabel="Yes"
-                    renderSecondary={() => (
-                      <Button
-                      className={Button.constants.classNames.seconday}
-                      dataTest="modal-confirm"
-                      onClick={this.toggleUnsavedChanges}>No</Button>
-                    )}
-                  />
-                 }
                 <div className="content-wrapper">
                   {shouldUseGandalf &&
                   <React.Fragment>
@@ -283,7 +236,6 @@ export class QuoteBase extends React.Component {
                       promptUnsavedChanges
                       renderFooter={({ pristine, submitting, form, dirty }) => shouldRenderFooter &&
                         <React.Fragment>
-                          <Prompt when={dirty} message={this.handleBlockedNavigation} />
                           <QuoteFooter
                             handlePrimaryClick={this.primaryClickHandler}
                             handleResetForm={form.reset}
@@ -291,6 +243,22 @@ export class QuoteBase extends React.Component {
                             submitting={submitting}
                             isPrimaryDisabled={this.isSubmitDisabled(pristine, submitting)}
                           />
+                        </React.Fragment>
+                      }
+                      formListeners={() =>
+                        <React.Fragment>
+                          <FormSpy subscription={{}}>
+                            {({ form }) => {
+                              this.setFormInstance(form);
+                              return null;
+                            }}
+                          </FormSpy>
+
+                          <FormSpy subscription={{ dirty: true }}>
+                            {({ dirty }) =>
+                              <NavigationPrompt dirty={dirty} formInstance={this.formInstance} history={history} />
+                            }
+                          </FormSpy>
                         </React.Fragment>
                       }
                     />
@@ -306,7 +274,7 @@ export class QuoteBase extends React.Component {
                 resourceType={QUOTE_RESOURCE_TYPE} />
 
               {(quoteData && quoteData.quoteNumber) &&
-              <DiaryPolling filter={{ resourceId: quoteData.quoteNumber, resourceType: QUOTE_RESOURCE_TYPE }} />
+                <DiaryPolling filter={{ resourceId: quoteData.quoteNumber, resourceType: QUOTE_RESOURCE_TYPE }} />
               }
 
             </React.Fragment>
