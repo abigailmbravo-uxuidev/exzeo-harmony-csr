@@ -3,6 +3,65 @@
   flex-wrap: wrap;
 }
 
+.component-loader {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: $border-radius;
+
+  &.loader-sm {}
+  &.loader-md {
+    height: 16rem;
+  }
+  &.loader-lg {}
+  &.loader-xl {}
+
+
+  .spinner {
+    margin: 0 auto;
+    width: 90px;
+    text-align: center;
+  }
+  
+  .spinner > div {
+    display: inline-block;
+    margin: 0 2px;
+    width: 16px;
+    height: 16px;
+    border-radius: 100%;
+    background-color: rgba($bright-blue-darken-04, .4);
+    -webkit-animation: sk-bouncedelay 1.4s infinite ease-in-out both;
+    animation: sk-bouncedelay 1.4s infinite ease-in-out both;
+  }
+  
+  .spinner .bounce1 {
+    -webkit-animation-delay: -0.32s;
+    animation-delay: -0.32s;
+  }
+  
+  .spinner .bounce2 {
+    -webkit-animation-delay: -0.16s;
+    animation-delay: -0.16s;
+  }
+  
+  @-webkit-keyframes sk-bouncedelay {
+    0%, 80%, 100% { -webkit-transform: scale(0) }
+    40% { -webkit-transform: scale(1.0) }
+  }
+  
+  @keyframes sk-bouncedelay {
+    0%, 80%, 100% { 
+      -webkit-transform: scale(0);
+      transform: scale(0);
+    } 40% { 
+      -webkit-transform: scale(1.0);
+      transform: scale(1.0);
+    }
+  }
+
+  
+}
+
 //title component
 /*------------------------------------------------------------------------------------*/
 .title {
