@@ -7,7 +7,6 @@ import DiariesSearch from './DiariesSearch';
 
 const mapStateToProps = (state) => {
   return {
-    userProfile: state.authState.userProfile,
     assigneeAnswers: getDiaryAssigneeAnswers(state)
   };
 };

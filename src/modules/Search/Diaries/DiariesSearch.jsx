@@ -6,22 +6,6 @@ import { Select, MultiSelectTypeAhead, DateRange, Button, validation, emptyObjec
 import { REASONS, STATUS_ANSWERS } from '../../../constants/diaries';
 
 class DiariesSearch extends Component {
-  /*componentDidMount() {
-    const {
-      assigneeAnswers,
-      initialValues,
-      initialize,
-      userProfile
-    } = this.props;
-
-    const initialUser = {
-      answer: userProfile.userId,
-      label: `${userProfile.profile.given_name} ${userProfile.profile.family_name}`,
-      type: 'user'
-    }
-    initialize({ ...initialValues, assignees: [initialUser] });
-  }*/
-
   render() {
     const {
       assigneeAnswers,
@@ -90,7 +74,6 @@ class DiariesSearch extends Component {
 
 DiariesSearch.propTypes = {
   initialize: PropTypes.func.isRequired,
-  userProfile: PropTypes.shape().isRequired,
   assigneeAnswers: PropTypes.arrayOf(PropTypes.shape()),
   initialValues: PropTypes.shape(),
   submitting: PropTypes.bool
