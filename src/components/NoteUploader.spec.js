@@ -23,8 +23,7 @@ describe('Testing NoteUploader component', () => {
         ui: {
           diary: {},
           note: {},
-          minimizeDiary: false,
-          minimizeNote: false
+          minimize: false
         },
         authState: {
           userProfile: {
@@ -42,7 +41,7 @@ describe('Testing NoteUploader component', () => {
       };
 
       props = {
-        minimizeNote: false,
+        minimize: false,
         companyCode: 'TTIC',
         state: 'FL',
         product: 'HO3',
