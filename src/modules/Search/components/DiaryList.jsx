@@ -58,7 +58,7 @@ const DiaryList = ({
                   <span className="diary action" />
                 </li>
                 <li className="data-row">
-                  <span className="diary due-date">{date.formattedDate(due)}</span>
+                  <span className="diary due-date">{date.formatDate(due)}</span>
                   <span className="diary assignee">{displayName}</span>
                   <span className="diary reason">{reason}</span>
                   <span className="diary message">{formattedMessage}</span>

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 import moment from 'moment-timezone';
 import { connect } from 'react-redux';
+import { date } from '@exzeo/core-ui';
 
 import { DUE_STATUS } from '../constants/diaries';
 import { toggleDiary } from '../state/actions/ui.actions';
@@ -15,8 +16,7 @@ export const SearchPanel = props => (
   </div>
 );
 
-// TODO: Use from core-ui
-const toLocaleDate = dataString => moment.utc(dataString).format('MM/DD/YYYY');
+const toLocaleDate = dataString => date.formatDate(dataString);
 
 // TODO: Move to component
 const DiaryExpandColumns = ({ diaries }) => {
