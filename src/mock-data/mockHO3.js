@@ -1,7 +1,7 @@
 /* eslint-disable */
 const mock = {
   "header": {
-    "hideDeatailSummary": true,
+    "hideDetailSummary": true,
     "fields": [
       { "value": 'policyHolder', "component": 'Section', "label": 'Policyholder' },
       { "value": 'mailingAddress', "component": 'Section' },
@@ -1538,58 +1538,75 @@ const mock = {
           children: [],
         },
         {
-          id: 34576,
-          type: '$TITLE',
+          id: 5152233354,
+          type: '$SECTION',
           dependencies: [{ path: 'rating.worksheet', value: true }],
-          data: {
-            text: 'Mailing Address',
-          },
+          data: {},
           formData: {},
-          children: [],
+          children: [
+            {
+              id: 34576,
+              type: '$TITLE',
+              dependencies: [],
+              data: {
+                text: 'Mailing Address',
+              },
+              formData: {},
+              children: [],
+            },
+            {
+              id: 14436,
+              type: '$CUSTOM',
+              dependencies: [],
+              data: {
+                component: '$ADDRESS',
+                extendedProperties: {
+                  watchFieldCustomClass: 'segmented-switch',
+                  watchField: 'sameAsPropertyAddress',
+                  fieldPrefix: 'policyHolderMailingAddress',
+                  matchPrefix: 'property.physicalAddress'
+                }
+              },
+              formData: {},
+              children: [],
+            },
+          ]
         },
         {
-          id: 1,
-          type: '$CUSTOM',
+          id: 5152019254,
+          type: '$SECTION',
           dependencies: [{ path: 'rating.worksheet', value: true }],
-          data: {
-            component: '$ADDRESS',
-            extendedProperties: {
-              watchFieldCustomClass: 'segmented-switch',
-              watchField: 'sameAsPropertyAddress',
-              fieldPrefix: 'policyHolderMailingAddress',
-              matchPrefix: 'property.physicalAddress'
+          data: {},
+          formData: {},
+          children: [
+            {
+              id: 340934,
+              type: '$TITLE',
+              dependencies: [],
+              data: {
+                text: 'Billing Information',
+              },
+              formData: {},
+              children: [],
+            },
+            {
+              id: 348833,
+              type: '$CUSTOM',
+              dependencies: [],
+              data: {
+                component: '$BILLING',
+                extendedProperties: {
+                  subscribe: true,
+                }
+              },
+              formData: {
+                required: true,
+              },
+              children: [],
             }
-          },
-          formData: {},
-          children: [],
-        },
-        {
-          id: 340934,
-          type: '$TITLE',
-          dependencies: [{ path: 'rating.worksheet', value: true }],
-          data: {
-            text: 'Billing Information',
-          },
-          formData: {},
-          children: [],
-        },
-        {
-          id: 348833,
-          type: '$CUSTOM',
-          dependencies: [{ path: 'rating.worksheet', value: true }],
-          data: {
-            component: '$BILLING',
-            dataSource: 'billPlans',
-            extendedProperties: {
-              subscribe: true,
-            }
-          },
-          formData: {
-            required: true,
-          },
-          children: [],
-        },
-      ],
+          ]
+        }
+      ]
     },
     {
       name: 'notes',
@@ -1613,7 +1630,8 @@ const mock = {
               children: [],
             },
           ]
-        }]
+        }
+      ]
     },
     {
       name: 'summary',
