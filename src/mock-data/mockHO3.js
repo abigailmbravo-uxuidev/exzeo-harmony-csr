@@ -64,29 +64,14 @@ const mock = {
               children: [],
             },
             {
-              id: 4,
-              type: '$CUSTOM',
-              dependencies: [],
-              data: {
-                size: '5',
-                component: '$AGENCY',
-                dataSource: 'agencies',
-              },
-              formData: {
-                required: true,
-              },
-              children: [],
-            },
-            {
               id: 5,
-              type: '$INPUT',
+              type: '$CUSTOM',
               path: 'agentCode',
               dependencies: [],
               data: {
-                component: 'select',
+                component: '$AGENCY',
                 label: 'Agent',
-                size: '4',
-                dataSource: 'agents'
+
               },
               formData: {
                 path: 'agentCode',
