@@ -1,8 +1,7 @@
 import React from 'react'
-import PropTypes from 'prop-types'
 import Footer from '../../components/Common/Footer';
 import { Button } from '@exzeo/core-ui/src';
-import Share from '@exzeo/core-ui/src/@Harmony/Summary/Share';
+import { Share } from '@exzeo/core-ui/src/@Harmony';
 
 function QuoteFooter({ submitting, isPrimaryDisabled, handlePrimaryClick, handleResetForm, currentStep }) {
 

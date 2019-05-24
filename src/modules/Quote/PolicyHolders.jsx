@@ -1,7 +1,8 @@
 import React from 'react';
 import classNames from 'classnames';
 import { Field } from '@exzeo/core-ui/src';
-import PolicyHolder from '@exzeo/core-ui/src/@Harmony/Components/PolicyHolder';
+import { PolicyHolder } from '@exzeo/core-ui/src/@Harmony';
+
 import PolicyHoldersWatcher from './PolicyHoldersWatcher';
 
 const PolicyHolders = ({

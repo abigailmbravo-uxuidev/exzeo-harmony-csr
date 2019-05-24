@@ -2,13 +2,13 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Field, Form, reduxForm } from 'redux-form';
+import classNames from 'classnames';
+import moment from 'moment';
 import Uppy from '@uppy/core';
 import Dashboard from '@uppy/react/lib/Dashboard';
 import XHRUpload from '@uppy/xhr-upload';
-import moment from 'moment';
 import { Select, validation, Loader } from '@exzeo/core-ui';
-import classNames from 'classnames';
-import { callService } from '@exzeo/core-ui/src/@Harmony/Domain/Api/serviceRunner';
+import { callService } from '@exzeo/core-ui/src/@Harmony';
 
 import { toggleNote, toggleDiary} from '../state/actions/ui.actions';
 import { fetchNotes } from '../state/actions/notes.actions';
@@ -140,9 +140,9 @@ export class NoteUploader extends Component {
     });
   }
 
-  state = { 
-    minimize: false, 
-    fileExtensions: {} 
+  state = {
+    minimize: false,
+    fileExtensions: {}
   };
 
   componentDidMount() {
@@ -156,15 +156,15 @@ export class NoteUploader extends Component {
       Quote: 8,
       Policy: 17
     };
-    
-    initialize({ 
+
+    initialize({
       contactType: this.contactTypes[0],
       fileType: this.docTypes[defaultValues[resourceType]]
     })
   }
 
-  handleMinimize = () => this.setState(state => ({ 
-    minimize: !state.minimize 
+  handleMinimize = () => this.setState(state => ({
+    minimize: !state.minimize
   }));
 
   handleClose = () => this.props.toggleNote({});
@@ -253,15 +253,15 @@ export class NoteUploader extends Component {
     };
 
     const noteConfig = {
-      exchangeName: 'harmony', 
-      routingKey: 'harmony.note.addNote', 
+      exchangeName: 'harmony',
+      routingKey: 'harmony.note.addNote',
       data: noteData
     };
 
     const { openDiary } = data;
     try {
       const { data } = await callService(noteConfig, 'addNote');
-      
+
       if (window.location.pathname.includes('/notes')) {
         const numberType = mapResourceToNumber[resourceType];
         const numbers = numberType === 'policyNumber'
@@ -287,10 +287,10 @@ export class NoteUploader extends Component {
 
   render() {
     const { handleSubmit, noteType, submitting } = this.props;
-    
+
     const contactTypeAnswers = this.contactTypes
       ? this.contactTypes.map(c => ({ answer: c, label: c })) : [];
-    
+
     const docTypeAnswers = this.docTypes
       ? this.docTypes.map(d => ({ answer: d, label: d })) : [];
 

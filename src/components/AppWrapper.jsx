@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Helmet } from 'react-helmet';
+import { DetailsHeader } from '@exzeo/core-ui/src/@Harmony'
 
 import { getPolicyDetails, getQuoteDetails } from '../state/selectors/detailHeader.selectors';
 import { getOpenDiaries } from '../state/selectors/diary.selectors';
@@ -9,7 +10,6 @@ import QuoteSideNav from '../components/Quote/QuoteSideNav';
 
 import Header from './Header';
 import DiaryButton from './DiaryButton';
-import DetailsHeader from '@exzeo/core-ui/src/@Harmony/DetailsHeader/DetailsHeader'
 
 const CONFIG = {
   policy: {

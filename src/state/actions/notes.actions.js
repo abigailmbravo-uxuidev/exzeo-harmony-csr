@@ -1,6 +1,6 @@
 import moment from 'moment';
 
-import { callService } from '@exzeo/core-ui/src/@Harmony/Domain/Api/serviceRunner';
+import { callService } from '@exzeo/core-ui/src/@Harmony';
 import * as types from './actionTypes';
 import { setAppError } from './error.actions';
 
@@ -56,8 +56,8 @@ export function fetchNotes(numbers, numberType) {
   const filesQuesry = numbers.map(number => number).join(',');
 
   const notesConfig = {
-    exchangeName: 'harmony', 
-    routingKey: 'harmony.note.getNotes', 
+    exchangeName: 'harmony',
+    routingKey: 'harmony.note.getNotes',
     data: { data: notesQuery, }
   };
 
@@ -70,7 +70,7 @@ export function fetchNotes(numbers, numberType) {
   return async dispatch => {
     try {
       const [notes, files] = await Promise.all([
-        await callService(notesConfig, 'fetchNotes'), 
+        await callService(notesConfig, 'fetchNotes'),
         numberType === 'policyNumber' ? callService(filesConfig, 'fetchFiles') : []
       ]);
       const allNotes = files.data
