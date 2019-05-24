@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Prompt } from 'react-router-dom'
-import { Alert, Button } from '@exzeo/core-ui/src';
+import { Alert, Button } from '@exzeo/core-ui';
 
 const NavigationPrompt = ({ dirty, formInstance, history }) => {
   const [nextLocation, setLocation] = useState('');

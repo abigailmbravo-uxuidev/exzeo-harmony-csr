@@ -1,8 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Prompt } from 'react-router-dom';
-import { Loader, Alert, Button, FormSpy } from '@exzeo/core-ui';
+import { Loader, FormSpy } from '@exzeo/core-ui';
 import { getConfigForJsonTransform, Gandalf } from '@exzeo/core-ui/src/@Harmony';
 import { defaultMemoize } from 'reselect';
 
@@ -199,8 +198,7 @@ export class QuoteBase extends React.Component {
       handleAgencyChange: this.handleAgencyChange,
       fetchNotes: fetchNotes,
       setAppError: this.props.setAppError,
-      toggleDiary: this.props.toggleDiary,
-      setFormInstance: this.setFormInstance, // needed for reset() in handleBlockedNavigation
+      toggleDiary: this.props.toggleDiary
     };
     return (
       <div className="app-wrapper csr quote">
