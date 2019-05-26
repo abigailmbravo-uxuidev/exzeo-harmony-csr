@@ -64,12 +64,5 @@ export default {
   list: {
     zipCodeSettings: {},
     uiQuestions: {},
-    underwritingQuestions: [],
-    agents: [],
-    billingConfig: {
-      billToConfig: {},
-      billingOptions: [],
-      paymentPlans: {},},
-
   }
 };

@@ -45,35 +45,17 @@ function formatTopAnswers(answers) {
 }
 
 function setEnums(state, action) {
-  const underwritingQuestions = (action.underwritingQuestions || [])
-    .sort((a, b) => a.order - b.order)
-    .map(question => {
-      const defaultValue = (question.answers || []).find(answer => answer.default);
-      return ({
-        name: question.name,
-        hidden: question.hidden,
-        label: question.question,
-        defaultValue: defaultValue ? defaultValue.answer : '',
-        validation: ['isRequired'],
-        options: (question.answers || []).map(answer => ({
-          answer: answer.answer,
-          label: answer.answer,
-        }))
-      });
-    });
-
   const mortgageeAnswers = action.additionalInterestQuestions.find(q => q.name === 'mortgagee');
   const mortgagee = formatTopAnswers(mortgageeAnswers.answers);
 
-  const premiumFinanaceAnswers = action.additionalInterestQuestions.find(q => q.name === 'premiumFinance');
-  const premiumFinance = formatTopAnswers(premiumFinanaceAnswers.answers);
+  const premiumFinanceAnswers = action.additionalInterestQuestions.find(q => q.name === 'premiumFinance');
+  const premiumFinance = formatTopAnswers(premiumFinanceAnswers.answers);
 
   const orderAnswers = action.additionalInterestQuestions.find(q => q.name === 'order');
   const order = orderAnswers.answers;
 
   return {
     ...state,
-    underwritingQuestions,
     premiumFinance,
     mortgagee,
     order,
