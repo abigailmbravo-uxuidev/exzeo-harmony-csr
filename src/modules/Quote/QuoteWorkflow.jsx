@@ -114,8 +114,18 @@ export class QuoteBase extends React.Component {
   handleGandalfSubmit = async ({ shouldNav, options, ...values }) => {
     const { quoteData, location } = this.props;
     const { currentStep } = getCurrentStepAndPage(location.pathname);
-    const { modelName, submitData, pageName } = formatForSubmit(values, currentStep, this.props);
-    await this.props.updateQuote({ data: submitData, modelName, pageName, quoteData, options });
+    // TODO need to refactor this out ASAP. QuoteWorkflow should not know about CG anymore,
+    //  if we still need to use CG, we should do that in the quote action to keep it abstracted away from this component (like we did in harmony-web)
+    const { submitData, modelName = '', pageName = '' } = formatForSubmit(values, currentStep, this.props);
+    await this.props.updateQuote({
+      data: submitData,
+      options: {
+        modelName,
+        pageName,
+        quoteData,
+        currentStep,
+      },
+    });
     if (currentStep === 'application'){
       this.setState({ applicationSent: true });
     }
@@ -254,9 +264,9 @@ export class QuoteBase extends React.Component {
                 resourceId={quoteData.quoteNumber}
                 resourceType={QUOTE_RESOURCE_TYPE} />
 
-              {/*{(quoteData && quoteData.quoteNumber) &&*/}
-              {/*  <DiaryPolling filter={{ resourceId: quoteData.quoteNumber, resourceType: QUOTE_RESOURCE_TYPE }} />*/}
-              {/*}*/}
+              {(quoteData && quoteData.quoteNumber) &&
+                <DiaryPolling filter={{ resourceId: quoteData.quoteNumber, resourceType: QUOTE_RESOURCE_TYPE }} />
+              }
 
             </React.Fragment>
           </App>

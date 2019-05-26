@@ -72,26 +72,29 @@ export function getQuote(quoteId, currentPage) {
   };
 }
 
-function formatQuoteForSubmit(data) {
+function formatQuoteForSubmit(data, options) {
   const quote = { ...data };
   quote.effectiveDate = date.formatToUTC(date.formatDate(data.effectiveDate, date.FORMATS.SECONDARY), data.property.timezone);
 
-  if (data.policyHolders.length > 0) {
-    quote.policyHolders[0].electronicDelivery = data.policyHolders[0].electronicDelivery || false;
-    quote.policyHolders[0].order = data.policyHolders[0].order || 0;
-    quote.policyHolders[0].entityType = data.policyHolders[0].entityType || "Person";
-  }
-  
-  if (data.policyHolders.length > 1) {
-    quote.policyHolders[1].order = data.policyHolders[1].order || 1;
-    quote.policyHolders[1].entityType = data.policyHolders[1].entityType || "Person";
+  if (options.currentStep === 0) {
+    if (data.policyHolders.length > 0) {
+      quote.policyHolders[0].electronicDelivery = data.policyHolders[0].electronicDelivery || false;
+      quote.policyHolders[0].order = data.policyHolders[0].order || 0;
+      quote.policyHolders[0].entityType = data.policyHolders[0].entityType || "Person";
+    }
+
+    if (data.policyHolders.length > 1) {
+      quote.policyHolders[1].order = data.policyHolders[1].order || 1;
+      quote.policyHolders[1].entityType = data.policyHolders[1].entityType || "Person";
+      delete quote.policyHolders[1].electronicDelivery;
+    }
   }
 
   if (!data.coverageLimits.personalProperty.value) {
     quote.coverageOptions.personalPropertyReplacementCost.answer = false;
   }
-  if(!data.deductibles.sinkhole.value) quote.coverageOptions.sinkholePerilCoverage.answer = false;
-  else quote.coverageOptions.sinkholePerilCoverage.answer = true;
+
+  quote.coverageOptions.sinkholePerilCoverage.answer = !!data.deductibles.sinkhole.value;
 
 
   // AF3 specific rules
@@ -105,9 +108,9 @@ function formatQuoteForSubmit(data) {
   return quote;
 }
 
-export function updateQuote({ data = {}, modelName, options, quoteData, pageName = '' }) {
+export function updateQuote({ data = {}, options = {} }) {
   return async function(dispatch) {
-
+    const { modelName, pageName, currentStep, quoteData } = options;
     dispatch(toggleLoading(true));
     try {
        if (modelName) {
@@ -117,7 +120,7 @@ export function updateQuote({ data = {}, modelName, options, quoteData, pageName
             ...data
           });
       } else {
-        const updatedQuote = formatQuoteForSubmit(data);
+        const updatedQuote = formatQuoteForSubmit(data, options);
         const config = {
           exchangeName: 'harmony',
           routingKey: 'harmony.quote.updateQuote',
