@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Loader, FormSpy } from '@exzeo/core-ui';
+import { Loader, FormSpy, remoteSubmit } from '@exzeo/core-ui';
 import { getConfigForJsonTransform, Gandalf } from '@exzeo/core-ui/src/@Harmony';
 import { defaultMemoize } from 'reselect';
 
@@ -34,6 +34,17 @@ import QuoteFooter from './QuoteFooter';
 import NavigationPrompt from './NavigationPrompt';
 import { QUOTE_INPUT_STATE, QUOTE_STATE, VALID_SHARE_STATE } from '../../utilities/quoteState';
 
+const getCurrentStepAndPage = defaultMemoize((pathname) => {
+  const currentStep = pathname.split('/')[3];
+  return {
+    currentPage: PAGE_ROUTING[currentStep],
+    currentStep,
+  };
+});
+
+// Thin memoized wrapper around FormSpys to keep them from needlessly re-rendering.
+const MemoizedFormListeners = React.memo(({ children }) => <React.Fragment>{children}</React.Fragment>);
+
 const FORM_ID = 'QuoteWorkflowCSR';
 
 export class QuoteBase extends React.Component {
@@ -43,12 +54,7 @@ export class QuoteBase extends React.Component {
       showEmailPopup: false,
       gandalfTemplate: null,
       showDiaries: false,
-      formState: null,
-      submitting: false,
       applicationSent: false,
-      blockNavigation: false,
-      nextLocation: null,
-      confirmedNavigation: false
     };
 
     this.formInstance = null;
@@ -69,8 +75,6 @@ export class QuoteBase extends React.Component {
       if (quoteData && quoteData.property) {
         const { companyCode, state, product, property } = quoteData;
         this.props.getEnumsForQuoteWorkflow({ companyCode, state, product, property });
-        this.props.getAgencies(quoteData.companyCode, quoteData.state);
-        this.props.getAgentsByAgencyCode(quoteData.agencyCode);
         this.props.getZipcodeSettings(quoteData.companyCode, quoteData.state, quoteData.product, quoteData.property.physicalAddress.zip);
         this.props.fetchDiaries({ resourceId: quoteData.quoteNumber, resourceType: QUOTE_RESOURCE_TYPE });
       }
@@ -104,21 +108,12 @@ export class QuoteBase extends React.Component {
   };
 
   primaryClickHandler = () => {
-    // ie11 does not handle customEvents the same way as other browsers. So here we have to check before creating
-    // this custom submit event - this is being used to submit the form from outside of the form.
-    const form = document.getElementById(FORM_ID);
-    if (typeof (Event) === 'function') {
-      form.dispatchEvent(new Event('submit', { cancelable: true }));
-    } else {
-      const event = document.createEvent('Event');
-      event.initEvent('submit', true, true);
-      form.dispatchEvent(event);
-    }
+    remoteSubmit(FORM_ID);
   };
 
   handleGandalfSubmit = async ({ shouldNav, options, ...values }) => {
-    const { quoteData } = this.props;
-    const currentStep = this.props.location.pathname.split('/')[3];
+    const { quoteData, location } = this.props;
+    const { currentStep } = getCurrentStepAndPage(location.pathname);
     const { modelName, submitData, pageName } = formatForSubmit(values, currentStep, this.props);
     await this.props.updateQuote({ data: submitData, modelName, pageName, quoteData, options });
     if (currentStep === 'application'){
@@ -134,25 +129,15 @@ export class QuoteBase extends React.Component {
     this.setState(() => ({ showEmailPopup }));
   };
 
-  handleAgencyChange = (agencyCode, onChange) =>  {
-    this.props.getAgentsByAgencyCode(agencyCode);
-    return onChange(agencyCode);
-  };
-
   setFormInstance = (formInstance) => {
     this.formInstance = formInstance;
-  };
-
-  getFormState = (formState) => {
-    this.setState(() => ({ formState }));
   };
 
   isSubmitDisabled = (pristine, submitting) => {
     const { location, quoteData } = this.props;
     if(quoteData.quoteState ==='Application Sent DocuSign' || this.state.applicationSent) return true;
 
-    const currentStep = location.pathname.split('/')[3];
-    const currentPage = PAGE_ROUTING[currentStep];
+    const { currentPage } = getCurrentStepAndPage(location.pathname);
 
     if(currentPage === PAGE_ROUTING.application){
       return (Array.isArray(quoteData.underwritingExceptions) &&
@@ -183,8 +168,7 @@ export class QuoteBase extends React.Component {
     } = this.props;
 
     const { showDiaries, gandalfTemplate } = this.state;
-    const currentStep = location.pathname.split('/')[3];
-    const currentPage = PAGE_ROUTING[currentStep];
+    const { currentStep, currentPage } = getCurrentStepAndPage(location.pathname);
     const shouldUseGandalf = (gandalfTemplate && ROUTES_NOT_HANDLED_BY_GANDALF.indexOf(currentStep) === -1);
     const shouldRenderFooter = ROUTES_NOT_USING_FOOTER.indexOf(currentStep) === -1;
     const transformConfig = this.getConfigForJsonTransform(gandalfTemplate);
@@ -195,14 +179,16 @@ export class QuoteBase extends React.Component {
       getState: this.getLocalState,
       handleSubmit: this.handleGandalfSubmit,
       history: history,
-      handleAgencyChange: this.handleAgencyChange,
       fetchNotes: fetchNotes,
       setAppError: this.props.setAppError,
       toggleDiary: this.props.toggleDiary
     };
     return (
       <div className="app-wrapper csr quote">
-        {(isLoading || !quoteData.quoteNumber) && <Loader />}
+        {(isLoading || !quoteData.quoteNumber) &&
+          <Loader />
+        }
+
         {quoteData.quoteNumber && gandalfTemplate &&
           <App
             header={gandalfTemplate.header}
@@ -213,7 +199,7 @@ export class QuoteBase extends React.Component {
             match={match}
             onToggleDiaries={this.handleToggleDiaries}
             showDiaries={showDiaries}
-            render={() => (
+          >
               <React.Fragment>
                 <div className="content-wrapper">
                   {shouldUseGandalf &&
@@ -222,29 +208,26 @@ export class QuoteBase extends React.Component {
                       formId={FORM_ID}
                       className="route-content"
                       currentPage={currentPage}
+                      customComponents={this.customComponents}
+                      customHandlers={customHandlers}
                       handleSubmit={this.handleGandalfSubmit}
                       initialValues={quoteData}
-                      template={gandalfTemplate}
-                      options={{ agencies, diaries, notes, ...options}} // enums for select/radio fields
-                      transformConfig={transformConfig}
+                      options={{ diaries, notes, ...options}} // enums for select/radio fields
                       path={location.pathname}
-                      customHandlers={customHandlers}
-                      customComponents={this.customComponents}
+                      template={gandalfTemplate}
+                      transformConfig={transformConfig}
                       stickyFooter
-                      promptUnsavedChanges
-                      renderFooter={({ pristine, submitting, form, dirty }) => shouldRenderFooter &&
-                        <React.Fragment>
-                          <QuoteFooter
-                            handlePrimaryClick={this.primaryClickHandler}
-                            handleResetForm={form.reset}
-                            currentStep={currentStep}
-                            submitting={submitting}
-                            isPrimaryDisabled={this.isSubmitDisabled(pristine, submitting)}
-                          />
-                        </React.Fragment>
+                      renderFooter={({ pristine, submitting, form }) => shouldRenderFooter &&
+                        <QuoteFooter
+                          handlePrimaryClick={this.primaryClickHandler}
+                          handleResetForm={form.reset}
+                          currentStep={currentStep}
+                          submitting={submitting}
+                          isPrimaryDisabled={this.isSubmitDisabled(pristine, submitting)}
+                        />
                       }
                       formListeners={() =>
-                        <React.Fragment>
+                        <MemoizedFormListeners>
                           <FormSpy subscription={{}}>
                             {({ form }) => {
                               this.setFormInstance(form);
@@ -252,12 +235,12 @@ export class QuoteBase extends React.Component {
                             }}
                           </FormSpy>
 
-                          <FormSpy subscription={{ dirty: true }}>
+                          <FormSpy subscription={{ dirty: true, pristine: true }}>
                             {({ dirty }) =>
                               <NavigationPrompt dirty={dirty} formInstance={this.formInstance} history={history} />
                             }
                           </FormSpy>
-                        </React.Fragment>
+                        </MemoizedFormListeners>
                       }
                     />
                   </React.Fragment>
@@ -271,12 +254,13 @@ export class QuoteBase extends React.Component {
                 resourceId={quoteData.quoteNumber}
                 resourceType={QUOTE_RESOURCE_TYPE} />
 
-              {(quoteData && quoteData.quoteNumber) &&
-                <DiaryPolling filter={{ resourceId: quoteData.quoteNumber, resourceType: QUOTE_RESOURCE_TYPE }} />
-              }
+              {/*{(quoteData && quoteData.quoteNumber) &&*/}
+              {/*  <DiaryPolling filter={{ resourceId: quoteData.quoteNumber, resourceType: QUOTE_RESOURCE_TYPE }} />*/}
+              {/*}*/}
 
             </React.Fragment>
-          )} />}
+          </App>
+        }
       </div>
     );
   }
