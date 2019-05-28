@@ -91,7 +91,7 @@ export class SideNav extends React.Component {
   updateNotes = () => {
     const { actions, policy, fetchNotes } = this.props;
     return () => {
-      fetchNotes([policy.policyNumber, policy.sourceNumber]);
+      fetchNotes([policy.policyNumber, policy.sourceNumber], 'policyNumber');
     };
   };
 
