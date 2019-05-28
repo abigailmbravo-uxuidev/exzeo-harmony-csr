@@ -8,7 +8,15 @@ function PolicyCard({
   policy
 }) {
   return (
-    <div tabIndex="0" onKeyPress={handleKeyPress} id={policy.PolicyID} onClick={handleClick} className="card">
+    <div
+      tabIndex="0"
+      onKeyPress={handleKeyPress}
+      id={policy.PolicyID}
+      onClick={handleClick}
+      className="card"
+      data-test={policy.policyNumber}
+      data-url={`/policy/${policy.policyNumber}/coverage`}
+    >
       <div className="icon-name">
         {/*<i className="card-icon fa fa-user-circle" />*/}
         <i className="card-icon fa fa-file-text" />
@@ -31,10 +39,7 @@ function PolicyCard({
           <li>
             <div
               id={policy.PolicyID}
-              onClick={handleClick}
-              data-test={policy.policyNumber}
               className='row'
-              data-url={`/policy/${policy.policyNumber}/coverage`}
             >
               <span className="quote-no">{policy.policyNumber}</span>
               <span className="property-address">
