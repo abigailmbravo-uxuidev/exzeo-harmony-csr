@@ -2,9 +2,9 @@ import React from 'react';
 import configureStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import { shallow } from 'enzyme';
+import * as serviceRunner from '@exzeo/core-ui/src/@Harmony/Domain/Api/serviceRunner';
 
 import NoteUploader, { validate, renderNotes } from './NoteUploader';
-import * as serviceRunner from '../utilities/serviceRunner';
 
 describe('Testing NoteUploader component', () => {
   const middlewares = [thunk];
