@@ -18,7 +18,7 @@ export class Notes extends Component {
   }
 
   render() {
-    const { error, notes,  setAppError } = this.props;
+    const { error, notes,  setAppError, policy } = this.props;
     const { isLoading } = this.state;
 
     return (
@@ -26,7 +26,7 @@ export class Notes extends Component {
         <div className="route-content">
           {isLoading && <Loader />}
           <div className="scroll">
-            <NoteList notes={notes} setAppError={setAppError} />
+            <NoteList notes={notes} setAppError={setAppError}  entityEndDate={policy.endDate} />
           </div>
         </div>
         <div className="basic-footer">
@@ -43,7 +43,8 @@ Notes.propTypes = {
 };
 
 const mapStateToProps = state => ({
-  notes: state.notes
+  notes: state.notes,
+  policy: state.policyState.policy
 });
 
 export default connect(mapStateToProps, {

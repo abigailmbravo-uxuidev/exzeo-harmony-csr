@@ -28,7 +28,7 @@ function NotesFiles ({ options, customHandlers, formValues }) {
               <button type="button" className={`btn btn-tab ${historyTab === NOTE_TYPE.diaries ? 'selected' : ''}`} onClick={() => setHistoryTab(NOTE_TYPE.diaries)}>Diaries</button>
             </div>
             {NOTE_TABS.includes(historyTab) && <Notes notes={notes} customHandlers={customHandlers} attachmentStatus={historyTab === NOTE_TYPE.files} />}
-            {DIARY_TAB === historyTab && <DiaryTable customHandlers={customHandlers} diaries={diaries} />}
+            {DIARY_TAB === historyTab && <DiaryTable customHandlers={customHandlers} diaries={diaries} entityEndDate={formValues.endDate} />}
           </div>
         </div>
       </section>
