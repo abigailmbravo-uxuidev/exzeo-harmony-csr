@@ -1,6 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment-timezone';
+import { date } from '@exzeo/core-ui';
+
+import ShortenText from './ShortenText';
 
 const DIARY_LEVELS = {
   upComing: {
@@ -39,14 +42,14 @@ const Diaries = ({ diaryLevel, diaries, onToggleDiary }) => {
             <li key={diary.diaryId} data-test={severity.sectionClass}>
               <div className="diary-header">
                 <i className={severity.listIconClass} aria-hidden="true" />
-                <span className="diary-due-date">{moment.utc(diary.due).format('MM/DD/YYYY')} </span>
+                <span className="diary-due-date">{date.formatDate(diary.due)} </span>
                 <button className="btn btn-link btn-sm" onClick={() => onToggleDiary(diary)}>
                   <i className="fa fa-chevron-circle-up" />Open
                 </button>
               </div>
               <div className="diary-type">{diary.type}</div>
               <div className="diary-reason">
-                <p>{diary.reason}: {diary.message}</p>
+                <p>{diary.reason}: <ShortenText text={diary.message} /></p>
               </div>
               <div className="diary-assignee">
                 {diary.assignee.displayName}

@@ -22,12 +22,14 @@ const DiaryList = ({
             due,
             reason,
             message,
-            updatedAt,
-            userName,
+            createdAt,
+            createdBy,
              open
           } = entry;
 
         const dueStatus = getDueStatus(due, open);
+        const formattedMessage = message.split(/\r|\n/g).map((msg, i) => <div key={i}>{msg}</div>);
+        
         return (
           <ListItem
             key={_id}
@@ -56,12 +58,12 @@ const DiaryList = ({
                   <span className="diary action" />
                 </li>
                 <li className="data-row">
-                  <span className="diary due-date">{date.formattedDate(due)}</span>
+                  <span className="diary due-date">{date.formatDate(due)}</span>
                   <span className="diary assignee">{displayName}</span>
                   <span className="diary reason">{reason}</span>
-                  <span className="diary message">{message}</span>
-                  <span className="diary updated">{date.formattedDate(updatedAt)}</span>
-                  <span className="diary updated-by">{userName}</span>
+                  <span className="diary message">{formattedMessage}</span>
+                  <span className="diary updated">{date.formattedDate(createdAt)}</span>
+                  <span className="diary updated-by">{createdBy.userName}</span>
                   <span className="diary action" />
                 </li>
               </ul>

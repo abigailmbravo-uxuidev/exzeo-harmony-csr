@@ -35,7 +35,7 @@ const getNavLinks = ({ policyNumber }) => [
   }, {
     key: 'notes',
     to: `/policy/${policyNumber}/notes`,
-    label: 'Notes / Files',
+    label: 'Notes / Files / Diaries',
     styleName: 'notes',
     exact: true
   }, {

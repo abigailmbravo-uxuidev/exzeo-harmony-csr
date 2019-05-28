@@ -84,13 +84,28 @@ export class SearchPage extends Component {
     this.setState({ advancedSearch: !advancedSearch });
   };
 
+  setInitialValues = (searchType, searchConfig) => {
+    const { userProfile } = this.props;
+    const initialValues = SEARCH_CONFIG[searchConfig].initialValues;
+
+    return searchType === 'diaries'
+      ? {...initialValues,
+          assignees: [{
+            answer: userProfile.userId,
+            label: `${userProfile.profile.given_name} ${userProfile.profile.family_name}`,
+            type: 'user'
+          }]
+        }
+      : initialValues;
+  };
+
   render() {
     const {
       advancedSearch,
       hasSearched,
       searchConfig,
       searchReady,
-      searchType
+      searchType,
     } = this.state;
 
     const SearchForm = SEARCH_FORMS[searchType];
@@ -103,7 +118,7 @@ export class SearchPage extends Component {
             <SearchBar
               advancedSearch={advancedSearch}
               changeSearchType={this.changeSearchType}
-              initialValues={SEARCH_CONFIG[searchConfig].initialValues}
+              initialValues={this.setInitialValues(searchType, searchConfig)}
               onSubmitSuccess={() => this.setHasSearched(true)}
               searchType={searchType}
               render={({
@@ -146,4 +161,10 @@ export class SearchPage extends Component {
   }
 }
 
-export default connect(null, { resetSearch })(SearchPage);
+const mapStateToProps = (state) => {
+  return {
+    userProfile: state.authState.userProfile
+  };
+};
+
+export default connect(mapStateToProps, { resetSearch })(SearchPage);

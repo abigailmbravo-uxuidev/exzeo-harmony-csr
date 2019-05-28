@@ -8,7 +8,7 @@ function QuoteCard({
   quote
 }) {
   return (
-    <div tabIndex="0" onKeyPress={handleKeyPress} id={quote._id} className="card">
+    <div tabIndex="0" onKeyPress={handleKeyPress} id={quote._id} onClick={handleClick} className="card">
       <div className="icon-name">
         {/*<i className="card-icon fa fa-user-circle" />*/}
         <i className="card-icon fa fa-quote-left" />
@@ -31,7 +31,7 @@ function QuoteCard({
             <span className="premium">Premium</span>
           </li>
           <li>
-            <a
+            <div
               id={quote.quoteNumber + quote.property.physicalAddress.address1}
               className="row"
               data-test={quote.quoteNumber}
@@ -44,7 +44,7 @@ function QuoteCard({
               <span className="effective-date">{moment.utc(quote.effectiveDate).format(STANDARD_DATE_FORMAT)}</span>
               <span className="started-on">{moment.utc(quote.createdAt).format(STANDARD_DATE_FORMAT)}</span>
               <span className="premium">$ {quote.rating ? quote.rating.totalPremium : '-'}</span>
-            </a>
+            </div>
           </li>
         </ul>
       </section>

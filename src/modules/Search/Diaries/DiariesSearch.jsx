@@ -6,24 +6,6 @@ import { Select, MultiSelectTypeAhead, DateRange, Button, validation, emptyObjec
 import { REASONS, STATUS_ANSWERS } from '../../../constants/diaries';
 
 class DiariesSearch extends Component {
-  
-  /*
-    TODO: redux-form initialize has a bug. We need to check back with this.
-    For now we won't initialize a value for the current user.
-    Link: https://github.com/erikras/redux-form/issues/2818
-    
-    componentDidMount() {
-    const {
-      assigneeAnswers,
-      initialValues,
-      initialize,
-      userProfile
-    } = this.props;
-    const currentUser = assigneeAnswers.find(a => a.answer === userProfile.userId);
-
-    initialize({ ...initialValues, assignees: currentUser ? [currentUser] : [] });
-  }*/
-
   render() {
     const {
       assigneeAnswers,
@@ -39,6 +21,7 @@ class DiariesSearch extends Component {
                 name="open"
                 dataTest="status"
                 label="Diary Status"
+                styleName="open"
                 component={Select}
                 id="status"
                 validate={validation.isRequired}
@@ -60,6 +43,7 @@ class DiariesSearch extends Component {
               <Field
                 name="dateRange"
                 dataTest="date-range"
+                styleName="dateRange"
                 component={DateRange}
                 label="Date Range"
                 errorHint />
@@ -68,13 +52,13 @@ class DiariesSearch extends Component {
               <Field
                 name="assignees"
                 dataTest="assignees"
+                styleName="assignees"
                 component={MultiSelectTypeAhead}
                 label="Assigned To"
                 answers={assigneeAnswers}
                 errorHint />
             </div>
           </div>
-
           <Button
             baseClass="success"
             customClass="multi-input btn-success"
@@ -90,7 +74,6 @@ class DiariesSearch extends Component {
 
 DiariesSearch.propTypes = {
   initialize: PropTypes.func.isRequired,
-  userProfile: PropTypes.shape().isRequired,
   assigneeAnswers: PropTypes.arrayOf(PropTypes.shape()),
   initialValues: PropTypes.shape(),
   submitting: PropTypes.bool

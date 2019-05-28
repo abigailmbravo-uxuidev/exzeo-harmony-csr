@@ -14,14 +14,18 @@ export class SearchBar extends Component {
   componentDidMount() {
     const {
       agencies,
+      formProps: { handleSubmit },
       getAgencies,
-      toggleLoading
+      toggleLoading,
+      searchType
     } = this.props;
 
     toggleLoading(false);
     if (!agencies.length) {
       getAgencies(DEFAULT_SEARCH_PARAMS.companyCode, DEFAULT_SEARCH_PARAMS.state);
     }
+
+    if (searchType === 'diaries') handleSubmit(this.handleSearchFormSubmit)();
   }
 
   handleSearchFormSubmit = async (data, dispatch, props) => {
