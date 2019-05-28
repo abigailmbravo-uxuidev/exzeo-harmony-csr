@@ -21,7 +21,7 @@ describe('Policy: Policy States + Effective/Cancellation Date', () => {
   ];
 
   const goToBilling = (home = true) => {
-    if (home) { cy.home(); }
+    if (home) { cy.visit(''); }
 
     cy.clickSubmit('#SearchBar')
       .findDataTag('policy-list').find('> div section ul li > a').then($a => {
@@ -41,7 +41,7 @@ describe('Policy: Policy States + Effective/Cancellation Date', () => {
     if (billingStatus.code === 9) {
       checkHeaderSection('finalPaymentDetail', ['Final Payment Date', '']);
     };
-  
+
     if (canceledPolicyStatuses.includes(policyStatus) || billingStatus.code === 9) {
       checkHeaderSection('cancellationDetail', ['Cancellation Effective Date', '']);
     } else if (expirationPolicyStatuses.includes(policyStatus)) {

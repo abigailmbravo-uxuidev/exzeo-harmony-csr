@@ -3,14 +3,14 @@ import user from '../../fixtures/stockData/user.json';
 import {
   checkHeaderSection,
   checkFullHeader,
-  navNewQuote,
-  navCoverage,
-  navUnderwriting,
-  navAdditionalInterests,
-  navMailingBilling,
-  navNotesFiles,
-  navSummary,
-  navApplication
+  navigateThroughNewQuote,
+  navigateThroughCoverage,
+  navigateThroughUnderwriting,
+  navigateThroughAdditionalInterests,
+  navigateThroughMailingBilling,
+  navigateThroughNotesFiles,
+  navigateThroughSummary,
+  navigateThroughApplication
 } from '../../helpers';
 import stubAllRoutes from '../../support/stubAllRoutes';
 
@@ -38,7 +38,7 @@ describe('Quote Header Testing', () => {
   before(() => {
     stubAllRoutes();
     cy.login();
-    navNewQuote();
+    navigateThroughNewQuote();
   });
 
   beforeEach(() => stubAllRoutes());
@@ -56,7 +56,7 @@ describe('Quote Header Testing', () => {
           emailAddress: pH1.pH1email
         }]]
       ];
-    navCoverage(pH1, currentStub);
+    navigateThroughCoverage(pH1, currentStub);
     checkFullHeader(quoteData, options);
   });
 
@@ -66,14 +66,14 @@ describe('Quote Header Testing', () => {
       ['rating', { totalPremium: 100 }],
       ['underwritingAnswers', { rented: { answer: "Never" } }]
     ];
-    navUnderwriting(undefined, currentStub);
+    navigateThroughUnderwriting(undefined, currentStub);
     options['premium'] = true;
     checkFullHeader(quoteData, options);
   });
 
   it('Additional Interest Page', () => {
     cy.setFx('stubs/start/csrGetQuoteWithUnderwriting', currentStub);
-    navAdditionalInterests();
+    navigateThroughAdditionalInterests();
     checkFullHeader(quoteData, options);
   });
 
@@ -82,25 +82,25 @@ describe('Quote Header Testing', () => {
     currentStub = [...currentStub,
       ['policyHolderMailingAddress', { address1, address2, city, state, zip, country }]
     ];
-    navMailingBilling(currentStub);
+    navigateThroughMailingBilling(currentStub);
     options['mailingComplete'] = true;
     checkFullHeader(quoteData, options);
   });
 
   it('Notes/Files Page', () => {
     currentStub = [...currentStub, ['quoteState', 'Application Started']];
-    navNotesFiles(currentStub);
+    navigateThroughNotesFiles(currentStub);
     options['application'] = true;
     checkFullHeader(quoteData, options);
   });
 
   it('Quote Summary Page', () => {
-    navSummary(currentStub);
+    navigateThroughSummary(currentStub);
     checkFullHeader(quoteData, options);
   });
 
   it('Application Page', () => {
-    navApplication(currentStub);
+    navigateThroughApplication(currentStub);
     checkFullHeader(quoteData, options);
   });
 });
