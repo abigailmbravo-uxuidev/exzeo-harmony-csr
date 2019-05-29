@@ -1,10 +1,12 @@
-export const NOTE_TYPE = { 
+export const NOTE_TYPE = {
   notes: 'notes',
   files: 'files',
   diaries: 'diaries'
 };
 
-export const NOTE_TABS = [NOTE_TYPE.notes, NOTE_TYPE.files];
+export const NOTE_TAB = NOTE_TYPE.notes;
+export const FILES_TAB = NOTE_TYPE.files;
+export const DIARY_TAB = NOTE_TYPE.diaries;
 
 export const POLICY_RESOURCE_TYPE = 'Policy';
 export const QUOTE_RESOURCE_TYPE = 'Quote';
@@ -82,11 +84,6 @@ export const DUE_STATUS = {
   pastDue: 'Past Due',
   upComing: 'Upcoming'
 };
-
-
-export const DIARY_TAB = 'diaries';
-
-
 
 export const DIARY_STATUS = {
   pastDue: `OPEN | ${DUE_STATUS.pastDue}`,

@@ -1,14 +1,15 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
+import classNames from 'classnames';
 import { shape } from 'prop-types'
+import { SectionLoader } from '@exzeo/core-ui';
 
-import Notes from './Notes';
-import DiaryTable from './DiaryTable';
-import { NOTE_TYPE, NOTE_TABS, DIARY_TAB } from '../constants';
+import { NOTE_TYPE, DIARY_TAB, FILES_TAB, NOTE_TAB } from '../constants';
 import { useFetchNotes } from '../hooks';
-import { SectionLoader } from '@exzeo/core-ui/src';
+import DiaryTable from './DiaryTable';
+import Notes from './Notes';
 
 function NotesFiles ({ options, customHandlers, initialValues }) {
-  const [historyTab, setHistoryTab] = useState(NOTE_TYPE.notes);
+  const [selectedTab, setSelectedTab] = useState(NOTE_TYPE.notes);
   const { notes, notesLoaded } = useFetchNotes([initialValues.quoteNumber], 'quoteNumber');
 
   if(!notesLoaded) {
@@ -19,12 +20,17 @@ function NotesFiles ({ options, customHandlers, initialValues }) {
     <div className="notes-list">
       <div className="note-grid-wrapper btn-tabs">
         <div className="filter-tabs">
-          <button type="button" className={`btn btn-tab ${historyTab === NOTE_TYPE.notes ? 'selected' : ''}`} onClick={() => setHistoryTab(NOTE_TYPE.notes)}>Notes</button>
-          <button type="button" className={`btn btn-tab ${historyTab === NOTE_TYPE.files ? 'selected' : ''}`} onClick={() => setHistoryTab(NOTE_TYPE.files)}>Files</button>
-          <button type="button" className={`btn btn-tab ${historyTab === NOTE_TYPE.diaries ? 'selected' : ''}`} onClick={() => setHistoryTab(NOTE_TYPE.diaries)}>Diaries</button>
+          <button type="button" className={classNames('btn btn-tab', { 'selected': selectedTab === NOTE_TYPE.notes })} onClick={() => setSelectedTab(NOTE_TYPE.notes)}>Notes</button>
+          <button type="button" className={classNames('btn btn-tab', { 'selected': selectedTab === NOTE_TYPE.files })} onClick={() => setSelectedTab(NOTE_TYPE.files)}>Files</button>
+          <button type="button" className={classNames('btn btn-tab', { 'selected': selectedTab === NOTE_TYPE.diaries })} onClick={() => setSelectedTab(NOTE_TYPE.diaries)}>Diaries</button>
         </div>
-        {NOTE_TABS.includes(historyTab) && <Notes notes={notes} customHandlers={customHandlers} attachmentStatus={historyTab === NOTE_TYPE.files} />}
-        {DIARY_TAB === historyTab && <DiaryTable customHandlers={customHandlers} diaries={options.diaries} entityEndDate={initialValues.endDate} />}
+        {(selectedTab === NOTE_TAB || selectedTab === FILES_TAB) &&
+          <Notes notes={notes} customHandlers={customHandlers} attachmentStatus={selectedTab === NOTE_TYPE.files} />
+        }
+
+        {selectedTab === DIARY_TAB &&
+          <DiaryTable customHandlers={customHandlers} diaries={options.diaries} entityEndDate={initialValues.endDate} />
+        }
       </div>
     </div>
   );

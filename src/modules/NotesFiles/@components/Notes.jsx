@@ -12,7 +12,7 @@ export const filterNotesByType = (notes, type) => {
 
 const toTitleCase = str =>
     str.toLowerCase().split(' ').map(s => s.replace(s[0], s[0].toUpperCase())).join(' ');
-  
+
   const getFileName = a => a.fileName ? a.fileName : a.fileUrl.substring(a.fileUrl.lastIndexOf("/") + 1);
 
   const showCreatedBy = createdBy => (createdBy ? createdBy.userName : '');
@@ -41,23 +41,24 @@ const toTitleCase = str =>
 
 const Notes = (props) => {
   const { notes, attachmentStatus, customHandlers: { setAppError } } = props;
-  const options = { searchPanel: props => (<SearchPanel {...props} />) };
+  const options = { searchPanel: props => (<SearchPanel searchField={props.searchField} />) };
 
   const attachmentUrl = attachments => (
     <span>
       {attachments.map((attachment, i) => {
         const fileName = getFileName(attachment);
         return (
-            <Downloader
+          <Downloader
+            key={i}
             fileName={fileName}
             fileUrl={attachment.fileUrl}
             errorHandler={err => setAppError(err)}
-            key={i} />
+          />
         );
       })}
     </span>
   );
-  
+
   return (
     <BootstrapTable
       className={attachmentStatus ? 'files compact-table' : 'notes compact-table'}
@@ -66,13 +67,13 @@ const Notes = (props) => {
       search
       multiColumnSearch>
         <TableHeaderColumn dataField="_id" isKey hidden>ID</TableHeaderColumn>
-      <TableHeaderColumn className="created-date" columnClassName="created-date" dataField="createdAt" dataSort dataFormat={formatCreatedDate} filterFormatted >Created</TableHeaderColumn>
-      <TableHeaderColumn className="created-by" columnClassName="created-by" dataField="createdBy" dataSort dataFormat={showCreatedBy} sortFunc={sortAuthor}>Author</TableHeaderColumn>
-      <TableHeaderColumn className="note-type" columnClassName="note-type" dataField="noteContactType" dataSort hidden={attachmentStatus} >Contact</TableHeaderColumn>
-      <TableHeaderColumn className="note" columnClassName="note" dataField="noteContent" dataSort dataFormat={formatNote} hidden={attachmentStatus} >Note</TableHeaderColumn>
-      <TableHeaderColumn className="count" columnClassName="count" dataField="noteAttachments" dataFormat={attachmentCount} hidden />
-      <TableHeaderColumn className="file-type" columnClassName="file-type" dataField="noteAttachments" dataSort dataFormat={attachmentType} >File Type</TableHeaderColumn>
-      <TableHeaderColumn className="attachments" columnClassName="attachments" dataField="noteAttachments" dataSort dataFormat={attachmentUrl} filterValue={attachmentFilter} sortFunc={sortFiles}>File</TableHeaderColumn>
+        <TableHeaderColumn className="created-date" columnClassName="created-date" dataField="createdAt" dataSort dataFormat={formatCreatedDate} filterFormatted >Created</TableHeaderColumn>
+        <TableHeaderColumn className="created-by" columnClassName="created-by" dataField="createdBy" dataSort dataFormat={showCreatedBy} sortFunc={sortAuthor}>Author</TableHeaderColumn>
+        <TableHeaderColumn className="note-type" columnClassName="note-type" dataField="noteContactType" dataSort hidden={attachmentStatus} >Contact</TableHeaderColumn>
+        <TableHeaderColumn className="note" columnClassName="note" dataField="noteContent" dataSort dataFormat={formatNote} hidden={attachmentStatus} >Note</TableHeaderColumn>
+        <TableHeaderColumn className="count" columnClassName="count" dataField="noteAttachments" dataFormat={attachmentCount} hidden />
+        <TableHeaderColumn className="file-type" columnClassName="file-type" dataField="noteAttachments" dataSort dataFormat={attachmentType} >File Type</TableHeaderColumn>
+        <TableHeaderColumn className="attachments" columnClassName="attachments" dataField="noteAttachments" dataSort dataFormat={attachmentUrl} filterValue={attachmentFilter} sortFunc={sortFiles}>File</TableHeaderColumn>
     </BootstrapTable>
   );
 };
