@@ -3,16 +3,15 @@ import { shape } from 'prop-types'
 
 import Notes from './Notes';
 import DiaryTable from './DiaryTable';
-import { NOTE_TYPE, NOTE_TABS, DIARY_TAB, QUOTE_RESOURCE_TYPE } from '../constants';
-import { useFetchNotes, useFetchDiaries } from '../hooks';
+import { NOTE_TYPE, NOTE_TABS, DIARY_TAB } from '../constants';
+import { useFetchNotes } from '../hooks';
 import { SectionLoader } from '@exzeo/core-ui/src';
 
 function NotesFiles ({ options, customHandlers, initialValues }) {
   const [historyTab, setHistoryTab] = useState(NOTE_TYPE.notes);
   const { notes, notesLoaded } = useFetchNotes([initialValues.quoteNumber], 'quoteNumber');
-  const { diaries, diariesLoaded } = useFetchDiaries({ resourceId: initialValues.quoteNumber, resourceType: QUOTE_RESOURCE_TYPE });
 
-  if(!notesLoaded || !diariesLoaded) {
+  if(!notesLoaded) {
     return <SectionLoader />
   }
 
@@ -25,7 +24,7 @@ function NotesFiles ({ options, customHandlers, initialValues }) {
           <button type="button" className={`btn btn-tab ${historyTab === NOTE_TYPE.diaries ? 'selected' : ''}`} onClick={() => setHistoryTab(NOTE_TYPE.diaries)}>Diaries</button>
         </div>
         {NOTE_TABS.includes(historyTab) && <Notes notes={notes} customHandlers={customHandlers} attachmentStatus={historyTab === NOTE_TYPE.files} />}
-        {DIARY_TAB === historyTab && <DiaryTable customHandlers={customHandlers} diaries={diaries} entityEndDate={initialValues.endDate} />}
+        {DIARY_TAB === historyTab && <DiaryTable customHandlers={customHandlers} diaries={options.diaries} entityEndDate={initialValues.endDate} />}
       </div>
     </div>
   );

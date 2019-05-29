@@ -96,4 +96,5 @@ class DiaryTable extends Component {
   }
 }
 
+
 export default DiaryTable;
