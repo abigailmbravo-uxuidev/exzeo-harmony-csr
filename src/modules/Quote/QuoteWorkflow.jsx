@@ -35,10 +35,10 @@ import NavigationPrompt from './NavigationPrompt';
 import { QUOTE_INPUT_STATE, QUOTE_STATE, VALID_SHARE_STATE } from '../../utilities/quoteState';
 
 const getCurrentStepAndPage = defaultMemoize((pathname) => {
-  const currentStep = pathname.split('/')[3];
+  const currentRouteName = pathname.split('/')[3];
   return {
-    currentPage: PAGE_ROUTING[currentStep],
-    currentStep,
+    currentStepNumber: PAGE_ROUTING[currentRouteName],
+    currentRouteName,
   };
 });
 
@@ -113,20 +113,21 @@ export class QuoteBase extends React.Component {
 
   handleGandalfSubmit = async ({ shouldNav, options, ...values }) => {
     const { quoteData, location } = this.props;
-    const { currentStep } = getCurrentStepAndPage(location.pathname);
+    const { currentRouteName, currentStepNumber } = getCurrentStepAndPage(location.pathname);
     // TODO need to refactor this out ASAP. QuoteWorkflow should not know about CG anymore,
     //  if we still need to use CG, we should do that in the quote action to keep it abstracted away from this component (like we did in harmony-web)
-    const { submitData, modelName = '', pageName = '' } = formatForSubmit(values, currentStep, this.props);
+    const { submitData, modelName = '', pageName = '' } = formatForSubmit(values, currentRouteName, this.props);
     await this.props.updateQuote({
       data: submitData,
       options: {
         modelName,
         pageName,
         quoteData,
-        currentStep,
+        step: currentStepNumber,
+        shouldSendApplication: currentRouteName === 'application',
       },
     });
-    if (currentStep === 'application'){
+    if (currentRouteName === 'application'){
       this.setState({ applicationSent: true });
     }
   };
@@ -147,14 +148,14 @@ export class QuoteBase extends React.Component {
     const { location, quoteData } = this.props;
     if(quoteData.quoteState ==='Application Sent DocuSign' || this.state.applicationSent) return true;
 
-    const { currentPage } = getCurrentStepAndPage(location.pathname);
+    const { currentStepNumber } = getCurrentStepAndPage(location.pathname);
 
-    if(currentPage === PAGE_ROUTING.application){
+    if(currentStepNumber === PAGE_ROUTING.application){
       return (Array.isArray(quoteData.underwritingExceptions) &&
        quoteData.underwritingExceptions.filter(uw => !uw.overridden).length > 0);
     }
 
-    if(currentPage === PAGE_ROUTING.summary) {
+    if(currentStepNumber === PAGE_ROUTING.summary) {
       return !VALID_SHARE_STATE.includes(quoteData.quoteState) &&
       (QUOTE_STATE.QuoteStarted && quoteData.quoteInputState !== QUOTE_INPUT_STATE.Qualified);
     }
@@ -177,8 +178,8 @@ export class QuoteBase extends React.Component {
     } = this.props;
 
     const { showDiaries, gandalfTemplate } = this.state;
-    const { currentStep, currentPage } = getCurrentStepAndPage(location.pathname);
-    const shouldUseGandalf = (gandalfTemplate && ROUTES_NOT_HANDLED_BY_GANDALF.indexOf(currentStep) === -1);
+    const { currentRouteName, currentStepNumber } = getCurrentStepAndPage(location.pathname);
+    const shouldUseGandalf = (gandalfTemplate && ROUTES_NOT_HANDLED_BY_GANDALF.indexOf(currentRouteName) === -1);
     const transformConfig = this.getConfigForJsonTransform(gandalfTemplate);
     // TODO going to use Context to pass these directly to custom components,
     //  so Gandalf does not need to know about these.
@@ -214,7 +215,7 @@ export class QuoteBase extends React.Component {
                     <Gandalf
                       formId={FORM_ID}
                       className="route-content"
-                      currentPage={currentPage}
+                      currentPage={currentStepNumber}
                       customComponents={this.customComponents}
                       customHandlers={customHandlers}
                       handleSubmit={this.handleGandalfSubmit}
@@ -228,7 +229,7 @@ export class QuoteBase extends React.Component {
                         <QuoteFooter
                           handlePrimaryClick={this.primaryClickHandler}
                           handleResetForm={form.reset}
-                          currentStep={currentStep}
+                          currentStep={currentRouteName}
                           submitting={submitting}
                           isPrimaryDisabled={this.isSubmitDisabled(pristine, submitting)}
                         />

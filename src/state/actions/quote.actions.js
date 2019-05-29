@@ -76,7 +76,7 @@ function formatQuoteForSubmit(data, options) {
   const quote = { ...data };
   quote.effectiveDate = date.formatToUTC(date.formatDate(data.effectiveDate, date.FORMATS.SECONDARY), data.property.timezone);
 
-  if (options.currentStep === 0) {
+  if (options.step === 0) {
     if (data.policyHolders.length > 0) {
       quote.policyHolders[0].electronicDelivery = data.policyHolders[0].electronicDelivery || false;
       quote.policyHolders[0].order = data.policyHolders[0].order || 0;
@@ -110,15 +110,20 @@ function formatQuoteForSubmit(data, options) {
 
 export function updateQuote({ data = {}, options = {} }) {
   return async function(dispatch) {
-    const { modelName, pageName, currentStep, quoteData } = options;
+    const { modelName, pageName, quoteData } = options;
     dispatch(toggleLoading(true));
     try {
-       if (modelName) {
-        await choreographer.startWorkflow(modelName,
-          {
-            quoteId: quoteData._id,
-            ...data
-          });
+       if (options.shouldSendApplication) {
+         const config = {
+           exchangeName: 'harmony',
+           routingKey: 'harmony.quote.sendApplication',
+           data: {
+             quoteNumber: data.quoteNumber,
+             sendType: 'docusign',
+           }
+         };
+
+         await serviceRunner.callService(config, 'quoteManage.sendApplication');
       } else {
         const updatedQuote = formatQuoteForSubmit(data, options);
         const config = {
