@@ -1,6 +1,5 @@
 import React from 'react';
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
-import { date } from '@exzeo/core-ui';
 
 import * as notesUtils from '../utilities';
 import Downloader from './Downloader';
@@ -34,7 +33,7 @@ const Notes = (props) => {
       search
       multiColumnSearch>
         <TableHeaderColumn dataField="_id" isKey hidden>ID</TableHeaderColumn>
-        <TableHeaderColumn className="created-date" columnClassName="created-date" dataField="createdAt" dataSort dataFormat={date.formattedLocalDate} filterFormatted >Created</TableHeaderColumn>
+        <TableHeaderColumn className="created-date" columnClassName="created-date" dataField="createdAt" dataSort dataFormat={notesUtils.formatCreatedDate} filterFormatted >Created</TableHeaderColumn>
         <TableHeaderColumn className="created-by" columnClassName="created-by" dataField="createdBy" dataSort dataFormat={notesUtils.showCreatedBy} sortFunc={notesUtils.sortAuthor}>Author</TableHeaderColumn>
         <TableHeaderColumn className="note-type" columnClassName="note-type" dataField="noteContactType" dataSort hidden={attachmentStatus} >Contact</TableHeaderColumn>
         <TableHeaderColumn className="note" columnClassName="note" dataField="noteContent" dataSort dataFormat={notesUtils.formatNote} hidden={attachmentStatus} >Note</TableHeaderColumn>

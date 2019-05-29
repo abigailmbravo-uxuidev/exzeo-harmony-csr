@@ -1,4 +1,5 @@
 import moment from 'moment-timezone';
+import { date } from '@exzeo/core-ui';
 
 export const removeTerm = id => (id && id.replace) ? id.replace(/(\d{2}-\d{7})-\d{2}/g, (_, group) => group) : id;
 
@@ -49,6 +50,8 @@ export const attachmentType = attachments => (attachments.length > 0 ? toTitleCa
 export const formatNote = note => (note ? note.replace(/\r|\n/g, '<br>') : '');
 
 export const attachmentFilter = cell => (cell.length > 0 ? cell[0].fileName : null);
+
+export const formatCreatedDate = createdDate => date.formattedLocalDate(createdDate);
 
 export const sortAuthor = (a, b, order) => {
   if (!a.createdBy) return order === 'desc' ? -1 : 1;
