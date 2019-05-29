@@ -8,7 +8,15 @@ function QuoteCard({
   quote
 }) {
   return (
-    <div tabIndex="0" onKeyPress={handleKeyPress} id={quote._id} onClick={handleClick} className="card">
+    <div
+      tabIndex="0"
+      onKeyPress={handleKeyPress}
+      id={quote._id}
+      data-test={quote.quoteNumber}
+      onClick={handleClick}
+      data-url={`/quote/${quote.quoteNumber}/coverage`}
+      className="card"
+    >
       <div className="icon-name">
         {/*<i className="card-icon fa fa-user-circle" />*/}
         <i className="card-icon fa fa-quote-left" />
@@ -34,9 +42,6 @@ function QuoteCard({
             <div
               id={quote.quoteNumber + quote.property.physicalAddress.address1}
               className="row"
-              data-test={quote.quoteNumber}
-              onClick={handleClick}
-              data-url={`/quote/${quote.quoteNumber}/coverage`}
             >
               <span className="quote-no">{quote.quoteNumber}</span>
               <span className="property-address">{`${quote.property.physicalAddress.address1} ${quote.property.physicalAddress.city}, ${quote.property.physicalAddress.state} ${quote.property.physicalAddress.zip}`}</span>
