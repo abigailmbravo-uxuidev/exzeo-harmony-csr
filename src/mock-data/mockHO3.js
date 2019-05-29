@@ -1594,16 +1594,24 @@ const mock = {
       step: {},
       components: [
         {
-          id: 5152019254,
+          id: 5101254,
           type: '$SECTION',
           dependencies: [],
-          data: {
-            className: 'application'
-          },
+          data: {},
           formData: {},
           children: [
             {
               id: 5152019255,
+              type: '$TITLE',
+              dependencies: [],
+              data: {
+                text: 'History'
+              },
+              formData: {},
+              children: [],
+            },
+            {
+              id: 515255,
               type: '$NOTESFILES',
               dependencies: [],
               data: {},
@@ -1743,7 +1751,6 @@ const mock = {
               data: {
                 component: '$SUMMARY',
                 extendedProperties: {
-                  className :"policyholder-details",
                   details: [
                     { label: 'Policyholder Name', items: [{ format: 'name', path: 'policyHolders[0]'}] },
                     { label: 'Phone Number', items: [{ format: 'phone', path: 'policyHolders[0].primaryPhoneNumber'}]},
@@ -1785,7 +1792,6 @@ const mock = {
               data: {
                 component: '$SUMMARY',
                 extendedProperties: {
-                  hideNoValuePath: 'policyHolders[1]',
                   details: [
                     { label: 'Policyholder Name', items: [{ format: 'name', path: 'policyHolders[1]'}] },
                     { label: 'Phone Number', items: [{ format: 'phone', path: 'policyHolders[1].primaryPhoneNumber'}]},
