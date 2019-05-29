@@ -1,7 +1,7 @@
 /* eslint-disable */
 const mock = {
   "header": {
-    "hideDetailSummary": true,
+    "hideDetailSummary": false,
     "fields": [
       { "value": 'policyHolder', "component": 'Section', "label": 'Policyholder' },
       { "value": 'mailingAddress', "component": 'Section' },
