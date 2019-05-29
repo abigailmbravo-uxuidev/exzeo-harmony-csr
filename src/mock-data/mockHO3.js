@@ -1690,7 +1690,6 @@ const mock = {
               data: {
                 component: '$SUMMARY',
                 extendedProperties: {
-                  className :"coverage-rating",
                   details: [
                     { items: [{ format: 'currency', path: 'rating.totalPremium'}], label: 'Yearly Premium'},
                     { items: [{ format: 'currency', path: 'coverageLimits.dwelling.amount'}], label: 'A. Dwelling'},
@@ -1889,9 +1888,7 @@ const mock = {
           id: 5142019254,
           type: '$SECTION',
           dependencies: [],
-          data: {
-            className: 'application'
-          },
+          data: {},
           formData: {},
           children: [
             {

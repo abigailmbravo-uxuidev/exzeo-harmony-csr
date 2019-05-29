@@ -180,7 +180,6 @@ export class QuoteBase extends React.Component {
     const { showDiaries, gandalfTemplate } = this.state;
     const { currentStep, currentPage } = getCurrentStepAndPage(location.pathname);
     const shouldUseGandalf = (gandalfTemplate && ROUTES_NOT_HANDLED_BY_GANDALF.indexOf(currentStep) === -1);
-    const shouldRenderFooter = ROUTES_NOT_USING_FOOTER.indexOf(currentStep) === -1;
     const transformConfig = this.getConfigForJsonTransform(gandalfTemplate);
     // TODO going to use Context to pass these directly to custom components,
     //  so Gandalf does not need to know about these.
@@ -227,7 +226,7 @@ export class QuoteBase extends React.Component {
                       template={gandalfTemplate}
                       transformConfig={transformConfig}
                       stickyFooter
-                      renderFooter={({ pristine, submitting, form }) => shouldRenderFooter &&
+                      renderFooter={({ pristine, submitting, form }) =>
                         <QuoteFooter
                           handlePrimaryClick={this.primaryClickHandler}
                           handleResetForm={form.reset}

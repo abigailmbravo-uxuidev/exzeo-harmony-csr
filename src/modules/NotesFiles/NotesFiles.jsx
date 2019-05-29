@@ -7,12 +7,12 @@ import { NOTE_TABS, NOTE_TYPE } from '../../constants/notes';
 import { DIARY_TAB } from '../../constants/diaries';
 
 
-function NotesFiles ({ options, customHandlers, formValues }) {
+function NotesFiles ({ options, customHandlers, initialValues }) {
   const [historyTab, setHistoryTab] = useState(NOTE_TYPE.notes);
 
   const { notes, diaries } = options;
   useEffect(() => {
-    customHandlers.fetchNotes([formValues.quoteNumber], 'quoteNumber')
+    customHandlers.fetchNotes([initialValues.quoteNumber], 'quoteNumber')
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
   return (
@@ -28,7 +28,7 @@ function NotesFiles ({ options, customHandlers, formValues }) {
               <button type="button" className={`btn btn-tab ${historyTab === NOTE_TYPE.diaries ? 'selected' : ''}`} onClick={() => setHistoryTab(NOTE_TYPE.diaries)}>Diaries</button>
             </div>
             {NOTE_TABS.includes(historyTab) && <Notes notes={notes} customHandlers={customHandlers} attachmentStatus={historyTab === NOTE_TYPE.files} />}
-            {DIARY_TAB === historyTab && <DiaryTable customHandlers={customHandlers} diaries={diaries} entityEndDate={formValues.endDate} />}
+            {DIARY_TAB === historyTab && <DiaryTable customHandlers={customHandlers} diaries={diaries} entityEndDate={initialValues.endDate} />}
           </div>
         </div>
       </section>
