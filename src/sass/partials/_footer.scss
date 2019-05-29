@@ -2,10 +2,11 @@
   align-items: center;
   flex-grow: 0;
   flex-shrink: 0;
-  width: 100%;
-  height: auto;
+  flex-wrap: wrap;
   margin-bottom: 0;
   padding: ($padding/2) $padding;
+  width: 100%;
+  height: auto;
   border-top: 1px dotted $warm-gray-04;
 
   &.btn-footer {

@@ -760,14 +760,13 @@
 //summary page
 /*------------------------------------------------------------------------------------*/
 
-.share-quote {
+.share {
   display: flex;
   align-content: space-between;
   align-items: flex-start;
   flex-grow: 0;
   flex-shrink: 0;
   padding: $padding;
-  width: auto;
   width: 100%;
   border-top: 1px dotted $warm-gray-04;
   background: $warm-gray-01;
