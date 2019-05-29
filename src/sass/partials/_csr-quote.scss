@@ -495,7 +495,7 @@
       flex-shrink: 0;
       margin-bottom: 0;
       padding: 0.5rem;
-      height: 3.25rem;
+      height: auto;
       border-top: 1px dotted $warm-gray-04;
 
       footer {
@@ -768,6 +768,7 @@
   flex-shrink: 0;
   padding: $padding;
   width: auto;
+  width: 100%;
   border-top: 1px dotted $warm-gray-04;
   background: $warm-gray-01;
 
