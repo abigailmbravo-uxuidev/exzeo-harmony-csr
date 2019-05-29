@@ -173,8 +173,7 @@ export class QuoteBase extends React.Component {
       match,
       notes,
       options,
-      quoteData,
-      fetchNotes
+      quoteData
     } = this.props;
 
     const { showDiaries, gandalfTemplate } = this.state;
@@ -188,7 +187,6 @@ export class QuoteBase extends React.Component {
       getState: this.getLocalState,
       handleSubmit: this.handleGandalfSubmit,
       history: history,
-      fetchNotes: fetchNotes,
       setAppError: this.props.setAppError,
       toggleDiary: this.props.toggleDiary
     };

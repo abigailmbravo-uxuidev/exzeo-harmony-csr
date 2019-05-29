@@ -51,7 +51,7 @@ const Notes = (props) => {
             <Downloader
             fileName={fileName}
             fileUrl={attachment.fileUrl}
-            errorHandler={err => props.setAppError(err)}
+            errorHandler={err => setAppError(err)}
             key={i} />
         );
       })}

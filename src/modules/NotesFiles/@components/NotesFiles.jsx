@@ -3,16 +3,18 @@ import { shape } from 'prop-types'
 
 import Notes from './Notes';
 import DiaryTable from './DiaryTable';
-import { NOTE_TYPE, NOTE_TABS, DIARY_TAB } from '../constants';
+import { NOTE_TYPE, NOTE_TABS, DIARY_TAB, QUOTE_RESOURCE_TYPE } from '../constants';
+import { useFetchNotes, useFetchDiaries } from '../hooks';
+import { SectionLoader } from '@exzeo/core-ui/src';
 
 function NotesFiles ({ options, customHandlers, initialValues }) {
   const [historyTab, setHistoryTab] = useState(NOTE_TYPE.notes);
+  const { notes, notesLoaded } = useFetchNotes([initialValues.quoteNumber], 'quoteNumber');
+  const { diaries, diariesLoaded } = useFetchDiaries({ resourceId: initialValues.quoteNumber, resourceType: QUOTE_RESOURCE_TYPE });
 
-  const { notes, diaries } = options;
-  useEffect(() => {
-    customHandlers.fetchNotes([initialValues.quoteNumber], 'quoteNumber')
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  if(!notesLoaded || !diariesLoaded) {
+    return <SectionLoader />
+  }
 
   return (
     <div className="notes-list">
