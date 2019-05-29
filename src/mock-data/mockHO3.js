@@ -19,12 +19,11 @@ const mock = {
       step: {},
       components: [
         {
+          name: 'ProducedBy',
           id: 100100,
           type: '$SECTION',
           dependencies: [],
-          data: {
-            className: 'produced-by'
-          },
+          data: {},
           formData: {},
           children: [
             {
@@ -80,6 +79,7 @@ const mock = {
           ]
         },
         {
+          name: 'Policyholders',
           id: 6,
           type: '$CUSTOM',
           dependencies: [],
@@ -93,6 +93,7 @@ const mock = {
           children: [],
         },
         {
+          name: 'PropertyAddress',
           id: 10007,
           type: '$SECTION',
           dependencies: [],
@@ -186,6 +187,7 @@ const mock = {
           ]
         },
         {
+          name: "Location",
           id: 100001,
           type: '$SECTION',
           dependencies: [],
@@ -444,6 +446,7 @@ const mock = {
           ]
         },
         {
+          name: "Coverages",
           id: 100034,
           type: '$SECTION',
           dependencies: [],
@@ -640,6 +643,7 @@ const mock = {
           ]
         },
         {
+          name: "OtherCoverages",
           id: 1000042,
           type: '$SECTION',
           dependencies: [],
@@ -809,6 +813,7 @@ const mock = {
           ]
         },
         {
+          name: "Deductibles",
           id: 1000048,
           type: '$SECTION',
           dependencies: [],
@@ -937,6 +942,7 @@ const mock = {
           ]
         },
         {
+          name: "Discounts",
           id: 1000053,
           type: '$SECTION',
           dependencies: [],
@@ -1055,6 +1061,7 @@ const mock = {
           ]
         },
         {
+          name: "WindMitigation",
           id: 1000058,
           type: '$SECTION',
           dependencies: [],
@@ -1062,7 +1069,6 @@ const mock = {
             className: 'wind-mit',
           },
           formData: {},
-          className: 'test',
           children: [
             {
               id: 159,
@@ -1445,13 +1451,11 @@ const mock = {
           id: 51320191033,
           type: '$SECTION',
           dependencies: [],
-          data: {
-            className: ''
-          },
+          data: {},
           formData: {},
           children: [
             {
-              id: 51320191034,
+              id: 0,
               type: '$TITLE',
               dependencies: [],
               data: {
@@ -1461,7 +1465,7 @@ const mock = {
               children: [],
             },
             {
-              id: 51320191035,
+              id: 1,
               type: '$CUSTOM',
               dependencies: [],
               data: {
@@ -1493,7 +1497,6 @@ const mock = {
                 'premiumFinance',
                 'billPayer',
               ],
-              subscribe: true,
               displayReferenceNumber: true,
             }
           },
