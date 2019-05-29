@@ -26,8 +26,9 @@ function NotesFiles ({ options, customHandlers, initialValues }) {
         {DIARY_TAB === historyTab && <DiaryTable customHandlers={customHandlers} diaries={diaries} entityEndDate={initialValues.endDate} />}
       </div>
     </div>
+  </div>
   );
-}
+};
 
 NotesFiles.propTypes = {
   customHandlers: shape({}).isRequired,
