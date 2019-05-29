@@ -112,6 +112,10 @@
                     
                     .form-group {
                       width: 50%;
+
+                      &.email {
+                        width: 100%;
+                      }
                     }
                   }
                 }
