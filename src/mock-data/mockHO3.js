@@ -888,15 +888,15 @@ const mock = {
                 metaData: {
                   enum: [
                     {
-                      "label": "2% of Dewlling Limit",
+                      "label": "2% of Dwelling Limit",
                       "answer": 2
                     },
                     {
-                      "label": "5% of Dewlling Limit",
+                      "label": "5% of Dwelling Limit",
                       "answer": 5
                     },
                     {
-                      "label": "10% of Dewlling Limit",
+                      "label": "10% of Dwelling Limit",
                       "answer": 10
                     }
                   ],
