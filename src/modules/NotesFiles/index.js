@@ -1,3 +1,3 @@
-import NotesFiles from './NotesFiles';
+import NotesFiles from './@components/NotesFiles';
 
 export default NotesFiles;

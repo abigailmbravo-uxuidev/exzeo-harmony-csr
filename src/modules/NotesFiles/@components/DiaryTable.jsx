@@ -3,12 +3,7 @@ import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 import { toLocaleDate } from '@exzeo/core-ui/src/Utilities/date';
 
 import { SearchPanel } from './SearchPanel';
-
-export const DUE_STATUS = {
-  dueSoon: 'Due Soon',
-  pastDue: 'Past Due',
-  upComing: 'Upcoming'
-};
+import { DIARY_STATUS_COLOR, DIARY_STATUS } from '../constants';
 
 
 const DiaryExpandColumns = ({ diaries }) => {
@@ -25,19 +20,6 @@ const DiaryExpandColumns = ({ diaries }) => {
   );
 };
 
-const DIARY_STATUS = {
-  pastDue: `OPEN | ${DUE_STATUS.pastDue}`,
-  dueSoon: `OPEN | ${DUE_STATUS.dueSoon}`,
-  upComing: `OPEN | ${DUE_STATUS.upComing}`,
-  closed: 'CLOSED'
-};
-
-const DIARY_STATUS_COLOR = {
-  pastDue: 'red',
-  dueSoon: 'yellow',
-  upComing: 'green',
-  closed: 'gray'
-};
 
 class DiaryTable extends Component {
   isExpandableRow = (row) => {
