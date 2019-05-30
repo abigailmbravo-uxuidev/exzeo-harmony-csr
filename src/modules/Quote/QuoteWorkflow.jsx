@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Loader, FormSpy, remoteSubmit } from '@exzeo/core-ui';
-import { getConfigForJsonTransform, Gandalf } from '@exzeo/core-ui/src/@Harmony';
+import { getConfigForJsonTransform, Gandalf, AgencySelect } from '@exzeo/core-ui/src/@Harmony';
 import { defaultMemoize } from 'reselect';
 
 import UnderwritingValidationBarConnect from './UnderwritingValidationBar';
@@ -63,6 +63,7 @@ export class QuoteBase extends React.Component {
       $POLICYHOLDERS: PolicyHolders,
       $APPLICATION: Application,
       $NOTESFILES: NotesFiles,
+      $AGENCY_SELECT: AgencySelect,
     };
 
   }
