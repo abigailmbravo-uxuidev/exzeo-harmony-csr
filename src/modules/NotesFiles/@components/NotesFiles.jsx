@@ -17,7 +17,7 @@ function NotesFiles ({ options, customHandlers, initialValues }) {
   }
 
   return (
-    <div className="notes-list">
+    <div className="notes-list fade-in">
       <div className="note-grid-wrapper btn-tabs">
         <div className="filter-tabs">
           <button type="button" className={classNames('btn btn-tab', { 'selected': selectedTab === NOTE_TYPE.notes })} onClick={() => setSelectedTab(NOTE_TYPE.notes)}>Notes</button>
