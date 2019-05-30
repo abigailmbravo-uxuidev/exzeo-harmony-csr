@@ -7,7 +7,7 @@ import moment from 'moment';
 
 import { saveUnderwritingExceptions } from '../../state/actions/service.actions';
 import { getQuote } from '../../state/actions/quote.actions';
-import CheckField from '../Form/inputs/CheckField';
+import CheckField from '../../components/Form/inputs/CheckField';
 
 import UnderwritingExceptions from './UnderwritingExceptions';
 

@@ -1,9 +1,12 @@
 import React from 'react';
-import Footer from '../../components/Common/Footer';
-import { Button } from '@exzeo/core-ui/src';
-import { Share } from '@exzeo/core-ui/src/@Harmony';
+import { bool, func, string, shape } from 'prop-types';
 
-function QuoteFooter({ submitting, isPrimaryDisabled, handlePrimaryClick, handleResetForm, currentStep }) {
+import { Button } from '@exzeo/core-ui';
+import { ShareFooter } from '@exzeo/core-ui/src/@Harmony';
+
+import Footer from '../../components/Common/Footer';
+
+function QuoteFooter({ isSubmitDisabled, handlePrimaryClick, currentStep, formInstance }) {
   return (
     <React.Fragment>
       {(currentStep === 'notes' || currentStep === 'additionalInterests')
@@ -12,7 +15,7 @@ function QuoteFooter({ submitting, isPrimaryDisabled, handlePrimaryClick, handle
         </div>
         : (currentStep === 'summary')
         ? <React.Fragment>
-          <Share handleShare={handlePrimaryClick} disabled={isPrimaryDisabled}/>
+          <ShareFooter parentFormInstance={formInstance} summaryType='csr'/>
           <div className="basic-footer">
             <Footer/>
           </div>
@@ -22,7 +25,7 @@ function QuoteFooter({ submitting, isPrimaryDisabled, handlePrimaryClick, handle
           <div className="btn-wrapper">
             {currentStep !== 'application' &&
             <Button
-              onClick={handleResetForm}
+              onClick={formInstance.reset}
               data-test="reset"
               className={Button.constants.classNames.secondary}
               label="Reset"
@@ -32,7 +35,7 @@ function QuoteFooter({ submitting, isPrimaryDisabled, handlePrimaryClick, handle
               data-test="submit"
               className={Button.constants.classNames.primary}
               onClick={handlePrimaryClick}
-              disabled={isPrimaryDisabled}
+              disabled={isSubmitDisabled}
               label={currentStep !== 'application' ? 'Update' : 'Send To Docusign'}
             />
           </div>
@@ -42,7 +45,12 @@ function QuoteFooter({ submitting, isPrimaryDisabled, handlePrimaryClick, handle
   );
 }
 
-QuoteFooter.propTypes = {};
+QuoteFooter.propTypes = {
+  isSubmitDisabled: bool.isRequired,
+  handlePrimaryClick: func.isRequired,
+  currentStep: string.isRequired,
+  formInstance: shape({}).isRequired
+};
 
 export default QuoteFooter;
 

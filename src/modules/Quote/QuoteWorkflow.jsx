@@ -5,7 +5,7 @@ import { Loader, FormSpy, remoteSubmit } from '@exzeo/core-ui';
 import { getConfigForJsonTransform, Gandalf } from '@exzeo/core-ui/src/@Harmony';
 import { defaultMemoize } from 'reselect';
 
-import UnderwritingValidationBarConnect from '../../components/Quote/UnderwritingValidationBar';
+import UnderwritingValidationBarConnect from './UnderwritingValidationBar';
 import App from '../../components/AppWrapper';
 import OpenDiariesBar from '../../components/OpenDiariesBar';
 import DiaryPolling from '../../components/DiaryPolling';
@@ -24,7 +24,7 @@ import { getAgentList, getAgencyList } from '../../state/selectors/agency.select
 import { getDiariesForTable } from '../../state/selectors/diary.selectors';
 
 import MOCK_CONFIG_DATA from '../../mock-data/mockHO3';
-import { ROUTES_NOT_HANDLED_BY_GANDALF, ROUTES_NOT_USING_FOOTER, PAGE_ROUTING } from './constants/workflowNavigation';
+import { ROUTES_NOT_HANDLED_BY_GANDALF, PAGE_ROUTING } from './constants/workflowNavigation';
 import { formatForSubmit } from '../../utilities/choreographer';
 
 import Application from './Application'
@@ -62,7 +62,7 @@ export class QuoteBase extends React.Component {
     this.customComponents = {
       $POLICYHOLDERS: PolicyHolders,
       $APPLICATION: Application,
-      $NOTESFILES: NotesFiles
+      $NOTESFILES: NotesFiles,
     };
 
   }
@@ -227,11 +227,10 @@ export class QuoteBase extends React.Component {
                       stickyFooter
                       renderFooter={({ pristine, submitting, form }) =>
                         <QuoteFooter
-                          handlePrimaryClick={this.primaryClickHandler}
-                          handleResetForm={form.reset}
                           currentStep={currentRouteName}
-                          submitting={submitting}
-                          isPrimaryDisabled={this.isSubmitDisabled(pristine, submitting)}
+                          formInstance={form}
+                          isSubmitDisabled={this.isSubmitDisabled(pristine, submitting)}
+                          handlePrimaryClick={this.primaryClickHandler}
                         />
                       }
                       formListeners={() =>

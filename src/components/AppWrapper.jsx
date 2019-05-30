@@ -6,7 +6,7 @@ import { DetailsHeader } from '@exzeo/core-ui/src/@Harmony'
 import { getPolicyDetails, getQuoteDetails } from '../state/selectors/detailHeader.selectors';
 import { getOpenDiaries } from '../state/selectors/diary.selectors';
 import PolicySideNav from '../components/Policy/PolicySideNav';
-import QuoteSideNav from '../components/Quote/QuoteSideNav';
+import QuoteSideNav from './QuoteSideNav';
 
 import Header from './Header';
 import DiaryButton from './DiaryButton';

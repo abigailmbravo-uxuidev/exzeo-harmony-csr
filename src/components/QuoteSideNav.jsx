@@ -5,12 +5,13 @@ import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 import { SideNavigation } from '@exzeo/core-ui/src/@Harmony';
 
-import * as appStateActions from '../../state/actions/appState.actions';
-import * as uiActions from '../../state/actions/ui.actions';
-import * as cgActions from '../../state/actions/cg.actions';
-import PlusButton from '../PlusButton';
-import UWconditions from '../Common/UWconditions';
-import { QUOTE_RESOURCE_TYPE } from '../../constants/diaries';
+import * as appStateActions from '../state/actions/appState.actions';
+import * as uiActions from '../state/actions/ui.actions';
+import * as cgActions from '../state/actions/cg.actions';
+import { QUOTE_RESOURCE_TYPE } from '../constants/diaries';
+
+import PlusButton from './PlusButton';
+import UWConditions from './UWconditions';
 
 export const newDiary = (props) => {
   const { quoteData: { companyCode, state, product, quoteNumber, endDate } } = props;
@@ -110,7 +111,7 @@ export const SideNav = (props) => {
           </li>
         </SideNavigation>
         {props.appState.data.showUWconditions === true &&
-          <UWconditions closeButtonHandler={() => closeUWConditions(props)} />
+          <UWConditions closeButtonHandler={() => closeUWConditions(props)} />
         }
         <PlusButton newNote={() => newNote(props)} newDiary={() => newDiary(props)} />
       </nav>
