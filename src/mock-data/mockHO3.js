@@ -1483,9 +1483,21 @@ const mock = {
       step: {},
       components: [
         {
+          id: 340933,
+          type: '$TITLE',
+          dependencies: [{ path: 'rating.worksheet', value: false }],
+          data: {
+            className: 'messages',
+            icon: 'fa fa-exclamation-circle',
+            text: 'Additional Interests cannot be accessed until Premium calculated.',
+          },
+          formData: {},
+          children: [],
+        },
+        {
           id: 300,
           type: '$CUSTOM',
-          dependencies: [],
+          dependencies: [{ path: 'rating.worksheet', value: true }],
           data: {
             component: '$ADDITIONAL_INTERESTS',
             extendedProperties: {
