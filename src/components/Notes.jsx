@@ -9,7 +9,7 @@ import NoteList from './NoteList';
 import Footer from './Common/Footer';
 
 export class Notes extends Component {
-  state = { isLoading: true }
+  state = { isLoading: true };
 
   async componentDidMount() {
     const { numbers, numberType, fetchNotes } = this.props;
@@ -26,7 +26,7 @@ export class Notes extends Component {
         <div className="route-content">
           {isLoading && <Loader />}
           <div className="scroll">
-            <NoteList notes={notes} setAppError={setAppError}  entityEndDate={policy.endDate} />
+            <NoteList notes={notes} setAppError={setAppError} entityEndDate={policy.endDate} />
           </div>
         </div>
         <div className="basic-footer">
