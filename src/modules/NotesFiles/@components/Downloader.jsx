@@ -1,5 +1,5 @@
 import React from 'react';
-import { http } from '@exzeo/core-ui/src/Utilities';
+import { http } from '@exzeo/core-ui';
 
 export const downloadFile = (fileUrl, fileName, errorHandler) => {
   const proxyUrl = `${process.env.REACT_APP_API_URL}/download`;

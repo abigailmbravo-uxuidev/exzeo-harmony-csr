@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { http } from '@exzeo/core-ui/src/Utilities';
+import { http } from '@exzeo/core-ui';
 
 import { setUserProfile } from '../state/actions/auth.actions';
 import { setAppError } from '../state/actions/error.actions';
