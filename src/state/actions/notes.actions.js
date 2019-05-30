@@ -53,7 +53,7 @@ export function fetchNotes(numbers, numberType) {
     return { number: removeTerm(number), numberType: noteType };
   });
 
-  const filesQuesry = numbers.map(number => number).join(',');
+  const filesQuesry = numbers.map(number => removeTerm(number)).join(',');
 
   const notesConfig = {
     exchangeName: 'harmony', 
