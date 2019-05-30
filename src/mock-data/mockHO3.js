@@ -1483,7 +1483,7 @@ const mock = {
       step: {},
       components: [
         {
-          id: 340933,
+          id: 6560933,
           type: '$TITLE',
           dependencies: [{ path: 'rating.worksheet', value: false }],
           data: {
@@ -1495,13 +1495,23 @@ const mock = {
           children: [],
         },
         {
+          id: 6560955,
+          type: '$TITLE',
+          dependencies: [{ path: 'rating.worksheet', value: true }],
+          data: {
+            className: 'messages',
+            text: 'Additional Interests',
+          },
+          formData: {},
+          children: [],
+        },
+        {
           id: 300,
           type: '$CUSTOM',
           dependencies: [{ path: 'rating.worksheet', value: true }],
           data: {
             component: '$ADDITIONAL_INTERESTS',
             extendedProperties: {
-              text: 'Please select the type of Additional Interest that you would like to add for this policy. (If the policy premium bill needs to go to somewhere other than the policyholder or an additional interest, please select Bill Payer to enter the alternate address.)',
               types: [
                 'mortgagee',
                 'additionalInsured',
@@ -1509,7 +1519,7 @@ const mock = {
                 'premiumFinance',
                 'billPayer',
               ],
-              displayReferenceNumber: true,
+              displayReferenceNumber: true
             }
           },
           formData: {},
