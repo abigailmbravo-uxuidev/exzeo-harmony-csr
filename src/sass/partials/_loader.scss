@@ -4,10 +4,10 @@
   align-items: center;
   flex-direction: column;
   justify-content: center;
-  background-color: rgba($white, .9);
+  background-color: rgba($warm-gray-15, .9);
   
   .message{
-    color: $bright-blue-darken-04;
+    color: $white;
     font-weight: $font-weight-bold;
     font-size: $font-size-h3;
   }
@@ -24,7 +24,7 @@
     width: 16px;
     height: 16px;
     border-radius: 100%;
-    background-color: rgba($bright-blue-darken-04, 1);
+    background-color: rgba($white, 1);
     -webkit-animation: sk-bouncedelay 1.4s infinite ease-in-out both;
     animation: sk-bouncedelay 1.4s infinite ease-in-out both;
   }

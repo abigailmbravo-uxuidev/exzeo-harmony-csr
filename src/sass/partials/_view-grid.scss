@@ -8,6 +8,7 @@
   align-items: center;
   justify-content: center;
   border-radius: $border-radius;
+  background: rgba($warm-gray-01, .5);
 
   &.loader-sm {}
   &.loader-md {
@@ -19,7 +20,7 @@
 
   .spinner {
     margin: 0 auto;
-    width: 90px;
+    width: 150px;
     text-align: center;
   }
   
@@ -29,7 +30,7 @@
     width: 16px;
     height: 16px;
     border-radius: 100%;
-    background-color: rgba($bright-blue-darken-04, .4);
+    background-color: rgba($bright-blue, 1);
     -webkit-animation: sk-bouncedelay 1.4s infinite ease-in-out both;
     animation: sk-bouncedelay 1.4s infinite ease-in-out both;
   }
@@ -43,6 +44,7 @@
     -webkit-animation-delay: -0.16s;
     animation-delay: -0.16s;
   }
+  
   
 }
 
