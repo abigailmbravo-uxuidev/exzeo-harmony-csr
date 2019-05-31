@@ -207,6 +207,10 @@ select {
           margin: 0;
           padding: 0;
 
+          &.react-select__single-value {
+            display: block;
+          }
+
           &.react-select__placeholder {
             left: $padding;
           }
@@ -262,6 +266,12 @@ select {
 
       .react-select__menu-list {
         padding: 0;
+      }
+    }
+
+    .react-select__indicators {
+      .react-select__clear-indicator {
+        padding: $padding/2;
       }
     }
   }
