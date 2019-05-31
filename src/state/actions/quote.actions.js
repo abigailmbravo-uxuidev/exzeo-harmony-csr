@@ -99,10 +99,7 @@ function formatQuoteForSubmit(data, options) {
 
   // AF3 specific rules
   if (data.product === PRODUCT_TYPES.flood) {
-    quote.deductibles.personalPropertyDeductible.value = data.deductibles.personalPropertyDeductible.value || 500;
-    quote.deductibles.buildingDeductible.value = data.deductibles.buildingDeductible.value || 500;
-    quote.coverageLimits.personalProperty.value = data.coverageLimits.personalProperty.value || 100000;
-    quote.coverageLimits.lossOfUse.value = data.coverageLimits.lossOfUse.value || 5000;
+    // currently no defaults specific to flood that we know of.
   }
 
   return quote;
