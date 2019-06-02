@@ -59,6 +59,8 @@ function setEnums(state, action) {
     premiumFinance,
     mortgagee,
     order,
+    agent: action.agent,
+    agency: action.agency,
   };
 }
 

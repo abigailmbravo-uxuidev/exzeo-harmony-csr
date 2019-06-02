@@ -62,7 +62,10 @@ export default {
     zipCodeSettings: []
   },
   list: {
-    zipCodeSettings: {},
-    uiQuestions: {},
+    mortgagee: [],
+    premiumFinance: [],
+    order: [],
+    agency: [],
+    agent: [],
   }
 };
