@@ -16,8 +16,8 @@ export function setAgencies(agencies) {
 
 /**
  *
- * @param agency
- * @returns {{type: string, agency: *}}
+ * @param agencyData
+ * @returns {{agency: *, type: string}}
  */
 export function setAgency(agencyData) {
   // TODO: Transforming Agent Data to be in the Branches array
@@ -84,6 +84,7 @@ export function getAgency(agencyCode) {
  *
  * @param companyCode
  * @param state
+ * @param agencyCode
  * @returns {Function}
  */
 export function getAgencies(companyCode, state, agencyCode) {
@@ -177,6 +178,7 @@ export function updateAgency(agencyData) {
 /**
  *
  * @param agentData
+ * @param agencyCode
  * @returns {Function}
  */
 export function addAgent(agentData, agencyCode) {
@@ -195,6 +197,7 @@ export function addAgent(agentData, agencyCode) {
 /**
  *
  * @param agentData
+ * @param agencyCode
  * @returns {Function}
  */
 export function updateAgent(agentData, agencyCode) {
@@ -233,6 +236,7 @@ export async function fetchAgency(agencyCode) {
  *
  * @param companyCode
  * @param state
+ * @param agencyCode
  * @returns {Promise<Array>}
  */
 export async function fetchAgencies(companyCode, state, agencyCode = '') {
@@ -352,11 +356,8 @@ export async function addNewAgent(agentData) {
 
 /**
  *
- * @param formData
- * @param currentAgency
- * @returns {Function}
+ * @returns {Promise<Array>}
  */
-
 export async function fetchOrphanedAgents() {
   try {
     const config = {
@@ -371,6 +372,10 @@ export async function fetchOrphanedAgents() {
   }
 }
 
+/**
+ *
+ * @returns {Function}
+ */
 export function getListOfOrphanedAgents() {
   return async (dispatch) => {
     try {
@@ -403,7 +408,11 @@ export async function saveNewAgency(agencyData) {
   }
 }
 
-
+/**
+ *
+ * @param agencyData
+ * @returns {Function}
+ */
 export function createAgency(agencyData) {
   return async (dispatch) => {
     try {
@@ -420,7 +429,8 @@ export function createAgency(agencyData) {
 
 /**
  *
- * @param agencyData
+ * @param branchData
+ * @param agencyCode
  * @returns {Promise<{}>}
  */
 export async function saveNewBranch(branchData, agencyCode) {
@@ -438,7 +448,12 @@ export async function saveNewBranch(branchData, agencyCode) {
   }
 }
 
-
+/**
+ *
+ * @param branchData
+ * @param agencyCode
+ * @returns {Function}
+ */
 export function createBranch(branchData, agencyCode) {
   return async (dispatch) => {
     try {
@@ -455,6 +470,11 @@ export function createBranch(branchData, agencyCode) {
   };
 }
 
+/**
+ *
+ * @param agencyData
+ * @returns {*}
+ */
 export function transormAgencyToBranch(agencyData) {
   const {
     mailingAddress,
@@ -499,12 +519,8 @@ export function transormAgencyToBranch(agencyData) {
 
 /**
  *
- * @param policies
- * @param agentCodeTo
- * @param agencyCodeTo
- * @param agencyCode
- * @param agentCode
- * @returns {Promise<{}>}
+ * @param transfers
+ * @returns {Promise<*>}
  */
 export async function transferPoliciesRequest(transfers) {
   try {
@@ -526,12 +542,8 @@ export async function transferPoliciesRequest(transfers) {
 
 /**
  *
- * @param policies
- * @param agentCodeTo
- * @param agencyCodeTo
- * @param agencyCode
- * @param agentCode
- * @returns {Promise<{}>}
+ * @param transfers
+ * @returns {Function}
  */
 export function transferPoliciesToAgent(transfers) {
   return async (dispatch) => {
