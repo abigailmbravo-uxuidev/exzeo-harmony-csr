@@ -14,13 +14,11 @@ import { toggleDiary } from '../../state/actions/ui.actions';
 import { setAppState } from '../../state/actions/appState.actions';
 import { setAppError } from '../../state/actions/error.actions';
 import { getQuote, updateQuote } from '../../state/actions/quote.actions';
-import { getAgencies, getAgentsByAgencyCode } from '../../state/actions/agency.actions';
 import { getZipcodeSettings } from '../../state/actions/service.actions';
 import { fetchNotes } from '../../state/actions/notes.actions';
 import { fetchDiaries } from '../../state/actions/diary.actions';
 import { getEnumsForQuoteWorkflow } from '../../state/actions/list.actions';
 import { getQuoteSelector } from '../../state/selectors/choreographer.selectors';
-import { getAgentList, getAgencyList } from '../../state/selectors/agency.selector';
 import { getDiariesForTable } from '../../state/selectors/diary.selectors';
 
 import MOCK_CONFIG_DATA from '../../mock-data/mockHO3';
@@ -47,7 +45,7 @@ const MemoizedFormListeners = React.memo(({ children }) => <React.Fragment>{chil
 
 const FORM_ID = 'QuoteWorkflowCSR';
 
-export class QuoteBase extends React.Component {
+export class QuoteWorkflow extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -62,7 +60,7 @@ export class QuoteBase extends React.Component {
     this.customComponents = {
       $POLICYHOLDERS: PolicyHolders,
       $APPLICATION: Application,
-      $NOTESFILES: NotesFiles,
+      $NOTES_FILES: NotesFiles,
       $AGENCY_SELECT: AgencySelect,
     };
 
@@ -74,10 +72,9 @@ export class QuoteBase extends React.Component {
     const { match } = this.props;
     this.props.getQuote(match.params.quoteNumber, '').then((quoteData) => {
       if (quoteData && quoteData.property) {
-        const { companyCode, state, product, property } = quoteData;
-        this.props.getEnumsForQuoteWorkflow({ companyCode, state, product, property });
-        this.props.getZipcodeSettings(quoteData.companyCode, quoteData.state, quoteData.product, quoteData.property.physicalAddress.zip);
-        this.props.fetchDiaries({ resourceId: quoteData.quoteNumber, resourceType: QUOTE_RESOURCE_TYPE });
+        const { companyCode, state, product, property, agencyCode, agentCode } = quoteData;
+        this.props.getEnumsForQuoteWorkflow({ companyCode, state, product, agencyCode, agentCode });
+        this.props.getZipcodeSettings(companyCode, state, product, property.physicalAddress.zip);
       }
 
     });
@@ -104,14 +101,6 @@ export class QuoteBase extends React.Component {
     this.setState(() => ({ gandalfTemplate: MOCK_CONFIG_DATA }));
   };
 
-  handleToggleDiaries = () => {
-    this.setState({ showDiaries: !this.state.showDiaries });
-  };
-
-  primaryClickHandler = () => {
-    remoteSubmit(FORM_ID);
-  };
-
   handleGandalfSubmit = async ({ shouldNav, options, ...values }) => {
     const { quoteData, location } = this.props;
     const { currentRouteName, currentStepNumber } = getCurrentStepAndPage(location.pathname);
@@ -133,16 +122,8 @@ export class QuoteBase extends React.Component {
     }
   };
 
-  getLocalState = () => {
-    return this.state;
-  };
-
-  setShowEmailPopup = (showEmailPopup) => {
-    this.setState(() => ({ showEmailPopup }));
-  };
-
-  setFormInstance = (formInstance) => {
-    this.formInstance = formInstance;
+  handleToggleDiaries = () => {
+    this.setState({ showDiaries: !this.state.showDiaries });
   };
 
   isSubmitDisabled = (pristine, submitting) => {
@@ -153,21 +134,27 @@ export class QuoteBase extends React.Component {
 
     if(currentStepNumber === PAGE_ROUTING.application){
       return (Array.isArray(quoteData.underwritingExceptions) &&
-       quoteData.underwritingExceptions.filter(uw => !uw.overridden).length > 0);
+        quoteData.underwritingExceptions.filter(uw => !uw.overridden).length > 0);
     }
 
     if(currentStepNumber === PAGE_ROUTING.summary) {
       return !VALID_SHARE_STATE.includes(quoteData.quoteState) &&
-      (QUOTE_STATE.QuoteStarted && quoteData.quoteInputState !== QUOTE_INPUT_STATE.Qualified);
+        (QUOTE_STATE.QuoteStarted && quoteData.quoteInputState !== QUOTE_INPUT_STATE.Qualified);
     }
 
     return pristine || submitting;
   };
 
+  primaryClickHandler = () => {
+    remoteSubmit(FORM_ID);
+  };
+
+  setFormInstance = (formInstance) => {
+    this.formInstance = formInstance;
+  };
 
   render() {
     const {
-      agencies,
       diaries,
       history,
       isLoading,
@@ -185,8 +172,6 @@ export class QuoteBase extends React.Component {
     // TODO going to use Context to pass these directly to custom components,
     //  so Gandalf does not need to know about these.
     const customHandlers = {
-      setEmailPopup: this.setShowEmailPopup,
-      getState: this.getLocalState,
       handleSubmit: this.handleGandalfSubmit,
       history: history,
       setAppError: this.props.setAppError,
@@ -274,7 +259,7 @@ export class QuoteBase extends React.Component {
   }
 }
 
-QuoteBase.propTypes = {
+QuoteWorkflow.propTypes = {
   children: PropTypes.oneOfType([
     PropTypes.arrayOf(PropTypes.node),
     PropTypes.node
@@ -285,8 +270,6 @@ const mapStateToProps = state => {
   return {
     appState: state.appState,
     quoteData: getQuoteSelector(state),
-    agents: getAgentList(state),
-    agencies: getAgencyList(state),
     options: state.list,
     isLoading: state.ui.isLoading,
     diaries: getDiariesForTable(state),
@@ -298,12 +281,10 @@ export default connect(mapStateToProps, {
   setAppState,
   setAppError,
   getQuote,
-  getAgencies,
-  getAgentsByAgencyCode,
   getZipcodeSettings,
   getEnumsForQuoteWorkflow,
   updateQuote,
   fetchNotes,
   toggleDiary,
   fetchDiaries
-})(QuoteBase);
+})(QuoteWorkflow);

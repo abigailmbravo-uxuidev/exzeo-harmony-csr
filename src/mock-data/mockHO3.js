@@ -1637,7 +1637,7 @@ const mock = {
             },
             {
               id: 515255,
-              type: '$NOTESFILES',
+              type: '$NOTES_FILES',
               dependencies: [],
               data: {},
               formData: {},
