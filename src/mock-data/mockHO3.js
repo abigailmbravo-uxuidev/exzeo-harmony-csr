@@ -1547,7 +1547,9 @@ const mock = {
           id: 5152233354,
           type: '$SECTION',
           dependencies: [{ path: 'rating.worksheet', value: true }],
-          data: {},
+          data: {
+            className: 'billing-address',
+          },
           formData: {},
           children: [
             {
@@ -1582,7 +1584,9 @@ const mock = {
           id: 5152019254,
           type: '$SECTION',
           dependencies: [{ path: 'rating.worksheet', value: true }],
-          data: {},
+          data: {
+            className: 'billing-information',
+          },
           formData: {},
           children: [
             {

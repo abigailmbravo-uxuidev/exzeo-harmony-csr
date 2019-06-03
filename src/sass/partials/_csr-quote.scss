@@ -679,6 +679,38 @@
 }
 //Mailing & Billing
 /*------------------------------------------------------------------------------------*/
+.billing-information {
+  .form-group {
+    &.radio.segmented {
+      .segmented-answer-wrapper {
+        > div {
+          width: 33.33%;
+        }
+      }
+    }
+  }
+  .billing-plan-wrapper {
+    .title {
+      padding: 0;
+    }
+    dl {
+      padding: 0;
+      dt {
+        padding: 0 $padding;
+        background: $warm-gray-02;
+      }
+      dd {
+        margin-bottom: 0;
+        padding: ($padding/2) $padding;
+        border-bottom: 1px dotted $warm-gray-03;
+        
+        &:nth-of-type(even) {
+          background: $warm-gray-01;
+        }
+      }
+    }
+  }
+}
 #MailingAddressBilling {
   .mailing-address {
     .segmented-switch {
