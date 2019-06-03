@@ -10,10 +10,18 @@
   flex-direction: column;
   justify-content: center;
   background: rgba($warm-gray-15, .75);
+
   &.gradient-bg {
     background: radial-gradient(ellipse at center, rgba($warm-gray-12, .75) 0%, rgba($warm-gray-15, .9) 100%);
     /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
   }
+
+  &.modal-alert {
+    .card {
+      max-width: 24rem;
+    }
+  }
+
   &.schedule-date-modal {
     .survey-wrapper {
       display: flex;
