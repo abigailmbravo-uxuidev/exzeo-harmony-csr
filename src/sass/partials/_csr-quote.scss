@@ -694,7 +694,11 @@
       padding: 0;
     }
     dl {
-      padding: 0;
+      padding: 0 ($padding/2) 0 0;
+
+      &:last-of-type {
+        padding-right: 0;
+      }
       dt {
         padding: 0 $padding;
         background: $warm-gray-02;
