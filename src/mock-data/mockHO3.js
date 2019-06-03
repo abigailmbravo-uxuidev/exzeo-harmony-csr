@@ -1768,7 +1768,7 @@ const mock = {
               type: '$TITLE',
               dependencies: [],
               data: {
-                text: 'Primary PolicyHolder',
+                text: 'Primary Policyholder',
               },
               formData: {},
               children: [],
