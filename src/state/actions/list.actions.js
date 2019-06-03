@@ -1,5 +1,5 @@
 import * as serviceRunner from '@exzeo/core-ui/src/@Harmony/Domain/Api/serviceRunner';
-import { fetchAgents, fetchAgencies } from '@exzeo/core-ui/src/@Harmony';
+import { searchAgencies, fetchAgentsByAgencyCode } from '@exzeo/core-ui/src/@Harmony';
 
 import * as listTypes from '../actionTypes/list.actionTypes';
 import { setAppError } from './error.actions';
@@ -28,8 +28,8 @@ export function getEnumsForQuoteWorkflow({ companyCode, state, product, agencyCo
       // fetch all enums/data needed for the quote workflow in here.
       // 1. assign async function(s) to variable(s) - calls the func
       const additionalInterestQuestions = fetchMortgagees();
-      const agencyOption = fetchAgencies({ companyCode, state, agencyCode });
-      const agentOption = fetchAgents({ companyCode, state, agencyCode });
+      const agencyOption = searchAgencies({ companyCode, state, agencyCode });
+      const agentOption = fetchAgentsByAgencyCode({ companyCode, state, agencyCode });
       // 2. new variable awaits the previous.
       const additionalInterestResponse = await additionalInterestQuestions;
       const agencyResponse = await agencyOption;
