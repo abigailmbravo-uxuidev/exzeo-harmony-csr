@@ -5,7 +5,7 @@ import { Loader, FormSpy, remoteSubmit } from '@exzeo/core-ui';
 import { getConfigForJsonTransform, Gandalf, AgencySelect } from '@exzeo/core-ui/src/@Harmony';
 import { defaultMemoize } from 'reselect';
 
-import UnderwritingValidationBarConnect from './UnderwritingValidationBar';
+import UnderwritingValidationBar from './UnderwritingValidationBar';
 import App from '../../components/AppWrapper';
 import OpenDiariesBar from '../../components/OpenDiariesBar';
 import DiaryPolling from '../../components/DiaryPolling';
@@ -240,12 +240,13 @@ export class QuoteWorkflow extends React.Component {
                 }
               </div>
 
-              <UnderwritingValidationBarConnect />
+              <UnderwritingValidationBar />
 
               <OpenDiariesBar
                 entityEndDate={quoteData.endDate}
                 resourceId={quoteData.quoteNumber}
-                resourceType={QUOTE_RESOURCE_TYPE} />
+                resourceType={QUOTE_RESOURCE_TYPE}
+              />
 
               {(quoteData && quoteData.quoteNumber) &&
                 <DiaryPolling filter={{ resourceId: quoteData.quoteNumber, resourceType: QUOTE_RESOURCE_TYPE }} />
