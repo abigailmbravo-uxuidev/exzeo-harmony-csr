@@ -78,13 +78,13 @@
 
 //remove once the typeahead is updated
 /*------------------------------------------------------------------------------------*/
-.test {
+.agencyTypeahead {
   label {
     position: relative;
     &:after {
       margin-left: $padding;
       color: $warm-gray-05;
-      content: 'Start typing to search';
+      content: '*Start typing to search';
       font-weight: $font-weight-normal;
       font-style: italic;
       font-size: $font-size-sm;
