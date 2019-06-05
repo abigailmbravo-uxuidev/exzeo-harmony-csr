@@ -5,7 +5,8 @@ import { getEditModalInitialValues,
   getAgentOfRecord,
   getBranchesList,
   getBranchInitialValues,
-  filterActiveAgentsList
+  filterActiveAgentsList,
+  filterAgenciesList
 } from './agency.selector';
 
 describe('Testing Agency Selectors', () => {
@@ -145,5 +146,19 @@ describe('Testing Agency Selectors', () => {
       territoryManagerId: '5b7db9f6ff54fd6a5c619eec'
     });
   });
+
+  it('should test filterAgenciesList', () => {
+    const agents = [{
+        agencyCode: 234, displayName: 'TestFirst AOR Agency', status: 'Active'
+        },
+        {
+          agencyCode: 567, displayName: 'TestSecond AOR', status: 'Cancel'
+        }];
+
+    const result = filterAgenciesList(agents);
+    const res = [{"answer": 234, "label": "234: TestFirst AOR Agency"}];
+    expect(result).toEqual(res);
+  });
+  
 });
 
