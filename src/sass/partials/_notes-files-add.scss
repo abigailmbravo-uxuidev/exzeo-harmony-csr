@@ -35,6 +35,11 @@
     height: 2.4375rem;
     background: $bright-blue-darken-04;
 
+    .title {
+      margin-bottom: 0;
+      font-size: $font-size-h4;
+    }
+
     * {
       color: $white;
     }
