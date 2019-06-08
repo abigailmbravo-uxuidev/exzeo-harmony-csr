@@ -18,12 +18,11 @@ import { getZipcodeSettings } from '../../state/actions/service.actions';
 import { fetchNotes } from '../../state/actions/notes.actions';
 import { fetchDiaries } from '../../state/actions/diary.actions';
 import { getEnumsForQuoteWorkflow } from '../../state/actions/list.actions';
-import { getQuoteSelector } from '../../state/selectors/choreographer.selectors';
+import { getQuoteSelector } from '../../state/selectors/quote.selectors.selectors';
 import { getDiariesForTable } from '../../state/selectors/diary.selectors';
 
 import MOCK_CONFIG_DATA from '../../mock-data/mockHO3';
 import { ROUTES_NOT_HANDLED_BY_GANDALF, PAGE_ROUTING } from './constants/workflowNavigation';
-import { formatForSubmit } from '../../utilities/choreographer';
 
 import Application from './Application'
 import PolicyHolders from './PolicyHolders';
@@ -101,22 +100,18 @@ export class QuoteWorkflow extends React.Component {
     this.setState(() => ({ gandalfTemplate: MOCK_CONFIG_DATA }));
   };
 
-  handleGandalfSubmit = async ({ shouldNav, options, ...values }) => {
+  handleGandalfSubmit = async ({ shouldNav, removeSecondary, options, ...values }) => {
     const { quoteData, location } = this.props;
     const { currentRouteName, currentStepNumber } = getCurrentStepAndPage(location.pathname);
-    // TODO need to refactor this out ASAP. QuoteWorkflow should not know about CG anymore,
-    //  if we still need to use CG, we should do that in the quote action to keep it abstracted away from this component (like we did in harmony-web)
-    const { submitData, modelName = '', pageName = '' } = formatForSubmit(values, currentRouteName, this.props);
     await this.props.updateQuote({
-      data: submitData,
+      data: values,
       options: {
-        modelName,
-        pageName,
         quoteData,
         step: currentStepNumber,
         shouldSendApplication: currentRouteName === 'application',
       },
     });
+
     if (currentRouteName === 'application'){
       this.setState({ applicationSent: true });
     }

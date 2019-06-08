@@ -105,9 +105,14 @@ function formatQuoteForSubmit(data, options) {
   return quote;
 }
 
+/**
+ *
+ * @param data
+ * @param options
+ * @returns {Function}
+ */
 export function updateQuote({ data = {}, options = {} }) {
   return async function(dispatch) {
-    const { modelName, pageName, quoteData } = options;
     dispatch(toggleLoading(true));
     try {
        if (options.shouldSendApplication) {
@@ -129,14 +134,21 @@ export function updateQuote({ data = {}, options = {} }) {
           data: updatedQuote,
         };
 
-        await serviceRunner.callService(config, 'quoteManager.updateQuote');
+        const response = await serviceRunner.callService(config, 'quoteManager.updateQuote');
+        const quote = response.data.result;
+        if (!quote) {
+          dispatch(errorActions.setAppError(response.data));
+          return null;
+        }
+
+        dispatch(setQuote(quote));
+        return quote;
       }
     } catch (error) {
       dispatch(errorActions.setAppError(error));
       return null;
 
     } finally {
-      await dispatch(getQuote(quoteData._id, pageName));
       dispatch(toggleLoading(false));
     }
   };
