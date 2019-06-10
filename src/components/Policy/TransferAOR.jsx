@@ -3,31 +3,33 @@ import { defaultMemoize } from 'reselect';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Field, reduxForm } from 'redux-form';
-import { SelectInteger, SelectTypeAhead, Loader, validation } from '@exzeo/core-ui';
+import { SelectInteger, SelectTypeAhead, Loader, validation, Button } from '@exzeo/core-ui';
 import { callService } from '@exzeo/core-ui/src/@Harmony';
 
-import { getAgencies, fetchAgentsByAgencyCode, getAgency, getAgentsByAgencyCode } from '../../state/actions/agency.actions';
+import { getAgencies, fetchAgentsByAgencyCode, getAgency, getAgentsByAgencyCode, fetchAgenciesByAgencyCodeOrName } from '../../state/actions/agency.actions';
 import { getPolicy } from '../../state/actions/policy.actions';
 import { setAppError } from '../../state/actions/error.actions';
-import { getAgencyList, filterActiveAgentsList } from '../../state/selectors/agency.selector';
+import { filterAgenciesList, filterActiveAgentsList } from '../../state/selectors/agency.selector';
 
 export class TransferAOR extends Component {
   constructor(props) {
     super(props);
     this.filterActiveAgentsList = defaultMemoize(filterActiveAgentsList);
+    this.filterAgenciesList = defaultMemoize(filterAgenciesList);
   }
 
   state = {
     isLoading: false,
-    agents: []
-  };
+    agents: [],
+    agencies: []
+  }
 
   async componentDidMount() {
-    const { getAgencies, initialize, companyCode, agencyCode, state } = this.props;
+    const { agencyCode } = this.props;
 
     try {
       this.setState({ isLoading: true });
-      await getAgencies(companyCode, state);
+      await this.getAgenciesForAORTransfer(agencyCode);
       await this.getAgentsForAORTransfer(agencyCode);
 
     } catch (err) {
@@ -37,10 +39,22 @@ export class TransferAOR extends Component {
     }
   }
 
+
+  getAgenciesForAORTransfer = async (searchParam = '') => {
+    const { companyCode, state } = this.props;
+    const agencies = await fetchAgenciesByAgencyCodeOrName(companyCode, state, searchParam);
+    this.setState({ agencies: this.filterAgenciesList(agencies) });
+  }
+
   getAgentsForAORTransfer = async (agencyCode) => {
     const agents = await fetchAgentsByAgencyCode(agencyCode);
     this.setState({ agents: this.filterActiveAgentsList(agents) });
   };
+
+  handleAgenciesFilter = (value) => {
+    this.getAgenciesForAORTransfer(value);
+    return value;
+  }
 
   handleAgencyChange = (_, agencyCode) => {
     const { change } = this.props;
@@ -71,8 +85,8 @@ export class TransferAOR extends Component {
   };
 
   render() {
-    const { handleSubmit, toggleModal, agencies, pristine } = this.props;
-    const { isLoading, agents } = this.state;
+    const { handleSubmit, toggleModal, pristine } = this.props;
+    const { isLoading, agents, agencies } = this.state;
 
     return (
       <div className="modal transfer-AOR-modal" style={this.modalStyle}>
@@ -93,6 +107,7 @@ export class TransferAOR extends Component {
                 answers={agencies}
                 validate={validation.isRequired}
                 onChange={this.handleAgencyChange}
+                onInputChange={this.handleAgenciesFilter}
               />
               <Field
                 label="Agent"
@@ -105,21 +120,19 @@ export class TransferAOR extends Component {
             </div>
             <div className="card-footer">
               <div className="btn-group">
-                <button
+                <Button
                   tabIndex="0"
-                  aria-label="reset-btn form-editBilling"
                   className="btn btn-secondary"
-                  type="button"
-                  onClick={toggleModal}>Cancel
-                </button>
-                <button
+                  label="Cancel"
+                  onClick={toggleModal}
+                  dataTest="aor-modal-cancel" />
+                <Button
                   tabIndex="0"
-                  aria-label="submit-btn form-editBilling"
                   className="btn btn-primary"
-                  disabled={pristine}
                   type="submit"
-                >Update
-                </button>
+                  label="Update"
+                  dataTest="aor-modal-submit"
+                  disabled={pristine} />
               </div>
             </div>
           </form>
@@ -139,7 +152,6 @@ TransferAOR.propTypes = {
 };
 
 const mapStateToProps = (state, { agencyCode, agentCode }) => ({
-  agencies: getAgencyList(state),
   initialValues: { agencyCode, agentCode }
 });
 

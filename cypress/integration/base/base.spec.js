@@ -1,14 +1,14 @@
 import _ from 'lodash'; //eslint-disable-line
 import {
-  navNewQuote,
-  navCoverage,
-  navUnderwriting,
-  navAdditionalInterests,
-  navMailingBilling,
-  navNotesFiles,
-  navSummary,
-  navApplication,
-  navDocusign
+  navigateThroughNewQuote,
+  navigateThroughCoverage,
+  navigateThroughUnderwriting,
+  navigateThroughAdditionalInterests,
+  navigateThroughMailingBilling,
+  navigateThroughNotesFiles,
+  navigateThroughSummary,
+  navigateThroughApplication,
+  navigateThroughDocusign
 } from '../../helpers';
 import stubAllRoutes from '../../support/stubAllRoutes';
 import user from '../../fixtures/stockData/user.json';
@@ -24,7 +24,7 @@ describe('Base Path', () => {
   });
 
   it('Navigate through base app', () => {
-    navNewQuote(address1);
+    navigateThroughNewQuote(address1);
     const coverageRes = [
       'data.previousTask.value.result.policyHolders', [{
         firstName: pH1.pH1FirstName,
@@ -33,13 +33,13 @@ describe('Base Path', () => {
         emailAddress: pH1.pH1email
       }]
     ];
-    navCoverage(pH1, coverageRes, true);
-    navUnderwriting(underwritingData, undefined, true);
-    navAdditionalInterests();
-    navMailingBilling(undefined, true);
-    navNotesFiles();
-    navSummary();
-    navApplication();
-    navDocusign();
+    navigateThroughCoverage(pH1, coverageRes, true);
+    navigateThroughUnderwriting(underwritingData, undefined, true);
+    navigateThroughAdditionalInterests();
+    navigateThroughMailingBilling(undefined, true);
+    navigateThroughNotesFiles();
+    navigateThroughSummary();
+    navigateThroughApplication();
+    navigateThroughDocusign();
   });
 });

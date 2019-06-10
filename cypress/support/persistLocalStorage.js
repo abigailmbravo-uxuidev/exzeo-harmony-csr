@@ -3,14 +3,14 @@
 
 import { AUTH_TOKENS } from './constants';
 
-Cypress.Commands.add('persistSession', (keys) =>
+Cypress.Commands.add('persistSession', keys =>
   cy.wrap(keys).each(key => {
     const value = localStorage.getItem(key);
     if (value) { cy.setCookie(key, value); }
   })
 );
 
-Cypress.Commands.add('restoreSession', (keys) =>
+Cypress.Commands.add('restoreSession', keys =>
   cy.wrap(keys).each(key =>
     cy.getCookie(key).then(cookie => {
       if (cookie && cookie.value) { localStorage.setItem(key, cookie.value); }

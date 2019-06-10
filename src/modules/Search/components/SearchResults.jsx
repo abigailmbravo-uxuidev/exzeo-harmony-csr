@@ -114,6 +114,7 @@ export class SearchResults extends Component {
         }
 
         {hasSearched && searchType === SEARCH_TYPES.diaries && !!results.length &&
+            handleKeyPress={handleKeyPress}
         <DiaryList
           handleKeyPress={handleDiaryKeyPress}
           onItemClick={handleDiaryClick}

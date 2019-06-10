@@ -24,7 +24,6 @@ describe('Test DiaryModal component', () => {
     expect(wrapper.exists())
       .toBeTruthy();
 
-    wrapper.instance().componentDidMount();
     wrapper.instance().handleMinimize();
     wrapper.instance().handleClose();
     wrapper.instance().submitDiary({ assignee: { id: '1' }, foo: '1', bar: '2' }, x => x, props);
@@ -34,8 +33,6 @@ describe('Test DiaryModal component', () => {
     const wrapper = shallow(<DiaryModal {...props} user={{ test: '1' }} />);
     expect(wrapper.exists())
       .toBeTruthy();
-
-    wrapper.instance().componentDidMount();
 
     expect(wrapper.instance().normalizeDiaryReason('none')).toEqual('none');
     expect(wrapper.instance().normalizeDiaryReason('additional_interest')).toEqual('additional_interest');

@@ -39,6 +39,7 @@ class DiariesSearch extends Component {
                 name="open"
                 dataTest="status"
                 label="Diary Status"
+                styleName="open"
                 component={Select}
                 id="status"
                 validate={validation.isRequired}
@@ -60,6 +61,7 @@ class DiariesSearch extends Component {
               <Field
                 name="dateRange"
                 dataTest="date-range"
+                styleName="dateRange"
                 component={DateRange}
                 label="Date Range"
                 errorHint />
@@ -68,13 +70,13 @@ class DiariesSearch extends Component {
               <Field
                 name="assignees"
                 dataTest="assignees"
+                styleName="assignees"
                 component={MultiSelectTypeAhead}
                 label="Assigned To"
                 answers={assigneeAnswers}
                 errorHint />
             </div>
           </div>
-
           <Button
             className={Button.constants.classNames.success}
             customClass="multi-input"
@@ -90,7 +92,6 @@ class DiariesSearch extends Component {
 
 DiariesSearch.propTypes = {
   initialize: PropTypes.func.isRequired,
-  userProfile: PropTypes.shape().isRequired,
   assigneeAnswers: PropTypes.arrayOf(PropTypes.shape()),
   initialValues: PropTypes.shape(),
   submitting: PropTypes.bool

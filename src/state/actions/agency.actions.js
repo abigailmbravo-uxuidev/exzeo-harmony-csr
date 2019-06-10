@@ -256,6 +256,36 @@ export async function fetchAgencies(companyCode, state, agencyCode = '') {
 
 /**
  *
+ * @param companyCode
+ * @param state
+ * @returns {Promise<Array>}
+ */
+export async function fetchAgenciesByAgencyCodeOrName(companyCode, state, searchParam = '') {
+
+  let agencyCode = '';
+  let displayName = '';
+
+  const onlyNumbers = new RegExp('^[0-9]+$');
+  if(onlyNumbers.test(searchParam)) agencyCode = searchParam;
+  else displayName = encodeURI(searchParam);
+
+  const config = {
+    service: 'agency',
+    method: 'GET',
+    path: `agencies?companyCode=${companyCode}&state=${state}&agencyCode=${agencyCode}&displayName=${displayName}`
+  };
+
+  try {
+    const response = await serviceRunner.callService(config, 'fetchAgenciesByAgencyCodeOrName');
+    return response.data && response.data.result ? response.data.result : [];
+  } catch (error) {
+    throw error;
+  }
+}
+
+
+/**
+ *
  * @param agencyCode
  * @returns {Promise<Array>}
  */

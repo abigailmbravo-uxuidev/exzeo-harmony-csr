@@ -667,12 +667,8 @@ ul.list-cards {
   li {
     margin-bottom: $padding/2;
 
-    a {
-      align-items: center;
-      padding: $padding $padding*1.5;
-      border: $card-border-width solid $card-border-color;
-      border-radius: $card-border-radius;
-      background: $white;
+    > div {
+
 
       section {
         flex-direction: column;
@@ -728,6 +724,8 @@ ul.list-cards {
     flex-direction: row;
     margin: 0 0 ($padding/2);
     padding: $padding $padding*1.5;
+
+    @include transition(all 0.2s ease-in-out);
 
     .icon-name {
       display: flex;
@@ -794,7 +792,7 @@ ul.list-cards {
             font-size: $font-size-sm;
           }
 
-          a.row {
+          div.row {
             display: flex;
             padding: 0;
             width: 100%;
@@ -802,9 +800,7 @@ ul.list-cards {
             border-radius: 0;
             color: $bright-blue;
 
-            &:hover {
-              background: rgba($bright-blue, .1);
-            }
+            @include transition(all 0.2s ease-in-out);
 
             span {
               padding: ($padding/4) 0;
@@ -856,6 +852,22 @@ ul.list-cards {
             flex-grow: 0;
             flex-shrink: 0;
             padding-right: $padding;
+          }
+        }
+      }
+    }
+
+    &:hover {
+      box-shadow: $card-box-shadow-hover;
+      cursor: pointer;
+      transform: scale(1.004);
+  
+      ul {
+        &.quote-search-results, &.policy-search-results {
+          div {
+            &.row {
+              background: rgba($bright-blue, .1);
+            }
           }
         }
       }

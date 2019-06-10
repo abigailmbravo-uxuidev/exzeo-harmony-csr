@@ -4,10 +4,10 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { SideNavigation } from '@exzeo/core-ui/src/@Harmony';
 
-import * as uiActions from '../../state/actions/ui.actions';
-import * as serviceActions from '../../state/actions/service.actions';
-import * as cgActions from '../../state/actions/cg.actions';
-import * as errorActions from '../../state/actions/error.actions';
+import { toggleNote, toggleDiary } from '../../state/actions/ui.actions';
+import { fetchNotes } from '../../state/actions/notes.actions';
+import { startWorkflow } from '../../state/actions/cg.actions';
+import { setAppError } from '../../state/actions/error.actions';
 import { POLICY_RESOURCE_TYPE } from '../../constants/diaries';
 
 import PlusButton from '../PlusButton';
@@ -35,7 +35,7 @@ const getNavLinks = ({ policyNumber }) => [
   }, {
     key: 'notes',
     to: `/policy/${policyNumber}/notes`,
-    label: 'Notes / Files',
+    label: 'Notes / Files / Diaries',
     styleName: 'notes',
     exact: true
   }, {
@@ -60,8 +60,8 @@ export class SideNav extends React.Component {
   };
 
   newDiary = () => {
-    const { actions, policy: { companyCode, state, product, policyNumber, endDate } } = this.props;
-    actions.uiActions.toggleDiary({
+    const { actions, toggleDiary, policy: { companyCode, state, product, policyNumber, endDate } } = this.props;
+    toggleDiary({
       companyCode,
       state,
       product,
@@ -72,8 +72,8 @@ export class SideNav extends React.Component {
   };
 
   newNote = () => {
-    const { actions, policy: { companyCode, state, product, policyNumber, sourceNumber } } = this.props;
-    actions.uiActions.toggleNote({
+    const { actions, toggleNote, policy: { companyCode, state, product, policyNumber, sourceNumber } } = this.props;
+    toggleNote({
       companyCode,
       state,
       product,
@@ -89,14 +89,14 @@ export class SideNav extends React.Component {
   };
 
   updateNotes = () => {
-    const { actions, policy } = this.props;
+    const { actions, policy, fetchNotes } = this.props;
     return () => {
-      actions.serviceActions.getNotes(policy.policyNumber, policy.sourceNumber);
+      fetchNotes([policy.policyNumber, policy.sourceNumber], 'policyNumber');
     };
   };
 
   render() {
-    const { actions, policy } = this.props;
+    const { actions, policy, startWorkflow, setAppError } = this.props;
     return (
       <nav className="site-nav">
         <SideNavigation navLinks={getNavLinks({ policyNumber: policy.policyNumber })}>
@@ -116,8 +116,8 @@ export class SideNav extends React.Component {
                 policyNumber={policy.policyNumber}
                 policyID={policy.policyID}
                 updateNotes={this.updateNotes(this.props)}
-                startWorkflow={actions.cgActions.startWorkflow}
-                errorHandler={actions.errorActions.setAppError} />
+                startWorkflow={startWorkflow}
+                errorHandler={setAppError} />
             }
           </li>
         </SideNavigation>
@@ -139,13 +139,10 @@ const mapStateToProps = state => ({
   policy: state.policyState.policy || {}
 });
 
-const mapDispatchToProps = dispatch => ({
-  actions: {
-    cgActions: bindActionCreators(cgActions, dispatch),
-    uiActions: bindActionCreators(uiActions, dispatch),
-    serviceActions: bindActionCreators(serviceActions, dispatch),
-    errorActions: bindActionCreators(errorActions, dispatch)
-  }
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(SideNav);
+export default connect(mapStateToProps, {
+  startWorkflow,
+  toggleNote,
+  toggleDiary,
+  fetchNotes,
+  setAppError
+})(SideNav);

@@ -8,7 +8,15 @@ function PolicyCard({
   policy
 }) {
   return (
-    <div tabIndex="0" onKeyPress={handleKeyPress} id={policy.PolicyID} className="card">
+    <div
+      tabIndex="0"
+      onKeyPress={handleKeyPress}
+      id={policy.PolicyID}
+      onClick={handleClick}
+      className="card"
+      data-test={policy.policyNumber}
+      data-url={`/policy/${policy.policyNumber}/coverage`}
+    >
       <div className="icon-name">
         {/*<i className="card-icon fa fa-user-circle" />*/}
         <i className="card-icon fa fa-file-text" />
@@ -29,12 +37,9 @@ function PolicyCard({
             <span className="effective-date">Effective Date</span>
           </li>
           <li>
-            <a
+            <div
               id={policy.PolicyID}
-              onClick={handleClick}
-              data-test={policy.policyNumber}
               className='row'
-              data-url={`/policy/${policy.policyNumber}/coverage`}
             >
               <span className="quote-no">{policy.policyNumber}</span>
               <span className="property-address">
@@ -44,7 +49,7 @@ function PolicyCard({
               </span>
               <span className="policy-status">{policy.status}</span>
               <span className="effective-date">{moment.utc(policy.effectiveDate).format(STANDARD_DATE_FORMAT)}</span>
-            </a>
+            </div>
           </li>
         </ul>
       </section>

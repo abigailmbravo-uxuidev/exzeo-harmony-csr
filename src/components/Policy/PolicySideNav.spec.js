@@ -20,15 +20,11 @@ const props = {
   policy: {
 
   },
-  actions: {
-    cgActions: {
-      batchCompleteTask() { return Promise.resolve(); }
-    },
-    appStateActions: {
-      setAppState() {},
-      toggleNote() {}
-    }
-  },
+  startWorkflow() {},
+  toggleNote() {},
+  toggleDiary() {},
+  fetchNotes() {},
+  setAppError() {},
   fieldQuestions: [],
   quoteData: {},
   dispatch: store.dispatch,

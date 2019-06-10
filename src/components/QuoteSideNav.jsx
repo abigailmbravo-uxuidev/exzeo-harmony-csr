@@ -65,7 +65,7 @@ const getNavLinks = ({ quoteNumber }) => {
   }, {
     key: 'notes',
     to: `/quote/${quoteNumber}/notes`,
-    label: 'Notes / Files',
+    label: 'Notes / Files / Diaries',
     styleName: 'notes',
     exact: true
   }, {

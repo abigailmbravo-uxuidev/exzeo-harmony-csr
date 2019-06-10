@@ -9,7 +9,7 @@ export const goToNav = name =>
   cy.get('.loader.modal').should('not.exist')
     .findDataTag(`nav-${name}`).find('a').click({ force: true });
 
-export const navNewQuote = (address = user.address1) => {
+export const navigateThroughNewQuote = (address = user.address1) => {
   cy.findDataTag('searchType').select('address')
     .findDataTag('address').type(address)
     .clickSubmit().wait('@fetchAddresses')
@@ -19,7 +19,7 @@ export const navNewQuote = (address = user.address1) => {
   });
 };
 
-export const navCoverage = (customerInfo = pH1, updates, useConfig) => {
+export const navigateThroughCoverage = (customerInfo = pH1, updates, useConfig) => {
   if (!updates) {
     updates = ['policyHolders',
         [{
@@ -39,7 +39,7 @@ export const navCoverage = (customerInfo = pH1, updates, useConfig) => {
     .findDataTag('coverage-submit').click();
 };
 
-export const navUnderwriting = (data = underwritingDefault, updates, useConfig) => {
+export const navigateThroughUnderwriting = (data = underwritingDefault, updates, useConfig) => {
   if (!updates) {
     updates = ['underwritingAnswers', { rented: { answer: "Never" } } ];
   };
@@ -51,38 +51,39 @@ export const navUnderwriting = (data = underwritingDefault, updates, useConfig) 
     .clickSubmit();
 };
 
-export const navAdditionalInterests = () => goToNav('additionalInterests');
+export const navigateThroughAdditionalInterests = () => goToNav('additionalInterests');
 
-export const navMailingBilling = (updates, useConfig) => {
+export const navigateThroughMailingBilling = (updates, useConfig) => {
   if (!updates) {
     const { address1, address2, city, state, zip, country } = user;
     updates = ['policyHolderMailingAddress', { address1, address2, city, state, zip, country } ];
   };
   goToNav('billing');
-  cy.get('.segmented-switch').click(30, 10)
+  cy.get('.loader.modal').should('not.exist').wait(3000)
+    .get('.segmented-switch [value="false"]').click({ force: true })
     .setFx('stubs/start/csrGetQuoteWithUnderwriting', updates, useConfig)
     .clickSubmit();
 };
 
-export const navNotesFiles = (updates, useConfig) =>
-  cy.setFx('stubs/start/csrGetQuoteWithUnderwriting', updates, useConfig).then(() => 
+export const navigateThroughNotesFiles = (updates, useConfig) =>
+  cy.setFx('stubs/start/csrGetQuoteWithUnderwriting', updates, useConfig).then(() =>
     goToNav('notes')
-  )
+  );
 
 
-export const navSummary = (updates, useConfig) =>
+export const navigateThroughSummary = (updates, useConfig) =>
   cy.setFx('stubs/start/csrGetQuoteWithUnderwriting', updates, useConfig).then(() => {
     goToNav('summary');
     cy.wait('@csrGetQuoteWithUnderwriting');
-  })
+  });
 
-export const navApplication = (updates, useConfig) =>
+export const navigateThroughApplication = (updates, useConfig) =>
   cy.setFx('stubs/start/csrGetQuoteWithUnderwriting', updates, useConfig).then(() => {
     goToNav('application');
     cy.wait('@csrGetQuoteWithUnderwriting');
-  })
+  });
 
-export const navDocusign = () =>
+export const navigateThroughDocusign = () =>
   cy.get('.basic-footer button[data-test="submit"]:not([disabled])').click()
     .wait(1000).get('.modal.quote-summary').should('exist')
     .get('.modal.quote-summary button[type="submit"]').click({ force: true }).wait('@csrGetQuoteWithUnderwriting')

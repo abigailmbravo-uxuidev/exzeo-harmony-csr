@@ -18,7 +18,7 @@ import { getZipcodeSettings } from '../../state/actions/service.actions';
 import { fetchNotes } from '../../state/actions/notes.actions';
 import { fetchDiaries } from '../../state/actions/diary.actions';
 import { getEnumsForQuoteWorkflow } from '../../state/actions/list.actions';
-import { getQuoteSelector } from '../../state/selectors/quote.selectors.selectors';
+import { getQuoteSelector } from '../../state/selectors/quote.selectors';
 import { getDiariesForTable } from '../../state/selectors/diary.selectors';
 
 import MOCK_CONFIG_DATA from '../../mock-data/mockHO3';

@@ -4,6 +4,7 @@ import configureStore from 'redux-mock-store';
 import { Provider } from 'react-redux';
 
 import TransferAOR from './TransferAOR';
+import { Button } from '@exzeo/core-ui';
 
 describe('Testing TransferAOR component', () => {
 
@@ -33,5 +34,16 @@ describe('Testing TransferAOR component', () => {
     expect(wrapper.exists()).toBeTruthy();
     expect(wrapper.find('Field')).toHaveLength(2);
     expect(wrapper.find('button')).toHaveLength(2);
+  });
+
+  it('onchange handlers', () => {
+    const wrapper = mount(<Provider store={store} ><TransferAOR {...props} /></Provider>);
+    wrapper.find('input[name="agencyCode"]').simulate('change', { target: { value: '20000' } });
+    wrapper.find('Button').everyWhere((x) => {
+      x.simulate('click');
+      return x;
+    });
+
+    
   });
 });
