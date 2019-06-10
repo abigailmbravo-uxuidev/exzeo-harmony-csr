@@ -480,6 +480,7 @@ const mock = {
                 validation: ['isDwellingRange'],
                 extendedProperties: {
                   format: 'currency',
+                  displayRange: true,
                   min: 'coverageLimits.dwelling.minAmount',
                   max: 'coverageLimits.dwelling.maxAmount',
                   step: 1000,
