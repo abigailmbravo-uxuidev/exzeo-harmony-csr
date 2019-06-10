@@ -1715,7 +1715,7 @@ const mock = {
               type: '$TITLE',
               dependencies: [],
               data: {
-                text: 'Coverage / Details',
+                text: 'Coverage / Rating',
               },
               formData: {},
               children: [],
