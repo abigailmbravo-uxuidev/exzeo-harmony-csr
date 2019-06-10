@@ -246,6 +246,12 @@
               }
             }
 
+            &.ref-number {
+              flex-grow: 0;
+              flex-shrink: 0;
+              width: 10rem;
+            }
+
             h4 {
               margin: 0;
             }
