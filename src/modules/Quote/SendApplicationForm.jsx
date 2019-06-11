@@ -9,9 +9,8 @@ const SendApplicationForm = ({ className, children, handleSubmit, initialValues 
       onSubmit={handleSubmit}
       subscription={{ submitting: true, pristine: true }}>
       {({ handleSubmit, submitting, pristine }) => (
-        <div className={className}>
           <form id="sendApplicationForm" className="application" onSubmit={handleSubmit}>
-          <div className="user-script">
+          <div className="card-block user-script">
             <p className="script margin bottom">I need to confirm a few more items prior to sending the application</p>
             <ul>
               <li className="script">Do you have a pool or similar structure on the property?
@@ -60,9 +59,8 @@ const SendApplicationForm = ({ className, children, handleSubmit, initialValues 
             <p className="script margin bottom">All properties are inspected within 30 days of the effective date. One of our representatives will be in contact with you to schedule it. Please plan to have someone present at the inspection as the inspector will need to enter the home.</p>
             <p className="scriptInfo margin bottom">Click &ldquo;SEND&rdquo; below to generate the Homeowners Application. Once you click &ldquo;SEND&rdquo; no changes can be made to this quote.</p>
           </div>
-            {children({ submitting, pristine })}
+          {children({ submitting, pristine })}
           </form>
-        </div>
       )}
     </Form>
   );
