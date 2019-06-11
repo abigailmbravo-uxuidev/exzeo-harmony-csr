@@ -593,7 +593,7 @@ const mock = {
             {
               id: 140,
               type: '$INPUT',
-              path: 'coverageLimits.personalLiability.amount',
+              path: 'coverageLimits.personalLiability.value',
               dependencies: [],
               data: {
                 component: 'selectInteger',
@@ -618,7 +618,7 @@ const mock = {
             {
               id: 141,
               type: '$INPUT',
-              path: 'coverageLimits.medicalPayments.amount',
+              path: 'coverageLimits.medicalPayments.value',
               dependencies: [],
               data: {
                 component: 'display',
@@ -668,7 +668,7 @@ const mock = {
             {
               id: 144,
               type: '$INPUT',
-              path: 'coverageLimits.moldProperty.amount',
+              path: 'coverageLimits.moldProperty.value',
               dependencies: [],
               data: {
                 component: 'selectInteger',
@@ -701,7 +701,7 @@ const mock = {
             {
               id: 145,
               type: '$INPUT',
-              path: 'coverageLimits.moldLiability.amount',
+              path: 'coverageLimits.moldLiability.value',
               dependencies: [],
               data: {
                 component: 'selectInteger',
@@ -785,7 +785,7 @@ const mock = {
             {
               id: 147,
               type: '$INPUT',
-              path: 'coverageLimits.ordinanceOrLaw.amount',
+              path: 'coverageLimits.ordinanceOrLaw.value',
               dependencies: [],
               data: {
                 component: 'selectInteger',
@@ -838,7 +838,7 @@ const mock = {
             {
               id: 150,
               component: '$INPUT',
-              path: 'deductibles.allOtherPerils.amount',
+              path: 'deductibles.allOtherPerils.value',
               dependencies: [],
               data: {
                 component: 'selectInteger',
@@ -871,7 +871,7 @@ const mock = {
             {
               id: 151,
               type: '$INPUT',
-              path: 'deductibles.hurricane.amount',
+              path: 'deductibles.hurricane.value',
               dependencies: [],
               data: {
                 component: 'selectInteger',
@@ -901,7 +901,7 @@ const mock = {
                       "answer": 10
                     }
                   ],
-                  target: '${Math.ceil(((it.deductibles.hurricane.amount / 100) * it.coverageLimits.dwelling.value))}',
+                  target: '${Math.ceil(((it.deductibles.hurricane.value / 100) * it.coverageLimits.dwelling.value))}',
                 },
               },
               children: [],
