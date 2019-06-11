@@ -134,7 +134,7 @@ describe('Testing AppWrapper', () => {
       constructionType,
       currentPremium
     }} = props;
-    
+
     const { getByText } = renderWithReduxAndRouter(<AppWrapper {...props} />);
     expect(getByText(details.product));
     expect(getByText(details.quoteNumber));
@@ -181,7 +181,7 @@ describe('Testing AppWrapper', () => {
       ...baseProps,
       context: 'policy'
     };
-    
+
     const { getByText } = renderWithReduxAndRouter(<AppWrapper {...props} />);
     expect(getByText('Coverage / Rating'));
     expect(getByText('Policyholder / Agent'));

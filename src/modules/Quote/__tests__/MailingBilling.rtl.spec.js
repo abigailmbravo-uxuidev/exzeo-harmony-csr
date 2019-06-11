@@ -51,7 +51,7 @@ describe('Mailing Address Testing', () => {
 
   it('POS:Checks message with no rating options', () => {
     const newProps = {
-    ...props,
+      ...props,
       quoteData: {
         ...props.quoteData,
         rating: {}

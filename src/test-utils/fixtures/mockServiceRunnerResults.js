@@ -155,37 +155,3 @@ export const notesResult = [
     state: 'FL'
   }
 ];
-
-export const searchAgenciesResult = [
-  {
-    agencyCode: 20000,
-    agentOfRecord: '60000',
-    branches: [],
-    contact: { emailAddress: 'test@typtap.com', firstName: 'WALLY', lastName: 'WAGONER', title: null },
-    contracts: [],
-    createdAt: '2015-12-23T12:45:30.137Z',
-    createdBy: 'tsmith',
-    customerServiceEmailAddress: 'test@typtap.com',
-    displayName: 'TYPTAP MANAGEMENT COMPANY',
-    eoExpirationDate: '2019-07-12T00:00:00.000Z',
-    faxNumber: '3525334073',
-    legalName: 'TYPTAP INSURANCE COMPANY',
-    licenses: [],
-    mailingAddress: { careOf: null, address1: '3001 SE MARICAMP ROAD', address2: null, city: 'OCALA', state: 'FL', country: { code: 'USA', displayText: 'United States of America'}},
-    okToPay: true,
-    physicalAddress: { address1: '3001 SE MARICAMP ROAD', address2: null, city: 'OCALA', state: 'FL', county: 'MARION', zip: '34471' },
-    primaryPhoneNumber: '3525099008',
-    principal: { emailAddress: 'test@typtap.com', firstName: 'WALLY', lastName: 'WAGONER' },
-    secondaryPhoneNumber: '8442897968',
-    status: 'Active',
-    taxClassification: 'Corporation',
-    taxIdNumber: '810922384',
-    territoryManagerId: '5b7db9f6ff54fd6a5c619ee8',
-    tier: 940,
-    tpaid: 0,
-    updatedAt: '2019-04-09T17:22:33.221Z',
-    updatedBy: 'msarmiento',
-    websiteUrl: 'WWW.TYPTAP.COM',
-    _id: '5b97e676968a4b75eea823d7'
-  }
-]

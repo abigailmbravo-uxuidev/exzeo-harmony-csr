@@ -19,7 +19,7 @@ describe('Notes Testing', () => {
   it('POS:Table Sorting', () => {
     const state = {
       ...defaultInitialState,
-      quoteState: { quote: { quoteNumber: '123' } },
+      quoteState: { quote: { quoteNumber: '123' }},
       appState: {},
       notes: [
         {

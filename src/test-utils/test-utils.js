@@ -78,16 +78,16 @@ const parseQueryType = (query, field, queryOptions) => {
   // We determine which field value to use based on query name
   const queryName = query.name.replace(/bound /g, '');
   switch (queryName) {
-    case 'getByTestId':
-      return query(field.name, queryOptions);
-    case 'getByText':
-      return query(field.text, queryOptions);
-    case 'getByLabelText':
-      return query(field.label, queryOptions);
-    case 'getByPlaceholderText':
-      return(query(field.placeholder, queryOptions));
-    default:
-      return query(field.name, queryOptions);
+  case 'getByTestId':
+    return query(field.name, queryOptions);
+  case 'getByText':
+    return query(field.text, queryOptions);
+  case 'getByLabelText':
+    return query(field.label, queryOptions);
+  case 'getByPlaceholderText':
+    return(query(field.placeholder, queryOptions));
+  default:
+    return query(field.name, queryOptions);
   }
 };
 
@@ -99,13 +99,13 @@ export const checkError = (query, { name = '', text = '', label = '', error = 'F
 
 export const checkTextInput = (query, field, queryOptions) => {
   const input = parseQueryType(query, field, queryOptions);
-  fireEvent.change(input, { target: { value: field.data } });
+  fireEvent.change(input, { target: { value: field.data }});
   expect(input.value).toBe(field.data);
 };
 
 export const checkTypeahead = (query, field) => {
-  const wrapper = parseQueryType(query, { ...field, name: `${field.name}_wrapper`});
-  console.log(wrapper.querySelectorAll('select'))
+  const wrapper = parseQueryType(query, { ...field, name: `${field.name}_wrapper` });
+  console.log(wrapper.querySelectorAll('select'));
   // const input = wrapper.querySelector('input#react-select-2-input');
   // fireEvent.change(input, { target: { value: field.data }});
   // fireEvent.focus(input);
@@ -115,13 +115,13 @@ export const checkTypeahead = (query, field) => {
 
 export const submitForm = (query, button = /submit/) => fireEvent.click(query(button));
 
-export const clearText = (query, field) => fireEvent.change(parseQueryType(query, field), { target: { value: '' } });
+export const clearText = (query, field) => fireEvent.change(parseQueryType(query, field), { target: { value: '' }});
 
 export const checkRadio = (
   query,
   { name = '', label = '', values },
   // Account for the same answer text appearing in multiple questions and select only current question
-  queryOptions = { selector: `[for="${name}"] span`}
+  queryOptions = { selector: `[for="${name}"] span` }
 ) => {
   values.forEach(value => {
     // Get the option to select and click it
@@ -141,7 +141,7 @@ export const checkRadio = (
 export const checkSelect = (query, field, queryOptions) => {
   const select = parseQueryType(query, field, queryOptions);
   field.values && field.values.forEach(value => {
-    fireEvent.change(select, { target: { value } });
+    fireEvent.change(select, { target: { value }});
     expect(select.getAttribute('data-selected')).toEqual(value);
   });
 };
@@ -179,7 +179,7 @@ export const verifyForm = (query, baseFields = [], fieldsLeftBlank = [], button)
   [...baseFields, ...fieldsLeftBlank].forEach(field => clearText(query, field));
   // Fills all fields out not in fieldsLeftBlank array based on 'data' key
   baseFields.filter(field => fieldsLeftBlank.indexOf(field) === -1)
-    .forEach(field => fireEvent.change(parseQueryType(query, field), { target: { value: field.data } }));
+    .forEach(field => fireEvent.change(parseQueryType(query, field), { target: { value: field.data }}));
   // Submit form
   submitForm(query, button);
   // Expect errors to exist on blank fields

@@ -29,41 +29,6 @@ import {
 } from '../../../test-utils';
 import { QuoteWorkflow } from '../QuoteWorkflow';
 
-// jest.mock('react-select', () => ({
-//   options,
-//   getOptionLabel,
-//   getOptionValue,
-//   isDisabled,
-//   name,
-//   value,
-//   onChange,
-//   isLoading,
-//   classNamePrefix, isClearable, onInputChange,
-//   ...rest
-// }) => {
-//   const handleChange = (event) => {
-//     const option = options.find(
-//       option => option.value === event.currentTarget.value
-//     );
-//     onChange(option);
-//   };
-//   return <select
-//       data-test={name}
-//       name={name}
-//       id={name}
-//       value={value}
-//       onChange={handleChange}
-//       disabled={isDisabled}
-//       {...rest}
-//     >
-//       {options.map(option => (
-//         <option key={getOptionValue(option)} value={getOptionValue(option)}>
-//           {getOptionLabel(option)}
-//         </option>
-//       ))}
-//     </select>;
-// });
-
 const pageHeaders = [
   { text: 'Produced By' }, { text: 'Primary Policyholder' }, { text: 'Secondary Policyholder' },
   { text: 'Property Address' }, { text: 'Home and Location' }, { text: 'Coverages' },
@@ -74,7 +39,7 @@ describe('Testing the Coverage/Rating Page', () => {
   const props = {
     ...defaultQuoteWorkflowProps,
     location: { pathname: '/quote/12-345-67/coverage' },
-  }
+  };
 
   const allFields = [
     ...producedByFields, ...primaryPolicyholderFields, ...secondaryPolicyholderFields,
@@ -90,19 +55,6 @@ describe('Testing the Coverage/Rating Page', () => {
     // expect(getByTestId('removeSecondary')).toBeDisabled();
     allFields.filter(field => field.visible !== false).forEach(field => checkLabel(getByTestId, field));
   });
-
-  // it('POS:Produced By Fields', async () => {
-  //   mockServiceRunner(result);
-
-  //   const { getByText, getByTestId } = renderWithForm(<QuoteWorkflow {...props} />);
-  //   producedByFields.forEach(field => {
-  //     if (field.type === 'text') checkTextInput(getByTestId, field);
-  //     if (field.type === 'typeahead' && !field.disabled) {
-  //       checkTypeahead(getByTestId, field);
-  //     }
-      
-  //   });
-  // });
 
   it('POS:PolicyHolder Fields', () => {
     const { getByTestId } = renderWithForm(<QuoteWorkflow {...props} />);

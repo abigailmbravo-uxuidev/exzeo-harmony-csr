@@ -222,7 +222,7 @@ export const coverageFields = [
     required: true,
     label: /Dwelling Limit/,
     data: '$ 300,000'
-},
+  },
   {
     name: 'coverageLimits.otherStructures.value',
     type: 'select',
