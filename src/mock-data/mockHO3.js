@@ -470,7 +470,7 @@ const mock = {
             {
               id: 136,
               type: '$INPUT',
-              path: 'coverageLimits.dwelling.amount',
+              path: 'coverageLimits.dwelling.value',
               dependencies: [],
               data: {
                 component: 'currency',
@@ -519,7 +519,7 @@ const mock = {
                 type: 'integer',
                 required: true,
                 metaData: {
-                  target: '${Math.ceil(((it.coverageLimits.otherStructures.value / 100) * it.coverageLimits.dwelling.amount))}',
+                  target: '${Math.ceil(((it.coverageLimits.otherStructures.value / 100) * it.coverageLimits.dwelling.value))}',
                 },
               },
               children: [],
@@ -561,7 +561,7 @@ const mock = {
                 type: 'integer',
                 required: true,
                 metaData: {
-                  target: '${Math.ceil(((it.coverageLimits.personalProperty.value / 100) * it.coverageLimits.dwelling.amount))}',
+                  target: '${Math.ceil(((it.coverageLimits.personalProperty.value / 100) * it.coverageLimits.dwelling.value))}',
                 },
               },
               children: [],
@@ -585,7 +585,7 @@ const mock = {
                 type: 'integer',
                 required: true,
                 metaData: {
-                  target: '${Math.ceil(((it.coverageLimits.lossOfUse.value / 100) * it.coverageLimits.dwelling.amount))}',
+                  target: '${Math.ceil(((it.coverageLimits.lossOfUse.value / 100) * it.coverageLimits.dwelling.value))}',
                 },
               },
               children: [],
@@ -901,7 +901,7 @@ const mock = {
                       "answer": 10
                     }
                   ],
-                  target: '${Math.ceil(((it.deductibles.hurricane.amount / 100) * it.coverageLimits.dwelling.amount))}',
+                  target: '${Math.ceil(((it.deductibles.hurricane.amount / 100) * it.coverageLimits.dwelling.value))}',
                 },
               },
               children: [],
@@ -935,7 +935,7 @@ const mock = {
                 type: 'integer',
                 required: true,
                 metaData: {
-                  target: '${Math.ceil(((it.deductibles.sinkhole.value / 100) * it.coverageLimits.dwelling.amount))}',
+                  target: '${Math.ceil(((it.deductibles.sinkhole.value / 100) * it.coverageLimits.dwelling.value))}',
                 },
               },
               children: [],
