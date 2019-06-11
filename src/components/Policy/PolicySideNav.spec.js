@@ -7,7 +7,11 @@ import ConnectedApp, { SideNav } from './PolicySideNav';
 const middlewares = [];
 const mockStore = configureStore(middlewares);
 const initialState = {
-  policyState: {},
+  policyState: {
+    policy: {
+      policyNumber: '1', policyID: '1'
+    }
+  },
   appState: {
     data: {}
   },
@@ -17,9 +21,6 @@ const initialState = {
 };
 const store = mockStore(initialState);
 const props = {
-  policy: {
-
-  },
   startWorkflow() {},
   toggleNote() {},
   toggleDiary() {},

@@ -22,6 +22,15 @@ Cypress.Commands.add('checkHeader', ({ name, text, icon }) =>
   cy.findDataTag(name).should('contain', text).find('i').should('have.attr', 'class', icon));
 
 /**
+  *
+  * @param {string} name
+  * @param {string} content
+  */
+Cypress.Commands.add('checkHeaderSection', (name, content) =>
+  cy.findDataTag(name).find('dl > div')
+    .children().each(($child, i) => cy.wrap($child).should('contain', content[i])));
+
+/**
  * @param {string} tag - String name of data-test tag.
  * @param {string} text - Check this text is now in value of input
  */
@@ -66,7 +75,7 @@ Cypress.Commands.add('checkSwitch', ({ name, defaultValue }) =>
 Cypress.Commands.add('checkSubmitButton', ((form = 'body') =>
   cy.get(form).findDataTag('submit').should('exist').and('have.attr', 'type', 'button')));
 
-  /**
+/**
    * Confirms each option in a select contains given data.
    * @param {Object} field - A select field
    * @param {string} field.name - Name of the wrapping data-test tag
@@ -78,7 +87,7 @@ Cypress.Commands.add('checkSelect', ({ name, options }) =>
     cy.wrap($els).each(($el, i) => cy.wrap($el).should('contain', options[i]));
   }));
 
-  /**
+/**
    * Check the basics of a React select Typeahead
    * @param {Object} field - A select field
    * @param {string} field.name - Name of the wrapping data-test tag
@@ -141,8 +150,7 @@ Cypress.Commands.add('checkResultsCard', (card, { icon, cardName = '', headerDat
     .parent().next().find('span').then($spans => {
       expect($spans).to.have.length(cardData.length);
       cy.wrap($spans).each(($span, i) => cy.wrap($span).should('contain', cardData[i]));
-    })
-  );
+    }));
 
 /**
 * Checks all values on an agency search result card
@@ -170,14 +178,10 @@ Cypress.Commands.add('checkAgencyCard', (card, { icon, cardData, status, address
       cy.wrap($li).children().first().should('contain', additionalContacts[i].name)
         .next().find('p').first().should('contain', additionalContacts[i].primaryPhone)
         .find('i').should('have.attr', 'class', 'fa fa-phone-square')
-        .parent().next().should('contain', additionalContacts[i].secondaryPhone)
-        .find('i').should('have.attr', 'class', 'fa fa-phone')
-        .parent().parent().next().should('contain', additionalContacts[i].fax)
         .find('i').should('have.attr', 'class', 'fa fa-fax')
         .parent().next().should('contain', additionalContacts[i].email)
         .find('i').should('have.attr', 'class', 'fa fa-envelope')
-    )
-  );
+    ));
 
 /**
 * Checks all values on an agent search result card
@@ -207,8 +211,7 @@ Cypress.Commands.add('checkAgentCard', (card, { icon, cardData, status, address,
         .find('i').should('have.attr', 'class', 'fa fa-fax')
         .parent().next().should('contain', additionalContacts[i].email)
         .find('i').should('have.attr', 'class', 'fa fa-envelope')
-    )
-  );
+    ));
 
 /**
 * Checks all values on an agent search result card
@@ -233,5 +236,6 @@ Cypress.Commands.add('checkDiaryCard', (card, { status, id, type, cardData }) =>
     .parent().next().find('span').then($spans => {
       expect($spans).to.have.length(cardData.length);
       cy.wrap($spans).each(($span, i) => cy.wrap($span).should('contain', cardData[i]));
-    })
-  );
+    }));
+
+Cypress.Commands.add('checkQuoteState', quoteState => cy.findDataTag('quoteDetails').find('.status').should('contain', quoteState));

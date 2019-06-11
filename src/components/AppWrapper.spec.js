@@ -13,7 +13,9 @@ describe('Test the AppWrapper Component', () => {
       showDiaries: false,
       openDiaryCount: 2,
       onToggleDiaries: x => x,
-      render: x => x
+      render: x => x,
+      header: {},
+      headerDetails: {}
     };
     const wrapper = shallow(<AppWrapper {...props} />);
 

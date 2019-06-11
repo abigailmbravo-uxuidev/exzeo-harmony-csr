@@ -1,42 +1,39 @@
-import stubAllRoutes from '../../support/stubAllRoutes';
-import { fields, agentCard } from './agentSearchFields';
+import { setRouteAliases } from '../../helpers';
 
 describe('Agent Search Testing', () => {
-  const selectAgencySearch = () =>
+  const selectAgentSearch = () =>
     cy.findDataTag('agency-link').click()
       .findDataTag('searchType').select('agent', { force: true });
 
-  before(() => {
-    stubAllRoutes();
-    cy.login();
+  before('Login', () => cy.login());
+
+  beforeEach('Set aliases and go to agent search', () => {
+    setRouteAliases();
+    selectAgentSearch();
   });
-
-  beforeEach(() => {
-    stubAllRoutes();
-    selectAgencySearch();
-  });
-
-  const selectFields = fields.filter(({ type }) => type === 'select');
-  const textFields = fields.filter(({ type }) => type === 'text');
-
-  it('POS:Agent Search Input Text / Label', () =>
-    cy.wrap(fields).each(({ name, label }) => cy.findDataTag(`${name}_label`).should('contain', label))
-      .wrap(selectFields).each(({ name, selected }) =>
-        cy.findDataTag(name).should('have.attr', 'data-selected', selected)
-    ).wrap(textFields).each(({ name, placeholder }) =>
-      cy.findDataTag(name).should('have.attr', 'placeholder', placeholder)
-    )
-  );
-
-  it('POS:Agent Search Button', () =>
-    cy.findDataTag('submit').should('have.attr', 'type', 'submit')
-      .checkHeader({ name: 'submit', text: 'Search', icon: 'fa fa-search' })
-  );
 
   it('POS:Agent Search', () =>
-    cy.findDataTag('submit').click()
-      .get('.agent-list').children().each($card =>
-        cy.checkAgentCard($card, agentCard)
-      )
+    cy.clickSubmit().wait('@fetchAgents')
+      .get('.agent-list').children().should('exist')
+
+      .findDataTag('agentCode').type('{selectall}{backspace}60033', { force: true })
+      .clickSubmit().wait('@fetchAgents')
+      .get('.agent-list').children().should('exist')
+
+      .findDataTag('firstName').type('{selectall}{backspace}brian')
+      .clickSubmit().wait('@fetchAgents')
+      .get('.agent-list').children().should('exist')
+
+      .findDataTag('lastName').type('{selectall}{backspace}chapman')
+      .clickSubmit().wait('@fetchAgents')
+      .get('.agent-list').children().should('exist')
+
+      .findDataTag('address').type('{selectall}{backspace}tamiami')
+      .clickSubmit().wait('@fetchAgents')
+      .get('.agent-list').children().should('exist')
+
+      .findDataTag('licenseNumber').type('{selectall}{backspace}E079822')
+      .clickSubmit().wait('@fetchAgents')
+      .get('.agent-list').children().should('exist')
   );
 });

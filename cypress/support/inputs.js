@@ -3,7 +3,14 @@
  * @param {Object} data - Data to fill out with keys corresponding to each entry in fields.
  */
 Cypress.Commands.add('fillFields', (fields = [], data) =>
-  cy.wrap(fields).each(field => cy.findDataTag(`${field.name}`).find('input').type(data ? data[field.name] : field.data))
+  cy.wrap(fields).each(field =>
+    cy.findDataTag(`${field.name}`).then($el =>
+      // Sometimes the dom structure nests inputs
+      $el.find('input').length ?
+        cy.wrap($el).find('input').type(data ? data[field.name] : field.data) :
+        cy.wrap($el).type(data ? data[field.name] : field.data)
+    )
+  )
 );
 
 /**
@@ -31,11 +38,14 @@ Cypress.Commands.add('submitAndCheckValidation', (fields = [], options = {}) => 
  * @param {array} fields - Array of field objects corresponding to data-test tags to clear.
  */
 Cypress.Commands.add('clearAllText', fields =>
-  cy.wrap(fields).each(({ name }) => {
-    cy.findDataTag(name).find('input').then($input => {
-      if ($input.val()) cy.wrap($input).type('{selectall}{backspace}');
-    });
-  })
+  cy.wrap(fields).each(({ name }) =>
+    cy.findDataTag(name).then($el =>
+      // Sometimes the dom structure nests inputs
+      $el.find('input').length ?
+        cy.wrap($el).find('input').then($input => $input.val() && cy.wrap($input).type('{selectall}{backspace}')) :
+        $el.val() && cy.wrap($el).type('{selectall}{backspace}')
+    )
+  )
 );
 
 /**

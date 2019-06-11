@@ -1,90 +1,49 @@
 // Functions used to navigate each tab of the app
 
-import user from '../fixtures/stockData/user.json';
-import pH1 from '../fixtures/stockData/pH1.json';
-import underwritingDefault from '../fixtures/stockData/underwriting.json';
-
-// Function to find and navigate to the next tab
-export const goToNav = name =>
-  cy.get('.loader.modal').should('not.exist')
-    .findDataTag(`nav-${name}`).find('a').click({ force: true });
+import { user, pH1, underwriting } from '../fixtures';
 
 export const navigateThroughNewQuote = (address = user.address1) => {
-  cy.findDataTag('searchType').select('address')
+  cy.task('log', 'Navigating through Quote')
+    .findDataTag('searchType').select('address')
     .findDataTag('address').type(address)
     .clickSubmit().wait('@fetchAddresses')
-  // This is going to get rewritten once we refactor this in the app itself
+    // This makes it so we don't open up a new window
     .findDataTag(address).then($a => {
       $a.prop('onclick', () => cy.visit($a.prop('dataset').url)).click();
-  });
+      cy.wait('@csrCreateQuote');
+    });
 };
 
-export const navigateThroughCoverage = (customerInfo = pH1, updates, useConfig) => {
-  if (!updates) {
-    updates = ['policyHolders',
-        [{
-          firstName: pH1.pH1FirstName,
-          lastName: pH1.pH1LastName,
-          primaryPhoneNumber: pH1.pH1phone,
-          emailAddress: pH1.pH1email
-        }]
-    ];
-  };
-  goToNav('coverage');
+export const fillOutCoverage = (customerInfo = pH1) =>
+  cy.task('log', 'Filling out Coverage').goToNav('coverage')
+    .wrap(Object.entries(customerInfo)).each(([field, value]) =>
+      cy.findDataTag(field).type(`{selectall}{backspace}${value}`)
+    ).findDataTag('coverage-submit').click().wait('@csrGetQuoteWithUnderwriting')
 
-  Object.entries(customerInfo).forEach(([field, value]) =>
-    cy.findDataTag(field).type(`{selectall}{backspace}${value}`)
-  );
-  cy.setFx('stubs/start/csrGetQuoteWithUnderwriting', updates, useConfig)
-    .findDataTag('coverage-submit').click();
-};
+export const fillOutUnderwriting = (data = underwriting) =>
+  cy.task('log', 'Filling out Underwriting').goToNav('underwriting')
+    .wrap(Object.entries(data)).each(([name, value]) =>
+      cy.get(`input[name="${name}"][value="${value}"] + span`).click()
+    ).clickSubmit().wait('@csrGetQuoteWithUnderwriting');
 
-export const navigateThroughUnderwriting = (data = underwritingDefault, updates, useConfig) => {
-  if (!updates) {
-    updates = ['underwritingAnswers', { rented: { answer: "Never" } } ];
-  };
-  goToNav('underwriting');
-  Object.entries(data).forEach(([name, value]) => {
-    cy.get(`input[name="${name}"][value="${value}"] + span`).click();
-  });
-  cy.setFx('stubs/start/csrGetQuoteWithUnderwriting', updates, useConfig)
-    .clickSubmit();
-};
+export const fillOutAdditionalInterests = () =>
+  cy.task('log', 'Filling out AIs').goToNav('additionalInterests');
 
-export const navigateThroughAdditionalInterests = () => goToNav('additionalInterests');
-
-export const navigateThroughMailingBilling = (updates, useConfig) => {
-  if (!updates) {
-    const { address1, address2, city, state, zip, country } = user;
-    updates = ['policyHolderMailingAddress', { address1, address2, city, state, zip, country } ];
-  };
-  goToNav('billing');
-  cy.get('.loader.modal').should('not.exist').wait(3000)
+export const fillOutMailingBilling = () =>
+  cy.task('log', 'Filling out Mailing Billing').goToNav('billing')
+    .get('.loader.modal').should('not.exist')
     .get('.segmented-switch [value="false"]').click({ force: true })
-    .setFx('stubs/start/csrGetQuoteWithUnderwriting', updates, useConfig)
-    .clickSubmit();
-};
+    .get('span').contains('Annual').click({ force: true })
+    .clickSubmit().wait('@csrGetQuoteWithUnderwriting');
 
-export const navigateThroughNotesFiles = (updates, useConfig) =>
-  cy.setFx('stubs/start/csrGetQuoteWithUnderwriting', updates, useConfig).then(() =>
-    goToNav('notes')
-  );
+export const fillOutNotesFiles = () => cy.task('log', 'Filling out Notes and Files').goToNav('notes');
 
+export const fillOutSummary = () => cy.task('log', 'Filling out Summary').goToNav('summary');
 
-export const navigateThroughSummary = (updates, useConfig) =>
-  cy.setFx('stubs/start/csrGetQuoteWithUnderwriting', updates, useConfig).then(() => {
-    goToNav('summary');
-    cy.wait('@csrGetQuoteWithUnderwriting');
-  });
-
-export const navigateThroughApplication = (updates, useConfig) =>
-  cy.setFx('stubs/start/csrGetQuoteWithUnderwriting', updates, useConfig).then(() => {
-    goToNav('application');
-    cy.wait('@csrGetQuoteWithUnderwriting');
-  });
+export const fillOutApplication = () => cy.task('log', 'Filling out Application Page').goToNav('application');
 
 export const navigateThroughDocusign = () =>
-  cy.get('.basic-footer button[data-test="submit"]:not([disabled])').click()
-    .wait(1000).get('.modal.quote-summary').should('exist')
-    .get('.modal.quote-summary button[type="submit"]').click({ force: true }).wait('@csrGetQuoteWithUnderwriting')
-    .reload();
+  cy.task('log', 'Navigating through DocuSign').wait('@summary')
+    .clickSubmit().wait(1000)
+    .get('.modal.quote-summary button[type="submit"]').click()
+    .wait('@csrGetQuoteWithUnderwriting').get('.basic-footer button[data-test="submit').should('be.disabled');

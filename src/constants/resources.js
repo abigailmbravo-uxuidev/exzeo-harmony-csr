@@ -1,6 +1,6 @@
 const RESOURCES = {
   newQuote: 'address',
-    quote: 'quote',
+  quote: 'quote',
   policy: 'policy',
   agent: 'agent',
   agency: 'agency',

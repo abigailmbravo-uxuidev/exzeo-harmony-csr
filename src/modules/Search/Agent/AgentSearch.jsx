@@ -70,7 +70,7 @@ const AgentSearch = ({
           styleName="agency-reg-lic-fein-search" />
 
         <Button
-          baseClass="success"
+          className={Button.constants.classNames.success}
           customClass="multi-input btn-success"
           type="submit"
           disabled={submitting}

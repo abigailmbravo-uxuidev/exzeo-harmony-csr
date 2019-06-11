@@ -1,0 +1,53 @@
+import React from 'react';
+import { createStore, applyMiddleware } from 'redux';
+import { fireEvent } from 'react-testing-library';
+import thunk from 'redux-thunk';
+
+import {
+  defaultInitialState,
+  renderWithReduxAndRouter,
+  checkTextInput,
+  checkLabel,
+  checkButton
+} from '../../../test-utils';
+import rootReducer from '../../../state/reducers';
+import ConnectedSearch from '../index';
+
+const newQuoteFields = [
+  {
+    name: 'address',
+    type: 'text',
+    required: true,
+    label: 'Property Address',
+    data: '4131 TEST ADDRESS'
+  }
+];
+
+describe('Testing Policy Search Component', () => {
+  const props = { pathName: '/' };
+
+  // Create a real store with our actual reducers so we have the formReducer
+  const store = createStore(rootReducer, defaultInitialState, applyMiddleware(thunk));
+
+  it('POS:Policy Search', () => {
+    const { getByText, getByTestId } = renderWithReduxAndRouter(<ConnectedSearch
+      {...props}
+    />, { store });
+    expect(getByText('Search Context'));
+    expect(getByText('Property Street Address'));
+    expect(getByText('New Quote'));
+    expect(getByText('Quote Search'));
+    expect(getByText('Policy Search'));
+
+    // Change search type
+    fireEvent.change(getByTestId('searchType'), { target: { value: 'address' }});
+    expect(getByTestId('searchType').getAttribute('data-selected')).toEqual('address');
+    expect(getByText('Property Address'));
+    newQuoteFields.filter(({ type }) => type === 'text').forEach(field => {
+      checkTextInput(getByTestId, field);
+      checkLabel(getByTestId, field);
+    });
+    checkButton(getByText, { text: 'Search', type: 'submit' });
+    expect(getByText('Search').getAttribute('type')).toEqual('submit');
+  });
+});

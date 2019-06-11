@@ -1,4 +1,4 @@
-import login from '../fixtures/stockData/login.json';
+import { login } from '../fixtures';
 
 Cypress.Commands.add('login', (loginInfo = login) => {
   const useMockAuth0 = Cypress.env('USE_MOCK_AUTH0');

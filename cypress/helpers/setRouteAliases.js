@@ -1,0 +1,11 @@
+export const setRouteAliases = () => cy.server()
+  .route('POST', '/cg/start?csrGetQuoteWithUnderwriting').as('csrGetQuoteWithUnderwriting')
+  .route('POST', '/cg/start?csrCreateQuote').as('csrCreateQuote')
+  .route('POST', '/svc?fetchAgencies').as('fetchAgencies')
+  .route('POST', '/svc?fetchAgents').as('fetchAgents')
+  .route('POST', '/svc?fetchDiaries').as('fetchDiaries')
+  .route('POST', '/svc?fetchAddresses').as('fetchAddresses')
+  .route('POST', '/svc?fetchPolicies').as('fetchPolicies')
+  .route('POST', '/svc?fetchQuotes').as('fetchQuotes')
+  .route('POST', '/svc?summary').as('summary')
+  .route('POST' ,'/svc?saveUnderwritingExceptions').as('saveUnderwritingExceptions');
