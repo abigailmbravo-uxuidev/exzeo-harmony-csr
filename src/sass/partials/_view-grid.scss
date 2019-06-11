@@ -76,6 +76,12 @@
   @include for-phone-only {
     font-size: $font-size-h3;
   }
+
+  &.messages {
+    color: $warm-gray-07;
+    font-weight: $font-weight-normal;
+    font-size: $font-size-h5;
+  }
 }
 //end title component
 /*------------------------------------------------------------------------------------*/
