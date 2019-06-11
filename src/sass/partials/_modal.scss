@@ -42,7 +42,7 @@
         flex-direction: column;
         flex-grow: 1;
         flex-shrink: 1;
-        max-height: 70vh;
+        max-height: calc(100vh - 9rem);
         
 
         .card-block {
@@ -50,7 +50,6 @@
           overflow-y: auto;
           flex-grow: 1;
           flex-shrink: 1;
-          max-height: 80vh;
           width: 100%;
           height: auto;
 
