@@ -1682,6 +1682,7 @@ const mock = {
               data: {
                 component: '$SUMMARY',
                 extendedProperties: {
+                  useFetchAgents: true, 
                   className: "property-details",
                   details: [
                     { label: 'Quote Number', items: [{ format: '', path: 'quoteNumber'}] },

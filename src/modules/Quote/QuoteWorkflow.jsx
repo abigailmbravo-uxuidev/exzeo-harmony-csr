@@ -48,10 +48,10 @@ export class QuoteWorkflow extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      showEmailPopup: false,
       gandalfTemplate: null,
       showDiaries: false,
       applicationSent: false,
+      showApplicationModal: false
     };
 
     this.formInstance = null;
@@ -112,8 +112,9 @@ export class QuoteWorkflow extends React.Component {
       },
     });
 
-    if (currentRouteName === 'application'){
-      this.setState({ applicationSent: true });
+    if(currentRouteName === 'application'){
+      this.setApplicationSent(true);
+      this.setShowApplicationModal(false);
     }
   };
 
@@ -148,6 +149,15 @@ export class QuoteWorkflow extends React.Component {
     this.formInstance = formInstance;
   };
 
+  setApplicationSent = (applicationSent) => {
+    this.setState({ applicationSent });
+  };
+
+  setShowApplicationModal = (showApplicationModal) => {
+    this.setState({ showApplicationModal});
+    
+  }
+
   render() {
     const {
       diaries,
@@ -170,7 +180,9 @@ export class QuoteWorkflow extends React.Component {
       handleSubmit: this.handleGandalfSubmit,
       history: history,
       setAppError: this.props.setAppError,
-      toggleDiary: this.props.toggleDiary
+      toggleDiary: this.props.toggleDiary,
+      showApplicationModal: this.state.showApplicationModal, 
+      setShowApplicationModal: this.setShowApplicationModal
     };
     return (
       <div className="app-wrapper csr quote">
@@ -212,6 +224,7 @@ export class QuoteWorkflow extends React.Component {
                           formInstance={form}
                           isSubmitDisabled={this.isSubmitDisabled(pristine, submitting)}
                           handlePrimaryClick={this.primaryClickHandler}
+                          handleApplicationClick={() => this.setShowApplicationModal(true)}
                         />
                       }
                       formListeners={() =>
@@ -246,6 +259,8 @@ export class QuoteWorkflow extends React.Component {
               {(quoteData && quoteData.quoteNumber) &&
                 <DiaryPolling filter={{ resourceId: quoteData.quoteNumber, resourceType: QUOTE_RESOURCE_TYPE }} />
               }
+
+
 
             </React.Fragment>
           </App>
