@@ -300,9 +300,9 @@ export const deductiblesFields = [
     }
   },
   {
-    name: 'deductibles.sinkhole.value',
+    name: 'coverageOptions.sinkholePerilCoverage.answer',
     type: 'select',
-    values: ['0', '10'],
+    values: ['true', 'false'],
     label: 'Sinkhole',
     output: {
       label: 'Calculated Sinkhole', value: '$ 0'
