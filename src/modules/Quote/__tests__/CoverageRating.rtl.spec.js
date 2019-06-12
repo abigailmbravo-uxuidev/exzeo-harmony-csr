@@ -1,11 +1,12 @@
 import React from 'react';
 import { fireEvent, waitForElement, wait } from 'react-testing-library';
+import * as agencyData from '@exzeo/core-ui/src/@Harmony/Agency/data';
 
 import {
   defaultQuoteWorkflowProps,
   renderWithForm,
-  mockServiceRunner,
-  searchAgenciesResult as result,
+  searchAgenciesResult,
+  searchAgentsResult,
   checkTypeahead,
   checkHeader,
   checkLabel,
@@ -28,6 +29,9 @@ import {
   windFields,
 } from '../../../test-utils';
 import { QuoteWorkflow } from '../QuoteWorkflow';
+
+agencyData.searchAgencies = jest.fn(() => Promise.resolve(searchAgenciesResult));
+agencyData.fetchAgents = jest.fn(() => Promise.resolve(searchAgentsResult));
 
 const pageHeaders = [
   { text: 'Produced By' }, { text: 'Primary Policyholder' }, { text: 'Secondary Policyholder' },
@@ -57,7 +61,8 @@ describe('Testing the Coverage/Rating Page', () => {
   });
 
   it('POS:Produced By Fields', async () => {
-    mockServiceRunner(result);
+    // agencyData.searchAgencies = jest.fn(() => Promise.resolve(searchAgenciesResult));
+    // agencyData.fetchAgents = jest.fn(() => Promise.resolve(searchAgentsResult));
     const { getByText, getByTestId, getByLabelText } = renderWithForm(<QuoteWorkflow {...props} />);
     await waitForElement(() => getByText('20000: TYPTAP MANAGEMENT COMPANY'))
     const getSelect = async (testId, itemText) => {

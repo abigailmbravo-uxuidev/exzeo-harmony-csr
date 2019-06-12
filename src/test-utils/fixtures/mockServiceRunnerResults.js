@@ -169,5 +169,14 @@ export const searchAgenciesResult = [
     displayName: 'COLINS AGENCY',
     _id: '987a'
   }
+];
 
-]
+export const searchAgentsResult = [
+  {
+    agencies: [{ agencyCode: 20000}],
+    agentCode: 60000,
+    firstName: 'James',
+    lastName: 'Baldwin',
+    status: 'Active'
+  }
+];
