@@ -38,7 +38,6 @@ describe('Testing TransferAOR component', () => {
 
   it('onchange handlers', () => {
     const wrapper = mount(<Provider store={store} ><TransferAOR {...props} /></Provider>);
-    wrapper.find('input[name="agencyCode"]').simulate('change', { target: { value: '20000' } });
     wrapper.find('Button').everyWhere((x) => {
       x.simulate('click');
       return x;
