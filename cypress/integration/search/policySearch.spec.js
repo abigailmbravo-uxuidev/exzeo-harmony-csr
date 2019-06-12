@@ -62,7 +62,11 @@ describe('Policy Search testing', () => {
 
   it('Policy Search Sorting', () => {
     toggleAdvancedSearch();
-    cy.clearAllText(fields).fillFields([{ name: 'firstName', data: 'e'}]).clickSubmit('#SearchBar').wait('@fetchPolicies')
+    // Fill out data
+    cy.clearAllText(fields).fillFields([{ name: 'firstName', data: 'e' }])
+      // and sort by first name
+      .findDataTag('sortBy').select('firstName').clickSubmit('#SearchBar').wait('@fetchPolicies')
+      // so confirm our response starts with 'b' for batman.
       .then(({ response }) => expect(response.body.policies[0].policyHolders[0].firstName.charAt(0)).to.match(/b/i))
   });
 });
