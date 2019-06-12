@@ -12,13 +12,13 @@ export const producedByFields = [
     label: 'Agency',
     values: ['0', '20000', '20093']
   },
-  {
-    name: 'agentCode',
-    type: 'typeahead',
-    disabled: true,
-    label: 'Agent',
-    values: ['0', '60092']
-  }
+  // {
+  //   name: 'agentCode',
+  //   type: 'typeahead',
+  //   disabled: true,
+  //   label: 'Agent',
+  //   values: ['0', '60092']
+  // }
 ];
 
 export const primaryPolicyholderFields = [

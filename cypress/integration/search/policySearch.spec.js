@@ -62,7 +62,8 @@ describe('Policy Search testing', () => {
 
   it('Policy Search Sorting', () => {
     toggleAdvancedSearch();
-    cy.clearAllText(fields).fillFields([{ name: 'firstName', data: 'e'}]).clickSubmit('#SearchBar').wait('@fetchPolicies')
+    cy.clearAllText(fields).fillFields([{ name: 'firstName', data: 'e'}])
+      .findDataTag('sortBy').select('firstName').clickSubmit('#SearchBar').wait('@fetchPolicies')
       .then(({ response }) => expect(response.body.policies[0].policyHolders[0].firstName.charAt(0)).to.match(/b/i))
   });
 });

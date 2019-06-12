@@ -1,6 +1,8 @@
 import policyHolder from './policyHolder';
 
 export default {
+  agencyCode: 20000,
+  agentCode: 60000,
   underwritingExceptions: [],
   quoteNumber: '12-345-67',
   effectiveDate: '2019-05-23T04:00:00.000Z',

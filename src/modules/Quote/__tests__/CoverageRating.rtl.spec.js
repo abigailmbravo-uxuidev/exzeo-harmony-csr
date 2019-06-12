@@ -1,5 +1,5 @@
 import React from 'react';
-import { fireEvent } from 'react-testing-library';
+import { fireEvent, waitForElement, wait } from 'react-testing-library';
 
 import {
   defaultQuoteWorkflowProps,
@@ -29,41 +29,6 @@ import {
 } from '../../../test-utils';
 import { QuoteWorkflow } from '../QuoteWorkflow';
 
-// jest.mock('react-select', () => ({
-//   options,
-//   getOptionLabel,
-//   getOptionValue,
-//   isDisabled,
-//   name,
-//   value,
-//   onChange,
-//   isLoading,
-//   classNamePrefix, isClearable, onInputChange,
-//   ...rest
-// }) => {
-//   const handleChange = (event) => {
-//     const option = options.find(
-//       option => option.value === event.currentTarget.value
-//     );
-//     onChange(option);
-//   };
-//   return <select
-//       data-test={name}
-//       name={name}
-//       id={name}
-//       value={value}
-//       onChange={handleChange}
-//       disabled={isDisabled}
-//       {...rest}
-//     >
-//       {options.map(option => (
-//         <option key={getOptionValue(option)} value={getOptionValue(option)}>
-//           {getOptionLabel(option)}
-//         </option>
-//       ))}
-//     </select>;
-// });
-
 const pageHeaders = [
   { text: 'Produced By' }, { text: 'Primary Policyholder' }, { text: 'Secondary Policyholder' },
   { text: 'Property Address' }, { text: 'Home and Location' }, { text: 'Coverages' },
@@ -91,18 +56,39 @@ describe('Testing the Coverage/Rating Page', () => {
     allFields.filter(field => field.visible !== false).forEach(field => checkLabel(getByTestId, field));
   });
 
-  // it('POS:Produced By Fields', async () => {
-  //   mockServiceRunner(result);
+  it('POS:Produced By Fields', async () => {
+    mockServiceRunner(result);
+    const { getByText, getByTestId, getByLabelText } = renderWithForm(<QuoteWorkflow {...props} />);
+    await waitForElement(() => getByText('20000: TYPTAP MANAGEMENT COMPANY'))
+    const getSelect = async (testId, itemText) => {
+      const wrapper = getByTestId(`${testId}_wrapper`);
 
-  //   const { getByText, getByTestId } = renderWithForm(<QuoteWorkflow {...props} />);
-  //   producedByFields.forEach(field => {
-  //     if (field.type === 'text') checkTextInput(getByTestId, field);
-  //     if (field.type === 'typeahead' && !field.disabled) {
-  //       checkTypeahead(getByTestId, field);
-  //     }
+      // Click 'a' key
+      fireEvent.keyDown(wrapper.querySelector('div.Select.TypeAhead'), { keyCode: 40 });
+      await waitForElement(() => getByText(itemText));
+      fireEvent.click(getByText(itemText));
+    };
+    await getSelect('agencyCode', '20000: TYPTAP MANAGEMENT COMPANY')
+
+    await getSelect('agencyCode', /COLIN/i)
+
+
+    // await waitForElement(() => getByText('20000: TYPTAP MANAGEMENT COMPANY'));
+    // producedByFields.forEach(field => {
+    //   if (field.type === 'text') checkTextInput(getByTestId, field);
+    //   if (field.type === 'typeahead' && !field.disabled) {
+    //     checkTypeahead(getByTestId, field);
+    //   };
       
-  //   });
-  // });
+    // });
+    // const wrapper = getByTestId('agencyCode_wrapper');
+    // // const input = wrapper.querySelector('input:not([type="hidden"])');
+    // const select = wrapper.querySelector('Select');
+    // console.log(select)
+    // // fireEvent.change(input, { target: { value: '20000', action: 'input-change' }});
+    // // await wait(() => expect(input.value).toEqual('20000'));
+    // // console.log(wrapper.querySelectorAll('div.react-select__menu'))
+  });
 
   it('POS:PolicyHolder Fields', () => {
     const { getByTestId } = renderWithForm(<QuoteWorkflow {...props} />);
