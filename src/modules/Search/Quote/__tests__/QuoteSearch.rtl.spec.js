@@ -46,7 +46,13 @@ const fields = [
     label: 'Quote Status',
     selected: '',
     placeholder: 'Please Select...',
-    options: ['Please Select...', 'Quote Started', 'Application Started']
+    options: [
+      'Please Select...', 'Quote Started', 'Application Started',
+      'Quote Stopped', 'Quote Declined', 'Application Sent DocuSign',
+      'Application Sent Manual', 'Application Obstructed',
+      'Quote Expired', 'Documents Received', 'Policy Issued', 'DocuSign Voided',
+      'Quote Qualified', 'Application Ready'
+    ]
   }
 ];
 
@@ -56,7 +62,18 @@ describe('Quote Search Testing', () => {
     questions: {
       quoteState: { answers: [
         { answer: 'Quote Started', label: 'Quote Started' },
-        { answer: 'Application Started', label: 'Application Started' }
+        { answer: 'Application Started', label: 'Application Started' },
+        { answer: 'Quote Stopped', label: 'Quote Stopped' },
+        { answer: 'Quote Declined', label: 'Quote Declined' },
+        { answer: 'Application Sent DocuSign', label: 'Application Sent DocuSign' },
+        { answer: 'Application Sent Manual', label: 'Application Sent Manual' },
+        { answer: 'Application Obstructed', label: 'Applicaiton Obstructed' },
+        { answer: 'Quote Expired', label: 'Quote Expired' },
+        { answer: 'Documents Received', label: 'Documents Received' },
+        { answer: 'Policy Issued', label: 'Policy Issued' },
+        { answer: 'DocuSign Voided', label: 'DocuSign Voided' },
+        { answer: 'Quote Qualified', label: 'Quote Qualified' },
+        { answer: 'Application Ready', label: 'Application Ready' }
       ]}
     },
     search: { results: []},

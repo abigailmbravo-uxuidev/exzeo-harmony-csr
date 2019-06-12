@@ -1,5 +1,6 @@
 import React from 'react';
 import { reduxForm } from 'redux-form';
+import { fireEvent, waitForElement } from 'react-testing-library';
 
 import { renderWithForm, checkLabel, checkTextInput, checkSelect, checkButton } from '../../../../test-utils';
 import PolicySearch from '../PolicySearch';
@@ -58,7 +59,11 @@ const fields = [
     type: 'select',
     label: 'Policy Status',
     selected: '',
-    options: ['Please Select...', 'Policy Issued', 'In Force']
+    options: [
+      'Please Select...', 'Policy Issued', 'In Force', 'Pending Voluntary Cancellation',
+      'Pending Underwriting Cancellation', 'Pending Underwriting Non-Renewal', 'Cancelled',
+      'Not In Force'
+    ]
   },
   {
     name: 'sortBy',
@@ -77,7 +82,11 @@ describe('Policy Search Testing', () => {
     questions: {
       diaryAssignees: [{ answer: 'auth0|5956365ec2b5082b9e613263', label: 'test user', type: 'user' }],
       lists: {},
-      policyStatus: { answers: [{ answer: '0', label: 'Policy Issued' }, { answer: '1', label: 'In Force' }]}
+      policyStatus: { answers: [
+        { answer: '0', label: 'Policy Issued' }, { answer: '1', label: 'In Force' },
+        { answer: '2', label: 'Pending Voluntary Cancellation' }, { answer: '3', label: 'Pending Underwriting Cancellation' },
+        { answer: '4', label: 'Pending Underwriting Non-Renewal' }, { answer: '8', label: 'Cancelled' }, { answer: '9', label: 'Not In Force' },
+      ]}
     },
     toggleAdvancedSearch: () => {},
     handlePagination: () => {},
@@ -96,11 +105,6 @@ describe('Policy Search Testing', () => {
 
   const selectFields = fields.filter(({ type }) => type === 'select');
   const textFields = fields.filter(({ type }) => type === 'text');
-
-  it('POS:Policy Advanced Search Open Arrow', () => {
-    const { getByTestId } = renderWithForm(<SearchForm {...props} />);
-    expect(getByTestId('policy-advanced-search').querySelector('i').className).toEqual('fa fa-chevron-up');
-  });
 
   it('POS:Renders and has fields and labels', () => {
     const { getByPlaceholderText, getByTestId } = renderWithForm(<SearchForm {...props} />);
