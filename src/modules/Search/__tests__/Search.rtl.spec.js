@@ -1,10 +1,11 @@
 import React from 'react';
 import { createStore, applyMiddleware } from 'redux';
-import { fireEvent } from 'react-testing-library';
+import { fireEvent, waitForElement, wait } from 'react-testing-library';
 import thunk from 'redux-thunk';
 
 import {
   defaultInitialState,
+  userProfile,
   renderWithReduxAndRouter,
   checkTextInput,
   checkLabel,
@@ -24,10 +25,12 @@ const newQuoteFields = [
 ];
 
 describe('Testing Policy Search Component', () => {
-  const props = { pathName: '/' };
+  const props = {
+    pathName: '/'
+  };
 
   // Create a real store with our actual reducers so we have the formReducer
-  const store = createStore(rootReducer, defaultInitialState, applyMiddleware(thunk));
+  const store = createStore(rootReducer, { ...defaultInitialState, authState: { userProfile }}, applyMiddleware(thunk));
 
   it('POS:Policy Search', () => {
     const { getByText, getByTestId } = renderWithReduxAndRouter(<ConnectedSearch
@@ -49,5 +52,18 @@ describe('Testing Policy Search Component', () => {
     });
     checkButton(getByText, { text: 'Search', type: 'submit' });
     expect(getByText('Search').getAttribute('type')).toEqual('submit');
+  });
+
+
+  it('POS:Policy Advanced Search Open Arrow', async () => {
+    const { getByTestId, queryByTestId } = renderWithReduxAndRouter(<ConnectedSearch
+      {...props}
+    />, { store });
+    fireEvent.click(getByTestId('policy-advanced-search'));
+    await waitForElement(() => getByTestId('sortBy'));
+    expect(getByTestId('policy-advanced-search').querySelector('i').className).toEqual('fa fa-chevron-up');
+    fireEvent.click(getByTestId('policy-advanced-search'));
+    await wait(() => expect(queryByTestId('[data-test="sortBy"]')).toBeNull());
+    expect(getByTestId('policy-advanced-search').querySelector('i').className).toEqual('fa fa-chevron-down');
   });
 });

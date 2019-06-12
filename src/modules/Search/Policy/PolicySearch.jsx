@@ -44,8 +44,8 @@ const PolicySearch = ({
   search,
   changeSearchType,
   searchTypeOptions
-}) => (
-    <React.Fragment>
+}) => {
+    return <React.Fragment>
       <div className="form-group search-context">
         <Field
           name="searchType"
@@ -160,7 +160,7 @@ const PolicySearch = ({
           totalPages={search.totalPages} />
       }
     </React.Fragment>
-  );
+};
 
 PolicySearch.propTypes = {
   advancedSearch: PropTypes.bool.isRequired,
