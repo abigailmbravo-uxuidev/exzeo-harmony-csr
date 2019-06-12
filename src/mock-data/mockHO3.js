@@ -1500,7 +1500,6 @@ const mock = {
           type: '$TITLE',
           dependencies: [{ path: 'rating.worksheet', value: true }],
           data: {
-            className: 'messages',
             text: 'Additional Interests',
           },
           formData: {},
