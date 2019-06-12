@@ -24,7 +24,7 @@ import { getDiariesForTable } from '../../state/selectors/diary.selectors';
 import MOCK_CONFIG_DATA from '../../mock-data/mockHO3';
 import { ROUTES_NOT_HANDLED_BY_GANDALF, PAGE_ROUTING } from './constants/workflowNavigation';
 
-import Application from './Application'
+import Application from './Application';
 import PolicyHolders from './PolicyHolders';
 import NotesFiles from '../NotesFiles';
 import QuoteFooter from './QuoteFooter';
@@ -35,7 +35,7 @@ const getCurrentStepAndPage = defaultMemoize((pathname) => {
   const currentRouteName = pathname.split('/')[3];
   return {
     currentStepNumber: PAGE_ROUTING[currentRouteName],
-    currentRouteName,
+    currentRouteName
   };
 });
 
@@ -60,7 +60,7 @@ export class QuoteWorkflow extends React.Component {
       $POLICYHOLDERS: PolicyHolders,
       $APPLICATION: Application,
       $NOTES_FILES: NotesFiles,
-      $AGENCY_SELECT: AgencySelect,
+      $AGENCY_SELECT: AgencySelect
     };
 
   }
@@ -69,14 +69,21 @@ export class QuoteWorkflow extends React.Component {
 
   componentDidMount() {
     const { match } = this.props;
-    this.props.getQuote(match.params.quoteNumber, '').then((quoteData) => {
-      if (quoteData && quoteData.property) {
-        const { companyCode, state, product, property, agencyCode, agentCode } = quoteData;
-        this.props.getEnumsForQuoteWorkflow({ companyCode, state, product, agencyCode, agentCode });
-        this.props.getZipcodeSettings(companyCode, state, product, property.physicalAddress.zip);
-      }
+    this.props.getQuote(match.params.quoteNumber, '')
+      .then((quoteData) => {
+        if (quoteData && quoteData.property) {
+          const { companyCode, state, product, property, agencyCode, agentCode } = quoteData;
+          this.props.getEnumsForQuoteWorkflow({
+            companyCode,
+            state,
+            product,
+            agencyCode,
+            agentCode
+          });
+          this.props.getZipcodeSettings(companyCode, state, product, property.physicalAddress.zip);
+        }
 
-    });
+      });
     this.getTemplate();
   }
 
@@ -100,19 +107,18 @@ export class QuoteWorkflow extends React.Component {
     this.setState(() => ({ gandalfTemplate: MOCK_CONFIG_DATA }));
   };
 
-  handleGandalfSubmit = async ({ shouldNav, removeSecondary, options, ...values }) => {
-    const { quoteData, location } = this.props;
+  handleGandalfSubmit = async ({ shouldNav, removeSecondary, ...values }) => {
+    const { location } = this.props;
     const { currentRouteName, currentStepNumber } = getCurrentStepAndPage(location.pathname);
     await this.props.updateQuote({
       data: values,
       options: {
-        quoteData,
         step: currentStepNumber,
-        shouldSendApplication: currentRouteName === 'application',
-      },
+        shouldSendApplication: currentRouteName === 'application'
+      }
     });
 
-    if(currentRouteName === 'application'){
+    if (currentRouteName === 'application') {
       this.setApplicationSent(true);
       this.setShowApplicationModal(false);
     }
@@ -124,16 +130,16 @@ export class QuoteWorkflow extends React.Component {
 
   isSubmitDisabled = (pristine, submitting) => {
     const { location, quoteData } = this.props;
-    if(quoteData.quoteState ==='Application Sent DocuSign' || this.state.applicationSent) return true;
+    if (quoteData.quoteState === 'Application Sent DocuSign' || this.state.applicationSent) return true;
 
     const { currentStepNumber } = getCurrentStepAndPage(location.pathname);
 
-    if(currentStepNumber === PAGE_ROUTING.application){
+    if (currentStepNumber === PAGE_ROUTING.application) {
       return (Array.isArray(quoteData.underwritingExceptions) &&
         quoteData.underwritingExceptions.filter(uw => !uw.overridden).length > 0);
     }
 
-    if(currentStepNumber === PAGE_ROUTING.summary) {
+    if (currentStepNumber === PAGE_ROUTING.summary) {
       return !VALID_SHARE_STATE.includes(quoteData.quoteState) &&
         (QUOTE_STATE.QuoteStarted && quoteData.quoteInputState !== QUOTE_INPUT_STATE.Qualified);
     }
@@ -154,9 +160,9 @@ export class QuoteWorkflow extends React.Component {
   };
 
   setShowApplicationModal = (showApplicationModal) => {
-    this.setState({ showApplicationModal});
-    
-  }
+    this.setState({ showApplicationModal });
+
+  };
 
   render() {
     const {
@@ -181,89 +187,90 @@ export class QuoteWorkflow extends React.Component {
       history: history,
       setAppError: this.props.setAppError,
       toggleDiary: this.props.toggleDiary,
-      showApplicationModal: this.state.showApplicationModal, 
+      showApplicationModal: this.state.showApplicationModal,
       setShowApplicationModal: this.setShowApplicationModal
     };
     return (
       <div className="app-wrapper csr quote">
         {(isLoading || !quoteData.quoteNumber) &&
-          <Loader />
+        <Loader/>
         }
 
         {quoteData.quoteNumber && gandalfTemplate &&
-          <App
-            header={gandalfTemplate.header}
-            context={match.path.split('/')[1]}
-            resourceType={QUOTE_RESOURCE_TYPE}
-            resourceId={quoteData.quoteNumber}
-            pageTitle={`Q: ${quoteData.quoteNumber || ''}`}
-            match={match}
-            onToggleDiaries={this.handleToggleDiaries}
-            showDiaries={showDiaries}
-          >
-              <React.Fragment>
-                <div className="content-wrapper">
-                  {shouldUseGandalf &&
-                  <React.Fragment>
-                    <Gandalf
-                      formId={FORM_ID}
-                      className="route-content"
-                      currentPage={currentStepNumber}
-                      customComponents={this.customComponents}
-                      customHandlers={customHandlers}
-                      handleSubmit={this.handleGandalfSubmit}
-                      initialValues={quoteData}
-                      options={{ diaries, notes, ...options}} // enums for select/radio fields
-                      path={location.pathname}
-                      template={gandalfTemplate}
-                      transformConfig={transformConfig}
-                      stickyFooter
-                      renderFooter={({ pristine, submitting, form }) =>
-                        <QuoteFooter
-                          currentStep={currentRouteName}
-                          formInstance={form}
-                          isSubmitDisabled={this.isSubmitDisabled(pristine, submitting)}
-                          handlePrimaryClick={this.primaryClickHandler}
-                          handleApplicationClick={() => this.setShowApplicationModal(true)}
-                        />
-                      }
-                      formListeners={() =>
-                        <MemoizedFormListeners>
-                          <FormSpy subscription={{}}>
-                            {({ form }) => {
-                              this.setFormInstance(form);
-                              return null;
-                            }}
-                          </FormSpy>
+        <App
+          header={gandalfTemplate.header}
+          context={match.path.split('/')[1]}
+          resourceType={QUOTE_RESOURCE_TYPE}
+          resourceId={quoteData.quoteNumber}
+          pageTitle={`Q: ${quoteData.quoteNumber || ''}`}
+          match={match}
+          onToggleDiaries={this.handleToggleDiaries}
+          showDiaries={showDiaries}
+        >
+          <React.Fragment>
+            <div className="content-wrapper">
+              {shouldUseGandalf &&
+                <React.Fragment>
+                  <Gandalf
+                    formId={FORM_ID}
+                    className="route-content"
+                    currentPage={currentStepNumber}
+                    customComponents={this.customComponents}
+                    customHandlers={customHandlers}
+                    handleSubmit={this.handleGandalfSubmit}
+                    initialValues={quoteData}
+                    options={{ diaries, notes, ...options }} // enums for select/radio fields
+                    path={location.pathname}
+                    template={gandalfTemplate}
+                    transformConfig={transformConfig}
+                    stickyFooter
+                    renderFooter={({ pristine, submitting, form }) => (
+                      <QuoteFooter
+                        currentStep={currentRouteName}
+                        formInstance={form}
+                        isSubmitDisabled={this.isSubmitDisabled(pristine, submitting)}
+                        handlePrimaryClick={this.primaryClickHandler}
+                        handleApplicationClick={() => this.setShowApplicationModal(true)}
+                      />
+                    )}
+                    formListeners={() => (
+                      <MemoizedFormListeners>
+                        <FormSpy subscription={{}}>
+                          {({ form }) => {
+                            this.setFormInstance(form);
+                            return null;
+                          }}
+                        </FormSpy>
 
-                          <FormSpy subscription={{ dirty: true, pristine: true }}>
-                            {({ dirty }) =>
-                              <NavigationPrompt dirty={dirty} formInstance={this.formInstance} history={history} />
-                            }
-                          </FormSpy>
-                        </MemoizedFormListeners>
-                      }
-                    />
-                  </React.Fragment>
-                }
-              </div>
-
-              <UnderwritingValidationBar />
-
-              <OpenDiariesBar
-                entityEndDate={quoteData.endDate}
-                resourceId={quoteData.quoteNumber}
-                resourceType={QUOTE_RESOURCE_TYPE}
-              />
-
-              {(quoteData && quoteData.quoteNumber) &&
-                <DiaryPolling filter={{ resourceId: quoteData.quoteNumber, resourceType: QUOTE_RESOURCE_TYPE }} />
+                        <FormSpy subscription={{ dirty: true, pristine: true }}>
+                          {({ dirty }) =>
+                            <NavigationPrompt dirty={dirty} formInstance={this.formInstance} history={history} />
+                          }
+                        </FormSpy>
+                      </MemoizedFormListeners>
+                    )}
+                  />
+                </React.Fragment>
               }
+            </div>
 
+            <UnderwritingValidationBar/>
 
+            <OpenDiariesBar
+              entityEndDate={quoteData.endDate}
+              resourceId={quoteData.quoteNumber}
+              resourceType={QUOTE_RESOURCE_TYPE}
+            />
 
-            </React.Fragment>
-          </App>
+            {(quoteData && quoteData.quoteNumber) &&
+              <DiaryPolling filter={{
+                resourceId: quoteData.quoteNumber,
+                resourceType: QUOTE_RESOURCE_TYPE
+              }}/>
+            }
+
+          </React.Fragment>
+        </App>
         }
       </div>
     );
@@ -285,7 +292,7 @@ const mapStateToProps = state => {
     isLoading: state.ui.isLoading,
     diaries: getDiariesForTable(state),
     notes: state.notes
-  }
+  };
 };
 
 export default connect(mapStateToProps, {

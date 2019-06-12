@@ -909,19 +909,19 @@ const mock = {
             {
               id: 152,
               type: '$INPUT',
-              path: 'deductibles.sinkhole.value',
+              path: 'coverageOptions.sinkholePerilCoverage.answer',
               dependencies: [],
               data: {
-                component: 'selectInteger',
+                component: 'select',
                 label: 'Sinkhole',
                 size: '12',
                 dataSource: [
                   {
-                    "answer": 0,
+                    "answer": false,
                     "label": "Coverage Excluded"
                   },
                   {
-                    "answer": 10,
+                    "answer": true,
                     "label": "10% of Dwelling Limit"
                   }
                 ],
@@ -931,11 +931,11 @@ const mock = {
                 }
               },
               formData: {
-                path: 'deductibles.sinkhole.value',
+                path: 'coverageOptions.sinkholePerilCoverage.answer',
                 type: 'integer',
                 required: true,
                 metaData: {
-                  target: '${Math.ceil(((it.deductibles.sinkhole.value / 100) * it.coverageLimits.dwelling.value))}',
+                  target: '${it.coverageOptions.sinkholePerilCoverage.answer === \'true\' ? Math.ceil(((10 / 100) * it.coverageLimits.dwelling.value)) : 0}',
                 },
               },
               children: [],
@@ -1681,7 +1681,7 @@ const mock = {
               data: {
                 component: '$SUMMARY',
                 extendedProperties: {
-                  useFetchAgents: true, 
+                  useFetchAgents: true,
                   className: "property-details",
                   details: [
                     { label: 'Quote Number', items: [{ format: '', path: 'quoteNumber'}] },

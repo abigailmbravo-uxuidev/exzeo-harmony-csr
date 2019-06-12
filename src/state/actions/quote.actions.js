@@ -94,9 +94,6 @@ function formatQuoteForSubmit(data, options) {
     quote.coverageOptions.personalPropertyReplacementCost.answer = false;
   }
 
-  quote.coverageOptions.sinkholePerilCoverage.answer = !!data.deductibles.sinkhole.value;
-
-
   // AF3 specific rules
   if (data.product === PRODUCT_TYPES.flood) {
     // currently no defaults specific to flood that we know of.
@@ -145,6 +142,9 @@ export function updateQuote({ data = {}, options = {} }) {
         return quote;
       }
     } catch (error) {
+      if (process.env.NODE_ENV !== 'production') {
+        console.log('Error updating quote: ', error);
+      }
       dispatch(errorActions.setAppError(error));
       return null;
 
