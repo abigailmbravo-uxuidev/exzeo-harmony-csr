@@ -189,9 +189,6 @@ describe('Additional Interest Testing', () => {
     verifyForm(getByTestId, [{
       ...stateField, data: 'abc', error: 'Only 2 letters allowed'
     }], [], 'ai-modal-submit');
-    // verifyForm(getByTestId, [{
-    //   ...zipField, data: 'abcd', error: 'Not a valid zip code'
-    // }], [], 'ai-modal-submit');
     verifyForm(getByTestId, [{
       ...zipField, data: '1234567890', error: 'Only 8 letters or numbers allowed'
     }], [], 'ai-modal-submit');
@@ -214,10 +211,6 @@ describe('Additional Interest Testing', () => {
     verifyForm(getByTestId, [{
       ...stateField, data: 'abc', error: 'Only 2 letters allowed'
     }], [], 'ai-modal-submit');
-    // TODO: COLIN -- Check if this is a bug or not
-    // verifyForm(getByTestId, [{
-    //   ...zipField, data: 'abcd', error: 'Not a valid zip code'
-    // }], [], 'ai-modal-submit');
     verifyForm(getByTestId, [{
       ...zipField, data: '1234567890', error: 'Only 8 letters or numbers allowed'
     }], [], 'ai-modal-submit');
@@ -240,9 +233,6 @@ describe('Additional Interest Testing', () => {
     verifyForm(getByTestId, [{
       ...stateField, data: 'abc', error: 'Only 2 letters allowed'
     }], [], 'ai-modal-submit');
-    // verifyForm(getByTestId, [{
-    //   ...zipField, data: 'abcd', error: 'Not a valid zip code'
-    // }], [], 'ai-modal-submit');
     verifyForm(getByTestId, [{
       ...zipField, data: '1234567890', error: 'Only 8 letters or numbers allowed'
     }], [], 'ai-modal-submit');
@@ -265,9 +255,6 @@ describe('Additional Interest Testing', () => {
     verifyForm(getByTestId, [{
       ...stateField, data: 'abc', error: 'Only 2 letters allowed'
     }], [], 'ai-modal-submit');
-    // verifyForm(getByTestId, [{
-    //   ...zipField, data: 'abcd', error: 'Not a valid zip code'
-    // }], [], 'ai-modal-submit');
     verifyForm(getByTestId, [{
       ...zipField, data: '1234567890', error: 'Only 8 letters or numbers allowed'
     }], [], 'ai-modal-submit');
@@ -290,9 +277,6 @@ describe('Additional Interest Testing', () => {
     verifyForm(getByTestId, [{
       ...stateField, data: 'abc', error: 'Only 2 letters allowed'
     }], [], 'ai-modal-submit');
-    // verifyForm(getByTestId, [{
-    //   ...zipField, data: 'abcd', error: 'Not a valid zip code'
-    // }], [], 'ai-modal-submit');
     verifyForm(getByTestId, [{
       ...zipField, data: '1234567890', error: 'Only 8 letters or numbers allowed'
     }], [], 'ai-modal-submit');
