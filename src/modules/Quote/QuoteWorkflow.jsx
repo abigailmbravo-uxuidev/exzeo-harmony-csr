@@ -69,7 +69,7 @@ export class QuoteWorkflow extends React.Component {
 
   componentDidMount() {
     const { match } = this.props;
-    this.props.getQuote(match.params.quoteNumber, '')
+    this.props.getQuote({ quoteNumber: match.params.quoteNumber })
       .then((quoteData) => {
         if (quoteData && quoteData.property) {
           const { companyCode, state, product, property, agencyCode, agentCode } = quoteData;

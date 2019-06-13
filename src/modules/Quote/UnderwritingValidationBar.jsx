@@ -12,7 +12,7 @@ import CheckField from '../../components/Form/inputs/CheckField';
 import UnderwritingExceptions from './UnderwritingExceptions';
 
 export const handleFormSubmit = async (data, dispatch, props) => {
-  const { underwritingExceptions } = props.quoteData;
+  const { underwritingExceptions, quoteNumber } = props.quoteData;
   const uwExceptions = underwritingExceptions || [];
   for (let i = 0; i < uwExceptions.length; i += 1) {
     const uwException = uwExceptions[i];
@@ -28,7 +28,7 @@ export const handleFormSubmit = async (data, dispatch, props) => {
     }
   }
   await props.saveUnderwritingExceptions(props.quoteData._id, uwExceptions);
-  await props.getQuote(props.quoteData._id, 'underwritingValidation');
+  await props.getQuote({ quoteNumber });
 };
 
 export const handleInitialize = (state) => {

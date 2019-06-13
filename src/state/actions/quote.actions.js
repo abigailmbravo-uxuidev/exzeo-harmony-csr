@@ -55,19 +55,56 @@ export function createQuote(address, igdID, stateCode, companyCode, product) {
 }
 
 /**
- * Get quote via CG model
- * @param quoteId - can be quote._id or quote.quoteNumber
- * @param currentPage
+ *
+ * @param quoteNumber
+ * @param quoteId
  * @returns {Function}
  */
-export function getQuote(quoteId, currentPage) {
+export function getQuote({ quoteNumber, quoteId }) {
   return async (dispatch) => {
+    dispatch(toggleLoading(true));
     try {
-      const quoteData = await choreographer.startWorkflow('csrGetQuoteWithUnderwriting', { quoteId, currentPage });
-      dispatch(setQuote(quoteData));
-      return quoteData;
+      const config = {
+        service: 'quote-data',
+        method: 'GET',
+        path: quoteId || quoteNumber
+      };
+
+      const response = await serviceRunner.callService(config, 'getQuote');
+      const quote = response.data.result;
+      dispatch(setQuote(quote));
+      return quote;
     } catch (error) {
       dispatch(errorActions.setAppError(error));
+      return null;
+    } finally {
+      dispatch(toggleLoading(false));
+    }
+  };
+}
+
+export function retrieveQuote({ quoteNumber, quoteId }) {
+  return async (dispatch) => {
+    const config = {
+      exchangeName: 'harmony',
+      routingKey: 'harmony.quote.retrieveQuote',
+      data: {
+        quoteId,
+        quoteNumber
+      }
+    };
+
+    try {
+      dispatch(toggleLoading(true));
+      const response = await serviceRunner.callService(config, 'quoteManager.retrieveQuote');
+      const quote = response.data.result;
+      dispatch(setQuote(quote));
+      return quote;
+    } catch (error) {
+      dispatch(errorActions.setAppError(error));
+      return null;
+    } finally {
+      dispatch(toggleLoading(false));
     }
   };
 }
