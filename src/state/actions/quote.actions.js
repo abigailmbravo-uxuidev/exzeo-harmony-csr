@@ -130,6 +130,15 @@ function formatQuoteForSubmit(data, options) {
     quote.coverageOptions.personalPropertyReplacementCost.answer = false;
   }
 
+  if (data.product === PRODUCT_TYPES.home) {
+    quote.coverageOptions.sinkholePerilCoverage.answer = !!(data.coverageOptions.sinkholePerilCoverage.answer === 'true');
+    // TODO created HAR-6754 to talk about this with the backend...
+    if (quote.coverageOptions.sinkholePerilCoverage) {
+      quote.deductibles.sinkhole = { value: 10 }
+    }
+
+  }
+
   // AF3 specific rules
   if (data.product === PRODUCT_TYPES.flood) {
     // currently no defaults specific to flood that we know of.
