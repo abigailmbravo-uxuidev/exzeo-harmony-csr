@@ -374,21 +374,20 @@ export const windFields = [
     values: ['None', 'Basic', 'Hurricane'],
     label: 'Opening Protection'
   },
-  // TODO: COLIN -- Check if these fields are supposed to be required and wait for update
-  // {
-  //   name: 'property.windMitigation.floridaBuildingCodeWindSpeed',
-  //   type: 'text',
-  //   required: true,
-  //   data: '1300',
-  //   label: 'FBC Wind Speed'
-  // },
-  // {
-  //   name: 'property.windMitigation.floridaBuildingCodeWindSpeedDesign',
-  //   type: 'text',
-  //   required: true,
-  //   data: '1300',
-  //   label: 'FBC Wind Speed Design'
-  // },
+  {
+    name: 'property.windMitigation.floridaBuildingCodeWindSpeed',
+    type: 'text',
+    required: true,
+    data: '1300',
+    label: 'FBC Wind Speed'
+  },
+  {
+    name: 'property.windMitigation.floridaBuildingCodeWindSpeedDesign',
+    type: 'text',
+    required: true,
+    data: '1300',
+    label: 'FBC Wind Speed Design'
+  },
   {
     name: 'property.windMitigation.terrain',
     type: 'select',
