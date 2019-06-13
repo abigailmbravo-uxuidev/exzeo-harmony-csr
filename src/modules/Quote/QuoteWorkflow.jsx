@@ -114,7 +114,8 @@ export class QuoteWorkflow extends React.Component {
       data: values,
       options: {
         step: currentStepNumber,
-        shouldSendApplication: currentRouteName === 'application'
+        shouldSendApplication: currentRouteName === 'application',
+        removeSecondary
       }
     });
 

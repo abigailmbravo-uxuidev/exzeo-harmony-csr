@@ -119,7 +119,10 @@ function formatQuoteForSubmit(data, options) {
       quote.policyHolders[0].entityType = data.policyHolders[0].entityType || "Person";
     }
 
-    if (data.policyHolders.length > 1) {
+    if (options.removeSecondary) {
+      quote.policyHolders = [quote.policyHolders[0]]
+    }
+    else if (data.policyHolders.length > 1) {
       quote.policyHolders[1].order = data.policyHolders[1].order || 1;
       quote.policyHolders[1].entityType = data.policyHolders[1].entityType || "Person";
       delete quote.policyHolders[1].electronicDelivery;
