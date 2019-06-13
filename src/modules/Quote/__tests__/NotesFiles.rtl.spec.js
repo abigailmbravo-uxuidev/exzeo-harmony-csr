@@ -12,7 +12,10 @@ import { QuoteWorkflow } from '../QuoteWorkflow';
 
 const pageHeaders = [{ text: 'History' }];
 const notesColumns = ['Created', 'Author', 'Contact', 'Note', 'File Type', 'File'];
-const diariesColumns = ['Status', 'Due', 'Assignee', 'Reason', 'Message', 'Updated', 'UpdatedBy', 'Actions'];
+const diariesColumns = ['Status', 'Due', 'Assignee', 'Reason', 'Message', 'Updated',
+  // TODO: COLIN -- Await bug fix and give this a space
+'UpdatedBy',
+'Actions'];
 
 mockServiceRunner([]);
 

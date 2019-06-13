@@ -10,15 +10,16 @@ export const producedByFields = [
     name: 'agencyCode',
     type: 'typeahead',
     label: 'Agency',
+    placeholder: 'Start typing to search',
     values: ['0', '20000', '20093']
   },
-  // {
-  //   name: 'agentCode',
-  //   type: 'typeahead',
-  //   disabled: true,
-  //   label: 'Agent',
-  //   values: ['0', '60092']
-  // }
+  {
+    name: 'agentCode',
+    type: 'typeahead',
+    disabled: true,
+    label: 'Agent',
+    values: ['0', '60092']
+  }
 ];
 
 export const primaryPolicyholderFields = [

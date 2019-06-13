@@ -7,6 +7,7 @@ import {
   renderWithForm,
   searchAgenciesResult,
   searchAgentsResult,
+  jestResolve,
   checkTypeahead,
   checkHeader,
   checkLabel,
@@ -29,9 +30,6 @@ import {
   windFields,
 } from '../../../test-utils';
 import { QuoteWorkflow } from '../QuoteWorkflow';
-
-agencyData.searchAgencies = jest.fn(() => Promise.resolve(searchAgenciesResult));
-agencyData.fetchAgents = jest.fn(() => Promise.resolve(searchAgentsResult));
 
 const pageHeaders = [
   { text: 'Produced By' }, { text: 'Primary Policyholder' }, { text: 'Secondary Policyholder' },
@@ -60,39 +58,32 @@ describe('Testing the Coverage/Rating Page', () => {
     allFields.filter(field => field.visible !== false).forEach(field => checkLabel(getByTestId, field));
   });
 
+  it('POS:Produced By Fields Placeholder', async () => {
+    agencyData.searchAgencies = jestResolve([]);
+    agencyData.fetchAgentsByAgencyCode = jestResolve([]);
+    const { getByTestId } = renderWithForm(<QuoteWorkflow {...props} />);
+    await wait(() => expect(getByTestId('agencyCode_wrapper').textContent).toMatch(/Start typing to search.../));
+    await wait(() => expect(getByTestId('agentCode_wrapper').textContent).toMatch(/Start typing to search.../));
+  });
+
   it('POS:Produced By Fields', async () => {
-    // agencyData.searchAgencies = jest.fn(() => Promise.resolve(searchAgenciesResult));
-    // agencyData.fetchAgents = jest.fn(() => Promise.resolve(searchAgentsResult));
-    const { getByText, getByTestId, getByLabelText } = renderWithForm(<QuoteWorkflow {...props} />);
-    await waitForElement(() => getByText('20000: TYPTAP MANAGEMENT COMPANY'))
-    const getSelect = async (testId, itemText) => {
-      const wrapper = getByTestId(`${testId}_wrapper`);
+    agencyData.searchAgencies = jestResolve(searchAgenciesResult);
+    agencyData.fetchAgentsByAgencyCode = jestResolve(searchAgentsResult);
+    const { getByText, getByTestId } = renderWithForm(<QuoteWorkflow {...props} />);
+    const agency = getByTestId('agencyCode_wrapper');
+    const agent = getByTestId('agentCode_wrapper');
+    await waitForElement(() => getByText(/20000: TEST DEFAULT AGENCY/));
+    expect(getByText(/60000: Peregrin Took/));
 
-      // Click 'a' key
-      fireEvent.keyDown(wrapper.querySelector('div.Select.TypeAhead'), { keyCode: 40 });
-      await waitForElement(() => getByText(itemText));
-      fireEvent.click(getByText(itemText));
-    };
-    await getSelect('agencyCode', '20000: TYPTAP MANAGEMENT COMPANY')
+    fireEvent.keyDown(agency.querySelector('input:not([type="hidden"])'), { keyCode: 40 });
+    await waitForElement(() => getByText(/123: TEST NEW AGENCY/));
+    fireEvent.click(getByText(/123: TEST NEW AGENCY/));
+    // TODO: COLIN -- Figure out how this works
+    // await wait(() => expect(agent.textContent).toMatch(/999: Meriadoc Brandybuck/))
 
-    await getSelect('agencyCode', /COLIN/i)
-
-
-    // await waitForElement(() => getByText('20000: TYPTAP MANAGEMENT COMPANY'));
-    // producedByFields.forEach(field => {
-    //   if (field.type === 'text') checkTextInput(getByTestId, field);
-    //   if (field.type === 'typeahead' && !field.disabled) {
-    //     checkTypeahead(getByTestId, field);
-    //   };
-      
-    // });
-    // const wrapper = getByTestId('agencyCode_wrapper');
-    // // const input = wrapper.querySelector('input:not([type="hidden"])');
-    // const select = wrapper.querySelector('Select');
-    // console.log(select)
-    // // fireEvent.change(input, { target: { value: '20000', action: 'input-change' }});
-    // // await wait(() => expect(input.value).toEqual('20000'));
-    // // console.log(wrapper.querySelectorAll('div.react-select__menu'))
+    fireEvent.keyDown(agent.querySelector('input:not([type="hidden"])'), { keyCode: 40 });
+    await(waitForElement(() => getByText(/999: Meriadoc Brandybuck/)));
+    fireEvent.click(getByText(/999: Meriadoc Brandybuck/));
   });
 
   it('POS:PolicyHolder Fields', () => {
