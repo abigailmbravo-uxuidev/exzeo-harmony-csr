@@ -3,8 +3,6 @@ import PropTypes from 'prop-types';
 import { Select, validation, SelectTypeAhead, Button, emptyArray } from '@exzeo/core-ui';
 import { reduxForm, FieldArray, Field } from 'redux-form';
 
-import { isUnique } from '../utilities/validation';
-
 export const RenderProducts = ({ fields, stateAnswers, productAnswers }) => {
   if (fields.length === 0) fields.insert(0, {});
 
@@ -84,7 +82,7 @@ export const ContractModal = (props) => {
                 component={SelectTypeAhead}
                 styleName="contractNumber"
                 dataTest="contractNumber"
-                validate={[validation.isRequired, isUnique]}
+                validate={[validation.isRequired, validation.isUnique]}
                 answers={agencyContractAnswers} />
               <Field
                 name="addendum"
