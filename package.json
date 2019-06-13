@@ -3,7 +3,6 @@
   "version": "0.9.1",
   "private": true,
   "scripts": {
-    "server": "./replace-dotenv.sh && exframe-web",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --coverage --watchAll=false",
@@ -22,7 +21,6 @@
     "auth0-js": "~8.10.1",
     "bluebird": "^3.5.3",
     "classnames": "~2.2.5",
-    "exframe-web": "~1.0.0",
     "font-awesome": "~4.7.0",
     "history": "~4.6.2",
     "jwt-decode": "~2.2.0",
