@@ -10,6 +10,7 @@ export const producedByFields = [
     name: 'agencyCode',
     type: 'typeahead',
     label: 'Agency',
+    placeholder: 'Start typing to search',
     values: ['0', '20000', '20093']
   },
   {

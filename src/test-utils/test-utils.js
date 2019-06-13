@@ -4,7 +4,7 @@ import thunk from 'redux-thunk';
 import { BrowserRouter as Router } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import { createStore, applyMiddleware } from 'redux';
-import { render, fireEvent } from 'react-testing-library';
+import { render, fireEvent, wait } from 'react-testing-library';
 
 import rootReducer from '../state/reducers';
 
@@ -103,14 +103,12 @@ export const checkTextInput = (query, field, queryOptions) => {
   expect(input.value).toBe(field.data);
 };
 
-export const checkTypeahead = (query, field) => {
-  const wrapper = parseQueryType(query, { ...field, name: `${field.name}_wrapper` });
-  console.log(wrapper.querySelectorAll('select'));
-  // const input = wrapper.querySelector('input#react-select-2-input');
-  // fireEvent.change(input, { target: { value: field.data }});
-  // fireEvent.focus(input);
-  // console.log(input);
-  // wrapper.querySelectorAll('div.react-select__menu div[role="option"]').forEach($node => expect($node.textContent).toEqual(/20FASDLFJASKDFLKJ000/));
+export const checkSelect = (query, field, queryOptions) => {
+  const select = parseQueryType(query, field, queryOptions);
+  field.values && field.values.forEach(value => {
+    fireEvent.change(select, { target: { value } });
+    expect(select.getAttribute('data-selected')).toEqual(value);
+  });
 };
 
 export const submitForm = (query, button = /submit/) => fireEvent.click(query(button));
@@ -135,14 +133,6 @@ export const checkRadio = (
         parseQueryType(query, { name: `${name}_${uncheckedValue}`, text: uncheckedValue, label }, queryOptions).parentNode.className)
         .toEqual('label-segmented')
       );
-  });
-};
-
-export const checkSelect = (query, field, queryOptions) => {
-  const select = parseQueryType(query, field, queryOptions);
-  field.values && field.values.forEach(value => {
-    fireEvent.change(select, { target: { value }});
-    expect(select.getAttribute('data-selected')).toEqual(value);
   });
 };
 

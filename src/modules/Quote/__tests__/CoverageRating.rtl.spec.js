@@ -1,12 +1,13 @@
 import React from 'react';
-import { fireEvent } from 'react-testing-library';
+import { fireEvent, waitForElement, wait } from 'react-testing-library';
+import * as agencyData from '@exzeo/core-ui/src/@Harmony/Agency/data';
 
 import {
   defaultQuoteWorkflowProps,
   renderWithForm,
-  mockServiceRunner,
-  searchAgenciesResult as result,
-  checkTypeahead,
+  searchAgenciesResult,
+  searchAgentsResult,
+  jestResolve,
   checkHeader,
   checkLabel,
   checkSelect,
@@ -38,6 +39,11 @@ const pageHeaders = [
 describe('Testing the Coverage/Rating Page', () => {
   const props = {
     ...defaultQuoteWorkflowProps,
+    quoteData: {
+      ...defaultQuoteWorkflowProps.quoteData,
+      agencyCode: 20000,
+      agentCode: 60000
+    },
     location: { pathname: '/quote/12-345-67/coverage' },
   };
 
@@ -54,6 +60,34 @@ describe('Testing the Coverage/Rating Page', () => {
     // TODO: COLIN -- Check if this is supposed to be disabled
     // expect(getByTestId('removeSecondary')).toBeDisabled();
     allFields.filter(field => field.visible !== false).forEach(field => checkLabel(getByTestId, field));
+  });
+
+  it('POS:Produced By Fields Placeholder', async () => {
+    agencyData.searchAgencies = jestResolve([]);
+    agencyData.fetchAgentsByAgencyCode = jestResolve([]);
+    const { getByTestId } = renderWithForm(<QuoteWorkflow {...props} />);
+    await wait(() => expect(getByTestId('agencyCode_wrapper').textContent).toMatch(/Start typing to search.../));
+    await wait(() => expect(getByTestId('agentCode_wrapper').textContent).toMatch(/Start typing to search.../));
+  });
+
+  it('POS:Produced By Fields', async () => {
+    agencyData.searchAgencies = jestResolve(searchAgenciesResult);
+    agencyData.fetchAgentsByAgencyCode = jestResolve(searchAgentsResult);
+    const { getByText, getByTestId } = renderWithForm(<QuoteWorkflow {...props} />);
+    const agency = getByTestId('agencyCode_wrapper');
+    const agent = getByTestId('agentCode_wrapper');
+    await waitForElement(() => getByText(/20000: TEST DEFAULT AGENCY/));
+    expect(getByText(/60000: Peregrin Took/));
+
+    fireEvent.keyDown(agency.querySelector('input:not([type="hidden"])'), { keyCode: 40 });
+    await waitForElement(() => getByText(/123: TEST NEW AGENCY/));
+    fireEvent.click(getByText(/123: TEST NEW AGENCY/));
+    // TODO: COLIN -- Figure out how this works
+    // await wait(() => expect(agent.textContent).toMatch(/999: Meriadoc Brandybuck/))
+
+    fireEvent.keyDown(agent.querySelector('input:not([type="hidden"])'), { keyCode: 40 });
+    await(waitForElement(() => getByText(/999: Meriadoc Brandybuck/)));
+    fireEvent.click(getByText(/999: Meriadoc Brandybuck/));
   });
 
   it('POS:PolicyHolder Fields', () => {
