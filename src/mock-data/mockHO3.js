@@ -1124,7 +1124,11 @@ const mock = {
                 label: 'FBC Wind Speed',
                 size: '6',
               },
-              formData: {},
+              formData: {
+                path: 'property.windMitigation.floridaBuildingCodeWindSpeed',
+                required: true,
+
+              },
               children: [],
             },
             {
@@ -1182,7 +1186,10 @@ const mock = {
                 label: 'FBC Wind Speed Design',
                 size: '6',
               },
-              formData: {},
+              formData: {
+                path: 'property.windMitigation.floridaBuildingCodeWindSpeedDesign',
+                required: true
+              },
               children: [],
             },
             {
