@@ -80,57 +80,24 @@
             flex-shrink: 1;
             width: auto;
 
-            @include for-phone-only {
-              flex-direction: column;
-            }
-
-            &:last-of-type {
-              .form-group {
-                margin-bottom: 0;
-                border-bottom-width: 0;
-
-                @include for-phone-only {
-                  margin-bottom: $padding*2;
-                  border-bottom: 1px dashed $cool-gray-02;
-
-                  &:last-of-type {
-                    border-bottom-width: 0;
-                  }
-                }
-              }
-            }
-
             .form-group {
               flex-grow: 1;
               flex-shrink: 1;
-              border-bottom: 1px dashed $cool-gray-02;
 
               &.state {
                 flex-grow: 0;
                 flex-shrink: 0;
                 width: 8rem;
-
-                @include for-phone-only {
-                  width: 100%;
-                }
               }
               &.zip {
                 flex-grow: 0;
                 flex-shrink: 0;
                 width: 16rem;
-
-                @include for-phone-only {
-                  width: 100%;
-                }
               }
               &.phone {
                 flex-grow: 0;
                 flex-shrink: 0;
                 width: 20rem;
-
-                @include for-phone-only {
-                  width: 100%;
-                }
               }
 
               &.order {
@@ -181,20 +148,6 @@
     .card {
       max-width: 40rem;
       width: 50%;
-
-      @include for-phone-only {
-        position: absolute;
-        top: 3.375rem;
-        bottom: 0;
-        z-index: 1000;
-        width: 100%;
-        border-radius: 0;
-
-        .card-block {
-          max-height: 100vh;
-          height: calc(100vh - 9.5625rem);
-        }
-      }
     }
   }
 
@@ -203,20 +156,6 @@
     .card {
       max-width: 60rem;
       width: 80%;
-
-      @include for-phone-only {
-        position: absolute;
-        top: 3.375rem;
-        bottom: 0;
-        z-index: 1000;
-        width: 100%;
-        border-radius: 0;
-
-        .card-block {
-          max-height: 100vh;
-          height: calc(100vh - 9.5625rem);
-        }
-      }
     }
   }
 
@@ -225,20 +164,6 @@
     .card {
       max-width: 80rem;
       width: 80%;
-
-      @include for-phone-only {
-        position: absolute;
-        top: 3.375rem;
-        bottom: 0;
-        z-index: 1000;
-        width: 100%;
-        border-radius: 0;
-
-        .card-block {
-          max-height: 100vh;
-          height: calc(100vh - 9.5625rem);
-        }
-      }
     }
   }
 
@@ -246,20 +171,6 @@
     .card {
       max-width: 60rem;
       width: 60%;
-
-      @include for-phone-only {
-        position: absolute;
-        top: 3.375rem;
-        bottom: 0;
-        z-index: 1000;
-        width: 100%;
-        border-radius: 0;
-
-        .card-block {
-          max-height: 100vh;
-          height: calc(100vh - 9.5625rem);
-        }
-      }
     }
   }
 
