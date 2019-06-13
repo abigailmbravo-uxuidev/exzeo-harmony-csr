@@ -10,11 +10,11 @@ const DiaryExpandColumns = ({ diaries }) => {
   return (
     <BootstrapTable className="sub-table" data={diaries}>
       <TableHeaderColumn dataField="_id" isKey hidden>ID</TableHeaderColumn>
-      <TableHeaderColumn className="due" columnClassName="due" dataField="due" dataFormat={date.toLocaleDate}>Due</TableHeaderColumn>
+      <TableHeaderColumn className="due" columnClassName="due" dataField="due" dataFormat={val => date.formatDate(val)}>Due</TableHeaderColumn>
       <TableHeaderColumn className="assignee" columnClassName="assignee" dataField="assignee" dataFormat={val => val.displayName}>Assignee</TableHeaderColumn>
       <TableHeaderColumn className="reason" columnClassName="reason" dataField="reason">Reason</TableHeaderColumn>
       <TableHeaderColumn className="message" columnClassName="message" dataField="message">Message</TableHeaderColumn>
-      <TableHeaderColumn className="updated-at" columnClassName="updated-at" dataField="updatedAt" dataFormat={date.toLocaleDate}>Updated</TableHeaderColumn>
+      <TableHeaderColumn className="updated-at" columnClassName="updated-at" dataField="updatedAt" dataFormat={val => date.formatDate(val)}>Updated</TableHeaderColumn>
       <TableHeaderColumn className="created-by" columnClassName="created-by" dataField="createdBy" dataFormat={val => val.userName}>Updated By</TableHeaderColumn>
     </BootstrapTable>
   );
@@ -85,11 +85,11 @@ class DiaryTable extends Component {
         }}>
         <TableHeaderColumn dataField="diaryId" isKey hidden>ID</TableHeaderColumn>
         <TableHeaderColumn className="due-status" columnClassName="due-status" dataField="dueStatus" dataFormat={this.statusFormatter} dataSort>Status</TableHeaderColumn>
-        <TableHeaderColumn className="due" columnClassName="due" dataField="due" dataFormat={date.toLocaleDate} dataSort>Due</TableHeaderColumn>
+        <TableHeaderColumn className="due" columnClassName="due" dataField="due" dataFormat={val => date.formatDate(val)} dataSort>Due</TableHeaderColumn>
         <TableHeaderColumn className="assignee" columnClassName="assignee" dataField="assignee" dataFormat={val => val.displayName} dataSort>Assignee</TableHeaderColumn>
         <TableHeaderColumn className="reason" columnClassName="reason" dataField="reason" dataSort>Reason</TableHeaderColumn>
         <TableHeaderColumn className="message" columnClassName="message" dataField="message">Message</TableHeaderColumn>
-        <TableHeaderColumn className="updated-at" columnClassName="updated-at" dataField="updatedAt" dataFormat={date.toLocaleDate} dataSort>Updated</TableHeaderColumn>
+        <TableHeaderColumn className="updated-at" columnClassName="updated-at" dataField="updatedAt" dataFormat={val => date.formatDate(val)} dataSort>Updated</TableHeaderColumn>
         <TableHeaderColumn className="created-by" columnClassName="created-by" dataField="createdBy" dataFormat={val => val.userName} dataSort>Updated By</TableHeaderColumn>
         <TableHeaderColumn className="action" columnClassName="action" dataField="action" dataFormat={this.buttonFormatter} expandable={false}>Actions</TableHeaderColumn>
       </BootstrapTable>);
