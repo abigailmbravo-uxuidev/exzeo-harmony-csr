@@ -87,6 +87,17 @@
         padding-bottom: 0;
         border-bottom-width: 0;
       }
+
+      &.error {
+        input {
+          border-color: $red-darken-01;
+        }
+  
+        span {
+          color: $red-darken-01;
+          font-size: $font-size-sm;
+        }
+      }
     }
 
     h1,

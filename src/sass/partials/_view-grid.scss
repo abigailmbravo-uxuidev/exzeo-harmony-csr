@@ -114,17 +114,17 @@
       background-color: $input-bg-disabled;
       opacity: 1;
     }
+  }
 
-    .form-group {
-      &.error {
-        input {
-          border-color: $red-darken-01;
-        }
-  
-        span {
-          color: $red-darken-01;
-          font-size: $font-size-sm;
-        }
+  .form-group {
+    &.error {
+      input {
+        border-color: $red-darken-01;
+      }
+
+      span {
+        color: $red-darken-01;
+        font-size: $font-size-sm;
       }
     }
   }
