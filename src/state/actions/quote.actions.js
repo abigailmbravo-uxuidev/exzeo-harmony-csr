@@ -131,8 +131,8 @@ function formatQuoteForSubmit(data, options) {
   }
 
   if (data.product === PRODUCT_TYPES.home) {
-    quote.coverageOptions.sinkholePerilCoverage.answer = !!(data.coverageOptions.sinkholePerilCoverage.answer === 'true');
     // TODO created HAR-6754 to talk about this with the backend...
+    quote.coverageOptions.sinkholePerilCoverage.answer = String(data.coverageOptions.sinkholePerilCoverage.answer) === 'true';
     if (quote.coverageOptions.sinkholePerilCoverage) {
       quote.deductibles.sinkhole = { value: 10 }
     }
