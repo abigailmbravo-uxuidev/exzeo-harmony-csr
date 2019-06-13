@@ -90,7 +90,7 @@ class DiaryTable extends Component {
         <TableHeaderColumn className="reason" columnClassName="reason" dataField="reason" dataSort>Reason</TableHeaderColumn>
         <TableHeaderColumn className="message" columnClassName="message" dataField="message">Message</TableHeaderColumn>
         <TableHeaderColumn className="updated-at" columnClassName="updated-at" dataField="updatedAt" dataFormat={date.toLocaleDate} dataSort>Updated</TableHeaderColumn>
-        <TableHeaderColumn className="created-by" columnClassName="created-by" dataField="createdBy" dataFormat={val => val.userName} dataSort>UpdatedBy</TableHeaderColumn>
+        <TableHeaderColumn className="created-by" columnClassName="created-by" dataField="createdBy" dataFormat={val => val.userName} dataSort>Updated By</TableHeaderColumn>
         <TableHeaderColumn className="action" columnClassName="action" dataField="action" dataFormat={this.buttonFormatter} expandable={false}>Actions</TableHeaderColumn>
       </BootstrapTable>);
   }
