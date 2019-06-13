@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { reduxForm, Field } from 'redux-form';
-import { isUnique } from '../utilities/validation';
 import { Input, Date, Select, validation } from '@exzeo/core-ui';
 
 export const LicenseModal = (props) => {
@@ -42,7 +41,7 @@ export const LicenseModal = (props) => {
                 name="licenseNumber"
                 component={Input}
                 dataTest="licenseNumber"
-                validate={[validation.isRequired, isUnique]} />
+                validate={[validation.isRequired, validation.isUnique]} />
               <Field
                 label="Type"
                 styleName="licenseType"

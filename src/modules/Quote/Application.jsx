@@ -1,4 +1,5 @@
 import React from 'react'
+import { ModalPortal } from '@exzeo/core-ui';
 import SendApplicationModal from './SendApplicationModal';
 
 const Application = ({ initialValues, customHandlers }) => {
@@ -12,12 +13,14 @@ const Application = ({ initialValues, customHandlers }) => {
         </div>
       </div>
     }
-    {customHandlers.showApplicationModal && 
-      <SendApplicationModal
-      initialValues={initialValues}
-      submitApplication={customHandlers.handleSubmit}
-      closeModal={() => customHandlers.setShowApplicationModal(false)}
-      />
+    {customHandlers.showApplicationModal &&
+      <ModalPortal>
+        <SendApplicationModal
+          initialValues={initialValues}
+          submitApplication={customHandlers.handleSubmit}
+          closeModal={() => customHandlers.setShowApplicationModal(false)}
+        />
+      </ModalPortal>
     }
    </div>
   )
