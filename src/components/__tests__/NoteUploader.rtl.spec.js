@@ -34,7 +34,7 @@ const noteFileModalFields = [
   },
 ];
 
-describe('Diary Modal Testing', () => {
+describe('Note Uploader Testing', () => {
   const baseProps = {
     handleSubmit: x => x,
     noteType: 'Quote Note',
