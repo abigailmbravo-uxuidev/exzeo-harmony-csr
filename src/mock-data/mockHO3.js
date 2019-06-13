@@ -935,7 +935,7 @@ const mock = {
                 type: 'integer',
                 required: true,
                 metaData: {
-                  target: '${it.coverageOptions.sinkholePerilCoverage.answer === \'true\' ? Math.ceil(((10 / 100) * it.coverageLimits.dwelling.value)) : 0}',
+                  target: '${it.coverageOptions.sinkholePerilCoverage.answer === \'true\' || it.coverageOptions.sinkholePerilCoverage.answer === true ? Math.ceil(((10 / 100) * it.coverageLimits.dwelling.value)) : 0}',
                 },
               },
               children: [],
