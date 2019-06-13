@@ -106,7 +106,7 @@ export const checkTextInput = (query, field, queryOptions) => {
 export const checkSelect = (query, field, queryOptions) => {
   const select = parseQueryType(query, field, queryOptions);
   field.values && field.values.forEach(value => {
-    fireEvent.change(select, { target: { value } });
+    fireEvent.change(select, { target: { value }});
     expect(select.getAttribute('data-selected')).toEqual(value);
   });
 };

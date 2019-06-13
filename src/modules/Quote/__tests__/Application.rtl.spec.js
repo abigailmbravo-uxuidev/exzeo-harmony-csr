@@ -35,12 +35,6 @@ describe('Application Testing', () => {
   });
 
   it('POS:Congratulations Modal Testing', async () => {
-    const newProps = {
-      ...props,
-      appState: {
-        data: { showQuoteSummaryModal: true }
-      }
-    };
     const { getByText, getByTestId } = renderWithForm(<QuoteWorkflow {...props} />);
     fireEvent.click(getByText('Send To Docusign'));
     await waitForElement(() => getByTestId('modal'));
