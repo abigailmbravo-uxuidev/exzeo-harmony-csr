@@ -16,7 +16,7 @@ import ConnectedSearch from '../index';
 
 const newQuoteFields = [
   {
-    name: 'address',
+    dataTest: 'address',
     type: 'text',
     required: true,
     label: 'Property Address',

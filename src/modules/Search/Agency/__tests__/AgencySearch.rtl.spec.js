@@ -6,49 +6,49 @@ import AgencySearch from '../AgencySearch';
 
 const fields = [
   {
-    name: 'searchType',
+    dataTest: 'searchType',
     type: 'select',
     label: 'Search Context',
     selected: 'agency',
     options: ['Agent Search', 'Agency Search']
   },
   {
-    name: 'agencyCode',
+    dataTest: 'agencyCode',
     type: 'text',
     label: 'Agency ID',
     placeholder: 'Agency ID Search',
     data: '1234'
   },
   {
-    name: 'displayName',
+    dataTest: 'displayName',
     type: 'text',
     label: 'Agency Name',
     placeholder: 'Agency Name Search',
     data: 'Randall Tex Cobb'
   },
   {
-    name: 'address',
+    dataTest: 'address',
     type: 'text',
     label: 'Agency Address',
     placeholder: 'Agency Address Search',
     data: '1234 Mulholland Drive'
   },
   {
-    name: 'licenseNumber',
+    dataTest: 'licenseNumber',
     type: 'text',
     label: 'Lic Number',
     placeholder: 'Lic No Search',
     data: '123456'
   },
   {
-    name: 'fein',
+    dataTest: 'fein',
     type: 'text',
     label: 'FEIN Number',
     placeholder: 'FEIN No Search',
     data: '123'
   },
   {
-    name: 'phone',
+    dataTest: 'phone',
     type: 'text',
     label: 'Agency Phone Number',
     placeholder: 'Phone No Search',
@@ -78,7 +78,7 @@ describe('Agency Search Testing', () => {
 
     fields.forEach(field => checkLabel(getByTestId, field));
     textFields.forEach(({ placeholder }) => expect(getByPlaceholderText(placeholder)));
-    selectFields.forEach(({ name, selected }) => expect(getByTestId(name).getAttribute('data-selected')).toEqual(selected));
+    selectFields.forEach(({ dataTest, selected }) => expect(getByTestId(dataTest).getAttribute('data-selected')).toEqual(selected));
   });
 
   it('POS:Checks that all fields are working', () => {
@@ -89,6 +89,6 @@ describe('Agency Search Testing', () => {
 
   it('POS:Agency Search Button', () => {
     const { getByTestId } = renderWithForm(<SearchForm {...props} />);
-    checkButton(getByTestId, { name: 'submit', type: 'submit' });
+    checkButton(getByTestId, { dataTest: 'submit', type: 'submit' });
   });
 });

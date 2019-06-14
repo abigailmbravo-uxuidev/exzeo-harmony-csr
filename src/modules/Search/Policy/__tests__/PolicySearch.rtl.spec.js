@@ -6,55 +6,55 @@ import PolicySearch from '../PolicySearch';
 
 const fields = [
   {
-    name: 'searchType',
+    dataTest: 'searchType',
     type: 'select',
     label: 'Search Context',
     selected: 'policy',
     options: ['New Quote', 'Quote Search', 'Policy Search']
   },
   {
-    name: 'firstName',
+    dataTest: 'firstName',
     type: 'text',
     label: 'First Name',
     placeholder: 'First Name Search',
     data: 'first name test'
   },
   {
-    name: 'lastName',
+    dataTest: 'lastName',
     type: 'text',
     label: 'Last Name',
     placeholder: 'Last Name Search',
     data: 'last name test'
   },
   {
-    name: 'address',
+    dataTest: 'address',
     type: 'text',
     label: 'Property Street Address',
     placeholder: 'Property Street Address Search',
     data: '1234 anytown usa'
   },
   {
-    name: 'policyNumber',
+    dataTest: 'policyNumber',
     type: 'text',
     label: 'Policy Number',
     placeholder: 'Policy No Search',
     data: '1234'
   },
   {
-    name: 'agencyCode',
+    dataTest: 'agencyCode',
     type: 'typeahead',
     label: 'Agency Name',
     placeholder: 'Select...'
   },
   {
-    name: 'effectiveDate',
+    dataTest: 'effectiveDate',
     type: 'text',
     label: 'Effective Date',
     placeholder: 'MM/DD/YYYY',
     data: '12/12/2018'
   },
   {
-    name: 'policyStatus',
+    dataTest: 'policyStatus',
     type: 'select',
     label: 'Policy Status',
     selected: '',
@@ -65,7 +65,7 @@ const fields = [
     ]
   },
   {
-    name: 'sortBy',
+    dataTest: 'sortBy',
     type: 'select',
     label: 'Sort By',
     selected: 'policyNumber',
@@ -110,7 +110,7 @@ describe('Policy Search Testing', () => {
 
     fields.forEach(field => checkLabel(getByTestId, field));
     textFields.forEach(({ placeholder }) => expect(getByPlaceholderText(placeholder)));
-    selectFields.forEach(({ name, selected }) => expect(getByTestId(name).getAttribute('data-selected')).toEqual(selected));
+    selectFields.forEach(({ dataTest, selected }) => expect(getByTestId(dataTest).getAttribute('data-selected')).toEqual(selected));
   });
 
   it('POS:Checks that all fields are working', () => {
@@ -121,6 +121,6 @@ describe('Policy Search Testing', () => {
 
   it('POS:Policy Search Button', () => {
     const { getByTestId } = renderWithForm(<SearchForm {...props} />);
-    checkButton(getByTestId, { name: 'submit', type: 'submit' });
+    checkButton(getByTestId, { dataTest: 'submit', type: 'submit' });
   });
 });

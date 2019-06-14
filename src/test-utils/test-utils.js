@@ -79,7 +79,7 @@ const parseQueryType = (query, field, queryOptions) => {
   const queryName = query.name.replace(/bound /g, '');
   switch (queryName) {
   case 'getByTestId':
-    return query(field.name, queryOptions);
+    return query(field.dataTest, queryOptions);
   case 'getByText':
     return query(field.text, queryOptions);
   case 'getByLabelText':
@@ -87,15 +87,15 @@ const parseQueryType = (query, field, queryOptions) => {
   case 'getByPlaceholderText':
     return(query(field.placeholder, queryOptions));
   default:
-    return query(field.name, queryOptions);
+    return query(field.dataTest, queryOptions);
   }
 };
 
-export const checkLabel = (query, { name = '', text = '', label }, queryOptions) =>
-  expect(parseQueryType(query, { name: `${name}_label`, text, label }, queryOptions)).toHaveTextContent(label);
+export const checkLabel = (query, { dataTest = '', text = '', label }, queryOptions) =>
+  expect(parseQueryType(query, { dataTest: `${dataTest}_label`, text, label }, queryOptions)).toHaveTextContent(label);
 
-export const checkError = (query, { name = '', text = '', label = '', error = 'Field Required' } = {}, queryOptions) =>
-  expect(parseQueryType(query, { name: `${name}_error`, text, label, error }, queryOptions)).toHaveTextContent(error);
+export const checkError = (query, { dataTest = '', text = '', label = '', error = 'Field Required' } = {}, queryOptions) =>
+  expect(parseQueryType(query, { dataTest: `${dataTest}_error`, text, label, error }, queryOptions)).toHaveTextContent(error);
 
 export const checkTextInput = (query, field, queryOptions) => {
   const input = parseQueryType(query, field, queryOptions);
@@ -117,20 +117,20 @@ export const clearText = (query, field) => fireEvent.change(parseQueryType(query
 
 export const checkRadio = (
   query,
-  { name = '', label = '', values },
+  { dataTest = '', label = '', values },
   // Account for the same answer text appearing in multiple questions and select only current question
-  queryOptions = { selector: `[for="${name}"] span` }
+  queryOptions = { selector: `[for="${dataTest}"] span` }
 ) => {
   values.forEach(value => {
     // Get the option to select and click it
-    const selectedOption = parseQueryType(query, { name: `${name}_${value}`, text: value, label }, queryOptions);
+    const selectedOption = parseQueryType(query, { dataTest: `${dataTest}_${value}`, text: value, label }, queryOptions);
     fireEvent.click(selectedOption);
     // Expect the parent wrapper to be selected
     expect(selectedOption.parentNode.className).toEqual('label-segmented selected');
     // Expect all other values' parents to be unchecked
     values.filter(uncheckedValue => value !== uncheckedValue)
       .forEach(uncheckedValue => expect(
-        parseQueryType(query, { name: `${name}_${uncheckedValue}`, text: uncheckedValue, label }, queryOptions).parentNode.className)
+        parseQueryType(query, { dataTest: `${dataTest}_${uncheckedValue}`, text: uncheckedValue, label }, queryOptions).parentNode.className)
         .toEqual('label-segmented')
       );
   });

@@ -26,13 +26,13 @@ const pageHeaders = [
 
 const billingFields = [
   {
-    name: 'billToId',
+    dataTest: 'billToId',
     label: 'Bill To',
     type: 'select',
     values: ['ab1234']
   },
   {
-    name: 'billPlan',
+    dataTest: 'billPlan',
     label: 'Bill Plan',
     type: 'radio',
     values: ['Annual', 'Semi-Annual', 'Quarterly']

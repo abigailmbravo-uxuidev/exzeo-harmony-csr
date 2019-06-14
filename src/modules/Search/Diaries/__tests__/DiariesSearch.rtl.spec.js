@@ -6,14 +6,14 @@ import DiariesSearch from '../DiariesSearch';
 
 const fields = [
   {
-    name: 'status',
+    dataTest: 'status',
     type: 'select',
     label: 'Diary Status',
     selected: 'true',
     options: ['Open', 'Closed']
   },
   {
-    name: 'reason',
+    dataTest: 'reason',
     type: 'select',
     label: 'Reason',
     selected: '',
@@ -26,13 +26,13 @@ const fields = [
     ]
   },
   {
-    name: 'assignees',
+    dataTest: 'assignees',
     type: 'typeahead',
     label: 'Assigned To',
     placeholder: 'Select...'
   },
   {
-    name: 'date-range',
+    dataTest: 'date-range',
     type: 'date',
     label: 'Date Range'
   }
@@ -57,7 +57,7 @@ describe('Diaries Search Testing', () => {
     const { getByTestId } = renderWithForm(<SearchForm {...props} />);
 
     fields.forEach(field => checkLabel(getByTestId, field));
-    selectFields.forEach(({ name, selected }) => expect(getByTestId(name).getAttribute('data-selected')).toEqual(selected));
+    selectFields.forEach(({ dataTest, selected }) => expect(getByTestId(dataTest).getAttribute('data-selected')).toEqual(selected));
   });
 
   it('POS:Checks that all fields are working', () => {
@@ -67,6 +67,6 @@ describe('Diaries Search Testing', () => {
 
   it('POS:Diary Search Button', () => {
     const { getByTestId } = renderWithForm(<SearchForm {...props} />);
-    checkButton(getByTestId, { name: 'submit', type: 'submit' });
+    checkButton(getByTestId, { dataTest: 'submit', type: 'submit' });
   });
 });

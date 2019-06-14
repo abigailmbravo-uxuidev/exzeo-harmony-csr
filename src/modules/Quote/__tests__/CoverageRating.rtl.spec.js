@@ -130,7 +130,7 @@ describe('Testing the Coverage/Rating Page', () => {
 
     allFields.filter(({ required, disabled, type }) => required && !disabled && type === 'text').forEach(field => {
       clearText(getByTestId, field);
-      fireEvent.blur(getByTestId(field.name));
+      fireEvent.blur(getByTestId(field.dataTest));
       checkError(getByTestId, field);
     });
   });

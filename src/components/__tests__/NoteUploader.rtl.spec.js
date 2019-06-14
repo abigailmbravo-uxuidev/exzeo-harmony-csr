@@ -11,7 +11,7 @@ import { NoteUploader } from '../NoteUploader';
 
 const noteFileModalFields = [
   {
-    name: 'contactType',
+    dataTest: 'contactType',
     label: 'Contact',
     type: 'select',
     values: ['Agent', 'Policyholder', 'Inspector', 'Other'],
@@ -23,7 +23,7 @@ const noteFileModalFields = [
     data: 'Test note content'
   },
   {
-    name: 'fileType',
+    dataTest: 'fileType',
     label: 'File Type',
     type: 'select',
     values: [

@@ -16,60 +16,60 @@ import { QuoteWorkflow } from '../QuoteWorkflow';
 
 const baseAiFields = [
   {
-    name: 'name1',
+    dataTest: 'name1',
     type: 'text',
     required: true,
     label: 'First Name',
     data: 'test last names',
   },
   {
-    name: 'name2',
+    dataTest: 'name2',
     type: 'text',
     label: 'Last Name',
     data: 'test first name',
   },
   {
-    name: 'address1',
+    dataTest: 'address1',
     type: 'text',
     required: true,
     label: 'Address 1',
     data: 'test adress 1',
   },
   {
-    name: 'address2',
+    dataTest: 'address2',
     type: 'text',
     label: 'Address 2',
     data: 'test address 2',
   },
   {
-    name: 'city',
+    dataTest: 'city',
     type: 'text',
     required: true,
     label: 'City',
     data: 'test city',
   },
   {
-    name: 'state',
+    dataTest: 'state',
     type: 'text',
     required: true,
     label: 'State',
     data: 'FL',
   },
   {
-    name: 'zip',
+    dataTest: 'zip',
     type: 'text',
     required: true,
     label: 'Zip Code',
     data: 'test name 1',
   },
   {
-    name: 'phoneNumber',
+    dataTest: 'phoneNumber',
     type: 'text',
     label: 'Phone Number',
     data: '(123) 123-1231'
   },
   {
-    name: 'referenceNumber',
+    dataTest: 'referenceNumber',
     type: 'text',
     label: 'Reference Number',
     data: '123'
@@ -78,60 +78,60 @@ const baseAiFields = [
 
 const mortgageeFields = [
   {
-    name: 'name1',
+    dataTest: 'name1',
     type: 'text',
     required: true,
     label: 'Name 1',
     data: 'test name 1',
   },
   {
-    name: 'name2',
+    dataTest: 'name2',
     type: 'text',
     label: 'Name 2',
     data: 'test name 2',
   },
   {
-    name: 'address1',
+    dataTest: 'address1',
     type: 'text',
     required: true,
     label: 'Address 1',
     data: 'test adress 1',
   },
   {
-    name: 'address2',
+    dataTest: 'address2',
     type: 'text',
     label: 'Address 2',
     data: 'test address 2',
   },
   {
-    name: 'city',
+    dataTest: 'city',
     type: 'text',
     required: true,
     label: 'City',
     data: 'test city',
   },
   {
-    name: 'state',
+    dataTest: 'state',
     type: 'text',
     required: true,
     label: 'State',
     data: 'FL',
   },
   {
-    name: 'zip',
+    dataTest: 'zip',
     type: 'text',
     required: true,
     label: 'Zip Code',
     data: 'test name 1',
   },
   {
-    name: 'phoneNumber',
+    dataTest: 'phoneNumber',
     type: 'text',
     label: 'Phone Number',
     data: '(123) 123-1231'
   },
   {
-    name: 'referenceNumber',
+    dataTest: 'referenceNumber',
     type: 'text',
     label: 'Reference Number',
     data: '1`23'
@@ -159,6 +159,9 @@ describe('Additional Interest Testing', () => {
     }
   };
 
+  const stateField = baseAiFields.find(({ dataTest }) => dataTest === 'state');
+  const zipField = baseAiFields.find(({ dataTest }) => dataTest === 'zip');
+
   it('POS:Error Message exists with no quote data', () => {
     const newProps = {
       ...props,
@@ -183,9 +186,6 @@ describe('Additional Interest Testing', () => {
     const { getByText, getByTestId } = renderWithForm(<QuoteWorkflow {...props} />);
     fireEvent.click(getByText('Mortgagee'));
 
-    const stateField = baseAiFields.find(({ name }) => name === 'state');
-    const zipField = baseAiFields.find(({ name }) => name === 'zip');
-
     verifyForm(getByTestId, [{
       ...stateField, data: 'abc', error: 'Only 2 letters allowed'
     }], [], 'ai-modal-submit');
@@ -204,9 +204,6 @@ describe('Additional Interest Testing', () => {
   it('NEG:Additional Insured Invalid Input Testing', () => {
     const { getByText, getByTestId } = renderWithForm(<QuoteWorkflow {...props} />);
     fireEvent.click(getByText('Additional Insured'));
-
-    const stateField = baseAiFields.find(({ name }) => name === 'state');
-    const zipField = baseAiFields.find(({ name }) => name === 'zip');
 
     verifyForm(getByTestId, [{
       ...stateField, data: 'abc', error: 'Only 2 letters allowed'
@@ -227,9 +224,6 @@ describe('Additional Interest Testing', () => {
     const { getByText, getByTestId } = renderWithForm(<QuoteWorkflow {...props} />);
     fireEvent.click(getByText('Additional Interest'));
 
-    const stateField = baseAiFields.find(({ name }) => name === 'state');
-    const zipField = baseAiFields.find(({ name }) => name === 'zip');
-
     verifyForm(getByTestId, [{
       ...stateField, data: 'abc', error: 'Only 2 letters allowed'
     }], [], 'ai-modal-submit');
@@ -249,8 +243,6 @@ describe('Additional Interest Testing', () => {
     const { getByText, getByTestId } = renderWithForm(<QuoteWorkflow {...props} />);
     fireEvent.click(getByText('Premium Finance'));
 
-    const stateField = baseAiFields.find(({ name }) => name === 'state');
-    const zipField = baseAiFields.find(({ name }) => name === 'zip');
 
     verifyForm(getByTestId, [{
       ...stateField, data: 'abc', error: 'Only 2 letters allowed'
@@ -271,8 +263,6 @@ describe('Additional Interest Testing', () => {
     const { getByText, getByTestId } = renderWithForm(<QuoteWorkflow {...props} />);
     fireEvent.click(getByText('Bill Payer'));
 
-    const stateField = baseAiFields.find(({ name }) => name === 'state');
-    const zipField = baseAiFields.find(({ name }) => name === 'zip');
 
     verifyForm(getByTestId, [{
       ...stateField, data: 'abc', error: 'Only 2 letters allowed'
@@ -306,8 +296,8 @@ describe('Additional Interest Testing', () => {
       checkLabel(getByTestId, field);
       checkTextInput(getByTestId, field);
     });
-    checkLabel(getByTestId, { name: 'mortgage', label: 'Top Mortgagees' });
-    checkSelect(getByTestId, { name: 'order', type: 'select', values: ['0']});
+    checkLabel(getByTestId, { dataTest: 'mortgage', label: 'Top Mortgagees' });
+    checkSelect(getByTestId, { dataTest: 'order', type: 'select', values: ['0']});
   });
 
   it('POS:Additional Insured Modal Testing', () => {
@@ -347,7 +337,7 @@ describe('Additional Interest Testing', () => {
       checkLabel(getByTestId, field);
       checkTextInput(getByTestId, field);
     });
-    checkLabel(getByTestId, { name: 'premiumFinance', label: 'Top Premium Finance' });
+    checkLabel(getByTestId, { dataTest: 'premiumFinance', label: 'Top Premium Finance' });
   });
 
   it('POS:Bill Payer Modal Testing', () => {

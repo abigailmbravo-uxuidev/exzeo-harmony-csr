@@ -6,42 +6,42 @@ import QuoteSearch from '../QuoteSearch';
 
 const fields = [
   {
-    name: 'searchType',
+    dataTest: 'searchType',
     type: 'select',
     label: 'Search Context',
     selected: 'quote',
     options: ['New Quote', 'Quote Search', 'Policy Search']
   },
   {
-    name: 'firstName',
+    dataTest: 'firstName',
     type: 'text',
     label: 'First Name',
     placeholder: 'First Name Search',
     data: 'Kim'
   },
   {
-    name: 'lastName',
+    dataTest: 'lastName',
     type: 'text',
     label: 'Last Name',
     placeholder: 'Last Name Search',
     data: 'Gordon'
   },
   {
-    name: 'address',
+    dataTest: 'address',
     type: 'text',
     label: 'Property Street Address',
     placeholder: 'Property Street Address Search',
     data: '9876 test address'
   },
   {
-    name: 'quoteNumber',
+    dataTest: 'quoteNumber',
     type: 'text',
     label: 'Quote Number',
     placeholder: 'Quote No Search',
     data: '123'
   },
   {
-    name: 'quoteState',
+    dataTest: 'quoteState',
     type: 'select',
     label: 'Quote Status',
     selected: '',
@@ -97,7 +97,7 @@ describe('Quote Search Testing', () => {
 
     fields.forEach(field => checkLabel(getByTestId, field));
     textFields.forEach(({ placeholder }) => expect(getByPlaceholderText(placeholder)));
-    selectFields.forEach(({ name, selected }) => expect(getByTestId(name).getAttribute('data-selected')).toEqual(selected));
+    selectFields.forEach(({ dataTest, selected }) => expect(getByTestId(dataTest).getAttribute('data-selected')).toEqual(selected));
   });
 
   it('POS:Checks that all fields are working', () => {
@@ -108,6 +108,6 @@ describe('Quote Search Testing', () => {
 
   it('POS:Quote Search Button', () => {
     const { getByTestId } = renderWithForm(<SearchForm {...props} />);
-    checkButton(getByTestId, { name: 'submit', type: 'submit' });
+    checkButton(getByTestId, { dataTest: 'submit', type: 'submit' });
   });
 });

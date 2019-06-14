@@ -19,8 +19,8 @@ const pageHeaders = [
 ];
 
 const fields = [
-  { name: 'name', label: 'Email To Name', data: 'Robert Pollard' },
-  { name: 'email', label: 'Email Address', data: 'fake@aol.com' }
+  { dataTest: 'name', label: 'Email To Name', data: 'Robert Pollard' },
+  { dataTest: 'email', label: 'Email Address', data: 'fake@aol.com' }
 ];
 
 describe('Summary testing', () => {
@@ -121,7 +121,7 @@ describe('Summary testing', () => {
     checkButton(getByText, { text: 'Share', type: 'submit' });
 
     fields.forEach(field => {
-      const fieldInput = getByTestId(field.name);
+      const fieldInput = getByTestId(field.dataTest);
       clearText(getByTestId, field);
       fireEvent.blur(fieldInput);
       checkError(getByTestId, field);
