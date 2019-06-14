@@ -9,15 +9,15 @@ import { setAppState } from '../../state/actions/appState.actions';
 import { getZipcodeSettings, getAgents, getAgency } from '../../state/actions/service.actions';
 import { fetchNotes } from '../../state/actions/notes.actions';
 
-import { 
-  createTransaction, 
-  getBillingOptionsForPolicy, 
+import {
+  createTransaction,
+  getBillingOptionsForPolicy,
   getEffectiveDateChangeReasons,
-  getPolicy, 
-  getPaymentOptionsApplyPayments, 
-  getPaymentHistory, 
-  getCancelOptions, 
-  getEndorsementHistory 
+  getPolicy,
+  getPaymentOptionsApplyPayments,
+  getPaymentHistory,
+  getCancelOptions,
+  getEndorsementHistory
 } from '../../state/actions/policy.actions';
 import { startWorkflow, batchCompleteTask } from '../../state/actions/cg.actions';
 
@@ -90,19 +90,19 @@ export class Policy extends React.Component {
   handleToggleDiaries = () => {
     this.setState(state => ({
       showDiaries: !state.showDiaries
-      }));  
+      }));
   }
 
   handleToggleReinstateModal = () => {
     this.setState(state => ({
       showReinstatePolicyModal: !state.showReinstatePolicyModal
-      }));  
+      }));
   }
 
   handleToggleEffectiveDateChangeModal = () => {
     this.setState(state => ({
       showEffectiveDateChangeModal: !state.showEffectiveDateChangeModal
-      }));  
+      }));
   }
 
   changeEffectiveDate = async (data) => {
@@ -182,6 +182,8 @@ export class Policy extends React.Component {
           showDiaries={showDiaries}
           modalHandlers={modalHandlers}
           header={{
+            showEffectiveDateButton: true,
+            showReinstateButton: true,
             fields: [
               { value: 'policyHolder', component: 'Section', label: 'Policyholder' },
               { value: 'mailingAddress', component: 'Section' },
