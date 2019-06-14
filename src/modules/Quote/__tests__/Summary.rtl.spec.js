@@ -28,6 +28,7 @@ describe('Summary testing', () => {
     ...defaultQuoteWorkflowProps,
     quoteData: {
       ...defaultQuoteWorkflowProps.quoteData,
+      quoteInputState: 'Qualified',
       rating
     },
     location: { pathname: '/quote/12-345-67/summary' }

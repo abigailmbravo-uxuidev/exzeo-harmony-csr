@@ -20,6 +20,7 @@ describe('Application Testing', () => {
       ...props,
       quoteData: {
         ...props.quoteData,
+        quoteInputState: 'Qualified',
         underwritingExceptions: [underwritingException]
       }
     };
@@ -35,7 +36,14 @@ describe('Application Testing', () => {
   });
 
   it('POS:Congratulations Modal Testing', async () => {
-    const { getByText, getByTestId } = renderWithForm(<QuoteWorkflow {...props} />);
+    const newProps = {
+      ...props,
+      quoteData: {
+        ...props.quoteData,
+        quoteInputState: 'Qualified',
+      }
+    };
+    const { getByText, getByTestId } = renderWithForm(<QuoteWorkflow {...newProps} />);
     fireEvent.click(getByText('Send To Docusign'));
     await waitForElement(() => getByTestId('modal'));
 
