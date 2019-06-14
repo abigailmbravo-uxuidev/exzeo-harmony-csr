@@ -48,11 +48,11 @@ const PolicyHoldersWatcher = ({ fieldPrefix, watchField, values }) => {
         </Field>
 
         <Field name={`${fieldPrefix}.secondaryPhoneNumber`} subscription={{}}>
-          {({ input: { onChange } }) => (
+          {({ input: { onChange, name } }) => (
             <OnChangeListener name={watchField}>
               {(value) => {
                 if (!value) {
-                  onChange(_get(values, `${fieldPrefix}.secondaryPhoneNumber`, ''));
+                  onChange(_get(values, name, ''));
                 } else {
                   onChange('');
                 }
@@ -62,11 +62,11 @@ const PolicyHoldersWatcher = ({ fieldPrefix, watchField, values }) => {
         </Field>
 
         <Field name={`${fieldPrefix}.emailAddress`} subscription={{}}>
-          {({ input: { onChange } }) => (
+          {({ input: { onChange, name } }) => (
             <OnChangeListener name={watchField}>
               {(value) => {
                 if (!value) {
-                  onChange(_get(values, `${fieldPrefix}.emailAddress`, ''));
+                  onChange(_get(values, name, ''));
                 } else {
                   onChange('');
                 }
@@ -74,8 +74,36 @@ const PolicyHoldersWatcher = ({ fieldPrefix, watchField, values }) => {
             </OnChangeListener>
           )}
         </Field>
+
+      <Field name={`${fieldPrefix}.order`} subscription={{}}>
+        {({ input: { onChange, name } }) => (
+          <OnChangeListener name={watchField}>
+            {(value) => {
+              if (!value) {
+                onChange(_get(values, name, ''));
+              } else {
+                onChange('');
+              }
+            }}
+          </OnChangeListener>
+        )}
+      </Field>
+
+      <Field name={`${fieldPrefix}.entityType`} subscription={{}}>
+        {({ input: { onChange, name } }) => (
+          <OnChangeListener name={watchField}>
+            {(value) => {
+              if (!value) {
+                onChange(_get(values, name, ''));
+              } else {
+                onChange('');
+              }
+            }}
+          </OnChangeListener>
+        )}
+      </Field>
     </React.Fragment>
   )
-}
+};
 
 export default PolicyHoldersWatcher;

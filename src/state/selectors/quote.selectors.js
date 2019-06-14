@@ -53,66 +53,23 @@ export const blockQuote = createSelector(
   }
 );
 
-// export const getQuoteDataFromCgState = createSelector(
-//   [getAppState, getCGState],
-//   (appState, cgState) => {
-//     const taskData = cgState[appState.modelName] && cgState[appState.modelName].data;
-//
-//     if (!taskData || !taskData.model || !taskData.model.variables) return {};
-//
-//     const preferredResult = taskData.model.variables.find(variable => variable.name === 'getQuoteBetweenPageLoop');
-//     if (preferredResult && preferredResult.value && preferredResult.value.result) {
-//       return preferredResult.value.result;
-//     }
-//
-//     const backupResult = taskData.model.variables.find(variable => variable.name === 'retrieveQuote');
-//     if (backupResult && backupResult.value && backupResult.value.result) {
-//       return backupResult.value.result;
-//     }
-//
-//     return {};
-//   }
-// );
-
-// export const getQuoteForCreate = createSelector(
-//   [getAppState, getCGState],
-//   (appState, cgState) => {
-//     const taskData = cgState[appState.modelName] && cgState[appState.modelName].data;
-
-//     if (!taskData || !taskData.model || !taskData.model.variables) return {};
-
-//     const preferredResult = taskData.model.variables.find(variable => variable.name === 'createQuote');
-//     if (preferredResult && preferredResult.value && preferredResult.value.result) {
-//       return preferredResult.value.result;
-//     }
-
-//     const backupResult = taskData.model.variables.find(variable => variable.name === 'retrieveQuote');
-//     if (backupResult && backupResult.value && backupResult.value.result) {
-//       return backupResult.value.result;
-//     }
-
-//     return {};
-//   }
-// );
-
 export const getQuoteSelector = createSelector(
     [getQuote],
     (quoteData) => {
       if (!quoteData || !quoteData.quoteNumber) return {};
+
       quoteData.effectiveDate = formatDate(quoteData.effectiveDate, FORMATS.SECONDARY);
+      quoteData.removeSecondary = false;
 
       if (quoteData.product === 'AF3') {
         return quoteData;
       }
-      // // do some kind of transformation then it all works form here. Just a thought
-      // quoteData.coverageLimits.otherStructures.value = Math.ceil((quoteData.coverageLimits.otherStructures.amount * 100) / quoteData.coverageLimits.dwelling.amount);
-      // quoteData.coverageLimits.personalProperty.value = Math.ceil((quoteData.coverageLimits.personalProperty.amount * 100) / quoteData.coverageLimits.dwelling.amount);
-      // quoteData.coverageLimits.lossOfUse.value = Math.ceil(((quoteData.coverageLimits.lossOfUse.amount * 100) / quoteData.coverageLimits.dwelling.amount));
-      // quoteData.deductibles.hurricane.value = quoteData.deductibles.hurricane.amount;
 
-      // if(!quoteData.deductibles.sinkhole) quoteData.deductibles.sinkhole = { amount: 0, value: 0 }
-      // if(quoteData.policyHolders.length > 1 && !quoteData.policyHolders[1].secondaryPhoneNumber) delete quoteData.policyHolders[1].secondaryPhoneNumber
-      // quoteData.sameAsPropertyAddress = ((quoteData.policyHolderMailingAddress || {}).address1 === (quoteData.property.physicalAddress || {}).address1);
+      if (quoteData.product === 'HO3') {
+        return quoteData;
+      }
+
+      // just in case
       return quoteData;
     }
   );

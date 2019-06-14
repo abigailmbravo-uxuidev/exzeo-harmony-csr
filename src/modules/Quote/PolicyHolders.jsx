@@ -33,7 +33,8 @@ const PolicyHolders = ({
                     name={watchField}
                     component="input"
                     type="checkbox"
-                    data-test={watchField} />
+                    data-test={watchField}
+                  />
                   <label htmlFor={watchField}> Remove</label>
             </div>
           )}
