@@ -18,7 +18,7 @@ describe('Testing AppWrapper', () => {
       constructionType: 'MASONRY',
       county: 'SARASOTA',
       currentPremium: '$ 1,234',
-      details: { product: 'HO3 Homeowners' },
+      details: { product: 'HO3 Homeowners', quoteNumber: '12-345-67' },
       effectiveDate: '06/08/2019',
       mailingAddress: {
         address1: '4131 TEST ADDRESS',
@@ -27,6 +27,7 @@ describe('Testing AppWrapper', () => {
       },
       policyHolder: { displayName: 'Batman Robin', phone: '(123) 456-7890' },
       policyNumber: undefined,
+      policyID: '5ceec090667f7b001172bce6',
       propertyAddress: {
         address1: '4131 TEST ADDRESS',
         address2: '',
@@ -37,14 +38,15 @@ describe('Testing AppWrapper', () => {
     header: {
       hideDetailSummary: false,
       fields: [
-        { value: "policyHolder", component: "Section", label: "Policyholder" },
-        { value: "mailingAddress", component: "Section" },
-        { value: "propertyAddress", component: "Section" },
-        { value: "county", label: "Property County" },
-        { value: "territory" },
-        { value: "constructionType" },
-        { value: "effectiveDate", className: "quoteEffectiveDate" },
-        { value: "currentPremium", label: "Premium", className: "premium" }
+        { value: 'policyHolder', component: 'Section', label: 'Policyholder' },
+        { value: 'mailingAddress', component: 'Section' },
+        { value: 'propertyAddress', component: 'Section' },
+        { value: 'county', label: 'Property County' },
+        { value: 'territory' },
+        { value: 'constructionType' },
+        { value: 'effectiveDate' },
+        { value: 'cancellation' },
+        { value: 'currentPremium', label: 'Premium', className: 'premium' }
       ]
     }
   };
@@ -55,9 +57,8 @@ describe('Testing AppWrapper', () => {
       context: 'policy',
       headerDetails: {
         ...baseProps.headerDetails,
-        policyNumber: '12-1016507-01',
+        policyNumber: '12-345-67',
         status: 'Policy Issued / Payment Invoice Issued',
-        policyID: '5ceec090667f7b001172bce6',
         finalPayment: {},
         cancellation: {
           label: 'Expiration Date',
@@ -68,7 +69,7 @@ describe('Testing AppWrapper', () => {
     };
 
     const { headerDetails: {
-      details,
+      details: { product },
       policyNumber,
       status,
       policyHolder,
@@ -77,13 +78,13 @@ describe('Testing AppWrapper', () => {
       county,
       effectiveDate,
       territory,
-      cancellation,
+      cancellation: { label, value },
       constructionType,
       currentPremium
     }} = props;
 
     const { getByText } = renderWithReduxAndRouter(<AppWrapper {...props} />);
-    expect(getByText(details.product));
+    expect(getByText(product));
     expect(getByText(policyNumber));
     expect(getByText(status));
     expect(getByText('Policyholder'));
@@ -101,13 +102,35 @@ describe('Testing AppWrapper', () => {
     expect(getByText(effectiveDate));
     expect(getByText('Territory'));
     expect(getByText(territory));
-    // TODO: COLIN -- Check if this is a bug or not
-    // expect(getByText(cancellation.label));
-    // expect(getByText(cancellation.value));
+    expect(getByText(label));
+    expect(getByText(value));
     expect(getByText('Construction Type'));
     expect(getByText(constructionType));
     expect(getByText('Premium'));
     expect(getByText(currentPremium));
+  });
+
+  it('POS:Has a complete policy header with cancellation date', () => {
+    const props = {
+      ...baseProps,
+      context: 'policy',
+      headerDetails: {
+        ...baseProps.headerDetails,
+        policyNumber: '12-345-67',
+        status: 'Pending Underwriting Cancellation / Payment Invoice Issued',
+        finalPayment: {},
+        cancellation: {
+          label: 'Cancellation Effective Date',
+          showReinstatement: false,
+          value: '06/08/2020'
+        },
+      }
+    };
+    const { headerDetails : { cancellation: { label, value }}} = props;
+    const { getByText } = renderWithReduxAndRouter(<AppWrapper {...props} />);
+
+    expect(getByText(label));
+    expect(getByText(value));
   });
 
   it('POS:Has a complete quote header', () => {
@@ -116,7 +139,6 @@ describe('Testing AppWrapper', () => {
       context: 'quote',
       headerDetails: {
         ...baseProps.headerDetails,
-        details: { ...baseProps.headerDetails.details, quoteNumber: '12-345-67' },
         status: 'Application Sent DocuSign',
         showPolicyLink: false
       }
