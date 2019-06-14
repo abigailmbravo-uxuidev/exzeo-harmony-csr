@@ -197,10 +197,11 @@ export async function fetchQuotes({
   sort,
   sortDirection
 }) {
+  // TODO: the service requires that companyCode and state are included in this query. Hard coding for now.
   const config = {
     service: 'quote-data',
     method: 'GET',
-    path: `/quotes?quoteNumber=${quoteNumber}&lastName=${lastName}&firstName=${firstName}&propertyAddress=${address}&page=${currentPage}&pageSize=${pageSize}&sort=${sort}&sortDirection=${sortDirection}&quoteState=${quoteState}`
+    path: `/quotes?companyCode=TTIC&state=FL&quoteNumber=${quoteNumber}&lastName=${lastName}&firstName=${firstName}&propertyAddress=${address}&page=${currentPage}&pageSize=${pageSize}&sort=${sort}&sortDirection=${sortDirection}&quoteState=${quoteState}`
   };
 
   try {
@@ -241,10 +242,11 @@ export async function fetchPolicies({
   sortBy,
   sortDirection,
 }) {
+  // TODO: the service requires that companyCode and state are included in this query. Hard coding for now.
   const config = {
     service: 'policy-data',
     method: 'GET',
-    path: `/transactions?policyNumber=${policyNumber}&firstName=${firstName}&lastName=${lastName}&propertyAddress=${address}&page=${currentPage}&pageSize=${pageSize}&sort=${sortBy}&sortDirection=${sortDirection}&effectiveDate=${effectiveDate}&agencyCode=${agencyCode}&status=${policyStatus}`
+    path: `/transactions?companyCode=TTIC&state=FL&policyNumber=${policyNumber}&firstName=${firstName}&lastName=${lastName}&propertyAddress=${address}&page=${currentPage}&pageSize=${pageSize}&sort=${sortBy}&sortDirection=${sortDirection}&effectiveDate=${effectiveDate}&agencyCode=${agencyCode}&status=${policyStatus}`
   };
 
   try {
