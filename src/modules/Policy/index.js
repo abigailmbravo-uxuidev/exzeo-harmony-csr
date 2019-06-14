@@ -182,15 +182,17 @@ export class Policy extends React.Component {
           showDiaries={showDiaries}
           modalHandlers={modalHandlers}
           header={{
-            "fields": [
-              { "value": 'policyHolder', "component": 'Section', "label": 'Policyholder' },
-              { "value": 'mailingAddress', "component": 'Section' },
-              { "value": 'propertyAddress', "component": 'Section' },
-              { "value": 'county', "label": 'Property County' },
-              { "value": 'territory' },
-              { "value": 'constructionType' },
-              { "value": 'effectiveDate', "className": 'quoteEffectiveDate'},
-              { "value": 'currentPremium', "label": 'Premium', "className":'premium' }
+            fields: [
+              { value: 'policyHolder', component: 'Section', label: 'Policyholder' },
+              { value: 'mailingAddress', component: 'Section' },
+              { value: 'propertyAddress', component: 'Section' },
+              { value: 'county', label: 'Property County' },
+              { value: 'territory' },
+              { value: 'constructionType' },
+              { value: 'effectiveDate' },
+              { value: 'cancellation' },
+              { value: 'finalPayment', label: 'Final Payment' },
+              { value: 'currentPremium', className:'premium' }
             ]
           }}
           render={() => (
