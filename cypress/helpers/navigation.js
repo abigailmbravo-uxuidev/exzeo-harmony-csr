@@ -10,21 +10,22 @@ export const navigateThroughNewQuote = (address = user.address1) => {
     // This makes it so we don't open up a new window
     .findDataTag(address).then($a => {
       $a.prop('onclick', () => cy.visit($a.prop('dataset').url)).click();
-      cy.wait('@csrCreateQuote');
+      cy.wait('@createQuote');
     });
 };
 
 export const fillOutCoverage = (customerInfo = pH1) =>
   cy.task('log', 'Filling out Coverage').goToNav('coverage')
+    .wait('@reviewQuote')
     .wrap(Object.entries(customerInfo)).each(([field, value]) =>
       cy.findDataTag(field).type(`{selectall}{backspace}${value}`)
-    ).findDataTag('coverage-submit').click().wait('@csrGetQuoteWithUnderwriting')
+    ).findDataTag('submit').click().wait('@updateQuote');
 
 export const fillOutUnderwriting = (data = underwriting) =>
   cy.task('log', 'Filling out Underwriting').goToNav('underwriting')
     .wrap(Object.entries(data)).each(([name, value]) =>
       cy.get(`input[name="${name}"][value="${value}"] + span`).click()
-    ).clickSubmit().wait('@csrGetQuoteWithUnderwriting');
+    ).clickSubmit().wait('@updateQuote');
 
 export const fillOutAdditionalInterests = () =>
   cy.task('log', 'Filling out AIs').goToNav('additionalInterests');
@@ -34,7 +35,7 @@ export const fillOutMailingBilling = () =>
     .get('.loader.modal').should('not.exist')
     .get('.segmented-switch [value="false"]').click({ force: true })
     .get('span').contains('Annual').click({ force: true })
-    .clickSubmit().wait('@csrGetQuoteWithUnderwriting');
+    .clickSubmit().wait('@updateQuote');
 
 export const fillOutNotesFiles = () => cy.task('log', 'Filling out Notes and Files').goToNav('notes');
 
@@ -46,4 +47,4 @@ export const navigateThroughDocusign = () =>
   cy.task('log', 'Navigating through DocuSign').wait('@summary')
     .clickSubmit().wait(1000)
     .get('.modal.quote-summary button[type="submit"]').click()
-    .wait('@csrGetQuoteWithUnderwriting').get('.basic-footer button[data-test="submit').should('be.disabled');
+    .wait('@updateQuote').get('.basic-footer button[data-test="submit').should('be.disabled');
