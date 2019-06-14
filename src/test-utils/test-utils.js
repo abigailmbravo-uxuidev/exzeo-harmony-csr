@@ -46,7 +46,7 @@ export const defaultQuoteWorkflowProps = {
   location: { pathname: '' },
   isLoading: false,
   quoteData: quote,
-  getQuote: () => Promise.resolve({}),
+  reviewQuote: () => Promise.resolve({}),
   setAppState: () => {},
   setAppError: () => {},
   getZipcodeSettings: () => Promise.resolve({}),
