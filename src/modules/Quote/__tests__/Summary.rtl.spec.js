@@ -23,7 +23,7 @@ const fields = [
   { dataTest: 'email', label: 'Email Address', data: 'fake@aol.com' }
 ];
 
-describe('Summary testing', () => {
+describe('Summary testing with finished Quote', () => {
   const props = {
     ...defaultQuoteWorkflowProps,
     quoteData: {
@@ -127,5 +127,35 @@ describe('Summary testing', () => {
       fireEvent.blur(fieldInput);
       checkError(getByTestId, field);
     });
+  });
+});
+
+describe('Summary Testing with Default Quote', () => {
+  const props = {
+    ...defaultQuoteWorkflowProps,
+    quoteData: {
+      ...defaultQuoteWorkflowProps.quoteData,
+      rating
+    },
+    location: { pathname: '/quote/12-345-67/summary' }
+  };
+
+  it('POS:Underwriting Violation Error with default data', () => {
+    const { getByText } = renderWithForm(<QuoteWorkflow {...props} />);
+
+    expect(getByText('Quote Summary cannot be sent due to Underwriting Validations'));
+  });
+
+  it('POS:Underwriting Violations Error Message', () => {
+    const newProps = {
+      ...props,
+      quoteData: {
+        ...props.quoteData,
+        quoteInputState: 'Underwriting'
+      }
+    };
+    const { getByText } = renderWithForm(<QuoteWorkflow {...newProps} />);
+
+    expect(getByText('Quote Summary cannot be sent due to Underwriting Validations'));
   });
 });

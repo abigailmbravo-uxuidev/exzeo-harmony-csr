@@ -41,7 +41,7 @@ describe('Underwriting Error Testing', () => {
       .find('input').should('have.attr', 'value', 'false').click()
       .get('.msg-caution button[type="submit"]').click()
       .wait('@saveUnderwritingExceptions').then(({ response }) =>
-      // Confirm that there exists an overridden exception.
+        // Confirm that there exists an overridden exception.
         expect(response.body.result.underwritingExceptions.filter(({ overridden }) => overridden).length).to.equal(1)
       );
   });

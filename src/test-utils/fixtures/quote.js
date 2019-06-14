@@ -1,6 +1,7 @@
 import policyHolder from './policyHolder';
 
 export default {
+  quoteInputState: 'Initial Data',
   underwritingExceptions: [],
   quoteNumber: '12-345-67',
   effectiveDate: '2019-05-23T04:00:00.000Z',
