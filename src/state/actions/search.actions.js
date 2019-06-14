@@ -190,10 +190,8 @@ export async function fetchQuotes({
   firstName,
   lastName,
   address,
-  companyCode,
   quoteNumber,
   quoteState,
-  state,
   currentPage,
   pageSize,
   sort,
@@ -202,7 +200,7 @@ export async function fetchQuotes({
   const config = {
     service: 'quote-data',
     method: 'GET',
-    path: `/quotes?companyCode=${companyCode}&state=${state}&product=HO3&quoteNumber=${quoteNumber}&lastName=${lastName}&firstName=${firstName}&propertyAddress=${address}&page=${currentPage}&pageSize=${pageSize}&sort=${sort}&sortDirection=${sortDirection}&quoteState=${quoteState}`
+    path: `/quotes?quoteNumber=${quoteNumber}&lastName=${lastName}&firstName=${firstName}&propertyAddress=${address}&page=${currentPage}&pageSize=${pageSize}&sort=${sort}&sortDirection=${sortDirection}&quoteState=${quoteState}`
   };
 
   try {
@@ -235,7 +233,6 @@ export async function fetchPolicies({
   lastName,
   address,
   agencyCode,
-  companyCode,
   effectiveDate,
   policyNumber,
   policyStatus,
@@ -243,12 +240,11 @@ export async function fetchPolicies({
   pageSize,
   sortBy,
   sortDirection,
-  state
 }) {
   const config = {
     service: 'policy-data',
     method: 'GET',
-    path: `/transactions?companyCode=${companyCode}&state=${state}&product=HO3&policyNumber=${policyNumber}&firstName=${firstName}&lastName=${lastName}&propertyAddress=${address}&page=${currentPage}&pageSize=${pageSize}&sort=${sortBy}&sortDirection=${sortDirection}&effectiveDate=${effectiveDate}&agencyCode=${agencyCode}&status=${policyStatus}`
+    path: `/transactions?policyNumber=${policyNumber}&firstName=${firstName}&lastName=${lastName}&propertyAddress=${address}&page=${currentPage}&pageSize=${pageSize}&sort=${sortBy}&sortDirection=${sortDirection}&effectiveDate=${effectiveDate}&agencyCode=${agencyCode}&status=${policyStatus}`
   };
 
   try {
