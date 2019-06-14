@@ -15,7 +15,7 @@ function QuoteFooter({ isSubmitDisabled, handlePrimaryClick, currentStep, formIn
           </div>
         : (currentStep === 'summary')
           ? <React.Fragment>
-              <ShareFooter parentFormInstance={formInstance} summaryType='csr'/>
+              <ShareFooter parentFormInstance={formInstance} summaryType='csr' disabled={isSubmitDisabled} />
               <div className="basic-footer">
                 <Footer/>
               </div>

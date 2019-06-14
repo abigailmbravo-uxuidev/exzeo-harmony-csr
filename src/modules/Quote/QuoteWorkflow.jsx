@@ -29,7 +29,7 @@ import PolicyHolders from './PolicyHolders';
 import NotesFiles from '../NotesFiles';
 import QuoteFooter from './QuoteFooter';
 import NavigationPrompt from './NavigationPrompt';
-import { QUOTE_INPUT_STATE, QUOTE_STATE, VALID_SHARE_STATE } from '../../utilities/quoteState';
+import { QUOTE_INPUT_STATE, QUOTE_STATE, UNQUALIFIED_STATE } from '../../utilities/quoteState';
 
 const getCurrentStepAndPage = defaultMemoize((pathname) => {
   const currentRouteName = pathname.split('/')[3];
@@ -136,13 +136,12 @@ export class QuoteWorkflow extends React.Component {
     const { currentStepNumber } = getCurrentStepAndPage(location.pathname);
 
     if (currentStepNumber === PAGE_ROUTING.application) {
-      return (Array.isArray(quoteData.underwritingExceptions) &&
-        quoteData.underwritingExceptions.filter(uw => !uw.overridden).length > 0);
+      return UNQUALIFIED_STATE.includes(quoteData.quoteInputState) ||
+        quoteData.underwritingExceptions.filter(uw => !uw.overridden).length > 0;
     }
 
     if (currentStepNumber === PAGE_ROUTING.summary) {
-      return !VALID_SHARE_STATE.includes(quoteData.quoteState) &&
-        (QUOTE_STATE.QuoteStarted && quoteData.quoteInputState !== QUOTE_INPUT_STATE.Qualified);
+      return UNQUALIFIED_STATE.includes(quoteData.quoteInputState);
     }
 
     return pristine || submitting;

@@ -19,4 +19,7 @@ export const QUOTE_INPUT_STATE = {
   Ready: 'Ready'
 };
 
-export const VALID_SHARE_STATE = [QUOTE_STATE.QuoteQualified, QUOTE_STATE.ApplicationStarted,  QUOTE_STATE.ApplicationReady]
+export const UNQUALIFIED_STATE = [
+  QUOTE_INPUT_STATE.InitialData,
+  QUOTE_INPUT_STATE.Underwriting,
+];

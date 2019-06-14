@@ -1663,263 +1663,290 @@ const mock = {
       step: {},
       components: [
         {
-          id: 1023211113150,
-          type: '$SECTION',
-          dependencies: [],
+          id: 340933,
+          type: '$TITLE',
+          dependencies: [
+            { path: 'quoteInputState', value: 'Initial Data' },
+            { path: 'quoteInputState', value: 'Underwriting' }
+            ],
           data: {
-            className: 'produced-by'
+            className: 'messages',
+            icon: 'fa fa-exclamation-circle',
+            text: 'Quote Summary cannot be sent due to Underwriting Validations',
           },
+          formData: {},
+          children: [],
+        },
+        {
+          id: 3402232,
+          type: '$GROUP',
+          dependencies: [
+            { path: 'quoteInputState', value: 'Qualified' },
+            { path: 'quoteInputState', value: 'Ready' }
+          ],
+          data: {},
           formData: {},
           children: [
             {
-              id: 90339239393906,
-              type: '$TITLE',
+              id: 1023211113150,
+              type: '$SECTION',
               dependencies: [],
               data: {
-                text: 'Quote Details',
+                className: 'produced-by'
               },
               formData: {},
-              children: [],
-            },
-            {
-              id: 102345224900,
-              type: '$CUSTOM',
-              dependencies: [],
-              data: {
-                component: '$SUMMARY',
-                extendedProperties: {
-                  useFetchAgents: true,
-                  className: "property-details",
-                  details: [
-                    { label: 'Quote Number', items: [{ format: '', path: 'quoteNumber'}] },
-                    { label: 'Property Address', items: [
-                        { format: '', path: 'property.physicalAddress.address1'},
-                        { format: '', path: 'property.physicalAddress.address2'},
-                        { format: 'cityStateZip', path: 'property.physicalAddress'}
+              children: [
+                {
+                  id: 90339239393906,
+                  type: '$TITLE',
+                  dependencies: [],
+                  data: {
+                    text: 'Quote Details',
+                  },
+                  formData: {},
+                  children: [],
+                },
+                {
+                  id: 102345224900,
+                  type: '$CUSTOM',
+                  dependencies: [],
+                  data: {
+                    component: '$SUMMARY',
+                    extendedProperties: {
+                      useFetchAgents: true,
+                      className: "property-details",
+                      details: [
+                        { label: 'Quote Number', items: [{ format: '', path: 'quoteNumber'}] },
+                        { label: 'Property Address', items: [
+                            { format: '', path: 'property.physicalAddress.address1'},
+                            { format: '', path: 'property.physicalAddress.address2'},
+                            { format: 'cityStateZip', path: 'property.physicalAddress'}
+                          ]
+                        },
+                        { label: 'Year Built', items: [{ format: '', path: 'property.yearBuilt'}] },
+                        { label: 'Effective Date', items: [{ format: 'date', path: 'effectiveDate'}] },
+                        { label: 'Agent', items: [{ format: '', optionKey: 'agents', compareField: 'answer', valuePath: 'agentCode', selectField: 'displayName'}] }
                       ]
-                    },
-                    { label: 'Year Built', items: [{ format: '', path: 'property.yearBuilt'}] },
-                    { label: 'Effective Date', items: [{ format: 'date', path: 'effectiveDate'}] },
-                    { label: 'Agent', items: [{ format: '', optionKey: 'agents', compareField: 'answer', valuePath: 'agentCode', selectField: 'displayName'}] }
-                  ]
-                }
-              },
-              formData: {},
-              children: [],
-            },
-          ]
-        },
-        {
-          id: 1005140,
-          type: '$SECTION',
-          dependencies: [],
-          data: {
-            className: 'coverage-rating'
-          },
-          formData: {},
-          children: [
-            {
-              id: 9008264856,
-              type: '$TITLE',
-              dependencies: [],
-              data: {
-                text: 'Coverage / Rating',
-              },
-              formData: {},
-              children: [],
+                    }
+                  },
+                  formData: {},
+                  children: [],
+                },
+              ]
             },
             {
-              id: 90854493201,
-              type: '$CUSTOM',
+              id: 1005140,
+              type: '$SECTION',
               dependencies: [],
               data: {
-                component: '$SUMMARY',
-                extendedProperties: {
-                  details: [
-                    { items: [{ format: 'currency', path: 'rating.totalPremium'}], label: 'Yearly Premium'},
-                    { items: [{ format: 'currency', path: 'coverageLimits.dwelling.amount'}], label: 'A. Dwelling'},
-                    { items: [{ format: 'currency', path: 'coverageLimits.otherStructures.amount'}], label: 'B. Other Structures'},
-                    { items: [{ format: 'currency', path: 'coverageLimits.personalProperty.amount'}], label: 'C. Personal Property'},
-                    { items: [{ format: 'currency', path: 'coverageLimits.lossOfUse.amount'}], label: 'D. Loss Of Use'},
-                    { items: [{ format: 'currency', path: 'coverageLimits.personalLiability.amount'}], label: 'E. Personal Liability'},
-                    { items: [{ format: 'currency', path: 'coverageLimits.medicalPayments.amount'}], label: 'F. Medical Payments'},
-                    { items: [{ format: 'bool', path: 'coverageOptions.personalPropertyReplacementCost.answer'}], label: 'Personal Property Replacement Cost'},
-                    { items: [{ format: 'currency', path: 'coverageLimits.moldProperty.amount'}], label: 'Mold Property'},
-                    { items: [{ format: 'currency', path: 'coverageLimits.moldLiability.amount'}], label: 'Mold Liability'},
-                    { items: [{ format: 'percent', path: 'coverageLimits.ordinanceOrLaw.amount'}], label: 'Ordinance or Law'},
-                    { items: [{ format: 'currency', path: 'deductibles.allOtherPerils.amount'}], label: 'All Other Perils Deductible'},
-                    { items: [{ format: 'percent', path: 'deductibles.hurricane.amount'}], label: 'Hurricane Deductible'},
-                    { items: [{ format: 'currency', path: 'deductibles.hurricane.calculatedAmount'}], label: 'Calculated Hurricane Deductible'},
-                    { items: [{ hideNoValuePath: 'deductibles.sinkhole.amount', format: 'percent', path: 'deductibles.sinkhole.amount'}], label: 'Sinkhole Deductible'},
-                    { items: [{ hideNoValuePath: 'deductibles.sinkhole.calculatedAmount', format: 'currency', path: 'deductibles.sinkhole.calculatedAmount'}], label: 'Calculated Sinkhole Deductible'}
-                  ]
-                }
+                className: 'coverage-rating'
               },
               formData: {},
-              children: [],
-            },
-          ]
-        },
-        {
-          id: 100233140,
-          type: '$SECTION',
-          dependencies: [
-            { path: 'policyHolders[0].firstName', value: true }
-          ],
-          data: {
-            className: 'policyholder-details'
-          },
-          formData: {},
-          children: [
-            {
-              id: 903382406,
-              type: '$TITLE',
-              dependencies: [],
-              data: {
-                text: 'Primary Policyholder',
-              },
-              formData: {},
-              children: [],
-            },
-            {
-              id: 9000448302,
-              type: '$CUSTOM',
-              dependencies: [],
-              data: {
-                component: '$SUMMARY',
-                extendedProperties: {
-                  details: [
-                    { label: 'Policyholder Name', items: [{ format: 'name', path: 'policyHolders[0]'}] },
-                    { label: 'Phone Number', items: [{ format: 'phone', path: 'policyHolders[0].primaryPhoneNumber'}]},
-                    { label: 'Email', items: [{ format: '', path: 'policyHolders[0].emailAddress'}]},
-                    { label: 'Electronic Delivery', items: [{ format: 'bool', path: 'policyHolders[0].electronicDelivery'}]},
-                  ]
-                }
-              },
-              formData: {},
-              children: [],
-            },
-          ]
-        },
-        {
-          id: 10022140,
-          type: '$SECTION',
-          dependencies: [
-            { path: 'policyHolders[1].firstName', value: true }
-          ],
-          data: {
-            className :"property-details",
-          },
-          formData: {},
-          children: [
-            {
-              id: 905839506,
-              type: '$TITLE',
-              dependencies: [],
-              data: {
-                text: 'Secondary PolicyHolder',
-              },
-              formData: {},
-              children: [],
-            },
-            {
-              id: 909939503,
-              type: '$CUSTOM',
-              dependencies: [],
-              data: {
-                component: '$SUMMARY',
-                extendedProperties: {
-                  details: [
-                    { label: 'Policyholder Name', items: [{ format: 'name', path: 'policyHolders[1]'}] },
-                    { label: 'Phone Number', items: [{ format: 'phone', path: 'policyHolders[1].primaryPhoneNumber'}]},
-                    { label: 'Email', items: [{ format: '', path: 'policyHolders[1].emailAddress'}]},
-                    { label: 'Electronic Delivery', items: [{ format: 'bool', path: 'policyHolders[1].electronicDelivery'}]},
-                  ]
-                }
-              },
-              formData: {},
-              children: [],
-            },
-          ]
-        },
-        {
-          id: 100140,
-          type: '$SECTION',
-          dependencies: [
-            { path: 'policyHolderMailingAddress.address1', value: true }
-          ],
-          data: {
-            className :"property-details",
-          },
-          formData: {},
-          children: [
-            {
-              id: 900623456,
-              type: '$TITLE',
-              dependencies: [],
-              data: {
-                text: "Mailing Address",
-              },
-              formData: {},
-              children: [],
-            },
-            {
-              id: 9004434,
-              type: '$CUSTOM',
-              dependencies: [],
-              data: {
-                component: '$SUMMARY',
-                extendedProperties: {
-                  details: [
-                    { label: 'Address',
-                      items: [
-                        { format: '', path: 'policyHolderMailingAddress.address1'},
-                        { hideNoValuePath: 'policyHolderMailingAddress.address2', format: '', path: 'policyHolderMailingAddress.address2'}
+              children: [
+                {
+                  id: 9008264856,
+                  type: '$TITLE',
+                  dependencies: [],
+                  data: {
+                    text: 'Coverage / Rating',
+                  },
+                  formData: {},
+                  children: [],
+                },
+                {
+                  id: 90854493201,
+                  type: '$CUSTOM',
+                  dependencies: [],
+                  data: {
+                    component: '$SUMMARY',
+                    extendedProperties: {
+                      details: [
+                        { items: [{ format: 'currency', path: 'rating.totalPremium'}], label: 'Yearly Premium'},
+                        { items: [{ format: 'currency', path: 'coverageLimits.dwelling.amount'}], label: 'A. Dwelling'},
+                        { items: [{ format: 'currency', path: 'coverageLimits.otherStructures.amount'}], label: 'B. Other Structures'},
+                        { items: [{ format: 'currency', path: 'coverageLimits.personalProperty.amount'}], label: 'C. Personal Property'},
+                        { items: [{ format: 'currency', path: 'coverageLimits.lossOfUse.amount'}], label: 'D. Loss Of Use'},
+                        { items: [{ format: 'currency', path: 'coverageLimits.personalLiability.amount'}], label: 'E. Personal Liability'},
+                        { items: [{ format: 'currency', path: 'coverageLimits.medicalPayments.amount'}], label: 'F. Medical Payments'},
+                        { items: [{ format: 'bool', path: 'coverageOptions.personalPropertyReplacementCost.answer'}], label: 'Personal Property Replacement Cost'},
+                        { items: [{ format: 'currency', path: 'coverageLimits.moldProperty.amount'}], label: 'Mold Property'},
+                        { items: [{ format: 'currency', path: 'coverageLimits.moldLiability.amount'}], label: 'Mold Liability'},
+                        { items: [{ format: 'percent', path: 'coverageLimits.ordinanceOrLaw.amount'}], label: 'Ordinance or Law'},
+                        { items: [{ format: 'currency', path: 'deductibles.allOtherPerils.amount'}], label: 'All Other Perils Deductible'},
+                        { items: [{ format: 'percent', path: 'deductibles.hurricane.amount'}], label: 'Hurricane Deductible'},
+                        { items: [{ format: 'currency', path: 'deductibles.hurricane.calculatedAmount'}], label: 'Calculated Hurricane Deductible'},
+                        { items: [{ hideNoValuePath: 'deductibles.sinkhole.amount', format: 'percent', path: 'deductibles.sinkhole.amount'}], label: 'Sinkhole Deductible'},
+                        { items: [{ hideNoValuePath: 'deductibles.sinkhole.calculatedAmount', format: 'currency', path: 'deductibles.sinkhole.calculatedAmount'}], label: 'Calculated Sinkhole Deductible'}
                       ]
-                    },
-                    { label: 'City/State/Zip', items: [{ format: 'cityStateZip', path: 'policyHolderMailingAddress'}]},
-                    { label: 'Country', items: [{ format: '', path: 'policyHolderMailingAddress.country.displayText'}]}
-                  ]
-                }
-              },
-              formData: {},
-              children: [],
-            }
-          ]
-        },
-        {
-          id: 90053453,
-          type: '$SECTION',
-          dependencies: [],
-          data: {
-            className: 'detail-group additional-interests',
-          },
-          formData: {},
-          children: [
-            {
-              id: 90644206,
-              type: '$TITLE',
-              dependencies: [],
-              data: {
-                text: 'Additional Interests',
-              },
-              formData: {},
-              children: [],
+                    }
+                  },
+                  formData: {},
+                  children: [],
+                },
+              ]
             },
             {
-              id: 90456207,
-              type: '$CUSTOM',
-              dependencies: [],
+              id: 100233140,
+              type: '$SECTION',
+              dependencies: [
+                { path: 'policyHolders[0].firstName', value: true }
+              ],
               data: {
-                component: '$ADDITIONAL_INTEREST_LIST',
-                extendedProperties: {
-                  displayReferenceNumber: true
-                }
+                className: 'policyholder-details'
               },
               formData: {},
-              children: [],
-            }
-          ]
+              children: [
+                {
+                  id: 903382406,
+                  type: '$TITLE',
+                  dependencies: [],
+                  data: {
+                    text: 'Primary Policyholder',
+                  },
+                  formData: {},
+                  children: [],
+                },
+                {
+                  id: 9000448302,
+                  type: '$CUSTOM',
+                  dependencies: [],
+                  data: {
+                    component: '$SUMMARY',
+                    extendedProperties: {
+                      details: [
+                        { label: 'Policyholder Name', items: [{ format: 'name', path: 'policyHolders[0]'}] },
+                        { label: 'Phone Number', items: [{ format: 'phone', path: 'policyHolders[0].primaryPhoneNumber'}]},
+                        { label: 'Email', items: [{ format: '', path: 'policyHolders[0].emailAddress'}]},
+                        { label: 'Electronic Delivery', items: [{ format: 'bool', path: 'policyHolders[0].electronicDelivery'}]},
+                      ]
+                    }
+                  },
+                  formData: {},
+                  children: [],
+                },
+              ]
+            },
+            {
+              id: 10022140,
+              type: '$SECTION',
+              dependencies: [
+                { path: 'policyHolders[1].firstName', value: true }
+              ],
+              data: {
+                className :"property-details",
+              },
+              formData: {},
+              children: [
+                {
+                  id: 905839506,
+                  type: '$TITLE',
+                  dependencies: [],
+                  data: {
+                    text: 'Secondary PolicyHolder',
+                  },
+                  formData: {},
+                  children: [],
+                },
+                {
+                  id: 909939503,
+                  type: '$CUSTOM',
+                  dependencies: [],
+                  data: {
+                    component: '$SUMMARY',
+                    extendedProperties: {
+                      details: [
+                        { label: 'Policyholder Name', items: [{ format: 'name', path: 'policyHolders[1]'}] },
+                        { label: 'Phone Number', items: [{ format: 'phone', path: 'policyHolders[1].primaryPhoneNumber'}]},
+                        { label: 'Email', items: [{ format: '', path: 'policyHolders[1].emailAddress'}]},
+                        { label: 'Electronic Delivery', items: [{ format: 'bool', path: 'policyHolders[1].electronicDelivery'}]},
+                      ]
+                    }
+                  },
+                  formData: {},
+                  children: [],
+                },
+              ]
+            },
+            {
+              id: 100140,
+              type: '$SECTION',
+              dependencies: [
+                { path: 'policyHolderMailingAddress.address1', value: true }
+              ],
+              data: {
+                className :"property-details",
+              },
+              formData: {},
+              children: [
+                {
+                  id: 900623456,
+                  type: '$TITLE',
+                  dependencies: [],
+                  data: {
+                    text: "Mailing Address",
+                  },
+                  formData: {},
+                  children: [],
+                },
+                {
+                  id: 9004434,
+                  type: '$CUSTOM',
+                  dependencies: [],
+                  data: {
+                    component: '$SUMMARY',
+                    extendedProperties: {
+                      details: [
+                        { label: 'Address',
+                          items: [
+                            { format: '', path: 'policyHolderMailingAddress.address1'},
+                            { hideNoValuePath: 'policyHolderMailingAddress.address2', format: '', path: 'policyHolderMailingAddress.address2'}
+                          ]
+                        },
+                        { label: 'City/State/Zip', items: [{ format: 'cityStateZip', path: 'policyHolderMailingAddress'}]},
+                        { label: 'Country', items: [{ format: '', path: 'policyHolderMailingAddress.country.displayText'}]}
+                      ]
+                    }
+                  },
+                  formData: {},
+                  children: [],
+                }
+              ]
+            },
+            {
+              id: 90053453,
+              type: '$SECTION',
+              dependencies: [],
+              data: {
+                className: 'detail-group additional-interests',
+              },
+              formData: {},
+              children: [
+                {
+                  id: 90644206,
+                  type: '$TITLE',
+                  dependencies: [],
+                  data: {
+                    text: 'Additional Interests',
+                  },
+                  formData: {},
+                  children: [],
+                },
+                {
+                  id: 90456207,
+                  type: '$CUSTOM',
+                  dependencies: [],
+                  data: {
+                    component: '$ADDITIONAL_INTEREST_LIST',
+                    extendedProperties: {
+                      displayReferenceNumber: true
+                    }
+                  },
+                  formData: {},
+                  children: [],
+                }
+              ]
+            },
+          ],
         },
       ],
     },
@@ -1928,9 +1955,27 @@ const mock = {
       step: {},
       components: [
         {
+          id: 340933,
+          type: '$TITLE',
+          dependencies: [
+            { path: 'quoteInputState', value: 'Initial Data' },
+            { path: 'quoteInputState', value: 'Underwriting' }
+          ],
+          data: {
+            className: 'messages',
+            icon: 'fa fa-exclamation-circle',
+            text: 'Application cannot be sent due to Underwriting Validations',
+          },
+          formData: {},
+          children: [],
+        },
+        {
           id: 5142019254,
           type: '$SECTION',
-          dependencies: [],
+          dependencies: [
+            { path: 'quoteInputState', value: 'Qualified' },
+            { path: 'quoteInputState', value: 'Ready' }
+          ],
           data: {},
           formData: {},
           children: [
