@@ -18,7 +18,7 @@ import { getZipcodeSettings } from '../../state/actions/service.actions';
 import { fetchNotes } from '../../state/actions/notes.actions';
 import { fetchDiaries } from '../../state/actions/diary.actions';
 import { getEnumsForQuoteWorkflow } from '../../state/actions/list.actions';
-import { getQuoteSelector } from '../../state/selectors/quote.selectors';
+import { getQuoteSelector, getGroupedUnderwritingExceptions, getUnderwritingInitialValues } from '../../state/selectors/quote.selectors';
 import { getDiariesForTable } from '../../state/selectors/diary.selectors';
 
 import MOCK_CONFIG_DATA from '../../mock-data/mockHO3';
@@ -173,7 +173,11 @@ export class QuoteWorkflow extends React.Component {
       match,
       notes,
       options,
-      quoteData
+      quoteData,
+      underwritingExceptions,
+      underwritingInitialValues,
+      userProfile,
+      updateQuote
     } = this.props;
 
     const { showDiaries, gandalfTemplate } = this.state;
@@ -254,7 +258,13 @@ export class QuoteWorkflow extends React.Component {
               }
             </div>
 
-            <UnderwritingValidationBar/>
+            <UnderwritingValidationBar 
+              exceptions={underwritingExceptions} 
+              initialValues={underwritingInitialValues} 
+              quoteData={quoteData}
+              userProfile={userProfile}
+              updateQuote={updateQuote}
+            />
 
             <OpenDiariesBar
               entityEndDate={quoteData.endDate}
@@ -291,7 +301,10 @@ const mapStateToProps = state => {
     options: state.list,
     isLoading: state.ui.isLoading,
     diaries: getDiariesForTable(state),
-    notes: state.notes
+    notes: state.notes,
+    underwritingExceptions: getGroupedUnderwritingExceptions(state),
+    underwritingInitialValues: getUnderwritingInitialValues(state),
+    userProfile: state.authState.userProfile
   };
 };
 

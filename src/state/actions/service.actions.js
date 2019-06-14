@@ -187,26 +187,6 @@ export const getUnderwritingQuestions = (companyCode, state, product, property) 
   }
 };
 
-export const saveUnderwritingExceptions = (id, underwritingExceptions) => async (dispatch) => {
-  const axiosConfig = {
-    service: 'quote-data',
-    method: 'put',
-    path: String(' '),
-    data: {
-      _id: id,
-      underwritingExceptions
-    }
-  };
-
-  try {
-    const response = await serviceRunner.callService(axiosConfig, 'saveUnderwritingExceptions');
-    const data = { transactions: response.data.result };
-    return dispatch(serviceRequest(data));
-  } catch(error) {
-    return dispatch(errorActions.setAppError(error));
-  }
-};
-
 export const getBillingOptions = paymentOptions => async (dispatch) => {
   const axiosConfig = {
     service: 'billing',

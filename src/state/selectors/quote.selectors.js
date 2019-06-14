@@ -73,3 +73,41 @@ export const getQuoteSelector = createSelector(
       return quoteData;
     }
   );
+
+
+  export const getGroupedUnderwritingExceptions = createSelector(
+    [getQuote],
+    (quoteData) => {
+      if (!quoteData || !Array.isArray(quoteData.underwritingExceptions)) return [];
+
+      return quoteData.underwritingExceptions.reduce((data, exception) => {
+        if (exception.action === 'Missing Info') {
+          return {
+            ...data,
+            warnings: [...data.warnings, exception]
+          };
+        }
+        return exception.canOverride ?
+          ({ ...data, overridableExceptions: [...data.overridableExceptions, exception] }) :
+          ({ ...data, nonOverridableExceptions: [...data.nonOverridableExceptions, exception] });
+      }, { warnings: [], overridableExceptions: [], nonOverridableExceptions: [] });
+    }
+  );
+
+  export const getUnderwritingInitialValues = createSelector(
+    [getQuote],
+    (quoteData) => {
+      const values = {};
+      if (!quoteData) return values;
+
+      const underwritingExceptions = quoteData && quoteData.underwritingExceptions ? quoteData.underwritingExceptions : [];
+      
+      for (let i = 0; i < underwritingExceptions.length; i += 1) {
+        const uwException = underwritingExceptions[i];
+        if (uwException.canOverride) {
+          values[uwException._id] = uwException.overridden;
+        }
+      }
+      return values;
+    }
+  );
