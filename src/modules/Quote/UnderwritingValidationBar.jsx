@@ -6,7 +6,7 @@ import orderBy from 'lodash/orderBy';
 import moment from 'moment';
 
 import { saveUnderwritingExceptions } from '../../state/actions/service.actions';
-import { getQuote } from '../../state/actions/quote.actions';
+import { reviewQuote } from '../../state/actions/quote.actions';
 import CheckField from '../../components/Form/inputs/CheckField';
 
 import UnderwritingExceptions from './UnderwritingExceptions';
@@ -28,7 +28,7 @@ export const handleFormSubmit = async (data, dispatch, props) => {
     }
   }
   await props.saveUnderwritingExceptions(props.quoteData._id, uwExceptions);
-  await props.getQuote({ quoteNumber });
+  await props.reviewQuote({ quoteNumber });
 };
 
 export const handleInitialize = (state) => {
@@ -142,6 +142,6 @@ const mapStateToProps = state => ({
 });
 
 export default connect(mapStateToProps, {
-  getQuote,
+  reviewQuote,
   saveUnderwritingExceptions
 })(reduxForm({ form: 'UnderwritingOverride', enableReinitialize: true, destroyOnUnmount: false })(UnderwritingValidationBar));

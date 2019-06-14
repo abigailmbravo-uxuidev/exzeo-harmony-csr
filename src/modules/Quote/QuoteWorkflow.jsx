@@ -13,7 +13,7 @@ import { QUOTE_RESOURCE_TYPE } from '../../constants/diaries';
 import { toggleDiary } from '../../state/actions/ui.actions';
 import { setAppState } from '../../state/actions/appState.actions';
 import { setAppError } from '../../state/actions/error.actions';
-import { getQuote, updateQuote } from '../../state/actions/quote.actions';
+import { reviewQuote, updateQuote } from '../../state/actions/quote.actions';
 import { getZipcodeSettings } from '../../state/actions/service.actions';
 import { fetchNotes } from '../../state/actions/notes.actions';
 import { fetchDiaries } from '../../state/actions/diary.actions';
@@ -69,7 +69,7 @@ export class QuoteWorkflow extends React.Component {
 
   componentDidMount() {
     const { match } = this.props;
-    this.props.getQuote({ quoteNumber: match.params.quoteNumber })
+    this.props.reviewQuote({ quoteNumber: match.params.quoteNumber })
       .then((quoteData) => {
         if (quoteData && quoteData.property) {
           const { companyCode, state, product, property, agencyCode, agentCode } = quoteData;
@@ -298,7 +298,7 @@ const mapStateToProps = state => {
 export default connect(mapStateToProps, {
   setAppState,
   setAppError,
-  getQuote,
+  reviewQuote,
   getZipcodeSettings,
   getEnumsForQuoteWorkflow,
   updateQuote,

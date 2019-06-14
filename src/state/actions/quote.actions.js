@@ -116,9 +116,36 @@ export function retrieveQuote({ quoteNumber, quoteId }) {
 
 /**
  *
- * @param data
- * @param options
+ * @param quoteNumber
+ * @param quoteId
+ * @returns {Function}
  */
+export function reviewQuote({ quoteNumber, quoteId }) {
+  return async (dispatch) => {
+    const config = {
+      exchangeName: 'harmony',
+      routingKey: 'harmony.quote.reviewQuote',
+      data: {
+        quoteId,
+        quoteNumber
+      }
+    };
+
+    try {
+      dispatch(toggleLoading(true));
+      const response = await serviceRunner.callService(config, 'quoteManager.reviewQuote');
+      const quote = response.data.result;
+      dispatch(setQuote(quote));
+      return quote;
+    } catch (error) {
+      dispatch(errorActions.setAppError(error));
+      return null;
+    } finally {
+      dispatch(toggleLoading(false));
+    }
+  };
+}
+
 function formatQuoteForSubmit(data, options) {
   const quote = { ...data };
   quote.effectiveDate = date.formatToUTC(date.formatDate(data.effectiveDate, date.FORMATS.SECONDARY), data.property.timezone);
