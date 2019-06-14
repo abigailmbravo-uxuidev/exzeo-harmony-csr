@@ -24,25 +24,25 @@ export function setQuote(quote) {
  */
 export function createQuote(address, igdID, stateCode, companyCode, product) {
   return async (dispatch) => {
-    const config = {
-      exchangeName: 'harmony',
-      routingKey: 'harmony.quote.createQuote',
-      data: {
-        companyCode,
-        state: stateCode,
-        product,
-        propertyId: igdID,
-      }
-    };
-
     try {
       dispatch(toggleLoading(true));
+
+      const config = {
+        exchangeName: 'harmony',
+        routingKey: 'harmony.quote.createQuote',
+        data: {
+          companyCode,
+          state: stateCode,
+          product,
+          propertyId: igdID,
+        }
+      };
+
       const response = await serviceRunner.callService(config, 'quoteManager.createQuote');
       const quote = response.data.result;
       // Ensure that all 'source' fields are set for underwriting questions
       Object.keys(quote.underwritingAnswers || {}).map(q => quote.underwritingAnswers[q].source = 'Customer');
 
-      dispatch(setQuote(quote));
       return quote;
     } catch (error) {
       dispatch(errorActions.setAppError(error));
