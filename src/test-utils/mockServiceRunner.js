@@ -1,8 +1,6 @@
 import * as serviceRunner from '@exzeo/core-ui/src/@Harmony/Domain/Api/serviceRunner';
+import { jestResolve } from '.';
 
-export const jestResolve = (result, error) => jest.fn(() => error ?
-  Promise.reject(result) : Promise.resolve(result));
-
-export const mockServiceRunner = (result, error) => {
+export default (result, error) => {
   serviceRunner.callService = jestResolve({ data: { result }}, error);
 };

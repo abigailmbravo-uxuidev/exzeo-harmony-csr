@@ -40,21 +40,25 @@ export const defaultInitialProps = {
   }
 };
 
+export const jestResolve = (result = {}, error) => jest.fn(() => error ?
+  Promise.reject(result) : Promise.resolve(result));
+
 export const defaultQuoteWorkflowProps = {
   ...defaultInitialProps,
   history: { replace: x => x },
   location: { pathname: '' },
   isLoading: false,
   quoteData: quote,
-  reviewQuote: () => Promise.resolve({}),
+  // reviewQuote: () => Promise.resolve({}),
+  reviewQuote: jestResolve(),
   setAppState: () => {},
   setAppError: () => {},
-  getZipcodeSettings: () => Promise.resolve({}),
+  getZipcodeSettings: jestResolve(),
   getEnumsForQuoteWorkflow: () => {},
-  updateQuote: () => Promise.resolve({}),
-  fetchNotes: () => Promise.resolve({}),
+  updateQuote: jestResolve(),
+  fetchNotes: jestResolve(),
   toggleDiary: () => {},
-  fetchDiaries: () => Promise.resolve({})
+  fetchDiaries: jestResolve(),
 };
 
 export const renderWithReduxAndRouter = (ui, { state = defaultInitialState, store = mockStore(state) } = {}) => {
