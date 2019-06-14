@@ -1,6 +1,5 @@
 import React from 'react';
 import { reduxForm } from 'redux-form';
-import { fireEvent, waitForElement } from 'react-testing-library';
 
 import { renderWithForm, checkLabel, checkTextInput, checkSelect, checkButton } from '../../../../test-utils';
 import PolicySearch from '../PolicySearch';

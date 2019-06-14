@@ -4,7 +4,7 @@ import thunk from 'redux-thunk';
 import { BrowserRouter as Router } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import { createStore, applyMiddleware } from 'redux';
-import { render, fireEvent, wait } from 'react-testing-library';
+import { render, fireEvent } from 'react-testing-library';
 
 import rootReducer from '../state/reducers';
 
