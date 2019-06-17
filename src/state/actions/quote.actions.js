@@ -151,18 +151,17 @@ function formatQuoteForSubmit(data, options) {
   const { shouldNav, removeSecondary, hasActiveExceptions, hasUWError, editingDisabled, ...quote } = data;
   quote.effectiveDate = date.formatToUTC(date.formatDate(data.effectiveDate, date.FORMATS.SECONDARY), data.property.timezone);
 
-  if (options.step === 0) {
-    if (removeSecondary) {
-      // Backend doesn't like when partial policyholder is filled out, so for now we have to check whether or not
-      // actual user input was entered. There are hidden fields that we add initial values to because the backend wants
-      // them but we are not supposed to show them.
-      quote.policyHolders = quote.policyHolders[0].firstName ? [quote.policyHolders[0]] : [];
-    }
-    else if (data.policyHolders.length > 1) {
-      quote.policyHolders[1].order = data.policyHolders[1].order || 1;
-      quote.policyHolders[1].entityType = data.policyHolders[1].entityType || "Person";
-    }
+  if (removeSecondary || quote.policyHolders.length === 1) {
+    // Backend doesn't like when partial policyholder is filled out, so for now we have to check whether or not
+    // actual user input was entered. There are hidden fields that we add initial values to because the backend wants
+    // them but we are not supposed to show them.
+    quote.policyHolders = quote.policyHolders[0].firstName ? [quote.policyHolders[0]] : [];
   }
+  else if (data.policyHolders.length > 1) {
+    quote.policyHolders[1].order = data.policyHolders[1].order || 1;
+    quote.policyHolders[1].entityType = data.policyHolders[1].entityType || "Person";
+  }
+
 
   if (!data.coverageLimits.personalProperty.value) {
     quote.coverageOptions.personalPropertyReplacementCost.answer = false;
