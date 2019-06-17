@@ -63,9 +63,6 @@ export const defaultQuoteWorkflowProps = {
   fetchNotes: jestResolve(),
   toggleDiary: () => {},
   fetchDiaries: jestResolve(),
-  underwritingExceptions: { warnings: [], overridableExceptions: [], nonOverridableExceptions: [] },
-  underwritingInitialValues: {},
-  notes: [],
   diaries: [],
 };
 
