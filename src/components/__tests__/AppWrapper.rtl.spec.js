@@ -1,6 +1,7 @@
 import React from 'react';
+import { fireEvent } from 'react-testing-library';
 
-import { renderWithReduxAndRouter } from '../../test-utils';
+import { renderWithReduxAndRouter, renderWithForm } from '../../test-utils';
 import { AppWrapper } from '../AppWrapper';
 
 describe('Testing AppWrapper', () => {
@@ -188,7 +189,7 @@ describe('Testing AppWrapper', () => {
       context: 'quote'
     };
 
-    const { getByText } = renderWithReduxAndRouter(<AppWrapper {...props} />);
+    const { getByText } = renderWithForm(<AppWrapper {...props} />);
     expect(getByText('Coverage / Rating'));
     expect(getByText('Underwriting'));
     expect(getByText('Additional Interests'));
@@ -196,6 +197,19 @@ describe('Testing AppWrapper', () => {
     expect(getByText('Notes / Files / Diaries'));
     expect(getByText('Quote Summary'));
     expect(getByText('Application'));
+
+    fireEvent.click(getByText('Underwriting Conditions'));
+    expect(getByText('Please be aware that assumptions to this property have been made in order to provide you this quote. If any of the below assumptions are not correct, please contact us before continuing.'))
+    expect(getByText('All properties will be inspected within 30 days of the effective date.'));
+    expect(getByText('Please be aware that assumptions to this property have been made in order to provide you this quote. If any of the below assumptions are not correct, please contact us before continuing.'));
+    expect(getByText('Properties with pools (or similar structures), are to be completely fenced, walled, or screened. There are no slides or diving boards.'));
+    expect(getByText('Properties located in Special Flood Hazard Areas, as defined by the National Flood Insurance Program maintain a separate flood policy.'));
+    expect(getByText('Property is not in state of disrepair or having existing unrepaired damage.'));
+    expect(getByText('Roof covering does not exceed the age as defined below'));
+    expect(getByText('Roof cannot be over 20 years old if Asphalt, Fiberglass, Composition/Wood Shake Shingles; Built-up Tar and Gravel; or other roof covering types not included below'));
+    expect(getByText('Roof cannot be over 40 years old if Tile, Slate, Concrete, or Metal'));
+    fireEvent.click(getByText('Close'));
+    expect(document.querySelector('div.modal.uw-conditions')).toBeNull();
   });
 
   it('POS:Has a complete Sidenav in Policy', () => {
