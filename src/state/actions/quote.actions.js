@@ -153,6 +153,9 @@ function formatQuoteForSubmit(data, options) {
 
   if (options.step === 0) {
     if (removeSecondary) {
+      // Backend doesn't like when partial policyholder is filled out, so for now we have to check whether or not
+      // actual user input was entered. There are hidden fields that we add initial values to because the backend wants
+      // them but we are not supposed to show them.
       quote.policyHolders = quote.policyHolders[0].firstName ? [quote.policyHolders[0]] : [];
     }
     else if (data.policyHolders.length > 1) {

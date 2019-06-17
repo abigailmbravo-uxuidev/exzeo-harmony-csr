@@ -15,7 +15,7 @@ import { setAppError } from '../../state/actions/error.actions';
 import { reviewQuote, updateQuote } from '../../state/actions/quote.actions';
 import { getZipcodeSettings } from '../../state/actions/service.actions';
 import { getEnumsForQuoteWorkflow } from '../../state/actions/list.actions';
-import { getQuoteSelector, getGroupedUnderwritingExceptions, getUnderwritingInitialValues } from '../../state/selectors/quote.selectors';
+import { getQuoteSelector } from '../../state/selectors/quote.selectors';
 import { getDiariesForTable } from '../../state/selectors/diary.selectors';
 
 import MOCK_CONFIG_DATA from '../../mock-data/mockHO3';
@@ -173,7 +173,8 @@ export class QuoteWorkflow extends React.Component {
       options,
       quoteData,
       userProfile,
-      updateQuote
+      updateQuote,
+      notesSynced,
     } = this.props;
 
     const { showDiaries, gandalfTemplate } = this.state;
@@ -185,10 +186,11 @@ export class QuoteWorkflow extends React.Component {
     const customHandlers = {
       handleSubmit: this.handleGandalfSubmit,
       history: history,
+      notesSynced: notesSynced,
       setAppError: this.props.setAppError,
-      toggleDiary: this.props.toggleDiary,
+      setShowApplicationModal: this.setShowApplicationModal,
       showApplicationModal: this.state.showApplicationModal,
-      setShowApplicationModal: this.setShowApplicationModal
+      toggleDiary: this.props.toggleDiary,
     };
     return (
       <div className="app-wrapper csr quote">
@@ -295,6 +297,7 @@ const mapStateToProps = state => {
     isLoading: state.ui.isLoading,
     diaries: getDiariesForTable(state),
     notes: state.notes,
+    notesSynced: state.ui.notesSynced,
     userProfile: state.authState.userProfile
   };
 };

@@ -1,5 +1,10 @@
 import * as types from './actionTypes';
 
+/**
+ *
+ * @param noteMeta
+ * @returns {{type: string, noteMeta: *}}
+ */
 export function toggleNote(noteMeta) {
   return {
     type: types.TOGGLE_NOTE,
@@ -7,6 +12,11 @@ export function toggleNote(noteMeta) {
   };
 }
 
+/**
+ *
+ * @param diaryMeta
+ * @returns {{diaryMeta, type: string}}
+ */
 export function toggleDiary(diaryMeta = {}) {
   return {
     type: types.TOGGLE_DIARY,
@@ -14,6 +24,11 @@ export function toggleDiary(diaryMeta = {}) {
   };
 }
 
+/**
+ *
+ * @param minimizeNote
+ * @returns {{minimizeNote: boolean, type: string}}
+ */
 export function toggleMinimizeNote(minimizeNote = false) {
   return {
     type: types.TOGGLE_MINIMIZE_NOTE,
@@ -21,6 +36,11 @@ export function toggleMinimizeNote(minimizeNote = false) {
   };
 }
 
+/**
+ *
+ * @param minimizeDiary
+ * @returns {{type: string, minimizeDiary: boolean}}
+ */
 export function toggleMinimizeDiary(minimizeDiary = false) {
   return {
     type: types.TOGGLE_MINIMIZE_DIARY,
@@ -33,7 +53,19 @@ export function toggleMinimizeDiary(minimizeDiary = false) {
  * @param isLoading
  * @returns {{type: string, isLoading: boolean}}
  */
-export const toggleLoading = isLoading => ({
-  type: types.TOGGLE_LOADING,
-  isLoading
-});
+export function toggleLoading(isLoading) {
+  return {
+    type: types.TOGGLE_LOADING,
+    isLoading
+  };
+}
+
+/**
+ *
+ * @returns {{type: string}}
+ */
+export function setNotesSynced() {
+  return {
+    type: types.SET_NOTES_SYNCED
+  }
+}

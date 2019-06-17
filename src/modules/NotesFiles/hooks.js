@@ -3,7 +3,7 @@ import * as serviceRunner from '@exzeo/core-ui/src/@Harmony/Domain/Api/serviceRu
 
 import { mergeNotes, removeTerm } from './utilities';
 
-export const useFetchNotes = (numbers, numberType) => {
+export const useFetchNotes = (numbers, numberType, notesSynced) => {
   const [notes, setNotes] = useState([]);
   const [notesLoaded, setNotesLoaded] = useState(false);
 
@@ -53,7 +53,7 @@ export const useFetchNotes = (numbers, numberType) => {
 
     fetchNotes();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [notesSynced]);
 
   return {
     notes,

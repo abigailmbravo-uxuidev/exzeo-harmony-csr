@@ -4,7 +4,7 @@ export const AUTH = 'AUTH';
 export const APPSTATE_SET = 'APPSTATE_SET';
 export const APPSTATE_ERROR = 'APPSTATE_ERROR';
 
-/* UI Actions */ 
+/* UI Actions */
 export const TOGGLE_NOTE = 'TOGGLE_NOTE';
 export const TOGGLE_DIARY = 'TOGGLE_DIARY';
 export const TOGGLE_MINIMIZE_DIARY = 'TOGGLE_MINIMIZE_DIARY';
@@ -44,6 +44,7 @@ export const SET_SEARCH_RESULTS = 'SET_SEARCH_RESULTS';
 export const TOGGLE_LOADING = 'TOGGLE_LOADING';
 /* NOTES ACTIONS */
 export const SET_NOTES = 'SET_NOTES';
+export const SET_NOTES_SYNCED = 'SET_NOTES_SYNCED';
 /* DIARIES ACTIONS */
 export const SET_DIARIES = 'SET_DIARIES';
 /* TODO: DEPRECATED - SERVICE */

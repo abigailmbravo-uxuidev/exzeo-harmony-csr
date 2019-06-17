@@ -31,9 +31,9 @@ const mergeNotes = (notes, files ) => {
 };
 
 /**
- * Set Notes
- * @param {array} notes
- * @returns {{type: string, loading: array}}
+ *
+ * @param notes
+ * @returns {{notes: *, type: string}}
  */
 export function setNotes(notes) {
   return {

@@ -10,7 +10,7 @@ import XHRUpload from '@uppy/xhr-upload';
 import { Select, validation, Loader } from '@exzeo/core-ui';
 import { callService } from '@exzeo/core-ui/src/@Harmony';
 
-import { toggleNote, toggleDiary } from '../state/actions/ui.actions';
+import { toggleNote, toggleDiary, setNotesSynced } from '../state/actions/ui.actions';
 import { fetchNotes } from '../state/actions/notes.actions';
 import { setAppError } from '../state/actions/error.actions';
 
@@ -200,7 +200,8 @@ export class NoteUploader extends Component {
       sourceId,
       resourceType,
       fetchNotes,
-      toggleDiary
+      toggleDiary,
+      setNotesSynced,
     } = props;
 
     const mapResourceToNumber = {
@@ -247,11 +248,14 @@ export class NoteUploader extends Component {
     try {
       const { data } = await callService(noteConfig, 'addNote');
 
-      const numberType = mapResourceToNumber[resourceType];
-      const numbers = numberType === 'policyNumber'
-        ? [noteData.number, noteData.source]
-        : [noteData.number];
-      fetchNotes(numbers, numberType);
+      if (window.location.pathname.includes('/notes')) {
+        const numberType = mapResourceToNumber[resourceType];
+        const numbers = numberType === 'policyNumber'
+          ? [noteData.number, noteData.source]
+          : [noteData.number];
+        fetchNotes(numbers, numberType);
+        setNotesSynced()
+      }
 
       if (openDiary) {
         toggleDiary({
@@ -353,7 +357,8 @@ export default connect(mapStateToProps, {
   fetchNotes,
   toggleNote,
   toggleDiary,
-  setAppError
+  setAppError,
+  setNotesSynced,
 })(reduxForm({
   form: 'NoteUploader',
   validate
