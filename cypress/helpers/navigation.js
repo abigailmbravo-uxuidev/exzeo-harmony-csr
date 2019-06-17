@@ -24,7 +24,7 @@ export const fillOutCoverage = (customerInfo = pH1) =>
 export const fillOutUnderwriting = (data = underwriting) =>
   cy.task('log', 'Filling out Underwriting').goToNav('underwriting')
     .wrap(Object.entries(data)).each(([name, value]) =>
-      cy.get(`input[name="${name}"][value="${value}"] + span`).click()
+      cy.findDataTag(`${name}_${value}`).click()
     ).clickSubmit().wait('@updateQuote');
 
 export const fillOutAdditionalInterests = () =>
@@ -33,8 +33,8 @@ export const fillOutAdditionalInterests = () =>
 export const fillOutMailingBilling = () =>
   cy.task('log', 'Filling out Mailing Billing').goToNav('billing')
     .get('.loader.modal').should('not.exist')
-    .get('.segmented-switch [value="false"]').click({ force: true })
-    .get('span').contains('Annual').click({ force: true })
+    .findDataTag('sameAsPropertyAddress').click('left')
+    .findDataTag('billPlan_Annual').click({ force: true })
     .clickSubmit().wait('@updateQuote');
 
 export const fillOutNotesFiles = () => cy.task('log', 'Filling out Notes and Files').goToNav('notes');
@@ -44,7 +44,6 @@ export const fillOutSummary = () => cy.task('log', 'Filling out Summary').goToNa
 export const fillOutApplication = () => cy.task('log', 'Filling out Application Page').goToNav('application');
 
 export const navigateThroughDocusign = () =>
-  cy.task('log', 'Navigating through DocuSign').wait('@summary')
-    .clickSubmit().wait(1000)
-    .get('.modal.quote-summary button[type="submit"]').click()
-    .wait('@updateQuote').get('.basic-footer button[data-test="submit').should('be.disabled');
+  cy.task('log', 'Navigating through Docusign').clickSubmit('body', 'send-application')
+    .clickSubmit('#sendApplicationForm', 'modal-submit').wait('@sendApplication')
+    .wait('@updateQuote').get('button[data-test="send-application"]').should('be.disabled');

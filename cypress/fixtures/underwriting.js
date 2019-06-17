@@ -1,6 +1,6 @@
 export default {
-  rented: 'Never',
-  previousClaims: 'No claims ever filed',
-  monthsOccupied: '10+',
-  business: 'No'
+  'underwritingAnswers.rented.answer': 'Never',
+  'underwritingAnswers.previousClaims.answer': 'No claims ever filed',
+  'underwritingAnswers.monthsOccupied.answer': '10+',
+  'underwritingAnswers.business.answer': 'No'
 };

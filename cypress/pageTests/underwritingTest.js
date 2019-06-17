@@ -1,2 +1,2 @@
 export default () =>
-  cy.checkQuoteState('Quote Started');
+  cy.checkQuoteState('Quote Qualified');

@@ -191,17 +191,17 @@ export function updateQuote({ data = {}, options = {} }) {
   return async function(dispatch) {
     dispatch(toggleLoading(true));
     try {
-       if (options.shouldSendApplication) {
-         const config = {
-           exchangeName: 'harmony',
-           routingKey: 'harmony.quote.sendApplication',
-           data: {
-             quoteNumber: data.quoteNumber,
-             sendType: 'docusign',
-           }
-         };
+      if (options.shouldSendApplication) {
+        const config = {
+          exchangeName: 'harmony',
+          routingKey: 'harmony.quote.sendApplication',
+          data: {
+            quoteNumber: data.quoteNumber,
+            sendType: 'docusign',
+          }
+        };
 
-         await serviceRunner.callService(config, 'quoteManage.sendApplication');
+        await serviceRunner.callService(config, 'quoteManager.sendApplication');
       } else {
         const updatedQuote = formatQuoteForSubmit(data, options);
         const config = {
