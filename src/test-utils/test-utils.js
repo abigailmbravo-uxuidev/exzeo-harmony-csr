@@ -49,7 +49,6 @@ export const defaultQuoteWorkflowProps = {
   location: { pathname: '' },
   isLoading: false,
   quoteData: quote,
-  // reviewQuote: () => Promise.resolve({}),
   reviewQuote: jestResolve(),
   setAppState: () => {},
   setAppError: () => {},

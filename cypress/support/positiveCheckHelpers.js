@@ -238,4 +238,5 @@ Cypress.Commands.add('checkDiaryCard', (card, { status, id, type, cardData }) =>
       cy.wrap($spans).each(($span, i) => cy.wrap($span).should('contain', cardData[i]));
     }));
 
-Cypress.Commands.add('checkQuoteState', quoteState => cy.findDataTag('quoteDetails').find('.status').should('contain', quoteState));
+Cypress.Commands.add('checkQuoteState', quoteState =>
+  cy.get('.spinner').should('not.exist').findDataTag('quoteDetails').find('.status').should('contain', quoteState));

@@ -3,8 +3,10 @@
   "chromeWebSecurity": false,
   "testFiles": "**/**.spec.js",
   "video": false,
-  "defaultCommandTimeout": 20000,
+  "defaultCommandTimeout": 30000,
   "requestTimeout": 120000,
   "responseTimeout": 180000,
-  "pageLoadTimeout": 180000
+  "pageLoadTimeout": 180000,
+  "viewportHeight": 960,
+  "viewportWidth": 1280
 }

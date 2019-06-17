@@ -19,12 +19,12 @@ export const fillOutCoverage = (customerInfo = pH1) =>
     .wait('@reviewQuote')
     .wrap(Object.entries(customerInfo)).each(([field, value]) =>
       cy.findDataTag(field).type(`{selectall}{backspace}${value}`)
-    ).findDataTag('submit').click().wait('@updateQuote');
+    ).clickSubmit().wait('@updateQuote');
 
 export const fillOutUnderwriting = (data = underwriting) =>
   cy.task('log', 'Filling out Underwriting').goToNav('underwriting')
     .wrap(Object.entries(data)).each(([name, value]) =>
-      cy.findDataTag(`${name}_${value}`).click()
+      cy.findDataTag(`${name}_${value}`).click({ force: true })
     ).clickSubmit().wait('@updateQuote');
 
 export const fillOutAdditionalInterests = () =>
@@ -32,7 +32,6 @@ export const fillOutAdditionalInterests = () =>
 
 export const fillOutMailingBilling = () =>
   cy.task('log', 'Filling out Mailing Billing').goToNav('billing')
-    .get('.loader.modal').should('not.exist')
     .findDataTag('sameAsPropertyAddress').click('left')
     .findDataTag('billPlan_Annual').click({ force: true })
     .clickSubmit().wait('@updateQuote');
