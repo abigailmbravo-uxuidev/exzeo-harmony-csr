@@ -9,7 +9,7 @@ import {
   ADDITIONAL_INTERESTS,
   DEFAULT_ADDITIONAL_INTERESTS_MAP,
 } from '../../constants/additionalInterests';
-import { CAN_QUOTE_STATES } from '../../constants/quoteState';
+import { EDITING_ENABLED } from '../../constants/quoteState';
 
 import { getQuote } from './entity.selectors';
 
@@ -46,13 +46,6 @@ export const getGroupedAdditionalInterests = createSelector(
   }
 );
 
-export const blockQuote = createSelector(
-  [getQuote],
-  (quoteData) => {
-    return !CAN_QUOTE_STATES.some(state => state === quoteData.quoteState);
-  }
-);
-
 export const getQuoteSelector = createSelector(
     [getQuote],
     (quoteData) => {
@@ -64,6 +57,8 @@ export const getQuoteSelector = createSelector(
       quoteData.hasUWError = quoteData.underwritingExceptions.filter(uw =>
         !uw.overridden && uw.action !== 'Missing Info'
       ).length > 0;
+
+      quoteData.editingDisabled = EDITING_ENABLED.indexOf(quoteData.quoteState) === -1;
 
       if (quoteData.product === 'AF3') {
         return quoteData;

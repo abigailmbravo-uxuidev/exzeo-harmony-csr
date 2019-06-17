@@ -128,7 +128,7 @@ export class QuoteWorkflow extends React.Component {
 
   isSubmitDisabled = (pristine, submitting) => {
     const { location, quoteData } = this.props;
-    if (quoteData.quoteState === 'Application Sent DocuSign' || this.state.applicationSent) return true;
+    if (quoteData.editingDisabled || this.state.applicationSent) return true;
 
     const { currentStepNumber } = getCurrentStepAndPage(location.pathname);
 
@@ -184,6 +184,7 @@ export class QuoteWorkflow extends React.Component {
     // TODO going to use Context to pass these directly to custom components,
     //  so Gandalf does not need to know about these.
     const customHandlers = {
+      editingDisabled: quoteData.editingDisabled,
       handleSubmit: this.handleGandalfSubmit,
       history: history,
       notesSynced: notesSynced,
