@@ -8,5 +8,4 @@ export default () =>
     .wait(20000)
     .reload()
     .checkQuoteState('Application Sent DocuSign')
-    // TODO: Colin -- when this is fixed add this
-    // .wrap(aiButtons).each(button => cy.findDataTag(button).should('be.disabled'));
+    .wrap(aiButtons).each(button => cy.get(`[data-test=${button}]`).should('be.disabled'));

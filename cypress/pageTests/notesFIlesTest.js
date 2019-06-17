@@ -18,7 +18,5 @@ export default () => {
     .checkQuoteState('Application Ready')
     .goToNav('coverage');
 
-    // TODO: COLIN - Add this in once this fixed
-
-  // addNoteCheck('another note');
+  addNoteCheck('another note');
 };
