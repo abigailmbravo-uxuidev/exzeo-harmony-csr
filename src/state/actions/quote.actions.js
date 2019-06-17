@@ -152,7 +152,7 @@ function formatQuoteForSubmit(data, options) {
   quote.effectiveDate = date.formatToUTC(date.formatDate(data.effectiveDate, date.FORMATS.SECONDARY), data.property.timezone);
 
   if (options.step === 0) {
-    if (options.removeSecondary) {
+    if (removeSecondary) {
       quote.policyHolders = [quote.policyHolders[0]]
     }
     else if (data.policyHolders.length > 1) {

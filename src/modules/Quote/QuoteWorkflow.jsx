@@ -105,7 +105,7 @@ export class QuoteWorkflow extends React.Component {
     this.setState(() => ({ gandalfTemplate: MOCK_CONFIG_DATA }));
   };
 
-  handleGandalfSubmit = async ({ shouldNav, removeSecondary, hasActiveExceptions, hasUWError, ...values }) => {
+  handleGandalfSubmit = async (values) => {
     const { location } = this.props;
     const { currentRouteName, currentStepNumber } = getCurrentStepAndPage(location.pathname);
     await this.props.updateQuote({
@@ -113,7 +113,6 @@ export class QuoteWorkflow extends React.Component {
       options: {
         step: currentStepNumber,
         shouldSendApplication: currentRouteName === 'application',
-        removeSecondary
       }
     });
 
