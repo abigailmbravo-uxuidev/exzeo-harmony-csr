@@ -11,12 +11,9 @@ import OpenDiariesBar from '../../components/OpenDiariesBar';
 import DiaryPolling from '../../components/DiaryPolling';
 import { QUOTE_RESOURCE_TYPE } from '../../constants/diaries';
 import { toggleDiary } from '../../state/actions/ui.actions';
-import { setAppState } from '../../state/actions/appState.actions';
 import { setAppError } from '../../state/actions/error.actions';
 import { reviewQuote, updateQuote } from '../../state/actions/quote.actions';
 import { getZipcodeSettings } from '../../state/actions/service.actions';
-import { fetchNotes } from '../../state/actions/notes.actions';
-import { fetchDiaries } from '../../state/actions/diary.actions';
 import { getEnumsForQuoteWorkflow } from '../../state/actions/list.actions';
 import { getQuoteSelector, getGroupedUnderwritingExceptions, getUnderwritingInitialValues } from '../../state/selectors/quote.selectors';
 import { getDiariesForTable } from '../../state/selectors/diary.selectors';
@@ -29,7 +26,7 @@ import PolicyHolders from './PolicyHolders';
 import NotesFiles from '../NotesFiles';
 import QuoteFooter from './QuoteFooter';
 import NavigationPrompt from './NavigationPrompt';
-import { QUOTE_INPUT_STATE, QUOTE_STATE, UNQUALIFIED_STATE } from '../../utilities/quoteState';
+import { UNQUALIFIED_STATE } from '../../utilities/quoteState';
 
 const getCurrentStepAndPage = defaultMemoize((pathname) => {
   const currentRouteName = pathname.split('/')[3];
@@ -68,19 +65,20 @@ export class QuoteWorkflow extends React.Component {
   getConfigForJsonTransform = defaultMemoize(getConfigForJsonTransform);
 
   componentDidMount() {
-    const { match } = this.props;
-    this.props.reviewQuote({ quoteNumber: match.params.quoteNumber })
+    const { match, reviewQuote, getEnumsForQuoteWorkflow, getZipcodeSettings } = this.props;
+    reviewQuote({ quoteNumber: match.params.quoteNumber })
       .then((quoteData) => {
         if (quoteData && quoteData.property) {
-          const { companyCode, state, product, property, agencyCode, agentCode } = quoteData;
-          this.props.getEnumsForQuoteWorkflow({
+          const { companyCode, state, product, property, agencyCode, agentCode, quoteNumber } = quoteData;
+          getEnumsForQuoteWorkflow({
             companyCode,
             state,
             product,
             agencyCode,
-            agentCode
+            agentCode,
+            quoteNumber
           });
-          this.props.getZipcodeSettings(companyCode, state, product, property.physicalAddress.zip);
+          getZipcodeSettings(companyCode, state, product, property.physicalAddress.zip);
         }
 
       });
@@ -258,9 +256,9 @@ export class QuoteWorkflow extends React.Component {
               }
             </div>
 
-            <UnderwritingValidationBar 
-              exceptions={underwritingExceptions} 
-              initialValues={underwritingInitialValues} 
+            <UnderwritingValidationBar
+              exceptions={underwritingExceptions}
+              initialValues={underwritingInitialValues}
               quoteData={quoteData}
               userProfile={userProfile}
               updateQuote={updateQuote}
@@ -296,7 +294,6 @@ QuoteWorkflow.propTypes = {
 
 const mapStateToProps = state => {
   return {
-    appState: state.appState,
     quoteData: getQuoteSelector(state),
     options: state.list,
     isLoading: state.ui.isLoading,
@@ -309,13 +306,10 @@ const mapStateToProps = state => {
 };
 
 export default connect(mapStateToProps, {
-  setAppState,
   setAppError,
   reviewQuote,
   getZipcodeSettings,
   getEnumsForQuoteWorkflow,
   updateQuote,
-  fetchNotes,
   toggleDiary,
-  fetchDiaries
 })(QuoteWorkflow);

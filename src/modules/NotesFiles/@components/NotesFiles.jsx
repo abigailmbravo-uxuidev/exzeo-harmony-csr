@@ -10,9 +10,13 @@ import Notes from './Notes';
 
 function NotesFiles ({ options, customHandlers, initialValues }) {
   const [selectedTab, setSelectedTab] = useState(NOTE_TYPE.notes);
+  // TODO we need to somehow sync this up with the notes uploader. Currently we are only getting the initial notes, but not updates.
+  //  without using redux, we are not being notified by the uploader that a new note is available.
   const { notes, notesLoaded } = useFetchNotes([initialValues.quoteNumber], 'quoteNumber');
+  // this gives us updated notes and diaries. Diaries will need to be deprecated as well.
+  const { notes: notes_DEPRECATED, diaries } = options;
 
-  if(!notesLoaded) {
+  if (!notesLoaded) {
     return <SectionLoader />
   }
 
@@ -25,11 +29,11 @@ function NotesFiles ({ options, customHandlers, initialValues }) {
           <button type="button" className={classNames('btn btn-tab', { 'selected': selectedTab === NOTE_TYPE.diaries })} onClick={() => setSelectedTab(NOTE_TYPE.diaries)}>Diaries</button>
         </div>
         {(selectedTab === NOTE_TAB || selectedTab === FILES_TAB) &&
-          <Notes notes={notes} customHandlers={customHandlers} attachmentStatus={selectedTab === NOTE_TYPE.files} />
+          <Notes notes={notes_DEPRECATED} customHandlers={customHandlers} attachmentStatus={selectedTab === NOTE_TYPE.files} />
         }
 
         {selectedTab === DIARY_TAB &&
-          <DiaryTable customHandlers={customHandlers} diaries={options.diaries} entityEndDate={initialValues.endDate} />
+          <DiaryTable customHandlers={customHandlers} diaries={diaries} entityEndDate={initialValues.endDate} />
         }
       </div>
     </div>

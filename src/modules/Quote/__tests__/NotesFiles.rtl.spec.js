@@ -75,8 +75,14 @@ describe('Notes Files Testing', () => {
   });
 
   it('POS:Table Sorting', async () => {
-    mockServiceRunner(result);
-    const { getByText } = renderWithForm(<QuoteWorkflow {...props} />);
+    // TODO updated this test because we had to circumvent Notes/Files' page fetching its own data. For now, diaries
+    //  notes are being read from redux. Once this is fixed, uncomment the mockServiceRunner statement.
+    // mockServiceRunner(result);
+    const newProps = {
+      ...props,
+      notes: result
+    };
+    const { getByText } = renderWithForm(<QuoteWorkflow {...newProps} />);
     await waitForElement(() => getByText('Search Table Data'));
 
     expect(getByText('03/21/2019 8:00 PM EDT'));

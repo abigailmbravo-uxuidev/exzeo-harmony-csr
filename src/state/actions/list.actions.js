@@ -3,6 +3,8 @@ import { searchAgencies, fetchAgentsByAgencyCode } from '@exzeo/core-ui/src/@Har
 
 import * as listTypes from '../actionTypes/list.actionTypes';
 import { setAppError } from './error.actions';
+import { fetchNotes } from './notes.actions';
+import { fetchDiaries } from './diary.actions';
 
 
 function setEnums(enums) {
@@ -18,12 +20,17 @@ function setEnums(enums) {
  * @param companyCode
  * @param state
  * @param product
- * @param property
+ * @param agencyCode
+ * @param agentCode
+ * @param quoteNumber
  * @returns {Function}
  */
-export function getEnumsForQuoteWorkflow({ companyCode, state, product, agencyCode, agentCode }) {
+export function getEnumsForQuoteWorkflow({ companyCode, state, product, agencyCode, agentCode, quoteNumber }) {
   return async dispatch => {
     try {
+
+      dispatch(fetchDiaries({ resourceId: quoteNumber}));
+      dispatch(fetchNotes([quoteNumber], 'quoteNumber'));
       // this pattern sets us up to "parallelize" the network requests in this function. We want to
       // fetch all enums/data needed for the quote workflow in here.
       // 1. assign async function(s) to variable(s) - calls the func

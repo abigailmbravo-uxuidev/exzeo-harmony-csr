@@ -24,7 +24,7 @@ const mergeNotes = (notes, files ) => {
         ]
       };
       filtered.push(newNote);
-    };
+    }
     return filtered;
   }, []);
   return [...notes, ...fileNotes];
@@ -44,7 +44,8 @@ export function setNotes(notes) {
 
 /**
  *
- * @param filter
+ * @param numbers
+ * @param numberType
  * @returns {Function}
  */
 export function fetchNotes(numbers, numberType) {
@@ -53,7 +54,7 @@ export function fetchNotes(numbers, numberType) {
     return { number: removeTerm(number), numberType: noteType };
   });
 
-  const filesQuesry = numbers.map(number => number).join(',');
+  const filesQuery = numbers.map(number => number).join(',');
 
   const notesConfig = {
     exchangeName: 'harmony',
@@ -64,7 +65,7 @@ export function fetchNotes(numbers, numberType) {
   const filesConfig = {
     service: 'file-index',
     method: 'GET',
-    path: `v1/fileindex/${filesQuesry}`
+    path: `v1/fileindex/${filesQuery}`
   };
 
   return async dispatch => {
@@ -82,5 +83,5 @@ export function fetchNotes(numbers, numberType) {
       return dispatch(setAppError(err));
     }
   };
-};
+}
 

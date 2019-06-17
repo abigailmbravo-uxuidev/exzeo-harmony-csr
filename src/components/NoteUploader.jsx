@@ -10,7 +10,7 @@ import XHRUpload from '@uppy/xhr-upload';
 import { Select, validation, Loader } from '@exzeo/core-ui';
 import { callService } from '@exzeo/core-ui/src/@Harmony';
 
-import { toggleNote, toggleDiary} from '../state/actions/ui.actions';
+import { toggleNote, toggleDiary } from '../state/actions/ui.actions';
 import { fetchNotes } from '../state/actions/notes.actions';
 import { setAppError } from '../state/actions/error.actions';
 

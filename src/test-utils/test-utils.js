@@ -59,6 +59,10 @@ export const defaultQuoteWorkflowProps = {
   fetchNotes: jestResolve(),
   toggleDiary: () => {},
   fetchDiaries: jestResolve(),
+  underwritingExceptions: { warnings: [], overridableExceptions: [], nonOverridableExceptions: [] },
+  underwritingInitialValues: {},
+  notes: [],
+  diaries: [],
 };
 
 export const renderWithReduxAndRouter = (ui, { state = defaultInitialState, store = mockStore(state) } = {}) => {
