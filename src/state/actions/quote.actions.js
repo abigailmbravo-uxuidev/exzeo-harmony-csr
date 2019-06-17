@@ -148,7 +148,7 @@ export function reviewQuote({ quoteNumber, quoteId }) {
 }
 
 function formatQuoteForSubmit(data, options) {
-  const quote = { ...data };
+  const { shouldNav, removeSecondary, hasActiveExceptions, hasUWError, ...quote } = data;
   quote.effectiveDate = date.formatToUTC(date.formatDate(data.effectiveDate, date.FORMATS.SECONDARY), data.property.timezone);
 
   if (options.step === 0) {

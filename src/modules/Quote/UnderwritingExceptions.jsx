@@ -38,12 +38,12 @@ class UnderwritingExceptions extends React.Component {
         </h5>
         <div>
           <ul className="fa-ul">
-            {exceptions.map(exception => (
+            {exceptions.map((exception, index) => (
               <li key={exception._id} className={classNames({ 'overridden': exception.canOverride && exception.overridden })}>
                 <i className={severity.listIconClass} aria-hidden="true"/>
                 <span>{exception.internalMessage}</span>
 
-                {this.props.render(exception)}
+                {this.props.render(exception, index)}
 
               </li>
             ))}

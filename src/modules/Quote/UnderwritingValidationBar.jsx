@@ -1,41 +1,52 @@
 import React from 'react';
 import orderBy from 'lodash/orderBy';
-import moment from 'moment';
-import { Form, Field, Input } from '@exzeo/core-ui';
+import { Form, Field, date } from '@exzeo/core-ui';
+import { defaultMemoize } from 'reselect'
 
 import UnderwritingExceptions from './UnderwritingExceptions';
 
-const UnderwritingValidationBar = ({ initialValues, exceptions, userProfile, updateQuote, quoteData  }) => {
+const UnderwritingValidationBar = ({ userProfile, updateQuote, quoteData  }) => {
+
+  const getGroupedUnderwritingExceptions = defaultMemoize((quoteData) => {
+      if (!quoteData || !Array.isArray(quoteData.underwritingExceptions)) return [];
+
+      return quoteData.underwritingExceptions.reduce((data, exception) => {
+        if (exception.action === 'Missing Info') {
+          return {
+            ...data,
+            warnings: [...data.warnings, exception]
+          };
+        }
+        return exception.canOverride ?
+          ({ ...data, overridableExceptions: orderBy([...data.overridableExceptions, exception], ['overridden'], ['asc']) }) :
+          ({ ...data, nonOverridableExceptions: [...data.nonOverridableExceptions, exception] });
+      }, { warnings: [], overridableExceptions: [], nonOverridableExceptions: [] });
+    });
 
   const handleFormSubmit = async (data) => {
-    const { underwritingExceptions, ...quote } = quoteData;
-    const uwExceptions = underwritingExceptions || [];
-    for (let i = 0; i < uwExceptions.length; i += 1) {
-      const uwException = uwExceptions[i];
-      if (uwException.canOverride && data[uwException._id] === true) {
-        uwException.overridden = true;
-        uwException.overriddenAt = moment.utc();
-        uwException.overriddenBy = {
+    const { warnings, nonOverridableExceptions, overridableExceptions } = data;
+
+    overridableExceptions.forEach(exception => {
+      if (exception.overridden && !exception.overriddenAt) {
+        exception.overriddenAt = date.formatToUTC();
+        exception.overriddenBy = {
           userId: userProfile.userId,
           userName: userProfile.userName
         };
-      } else if (uwException.canOverride) {
-        uwException.overridden = false;
       }
-    }
+    });
     await updateQuote({ 
       data: {
         ...quoteData,
-        underwritingExceptions: uwExceptions
+        underwritingExceptions: [...warnings, ...nonOverridableExceptions, ...overridableExceptions]
       }
     })
   };
 
-  const { warnings, overridableExceptions, nonOverridableExceptions } = exceptions;
-  const sortedOverridableExceptions = orderBy(overridableExceptions, ['overridden'], ['asc']);
+  const { warnings, nonOverridableExceptions, overridableExceptions } = getGroupedUnderwritingExceptions(quoteData);
   return (
     <Form
-      initialValues={initialValues}
+      initialValues={{ warnings, nonOverridableExceptions, overridableExceptions }}
       onSubmit={handleFormSubmit}
       subscription={{ pristine: true }}>
       {({ handleSubmit, pristine }) => (
@@ -59,17 +70,17 @@ const UnderwritingValidationBar = ({ initialValues, exceptions, userProfile, upd
               {overridableExceptions.length > 0 &&
               <UnderwritingExceptions
               exceptionLevel="overridable"
-              exceptions={sortedOverridableExceptions}
+              exceptions={overridableExceptions}
               pristine={pristine}
-              render={exception => (
+              render={(exception, index) => (
                 <div className="check-box-wrapper">
                   <Field
-                    name={exception._id}
+                    name={`overridableExceptions[${index}].overridden`}
                     component="input"
                     type="checkbox"
-                    data-test={exception._id}
+                    data-test={`overridableExceptions[${index}].overridden`}
                   />
-                  <label htmlFor={exception._id}> Override</label>
+                  <label htmlFor={`overridableExceptions[${index}].overridden`}> Override</label>
               </div>
               )} />
               }

@@ -172,8 +172,6 @@ export class QuoteWorkflow extends React.Component {
       notes,
       options,
       quoteData,
-      underwritingExceptions,
-      underwritingInitialValues,
       userProfile,
       updateQuote
     } = this.props;
@@ -257,8 +255,6 @@ export class QuoteWorkflow extends React.Component {
             </div>
 
             <UnderwritingValidationBar
-              exceptions={underwritingExceptions}
-              initialValues={underwritingInitialValues}
               quoteData={quoteData}
               userProfile={userProfile}
               updateQuote={updateQuote}
@@ -299,8 +295,6 @@ const mapStateToProps = state => {
     isLoading: state.ui.isLoading,
     diaries: getDiariesForTable(state),
     notes: state.notes,
-    underwritingExceptions: getGroupedUnderwritingExceptions(state),
-    underwritingInitialValues: getUnderwritingInitialValues(state),
     userProfile: state.authState.userProfile
   };
 };
