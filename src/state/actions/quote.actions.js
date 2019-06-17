@@ -153,7 +153,7 @@ function formatQuoteForSubmit(data, options) {
 
   if (options.step === 0) {
     if (removeSecondary) {
-      quote.policyHolders = [quote.policyHolders[0]]
+      quote.policyHolders = quote.policyHolders[0].firstName ? [quote.policyHolders[0]] : [];
     }
     else if (data.policyHolders.length > 1) {
       quote.policyHolders[1].order = data.policyHolders[1].order || 1;
