@@ -35,6 +35,7 @@ export function createQuote(address, igdID, stateCode, companyCode, product) {
           state: stateCode,
           product,
           propertyId: igdID,
+          runUnderwriting: true,
         }
       };
 
