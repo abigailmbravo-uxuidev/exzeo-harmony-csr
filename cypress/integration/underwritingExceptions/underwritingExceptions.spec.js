@@ -20,7 +20,7 @@ describe('Underwriting Error Testing', () => {
     // Fill out underwriting with bad data.
     fillOutUnderwriting({
       ...underwriting,
-      'previousClaims': '3-5 Years'
+      'underwritingAnswers.previousClaims.answer': '3-5 Years'
     });
     // Check for an error.
     cy.get('section.msg-caution .fa-ul li').should('contain', 'Due to previous claims history, additional review is required.');
@@ -34,13 +34,13 @@ describe('Underwriting Error Testing', () => {
     // Fill out underwriting with bad data.
     fillOutUnderwriting({
       ...underwriting,
-      'previousClaims': '3-5 Years'
+      'underwritingAnswers.previousClaims.answer': '3-5 Years'
     });
     cy.get('section.msg-caution .fa-ul li label').should('contain', 'Override')
     // Override the exception manually.
-      .find('input').should('have.attr', 'value', 'false').click()
+      .get('section.msg-caution .fa-ul li input').should('have.attr', 'value', 'false').click()
       .get('.msg-caution button[type="submit"]').click()
-      .wait('@saveUnderwritingExceptions').then(({ response }) =>
+      .wait('@updateQuote').then(({ response }) =>
         // Confirm that there exists an overridden exception.
         expect(response.body.result.underwritingExceptions.filter(({ overridden }) => overridden).length).to.equal(1)
       );
