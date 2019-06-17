@@ -255,7 +255,7 @@
             &.ref-number {
               flex-grow: 0;
               flex-shrink: 0;
-              width: 10rem;
+              min-width: 10rem;
             }
 
             h4 {
