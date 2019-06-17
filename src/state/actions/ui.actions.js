@@ -60,10 +60,9 @@ export function toggleLoading(isLoading) {
   };
 }
 
-/**
- *
- * @returns {{type: string}}
- */
+// Temporary trick: the NotesUploader and Notes/Files page are not in sync. This will flip a boolean back and forth
+// which will trigger the 'useFetchDiaries' hook to fire. This will ensure that if a user creates a note and is currently
+// on the NOTES/FILES page, they see the updated list of notes.
 export function setNotesSynced() {
   return {
     type: types.SET_NOTES_SYNCED

@@ -17,7 +17,7 @@ import { setAppError } from '../state/actions/error.actions';
 import '@uppy/core/dist/style.min.css';
 
 export const renderNotes = ({
-  input, label, type, meta: { touched, error }
+  input, label, meta: { touched, error }
 }) => (
   <div className={`${touched && error ? 'error' : ''} text-area-wrapper`}>
     <textarea {...input} placeholder={label} rows="10" cols="40" />
@@ -146,7 +146,7 @@ export class NoteUploader extends Component {
   };
 
   componentDidMount() {
-    const { initialize, resourceType, user } = this.props;
+    const { initialize, resourceType } = this.props;
 
     this.contactTypes = resourceType ? contactTypeOptions[resourceType] : [];
     this.docTypes = resourceType ? docTypeOptions[resourceType] : [];
@@ -169,7 +169,7 @@ export class NoteUploader extends Component {
 
   handleClose = () => this.props.toggleNote({});
 
-  validateFile = (file, currentFiles) => {
+  validateFile = (file) => {
     if (file.data.size === 0) {
       this.uppy.info('The file is empty.');
       return false;
@@ -181,19 +181,18 @@ export class NoteUploader extends Component {
     }
   };
 
-  validateUpload = (files => {
-    if(Object.keys(files).some(id => (!files[id].meta.name.includes('.')))) {
+  validateUpload = (files) => {
+    if (Object.keys(files).some(id => (!files[id].meta.name.includes('.')))) {
       this.uppy.info('The file name must have a file extension.');
       return false;
     }
-  });
+  };
 
   submitNote = async (data, dispatch, props) => {
     const {
       companyCode,
       state,
       product,
-      actions,
       user,
       noteType,
       documentId,
@@ -246,14 +245,16 @@ export class NoteUploader extends Component {
 
     const { openDiary } = data;
     try {
-      const { data } = await callService(noteConfig, 'addNote');
+      await callService(noteConfig, 'addNote');
 
       if (window.location.pathname.includes('/notes')) {
         const numberType = mapResourceToNumber[resourceType];
         const numbers = numberType === 'policyNumber'
           ? [noteData.number, noteData.source]
           : [noteData.number];
+        // Update notes for Policy components (will be removed once Gandalf is added to Policy.
         fetchNotes(numbers, numberType);
+        // Let Notes/Files page know to fetch list of notes
         setNotesSynced()
       }
 
@@ -307,10 +308,11 @@ export class NoteUploader extends Component {
                   />
                 </div>
                 {noteType !== 'Agency Note' &&
-                <div className="form-group diary-checkbox">
-                  <Field component="input" name="openDiary" type="checkbox" />
-                  <label>Create & Open Diary On Save</label>
-                </div>}
+                  <div className="form-group diary-checkbox">
+                    <Field component="input" name="openDiary" type="checkbox" />
+                    <label>Create & Open Diary On Save</label>
+                  </div>
+                }
               </div>
               <Field name="noteContent" component={renderNotes} label="Note Content" />
               <Field

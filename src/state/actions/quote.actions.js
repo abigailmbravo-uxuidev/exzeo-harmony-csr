@@ -147,8 +147,15 @@ export function reviewQuote({ quoteNumber, quoteId }) {
   };
 }
 
+/**
+ *
+ * @param data
+ * @param options
+ * @returns {*}
+ */
 function formatQuoteForSubmit(data, options) {
   const { remainOnStep, shouldNav, removeSecondary, hasActiveExceptions, hasUWError, editingDisabled, ...quote } = data;
+  // ensure the effectiveDate is converted back to UTC
   quote.effectiveDate = date.formatToUTC(date.formatDate(data.effectiveDate, date.FORMATS.SECONDARY), data.property.timezone);
 
   if (removeSecondary || quote.policyHolders.length === 1) {
