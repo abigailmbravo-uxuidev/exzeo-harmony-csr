@@ -1493,7 +1493,9 @@ const mock = {
         {
           id: 6560933,
           type: '$TITLE',
-          dependencies: [{ path: 'rating.worksheet', value: false }],
+          dependencies: [
+            { 'rating.worksheet': false }
+            ],
           data: {
             className: 'messages',
             icon: 'fa fa-exclamation-circle',
@@ -1505,7 +1507,7 @@ const mock = {
         {
           id: 6560955,
           type: '$TITLE',
-          dependencies: [{ path: 'rating.worksheet', value: true }],
+          dependencies: [{ 'rating.worksheet': true }],
           data: {
             text: 'Additional Interests',
           },
@@ -1515,7 +1517,7 @@ const mock = {
         {
           id: 300,
           type: '$CUSTOM',
-          dependencies: [{ path: 'rating.worksheet', value: true }],
+          dependencies: [{ 'rating.worksheet': true }],
           data: {
             component: '$ADDITIONAL_INTERESTS',
             extendedProperties: {
@@ -1541,7 +1543,7 @@ const mock = {
         {
           id: 340933,
           type: '$TITLE',
-          dependencies: [{ path: 'rating.worksheet', value: false }],
+          dependencies: [{ 'rating.worksheet': false }],
           data: {
             className: 'messages',
             icon: 'fa fa-exclamation-circle',
@@ -1553,7 +1555,7 @@ const mock = {
         {
           id: 5152233354,
           type: '$SECTION',
-          dependencies: [{ path: 'rating.worksheet', value: true }],
+          dependencies: [{ 'rating.worksheet': true }],
           data: {
             className: 'billing-address',
           },
@@ -1590,7 +1592,7 @@ const mock = {
         {
           id: 5152019254,
           type: '$SECTION',
-          dependencies: [{ path: 'rating.worksheet', value: true }],
+          dependencies: [{ 'rating.worksheet': true }],
           data: {
             className: 'billing-information',
           },
@@ -1666,8 +1668,9 @@ const mock = {
           id: 340933,
           type: '$TITLE',
           dependencies: [
-            { path: 'quoteInputState', value: 'Initial Data' },
-            { path: 'quoteInputState', value: 'Underwriting' }
+            {'hasUWError': true },
+            { 'quoteInputState': 'Initial Data' },
+            { 'quoteInputState': 'Underwriting' },
             ],
           data: {
             className: 'messages',
@@ -1681,8 +1684,14 @@ const mock = {
           id: 3402232,
           type: '$GROUP',
           dependencies: [
-            { path: 'quoteInputState', value: 'Qualified' },
-            { path: 'quoteInputState', value: 'Ready' }
+            {
+              'quoteInputState': 'Qualified',
+              'hasUWError': false
+            },
+            {
+              'quoteInputState': 'Ready',
+              'hasUWError': false
+            }
           ],
           data: {},
           formData: {},
@@ -1789,7 +1798,7 @@ const mock = {
               id: 100233140,
               type: '$SECTION',
               dependencies: [
-                { path: 'policyHolders[0].firstName', value: true }
+                { 'policyHolders[0].firstName': true }
               ],
               data: {
                 className: 'policyholder-details'
@@ -1830,7 +1839,7 @@ const mock = {
               id: 10022140,
               type: '$SECTION',
               dependencies: [
-                { path: 'policyHolders[1].firstName', value: true }
+                { 'policyHolders[1].firstName': true }
               ],
               data: {
                 className :"property-details",
@@ -1871,7 +1880,7 @@ const mock = {
               id: 100140,
               type: '$SECTION',
               dependencies: [
-                { path: 'policyHolderMailingAddress.address1', value: true }
+                { 'policyHolderMailingAddress.address1': true }
               ],
               data: {
                 className :"property-details",
@@ -1958,8 +1967,8 @@ const mock = {
           id: 340933,
           type: '$TITLE',
           dependencies: [
-            { path: 'quoteInputState', value: 'Initial Data' },
-            { path: 'quoteInputState', value: 'Underwriting' }
+            { 'quoteInputState': 'Initial Data' },
+            { 'quoteInputState': 'Underwriting' }
           ],
           data: {
             className: 'messages',
@@ -1973,8 +1982,8 @@ const mock = {
           id: 5142019254,
           type: '$SECTION',
           dependencies: [
-            { path: 'quoteInputState', value: 'Qualified' },
-            { path: 'quoteInputState', value: 'Ready' }
+            { 'quoteInputState': 'Qualified' },
+            { 'quoteInputState': 'Ready' }
           ],
           data: {},
           formData: {},

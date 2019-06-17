@@ -179,14 +179,14 @@ export class NoteUploader extends Component {
       this.uppy.info('Uploads must have a file extension.');
       return false;
     }
-  }
+  };
 
   validateUpload = (files => {
     if(Object.keys(files).some(id => (!files[id].meta.name.includes('.')))) {
       this.uppy.info('The file name must have a file extension.');
       return false;
     }
-  })
+  });
 
   submitNote = async (data, dispatch, props) => {
     const {
@@ -247,14 +247,13 @@ export class NoteUploader extends Component {
     try {
       const { data } = await callService(noteConfig, 'addNote');
 
-      if (window.location.pathname.includes('/notes')) {
-        const numberType = mapResourceToNumber[resourceType];
-        const numbers = numberType === 'policyNumber'
-          ? [noteData.number, noteData.source] : [noteData.number];
-        fetchNotes(numbers, numberType);
-      }
+      const numberType = mapResourceToNumber[resourceType];
+      const numbers = numberType === 'policyNumber'
+        ? [noteData.number, noteData.source]
+        : [noteData.number];
+      fetchNotes(numbers, numberType);
 
-      if(openDiary) {
+      if (openDiary) {
         toggleDiary({
           companyCode,
           state,
@@ -262,7 +261,7 @@ export class NoteUploader extends Component {
           resourceType,
           resourceId: documentId
         });
-      };
+      }
     } catch (err) {
       setAppError({ message: err });
     } finally {

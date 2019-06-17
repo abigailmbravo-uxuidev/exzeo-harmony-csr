@@ -140,7 +140,7 @@ describe('Summary Testing with Default Quote', () => {
     location: { pathname: '/quote/12-345-67/summary' }
   };
 
-  it('POS:Underwriting Violation Error with default data', () => {
+  it('POS:Underwriting Violation Error with initial quote data', () => {
     const { getByText } = renderWithForm(<QuoteWorkflow {...props} />);
 
     expect(getByText('Quote Summary cannot be sent due to Underwriting Validations'));
@@ -151,7 +151,7 @@ describe('Summary Testing with Default Quote', () => {
       ...props,
       quoteData: {
         ...props.quoteData,
-        quoteInputState: 'Underwriting'
+        quoteInputState: 'Underwriting',
       }
     };
     const { getByText } = renderWithForm(<QuoteWorkflow {...newProps} />);

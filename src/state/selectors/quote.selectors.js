@@ -60,6 +60,10 @@ export const getQuoteSelector = createSelector(
 
       quoteData.effectiveDate = formatDate(quoteData.effectiveDate, FORMATS.SECONDARY);
       quoteData.removeSecondary = false;
+      quoteData.hasActiveExceptions = quoteData.underwritingExceptions.filter(uw => !uw.overridden).length > 0;
+      quoteData.hasUWError = quoteData.underwritingExceptions.filter(uw =>
+        !uw.overridden && uw.action !== 'Missing Info'
+      ).length > 0;
 
       if (quoteData.product === 'AF3') {
         return quoteData;

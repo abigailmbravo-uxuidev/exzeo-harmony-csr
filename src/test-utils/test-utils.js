@@ -48,7 +48,12 @@ export const defaultQuoteWorkflowProps = {
   history: { replace: x => x },
   location: { pathname: '' },
   isLoading: false,
-  quoteData: quote,
+  quoteData: {
+    ...quote,
+    hasUWError: false,
+    hasActiveExceptions: false,
+    removeSecondary: false
+  },
   reviewQuote: jestResolve(),
   setAppState: () => {},
   setAppError: () => {},

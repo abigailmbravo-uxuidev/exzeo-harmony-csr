@@ -105,7 +105,7 @@ export class QuoteWorkflow extends React.Component {
     this.setState(() => ({ gandalfTemplate: MOCK_CONFIG_DATA }));
   };
 
-  handleGandalfSubmit = async ({ shouldNav, removeSecondary, ...values }) => {
+  handleGandalfSubmit = async ({ shouldNav, removeSecondary, hasActiveExceptions, hasUWError, ...values }) => {
     const { location } = this.props;
     const { currentRouteName, currentStepNumber } = getCurrentStepAndPage(location.pathname);
     await this.props.updateQuote({
@@ -135,11 +135,12 @@ export class QuoteWorkflow extends React.Component {
 
     if (currentStepNumber === PAGE_ROUTING.application) {
       return UNQUALIFIED_STATE.includes(quoteData.quoteInputState) ||
-        quoteData.underwritingExceptions.filter(uw => !uw.overridden).length > 0;
+        quoteData.hasActiveExceptions
     }
 
     if (currentStepNumber === PAGE_ROUTING.summary) {
-      return UNQUALIFIED_STATE.includes(quoteData.quoteInputState);
+      return UNQUALIFIED_STATE.includes(quoteData.quoteInputState) ||
+        quoteData.hasUWError;
     }
 
     return pristine || submitting;
