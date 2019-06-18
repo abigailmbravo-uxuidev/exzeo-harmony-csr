@@ -50,10 +50,9 @@ export default {
     zip: '98765',
     country: { displayText: 'test country' }
   },
-  policyHolders: [
-    policyHolder
-  ],
+  policyHolders: [policyHolder],
   hasUWError: false,
   hasActiveExceptions: false,
-  removeSecondary: false
+  removeSecondary: false,
+  editingDisabled: false
 };

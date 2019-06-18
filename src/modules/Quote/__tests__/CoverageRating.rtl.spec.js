@@ -161,4 +161,18 @@ describe('Testing the Coverage/Rating Page', () => {
     expect(getByTestId('policyHolders[1].firstName').value).toEqual(newProps.quoteData.policyHolders[1].firstName);
     expect(getByTestId('submit')).toBeDisabled();
   });
+
+  it('POS:Cannot be modified when editingDisabled is true', () => {
+    const newProps = {
+      ...props,
+      quoteData: {
+        ...props.quoteData,
+        editingDisabled: true
+      }
+    };
+    const { getByTestId } = renderWithForm(<QuoteWorkflow {...newProps} />);
+
+    primaryPolicyholderFields.forEach(field => clearText(getByTestId, field));
+    expect(getByTestId('submit')).toBeDisabled();
+  });
 });

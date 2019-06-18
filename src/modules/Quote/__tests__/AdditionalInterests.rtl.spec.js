@@ -427,4 +427,21 @@ describe('Additional Interest Testing', () => {
     expect(getByText('Premium Finance')).toBeDisabled();
     expect(getByText('Bill Payer')).toBeDisabled();
   });
+
+  it('POS:All buttons disabled when editingDisabled is true', () => {
+    const newProps = {
+      ...props,
+      quoteData: {
+        ...props.quoteData,
+        editingDisabled: true
+      }
+    };
+    const { getByText } = renderWithForm(<QuoteWorkflow {...newProps} />);
+    // Check our buttons are all disabled
+    expect(getByText('Mortgagee')).toBeDisabled();
+    expect(getByText('Additional Insured')).toBeDisabled();
+    expect(getByText('Additional Interest')).toBeDisabled();
+    expect(getByText('Premium Finance')).toBeDisabled();
+    expect(getByText('Bill Payer')).toBeDisabled();
+  })
 });
