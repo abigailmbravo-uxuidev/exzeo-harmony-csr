@@ -96,7 +96,8 @@ export function retrieveQuote({ quoteNumber, quoteId }) {
       routingKey: 'harmony.quote.retrieveQuote',
       data: {
         quoteId,
-        quoteNumber
+        quoteNumber,
+        alwaysRunUnderwriting: true
       }
     };
 
