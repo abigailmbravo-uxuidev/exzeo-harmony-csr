@@ -4,6 +4,7 @@ import * as agencyData from '@exzeo/core-ui/src/@Harmony/Agency/data';
 
 import {
   defaultQuoteWorkflowProps,
+  policyHolder,
   renderWithForm,
   searchAgenciesResult,
   searchAgentsResult,
@@ -133,5 +134,31 @@ describe('Testing the Coverage/Rating Page', () => {
       fireEvent.blur(getByTestId(field.dataTest));
       checkError(getByTestId, field);
     });
+  });
+
+  it('POS:Remove Secondary Policyholder button works correctly when toggled twice', () => {
+    const newProps = {
+      ...props,
+      quoteData: {
+        ...props.quoteData,
+        policyHolders: [
+          ...props.quoteData.policyHolders,
+          policyHolder
+        ]
+      }
+    };
+    const { getByTestId } = renderWithForm(<QuoteWorkflow {...newProps} />);
+
+
+    expect(getByTestId('policyHolders[1].firstName').value).toEqual(newProps.quoteData.policyHolders[1].firstName);
+    expect(getByTestId('submit')).toBeDisabled();
+
+    fireEvent.click(getByTestId('removeSecondary'));
+    expect(getByTestId('policyHolders[1].firstName').value).toEqual('');
+    expect(getByTestId('submit')).not.toBeDisabled();
+
+    fireEvent.click(getByTestId('removeSecondary'));
+    expect(getByTestId('policyHolders[1].firstName').value).toEqual(newProps.quoteData.policyHolders[1].firstName);
+    expect(getByTestId('submit')).toBeDisabled();
   });
 });
