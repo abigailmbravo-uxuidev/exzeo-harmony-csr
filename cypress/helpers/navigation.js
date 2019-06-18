@@ -16,7 +16,7 @@ export const navigateThroughNewQuote = (address = user.address1) => {
 
 export const fillOutCoverage = (customerInfo = pH1) =>
   cy.task('log', 'Filling out Coverage').goToNav('coverage')
-    .wait('@reviewQuote')
+    .wait('@reviewQuote').wait(3000)
     .wrap(Object.entries(customerInfo)).each(([field, value]) =>
       cy.findDataTag(field).type(`{selectall}{backspace}${value}`)
     ).clickSubmit().wait('@updateQuote');

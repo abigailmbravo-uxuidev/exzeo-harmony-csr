@@ -13,7 +13,6 @@ Confirm that the following ENV variable is in `.env.local`
 # Modify Cypress behavior
 # CYPRESS_BASE_URL=http://csr.harmony-ins.com
 # CYPRESS_USE_MOCK_AUTH0=true
-# CYPRESS_FIXTURES=false
 ```
 **This variable can me modified to point to various harmony environments.*
 
@@ -86,12 +85,6 @@ the harmony-csr code itself. **When adding data-test tags, use dashes.**
 When creating a test, place any reusable functions at the top, inside the describe.
 For example, if you are always typing on the same inputs, this is a good place
 to create a reusable call.
-
-When using fixtures, if they are used more than once in the suite, alias them in the
-`beforeEach()` call using `cy.fixture().as()`. If you do, your `it()` statements
-which utilize these fixtures must use the `function()` notation rather than arrow 
-notation. In all other cases  - including `before` and `beforeEach`, even when aliasing 
-- use arrow notation.
 
 Favor dot notation over callback notation. Only use `then` calls if necessary. A good
 place for then calls is when waiting on async calls, such as either a network request
