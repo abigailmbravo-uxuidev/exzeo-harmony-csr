@@ -4,9 +4,6 @@ const addNoteCheck = text => cy.findDataTag('new-note').click({ force: true })
   .goToNav('notes').get('div').contains(text);
 
 export default () => {
-  // TODO: Colin - remove this reload once fix is in
-  cy.reload();
-  // 💥💥💥
   cy.get('td.note div').contains('Quote State Changed: Quote Created')
     .get('td.note div').contains('Quote State Changed: Quote Qualified')
     .get('td.note div').contains('Quote State Changed: Application Ready')
