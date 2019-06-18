@@ -52,5 +52,8 @@ export default {
   },
   policyHolders: [
     policyHolder
-  ]
+  ],
+  hasUWError: false,
+  hasActiveExceptions: false,
+  removeSecondary: false
 };
