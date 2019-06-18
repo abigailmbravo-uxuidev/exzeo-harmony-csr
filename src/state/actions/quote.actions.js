@@ -217,7 +217,10 @@ export function updateQuote({ data = {}, options = {} }) {
         const config = {
           exchangeName: 'harmony',
           routingKey: 'harmony.quote.updateQuote',
-          data: updatedQuote,
+          data: {
+            ...updatedQuote,
+            alwaysRunUnderwriting: true
+          },
         };
 
         const response = await serviceRunner.callService(config, 'quoteManager.updateQuote');
