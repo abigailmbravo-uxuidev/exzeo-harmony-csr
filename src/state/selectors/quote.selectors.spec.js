@@ -17,8 +17,8 @@ describe('Test Quote Selectors', () => {
       expect(result).toEqual({});
     });
 
-    it('Returns ymodified and new data correctl', () => {
-      const state= {
+    it('Confirms all custom fields', () => {
+      const state = {
         quoteState: {
           quote: {
             ...quote,
@@ -40,6 +40,33 @@ describe('Test Quote Selectors', () => {
       expect(removeSecondary).toEqual(false);
       expect(hasActiveExceptions).toEqual(true);
       expect(hasUWError).toEqual(false);
+    });
+
+    it('Confirms UW Exceptions filters Missing Info', () => {
+      const state = {
+        quoteState: {
+          quote: {
+            ...quote,
+            underwritingExceptions: [{ overridden: false, actions: 'Not Missing Info' }]
+          }
+        }
+      };
+      const { hasUWError } = getQuoteSelector(state);
+      expect(hasUWError).toEqual(true);
+    });
+
+    it('Confirms hasActiveExceptions & UW Exception filters overriden', () => {
+      const state = {
+        quoteState: {
+          quote: {
+            ...quote,
+            underwritingExceptions: [{ overridden: true, actions: 'Missing Info' }]
+          }
+        }
+      };
+      const { hasUWError, hasActiveExceptions } = getQuoteSelector(state);
+      expect(hasUWError).toEqual(false);
+      expect(hasActiveExceptions).toEqual(false);
     });
   });
 });
