@@ -70,18 +70,26 @@ export const getGroupedOpenDiaries = createSelector(
   diaries => groupDiaries(diaries)
 );
 
+const REQUIRED_DIARY_RIGHTS = ['READ', 'UPDATE', 'INSERT'];
+
 export const isPollingPermitted = createSelector(
   [getUserProfile],
   (userProfile) => {
     const { resources } = userProfile;
     if (!Array.isArray(resources)) return false;
 
-    const diariesResources = resources.filter((resource) => {
-      const arr = resource.uri.split(':');
-      return arr.includes('Diaries');
+    const diariesResources = [];
+    // find all three 'Diaries' resources ignoring duplicates
+    REQUIRED_DIARY_RIGHTS.forEach(right => {
+      const resource = resources.find(r => {
+        return r.uri.indexOf('Diaries') !== -1 && r.right === right
+      });
+
+      if (resource) {
+        diariesResources.push(resource);
+      }
     });
 
-    // user needs all three Diaries resources to to be able to see them.
     return diariesResources.length === 3;
   }
 );
