@@ -9,4 +9,5 @@ export const setRouteAliases = () => cy.server()
   .route('POST', '/svc?fetchNotes').as('fetchNotes')
   .route('POST', '/svc?fetchAddresses').as('fetchAddresses')
   .route('POST', '/svc?fetchPolicies').as('fetchPolicies')
-  .route('POST', '/svc?fetchQuotes').as('fetchQuotes');
+  .route('POST', '/svc?fetchQuotes').as('fetchQuotes')
+  .route('POST', '/svc?UWQuestions').as('UWQuestions');

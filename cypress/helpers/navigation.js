@@ -16,13 +16,14 @@ export const navigateThroughNewQuote = (address = user.address1) => {
 
 export const fillOutCoverage = (customerInfo = pH1) =>
   cy.task('log', 'Filling out Coverage').goToNav('coverage')
-    .wait('@reviewQuote').wait(3000)
+    .wait('@reviewQuote').wait('@fetchDiaries')
     .wrap(Object.entries(customerInfo)).each(([field, value]) =>
       cy.findDataTag(field).type(`{selectall}{backspace}${value}`)
     ).clickSubmit().wait('@updateQuote');
 
 export const fillOutUnderwriting = (data = underwriting) =>
   cy.task('log', 'Filling out Underwriting').goToNav('underwriting')
+    .wait('@UWQuestions')
     .wrap(Object.entries(data)).each(([name, value]) =>
       cy.findDataTag(`${name}_${value}`).click({ force: true })
     ).clickSubmit().wait('@updateQuote');
