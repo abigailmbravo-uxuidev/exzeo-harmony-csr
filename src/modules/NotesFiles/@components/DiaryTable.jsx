@@ -14,7 +14,7 @@ const DiaryExpandColumns = ({ diaries }) => {
       <TableHeaderColumn className="assignee" columnClassName="assignee" dataField="assignee" dataFormat={val => val.displayName}>Assignee</TableHeaderColumn>
       <TableHeaderColumn className="reason" columnClassName="reason" dataField="reason">Reason</TableHeaderColumn>
       <TableHeaderColumn className="message" columnClassName="message" dataField="message">Message</TableHeaderColumn>
-      <TableHeaderColumn className="updated-at" columnClassName="updated-at" dataField="updatedAt" dataFormat={val => date.formatDate(val)}>Updated</TableHeaderColumn>
+      <TableHeaderColumn className="updated-at" columnClassName="updated-at" dataField="createdAt" dataFormat={val => date.formatDate(val)}>Updated</TableHeaderColumn>
       <TableHeaderColumn className="created-by" columnClassName="created-by" dataField="createdBy" dataFormat={val => val.userName}>Updated By</TableHeaderColumn>
     </BootstrapTable>
   );
