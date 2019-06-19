@@ -25,8 +25,6 @@ export function setQuote(quote) {
 export function createQuote(address, igdID, stateCode, companyCode, product) {
   return async (dispatch) => {
     try {
-      dispatch(toggleLoading(true));
-
       const config = {
         exchangeName: 'harmony',
         routingKey: 'harmony.quote.createQuote',
@@ -39,6 +37,7 @@ export function createQuote(address, igdID, stateCode, companyCode, product) {
         }
       };
 
+      dispatch(toggleLoading(true));
       const response = await serviceRunner.callService(config, 'quoteManager.createQuote');
       const quote = response.data.result;
       // Ensure that all 'source' fields are set for underwriting questions
@@ -46,35 +45,9 @@ export function createQuote(address, igdID, stateCode, companyCode, product) {
 
       return quote;
     } catch (error) {
-      dispatch(errorActions.setAppError(error));
-      return null;
-    } finally {
-      dispatch(toggleLoading(false));
-    }
-  };
-}
-
-/**
- *
- * @param quoteNumber
- * @param quoteId
- * @returns {Function}
- */
-export function getQuote({ quoteNumber, quoteId }) {
-  return async (dispatch) => {
-    dispatch(toggleLoading(true));
-    try {
-      const config = {
-        service: 'quote-data',
-        method: 'GET',
-        path: quoteId || quoteNumber
-      };
-
-      const response = await serviceRunner.callService(config, 'getQuote');
-      const quote = response.data.result;
-      dispatch(setQuote(quote));
-      return quote;
-    } catch (error) {
+      if (process.env.NODE_ENV !== 'production') {
+        console.log('Error creating quote: ', error);
+      }
       dispatch(errorActions.setAppError(error));
       return null;
     } finally {
@@ -91,23 +64,26 @@ export function getQuote({ quoteNumber, quoteId }) {
  */
 export function retrieveQuote({ quoteNumber, quoteId }) {
   return async (dispatch) => {
-    const config = {
-      exchangeName: 'harmony',
-      routingKey: 'harmony.quote.retrieveQuote',
-      data: {
-        quoteId,
-        quoteNumber,
-        alwaysRunUnderwriting: true
-      }
-    };
-
     try {
+      const config = {
+        exchangeName: 'harmony',
+        routingKey: 'harmony.quote.retrieveQuote',
+        data: {
+          quoteId,
+          quoteNumber,
+          alwaysRunUnderwriting: true
+        }
+      };
+
       dispatch(toggleLoading(true));
       const response = await serviceRunner.callService(config, 'quoteManager.retrieveQuote');
       const quote = response.data.result;
       dispatch(setQuote(quote));
       return quote;
     } catch (error) {
+      if (process.env.NODE_ENV !== 'production') {
+        console.log('Error retrieving quote: ', error);
+      }
       dispatch(errorActions.setAppError(error));
       return null;
     } finally {
@@ -124,22 +100,25 @@ export function retrieveQuote({ quoteNumber, quoteId }) {
  */
 export function reviewQuote({ quoteNumber, quoteId }) {
   return async (dispatch) => {
-    const config = {
-      exchangeName: 'harmony',
-      routingKey: 'harmony.quote.reviewQuote',
-      data: {
-        quoteId,
-        quoteNumber
-      }
-    };
-
     try {
+      const config = {
+        exchangeName: 'harmony',
+        routingKey: 'harmony.quote.reviewQuote',
+        data: {
+          quoteId,
+          quoteNumber
+        }
+      };
+
       dispatch(toggleLoading(true));
       const response = await serviceRunner.callService(config, 'quoteManager.reviewQuote');
       const quote = response.data.result;
       dispatch(setQuote(quote));
       return quote;
     } catch (error) {
+      if (process.env.NODE_ENV !== 'production') {
+        console.log('Error reviewing quote: ', error);
+      }
       dispatch(errorActions.setAppError(error));
       return null;
     } finally {
@@ -200,8 +179,9 @@ function formatQuoteForSubmit(data, options) {
  */
 export function updateQuote({ data = {}, options = {} }) {
   return async function(dispatch) {
-    dispatch(toggleLoading(true));
     try {
+      dispatch(toggleLoading(true));
+
       if (options.shouldSendApplication) {
         const config = {
           exchangeName: 'harmony',
@@ -230,7 +210,6 @@ export function updateQuote({ data = {}, options = {} }) {
           dispatch(errorActions.setAppError(response.data));
           return null;
         }
-
         dispatch(setQuote(quote));
         return quote;
       }
@@ -241,6 +220,35 @@ export function updateQuote({ data = {}, options = {} }) {
       dispatch(errorActions.setAppError(error));
       return null;
 
+    } finally {
+      dispatch(toggleLoading(false));
+    }
+  };
+}
+
+/**
+ *
+ * @param quoteNumber
+ * @param quoteId
+ * @returns {Function}
+ */
+export function getQuote({ quoteNumber, quoteId }) {
+  return async (dispatch) => {
+    try {
+      const config = {
+        service: 'quote-data',
+        method: 'GET',
+        path: quoteId || quoteNumber
+      };
+
+      dispatch(toggleLoading(true));
+      const response = await serviceRunner.callService(config, 'getQuote');
+      const quote = response.data.result;
+      dispatch(setQuote(quote));
+      return quote;
+    } catch (error) {
+      dispatch(errorActions.setAppError(error));
+      return null;
     } finally {
       dispatch(toggleLoading(false));
     }
