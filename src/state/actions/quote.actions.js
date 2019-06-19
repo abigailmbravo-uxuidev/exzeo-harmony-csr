@@ -13,6 +13,13 @@ export function setQuote(quote) {
   };
 }
 
+export function setRetrievedQuote(response) {
+  return {
+    type: types.SET_RETRIEVED_QUOTE,
+    response
+  }
+}
+
 /**
  * Create a quote
  * @param {string} address
@@ -56,6 +63,7 @@ export function createQuote(address, igdID, stateCode, companyCode, product) {
   };
 }
 
+// TODO nothing is using this yet.
 /**
  *
  * @param quoteNumber
@@ -71,15 +79,14 @@ export function retrieveQuote({ quoteNumber, quoteId }) {
         data: {
           quoteId,
           quoteNumber,
-          alwaysRunUnderwriting: true
         }
       };
 
       dispatch(toggleLoading(true));
       const response = await serviceRunner.callService(config, 'quoteManager.retrieveQuote');
-      const quote = response.data.result;
-      dispatch(setQuote(quote));
-      return quote;
+      const result = response.data.result;
+      dispatch(setRetrievedQuote(result));
+      return result.quote;
     } catch (error) {
       if (process.env.NODE_ENV !== 'production') {
         console.log('Error retrieving quote: ', error);
@@ -106,7 +113,8 @@ export function reviewQuote({ quoteNumber, quoteId }) {
         routingKey: 'harmony.quote.reviewQuote',
         data: {
           quoteId,
-          quoteNumber
+          quoteNumber,
+          alwaysRunUnderwriting: true
         }
       };
 

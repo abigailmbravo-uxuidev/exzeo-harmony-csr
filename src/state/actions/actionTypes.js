@@ -52,6 +52,7 @@ export const SERVICE_REQUEST = 'SERVICE_REQUEST';
 
 /* QUOTE ACTIONS */
 export const SET_QUOTE = 'SET_QUOTE';
+export const SET_RETRIEVED_QUOTE = 'SET_RETRIEVED_QUOTE';
 
 /* AGENCY */
 export const SET_AGENCIES = 'SET_AGENCIES';
