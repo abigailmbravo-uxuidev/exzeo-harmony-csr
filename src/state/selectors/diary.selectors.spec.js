@@ -153,6 +153,32 @@ describe('Test diary selectors', () => {
       expect(result).toBeFalsy();
     });
 
+    it('Should return true even when there are duplicate resources, but ALL THREE right are present', () => {
+      state.authState.userProfile.resources = [
+        { right: 'READ', uri: 'TTIC:FL:HO3:Diaries:DiariesService:*' },
+        { right: 'INSERT', uri: 'TTIC:FL:HO3:Diaries:DiariesService:*' },
+        { right: 'UPDATE', uri: 'TTIC:FL:HO3:Diaries:DiariesService:*' },
+        { right: 'READ', uri: 'Diaries:DiariesService:*', conditions: [{ csp: "TTIC:FL:HO3" }] },
+        { right: 'INSERT', uri: 'Diaries:DiariesService:*',  conditions: [{ csp: "TTIC:FL:HO3" }] },
+        { right: 'UPDATE', uri: 'Diaries:DiariesService:*', conditions: [{ csp: "TTIC:FL:HO3" }] },
+      ];
+
+      const result = isPollingPermitted(state);
+      expect(result).toBeTruthy();
+    });
+
+    it('Should return false even when there are duplicate resources, but ALL THREE rights are NOT present', () => {
+      state.authState.userProfile.resources = [
+        { right: 'READ', uri: 'TTIC:FL:HO3:Diaries:DiariesService:*' },
+        { right: 'UPDATE', uri: 'TTIC:FL:HO3:Diaries:DiariesService:*' },
+        { right: 'READ', uri: 'Diaries:DiariesService:*', conditions: [{ csp: "TTIC:FL:HO3" }] },
+        { right: 'UPDATE', uri: 'Diaries:DiariesService:*', conditions: [{ csp: "TTIC:FL:HO3" }] },
+      ];
+
+      const result = isPollingPermitted(state);
+      expect(result).toBeFalsy();
+    });
+
     it('Should not throw when authState missing', () => {
       state.authState = {};
       expect(() => isPollingPermitted(state)).not.toThrow();
