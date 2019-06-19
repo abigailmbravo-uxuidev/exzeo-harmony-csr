@@ -24,5 +24,4 @@ Cypress.Commands.add('goToNav', name =>
     !loc.pathname.includes(name) &&
     cy.get('.spinner').should('not.exist')
       .findDataTag(`nav-${name}`).find('a').click({ force: true })
-      .get('.spinner').should('not.exist')
-  ));
+      .get('.spinner').should('not.exist').wait(1500)));
