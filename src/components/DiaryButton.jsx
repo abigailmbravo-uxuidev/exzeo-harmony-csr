@@ -6,8 +6,8 @@ const DiaryButton = ({ onToggleDiaries, showDiaries, openDiaryCount }) => (
   <div className={openDiaryCount > 0 ? 'header-toggle-wrapper active-diaries' : 'header-toggle-wrapper'}>
     <Button
       onClick={onToggleDiaries}
-      baseClass="link"
-      customClass=""
+      className={Button.constants.classNames.primary}
+      customClass="link"
       type="button"
       dataTest="diaryButton">
       {showDiaries && (

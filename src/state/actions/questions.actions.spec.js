@@ -1,5 +1,5 @@
 import configureStore from 'redux-mock-store';
-import axios from 'axios';
+import { http as axios } from '@exzeo/core-ui';
 import MockAdapter from 'axios-mock-adapter';
 import thunk from 'redux-thunk';
 

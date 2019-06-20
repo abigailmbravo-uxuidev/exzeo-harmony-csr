@@ -11,7 +11,8 @@ export default {
     diary: {},
     note: {},
     minimizeDiary: false,
-    minimizeNote: false
+    minimizeNote: false,
+    isLoading: false
   },
   cg: {},
   error: {},
@@ -59,5 +60,12 @@ export default {
   },
   zipCodeSettingsState: {
     zipCodeSettings: []
+  },
+  list: {
+    mortgagee: [],
+    premiumFinance: [],
+    order: [],
+    agency: [],
+    agent: [],
   }
 };

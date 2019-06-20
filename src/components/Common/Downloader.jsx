@@ -1,11 +1,11 @@
 import React from 'react';
-import axios from 'axios';
+import { http } from '@exzeo/core-ui';
 
 export const downloadFile = (fileUrl, fileName, errorHandler) => {
   const proxyUrl = `${process.env.REACT_APP_API_URL}/download`;
   const params = { url: fileUrl };
 
-  return axios.get(proxyUrl, { responseType: 'blob', params })
+  return http.get(proxyUrl, { responseType: 'blob', params })
     .then((response) => {
       const blobUrl = window.URL.createObjectURL(response.data);
       const link = window.document.createElement('a');

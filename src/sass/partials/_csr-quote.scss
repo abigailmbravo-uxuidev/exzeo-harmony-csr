@@ -43,247 +43,262 @@
     main[role="document"] {
       position: relative;
 
+      //NEED TO REFACTOR AND CLEAN UP GANDALF ADDITION
+
       .content-wrapper {
-        flex-wrap: nowrap;
 
         .route-content {
           display: flex;
           overflow: hidden;
+          flex-direction: column;
           flex-grow: 1;
           flex-shrink: 1;
 
-          .modal.quote-summary {
-            form {
-              flex-basis: auto;
-              flex-grow: 0;
-              flex-shrink: 0;
-            }
-          }
-
-          form {
+          .scroll {
             display: flex;
-            overflow: hidden;
+            overflow-x: hidden;
+            overflow-y: auto;
+            flex-direction: column;
             flex-grow: 1;
             flex-shrink: 1;
-          }
-
-          .scroll {
-            overflow-y: auto;
-            flex-grow: 1;
-            flex-shrink: 0;
+            flex-wrap: nowrap;
+            padding: $padding;
             width: 100%;
-          }
 
-          .survey-wrapper {
-            flex-direction: column;
-          }
-
-          .form-group {
-            .responsive-tables {
-              display: flex;
-              flex-direction: row;
-              margin: 0 0 ($padding*2);
-              width: 100%;
-
-              .card-view,
-              .table-view {
-                margin: 0 ($padding*2);
-
-                &:first-child {
-                  margin-left: 0;
-
-                  .react-bs-table-container {
-                    .react-bs-table {
-                      margin-left: 0;
-                    }
-                  }
-                }
-
-                &:last-child {
-                  margin-right: 0;
-
-                  .react-bs-table-container {
-                    .react-bs-table {
-                      margin-right: 0;
-                    }
-                  }
-                }
-              }
-
-              .table-view {
-                width: 33%;
-
-                .date {
-                  padding: $padding 15px $padding $padding;
-                  width: 60%;
-                }
-
-                .amount {
-                  padding: $padding $padding $padding 15px;
-                  width: 40%;
-                }
+            .modal.quote-summary {
+              form {
+                flex-basis: auto;
+                flex-grow: 0;
+                flex-shrink: 0;
               }
             }
 
-            h4 {
-              font-weight: normal;
-            }
-
-            > section {
-              margin-bottom: $padding*2;
-              padding-bottom: $padding*2;
-              border-bottom: 1px dashed $green-darken-04;
-            }
-
-            > section:last-of-type {
-              margin-bottom: 0;
-              border: 0;
-            }
-
-            .producer {
-              .flex-parent {
-                .flex-child:first-child {
-                  flex-basis: auto;
-                  flex-grow: 0;
-                  flex-shrink: 0;
-                }
-              }
-            }
-
-            .property {
-              .property-address {
-                width: 30%;
-
-                .state {
-                  flex-basis: 4rem;
-                  flex-grow: 0;
-                  flex-shrink: 0;
-                }
-
-                .zip {
-                  flex-basis: 8rem;
-                  flex-grow: 0;
-                  flex-shrink: 0;
-                }
-              }
-
-              .property-details {
-                width: 70%;
-
-                .flex-parent {
-                  .flex-child {
-                    width: 25%;
-                  }
-                }
-              }
-            }
-
-            .coverage-options {
-              > .flex-child {
-                width: 25%;
-              }
-
-              .coverages {
-                width: 35%;
-              }
-
-              .other-coverages {
-                width: 30%;
-              }
-
-              .deductibles {
-                width: 20%;
-              }
-
-              .discounts {
-                width: 15%;
-              }
-            }
-
-            .wind {
-              .wind-col1 {
-                width: 50%;
-              }
-
-              .wind-col2 {
-                width: 50%;
-              }
-            }
-
-            .agencyCode {
-              overflow: hidden;
+            form {
               flex-grow: 0;
               flex-shrink: 0;
-              width: 40%;
 
-              .agencyCode {
-                width: 100%;
-              }
-            }
-          }
-
-          &.summary {
-            .detail-wrapper {
-              > div {
+              > section {
                 border-bottom: 1px dashed $green-darken-04;
 
-                &:last-child {
+                &:last-of-type {
+                  margin-bottom: 0;
                   border-bottom-width: 0;
+                }
+
+                &.policyholder-component {
+                  section {
+                    padding: 0;
+
+                    .title-check-box-wrapper {
+                      display: flex;
+                      align-items: flex-end;
+                      padding: 0;
+                      
+                      .title {
+                        flex-grow: 0;
+                        flex-shrink: 0;
+                        max-width: fit-content;
+                      }
+                      .check-box-wrapper {
+                        flex-grow: 1;
+                        flex-shrink: 1;
+                        margin-bottom: $padding/4;
+
+                        input {
+                          margin-right: $padding/2;
+                        }
+                      }
+                    }
+                    
+                    .form-group {
+                      width: 50%;
+
+                      &.email {
+                        width: 100%;
+                      }
+                    }
+                  }
+                }
+
+                &.coverages {
+                  .form-group {
+                    &.has-output-label {
+                      flex-direction: row-reverse;
+                      flex-wrap: wrap;
+                      > * {
+                        width: calc(50% - .5rem);
+                      }
+    
+                      select, input {
+                        order: 1;
+                      }
+    
+                      label {
+                        margin-right: $padding;
+                        
+                        &:first-of-type {
+                          margin-right: 0;
+                          margin-left: $padding;
+                        }
+                      }
+    
+                      select, input {
+                        margin-left: $padding;
+                      }
+    
+                      output {
+                        order: 3;
+                        margin-right: $padding;
+                      }
+                    }
+                  }
+                }
+
+                &.deductibles {
+                  .form-group {
+                    &.has-output-label {
+                      input, select {
+                        margin-bottom: $padding*2;
+                      }
+                    }
+                  }
                 }
               }
             }
-          }
-        }
 
-        .share-quote {
-          display: flex;
-          flex-grow: 0;
-          flex-shrink: 0;
-          padding: $padding;
-          width: auto;
-          border-top: 1px dotted $warm-gray-04;
-          background: $warm-gray-01;
-
-          form {
-            display: flex;
-            align-content: space-between;
-            align-items: flex-start;
-            width: 100%;
-
-            .btn {
-              align-self: flex-start;
-              margin-top: 1.5rem;
+            .survey-wrapper {
+              flex-direction: column;
             }
 
             .form-group {
-              margin: 0 $padding 0 0;
+              .responsive-tables {
+                display: flex;
+                flex-direction: row;
+                margin: 0 0 ($padding*2);
+                width: 100%;
 
-              &.share-name {
-                margin-right: $padding;
-              }
+                .card-view,
+                .table-view {
+                  margin: 0 ($padding*2);
 
-              &.share-email {
-                margin-right: $padding;
-              }
+                  &:first-child {
+                    margin-left: 0;
 
-              &.error {
-                input {
-                  border-color: $red-darken-03;
+                    .react-bs-table-container {
+                      .react-bs-table {
+                        margin-left: 0;
+                      }
+                    }
+                  }
+
+                  &:last-child {
+                    margin-right: 0;
+
+                    .react-bs-table-container {
+                      .react-bs-table {
+                        margin-right: 0;
+                      }
+                    }
+                  }
                 }
 
-                span {
-                  color: $red-darken-03;
-                  font-weight: $font-weight-bold;
+                .table-view {
+                  width: 33%;
+
+                  .date {
+                    padding: $padding 15px $padding $padding;
+                    width: 60%;
+                  }
+
+                  .amount {
+                    padding: $padding $padding $padding 15px;
+                    width: 40%;
+                  }
                 }
               }
 
-              label {
-                font-size: $font-size-sm;
+              h4 {
+                font-weight: normal;
               }
-            }
 
-            button {
-              margin-top: 1.5rem;
+              > section {
+                border-bottom: 1px dashed $green-darken-04;
+              }
+
+              > section:last-of-type {
+                margin-bottom: 0;
+                border: 0;
+              }
+
+              .producer {
+                .flex-parent {
+                  .flex-child:first-child {
+                    flex-basis: auto;
+                    flex-grow: 0;
+                    flex-shrink: 0;
+                  }
+                }
+              }
+
+              .property {
+                .property-address {
+                  width: 30%;
+
+                  .state {
+                    flex-basis: 4rem;
+                    flex-grow: 0;
+                    flex-shrink: 0;
+                  }
+
+                  .zip {
+                    flex-basis: 8rem;
+                    flex-grow: 0;
+                    flex-shrink: 0;
+                  }
+                }
+
+                .property-details {
+                  width: 70%;
+
+                  .flex-parent {
+                    .flex-child {
+                      width: 25%;
+                    }
+                  }
+                }
+              }
+
+              .coverage-options {
+                > .flex-child {
+                  width: 25%;
+                }
+
+                .coverages {
+                  width: 35%;
+                }
+
+                .other-coverages {
+                  width: 30%;
+                }
+
+                .deductibles {
+                  width: 20%;
+                }
+
+                .discounts {
+                  width: 15%;
+                }
+              }
+
+              .wind {
+                .wind-col1 {
+                  width: 50%;
+                }
+
+                .wind-col2 {
+                  width: 50%;
+                }
+              }
             }
           }
         }
@@ -473,15 +488,13 @@
       flex-shrink: 0;
       margin-bottom: 0;
       padding: 0.5rem;
-      height: 3.25rem;
+      height: auto;
       border-top: 1px dotted $warm-gray-04;
 
       footer {
         flex-grow: 1;
         flex-shrink: 0;
         width: auto;
-
-        div[role="banner"] {}
       }
     }
   }
@@ -595,33 +608,40 @@
 /*------------------------------------------------------------------------------------*/
 #AddAdditionalInterestPage,
 .additional-interests {
-  .detail-wrapper {
+/*   .detail-wrapper {
     flex-direction: column;
-  }
+  } */
+/*   ul.results.result-cards {
+    margin: 0;
+    padding: 0;
+    list-style: none;
 
-  .button-group {
-    display: flex;
+    li {
+      .card {
+        flex-direction: row;
+        margin: 0;
+        padding: $padding 0;
+        width: 100%;
 
-    .btn {
-      margin: 0 $padding $padding 0;
-    }
-  }
+        > div {
+          flex-grow: 1;
+          flex-shrink: 1;
 
-  .results-wrapper {
-    display: flex;
-    flex-direction: column;
-    flex-grow: 1;
-    flex-shrink: 1;
-    margin: $padding 0 ($padding*2);
-    padding: ($padding*2) 0 $paragraph-margin-bottom;
-    width: 100%;
+          h4 {
+            margin: 0;
+          }
 
-    ul.results.result-cards {
-      margin: 0;
-      padding: 0;
-      list-style: none;
+          &.card-icon {
+            flex-grow: 0;
+            flex-shrink: 0;
+          }
 
-      li {
+          &.ref-number {
+            flex-grow: 0;
+            flex-shrink: 0;
+          }
+        }
+
         .edit-btn {
           &:hover {
             color: $bright-blue-darken-04;
@@ -638,16 +658,63 @@
         }
       }
     }
-  }
+  } */
 }
 
 #AddAdditionalInterestPage {
   .results-wrapper {
+    padding-top: $padding*2;
     border-top: 1px dashed $green-darken-03;
+  }
+
+  .button-group {
+    display: flex;
+    flex-wrap: wrap;
+    margin-bottom: $padding;
+
+    .btn {
+      margin: 0 $padding $padding 0;
+    }
   }
 }
 //Mailing & Billing
 /*------------------------------------------------------------------------------------*/
+.billing-information {
+  .form-group {
+    &.radio.segmented {
+      .segmented-answer-wrapper {
+        > div {
+          width: 33.33%;
+        }
+      }
+    }
+  }
+  .billing-plan-wrapper {
+    .title {
+      padding: 0;
+    }
+    dl {
+      padding: 0 ($padding/2) 0 0;
+
+      &:last-of-type {
+        padding-right: 0;
+      }
+      dt {
+        padding: 0 $padding;
+        background: $warm-gray-02;
+      }
+      dd {
+        margin-bottom: 0;
+        padding: ($padding/2) $padding;
+        border-bottom: 1px dotted $warm-gray-03;
+        
+        &:nth-of-type(even) {
+          background: $warm-gray-01;
+        }
+      }
+    }
+  }
+}
 #MailingAddressBilling {
   .mailing-address {
     .segmented-switch {
@@ -718,224 +785,63 @@
     width: 50%;
   }
 }
+
 //summary page
 /*------------------------------------------------------------------------------------*/
-.summary {
-  overflow-y: auto;
-  width: 100%;
 
-  dt {
-    color: $warm-gray-08;
+.share {
+  display: flex;
+  align-content: space-between;
+  align-items: flex-start;
+  flex-grow: 0;
+  flex-shrink: 0;
+  padding: $padding;
+  width: 100%;
+  border-top: 1px dotted $warm-gray-04;
+  background: $warm-gray-01;
+
+  .btn {
+    align-self: flex-start;
+    margin-top: 1.5rem;
   }
 
-  .detail-wrapper {
-    width: 100%;
+  .share-inputs {
+    display: flex;
+    flex-grow: 1;
+    flex-shrink: 1;
 
-    .detail-group {
-      .edit-btn {
-        &:hover {
-          text-decoration: none;
+    .form-group {
+      margin: 0 $padding 0 0;
+
+      &.share-name {
+        margin-right: $padding;
+      }
+
+      &.share-email {
+        margin-right: $padding;
+      }
+
+      &.error {
+        input {
+          border-color: $red-darken-03;
+        }
+
+        span {
+          color: $red-darken-03;
+          font-weight: $font-weight-bold;
         }
       }
 
-      &.edit {
-        border: 2px solid $warm-gray-07;
-
-        .editing {
-          position: absolute;
-          top: $padding;
-          right: $padding;
-          color: $white;
-          text-transform: uppercase;
-        }
-
-        .section-group-header {
-          background: $bright-blue;
-        }
-
-        .display-element {
-          padding: ($padding) 0;
-
-          .workflow-steps {
-            padding: 0;
-          }
-        }
-      }
-
-      &.property-details {
-        margin-bottom: $padding*2;
-
-        .display-element {
-          display: flex;
-          flex-wrap: wrap;
-          padding: $padding 0;
-
-          dl {
-            flex-grow: 1;
-            flex-shrink: 0;
-
-            div {
-              dd {
-                margin-bottom: 0;
-              }
-            }
-          }
-        }
-      }
-
-      &.quote-details {
-        margin-bottom: 1rem;
-
-        .display-element {
-          display: flex;
-          flex-direction: column;
-          flex-wrap: wrap;
-          margin-bottom: $padding;
-
-          dl {
-            display: flex;
-            margin-bottom: 0;
-            padding: ($padding);
-
-            &:nth-of-type(odd) {
-              background: $warm-gray-01;
-            }
-
-            div {
-              display: flex;
-              align-items: center;
-              justify-content: space-between;
-              width: 100%;
-
-              dt {
-                span {
-                  margin-right: $padding;
-                }
-              }
-
-              dd {
-                margin-bottom: 0;
-              }
-            }
-          }
-        }
-      }
-
-      &.policyholder-details {
-        margin-bottom: 1rem;
-
-        .display-element {
-          padding: $padding 0;
-
-          p {
-            padding: $padding*2;
-            background: $orange-lighten-04;
-            color: $red-darken-02;
-          }
-
-          .contact-card {
-            display: flex;
-
-            div {
-              flex-grow: 1;
-              flex-shrink: 0;
-
-              &.contact-name {}
-
-              &.contact-email {}
-
-              dl {
-                margin-right: $padding*2;
-
-                div {
-                  dd {
-                    margin-bottom: 0;
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-
-      &.mailing-address-details {
-        margin-bottom: 1rem;
-
-        .display-element {
-          display: flex;
-          padding: $padding 0;
-
-          dl {
-            flex-grow: 1;
-            flex-shrink: 0;
-          }
-        }
-      }
-
-      &.additional-interests-details {
-        .display-element {
-          padding: $padding 0;
-
-          .card {
-            flex-direction: row;
-            margin: 0 0 $padding;
-            padding: $padding;
-
-            .card-icon {
-              display: flex;
-              align-items: center;
-              flex-direction: column;
-              justify-content: center;
-              margin-right: $padding;
-
-              i {
-                display: flex;
-                align-items: center;
-                flex-grow: 0;
-                flex-shrink: 0;
-                justify-content: center;
-                width: 2rem;
-                height: 2rem;
-                color: $bright-blue-darken-04;
-                font-size: $font-size-h2;
-              }
-
-              label {
-                margin-bottom: 0;
-                background: none;
-                font-weight: $font-weight-normal;
-                font-size: $font-size-xs;
-              }
-            }
-
-            section {
-              flex-grow: 1;
-              flex-shrink: 1;
-
-              h4 {
-                margin-bottom: 0;
-              }
-
-              p {
-                margin-bottom: 0;
-              }
-            }
-          }
-        }
+      label {
+        font-size: $font-size-sm;
       }
     }
   }
-}
 
-.csr.quote {
-  .email-address {
-    flex-grow: 1;
-    flex-shrink: 1;
-  }
-
-  .electronicDelivery {
-    flex-grow: 0;
-    flex-shrink: 0;
-    width: 32%;
+  button {
+    margin-top: 1.5rem;
   }
 }
+
+//end summary page
+/*------------------------------------------------------------------------------------*/

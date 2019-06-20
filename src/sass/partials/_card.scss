@@ -87,6 +87,17 @@
         padding-bottom: 0;
         border-bottom-width: 0;
       }
+
+      &.error {
+        input {
+          border-color: $red-darken-01;
+        }
+  
+        span {
+          color: $red-darken-01;
+          font-size: $font-size-sm;
+        }
+      }
     }
 
     h1,
@@ -158,8 +169,8 @@
   align-items: center;
   flex-direction: column;
   justify-content: center;
-  width: 6rem;
   margin-right: $padding;
+  width: 6rem;
 
   label {
     margin-bottom: 0;
@@ -173,12 +184,12 @@
   align-items: center;
   margin-left: $padding;
   color: $bright-blue;
-  font-size: $font-size-sm;
   font-weight: $font-weight-bold;
+  font-size: $font-size-sm;
 
   i {
-    width: auto;
     margin: 0 ($padding/2) 0 0;
+    width: auto;
     color: $bright-blue;
     font-size: $font-size-sm;
   }
@@ -188,13 +199,13 @@
   display: flex;
   align-self: center;
   flex-direction: column;
-  min-width: 10rem;
   margin: 0 $padding;
+  min-width: 10rem;
 
   label {
     margin-bottom: 0;
-    font-size: $font-size-sm;
     font-weight: $font-weight-normal;
+    font-size: $font-size-sm;
   }
 }
 
@@ -248,9 +259,9 @@
           }
 
           &.inactive {
-            color: $btn-link-disabled-color;
             border-color: $warm-gray-03;
             background: $warm-gray-00;
+            color: $btn-link-disabled-color;
 
             .card-icon {
               i,
@@ -282,16 +293,17 @@
 
 ul {
   &.results {
-    width: 100%;
     padding: $padding*2;
+    width: 100%;
 
     &.diary-list {
       .card {
         flex-direction: row;
         flex-grow: 1;
         flex-shrink: 1;
-        width: 100%;
         margin: 0 0 $padding;
+        width: 100%;
+
         @include transition(all 0.2s ease-in-out);
 
         &.pastDue {
@@ -353,8 +365,8 @@ ul {
             display: flex;
             flex-grow: 0;
             flex-shrink: 0;
-            width: auto;
             padding: ($padding/2) ($padding/2) ($padding/2) $padding;
+            width: auto;
             border-width: 0;
             background: $white;
 
@@ -388,8 +400,8 @@ ul {
 
               > div {
                 color: $bright-blue-darken-04;
-                font-size: $font-size-xs;
                 font-weight: $font-weight-bold;
+                font-size: $font-size-xs;
               }
             }
           }
@@ -399,8 +411,8 @@ ul {
           &.card-body {
             flex-grow: 1;
             flex-shrink: 1;
-            width: auto;
             padding: $padding $padding $padding 0;
+            width: auto;
             background: $white;
 
             h4 {
@@ -420,6 +432,7 @@ ul {
                   padding: ($padding/4) 0;
                   color: $warm-gray-08;
                   font-size: $font-size-sm;
+
                   @include transition(all 0.2s ease-in-out);
 
                   &.header {
@@ -478,9 +491,9 @@ ul {
         }
 
         &:hover {
+          box-shadow: $card-box-shadow-hover;
           cursor: pointer;
           transform: scale(1.004);
-          box-shadow: $card-box-shadow-hover;
 
           > div {
             &.card-body {
@@ -498,9 +511,9 @@ ul {
         }
 
         &:hover {
+          box-shadow: $card-box-shadow-hover;
           cursor: pointer;
           transform: scale(1.004);
-          box-shadow: $card-box-shadow-hover;
 
           > div {
             &.card-body {
@@ -521,8 +534,8 @@ ul {
           &.card-footer {
             flex-grow: 0;
             flex-shrink: 0;
-            width: auto;
             padding: 0;
+            width: auto;
             border-width: 0;
             background: $white;
           }

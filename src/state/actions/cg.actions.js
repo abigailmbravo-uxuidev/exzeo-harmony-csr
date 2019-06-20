@@ -1,5 +1,5 @@
 import Promise from 'bluebird';
-import axios from 'axios';
+import { http } from '@exzeo/core-ui/src/Utilities';
 import { batchActions } from 'redux-batched-actions';
 import _ from 'lodash';
 import * as types from './actionTypes';
@@ -71,7 +71,7 @@ export const startWorkflow = (modelName, data, dispatchAppState = true) => (disp
     url: `${process.env.REACT_APP_API_URL}/cg/start?${modelName}`
   };
 
-  return axios(axiosConfig)
+  return http(axiosConfig)
     .then((response) => {
       const responseData = response.data.data;
       // check to see if the cg has returned an error as an ok
@@ -122,7 +122,7 @@ export const completeTask = (modelName, workflowId, stepName, data, dispatchAppS
     }
   };
 
-  return axios(axiosConfig)
+  return http(axiosConfig)
     .then((response) => {
       const responseData = response.data.data;
       // check to see if the cg has returned an error as an ok
@@ -157,7 +157,7 @@ export const batchCompleteTask = (modelName, workflowId, stepsWithData, dispatch
     axiosConfigs.push(axiosConfig);
   });
 
-  return Promise.reduce(axiosConfigs, (response, axiosConfig) => axios(axiosConfig), 0)
+  return Promise.reduce(axiosConfigs, (response, axiosConfig) => http(axiosConfig), 0)
     .then((response) => {
       const responseData = response.data.data;
       // check to see if the cg has returned an error as an ok
@@ -186,7 +186,7 @@ export const moveToTask = (modelName, workflowId, stepName, dispatchAppState = t
       stepName
     }
   };
-  return axios(axiosConfig)
+  return http(axiosConfig)
     .then((response) => {
       const responseData = response.data.data;
       // check to see if the cg has returned an error as an ok
@@ -217,7 +217,7 @@ export const moveToTaskAndExecuteComplete = (modelName, workflowId, stepName, co
     }
   };
   let newInstanceId = '';
-  return axios(axiosConfig)
+  return http(axiosConfig)
     .then((response) => {
       const responseData = response.data.data;
       // check to see if the cg has returned an error as an ok
@@ -235,7 +235,7 @@ export const moveToTaskAndExecuteComplete = (modelName, workflowId, stepName, co
           data: completeStep.data
         }
       };
-      return axios(axiosConfig2);
+      return http(axiosConfig2);
     })
     .then((response) => {
       const responseData = response.data.data;

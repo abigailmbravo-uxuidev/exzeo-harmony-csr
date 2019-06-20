@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import axios from 'axios';
+import { http } from '@exzeo/core-ui';
 
 import { setUserProfile } from '../state/actions/auth.actions';
 import { setAppError } from '../state/actions/error.actions';
@@ -23,7 +23,7 @@ export class Authentication extends Component {
 
     if (isAuthenticated() && this.checkPublicPath(window.location.pathname)) {
       this.idToken = localStorage.getItem(config.tokenLocation);
-      axios.defaults.headers.common.authorization = `bearer ${this.idToken}`;
+      http.defaults.headers.common.authorization = `bearer ${this.idToken}`;
 
       if (!userProfile) {
         try {
@@ -35,7 +35,7 @@ export class Authentication extends Component {
       }
     } else if (!isAuthenticated() && this.checkPublicPath(window.location.pathname)) {
       history.push(config.unauthRedirect);
-      axios.defaults.headers.common.authorization = undefined; // eslint-disable-line
+      http.defaults.headers.common.authorization = undefined; // eslint-disable-line
     } else if (/access_token|id_token|error/.test(window.location.hash)) {
       auth.handleAuthentication();
     }

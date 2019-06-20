@@ -9,15 +9,15 @@ import { setAppState } from '../../state/actions/appState.actions';
 import { getZipcodeSettings, getAgents, getAgency } from '../../state/actions/service.actions';
 import { fetchNotes } from '../../state/actions/notes.actions';
 
-import { 
-  createTransaction, 
-  getBillingOptionsForPolicy, 
+import {
+  createTransaction,
+  getBillingOptionsForPolicy,
   getEffectiveDateChangeReasons,
-  getPolicy, 
-  getPaymentOptionsApplyPayments, 
-  getPaymentHistory, 
-  getCancelOptions, 
-  getEndorsementHistory 
+  getPolicy,
+  getPaymentOptionsApplyPayments,
+  getPaymentHistory,
+  getCancelOptions,
+  getEndorsementHistory
 } from '../../state/actions/policy.actions';
 import { startWorkflow, batchCompleteTask } from '../../state/actions/cg.actions';
 
@@ -90,19 +90,19 @@ export class Policy extends React.Component {
   handleToggleDiaries = () => {
     this.setState(state => ({
       showDiaries: !state.showDiaries
-      }));  
+      }));
   }
 
   handleToggleReinstateModal = () => {
     this.setState(state => ({
       showReinstatePolicyModal: !state.showReinstatePolicyModal
-      }));  
+      }));
   }
 
   handleToggleEffectiveDateChangeModal = () => {
     this.setState(state => ({
       showEffectiveDateChangeModal: !state.showEffectiveDateChangeModal
-      }));  
+      }));
   }
 
   changeEffectiveDate = async (data) => {
@@ -181,6 +181,22 @@ export class Policy extends React.Component {
           onToggleDiaries={this.handleToggleDiaries}
           showDiaries={showDiaries}
           modalHandlers={modalHandlers}
+          header={{
+            showEffectiveDateButton: true,
+            showReinstateButton: true,
+            fields: [
+              { value: 'policyHolder', component: 'Section', label: 'Policyholder' },
+              { value: 'mailingAddress', component: 'Section' },
+              { value: 'propertyAddress', component: 'Section' },
+              { value: 'county', label: 'Property County' },
+              { value: 'territory' },
+              { value: 'constructionType' },
+              { value: 'effectiveDate' },
+              { value: 'cancellation' },
+              { value: 'finalPayment', label: 'Final Payment' },
+              { value: 'currentPremium', className:'premium' }
+            ]
+          }}
           render={() => (
             <React.Fragment>
               {initialized &&
@@ -210,6 +226,7 @@ export class Policy extends React.Component {
                 hideEffectiveDateModal={this.handleToggleEffectiveDateChangeModal} />
           }
               <OpenDiariesBar
+                entityEndDate={policy.endDate}
                 effectiveDate={policy.effectiveDate}
                 resourceId={policy.policyNumber}
                 resourceType="Policy" />

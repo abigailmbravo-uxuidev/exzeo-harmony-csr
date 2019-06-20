@@ -1,6 +1,6 @@
 import moment from 'moment';
 
-import { callService } from '../../utilities/serviceRunner';
+import { callService } from '@exzeo/core-ui/src/@Harmony';
 import * as types from './actionTypes';
 import { setAppError } from './error.actions';
 
@@ -24,16 +24,16 @@ const mergeNotes = (notes, files ) => {
         ]
       };
       filtered.push(newNote);
-    };
+    }
     return filtered;
   }, []);
   return [...notes, ...fileNotes];
 };
 
 /**
- * Set Notes
- * @param {array} notes
- * @returns {{type: string, loading: array}}
+ *
+ * @param notes
+ * @returns {{notes: *, type: string}}
  */
 export function setNotes(notes) {
   return {
@@ -44,7 +44,8 @@ export function setNotes(notes) {
 
 /**
  *
- * @param filter
+ * @param numbers
+ * @param numberType
  * @returns {Function}
  */
 export function fetchNotes(numbers, numberType) {
@@ -53,24 +54,24 @@ export function fetchNotes(numbers, numberType) {
     return { number: removeTerm(number), numberType: noteType };
   });
 
-  const filesQuesry = numbers.map(number => number).join(',');
+  const filesQuery = numbers.map(number => number).join(',');
 
   const notesConfig = {
-    exchangeName: 'harmony', 
-    routingKey: 'harmony.note.getNotes', 
+    exchangeName: 'harmony',
+    routingKey: 'harmony.note.getNotes',
     data: { data: notesQuery, }
   };
 
   const filesConfig = {
     service: 'file-index',
     method: 'GET',
-    path: `v1/fileindex/${filesQuesry}`
+    path: `v1/fileindex/${filesQuery}`
   };
 
   return async dispatch => {
     try {
       const [notes, files] = await Promise.all([
-        await callService(notesConfig, 'fetchNotes'), 
+        await callService(notesConfig, 'fetchNotes'),
         numberType === 'policyNumber' ? callService(filesConfig, 'fetchFiles') : []
       ]);
       const allNotes = files.data
@@ -82,5 +83,5 @@ export function fetchNotes(numbers, numberType) {
       return dispatch(setAppError(err));
     }
   };
-};
+}
 

@@ -2,11 +2,11 @@
   "projectId": "71ns45",
   "chromeWebSecurity": false,
   "testFiles": "**/**.spec.js",
-  "videoUploadOnPasses": false,
-  "defaultCommandTimeout": 12000,
+  "video": false,
+  "defaultCommandTimeout": 30000,
   "requestTimeout": 120000,
   "responseTimeout": 180000,
   "pageLoadTimeout": 180000,
-  "reporter": "teamcity",
-  "numTestsKeptInMemory": 0
+  "viewportHeight": 960,
+  "viewportWidth": 1280
 }

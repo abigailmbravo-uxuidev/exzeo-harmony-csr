@@ -1,0 +1,419 @@
+.view-grid {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.component-loader {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: $border-radius;
+  color: $warm-gray-04;
+
+  &.loader-sm {}
+  &.loader-md {
+    height: 16rem;
+  }
+  &.loader-lg {}
+  &.loader-xl {}
+
+
+  .spinner {
+    margin: 0 auto;
+    width: 150px;
+    text-align: center;
+  }
+  
+  .spinner > div {
+    display: inline-block;
+    margin: 0 2px;
+    width: 16px;
+    height: 16px;
+    border-radius: 100%;
+    background-color: rgba($bright-blue-darken-04, 1);
+    -webkit-animation: sk-bouncedelay 1.4s infinite ease-in-out both;
+    animation: sk-bouncedelay 1.4s infinite ease-in-out both;
+  }
+  
+  .spinner .bounce1 {
+    -webkit-animation-delay: -0.32s;
+    animation-delay: -0.32s;
+  }
+  
+  .spinner .bounce2 {
+    -webkit-animation-delay: -0.16s;
+    animation-delay: -0.16s;
+  }
+  
+  
+}
+
+@-webkit-keyframes sk-bouncedelay {
+  0%, 80%, 100% { -webkit-transform: scale(0) }
+  40% { -webkit-transform: scale(1.0) }
+}
+
+@keyframes sk-bouncedelay {
+  0%, 80%, 100% { 
+    -webkit-transform: scale(0);
+    transform: scale(0);
+  } 40% { 
+    -webkit-transform: scale(1.0);
+    transform: scale(1.0);
+  }
+}
+
+//title component
+/*------------------------------------------------------------------------------------*/
+.title {
+  margin: 0 0 $padding;
+  padding: 0  $padding;
+  width: 100%;
+  color: $bright-blue-darken-04;
+  font-weight: $font-weight-bold;
+  font-size: $font-size-h3;
+
+  @include for-phone-only {
+    font-size: $font-size-h3;
+  }
+
+  &.messages {
+    color: $warm-gray-07;
+    font-weight: $font-weight-normal;
+    font-size: $font-size-h5;
+  }
+}
+//end title component
+/*------------------------------------------------------------------------------------*/
+
+//section component
+/*------------------------------------------------------------------------------------*/
+.view-grid {
+
+  section {
+    display: flex;
+    align-content: flex-start;
+    flex-wrap: wrap;
+    margin-bottom: $padding*2;
+    padding-bottom: $padding*2;
+
+    > section {
+      margin: 0;
+      padding: 0;
+    }
+
+    > * {
+      padding: 0 $padding;
+    }
+
+    output {
+      padding: ($padding/2);
+      height: 2rem;
+      border: 1px solid $warm-gray-02;
+      border-radius: $border-radius;
+      background-color: $input-bg-disabled;
+      opacity: 1;
+    }
+  }
+
+  .form-group {
+    &.error {
+      input {
+        border-color: $red-darken-01;
+      }
+
+      span {
+        color: $red-darken-01;
+        font-size: $font-size-sm;
+      }
+    }
+  }
+}
+
+.view-grid,
+.view-grid section {
+
+  &:last-of-type {
+    border-bottom-width: 0;
+  }
+
+  > * {
+    flex-grow: 0;
+    flex-shrink: 0;
+    width: 100%;
+  }
+
+  .view-col-1 {
+    flex-grow: 0;
+    flex-shrink: 0;
+    width: 8.333%;
+  }
+
+  .view-col-2 {
+    flex-grow: 0;
+    flex-shrink: 0;
+    width: 16.667%;
+  }
+
+  .view-col-3 {
+    flex-grow: 0;
+    flex-shrink: 0;
+    width: 25%;
+  }
+
+  .view-col-4 {
+    flex-grow: 0;
+    flex-shrink: 0;
+    width: 33.333%;
+  }
+
+  .view-col-5 {
+    flex-grow: 0;
+    flex-shrink: 0;
+    width: 41.667%;
+  }
+
+  .view-col-6 {
+    flex-grow: 0;
+    flex-shrink: 0;
+    width: 50%;
+  }
+
+  .view-col-7 {
+    flex-grow: 0;
+    flex-shrink: 0;
+    width: 58.333%;
+  }
+
+  .view-col-8 {
+    flex-grow: 0;
+    flex-shrink: 0;
+    width: 66.667%;
+  }
+
+  .view-col-9 {
+    flex-grow: 0;
+    flex-shrink: 0;
+    width: 75%;
+  }
+
+  .view-col-10 {
+    flex-grow: 0;
+    flex-shrink: 0;
+    width: 83.333%;
+  }
+
+  .view-col-11 {
+    flex-grow: 0;
+    flex-shrink: 0;
+    width: 91.667%;
+  }
+}
+//end section component
+/*------------------------------------------------------------------------------------*/
+
+//additional interests component
+/*------------------------------------------------------------------------------------*/
+.view-grid {
+  .additional-interests {
+
+    &.results-wrapper {
+      padding: 0;
+    }
+ 
+    .title {
+      padding: 0;
+    }
+
+    ul {
+      margin: 0;
+      padding: 0;
+      li {
+        margin-bottom: $padding;
+        .card {
+          display: flex;
+          flex-direction: row;
+          margin: 0;
+          width: 100%;
+
+          > div {
+            flex-grow: 1;
+            flex-shrink: 1;
+            padding: $padding $padding $padding 0;
+
+            &.card-icon {
+              flex-grow: 0;
+              flex-shrink: 0;
+              padding: $padding;
+
+              i {
+                color: $bright-blue-darken-04;
+                font-size: $font-size-h2;
+              }
+            }
+
+            &.ref-number {
+              flex-grow: 0;
+              flex-shrink: 0;
+              min-width: 10rem;
+            }
+
+            h4 {
+              margin: 0;
+            }
+          }
+
+          > a {
+            &.edit, &.remove {
+              flex-grow: 0;
+              flex-shrink: 0;
+              width: auto;
+              border-width: 0;
+              box-shadow: 0 0 0 rgba(0, 0, 0, 0);
+              color: $bright-blue;
+              font-size: $font-size-sm;
+
+              i {
+                margin-right: $padding/2;
+                width: auto;
+                color: $bright-blue;
+                font-size: $font-size-sm;
+
+                @include transition(all 0.2s ease-in-out);
+              }
+
+              &:after {
+                font-weight: $font-weight-bold;
+                font-family: $font-family-base;
+              }
+
+              &:hover {
+                border-width: 0;
+                box-shadow: 0 0 0 rgba(0, 0, 0, 0);
+                transform: scale(1);
+
+                &:after {
+                  color: $bright-blue-darken-04;
+                  text-decoration: underline;
+                }
+
+                i {
+                  color: $bright-blue-darken-04;
+                }
+              }
+            }
+
+            &.edit {
+
+              i {
+                &:after {
+                  content: '\f14b';
+                }
+              }
+
+              &:after {
+                content: 'EDIT'
+              }
+            }
+            &.remove {
+
+              i {
+                &:after {
+                  content: '\f2d3';
+                }
+              }
+
+              &:after {
+                content: 'DELETE'
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+//end additional interests component
+/*------------------------------------------------------------------------------------*/
+
+//notes/files page specific styles
+/*------------------------------------------------------------------------------------*/
+.app-wrapper.csr.quote {
+  #NotesFiles {
+    .scroll {
+      .form-group.survey-wrapper {
+        padding: 0;
+      }
+    }
+  }
+}
+//end notes/files page specific styles
+/*------------------------------------------------------------------------------------*/
+
+//summary page specific styles
+/*------------------------------------------------------------------------------------*/
+section {
+  .detail-group {
+    display: flex;
+    flex-direction: column;
+    padding: 0 ($padding*2);
+    min-height: 4rem;
+    width: 100%;
+
+    dl {
+      //margin-bottom: 1rem;
+      dt {
+        color: $warm-gray-08;
+      }
+      dd {
+        margin: 0;
+      }
+    }
+  }
+  &.produced-by, &.property-details, &.policyholder-details {
+    .detail-group {
+      flex-direction: row;
+      
+      dl {
+        flex-grow: 1;
+        flex-shrink: 1;
+      }
+    }
+  }
+  &.coverage-rating {
+    .detail-group {
+      display: flex;
+      align-content: space-between;
+      flex-direction: column;
+      flex-wrap: wrap;
+      height: 21.5rem;
+
+      dl {
+        margin-bottom: 0;
+        padding: $padding;
+        width: calc(50% - .5rem);
+        
+        &:nth-child(odd) {
+          background: $warm-gray-01;
+        }
+
+        > div {
+          display: flex;
+
+          dt {
+            flex-grow: 1;
+            flex-shrink: 1;
+          }
+
+          dd {
+            flex-grow: 1;
+            flex-shrink: 1;
+            text-align: right;
+          }
+        }
+      }
+    }
+  }
+}
+//end summary page specific styles
+/*------------------------------------------------------------------------------------*/

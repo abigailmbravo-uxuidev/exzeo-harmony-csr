@@ -17,7 +17,7 @@ export function handleNewTab(resource, type) {
   }
 }
 
-export function handleNewTabClick(resourceId, type) {
+export function handleDiaryClick(resourceId, type) {
   const formattedType = String(type).toLowerCase();
   if (formattedType === 'quote') {
     window.open(`/quote/${resourceId}/coverage`, '_blank');
@@ -30,9 +30,9 @@ export function handleNewTabClick(resourceId, type) {
   }
 }
 
-export function handleKeyPress(event, resourceId, type) {
+export function handleDiaryKeyPress(event, resourceId, type) {
   if (event.charCode === 13) {
-    handleNewTabClick(resourceId, type);
+    handleDiaryClick(resourceId, type);
   }
 }
 

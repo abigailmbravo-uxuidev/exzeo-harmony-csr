@@ -4,137 +4,40 @@
   align-items: center;
   flex-direction: column;
   justify-content: center;
-
-  .card {
-    //position: absolute;
-    flex-grow: 0;
-    width: auto;
-    margin: auto;
-    box-shadow: 0 0 40px 10px rgba(0,0,0,.25);
-
-    .card-block {
-      display: flex;
-      overflow: hidden;
-      align-items: center;
-      flex-direction: column;
-
-      div {
-        padding: 3px;
-        animation-name: spin-load;
-        -webkit-animation-timing-function: linear;
-        /* Safari 4.0 - 8.0 */
-        animation-timing-function: linear;
-        animation-iteration-count: infinite;
-        border-radius: 32px;
-      }
-
-      .ring-5 {
-        animation-duration: 5s;
-        animation-direction: reverse;
-        border: 1px solid #AEAEAE;
-        border-bottom: 1px solid transparent;
-      }
-
-      .ring-4 {
-        animation-duration: 3.75s;
-        animation-direction: normal;
-        border: 1px solid #999;
-        border-bottom: 1px solid transparent;
-      }
-
-      .ring-3 {
-        animation-duration: 3s;
-        animation-direction: reverse;
-        border: 1px solid #AEAEAE;
-        border-bottom: 1px solid transparent;
-      }
-
-      .ring-2 {
-        animation-duration: 1.75s;
-        animation-direction: normal;
-        border: 1px solid #999;
-        border-bottom: 1px solid transparent;
-      }
-
-      .ring-1 {
-        width: 20px;
-        height: 20px;
-        padding: 0;
-        animation-duration: 1s;
-        animation-direction: reverse;
-        border: 1px solid #AEAEAE;
-        border-bottom: 1px solid transparent;
-      }
-
-      span {
-        display: block;
-        margin: 5px 0 0;
-        animation-name: text-flash;
-        animation-duration: 2s;
-        -webkit-animation-timing-function: ease;
-        /* Safari 4.0 - 8.0 */
-        animation-timing-function: ease;
-        animation-iteration-count: infinite;
-        animation-direction: alternate;
-      }
-    }
+  background-color: rgba($warm-gray-15, .75);
+  
+  .message{
+    color: $white;
+    font-weight: $font-weight-bold;
+    font-size: $font-size-h3;
   }
-}
-@keyframes spin-load {
-  from {
-    -webkit-transform: rotate(0deg);
-    -moz-transform: rotate(0deg);
-    -ms-transform: rotate(0deg);
-    -o-transform: rotate(0deg);
-    transform: rotate(0deg);
+  
+  .spinner {
+    margin: 0 auto;
+    width: 150px;
+    text-align: center;
   }
-
-  to {
-    -webkit-transform: rotate(359deg);
-    -moz-transform: rotate(359deg);
-    -ms-transform: rotate(359deg);
-    -o-transform: rotate(359deg);
-    transform: rotate(359deg);
+  
+  .spinner > div {
+    display: inline-block;
+    margin: 0 2px;
+    width: 16px;
+    height: 16px;
+    border-radius: 100%;
+    background-color: rgba($white, 1);
+    -webkit-animation: sk-bouncedelay 1.4s infinite ease-in-out both;
+    animation: sk-bouncedelay 1.4s infinite ease-in-out both;
   }
-}
-@keyframes text-flash {
-  from {
-    opacity: 0;
+  
+  .spinner .bounce1 {
+    -webkit-animation-delay: -0.32s;
+    animation-delay: -0.32s;
   }
-
-  to {
-    opacity: 1;
+  
+  .spinner .bounce2 {
+    -webkit-animation-delay: -0.16s;
+    animation-delay: -0.16s;
   }
 }
 
 
-//loader theme
-.loader {
-  .card {
-    .card-block {
-      .ring-5 {
-        border: 1px solid #0281B7;
-      }
-
-      .ring-4 {
-        border: 1px solid #029CDE;
-      }
-
-      .ring-3 {
-        border: 1px solid #013951;
-      }
-
-      .ring-2 {
-        border: 1px solid #016691;
-      }
-
-      .ring-1 {
-        border: 1px solid #0293D1;
-      }
-
-      div[class^="ring-"] {
-        border-bottom: 1px solid transparent;
-      }
-    }
-  }
-}

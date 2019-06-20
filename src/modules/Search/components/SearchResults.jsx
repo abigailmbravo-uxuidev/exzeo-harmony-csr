@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 
-import { handleNewTab, handleNewTabClick, handleKeyPress } from '../../../utilities/handleNewTab';
+import { handleNewTab, handleDiaryClick, handleDiaryKeyPress } from '../../../utilities/handleNewTab';
 import { SEARCH_TYPES } from '../../../constants/search';
 
 import NoResults from './NoResults';
@@ -114,11 +114,11 @@ export class SearchResults extends Component {
         }
 
         {hasSearched && searchType === SEARCH_TYPES.diaries && !!results.length &&
-          <DiaryList
-            handleKeyPress={handleKeyPress}
-            onItemClick={handleNewTabClick}
-            clickable
-            diaries={results} />
+        <DiaryList
+          handleKeyPress={handleDiaryKeyPress}
+          onItemClick={handleDiaryClick}
+          clickable
+          diaries={results} />
         }
       </div>
     );

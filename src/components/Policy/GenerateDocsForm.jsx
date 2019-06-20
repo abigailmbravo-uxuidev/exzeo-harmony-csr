@@ -1,9 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import axios from 'axios';
-import { Form, Field } from 'react-final-form';
-import moment from 'moment-timezone';
-import { Select, Loader, Button, validation } from '@exzeo/core-ui';
+import { http } from '@exzeo/core-ui';
+import { Select, Loader, Button, Form, Field, validation } from '@exzeo/core-ui';
 
 const validate = values => (!values.documentType ? { documentType: 'Required' } : null);
 const documentTypeAnswers = [
@@ -13,7 +11,7 @@ const documentTypeAnswers = [
 ];
 
 export class GenerateDocsForm extends Component {
-  generateDoc = (values, form) => {
+  generateDoc = (values) => {
     const {
       errorHandler, policyNumber, policyID, updateNotes, startWorkflow
     } = this.props;
@@ -29,7 +27,7 @@ export class GenerateDocsForm extends Component {
         const fileUrl = result.workflowData[model].data.previousTask.value.result[0].fileUrl;
         const proxyUrl = `${process.env.REACT_APP_API_URL}/download`;
         const params = { url: fileUrl };
-        return axios.get(proxyUrl, { responseType: 'blob', params });
+        return http.get(proxyUrl, { responseType: 'blob', params });
       })
       .then((res) => {
         const contentDisposition = res.headers['content-disposition'];
@@ -64,8 +62,8 @@ export class GenerateDocsForm extends Component {
                 dataTest="documentType" />
 
               <Button
-                baseClass="primary"
-                size="small"
+                className={Button.constants.classNames.primary}
+                size={Button.constants.sizes.small}
                 customClass="btn-block"
                 type="submit"
                 dataTest="doc-submit">Generate Doc

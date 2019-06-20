@@ -31,12 +31,12 @@ export class SmallModal extends Component {
             <div className="card-footer">
               <div className="btn-footer">
                 <Button
-                  baseClass="secondary"
+                  className={Button.constants.classNames.secondary}
                   dataTest="modal-cancel"
                   onClick={handleCancel}>No
                 </Button>
                 <Button
-                  baseClass="primary"
+                  className={Button.constants.classNames.primary}
                   dataTest="modal-submit"
                   onClick={handleSubmit}
                   disabled={disabled}>Yes

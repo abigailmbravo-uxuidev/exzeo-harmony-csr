@@ -1,6 +1,6 @@
 import auth0 from 'auth0-js';
 import jwtDecode from 'jwt-decode';
-import axios from 'axios';
+import { http } from '@exzeo/core-ui/src/Utilities';
 
 import history from './history';
 
@@ -56,7 +56,7 @@ export default class Auth {
         const payload = jwtDecode(authResult.idToken);
         // check to see if the user exists in a CSR group
         if (payload['https://heimdall.security/groups'].some(group => group['isCSR'])) {
-          return axios.get(`${process.env.REACT_APP_API_URL}/mainUserProfile`, {
+          return http.get(`${process.env.REACT_APP_API_URL}/mainUserProfile`, {
             headers: { authorization: `bearer ${authResult.idToken}`}
           })
             .then((profile) => {

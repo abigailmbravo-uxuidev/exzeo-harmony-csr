@@ -1,5 +1,5 @@
 import configureStore from 'redux-mock-store';
-import axios from 'axios';
+import { http as axios} from '@exzeo/core-ui';
 import MockAdapter from 'axios-mock-adapter';
 import * as types from './actionTypes';
 import * as serviceActions from './service.actions';
@@ -107,7 +107,7 @@ describe('Service Actions', () => {
 
     return serviceActions.getAgents('TTIC', 'FL', '', '', '', '', '', '')(store.dispatch)
       .then(() => {
-        expect(store.getActions()[0].payload[0].type).toEqual(types.SERVICE_REQUEST);
+        expect(store.getActions()[0].type).toEqual(types.SERVICE_REQUEST);
       });
   });
 
@@ -137,7 +137,7 @@ describe('Service Actions', () => {
 
     return serviceActions.getAgents('4534', 'FL')(store.dispatch)
       .then(() => {
-        expect(store.getActions()[0].payload[0].type).toEqual(types.APP_ERROR);
+        expect(store.getActions()[0].type).toEqual(types.APP_ERROR);
       });
   });
 
@@ -242,7 +242,7 @@ describe('Service Actions', () => {
 
     return serviceActions.getUnderwritingQuestions('TTIC', 'FL', 'HO3', property)(store.dispatch)
       .then(() => {
-        expect(store.getActions()[0].payload[0].type).toEqual(types.SERVICE_REQUEST);
+        expect(store.getActions()[0].type).toEqual(types.SERVICE_REQUEST);
       });
   });
 
@@ -347,7 +347,7 @@ describe('Service Actions', () => {
 
     return serviceActions.getUnderwritingQuestions('55', '55', '543', property)(store.dispatch)
       .then(() => {
-        expect(store.getActions()[0].payload[0].type).toEqual(types.APP_ERROR);
+        expect(store.getActions()[0].type).toEqual(types.APP_ERROR);
       });
   });
 
@@ -415,106 +415,7 @@ describe('Service Actions', () => {
 
     return serviceActions.addTransaction(submitData)(store.dispatch)
       .then(() => {
-        expect(store.getActions()[0].payload[0].type).toEqual(types.SERVICE_REQUEST);
-      });
-  });
-
-  it('should save underwritingExceptions', () => {
-    const mockAdapter = new MockAdapter(axios);
-
-    const axiosOptions = {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      url: `${process.env.REACT_APP_API_URL}/svc?saveUnderwritingExceptions`,
-      data: {
-        service: 'quote-data',
-        method: 'put',
-        path: ' ',
-        data: {
-          _id: 123,
-          underwritingExceptions: [{
-            code: '101',
-            displayText: 'Property in Do Not Write List',
-            category: 'Property',
-            action: 'Fatal Error',
-            internalMessage: 'Address is not eligible for a stand alone flood policy based on the underwriting information.',
-            agentMessage: 'Address is not eligible for a stand alone flood policy based on the underwriting information.',
-            customerMessage: 'Address is not eligible for a stand alone flood policy based on the underwriting information.',
-            active: true,
-            canOverride: false,
-            overridden: true
-          }]
-        }
-      }
-    };
-
-    mockAdapter.onPost(axiosOptions.url, axiosOptions.data).reply(200, {
-      data: []
-    });
-
-    const initialState = {};
-    const store = mockStore(initialState);
-
-    return serviceActions.saveUnderwritingExceptions(123, [{
-      code: '101',
-      displayText: 'Property in Do Not Write List',
-      category: 'Property',
-      action: 'Fatal Error',
-      internalMessage: 'Address is not eligible for a stand alone flood policy based on the underwriting information.',
-      agentMessage: 'Address is not eligible for a stand alone flood policy based on the underwriting information.',
-      customerMessage: 'Address is not eligible for a stand alone flood policy based on the underwriting information.',
-      active: true,
-      canOverride: false,
-      overridden: true
-    }])(store.dispatch)
-      .then(() => {
-        expect(store.getActions()[0].payload[0].type).toEqual(types.SERVICE_REQUEST);
-      });
-  });
-
-  it('should fail save underwritingExceptions', () => {
-    const mockAdapter = new MockAdapter(axios);
-
-    const axiosOptions = {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      url: `${process.env.REACT_APP_API_URL}/svc`,
-      data: {
-        service: 'quote-data',
-        method: 'put',
-        path: '',
-        data: {
-          _id: 123,
-          underwritingExceptions: [{
-            code: '101',
-            displayText: 'Property in Do Not Write List',
-            category: 'Property',
-            action: 'Fatal Error',
-            internalMessage: 'Address is not eligible for a stand alone flood policy based on the underwriting information.',
-            agentMessage: 'Address is not eligible for a stand alone flood policy based on the underwriting information.',
-            customerMessage: 'Address is not eligible for a stand alone flood policy based on the underwriting information.',
-            active: true,
-            canOverride: false,
-            overridden: true
-          }]
-        }
-      }
-    };
-
-    mockAdapter.onPost(axiosOptions.url, axiosOptions.data).reply(200, {
-      data: []
-    });
-
-    const initialState = {};
-    const store = mockStore(initialState);
-
-    return serviceActions.saveUnderwritingExceptions(123, null)(store.dispatch)
-      .then(() => {
-        expect(store.getActions()[0].payload[0].type).toEqual(types.APP_ERROR);
+        expect(store.getActions()[0].type).toEqual(types.SERVICE_REQUEST);
       });
   });
 
@@ -565,7 +466,7 @@ describe('Service Actions', () => {
 
     return serviceActions.getBillingOptions(paymentOptions)(store.dispatch)
       .then(() => {
-        expect(store.getActions()[0].payload[0].type).toEqual(types.SERVICE_REQUEST);
+        expect(store.getActions()[0].type).toEqual(types.SERVICE_REQUEST);
       });
   });
 
@@ -616,7 +517,7 @@ describe('Service Actions', () => {
 
     return serviceActions.getBillingOptions('43543534')(store.dispatch)
       .then(() => {
-        expect(store.getActions()[0].payload[0].type).toEqual(types.APP_ERROR);
+        expect(store.getActions()[0].type).toEqual(types.APP_ERROR);
       });
   });
 
@@ -705,8 +606,8 @@ describe('Service Actions', () => {
     serviceActions.getZipcodeSettings(store.dispatch);
 
     return serviceActions.getZipcodeSettings('TTIC', 'FL', 'HO3', '33607')(store.dispatch)
-      .then(() => {
-        expect(store.getActions()[0].payload[0].type).toEqual(types.SERVICE_REQUEST);
+      .then((result) => {
+        expect(store.getActions()[0].type).toEqual(types.SERVICE_REQUEST);
       });
   });
 
@@ -735,7 +636,7 @@ describe('Service Actions', () => {
 
     return serviceActions.getZipcodeSettings(null)(store.dispatch)
       .then(() => {
-        expect(store.getActions()[0].payload[0].type).toEqual(types.APP_ERROR);
+        expect(store.getActions()[0].type).toEqual(types.APP_ERROR);
       });
   });
 
@@ -830,7 +731,7 @@ describe('Service Actions', () => {
 
     return serviceActions.saveBillingInfo(null)(store.dispatch)
       .then(() => {
-        expect(store.getActions()[0].payload[0].type).toEqual(types.APP_ERROR);
+        expect(store.getActions()[0].type).toEqual(types.APP_ERROR);
       });
   });
 

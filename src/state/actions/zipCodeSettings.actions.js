@@ -1,11 +1,12 @@
-import * as serviceRunner from '../../utilities/serviceRunner';
+import * as serviceRunner from '@exzeo/core-ui/src/@Harmony/Domain/Api/serviceRunner';
 
 import * as types from './actionTypes';
 import * as errorActions from './error.actions';
+
 /**
  *
  * @param zipCodeSettings
- * @returns {{state: string, zipCodeSettings: *}}
+ * @returns {{zipCodeSettings: *, type: string}}
  */
 export function setZipCodeSettings(zipCodeSettings) {
   return {

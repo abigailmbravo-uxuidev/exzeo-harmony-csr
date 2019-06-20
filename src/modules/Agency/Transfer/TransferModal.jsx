@@ -131,17 +131,19 @@ export class TransferModal extends Component {
               <div className="btn-group">
                 <Button
                   tabIndex="0"
-                  baseClass="secondary"
+                  className={Button.constants.classNames.secondary}
                   type="button"
                   label="Cancel"
                   onClick={this.closeModal}
-                  disabled={isLoading} />
+                  disabled={isLoading}
+                  data-test="cancel"/>
                 <Button
                   tabIndex="0"
-                  baseClass="primary"
+                  className={Button.constants.classNames.primary}
                   type="submit"
                   label="Transfer"
-                  disabled={isLoading} />
+                  disabled={isLoading}
+                  data-test="submit"/>
               </div>
             </div>
           </form>

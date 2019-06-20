@@ -8,11 +8,10 @@
 input,
 select,
 textarea {
-  height: 2rem;
   // // Make inputs at least the height of their button counterpart (base line-height + padding + border)
   //padding: $input-padding-y $input-padding-x;
   padding: 0;
-  color: $input-color;
+  height: 2rem;
   //border: $input-btn-border-width solid $input-border-color;
   //background-color: $input-bg;
   // Reset unusual Firefox-on-Android default style; see https://github.com/necolas/normalize.css/issues/214.
@@ -20,8 +19,10 @@ textarea {
   background-color: transparent;
   background-image: none;
   background-clip: padding-box;
+  color: $input-color;
   font-size: $font-size-base;
   line-height: $input-line-height;
+
   @include box-shadow($input-box-shadow);
   @include transition(border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s);
   // Customize the `:focus` state to imitate native WebKit styles.
@@ -73,10 +74,10 @@ textarea {
   }
   // Placeholder
   &::placeholder {
-    // Override Firefox's unusual default opacity; see https://github.com/twbs/bootstrap/pull/11526.
-    opacity: 1;
     color: $input-color-placeholder;
     font-style: italic;
+    // Override Firefox's unusual default opacity; see https://github.com/twbs/bootstrap/pull/11526.
+    opacity: 1;
   }
 
   .react-select__placeholder {
@@ -103,10 +104,10 @@ textarea {
   &:disabled,
   &[disabled="disabled"],
   &[readonly] {
-    // iOS fix for unreadable disabled content; see https://github.com/twbs/bootstrap/issues/11655.
-    opacity: 1;
     border-color: $warm-gray-02;
     background-color: $input-bg-disabled;
+    // iOS fix for unreadable disabled content; see https://github.com/twbs/bootstrap/issues/11655.
+    opacity: 1;
   }
 
   &:disabled,
@@ -117,8 +118,8 @@ textarea {
 
 input,
 textarea {
-  width: 100%;
   padding: ($padding/2);
+  width: 100%;
   background: $white;
   box-shadow: none;
 }
@@ -133,13 +134,13 @@ select {
       $select-border-width: ($border-width * 2);
     } */
   &:focus::-ms-value {
+    background-color: $input-bg;
     // Suppress the nested default white text on blue background highlight given to
     // the selected option text when the (still closed) <select> receives focus
     // in IE and (under certain conditions) Edge, as it looks bad and cannot be made to
     // match the appearance of the native widget.
     // See https://github.com/twbs/bootstrap/issues/19398.
     color: $input-color;
-    background-color: $input-bg;
   }
 }
 //combobox
@@ -155,18 +156,6 @@ select {
         width: auto;
       }
     }
-
-    &.react-select__control--is-focused {}
-  }
-
-  > div {
-    .react-select__menu {
-      .react-select__menu-list {
-        .react-select__option {
-          &.react-select__option--is-focused {}
-        }
-      }
-    }
   }
 }
 
@@ -180,8 +169,8 @@ select {
 
   &.TypeAhead {
     z-index: 10;
-    height: auto;
     min-height: 2rem;
+    height: auto;
 
     &:focus {
       outline: none;
@@ -189,9 +178,9 @@ select {
 
     .react-select__control {
       z-index: 20;
+      min-height: 2rem;
       width: 100%;
       height: auto;
-      min-height: 2rem;
 
       &.react-select__control--is-focused {
         border-width: 1;
@@ -209,14 +198,18 @@ select {
       .react-select__value-container {
         align-items: flex-start;
         justify-content: flex-start;
-        height: auto;
         margin: 0;
         padding: 0 0 0 $padding;
+        height: auto;
 
         > div {
           display: flex;
           margin: 0;
           padding: 0;
+
+          &.react-select__single-value {
+            display: block;
+          }
 
           &.react-select__placeholder {
             left: $padding;
@@ -237,11 +230,11 @@ select {
         }
 
         .react-select__multi-value {
-          width: auto;
           margin: $padding/4;
-          color: $white;
+          width: auto;
           border-radius: $border-radius;
           background: $warm-gray-08;
+          color: $white;
 
           .react-select__multi-value__label {
             color: $white;
@@ -249,11 +242,12 @@ select {
 
           .react-select__multi-value__remove {
             border-radius: 0 $border-radius $border-radius 0;
+
             @include transition(all 0.2s ease-in-out);
 
             &:hover {
-              cursor: pointer;
               background: $red-lighten-04;
+              cursor: pointer;
             }
           }
         }
@@ -272,6 +266,12 @@ select {
 
       .react-select__menu-list {
         padding: 0;
+      }
+    }
+
+    .react-select__indicators {
+      .react-select__clear-indicator {
+        padding: $padding/2;
       }
     }
   }
@@ -294,10 +294,10 @@ select {
         justify-content: center;
         width: 1.5rem;
         height: 2rem;
-        content: "\f0d7";
-        cursor: pointer;
         color: $warm-gray-10;
+        content: "\f0d7";
         font-family: $font-family-icon;
+        cursor: pointer;
       }
     }
 
@@ -321,22 +321,22 @@ select {
       position: relative;
       display: flex;
       align-self: stretch;
-      width: 100%;
       padding: 0 $padding;
+      width: 100%;
 
       .Select-value {
         position: absolute;
         top: 0;
         left: $padding;
-        width: 100%;
         padding-right: 3rem;
+        width: 100%;
 
         .Select-value-label {
           display: block;
           overflow: hidden;
           height: 2rem;
-          white-space: nowrap;
           text-overflow: ellipsis;
+          white-space: nowrap;
           line-height: 2rem;
         }
       }
@@ -359,8 +359,8 @@ select {
         left: 0;
         display: flex;
         align-items: center;
-        width: 100%;
         padding-left: $padding;
+        width: 100%;
       }
 
       span {
@@ -377,9 +377,9 @@ select {
 
         input[role="combobox"] {
           display: flex;
-          width: 100%;
           margin-right: $padding*2;
           padding: 0 !important;
+          width: 100%;
         }
       }
     }
@@ -388,11 +388,11 @@ select {
   &.is-focused {
     &:not(.is-open) {
       .Select-control {
-        color: $input-color-focus;
-        border-color: $input-border-focus;
         outline: none;
+        border-color: $input-border-focus;
         background-color: $input-bg-focus;
         box-shadow: none;
+        color: $input-color-focus;
       }
     }
 
@@ -410,9 +410,9 @@ select {
     left: 0;
     overflow-x: hidden;
     overflow-y: scroll;
-    width: auto;
-    max-height: 13.5rem;
     padding: 0;
+    max-height: 13.5rem;
+    width: auto;
     border: 1px solid $warm-gray-10;
     border-radius: 0 0 $border-radius $border-radius;
     background: $white;
@@ -458,16 +458,16 @@ select {
 
 label {
   color: $warm-gray-08;
-  font-size: $font-size-h5;
   font-weight: $font-weight-bold;
+  font-size: $font-size-h5;
 }
 
 .form-group {
   display: flex;
   flex-direction: column;
-  width: 100%;
   margin-bottom: $form-group-margin-bottom;
   padding: 0;
+  width: 100%;
 
   .h1,
   .h2,
@@ -500,13 +500,6 @@ label {
     @include transition(all 0.2s ease-in-out);
   }
 
-  &.disabled,
-  &.disabled.error {
-    label {}
-  }
-
-  input[type="tel"] {}
-
   &.segmented {
     label {
       &.label-segmented {
@@ -524,6 +517,7 @@ label {
     .segmented-answer-wrapper {
       display: flex;
       flex-direction: row;
+
       @include for-phone-only {
         flex-direction: column;
       }
@@ -544,12 +538,14 @@ label {
           flex-basis: 100px;
           flex-grow: 0;
           flex-shrink: 0;
+
           @include for-phone-only {
             flex-basis: 50px;
             height: 70px;
-            @include transition(all 0.2s ease-in-out);
             -webkit-filter: drop-shadow(0 0 4px rgba($green, 0));
             filter: drop-shadow(0 0 4px rgba($green, 0));
+
+            @include transition(all 0.2s ease-in-out);
           }
         }
 
@@ -573,17 +569,18 @@ label {
             align-items: center;
             flex-grow: 1;
             justify-content: center;
+            padding: ($padding);
             width: 100%;
             height: 2rem;
-            padding: ($padding);
-            cursor: pointer;
-            user-select: none;
-            text-align: center;
-            vertical-align: middle;
-            white-space: initial;
             border: $input-btn-border-width solid transparent;
+            vertical-align: middle;
+            text-align: center;
+            white-space: initial;
             font-weight: $btn-font-weight;
             line-height: 1;
+            cursor: pointer;
+
+            user-select: none;
             @include transition(all 0.2s ease-in-out);
             @include button-variant($warm-gray-08, $warm-gray-02, $warm-gray-02);
             @include for-phone-only {
@@ -602,8 +599,8 @@ label {
 
           &.selected {
             span {
-              color: $white;
               background: $bright-blue-darken-04;
+              color: $white;
             }
           }
 
@@ -612,8 +609,8 @@ label {
 
             &:checked {
               + span {
-                color: $white;
                 background: $bright-blue-darken-04;
+                color: $white;
               }
             }
           }
@@ -623,6 +620,7 @@ label {
       div:first-child {
         span {
           border-radius: $border-radius 0 0 $border-radius;
+
           @include for-phone-only {
             border-radius: $border-radius;
           }
@@ -636,6 +634,7 @@ label {
 
         span {
           border-radius: 0 $border-radius $border-radius 0;
+
           @include for-phone-only {
             border-radius: $border-radius;
           }
@@ -646,8 +645,8 @@ label {
         div {
           .label-segmented {
             span {
-              color: $red-lighten-01;
               border-color: $red-lighten-01;
+              color: $red-lighten-01;
             }
           }
         }
@@ -665,9 +664,10 @@ label {
       flex-wrap: wrap;
 
       .column-3 {
-        width: 33.33%;
         padding: 0;
+        width: 33.33%;
         border-right: 2px solid $white;
+
         @include for-phone-only {
           width: 100%;
         }
@@ -678,6 +678,7 @@ label {
           span {
             display: none;
             font-size: $font-size-h4;
+
             @include for-phone-only {
               display: block;
             }
@@ -701,19 +702,20 @@ label {
           cursor: not-allowed;
 
           .label-segmented {
-            cursor: not-allowed;
             border-right: 1px solid $warm-gray-01;
+            cursor: not-allowed;
 
             span {
               cursor: not-allowed;
+
               @include button-variant($warm-gray-04, $warm-gray-01, $warm-gray-01);
             }
 
             &.selected {
               span {
-                cursor: not-allowed;
-                color: $white;
                 background: rgba($bright-blue-darken-04, .5);
+                color: $white;
+                cursor: not-allowed;
               }
             }
 
@@ -722,9 +724,9 @@ label {
                 cursor: not-allowed;
 
                 + span {
-                  cursor: not-allowed;
-                  color: $warm-gray-05;
                   background: $warm-gray-03;
+                  color: $warm-gray-05;
+                  cursor: not-allowed;
                 }
               }
             }
@@ -733,8 +735,8 @@ label {
       }
 
       span {
-        cursor: not-allowed;
         border-color: $warm-gray-02;
+        cursor: not-allowed;
       }
 
       label {
@@ -744,8 +746,8 @@ label {
           cursor: not-allowed;
 
           span {
-            cursor: not-allowed;
             color: $warm-gray-03;
+            cursor: not-allowed;
           }
         }
       }
@@ -757,9 +759,9 @@ label {
           cursor: not-allowed;
 
           + span {
-            cursor: not-allowed;
-            color: $warm-gray-03;
             background: $warm-gray-01;
+            color: $warm-gray-03;
+            cursor: not-allowed;
           }
         }
       }
@@ -775,8 +777,8 @@ label {
       align-items: center;
       flex-direction: row;
       justify-content: space-between;
-      width: 100%;
       margin-bottom: 0;
+      width: 100%;
       line-height: 1.45;
 
       span {
@@ -792,18 +794,18 @@ label {
             background-color: $bright-blue-darken-04;
 
             &:before {
+              border-color: $cool-gray-01;
+              background-color: lighten($cool-gray-00, 10%);
               -webkit-transform: translateX(2rem);
               -ms-transform: translateX(2rem);
               transform: translateX(2rem);
-              border-color: $cool-gray-01;
-              background-color: lighten($cool-gray-00, 10%);
             }
 
             &:after {
               top: 0.25rem;
               left: 0.5rem;
-              content: "Yes";
               color: $white;
+              content: "Yes";
             }
 
             &.disabled {
@@ -822,39 +824,39 @@ label {
         flex-basis: 3.5rem;
         flex-grow: 0;
         flex-shrink: 0;
+        margin: 0.225rem 0;
         width: 3.5rem;
         height: 1.5rem;
-        margin: 0.225rem 0;
+        border-radius: 0.75rem;
+        background: $warm-gray-03;
+        color: $warm-gray-08;
         cursor: pointer;
         -webkit-transition: 0.4s;
         transition: 0.4s;
-        color: $warm-gray-08;
-        border-radius: 0.75rem;
-        background: $warm-gray-03;
 
         &:before {
           position: absolute;
           z-index: 2;
           width: 1.5rem;
           height: 1.5rem;
-          content: "";
-          -webkit-transition: 0.4s;
-          transition: 0.4s;
           border: 1px solid $cool-gray-01;
           border-radius: 50%;
           background-color: lighten($cool-gray-00, 10%);
           box-shadow: $input-box-shadow;
+          content: "";
           line-height: 1;
+          -webkit-transition: 0.4s;
+          transition: 0.4s;
         }
 
         &:after {
           position: absolute;
-          z-index: 1;
           top: 0.25rem;
           left: 2rem;
+          z-index: 1;
           content: "No";
-          font-size: 0.7rem;
           font-weight: $font-weight-bold;
+          font-size: 0.7rem;
         }
       }
     }
@@ -864,23 +866,23 @@ label {
       cursor: not-allowed;
 
       label {
-        cursor: not-allowed;
         color: $text-muted;
+        cursor: not-allowed;
       }
 
       div {
-        cursor: not-allowed;
         background-color: $warm-gray-01;
+        cursor: not-allowed;
 
         &:after {
-          cursor: not-allowed;
           color: $warm-gray-03;
+          cursor: not-allowed;
         }
 
         &:before {
-          cursor: not-allowed;
           border-color: $warm-gray-02;
           background-color: $warm-gray-01;
+          cursor: not-allowed;
         }
       }
 
@@ -948,16 +950,17 @@ label {
           top: 0.25rem;
           left: -.25rem;
           display: block;
-          width: 9rem;
           padding: 0.25rem;
-          content: 'VERIFY HERE';
-          text-align: center;
-          color: $red-darken-02;
+          width: 9rem;
           border-top-left-radius: 0.125rem;
           border-bottom-left-radius: 0.125rem;
           background: $orange-lighten-01;
+          color: $red-darken-02;
+          content: 'VERIFY HERE';
+          text-align: center;
           font: normal normal normal 1rem $font-family-sans-serif;
           line-height: 1;
+
           @include for-phone-only {
             left: -.75rem;
             width: 8rem;
@@ -971,10 +974,11 @@ label {
           left: 8.75rem;
           width: 0;
           height: 0;
-          content: '';
           border-top: 0.75rem solid transparent;
           border-bottom: 0.75rem solid transparent;
           border-left: 1rem solid $orange-lighten-01;
+          content: '';
+
           @include for-phone-only {
             left: 7.25rem;
             border-top: 0.6875rem solid transparent;
@@ -989,24 +993,24 @@ label {
         span {
           position: relative;
           flex-grow: 1;
-          height: 1px;
           margin-right: 0.5rem;
-          cursor: pointer;
+          height: 1px;
           background: $warm-gray-02;
+          cursor: pointer;
 
           &:before {
             position: absolute;
             top: -.75rem;
             left: -.75rem;
             display: block;
-            width: 1.5rem;
             padding: 0.25rem;
-            content: '\f14a';
-            text-align: center;
-            color: $yellow-lighten-05;
+            width: 1.5rem;
             border-top-left-radius: 0.125rem;
             border-bottom-left-radius: 0.125rem;
             background: $yellow;
+            color: $yellow-lighten-05;
+            content: '\f14a';
+            text-align: center;
             font: normal normal normal 1rem $font-family-icon;
           }
 
@@ -1016,10 +1020,10 @@ label {
             left: 0.75rem;
             width: 0;
             height: 0;
-            content: '';
             border-top: 0.75rem solid transparent;
             border-bottom: 0.75rem solid transparent;
             border-left: 1rem solid $yellow;
+            content: '';
           }
         }
 
@@ -1027,8 +1031,8 @@ label {
           &:checked {
             ~ span {
               &:before {
-                color: $green;
                 background: $warm-gray-02;
+                color: $green;
               }
 
               &:after {
@@ -1054,16 +1058,17 @@ label {
           top: 0.25rem;
           left: -.25rem;
           display: block;
-          width: 9rem;
           padding: 0.25rem;
-          content: 'CONFIRM HERE';
-          text-align: center;
-          color: $red-darken-02;
+          width: 9rem;
           border-top-left-radius: 0.125rem;
           border-bottom-left-radius: 0.125rem;
           background: $orange-lighten-01;
+          color: $red-darken-02;
+          content: 'CONFIRM HERE';
+          text-align: center;
           font: normal normal normal 1rem $font-family-sans-serif;
           line-height: 1;
+
           @include for-phone-only {
             left: -.75rem;
             width: 8rem;
@@ -1077,10 +1082,11 @@ label {
           left: 8.75rem;
           width: 0;
           height: 0;
-          content: '';
           border-top: 0.75rem solid transparent;
           border-bottom: 0.75rem solid transparent;
           border-left: 1rem solid $orange-lighten-01;
+          content: '';
+
           @include for-phone-only {
             left: 7.25rem;
             border-top: 0.6875rem solid transparent;
@@ -1095,24 +1101,24 @@ label {
         span {
           position: relative;
           flex-grow: 1;
-          height: 1px;
           margin-right: 0.5rem;
-          cursor: pointer;
+          height: 1px;
           background: $warm-gray-02;
+          cursor: pointer;
 
           &:before {
             position: absolute;
             top: -.75rem;
             left: -.75rem;
             display: block;
-            width: 1.5rem;
             padding: 0.25rem;
-            content: '\f14a';
-            text-align: center;
-            color: $yellow-lighten-05;
+            width: 1.5rem;
             border-top-left-radius: 0.125rem;
             border-bottom-left-radius: 0.125rem;
             background: $yellow;
+            color: $yellow-lighten-05;
+            content: '\f14a';
+            text-align: center;
             font: normal normal normal 1rem $font-family-icon;
           }
 
@@ -1122,10 +1128,10 @@ label {
             left: 0.75rem;
             width: 0;
             height: 0;
-            content: '';
             border-top: 0.75rem solid transparent;
             border-bottom: 0.75rem solid transparent;
             border-left: 1rem solid $yellow;
+            content: '';
           }
         }
 
@@ -1133,8 +1139,8 @@ label {
           &:checked {
             ~ span {
               &:before {
-                color: $green;
                 background: $warm-gray-02;
+                color: $green;
               }
 
               &:after {
@@ -1155,112 +1161,96 @@ label {
       z-index: 2;
       display: flex;
       flex-direction: column;
+    }
 
-      input[type="checkbox"] {
+    .switch-div {
+      position: absolute;
+      bottom: 0;
+      z-index: 1000;
+      display: block;
+      margin: 0;
+      width: 50%;
+      height: 2rem;
+      cursor: default;
+
+      &:before {
         position: absolute;
         bottom: 0;
-        display: block;
-        width: 50%;
+        left: 0;
+        z-index: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: calc(50% - 1px);
         height: 2rem;
-        margin: 0;
+        border: 1px solid $warm-gray-02;
+        border-radius: $border-radius 0 0 $border-radius;
+        background: $warm-gray-02;
+        color: $warm-gray-14;
+        content: 'YES';
+        font-weight: $font-weight-bold;
         cursor: pointer;
-        opacity: 0;
+
+        @include transition(all 0.2s ease-in-out);
       }
-    }
-
-    &:before {
-      position: absolute;
-      z-index: 1;
-      bottom: 0;
-      left: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width: calc(50% - 1px);
-      height: 2rem;
-      content: 'YES';
-      border: 1px solid $warm-gray-02;
-      border-radius: $border-radius 0 0 $border-radius;
-      font-weight: $font-weight-bold;
-      @include transition(all 0.2s ease-in-out);
-    }
-
-    &:after {
-      position: absolute;
-      z-index: 1;
-      right: 0;
-      bottom: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width: calc(50% - 1px);
-      height: 2rem;
-      content: 'NO';
-      border: 1px solid $warm-gray-02;
-      border-radius: 0 $border-radius $border-radius 0;
-      font-weight: $font-weight-bold;
-      @include transition(all 0.2s ease-in-out);
-    }
-
-    &.active {
-      &:before {
-        color: $white;
-        background: $bright-blue-darken-04;
-      }
-
+  
       &:after {
-        color: $warm-gray-14;
-        background: $warm-gray-02;
+        position: absolute;
+        right: 0;
+        bottom: 0;
+        z-index: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: calc(50% - 1px);
+        height: 2rem;
+        border: 1px solid $warm-gray-02;
+        border-radius: 0 $border-radius $border-radius 0;
+        background: $bright-blue-darken-04;
+        color: $white;
+        content: 'NO';
+        font-weight: $font-weight-bold;
+        cursor: default;
+
+        @include transition(all 0.2s ease-in-out);
+      }
+
+      &:hover {
+        &:before {
+          border-color: lighten($warm-gray-02, 6%);
+          background: lighten($warm-gray-02, 5%);
+        }
+      }
+
+      &.active {
+        &:before {
+          background: $bright-blue-darken-04;
+          color: $white;
+          cursor: default;
+        }
+  
+        &:after {
+          background: $warm-gray-02;
+          color: $warm-gray-14;
+          cursor: pointer;
+        }
 
         &:hover {
-          background: $warm-gray-01;
+          &:after {
+            border-color: lighten($warm-gray-02, 6%);
+            background: lighten($warm-gray-02, 5%);
+          }
         }
-      }
-
-      label {
-        input[type="checkbox"] {
-          right: 0;
-        }
-      }
-    }
-
-    &.inactive {
-      &:before {
-        color: $warm-gray-14;
-        background: $warm-gray-02;
-
-        &:hover {
-          background: $warm-gray-01;
-        }
-      }
-
-      &:after {
-        color: $white;
-        background: $bright-blue-darken-04;
-      }
-
-      label {
-        input[type="checkbox"] {
-          left: 0;
+  
+        label {
+          input[type="checkbox"] {
+            right: 0;
+          }
         }
       }
     }
   }
-
-  &.error {
-    input,
-    select,
-    textarea {
-      border: solid 1px $red;
-    }
-
-    span {
-      color: $red;
-      font-size: $font-size-sm;
-      line-height: 1.4;
-    }
-  }
-
+  
   &.info {
     span {
       color: $green;
@@ -1300,13 +1290,14 @@ ul.results {
       display: flex;
       align-items: flex-start;
       flex-direction: row;
-      width: 100%;
       padding: $padding $padding*1.5;
-      text-decoration: none;
+      width: 100%;
       border: $card-border-width solid $card-border-color;
       border-top-width: 0;
       border-radius: 0;
       box-shadow: $card-box-shadow;
+      text-decoration: none;
+
       @include transition(all 0.2s ease-in-out);
 
       &:first-child {
@@ -1359,11 +1350,12 @@ ul.results {
           flex-basis: 2rem;
           flex-shrink: 0;
           justify-content: flex-end;
+          margin: 0;
           width: 2rem;
           height: 2.4rem;
-          margin: 0;
-          cursor: pointer;
           font-size: $font-size-h4;
+          cursor: pointer;
+
           @include transition(all 0.2s ease-in-out);
 
           &:hover {
@@ -1386,12 +1378,13 @@ ul.results {
         display: flex;
         align-items: center;
         flex-direction: row;
-        width: 100%;
         padding: $padding $padding*1.5;
-        text-decoration: none;
+        width: 100%;
         border: $card-border-width solid $card-border-color;
         border-radius: $card-border-radius;
         box-shadow: $card-box-shadow;
+        text-decoration: none;
+
         @include transition(all 0.2s ease-in-out);
 
         section {
@@ -1417,6 +1410,7 @@ ul.results {
           width: 2rem;
           height: 2rem;
           font-size: $font-size-h2;
+
           @include transition(all 0.2s ease-in-out);
 
           &.fa-pencil {
@@ -1430,8 +1424,8 @@ ul.results {
 
         &:hover {
           z-index: 2;
-          transform: scale(1.004);
           box-shadow: $card-box-shadow-hover;
+          transform: scale(1.004);
         }
       }
     }

@@ -140,14 +140,14 @@ export class Create extends Component {
           <Footer />
           <div className="btn-wrapper">
             <Button
-              dataTest="resetButton"
-              baseClass="secondary"
+              className={Button.constants.classNames.secondary}
+              data-test="resetButton"
               onClick={this.handleResetForm}>Cancel
             </Button>
             <Button
+              className={Button.constants.classNames.primary}
               form="createAgency"
-              dataTest="submitButton"
-              baseClass="primary"
+              data-test="submitButton"
               type="submit"
               disabled={submitting || pristine}>Save
             </Button>

@@ -8,6 +8,8 @@ export default function quoteStateReducer(state = initialState.quoteState, actio
       return (action.quoteState) ? action.quoteState : {};
     case types.SET_QUOTE:
       return setQuote(state, action);
+    case types.SET_RETRIEVED_QUOTE:
+      return setRetrievedQuote(state, action);
     default:
       return state;
   }
@@ -18,4 +20,12 @@ function setQuote(state, action) {
     ...state,
     quote: action.quote
   };
+}
+
+function setRetrievedQuote(state, action) {
+  return {
+    ...state,
+    quote: action.quote,
+    // there is in this payload, for now, just set the quote until we use the other values
+  }
 }

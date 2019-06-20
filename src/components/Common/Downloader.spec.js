@@ -1,6 +1,6 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import axios from 'axios';
+import { http as axios } from '@exzeo/core-ui';
 import MockAdapter from 'axios-mock-adapter';
 import Downloader, { downloadFile } from './Downloader';
 

@@ -12,8 +12,166 @@
   background: rgba($warm-gray-15, .75);
 
   &.gradient-bg {
-    background: radial-gradient(ellipse at center, rgba($warm-gray-12, .75) 0%,rgba($warm-gray-15, .9) 100%);
+    background: radial-gradient(ellipse at center, rgba($warm-gray-12, .75) 0%, rgba($warm-gray-15, .9) 100%);
     /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+  }
+
+  &.modal-alert {
+    .card {
+      max-width: 24rem;
+    }
+  }
+
+  &.modal-sm, &.modal-md, &.modal-lg, &.modal-xl, &.modal-alert {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+
+    .card {
+      display: flex;
+      flex-grow: 0;
+      flex-shrink: 0;
+      margin: 0;
+      width: 100%;
+      height: auto;
+
+      > form {
+        display: flex;
+        overflow: hidden;
+        flex-direction: column;
+        flex-grow: 1;
+        flex-shrink: 1;
+        max-height: calc(100vh - 16rem);
+        
+
+        .card-block {
+          overflow-x: hidden;
+          overflow-y: auto;
+          flex-grow: 1;
+          flex-shrink: 1;
+          width: 100%;
+          height: auto;
+
+
+          .form-group {
+            flex-grow: 1;
+            flex-shrink: 1;
+            width: auto;
+            height: auto;
+
+            label {
+              width: 100%;
+            }
+            input {
+              width: 100%;
+            }
+
+            &.switch {
+              label {
+                width: auto;
+              }
+            }
+          }
+
+          .flex-form {
+            display: flex;
+            flex-grow: 1;
+            flex-shrink: 1;
+            width: auto;
+
+            .form-group {
+              flex-grow: 1;
+              flex-shrink: 1;
+
+              &.state {
+                flex-grow: 0;
+                flex-shrink: 0;
+                width: 8rem;
+              }
+              &.zip {
+                flex-grow: 0;
+                flex-shrink: 0;
+                width: 16rem;
+              }
+              &.phone {
+                flex-grow: 0;
+                flex-shrink: 0;
+                width: 20rem;
+              }
+
+              &.order {
+                flex-grow: 0;
+                flex-shrink: 0;
+                width: 20rem;
+              }
+            }
+          }
+        }
+
+        .card-footer {
+          flex-grow: 0;
+          flex-shrink: 0;
+          height: auto;
+
+          .btn-group {
+            flex-grow: 0;
+            flex-shrink: 0;
+            margin-bottom: 0;
+            height: auto;
+
+            .btn {
+              flex-grow: 0;
+              flex-shrink: 0;
+              height: auto;
+            }
+          }
+        }
+      }
+
+      &.card-policyholder {
+        .card-block {
+          flex-direction: row;
+          flex-wrap: wrap;
+
+          .title-check-box-wrapper {
+            width: 100%;
+          }
+        }
+      }
+    }
+
+  }
+
+  &.modal-md {
+
+    .card {
+      max-width: 40rem;
+      width: 50%;
+    }
+  }
+
+  &.modal-lg {
+
+    .card {
+      max-width: 60rem;
+      width: 80%;
+    }
+  }
+
+  &.modal-xl {
+
+    .card {
+      max-width: 80rem;
+      width: 80%;
+    }
+  }
+
+  &.modal-lg {
+    .card {
+      max-width: 60rem;
+      width: 60%;
+    }
   }
 
   &.schedule-date-modal {
@@ -24,183 +182,169 @@
       height: 100%;
     }
   }
-
   &.contract-crud {
     .card {
       width: 50rem;
     }
   }
-
   &.existing-agent-modal {
     .card {
       max-width: 40rem;
     }
   }
-
   &.agent-remove {
     .card {
       width: 40rem;
     }
   }
-
   &.additional-interest {
     form {
       height: 90%;
-
       .card {
         max-height: 45rem;
         width: 60rem;
         height: 90%;
       }
     }
-  } 
-  &.bob-transfer{
+  }
+  &.bob-transfer {
     .card {
-     width: 40rem;
-
-     #TransferPolicies {
-       .card-block {
+      width: 40rem;
+      #TransferPolicies {
+        .card-block {
+          overflow: visible;
+        }
+      }
+      ​.card-block {
         overflow: visible;
-       }
-     }
-  ​
-     .card-block {
-      overflow: visible;
-     }
+      }
     }
     .agencyCodeTo {
-     z-index: 20;   
-     .Select.TypeAhead {
       z-index: 20;
-      .react-select__menu {
-       .react-select__menu-list {
-        max-height: 200px;
-       }
+      
+      .Select.TypeAhead {
+        z-index: 20;
+        .react-select__menu {
+          .react-select__menu-list {
+            max-height: 200px;
+          }
+        }
       }
-     }
     }
-    
     .agentCodeTo {
-     z-index: 10;
-     .Select.TypeAhead {
       z-index: 10;
-      .react-select__menu {
-       .react-select__menu-list {
-        max-height: 140px;
-       }
+      
+      .Select.TypeAhead {
+        z-index: 10;
+        
+        .react-select__menu {
+          .react-select__menu-list {
+            max-height: 140px;
+          }
+        }
       }
-     }
     }
-   }
-   &.transfer-AOR-modal {
+  }
+  &.transfer-AOR-modal {
     .card {
-     width: 40rem;
-  ​
-     .card-block {
-      overflow: visible;
-     }
+      width: 40rem;
+      ​ .card-block {
+        overflow: visible;
+      }
     }
     .agencyCode {
-     z-index: 20;   
-     .Select.TypeAhead {
       z-index: 20;
-      .react-select__menu {
-       .react-select__menu-list {
-        max-height: 200px;
-       }
+      .Select.TypeAhead {
+        z-index: 20;
+        .react-select__menu {
+          .react-select__menu-list {
+            max-height: 200px;
+          }
+        }
       }
-     }
     }
-    
     .agentCode {
-     z-index: 10;
-     .Select.TypeAhead {
       z-index: 10;
-      .react-select__menu {
-       .react-select__menu-list {
-        max-height: 140px;
-       }
+      .Select.TypeAhead {
+        z-index: 10;
+        .react-select__menu {
+          .react-select__menu-list {
+            max-height: 140px;
+          }
+        }
       }
-     }
     }
-   }
-
+  }
   &.license-crud {
     .card {
       width: 40rem;
     }
   }
-
-  &.bob-transfer{
+  &.bob-transfer {
     .card {
-     width: 40rem;
-     #TransferPolicies {
-       .card-block {
+      width: 40rem;
+      #TransferPolicies {
+        .card-block {
+          overflow: visible;
+        }
+      }
+      .card-block {
         overflow: visible;
-       }
-     }
-  
-     .card-block {
-      overflow: visible;
-     }
+      }
     }
     .agencyCode {
-     z-index: 20;   
-     .Select.TypeAhead {
       z-index: 20;
-      .react-select__menu {
-       .react-select__menu-list {
-        max-height: 200px;
-       }
+      .Select.TypeAhead {
+        z-index: 20;
+        .react-select__menu {
+          .react-select__menu-list {
+            max-height: 200px;
+          }
+        }
       }
-     }
     }
-    
     .agentCode {
-     z-index: 10;
-     .Select.TypeAhead {
       z-index: 10;
-      .react-select__menu {
-       .react-select__menu-list {
-        max-height: 140px;
-       }
+      .Select.TypeAhead {
+        z-index: 10;
+        .react-select__menu {
+          .react-select__menu-list {
+            max-height: 140px;
+          }
+        }
       }
-     }
     }
-   }
-   &.transfer-AOR-modal {
-    > .card {
-     width: 40rem;
-  
-     .card-block {
-      overflow: visible;
-     }
+  }
+  &.transfer-AOR-modal {
+    >.card {
+      width: 40rem;
+      .card-block {
+        overflow: visible;
+      }
     }
     .agencyCode {
-     z-index: 20;   
-     .Select.TypeAhead {
       z-index: 20;
-      .react-select__menu {
-       .react-select__menu-list {
-        max-height: 200px;
-       }
+      .Select.TypeAhead {
+        z-index: 20;
+        .react-select__menu {
+          .react-select__menu-list {
+            max-height: 200px;
+          }
+        }
       }
-     }
     }
-    
     .agentCode {
-     z-index: 10;
-     .Select.TypeAhead {
       z-index: 10;
-      .react-select__menu {
-       .react-select__menu-list {
-        max-height: 140px;
-       }
+      .Select.TypeAhead {
+        z-index: 10;
+        .react-select__menu {
+          .react-select__menu-list {
+            max-height: 140px;
+          }
+        }
       }
-     }
     }
-   }
-
+  }
   .card {
     display: flex;
     align-content: flex-start;
@@ -210,19 +354,6 @@
     flex-wrap: nowrap;
     width: 60%;
   }
-
-  > form {
-    display: flex;
-    align-items: center;
-    flex-direction: column;
-    justify-content: center;
-
-    &.AdditionalInterestModal {
-      .card {
-        height: calc(90vh - 150px);
-      }
-    }
-  }
 }
 
 .ReactModal__Overlay--after-open {
@@ -230,7 +361,6 @@
   align-items: center;
   justify-content: center;
   background: rgba($warm-gray-15, .75) !important;
-
   .ReactModal__Content--after-open {
     top: auto;
     right: auto;
@@ -254,12 +384,10 @@
   .card {
     max-height: 36rem;
     height: 80%;
-
     .card-block {
       ul {
         margin: 0 ($padding*4);
         list-style: disc;
-
         li {
           display: list-item;
         }
@@ -271,5 +399,23 @@
 .ReactModalPortal {
   .ReactModal__Overlay {
     z-index: 10000;
+  }
+}
+
+#root .app-wrapper.csr.quote main[role="document"] .content-wrapper .route-content .scroll {
+  .AdditionalInterestModal {
+    overflow: hidden;
+    height: calc(90vh - 150px);
+    >form {
+      display: flex;
+      overflow: hidden;
+      flex-direction: column;
+      flex-grow: 1;
+      flex-shrink: 1;
+      .card-block {
+        overflow-x: hidden;
+        overflow-y: auto;
+      }
+    }
   }
 }

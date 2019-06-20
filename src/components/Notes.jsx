@@ -2,16 +2,14 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Loader } from '@exzeo/core-ui';
-import { Route } from 'react-router-dom';
 
 import { fetchNotes } from '../state/actions/notes.actions';
 import { setAppError } from '../state/actions/error.actions';
-import { callService } from '../utilities/serviceRunner';
 import NoteList from './NoteList';
 import Footer from './Common/Footer';
 
 export class Notes extends Component {
-  state = { isLoading: true }
+  state = { isLoading: true };
 
   async componentDidMount() {
     const { numbers, numberType, fetchNotes } = this.props;
@@ -20,7 +18,7 @@ export class Notes extends Component {
   }
 
   render() {
-    const { error, notes,  setAppError } = this.props;
+    const { error, notes,  setAppError, policy } = this.props;
     const { isLoading } = this.state;
 
     return (
@@ -28,7 +26,7 @@ export class Notes extends Component {
         <div className="route-content">
           {isLoading && <Loader />}
           <div className="scroll">
-            <NoteList notes={notes} setAppError={setAppError} />
+            <NoteList notes={notes} setAppError={setAppError} entityEndDate={policy.endDate} />
           </div>
         </div>
         <div className="basic-footer">
@@ -45,7 +43,8 @@ Notes.propTypes = {
 };
 
 const mapStateToProps = state => ({
-  notes: state.notes
+  notes: state.notes,
+  policy: state.policyState.policy
 });
 
 export default connect(mapStateToProps, {

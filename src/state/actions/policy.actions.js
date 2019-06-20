@@ -1,5 +1,7 @@
+// temporary full path import until we can find a better way to mock network requests
+import * as serviceRunner from '@exzeo/core-ui/src/@Harmony/Domain/Api/serviceRunner';
+
 import { convertToRateData } from '../../utilities/endorsementModel';
-import * as serviceRunner from '../../utilities/serviceRunner';
 import * as types from './actionTypes';
 import * as errorActions from './error.actions';
 import * as cgActions from './cg.actions';
@@ -309,7 +311,7 @@ export function createTransaction(submitData) {
     try {
       // performance issues can arise from returning an 'await'ed function - https://eslint.org/docs/rules/no-return-await
       // noinspection UnnecessaryLocalVariableJS
-      const response = await postCreatTransation(submitData);
+      const response = await postCreatTransaction(submitData);
       return response;
     } catch (error) {
       dispatch(errorActions.setAppError(error));
@@ -560,7 +562,7 @@ export async function fetchEndorsementHistory(policyNumber) {
  * @param submitData
  * @returns {Promise<{}>}
  */
-export async function postCreatTransation(submitData) {
+export async function postCreatTransaction(submitData) {
   const config = {
     service: 'policy-data',
     method: 'POST',
@@ -569,7 +571,7 @@ export async function postCreatTransation(submitData) {
   };
 
   try {
-    const response = await serviceRunner.callService(config, 'postCreatTransation');
+    const response = await serviceRunner.callService(config, 'postCreatTransaction');
     return response.data && response.data.result ? response.data.result : {};
   } catch (error) {
     throw error;
@@ -619,8 +621,12 @@ export async function fetchCancelOptions() {
 
 
 /**
- * Build query string and call policy service
+ *
  * @param agencyCode
+ * @param state
+ * @param product
+ * @param agentCode
+ * @param policyNumber
  * @returns {Promise<{}>}
  */
 export async function fetchPoliciesForAgency({ agencyCode = '', state = 'FL', product = 'HO3', agentCode = '', policyNumber = ''}) {
@@ -639,8 +645,12 @@ export async function fetchPoliciesForAgency({ agencyCode = '', state = 'FL', pr
 }
 
 /**
- * Search for policies matching some given criteria, set results as state
+ *
+ * @param policyNumber
  * @param agencyCode
+ * @param state
+ * @param product
+ * @param agentCode
  * @returns {Function}
  */
 export function getPoliciesForAgency({ policyNumber, agencyCode, state, product, agentCode}) {

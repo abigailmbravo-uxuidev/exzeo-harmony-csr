@@ -2,22 +2,22 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Field, Form, reduxForm } from 'redux-form';
+import classNames from 'classnames';
+import moment from 'moment';
 import Uppy from '@uppy/core';
 import Dashboard from '@uppy/react/lib/Dashboard';
 import XHRUpload from '@uppy/xhr-upload';
-import moment from 'moment';
 import { Select, validation, Loader } from '@exzeo/core-ui';
-import classNames from 'classnames';
-import { callService } from '../utilities/serviceRunner';
+import { callService } from '@exzeo/core-ui/src/@Harmony';
 
-import { toggleNote, toggleDiary} from '../state/actions/ui.actions';
+import { toggleNote, toggleDiary, setNotesSynced } from '../state/actions/ui.actions';
 import { fetchNotes } from '../state/actions/notes.actions';
 import { setAppError } from '../state/actions/error.actions';
 
 import '@uppy/core/dist/style.min.css';
 
 export const renderNotes = ({
-  input, label, type, meta: { touched, error }
+  input, label, meta: { touched, error }
 }) => (
   <div className={`${touched && error ? 'error' : ''} text-area-wrapper`}>
     <textarea {...input} placeholder={label} rows="10" cols="40" />
@@ -140,13 +140,13 @@ export class NoteUploader extends Component {
     });
   }
 
-  state = { 
-    minimize: false, 
-    fileExtensions: {} 
+  state = {
+    minimize: false,
+    fileExtensions: {}
   };
 
   componentDidMount() {
-    const { initialize, resourceType, user } = this.props;
+    const { initialize, resourceType } = this.props;
 
     this.contactTypes = resourceType ? contactTypeOptions[resourceType] : [];
     this.docTypes = resourceType ? docTypeOptions[resourceType] : [];
@@ -156,20 +156,20 @@ export class NoteUploader extends Component {
       Quote: 8,
       Policy: 17
     };
-    
-    initialize({ 
+
+    initialize({
       contactType: this.contactTypes[0],
       fileType: this.docTypes[defaultValues[resourceType]]
     })
   }
 
-  handleMinimize = () => this.setState(state => ({ 
-    minimize: !state.minimize 
+  handleMinimize = () => this.setState(state => ({
+    minimize: !state.minimize
   }));
 
   handleClose = () => this.props.toggleNote({});
 
-  validateFile = (file, currentFiles) => {
+  validateFile = (file) => {
     if (file.data.size === 0) {
       this.uppy.info('The file is empty.');
       return false;
@@ -179,28 +179,28 @@ export class NoteUploader extends Component {
       this.uppy.info('Uploads must have a file extension.');
       return false;
     }
-  }
+  };
 
-  validateUpload = (files => {
-    if(Object.keys(files).some(id => (!files[id].meta.name.includes('.')))) {
+  validateUpload = (files) => {
+    if (Object.keys(files).some(id => (!files[id].meta.name.includes('.')))) {
       this.uppy.info('The file name must have a file extension.');
       return false;
     }
-  })
+  };
 
   submitNote = async (data, dispatch, props) => {
     const {
       companyCode,
       state,
       product,
-      actions,
       user,
       noteType,
       documentId,
       sourceId,
       resourceType,
       fetchNotes,
-      toggleDiary
+      toggleDiary,
+      setNotesSynced,
     } = props;
 
     const mapResourceToNumber = {
@@ -238,23 +238,27 @@ export class NoteUploader extends Component {
     };
 
     const noteConfig = {
-      exchangeName: 'harmony', 
-      routingKey: 'harmony.note.addNote', 
+      exchangeName: 'harmony',
+      routingKey: 'harmony.note.addNote',
       data: noteData
     };
 
     const { openDiary } = data;
     try {
-      const { data } = await callService(noteConfig, 'addNote');
-      
+      await callService(noteConfig, 'addNote');
+
       if (window.location.pathname.includes('/notes')) {
         const numberType = mapResourceToNumber[resourceType];
         const numbers = numberType === 'policyNumber'
-          ? [noteData.number, noteData.source] : [noteData.number];
+          ? [noteData.number, noteData.source]
+          : [noteData.number];
+        // Update notes for Policy components (will be removed once Gandalf is added to Policy.
         fetchNotes(numbers, numberType);
+        // Let Notes/Files page know to fetch list of notes
+        setNotesSynced()
       }
 
-      if(openDiary) {
+      if (openDiary) {
         toggleDiary({
           companyCode,
           state,
@@ -262,7 +266,7 @@ export class NoteUploader extends Component {
           resourceType,
           resourceId: documentId
         });
-      };
+      }
     } catch (err) {
       setAppError({ message: err });
     } finally {
@@ -272,10 +276,10 @@ export class NoteUploader extends Component {
 
   render() {
     const { handleSubmit, noteType, submitting } = this.props;
-    
+
     const contactTypeAnswers = this.contactTypes
       ? this.contactTypes.map(c => ({ answer: c, label: c })) : [];
-    
+
     const docTypeAnswers = this.docTypes
       ? this.docTypes.map(d => ({ answer: d, label: d })) : [];
 
@@ -304,10 +308,11 @@ export class NoteUploader extends Component {
                   />
                 </div>
                 {noteType !== 'Agency Note' &&
-                <div className="form-group diary-checkbox">
-                  <Field component="input" name="openDiary" type="checkbox" />
-                  <label>Create & Open Diary On Save</label>
-                </div>}
+                  <div className="form-group diary-checkbox">
+                    <Field component="input" name="openDiary" type="checkbox" />
+                    <label>Create & Open Diary On Save</label>
+                  </div>
+                }
               </div>
               <Field name="noteContent" component={renderNotes} label="Note Content" />
               <Field
@@ -354,7 +359,8 @@ export default connect(mapStateToProps, {
   fetchNotes,
   toggleNote,
   toggleDiary,
-  setAppError
+  setAppError,
+  setNotesSynced,
 })(reduxForm({
   form: 'NoteUploader',
   validate

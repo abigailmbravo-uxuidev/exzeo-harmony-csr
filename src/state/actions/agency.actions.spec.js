@@ -1,10 +1,10 @@
 import configureStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import sinon from 'sinon';
-import axios from 'axios';
+import { http as axios } from '@exzeo/core-ui';
 import MockAdapter from 'axios-mock-adapter';
 
-import * as serviceRunner from '../../utilities/serviceRunner';
+import * as serviceRunner from '@exzeo/core-ui/src/@Harmony/Domain/Api/serviceRunner';
 import mockAgency from '../../modules/Agency/mockAgency';
 
 import * as agencyActions from './agency.actions';

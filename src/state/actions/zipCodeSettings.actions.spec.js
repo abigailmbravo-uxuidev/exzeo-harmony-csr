@@ -1,5 +1,5 @@
 import configureStore from 'redux-mock-store';
-import axios from 'axios';
+import { http as axios} from '@exzeo/core-ui';
 import MockAdapter from 'axios-mock-adapter';
 
 import * as types from './actionTypes';
@@ -53,7 +53,8 @@ describe('Zipcode Settings Actions', () => {
     return actions.searchSettingsByCSPAndZip('33607', 'FL')(store.dispatch)
       .then(() => {
         expect(store.getActions()[0].type).toEqual(types.SET_ZIPCODE_SETTINGS);
-      });
+      })
+      .catch(err => console.error('Error in test: searchSettingsByCSPandZip: ', err));
   });
 
   it('should fail searchSettingsByCSPAndZip', () => {

@@ -5,6 +5,9 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import Modal from 'react-modal';
 
+import * as appStateActions from './state/actions/appState.actions';
+import * as errorActions from './state/actions/error.actions';
+import * as authActions from './state/actions/auth.actions';
 import LoginPage from './containers/Login';
 import AccessDenied from './containers/AccessDenied';
 import LoggedOut from './containers/LoggedOut';
@@ -13,18 +16,14 @@ import SearchAgency from './containers/SearchAgency';
 import SearchPolicy from './containers/SearchPolicy';
 import SearchDiaries from './containers/SearchDiaries';
 import NotFoundPage from './containers/NotFound';
-import QuoteModule from './modules/Quote';
-import QuoteLanding from './components/Quote/QuoteLanding';
 import Reports from './containers/Reports';
-import PolicyModule from './modules/Policy';
-import Agency from './modules/Agency';
 import NoteUploader from './components/NoteUploader';
 import ConfirmPopup from './components/Common/ConfirmPopup';
 import DiaryModal from './components/DiaryModal';
 import Bootstrap from './components/Bootstrap';
-import * as appStateActions from './state/actions/appState.actions';
-import * as errorActions from './state/actions/error.actions';
-import * as authActions from './state/actions/auth.actions';
+import PolicyModule from './modules/Policy';
+import Agency from './modules/Agency';
+import { QuoteLanding, QuoteWorkflow } from './modules/Quote';
 
 class Routes extends Component {
   setBackStep = (goToNext, callback) => {
@@ -103,13 +102,13 @@ class Routes extends Component {
           }}>
 
           <div className="routes">
-            { userProfile && <Bootstrap userProfile={userProfile} />}
+            {userProfile && <Bootstrap userProfile={userProfile} />}
             <Switch>
               <Route exact path="/" render={props => <SearchPolicy auth={auth} {...props} />} />
               <Route exact path="/agency" render={props => <SearchAgency auth={auth} {...props} />} />
               <Route exact path="/diaries" render={props => <SearchDiaries auth={auth} {...props} />} />
               <Route exact path="/quote/new/:stateCode/:propertyId" render={props => <QuoteLanding auth={auth} {...props} />} />
-              <Route path="/quote/:quoteNumber" render={props => <QuoteModule auth={auth} {...props} />} />
+              <Route path="/quote/:quoteNumber" render={props => <QuoteWorkflow auth={auth} {...props} />} />
               <Route path="/policy/:policyNumber" render={props => <PolicyModule auth={auth} {...props} />} />
               <Route path="/agency/:agencyCode/:branchCode" render={props => <Agency auth={auth} {...props} />} />
               <Route exact path="/reports" render={props => <Reports auth={auth} {...props} />} />
@@ -122,11 +121,13 @@ class Routes extends Component {
                 render={() => {
                   auth.logout();
                   return <Callback />;
-                }} />
+                }}
+              />
               <Route
                 exact
                 path="/callback"
-                render={() => <Callback />} />
+                render={() => <Callback />}
+              />
               <Route path="*" render={props => <NotFoundPage auth={auth} {...props} />} />
             </Switch>
           </div>

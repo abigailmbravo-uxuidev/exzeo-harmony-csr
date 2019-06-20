@@ -104,6 +104,7 @@ export const getQuoteDetails = createSelector(
 
     const {
       constructionType,
+      floodZone,
       physicalAddress,
       territory
     } = property;
@@ -112,6 +113,7 @@ export const getQuoteDetails = createSelector(
 
     return {
       constructionType,
+      floodZone,
       currentPremium: detailUtils.getCurrentPremium(rating.totalPremium),
       territory,
       county: physicalAddress.county,

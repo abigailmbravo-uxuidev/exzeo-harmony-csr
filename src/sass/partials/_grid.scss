@@ -53,7 +53,6 @@ $table-border-color: $warm-gray-07 !default; //== Media queries breakpoints
 }
 
 .react-bs-container-body {
-  /*height: 154px;*/
   overflow: auto;
   width: 100%;
 }
@@ -201,14 +200,6 @@ $table-border-color: $warm-gray-07 !default; //== Media queries breakpoints
 .react-bs-table .react-bs-container-header .sort-column {
   position: relative;
   cursor: pointer;
-}
-/*inline editor default style*/
-.react-bs-container .form-control.editor {
-  /*width:100%;
-  top:0;
-  left:0;*/
-  /*height: 100%;
-  position: absolute;*/
 }
 
 .react-bs-container .textarea-save-btn {
@@ -637,7 +628,6 @@ table {
   }
 }
 
-.file-list {}
 //table view
 /*------------------------------------------------------------------------------------*/
 .react-bs-container-header {
@@ -903,8 +893,6 @@ table {
     flex-grow: 1;
     flex-shrink: 0;
   }
-
-  .card-view {}
 }
 //sortable column controls
 /*------------------------------------------------------------------------------------*/

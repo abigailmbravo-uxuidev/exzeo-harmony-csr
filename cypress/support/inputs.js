@@ -3,8 +3,12 @@
  * @param {Object} data - Data to fill out with keys corresponding to each entry in fields.
  */
 Cypress.Commands.add('fillFields', (fields = [], data) =>
-  cy.wrap(fields).each(field => cy.findDataTag(`${field.name}`).find('input').type(data ? data[field.name] : field.data))
-);
+  cy.wrap(fields).each(field =>
+    cy.findDataTag(`${field.name}`).then($el =>
+      // Sometimes the dom structure nests inputs
+      $el.find('input').length ?
+        cy.wrap($el).find('input').type(data ? data[field.name] : field.data, { force: true }) :
+        cy.wrap($el).type(data ? data[field.name] : field.data, { force: true }))));
 
 /**
  * @param {string} name - Field name to find.
@@ -31,12 +35,12 @@ Cypress.Commands.add('submitAndCheckValidation', (fields = [], options = {}) => 
  * @param {array} fields - Array of field objects corresponding to data-test tags to clear.
  */
 Cypress.Commands.add('clearAllText', fields =>
-  cy.wrap(fields).each(({ name }) => {
-    cy.findDataTag(name).find('input').then($input => {
-      if ($input.val()) cy.wrap($input).type('{selectall}{backspace}');
-    });
-  })
-);
+  cy.wrap(fields).each(({ name }) =>
+    cy.findDataTag(name).then($el =>
+      // Sometimes the dom structure nests inputs
+      $el.find('input').length ?
+        cy.wrap($el).find('input').then($input => $input.val() && cy.wrap($input).type('{selectall}{backspace}', { force: true })) :
+        $el.val() && cy.wrap($el).type('{selectall}{backspace}', { force: true }))));
 
 /**
  * Clear inputs, fill out inputs, and check validation on form
@@ -45,11 +49,10 @@ Cypress.Commands.add('clearAllText', fields =>
  * @param {Object} data - Data to use when filling out the form.
  * @param {Object} submitOptions - Options object used above in submitAndCheckValidation().
  */
-Cypress.Commands.add('verifyForm', ((baseFields = [], fieldsLeftBlank = [], data, submitOptions) => {
+Cypress.Commands.add('verifyForm', ((baseFields = [], fieldsLeftBlank = [], data, submitOptions) =>
   cy.clearAllText(baseFields)
     .fillFields(baseFields.filter(field => fieldsLeftBlank.indexOf(field) === -1), data)
-    .submitAndCheckValidation(fieldsLeftBlank.length ? fieldsLeftBlank : baseFields, submitOptions);
-}));
+    .submitAndCheckValidation(fieldsLeftBlank.length ? fieldsLeftBlank : baseFields, submitOptions)));
 
 /**
  * Uses the native slider setter, instead of React's

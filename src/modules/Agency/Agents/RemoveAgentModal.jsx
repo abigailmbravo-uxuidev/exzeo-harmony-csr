@@ -29,13 +29,13 @@ export class RemoveAgentModal extends Component {
             <div className="card-footer">
               <div className="btn-footer">
                 <Button
-                  baseClass="secondary"
-                  dataTest="modal-cancel"
+                  className={Button.constants.classNames.secondary}
+                  data-test="modal-cancel"
                   onClick={() => handleCancel()}>No
                 </Button>
                 <Button
-                  baseClass="primary"
-                  dataTest="modal-submit"
+                  className={Button.constants.classNames.primary}
+                  data-test="modal-submit"
                   type="submit"
                   disabled={disabled || submitting}>Yes
                 </Button>

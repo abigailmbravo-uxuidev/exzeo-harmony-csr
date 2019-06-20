@@ -15,7 +15,9 @@ const getAgentListData = state => state.agencyState.agentList;
 export const filterActiveAgentsList = agents => {
   return (agents || []).filter(a => a.status === 'Active').map(a => ({
     answer: a.agentCode,
-    label: `${a.agentCode}: ${a.firstName} ${a.lastName}`
+    label: `${a.agentCode}: ${a.firstName} ${a.lastName}`,
+    firstName: a.firstName,
+    lastName: a.lastName
   }));
 }
 

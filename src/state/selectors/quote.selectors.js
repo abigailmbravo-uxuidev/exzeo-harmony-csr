@@ -2,15 +2,16 @@ import { createSelector } from 'reselect';
 import cloneDeep from 'lodash/cloneDeep';
 import sortBy from 'lodash/sortBy';
 import { emptyArray } from '@exzeo/core-ui';
+import { formatDate, FORMATS } from '@exzeo/core-ui/src/Utilities/date';
 
 import { applyAdditionalInterestRanking } from '../../utilities/additionalInterests';
 import {
   ADDITIONAL_INTERESTS,
   DEFAULT_ADDITIONAL_INTERESTS_MAP,
 } from '../../constants/additionalInterests';
-import { CAN_QUOTE_STATES } from '../../constants/quoteState';
+import { EDITING_ENABLED } from '../../constants/quoteState';
 
-import { getQuote, getAppState, getCGState } from './entity.selectors';
+import { getQuote } from './entity.selectors';
 
 export const getSortedAdditionalInterests = createSelector(
   [getQuote],
@@ -45,51 +46,29 @@ export const getGroupedAdditionalInterests = createSelector(
   }
 );
 
-export const blockQuote = createSelector(
-  [getQuote],
-  (quoteData) => {
-    return !CAN_QUOTE_STATES.some(state => state === quoteData.quoteState);
-  }
-);
+export const getQuoteSelector = createSelector(
+    [getQuote],
+    (quoteData) => {
+      if (!quoteData || !quoteData.quoteNumber) return {};
 
-// export const getQuoteDataFromCgState = createSelector(
-//   [getAppState, getCGState],
-//   (appState, cgState) => {
-//     const taskData = cgState[appState.modelName] && cgState[appState.modelName].data;
-//
-//     if (!taskData || !taskData.model || !taskData.model.variables) return {};
-//
-//     const preferredResult = taskData.model.variables.find(variable => variable.name === 'getQuoteBetweenPageLoop');
-//     if (preferredResult && preferredResult.value && preferredResult.value.result) {
-//       return preferredResult.value.result;
-//     }
-//
-//     const backupResult = taskData.model.variables.find(variable => variable.name === 'retrieveQuote');
-//     if (backupResult && backupResult.value && backupResult.value.result) {
-//       return backupResult.value.result;
-//     }
-//
-//     return {};
-//   }
-// );
+      quoteData.effectiveDate = formatDate(quoteData.effectiveDate, FORMATS.SECONDARY);
+      quoteData.removeSecondary = false;
+      quoteData.hasActiveExceptions = quoteData.underwritingExceptions.filter(uw => !uw.overridden).length > 0;
+      quoteData.hasUWError = quoteData.underwritingExceptions.filter(uw =>
+        !uw.overridden && uw.action !== 'Missing Info'
+      ).length > 0;
 
-export const getQuoteForCreate = createSelector(
-  [getAppState, getCGState],
-  (appState, cgState) => {
-    const taskData = cgState[appState.modelName] && cgState[appState.modelName].data;
+      quoteData.editingDisabled = EDITING_ENABLED.indexOf(quoteData.quoteState) === -1;
 
-    if (!taskData || !taskData.model || !taskData.model.variables) return {};
+      if (quoteData.product === 'AF3') {
+        return quoteData;
+      }
 
-    const preferredResult = taskData.model.variables.find(variable => variable.name === 'createQuote');
-    if (preferredResult && preferredResult.value && preferredResult.value.result) {
-      return preferredResult.value.result;
+      if (quoteData.product === 'HO3') {
+        return quoteData;
+      }
+
+      // just in case
+      return quoteData;
     }
-
-    const backupResult = taskData.model.variables.find(variable => variable.name === 'retrieveQuote');
-    if (backupResult && backupResult.value && backupResult.value.result) {
-      return backupResult.value.result;
-    }
-
-    return {};
-  }
-);
+  );

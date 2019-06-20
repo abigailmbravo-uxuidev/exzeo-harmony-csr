@@ -17,18 +17,20 @@ export const LicenseCard = ({ license, editLicense, deleteLicense, canDelete }) 
       </div>
     </div>
     <div className="license-actions">
-      {canDelete && 
+      {canDelete &&
         <Button
-        customClass="btn btn-link btn-sm"
-        onClick={deleteLicense}
-        dataTest="delete-contract">
+          className={Button.constants.classNames.link}
+          size={Button.constants.sizes.small}
+          onClick={deleteLicense}
+          data-test="delete-contract">
           <i className="fa fa-trash" />Delete
         </Button>
       }
       <Button
-        customClass="btn btn-link btn-sm"
+        className={Button.constants.classNames.link}
+        size={Button.constants.sizes.small}
         onClick={editLicense}
-        dataTest="delete-contract">
+        data-test="delete-contract">
           <i className="fa fa-pencil-square" />Edit
       </Button>
     </div>

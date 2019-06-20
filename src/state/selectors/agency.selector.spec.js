@@ -54,7 +54,7 @@ describe('Testing Agency Selectors', () => {
         }];
 
     const result = filterActiveAgentsList(agents);
-    const res = [{"answer": 234, "label": "234: TestFirst AOR"}];
+    const res = [{"answer": 234, "label": "234: TestFirst AOR", "firstName": 'TestFirst', "lastName": 'AOR',}];
     expect(result).toEqual(res);
   });
 
