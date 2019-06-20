@@ -9,8 +9,8 @@ export default {
     displayText: 'United States of America'
   },
   customerInfo: {
-    FirstName: 'Bruce',
-    LastName: 'Lee',
+    FirstName: 'Batman',
+    LastName: 'Robin',
     EmailAddress: 'Batman@gmail.com',
     phoneNumber: '123 456 7890'
   },
