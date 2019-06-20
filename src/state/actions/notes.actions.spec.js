@@ -28,15 +28,16 @@ describe('Test notes.actions', () => {
       }
     ];
 
-    const stateObj = [{
-      type: types.SET_NOTES,
-      notes
-    }];
+    const stateObj = [
+      {
+        type: types.SET_NOTES,
+        notes
+      }
+    ];
 
     store.dispatch(setNotes(notes));
 
-    expect(store.getActions())
-      .toEqual(stateObj);
+    expect(store.getActions()).toEqual(stateObj);
   });
 
   describe('Test fetchNotes action', () => {
@@ -58,17 +59,20 @@ describe('Test notes.actions', () => {
         }
       ];
 
-      const stateObj = [{
-        type: types.SET_NOTES,
-        notes
-      }];
+      const stateObj = [
+        {
+          type: types.SET_NOTES,
+          notes
+        }
+      ];
 
-      serviceRunner.callService = jest.fn().mockReturnValue(Promise.resolve({ data: { result: notes } }));
+      serviceRunner.callService = jest
+        .fn()
+        .mockReturnValue(Promise.resolve({ data: { result: notes } }));
 
       await store.dispatch(fetchNotes([12345], 'agencyCode'));
       const action = store.getActions();
-      expect([action[0]])
-        .toEqual(stateObj);
+      expect([action[0]]).toEqual(stateObj);
     });
   });
 });

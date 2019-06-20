@@ -26,26 +26,23 @@ export const DateInput = ({
     { error: touched && error }
   );
 
-  const Hint = hint && (<FieldHint name={name} hint={hint} />);
+  const Hint = hint && <FieldHint name={name} hint={hint} />;
 
   const Error = touched && (error || warning) && (
     <span>{error || warning}</span>
   );
 
-  const Label = label && (<label htmlFor={name}>
-    {label}{Hint}
-  </label>);
+  const Label = label && (
+    <label htmlFor={name}>
+      {label}
+      {Hint}
+    </label>
+  );
 
   return (
     <div className={formGroupStyles} id={name}>
       {Label}
-      <input
-        tabIndex="0"
-        {...input}
-        type="date"
-        min={min}
-        max={max}
-      />
+      <input tabIndex="0" {...input} type="date" min={min} max={max} />
       {Error}
     </div>
   );
@@ -90,7 +87,6 @@ DateInput.propTypes = {
 
   // Name to add to class on render
   styleName: PropTypes.string
-
 };
 
 DateInput.defaultProps = {

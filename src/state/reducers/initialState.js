@@ -66,6 +66,6 @@ export default {
     premiumFinance: [],
     order: [],
     agency: [],
-    agent: [],
+    agent: []
   }
 };

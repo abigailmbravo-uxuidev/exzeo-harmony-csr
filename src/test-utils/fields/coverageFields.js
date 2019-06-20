@@ -213,7 +213,7 @@ export const homeAndLocationFields = [
     type: 'text',
     disabled: true,
     label: 'IGD ID'
-  },
+  }
 ];
 
 export const coverageFields = [
@@ -231,7 +231,8 @@ export const coverageFields = [
     values: ['0', '2', '5'],
     label: 'Percentage',
     output: {
-      label: 'Other Structures Limit', value: '$ 0'
+      label: 'Other Structures Limit',
+      value: '$ 0'
     }
   },
   {
@@ -240,7 +241,8 @@ export const coverageFields = [
     values: ['0', '25', '35'],
     label: 'Percentage',
     output: {
-      label: 'Personal Property Limit', value: '$ 0'
+      label: 'Personal Property Limit',
+      value: '$ 0'
     }
   },
   {
@@ -297,7 +299,8 @@ export const deductiblesFields = [
     values: ['2', '5'],
     label: 'Hurricane Deductible',
     output: {
-      label: 'Calculated Hurricane', value: '$ 0'
+      label: 'Calculated Hurricane',
+      value: '$ 0'
     }
   },
   {
@@ -306,7 +309,8 @@ export const deductiblesFields = [
     values: ['true', 'false'],
     label: 'Sinkhole',
     output: {
-      label: 'Calculated Sinkhole', value: '$ 0'
+      label: 'Calculated Sinkhole',
+      value: '$ 0'
     }
   }
 ];

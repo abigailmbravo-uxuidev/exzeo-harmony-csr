@@ -2,20 +2,19 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import reduxFormField from './reduxFormField';
 
-export const DisplayInput = ({
-  label,
-  input,
-  displayValue
-}) => (
+export const DisplayInput = ({ label, input, displayValue }) => (
   <div className="form-group">
-    <label htmlFor={input.name}>
-      {label}
-    </label>
+    <label htmlFor={input.name}>{label}</label>
     <input
       tabIndex={'0'}
       type="text"
       name={input.name}
-      value={displayValue || (!Number.isNaN(Number(input.value)) ? `$ ${input.value}`.replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') : input.value)}
+      value={
+        displayValue ||
+        (!Number.isNaN(Number(input.value))
+          ? `$ ${input.value}`.replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
+          : input.value)
+      }
       readOnly
     />
   </div>

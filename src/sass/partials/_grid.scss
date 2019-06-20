@@ -2,13 +2,19 @@
 //** Unit-less `line-height` for use in components like buttons.
 //$line-height-base: 1.45 from _variables.scss
 //** Computed "line-height" (`font-size` * `line-height`) for use with `margin`, `padding`, etc.
-$line-height-computed: floor(($font-size-base * $line-height-base)) !default; // ~20px
+$line-height-computed: floor(
+  ($font-size-base * $line-height-base)
+) !default; // ~20px
 //== Tables
 //
 //## Customizes the `.table` component with basic values, each used across all table variations.
 //** Padding for `<th>`s and `<td>`s.
-$table-cell-padding: ($padding/2) !default; //** Padding for cells in `.table-condensed`.
-$table-condensed-cell-padding: ($padding/2) !default; //** Default background color used for all tables.
+$table-cell-padding: (
+  $padding/2
+) !default; //** Padding for cells in `.table-condensed`.
+$table-condensed-cell-padding: (
+  $padding/2
+) !default; //** Default background color used for all tables.
 $table-bg: transparent !default; //** Background color used for `.table-striped`.
 $table-bg-accent: $white !default; //** Background color used for `.table-hover`.
 $table-bg-hover: $warm-gray-00 !default;
@@ -166,33 +172,101 @@ $table-border-color: $warm-gray-07 !default; //== Media queries breakpoints
   font-weight: normal;
 }
 
-.react-bs-table .react-bs-container-header > table > thead > tr > th .filter::-webkit-input-placeholder,
-.react-bs-table .react-bs-container-header > table > thead > tr > th .number-filter-input::-webkit-input-placeholder,
-.react-bs-table .react-bs-container-header > table > thead > tr > th .select-filter option[value=''],
-.react-bs-table .react-bs-container-header > table > thead > tr > th .select-filter.placeholder-selected {
+.react-bs-table
+  .react-bs-container-header
+  > table
+  > thead
+  > tr
+  > th
+  .filter::-webkit-input-placeholder,
+.react-bs-table
+  .react-bs-container-header
+  > table
+  > thead
+  > tr
+  > th
+  .number-filter-input::-webkit-input-placeholder,
+.react-bs-table
+  .react-bs-container-header
+  > table
+  > thead
+  > tr
+  > th
+  .select-filter
+  option[value=''],
+.react-bs-table
+  .react-bs-container-header
+  > table
+  > thead
+  > tr
+  > th
+  .select-filter.placeholder-selected {
   color: lightgrey;
   font-style: italic;
 }
 
-.react-bs-table .react-bs-container-header > table > thead > tr > th .select-filter.placeholder-selected option:not([value='']) {
+.react-bs-table
+  .react-bs-container-header
+  > table
+  > thead
+  > tr
+  > th
+  .select-filter.placeholder-selected
+  option:not([value='']) {
   color: initial;
   font-style: initial;
 }
 
-.react-bs-table .react-bs-container-header > table > thead > tr > th .date-filter,
-.react-bs-table .react-bs-container-header > table > thead > tr > th .number-filter {
+.react-bs-table
+  .react-bs-container-header
+  > table
+  > thead
+  > tr
+  > th
+  .date-filter,
+.react-bs-table
+  .react-bs-container-header
+  > table
+  > thead
+  > tr
+  > th
+  .number-filter {
   display: flex;
 }
 
-.react-bs-table .react-bs-container-header > table > thead > tr > th .date-filter-input,
-.react-bs-table .react-bs-container-header > table > thead > tr > th .number-filter-input {
+.react-bs-table
+  .react-bs-container-header
+  > table
+  > thead
+  > tr
+  > th
+  .date-filter-input,
+.react-bs-table
+  .react-bs-container-header
+  > table
+  > thead
+  > tr
+  > th
+  .number-filter-input {
   float: left;
   margin-left: $padding;
   width: calc(100% - 4.5rem - #{$padding});
 }
 
-.react-bs-table .react-bs-container-header > table > thead > tr > th .date-filter-comparator,
-.react-bs-table .react-bs-container-header > table > thead > tr > th .number-filter-comparator {
+.react-bs-table
+  .react-bs-container-header
+  > table
+  > thead
+  > tr
+  > th
+  .date-filter-comparator,
+.react-bs-table
+  .react-bs-container-header
+  > table
+  > thead
+  > tr
+  > th
+  .number-filter-comparator {
   float: left;
   width: 4.5rem;
 }
@@ -299,12 +373,12 @@ td.react-bs-table-expand-cell {
   80%,
   from,
   to {
-    animation-timing-function: cubic-bezier(0.215, 0.610, 0.355, 1.000);
+    animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
   }
 
   0% {
     opacity: 0;
-    transform: scale3d(.3, .3, .3);
+    transform: scale3d(0.3, 0.3, 0.3);
   }
 
   20% {
@@ -312,7 +386,7 @@ td.react-bs-table-expand-cell {
   }
 
   40% {
-    transform: scale3d(.9, .9, .9);
+    transform: scale3d(0.9, 0.9, 0.9);
   }
 
   60% {
@@ -321,7 +395,7 @@ td.react-bs-table-expand-cell {
   }
 
   80% {
-    transform: scale3d(.97, .97, .97);
+    transform: scale3d(0.97, 0.97, 0.97);
   }
 
   to {
@@ -335,7 +409,7 @@ td.react-bs-table-expand-cell {
 }
 @keyframes bounceOut {
   20% {
-    transform: scale3d(.9, .9, .9);
+    transform: scale3d(0.9, 0.9, 0.9);
   }
 
   50%,
@@ -346,7 +420,7 @@ td.react-bs-table-expand-cell {
 
   to {
     opacity: 0;
-    transform: scale3d(.3, .3, .3);
+    transform: scale3d(0.3, 0.3, 0.3);
   }
 }
 
@@ -380,7 +454,7 @@ th {
   width: 100%;
   // Cells
   > tbody,
-   > thead,
+  > thead,
   > tfoot {
     > tr {
       > td,
@@ -399,7 +473,7 @@ th {
   }
   // Remove top border from thead by default
   > colgroup + thead,
-   > thead:first-child,
+  > thead:first-child,
   > caption + thead {
     > tr:first-child {
       > td,
@@ -421,7 +495,7 @@ th {
 
 .table-condensed {
   > tbody,
-   > thead,
+  > thead,
   > tfoot {
     > tr {
       > td,
@@ -439,7 +513,7 @@ th {
   border: 1px solid $table-border-color;
 
   > tbody,
-   > thead,
+  > thead,
   > tfoot {
     > tr {
       > td,
@@ -482,7 +556,7 @@ th {
 //
 // Reset default table behavior
 
-table col[class*="col-"] {
+table col[class*='col-'] {
   position: static; // Prevent border hiding in Firefox and IE9-11 (see https://github.com/twbs/bootstrap/issues/11623)
   display: table-column;
   float: none;
@@ -491,7 +565,7 @@ table col[class*="col-"] {
 table {
   td,
   th {
-    &[class*="col-"] {
+    &[class*='col-'] {
       position: static; // Prevent border hiding in Firefox and IE9-11 (see https://github.com/twbs/bootstrap/issues/11623)
       display: table-cell;
       float: none;
@@ -524,7 +598,7 @@ table {
       margin-bottom: 0;
       // Ensure the content doesn't wrap
       > tbody,
-       > thead,
+      > thead,
       > tfoot {
         > tr {
           > td,
@@ -539,7 +613,7 @@ table {
       border: 0;
       // Nuke the appropriate borders so that the parent can handle them
       > tbody,
-       > thead,
+      > thead,
       > tfoot {
         > tr {
           > td:first-child,
@@ -601,12 +675,12 @@ table {
       font-size: $font-size-base;
 
       th {
-        padding: $table-cell-padding ($table-cell-padding*1.5);
+        padding: $table-cell-padding ($table-cell-padding * 1.5);
         border: none;
       }
 
       td {
-        padding: $table-cell-padding ($table-cell-padding*1.5);
+        padding: $table-cell-padding ($table-cell-padding * 1.5);
         border: none;
         font-size: $font-size-base;
       }
@@ -783,7 +857,7 @@ table {
                     font-size: $font-size-h4;
 
                     &:before {
-                      content: "\f111";
+                      content: '\f111';
                       font-family: $font-family-icon;
                     }
                   }
@@ -852,7 +926,11 @@ table {
           @include button-variant($warm-gray-12, $warm-gray-01, $warm-gray-01);
 
           &:hover {
-            @include button-variant($warm-gray-12, $warm-gray-04, $warm-gray-04);
+            @include button-variant(
+              $warm-gray-12,
+              $warm-gray-04,
+              $warm-gray-04
+            );
           }
 
           &:first-child {
@@ -867,12 +945,20 @@ table {
           }
 
           &.selected {
-            @include button-variant($white, $bright-blue-darken-04, $bright-blue-darken-04);
+            @include button-variant(
+              $white,
+              $bright-blue-darken-04,
+              $bright-blue-darken-04
+            );
 
             &:hover {
               cursor: default;
 
-              @include button-variant($white, $bright-blue-darken-04, $bright-blue-darken-04);
+              @include button-variant(
+                $white,
+                $bright-blue-darken-04,
+                $bright-blue-darken-04
+              );
             }
           }
 
@@ -918,13 +1004,13 @@ table {
       }
 
       > .caret {
-        top: -.125rem;
+        top: -0.125rem;
         margin: 0 !important;
         padding: 0 !important;
 
         &:before {
           color: rgba($warm-gray-07, 1);
-          content: "\f0d8";
+          content: '\f0d8';
           font: normal normal normal 1rem $font-family-icon;
         }
       }
@@ -935,7 +1021,7 @@ table {
 
           &:before {
             color: rgba($warm-gray-07, 1);
-            content: "\f0d7";
+            content: '\f0d7';
             font: normal normal normal 1rem $font-family-icon;
           }
         }
@@ -950,11 +1036,11 @@ table {
         line-height: 1;
 
         &.dropdown {
-          top: -.125rem;
+          top: -0.125rem;
 
           &:before {
-            color: rgba($warm-gray-07, .25);
-            content: "\f0d8";
+            color: rgba($warm-gray-07, 0.25);
+            content: '\f0d8';
             font: normal normal normal 1rem $font-family-icon;
           }
 
@@ -968,8 +1054,8 @@ table {
           top: 0.375rem;
 
           &:before {
-            color: rgba($warm-gray-07, .25);
-            content: "\f0d7";
+            color: rgba($warm-gray-07, 0.25);
+            content: '\f0d7';
             font: normal normal normal 1rem $font-family-icon;
           }
         }

@@ -3,7 +3,10 @@ import configureStore from 'redux-mock-store';
 import { propTypes } from 'redux-form';
 import { shallow } from 'enzyme';
 
-import ConnectedApp, { AdditionalInterestModal, checkAdditionalInterestForName } from './AdditionalInterestModal';
+import ConnectedApp, {
+  AdditionalInterestModal,
+  checkAdditionalInterestForName
+} from './AdditionalInterestModal';
 
 const middlewares = [];
 const mockStore = configureStore(middlewares);
@@ -58,25 +61,27 @@ describe('Testing AdditionalInterestModal component', () => {
       handleSubmit() {},
       verify() {},
       quoteData: {
-        AdditionalInterests: [{
-          id: '049a50b23c21c2ae3',
-          type: 'Mortgagee',
-          order: 1,
-          name1: 'BB&T Home Mortgage',
-          referenceNumber: '1234567',
-          mailingAddress: {
-            address1: '5115 Garden Vale Ave',
-            city: 'Tampa',
-            state: 'FL',
-            county: 'Hillsborough',
-            zip: '33624',
-            country: {
-              code: 'USA',
-              displayText: 'United States of America'
-            }
-          },
-          active: true
-        }]
+        AdditionalInterests: [
+          {
+            id: '049a50b23c21c2ae3',
+            type: 'Mortgagee',
+            order: 1,
+            name1: 'BB&T Home Mortgage',
+            referenceNumber: '1234567',
+            mailingAddress: {
+              address1: '5115 Garden Vale Ave',
+              city: 'Tampa',
+              state: 'FL',
+              county: 'Hillsborough',
+              zip: '33624',
+              country: {
+                code: 'USA',
+                displayText: 'United States of America'
+              }
+            },
+            active: true
+          }
+        ]
       },
       ...propTypes
     };
@@ -138,49 +143,55 @@ describe('Testing AdditionalInterestModal component', () => {
         }
       },
       quoteData: {
-        AdditionalInterests: [{
-          id: '049a50b23c21c2ae3',
-          type: 'Mortgagee',
-          order: 1,
-          name1: 'BB&T Home Mortgage',
-          referenceNumber: '1234567',
-          mailingAddress: {
-            address1: '5115 Garden Vale Ave',
-            city: 'Tampa',
-            state: 'FL',
-            county: 'Hillsborough',
-            zip: '33624',
-            country: {
-              code: 'USA',
-              displayText: 'United States of America'
-            }
-          },
-          active: true
-        }]
+        AdditionalInterests: [
+          {
+            id: '049a50b23c21c2ae3',
+            type: 'Mortgagee',
+            order: 1,
+            name1: 'BB&T Home Mortgage',
+            referenceNumber: '1234567',
+            mailingAddress: {
+              address1: '5115 Garden Vale Ave',
+              city: 'Tampa',
+              state: 'FL',
+              county: 'Hillsborough',
+              zip: '33624',
+              country: {
+                code: 'USA',
+                displayText: 'United States of America'
+              }
+            },
+            active: true
+          }
+        ]
       },
       entity: {
-        AdditionalInterests: [{
-          id: '049a50b23c21c2ae3',
-          type: 'Mortgagee',
-          order: 1,
-          name1: 'BB&T Home Mortgage',
-          referenceNumber: '1234567',
-          mailingAddress: {
-            address1: '5115 Garden Vale Ave',
-            city: 'Tampa',
-            state: 'FL',
-            county: 'Hillsborough',
-            zip: '33624',
-            country: {
-              code: 'USA',
-              displayText: 'United States of America'
-            }
-          },
-          active: true
-        }]
+        AdditionalInterests: [
+          {
+            id: '049a50b23c21c2ae3',
+            type: 'Mortgagee',
+            order: 1,
+            name1: 'BB&T Home Mortgage',
+            referenceNumber: '1234567',
+            mailingAddress: {
+              address1: '5115 Garden Vale Ave',
+              city: 'Tampa',
+              state: 'FL',
+              county: 'Hillsborough',
+              zip: '33624',
+              country: {
+                code: 'USA',
+                displayText: 'United States of America'
+              }
+            },
+            active: true
+          }
+        ]
       }
     };
-    const wrapper = shallow(<AdditionalInterestModal store={store} {...props} />);
+    const wrapper = shallow(
+      <AdditionalInterestModal store={store} {...props} />
+    );
     const wi = wrapper.instance();
 
     wi.setTopValues('1', [{ id: '1' }]);
@@ -233,25 +244,27 @@ describe('Testing AdditionalInterestModal component', () => {
       handleSubmit() {},
       verify() {},
       quoteData: {
-        AdditionalInterests: [{
-          id: '049a50b23c21c2ae3',
-          type: 'Mortgagee',
-          order: 1,
-          name1: 'BB&T Home Mortgage',
-          referenceNumber: '1234567',
-          mailingAddress: {
-            address1: '5115 Garden Vale Ave',
-            city: 'Tampa',
-            state: 'FL',
-            county: 'Hillsborough',
-            zip: '33624',
-            country: {
-              code: 'USA',
-              displayText: 'United States of America'
-            }
-          },
-          active: true
-        }]
+        AdditionalInterests: [
+          {
+            id: '049a50b23c21c2ae3',
+            type: 'Mortgagee',
+            order: 1,
+            name1: 'BB&T Home Mortgage',
+            referenceNumber: '1234567',
+            mailingAddress: {
+              address1: '5115 Garden Vale Ave',
+              city: 'Tampa',
+              state: 'FL',
+              county: 'Hillsborough',
+              zip: '33624',
+              country: {
+                code: 'USA',
+                displayText: 'United States of America'
+              }
+            },
+            active: true
+          }
+        ]
       }
     };
 

@@ -1,7 +1,13 @@
 import React from 'react';
 import { reduxForm } from 'redux-form';
 
-import { renderWithForm, checkLabel, checkTextInput, checkSelect, checkButton } from '../../../../test-utils';
+import {
+  renderWithForm,
+  checkLabel,
+  checkTextInput,
+  checkSelect,
+  checkButton
+} from '../../../../test-utils';
 import AgencySearch from '../AgencySearch';
 
 const fields = [
@@ -74,15 +80,25 @@ describe('Agency Search Testing', () => {
   const textFields = fields.filter(({ type }) => type === 'text');
 
   it('POS:Renders and has fields and labels', () => {
-    const { getByPlaceholderText, getByTestId } = renderWithForm(<SearchForm {...props} />);
+    const { getByPlaceholderText, getByTestId } = renderWithForm(
+      <SearchForm {...props} />
+    );
 
     fields.forEach(field => checkLabel(getByTestId, field));
-    textFields.forEach(({ placeholder }) => expect(getByPlaceholderText(placeholder)));
-    selectFields.forEach(({ dataTest, selected }) => expect(getByTestId(dataTest).getAttribute('data-selected')).toEqual(selected));
+    textFields.forEach(({ placeholder }) =>
+      expect(getByPlaceholderText(placeholder))
+    );
+    selectFields.forEach(({ dataTest, selected }) =>
+      expect(getByTestId(dataTest).getAttribute('data-selected')).toEqual(
+        selected
+      )
+    );
   });
 
   it('POS:Checks that all fields are working', () => {
-    const { getByPlaceholderText, getByTestId } = renderWithForm(<SearchForm {...props} />);
+    const { getByPlaceholderText, getByTestId } = renderWithForm(
+      <SearchForm {...props} />
+    );
     selectFields.forEach(field => checkSelect(getByTestId, field));
     textFields.forEach(field => checkTextInput(getByPlaceholderText, field));
   });

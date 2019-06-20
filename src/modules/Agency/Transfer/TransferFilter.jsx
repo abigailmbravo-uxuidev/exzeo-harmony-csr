@@ -1,16 +1,11 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react';
 import { Field, reduxForm } from 'redux-form';
 import { connect } from 'react-redux';
 
-import {
-  Input,
-  SelectTypeAhead,
-  Button,
-} from '@exzeo/core-ui';
+import { Input, SelectTypeAhead, Button } from '@exzeo/core-ui';
 
 const FORM_NAME = 'TransferFilter';
 export class TransferFilter extends Component {
-
   handleFilterChange = (value, previousValues, allValues) => {
     const { agencyCode } = this.props;
     const { policyNumber, state, product, agentCode } = allValues;
@@ -20,19 +15,24 @@ export class TransferFilter extends Component {
       product,
       agentCode,
       agencyCode
-     });
+    });
 
     return value;
-  }
+  };
 
   resetFilter = async () => {
     const { reset, agencyCode } = this.props;
     await this.props.getPoliciesForAgency({ agencyCode });
     reset();
-  }
+  };
 
   render() {
-    const { policyNumberList, listAnswersAsKey, agentsList, reset } = this.props;
+    const {
+      policyNumberList,
+      listAnswersAsKey,
+      agentsList,
+      reset
+    } = this.props;
     return (
       <form id={FORM_NAME} className="search-inputs">
         <Field
@@ -53,7 +53,6 @@ export class TransferFilter extends Component {
           showPlaceholder
           answers={listAnswersAsKey.US_states}
           normalize={this.handleFilterChange}
-
         />
         <Field
           name="product"
@@ -64,7 +63,6 @@ export class TransferFilter extends Component {
           showPlaceholder
           answers={listAnswersAsKey.Products}
           normalize={this.handleFilterChange}
-
         />
         <Field
           name="agentCode"
@@ -80,10 +78,12 @@ export class TransferFilter extends Component {
           size={Button.constants.sizes.small}
           customClass="multi-input"
           onClick={this.resetFilter}
-          dataTest="clear-fields">Clear Filters
-          </Button>
+          dataTest="clear-fields"
+        >
+          Clear Filters
+        </Button>
       </form>
-    )
+    );
   }
 }
 

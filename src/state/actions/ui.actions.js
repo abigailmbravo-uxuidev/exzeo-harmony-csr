@@ -66,5 +66,5 @@ export function toggleLoading(isLoading) {
 export function setNotesSynced() {
   return {
     type: types.SET_NOTES_SYNCED
-  }
+  };
 }

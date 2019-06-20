@@ -2,10 +2,7 @@ import React from 'react';
 import configureStore from 'redux-mock-store';
 import { shallow } from 'enzyme';
 
-import ConnectedApp, {
-  SideNav,
-  UWconditionsPopup
-} from './QuoteSideNav';
+import ConnectedApp, { SideNav, UWconditionsPopup } from './QuoteSideNav';
 
 const middlewares = [];
 const mockStore = configureStore(middlewares);
@@ -40,7 +37,9 @@ describe('Testing QuoteSideNav component', () => {
           toggleNote() {}
         },
         cgActions: {
-          batchCompleteTask() { return Promise.resolve(); }
+          batchCompleteTask() {
+            return Promise.resolve();
+          }
         },
         appStateActions: {
           setAppState() {}

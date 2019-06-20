@@ -1,9 +1,12 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Helmet } from 'react-helmet';
-import { DetailsHeader } from '@exzeo/core-ui/src/@Harmony'
+import { DetailsHeader } from '@exzeo/core-ui/src/@Harmony';
 
-import { getPolicyDetails, getQuoteDetails } from '../state/selectors/detailHeader.selectors';
+import {
+  getPolicyDetails,
+  getQuoteDetails
+} from '../state/selectors/detailHeader.selectors';
 import { getOpenDiaries } from '../state/selectors/diary.selectors';
 import PolicySideNav from '../components/Policy/PolicySideNav';
 import QuoteSideNav from './QuoteSideNav';
@@ -33,7 +36,7 @@ export class AppWrapper extends Component {
       showDiaries,
       openDiaryCount,
       headerDetails,
-      modalHandlers,
+      modalHandlers
     } = this.props;
 
     const appConfig = CONFIG[context];
@@ -41,9 +44,15 @@ export class AppWrapper extends Component {
 
     return (
       <React.Fragment>
-        <Helmet><title>{pageTitle}</title></Helmet>
+        <Helmet>
+          <title>{pageTitle}</title>
+        </Helmet>
         <Header title={appConfig.title}>
-          <DiaryButton onToggleDiaries={onToggleDiaries} showDiaries={showDiaries} openDiaryCount={openDiaryCount} />
+          <DiaryButton
+            onToggleDiaries={onToggleDiaries}
+            showDiaries={showDiaries}
+            openDiaryCount={openDiaryCount}
+          />
         </Header>
         <DetailsHeader
           context={context}
@@ -51,7 +60,10 @@ export class AppWrapper extends Component {
           detailsFields={header}
           headerDetails={headerDetails}
         />
-        <main role="document" className={showDiaries ? 'diary-open' : 'diary-closed'}>
+        <main
+          role="document"
+          className={showDiaries ? 'diary-open' : 'diary-closed'}
+        >
           <aside className="content-panel-left">
             <SideNav match={match} />
           </aside>
@@ -73,6 +85,5 @@ const mapStateToProps = (state, ownProps) => {
     openDiaryCount: getOpenDiaries(state).length
   };
 };
-
 
 export default connect(mapStateToProps)(AppWrapper);

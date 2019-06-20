@@ -8,4 +8,3 @@ describe('Policy Search', () => {
     expect(wrapper.exists()).toBeTruthy();
   });
 });
-

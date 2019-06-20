@@ -22,11 +22,10 @@ function setAgents(state, action) {
         answer: o.agentCode,
         emailAddress: o.emailAddress
       }))
-
     : [];
   return {
     ...state,
-    agents,
+    agents
   };
 }
 
@@ -45,13 +44,19 @@ function formatTopAnswers(answers) {
 }
 
 function setEnums(state, action) {
-  const mortgageeAnswers = action.additionalInterestQuestions.find(q => q.name === 'mortgagee');
+  const mortgageeAnswers = action.additionalInterestQuestions.find(
+    q => q.name === 'mortgagee'
+  );
   const mortgagee = formatTopAnswers(mortgageeAnswers.answers);
 
-  const premiumFinanceAnswers = action.additionalInterestQuestions.find(q => q.name === 'premiumFinance');
+  const premiumFinanceAnswers = action.additionalInterestQuestions.find(
+    q => q.name === 'premiumFinance'
+  );
   const premiumFinance = formatTopAnswers(premiumFinanceAnswers.answers);
 
-  const orderAnswers = action.additionalInterestQuestions.find(q => q.name === 'order');
+  const orderAnswers = action.additionalInterestQuestions.find(
+    q => q.name === 'order'
+  );
   const order = orderAnswers.answers;
 
   return {
@@ -60,13 +65,13 @@ function setEnums(state, action) {
     mortgagee,
     order,
     agent: action.agent,
-    agency: action.agency,
+    agency: action.agency
   };
 }
 
 function setZipCodeSettings(state, action) {
   return {
     ...state,
-    zipCodeSettings: action.zipCodeSettings,
+    zipCodeSettings: action.zipCodeSettings
   };
 }

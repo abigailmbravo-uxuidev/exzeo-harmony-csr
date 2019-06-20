@@ -22,7 +22,10 @@ export class SearchBar extends Component {
 
     toggleLoading(false);
     if (!agencies.length) {
-      getAgencies(DEFAULT_SEARCH_PARAMS.companyCode, DEFAULT_SEARCH_PARAMS.state);
+      getAgencies(
+        DEFAULT_SEARCH_PARAMS.companyCode,
+        DEFAULT_SEARCH_PARAMS.state
+      );
     }
 
     if (searchType === 'diaries') handleSubmit(this.handleSearchFormSubmit)();
@@ -33,11 +36,17 @@ export class SearchBar extends Component {
     await handleSearchSubmit(data, props);
   };
 
-  handlePagination = (isNext) => {
-    const { formProps: { handleSubmit } } = this.props;
+  handlePagination = isNext => {
+    const {
+      formProps: { handleSubmit }
+    } = this.props;
     return handleSubmit((data, dispatch, props) => {
       // submit function is looking for these two added properties to determine if this is an initial submit or pagination submit.
-      const submitData = { ...data, isNext, currentPage: props.search.currentPage };
+      const submitData = {
+        ...data,
+        isNext,
+        currentPage: props.search.currentPage
+      };
       dispatch(handleSearchSubmit(submitData, this.props));
     });
   };
@@ -49,29 +58,28 @@ export class SearchBar extends Component {
   };
 
   clearForm = () => {
-    const { clearAppError, formProps: { reset } } = this.props;
+    const {
+      clearAppError,
+      formProps: { reset }
+    } = this.props;
     reset();
     clearAppError();
     toggleLoading(false);
   };
 
   render() {
-    const {
-      formProps
-    } = this.props;
+    const { formProps } = this.props;
 
     return (
       <div id="SearchBar">
         <form onSubmit={formProps.handleSubmit(this.handleSearchFormSubmit)}>
           <div className="search-input-wrapper">
-
             {// render the correct search form based on searchType (declared in Search/index.js)
-              this.props.render({
-                changeSearchType: this.changeSearchType,
-                handlePagination: this.handlePagination,
-                formProps
+            this.props.render({
+              changeSearchType: this.changeSearchType,
+              handlePagination: this.handlePagination,
+              formProps
             })}
-
           </div>
         </form>
       </div>
@@ -84,14 +92,19 @@ const mapStateToProps = state => ({
   agencies: state.service.agencies || []
 });
 
-export default connect(mapStateToProps, {
-  clearAppError,
-  getAgencies,
-  toggleLoading,
-  handleSearchSubmit
-})(reduxForm({
-  // 'initialValues' prop is being passed in from parent component based on route/pathName
-  form: SEARCH_FORM,
-  enableReinitialize: true,
-  propNamespace: 'formProps'
-})(SearchBar));
+export default connect(
+  mapStateToProps,
+  {
+    clearAppError,
+    getAgencies,
+    toggleLoading,
+    handleSearchSubmit
+  }
+)(
+  reduxForm({
+    // 'initialValues' prop is being passed in from parent component based on route/pathName
+    form: SEARCH_FORM,
+    enableReinitialize: true,
+    propNamespace: 'formProps'
+  })(SearchBar)
+);

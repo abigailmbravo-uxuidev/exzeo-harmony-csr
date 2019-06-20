@@ -14,8 +14,11 @@ import {
 import { QuoteWorkflow } from '../QuoteWorkflow';
 
 const pageHeaders = [
-  { text: 'Quote Details' }, { text: 'Coverage / Rating' },
-  { text: 'Primary Policyholder' }, { text: 'Mailing Address' }, { text: 'Additional Interests' }
+  { text: 'Quote Details' },
+  { text: 'Coverage / Rating' },
+  { text: 'Primary Policyholder' },
+  { text: 'Mailing Address' },
+  { text: 'Additional Interests' }
 ];
 
 const fields = [
@@ -116,7 +119,9 @@ describe('Summary testing with finished Quote', () => {
   });
 
   it('POS:Share Fields', () => {
-    const { getByLabelText, getByTestId, getByText } = renderWithForm(<QuoteWorkflow {...props} />);
+    const { getByLabelText, getByTestId, getByText } = renderWithForm(
+      <QuoteWorkflow {...props} />
+    );
 
     fields.forEach(field => checkTextInput(getByLabelText, field));
     checkButton(getByText, { text: 'Share', type: 'submit' });
@@ -143,7 +148,9 @@ describe('Summary Testing with Default Quote', () => {
   it('POS:Underwriting Violation Error with initial quote data', () => {
     const { getByText } = renderWithForm(<QuoteWorkflow {...props} />);
 
-    expect(getByText('Quote Summary cannot be sent due to Underwriting Validations'));
+    expect(
+      getByText('Quote Summary cannot be sent due to Underwriting Validations')
+    );
   });
 
   it('POS:Underwriting Violations Error Message in Underwriting State', () => {
@@ -151,12 +158,14 @@ describe('Summary Testing with Default Quote', () => {
       ...props,
       quoteData: {
         ...props.quoteData,
-        quoteInputState: 'Underwriting',
+        quoteInputState: 'Underwriting'
       }
     };
     const { getByText } = renderWithForm(<QuoteWorkflow {...newProps} />);
 
-    expect(getByText('Quote Summary cannot be sent due to Underwriting Validations'));
+    expect(
+      getByText('Quote Summary cannot be sent due to Underwriting Validations')
+    );
   });
 
   it('POS:Underwriting Violations Error Message in Qualified State w/ UW Error', () => {
@@ -170,7 +179,9 @@ describe('Summary Testing with Default Quote', () => {
     };
     const { getByText } = renderWithForm(<QuoteWorkflow {...newProps} />);
 
-    expect(getByText('Quote Summary cannot be sent due to Underwriting Validations'));
+    expect(
+      getByText('Quote Summary cannot be sent due to Underwriting Validations')
+    );
   });
 
   it('NEG:No Error Message with Qualified State and no UW Errors', () => {
@@ -183,7 +194,11 @@ describe('Summary Testing with Default Quote', () => {
     };
     const { queryByText } = renderWithForm(<QuoteWorkflow {...newProps} />);
 
-    expect(queryByText('Quote Summary cannot be sent due to Underwriting Validations')).toBeNull();
+    expect(
+      queryByText(
+        'Quote Summary cannot be sent due to Underwriting Validations'
+      )
+    ).toBeNull();
   });
 
   it('POS:Underwriting Violations Error Message in Ready State w/ UW Error', () => {
@@ -197,7 +212,9 @@ describe('Summary Testing with Default Quote', () => {
     };
     const { getByText } = renderWithForm(<QuoteWorkflow {...newProps} />);
 
-    expect(getByText('Quote Summary cannot be sent due to Underwriting Validations'));
+    expect(
+      getByText('Quote Summary cannot be sent due to Underwriting Validations')
+    );
   });
 
   it('NEG:No Error Message with Ready State and no UW Errors', () => {
@@ -211,6 +228,10 @@ describe('Summary Testing with Default Quote', () => {
 
     const { queryByText } = renderWithForm(<QuoteWorkflow {...newProps} />);
 
-    expect(queryByText('Quote Summary cannot be sent due to Underwriting Validations')).toBeNull();
+    expect(
+      queryByText(
+        'Quote Summary cannot be sent due to Underwriting Validations'
+      )
+    ).toBeNull();
   });
 });

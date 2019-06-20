@@ -16,14 +16,16 @@ const License = ({ fields, isAgency, stateAnswers }) => {
             label="State"
             answers={stateAnswers}
             dataTest={`${license}.state`}
-            validate={validation.isRequired} />
+            validate={validation.isRequired}
+          />
           <Field
             name={`${license}.licenseNumber`}
             component={Input}
             label="License"
             styleName="licenseNumber"
             dataTest={`${license}.licenseNumber`}
-            validate={validation.isRequired} />
+            validate={validation.isRequired}
+          />
           <Field
             name={`${license}.licenseType`}
             component={Select}
@@ -31,7 +33,8 @@ const License = ({ fields, isAgency, stateAnswers }) => {
             label="Type"
             answers={LICENSE_TYPE}
             dataTest={`${license}.licenseType`}
-            validate={validation.isRequired} />
+            validate={validation.isRequired}
+          />
           <div className="appointed-wrapper">
             <label htmlFor={`${license}.appointed`}>Appointed</label>
             <Field
@@ -40,18 +43,32 @@ const License = ({ fields, isAgency, stateAnswers }) => {
               type="checkbox"
               className="appointed"
               label="Appointed"
-              data-test={`${license}.appointed`} />
+              data-test={`${license}.appointed`}
+            />
           </div>
-          {fields.length > 1 &&
-          <div className="btn-remove-wrapper align-right align-bottom in-grid-layout">
-            <button type="button" className="btn btn-link btn-sm" onClick={() => fields.remove(index)}>
-              <i className="fa fa-times-circle" />REMOVE
-            </button>
-          </div>}
+          {fields.length > 1 && (
+            <div className="btn-remove-wrapper align-right align-bottom in-grid-layout">
+              <button
+                type="button"
+                className="btn btn-link btn-sm"
+                onClick={() => fields.remove(index)}
+              >
+                <i className="fa fa-times-circle" />
+                REMOVE
+              </button>
+            </div>
+          )}
         </div>
-          ))}
+      ))}
       <div className="btn-divider-wrapper">
-        <button className="btn btn-secondary btn-sm add-license" type="button" onClick={() => fields.push({ appointed: false})}><i className="fa fa-plus" />License</button>
+        <button
+          className="btn btn-secondary btn-sm add-license"
+          type="button"
+          onClick={() => fields.push({ appointed: false })}
+        >
+          <i className="fa fa-plus" />
+          License
+        </button>
       </div>
     </React.Fragment>
   );

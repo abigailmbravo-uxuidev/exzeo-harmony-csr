@@ -5,12 +5,15 @@ import { getDiaryAssigneeAnswers } from '../../../state/selectors/questions.sele
 
 import DiariesSearch from './DiariesSearch';
 
-const mapStateToProps = (state) => {
+const mapStateToProps = state => {
   return {
     assigneeAnswers: getDiaryAssigneeAnswers(state)
   };
 };
 
-export default connect(mapStateToProps, {
-  submitSearch: submit
-})(DiariesSearch);
+export default connect(
+  mapStateToProps,
+  {
+    submitSearch: submit
+  }
+)(DiariesSearch);

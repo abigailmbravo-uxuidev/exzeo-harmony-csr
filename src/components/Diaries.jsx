@@ -34,7 +34,8 @@ const Diaries = ({ diaryLevel, diaries, onToggleDiary }) => {
   return (
     <section className={severity.sectionClass}>
       <h5>
-        <i className={severity.iconClass} aria-hidden="true" /><span> {severity.label}</span>
+        <i className={severity.iconClass} aria-hidden="true" />
+        <span> {severity.label}</span>
       </h5>
       <div>
         <ul className="fa-ul diary-list">
@@ -42,18 +43,24 @@ const Diaries = ({ diaryLevel, diaries, onToggleDiary }) => {
             <li key={diary.diaryId} data-test={severity.sectionClass}>
               <div className="diary-header">
                 <i className={severity.listIconClass} aria-hidden="true" />
-                <span className="diary-due-date">{date.formatDate(diary.due)} </span>
-                <button className="btn btn-link btn-sm" onClick={() => onToggleDiary(diary)}>
-                  <i className="fa fa-chevron-circle-up" />Open
+                <span className="diary-due-date">
+                  {date.formatDate(diary.due)}{' '}
+                </span>
+                <button
+                  className="btn btn-link btn-sm"
+                  onClick={() => onToggleDiary(diary)}
+                >
+                  <i className="fa fa-chevron-circle-up" />
+                  Open
                 </button>
               </div>
               <div className="diary-type">{diary.type}</div>
               <div className="diary-reason">
-                <p>{diary.reason}: <ShortenText text={diary.message} /></p>
+                <p>
+                  {diary.reason}: <ShortenText text={diary.message} />
+                </p>
               </div>
-              <div className="diary-assignee">
-                {diary.assignee.displayName}
-              </div>
+              <div className="diary-assignee">{diary.assignee.displayName}</div>
             </li>
           ))}
         </ul>
@@ -65,10 +72,12 @@ const Diaries = ({ diaryLevel, diaries, onToggleDiary }) => {
 Diaries.propTypes = {
   diaryLevel: PropTypes.oneOf(['upComing', 'pastDue', 'dueSoon']).isRequired,
   onToggleDiary: PropTypes.func.isRequired,
-  diaries: PropTypes.arrayOf(PropTypes.shape({
-    _id: PropTypes.string,
-    internalMessage: PropTypes.string
-  }))
+  diaries: PropTypes.arrayOf(
+    PropTypes.shape({
+      _id: PropTypes.string,
+      internalMessage: PropTypes.string
+    })
+  )
 };
 
 export default Diaries;

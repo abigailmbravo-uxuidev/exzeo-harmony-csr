@@ -31,7 +31,7 @@ import { PREMIUM_FINANCE_BILL_PAYER_TYPES } from '../../constants/additionalInte
 const validateBatchNumber = validation.isDateMatchMin10('cashDate', 'YYYYMMDD');
 const validateAmount = validation.isRange(-1000000, 1000000);
 
-export const handleInitialize = (state) => {
+export const handleInitialize = state => {
   const policy = state.policyState.policy || {};
   const values = {};
   values.policyNumber = policy ? policy.policyNumber : null;
@@ -56,7 +56,7 @@ export class MortgageBilling extends Component {
     this.props.getUIQuestions('additionalInterestsCSR');
   }
 
-  handleBillingFormSubmit = async (data) => {
+  handleBillingFormSubmit = async data => {
     const { updateBillPlan, policy } = this.props;
     const updateData = {
       policyNumber: policy.policyNumber,
@@ -80,7 +80,7 @@ export class MortgageBilling extends Component {
       additionalInterestId: aiData._id,
       policyID: policy.policyID,
       policyNumber: policy.policyNumber,
-      transactionType: isEditingAI ? 'AI Update' : 'AI Addition', // eslint-disable-line
+      transactionType: isEditingAI ? 'AI Update' : 'AI Addition' // eslint-disable-line
     };
 
     await createTransaction(submitData);
@@ -92,7 +92,7 @@ export class MortgageBilling extends Component {
     });
   };
 
-  addAdditionalInterest = (type) => {
+  addAdditionalInterest = type => {
     this.setState({
       showAdditionalInterestModal: true,
       isEditingAI: false,
@@ -101,7 +101,7 @@ export class MortgageBilling extends Component {
     });
   };
 
-  editAI = (ai) => {
+  editAI = ai => {
     this.setState({
       showAdditionalInterestModal: true,
       isEditingAI: true,
@@ -128,22 +128,36 @@ export class MortgageBilling extends Component {
         type: addAdditionalInterestType
       };
 
-
-      if (policy.additionalInterests && addAdditionalInterestType === 'Mortgagee') {
-        const mortgageeOrderAnswers = getMortgageeOrderAnswers(questions, (policy.additionalInterests || null));
+      if (
+        policy.additionalInterests &&
+        addAdditionalInterestType === 'Mortgagee'
+      ) {
+        const mortgageeOrderAnswers = getMortgageeOrderAnswers(
+          questions,
+          policy.additionalInterests || null
+        );
         return {
           ...initialValues,
-          order: mortgageeOrderAnswers.length === 1 ? mortgageeOrderAnswers[0].answer : ''
+          order:
+            mortgageeOrderAnswers.length === 1
+              ? mortgageeOrderAnswers[0].answer
+              : ''
         };
       }
       return {
         ...initialValues,
-        order: policy.additionalInterests.filter(ai => ai.active && ai.type === addAdditionalInterestType).length
+        order: policy.additionalInterests.filter(
+          ai => ai.active && ai.type === addAdditionalInterestType
+        ).length
       };
     }
 
     const mortgageeAnswers = getAnswers('mortgagee', questions);
-    const mortgagee = mortgageeAnswers.find(ai => ai.AIName1 === selectedAI.name1 && ai.AIAddress1 === selectedAI.mailingAddress.address1);
+    const mortgagee = mortgageeAnswers.find(
+      ai =>
+        ai.AIName1 === selectedAI.name1 &&
+        ai.AIAddress1 === selectedAI.mailingAddress.address1
+    );
 
     return {
       mortgagee,
@@ -172,11 +186,14 @@ export class MortgageBilling extends Component {
     });
   };
 
-  toggleAIState = async (ai) => {
+  toggleAIState = async ai => {
+    this.setState({ isDeleting: true });
 
-    this.setState({ isDeleting: true })
-
-    const { createTransaction, getPolicy, policy: { policyID, policyNumber } } = this.props;
+    const {
+      createTransaction,
+      getPolicy,
+      policy: { policyID, policyNumber }
+    } = this.props;
     const submitData = {
       policyID,
       policyNumber,
@@ -188,14 +205,14 @@ export class MortgageBilling extends Component {
     this.hideAdditionalInterestModal();
   };
 
-  setBatch = (value) => {
+  setBatch = value => {
     const { change } = this.props;
 
     change('cashDate', value);
     change('batchNumber', moment.utc(value).format('YYYYMMDD'));
   };
 
-  normalizeCashType = (value) => {
+  normalizeCashType = value => {
     const { change } = this.props;
     change('cashDescription', '');
     return value;
@@ -211,15 +228,43 @@ export class MortgageBilling extends Component {
 
   checkValidTypes = (additionalInterests, selectedAI) => {
     const ais = [];
-    if (selectedAI.type === 'Mortgagee' || additionalInterests.filter(ai => ai.type === 'Mortgagee' && ai.active).length <= 1) ais.push({ answer: 'Mortgagee' });
-    if (selectedAI.type === 'Additional Insured' || additionalInterests.filter(ai => ai.type === 'Additional Insured' && ai.active).length <= 1) ais.push({ answer: 'Additional Insured' });
-    if (selectedAI.type === 'Additional Interest' || additionalInterests.filter(ai => ai.type === 'Additional Interest' && ai.active).length <= 1) ais.push({ answer: 'Additional Interest' });
-    if (selectedAI.type === 'Premium Finance' || additionalInterests.filter(ai => ai.type === 'Premium Finance' && ai.active).length <= 1) ais.push({ answer: 'Premium Finance' });
-    if (selectedAI.type === 'Bill Payer' || additionalInterests.filter(ai => ai.type === 'Bill Payer' && ai.active).length === 0) ais.push({ answer: 'Bill Payer' });
+    if (
+      selectedAI.type === 'Mortgagee' ||
+      additionalInterests.filter(ai => ai.type === 'Mortgagee' && ai.active)
+        .length <= 1
+    )
+      ais.push({ answer: 'Mortgagee' });
+    if (
+      selectedAI.type === 'Additional Insured' ||
+      additionalInterests.filter(
+        ai => ai.type === 'Additional Insured' && ai.active
+      ).length <= 1
+    )
+      ais.push({ answer: 'Additional Insured' });
+    if (
+      selectedAI.type === 'Additional Interest' ||
+      additionalInterests.filter(
+        ai => ai.type === 'Additional Interest' && ai.active
+      ).length <= 1
+    )
+      ais.push({ answer: 'Additional Interest' });
+    if (
+      selectedAI.type === 'Premium Finance' ||
+      additionalInterests.filter(
+        ai => ai.type === 'Premium Finance' && ai.active
+      ).length <= 1
+    )
+      ais.push({ answer: 'Premium Finance' });
+    if (
+      selectedAI.type === 'Bill Payer' ||
+      additionalInterests.filter(ai => ai.type === 'Bill Payer' && ai.active)
+        .length === 0
+    )
+      ais.push({ answer: 'Bill Payer' });
     return ais;
   };
 
-  handleFormSubmit = async (data) => {
+  handleFormSubmit = async data => {
     const { policy, reset: resetForm, addTransaction } = this.props;
     const submitData = data;
 
@@ -235,13 +280,23 @@ export class MortgageBilling extends Component {
     resetForm();
   };
 
-  amountFormatter = cell => (cell ? Number(cell).toLocaleString('en-US', { style: 'currency', currency: 'USD' }) : '');
+  amountFormatter = cell =>
+    cell
+      ? Number(cell).toLocaleString('en-US', {
+          style: 'currency',
+          currency: 'USD'
+        })
+      : '';
 
   dateFormatter = cell => `${cell.substring(0, 10)}`;
 
-  toggleDeleteReinstateAIModal = (deleteReinstateType) => (selectedAI) => {
-    this.setState({ showDeleteReinstateAI: !this.state.showDeleteReinstateAI, selectedAI, deleteReinstateType });
-  }
+  toggleDeleteReinstateAIModal = deleteReinstateType => selectedAI => {
+    this.setState({
+      showDeleteReinstateAI: !this.state.showDeleteReinstateAI,
+      selectedAI,
+      deleteReinstateType
+    });
+  };
 
   render() {
     const {
@@ -259,45 +314,60 @@ export class MortgageBilling extends Component {
       sortedAdditionalInterests
     } = this.props;
 
-    const validAdditionalInterestTypes = this.checkValidTypes(additionalInterests, this.state.selectedAI || {});
+    const validAdditionalInterestTypes = this.checkValidTypes(
+      additionalInterests,
+      this.state.selectedAI || {}
+    );
     const cashDescriptionAnswers = cashDescriptionOptions[cashTypeValue] || [];
 
     const billingOptionsValues = billingOptions.options || [];
-    const selectedBillintOptions = billingOptionsValues.find(opt => opt.billToId === this.props.policy.billToId);
-    const billToText = selectedBillintOptions ? selectedBillintOptions.displayText : null;
+    const selectedBillintOptions = billingOptionsValues.find(
+      opt => opt.billToId === this.props.policy.billToId
+    );
+    const billToText = selectedBillintOptions
+      ? selectedBillintOptions.displayText
+      : null;
 
-    const disableBillPayerPremiumFinance = (policy && (policy.additionalInterests.filter(ai => ai.type === 'Bill Payer' && ai.active).length > 0 ||
-     policy.additionalInterests.filter(ai => ai.type === 'Premium Finance' && ai.active).length > 0));
+    const disableBillPayerPremiumFinance =
+      policy &&
+      (policy.additionalInterests.filter(
+        ai => ai.type === 'Bill Payer' && ai.active
+      ).length > 0 ||
+        policy.additionalInterests.filter(
+          ai => ai.type === 'Premium Finance' && ai.active
+        ).length > 0);
 
     return (
       <React.Fragment>
         <div className="route-content">
-
-          {(!(billingOptions && billingOptions.options)) &&
-            <Loader />
-          }
+          {!(billingOptions && billingOptions.options) && <Loader />}
 
           <div className="scroll">
             <div className="form-group survey-wrapper" role="group">
               {/* TODO: This section needs to be hidden per role */}
               <section className="add-payment">
                 <h3>Add Payment</h3>
-                <form id="MortgageBilling" onSubmit={handleSubmit(this.handleFormSubmit)} >
+                <form
+                  id="MortgageBilling"
+                  onSubmit={handleSubmit(this.handleFormSubmit)}
+                >
                   <div className="flex-row">
                     <Field
-                        name="cashDate"
-                        dataTest="cashDate"
-                        label="Cash Date"
-                        component={Input}
-                        type="date"
-                        validate={validation.isRequired}
-                        normalize={this.setBatch} />
+                      name="cashDate"
+                      dataTest="cashDate"
+                      label="Cash Date"
+                      component={Input}
+                      type="date"
+                      validate={validation.isRequired}
+                      normalize={this.setBatch}
+                    />
                     <Field
                       name="batchNumber"
                       dataTest="batchNumber"
                       label="Batch Number"
                       component={Input}
-                      validate={validateBatchNumber} />
+                      validate={validateBatchNumber}
+                    />
                   </div>
                   <div className="flex-row">
                     <Field
@@ -307,14 +377,16 @@ export class MortgageBilling extends Component {
                       normalize={this.normalizeCashType}
                       component={Select}
                       validate={validation.isRequired}
-                      answers={cashTypeAnswers} />
+                      answers={cashTypeAnswers}
+                    />
                     <Field
                       name="cashDescription"
                       dataTest="cashDescription"
                       label="Description"
                       component={Select}
                       validate={validation.isRequired}
-                      answers={cashDescriptionAnswers} />
+                      answers={cashDescriptionAnswers}
+                    />
                     <Field
                       name="amount"
                       dataTest="amount"
@@ -323,22 +395,45 @@ export class MortgageBilling extends Component {
                       validate={validateAmount}
                       noDecimal={false}
                       min={-1000000}
-                      max={1000000} />
+                      max={1000000}
+                    />
                   </div>
                   <div className="btn-footer">
-                    <button className="btn btn-secondary" type="button" form="MortgageBilling" onClick={resetForm}>Cancel</button>
-                    <button className="btn btn-primary" type="submit" form="MortgageBilling" disabled={submitting || pristine}>Save</button>
+                    <button
+                      className="btn btn-secondary"
+                      type="button"
+                      form="MortgageBilling"
+                      onClick={resetForm}
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      className="btn btn-primary"
+                      type="submit"
+                      form="MortgageBilling"
+                      disabled={submitting || pristine}
+                    >
+                      Save
+                    </button>
                   </div>
                 </form>
               </section>
               <section className="payment-summary">
-                <h3>Billing <button className="btn btn-link btn-sm" onClick={this.handleBillingEdit}><i className="fa fa-pencil-square" />Edit</button></h3>
+                <h3>
+                  Billing{' '}
+                  <button
+                    className="btn btn-link btn-sm"
+                    onClick={this.handleBillingEdit}
+                  >
+                    <i className="fa fa-pencil-square" />
+                    Edit
+                  </button>
+                </h3>
                 <div className="payment-summary">
                   <dl>
                     <div>
                       <dt>Bill To</dt>
-                      <dd>{billToText}
-                      </dd>
+                      <dd>{billToText}</dd>
                     </div>
                   </dl>
                   <dl>
@@ -352,12 +447,17 @@ export class MortgageBilling extends Component {
                   <h3 className="flex-child">Payments</h3>
                 </div>
                 <div className="payment-summary grid">
-
                   <PaymentHistoryTable paymentHistory={paymentHistory} />
 
                   <dl className="total">
                     <div>
-                      {this.props.summaryLedger && this.props.summaryLedger.cashReceived && `Payments Received ${this.amountFormatter(this.props.summaryLedger.cashReceived.$numberDecimal || '0')}`} <br />
+                      {this.props.summaryLedger &&
+                        this.props.summaryLedger.cashReceived &&
+                        `Payments Received ${this.amountFormatter(
+                          this.props.summaryLedger.cashReceived
+                            .$numberDecimal || '0'
+                        )}`}{' '}
+                      <br />
                     </div>
                   </dl>
                 </div>
@@ -366,11 +466,88 @@ export class MortgageBilling extends Component {
                 <h3>Additional Interests</h3>
                 <div className="results-wrapper">
                   <div className="button-group">
-                    <button tabIndex="0" disabled={(policy && policy.additionalInterests.filter(ai => ai.type === 'Mortgagee' && ai.active).length > 2)} onClick={() => this.addAdditionalInterest('Mortgagee')} className="btn btn-sm btn-secondary" type="button"> <div><i className="fa fa-plus" /><span>Mortgagee</span></div></button>
-                    <button tabIndex="0" disabled={(policy && policy.additionalInterests.filter(ai => ai.type === 'Additional Insured' && ai.active).length > 1)} onClick={() => this.addAdditionalInterest('Additional Insured')} className="btn btn-sm btn-secondary" type="button"><div><i className="fa fa-plus" /><span>Additional Insured</span></div></button>
-                    <button tabIndex="0" disabled={(policy && policy.additionalInterests.filter(ai => ai.type === 'Additional Interest' && ai.active).length > 1)} onClick={() => this.addAdditionalInterest('Additional Interest')} className="btn btn-sm btn-secondary" type="button"><div><i className="fa fa-plus" /><span>Additional Interest</span></div></button>
-                    <button tabIndex="0" disabled={disableBillPayerPremiumFinance} onClick={() => this.addAdditionalInterest('Premium Finance')} className="btn btn-sm btn-secondary" type="button"><div><i className="fa fa-plus" /><span>Premium Finance</span></div></button>
-                    <button tabIndex="0" disabled={disableBillPayerPremiumFinance} onClick={() => this.addAdditionalInterest('Bill Payer')} className="btn btn-sm btn-secondary" type="button"><div><i className="fa fa-plus" /><span>Bill Payer</span></div></button>
+                    <button
+                      tabIndex="0"
+                      disabled={
+                        policy &&
+                        policy.additionalInterests.filter(
+                          ai => ai.type === 'Mortgagee' && ai.active
+                        ).length > 2
+                      }
+                      onClick={() => this.addAdditionalInterest('Mortgagee')}
+                      className="btn btn-sm btn-secondary"
+                      type="button"
+                    >
+                      {' '}
+                      <div>
+                        <i className="fa fa-plus" />
+                        <span>Mortgagee</span>
+                      </div>
+                    </button>
+                    <button
+                      tabIndex="0"
+                      disabled={
+                        policy &&
+                        policy.additionalInterests.filter(
+                          ai => ai.type === 'Additional Insured' && ai.active
+                        ).length > 1
+                      }
+                      onClick={() =>
+                        this.addAdditionalInterest('Additional Insured')
+                      }
+                      className="btn btn-sm btn-secondary"
+                      type="button"
+                    >
+                      <div>
+                        <i className="fa fa-plus" />
+                        <span>Additional Insured</span>
+                      </div>
+                    </button>
+                    <button
+                      tabIndex="0"
+                      disabled={
+                        policy &&
+                        policy.additionalInterests.filter(
+                          ai => ai.type === 'Additional Interest' && ai.active
+                        ).length > 1
+                      }
+                      onClick={() =>
+                        this.addAdditionalInterest('Additional Interest')
+                      }
+                      className="btn btn-sm btn-secondary"
+                      type="button"
+                    >
+                      <div>
+                        <i className="fa fa-plus" />
+                        <span>Additional Interest</span>
+                      </div>
+                    </button>
+                    <button
+                      tabIndex="0"
+                      disabled={disableBillPayerPremiumFinance}
+                      onClick={() =>
+                        this.addAdditionalInterest('Premium Finance')
+                      }
+                      className="btn btn-sm btn-secondary"
+                      type="button"
+                    >
+                      <div>
+                        <i className="fa fa-plus" />
+                        <span>Premium Finance</span>
+                      </div>
+                    </button>
+                    <button
+                      tabIndex="0"
+                      disabled={disableBillPayerPremiumFinance}
+                      onClick={() => this.addAdditionalInterest('Bill Payer')}
+                      className="btn btn-sm btn-secondary"
+                      type="button"
+                    >
+                      <div>
+                        <i className="fa fa-plus" />
+                        <span>Bill Payer</span>
+                      </div>
+                    </button>
                   </div>
                   <ul className="results result-cards additional-interests-list">
                     {sortedAdditionalInterests.map(ai => (
@@ -378,9 +555,16 @@ export class MortgageBilling extends Component {
                         key={ai._id}
                         ai={ai}
                         editAI={this.editAI}
-                        toggleReactivateAIModal={this.toggleDeleteReinstateAIModal('Reactivate')}
-                        toggleDeleteAIModal={this.toggleDeleteReinstateAIModal('Delete')}
-                        disableBillPayerPremiumFinance={disableBillPayerPremiumFinance && PREMIUM_FINANCE_BILL_PAYER_TYPES.includes(ai.type)}
+                        toggleReactivateAIModal={this.toggleDeleteReinstateAIModal(
+                          'Reactivate'
+                        )}
+                        toggleDeleteAIModal={this.toggleDeleteReinstateAIModal(
+                          'Delete'
+                        )}
+                        disableBillPayerPremiumFinance={
+                          disableBillPayerPremiumFinance &&
+                          PREMIUM_FINANCE_BILL_PAYER_TYPES.includes(ai.type)
+                        }
                       />
                     ))}
                   </ul>
@@ -388,7 +572,7 @@ export class MortgageBilling extends Component {
               </section>
             </div>
           </div>
-          {this.state.showAdditionalInterestModal &&
+          {this.state.showAdditionalInterestModal && (
             <AIModal
               additionalInterests={additionalInterests}
               addAdditionalInterestType={this.state.addAdditionalInterestType}
@@ -400,23 +584,27 @@ export class MortgageBilling extends Component {
               selectedAI={this.state.selectedAI}
               validAdditionalInterestTypes={validAdditionalInterestTypes}
               deleteAdditionalInterest={this.toggleAIState}
-              isPolicy />
-          }
-          {this.state.showDeleteReinstateAI && 
-          <AIDeleteReinstateModal
-            actionType={this.state.deleteReinstateType}
-            closeModal={this.hideAdditionalInterestModal}
-            selectedAI={this.state.selectedAI}
-            handleAction={() => this.toggleAIState(this.state.selectedAI, this.props)}
-          />
-          }
+              isPolicy
+            />
+          )}
+          {this.state.showDeleteReinstateAI && (
+            <AIDeleteReinstateModal
+              actionType={this.state.deleteReinstateType}
+              closeModal={this.hideAdditionalInterestModal}
+              selectedAI={this.state.selectedAI}
+              handleAction={() =>
+                this.toggleAIState(this.state.selectedAI, this.props)
+              }
+            />
+          )}
         </div>
-        {this.state.showBillingEditModal &&
+        {this.state.showBillingEditModal && (
           <BillingModal
             billingOptions={billingOptions.options}
             handleBillingSubmit={this.handleBillingFormSubmit}
-            hideBillingModal={this.hideBillingModal} />
-        }
+            hideBillingModal={this.hideBillingModal}
+          />
+        )}
         <div className="basic-footer">
           <Footer />
         </div>
@@ -458,13 +646,18 @@ const mapStateToProps = state => ({
   tasks: state.cg
 });
 
-export default connect(mapStateToProps, {
-  addTransaction,
-  createTransaction,
-  getUIQuestions,
-  getPolicy,
-  updateBillPlan
-})(reduxForm({
-  form: 'MortgageBilling',
-  enableReinitialize: true
-})(MortgageBilling));
+export default connect(
+  mapStateToProps,
+  {
+    addTransaction,
+    createTransaction,
+    getUIQuestions,
+    getPolicy,
+    updateBillPlan
+  }
+)(
+  reduxForm({
+    form: 'MortgageBilling',
+    enableReinitialize: true
+  })(MortgageBilling)
+);

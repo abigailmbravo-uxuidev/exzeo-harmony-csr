@@ -5,7 +5,11 @@ import { Field, reduxForm } from 'redux-form';
 import { Date, Select, validation, Loader, TextArea } from '@exzeo/core-ui';
 import classNames from 'classnames';
 
-import { REASONS, REASONS_DATA, USE_ENITY_END_DATE } from '../constants/diaries';
+import {
+  REASONS,
+  REASONS_DATA,
+  USE_ENITY_END_DATE
+} from '../constants/diaries';
 import { addDate } from '../utilities/diaries';
 import { submitDiary } from '../state/actions/diary.actions';
 import { toggleDiary, toggleMinimizeDiary } from '../state/actions/ui.actions';
@@ -27,9 +31,18 @@ export class DiaryModal extends Component {
 
   submitDiary = async (data, dispatch, props) => {
     try {
-      const { assignee: { id }, ...submitData } = data;
-      const assigneeObj = props.assigneeAnswers.find(u => String(u.answer) === String(id));
-      const assignee = { id: assigneeObj.answer, displayName: assigneeObj.label, type: assigneeObj.type };
+      const {
+        assignee: { id },
+        ...submitData
+      } = data;
+      const assigneeObj = props.assigneeAnswers.find(
+        u => String(u.answer) === String(id)
+      );
+      const assignee = {
+        id: assigneeObj.answer,
+        displayName: assigneeObj.label,
+        type: assigneeObj.type
+      };
       await props.submitDiary({ ...submitData, assignee }, props);
     } catch (error) {
       props.setAppError({ message: error });
@@ -40,7 +53,10 @@ export class DiaryModal extends Component {
 
   normalizeDiaryReason = (value, prevVal) => {
     const {
-      change, user: { userId }, assigneeAnswers, entityEndDate
+      change,
+      user: { userId },
+      assigneeAnswers,
+      entityEndDate
     } = this.props;
     const defaultData = REASONS_DATA[value];
 
@@ -49,7 +65,9 @@ export class DiaryModal extends Component {
     if (!defaultData.assignee) {
       change('assignee.id', userId);
     } else {
-      const selectedAssignee = assigneeAnswers.find(u => String(u.label) === String(defaultData.assignee));
+      const selectedAssignee = assigneeAnswers.find(
+        u => String(u.label) === String(defaultData.assignee)
+      );
       change('assignee.id', selectedAssignee.answer);
     }
     change('reason', defaultData.reason);
@@ -64,30 +82,54 @@ export class DiaryModal extends Component {
   };
 
   render() {
-    const { diaryId, assigneeAnswers, handleSubmit, submitting, minimizeDiary } = this.props;
+    const {
+      diaryId,
+      assigneeAnswers,
+      handleSubmit,
+      submitting,
+      minimizeDiary
+    } = this.props;
 
     return (
-      <div className={classNames('new-diary-file', {'minimize': minimizeDiary })} >
+      <div
+        className={classNames('new-diary-file', { minimize: minimizeDiary })}
+      >
         <div className="title-bar">
-          <div className="title title-minimize-button" onClick={this.handleMinimize} data-test="diary-minimize-button">Diary</div>
+          <div
+            className="title title-minimize-button"
+            onClick={this.handleMinimize}
+            data-test="diary-minimize-button"
+          >
+            Diary
+          </div>
           <div className="controls note-file-header-button-group">
             <button
               className="btn btn-icon minimize-button"
               type="button"
-              onClick={this.handleMinimize}>
-              <i className="fa fa-window-minimize" aria-hidden="true" data-test="diary-window-minimize" />
+              onClick={this.handleMinimize}
+            >
+              <i
+                className="fa fa-window-minimize"
+                aria-hidden="true"
+                data-test="diary-window-minimize"
+              />
             </button>
             <button
               className="btn btn-icon close-button"
               type="button"
-              onClick={this.handleClose}>
-              <i className="fa fa-times-circle" aria-hidden="true" data-test="diary-window-close" />
+              onClick={this.handleClose}
+            >
+              <i
+                className="fa fa-times-circle"
+                aria-hidden="true"
+                data-test="diary-window-close"
+              />
             </button>
           </div>
         </div>
         <div className="mainContainer">
           {submitting && <Loader />}
-          <form id="DiaryModal" onSubmit={handleSubmit(this.submitDiary)} >
+          <form id="DiaryModal" onSubmit={handleSubmit(this.submitDiary)}>
             <div className="content">
               <Field
                 name="reason"
@@ -96,7 +138,8 @@ export class DiaryModal extends Component {
                 answers={REASONS}
                 validate={validation.isRequired}
                 normalize={this.normalizeDiaryReason}
-                dataTest="reason" />
+                dataTest="reason"
+              />
               <Field
                 name="assignee.id"
                 styleName="assignee"
@@ -104,47 +147,57 @@ export class DiaryModal extends Component {
                 component={Select}
                 answers={assigneeAnswers}
                 validate={validation.isRequired}
-                dataTest="assignee" />
+                dataTest="assignee"
+              />
               <Field
                 name="due"
                 styleName="due"
                 label="Due Date"
                 component={Date}
                 validate={[validation.isRequired, validation.isDate]}
-                dataTest="due" />
+                dataTest="due"
+              />
               <Field
                 name="message"
                 label="Message"
                 dataTest="message"
                 component={TextArea}
-                validate={validation.isRequired} />
+                validate={validation.isRequired}
+              />
             </div>
             <div className="buttons note-file-footer-button-group">
-              {diaryId &&
+              {diaryId && (
                 <button
                   tabIndex="0"
                   type="button"
                   data-test="note-close-diary"
                   className="btn btn-primary close-diary-button"
                   onClick={handleSubmit((values, dispatch, props) => {
-                    this.submitDiary({ ...values, open: false }, dispatch, props);
-                  })}>
+                    this.submitDiary(
+                      { ...values, open: false },
+                      dispatch,
+                      props
+                    );
+                  })}
+                >
                   Mark as Closed
                 </button>
-              }
+              )}
               <button
                 tabIndex="0"
                 type="button"
                 data-test="note-cancel"
                 className="btn btn-secondary cancel-button"
-                onClick={this.handleClose}>
+                onClick={this.handleClose}
+              >
                 Cancel
               </button>
               <button
                 tabIndex="0"
                 type="submit"
                 data-test="note-submit"
-                className="btn btn-primary submit-button">
+                className="btn btn-primary submit-button"
+              >
                 Save
               </button>
             </div>
@@ -183,12 +236,17 @@ const mapStateToProps = (state, ownProps) => {
   };
 };
 
-export default connect(mapStateToProps, {
-  setAppError,
-  submitDiary,
-  toggleDiary,
-  toggleMinimizeDiary
-})(reduxForm({
-  form: 'DiaryModal',
-  enableReinitialize: true
-})(DiaryModal));
+export default connect(
+  mapStateToProps,
+  {
+    setAppError,
+    submitDiary,
+    toggleDiary,
+    toggleMinimizeDiary
+  }
+)(
+  reduxForm({
+    form: 'DiaryModal',
+    enableReinitialize: true
+  })(DiaryModal)
+);

@@ -1,5 +1,5 @@
-@import "_variables";
-@import "utilities/_borders"; // scss-lint:disable QualifyingElement
+@import '_variables';
+@import 'utilities/_borders'; // scss-lint:disable QualifyingElement
 //
 // Textual form controls
 //
@@ -24,11 +24,14 @@ textarea {
   line-height: $input-line-height;
 
   @include box-shadow($input-box-shadow);
-  @include transition(border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s);
+  @include transition(
+    border-color ease-in-out 0.15s,
+    box-shadow ease-in-out 0.15s
+  );
   // Customize the `:focus` state to imitate native WebKit styles.
   @include form-control-focus();
 
-  &[type="checkbox"] {
+  &[type='checkbox'] {
     position: relative;
     width: 1rem;
     height: 1rem;
@@ -36,12 +39,12 @@ textarea {
     line-height: 1;
   }
 
-  &[type="range"] {
+  &[type='range'] {
     border-width: 0;
     box-shadow: none;
   }
 
-  &[type="radio"] {
+  &[type='radio'] {
     position: relative;
     width: 1rem;
     height: 1rem;
@@ -49,13 +52,13 @@ textarea {
     line-height: 1;
   }
 
-  &[type="date"] {
+  &[type='date'] {
     @include for-phone-only {
       width: 100%;
     }
   }
 
-  &[type="file"] {
+  &[type='file'] {
     width: 100%;
     //box-shadow: none;
   }
@@ -102,7 +105,7 @@ textarea {
   // disabled if the fieldset is disabled. Due to implementation difficulty, we
   // don't honor that edge case; we style them as disabled anyway.
   &:disabled,
-  &[disabled="disabled"],
+  &[disabled='disabled'],
   &[readonly] {
     border-color: $warm-gray-02;
     background-color: $input-bg-disabled;
@@ -111,7 +114,7 @@ textarea {
   }
 
   &:disabled,
-  &[disabled="disabled"] {
+  &[disabled='disabled'] {
     cursor: $cursor-disabled;
   }
 }
@@ -295,7 +298,7 @@ select {
         width: 1.5rem;
         height: 2rem;
         color: $warm-gray-10;
-        content: "\f0d7";
+        content: '\f0d7';
         font-family: $font-family-icon;
         cursor: pointer;
       }
@@ -375,9 +378,9 @@ select {
         display: flex !important;
         width: 100%;
 
-        input[role="combobox"] {
+        input[role='combobox'] {
           display: flex;
-          margin-right: $padding*2;
+          margin-right: $padding * 2;
           padding: 0 !important;
           width: 100%;
         }
@@ -422,7 +425,7 @@ select {
       color: $warm-gray-10;
 
       &.is-focused {
-        background-color: rgba($bright-blue, .1);
+        background-color: rgba($bright-blue, 0.1);
       }
     }
   }
@@ -484,8 +487,8 @@ label {
     flex-basis: 100%;
   }
 
-  &.row[role="group"] {
-    margin: 0 -($padding/2);
+  &.row[role='group'] {
+    margin: 0 - ($padding/2);
   }
 
   &.row {
@@ -507,7 +510,7 @@ label {
         align-items: center;
         justify-content: space-between;
 
-        > input[type="text"] {
+        > input[type='text'] {
           flex-basis: 6.5rem;
         }
       }
@@ -582,7 +585,11 @@ label {
 
             user-select: none;
             @include transition(all 0.2s ease-in-out);
-            @include button-variant($warm-gray-08, $warm-gray-02, $warm-gray-02);
+            @include button-variant(
+              $warm-gray-08,
+              $warm-gray-02,
+              $warm-gray-02
+            );
             @include for-phone-only {
               border-radius: $border-radius;
             }
@@ -604,7 +611,7 @@ label {
             }
           }
 
-          input[type=radio] {
+          input[type='radio'] {
             display: none;
 
             &:checked {
@@ -673,7 +680,7 @@ label {
         }
 
         dt {
-          padding: (.25*$padding) $padding;
+          padding: (0.25 * $padding) $padding;
 
           span {
             display: none;
@@ -686,7 +693,7 @@ label {
         }
 
         dd {
-          padding: (.25*$padding) $padding;
+          padding: (0.25 * $padding) $padding;
         }
       }
     }
@@ -708,18 +715,22 @@ label {
             span {
               cursor: not-allowed;
 
-              @include button-variant($warm-gray-04, $warm-gray-01, $warm-gray-01);
+              @include button-variant(
+                $warm-gray-04,
+                $warm-gray-01,
+                $warm-gray-01
+              );
             }
 
             &.selected {
               span {
-                background: rgba($bright-blue-darken-04, .5);
+                background: rgba($bright-blue-darken-04, 0.5);
                 color: $white;
                 cursor: not-allowed;
               }
             }
 
-            input[type=radio] {
+            input[type='radio'] {
               &:checked {
                 cursor: not-allowed;
 
@@ -752,7 +763,7 @@ label {
         }
       }
 
-      input[type=radio] {
+      input[type='radio'] {
         cursor: not-allowed;
 
         &:checked {
@@ -785,8 +796,8 @@ label {
         flex-grow: 1;
       }
 
-      input[type="checkbox"],
-      input[type="radio"] {
+      input[type='checkbox'],
+      input[type='radio'] {
         display: none;
 
         &:checked {
@@ -805,7 +816,7 @@ label {
               top: 0.25rem;
               left: 0.5rem;
               color: $white;
-              content: "Yes";
+              content: 'Yes';
             }
 
             &.disabled {
@@ -843,7 +854,7 @@ label {
           border-radius: 50%;
           background-color: lighten($cool-gray-00, 10%);
           box-shadow: $input-box-shadow;
-          content: "";
+          content: '';
           line-height: 1;
           -webkit-transition: 0.4s;
           transition: 0.4s;
@@ -854,7 +865,7 @@ label {
           top: 0.25rem;
           left: 2rem;
           z-index: 1;
-          content: "No";
+          content: 'No';
           font-weight: $font-weight-bold;
           font-size: 0.7rem;
         }
@@ -886,8 +897,8 @@ label {
         }
       }
 
-      input[type="checkbox"],
-      input[type="radio"] {
+      input[type='checkbox'],
+      input[type='radio'] {
         display: none;
 
         &:checked {
@@ -920,8 +931,8 @@ label {
         }
       }
 
-      input[type="checkbox"],
-      input[type="radio"] {
+      input[type='checkbox'],
+      input[type='radio'] {
         display: none;
 
         &:checked {
@@ -948,7 +959,7 @@ label {
         &:before {
           position: absolute;
           top: 0.25rem;
-          left: -.25rem;
+          left: -0.25rem;
           display: block;
           padding: 0.25rem;
           width: 9rem;
@@ -962,7 +973,7 @@ label {
           line-height: 1;
 
           @include for-phone-only {
-            left: -.75rem;
+            left: -0.75rem;
             width: 8rem;
             font-size: 0.875rem;
           }
@@ -1000,8 +1011,8 @@ label {
 
           &:before {
             position: absolute;
-            top: -.75rem;
-            left: -.75rem;
+            top: -0.75rem;
+            left: -0.75rem;
             display: block;
             padding: 0.25rem;
             width: 1.5rem;
@@ -1016,7 +1027,7 @@ label {
 
           &:after {
             position: absolute;
-            top: -.75rem;
+            top: -0.75rem;
             left: 0.75rem;
             width: 0;
             height: 0;
@@ -1027,7 +1038,7 @@ label {
           }
         }
 
-        input[type="checkbox"] {
+        input[type='checkbox'] {
           &:checked {
             ~ span {
               &:before {
@@ -1056,7 +1067,7 @@ label {
         &:before {
           position: absolute;
           top: 0.25rem;
-          left: -.25rem;
+          left: -0.25rem;
           display: block;
           padding: 0.25rem;
           width: 9rem;
@@ -1070,7 +1081,7 @@ label {
           line-height: 1;
 
           @include for-phone-only {
-            left: -.75rem;
+            left: -0.75rem;
             width: 8rem;
             font-size: 0.875rem;
           }
@@ -1108,8 +1119,8 @@ label {
 
           &:before {
             position: absolute;
-            top: -.75rem;
-            left: -.75rem;
+            top: -0.75rem;
+            left: -0.75rem;
             display: block;
             padding: 0.25rem;
             width: 1.5rem;
@@ -1124,7 +1135,7 @@ label {
 
           &:after {
             position: absolute;
-            top: -.75rem;
+            top: -0.75rem;
             left: 0.75rem;
             width: 0;
             height: 0;
@@ -1135,7 +1146,7 @@ label {
           }
         }
 
-        input[type="checkbox"] {
+        input[type='checkbox'] {
           &:checked {
             ~ span {
               &:before {
@@ -1193,7 +1204,7 @@ label {
 
         @include transition(all 0.2s ease-in-out);
       }
-  
+
       &:after {
         position: absolute;
         right: 0;
@@ -1228,7 +1239,7 @@ label {
           color: $white;
           cursor: default;
         }
-  
+
         &:after {
           background: $warm-gray-02;
           color: $warm-gray-14;
@@ -1241,16 +1252,16 @@ label {
             background: lighten($warm-gray-02, 5%);
           }
         }
-  
+
         label {
-          input[type="checkbox"] {
+          input[type='checkbox'] {
             right: 0;
           }
         }
       }
     }
   }
-  
+
   &.info {
     span {
       color: $green;
@@ -1272,7 +1283,7 @@ label {
   justify-content: flex-end;
   width: 100%;
 
-  button[type="submit"] {
+  button[type='submit'] {
     margin-left: 1rem;
   }
 }
@@ -1290,7 +1301,7 @@ ul.results {
       display: flex;
       align-items: flex-start;
       flex-direction: row;
-      padding: $padding $padding*1.5;
+      padding: $padding $padding * 1.5;
       width: 100%;
       border: $card-border-width solid $card-border-color;
       border-top-width: 0;
@@ -1378,7 +1389,7 @@ ul.results {
         display: flex;
         align-items: center;
         flex-direction: row;
-        padding: $padding $padding*1.5;
+        padding: $padding $padding * 1.5;
         width: 100%;
         border: $card-border-width solid $card-border-color;
         border-radius: $card-border-radius;
@@ -1437,18 +1448,18 @@ ul.results {
 }
 
 form + form {
-  margin-top: $padding*2;
+  margin-top: $padding * 2;
 }
 
-input[type="checkbox"] {
+input[type='checkbox'] {
   display: inline-block;
   margin: 0 0 0 10px;
 }
 
 .child-element {
-  margin-bottom: ($padding*2);
-  margin-left: ($padding*2);
-  padding-left: ($padding*2);
+  margin-bottom: ($padding * 2);
+  margin-left: ($padding * 2);
+  padding-left: ($padding * 2);
   border-left: solid 3px $cool-gray-08;
 }
 
@@ -1456,7 +1467,7 @@ input[type="checkbox"] {
   display: flex;
   align-items: baseline;
 
-  input[type="checkbox"] {
+  input[type='checkbox'] {
     margin-right: $padding/2;
   }
 }

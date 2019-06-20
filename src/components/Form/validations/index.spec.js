@@ -1,14 +1,33 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import { matchDateMin, requireField, zipNumbersOnly, phone, range } from './index';
-
+import {
+  matchDateMin,
+  requireField,
+  zipNumbersOnly,
+  phone,
+  range
+} from './index';
 
 describe('matchDate', () => {
   it('should match the Date but throw validation error wiuth 8 characters', () => {
-    expect(matchDateMin(9)('20180430', { testName: '20180430' }, 'testName', 'YYYYMMDD')).toEqual('Field must match date and be at least 9 characters');
+    expect(
+      matchDateMin(9)(
+        '20180430',
+        { testName: '20180430' },
+        'testName',
+        'YYYYMMDD'
+      )
+    ).toEqual('Field must match date and be at least 9 characters');
   });
   it('should match the Date and return valid with minimum 9', () => {
-    expect(matchDateMin(9)('2018043000', { testName: '20180430' }, 'testName', 'YYYYMMDD')).toEqual(undefined);
+    expect(
+      matchDateMin(9)(
+        '2018043000',
+        { testName: '20180430' },
+        'testName',
+        'YYYYMMDD'
+      )
+    ).toEqual(undefined);
   });
 });
 

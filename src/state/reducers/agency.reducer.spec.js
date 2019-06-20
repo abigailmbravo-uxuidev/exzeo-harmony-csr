@@ -1,4 +1,3 @@
-
 import * as types from '../actions/actionTypes';
 
 import initialState from './initialState';
@@ -13,7 +12,10 @@ describe('Agency State Reducer', () => {
       agencies: inputProps
     };
 
-    expect(agencyStateReducer(state, action)).toEqual({ ...initialState.agencyState, agencies: inputProps });
+    expect(agencyStateReducer(state, action)).toEqual({
+      ...initialState.agencyState,
+      agencies: inputProps
+    });
   });
 
   it('should call agencyStateReducer SET_AGENCY', () => {
@@ -24,7 +26,10 @@ describe('Agency State Reducer', () => {
       agency: inputProps
     };
 
-    expect(agencyStateReducer(state, action)).toEqual({ ...initialState.agencyState, agency: inputProps });
+    expect(agencyStateReducer(state, action)).toEqual({
+      ...initialState.agencyState,
+      agency: inputProps
+    });
   });
 
   it('should call agencyStateReducer SET_AGENTS', () => {
@@ -35,7 +40,10 @@ describe('Agency State Reducer', () => {
       agents: inputProps
     };
 
-    expect(agencyStateReducer(state, action)).toEqual({ ...initialState.agencyState, agents: inputProps });
+    expect(agencyStateReducer(state, action)).toEqual({
+      ...initialState.agencyState,
+      agents: inputProps
+    });
   });
 
   it('should call agencyStateReducer SET_AGENTS_LIST', () => {
@@ -46,7 +54,10 @@ describe('Agency State Reducer', () => {
       agentList: inputProps
     };
 
-    expect(agencyStateReducer(state, action)).toEqual({ ...initialState.agencyState, agentList: inputProps });
+    expect(agencyStateReducer(state, action)).toEqual({
+      ...initialState.agencyState,
+      agentList: inputProps
+    });
   });
 
   it('should call agencyStateReducer SET_ORPHANED_AGENTS', () => {
@@ -57,6 +68,9 @@ describe('Agency State Reducer', () => {
       orphans: inputProps
     };
 
-    expect(agencyStateReducer(state, action)).toEqual({ ...initialState.agencyState, orphans: inputProps });
+    expect(agencyStateReducer(state, action)).toEqual({
+      ...initialState.agencyState,
+      orphans: inputProps
+    });
   });
 });

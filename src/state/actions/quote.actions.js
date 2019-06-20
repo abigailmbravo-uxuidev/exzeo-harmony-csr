@@ -17,7 +17,7 @@ export function setRetrievedQuote(response) {
   return {
     type: types.SET_RETRIEVED_QUOTE,
     response
-  }
+  };
 }
 
 /**
@@ -30,7 +30,7 @@ export function setRetrievedQuote(response) {
  * @returns {Function}
  */
 export function createQuote(address, igdID, stateCode, companyCode, product) {
-  return async (dispatch) => {
+  return async dispatch => {
     try {
       const config = {
         exchangeName: 'harmony',
@@ -40,15 +40,20 @@ export function createQuote(address, igdID, stateCode, companyCode, product) {
           state: stateCode,
           product,
           propertyId: igdID,
-          runUnderwriting: true,
+          runUnderwriting: true
         }
       };
 
       dispatch(toggleLoading(true));
-      const response = await serviceRunner.callService(config, 'quoteManager.createQuote');
+      const response = await serviceRunner.callService(
+        config,
+        'quoteManager.createQuote'
+      );
       const quote = response.data.result;
       // Ensure that all 'source' fields are set for underwriting questions
-      Object.keys(quote.underwritingAnswers || {}).map(q => quote.underwritingAnswers[q].source = 'Customer');
+      Object.keys(quote.underwritingAnswers || {}).map(
+        q => (quote.underwritingAnswers[q].source = 'Customer')
+      );
 
       return quote;
     } catch (error) {
@@ -71,19 +76,22 @@ export function createQuote(address, igdID, stateCode, companyCode, product) {
  * @returns {Function}
  */
 export function retrieveQuote({ quoteNumber, quoteId }) {
-  return async (dispatch) => {
+  return async dispatch => {
     try {
       const config = {
         exchangeName: 'harmony',
         routingKey: 'harmony.quote.retrieveQuote',
         data: {
           quoteId,
-          quoteNumber,
+          quoteNumber
         }
       };
 
       dispatch(toggleLoading(true));
-      const response = await serviceRunner.callService(config, 'quoteManager.retrieveQuote');
+      const response = await serviceRunner.callService(
+        config,
+        'quoteManager.retrieveQuote'
+      );
       const result = response.data.result;
       dispatch(setRetrievedQuote(result));
       return result.quote;
@@ -106,7 +114,7 @@ export function retrieveQuote({ quoteNumber, quoteId }) {
  * @returns {Function}
  */
 export function reviewQuote({ quoteNumber, quoteId }) {
-  return async (dispatch) => {
+  return async dispatch => {
     try {
       const config = {
         exchangeName: 'harmony',
@@ -119,7 +127,10 @@ export function reviewQuote({ quoteNumber, quoteId }) {
       };
 
       dispatch(toggleLoading(true));
-      const response = await serviceRunner.callService(config, 'quoteManager.reviewQuote');
+      const response = await serviceRunner.callService(
+        config,
+        'quoteManager.reviewQuote'
+      );
       const quote = response.data.result;
       dispatch(setQuote(quote));
       return quote;
@@ -142,21 +153,33 @@ export function reviewQuote({ quoteNumber, quoteId }) {
  * @returns {*}
  */
 function formatQuoteForSubmit(data, options) {
-  const { remainOnStep, shouldNav, removeSecondary, hasActiveExceptions, hasUWError, editingDisabled, ...quote } = data;
+  const {
+    remainOnStep,
+    shouldNav,
+    removeSecondary,
+    hasActiveExceptions,
+    hasUWError,
+    editingDisabled,
+    ...quote
+  } = data;
   // ensure the effectiveDate is converted back to UTC
-  quote.effectiveDate = date.formatToUTC(date.formatDate(data.effectiveDate, date.FORMATS.SECONDARY), data.property.timezone);
+  quote.effectiveDate = date.formatToUTC(
+    date.formatDate(data.effectiveDate, date.FORMATS.SECONDARY),
+    data.property.timezone
+  );
 
   if (removeSecondary || quote.policyHolders.length === 1) {
     // Backend doesn't like when partial policyholder is filled out, so for now we have to check whether or not
     // actual user input was entered. There are hidden fields that we add initial values to because the backend wants
     // them but we are not supposed to show them.
-    quote.policyHolders = quote.policyHolders[0].firstName ? [quote.policyHolders[0]] : [];
-  }
-  else if (data.policyHolders.length > 1) {
+    quote.policyHolders = quote.policyHolders[0].firstName
+      ? [quote.policyHolders[0]]
+      : [];
+  } else if (data.policyHolders.length > 1) {
     quote.policyHolders[1].order = data.policyHolders[1].order || 1;
-    quote.policyHolders[1].entityType = data.policyHolders[1].entityType || "Person";
+    quote.policyHolders[1].entityType =
+      data.policyHolders[1].entityType || 'Person';
   }
-
 
   if (!data.coverageLimits.personalProperty.value) {
     quote.coverageOptions.personalPropertyReplacementCost.answer = false;
@@ -164,11 +187,11 @@ function formatQuoteForSubmit(data, options) {
 
   if (data.product === PRODUCT_TYPES.home) {
     // TODO created HAR-6754 to talk about this with the backend...
-    quote.coverageOptions.sinkholePerilCoverage.answer = String(data.coverageOptions.sinkholePerilCoverage.answer) === 'true';
+    quote.coverageOptions.sinkholePerilCoverage.answer =
+      String(data.coverageOptions.sinkholePerilCoverage.answer) === 'true';
     if (quote.coverageOptions.sinkholePerilCoverage) {
-      quote.deductibles.sinkhole = { value: 10 }
+      quote.deductibles.sinkhole = { value: 10 };
     }
-
   }
 
   // AF3 specific rules
@@ -196,7 +219,7 @@ export function updateQuote({ data = {}, options = {} }) {
           routingKey: 'harmony.quote.sendApplication',
           data: {
             quoteNumber: data.quoteNumber,
-            sendType: 'docusign',
+            sendType: 'docusign'
           }
         };
 
@@ -209,10 +232,13 @@ export function updateQuote({ data = {}, options = {} }) {
           data: {
             quote: updatedQuote,
             alwaysRunUnderwriting: true
-          },
+          }
         };
 
-        const response = await serviceRunner.callService(config, 'quoteManager.updateQuote');
+        const response = await serviceRunner.callService(
+          config,
+          'quoteManager.updateQuote'
+        );
         const quote = response.data.result;
         if (!quote) {
           dispatch(errorActions.setAppError(response.data));
@@ -227,7 +253,6 @@ export function updateQuote({ data = {}, options = {} }) {
       }
       dispatch(errorActions.setAppError(error));
       return null;
-
     } finally {
       dispatch(toggleLoading(false));
     }
@@ -241,7 +266,7 @@ export function updateQuote({ data = {}, options = {} }) {
  * @returns {Function}
  */
 export function getQuote({ quoteNumber, quoteId }) {
-  return async (dispatch) => {
+  return async dispatch => {
     try {
       const config = {
         service: 'quote-data',

@@ -17,8 +17,8 @@ export function setAppError(error) {
  * @returns {{type: string, error: {}}}
  */
 export function clearAppError() {
-  return{
+  return {
     type: types.APP_ERROR_CLEAR,
     error: {}
-  }
+  };
 }

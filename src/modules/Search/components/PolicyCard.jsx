@@ -2,11 +2,7 @@ import React from 'react';
 import moment from 'moment';
 import { STANDARD_DATE_FORMAT } from '../../../constants/dates';
 
-function PolicyCard({
-  handleKeyPress,
-  handleClick,
-  policy
-}) {
+function PolicyCard({ handleKeyPress, handleClick, policy }) {
   return (
     <div
       tabIndex="0"
@@ -23,11 +19,14 @@ function PolicyCard({
       </div>
       <section>
         <div className="card-name">
-          {(Array.isArray(policy.policyHolders) && policy.policyHolders.length > 0) &&
-            <h5 title={`${policy.policyHolders[0].firstName} ${policy.policyHolders[0].lastName}`}>
-              {`${policy.policyHolders[0].firstName} ${policy.policyHolders[0].lastName}`}
-            </h5>
-          }
+          {Array.isArray(policy.policyHolders) &&
+            policy.policyHolders.length > 0 && (
+              <h5
+                title={`${policy.policyHolders[0].firstName} ${policy.policyHolders[0].lastName}`}
+              >
+                {`${policy.policyHolders[0].firstName} ${policy.policyHolders[0].lastName}`}
+              </h5>
+            )}
         </div>
         <ul id="policy-search-results" className="policy-search-results">
           <li className="header">
@@ -37,18 +36,17 @@ function PolicyCard({
             <span className="effective-date">Effective Date</span>
           </li>
           <li>
-            <div
-              id={policy.PolicyID}
-              className='row'
-            >
+            <div id={policy.PolicyID} className="row">
               <span className="quote-no">{policy.policyNumber}</span>
               <span className="property-address">
-              {`${policy.property.physicalAddress.address1}
+                {`${policy.property.physicalAddress.address1}
                 ${policy.property.physicalAddress.city}, ${policy.property.physicalAddress.state}
                 ${policy.property.physicalAddress.zip}`}
               </span>
               <span className="policy-status">{policy.status}</span>
-              <span className="effective-date">{moment.utc(policy.effectiveDate).format(STANDARD_DATE_FORMAT)}</span>
+              <span className="effective-date">
+                {moment.utc(policy.effectiveDate).format(STANDARD_DATE_FORMAT)}
+              </span>
             </div>
           </li>
         </ul>

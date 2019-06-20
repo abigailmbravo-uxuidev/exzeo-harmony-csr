@@ -12,7 +12,7 @@ import AgentDetails from './FormGroup/AgentDetails';
 const FORM_NAME = 'AgentDetails';
 
 export class AgentModal extends Component {
-  handleSave = async (data) => {
+  handleSave = async data => {
     await this.props.handleSaveAgent(data);
   };
 
@@ -34,7 +34,8 @@ export class AgentModal extends Component {
           <div className="card">
             <div className="card-header">
               <h4>
-                <i className="fa fa-address-book" /> {isEditing ? 'Edit' : 'Save'} Agent
+                <i className="fa fa-address-book" />{' '}
+                {isEditing ? 'Edit' : 'Save'} Agent
               </h4>
             </div>
             <div className="card-block">
@@ -42,7 +43,11 @@ export class AgentModal extends Component {
                 <h3 data-test="agent-details">Details</h3>
                 <AgentDetails isEditing={isEditing} />
               </section>
-              <AddressGroup sameAsMailingValue={sameAsMailingValue} changeField={change} isOptional />
+              <AddressGroup
+                sameAsMailingValue={sameAsMailingValue}
+                changeField={change}
+                isOptional
+              />
               <section className="agent-license">
                 <h3 data-test="agent-license">Licenses</h3>
                 <FieldArray
@@ -50,7 +55,8 @@ export class AgentModal extends Component {
                   stateAnswers={listAnswersAsKey.US_states}
                   component={License}
                   licenseValue={licenseValue}
-                  isAgency={false} />
+                  isAgency={false}
+                />
               </section>
             </div>
             <div className="card-footer">
@@ -58,15 +64,17 @@ export class AgentModal extends Component {
                 <Button
                   className={Button.constants.classNames.secondary}
                   data-test="cancel-modal"
-                  onClick={closeModal}>
-                Cancel
+                  onClick={closeModal}
+                >
+                  Cancel
                 </Button>
                 <Button
                   className={Button.constants.classNames.primary}
                   type="submit"
                   data-test="submit-modal"
-                  disabled={submitting}>
-                Save
+                  disabled={submitting}
+                >
+                  Save
                 </Button>
               </div>
             </div>
@@ -85,7 +93,9 @@ const mapStateToProps = state => ({
   listAnswersAsKey: getListAnswersAsKey(state)
 });
 
-export default connect(mapStateToProps)(reduxForm({
-  form: FORM_NAME,
-  enableReinitialize: true
-})(AgentModal));
+export default connect(mapStateToProps)(
+  reduxForm({
+    form: FORM_NAME,
+    enableReinitialize: true
+  })(AgentModal)
+);

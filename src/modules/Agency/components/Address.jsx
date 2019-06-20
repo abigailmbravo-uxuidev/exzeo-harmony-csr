@@ -6,11 +6,18 @@ import { Input, validation, Select, SelectTypeAhead } from '@exzeo/core-ui';
 import { getListOfZipCodes } from '../../../state/selectors/zipCodeSettings.selectors';
 import { getListAnswersAsKey } from '../../../state/selectors/questions.selectors';
 
-
 export class Address extends Component {
   render() {
     const {
-      showCounty, sectionDisabled, listOfZipCodes, section, listAnswersAsKey, normalizeSameAsMailing, normalizeZipCode, normalizeState, isOptional
+      showCounty,
+      sectionDisabled,
+      listOfZipCodes,
+      section,
+      listAnswersAsKey,
+      normalizeSameAsMailing,
+      normalizeZipCode,
+      normalizeState,
+      isOptional
     } = this.props;
 
     return (
@@ -23,7 +30,8 @@ export class Address extends Component {
           dataTest="address1"
           validate={isOptional ? null : validation.isRequired}
           normalize={normalizeSameAsMailing}
-          disabled={sectionDisabled} />
+          disabled={sectionDisabled}
+        />
         <Field
           name="address2"
           label="Address 2"
@@ -31,7 +39,8 @@ export class Address extends Component {
           styleName="address2"
           dataTest="address2"
           normalize={normalizeSameAsMailing}
-          disabled={sectionDisabled} />
+          disabled={sectionDisabled}
+        />
         <div className="city-state-zip">
           <Field
             name="city"
@@ -41,7 +50,8 @@ export class Address extends Component {
             dataTest="city"
             validate={isOptional ? null : validation.isRequired}
             normalize={normalizeSameAsMailing}
-            disabled={sectionDisabled} />
+            disabled={sectionDisabled}
+          />
           <Field
             name="state"
             label="State"
@@ -51,38 +61,46 @@ export class Address extends Component {
             validate={isOptional ? null : validation.isRequired}
             normalize={section === 'physicalAddress' ? normalizeState : null}
             answers={listAnswersAsKey.US_states}
-            disabled={sectionDisabled} />
-          {section === 'physicalAddress' && <Field
-            name="zip"
-            label="Zip Code"
-            component={SelectTypeAhead}
-            styleName="zip"
-            dataTest="zip"
-            optionValue="answer"
-            optionLabel="label"
-            validate={isOptional ? null : validation.isRequired}
-            normalize={normalizeZipCode}
-            answers={listOfZipCodes}
-            disabled={sectionDisabled} />}
-          {section === 'mailingAddress' && <Field
-            name="zip"
-            label="Zip Code"
-            component={Input}
-            styleName="zip"
-            dataTest="zip"
-            validate={isOptional ? null : validation.isRequired}
-            normalize={normalizeSameAsMailing}
-            disabled={sectionDisabled} />}
+            disabled={sectionDisabled}
+          />
+          {section === 'physicalAddress' && (
+            <Field
+              name="zip"
+              label="Zip Code"
+              component={SelectTypeAhead}
+              styleName="zip"
+              dataTest="zip"
+              optionValue="answer"
+              optionLabel="label"
+              validate={isOptional ? null : validation.isRequired}
+              normalize={normalizeZipCode}
+              answers={listOfZipCodes}
+              disabled={sectionDisabled}
+            />
+          )}
+          {section === 'mailingAddress' && (
+            <Field
+              name="zip"
+              label="Zip Code"
+              component={Input}
+              styleName="zip"
+              dataTest="zip"
+              validate={isOptional ? null : validation.isRequired}
+              normalize={normalizeSameAsMailing}
+              disabled={sectionDisabled}
+            />
+          )}
         </div>
-        {showCounty &&
-        <Field
-          name="county"
-          label="County"
-          component={Input}
-          styleName="county"
-          dataTest="county"
-          validate={validation.isRequired} />
-          }
+        {showCounty && (
+          <Field
+            name="county"
+            label="County"
+            component={Input}
+            styleName="county"
+            dataTest="county"
+            validate={validation.isRequired}
+          />
+        )}
       </React.Fragment>
     );
   }
@@ -98,11 +116,9 @@ Address.defaultProps = {
   listAnswers: {}
 };
 
-
 const mapStateToProps = state => ({
   listOfZipCodes: getListOfZipCodes(state),
   listAnswersAsKey: getListAnswersAsKey(state)
 });
 
 export default connect(mapStateToProps)(Address);
-

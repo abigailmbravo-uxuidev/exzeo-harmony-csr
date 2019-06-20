@@ -2,5 +2,5 @@ import * as serviceRunner from '@exzeo/core-ui/src/@Harmony/Domain/Api/serviceRu
 import { jestResolve } from '.';
 
 export default (result, error) => {
-  serviceRunner.callService = jestResolve({ data: { result }}, error);
+  serviceRunner.callService = jestResolve({ data: { result } }, error);
 };

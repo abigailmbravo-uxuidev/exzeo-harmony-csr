@@ -48,20 +48,20 @@ export default {
   },
   territoryManagerId: '5b7db9f6ff54fd6a5c619eec',
   contracts: [
-    { 
+    {
       companyCode: 'TTIC',
       stateProducts: [
-       { state: 'FL', product: 'HO3'},
-       { state: 'FL', product: 'AF3'}
+        { state: 'FL', product: 'HO3' },
+        { state: 'FL', product: 'AF3' }
       ],
       contractNumber: 'Flood 03 16',
       addendum: null
     },
-    { 
+    {
       companyCode: 'ABC',
       stateProducts: [
-       { state: 'FL', product: 'HO3'},
-       { state: 'FL', product: 'AF3'}
+        { state: 'FL', product: 'HO3' },
+        { state: 'FL', product: 'AF3' }
       ],
       contractNumber: 'Flood 03 16',
       addendum: null

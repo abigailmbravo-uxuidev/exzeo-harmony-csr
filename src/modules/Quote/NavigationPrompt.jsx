@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Prompt } from 'react-router-dom'
+import { Prompt } from 'react-router-dom';
 import { Alert, Button } from '@exzeo/core-ui';
 
 const NavigationPrompt = ({ dirty, formInstance, history }) => {
@@ -27,7 +27,7 @@ const NavigationPrompt = ({ dirty, formInstance, history }) => {
     <React.Fragment>
       <Prompt when={dirty} message={stopNavigation} />
 
-      {blockNavigation &&
+      {blockNavigation && (
         <Alert
           modalClassName="unsaved-changes"
           headerIcon="fa fa-exclamation-circle"
@@ -39,10 +39,13 @@ const NavigationPrompt = ({ dirty, formInstance, history }) => {
             <Button
               className={Button.constants.classNames.secondary}
               dataTest="modal-cancel"
-              onClick={() => setBlockNavigation(false)}>No</Button>
+              onClick={() => setBlockNavigation(false)}
+            >
+              No
+            </Button>
           )}
         />
-      }
+      )}
     </React.Fragment>
   );
 };

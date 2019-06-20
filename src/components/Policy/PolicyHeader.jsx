@@ -11,7 +11,11 @@ const PolicyHeader = ({ toggleDiaries, showDiaries, openDiaryCount }) => (
       <a href="/" id="logo" className="logo">
         <img src={logo} alt="Harmony" />
       </a>
-      <DiaryButton toggleDiaries={toggleDiaries} showDiaries={showDiaries} openDiaryCount={openDiaryCount} />
+      <DiaryButton
+        toggleDiaries={toggleDiaries}
+        showDiaries={showDiaries}
+        openDiaryCount={openDiaryCount}
+      />
     </div>
   </header>
 );

@@ -1,7 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Field } from 'redux-form';
-import { SelectGroup, RadioGroup, IntegerGroup, InputGroup, validation } from '@exzeo/core-ui';
+import {
+  SelectGroup,
+  RadioGroup,
+  IntegerGroup,
+  InputGroup,
+  validation
+} from '@exzeo/core-ui';
 
 import { getAnswers } from '../../../utilities/forms';
 
@@ -12,7 +18,9 @@ const WindMitigation = ({ questions }) => (
       {/* Col1 */}
       <div className="col-2">
         <div className="form-group labels">
-          <label /><label>Current</label><label>New</label>
+          <label />
+          <label>Current</label>
+          <label>New</label>
         </div>
         <Field
           label="Roof Covering"
@@ -20,7 +28,7 @@ const WindMitigation = ({ questions }) => (
           answers={getAnswers('roofCovering', questions)}
           component={SelectGroup}
           validate={validation.isRequired}
-          dataTest='roofCovering'
+          dataTest="roofCovering"
         />
         <Field
           label="Roof Deck Attachment"
@@ -28,7 +36,7 @@ const WindMitigation = ({ questions }) => (
           answers={getAnswers('roofDeckAttachment', questions)}
           component={SelectGroup}
           validate={validation.isRequired}
-          dataTest='roofDeckAttachment'
+          dataTest="roofDeckAttachment"
         />
         <Field
           label="Roof to Wall Attachment"
@@ -37,7 +45,7 @@ const WindMitigation = ({ questions }) => (
           styleName="weakestRoofWallConnect"
           component={SelectGroup}
           validate={validation.isRequired}
-          dataTest='roofToWallConnection'
+          dataTest="roofToWallConnection"
         />
         <Field
           label="Roof Geometry"
@@ -45,7 +53,7 @@ const WindMitigation = ({ questions }) => (
           answers={getAnswers('roofGeometry', questions)}
           component={SelectGroup}
           validate={validation.isRequired}
-          dataTest='roofGeometry'
+          dataTest="roofGeometry"
         />
         <Field
           segmented
@@ -54,7 +62,7 @@ const WindMitigation = ({ questions }) => (
           answers={getAnswers('secondaryWaterResistance', questions)}
           component={RadioGroup}
           validate={validation.isRequired}
-          dataTest='secondaryWaterResistance'
+          dataTest="secondaryWaterResistance"
         />
         <Field
           label="Opening Protection"
@@ -62,28 +70,30 @@ const WindMitigation = ({ questions }) => (
           answers={getAnswers('openingProtection', questions)}
           component={SelectGroup}
           validate={validation.isRequired}
-          dataTest='openingProtection'
+          dataTest="openingProtection"
         />
       </div>
 
       {/* Col2 */}
       <div className="col-2">
         <div className="form-group labels">
-          <label /><label>Current</label><label>New</label>
+          <label />
+          <label>Current</label>
+          <label>New</label>
         </div>
         <Field
           label="FBC Wind Speed"
           name="property.windMitigation.floridaBuildingCodeWindSpeed"
           component={IntegerGroup}
           validate={[validation.isRequired, validation.isNumbersOnly]}
-          dataTest='floridaBuildingCodeWindSpeed'
+          dataTest="floridaBuildingCodeWindSpeed"
         />
         <Field
           label="FBC Wind Speed Design"
           name="property.windMitigation.floridaBuildingCodeWindSpeedDesign"
           component={IntegerGroup}
           validate={[validation.isRequired, validation.isNumbersOnly]}
-          dataTest='floridaBuildingCodeWindSpeedDesign'
+          dataTest="floridaBuildingCodeWindSpeedDesign"
         />
         <Field
           label="Terrain"
@@ -92,7 +102,7 @@ const WindMitigation = ({ questions }) => (
           component={SelectGroup}
           answers={getAnswers('terrain', questions)}
           validate={validation.isRequired}
-          dataTest='terrain'
+          dataTest="terrain"
         />
         <Field
           label="Internal Pressure Design"
@@ -100,7 +110,7 @@ const WindMitigation = ({ questions }) => (
           answers={getAnswers('internalPressureDesign', questions)}
           component={SelectGroup}
           validate={validation.isRequired}
-          dataTest='internalPressureDesign'
+          dataTest="internalPressureDesign"
         />
         <Field
           segmented
@@ -109,14 +119,14 @@ const WindMitigation = ({ questions }) => (
           answers={getAnswers('windBorneDebrisRegion', questions)}
           component={RadioGroup}
           validate={validation.isRequired}
-          dataTest='windBorneDebrisRegion'
+          dataTest="windBorneDebrisRegion"
         />
         <Field
           label="Wind Mit Factor"
           name="windMitFactor"
           component={InputGroup}
           disabled
-          dataTest='windMitFactor'
+          dataTest="windMitFactor"
         />
       </div>
     </div>

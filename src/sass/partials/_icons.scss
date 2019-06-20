@@ -1,32 +1,31 @@
-
 .fa {
   &.Mortgagee {
     &:before {
-      content: "\f19c";
+      content: '\f19c';
     }
   }
 
   &.Premium {
     &:before {
-      content: "\F27E";
+      content: '\F27E';
     }
   }
 
   &.Interest {
     &:before {
-      content: "\F2B5";
+      content: '\F2B5';
     }
   }
 
   &.Insured {
     &:before {
-      content: "\F234";
+      content: '\F234';
     }
   }
 
   &.Bill {
     &:before {
-      content: "\F0D6";
+      content: '\F0D6';
     }
   }
 }

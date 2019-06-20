@@ -5,11 +5,20 @@ import { reduxForm, Field } from 'redux-form';
 import { defaultMemoize } from 'reselect';
 import { SelectTypeAhead, Loader, validation, Button } from '@exzeo/core-ui';
 import { setAppError } from '../../../state/actions/error.actions';
-import { getAgencies, getAgentListByAgencyCode, clearAgentList, transferPoliciesToAgent, fetchAgenciesByAgencyCodeOrName, fetchAgentsByAgencyCode } from '../../../state/actions/agency.actions';
-import { filterAgenciesList, filterActiveAgentsList } from '../../../state/selectors/agency.selector';
+import {
+  getAgencies,
+  getAgentListByAgencyCode,
+  clearAgentList,
+  transferPoliciesToAgent,
+  fetchAgenciesByAgencyCodeOrName,
+  fetchAgentsByAgencyCode
+} from '../../../state/actions/agency.actions';
+import {
+  filterAgenciesList,
+  filterActiveAgentsList
+} from '../../../state/selectors/agency.selector';
 
 export class TransferModal extends Component {
-
   constructor(props) {
     super(props);
     this.filterActiveAgentsList = defaultMemoize(filterActiveAgentsList);
@@ -20,7 +29,7 @@ export class TransferModal extends Component {
     isLoading: false,
     agents: [],
     agencies: []
-  }
+  };
 
   async componentDidMount() {
     const { clearAgentList, setAppError } = this.props;
@@ -29,7 +38,6 @@ export class TransferModal extends Component {
       this.setState({ isLoading: true });
       await this.getAgenciesForTransfer('');
       clearAgentList();
-
     } catch (err) {
       setAppError(err);
     } finally {
@@ -40,34 +48,34 @@ export class TransferModal extends Component {
   getAgenciesForTransfer = async (searchParam = '') => {
     const agencies = await fetchAgenciesByAgencyCodeOrName('', '', searchParam);
     this.setState({ agencies: this.filterAgenciesList(agencies) });
-  }
+  };
 
-  handleAgenciesFilter = (value) => {
+  handleAgenciesFilter = value => {
     this.getAgenciesForTransfer(value);
     return value;
-  }
+  };
 
-  getAgentsForTransfer = async (agencyCode) => {
+  getAgentsForTransfer = async agencyCode => {
     const agents = await fetchAgentsByAgencyCode(agencyCode);
     this.setState({ agents: this.filterActiveAgentsList(agents) });
-  }
+  };
 
   handleAgencyChange = (_, agencyCode) => {
     const { change } = this.props;
     change('agentCodeTo', null);
     this.getAgentsForTransfer(agencyCode);
-  }
+  };
 
   groupPolicyByAgentCode(array) {
     var sorted = {};
-    for( var i = 0, max = array.length; i < max ; i++ ){
-        if(sorted[String(array[i].agentCode)] === undefined ){
-         sorted[String(array[i].agentCode)] = [];
-        }
-        sorted[String(array[i].agentCode)].push(array[i]);
+    for (var i = 0, max = array.length; i < max; i++) {
+      if (sorted[String(array[i].agentCode)] === undefined) {
+        sorted[String(array[i].agentCode)] = [];
+      }
+      sorted[String(array[i].agentCode)].push(array[i]);
     }
     return sorted;
-}
+  }
 
   submitTransfer = async (data, dispatch, props) => {
     const { agentCodeTo, agencyCodeTo } = data;
@@ -77,33 +85,46 @@ export class TransferModal extends Component {
     const transfers = [];
     Object.keys(groupedPolices).forEach(p => {
       const policies = groupedPolices[p] || [];
-        const { agencyCode: agencyCodeFrom, agentCode: agentCodeFrom } = policies[0];
-        transfers.push({ policyNumbers: policies.map(p => p.policyNumber), agencyCodeTo, agentCodeTo: Number(agentCodeTo), agencyCodeFrom, agentCodeFrom})
+      const {
+        agencyCode: agencyCodeFrom,
+        agentCode: agentCodeFrom
+      } = policies[0];
+      transfers.push({
+        policyNumbers: policies.map(p => p.policyNumber),
+        agencyCodeTo,
+        agentCodeTo: Number(agentCodeTo),
+        agencyCodeFrom,
+        agentCodeFrom
+      });
     });
 
     await props.transferPoliciesToAgent(transfers);
     await props.getAgentListByAgencyCode(activeAgencyCode);
-    await props.getPoliciesForAgency({ agencyCode: activeAgencyCode } );
+    await props.getPoliciesForAgency({ agencyCode: activeAgencyCode });
     props.clearSelectedPolicies();
     props.toggleModal();
-  }
+  };
 
   closeModal = () => {
     const { activeAgencyCode } = this.props;
     this.props.getAgentListByAgencyCode(activeAgencyCode);
     this.props.toggleModal();
-  }
+  };
 
   render() {
     const { handleSubmit, submitting } = this.props;
-    const { isLoading, agencies, agents  } = this.state;
+    const { isLoading, agencies, agents } = this.state;
 
-    if(isLoading || submitting) return (<Loader />);
+    if (isLoading || submitting) return <Loader />;
 
     return (
       <div className="modal bob-transfer">
         <div className="card ">
-          <form id="TransferPolicies" className="Transfer" onSubmit={handleSubmit(this.submitTransfer)}>
+          <form
+            id="TransferPolicies"
+            className="Transfer"
+            onSubmit={handleSubmit(this.submitTransfer)}
+          >
             <div className="card-header">
               <h4>Agent Receiving Selected Policy</h4>
             </div>
@@ -117,7 +138,8 @@ export class TransferModal extends Component {
                 answers={agencies}
                 onChange={this.handleAgencyChange}
                 onInputChange={this.handleAgenciesFilter}
-                validate={validation.isRequired} />
+                validate={validation.isRequired}
+              />
               <Field
                 label="Agent"
                 styleName="agentCode"
@@ -125,7 +147,8 @@ export class TransferModal extends Component {
                 dataTest="agentCodeTo"
                 component={SelectTypeAhead}
                 answers={agents}
-                validate={validation.isRequired} />
+                validate={validation.isRequired}
+              />
             </div>
             <div className="card-footer">
               <div className="btn-group">
@@ -136,14 +159,16 @@ export class TransferModal extends Component {
                   label="Cancel"
                   onClick={this.closeModal}
                   disabled={isLoading}
-                  data-test="cancel"/>
+                  data-test="cancel"
+                />
                 <Button
                   tabIndex="0"
                   className={Button.constants.classNames.primary}
                   type="submit"
                   label="Transfer"
                   disabled={isLoading}
-                  data-test="submit"/>
+                  data-test="submit"
+                />
               </div>
             </div>
           </form>
@@ -161,13 +186,18 @@ const mapStateToProps = (state, { agencyCode, agentCode }) => ({
   initialValues: { agencyCode, agentCode }
 });
 
-export default connect(mapStateToProps, {
-  getAgencies,
-  getAgentListByAgencyCode,
-  clearAgentList,
-  transferPoliciesToAgent,
-  setAppError
-})(reduxForm({
-  form: 'TransferPolicies',
-  enableReinitialize: true
-})(TransferModal));
+export default connect(
+  mapStateToProps,
+  {
+    getAgencies,
+    getAgentListByAgencyCode,
+    clearAgentList,
+    transferPoliciesToAgent,
+    setAppError
+  }
+)(
+  reduxForm({
+    form: 'TransferPolicies',
+    enableReinitialize: true
+  })(TransferModal)
+);

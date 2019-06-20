@@ -15,7 +15,10 @@ const SINKHOLE = {
 };
 
 export function calculateEndorsementDate(date, timezone) {
-  return moment.tz(moment.utc(date).format('YYYY-MM-DD'), timezone).utc().format();
+  return moment
+    .tz(moment.utc(date).format('YYYY-MM-DD'), timezone)
+    .utc()
+    .format();
 }
 
 export function setEndorsementDate(effectiveDate, endPolicyDate) {
@@ -32,7 +35,10 @@ export function setEndorsementDate(effectiveDate, endPolicyDate) {
 }
 
 export function premiumAmountFormatter(cell) {
-  return Number(cell).toLocaleString('en-US', { style: 'currency', currency: 'USD' });
+  return Number(cell).toLocaleString('en-US', {
+    style: 'currency',
+    currency: 'USD'
+  });
 }
 
 export const calculatePercentage = (oldFigure, newFigure) => {
@@ -40,7 +46,8 @@ export const calculatePercentage = (oldFigure, newFigure) => {
   return (oldFigure / newFigure) * 100;
 };
 
-export const setPercentageOfValue = (value, percent) => Math.ceil(value * (percent / 100));
+export const setPercentageOfValue = (value, percent) =>
+  Math.ceil(value * (percent / 100));
 
 export function initializeEndorsementForm(policy = {}) {
   const defaultValues = {};
@@ -56,23 +63,41 @@ export function initializeEndorsementForm(policy = {}) {
   // Initialize values for form
   values.clearFields = false;
   values.transactionType = 'Endorsement';
-  values.endorsementDate = setEndorsementDate(policy.effectiveDate, policy.endDate);
+  values.endorsementDate = setEndorsementDate(
+    policy.effectiveDate,
+    policy.endDate
+  );
 
   // These objects are not always populated on Policy Object
-  values.underwritingAnswers.business = values.underwritingAnswers.business || BUSINESS;
+  values.underwritingAnswers.business =
+    values.underwritingAnswers.business || BUSINESS;
   values.deductibles.sinkhole = values.deductibles.sinkhole || SINKHOLE;
 
-  values.windMitFactor = policy.rating.worksheet.elements.windMitigationFactors.windMitigationDiscount;
+  values.windMitFactor =
+    policy.rating.worksheet.elements.windMitigationFactors.windMitigationDiscount;
   // Coverage Top Left
-  values.coverageLimits.otherStructures.percentage = calculatePercentage(otherStructures, dwelling);
-  values.coverageLimits.personalProperty.percentage = calculatePercentage(personalProperty, dwelling);
-  values.coverageOptions.personalPropertyReplacementCost.answer = policy.coverageOptions.personalPropertyReplacementCost.answer || false;
-  values.coverageOptions.propertyIncidentalOccupanciesMainDwelling.answer = policy.coverageOptions.propertyIncidentalOccupanciesMainDwelling.answer || false;
-  values.coverageOptions.propertyIncidentalOccupanciesOtherStructures.answer = policy.coverageOptions.propertyIncidentalOccupanciesOtherStructures.answer || false;
-  values.coverageOptions.liabilityIncidentalOccupancies.answer = policy.coverageOptions.liabilityIncidentalOccupancies.answer || false;
+  values.coverageLimits.otherStructures.percentage = calculatePercentage(
+    otherStructures,
+    dwelling
+  );
+  values.coverageLimits.personalProperty.percentage = calculatePercentage(
+    personalProperty,
+    dwelling
+  );
+  values.coverageOptions.personalPropertyReplacementCost.answer =
+    policy.coverageOptions.personalPropertyReplacementCost.answer || false;
+  values.coverageOptions.propertyIncidentalOccupanciesMainDwelling.answer =
+    policy.coverageOptions.propertyIncidentalOccupanciesMainDwelling.answer ||
+    false;
+  values.coverageOptions.propertyIncidentalOccupanciesOtherStructures.answer =
+    policy.coverageOptions.propertyIncidentalOccupanciesOtherStructures
+      .answer || false;
+  values.coverageOptions.liabilityIncidentalOccupancies.answer =
+    policy.coverageOptions.liabilityIncidentalOccupancies.answer || false;
   // Wind Mitigation
   values.property.protectionClass = policy.property.protectionClass || '';
-  values.property.buildingCodeEffectivenessGrading = policy.property.buildingCodeEffectivenessGrading || null;
+  values.property.buildingCodeEffectivenessGrading =
+    policy.property.buildingCodeEffectivenessGrading || null;
   values.property.familyUnits = policy.property.familyUnits || '';
   values.property.floodZone = policy.property.floodZone || '';
   // Home/Location Bottom Right
@@ -83,21 +108,31 @@ export function initializeEndorsementForm(policy = {}) {
 }
 
 export function generateModel(data, props) {
-  const endorsementDate = calculateEndorsementDate(data.endorsementDate, props.zipcodeSettings.timezone);
+  const endorsementDate = calculateEndorsementDate(
+    data.endorsementDate,
+    props.zipcodeSettings.timezone
+  );
 
   data.transactionType = 'Endorsement';
   data.billingStatus = props.summaryLedger.status.code;
 
-  data.property.yearOfRoof = String(data.property.yearOfRoof).length > 0 ? data.property.yearOfRoof : null;
+  data.property.yearOfRoof =
+    String(data.property.yearOfRoof).length > 0
+      ? data.property.yearOfRoof
+      : null;
 
-  data.deductibles.hurricane.calculatedAmount = String(data.deductibles.hurricane.calculatedAmount);
+  data.deductibles.hurricane.calculatedAmount = String(
+    data.deductibles.hurricane.calculatedAmount
+  );
 
   // ensure that the second policyholder is removed if there is no data entered
-  if (data.policyHolders.length > 1 &&
-     (!data.policyHolders[1].firstName ||
+  if (
+    data.policyHolders.length > 1 &&
+    (!data.policyHolders[1].firstName ||
       !data.policyHolders[1].lastName ||
       !data.policyHolders[1].emailAddress ||
-      !data.policyHolders[1].primaryPhoneNumber)) {
+      !data.policyHolders[1].primaryPhoneNumber)
+  ) {
     data.policyHolders.pop();
   }
   // ensure that we have order and entityType properties set for secondary policyHolder if there is one.
@@ -116,9 +151,16 @@ export function generateModel(data, props) {
 }
 
 export const convertToRateData = (formData, formProps) => {
-  const { summaryLedger: { currentPremium }, zipcodeSettings } = formProps;
-  const endorsementDate = calculateEndorsementDate(formData.endorsementDate, zipcodeSettings.timezone);
-  formData.coverageLimits.dwelling.amount = Math.round(formData.coverageLimits.dwelling.amount / 1000) * 1000;
+  const {
+    summaryLedger: { currentPremium },
+    zipcodeSettings
+  } = formProps;
+  const endorsementDate = calculateEndorsementDate(
+    formData.endorsementDate,
+    zipcodeSettings.timezone
+  );
+  formData.coverageLimits.dwelling.amount =
+    Math.round(formData.coverageLimits.dwelling.amount / 1000) * 1000;
 
   return {
     ...formData,

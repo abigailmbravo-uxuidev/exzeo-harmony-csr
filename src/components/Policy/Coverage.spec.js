@@ -37,11 +37,11 @@ describe('Testing Coverage component', () => {
         }
       },
       getPolicy() {},
-      getCancelOptions() { return Promise.resolve(); },
-      getUIQuestions() {},
-      summaryLedger: {
-
+      getCancelOptions() {
+        return Promise.resolve();
       },
+      getUIQuestions() {},
+      summaryLedger: {},
       policy: {
         rating: {}
       },
@@ -50,21 +50,31 @@ describe('Testing Coverage component', () => {
           updatePolicy() {}
         },
         appStateActions: {
-          setAppState() { }
+          setAppState() {}
         },
         cgActions: {
-          batchCompleteTask() { return Promise.resolve({ payload: [{ data: { policy: { } } }] }); },
-          startWorkflow() { return Promise.resolve({ payload: [{ data: { policy: { } } }] }); }
+          batchCompleteTask() {
+            return Promise.resolve({ payload: [{ data: { policy: {} } }] });
+          },
+          startWorkflow() {
+            return Promise.resolve({ payload: [{ data: { policy: {} } }] });
+          }
         },
         questionsActions: {
           getUIQuestions() {}
         },
         serviceActions: {
-          getCancelOptions() { return Promise.resolve(); },
-          getBillingOptionsForPolicy() { return Promise.resolve(); },
-          getSummaryLedger() { return Promise.resolve(); }
+          getCancelOptions() {
+            return Promise.resolve();
+          },
+          getBillingOptionsForPolicy() {
+            return Promise.resolve();
+          },
+          getSummaryLedger() {
+            return Promise.resolve();
+          }
         },
-        errorActions: { clearAppError() { } }
+        errorActions: { clearAppError() {} }
       },
       fieldQuestions: [],
       quoteData: {},
@@ -78,9 +88,12 @@ describe('Testing Coverage component', () => {
     };
 
     localStorage.setItem('isNewTab', true);
-    localStorage.setItem('lastSearchData', JSON.stringify({
-      searchType: 'policy'
-    }));
+    localStorage.setItem(
+      'lastSearchData',
+      JSON.stringify({
+        searchType: 'policy'
+      })
+    );
 
     const wrapper2 = shallow(<Coverage store={store} {...props} />);
     wrapper2.instance().componentDidMount();
@@ -98,12 +111,8 @@ describe('Testing Coverage component', () => {
       propertyAppraisal: {
         _id: '32432424234234234',
         name: 'propertyAppraisal',
-        steps: [
-          'additionalInterestsCSR'
-        ],
-        models: [
-          'quote'
-        ],
+        steps: ['additionalInterestsCSR'],
+        models: ['quote'],
         question: 'PA',
         answerType: 'radio',
         answers: [
@@ -118,7 +127,17 @@ describe('Testing Coverage component', () => {
         ]
       }
     };
-    expect(getPropertyAppraisalLink(policy.property.physicalAddress.county, questions).label).toEqual('ALACHUA');
-    expect(getPropertyAppraisalLink(policy.property.physicalAddress.county, questions).answer).toEqual('http://www.acpafl.org/');
+    expect(
+      getPropertyAppraisalLink(
+        policy.property.physicalAddress.county,
+        questions
+      ).label
+    ).toEqual('ALACHUA');
+    expect(
+      getPropertyAppraisalLink(
+        policy.property.physicalAddress.county,
+        questions
+      ).answer
+    ).toEqual('http://www.acpafl.org/');
   });
 });

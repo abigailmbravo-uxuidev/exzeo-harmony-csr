@@ -8,19 +8,19 @@ describe('Testing QuoteLanding component', () => {
       quoteData: {},
       match: { params: {} },
       createQuote: () => {},
-      setAppError: () => {},
+      setAppError: () => {}
     };
 
     const component = mount(<QuoteLanding {...props} />);
     expect(component);
   });
 
-  it('should setup steps for batchCompleteTask based on \'newQuote\' prop value', () => {
+  it("should setup steps for batchCompleteTask based on 'newQuote' prop value", () => {
     const props = {
       quoteData: { _id: '321' },
       match: { params: {} },
       createQuote: () => {},
-      setAppError: () => {},
+      setAppError: () => {}
     };
 
     const component = mount(<QuoteLanding {...props} />);

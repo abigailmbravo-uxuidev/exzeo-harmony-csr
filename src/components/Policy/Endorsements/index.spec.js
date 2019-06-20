@@ -25,7 +25,6 @@ const policy = {
     allOtherPerils: {},
     hurricane: {},
     sinkhole: {}
-
   },
   coverageOptions: {
     sinkholePerilCoverage: {},
@@ -38,14 +37,11 @@ const policy = {
     rented: {},
     monthsOccupied: {},
     noPriorInsuranceSurcharge: {}
-
   },
   rating: {
     worksheet: {
       elements: {
-        windMitigationFactors: {
-
-        }
+        windMitigationFactors: {}
       }
     }
   }
@@ -74,12 +70,16 @@ const baseProps = {
   reset() {},
   handleSubmit() {},
   initialize() {},
-  errorActions: { clearAppError() { } },
+  errorActions: { clearAppError() {} },
   getZipcodeSettings() {},
   getUnderwritingQuestions() {},
   getEndorsementHistory() {},
-  submitEndorsementForm() { return Promise.resolve(); },
-  getRate() { return Promise.resolve({ rating: {} }); },
+  submitEndorsementForm() {
+    return Promise.resolve();
+  },
+  getRate() {
+    return Promise.resolve({ rating: {} });
+  },
   getNewRate() {},
   clearRate() {},
   getUIQuestions() {},
@@ -95,7 +95,10 @@ const baseProps = {
   zipcodeSettings: {},
   summaryLedger: {},
   quoteData: {},
-  selectedValues: { clearFields: false, coverageLimits: { personalProperty: { amount: 0 } } },
+  selectedValues: {
+    clearFields: false,
+    coverageLimits: { personalProperty: { amount: 0 } }
+  },
   initialValues: policy,
   policy
 };
@@ -103,9 +106,12 @@ const baseProps = {
 describe('Test the Endorsements form component', () => {
   beforeEach(() => {
     localStorage.setItem('isNewTab', true);
-    localStorage.setItem('lastSearchData', JSON.stringify({
-      searchType: 'policy'
-    }));
+    localStorage.setItem(
+      'lastSearchData',
+      JSON.stringify({
+        searchType: 'policy'
+      })
+    );
   });
 
   it('should test connected app', () => {
@@ -130,13 +136,18 @@ describe('Test the Endorsements form component', () => {
     };
 
     localStorage.setItem('isNewTab', true);
-    localStorage.setItem('lastSearchData', JSON.stringify({
-      searchType: 'policy'
-    }));
+    localStorage.setItem(
+      'lastSearchData',
+      JSON.stringify({
+        searchType: 'policy'
+      })
+    );
 
     const wrapper = shallow(<Endorsements {...props} />);
     // wrapper.instance().componentWillReceiveProps(props);
-    expect(wrapper.find('.error').text()).toEqual(' Endorsement page cannot be accessed due to User Permissions.');
+    expect(wrapper.find('.error').text()).toEqual(
+      ' Endorsement page cannot be accessed due to User Permissions.'
+    );
     expect(wrapper);
   });
 

@@ -24,14 +24,20 @@ import {
 } from '../utilities/additionalInterests';
 import { getTopAnswers } from '../state/selectors/questions.selectors';
 import { ADDITIONAL_INTERESTS } from '../constants/additionalInterests';
-import { getGroupedAdditionalInterests, getSortedAdditionalInterests } from '../state/selectors/quote.selectors';
+import {
+  getGroupedAdditionalInterests,
+  getSortedAdditionalInterests
+} from '../state/selectors/quote.selectors';
 
-export const checkAdditionalInterestForName = (aiType) => {
-  return aiType === 'Additional Insured' || aiType === 'Additional Interest' || aiType === 'Bill Payer';
+export const checkAdditionalInterestForName = aiType => {
+  return (
+    aiType === 'Additional Insured' ||
+    aiType === 'Additional Interest' ||
+    aiType === 'Bill Payer'
+  );
 };
 
 export class AdditionalInterestModal extends React.Component {
-
   setTopValues = (value, answers = []) => {
     const { change } = this.props;
     if (value) {
@@ -55,12 +61,12 @@ export class AdditionalInterestModal extends React.Component {
     return value;
   };
 
-  normalizeTopMortgagee = (value) => {
+  normalizeTopMortgagee = value => {
     const { mortgageeAnswers } = this.props;
     return this.setTopValues(value, mortgageeAnswers);
   };
 
-  normalizeTopPremiumFinance = (value) => {
+  normalizeTopPremiumFinance = value => {
     const { premiumFinanceAnswers } = this.props;
     return this.setTopValues(value, premiumFinanceAnswers);
   };
@@ -94,12 +100,17 @@ export class AdditionalInterestModal extends React.Component {
     let updatedAdditionalInterests;
 
     if (isEditing) {
-      updatedAdditionalInterests = (additionalInterests || []).filter(ai => ai._id !== data._id);
+      updatedAdditionalInterests = (additionalInterests || []).filter(
+        ai => ai._id !== data._id
+      );
 
       if (isMortgagee && data.order !== formProps.initialValues.order) {
         // if user changed the order of mortgagee, make sure we swap the order of mortgagee that currently holds that order
-        updatedAdditionalInterests.forEach((ai) => {
-          if (ai.type === ADDITIONAL_INTERESTS.mortgagee && ai.order === data.order) {
+        updatedAdditionalInterests.forEach(ai => {
+          if (
+            ai.type === ADDITIONAL_INTERESTS.mortgagee &&
+            ai.order === data.order
+          ) {
             ai.order = Number(formProps.initialValues.order);
           }
         });
@@ -134,67 +145,91 @@ export class AdditionalInterestModal extends React.Component {
     return (
       <div className="modal additional-interest">
         <form
-          id={isEditing ? 'AdditionalInterestEditModal' : 'AdditionalInterestModal'}
+          id={
+            isEditing
+              ? 'AdditionalInterestEditModal'
+              : 'AdditionalInterestModal'
+          }
           onSubmit={handleSubmit(this.handleFormSubmit)}
           className={classNames('AdditionalInterestModal', {
-            [selectedAI.type]: isEditing, [addAdditionalInterestType]: !isEditing
-          })}>
-
+            [selectedAI.type]: isEditing,
+            [addAdditionalInterestType]: !isEditing
+          })}
+        >
           <div className="card">
             <div className="card-header">
-              <h4><i className={`fa fa-circle ${addAdditionalInterestType}`} /> {addAdditionalInterestType}</h4>
+              <h4>
+                <i className={`fa fa-circle ${addAdditionalInterestType}`} />{' '}
+                {addAdditionalInterestType}
+              </h4>
             </div>
             <div className="card-block">
-              {(addAdditionalInterestType || selectedAI.type) === 'Mortgagee' &&
-              <Field
-                label="Top Mortgagees"
-                name="mortgagee"
-                dataTest="mortgage"
-                component={SelectTypeAhead}
-                valueKey="displayText"
-                labelKey="displayText"
-                answers={mortgageeAnswers}
-                normalize={this.normalizeTopMortgagee}
-                optionValue="id" />
-              }
-              {(addAdditionalInterestType || selectedAI.type) === 'Premium Finance' &&
-              <Field
-                label="Top Premium Finance"
-                name="premiumFinance"
-                dataTest="premiumFinance"
-                component={SelectTypeAhead}
-                valueKey="displayText"
-                labelKey="displayText"
-                answers={premiumFinanceAnswers}
-                normalize={this.normalizeTopPremiumFinance}
-                optionValue="id" />
-              }
+              {(addAdditionalInterestType || selectedAI.type) ===
+                'Mortgagee' && (
+                <Field
+                  label="Top Mortgagees"
+                  name="mortgagee"
+                  dataTest="mortgage"
+                  component={SelectTypeAhead}
+                  valueKey="displayText"
+                  labelKey="displayText"
+                  answers={mortgageeAnswers}
+                  normalize={this.normalizeTopMortgagee}
+                  optionValue="id"
+                />
+              )}
+              {(addAdditionalInterestType || selectedAI.type) ===
+                'Premium Finance' && (
+                <Field
+                  label="Top Premium Finance"
+                  name="premiumFinance"
+                  dataTest="premiumFinance"
+                  component={SelectTypeAhead}
+                  valueKey="displayText"
+                  labelKey="displayText"
+                  answers={premiumFinanceAnswers}
+                  normalize={this.normalizeTopPremiumFinance}
+                  optionValue="id"
+                />
+              )}
               <Field
                 name="name1"
                 dataTest="name1"
-                label={checkAdditionalInterestForName(addAdditionalInterestType) ? 'First Name' : 'Name 1'}
+                label={
+                  checkAdditionalInterestForName(addAdditionalInterestType)
+                    ? 'First Name'
+                    : 'Name 1'
+                }
                 component={Input}
                 styleName="name-1"
-                validate={validation.isRequired} />
+                validate={validation.isRequired}
+              />
               <Field
                 name="name2"
                 dataTest="name2"
-                label={checkAdditionalInterestForName(addAdditionalInterestType) ? 'Last Name' : 'Name 2'}
+                label={
+                  checkAdditionalInterestForName(addAdditionalInterestType)
+                    ? 'Last Name'
+                    : 'Name 2'
+                }
                 component={Input}
-                styleName="name-2" />
+                styleName="name-2"
+              />
               <Field
                 name="address1"
                 dataTest="address1"
                 label="Address 1"
                 component={Input}
                 styleName="address-1"
-                validate={validation.isRequired} />
+                validate={validation.isRequired}
+              />
               <Field
                 name="address2"
                 dataTest="address2"
                 label="Address 2"
                 component={Input}
-                styleName="address-2" />
+                styleName="address-2"
+              />
               <div className="flex-form">
                 <Field
                   name="city"
@@ -202,21 +237,24 @@ export class AdditionalInterestModal extends React.Component {
                   label="City"
                   component={Input}
                   styleName="city"
-                  validate={validation.isRequired} />
+                  validate={validation.isRequired}
+                />
                 <Field
                   name="state"
                   dataTest="state"
                   label="State"
                   component={Input}
                   styleName="state"
-                  validate={validation.isRequired} />
+                  validate={validation.isRequired}
+                />
                 <Field
                   name="zip"
                   dataTest="zip"
                   label="Zip Code"
                   component={Input}
                   styleName="zip"
-                  validate={[validation.isRequired, validation.isZipCode]} />
+                  validate={[validation.isRequired, validation.isZipCode]}
+                />
               </div>
               <div className="flex-form">
                 <Field
@@ -226,73 +264,86 @@ export class AdditionalInterestModal extends React.Component {
                   component={Phone}
                   styleName="phone"
                   validate={validation.isPhone}
-                  placeholder="555-555-5555" />
+                  placeholder="555-555-5555"
+                />
                 <Field
                   name="referenceNumber"
                   dataTest="referenceNumber"
                   label="Reference Number"
                   component={Input}
-                  styleName="reference-number" />
+                  styleName="reference-number"
+                />
 
-                {isEditing && selectedAI.type === 'Mortgagee' &&
-                <Field
-                  name="order"
-                  dataTest="order"
-                  component={SelectInteger}
-                  label="Order"
-                  validate={validation.isRequired}
-                  answers={getMortgageeOrderAnswersForEdit(questions, additionalInterests)} />
-                }
+                {isEditing && selectedAI.type === 'Mortgagee' && (
+                  <Field
+                    name="order"
+                    dataTest="order"
+                    component={SelectInteger}
+                    label="Order"
+                    validate={validation.isRequired}
+                    answers={getMortgageeOrderAnswersForEdit(
+                      questions,
+                      additionalInterests
+                    )}
+                  />
+                )}
 
-                {!isEditing && addAdditionalInterestType === 'Mortgagee' &&
-                <Field
-                  name="order"
-                  dataTest="order"
-                  component={SelectInteger}
-                  label="Order"
-                  validate={validation.isRequired}
-                  answers={getMortgageeOrderAnswers(questions, additionalInterests)} />
-                }
+                {!isEditing && addAdditionalInterestType === 'Mortgagee' && (
+                  <Field
+                    name="order"
+                    dataTest="order"
+                    component={SelectInteger}
+                    label="Order"
+                    validate={validation.isRequired}
+                    answers={getMortgageeOrderAnswers(
+                      questions,
+                      additionalInterests
+                    )}
+                  />
+                )}
               </div>
-              {isPolicy &&
-              <div className="flex-form">
-                <Field
-                  name="type"
-                  dataTest="aiType"
-                  label="Type"
-                  component={Select}
-                  answers={validAdditionalInterestTypes}
-                  validate={validation.isRequired} />
-              </div>
-              }
+              {isPolicy && (
+                <div className="flex-form">
+                  <Field
+                    name="type"
+                    dataTest="aiType"
+                    label="Type"
+                    component={Select}
+                    answers={validAdditionalInterestTypes}
+                    validate={validation.isRequired}
+                  />
+                </div>
+              )}
             </div>
             <div className="card-footer">
-
               <div className="btn-group">
                 <Button
                   className={Button.constants.classNames.secondary}
                   label="Cancel"
                   onClick={hideModal}
-                  data-test="ai-modal-cancel" />
-                {isEditing &&
+                  data-test="ai-modal-cancel"
+                />
+                {isEditing && (
                   <Button
                     className={Button.constants.classNames.secondary}
                     label="Delete"
                     disabled={submitting || isDeleting}
                     data-test="ai-modal-delete"
-                    onClick={() => deleteAdditionalInterest(selectedAI, this.props)} />
-                }
+                    onClick={() =>
+                      deleteAdditionalInterest(selectedAI, this.props)
+                    }
+                  />
+                )}
                 <Button
                   className={Button.constants.classNames.primary}
                   type="submit"
                   label="Save"
                   data-test="ai-modal-submit"
-                  disabled={pristine || submitting || isDeleting} />
+                  disabled={pristine || submitting || isDeleting}
+                />
               </div>
             </div>
-
           </div>
-
         </form>
       </div>
     );
@@ -341,9 +392,14 @@ const mapStateToProps = state => ({
   sortedAdditionalInterests: getSortedAdditionalInterests(state)
 });
 
-export default connect(mapStateToProps, {
-  resetForm: reset
-})(reduxForm({
-  form: 'AdditionalInterestModal',
-  enableReinitialize: true
-})(AdditionalInterestModal));
+export default connect(
+  mapStateToProps,
+  {
+    resetForm: reset
+  }
+)(
+  reduxForm({
+    form: 'AdditionalInterestModal',
+    enableReinitialize: true
+  })(AdditionalInterestModal)
+);

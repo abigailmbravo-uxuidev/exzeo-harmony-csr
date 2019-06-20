@@ -4,20 +4,20 @@
   align-items: center;
   flex-direction: column;
   justify-content: center;
-  background-color: rgba($warm-gray-15, .75);
-  
-  .message{
+  background-color: rgba($warm-gray-15, 0.75);
+
+  .message {
     color: $white;
     font-weight: $font-weight-bold;
     font-size: $font-size-h3;
   }
-  
+
   .spinner {
     margin: 0 auto;
     width: 150px;
     text-align: center;
   }
-  
+
   .spinner > div {
     display: inline-block;
     margin: 0 2px;
@@ -28,16 +28,14 @@
     -webkit-animation: sk-bouncedelay 1.4s infinite ease-in-out both;
     animation: sk-bouncedelay 1.4s infinite ease-in-out both;
   }
-  
+
   .spinner .bounce1 {
     -webkit-animation-delay: -0.32s;
     animation-delay: -0.32s;
   }
-  
+
   .spinner .bounce2 {
     -webkit-animation-delay: -0.16s;
     animation-delay: -0.16s;
   }
 }
-
-

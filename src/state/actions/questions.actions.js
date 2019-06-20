@@ -37,7 +37,7 @@ export function setLists(lists) {
 }
 
 export function getUIQuestions(step) {
-  return async (dispatch) => {
+  return async dispatch => {
     try {
       const data = { step };
       const response = await serviceRunner.callQuestions(data);
@@ -69,18 +69,25 @@ function buildAssigneesList(users) {
 
 export function getDiaryAssigneeOptions(userProfile) {
   const { resources } = userProfile;
-  const query = resources.filter(r => r.uri.includes('Diaries'))
+  const query = resources
+    .filter(r => r.uri.includes('Diaries'))
     .reduce((acc, val) => `${acc},${val.uri}|${val.right}`, '');
 
-  return async (dispatch) => {
+  return async dispatch => {
     try {
       const config = {
         method: 'GET',
         service: 'security-manager-service',
         path: `/user?r=${query}`
       };
-      const response = await serviceRunner.callService(config, 'getDiaryAssigneeOptions');
-      const users = response.data && Array.isArray(response.data.result) ? response.data.result : [];
+      const response = await serviceRunner.callService(
+        config,
+        'getDiaryAssigneeOptions'
+      );
+      const users =
+        response.data && Array.isArray(response.data.result)
+          ? response.data.result
+          : [];
 
       const diaryAssignees = buildAssigneesList(users);
       dispatch(setAssigneeOptions(diaryAssignees));
@@ -96,7 +103,7 @@ export function getDiaryAssigneeOptions(userProfile) {
  * @returns {Function}
  */
 export function getTerritoryManagers(state) {
-  return async (dispatch) => {
+  return async dispatch => {
     try {
       const tm = await fetchTerritoryManagers(state);
       dispatch(setTerritoryManagers(tm));
@@ -118,13 +125,15 @@ export async function fetchTerritoryManagers(state) {
       method: 'GET',
       path: `territoryManagers/${state}`
     };
-    const response = await serviceRunner.callService(config, 'fetchTerritoryManagers');
+    const response = await serviceRunner.callService(
+      config,
+      'fetchTerritoryManagers'
+    );
     return response.data && response.data.result ? response.data.result : [];
   } catch (error) {
     throw error;
   }
 }
-
 
 /**
  *
@@ -138,7 +147,9 @@ export async function fetchLists() {
       path: 'v1/lists'
     };
     const response = await serviceRunner.callService(config, 'fetchLists');
-    return response.data && response.data.result ? response.data.result.records : [];
+    return response.data && response.data.result
+      ? response.data.result.records
+      : [];
   } catch (error) {
     throw error;
   }
@@ -149,7 +160,7 @@ export async function fetchLists() {
  * @returns {Function}
  */
 export function getLists() {
-  return async (dispatch) => {
+  return async dispatch => {
     try {
       const lists = await fetchLists();
       dispatch(setLists(lists));

@@ -10,13 +10,19 @@ export class AgencyContactModal extends Component {
     const { agency, branchCode, section } = this.props;
 
     if (Number(branchCode) > 0) {
-      const selectedBranch = agency.branches.filter(b => String(b.branchCode) === String(branchCode));
+      const selectedBranch = agency.branches.filter(
+        b => String(b.branchCode) === String(branchCode)
+      );
       selectedBranch[0][section] = data[section];
-      agency.branches = agency.branches.filter(b => String(b.branchCode) !== '0');
+      agency.branches = agency.branches.filter(
+        b => String(b.branchCode) !== '0'
+      );
       await this.props.updateAgency(agency);
     } else {
       agency[section] = data[section];
-      agency.branches = agency.branches.filter(b => String(b.branchCode) !== '0');
+      agency.branches = agency.branches.filter(
+        b => String(b.branchCode) !== '0'
+      );
       await this.props.updateAgency(agency);
     }
     this.props.closeModal();
@@ -42,7 +48,7 @@ export class AgencyContactModal extends Component {
             </div>
             <div className="card-block">
               <section className="agency-details">
-                <FormSection name={section} >
+                <FormSection name={section}>
                   <Contact section={section} showTitle />
                 </FormSection>
               </section>
@@ -53,15 +59,17 @@ export class AgencyContactModal extends Component {
                   tabIndex="0"
                   className="btn btn-secondary"
                   type="button"
-                  onClick={closeModal}>
-                Cancel
+                  onClick={closeModal}
+                >
+                  Cancel
                 </button>
                 <button
                   tabIndex="0"
                   className="btn btn-primary"
                   type="submit"
-                  disabled={submitting}>
-                Save
+                  disabled={submitting}
+                >
+                  Save
                 </button>
               </div>
             </div>
@@ -74,10 +82,15 @@ export class AgencyContactModal extends Component {
 
 const mapStateToProps = state => state;
 
-export default connect(mapStateToProps, {
-  updateAgency
-})(reduxForm({
-  form: 'AgencyContactModal',
-  enableReinitialize: true,
-  destroyOnUnmount: false
-})(AgencyContactModal));
+export default connect(
+  mapStateToProps,
+  {
+    updateAgency
+  }
+)(
+  reduxForm({
+    form: 'AgencyContactModal',
+    enableReinitialize: true,
+    destroyOnUnmount: false
+  })(AgencyContactModal)
+);

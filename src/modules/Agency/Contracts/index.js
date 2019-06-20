@@ -2,7 +2,10 @@ import { connect } from 'react-redux';
 
 import { updateAgency } from '../../../state/actions/agency.actions';
 import { getEditModalInitialValues } from '../../../state/selectors/agency.selector';
-import { getListAnswers, getListAnswersAsKey } from '../../../state/selectors/questions.selectors';
+import {
+  getListAnswers,
+  getListAnswersAsKey
+} from '../../../state/selectors/questions.selectors';
 
 import Contracts from './Contracts';
 
@@ -14,4 +17,7 @@ const mapStateToProps = state => ({
   listOfAgents: [] // available agents to add to a license,
 });
 
-export default connect(mapStateToProps, { updateAgency })(Contracts);
+export default connect(
+  mapStateToProps,
+  { updateAgency }
+)(Contracts);

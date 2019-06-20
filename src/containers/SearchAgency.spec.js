@@ -8,4 +8,3 @@ describe('Agency Search', () => {
     expect(wrapper.exists()).toBeTruthy();
   });
 });
-

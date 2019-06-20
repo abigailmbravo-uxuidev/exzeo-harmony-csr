@@ -30,7 +30,9 @@ export default class Auth {
     const csrLoggedOut = localStorage.getItem('csr_loggedOut');
     // check if the user is actually logged out from another sso site
     if (!csrLoggedOut && !window.Cypress) {
-      this.renewInterval = setInterval(() => { this.checkAuth(); }, 5000);
+      this.renewInterval = setInterval(() => {
+        this.checkAuth();
+      }, 5000);
     }
   }
 
@@ -55,15 +57,20 @@ export default class Auth {
       if (authResult && authResult.accessToken && authResult.idToken) {
         const payload = jwtDecode(authResult.idToken);
         // check to see if the user exists in a CSR group
-        if (payload['https://heimdall.security/groups'].some(group => group['isCSR'])) {
-          return http.get(`${process.env.REACT_APP_API_URL}/mainUserProfile`, {
-            headers: { authorization: `bearer ${authResult.idToken}`}
-          })
-            .then((profile) => {
+        if (
+          payload['https://heimdall.security/groups'].some(
+            group => group['isCSR']
+          )
+        ) {
+          return http
+            .get(`${process.env.REACT_APP_API_URL}/mainUserProfile`, {
+              headers: { authorization: `bearer ${authResult.idToken}` }
+            })
+            .then(profile => {
               this.setSession(authResult, profile.data);
               history.replace('/');
             })
-            .catch((error) => {
+            .catch(error => {
               history.replace(`/accessDenied?error=${error}`);
             });
         }
@@ -76,13 +83,15 @@ export default class Auth {
 
   setSession = (authResult, userProfile) => {
     // Set the time that the access token will expire at
-    const expiresAt = JSON.stringify((authResult.expiresIn * 1000) + new Date().getTime());
+    const expiresAt = JSON.stringify(
+      authResult.expiresIn * 1000 + new Date().getTime()
+    );
     localStorage.setItem('user_profile', JSON.stringify(userProfile));
     localStorage.setItem('access_token', authResult.accessToken);
     localStorage.setItem('id_token', authResult.idToken);
     localStorage.setItem('expires_at', expiresAt);
     localStorage.removeItem('csr_loggedOut');
-  }
+  };
 
   getIdToken = () => {
     const idToken = localStorage.getItem('id_token');
@@ -90,7 +99,7 @@ export default class Auth {
       throw new Error('No id token found');
     }
     return idToken;
-  }
+  };
 
   getAccessToken = () => {
     const accessToken = localStorage.getItem('access_token');
@@ -98,7 +107,7 @@ export default class Auth {
       throw new Error('No access token found');
     }
     return accessToken;
-  }
+  };
 
   logout() {
     // Clear access token and ID token from local storage
@@ -108,7 +117,11 @@ export default class Auth {
     localStorage.removeItem('user_profile');
     localStorage.setItem('csr_loggedOut', true);
     this.userProfile = null;
-    this.auth0.logout({ returnTo: `${process.env.REACT_APP_AUTH0_PRIMARY_URL}/loggedOut`, clientID: process.env.REACT_APP_AUTH0_CLIENT_ID, federated: true });
+    this.auth0.logout({
+      returnTo: `${process.env.REACT_APP_AUTH0_PRIMARY_URL}/loggedOut`,
+      clientID: process.env.REACT_APP_AUTH0_CLIENT_ID,
+      federated: true
+    });
   }
 
   isAuthenticated = () => {
@@ -120,5 +133,5 @@ export default class Auth {
     }
     const payload = jwtDecode(idToken);
     return Math.floor(Date.now() / 1000) < payload.exp;
-  }
+  };
 }

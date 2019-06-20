@@ -13,10 +13,12 @@ describe('TextInput', () => {
     };
     const wrapper = shallow(<TextInput name="Test" {...inputProps} />);
 
-    expect(wrapper.containsAnyMatchingElements([
-      <input type="text" name={inputProps.input.name} />,
-      <label htmlFor={inputProps.input.name}>{inputProps.label}</label>
-    ])).toEqual(true);
+    expect(
+      wrapper.containsAnyMatchingElements([
+        <input type="text" name={inputProps.input.name} />,
+        <label htmlFor={inputProps.input.name}>{inputProps.label}</label>
+      ])
+    ).toEqual(true);
   });
 
   it('should render "text input" with FieldHint, when name, label, and hint are provided', () => {
@@ -26,24 +28,21 @@ describe('TextInput', () => {
         name: 'testing'
       },
       hint: 'Test Hint'
-
     };
     const wrapper = shallow(<TextInput name="Test" {...inputProps} />);
 
     expect(wrapper.find(FieldHint).length).toEqual(1);
-    expect(wrapper.containsAnyMatchingElements([
-      <input type="text" name={inputProps.input.name} />,
-      <label htmlFor={inputProps.input.name}>{inputProps.label}</label>
-    ])).toEqual(true);
+    expect(
+      wrapper.containsAnyMatchingElements([
+        <input type="text" name={inputProps.input.name} />,
+        <label htmlFor={inputProps.input.name}>{inputProps.label}</label>
+      ])
+    ).toEqual(true);
   });
 
-  const types = [
-    'text',
-    'number',
-    'date'
-  ];
+  const types = ['text', 'number', 'date'];
 
-  types.forEach((type) => {
+  types.forEach(type => {
     it(`should render '${type} input', when given type of ${type} is provided`, () => {
       const inputProps = {
         type
@@ -72,10 +71,12 @@ describe('TextInput', () => {
     };
     const wrapper = shallow(<TextInput name="Test" {...inputProps} />);
 
-    expect(wrapper.containsAnyMatchingElements([
-      <input type="text" />,
-      <span>{inputProps.meta.error}</span>
-    ])).toEqual(true);
+    expect(
+      wrapper.containsAnyMatchingElements([
+        <input type="text" />,
+        <span>{inputProps.meta.error}</span>
+      ])
+    ).toEqual(true);
   });
 
   it('should render "text input" with error, when touched and warning are provided', () => {
@@ -87,10 +88,12 @@ describe('TextInput', () => {
     };
     const wrapper = shallow(<TextInput name="Test" {...inputProps} />);
 
-    expect(wrapper.containsAnyMatchingElements([
-      <input type="text" />,
-      <span>{inputProps.meta.warning}</span>
-    ])).toEqual(true);
+    expect(
+      wrapper.containsAnyMatchingElements([
+        <input type="text" />,
+        <span>{inputProps.meta.warning}</span>
+      ])
+    ).toEqual(true);
   });
 
   it('should render "text input" without FieldHint, when name and hint are provided', () => {

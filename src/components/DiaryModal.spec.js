@@ -21,22 +21,27 @@ describe('Test DiaryModal component', () => {
   };
   it('renders without crashing', () => {
     const wrapper = shallow(<DiaryModal {...props} />);
-    expect(wrapper.exists())
-      .toBeTruthy();
+    expect(wrapper.exists()).toBeTruthy();
 
     wrapper.instance().handleMinimize();
     wrapper.instance().handleClose();
-    wrapper.instance().submitDiary({ assignee: { id: '1' }, foo: '1', bar: '2' }, x => x, props);
+    wrapper
+      .instance()
+      .submitDiary(
+        { assignee: { id: '1' }, foo: '1', bar: '2' },
+        x => x,
+        props
+      );
   });
 
   it('warns if no user profile is present', () => {
     const wrapper = shallow(<DiaryModal {...props} user={{ test: '1' }} />);
-    expect(wrapper.exists())
-      .toBeTruthy();
+    expect(wrapper.exists()).toBeTruthy();
 
     expect(wrapper.instance().normalizeDiaryReason('none')).toEqual('none');
-    expect(wrapper.instance().normalizeDiaryReason('additional_interest')).toEqual('additional_interest');
+    expect(
+      wrapper.instance().normalizeDiaryReason('additional_interest')
+    ).toEqual('additional_interest');
     expect(wrapper.instance().normalizeDiaryReason('estate')).toEqual('estate');
   });
 });
-

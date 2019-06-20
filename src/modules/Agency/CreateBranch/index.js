@@ -1,7 +1,11 @@
 import { connect } from 'react-redux';
 import { reduxForm, formValueSelector } from 'redux-form';
 
-import { getAgency, updateAgency, createBranch } from '../../../state/actions/agency.actions';
+import {
+  getAgency,
+  updateAgency,
+  createBranch
+} from '../../../state/actions/agency.actions';
 import { getOrphanedAgentsList } from '../../../state/selectors/agency.selector';
 import { getListAnswersAsKey } from '../../../state/selectors/questions.selectors';
 
@@ -14,9 +18,15 @@ const mapStateToProps = state => ({
   initialValues: {
     agentOfRecord: {
       sameAsMailing: false,
-      licenses: [{
-        state: '', license: '', licenseType: '', licenseEffectiveDate: '', appointed: false
-      }]
+      licenses: [
+        {
+          state: '',
+          license: '',
+          licenseType: '',
+          licenseEffectiveDate: '',
+          appointed: false
+        }
+      ]
     }
   },
   sameAsMailingValue: selector(state, 'sameAsMailing'),
@@ -28,9 +38,16 @@ const mapStateToProps = state => ({
   listAnswersAsKey: getListAnswersAsKey(state)
 });
 
-export default connect(mapStateToProps, {
-  getAgency, updateAgency, createBranch
-})(reduxForm({
-  form: 'CreateBranch',
-  enableReinitialize: true
-})(CreateBranch));
+export default connect(
+  mapStateToProps,
+  {
+    getAgency,
+    updateAgency,
+    createBranch
+  }
+)(
+  reduxForm({
+    form: 'CreateBranch',
+    enableReinitialize: true
+  })(CreateBranch)
+);

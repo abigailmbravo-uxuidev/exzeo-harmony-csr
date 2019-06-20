@@ -10,10 +10,7 @@ describe('<FieldGenerator />', () => {
 
   it('renders when mounted with handleSubmit', () => {
     const wrapper = shallow(
-      <FieldGenerator
-        question={question}
-        handleSubmit={onSubmit}
-      />
+      <FieldGenerator question={question} handleSubmit={onSubmit} />
     );
 
     expect(wrapper);
@@ -162,7 +159,9 @@ describe('<FieldGenerator />', () => {
   it('should check for conditional', () => {
     const inputProps = {
       handleSubmit: onSubmit,
-      question: { conditional: { slider: { minLocation: '', maxLocation: '' } } },
+      question: {
+        conditional: { slider: { minLocation: '', maxLocation: '' } }
+      },
       data: [],
       values: []
     };

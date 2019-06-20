@@ -6,7 +6,7 @@
     flex-grow: 1;
     flex-shrink: 1;
     order: 0;
-    padding: 0 ($padding*2) 0 0;
+    padding: 0 ($padding * 2) 0 0;
 
     &:last-of-type {
       padding: 0;
@@ -14,16 +14,16 @@
   }
 
   .wrap {
-      flex-wrap: wrap;
+    flex-wrap: wrap;
   }
 
   .col-2 {
-      width: 50%;
-      padding-right: $padding*2;
+    width: 50%;
+    padding-right: $padding * 2;
 
-      &:last-of-type {
-        padding: 0;
-      }
+    &:last-of-type {
+      padding: 0;
+    }
   }
 }
 

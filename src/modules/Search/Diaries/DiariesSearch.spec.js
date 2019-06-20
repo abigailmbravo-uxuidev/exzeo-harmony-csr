@@ -17,4 +17,3 @@ describe('Test DiariesSearch component', () => {
     expect(wrapper.exists()).toBeTruthy();
   });
 });
-

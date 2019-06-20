@@ -5,19 +5,8 @@ import classNames from 'classnames';
 import FieldHint from './FieldHint';
 import reduxFormField from './reduxFormField';
 
-export const CheckInput = ({
-  hint,
-  input,
-  isSwitch,
-  label,
-  styleName
-}) => {
-  const {
-    disabled,
-    name,
-    value,
-    onChange
-  } = input;
+export const CheckInput = ({ hint, input, isSwitch, label, styleName }) => {
+  const { disabled, name, value, onChange } = input;
 
   const formGroupStyles = classNames(
     input.value ? 'active' : 'inactive',
@@ -25,10 +14,10 @@ export const CheckInput = ({
     { name },
     { disabled },
     { switch: isSwitch },
-    styleName,
+    styleName
   );
 
-  const Hint = hint && (<FieldHint name={name} hint={hint} />);
+  const Hint = hint && <FieldHint name={name} hint={hint} />;
 
   const onKeyPress = (event, answer) => {
     if (event.charCode === 13) {
@@ -36,12 +25,24 @@ export const CheckInput = ({
     }
   };
 
-  const Switch = isSwitch && (<div className="switch-div" tabIndex={'0'} onKeyPress={event => onKeyPress(event, !value)} />);
+  const Switch = isSwitch && (
+    <div
+      className="switch-div"
+      tabIndex={'0'}
+      onKeyPress={event => onKeyPress(event, !value)}
+    />
+  );
 
   return (
-    <div className={formGroupStyles} >
-      <label htmlFor={name} onClick={() => onChange(!value)} tabIndex={'0'} onKeyPress={event => onKeyPress(event, !value)}>
-        {label}{Hint}
+    <div className={formGroupStyles}>
+      <label
+        htmlFor={name}
+        onClick={() => onChange(!value)}
+        tabIndex={'0'}
+        onKeyPress={event => onKeyPress(event, !value)}
+      >
+        {label}
+        {Hint}
         <input
           {...input}
           type="checkbox"
@@ -55,7 +56,6 @@ export const CheckInput = ({
 };
 
 CheckInput.propTypes = {
-
   /**
    * Tool tip hint
    */

@@ -14,12 +14,22 @@ export const SelectInputMortgagee = ({
 }) => {
   const { onChange, name, value, disabled } = input;
   const { touched, error, warning } = meta;
-  const Error = touched && (error || warning) && <span>{error || warning}</span>;
-  const formGroupStyles = classNames('form-group', styleName, name, Error ? 'error' : '');
-  const Hint = hint && (<FieldHint name={name} hint={hint} />);
+  const Error = touched && (error || warning) && (
+    <span>{error || warning}</span>
+  );
+  const formGroupStyles = classNames(
+    'form-group',
+    styleName,
+    name,
+    Error ? 'error' : ''
+  );
+  const Hint = hint && <FieldHint name={name} hint={hint} />;
   return (
     <div className={formGroupStyles}>
-      <label htmlFor={name}>{label}{Hint}</label>
+      <label htmlFor={name}>
+        {label}
+        {Hint}
+      </label>
       {answers && answers.length > 0 ? (
         <select
           tabIndex={'0'}
@@ -29,29 +39,37 @@ export const SelectInputMortgagee = ({
           disabled={disabled}
           onChange={onChange}
         >
-          <option aria-label={'Please select...'} disabled value={''}>Please select...</option>
+          <option aria-label={'Please select...'} disabled value={''}>
+            Please select...
+          </option>
           {answers.map((answer, index) => (
-            <option value={answer.ID} key={index} aria-label={`${answer.AIName1} ${answer.AIAddress1}, ${answer.AICity}, ${answer.AIState} ${answer.AIZip}`}>
-              {answer.AIName1} {answer.AIAddress1}, {answer.AICity}, {answer.AIState} {answer.AIZip}
+            <option
+              value={answer.ID}
+              key={index}
+              aria-label={`${answer.AIName1} ${answer.AIAddress1}, ${answer.AICity}, ${answer.AIState} ${answer.AIZip}`}
+            >
+              {answer.AIName1} {answer.AIAddress1}, {answer.AICity},{' '}
+              {answer.AIState} {answer.AIZip}
             </option>
-            ))}
+          ))}
         </select>
-        ) : null}
+      ) : null}
       {Error}
     </div>
   );
 };
 
 SelectInputMortgagee.propTypes = {
-
   /**
    * Answers array used to generate options
    */
-  answers: PropTypes.arrayOf(PropTypes.shape({
-    answer: PropTypes.any, // eslint-disable-line
-    label: PropTypes.string,
-    image: PropTypes.string
-  })),
+  answers: PropTypes.arrayOf(
+    PropTypes.shape({
+      answer: PropTypes.any, // eslint-disable-line
+      label: PropTypes.string,
+      image: PropTypes.string
+    })
+  ),
 
   /**
    * Tooltip for user
@@ -65,7 +83,7 @@ SelectInputMortgagee.propTypes = {
     disabled: PropTypes.bool,
     name: PropTypes.string,
     onChange: PropTypes.func,
-    value: PropTypes.any, // eslint-disable-line
+    value: PropTypes.any // eslint-disable-line
   }),
   meta: PropTypes.shape(),
   /**

@@ -14,14 +14,22 @@ export const SelectFieldBilling = ({
 }) => {
   const { onChange, name, value, disabled } = input;
   const { touched, error, warning } = meta;
-  const Error = touched && (error || warning) && <span>{error || warning}</span>;
-  const formGroupStyles = classNames('form-group', { styleName }, { name }, Error ? 'error' : '');
-  const Hint = hint && (<FieldHint name={name} hint={hint} />);
+  const Error = touched && (error || warning) && (
+    <span>{error || warning}</span>
+  );
+  const formGroupStyles = classNames(
+    'form-group',
+    { styleName },
+    { name },
+    Error ? 'error' : ''
+  );
+  const Hint = hint && <FieldHint name={name} hint={hint} />;
 
   return (
     <div className={formGroupStyles}>
       <label htmlFor={name}>
-        {label}{Hint}
+        {label}
+        {Hint}
       </label>
       {answers && answers.length > 0 ? (
         <select
@@ -32,29 +40,36 @@ export const SelectFieldBilling = ({
           disabled={disabled}
           onChange={onChange}
         >
-          <option aria-label={'Please select...'} disabled value={''}>Please select...</option>
+          <option aria-label={'Please select...'} disabled value={''}>
+            Please select...
+          </option>
           {answers.map((answer, index) => (
-            <option aria-label={answer.displayText} value={answer.billToId} key={index}>
+            <option
+              aria-label={answer.displayText}
+              value={answer.billToId}
+              key={index}
+            >
               {answer.displayText}
             </option>
-            ))}
+          ))}
         </select>
-        ) : null}
+      ) : null}
       {Error}
     </div>
   );
 };
 
 SelectFieldBilling.propTypes = {
-
   /**
    * Answers array used to generate options
    */
-  answers: PropTypes.arrayOf(PropTypes.shape({
-    answer: PropTypes.any, // eslint-disable-line
-    label: PropTypes.string,
-    image: PropTypes.string
-  })),
+  answers: PropTypes.arrayOf(
+    PropTypes.shape({
+      answer: PropTypes.any, // eslint-disable-line
+      label: PropTypes.string,
+      image: PropTypes.string
+    })
+  ),
   meta: PropTypes.shape({
     touched: PropTypes.bool,
     error: PropTypes.string,
@@ -73,7 +88,7 @@ SelectFieldBilling.propTypes = {
     disabled: PropTypes.bool,
     name: PropTypes.string,
     onChange: PropTypes.func,
-    value: PropTypes.any, // eslint-disable-line
+    value: PropTypes.any // eslint-disable-line
   }),
 
   /**

@@ -27,17 +27,18 @@ const policy = {
       displayText: 'United States of America'
     }
   },
-  policyHolders: [{
-    id: '523abc231c049a02e',
-    order: 1,
-    entityType: 'Person',
-    firstName: 'John',
-    lastName: 'Smith',
-    primaryPhoneNumber: '8135551234',
-    emailAddress: 'john.smith@google.com'
-  }]
+  policyHolders: [
+    {
+      id: '523abc231c049a02e',
+      order: 1,
+      entityType: 'Person',
+      firstName: 'John',
+      lastName: 'Smith',
+      primaryPhoneNumber: '8135551234',
+      emailAddress: 'john.smith@google.com'
+    }
+  ]
 };
-
 
 describe('Testing Coverage component', () => {
   it('should test connected app', () => {
@@ -105,7 +106,7 @@ describe('Testing Coverage component', () => {
         contact: {
           firstName: 'Jane',
           lastName: 'Doe',
-          emailAddress: 'contact@abcagency.com',
+          emailAddress: 'contact@abcagency.com'
         },
         primaryPhoneNumber: '8135551234',
         secondaryPhoneNumber: '813777777',
@@ -113,10 +114,12 @@ describe('Testing Coverage component', () => {
         principalEmailAddress: 'principal@abcagency.com',
         customerServiceEmailAddress: 'customerservice@abcagency.com',
         websiteUrl: 'www.abcagency.com',
-        licenses: [{
-          licenseNumber: 'A50922',
-          licenseExpirationDate: '2018-02-02T00:00:00Z'
-        }],
+        licenses: [
+          {
+            licenseNumber: 'A50922',
+            licenseExpirationDate: '2018-02-02T00:00:00Z'
+          }
+        ],
         contract: 'STD REV 06-01-15',
         addendum: 'STD REV 12-01-15',
         eoExpirationDate: '2017-02-02T00:00:00Z',
@@ -167,7 +170,9 @@ describe('Testing Coverage component', () => {
       }
     };
 
-    const shallowWrapper = shallow(<PolicyholderAgent store={store} {...props} />);
+    const shallowWrapper = shallow(
+      <PolicyholderAgent store={store} {...props} />
+    );
     expect(shallowWrapper);
   });
 });

@@ -79,7 +79,8 @@ describe('Detail Header selectors', () => {
             propertyIncidentalOccupanciesOtherStructures: {
               _id: '5bb77c0b940ee70012e2cc56',
               answer: true,
-              displayText: 'Property Permitted Incidental Occupancies Other Structures'
+              displayText:
+                'Property Permitted Incidental Occupancies Other Structures'
             },
             liabilityIncidentalOccupancies: {
               _id: '5bb77c0b940ee70012e2cc57',
@@ -94,7 +95,8 @@ describe('Detail Header selectors', () => {
             propertyIncidentalOccupanciesMainDwelling: {
               _id: '5bb77c0b940ee70012e2cc59',
               answer: false,
-              displayText: 'Property Permitted Incidental Occupancies Main Dwelling'
+              displayText:
+                'Property Permitted Incidental Occupancies Main Dwelling'
             }
           },
           deductibles: {
@@ -123,30 +125,35 @@ describe('Detail Header selectors', () => {
             rented: {
               _id: '5bb77c77a0a55800133fc1fd',
               answer: 'Never',
-              question: 'Is the home or any structures on the property ever rented?',
+              question:
+                'Is the home or any structures on the property ever rented?',
               source: 'Customer'
             },
             monthsOccupied: {
               _id: '5bb77c77a0a55800133fc1fe',
               answer: '10+',
-              question: 'How many months a year does the owner live in the home?',
+              question:
+                'How many months a year does the owner live in the home?',
               source: 'Customer'
             },
             fourPointUpdates: {
               _id: '5bb77c77a0a55800133fc1ff',
               answer: 'Yes',
-              question: 'Has the wiring, plumbing, HVAC, and roof been updated in the last 35 years?',
+              question:
+                'Has the wiring, plumbing, HVAC, and roof been updated in the last 35 years?',
               source: 'Customer'
             },
             noPriorInsuranceSurcharge: {
               _id: '5bb77be4a0a55800133fae66',
-              question: 'If not new purchase, please provide proof of prior insurance.',
+              question:
+                'If not new purchase, please provide proof of prior insurance.',
               answer: 'No',
               source: 'Default'
             },
             floodCoverage: {
               _id: '5bb77be4a0a55800133fae65',
-              question: 'Does this property have a separate insurance policy covering flood losses?',
+              question:
+                'Does this property have a separate insurance policy covering flood losses?',
               answer: 'Yes',
               source: 'Default'
             }
@@ -597,13 +604,15 @@ describe('Detail Header selectors', () => {
             },
             {
               _id: '5bb7838c91d9590012218581',
-              formName: 'Notice of Premium Discounts for Hurricane Loss Mitigation',
+              formName:
+                'Notice of Premium Discounts for Hurricane Loss Mitigation',
               formNumber: 'OIR-B1-1655',
               editionDate: '02 10'
             },
             {
               _id: '5bb7838c91d9590012218580',
-              formName: 'Windstorm Exterior Paint or Waterproofing Exclusion - Seacoast - FL',
+              formName:
+                'Windstorm Exterior Paint or Waterproofing Exclusion - Seacoast - FL',
               formNumber: 'TTIC HO 23 70',
               editionDate: '01 17'
             },
@@ -831,8 +840,8 @@ describe('Detail Header selectors', () => {
         showReinstatement: false
       },
       finalPayment: {
-        'label': undefined,
-        'value': undefined,
+        label: undefined,
+        value: undefined
       },
       constructionType: 'SUPERIOR',
       county: 'PALM BEACH',
@@ -846,7 +855,8 @@ describe('Detail Header selectors', () => {
         address2: 'TEST MAILING ADDRESS2',
         csz: 'TAMPA, FL 33607'
       },
-      mapURI: 'https://www.google.com/maps/search/?api=1&query=1378%20TEST%20ADDRESS%20%20JUPITER%2C%20FL%2000019',
+      mapURI:
+        'https://www.google.com/maps/search/?api=1&query=1378%20TEST%20ADDRESS%20%20JUPITER%2C%20FL%2000019',
       policyHolder: {
         displayName: 'Batman Robin CSR006',
         phone: '(727) 123-1234'

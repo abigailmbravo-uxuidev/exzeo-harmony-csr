@@ -1,7 +1,12 @@
 import React from 'react';
 import { reduxForm } from 'redux-form';
 
-import { renderWithForm, checkLabel, checkSelect, checkButton } from '../../../../test-utils';
+import {
+  renderWithForm,
+  checkLabel,
+  checkSelect,
+  checkButton
+} from '../../../../test-utils';
 import DiariesSearch from '../DiariesSearch';
 
 const fields = [
@@ -18,11 +23,21 @@ const fields = [
     label: 'Reason',
     selected: '',
     options: [
-      'Please choose', 'Information Needed', 'Estate',
-      'Death of Only NI', 'Other', 'Exception',
-      'New Policy', 'Occupancy Letter', 'Ownership Change',
-      'Renewal Processing', 'Underwriting Condition Letter', 'Underwriting Review',
-      'Vacant/Unoccupied', 'Tenant Occupied', 'Refund'
+      'Please choose',
+      'Information Needed',
+      'Estate',
+      'Death of Only NI',
+      'Other',
+      'Exception',
+      'New Policy',
+      'Occupancy Letter',
+      'Ownership Change',
+      'Renewal Processing',
+      'Underwriting Condition Letter',
+      'Underwriting Review',
+      'Vacant/Unoccupied',
+      'Tenant Occupied',
+      'Refund'
     ]
   },
   {
@@ -48,7 +63,11 @@ describe('Diaries Search Testing', () => {
 
   const SearchForm = reduxForm({
     form: 'SEARCH_BAR',
-    initialValues: { open: true, dateRange: { min: '', max: '' }, assignees: []}
+    initialValues: {
+      open: true,
+      dateRange: { min: '', max: '' },
+      assignees: []
+    }
   })(DiariesSearch);
 
   const selectFields = fields.filter(({ type }) => type === 'select');
@@ -57,7 +76,11 @@ describe('Diaries Search Testing', () => {
     const { getByTestId } = renderWithForm(<SearchForm {...props} />);
 
     fields.forEach(field => checkLabel(getByTestId, field));
-    selectFields.forEach(({ dataTest, selected }) => expect(getByTestId(dataTest).getAttribute('data-selected')).toEqual(selected));
+    selectFields.forEach(({ dataTest, selected }) =>
+      expect(getByTestId(dataTest).getAttribute('data-selected')).toEqual(
+        selected
+      )
+    );
   });
 
   it('POS:Checks that all fields are working', () => {

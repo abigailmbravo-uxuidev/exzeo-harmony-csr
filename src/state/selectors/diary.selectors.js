@@ -1,23 +1,28 @@
 import { createSelector } from 'reselect';
 import { date } from '@exzeo/core-ui';
 
-import { formatEntry, getDueStatus, groupDiaries, sortDiariesByDate } from '../../utilities/diaries';
+import {
+  formatEntry,
+  getDueStatus,
+  groupDiaries,
+  sortDiariesByDate
+} from '../../utilities/diaries';
 
 import { getDiaries, getUserProfile } from './entity.selectors';
 
 export const getSortedDiariesByDueDate = createSelector(
   [getDiaries],
-  (diaries) => {
+  diaries => {
     return sortDiariesByDate(diaries);
   }
 );
 
 export const getFormattedDiaries = createSelector(
   [getSortedDiariesByDueDate],
-  (diaries) => {
+  diaries => {
     if (!Array.isArray(diaries)) return [];
 
-    return diaries.map((d) => {
+    return diaries.map(d => {
       const entry = formatEntry(d.entries[0]);
       return {
         ...entry,
@@ -33,12 +38,12 @@ export const getFormattedDiaries = createSelector(
 
 export const getDiariesForTable = createSelector(
   [getSortedDiariesByDueDate],
-  (diaries) => {
+  diaries => {
     if (!Array.isArray(diaries)) return [];
 
-    return diaries.map((d) => {
+    return diaries.map(d => {
       const entry = formatEntry(d.entries[0]);
-      return ({
+      return {
         ...entry,
         diaryId: d._id,
         createdAt: d.createdAt,
@@ -53,14 +58,14 @@ export const getDiariesForTable = createSelector(
           ...d.entries[0],
           due: date.formatDate(d.entries[0].due, date.FORMATS.SECONDARY)
         }
-      });
+      };
     });
   }
 );
 
 export const getOpenDiaries = createSelector(
   [getFormattedDiaries],
-  (formattedDairies) => {
+  formattedDairies => {
     return formattedDairies.filter(d => d.open === true);
   }
 );
@@ -74,7 +79,7 @@ const REQUIRED_DIARY_RIGHTS = ['READ', 'UPDATE', 'INSERT'];
 
 export const isPollingPermitted = createSelector(
   [getUserProfile],
-  (userProfile) => {
+  userProfile => {
     const { resources } = userProfile;
     if (!Array.isArray(resources)) return false;
 
@@ -82,7 +87,7 @@ export const isPollingPermitted = createSelector(
     // find all three 'Diaries' resources ignoring duplicates
     REQUIRED_DIARY_RIGHTS.forEach(right => {
       const resource = resources.find(r => {
-        return r.uri.indexOf('Diaries') !== -1 && r.right === right
+        return r.uri.indexOf('Diaries') !== -1 && r.right === right;
       });
 
       if (resource) {
@@ -108,9 +113,12 @@ export const getInitialValuesForForm = createSelector(
       const selectedDiary = diaries.find(d => d._id === props.diaryId);
       return selectedDiary
         ? {
-          ...selectedDiary.entries[0],
-          due: date.formatDate(selectedDiary.entries[0].due, date.FORMATS.SECONDARY)
-        }
+            ...selectedDiary.entries[0],
+            due: date.formatDate(
+              selectedDiary.entries[0].due,
+              date.FORMATS.SECONDARY
+            )
+          }
         : { ...resource };
     }
     return { ...resource };

@@ -11,7 +11,12 @@ const agentTestData = {
   faxNumber: '7275466000',
   firstName: 'CHRISTOPHER',
   lastName: 'WEAVER',
-  licenses: [{ licenseNumber: 'P117154', licenseExpirationDate: '2015-12-08T00:00:00.000Z' }],
+  licenses: [
+    {
+      licenseNumber: 'P117154',
+      licenseExpirationDate: '2015-12-08T00:00:00.000Z'
+    }
+  ],
   mailingAddress: {
     address1: '4801 86TH AVE',
     address2: null,
@@ -28,4 +33,3 @@ const agentTestData = {
 };
 
 export default agentTestData;
-

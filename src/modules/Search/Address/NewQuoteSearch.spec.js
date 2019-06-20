@@ -8,4 +8,3 @@ describe('Test NewQuoteSearch component', () => {
     expect(wrapper.exists()).toBeTruthy();
   });
 });
-

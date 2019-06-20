@@ -15,16 +15,26 @@ export const ReactSelectInput = ({
   styleName,
   labelKey
 }) => {
-  const {
-    onChange, name, value
-  } = input;
+  const { onChange, name, value } = input;
   const { touched, error, warning } = meta;
-  const Error = touched && (error || warning) && <span>{error || warning}</span>;
-  const formGroupStyles = classNames('form-group', styleName, name, Error ? 'error' : '');
-  const Hint = hint && (<FieldHint name={name} hint={hint} />);
+  const Error = touched && (error || warning) && (
+    <span>{error || warning}</span>
+  );
+  const formGroupStyles = classNames(
+    'form-group',
+    styleName,
+    name,
+    Error ? 'error' : ''
+  );
+  const Hint = hint && <FieldHint name={name} hint={hint} />;
   return (
     <div className={formGroupStyles}>
-      { label && <label htmlFor={name}>{label}{Hint}</label> }
+      {label && (
+        <label htmlFor={name}>
+          {label}
+          {Hint}
+        </label>
+      )}
       {answers && answers.length >= 0 ? (
         <Select
           name={name}
@@ -35,22 +45,23 @@ export const ReactSelectInput = ({
           options={answers}
           onChange={onChange}
         />
-        ) : null}
+      ) : null}
       {Error}
     </div>
   );
 };
 
 ReactSelectInput.propTypes = {
-
   /**
    * Answers array used to generate options
    */
-  answers: PropTypes.arrayOf(PropTypes.shape({
-    answer: PropTypes.any, // eslint-disable-line
-    label: PropTypes.string,
-    image: PropTypes.string
-  })),
+  answers: PropTypes.arrayOf(
+    PropTypes.shape({
+      answer: PropTypes.any, // eslint-disable-line
+      label: PropTypes.string,
+      image: PropTypes.string
+    })
+  ),
 
   /**
    * Tooltip for user
@@ -64,7 +75,7 @@ ReactSelectInput.propTypes = {
     disabled: PropTypes.bool,
     name: PropTypes.string,
     onChange: PropTypes.func,
-    value: PropTypes.any, // eslint-disable-line
+    value: PropTypes.any // eslint-disable-line
   }),
   meta: PropTypes.shape(),
   /**

@@ -17,13 +17,22 @@ export const CurrencyInput = ({
   max
 }) => {
   return (
-    <div className={classNames('form-group', styleName, input.name, { disabled }, { valid: touched && !error }, { error: touched && error }, )}>
-      {label &&
-      <label htmlFor={input.name}>
-        {label}
-        {hint && <FieldHint name={input.name} hint={hint} />}
-      </label>
-      }
+    <div
+      className={classNames(
+        'form-group',
+        styleName,
+        input.name,
+        { disabled },
+        { valid: touched && !error },
+        { error: touched && error }
+      )}
+    >
+      {label && (
+        <label htmlFor={input.name}>
+          {label}
+          {hint && <FieldHint name={input.name} hint={hint} />}
+        </label>
+      )}
       <NumberFormat
         type={type}
         displayType="input"
@@ -35,9 +44,7 @@ export const CurrencyInput = ({
         max={max}
         disabled={disabled}
       />
-      {touched && (error || warning) &&
-      <span>{error || warning}</span>
-      }
+      {touched && (error || warning) && <span>{error || warning}</span>}
     </div>
   );
 };
@@ -68,7 +75,6 @@ CurrencyInput.propTypes = {
     'search'
   ]),
   styleName: PropTypes.string
-
 };
 
 CurrencyInput.defaultProps = {

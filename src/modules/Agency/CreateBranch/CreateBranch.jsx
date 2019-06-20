@@ -16,39 +16,56 @@ import { DEFAULT_COUNTRY } from '../../../constants/address';
 export class CreateBranch extends Component {
   state = {
     showAddExistingAgentModal: false
-  }
+  };
   handleCreateBranch = async (data, dispatch, props) => {
     data.mailingAddress.country = DEFAULT_COUNTRY;
-     data.agentOfRecord.status = 'Active';
-     data.agentOfRecord.mailingAddress.country = DEFAULT_COUNTRY;
-    const branch = await this.props.createBranch(data, this.props.agency.agencyCode);
-    history.push(`/agency/${this.props.agency.agencyCode}/${branch.branchCode}/overview`);
+    data.agentOfRecord.status = 'Active';
+    data.agentOfRecord.mailingAddress.country = DEFAULT_COUNTRY;
+    const branch = await this.props.createBranch(
+      data,
+      this.props.agency.agencyCode
+    );
+    history.push(
+      `/agency/${this.props.agency.agencyCode}/${branch.branchCode}/overview`
+    );
   };
 
   handleToggleExistingAgentModal = () => {
-    this.setState({ showAddExistingAgentModal: !this.state.showAddExistingAgentModal });
-  }
+    this.setState({
+      showAddExistingAgentModal: !this.state.showAddExistingAgentModal
+    });
+  };
 
   handleResetForm = () => {
     this.props.reset();
-    history.push(`/agency/${this.props.agency.agencyCode}/${this.props.branchCode}/overview`);
+    history.push(
+      `/agency/${this.props.agency.agencyCode}/${this.props.branchCode}/overview`
+    );
   };
 
   // TODO : Move to utilities
-  applyOrphanedAgent = (data) => {
+  applyOrphanedAgent = data => {
     const { change, orphans } = this.props;
     const { selectedAgentCode } = data;
-    const selectedAgent = orphans.filter(a => String(a.agentCode) === String(selectedAgentCode))[0];
+    const selectedAgent = orphans.filter(
+      a => String(a.agentCode) === String(selectedAgentCode)
+    )[0];
     change('agentOfRecord.firstName', selectedAgent.firstName);
     change('agentOfRecord.lastName', selectedAgent.lastName);
-    change('agentOfRecord.primaryPhoneNumber', selectedAgent.primaryPhoneNumber);
-    change('agentOfRecord.secondaryPhoneNumber', selectedAgent.secondaryPhoneNumber);
+    change(
+      'agentOfRecord.primaryPhoneNumber',
+      selectedAgent.primaryPhoneNumber
+    );
+    change(
+      'agentOfRecord.secondaryPhoneNumber',
+      selectedAgent.secondaryPhoneNumber
+    );
     change('agentOfRecord.faxNumber', selectedAgent.faxNumber);
     change('agentOfRecord.emailAddress', selectedAgent.emailAddress);
     change('agentOfRecord.agentCode', selectedAgent.agentCode);
 
     this.handleToggleExistingAgentModal();
-  }
+  };
 
   render() {
     const {
@@ -68,26 +85,48 @@ export class CreateBranch extends Component {
         <div className="route-content">
           <div className="scroll">
             <div className="form-group survey-wrapper" role="group">
-              <form id="createBranch" onSubmit={handleSubmit(this.handleCreateBranch)}>
+              <form
+                id="createBranch"
+                onSubmit={handleSubmit(this.handleCreateBranch)}
+              >
                 <h3>Details</h3>
                 <section className="agency-details">
                   <BranchDetails />
                   {/* web address validaiton */}
                 </section>
                 <h3>Address</h3>
-                <AddressGroup sameAsMailingValue={sameAsMailingValue} changeField={change} isAgency showCounty />
+                <AddressGroup
+                  sameAsMailingValue={sameAsMailingValue}
+                  changeField={change}
+                  isAgency
+                  showCounty
+                />
                 <h3>Contact</h3>
                 <section className="agency-contact">
-                  <FormSection name="contact" >
+                  <FormSection name="contact">
                     <Contact testPrefix="contact" />
                   </FormSection>
                 </section>
-                <h3>Agent Of Record <button onClick={this.handleToggleExistingAgentModal} className="btn btn-link btn-sm"><i className="fa fa-user" />Use Existing Agent</button></h3>
+                <h3>
+                  Agent Of Record{' '}
+                  <button
+                    onClick={this.handleToggleExistingAgentModal}
+                    className="btn btn-link btn-sm"
+                  >
+                    <i className="fa fa-user" />
+                    Use Existing Agent
+                  </button>
+                </h3>
                 <section className="agency-aor">
                   <div className="agent-of-record">
                     <FormSection name="agentOfRecord">
                       <Agent />
-                      <AddressGroup parentFormGroup="agentOfRecord" sameAsMailingValue={sameAsMailingAORValue} changeField={change} isOptional />
+                      <AddressGroup
+                        parentFormGroup="agentOfRecord"
+                        sameAsMailingValue={sameAsMailingAORValue}
+                        changeField={change}
+                        isOptional
+                      />
                     </FormSection>
                   </div>
                   <div className="agency-license">
@@ -96,7 +135,8 @@ export class CreateBranch extends Component {
                       stateAnswers={listAnswersAsKey.US_states}
                       component={License}
                       licenseValue={licenseValue}
-                      isAgency />
+                      isAgency
+                    />
                   </div>
                 </section>
               </form>
@@ -109,21 +149,28 @@ export class CreateBranch extends Component {
             <Button
               className={Button.constants.classNames.secondary}
               data-test="resetButton"
-              onClick={this.handleResetForm}>Cancel</Button>
+              onClick={this.handleResetForm}
+            >
+              Cancel
+            </Button>
             <Button
               className={Button.constants.classNames.primary}
               form="createBranch"
               type="submit"
               data-test="submitButton"
-              disabled={submitting || pristine}>Save</Button>
+              disabled={submitting || pristine}
+            >
+              Save
+            </Button>
           </div>
         </div>
-        {this.state.showAddExistingAgentModal &&
-        <ExistingAgentModal
-          listOfAgents={orphans}
-          onToggleModal={this.handleToggleExistingAgentModal}
-          handleSelection={this.applyOrphanedAgent} />
-      }
+        {this.state.showAddExistingAgentModal && (
+          <ExistingAgentModal
+            listOfAgents={orphans}
+            onToggleModal={this.handleToggleExistingAgentModal}
+            handleSelection={this.applyOrphanedAgent}
+          />
+        )}
       </div>
     );
   }

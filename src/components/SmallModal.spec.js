@@ -15,7 +15,7 @@ describe('Testing SmallModal component', () => {
     };
     const wrapper = mount(<SmallModal {...props} />);
     expect(wrapper.exists()).toBeTruthy();
-    wrapper.find('Button').everyWhere((x) => {
+    wrapper.find('Button').everyWhere(x => {
       x.simulate('click');
       return x;
     });

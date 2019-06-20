@@ -12,12 +12,14 @@ describe('authActions', () => {
       name: 'tester'
     };
 
-    const stateObj = [{
-      type: types.AUTH,
-      authState: {
-        userProfile
+    const stateObj = [
+      {
+        type: types.AUTH,
+        authState: {
+          userProfile
+        }
       }
-    }];
+    ];
 
     store.dispatch(authActions.setUserProfile(userProfile));
 

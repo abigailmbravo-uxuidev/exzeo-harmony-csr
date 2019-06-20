@@ -25,18 +25,24 @@ export const RadioInputBilling = ({
     { segmented },
     { name },
     { styleName },
-    { disabled },
+    { disabled }
   );
 
-  const labelStyles = classNames('group-label', { 'label-segmented': segmented });
+  const labelStyles = classNames('group-label', {
+    'label-segmented': segmented
+  });
 
-  const answerWrapperStyles = classNames('segmented-answer-wrapper', { error: touched && error });
+  const answerWrapperStyles = classNames('segmented-answer-wrapper', {
+    error: touched && error
+  });
 
-  const Hint = hint && (<FieldHint name={name} hint={hint} />);
+  const Hint = hint && <FieldHint name={name} hint={hint} />;
 
-  const DisplayField = displayValue && (<input type="text" value={displayValue} readOnly />);
+  const DisplayField = displayValue && (
+    <input type="text" value={displayValue} readOnly />
+  );
 
-  const getSelectedPlan = (answer) => {
+  const getSelectedPlan = answer => {
     let selection;
 
     if (answer === 'Annual') {
@@ -64,28 +70,30 @@ export const RadioInputBilling = ({
         {DisplayField}
       </label>
       <div className={answerWrapperStyles}>
-        {answers && answers.length > 0 && answers.map((answer, index) =>
-          <RadioOptionBilling
-            input={input}
-            paymentPlan={paymentPlans[getSelectedPlan(answer)]}
-            answer={answer}
-            onKeyPress={onKeyPress}
-            key={index}
-            tabIndex={'0'}
-            size={answers.length}
-            onChange={onChange}
-            name={name}
-            segmented={segmented}
-            value={value}
-          />
-        )}
+        {answers &&
+          answers.length > 0 &&
+          answers.map((answer, index) => (
+            <RadioOptionBilling
+              input={input}
+              paymentPlan={paymentPlans[getSelectedPlan(answer)]}
+              answer={answer}
+              onKeyPress={onKeyPress}
+              key={index}
+              tabIndex={'0'}
+              size={answers.length}
+              onChange={onChange}
+              name={name}
+              segmented={segmented}
+              value={value}
+            />
+          ))}
       </div>
     </div>
   );
 };
 
 RadioInputBilling.propTypes = {
-paymentPlans: PropTypes.any, // eslint-disable-line
+  paymentPlans: PropTypes.any, // eslint-disable-line
   /**
    * Answers used to generate options
    */
@@ -108,7 +116,7 @@ paymentPlans: PropTypes.any, // eslint-disable-line
     disabled: PropTypes.bool,
     name: PropTypes.string,
     onChange: PropTypes.func,
-    value: PropTypes.any, // eslint-disable-line
+    value: PropTypes.any // eslint-disable-line
   }),
 
   /**

@@ -18,7 +18,10 @@ const normalizeDate = (value, previousValue) => {
   if (onlyNums.length <= 4) {
     return `${onlyNums.slice(0, 2)}/${onlyNums.slice(2)}`;
   }
-  return `${onlyNums.slice(0, 2)}/${onlyNums.slice(2, 4)}/${onlyNums.slice(4, 8)}`;
+  return `${onlyNums.slice(0, 2)}/${onlyNums.slice(2, 4)}/${onlyNums.slice(
+    4,
+    8
+  )}`;
 };
 
 export default normalizeDate;

@@ -15,44 +15,56 @@ describe('Ui Reducer', () => {
       type: types.TOGGLE_NOTE,
       noteMeta
     };
-    expect(uiReducer(state, action)).toEqual({ ...state, note: { ...noteMeta } });
+    expect(uiReducer(state, action)).toEqual({
+      ...state,
+      note: { ...noteMeta }
+    });
   });
 
-   it('should toggle note off', () => {
+  it('should toggle note off', () => {
     const state = initialState.ui;
     const noteMeta = {};
     const action = {
       type: types.TOGGLE_NOTE,
       noteMeta
     };
-    expect(uiReducer(state, action)).toEqual({ ...state, note: { ...noteMeta } });
+    expect(uiReducer(state, action)).toEqual({
+      ...state,
+      note: { ...noteMeta }
+    });
   });
-  
+
   it('should toggle diary on', () => {
     const state = initialState.ui;
     const diaryMeta = {
-      "companyCode": "TTIC",
-      "state": "FL",
-      "product": "HO3",
-      "resourceType": "Quote",
-      "resourceId": "12-5160129-01",
-      "entityEndDate": "2020-04-05T04:00:00.000Z"
+      companyCode: 'TTIC',
+      state: 'FL',
+      product: 'HO3',
+      resourceType: 'Quote',
+      resourceId: '12-5160129-01',
+      entityEndDate: '2020-04-05T04:00:00.000Z'
     };
     const action = {
       type: types.TOGGLE_DIARY,
       diaryMeta
     };
-    expect(uiReducer(state, action)).toEqual({ ...state, diary: { ...diaryMeta } });
+    expect(uiReducer(state, action)).toEqual({
+      ...state,
+      diary: { ...diaryMeta }
+    });
   });
 
-   it('should toggle diary off', () => {
+  it('should toggle diary off', () => {
     const state = initialState.ui;
     const diaryMeta = {};
     const action = {
       type: types.TOGGLE_DIARY,
       diaryMeta
     };
-    expect(uiReducer(state, action)).toEqual({ ...state, diary: { ...diaryMeta } });
+    expect(uiReducer(state, action)).toEqual({
+      ...state,
+      diary: { ...diaryMeta }
+    });
   });
 
   it('should set minimizeNote true', () => {
@@ -88,6 +100,9 @@ describe('Ui Reducer', () => {
       type: types.TOGGLE_MINIMIZE_DIARY,
       minimizeDiary: false
     };
-    expect(uiReducer(state, action)).toEqual({ ...state, minimizeDiary: false });
+    expect(uiReducer(state, action)).toEqual({
+      ...state,
+      minimizeDiary: false
+    });
   });
 });

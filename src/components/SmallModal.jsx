@@ -17,41 +17,45 @@ export class SmallModal extends Component {
 
     return (
       <div className={classNames('modal', modalClassName)}>
-          <div className="card">
-            <div className="card-header">
-              <h4><i className={classNames('fa', headerIcon)} /> {header}</h4>
-            </div>
-            <div className="card-block">
-              <section>
-                <h4 className="textClassName">
-                    {text}
-                </h4>
-              </section>
-            </div>
-            <div className="card-footer">
-              <div className="btn-footer">
-                <Button
-                  className={Button.constants.classNames.secondary}
-                  dataTest="modal-cancel"
-                  onClick={handleCancel}>No
-                </Button>
-                <Button
-                  className={Button.constants.classNames.primary}
-                  dataTest="modal-submit"
-                  onClick={handleSubmit}
-                  disabled={disabled}>Yes
-                </Button>
-              </div>
+        <div className="card">
+          <div className="card-header">
+            <h4>
+              <i className={classNames('fa', headerIcon)} /> {header}
+            </h4>
+          </div>
+          <div className="card-block">
+            <section>
+              <h4 className="textClassName">{text}</h4>
+            </section>
+          </div>
+          <div className="card-footer">
+            <div className="btn-footer">
+              <Button
+                className={Button.constants.classNames.secondary}
+                dataTest="modal-cancel"
+                onClick={handleCancel}
+              >
+                No
+              </Button>
+              <Button
+                className={Button.constants.classNames.primary}
+                dataTest="modal-submit"
+                onClick={handleSubmit}
+                disabled={disabled}
+              >
+                Yes
+              </Button>
             </div>
           </div>
+        </div>
       </div>
     );
   }
-};
+}
 
 SmallModal.defaultProps = {
   headerIcon: 'fa-circle'
-}
+};
 
 SmallModal.propTypes = {
   modalClassName: PropTypes.string,

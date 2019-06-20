@@ -9,15 +9,68 @@ const mockStore = configureStore([]);
 const cancelOptions = [
   {
     cancelType: 'Voluntary Cancellation',
-    cancelReason: ['Continuous Wind Coverage - 3 Yrs', 'Duplicate - Similar Coverage', 'Insured Deceased', 'Mortgage Satisfied', 'Other', 'Property Demolished', 'Property Foreclosed', 'Reason Not Provided', 'Rewritten - Similar Coverage', 'Sold']
+    cancelReason: [
+      'Continuous Wind Coverage - 3 Yrs',
+      'Duplicate - Similar Coverage',
+      'Insured Deceased',
+      'Mortgage Satisfied',
+      'Other',
+      'Property Demolished',
+      'Property Foreclosed',
+      'Reason Not Provided',
+      'Rewritten - Similar Coverage',
+      'Sold'
+    ]
   },
   {
     cancelType: 'Underwriting Cancellation',
-    cancelReason: ['Claims Frequency', 'Claims Severity', 'Condition of Roof', 'Empty Pool', 'Existing/Unrepaired Damage', 'Failure to Comply with Underwriting Request', 'Ineligible Breed of Dog', 'Ineligible Ownership', 'Ineligible Protection Class', 'Ineligible Risk', 'Insured Deceased', 'No Insurable Interest', 'Policy Limits Paid', 'Property in Disrepair', 'Risk Management', 'Slide/Diving Board', 'Tenant Occupied', 'Trampoline', 'Unsecured Pool', 'Vacant']
+    cancelReason: [
+      'Claims Frequency',
+      'Claims Severity',
+      'Condition of Roof',
+      'Empty Pool',
+      'Existing/Unrepaired Damage',
+      'Failure to Comply with Underwriting Request',
+      'Ineligible Breed of Dog',
+      'Ineligible Ownership',
+      'Ineligible Protection Class',
+      'Ineligible Risk',
+      'Insured Deceased',
+      'No Insurable Interest',
+      'Policy Limits Paid',
+      'Property in Disrepair',
+      'Risk Management',
+      'Slide/Diving Board',
+      'Tenant Occupied',
+      'Trampoline',
+      'Unsecured Pool',
+      'Vacant'
+    ]
   },
   {
     cancelType: 'Underwriting Non-Renewal',
-    cancelReason: ['Claims Frequency', 'Claims Severity', 'Condition of Roof', 'Empty Pool', 'Existing/Unrepaired Damage', 'Failure to Comply with Underwriting Request', 'Ineligible Breed of Dog', 'Ineligible Ownership', 'Ineligible Protection Class', 'Ineligible Risk', 'Insured Deceased', 'No Insurable Interest', 'Policy Limits Paid', 'Property in Disrepair', 'Risk Management', 'Slide/Diving Board', 'Tenant Occupied', 'Trampoline', 'Unsecured Pool', 'Vacant']
+    cancelReason: [
+      'Claims Frequency',
+      'Claims Severity',
+      'Condition of Roof',
+      'Empty Pool',
+      'Existing/Unrepaired Damage',
+      'Failure to Comply with Underwriting Request',
+      'Ineligible Breed of Dog',
+      'Ineligible Ownership',
+      'Ineligible Protection Class',
+      'Ineligible Risk',
+      'Insured Deceased',
+      'No Insurable Interest',
+      'Policy Limits Paid',
+      'Property in Disrepair',
+      'Risk Management',
+      'Slide/Diving Board',
+      'Tenant Occupied',
+      'Trampoline',
+      'Unsecured Pool',
+      'Vacant'
+    ]
   }
 ];
 
@@ -51,12 +104,29 @@ describe('Testing Cancel component', () => {
     };
     const store = mockStore(initialState);
     const props = {
-      batchCompleteTask() { return Promise.resolve(); },
-      startWorkflow() { return Promise.resolve({ payload: [{ workflowData: { cancelPolicyModelUI: { data: {} }, cancelPolicy: { data: {} } } }] }); },
+      batchCompleteTask() {
+        return Promise.resolve();
+      },
+      startWorkflow() {
+        return Promise.resolve({
+          payload: [
+            {
+              workflowData: {
+                cancelPolicyModelUI: { data: {} },
+                cancelPolicy: { data: {} }
+              }
+            }
+          ]
+        });
+      },
       setAppState() {},
       getPolicy() {},
-      getCancelOptions() { return Promise.resolve(); },
-      getBillingOptionsForPolicy() { return Promise.resolve(); },
+      getCancelOptions() {
+        return Promise.resolve();
+      },
+      getBillingOptionsForPolicy() {
+        return Promise.resolve();
+      },
       getPaymentHistory() {},
       getZipcodeSettings() {},
       reset() {},
@@ -80,14 +150,22 @@ describe('Testing Cancel component', () => {
       ...props,
       fieldValues: { cancelType: 'Voluntary Cancellation' },
       summaryLedger: {},
-      policy: { property: { physicalAddress: { zip: 33607 } }, policyNumber: '1234', rating: { worksheet: { fees: {} } } }
+      policy: {
+        property: { physicalAddress: { zip: 33607 } },
+        policyNumber: '1234',
+        rating: { worksheet: { fees: {} } }
+      }
     });
 
     wrapper.instance().componentWillReceiveProps({
       ...props,
       fieldValues: { cancelType: 'Underwriting Non-Renewal' },
       summaryLedger: {},
-      policy: { property: { physicalAddress: { zip: 33607 } }, policyNumber: '1234', rating: { worksheet: { fees: {} } } }
+      policy: {
+        property: { physicalAddress: { zip: 33607 } },
+        policyNumber: '1234',
+        rating: { worksheet: { fees: {} } }
+      }
     });
 
     wrapper.instance().resetCancelReasons();

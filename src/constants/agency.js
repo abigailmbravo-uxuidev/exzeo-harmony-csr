@@ -17,7 +17,6 @@ export const STATUS = [
   { answer: 'Service Only', label: 'Service Only' },
   { answer: 'Pending', label: 'Pending' },
   { answer: 'Terminated', label: 'Terminated' }
-
 ];
 
 export const OK_TO_PAY = [

@@ -9,7 +9,8 @@ const mockStore = configureStore(middlewares);
 const initialState = {
   policyState: {
     policy: {
-      policyNumber: '1', policyID: '1'
+      policyNumber: '1',
+      policyID: '1'
     }
   },
   appState: {
@@ -39,18 +40,24 @@ const props = {
 
 describe('Testing PolicySideNav component', () => {
   it('should test connected app', () => {
-    const wrapper = shallow(<ConnectedApp store={store} {...props} />).dive().instance();
+    const wrapper = shallow(<ConnectedApp store={store} {...props} />)
+      .dive()
+      .instance();
     expect(wrapper).toBeInstanceOf(SideNav);
   });
 
   it('should should be true after showDocsForm', () => {
-    const wrapper = shallow(<ConnectedApp store={store} {...props} />).dive().instance();
+    const wrapper = shallow(<ConnectedApp store={store} {...props} />)
+      .dive()
+      .instance();
     wrapper.generateDoc();
     expect(wrapper.state.showDocsForm).toBe(true);
   });
 
   it('should should be true after showDocsForm', () => {
-    const wrapper = shallow(<ConnectedApp store={store} {...props} />).dive().instance();
+    const wrapper = shallow(<ConnectedApp store={store} {...props} />)
+      .dive()
+      .instance();
     expect(wrapper.newNote(props));
   });
 });

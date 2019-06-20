@@ -86,26 +86,41 @@ describe('Test diary selectors', () => {
     it('should return getOpenDiaries diaries', () => {
       const diary1 = {
         ...baseDiary,
-        entries: [{
-          ...baseEntry,
-          due: moment.utc().add(-5, 'd').format()
-        }]
+        entries: [
+          {
+            ...baseEntry,
+            due: moment
+              .utc()
+              .add(-5, 'd')
+              .format()
+          }
+        ]
       };
 
       const diary2 = {
         ...baseDiary,
-        entries: [{
-          ...baseEntry,
-          due: moment.utc().add(5, 'd').format()
-        }]
+        entries: [
+          {
+            ...baseEntry,
+            due: moment
+              .utc()
+              .add(5, 'd')
+              .format()
+          }
+        ]
       };
 
       const diary3 = {
         ...baseDiary,
-        entries: [{
-          ...baseEntry,
-          due: moment.utc().add(30, 'd').format()
-        }]
+        entries: [
+          {
+            ...baseEntry,
+            due: moment
+              .utc()
+              .add(30, 'd')
+              .format()
+          }
+        ]
       };
 
       const state = {
@@ -158,9 +173,21 @@ describe('Test diary selectors', () => {
         { right: 'READ', uri: 'TTIC:FL:HO3:Diaries:DiariesService:*' },
         { right: 'INSERT', uri: 'TTIC:FL:HO3:Diaries:DiariesService:*' },
         { right: 'UPDATE', uri: 'TTIC:FL:HO3:Diaries:DiariesService:*' },
-        { right: 'READ', uri: 'Diaries:DiariesService:*', conditions: [{ csp: "TTIC:FL:HO3" }] },
-        { right: 'INSERT', uri: 'Diaries:DiariesService:*',  conditions: [{ csp: "TTIC:FL:HO3" }] },
-        { right: 'UPDATE', uri: 'Diaries:DiariesService:*', conditions: [{ csp: "TTIC:FL:HO3" }] },
+        {
+          right: 'READ',
+          uri: 'Diaries:DiariesService:*',
+          conditions: [{ csp: 'TTIC:FL:HO3' }]
+        },
+        {
+          right: 'INSERT',
+          uri: 'Diaries:DiariesService:*',
+          conditions: [{ csp: 'TTIC:FL:HO3' }]
+        },
+        {
+          right: 'UPDATE',
+          uri: 'Diaries:DiariesService:*',
+          conditions: [{ csp: 'TTIC:FL:HO3' }]
+        }
       ];
 
       const result = isPollingPermitted(state);
@@ -171,8 +198,16 @@ describe('Test diary selectors', () => {
       state.authState.userProfile.resources = [
         { right: 'READ', uri: 'TTIC:FL:HO3:Diaries:DiariesService:*' },
         { right: 'UPDATE', uri: 'TTIC:FL:HO3:Diaries:DiariesService:*' },
-        { right: 'READ', uri: 'Diaries:DiariesService:*', conditions: [{ csp: "TTIC:FL:HO3" }] },
-        { right: 'UPDATE', uri: 'Diaries:DiariesService:*', conditions: [{ csp: "TTIC:FL:HO3" }] },
+        {
+          right: 'READ',
+          uri: 'Diaries:DiariesService:*',
+          conditions: [{ csp: 'TTIC:FL:HO3' }]
+        },
+        {
+          right: 'UPDATE',
+          uri: 'Diaries:DiariesService:*',
+          conditions: [{ csp: 'TTIC:FL:HO3' }]
+        }
       ];
 
       const result = isPollingPermitted(state);

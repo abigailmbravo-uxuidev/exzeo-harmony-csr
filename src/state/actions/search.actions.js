@@ -12,7 +12,6 @@ import {
 import * as types from './actionTypes';
 import * as errorActions from './error.actions';
 
-
 /**
  *  TODO: THIS FILE HAS A TREMENDOUS AMOUNT OF REPETITION, WILL BE ADDRESSING THIS IN A SUBSEQUENT PR
  */
@@ -77,7 +76,7 @@ export function setSearchResults({
  * @returns {Function}
  */
 export function searchAddresses(address) {
-  return async (dispatch) => {
+  return async dispatch => {
     try {
       const results = await fetchAddresses(address);
       dispatch(setSearchResults(formatAddressResults(results)));
@@ -93,7 +92,7 @@ export function searchAddresses(address) {
  * @returns {Function}
  */
 export function searchQuotes(quoteSearchData) {
-  return async (dispatch) => {
+  return async dispatch => {
     try {
       const results = await fetchQuotes(quoteSearchData);
       dispatch(setSearchResults(formatQuoteResults(results)));
@@ -109,7 +108,7 @@ export function searchQuotes(quoteSearchData) {
  * @returns {Function}
  */
 export function searchPolicies(policySearchData) {
-  return async (dispatch) => {
+  return async dispatch => {
     try {
       const results = await fetchPolicies(policySearchData);
       dispatch(setSearchResults(formatPolicyResults(results)));
@@ -125,7 +124,7 @@ export function searchPolicies(policySearchData) {
  * @returns {Function}
  */
 export function searchAgents(agentSearchData) {
-  return async (dispatch) => {
+  return async dispatch => {
     try {
       const results = await fetchAgents(agentSearchData);
       dispatch(setSearchResults(formatAgentResults(results)));
@@ -141,7 +140,7 @@ export function searchAgents(agentSearchData) {
  * @returns {Function}
  */
 export function searchAgencies(agencySearchData) {
-  return async (dispatch) => {
+  return async dispatch => {
     try {
       const results = await fetchAgencies(agencySearchData);
       dispatch(setSearchResults(formatAgencyResults(results)));
@@ -165,7 +164,9 @@ export async function fetchAddresses(address) {
 
   try {
     const response = await serviceRunner.callService(config, 'fetchAddresses');
-    return response && response.data && response.data.result ? response.data.result : {};
+    return response && response.data && response.data.result
+      ? response.data.result
+      : {};
   } catch (error) {
     throw error;
   }
@@ -206,7 +207,9 @@ export async function fetchQuotes({
 
   try {
     const response = await serviceRunner.callService(config, 'fetchQuotes');
-    return response && response.data && response.data.result ? response.data.result : {};
+    return response && response.data && response.data.result
+      ? response.data.result
+      : {};
   } catch (error) {
     throw error;
   }
@@ -240,7 +243,7 @@ export async function fetchPolicies({
   currentPage,
   pageSize,
   sortBy,
-  sortDirection,
+  sortDirection
 }) {
   // TODO: the service requires that companyCode and state are included in this query. Hard coding for now.
   const config = {
@@ -269,7 +272,13 @@ export async function fetchPolicies({
  * @returns {Promise<{}>}
  */
 export async function fetchAgents({
-  companyCode, state, firstName, lastName, agentCode, address, licenseNumber
+  companyCode,
+  state,
+  firstName,
+  lastName,
+  agentCode,
+  address,
+  licenseNumber
 }) {
   const config = {
     service: 'agency',
@@ -279,7 +288,9 @@ export async function fetchAgents({
 
   try {
     const response = await serviceRunner.callService(config, 'fetchAgents');
-    return response && response.data && response.data.result ? response.data.result : [];
+    return response && response.data && response.data.result
+      ? response.data.result
+      : [];
   } catch (error) {
     throw error;
   }
@@ -298,7 +309,14 @@ export async function fetchAgents({
  * @returns {Promise<{}>}
  */
 export async function fetchAgencies({
-  companyCode, state, displayName, agencyCode, address, licenseNumber, fein, phone
+  companyCode,
+  state,
+  displayName,
+  agencyCode,
+  address,
+  licenseNumber,
+  fein,
+  phone
 }) {
   const config = {
     service: 'agency',
@@ -308,7 +326,9 @@ export async function fetchAgencies({
 
   try {
     const response = await serviceRunner.callService(config, 'fetchAgencies');
-    return response && response.data && response.data.result ? response.data.result : [];
+    return response && response.data && response.data.result
+      ? response.data.result
+      : [];
   } catch (error) {
     throw error;
   }
@@ -419,7 +439,7 @@ export function formatForURI(value, sub = '') {
  * @returns {Function}
  */
 export function handleAddressSearch(data) {
-  return async (dispatch) => {
+  return async dispatch => {
     const taskData = {
       address: formatForURI(String(data.address).trim())
     };
@@ -434,7 +454,7 @@ export function handleAddressSearch(data) {
  * @returns {Function}
  */
 export function handleQuoteSearch(data) {
-  return async (dispatch) => {
+  return async dispatch => {
     const taskData = {
       firstName: formatForURI(data.firstName),
       lastName: formatForURI(data.lastName),
@@ -461,7 +481,7 @@ export function handleQuoteSearch(data) {
  * @returns {Function}
  */
 export function handlePolicySearch(data) {
-  return async (dispatch) => {
+  return async dispatch => {
     const taskData = {
       firstName: formatForURI(data.firstName),
       lastName: formatForURI(data.lastName),
@@ -469,7 +489,12 @@ export function handlePolicySearch(data) {
       policyNumber: formatForURI(data.policyNumber),
       policyStatus: formatForURI(data.policyStatus),
       agencyCode: formatForURI(data.agencyCode),
-      effectiveDate: formatForURI(data.effectiveDate && moment(data.effectiveDate).utc().format(SECONDARY_DATE_FORMAT)),
+      effectiveDate: formatForURI(
+        data.effectiveDate &&
+          moment(data.effectiveDate)
+            .utc()
+            .format(SECONDARY_DATE_FORMAT)
+      ),
       currentPage: setPageNumber(data.currentPage, data.isNext),
       sortBy: data.sortBy,
       sortDirection: data.sortBy === 'policyNumber' ? 'desc' : 'asc',
@@ -488,7 +513,7 @@ export function handlePolicySearch(data) {
  * @returns {Function}
  */
 export function handleAgentSearch(data) {
-  return async (dispatch) => {
+  return async dispatch => {
     const taskData = {
       agentCode: formatForURI(data.agentCode),
       firstName: formatForURI(data.firstName),
@@ -509,7 +534,7 @@ export function handleAgentSearch(data) {
  * @returns {Function}
  */
 export function handleAgencySearch(data) {
-  return async (dispatch) => {
+  return async dispatch => {
     const taskData = {
       agencyCode: formatForURI(data.agencyCode),
       displayName: formatForURI(data.displayName),
@@ -532,7 +557,7 @@ export function handleAgencySearch(data) {
  * @returns {Function}
  */
 export function handleDiariesSearch(data) {
-  return async (dispatch) => {
+  return async dispatch => {
     const taskData = {
       open: data.open === 'true',
       assignees: data.assignees.map(a => a.answer),
@@ -551,7 +576,7 @@ export function handleDiariesSearch(data) {
  * @returns {Function}
  */
 export function searchDiaries(diarySearchData) {
-  return async (dispatch) => {
+  return async dispatch => {
     try {
       const results = await fetchDiaries(diarySearchData);
       dispatch(setSearchResults(formatDiaryResults(results)));
@@ -620,29 +645,36 @@ function formatDiaryResults(results) {
  * @returns {Function}
  */
 export function handleSearchSubmit(data, props) {
-  return async (dispatch) => {
+  return async dispatch => {
     const { searchType } = props;
 
     dispatch(toggleLoading(true));
 
     try {
-      if (searchType === SEARCH_TYPES.newQuote) await dispatch(handleAddressSearch(data));
+      if (searchType === SEARCH_TYPES.newQuote)
+        await dispatch(handleAddressSearch(data));
 
-      if (searchType === SEARCH_TYPES.quote) await dispatch(handleQuoteSearch(data));
+      if (searchType === SEARCH_TYPES.quote)
+        await dispatch(handleQuoteSearch(data));
 
-      if (searchType === SEARCH_TYPES.policy) await dispatch(handlePolicySearch(data));
+      if (searchType === SEARCH_TYPES.policy)
+        await dispatch(handlePolicySearch(data));
 
-      if (searchType === SEARCH_TYPES.agent) await dispatch(handleAgentSearch(data));
+      if (searchType === SEARCH_TYPES.agent)
+        await dispatch(handleAgentSearch(data));
 
-      if (searchType === SEARCH_TYPES.agency) await dispatch(handleAgencySearch(data));
+      if (searchType === SEARCH_TYPES.agency)
+        await dispatch(handleAgencySearch(data));
 
-      if (searchType === SEARCH_TYPES.diaries) await dispatch(handleDiariesSearch(data));
+      if (searchType === SEARCH_TYPES.diaries)
+        await dispatch(handleDiariesSearch(data));
     } catch (error) {
       // 'error' is undefined if we catch here. Making a custom message to handle.
-      dispatch(errorActions.setAppError(error || { message: 'An error has occurred' }));
+      dispatch(
+        errorActions.setAppError(error || { message: 'An error has occurred' })
+      );
     }
 
     dispatch(toggleLoading(false));
   };
 }
-

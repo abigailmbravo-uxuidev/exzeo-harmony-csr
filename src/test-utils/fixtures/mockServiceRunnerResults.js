@@ -57,16 +57,14 @@ export const underwritingResult = [
     hidden: false,
     name: 'fourPointUpdates',
     order: 4,
-    question: 'Have the wiring, plumbing, and HVAC been updated in the last 35 years?',
+    question:
+      'Have the wiring, plumbing, and HVAC been updated in the last 35 years?',
     validations: ['required'],
     visible: true
   },
   {
     active: true,
-    answers: [
-      { answer: 'Yes' },
-      { answer: 'No' }
-    ],
+    answers: [{ answer: 'Yes' }, { answer: 'No' }],
     hidden: false,
     name: 'business',
     order: 6,
@@ -77,12 +75,15 @@ export const underwritingResult = [
 ];
 
 export const mailingBillingResult = {
-  options: [{
-    billToId: 'ab1234', billToType: 'Policyholder',
-    displayText: 'Policyholder: Fake Nameington',
-    payPlans: ['Annual', 'Semi-Annual', 'Quarterly'],
-    policyHolder
-  }],
+  options: [
+    {
+      billToId: 'ab1234',
+      billToType: 'Policyholder',
+      displayText: 'Policyholder: Fake Nameington',
+      payPlans: ['Annual', 'Semi-Annual', 'Quarterly'],
+      policyHolder
+    }
+  ],
   paymentPlans: {
     annual: {
       amount: 2667,
@@ -125,9 +126,7 @@ export const notesResult = [
     companyCode: 'TTIC',
     createdAt: '2019-03-22T00:00:00.00Z',
     createdBy: { userName: 'AAA user author' },
-    noteAttachments: [
-      { fileUrl: 'foo.com/aaa', fileType: 'AAA filetype' }
-    ],
+    noteAttachments: [{ fileUrl: 'foo.com/aaa', fileType: 'AAA filetype' }],
     noteContactType: 'AAA contact',
     noteContent: 'AAA content note',
     noteType: 'Quote Note',
@@ -142,9 +141,7 @@ export const notesResult = [
     companyCode: 'TTIC',
     createdAt: '2019-04-22T00:00:00.00Z',
     createdBy: { userName: 'ZZZ user author' },
-    noteAttachments: [
-      { fileUrl: 'foo.com/zzz', fileType: 'ZZZ filetype' }
-    ],
+    noteAttachments: [{ fileUrl: 'foo.com/zzz', fileType: 'ZZZ filetype' }],
     noteContactType: 'ZZZ contact',
     noteContent: 'ZZZ content note',
     noteType: 'Quote Note',

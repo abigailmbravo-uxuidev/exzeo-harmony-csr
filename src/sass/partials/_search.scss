@@ -44,7 +44,7 @@
         flex-grow: 1;
         flex-shrink: 1;
         flex-wrap: nowrap;
-        padding: $padding ($padding*2);
+        padding: $padding ($padding * 2);
         height: auto;
         border-bottom: 2px solid $white;
         background-color: $warm-gray-10;
@@ -361,16 +361,24 @@
             flex-grow: 0;
             flex-shrink: 0;
             justify-content: center;
-            margin: ($padding*3) 0 0 $padding;
+            margin: ($padding * 3) 0 0 $padding;
             padding: 0;
             width: 2rem;
             height: 2rem;
             border-radius: 50%;
 
-            @include button-variant($bright-blue-darken-03, $warm-gray-01, $warm-gray-01);
+            @include button-variant(
+              $bright-blue-darken-03,
+              $warm-gray-01,
+              $warm-gray-01
+            );
 
             &:hover {
-              @include button-variant($bright-blue-darken-04, $warm-gray-00, $warm-gray-00);
+              @include button-variant(
+                $bright-blue-darken-04,
+                $warm-gray-00,
+                $warm-gray-00
+              );
             }
 
             > i {
@@ -390,11 +398,11 @@
       width: 100%;
 
       ul.results {
-        padding: $padding*2;
+        padding: $padding * 2;
       }
 
       .result-cards {
-        padding: $padding*2;
+        padding: $padding * 2;
       }
 
       .heading {
@@ -569,7 +577,7 @@
 
     .results,
     .survey-wrapper {
-      padding: $padding*2;
+      padding: $padding * 2;
 
       .card {
         margin: 0 0 ($padding/2);
@@ -578,7 +586,7 @@
   }
 }
 
-main[role="document"] {
+main[role='document'] {
   &.policy-advanced {
     min-height: auto;
     //height: calc(100vh - 12.375rem);
@@ -668,8 +676,6 @@ ul.list-cards {
     margin-bottom: $padding/2;
 
     > div {
-
-
       section {
         flex-direction: column;
         flex-grow: 1;
@@ -716,14 +722,14 @@ ul.list-cards {
 .quote-list {
   flex-grow: 1;
   margin-bottom: $padding/2;
-  padding: $padding*2;
+  padding: $padding * 2;
   width: 100%;
 
   .card {
     display: flex;
     flex-direction: row;
     margin: 0 0 ($padding/2);
-    padding: $padding $padding*1.5;
+    padding: $padding $padding * 1.5;
 
     @include transition(all 0.2s ease-in-out);
 
@@ -861,12 +867,13 @@ ul.list-cards {
       box-shadow: $card-box-shadow-hover;
       cursor: pointer;
       transform: scale(1.004);
-  
+
       ul {
-        &.quote-search-results, &.policy-search-results {
+        &.quote-search-results,
+        &.policy-search-results {
           div {
             &.row {
-              background: rgba($bright-blue, .1);
+              background: rgba($bright-blue, 0.1);
             }
           }
         }
@@ -877,7 +884,7 @@ ul.list-cards {
   a {
     align-items: center;
     align-items: flex-start;
-    padding: $padding $padding*1.5;
+    padding: $padding $padding * 1.5;
     border: $card-border-width solid $card-border-color;
     border-radius: $card-border-radius;
     background: $white;
@@ -959,7 +966,7 @@ ul.list-cards {
 
     a {
       align-items: center;
-      padding: $padding $padding*1.5;
+      padding: $padding $padding * 1.5;
       border: $card-border-width solid $card-border-color;
       border-radius: $card-border-radius;
       background: $white;
@@ -1010,14 +1017,14 @@ ul.list-cards {
 .quote-list {
   flex-grow: 1;
   margin-bottom: $padding/2;
-  padding: $padding*2;
+  padding: $padding * 2;
   width: 100%;
 
   .card {
     display: flex;
     flex-direction: row;
     margin: 0 0 ($padding/2);
-    padding: $padding $padding*1.5;
+    padding: $padding $padding * 1.5;
 
     .icon-name {
       display: flex;
@@ -1093,7 +1100,7 @@ ul.list-cards {
             color: $bright-blue;
 
             &:hover {
-              background: rgba($bright-blue, .1);
+              background: rgba($bright-blue, 0.1);
             }
 
             span {
@@ -1155,7 +1162,7 @@ ul.list-cards {
   a {
     align-items: center;
     align-items: flex-start;
-    padding: $padding $padding*1.5;
+    padding: $padding $padding * 1.5;
     border: $card-border-width solid $card-border-color;
     border-radius: $card-border-radius;
     background: $white;

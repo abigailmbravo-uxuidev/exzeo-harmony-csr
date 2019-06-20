@@ -114,7 +114,7 @@ const body = {
     type: 'Cash',
     description: 'Annual Payment',
     batch: '239484-333838',
-    amount: 100.00
+    amount: 100.0
   }
 };
 
@@ -202,8 +202,7 @@ const policy = {
 describe('Testing MortgageBilling component', () => {
   it('should test connected app', () => {
     const initialState = {
-      service: {
-      },
+      service: {},
       policyState: {},
       cg: {
         bb: {
@@ -230,8 +229,12 @@ describe('Testing MortgageBilling component', () => {
       getPaymentOptionsApplyPayments() {},
       getBillingOptionsForPolicy() {},
       getSummaryLedger() {},
-      addTransaction() { return Promise.resolve(); },
-      createTransaction() { return Promise.resolve(); },
+      addTransaction() {
+        return Promise.resolve();
+      },
+      createTransaction() {
+        return Promise.resolve();
+      },
       getUIQuestions() {},
       updatePolicy() {},
       getPolicy() {},
@@ -272,7 +275,9 @@ describe('Testing MortgageBilling component', () => {
 
     wrapper.instance().amountFormatter(100);
     wrapper.instance().dateFormatter('123');
-    wrapper.instance().handleAISubmit({ type: 'Mortgagee' }, props.dispatch, props);
+    wrapper
+      .instance()
+      .handleAISubmit({ type: 'Mortgagee' }, props.dispatch, props);
     wrapper.instance().toggleAIState(additionalInterests[1], props);
   });
 });

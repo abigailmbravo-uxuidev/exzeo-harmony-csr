@@ -11,7 +11,7 @@
   }
 
   &.logo {
-    @include transition(all .2s ease-in-out);
+    @include transition(all 0.2s ease-in-out);
 
     .card-header {
       background-color: $bright-blue-darken-04;
@@ -88,7 +88,7 @@
       flex-shrink: 0;
 
       .quote-number {
-        margin-right: $padding*2;
+        margin-right: $padding * 2;
       }
 
       dl {
@@ -156,7 +156,7 @@
         margin-right: $padding;
         border: 5px solid $bright-blue-darken-01;
         border-radius: 50%;
-        background-image: url("../img/csr.jpg");
+        background-image: url('../img/csr.jpg');
         background-position: right center;
         background-size: cover;
       }
@@ -181,7 +181,7 @@
     bottom: 0;
     left: 0;
     overflow-y: auto;
-    background: rgba($black, .8);
+    background: rgba($black, 0.8);
 
     .survey-wrapper {
       display: flex;
@@ -200,7 +200,7 @@
           }
 
           .card-header {
-            background: rgba($red-darken-01,1);
+            background: rgba($red-darken-01, 1);
 
             h1,
             h2,
@@ -208,7 +208,7 @@
             h4,
             h5,
             h6 {
-              background: rgba($red-darken-01,.9);
+              background: rgba($red-darken-01, 0.9);
             }
           }
 
@@ -217,7 +217,7 @@
             align-items: center;
 
             a {
-              margin: $padding ($padding*2) ($padding*2) 0;
+              margin: $padding ($padding * 2) ($padding * 2) 0;
             }
           }
         }

@@ -175,7 +175,7 @@ describe('Testing DetailHeader component', () => {
     const wrapper = mount(
       <Provider store={store}>
         <DiaryTable />
-      </Provider>);
-
+      </Provider>
+    );
   });
 });

@@ -7,33 +7,49 @@ import TransferList from './TransferList';
 import TransferFilter from './TransferFilter';
 
 export class Transfer extends Component {
-  state = { showTransferModal: false, selectedPolicies: [], fadePolicy: undefined };
+  state = {
+    showTransferModal: false,
+    selectedPolicies: [],
+    fadePolicy: undefined
+  };
 
   handleToggleModal = () => {
     this.setState(state => ({ showTransferModal: !state.showTransferModal }));
-  }
+  };
 
-  checkPolicy = (policyNumber) => {
+  checkPolicy = policyNumber => {
     const { policies } = this.props;
     const { selectedPolicies } = this.state;
     const policy = policies.find(v => v.policyNumber === policyNumber);
-    this.setState({ selectedPolicies: [...selectedPolicies, policy], fadePolicy: undefined });
-  }
+    this.setState({
+      selectedPolicies: [...selectedPolicies, policy],
+      fadePolicy: undefined
+    });
+  };
 
-  unCheckPolicy = (policyNumber) => {
+  unCheckPolicy = policyNumber => {
     const { selectedPolicies } = this.state;
-    this.setState({ selectedPolicies: selectedPolicies.filter(p => p.policyNumber !== policyNumber), fadePolicy: undefined });
-  }
+    this.setState({
+      selectedPolicies: selectedPolicies.filter(
+        p => p.policyNumber !== policyNumber
+      ),
+      fadePolicy: undefined
+    });
+  };
 
   handleCheckPolicy = (policyNumber, e) => {
-    if(e && e.stopPropagation) e.stopPropagation();
-    this.setState({ fadePolicy: policyNumber },() => setTimeout(() => this.checkPolicy(policyNumber), 500));
-  }
+    if (e && e.stopPropagation) e.stopPropagation();
+    this.setState({ fadePolicy: policyNumber }, () =>
+      setTimeout(() => this.checkPolicy(policyNumber), 500)
+    );
+  };
 
   handleUncheckPolicy = (policyNumber, e) => {
-    if(e && e.stopPropagation) e.stopPropagation();
-    this.setState({ fadePolicy: policyNumber }, () => setTimeout(() => this.unCheckPolicy(policyNumber), 500));
-  }
+    if (e && e.stopPropagation) e.stopPropagation();
+    this.setState({ fadePolicy: policyNumber }, () =>
+      setTimeout(() => this.unCheckPolicy(policyNumber), 500)
+    );
+  };
 
   handleCheckAllPolicies = () => {
     const { policies } = this.props;
@@ -41,16 +57,14 @@ export class Transfer extends Component {
 
     if (policies.length === selectedPolicies.length) {
       this.clearSelectedPolicies();
-    }
-    else {
+    } else {
       this.setState({ selectedPolicies: policies });
     }
-
-  }
+  };
 
   clearSelectedPolicies = () => {
     this.setState({ selectedPolicies: [] });
-  }
+  };
 
   render() {
     const {
@@ -65,10 +79,12 @@ export class Transfer extends Component {
     } = this.props;
 
     const { showTransferModal, selectedPolicies, fadePolicy } = this.state;
-    const filteredPolicies = policies.filter(p => !selectedPolicies.some(s => s.policyNumber === p.policyNumber));
+    const filteredPolicies = policies.filter(
+      p => !selectedPolicies.some(s => s.policyNumber === p.policyNumber)
+    );
     return (
       <React.Fragment>
-        {showTransferModal &&
+        {showTransferModal && (
           <TransferModal
             getPoliciesForAgency={getPoliciesForAgency}
             activeAgencyCode={agencyCode}
@@ -77,7 +93,7 @@ export class Transfer extends Component {
             selectedPolicies={selectedPolicies}
             toggleModal={this.handleToggleModal}
           />
-        }
+        )}
         <div className="route-content">
           <div className="scroll">
             <div className="form-group survey-wrapper" role="group">

@@ -41,16 +41,20 @@ export const getPolicyDetails = createSelector(
       status: { displayText, code }
     } = summaryLedger;
 
-    const {
-      constructionType,
-      physicalAddress,
-      territory
-    } = property;
+    const { constructionType, physicalAddress, territory } = property;
 
     const mapQuery = detailUtils.getMapQuery(physicalAddress);
-    const cancellationDate = detailUtils.getCancellationDate(summaryLedger, status, endDate, cancelDate);
+    const cancellationDate = detailUtils.getCancellationDate(
+      summaryLedger,
+      status,
+      endDate,
+      cancelDate
+    );
     const showReinstatement = detailUtils.shouldShowReinstatement(status, code);
-    const dateLabel = detailUtils.getEntityDetailsDateLabel(displayText, status);
+    const dateLabel = detailUtils.getEntityDetailsDateLabel(
+      displayText,
+      status
+    );
     const finalPayment = detailUtils.getFinalPaymentDate(summaryLedger, status);
 
     return {
@@ -87,7 +91,7 @@ export const getPolicyDetails = createSelector(
 
 export const getQuoteDetails = createSelector(
   [getQuote],
-  (quote) => {
+  quote => {
     if (!quote || !quote.quoteNumber) return defaultEntity;
 
     const {

@@ -20,16 +20,19 @@ describe('CG Actions', () => {
     newWorkflowData[inputProps.modelName] = {};
     newWorkflowData[inputProps.modelName].data = inputProps.workflowId;
 
-    const stateObj = [{
-      type: types.CG_START,
-      workflowData: newWorkflowData
-    }];
+    const stateObj = [
+      {
+        type: types.CG_START,
+        workflowData: newWorkflowData
+      }
+    ];
 
-    store.dispatch(cgActions.start(inputProps.modelName, inputProps.workflowId));
+    store.dispatch(
+      cgActions.start(inputProps.modelName, inputProps.workflowId)
+    );
 
     expect(store.getActions()).toEqual(stateObj);
   });
-
 
   it('should call complete', () => {
     const initialState = {};
@@ -43,12 +46,16 @@ describe('CG Actions', () => {
     newWorkflowData[inputProps.modelName] = {};
     newWorkflowData[inputProps.modelName].data = inputProps.workflowId;
 
-    const stateObj = [{
-      type: types.CG_COMPLETE,
-      workflowData: newWorkflowData
-    }];
+    const stateObj = [
+      {
+        type: types.CG_COMPLETE,
+        workflowData: newWorkflowData
+      }
+    ];
 
-    store.dispatch(cgActions.complete(inputProps.modelName, inputProps.workflowId));
+    store.dispatch(
+      cgActions.complete(inputProps.modelName, inputProps.workflowId)
+    );
 
     expect(store.getActions()).toEqual(stateObj);
   });
@@ -65,9 +72,11 @@ describe('CG Actions', () => {
     newWorkflowData[inputProps.modelName] = {};
     newWorkflowData[inputProps.modelName].data = inputProps.workflowId;
 
-    const stateObj = [{
-      type: types.CLEAR_SEARCH_RESULTS
-    }];
+    const stateObj = [
+      {
+        type: types.CLEAR_SEARCH_RESULTS
+      }
+    ];
 
     store.dispatch(cgActions.clearSearchResults(inputProps.modelName, {}));
 
@@ -87,16 +96,19 @@ describe('CG Actions', () => {
     newWorkflowData[inputProps.modelName].data = inputProps.workflowId;
     newWorkflowData.previousTask = {};
 
-    const stateObj = [{
-      type: types.CLEAR_SEARCH_RESULTS,
-      workflowData: newWorkflowData
-    }];
+    const stateObj = [
+      {
+        type: types.CLEAR_SEARCH_RESULTS,
+        workflowData: newWorkflowData
+      }
+    ];
 
-    store.dispatch(cgActions.clearSearchResults(inputProps.modelName, newWorkflowData));
+    store.dispatch(
+      cgActions.clearSearchResults(inputProps.modelName, newWorkflowData)
+    );
 
     expect(store.getActions()).toEqual(stateObj);
   });
-
 
   it('should call start workflow thunk', () => {
     const mockAdapter = new MockAdapter(axios);
@@ -133,15 +145,28 @@ describe('CG Actions', () => {
     const initialState = {};
     const store = mockStore(initialState);
 
-    const stateObj = [{
-      type: types.APP_ERROR_CLEAR,
-      error: {}
-    }, {
-      type: types.CG_START,
-      workflowData: { quoteModel: { data: { activeTask: { name: 'search' }, modelInstanceId: '819966', modelName: 'qouteModel', previousTask: { name: 'uiTasks', value: {} } } } }
-    }];
+    const stateObj = [
+      {
+        type: types.APP_ERROR_CLEAR,
+        error: {}
+      },
+      {
+        type: types.CG_START,
+        workflowData: {
+          quoteModel: {
+            data: {
+              activeTask: { name: 'search' },
+              modelInstanceId: '819966',
+              modelName: 'qouteModel',
+              previousTask: { name: 'uiTasks', value: {} }
+            }
+          }
+        }
+      }
+    ];
 
-    return cgActions.startWorkflow(data.modelName, data.data, false)(store.dispatch)
+    return cgActions
+      .startWorkflow(data.modelName, data.data, false)(store.dispatch)
       .then(() => {
         expect(store.getActions()).toEqual(stateObj);
       });
@@ -152,9 +177,7 @@ describe('CG Actions', () => {
     const data = {
       workflowId: '819966',
       stepName: 'search',
-      data: {
-
-      }
+      data: {}
     };
 
     const axiosOptions = {
@@ -188,12 +211,30 @@ describe('CG Actions', () => {
       workflowId: '819966'
     };
 
-    const stateObj = [{
-      type: types.CG_COMPLETE,
-      workflowData: { quoteModel: { data: { activeTask: { name: 'search' }, modelInstanceId: '819966', modelName: 'quoteModel', previousTask: { name: 'uiTasks', value: {} } } } }
-    }];
+    const stateObj = [
+      {
+        type: types.CG_COMPLETE,
+        workflowData: {
+          quoteModel: {
+            data: {
+              activeTask: { name: 'search' },
+              modelInstanceId: '819966',
+              modelName: 'quoteModel',
+              previousTask: { name: 'uiTasks', value: {} }
+            }
+          }
+        }
+      }
+    ];
 
-    return cgActions.completeTask(inputProps.modelName, inputProps.workflowId, 'search', data.data, false)(store.dispatch)
+    return cgActions
+      .completeTask(
+        inputProps.modelName,
+        inputProps.workflowId,
+        'search',
+        data.data,
+        false
+      )(store.dispatch)
       .then(() => {
         expect(store.getActions()).toEqual(stateObj);
       });
@@ -201,13 +242,13 @@ describe('CG Actions', () => {
 
   it('should call batchCompleteTask thunk', () => {
     const mockAdapter = new MockAdapter(axios);
-    const stepsWithData = [{
-      workflowId: '819966',
-      name: 'search',
-      data: {
-
+    const stepsWithData = [
+      {
+        workflowId: '819966',
+        name: 'search',
+        data: {}
       }
-    }];
+    ];
 
     const axiosOptions = {
       method: 'POST',
@@ -244,12 +285,29 @@ describe('CG Actions', () => {
       workflowId: '819966'
     };
 
-    const stateObj = [{
-      type: types.CG_COMPLETE,
-      workflowData: { quoteModel: { data: { activeTask: { name: 'search' }, modelInstanceId: '819966', modelName: 'quoteModel', previousTask: { name: 'uiTasks', value: {} } } } }
-    }];
+    const stateObj = [
+      {
+        type: types.CG_COMPLETE,
+        workflowData: {
+          quoteModel: {
+            data: {
+              activeTask: { name: 'search' },
+              modelInstanceId: '819966',
+              modelName: 'quoteModel',
+              previousTask: { name: 'uiTasks', value: {} }
+            }
+          }
+        }
+      }
+    ];
 
-    return cgActions.batchCompleteTask(inputProps.modelName, inputProps.workflowId, stepsWithData, false)(store.dispatch)
+    return cgActions
+      .batchCompleteTask(
+        inputProps.modelName,
+        inputProps.workflowId,
+        stepsWithData,
+        false
+      )(store.dispatch)
       .then(() => {
         expect(store.getActions()).toEqual(stateObj);
       });
@@ -296,12 +354,26 @@ describe('CG Actions', () => {
       workflowId: '819966'
     };
 
-    const stateObj = [{
-      type: types.CG_COMPLETE,
-      workflowData: { quoteModel: { data: { activeTask: { name: 'search' }, modelInstanceId: '819966', modelName: 'quoteModel', previousTask: { name: 'uiTasks', value: {} } } } }
-    }];
+    const stateObj = [
+      {
+        type: types.CG_COMPLETE,
+        workflowData: {
+          quoteModel: {
+            data: {
+              activeTask: { name: 'search' },
+              modelInstanceId: '819966',
+              modelName: 'quoteModel',
+              previousTask: { name: 'uiTasks', value: {} }
+            }
+          }
+        }
+      }
+    ];
 
-    return cgActions.moveToTask(inputProps.modelName, inputProps.workflowId, 'search', false)(store.dispatch)
+    return cgActions
+      .moveToTask(inputProps.modelName, inputProps.workflowId, 'search', false)(
+        store.dispatch
+      )
       .then(() => {
         expect(store.getActions()).toEqual(stateObj);
       });
@@ -312,23 +384,17 @@ describe('CG Actions', () => {
     const data = {
       workflowId: '819966',
       name: 'search',
-      data: {
-
-      }
+      data: {}
     };
     const data2 = {
       workflowId: '819966',
       stepName: 'search',
-      data: {
-
-      }
+      data: {}
     };
     const completeData = {
       workflowId: '819966',
       stepName: 'search',
-      data: {
-
-      }
+      data: {}
     };
 
     const axiosOptions = {
@@ -351,7 +417,8 @@ describe('CG Actions', () => {
       data: data2
     };
     mockAdapter
-      .onPost(axiosOptions.url, axiosOptions.data).reply(200, {
+      .onPost(axiosOptions.url, axiosOptions.data)
+      .reply(200, {
         data: {
           modelInstanceId: '819966',
           modelName: 'quoteModel',
@@ -364,7 +431,8 @@ describe('CG Actions', () => {
           }
         }
       })
-      .onPost(axiosOptions2.url, axiosOptions2.data).reply(200, {
+      .onPost(axiosOptions2.url, axiosOptions2.data)
+      .reply(200, {
         data: {
           modelInstanceId: '819966',
           modelName: 'quoteModel',
@@ -386,12 +454,30 @@ describe('CG Actions', () => {
       workflowId: '819966'
     };
 
-    const stateObj = [{
-      type: types.CG_COMPLETE,
-      workflowData: { quoteModel: { data: { activeTask: { name: 'search' }, modelInstanceId: '819966', modelName: 'quoteModel', previousTask: { name: 'uiTasks', value: {} } } } }
-    }];
+    const stateObj = [
+      {
+        type: types.CG_COMPLETE,
+        workflowData: {
+          quoteModel: {
+            data: {
+              activeTask: { name: 'search' },
+              modelInstanceId: '819966',
+              modelName: 'quoteModel',
+              previousTask: { name: 'uiTasks', value: {} }
+            }
+          }
+        }
+      }
+    ];
 
-    return cgActions.moveToTaskAndExecuteComplete(inputProps.modelName, inputProps.workflowId, 'search', completeData, false)(store.dispatch)
+    return cgActions
+      .moveToTaskAndExecuteComplete(
+        inputProps.modelName,
+        inputProps.workflowId,
+        'search',
+        completeData,
+        false
+      )(store.dispatch)
       .then(() => {
         expect(store.getActions()).toEqual(stateObj);
       });
@@ -428,10 +514,12 @@ describe('CG Actions', () => {
       workflowId: '819966'
     };
 
-    return cgActions.moveToTask(inputProps.modelName, inputProps.workflowId, 'search', false)(store.dispatch)
+    return cgActions
+      .moveToTask(inputProps.modelName, inputProps.workflowId, 'search', false)(
+        store.dispatch
+      )
       .then(() => {
         expect(store.getActions()[0].payload[0].type).toEqual(types.APP_ERROR);
       });
   });
-
 });

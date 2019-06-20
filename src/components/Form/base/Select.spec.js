@@ -2,7 +2,6 @@ import React from 'react';
 import { shallow } from 'enzyme';
 import SelectInput from './Select';
 
-
 describe('Test the Select Component', () => {
   it('Should Render', () => {
     const input = {

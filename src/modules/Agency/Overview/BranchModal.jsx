@@ -7,25 +7,26 @@ import { updateAgency } from '../../../state/actions/agency.actions';
 
 import { STATUS } from '../../../constants/agency';
 
-
 const mailAnswers = [
   { answer: false, label: 'No' },
   { answer: true, label: 'Yes' }
 ];
 
-
 export class BranchModal extends Component {
   handleBranchSubmit = async (data, dispatch, props) => {
     const { agency, branchCode } = this.props;
 
-    const selectedBranch = agency.branches.filter(b => String(b.branchCode) === String(branchCode))[0];
+    const selectedBranch = agency.branches.filter(
+      b => String(b.branchCode) === String(branchCode)
+    )[0];
     selectedBranch.displayName = data.displayName;
     selectedBranch.status = data.status;
     selectedBranch.primaryPhoneNumber = data.primaryPhoneNumber;
     selectedBranch.secondaryPhoneNumber = data.secondaryPhoneNumber;
     selectedBranch.faxNumber = data.faxNumber;
     selectedBranch.websiteUrl = data.websiteUrl;
-    selectedBranch.mailCommissionChecksToBranch = data.mailCommissionChecksToBranch;
+    selectedBranch.mailCommissionChecksToBranch =
+      data.mailCommissionChecksToBranch;
     selectedBranch.mailPolicyDocsToBranch = data.mailPolicyDocsToBranch;
     agency.branches = agency.branches.filter(b => String(b.branchCode) !== '0');
     await this.props.updateAgency(agency);
@@ -33,11 +34,7 @@ export class BranchModal extends Component {
   };
 
   render() {
-    const {
-      closeModal,
-      handleSubmit,
-      submitting
-    } = this.props;
+    const { closeModal, handleSubmit, submitting } = this.props;
 
     return (
       <div className="modal agency-crud branch-agency-crud">
@@ -56,7 +53,8 @@ export class BranchModal extends Component {
                   styleName="displayName branchName branch"
                   label="Branch Name"
                   validate={validation.isRequired}
-                  component={Input} />
+                  component={Input}
+                />
                 <Field
                   id="status"
                   name="status"
@@ -65,7 +63,8 @@ export class BranchModal extends Component {
                   label="Status"
                   component={Select}
                   validate={validation.isRequired}
-                  answers={STATUS} />
+                  answers={STATUS}
+                />
                 <Field
                   name="mailCommissionChecksToBranch"
                   dataTest="mailCommissionChecksToBranch"
@@ -73,7 +72,8 @@ export class BranchModal extends Component {
                   label="Mail Commission Checks to this Branch"
                   component={Radio}
                   segmented
-                  answers={mailAnswers} />
+                  answers={mailAnswers}
+                />
                 <Field
                   name="mailPolicyDocsToBranch"
                   dataTest="mailPolicyDocsToBranch"
@@ -81,14 +81,16 @@ export class BranchModal extends Component {
                   label="Mail Policy Docs to this Branch"
                   component={Radio}
                   segmented
-                  answers={mailAnswers} />
+                  answers={mailAnswers}
+                />
                 <Field
                   label="Web Address"
                   styleName="webAddress branch"
                   name="websiteUrl"
                   dataTest="websiteUrl"
                   component={Input}
-                  validate={[validation.isRequired, validation.isWebAddress]} />
+                  validate={[validation.isRequired, validation.isWebAddress]}
+                />
                 <hr />
                 <Field
                   name="primaryPhoneNumber"
@@ -96,20 +98,23 @@ export class BranchModal extends Component {
                   component={Phone}
                   dataTest="primaryPhoneNumber"
                   styleName="primaryPhoneNumber"
-                  validate={validation.isRequired} />
+                  validate={validation.isRequired}
+                />
                 <Field
                   name="secondaryPhoneNumber"
                   label="Secondary Phone"
                   component={Phone}
                   dataTest="secondaryPhoneNumber"
-                  styleName="secondaryPhoneNumber" />
+                  styleName="secondaryPhoneNumber"
+                />
                 <Field
                   name="faxNumber"
                   label="Fax Number"
                   component={Phone}
                   dataTest="faxNumber"
                   validate={[validation.isPhone]}
-                  styleName="faxNumber" />
+                  styleName="faxNumber"
+                />
               </section>
             </div>
             <div className="card-footer">
@@ -118,15 +123,17 @@ export class BranchModal extends Component {
                   tabIndex="0"
                   className="btn btn-secondary"
                   type="button"
-                  onClick={closeModal}>
-                Cancel
+                  onClick={closeModal}
+                >
+                  Cancel
                 </button>
                 <button
                   tabIndex="0"
                   className="btn btn-primary"
                   type="submit"
-                  disabled={submitting}>
-                Save
+                  disabled={submitting}
+                >
+                  Save
                 </button>
               </div>
             </div>
@@ -139,8 +146,13 @@ export class BranchModal extends Component {
 
 const mapStateToProps = state => state;
 
-export default connect(mapStateToProps, { updateAgency })(reduxForm({
-  form: 'BranchModal',
-  enableReinitialize: true,
-  destroyOnUnmount: false
-})(BranchModal));
+export default connect(
+  mapStateToProps,
+  { updateAgency }
+)(
+  reduxForm({
+    form: 'BranchModal',
+    enableReinitialize: true,
+    destroyOnUnmount: false
+  })(BranchModal)
+);

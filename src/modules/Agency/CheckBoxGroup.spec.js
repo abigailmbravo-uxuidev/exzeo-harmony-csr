@@ -5,7 +5,11 @@ import CheckBoxGroup from './CheckBoxGroup';
 
 describe('Test the Input Component', () => {
   it('Should Render', () => {
-    const props = { input: { name: 'cbg', value: ['234'], onChange() {} }, meta: {}, options: [{ value: '234', label: 'dfdsfsd' }] };
+    const props = {
+      input: { name: 'cbg', value: ['234'], onChange() {} },
+      meta: {},
+      options: [{ value: '234', label: 'dfdsfsd' }]
+    };
 
     const wrapper = shallow(<CheckBoxGroup {...props} dataTest="test" />);
     expect(wrapper.exists()).toBeTruthy();

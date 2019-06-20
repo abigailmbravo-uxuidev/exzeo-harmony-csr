@@ -15,10 +15,12 @@ describe('New Note Actions', () => {
       sourceId: '67891'
     };
 
-    const stateObj = [{
-      type: types.TOGGLE_NOTE,
-      noteMeta
-    }];
+    const stateObj = [
+      {
+        type: types.TOGGLE_NOTE,
+        noteMeta
+      }
+    ];
 
     store.dispatch(newNoteActions.toggleNote(noteMeta));
 
@@ -31,10 +33,12 @@ describe('New Note Actions', () => {
 
     const noteMeta = {};
 
-    const stateObj = [{
-      type: types.TOGGLE_NOTE,
-      noteMeta
-    }];
+    const stateObj = [
+      {
+        type: types.TOGGLE_NOTE,
+        noteMeta
+      }
+    ];
 
     store.dispatch(newNoteActions.toggleNote(noteMeta));
 

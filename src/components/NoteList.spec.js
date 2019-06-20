@@ -6,7 +6,7 @@ describe('Testing NotesFiles component', () => {
   const props = {
     notes: [
       {
-        _id:'1234',
+        _id: '1234',
         createdDate: new Date(),
         createdBy: { userId: 'auth0|TESTUSER|0', userName: 'Tester' },
         noteContactType: 'Other',
@@ -14,14 +14,16 @@ describe('Testing NotesFiles component', () => {
         noteAttachments: []
       },
       {
-        _id:'2345',
+        _id: '2345',
         createdDate: new Date(),
         createdBy: { userId: 'auth0|SYSTEM|0', userName: 'System' },
         noteContactType: 'System',
-        noteAttachments: [{
-          fileName: 'test.pdf',
-          fileUrl: 'http://test.com/test.pdf'
-        }],
+        noteAttachments: [
+          {
+            fileName: 'test.pdf',
+            fileUrl: 'http://test.com/test.pdf'
+          }
+        ]
       }
     ],
     attachmentStatus: false,
@@ -43,17 +45,17 @@ describe('Testing NotesFiles component', () => {
   describe('Should filter notes', () => {
     it('should filter notes without attachments', () => {
       const result = filterNotesByType(props.notes, false);
-      expect(result).toEqual([props.notes[0]])
+      expect(result).toEqual([props.notes[0]]);
     });
 
     it('should filter notes with attachments', () => {
       const result = filterNotesByType(props.notes, true);
-      expect(result).toEqual([props.notes[1]])
+      expect(result).toEqual([props.notes[1]]);
     });
 
     it('should return empty array', () => {
       const result = filterNotesByType(null);
-      expect(result).toEqual([])
+      expect(result).toEqual([]);
     });
   });
 });

@@ -11,6 +11,6 @@ describe('serviceReducer', () => {
       service: inputProps
     };
 
-    expect(serviceReducer(state, action)).toEqual({...state, ...inputProps});
+    expect(serviceReducer(state, action)).toEqual({ ...state, ...inputProps });
   });
 });

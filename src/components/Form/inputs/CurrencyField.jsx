@@ -26,18 +26,21 @@ export const CurrencyInput = ({
     name,
     { disabled },
     { valid: touched && !error },
-    { error: touched && error },
+    { error: touched && error }
   );
 
-  const Hint = hint && (<FieldHint name={name} hint={hint} />);
+  const Hint = hint && <FieldHint name={name} hint={hint} />;
 
   const Error = touched && (error || warning) && (
     <span>{error || warning}</span>
   );
 
-  const Label = label && (<label htmlFor={name}>
-    {label}{Hint}
-  </label>);
+  const Label = label && (
+    <label htmlFor={name}>
+      {label}
+      {Hint}
+    </label>
+  );
 
   return (
     <div className={formGroupStyles}>
@@ -62,7 +65,6 @@ export const CurrencyInput = ({
 };
 
 CurrencyInput.propTypes = {
-
   /**
    * Hint for the user
    */
@@ -115,7 +117,6 @@ CurrencyInput.propTypes = {
    * Stylename for form-group
    */
   styleName: PropTypes.string
-
 };
 
 CurrencyInput.defaultProps = {

@@ -3,7 +3,6 @@ import { mount } from 'enzyme';
 
 import { DiaryPolling } from './DiaryPolling';
 
-
 describe('Test the DiaryPolling Component', () => {
   it('Should Render', () => {
     const props = {

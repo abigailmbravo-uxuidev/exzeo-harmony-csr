@@ -11,13 +11,24 @@ describe('Policy State Reducer', () => {
       policyState: inputProps
     };
 
-    expect(policyStateReducer(state, action)).toEqual({ ...initialState.policyState, ...inputProps });
+    expect(policyStateReducer(state, action)).toEqual({
+      ...initialState.policyState,
+      ...inputProps
+    });
   });
 
   it('should call policyStateReducer SET_POLICY', () => {
     const state = initialState.policyState;
     const inputProps = {
-      billingOptions: {}, cancelOptions: [], effectiveDateReasons: [], endorsementHistory: [], paymentHistory: [], paymentOptions: [], policy: {}, policyID: undefined, summaryLedger: undefined
+      billingOptions: {},
+      cancelOptions: [],
+      effectiveDateReasons: [],
+      endorsementHistory: [],
+      paymentHistory: [],
+      paymentOptions: [],
+      policy: {},
+      policyID: undefined,
+      summaryLedger: undefined
     };
     const action = {
       type: types.SET_POLICY,
@@ -26,13 +37,24 @@ describe('Policy State Reducer', () => {
       policy: {}
     };
 
-    expect(policyStateReducer(state, action)).toEqual({ ...initialState.policyState, ...inputProps });
+    expect(policyStateReducer(state, action)).toEqual({
+      ...initialState.policyState,
+      ...inputProps
+    });
   });
 
   it('should call policyStateReducer SET_SUMMARY_LEDGER', () => {
     const state = initialState.policyState;
     const inputProps = {
-      billingOptions: {}, cancelOptions: [], effectiveDateReasons: [], endorsementHistory: [], paymentHistory: [], paymentOptions: [], policy: {}, policyID: '', summaryLedger: {}
+      billingOptions: {},
+      cancelOptions: [],
+      effectiveDateReasons: [],
+      endorsementHistory: [],
+      paymentHistory: [],
+      paymentOptions: [],
+      policy: {},
+      policyID: '',
+      summaryLedger: {}
     };
     const action = {
       type: types.SET_SUMMARY_LEDGER,
@@ -40,20 +62,34 @@ describe('Policy State Reducer', () => {
       summaryLedger: {}
     };
 
-    expect(policyStateReducer(state, action)).toEqual({ ...initialState.policyState, ...inputProps });
+    expect(policyStateReducer(state, action)).toEqual({
+      ...initialState.policyState,
+      ...inputProps
+    });
   });
 
   it('should call policyStateReducer SET_PAYMENT_HISTORY', () => {
     const state = initialState.policyState;
     const inputProps = {
-      billingOptions: {}, cancelOptions: [], effectiveDateReasons: [], endorsementHistory: [], paymentHistory: undefined, paymentOptions: [], policy: {}, policyID: '', summaryLedger: {}
+      billingOptions: {},
+      cancelOptions: [],
+      effectiveDateReasons: [],
+      endorsementHistory: [],
+      paymentHistory: undefined,
+      paymentOptions: [],
+      policy: {},
+      policyID: '',
+      summaryLedger: {}
     };
     const action = {
       type: types.SET_PAYMENT_HISTORY,
       policyState: inputProps
     };
 
-    expect(policyStateReducer(state, action)).toEqual({ ...initialState.policyState, ...inputProps });
+    expect(policyStateReducer(state, action)).toEqual({
+      ...initialState.policyState,
+      ...inputProps
+    });
   });
   it('should call policyStateReducer SET_EFFECTIVE_DATE_CHANGE_REASONS', () => {
     const state = initialState.policyState;
@@ -74,7 +110,10 @@ describe('Policy State Reducer', () => {
       effectiveDateReasons: []
     };
 
-    expect(policyStateReducer(state, action)).toEqual({ ...initialState.policyState, ...inputProps });
+    expect(policyStateReducer(state, action)).toEqual({
+      ...initialState.policyState,
+      ...inputProps
+    });
   });
 
   it('should call policyStateReducer SET_PAYMENT_HISTORY', () => {
@@ -96,7 +135,10 @@ describe('Policy State Reducer', () => {
       paymentHistory: []
     };
 
-    expect(policyStateReducer(state, action)).toEqual({ ...initialState.policyState, ...inputProps });
+    expect(policyStateReducer(state, action)).toEqual({
+      ...initialState.policyState,
+      ...inputProps
+    });
   });
   it('should call policyStateReducer SET_ENDORSEMENT_HISTORY', () => {
     const state = initialState.policyState;
@@ -117,7 +159,10 @@ describe('Policy State Reducer', () => {
       endorsementHistory: []
     };
 
-    expect(policyStateReducer(state, action)).toEqual({ ...initialState.policyState, ...inputProps });
+    expect(policyStateReducer(state, action)).toEqual({
+      ...initialState.policyState,
+      ...inputProps
+    });
   });
 
   it('should call policyStateReducer SET_BILLING_OPTIONS', () => {
@@ -139,7 +184,10 @@ describe('Policy State Reducer', () => {
       billingOptions: {}
     };
 
-    expect(policyStateReducer(state, action)).toEqual({ ...initialState.policyState, ...inputProps });
+    expect(policyStateReducer(state, action)).toEqual({
+      ...initialState.policyState,
+      ...inputProps
+    });
   });
 
   it('should call policyStateReducer SET_CANCEL_OPTIONS', () => {
@@ -161,7 +209,10 @@ describe('Policy State Reducer', () => {
       cancelOptions: []
     };
 
-    expect(policyStateReducer(state, action)).toEqual({ ...initialState.policyState, ...inputProps });
+    expect(policyStateReducer(state, action)).toEqual({
+      ...initialState.policyState,
+      ...inputProps
+    });
   });
 
   it('should call policyStateReducer SET_PAYMENT_OPTIONS', () => {
@@ -183,6 +234,9 @@ describe('Policy State Reducer', () => {
       paymentOptions: []
     };
 
-    expect(policyStateReducer(state, action)).toEqual({ ...initialState.policyState, ...inputProps });
+    expect(policyStateReducer(state, action)).toEqual({
+      ...initialState.policyState,
+      ...inputProps
+    });
   });
 });

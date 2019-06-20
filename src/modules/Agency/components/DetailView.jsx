@@ -3,22 +3,16 @@ import { date } from '@exzeo/core-ui';
 
 import { formatUrl } from '../../../utilities/format';
 
-export const DetailView = ({
-  agency, agencyBranchData
-}) => {
+export const DetailView = ({ agency, agencyBranchData }) => {
   return (
     <React.Fragment>
       <div className="agencyCode" data-test="agency-code">
         <label>Agency ID</label>
-        <div>
-          {agency.agencyCode}
-        </div>
+        <div>{agency.agencyCode}</div>
       </div>
       <div className="agencyName" data-test="agency-name">
         <label>Agency Name</label>
-        <div>
-          {agencyBranchData.displayName}
-        </div>
+        <div>{agencyBranchData.displayName}</div>
       </div>
       <div className="entityName" data-test="entity-code">
         <label>Entity Name</label>
@@ -54,26 +48,31 @@ export const DetailView = ({
       </div>
       <div className="eoExpirationDate" data-test="eo-expiration-date">
         <label>EO Expiration Date</label>
-        <div>{date.formattedDate(agency.eoExpirationDate,'MM/DD/YYYY')}</div>
+        <div>{date.formattedDate(agency.eoExpirationDate, 'MM/DD/YYYY')}</div>
       </div>
-      {String(agencyBranchData.branchCode) !== '0' &&
-      <div className="branchName" data-test="branch-name">
-        <label>Branch Name</label>
-        <div>{agencyBranchData.displayName}</div>
-      </div>
-      }
-      {String(agencyBranchData.branchCode) !== '0' &&
-      <div className="mailCommissionChecksToBranch" data-test="mail-commission">
-        <label>Mail Commission Checks to this Branch</label>
-        <div>{agencyBranchData.mailCommissionChecksToBranch ? 'Yes' : 'No'}</div>
-      </div>
-      }
-      {String(agencyBranchData.branchCode) !== '0' &&
-      <div className="mailPolicyDocsToBranch" data-test="mail-policy-docs">
-        <label>Mail Policy Docs to this Branch</label>
-        <div>{agencyBranchData.mailPolicyDocsToBranch ? 'Yes' : 'No'}</div>
-      </div>
-      }
+      {String(agencyBranchData.branchCode) !== '0' && (
+        <div className="branchName" data-test="branch-name">
+          <label>Branch Name</label>
+          <div>{agencyBranchData.displayName}</div>
+        </div>
+      )}
+      {String(agencyBranchData.branchCode) !== '0' && (
+        <div
+          className="mailCommissionChecksToBranch"
+          data-test="mail-commission"
+        >
+          <label>Mail Commission Checks to this Branch</label>
+          <div>
+            {agencyBranchData.mailCommissionChecksToBranch ? 'Yes' : 'No'}
+          </div>
+        </div>
+      )}
+      {String(agencyBranchData.branchCode) !== '0' && (
+        <div className="mailPolicyDocsToBranch" data-test="mail-policy-docs">
+          <label>Mail Policy Docs to this Branch</label>
+          <div>{agencyBranchData.mailPolicyDocsToBranch ? 'Yes' : 'No'}</div>
+        </div>
+      )}
     </React.Fragment>
   );
 };

@@ -3,7 +3,7 @@ import { quote } from '../../test-utils';
 
 describe('Test Quote Selectors', () => {
   describe('getQuoteSelector', () => {
-    it ('Should return empty with no quoteData', () => {
+    it('Should return empty with no quoteData', () => {
       const state = {
         quoteState: {}
       };
@@ -12,7 +12,7 @@ describe('Test Quote Selectors', () => {
     });
 
     it('Should return empty with no quoteNumber', () => {
-      const state = { quoteState: { quote: { quoteNumber: undefined }}};
+      const state = { quoteState: { quote: { quoteNumber: undefined } } };
       const result = getQuoteSelector(state);
       expect(result).toEqual({});
     });
@@ -24,7 +24,9 @@ describe('Test Quote Selectors', () => {
             ...quote,
             quoteState: 'Quote Declined',
             effectiveDate: '2001-01-10T14:30Z',
-            underwritingExceptions: [{ overridden: false, action: 'Missing Info' }]
+            underwritingExceptions: [
+              { overridden: false, action: 'Missing Info' }
+            ]
           }
         }
       };
@@ -47,7 +49,9 @@ describe('Test Quote Selectors', () => {
         quoteState: {
           quote: {
             ...quote,
-            underwritingExceptions: [{ overridden: false, actions: 'Not Missing Info' }]
+            underwritingExceptions: [
+              { overridden: false, actions: 'Not Missing Info' }
+            ]
           }
         }
       };
@@ -60,7 +64,9 @@ describe('Test Quote Selectors', () => {
         quoteState: {
           quote: {
             ...quote,
-            underwritingExceptions: [{ overridden: true, actions: 'Missing Info' }]
+            underwritingExceptions: [
+              { overridden: true, actions: 'Missing Info' }
+            ]
           }
         }
       };

@@ -1,27 +1,28 @@
 #root {
   .app-wrapper.csr.agency {
-    main[role="document"] {
+    main[role='document'] {
       .content-wrapper {
         .route-content {
           .scroll {
             #TransferFilter {
               &.search-inputs {
-              display: flex;
-              overflow: visible;
-              flex-direction: row;
-          
+                display: flex;
+                overflow: visible;
+                flex-direction: row;
+
                 .form-group {
                   flex-grow: 1;
                   flex-shrink: 1;
                   margin-bottom: 0;
                   padding: $padding;
-                  &.state, &.product {
+                  &.state,
+                  &.product {
                     flex-grow: 0;
                     flex-shrink: 0;
                     width: 10rem;
                   }
                 }
-                
+
                 button {
                   align-self: flex-start;
                   margin-top: 2.3785rem;
@@ -38,17 +39,17 @@
                   display: flex;
                   padding: ($padding/2) $padding;
                   cursor: pointer;
-                  
+
                   &:nth-of-type(odd) {
                     background: $warm-gray-01;
                   }
                   span {
                     flex-grow: 0;
                     flex-shrink: 0;
-                    
+
                     &.checkbox {
                       width: 1.5rem;
-                      input[type="checkbox"] {
+                      input[type='checkbox'] {
                         margin: 0;
                       }
                     }

@@ -67,7 +67,6 @@ describe('Test search helpers', () => {
         expect(result).toEqual('2018-02-23');
       });
 
-
       it('should sbtract 50 days to the given dateString date', () => {
         clock = sinon.useFakeTimers(new Date('2018-01-01'));
         const dateString = '2018-01-04';

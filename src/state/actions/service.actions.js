@@ -4,26 +4,28 @@ import * as serviceRunner from '@exzeo/core-ui/src/@Harmony/Domain/Api/serviceRu
 import * as types from './actionTypes';
 import * as errorActions from './error.actions';
 
-
 export const serviceRequest = data => ({
   type: types.SERVICE_REQUEST,
   data
 });
 
 export function getNotes(noteId, sourceId) {
-  const reduceId = id => id.replace(/(\d{2}-\d{7})-\d{2}/g, (_, group) => group);
+  const reduceId = id =>
+    id.replace(/(\d{2}-\d{7})-\d{2}/g, (_, group) => group);
   const query = sourceId ? reduceId(`${noteId},${sourceId}`) : reduceId(noteId);
 
-  return async (dispatch) => {
+  return async dispatch => {
     try {
       const [notes, docsResult] = await Promise.all([
         fetchNotes(query),
         fetchDocuments(query)
       ]);
 
-      const fileList = notes.reduce((list, note) => [...list, ...note.attachments], []).map(n => n.fileUrl);
+      const fileList = notes
+        .reduce((list, note) => [...list, ...note.attachments], [])
+        .map(n => n.fileUrl);
 
-      docsResult.forEach((doc) => {
+      docsResult.forEach(doc => {
         if (!fileList.includes(doc.fileUrl)) {
           const newNote = {
             _id: doc.envelopeId ? doc.envelopeId : doc.fileUrl,
@@ -57,7 +59,10 @@ async function fetchNotes(noteId) {
   };
 
   try {
-    const response = await serviceRunner.callService(notesRequest, 'fetchNotes');
+    const response = await serviceRunner.callService(
+      notesRequest,
+      'fetchNotes'
+    );
     return response.data && response.data.result ? response.data.result : [];
   } catch (error) {
     throw error;
@@ -72,14 +77,17 @@ async function fetchDocuments(sysNoteId) {
   };
 
   try {
-    const response = await serviceRunner.callService(docsRequest, 'fetchDocuments');
+    const response = await serviceRunner.callService(
+      docsRequest,
+      'fetchDocuments'
+    );
     return response.data && response.data.result ? response.data.result : [];
   } catch (error) {
     throw error;
   }
 }
 
-export const getAgents = (companyCode, state) => async (dispatch) => {
+export const getAgents = (companyCode, state) => async dispatch => {
   const axiosConfig = {
     service: 'agency',
     method: 'GET',
@@ -90,17 +98,17 @@ export const getAgents = (companyCode, state) => async (dispatch) => {
     const response = await serviceRunner.callService(axiosConfig, 'getAgents');
     const data = { agents: response.data.result };
     return dispatch(serviceRequest(data));
-  } catch(error) {
+  } catch (error) {
     return dispatch(errorActions.setAppError(error));
   }
 };
 
-export const clearAgent = () => (dispatch) => {
+export const clearAgent = () => dispatch => {
   const data = { agents: [] };
   return dispatch(serviceRequest(data));
 };
 
-export const getAgency = (companyCode, state, agencyCode) => async (dispatch) => {
+export const getAgency = (companyCode, state, agencyCode) => async dispatch => {
   const axiosConfig = {
     service: 'agency',
     method: 'GET',
@@ -111,28 +119,35 @@ export const getAgency = (companyCode, state, agencyCode) => async (dispatch) =>
     const response = await serviceRunner.callService(axiosConfig, 'getAgency');
     const data = { agency: response.data.result };
     return dispatch(serviceRequest(data));
-  } catch(error) {
+  } catch (error) {
     return dispatch(errorActions.setAppError(error));
   }
 };
 
-export const getAgentsByAgency = (companyCode, state, agencyCode) => async (dispatch) => {
+export const getAgentsByAgency = (
+  companyCode,
+  state,
+  agencyCode
+) => async dispatch => {
   const axiosConfig = {
     service: 'agency',
     method: 'GET',
     path: `v1/agents/${companyCode}/${state}?agencyCode=${agencyCode}`
-  }
+  };
 
   try {
-    const response = await serviceRunner.callService(axiosConfig, 'getAgentsByAgency');
+    const response = await serviceRunner.callService(
+      axiosConfig,
+      'getAgentsByAgency'
+    );
     const data = { agents: response.data.result };
     return dispatch(serviceRequest(data));
-  } catch(error) {
+  } catch (error) {
     return dispatch(errorActions.setAppError(error));
   }
 };
 
-export const addTransaction = submitData => async (dispatch) => {
+export const addTransaction = submitData => async dispatch => {
   const body = {
     service: 'billing',
     method: 'POST',
@@ -156,12 +171,17 @@ export const addTransaction = submitData => async (dispatch) => {
     const response = await serviceRunner.callService(body, 'addTransaction');
     const data = { transactions: response.data.result };
     return dispatch(serviceRequest(data));
-  } catch(error) {
+  } catch (error) {
     return dispatch(errorActions.setAppError(error));
   }
 };
 
-export const getUnderwritingQuestions = (companyCode, state, product, property) => async (dispatch) => {
+export const getUnderwritingQuestions = (
+  companyCode,
+  state,
+  product,
+  property
+) => async dispatch => {
   const axiosConfig = {
     service: 'questions',
     method: 'POST',
@@ -179,15 +199,18 @@ export const getUnderwritingQuestions = (companyCode, state, product, property) 
   };
 
   try {
-    const response = await serviceRunner.callService(axiosConfig, 'getUnderwritingQuestions');
+    const response = await serviceRunner.callService(
+      axiosConfig,
+      'getUnderwritingQuestions'
+    );
     const data = { underwritingQuestions: response.data.result };
     return dispatch(serviceRequest(data));
-  } catch(error) {
+  } catch (error) {
     return dispatch(errorActions.setAppError(error));
   }
 };
 
-export const getBillingOptions = paymentOptions => async (dispatch) => {
+export const getBillingOptions = paymentOptions => async dispatch => {
   const axiosConfig = {
     service: 'billing',
     method: 'POST',
@@ -196,19 +219,21 @@ export const getBillingOptions = paymentOptions => async (dispatch) => {
   };
 
   try {
-    const response = await serviceRunner.callService(axiosConfig, 'getBillingOptions');
+    const response = await serviceRunner.callService(
+      axiosConfig,
+      'getBillingOptions'
+    );
     const data = { billingOptions: response.data.result };
     return dispatch(serviceRequest(data));
-  } catch(error) {
+  } catch (error) {
     return dispatch(errorActions.setAppError(error));
   }
 };
 
-export const clearRate = () => dispatch => dispatch(batchActions([
-  serviceRequest({ getRate: {} })
-]));
+export const clearRate = () => dispatch =>
+  dispatch(batchActions([serviceRequest({ getRate: {} })]));
 
-export const getQuote = quoteId => async (dispatch) => {
+export const getQuote = quoteId => async dispatch => {
   const axiosConfig = {
     service: 'quote-data',
     method: 'GET',
@@ -220,12 +245,17 @@ export const getQuote = quoteId => async (dispatch) => {
     const data = { quote: response.data ? response.data.result : {} };
     dispatch(serviceRequest(data));
     return data.quote;
-  } catch(error) {
+  } catch (error) {
     return dispatch(errorActions.setAppError(error));
   }
 };
 
-export const getZipcodeSettings = (companyCode, state, product, zip) => async (dispatch) => {
+export const getZipcodeSettings = (
+  companyCode,
+  state,
+  product,
+  zip
+) => async dispatch => {
   const axiosConfig = {
     service: 'underwriting',
     method: 'GET',
@@ -233,15 +263,28 @@ export const getZipcodeSettings = (companyCode, state, product, zip) => async (d
   };
 
   try {
-    const response = await serviceRunner.callService(axiosConfig, 'getZipcodeSettings');
-    const data = { getZipcodeSettings: response.data && response.data.result ? response.data.result[0] : { timezone: '' } };
+    const response = await serviceRunner.callService(
+      axiosConfig,
+      'getZipcodeSettings'
+    );
+    const data = {
+      getZipcodeSettings:
+        response.data && response.data.result
+          ? response.data.result[0]
+          : { timezone: '' }
+    };
     return dispatch(serviceRequest(data));
-  } catch(error) {
+  } catch (error) {
     return dispatch(errorActions.setAppError(error));
   }
 };
 
-export const saveBillingInfo = (id, billToType, billToId, billPlan) => async (dispatch) => {
+export const saveBillingInfo = (
+  id,
+  billToType,
+  billToId,
+  billPlan
+) => async dispatch => {
   const axiosConfig = {
     service: 'quote-data',
     method: 'put',
@@ -255,16 +298,19 @@ export const saveBillingInfo = (id, billToType, billToId, billPlan) => async (di
   };
 
   try {
-    const response = await serviceRunner.callService(axiosConfig, 'saveBillingInfo');
+    const response = await serviceRunner.callService(
+      axiosConfig,
+      'saveBillingInfo'
+    );
     const data = { transactions: response.data.result };
     dispatch(serviceRequest(data));
     return data.quote;
-  } catch(error) {
+  } catch (error) {
     return dispatch(errorActions.setAppError(error));
   }
 };
 
-export const getAgencies = (companyCode, state) => async (dispatch) => {
+export const getAgencies = (companyCode, state) => async dispatch => {
   const axiosConfig = {
     service: 'agency',
     method: 'GET',
@@ -272,11 +318,15 @@ export const getAgencies = (companyCode, state) => async (dispatch) => {
   };
 
   try {
-    const response = await serviceRunner.callService(axiosConfig, 'getAgencies');
-    const result = response.data && response.data.result ? response.data.result : [];
+    const response = await serviceRunner.callService(
+      axiosConfig,
+      'getAgencies'
+    );
+    const result =
+      response.data && response.data.result ? response.data.result : [];
     const data = { agencies: result };
     return dispatch(serviceRequest(data));
-  } catch(error) {
+  } catch (error) {
     return dispatch(errorActions.setAppError(error));
   }
 };

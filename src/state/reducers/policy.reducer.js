@@ -1,7 +1,10 @@
 import * as types from '../actions/actionTypes';
 import initialState from './initialState';
 
-export default function policyStateReducer(state = initialState.policyState, action) {
+export default function policyStateReducer(
+  state = initialState.policyState,
+  action
+) {
   switch (action.type) {
     case types.GET_POLICY:
       return getPolicy(state, action);
@@ -24,7 +27,7 @@ export default function policyStateReducer(state = initialState.policyState, act
     case types.RESET_POLICY:
       return resetPolicyState(state, action);
     case types.SET_POLICIES_FOR_AGENCY:
-      return setPoliciesForAgency(state, action)
+      return setPoliciesForAgency(state, action);
     default:
       return state;
   }

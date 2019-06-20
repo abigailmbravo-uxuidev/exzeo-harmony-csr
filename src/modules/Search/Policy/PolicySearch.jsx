@@ -45,7 +45,8 @@ const PolicySearch = ({
   changeSearchType,
   searchTypeOptions
 }) => {
-    return <React.Fragment>
+  return (
+    <React.Fragment>
       <div className="form-group search-context">
         <Field
           name="searchType"
@@ -57,7 +58,8 @@ const PolicySearch = ({
           onChange={changeSearchType}
           answers={searchTypeOptions}
           showPlaceholder={false}
-          errorHint />
+          errorHint
+        />
       </div>
       <div className="search-inputs  p">
         <Field
@@ -68,7 +70,8 @@ const PolicySearch = ({
           component={Input}
           styleName="first-name-search"
           validate={isValidNameFormat}
-          errorHint />
+          errorHint
+        />
         <Field
           name="lastName"
           dataTest="lastName"
@@ -77,7 +80,8 @@ const PolicySearch = ({
           component={Input}
           styleName="last-name-search"
           validate={isValidNameFormat}
-          errorHint />
+          errorHint
+        />
         <Field
           name="address"
           dataTest="address"
@@ -86,7 +90,8 @@ const PolicySearch = ({
           component={Input}
           styleName="property-search"
           validate={isValidChar}
-          errorHint />
+          errorHint
+        />
         <Field
           name="policyNumber"
           dataTest="policyNumber"
@@ -95,25 +100,34 @@ const PolicySearch = ({
           component={Input}
           styleName="policy-no-search"
           validate={isNumberDashOnly}
-          errorHint />
+          errorHint
+        />
         <Button
           className={Button.constants.classNames.success}
           customClass="multi-input"
           type="submit"
           disabled={submitting}
-          data-test="submit"><i className="fa fa-search" />Search
-      </Button>
+          data-test="submit"
+        >
+          <i className="fa fa-search" />
+          Search
+        </Button>
         <Button
           className={Button.constants.classNames.icon}
           size={Button.constants.sizes.small}
           customClass="advanced-search-btn"
           data-test="policy-advanced-search"
-          onClick={toggleAdvancedSearch}>
-          <i className={classNames(advancedSearch ? 'fa fa-chevron-up' : 'fa fa-chevron-down')} />
+          onClick={toggleAdvancedSearch}
+        >
+          <i
+            className={classNames(
+              advancedSearch ? 'fa fa-chevron-up' : 'fa fa-chevron-down'
+            )}
+          />
         </Button>
       </div>
 
-      {advancedSearch &&
+      {advancedSearch && (
         <div className="advanced-search">
           <Field
             name="agencyCode"
@@ -121,7 +135,8 @@ const PolicySearch = ({
             label="Agency Name"
             component={SelectTypeAhead}
             styleName="agencyCodeSelectField"
-            answers={agencyList} />
+            answers={agencyList}
+          />
           <div className="form-group effectiveDate">
             <Field
               name="effectiveDate"
@@ -131,7 +146,8 @@ const PolicySearch = ({
               placeholder={STANDARD_DATE_FORMAT}
               normalize={normalize.date}
               validate={isValidDate}
-              errorHint />
+              errorHint
+            />
           </div>
           <div className="form-group policy-status">
             <Field
@@ -139,7 +155,8 @@ const PolicySearch = ({
               dataTest="policyStatus"
               label="Policy Status"
               component={Select}
-              answers={getAnswers('policyStatus', questions)} />
+              answers={getAnswers('policyStatus', questions)}
+            />
           </div>
           <div className="form-group sortBy">
             <Field
@@ -148,18 +165,21 @@ const PolicySearch = ({
               label="Sort By"
               component={Select}
               answers={sortByOptions}
-              showPlaceholder={false} />
+              showPlaceholder={false}
+            />
           </div>
         </div>
-      }
-      {!!search.results.length && search.totalPages > 1 &&
+      )}
+      {!!search.results.length && search.totalPages > 1 && (
         <Pagination
           changePageForward={handlePagination(true)}
           changePageBack={handlePagination(false)}
           pageNumber={search.currentPage}
-          totalPages={search.totalPages} />
-      }
+          totalPages={search.totalPages}
+        />
+      )}
     </React.Fragment>
+  );
 };
 
 PolicySearch.propTypes = {
@@ -175,7 +195,7 @@ PolicySearch.propTypes = {
     currentPage: PropTypes.number
   }).isRequired,
   searchTypeOptions: PropTypes.array,
-  submitting: PropTypes.bool,
+  submitting: PropTypes.bool
 };
 
 PolicySearch.defaultProps = {

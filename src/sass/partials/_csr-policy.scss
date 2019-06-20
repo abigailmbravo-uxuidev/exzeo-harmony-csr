@@ -1,15 +1,15 @@
 .app-wrapper.csr.policy {
   //main header
   header {
-    div[role="banner"] {
+    div[role='banner'] {
       .tab-tag {
         display: flex;
         align-items: center;
         justify-content: center;
         width: 12rem;
         height: 3.25rem;
-        margin: (-$padding) ($padding*2) (-$padding) (-$padding*2);
-        padding: 0 ($padding*2);
+        margin: (-$padding) ($padding * 2) (-$padding) (-$padding * 2);
+        padding: 0 ($padding * 2);
         color: $white;
         border-right: 1px dotted $bright-blue-darken-01;
         background: $bright-blue-darken-03;
@@ -29,7 +29,7 @@
 
         label {
           margin-bottom: 0;
-          padding: 0 $padding 0 ($padding*4);
+          padding: 0 $padding 0 ($padding * 4);
           color: $warm-gray-07;
           font-weight: $font-weight-normal;
         }
@@ -137,7 +137,7 @@
                 label {
                   flex-grow: 0;
                   flex-shrink: 0;
-                  width: calc(33.33% - .5rem);
+                  width: calc(33.33% - 0.5rem);
                   margin: 0 $padding 0 0;
                   padding: 0;
                   text-align: left;
@@ -147,7 +147,7 @@
               .form-group-double-element {
                 display: flex;
                 align-items: flex-start;
-                margin: 0 0 ($padding*2);
+                margin: 0 0 ($padding * 2);
 
                 > .form-group {
                   display: flex;
@@ -173,7 +173,7 @@
                     display: block;
                     flex-grow: 0;
                     flex-shrink: 0;
-                    width: calc(33.33% - .5rem);
+                    width: calc(33.33% - 0.5rem);
                     margin: 0 $padding 0 0;
                     text-align: right;
 
@@ -189,32 +189,36 @@
                   }
 
                   .initial-value {
-                    width: calc(33.33% - .5rem);
+                    width: calc(33.33% - 0.5rem);
                     margin-right: $padding;
 
                     .label-segmented {
                       span {
                         cursor: not-allowed;
-                        @include button-variant($warm-gray-04, $warm-gray-01, $warm-gray-01);
+                        @include button-variant(
+                          $warm-gray-04,
+                          $warm-gray-01,
+                          $warm-gray-01
+                        );
                       }
 
                       &.selected {
                         span {
                           cursor: not-allowed;
                           color: $white;
-                          background: rgba($bright-blue-darken-04, .5);
+                          background: rgba($bright-blue-darken-04, 0.5);
                         }
                       }
                     }
 
-                    > input[type="text"],
+                    > input[type='text'],
                     select,
                     .segmented-answer-wrapper {
                       width: 100%;
                     }
                   }
 
-                  > input[type="text"],
+                  > input[type='text'],
                   select,
                   .segmented-answer-wrapper {
                     width: 33.33%;
@@ -263,7 +267,7 @@
                         span {
                           cursor: not-allowed;
                           color: $white;
-                          background: rgba($bright-blue-darken-04, .5);
+                          background: rgba($bright-blue-darken-04, 0.5);
                         }
                       }
                     }
@@ -272,7 +276,7 @@
 
                 &.wind-mit {
                   > .windMitFactor {
-                    width: calc(66.66% - .75rem);
+                    width: calc(66.66% - 0.75rem);
                     margin-right: $padding;
                     padding: 0 0 0 $padding;
 
@@ -280,8 +284,8 @@
                       width: 50%;
                     }
 
-                    input[type="text"] {
-                      width: calc(50% - .5rem);
+                    input[type='text'] {
+                      width: calc(50% - 0.5rem);
                     }
                   }
 
@@ -289,7 +293,7 @@
                     width: 33%;
                     padding: 0;
 
-                    input[type="text"] {
+                    input[type='text'] {
                       width: 100%;
                     }
                   }
@@ -366,7 +370,7 @@
                 }
 
                 input {
-                  &[disabled="disabled"],
+                  &[disabled='disabled'],
                   &:disabled {
                     border-color: $warm-gray-03;
                     background: $warm-gray-00;
@@ -382,7 +386,7 @@
 
           .additionalInterests {
             .results-wrapper {
-              margin: ($padding*2) 0 ($padding);
+              margin: ($padding * 2) 0 ($padding);
             }
           }
         }
@@ -393,11 +397,11 @@
           flex-grow: 0;
           flex-shrink: 0;
           width: 240px;
-          padding: 0 0 ($padding*2) ($padding*2);
+          padding: 0 0 ($padding * 2) ($padding * 2);
           border-left: dotted 1px $warm-gray-04;
 
           .uw-validation-header {
-            margin: ($padding*1.5) 0;
+            margin: ($padding * 1.5) 0;
           }
         }
         //end underwriting
@@ -412,7 +416,7 @@
             &.contact {
               flex-direction: row;
               margin: 0 (-$padding/2) ($padding);
-              padding: $padding ($padding*1.5);
+              padding: $padding ($padding * 1.5);
 
               &.agency,
               &.agent,
@@ -441,7 +445,7 @@
 
                 .contact-details {
                   flex-grow: 1;
-                  margin-left: $padding*2;
+                  margin-left: $padding * 2;
 
                   h4 {
                     margin-bottom: 0;
@@ -484,10 +488,10 @@
                     p {
                       display: flex;
                       align-items: center;
-                      margin-right: $padding*2;
+                      margin-right: $padding * 2;
 
                       .contact-divider {
-                        margin: 0 ($padding*2) 0 0;
+                        margin: 0 ($padding * 2) 0 0;
                       }
 
                       small {
@@ -562,7 +566,7 @@
                         div {
                           display: flex;
                           align-items: center;
-                          margin-right: $padding*2;
+                          margin-right: $padding * 2;
 
                           h5 {
                             margin: 0 $padding 0 0;
@@ -607,8 +611,8 @@
             .card-multi-split {
               display: flex;
               align-content: stretch;
-              margin-bottom: ($padding*2);
-              padding-bottom: ($padding*2);
+              margin-bottom: ($padding * 2);
+              padding-bottom: ($padding * 2);
               border-bottom: 1px dashed $warm-gray-01;
 
               .contact-details {
@@ -637,8 +641,8 @@
 
         .form-group {
           section {
-            margin-bottom: $padding*2;
-            padding-bottom: $padding*2;
+            margin-bottom: $padding * 2;
+            padding-bottom: $padding * 2;
             border-bottom: 1px dashed $bright-blue-darken-03;
 
             &:last-child {
@@ -648,7 +652,7 @@
 
             dl {
               div {
-                margin-right: $padding*4;
+                margin-right: $padding * 4;
 
                 dt {
                   margin-bottom: $padding;
@@ -658,7 +662,7 @@
 
                 dd {
                   display: inline-flex;
-                  margin-bottom: $padding*2;
+                  margin-bottom: $padding * 2;
                   color: $warm-gray-10;
                 }
               }
@@ -688,7 +692,7 @@
                 .total {
                   > div {
                     margin: 0;
-                    padding: ($padding) ($padding*2);
+                    padding: ($padding) ($padding * 2);
                     text-align: right;
                     color: $bright-blue-darken-04;
                     border-top: $border-width dotted $border-color;
@@ -758,7 +762,11 @@
               background: $warm-gray-01;
             }
 
-            .react-bs-table .table-bordered > tbody > tr:nth-of-type(even):hover > td {
+            .react-bs-table
+              .table-bordered
+              > tbody
+              > tr:nth-of-type(even):hover
+              > td {
               background: $warm-gray-01;
             }
 
@@ -791,31 +799,31 @@
 
                 .deductible {
                   thead tr th {
-                    background: rgba($orange-lighten-04, .3);
+                    background: rgba($orange-lighten-04, 0.3);
                   }
 
                   tbody tr:nth-of-type(even) > td {
-                    background: rgba($orange-lighten-04, .2);
+                    background: rgba($orange-lighten-04, 0.2);
                   }
                 }
 
                 .premium {
                   thead tr th {
-                    background: rgba($yellow-lighten-04, .3);
+                    background: rgba($yellow-lighten-04, 0.3);
                   }
 
                   tbody tr:nth-of-type(even) > td {
-                    background: rgba($yellow-lighten-04, .2);
+                    background: rgba($yellow-lighten-04, 0.2);
                   }
                 }
 
                 .billing {
                   thead tr th {
-                    background: rgba($green-lighten-04, .3);
+                    background: rgba($green-lighten-04, 0.3);
                   }
 
                   tbody tr:nth-of-type(even) > td {
-                    background: rgba($green-lighten-04, .2);
+                    background: rgba($green-lighten-04, 0.2);
                   }
 
                   .coverage {
@@ -834,21 +842,21 @@
                 .coverage,
                 .discountSurcharge {
                   width: 60%;
-                  padding: $padding ($padding*1.5);
+                  padding: $padding ($padding * 1.5);
                   white-space: normal;
                   hyphens: auto;
                 }
 
                 .value {
                   width: 40%;
-                  padding: $padding ($padding*1.5);
+                  padding: $padding ($padding * 1.5);
                   white-space: normal;
                 }
               }
             }
 
             .table-view.claims {
-              margin: 0 0 ($padding*2);
+              margin: 0 0 ($padding * 2);
 
               .claimNumber {
                 width: 10%;
@@ -885,7 +893,7 @@
                   }
 
                   section {
-                    margin: 0 0 0 ($padding*2);
+                    margin: 0 0 0 ($padding * 2);
                     padding: 0;
                     border-bottom-width: 0;
                   }

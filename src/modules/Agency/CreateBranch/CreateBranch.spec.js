@@ -8,7 +8,9 @@ describe('Testing CreateBranch Base component', () => {
     const props = {
       reset() {},
       handleSubmit() {},
-      createBranch() { return Promise.resolve({ branchCode: '1' }); },
+      createBranch() {
+        return Promise.resolve({ branchCode: '1' });
+      },
       licenseValue: '',
       sameAsMailingValue: false,
       submitting: false,

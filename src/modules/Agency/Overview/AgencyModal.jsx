@@ -11,11 +11,7 @@ export class AgencyModal extends Component {
   };
 
   render() {
-    const {
-      closeModal,
-      handleSubmit,
-      submitting
-    } = this.props;
+    const { closeModal, handleSubmit, submitting } = this.props;
 
     return (
       <div className="modal agency-crud">
@@ -37,15 +33,17 @@ export class AgencyModal extends Component {
                   tabIndex="0"
                   className="btn btn-secondary"
                   type="button"
-                  onClick={closeModal}>
-                Cancel
+                  onClick={closeModal}
+                >
+                  Cancel
                 </button>
                 <button
                   tabIndex="0"
                   className="btn btn-primary"
                   type="submit"
-                  disabled={submitting}>
-                Save
+                  disabled={submitting}
+                >
+                  Save
                 </button>
               </div>
             </div>

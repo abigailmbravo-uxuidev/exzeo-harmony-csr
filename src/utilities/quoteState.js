@@ -21,5 +21,5 @@ export const QUOTE_INPUT_STATE = {
 
 export const UNQUALIFIED_STATE = [
   QUOTE_INPUT_STATE.InitialData,
-  QUOTE_INPUT_STATE.Underwriting,
+  QUOTE_INPUT_STATE.Underwriting
 ];

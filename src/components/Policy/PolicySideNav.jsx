@@ -20,25 +20,29 @@ const getNavLinks = ({ policyNumber }) => [
     label: 'Coverage / Rating',
     styleName: 'coverage',
     exact: true
-  }, {
+  },
+  {
     key: 'policyholder',
     to: `/policy/${policyNumber}/policyHolder`,
     label: 'Policyholder / Agent',
     styleName: 'policyholder',
     exact: true
-  }, {
+  },
+  {
     key: 'billing',
     to: `/policy/${policyNumber}/billing`,
     label: 'Mortgage / Billing',
     styleName: 'billing',
     exact: true
-  }, {
+  },
+  {
     key: 'notes',
     to: `/policy/${policyNumber}/notes`,
     label: 'Notes / Files / Diaries',
     styleName: 'notes',
     exact: true
-  }, {
+  },
+  {
     key: 'cancel',
     to: `/policy/${policyNumber}/cancel`,
     label: 'Cancel Policy',
@@ -60,7 +64,11 @@ export class SideNav extends React.Component {
   };
 
   newDiary = () => {
-    const { actions, toggleDiary, policy: { companyCode, state, product, policyNumber, endDate } } = this.props;
+    const {
+      actions,
+      toggleDiary,
+      policy: { companyCode, state, product, policyNumber, endDate }
+    } = this.props;
     toggleDiary({
       companyCode,
       state,
@@ -72,7 +80,11 @@ export class SideNav extends React.Component {
   };
 
   newNote = () => {
-    const { actions, toggleNote, policy: { companyCode, state, product, policyNumber, sourceNumber } } = this.props;
+    const {
+      actions,
+      toggleNote,
+      policy: { companyCode, state, product, policyNumber, sourceNumber }
+    } = this.props;
     toggleNote({
       companyCode,
       state,
@@ -99,26 +111,36 @@ export class SideNav extends React.Component {
     const { actions, policy, startWorkflow, setAppError } = this.props;
     return (
       <nav className="site-nav">
-        <SideNavigation navLinks={getNavLinks({ policyNumber: policy.policyNumber })}>
+        <SideNavigation
+          navLinks={getNavLinks({ policyNumber: policy.policyNumber })}
+        >
           <hr className="nav-division" />
           <li>
             <button
               aria-label="open-btn"
               className="btn btn-primary btn-sm btn-block"
-              onClick={this.generateDoc}>
+              onClick={this.generateDoc}
+            >
               <i className="fa fa-plus" />
               Document
             </button>
           </li>
-          <li className={this.state.showDocsForm ? 'document-panel show' : 'document-panel hidden'}>
-            {this.state.showDocsForm &&
+          <li
+            className={
+              this.state.showDocsForm
+                ? 'document-panel show'
+                : 'document-panel hidden'
+            }
+          >
+            {this.state.showDocsForm && (
               <GenerateDocsForm
                 policyNumber={policy.policyNumber}
                 policyID={policy.policyID}
                 updateNotes={this.updateNotes(this.props)}
                 startWorkflow={startWorkflow}
-                errorHandler={setAppError} />
-            }
+                errorHandler={setAppError}
+              />
+            )}
           </li>
         </SideNavigation>
         <PlusButton newNote={this.newNote} newDiary={this.newDiary} />
@@ -139,10 +161,13 @@ const mapStateToProps = state => ({
   policy: state.policyState.policy || {}
 });
 
-export default connect(mapStateToProps, {
-  startWorkflow,
-  toggleNote,
-  toggleDiary,
-  fetchNotes,
-  setAppError
-})(SideNav);
+export default connect(
+  mapStateToProps,
+  {
+    startWorkflow,
+    toggleNote,
+    toggleDiary,
+    fetchNotes,
+    setAppError
+  }
+)(SideNav);

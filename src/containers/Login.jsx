@@ -4,7 +4,6 @@ import { Loader } from '@exzeo/core-ui';
 import history from '../history';
 
 class Login extends Component {
-
   componentDidMount() {
     const { isAuthenticated } = this.props.auth;
     if (!isAuthenticated()) {
@@ -14,7 +13,7 @@ class Login extends Component {
     }
   }
   render() {
-    return (<Loader />);
+    return <Loader />;
   }
 }
 

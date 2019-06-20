@@ -8,9 +8,8 @@ describe('Test UserSearch component', () => {
     expect(wrapper);
   });
 
-  it('has a disabled submit button when passed \'submitting\' prop', () => {
+  it("has a disabled submit button when passed 'submitting' prop", () => {
     const wrapper = shallow(<UserSearch submitting={true} />);
     expect(wrapper.find('button').prop('disabled')).toBeTruthy();
   });
 });
-

@@ -29,7 +29,6 @@ function setResults(state, action) {
     results: action.results,
     totalRecords: action.totalRecords,
     noResults: action.noResults
-
   };
 }
 

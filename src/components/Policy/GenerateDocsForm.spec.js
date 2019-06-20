@@ -15,7 +15,7 @@ describe('Testing GenerateDocsForm component', () => {
       updateNotes: jest.fn()
     };
 
-    const wrapper = mount(<GenerateDocsForm { ...props } />);
+    const wrapper = mount(<GenerateDocsForm {...props} />);
     expect(wrapper.exists()).toBeTruthy();
     expect(wrapper.find('form')).toHaveLength(1);
   });

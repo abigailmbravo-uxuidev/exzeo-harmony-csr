@@ -8,8 +8,11 @@ import { REASONS } from '../constants/diaries';
  * @param dateString
  * @returns {boolean | *}
  */
-export const isUpcoming = (dateString) => {
-  const sevenDaysOut = moment().utc().add(7, 'd').format(date.FORMATS.SECONDARY);
+export const isUpcoming = dateString => {
+  const sevenDaysOut = moment()
+    .utc()
+    .add(7, 'd')
+    .format(date.FORMATS.SECONDARY);
 
   return moment(dateString).isAfter(sevenDaysOut, 'd');
 };
@@ -19,9 +22,12 @@ export const isUpcoming = (dateString) => {
  * @param dateString
  * @returns {boolean}
  */
-export const isDueSoon = (dateString) => {
+export const isDueSoon = dateString => {
   const today = date.currentDay(date.FORMATS.SECONDARY);
-  const sevenDaysOut = moment.utc().add(7, 'd').format(date.FORMATS.SECONDARY);
+  const sevenDaysOut = moment
+    .utc()
+    .add(7, 'd')
+    .format(date.FORMATS.SECONDARY);
 
   return moment(dateString).isBetween(today, sevenDaysOut, 'd', '[]');
 };
@@ -31,7 +37,7 @@ export const isDueSoon = (dateString) => {
  * @param dateString
  * @returns {boolean}
  */
-export const isPastDue = (dateString) => {
+export const isPastDue = dateString => {
   const today = date.currentDay(date.FORMATS.SECONDARY);
 
   return moment(dateString).isBefore(today, 'd');
@@ -42,7 +48,7 @@ export const isPastDue = (dateString) => {
  * @param entry object
  * @returns {object}
  */
-export const formatEntry = (entry) => {
+export const formatEntry = entry => {
   const reasonKeyValue = REASONS.find(r => r.answer === entry.reason);
   const reason = reasonKeyValue ? reasonKeyValue.label : entry.reason;
   const due = date.formatDate(entry.due);
@@ -72,7 +78,7 @@ export const getDueStatus = (due, open) => {
  * @param diaries
  * @returns {*}
  */
-export const groupDiaries = (diaries) => {
+export const groupDiaries = diaries => {
   if (!diaries || diaries.length === 0) {
     return {
       upComing: [],
@@ -95,11 +101,16 @@ export const groupDiaries = (diaries) => {
  * @returns {Array}
  */
 export const sortDiariesByDate = (diaries = []) => {
-  return diaries.filter(d => d).sort((a, b) => {
-    return new Date(a.entries[0].due) - new Date(b.entries[0].due);
-  });
+  return diaries
+    .filter(d => d)
+    .sort((a, b) => {
+      return new Date(a.entries[0].due) - new Date(b.entries[0].due);
+    });
 };
 
 export const addDate = (days, dateString) => {
-  return moment.utc(dateString).add(days, 'd').format(date.FORMATS.SECONDARY);
+  return moment
+    .utc(dateString)
+    .add(days, 'd')
+    .format(date.FORMATS.SECONDARY);
 };

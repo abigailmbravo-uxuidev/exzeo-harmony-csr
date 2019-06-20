@@ -1,6 +1,7 @@
 import mockAgency from '../../modules/Agency/mockAgency';
 
-import { getEditModalInitialValues,
+import {
+  getEditModalInitialValues,
   getAgentsList,
   getAgentOfRecord,
   getBranchesList,
@@ -33,31 +34,57 @@ describe('Testing Agency Selectors', () => {
   it('should test getListOfAgents', () => {
     const state = {
       agencyState: {
-        agents: [{
-          agentCode: 234, displayText: 'TestFirst TestLast', firstName: 'TestFirst', lastName: 'TestLast'
-        }]
+        agents: [
+          {
+            agentCode: 234,
+            displayText: 'TestFirst TestLast',
+            firstName: 'TestFirst',
+            lastName: 'TestLast'
+          }
+        ]
       }
     };
     const result = getAgentsList(state);
-    const res = [{
-      agentCode: 234, displayText: 'TestFirst TestLast', firstName: 'TestFirst', lastName: 'TestLast'
-    }];
+    const res = [
+      {
+        agentCode: 234,
+        displayText: 'TestFirst TestLast',
+        firstName: 'TestFirst',
+        lastName: 'TestLast'
+      }
+    ];
     expect(result).toEqual(res);
   });
 
   it('should test filterActiveAgentsList', () => {
-    const agents = [{
-          agentCode: 234, displayText: 'TestFirst AOR', firstName: 'TestFirst', lastName: 'AOR', status: 'Active'
-        },
-        {
-          agentCode: 567, displayText: 'TestSecond AOR', firstName: 'TestSecond', lastName: 'AOR', status: 'Terminated'
-        }];
+    const agents = [
+      {
+        agentCode: 234,
+        displayText: 'TestFirst AOR',
+        firstName: 'TestFirst',
+        lastName: 'AOR',
+        status: 'Active'
+      },
+      {
+        agentCode: 567,
+        displayText: 'TestSecond AOR',
+        firstName: 'TestSecond',
+        lastName: 'AOR',
+        status: 'Terminated'
+      }
+    ];
 
     const result = filterActiveAgentsList(agents);
-    const res = [{"answer": 234, "label": "234: TestFirst AOR", "firstName": 'TestFirst', "lastName": 'AOR',}];
+    const res = [
+      {
+        answer: 234,
+        label: '234: TestFirst AOR',
+        firstName: 'TestFirst',
+        lastName: 'AOR'
+      }
+    ];
     expect(result).toEqual(res);
   });
-
 
   it('should test getListOfAgents without agent', () => {
     const state = {
@@ -98,7 +125,8 @@ describe('Testing Agency Selectors', () => {
           branches: [
             { branchCode: '2', displayName: 'Test 2' },
             { branchCode: '3', displayName: 'Test 3' },
-            { branchCode: '1', displayName: 'Test 1' }]
+            { branchCode: '1', displayName: 'Test 1' }
+          ]
         }
       }
     };
@@ -106,7 +134,8 @@ describe('Testing Agency Selectors', () => {
     expect(result).toEqual([
       { answer: '1', branchCode: 1, label: '1: Test 1' },
       { answer: '2', branchCode: 2, label: '2: Test 2' },
-      { answer: '3', branchCode: 3, label: '3: Test 3' }]);
+      { answer: '3', branchCode: 3, label: '3: Test 3' }
+    ]);
   });
 
   it('should test getBranchInitialValues', () => {
@@ -148,17 +177,21 @@ describe('Testing Agency Selectors', () => {
   });
 
   it('should test filterAgenciesList', () => {
-    const agents = [{
-        agencyCode: 234, displayName: 'TestFirst AOR Agency', status: 'Active'
-        },
-        {
-          agencyCode: 567, displayName: 'TestSecond AOR', status: 'Cancel'
-        }];
+    const agents = [
+      {
+        agencyCode: 234,
+        displayName: 'TestFirst AOR Agency',
+        status: 'Active'
+      },
+      {
+        agencyCode: 567,
+        displayName: 'TestSecond AOR',
+        status: 'Cancel'
+      }
+    ];
 
     const result = filterAgenciesList(agents);
-    const res = [{"answer": 234, "label": "234: TestFirst AOR Agency"}];
+    const res = [{ answer: 234, label: '234: TestFirst AOR Agency' }];
     expect(result).toEqual(res);
   });
-  
 });
-

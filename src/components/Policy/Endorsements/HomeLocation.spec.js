@@ -56,14 +56,32 @@ describe('Testing HomeLocation component', () => {
       ...propTypes
     };
     const wrapper = shallow(<HomeLocationComponent store={store} {...props} />);
-    wrapper.find('[name="property.buildingCodeEffectivenessGrading"]').simulate('change', { target: { value: '04' } });
-    wrapper.find('[name="property.familyUnits"]').simulate('change', { target: { value: '1-2' } });
-    wrapper.find('[name="property.floodZone"]').simulate('change', { target: { value: 'A' } });
-    wrapper.find('[name="property.distanceToTidalWater"]').simulate('change', { target: { value: '686.5' } });
-    wrapper.find('[name="property.distanceToFireHydrant"]').simulate('change', { target: { value: '1000' } });
-    wrapper.find('[name="property.distanceToFireStation"]').simulate('change', { target: { value: '0.4' } });
-    wrapper.find('[name="property.residenceType"]').simulate('change', { target: { value: 'SINGLE FAMILY' } });
-    wrapper.find('[name="property.squareFeet"]').simulate('change', { target: { value: '2000' } });
-    wrapper.find('[name="property.yearOfRoof"]').simulate('change', { target: { value: '2000' } });
+    wrapper
+      .find('[name="property.buildingCodeEffectivenessGrading"]')
+      .simulate('change', { target: { value: '04' } });
+    wrapper
+      .find('[name="property.familyUnits"]')
+      .simulate('change', { target: { value: '1-2' } });
+    wrapper
+      .find('[name="property.floodZone"]')
+      .simulate('change', { target: { value: 'A' } });
+    wrapper
+      .find('[name="property.distanceToTidalWater"]')
+      .simulate('change', { target: { value: '686.5' } });
+    wrapper
+      .find('[name="property.distanceToFireHydrant"]')
+      .simulate('change', { target: { value: '1000' } });
+    wrapper
+      .find('[name="property.distanceToFireStation"]')
+      .simulate('change', { target: { value: '0.4' } });
+    wrapper
+      .find('[name="property.residenceType"]')
+      .simulate('change', { target: { value: 'SINGLE FAMILY' } });
+    wrapper
+      .find('[name="property.squareFeet"]')
+      .simulate('change', { target: { value: '2000' } });
+    wrapper
+      .find('[name="property.yearOfRoof"]')
+      .simulate('change', { target: { value: '2000' } });
   });
 });

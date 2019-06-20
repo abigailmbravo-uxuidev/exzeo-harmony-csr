@@ -12,17 +12,20 @@ describe('ReactSelectField', () => {
     const inputProps = {
       meta: {
         touched: false
-
       },
       name: 'test',
       label: 'test',
-      answers: [{
-        answer: 'One'
-      }, {
-        answer: 'Two'
-      }, {
-        answer: 'Three'
-      }]
+      answers: [
+        {
+          answer: 'One'
+        },
+        {
+          answer: 'Two'
+        },
+        {
+          answer: 'Three'
+        }
+      ]
     };
 
     shallow(<ReactSelectInput {...inputProps} />);

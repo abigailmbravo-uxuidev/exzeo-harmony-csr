@@ -12,18 +12,17 @@ const RadioOptionBilling = ({
   value
 }) => (
   <div
-    className={classNames(
-      `radio-column-${size}`,
-      { selected: value === answer }
-  )}
+    className={classNames(`radio-column-${size}`, {
+      selected: value === answer
+    })}
     onKeyPress={event => onKeyPress(event, answer)}
     onClick={() => onChange(answer)}
   >
     <label
       className={classNames(
-      { 'label-segmented': segmented },
-      { selected: value === answer },
-    )}
+        { 'label-segmented': segmented },
+        { selected: value === answer }
+      )}
       htmlFor={name}
     >
       <input
@@ -39,7 +38,7 @@ const RadioOptionBilling = ({
 );
 
 RadioOptionBilling.propTypes = {
-  paymentPlan : PropTypes.any, // eslint-disable-line
+  paymentPlan: PropTypes.any, // eslint-disable-line
   /**
    * Answer used to generate option
    */
@@ -68,7 +67,7 @@ RadioOptionBilling.propTypes = {
   /**
    * Used to find if options is selected
    */
-  value: PropTypes.any, // eslint-disable-line
+  value: PropTypes.any // eslint-disable-line
 };
 
 export default RadioOptionBilling;

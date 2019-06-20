@@ -5,8 +5,9 @@ export const downloadFile = (fileUrl, fileName, errorHandler) => {
   const proxyUrl = `${process.env.REACT_APP_API_URL}/download`;
   const params = { url: fileUrl };
 
-  return http.get(proxyUrl, { responseType: 'blob', params })
-    .then((response) => {
+  return http
+    .get(proxyUrl, { responseType: 'blob', params })
+    .then(response => {
       const blobUrl = window.URL.createObjectURL(response.data);
       const link = window.document.createElement('a');
       link.href = blobUrl;
@@ -16,7 +17,7 @@ export const downloadFile = (fileUrl, fileName, errorHandler) => {
       document.body.removeChild(link);
       return true;
     })
-    .catch((err) => {
+    .catch(err => {
       return errorHandler({ message: err.response.statusText });
     });
 };
@@ -24,11 +25,14 @@ export const downloadFile = (fileUrl, fileName, errorHandler) => {
 const Downloader = props => {
   const { fileName, fileUrl, errorHandler } = props;
   return (
-    <div className="attachment-wrapper" onClick={() => downloadFile(fileUrl, fileName, errorHandler)}>
+    <div
+      className="attachment-wrapper"
+      onClick={() => downloadFile(fileUrl, fileName, errorHandler)}
+    >
       <i title={fileName} className="fa" />
-      <div className="btn btn-link btn-sm">{ fileName }</div>
+      <div className="btn btn-link btn-sm">{fileName}</div>
     </div>
-  )
+  );
 };
 
 export default Downloader;

@@ -12,18 +12,19 @@ const RadioOption = ({
   value
 }) => (
   <div
-    className={classNames(
-        `radio-column-${size}`,
-        { selected: value === answer.answer }
-    )}
+    className={classNames(`radio-column-${size}`, {
+      selected: value === answer.answer
+    })}
     onKeyPress={event => onKeyPress(event, answer.answer)}
     onClick={() => onChange(answer.answer)}
   >
-    {answer.image && <img src={answer.image} alt={answer.answer} role="presentation" />}
+    {answer.image && (
+      <img src={answer.image} alt={answer.answer} role="presentation" />
+    )}
     <label
       className={classNames(
         { 'label-segmented': segmented },
-        { selected: value === answer.answer },
+        { selected: value === answer.answer }
       )}
       htmlFor={name}
     >
@@ -40,7 +41,6 @@ const RadioOption = ({
 );
 
 RadioOption.propTypes = {
-
   // Answer Used to generate option
   answer: PropTypes.shape({
     answer: PropTypes.oneOfType([
@@ -48,10 +48,7 @@ RadioOption.propTypes = {
       PropTypes.number,
       PropTypes.string
     ]),
-    label: PropTypes.oneOfType([
-      PropTypes.number,
-      PropTypes.string
-    ]),
+    label: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     image: PropTypes.string
   }),
 

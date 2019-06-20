@@ -10,7 +10,10 @@ describe('Testing Create index component', () => {
   it('should render', () => {
     const middlewares = [];
     const mockStore = configureStore(middlewares);
-    const store = mockStore({ agencyState: {}, questions: { territoryManagers: [] } });
+    const store = mockStore({
+      agencyState: {},
+      questions: { territoryManagers: [] }
+    });
 
     const props = {
       agency: mockAgency,

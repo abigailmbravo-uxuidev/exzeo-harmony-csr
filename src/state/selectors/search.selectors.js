@@ -4,7 +4,7 @@ import { getAgencies } from './entity.selectors';
 
 export const getAgenciesForTypeAhead = createSelector(
   [getAgencies],
-  (agencies) => {
+  agencies => {
     if (!Array.isArray(agencies)) {
       return [];
     }
@@ -15,4 +15,3 @@ export const getAgenciesForTypeAhead = createSelector(
     }));
   }
 );
-

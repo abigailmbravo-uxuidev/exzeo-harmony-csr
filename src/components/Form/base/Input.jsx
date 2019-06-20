@@ -16,26 +16,33 @@ export const Input = ({
   min,
   max
 }) => (
-  <div className={classNames('form-group', styleName, name, { disabled }, { valid: touched && !error }, { error: touched && error }, )}>
-    {label &&
+  <div
+    className={classNames(
+      'form-group',
+      styleName,
+      name,
+      { disabled },
+      { valid: touched && !error },
+      { error: touched && error }
+    )}
+  >
+    {label && (
       <label htmlFor={name}>
         {label}
         {hint && <FieldHint name={name} hint={hint} />}
       </label>
-    }
-      <input
-        name={name}
-        type={type}
-        disabled={disabled}
-        {...input}
-        placeholder={placeholder}
-        min={min}
-        max={max}
-        tabIndex="0"
-      />
-      {touched && (error || warning) &&
-        <span>{error || warning}</span>
-      }
+    )}
+    <input
+      name={name}
+      type={type}
+      disabled={disabled}
+      {...input}
+      placeholder={placeholder}
+      min={min}
+      max={max}
+      tabIndex="0"
+    />
+    {touched && (error || warning) && <span>{error || warning}</span>}
   </div>
 );
 
@@ -54,7 +61,6 @@ Input.propTypes = {
     warning: PropTypes.string
   }),
   styleName: PropTypes.string
-
 };
 
 Input.defaultProps = {

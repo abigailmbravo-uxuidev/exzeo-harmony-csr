@@ -13,10 +13,17 @@ describe('DisplayInput', () => {
     };
     const wrapper = shallow(<DisplayInput {...inputProps} />);
 
-    expect(wrapper.containsAnyMatchingElements([
-      <input type="text" name={inputProps.input.name} value={inputProps.input.value} readOnly />,
-      <label htmlFor={inputProps.input.name}>{inputProps.label}</label>
-    ])).toEqual(true);
+    expect(
+      wrapper.containsAnyMatchingElements([
+        <input
+          type="text"
+          name={inputProps.input.name}
+          value={inputProps.input.value}
+          readOnly
+        />,
+        <label htmlFor={inputProps.input.name}>{inputProps.label}</label>
+      ])
+    ).toEqual(true);
   });
 
   it('should render component when name, label, and displayValue are provided', () => {
@@ -28,10 +35,17 @@ describe('DisplayInput', () => {
       displayValue: 'ok'
     };
     const wrapper = shallow(<DisplayInput {...inputProps} />);
-    expect(wrapper.containsAnyMatchingElements([
-      <input type="text" name={inputProps.input.name} value={inputProps.displayValue} readOnly />,
-      <label htmlFor={inputProps.input.name}>{inputProps.label}</label>
-    ])).toEqual(true);
+    expect(
+      wrapper.containsAnyMatchingElements([
+        <input
+          type="text"
+          name={inputProps.input.name}
+          value={inputProps.displayValue}
+          readOnly
+        />,
+        <label htmlFor={inputProps.input.name}>{inputProps.label}</label>
+      ])
+    ).toEqual(true);
   });
 
   it('should render component when name, label, and displayValue, and value are provided, chooses to show displayValue', () => {
@@ -45,9 +59,16 @@ describe('DisplayInput', () => {
     };
     const wrapper = shallow(<DisplayInput {...inputProps} />);
 
-    expect(wrapper.containsAnyMatchingElements([
-      <input type="text" name={inputProps.input.name} value={inputProps.displayValue} readOnly />,
-      <label htmlFor={inputProps.input.name}>{inputProps.label}</label>
-    ])).toEqual(true);
+    expect(
+      wrapper.containsAnyMatchingElements([
+        <input
+          type="text"
+          name={inputProps.input.name}
+          value={inputProps.displayValue}
+          readOnly
+        />,
+        <label htmlFor={inputProps.input.name}>{inputProps.label}</label>
+      ])
+    ).toEqual(true);
   });
 });

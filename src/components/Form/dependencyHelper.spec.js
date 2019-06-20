@@ -282,13 +282,9 @@ describe('dependencyHelper', () => {
         'quoteModelUIVishal',
         'quoteModelFinalUIVishal'
       ],
-      steps: [
-        'askToCustomizeDefaultQuote'
-      ],
+      steps: ['askToCustomizeDefaultQuote'],
       question: 'Dwelling Limit',
-      group: [
-        'coverageLimits'
-      ],
+      group: ['coverageLimits'],
       order: 2,
       defaultValueLocation: 'coverageLimits.dwelling.amount',
       answerType: 'slider',
@@ -327,13 +323,9 @@ describe('dependencyHelper', () => {
         'quoteModelUIVishal',
         'quoteModelFinalUIVishal'
       ],
-      steps: [
-        'askToCustomizeDefaultQuote'
-      ],
+      steps: ['askToCustomizeDefaultQuote'],
       question: 'Loss of Use Limit',
-      group: [
-        'coverageLimits'
-      ],
+      group: ['coverageLimits'],
       defaultValueLocation: 'coverageLimits.lossOfUse.amount',
       order: 6,
       answerType: 'display',
@@ -370,13 +362,9 @@ describe('dependencyHelper', () => {
         'quoteModelUIVishal',
         'quoteModelFinalUIVishal'
       ],
-      steps: [
-        'askToCustomizeDefaultQuote'
-      ],
+      steps: ['askToCustomizeDefaultQuote'],
       question: 'Loss of Use Limit',
-      group: [
-        'coverageLimits'
-      ],
+      group: ['coverageLimits'],
       defaultValueLocation: 'coverageLimits.lossOfUse.amount',
       order: 6,
       answerType: 'display',
@@ -392,7 +380,6 @@ describe('dependencyHelper', () => {
 
     expect(result.displayValue).toEqual('$ 100,000');
   });
-
 
   it('setup dependency info for dependency(percent)', () => {
     const values = {
@@ -416,13 +403,9 @@ describe('dependencyHelper', () => {
         'quoteModelUIVishal',
         'quoteModelFinalUIVishal'
       ],
-      steps: [
-        'askToCustomizeDefaultQuote'
-      ],
+      steps: ['askToCustomizeDefaultQuote'],
       question: 'Personal Property Limit',
-      group: [
-        'coverageLimits'
-      ],
+      group: ['coverageLimits'],
       order: 4,
       answerType: 'radio',
       answerFormat: 'currency',
@@ -478,13 +461,9 @@ describe('dependencyHelper', () => {
         'quoteModelUIVishal',
         'quoteModelFinalUIVishal'
       ],
-      steps: [
-        'askToCustomizeDefaultQuote'
-      ],
+      steps: ['askToCustomizeDefaultQuote'],
       question: 'Personal Property Limit',
-      group: [
-        'coverageLimits'
-      ],
+      group: ['coverageLimits'],
       order: 4,
       answerType: 'radio',
       answerFormat: 'currency',
@@ -539,13 +518,9 @@ describe('dependencyHelper', () => {
         'quoteModelUIVishal',
         'quoteModelFinalUIVishal'
       ],
-      steps: [
-        'askToCustomizeDefaultQuote'
-      ],
+      steps: ['askToCustomizeDefaultQuote'],
       question: 'Sinkhole Deductible',
-      group: [
-        'deductibles'
-      ],
+      group: ['deductibles'],
       order: 18,
       defaultValueLocation: 'deductibles.hurricane.amount',
       answerType: 'radio',
@@ -635,17 +610,20 @@ describe('dependencyHelper', () => {
     expect(result.hidden).toBeUndefined();
     expect(result.displayValue).toEqual('$ 2,500');
 
-    displayQuestion.conditional.display = [{
-      type: 'hidden',
-      operator: 'greaterThan',
-      trigger: true,
-      parent: 'sinkholeCoverage'
-    }, {
-      type: 'hidden',
-      operator: 'notEqual',
-      trigger: true,
-      parent: 'sinkholeCoverage'
-    }];
+    displayQuestion.conditional.display = [
+      {
+        type: 'hidden',
+        operator: 'greaterThan',
+        trigger: true,
+        parent: 'sinkholeCoverage'
+      },
+      {
+        type: 'hidden',
+        operator: 'notEqual',
+        trigger: true,
+        parent: 'sinkholeCoverage'
+      }
+    ];
 
     result = dependencyHelper(displayQuestion, data, values);
     expect(result.hidden).toEqual(true);

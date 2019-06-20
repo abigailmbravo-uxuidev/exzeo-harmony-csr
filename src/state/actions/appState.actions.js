@@ -38,4 +38,3 @@ export function setAppStateError(modelName, instanceId, error) {
     }
   };
 }
-

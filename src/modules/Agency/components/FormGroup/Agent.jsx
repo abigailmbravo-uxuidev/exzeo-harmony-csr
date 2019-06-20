@@ -11,21 +11,24 @@ export const Agent = () => (
         name="agentCode"
         dataTest="agentCode"
         component={Input}
-        validate={validation.isRequired} />
+        validate={validation.isRequired}
+      />
       <Field
         label="Agent First Name"
         styleName="agentFirstName flex-item"
         name="firstName"
         dataTest="agentFirstName"
         component={Input}
-        validate={validation.isRequired} />
+        validate={validation.isRequired}
+      />
       <Field
         label="Agent Last Name"
         styleName="agentLastName flex-item"
         name="lastName"
         dataTest="agentLastName"
         component={Input}
-        validate={validation.isRequired} />
+        validate={validation.isRequired}
+      />
     </div>
     <Field
       label="Email Address"
@@ -33,7 +36,8 @@ export const Agent = () => (
       name="emailAddress"
       dataTest="emailAddress"
       component={Input}
-      validate={[validation.isRequired, validation.isEmail]} />
+      validate={[validation.isRequired, validation.isEmail]}
+    />
     <div className="agent-phone">
       <Field
         label="Phone 1"
@@ -41,21 +45,24 @@ export const Agent = () => (
         name="primaryPhoneNumber"
         dataTest="primaryPhoneNumber"
         component={Phone}
-        validate={[validation.isRequired, validation.isPhone]} />
+        validate={[validation.isRequired, validation.isPhone]}
+      />
       <Field
         label="Phone 2"
         styleName="secondaryPhoneNumber"
         name="secondaryPhoneNumber"
         dataTest="secondaryPhoneNumber"
         component={Phone}
-        validate={validation.isPhone} />
+        validate={validation.isPhone}
+      />
       <Field
         label="Fax"
         styleName="faxNumber"
         name="faxNumber"
         dataTest="faxNumber"
         component={Phone}
-        validate={validation.isPhone} />
+        validate={validation.isPhone}
+      />
     </div>
   </React.Fragment>
 );

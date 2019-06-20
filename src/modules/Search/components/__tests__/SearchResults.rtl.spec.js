@@ -1,6 +1,10 @@
 import React from 'react';
 
-import { renderWithReduxAndRouter, defaultInitialState, newQuoteResults as results } from '../../../../test-utils';
+import {
+  renderWithReduxAndRouter,
+  defaultInitialState,
+  newQuoteResults as results
+} from '../../../../test-utils';
 
 import ConnectedSearchResults from '../SearchResults';
 
@@ -19,9 +23,10 @@ describe('POS:Results Search', () => {
   };
 
   it('POS:Results Search and Property Search Card', () => {
-    const { getByText, getByTestId } = renderWithReduxAndRouter(<ConnectedSearchResults
-      {...props}
-    />, { state });
+    const { getByText, getByTestId } = renderWithReduxAndRouter(
+      <ConnectedSearchResults {...props} />,
+      { state }
+    );
 
     expect(getByTestId('4131 TEST ADDRESS'));
     expect(getByText('4131 TEST ADDRESS'));

@@ -23,4 +23,3 @@ describe('Test PolicySearch component', () => {
     expect(wrapper.find('div.advanced-search')).toHaveLength(1);
   });
 });
-

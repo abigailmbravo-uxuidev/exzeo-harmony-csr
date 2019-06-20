@@ -1,5 +1,5 @@
 import React from 'react';
-import propTypes from 'prop-types'
+import propTypes from 'prop-types';
 import classNames from 'classnames';
 
 const EXCEPTION_LEVELS = {
@@ -7,13 +7,13 @@ const EXCEPTION_LEVELS = {
     sectionClass: 'msg-info',
     iconClass: 'fa fa-info-circle',
     label: 'Info',
-    listIconClass: 'fa-li fa fa-info-circle',
+    listIconClass: 'fa-li fa fa-info-circle'
   },
   nonOverridable: {
     sectionClass: 'msg-error',
     iconClass: 'fa fa-exclamation-circle',
     label: 'Error',
-    listIconClass: 'fa-li fa fa-exclamation-circle',
+    listIconClass: 'fa-li fa fa-exclamation-circle'
   },
   overridable: {
     canShowButton: true,
@@ -21,30 +21,43 @@ const EXCEPTION_LEVELS = {
     iconClass: 'fa fa-exclamation-triangle',
     label: 'Caution',
     listClass: 'overridden',
-    listIconClass: 'fa-li fa fa-exclamation-triangle',
-  },
+    listIconClass: 'fa-li fa fa-exclamation-triangle'
+  }
 };
 
 class UnderwritingExceptions extends React.Component {
   render() {
-    const {exceptionLevel, exceptions, pristine } = this.props;
+    const { exceptionLevel, exceptions, pristine } = this.props;
     const severity = EXCEPTION_LEVELS[exceptionLevel];
 
     return (
       <section className={severity.sectionClass}>
         <h5>
-          <i className={severity.iconClass} aria-hidden="true"/><span>{severity.label}</span>
-          {!pristine && severity.canShowButton && <button tabIndex="0" className="btn btn-sm btn-primary" type="submit">Save</button>}
+          <i className={severity.iconClass} aria-hidden="true" />
+          <span>{severity.label}</span>
+          {!pristine && severity.canShowButton && (
+            <button
+              tabIndex="0"
+              className="btn btn-sm btn-primary"
+              type="submit"
+            >
+              Save
+            </button>
+          )}
         </h5>
         <div>
           <ul className="fa-ul">
             {exceptions.map((exception, index) => (
-              <li key={exception._id} className={classNames({ 'overridden': exception.canOverride && exception.overridden })}>
-                <i className={severity.listIconClass} aria-hidden="true"/>
+              <li
+                key={exception._id}
+                className={classNames({
+                  overridden: exception.canOverride && exception.overridden
+                })}
+              >
+                <i className={severity.listIconClass} aria-hidden="true" />
                 <span>{exception.internalMessage}</span>
 
                 {this.props.render(exception, index)}
-
               </li>
             ))}
           </ul>
@@ -55,11 +68,14 @@ class UnderwritingExceptions extends React.Component {
 }
 
 UnderwritingExceptions.propTypes = {
-  exceptionLevel: propTypes.oneOf(['warning', 'overridable', 'nonOverridable']).isRequired,
-  exceptions: propTypes.arrayOf(propTypes.shape({
-    _id: propTypes.string,
-    internalMessage: propTypes.string
-  }))
+  exceptionLevel: propTypes.oneOf(['warning', 'overridable', 'nonOverridable'])
+    .isRequired,
+  exceptions: propTypes.arrayOf(
+    propTypes.shape({
+      _id: propTypes.string,
+      internalMessage: propTypes.string
+    })
+  )
 };
 
 UnderwritingExceptions.defaultProps = {

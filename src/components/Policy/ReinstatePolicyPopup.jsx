@@ -24,7 +24,10 @@ export const ReinstatePolicyPopup = ({
     <div id="reinstate-policy" className="modal reinstate-policy">
       {submitting && <Loader />}
       <div className="card unsaved-changes">
-        <form id="ReinstatePolicyPopup" onSubmit={handleSubmit(reinstatePolicySubmit)}>
+        <form
+          id="ReinstatePolicyPopup"
+          onSubmit={handleSubmit(reinstatePolicySubmit)}
+        >
           <div className="card-header">
             <h4> Reinstate Policy</h4>
           </div>
@@ -44,12 +47,16 @@ export const ReinstatePolicyPopup = ({
                 className="btn btn-secondary"
                 type="button"
                 onClick={hideReinstatePolicyModal}
-              >Cancel</button>
+              >
+                Cancel
+              </button>
               <button
                 disabled={submitting || pristine || !reinstatePolicyValue}
                 className="btn btn-primary"
                 type="submit"
-              >Update</button>
+              >
+                Update
+              </button>
             </div>
           </div>
         </form>
@@ -66,7 +73,9 @@ const mapStateToProps = state => ({
   reinstatePolicyValue: selector(state, 'reinstatePolicy')
 });
 
-export default connect(mapStateToProps)(reduxForm({
-  form: 'ReinstatePolicyPopup',
-  enableReinitialize: true
-})(ReinstatePolicyPopup));
+export default connect(mapStateToProps)(
+  reduxForm({
+    form: 'ReinstatePolicyPopup',
+    enableReinitialize: true
+  })(ReinstatePolicyPopup)
+);

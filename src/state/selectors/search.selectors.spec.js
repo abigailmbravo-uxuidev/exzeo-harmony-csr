@@ -2,7 +2,6 @@ import { getAgenciesForTypeAhead } from './search.selectors';
 
 describe('Test Search selectors', () => {
   describe('test getAgenciesForTypeAhead', () => {
-
     it('should return an empty array when there are no agencies', () => {
       const state = {
         service: {}
@@ -10,7 +9,6 @@ describe('Test Search selectors', () => {
 
       const result = getAgenciesForTypeAhead(state);
       expect(result).toEqual([]);
-
     });
 
     it('should return a properly formatted list of agencies', () => {
@@ -20,17 +18,14 @@ describe('Test Search selectors', () => {
       };
       const state = {
         service: {
-          agencies: [
-            { ...testAgency }
-          ]
+          agencies: [{ ...testAgency }]
         }
       };
 
-        const result = getAgenciesForTypeAhead(state);
-        const option = result[0];
-        expect(option.label).toEqual(testAgency.displayName);
-        expect(option.answer).toEqual(testAgency.agencyCode);
+      const result = getAgenciesForTypeAhead(state);
+      const option = result[0];
+      expect(option.label).toEqual(testAgency.displayName);
+      expect(option.answer).toEqual(testAgency.agencyCode);
     });
   });
-
 });

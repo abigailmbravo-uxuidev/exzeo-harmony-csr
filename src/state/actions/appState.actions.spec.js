@@ -5,7 +5,6 @@ import * as appStateActions from './appState.actions';
 const middlewares = [];
 const mockStore = configureStore(middlewares);
 describe('App State Actions', () => {
-
   it('should call setAppState', () => {
     const initialState = {};
     const store = mockStore(initialState);
@@ -16,12 +15,20 @@ describe('App State Actions', () => {
       data: { bb: '123' }
     };
 
-    const stateObj = [{
-      type: types.APPSTATE_SET,
-      appState: { ...inputProps }
-    }];
+    const stateObj = [
+      {
+        type: types.APPSTATE_SET,
+        appState: { ...inputProps }
+      }
+    ];
 
-    store.dispatch(appStateActions.setAppState(inputProps.modelName, inputProps.instanceId, inputProps.data));
+    store.dispatch(
+      appStateActions.setAppState(
+        inputProps.modelName,
+        inputProps.instanceId,
+        inputProps.data
+      )
+    );
 
     expect(store.getActions()).toEqual(stateObj);
   });
@@ -36,12 +43,20 @@ describe('App State Actions', () => {
       error: 'my error'
     };
 
-    const stateObj = [{
-      type: types.APPSTATE_ERROR,
-      appState: { ...inputProps }
-    }];
+    const stateObj = [
+      {
+        type: types.APPSTATE_ERROR,
+        appState: { ...inputProps }
+      }
+    ];
 
-    store.dispatch(appStateActions.setAppStateError(inputProps.modelName, inputProps.instanceId, inputProps.error));
+    store.dispatch(
+      appStateActions.setAppStateError(
+        inputProps.modelName,
+        inputProps.instanceId,
+        inputProps.error
+      )
+    );
     expect(store.getActions()).toEqual(stateObj);
   });
 });

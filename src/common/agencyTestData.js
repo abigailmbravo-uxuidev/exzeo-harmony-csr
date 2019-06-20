@@ -5,9 +5,9 @@ const agencyTestData = {
   agencyCode: 20000,
   companyCode: 'TTIC',
   contactEmailAddress: 'test@typtap.com',
-  contact:{ 
-    firstName: 'WALLY', 
-    lastName: 'WAGONER' 
+  contact: {
+    firstName: 'WALLY',
+    lastName: 'WAGONER'
   },
   contract: 'Flood 03 16',
   createdAt: '2015-12-23T12:45:30.137Z',
@@ -17,7 +17,12 @@ const agencyTestData = {
   eoExpirationDate: '2017-07-12T00:00:00.000Z',
   faxNumber: '3525334073',
   legalName: 'TYPTAP MANAGEMENT COMPANY',
-  licenses: [{ licenseNumber: 'L095305', licenseExpirationDate: '2015-12-08T00:00:00.000Z' }],
+  licenses: [
+    {
+      licenseNumber: 'L095305',
+      licenseExpirationDate: '2015-12-08T00:00:00.000Z'
+    }
+  ],
   mailingAddress: {
     address1: '3001 S.E. MARICAMP ROAD',
     address2: null,

@@ -19,11 +19,17 @@ export class RemoveAgentModal extends Component {
         <form onSubmit={handleSubmit(handleConfirm)}>
           <div className="card">
             <div className="card-header">
-              <h4><i className="fa fa-remove" /> Remove Agent</h4>
+              <h4>
+                <i className="fa fa-remove" /> Remove Agent
+              </h4>
             </div>
             <div className="card-block">
               <section className="agent-details">
-                <h4>Are you sure you want to remove {`${initialValues.firstName} ${initialValues.lastName}`} from {agencyName}?</h4>
+                <h4>
+                  Are you sure you want to remove{' '}
+                  {`${initialValues.firstName} ${initialValues.lastName}`} from{' '}
+                  {agencyName}?
+                </h4>
               </section>
             </div>
             <div className="card-footer">
@@ -31,13 +37,17 @@ export class RemoveAgentModal extends Component {
                 <Button
                   className={Button.constants.classNames.secondary}
                   data-test="modal-cancel"
-                  onClick={() => handleCancel()}>No
+                  onClick={() => handleCancel()}
+                >
+                  No
                 </Button>
                 <Button
                   className={Button.constants.classNames.primary}
                   data-test="modal-submit"
                   type="submit"
-                  disabled={disabled || submitting}>Yes
+                  disabled={disabled || submitting}
+                >
+                  Yes
                 </Button>
               </div>
             </div>
@@ -47,7 +57,6 @@ export class RemoveAgentModal extends Component {
     );
   }
 }
-
 
 export default reduxForm({
   form: 'RemoveAgent'

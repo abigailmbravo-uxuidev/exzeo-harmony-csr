@@ -2,7 +2,11 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Loader, FormSpy, remoteSubmit } from '@exzeo/core-ui';
-import { getConfigForJsonTransform, Gandalf, AgencySelect } from '@exzeo/core-ui/src/@Harmony';
+import {
+  getConfigForJsonTransform,
+  Gandalf,
+  AgencySelect
+} from '@exzeo/core-ui/src/@Harmony';
 import { defaultMemoize } from 'reselect';
 
 import UnderwritingValidationBar from './UnderwritingValidationBar';
@@ -19,7 +23,10 @@ import { getQuoteSelector } from '../../state/selectors/quote.selectors';
 import { getDiariesForTable } from '../../state/selectors/diary.selectors';
 
 import MOCK_CONFIG_DATA from '../../mock-data/mockHO3';
-import { ROUTES_NOT_HANDLED_BY_GANDALF, PAGE_ROUTING } from './constants/workflowNavigation';
+import {
+  ROUTES_NOT_HANDLED_BY_GANDALF,
+  PAGE_ROUTING
+} from './constants/workflowNavigation';
 
 import Application from './Application';
 import PolicyHolders from './PolicyHolders';
@@ -28,7 +35,7 @@ import QuoteFooter from './QuoteFooter';
 import NavigationPrompt from './NavigationPrompt';
 import { UNQUALIFIED_STATE } from '../../utilities/quoteState';
 
-const getCurrentStepAndPage = defaultMemoize((pathname) => {
+const getCurrentStepAndPage = defaultMemoize(pathname => {
   const currentRouteName = pathname.split('/')[3];
   return {
     currentStepNumber: PAGE_ROUTING[currentRouteName],
@@ -37,7 +44,9 @@ const getCurrentStepAndPage = defaultMemoize((pathname) => {
 });
 
 // Thin memoized wrapper around FormSpys to keep them from needlessly re-rendering.
-const MemoizedFormListeners = React.memo(({ children }) => <React.Fragment>{children}</React.Fragment>);
+const MemoizedFormListeners = React.memo(({ children }) => (
+  <React.Fragment>{children}</React.Fragment>
+));
 
 const FORM_ID = 'QuoteWorkflowCSR';
 
@@ -59,29 +68,44 @@ export class QuoteWorkflow extends React.Component {
       $NOTES_FILES: NotesFiles,
       $AGENCY_SELECT: AgencySelect
     };
-
   }
 
   getConfigForJsonTransform = defaultMemoize(getConfigForJsonTransform);
 
   componentDidMount() {
-    const { match, reviewQuote, getEnumsForQuoteWorkflow, getZipcodeSettings } = this.props;
-    reviewQuote({ quoteNumber: match.params.quoteNumber })
-      .then((quoteData) => {
-        if (quoteData && quoteData.property) {
-          const { companyCode, state, product, property, agencyCode, agentCode, quoteNumber } = quoteData;
-          getEnumsForQuoteWorkflow({
-            companyCode,
-            state,
-            product,
-            agencyCode,
-            agentCode,
-            quoteNumber
-          });
-          getZipcodeSettings(companyCode, state, product, property.physicalAddress.zip);
-        }
-
-      });
+    const {
+      match,
+      reviewQuote,
+      getEnumsForQuoteWorkflow,
+      getZipcodeSettings
+    } = this.props;
+    reviewQuote({ quoteNumber: match.params.quoteNumber }).then(quoteData => {
+      if (quoteData && quoteData.property) {
+        const {
+          companyCode,
+          state,
+          product,
+          property,
+          agencyCode,
+          agentCode,
+          quoteNumber
+        } = quoteData;
+        getEnumsForQuoteWorkflow({
+          companyCode,
+          state,
+          product,
+          agencyCode,
+          agentCode,
+          quoteNumber
+        });
+        getZipcodeSettings(
+          companyCode,
+          state,
+          product,
+          property.physicalAddress.zip
+        );
+      }
+    });
     this.getTemplate();
   }
 
@@ -105,14 +129,16 @@ export class QuoteWorkflow extends React.Component {
     this.setState(() => ({ gandalfTemplate: MOCK_CONFIG_DATA }));
   };
 
-  handleGandalfSubmit = async (values) => {
+  handleGandalfSubmit = async values => {
     const { location } = this.props;
-    const { currentRouteName, currentStepNumber } = getCurrentStepAndPage(location.pathname);
+    const { currentRouteName, currentStepNumber } = getCurrentStepAndPage(
+      location.pathname
+    );
     await this.props.updateQuote({
       data: values,
       options: {
         step: currentStepNumber,
-        shouldSendApplication: currentRouteName === 'application',
+        shouldSendApplication: currentRouteName === 'application'
       }
     });
 
@@ -133,13 +159,17 @@ export class QuoteWorkflow extends React.Component {
     const { currentStepNumber } = getCurrentStepAndPage(location.pathname);
 
     if (currentStepNumber === PAGE_ROUTING.application) {
-      return UNQUALIFIED_STATE.includes(quoteData.quoteInputState) ||
+      return (
+        UNQUALIFIED_STATE.includes(quoteData.quoteInputState) ||
         quoteData.hasActiveExceptions
+      );
     }
 
     if (currentStepNumber === PAGE_ROUTING.summary) {
-      return UNQUALIFIED_STATE.includes(quoteData.quoteInputState) ||
-        quoteData.hasUWError;
+      return (
+        UNQUALIFIED_STATE.includes(quoteData.quoteInputState) ||
+        quoteData.hasUWError
+      );
     }
 
     return pristine || submitting;
@@ -149,17 +179,16 @@ export class QuoteWorkflow extends React.Component {
     remoteSubmit(FORM_ID);
   };
 
-  setFormInstance = (formInstance) => {
+  setFormInstance = formInstance => {
     this.formInstance = formInstance;
   };
 
-  setApplicationSent = (applicationSent) => {
+  setApplicationSent = applicationSent => {
     this.setState({ applicationSent });
   };
 
-  setShowApplicationModal = (showApplicationModal) => {
+  setShowApplicationModal = showApplicationModal => {
     this.setState({ showApplicationModal });
-
   };
 
   render() {
@@ -174,12 +203,16 @@ export class QuoteWorkflow extends React.Component {
       quoteData,
       userProfile,
       updateQuote,
-      notesSynced,
+      notesSynced
     } = this.props;
 
     const { showDiaries, gandalfTemplate } = this.state;
-    const { currentRouteName, currentStepNumber } = getCurrentStepAndPage(location.pathname);
-    const shouldUseGandalf = (gandalfTemplate && ROUTES_NOT_HANDLED_BY_GANDALF.indexOf(currentRouteName) === -1);
+    const { currentRouteName, currentStepNumber } = getCurrentStepAndPage(
+      location.pathname
+    );
+    const shouldUseGandalf =
+      gandalfTemplate &&
+      ROUTES_NOT_HANDLED_BY_GANDALF.indexOf(currentRouteName) === -1;
     const transformConfig = this.getConfigForJsonTransform(gandalfTemplate);
     // TODO going to use Context to pass these directly to custom components,
     //  so Gandalf does not need to know about these.
@@ -191,94 +224,104 @@ export class QuoteWorkflow extends React.Component {
       setAppError: this.props.setAppError,
       setShowApplicationModal: this.setShowApplicationModal,
       showApplicationModal: this.state.showApplicationModal,
-      toggleDiary: this.props.toggleDiary,
+      toggleDiary: this.props.toggleDiary
     };
     return (
       <div className="app-wrapper csr quote">
-        {(isLoading || !quoteData.quoteNumber) &&
-        <Loader/>
-        }
+        {(isLoading || !quoteData.quoteNumber) && <Loader />}
 
-        {quoteData.quoteNumber && gandalfTemplate &&
-        <App
-          header={gandalfTemplate.header}
-          context={match.path.split('/')[1]}
-          resourceType={QUOTE_RESOURCE_TYPE}
-          resourceId={quoteData.quoteNumber}
-          pageTitle={`Q: ${quoteData.quoteNumber || ''}`}
-          match={match}
-          onToggleDiaries={this.handleToggleDiaries}
-          showDiaries={showDiaries}
-        >
-          <React.Fragment>
-            <div className="content-wrapper">
-              {shouldUseGandalf &&
-                <React.Fragment>
-                  <Gandalf
-                    formId={FORM_ID}
-                    className="route-content"
-                    currentPage={currentStepNumber}
-                    customComponents={this.customComponents}
-                    customHandlers={customHandlers}
-                    handleSubmit={this.handleGandalfSubmit}
-                    initialValues={quoteData}
-                    options={{ diaries, notes, ...options }} // enums for select/radio fields
-                    path={location.pathname}
-                    template={gandalfTemplate}
-                    transformConfig={transformConfig}
-                    stickyFooter
-                    renderFooter={({ pristine, submitting, form }) => (
-                      <QuoteFooter
-                        currentStep={currentRouteName}
-                        formInstance={form}
-                        isSubmitDisabled={this.isSubmitDisabled(pristine, submitting)}
-                        handlePrimaryClick={this.primaryClickHandler}
-                        handleApplicationClick={() => this.setShowApplicationModal(true)}
-                      />
-                    )}
-                    formListeners={() => (
-                      <MemoizedFormListeners>
-                        <FormSpy subscription={{}}>
-                          {({ form }) => {
-                            this.setFormInstance(form);
-                            return null;
-                          }}
-                        </FormSpy>
-
-                        <FormSpy subscription={{ dirty: true, pristine: true }}>
-                          {({ dirty }) =>
-                            <NavigationPrompt dirty={dirty} formInstance={this.formInstance} history={history} />
+        {quoteData.quoteNumber && gandalfTemplate && (
+          <App
+            header={gandalfTemplate.header}
+            context={match.path.split('/')[1]}
+            resourceType={QUOTE_RESOURCE_TYPE}
+            resourceId={quoteData.quoteNumber}
+            pageTitle={`Q: ${quoteData.quoteNumber || ''}`}
+            match={match}
+            onToggleDiaries={this.handleToggleDiaries}
+            showDiaries={showDiaries}
+          >
+            <React.Fragment>
+              <div className="content-wrapper">
+                {shouldUseGandalf && (
+                  <React.Fragment>
+                    <Gandalf
+                      formId={FORM_ID}
+                      className="route-content"
+                      currentPage={currentStepNumber}
+                      customComponents={this.customComponents}
+                      customHandlers={customHandlers}
+                      handleSubmit={this.handleGandalfSubmit}
+                      initialValues={quoteData}
+                      options={{ diaries, notes, ...options }} // enums for select/radio fields
+                      path={location.pathname}
+                      template={gandalfTemplate}
+                      transformConfig={transformConfig}
+                      stickyFooter
+                      renderFooter={({ pristine, submitting, form }) => (
+                        <QuoteFooter
+                          currentStep={currentRouteName}
+                          formInstance={form}
+                          isSubmitDisabled={this.isSubmitDisabled(
+                            pristine,
+                            submitting
+                          )}
+                          handlePrimaryClick={this.primaryClickHandler}
+                          handleApplicationClick={() =>
+                            this.setShowApplicationModal(true)
                           }
-                        </FormSpy>
-                      </MemoizedFormListeners>
-                    )}
-                  />
-                </React.Fragment>
-              }
-            </div>
+                        />
+                      )}
+                      formListeners={() => (
+                        <MemoizedFormListeners>
+                          <FormSpy subscription={{}}>
+                            {({ form }) => {
+                              this.setFormInstance(form);
+                              return null;
+                            }}
+                          </FormSpy>
 
-            <UnderwritingValidationBar
-              quoteData={quoteData}
-              userProfile={userProfile}
-              updateQuote={updateQuote}
-            />
+                          <FormSpy
+                            subscription={{ dirty: true, pristine: true }}
+                          >
+                            {({ dirty }) => (
+                              <NavigationPrompt
+                                dirty={dirty}
+                                formInstance={this.formInstance}
+                                history={history}
+                              />
+                            )}
+                          </FormSpy>
+                        </MemoizedFormListeners>
+                      )}
+                    />
+                  </React.Fragment>
+                )}
+              </div>
 
-            <OpenDiariesBar
-              entityEndDate={quoteData.endDate}
-              resourceId={quoteData.quoteNumber}
-              resourceType={QUOTE_RESOURCE_TYPE}
-            />
+              <UnderwritingValidationBar
+                quoteData={quoteData}
+                userProfile={userProfile}
+                updateQuote={updateQuote}
+              />
 
-            {(quoteData && quoteData.quoteNumber) &&
-              <DiaryPolling filter={{
-                resourceId: quoteData.quoteNumber,
-                resourceType: QUOTE_RESOURCE_TYPE
-              }}/>
-            }
+              <OpenDiariesBar
+                entityEndDate={quoteData.endDate}
+                resourceId={quoteData.quoteNumber}
+                resourceType={QUOTE_RESOURCE_TYPE}
+              />
 
-          </React.Fragment>
-        </App>
-        }
+              {quoteData && quoteData.quoteNumber && (
+                <DiaryPolling
+                  filter={{
+                    resourceId: quoteData.quoteNumber,
+                    resourceType: QUOTE_RESOURCE_TYPE
+                  }}
+                />
+              )}
+            </React.Fragment>
+          </App>
+        )}
       </div>
     );
   }
@@ -303,11 +346,14 @@ const mapStateToProps = state => {
   };
 };
 
-export default connect(mapStateToProps, {
-  setAppError,
-  reviewQuote,
-  getZipcodeSettings,
-  getEnumsForQuoteWorkflow,
-  updateQuote,
-  toggleDiary,
-})(QuoteWorkflow);
+export default connect(
+  mapStateToProps,
+  {
+    setAppError,
+    reviewQuote,
+    getZipcodeSettings,
+    getEnumsForQuoteWorkflow,
+    updateQuote,
+    toggleDiary
+  }
+)(QuoteWorkflow);

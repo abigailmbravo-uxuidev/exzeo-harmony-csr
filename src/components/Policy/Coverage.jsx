@@ -38,33 +38,55 @@ export class Coverage extends Component {
       }
     } = this.props;
 
-    const monthsOccupied = underwritingAnswers ? underwritingAnswers.monthsOccupied.answer : null;
+    const monthsOccupied = underwritingAnswers
+      ? underwritingAnswers.monthsOccupied.answer
+      : null;
 
     const discountSurcharge = [
       {
         discountSurcharge: 'Townhouse/Rowhouse',
         value: _get(property, 'townhouseRowhouse') === false ? 'No' : 'Yes'
-      }, {
+      },
+      {
         discountSurcharge: 'Property Ever Rented',
-        value: _get(underwritingAnswers, 'rented.answer') === 'Yes' ? 'Yes' : 'No'
-      }, {
+        value:
+          _get(underwritingAnswers, 'rented.answer') === 'Yes' ? 'Yes' : 'No'
+      },
+      {
         discountSurcharge: 'Seasonally Occupied',
-        value: monthsOccupied === '10+' || monthsOccupied === '7-9' ? 'No' : 'Yes'
-      }, {
+        value:
+          monthsOccupied === '10+' || monthsOccupied === '7-9' ? 'No' : 'Yes'
+      },
+      {
         discountSurcharge: 'No Prior Insurance',
         value: _get(underwritingAnswers, 'noPriorInsuranceSurcharge.answer')
-      }, {
+      },
+      {
         discountSurcharge: 'Burglar Alarm',
         value: _get(property, 'burglarAlarm') ? 'Yes' : 'No'
-      }, {
+      },
+      {
         discountSurcharge: 'Fire Alarm',
         value: _get(property, 'fireAlarm') ? 'Yes' : 'No'
-      }, {
+      },
+      {
         discountSurcharge: 'Sprinkler',
-        value: _get(property, 'sprinkler') === 'N' ? 'No' : _get(property, 'sprinkler')
-      }, {
+        value:
+          _get(property, 'sprinkler') === 'N'
+            ? 'No'
+            : _get(property, 'sprinkler')
+      },
+      {
         discountSurcharge: 'Wind Mit Factor',
-        value: _get(rating, 'worksheet.elements.windMitigationFactors.windMitigationDiscount') ? _get(rating, 'worksheet.elements.windMitigationFactors.windMitigationDiscount') : '0'
+        value: _get(
+          rating,
+          'worksheet.elements.windMitigationFactors.windMitigationDiscount'
+        )
+          ? _get(
+              rating,
+              'worksheet.elements.windMitigationFactors.windMitigationDiscount'
+            )
+          : '0'
       }
     ];
 
@@ -72,77 +94,131 @@ export class Coverage extends Component {
       {
         coverage: 'Dwelling Limit',
         value: `$ ${normalizeNumbers(_get(coverageLimits, 'dwelling.amount'))}`
-      }, {
+      },
+      {
         coverage: 'Other Structures Limit',
-        value: `$ ${normalizeNumbers(_get(coverageLimits, 'otherStructures.amount'))}`
-      }, {
+        value: `$ ${normalizeNumbers(
+          _get(coverageLimits, 'otherStructures.amount')
+        )}`
+      },
+      {
         coverage: 'Personal Property Limit',
-        value: `$ ${normalizeNumbers(_get(coverageLimits, 'personalProperty.amount'))}`
-      }, {
+        value: `$ ${normalizeNumbers(
+          _get(coverageLimits, 'personalProperty.amount')
+        )}`
+      },
+      {
         coverage: 'Loss of Use Limit',
         value: `$ ${normalizeNumbers(_get(coverageLimits, 'lossOfUse.amount'))}`
-      }, {
+      },
+      {
         coverage: 'Personal Liability Limit',
-        value: `$ ${normalizeNumbers(_get(coverageLimits, 'personalLiability.amount'))}`
-      }, {
+        value: `$ ${normalizeNumbers(
+          _get(coverageLimits, 'personalLiability.amount')
+        )}`
+      },
+      {
         coverage: 'Medical Payments to Others Limit',
-        value: `$ ${normalizeNumbers(_get(coverageLimits, 'medicalPayments.amount'))}`
+        value: `$ ${normalizeNumbers(
+          _get(coverageLimits, 'medicalPayments.amount')
+        )}`
       }
     ];
 
     const coverageOptionsData = [
       {
         coverage: 'Mold Property Limit',
-        value: `$ ${normalizeNumbers(_get(coverageLimits, 'moldProperty.amount'))}`
-      }, {
+        value: `$ ${normalizeNumbers(
+          _get(coverageLimits, 'moldProperty.amount')
+        )}`
+      },
+      {
         coverage: 'Mold Liability Limit',
-        value: `$ ${normalizeNumbers(_get(coverageLimits, 'moldLiability.amount'))}`
-      }, {
+        value: `$ ${normalizeNumbers(
+          _get(coverageLimits, 'moldLiability.amount')
+        )}`
+      },
+      {
         coverage: 'Personal Property Repl Cost',
-        value: _get(coverageOptions, 'personalPropertyReplacementCost.answer') ? 'Yes' : 'No'
-      }, {
+        value: _get(coverageOptions, 'personalPropertyReplacementCost.answer')
+          ? 'Yes'
+          : 'No'
+      },
+      {
         coverage: 'Ordinance or Law Coverage Limit',
         value: `${_get(coverageLimits, 'ordinanceOrLaw.amount')}%`
-      }, {
+      },
+      {
         coverage: 'Incidental Occ Main',
-        value: _get(coverageOptions, 'propertyIncidentalOccupanciesMainDwelling.answer') ? 'Yes' : 'No'
-      }, {
+        value: _get(
+          coverageOptions,
+          'propertyIncidentalOccupanciesMainDwelling.answer'
+        )
+          ? 'Yes'
+          : 'No'
+      },
+      {
         coverage: 'Incidental Occ Other',
-        value: _get(coverageOptions, 'propertyIncidentalOccupanciesOtherStructures.answer') ? 'Yes' : 'No'
+        value: _get(
+          coverageOptions,
+          'propertyIncidentalOccupanciesOtherStructures.answer'
+        )
+          ? 'Yes'
+          : 'No'
       },
       {
         coverage: 'Incidental Occ Liability',
-        value: _get(coverageOptions, 'liabilityIncidentalOccupancies.answer') ? 'Yes' : 'No'
+        value: _get(coverageOptions, 'liabilityIncidentalOccupancies.answer')
+          ? 'Yes'
+          : 'No'
       }
     ];
 
     const premium = [
       {
         premium: 'Current Premium',
-        value: `$ ${normalizeNumbers(_get(summaryLedger, 'currentPremium') || 0)}`
-      }, {
+        value: `$ ${normalizeNumbers(
+          _get(summaryLedger, 'currentPremium') || 0
+        )}`
+      },
+      {
         premium: 'Initial Premium',
-        value: `$ ${normalizeNumbers(_get(summaryLedger, 'initialPremium') || 0)}`
+        value: `$ ${normalizeNumbers(
+          _get(summaryLedger, 'initialPremium') || 0
+        )}`
       },
       {
         premium: 'Balance Due',
-        value: `$ ${normalizeNumbers(_get(summaryLedger, 'balance.$numberDecimal') || 0)}`
+        value: `$ ${normalizeNumbers(
+          _get(summaryLedger, 'balance.$numberDecimal') || 0
+        )}`
       }
     ];
 
     const billing = [
       {
         coverage: 'Next Payment',
-        value: `$ ${normalizeNumbers(_get(summaryLedger, 'noticeAmountDue.$numberDecimal') || 0)}`
+        value: `$ ${normalizeNumbers(
+          _get(summaryLedger, 'noticeAmountDue.$numberDecimal') || 0
+        )}`
       },
       {
         coverage: 'Payment Due',
-        value: _get(summaryLedger, 'invoiceDueDate') ? (moment(_get(summaryLedger, 'invoiceDueDate'))).format('L') : '-'
+        value: _get(summaryLedger, 'invoiceDueDate')
+          ? moment(_get(summaryLedger, 'invoiceDueDate')).format('L')
+          : '-'
       },
       {
         coverage: 'Bill To',
-        value: `${_get(_find(_get(paymentOptions, 'options'), option => option.billToId === _get(policy, 'billToId')), 'displayText')}`
-      }, {
+        value: `${_get(
+          _find(
+            _get(paymentOptions, 'options'),
+            option => option.billToId === _get(policy, 'billToId')
+          ),
+          'displayText'
+        )}`
+      },
+      {
         coverage: 'Bill Plan',
         value: _get(policy, 'billPlan')
       }
@@ -151,18 +227,24 @@ export class Coverage extends Component {
     const deductibleData = [
       {
         displayText: 'All Other Perils',
-        amount: `$ ${normalizeNumbers(_get(deductibles, 'allOtherPerils.amount'))}`
-      }, {
+        amount: `$ ${normalizeNumbers(
+          _get(deductibles, 'allOtherPerils.amount')
+        )}`
+      },
+      {
         displayText: 'Hurricane',
         amount: `${_get(deductibles, 'hurricane.amount')}%`
-      }, {
+      },
+      {
         displayText: 'Sinkhole',
-        amount: _get(deductibles, 'sinkhole.amount') ? `${_get(deductibles, 'sinkhole.amount')}%` : 'No'
+        amount: _get(deductibles, 'sinkhole.amount')
+          ? `${_get(deductibles, 'sinkhole.amount')}%`
+          : 'No'
       }
     ];
 
     const propertyData = property || {};
-    if (!policy.policyID) return (<Loader />);
+    if (!policy.policyID) return <Loader />;
 
     return (
       <React.Fragment>
@@ -174,41 +256,155 @@ export class Coverage extends Component {
                 <div className="coverage-premium">
                   <div className="responsive-tables">
                     <div className="table-view">
-                      <BootstrapTable className="" data={coverageLimitsData} striped hover>
-                        <TableHeaderColumn isKey dataField="coverage" className="coverage" columnClassName="coverage">Coverage Limits</TableHeaderColumn>
-                        <TableHeaderColumn dataField="value" className="value" columnClassName="value" dataAlign="right">Value</TableHeaderColumn>
+                      <BootstrapTable
+                        className=""
+                        data={coverageLimitsData}
+                        striped
+                        hover
+                      >
+                        <TableHeaderColumn
+                          isKey
+                          dataField="coverage"
+                          className="coverage"
+                          columnClassName="coverage"
+                        >
+                          Coverage Limits
+                        </TableHeaderColumn>
+                        <TableHeaderColumn
+                          dataField="value"
+                          className="value"
+                          columnClassName="value"
+                          dataAlign="right"
+                        >
+                          Value
+                        </TableHeaderColumn>
                       </BootstrapTable>
                     </div>
                     <div className="table-view">
-                      <BootstrapTable className="" data={coverageOptionsData} striped hover>
-                        <TableHeaderColumn isKey dataField="coverage" className="coverage" columnClassName="coverage">Coverage Limits</TableHeaderColumn>
-                        <TableHeaderColumn dataField="value" className="value" columnClassName="value" dataAlign="right">Value</TableHeaderColumn>
+                      <BootstrapTable
+                        className=""
+                        data={coverageOptionsData}
+                        striped
+                        hover
+                      >
+                        <TableHeaderColumn
+                          isKey
+                          dataField="coverage"
+                          className="coverage"
+                          columnClassName="coverage"
+                        >
+                          Coverage Limits
+                        </TableHeaderColumn>
+                        <TableHeaderColumn
+                          dataField="value"
+                          className="value"
+                          columnClassName="value"
+                          dataAlign="right"
+                        >
+                          Value
+                        </TableHeaderColumn>
                       </BootstrapTable>
                     </div>
                     <div className="table-view">
-                      <BootstrapTable className="" data={discountSurcharge} striped hover>
-                        <TableHeaderColumn isKey dataField="discountSurcharge" className="discountSurcharge" columnClassName="discountSurcharge">Discount/Surcharge</TableHeaderColumn>
-                        <TableHeaderColumn dataField="value" className="value" columnClassName="value" dataAlign="right">Value</TableHeaderColumn>
+                      <BootstrapTable
+                        className=""
+                        data={discountSurcharge}
+                        striped
+                        hover
+                      >
+                        <TableHeaderColumn
+                          isKey
+                          dataField="discountSurcharge"
+                          className="discountSurcharge"
+                          columnClassName="discountSurcharge"
+                        >
+                          Discount/Surcharge
+                        </TableHeaderColumn>
+                        <TableHeaderColumn
+                          dataField="value"
+                          className="value"
+                          columnClassName="value"
+                          dataAlign="right"
+                        >
+                          Value
+                        </TableHeaderColumn>
                       </BootstrapTable>
                     </div>
                   </div>
                   <div className="responsive-tables">
                     <div className="table-view">
-                      <BootstrapTable className="deductible" data={deductibleData} striped hover>
-                        <TableHeaderColumn isKey dataField="displayText" className="coverage" columnClassName="coverage">Deductible</TableHeaderColumn>
-                        <TableHeaderColumn dataField="amount" className="value" columnClassName="value" dataAlign="right">Value</TableHeaderColumn>
+                      <BootstrapTable
+                        className="deductible"
+                        data={deductibleData}
+                        striped
+                        hover
+                      >
+                        <TableHeaderColumn
+                          isKey
+                          dataField="displayText"
+                          className="coverage"
+                          columnClassName="coverage"
+                        >
+                          Deductible
+                        </TableHeaderColumn>
+                        <TableHeaderColumn
+                          dataField="amount"
+                          className="value"
+                          columnClassName="value"
+                          dataAlign="right"
+                        >
+                          Value
+                        </TableHeaderColumn>
                       </BootstrapTable>
                     </div>
                     <div className="table-view">
-                      <BootstrapTable className="premium" data={premium} striped hover>
-                        <TableHeaderColumn isKey dataField="premium" className="coverage" columnClassName="coverage">Premium</TableHeaderColumn>
-                        <TableHeaderColumn dataField="value" className="value" columnClassName="value" dataAlign="right">Value</TableHeaderColumn>
+                      <BootstrapTable
+                        className="premium"
+                        data={premium}
+                        striped
+                        hover
+                      >
+                        <TableHeaderColumn
+                          isKey
+                          dataField="premium"
+                          className="coverage"
+                          columnClassName="coverage"
+                        >
+                          Premium
+                        </TableHeaderColumn>
+                        <TableHeaderColumn
+                          dataField="value"
+                          className="value"
+                          columnClassName="value"
+                          dataAlign="right"
+                        >
+                          Value
+                        </TableHeaderColumn>
                       </BootstrapTable>
                     </div>
                     <div className="table-view">
-                      <BootstrapTable className="billing" data={billing} striped hover>
-                        <TableHeaderColumn isKey dataField="coverage" className="coverage" columnClassName="coverage">Billing</TableHeaderColumn>
-                        <TableHeaderColumn dataField="value" className="value" columnClassName="value" dataAlign="right">Value</TableHeaderColumn>
+                      <BootstrapTable
+                        className="billing"
+                        data={billing}
+                        striped
+                        hover
+                      >
+                        <TableHeaderColumn
+                          isKey
+                          dataField="coverage"
+                          className="coverage"
+                          columnClassName="coverage"
+                        >
+                          Billing
+                        </TableHeaderColumn>
+                        <TableHeaderColumn
+                          dataField="value"
+                          className="value"
+                          columnClassName="value"
+                          dataAlign="right"
+                        >
+                          Value
+                        </TableHeaderColumn>
                       </BootstrapTable>
                     </div>
                   </div>
@@ -220,39 +416,72 @@ export class Coverage extends Component {
                   <dl>
                     <div>
                       <dt className="yearHomeBuilt">Year Home Built</dt>
-                      <dd className="yearHomeBuilt">{propertyData.yearBuilt}</dd>
+                      <dd className="yearHomeBuilt">
+                        {propertyData.yearBuilt}
+                      </dd>
                       <dt className="construction">Construction</dt>
-                      <dd className="construction">{propertyData.constructionType}</dd>
+                      <dd className="construction">
+                        {propertyData.constructionType}
+                      </dd>
                       <dt className="yearRoofBuilt">Year Roof Built</dt>
-                      <dd className="yearRoofBuilt">{propertyData.yearOfRoof}</dd>
+                      <dd className="yearRoofBuilt">
+                        {propertyData.yearOfRoof}
+                      </dd>
                     </div>
                   </dl>
                   <dl>
                     <div>
                       <dt className="protectionClass">Protection Class</dt>
-                      <dd className="protectionClass">{propertyData.protectionClass}</dd>
+                      <dd className="protectionClass">
+                        {propertyData.protectionClass}
+                      </dd>
                       <dt className="BCEG">BCEG</dt>
-                      <dd className="BCEG">{propertyData.buildingCodeEffectivenessGrading}</dd>
+                      <dd className="BCEG">
+                        {propertyData.buildingCodeEffectivenessGrading}
+                      </dd>
                       <dt className="familyUnits">Family Units</dt>
-                      <dd className="familyUnits">{propertyData.familyUnits}</dd>
+                      <dd className="familyUnits">
+                        {propertyData.familyUnits}
+                      </dd>
                     </div>
                   </dl>
                   <dl>
                     <div>
-                      <dt className="distToTidalWaters">Dist. to Tidal Waters</dt>
-                      <dd className="distToTidalWaters">{normalizeNumbers(propertyData.distanceToTidalWater)} ft.</dd>
-                      <dt className="distToFireHydrant">Dist. to Fire Hydrant</dt>
-                      <dd className="distToFireHydrant">{propertyData.distanceToFireHydrant ? `${normalizeNumbers(propertyData.distanceToFireHydrant)} ft.` : '-'}</dd>
-                      <dt className="distToFireStation">Dist. to Fire Station</dt>
-                      <dd className="distToFireStation">{propertyData.distanceToFireStation} mi.</dd>
+                      <dt className="distToTidalWaters">
+                        Dist. to Tidal Waters
+                      </dt>
+                      <dd className="distToTidalWaters">
+                        {normalizeNumbers(propertyData.distanceToTidalWater)}{' '}
+                        ft.
+                      </dd>
+                      <dt className="distToFireHydrant">
+                        Dist. to Fire Hydrant
+                      </dt>
+                      <dd className="distToFireHydrant">
+                        {propertyData.distanceToFireHydrant
+                          ? `${normalizeNumbers(
+                              propertyData.distanceToFireHydrant
+                            )} ft.`
+                          : '-'}
+                      </dd>
+                      <dt className="distToFireStation">
+                        Dist. to Fire Station
+                      </dt>
+                      <dd className="distToFireStation">
+                        {propertyData.distanceToFireStation} mi.
+                      </dd>
                     </div>
                   </dl>
                   <dl>
                     <div>
                       <dt className="residenceType">Residence Type</dt>
-                      <dd className="residenceType">{propertyData.residenceType}</dd>
+                      <dd className="residenceType">
+                        {propertyData.residenceType}
+                      </dd>
                       <dt className="squareFootage">Square Footage</dt>
-                      <dd className="squareFootage">{propertyData.squareFeet}</dd>
+                      <dd className="squareFootage">
+                        {propertyData.squareFeet}
+                      </dd>
                       <dt className="floodZone">Flood Zone</dt>
                       <dd className="floodZone">{propertyData.floodZone}</dd>
                     </div>
@@ -264,11 +493,28 @@ export class Coverage extends Component {
                         <a
                           target="_blank"
                           rel="noopener noreferrer"
-                          href={getPropertyAppraisalLink(propertyData.physicalAddress.county, questions).answer}>{getPropertyAppraisalLink(propertyData.physicalAddress.county, questions).label}
+                          href={
+                            getPropertyAppraisalLink(
+                              propertyData.physicalAddress.county,
+                              questions
+                            ).answer
+                          }
+                        >
+                          {
+                            getPropertyAppraisalLink(
+                              propertyData.physicalAddress.county,
+                              questions
+                            ).label
+                          }
                         </a>
                       </dd>
                       <dt className="territory">Territory</dt>
-                      <dd className="territory">{_get(rating, 'worksheet.elements.territoryFactors.name') || '-'}</dd>
+                      <dd className="territory">
+                        {_get(
+                          rating,
+                          'worksheet.elements.territoryFactors.name'
+                        ) || '-'}
+                      </dd>
                       <dt className="igdid">IGD ID</dt>
                       <dd className="igdid">{propertyData.id}</dd>
                     </div>
@@ -281,41 +527,79 @@ export class Coverage extends Component {
                   <dl>
                     <div>
                       <dt className="roofCovering">Roof Covering</dt>
-                      <dd className="roofCovering">{property.windMitigation.roofCovering}</dd>
-                      <dt className="roofDeckAttachment">Roof Deck Attachment</dt>
-                      <dd className="roofDeckAttachment">{property.windMitigation.roofDeckAttachment}</dd>
-                      <dt className="roofToWallAttachment">Roof to Wall Attachment</dt>
-                      <dd className="roofToWallAttachment">{property.windMitigation.roofToWallConnection}</dd>
+                      <dd className="roofCovering">
+                        {property.windMitigation.roofCovering}
+                      </dd>
+                      <dt className="roofDeckAttachment">
+                        Roof Deck Attachment
+                      </dt>
+                      <dd className="roofDeckAttachment">
+                        {property.windMitigation.roofDeckAttachment}
+                      </dd>
+                      <dt className="roofToWallAttachment">
+                        Roof to Wall Attachment
+                      </dt>
+                      <dd className="roofToWallAttachment">
+                        {property.windMitigation.roofToWallConnection}
+                      </dd>
                     </div>
                   </dl>
                   <dl>
                     <div>
                       <dt className="roofGeometry">Roof Geometry</dt>
-                      <dd className="roofGeometry">{property.windMitigation.roofGeometry}</dd>
+                      <dd className="roofGeometry">
+                        {property.windMitigation.roofGeometry}
+                      </dd>
                       <dt className="SWR">Secondary Water Resistance (SWR)</dt>
-                      <dd className="SWR">{property.windMitigation.secondaryWaterResistance}</dd>
+                      <dd className="SWR">
+                        {property.windMitigation.secondaryWaterResistance}
+                      </dd>
                       <dt className="openingProtection">Opening Protection</dt>
-                      <dd className="openingProtection">{property.windMitigation.openingProtection}</dd>
+                      <dd className="openingProtection">
+                        {property.windMitigation.openingProtection}
+                      </dd>
                     </div>
                   </dl>
                   <dl>
                     <div>
                       <dt className="windSpeed">FBC Wind Speed</dt>
-                      <dd className="windSpeed">{property.windMitigation.floridaBuildingCodeWindSpeed}</dd>
+                      <dd className="windSpeed">
+                        {property.windMitigation.floridaBuildingCodeWindSpeed}
+                      </dd>
                       <dt className="windSpeedDesign">FBC Wind Speed Design</dt>
-                      <dd className="windSpeedDesign">{property.windMitigation.floridaBuildingCodeWindSpeedDesign}</dd>
+                      <dd className="windSpeedDesign">
+                        {
+                          property.windMitigation
+                            .floridaBuildingCodeWindSpeedDesign
+                        }
+                      </dd>
                       <dt className="terrain">Terrain</dt>
-                      <dd className="terrain">{property.windMitigation.terrain}</dd>
+                      <dd className="terrain">
+                        {property.windMitigation.terrain}
+                      </dd>
                     </div>
                   </dl>
                   <dl>
                     <div>
-                      <dt className="internalPressureDesign">Internal Pressure Design</dt>
-                      <dd className="internalPressureDesign">{property.windMitigation.internalPressureDesign}</dd>
+                      <dt className="internalPressureDesign">
+                        Internal Pressure Design
+                      </dt>
+                      <dd className="internalPressureDesign">
+                        {property.windMitigation.internalPressureDesign}
+                      </dd>
                       <dt className="WBDR">Wind Borne Debris Region (WBDR)</dt>
-                      <dd className="WBDR">{property.windMitigation.windBorneDebrisRegion}</dd>
+                      <dd className="WBDR">
+                        {property.windMitigation.windBorneDebrisRegion}
+                      </dd>
                       <dt className="windMitFactor">Wind Mit Factor</dt>
-                      <dd className="windMitFactor">{_get(_find(discountSurcharge, { discountSurcharge: 'Wind Mit Factor' }), 'value')}</dd>
+                      <dd className="windMitFactor">
+                        {_get(
+                          _find(discountSurcharge, {
+                            discountSurcharge: 'Wind Mit Factor'
+                          }),
+                          'value'
+                        )}
+                      </dd>
                     </div>
                   </dl>
                 </div>
@@ -359,6 +643,9 @@ const mapStateToProps = state => ({
   summaryLedger: state.policyState.summaryLedger
 });
 
-export default connect(mapStateToProps, {
-  getUIQuestions
-})(Coverage);
+export default connect(
+  mapStateToProps,
+  {
+    getUIQuestions
+  }
+)(Coverage);

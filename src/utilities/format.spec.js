@@ -12,7 +12,6 @@ describe('Test formatUrl', () => {
   });
 });
 
-
 describe('Test removeTerm', () => {
   it('should return the value if undefined', () => {
     const result = format.removeTerm(undefined);
@@ -35,8 +34,8 @@ describe('Test removeTerm', () => {
   });
 
   it('should return the value if empty string', () => {
-    const result = format.removeTerm("");
-    expect(result).toEqual("");
+    const result = format.removeTerm('');
+    expect(result).toEqual('');
   });
 
   it('should remove the term from the number 12-1005269-01', () => {
@@ -54,4 +53,3 @@ describe('Test removeTerm', () => {
     expect(result).toEqual('12-1005269');
   });
 });
-

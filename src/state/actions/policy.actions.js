@@ -7,7 +7,6 @@ import * as errorActions from './error.actions';
 import * as cgActions from './cg.actions';
 import endorsementUtils from '../../utilities/endorsementModel';
 
-
 /**
  * Reset policyState
  * @returns {{type: string}}
@@ -15,7 +14,7 @@ import endorsementUtils from '../../utilities/endorsementModel';
 export function resetPolicy() {
   return {
     type: types.RESET_POLICY
-  }
+  };
 }
 
 /**
@@ -134,7 +133,7 @@ export function setPoliciesForAgency(agencyPolices) {
  * @returns {Function}
  */
 export function getPolicy(policyNumber) {
-  return async (dispatch) => {
+  return async dispatch => {
     try {
       const policy = await fetchPolicy(policyNumber);
       const summaryLedger = await fetchSummaryLedger(policyNumber);
@@ -152,7 +151,7 @@ export function getPolicy(policyNumber) {
  * @returns {Function}
  */
 export function getSummaryLedger(policyNumber) {
-  return async (dispatch) => {
+  return async dispatch => {
     try {
       const summaryLedger = await fetchSummaryLedger(policyNumber);
       dispatch(setSummaryLedger(summaryLedger));
@@ -169,7 +168,7 @@ export function getSummaryLedger(policyNumber) {
  * @returns {Function}
  */
 export function getNewRate(formData, formProps) {
-  return async (dispatch) => {
+  return async dispatch => {
     try {
       const rateData = convertToRateData(formData, formProps);
       const config = {
@@ -179,7 +178,10 @@ export function getNewRate(formData, formProps) {
         data: rateData
       };
       const response = await serviceRunner.callService(config, 'getNewRate');
-      const rate = response && response.data && response.data.result ? response.data.result : {};
+      const rate =
+        response && response.data && response.data.result
+          ? response.data.result
+          : {};
       return { ...rate };
     } catch (error) {
       dispatch(errorActions.setAppError(error));
@@ -192,7 +194,7 @@ export function getNewRate(formData, formProps) {
  * @returns {Function}
  */
 export function getEffectiveDateChangeReasons() {
-  return async (dispatch) => {
+  return async dispatch => {
     try {
       const reasons = await fetchEffectiveDateChangeReasons();
       dispatch(setEffectiveDateChangeReasons(reasons));
@@ -208,7 +210,7 @@ export function getEffectiveDateChangeReasons() {
  * @returns {Function}
  */
 export function getPaymentHistory(policyNumber) {
-  return async (dispatch) => {
+  return async dispatch => {
     try {
       const paymentHistory = await fetchPaymentHistory(policyNumber);
       dispatch(setPaymentHistory(paymentHistory));
@@ -224,7 +226,7 @@ export function getPaymentHistory(policyNumber) {
  * @returns {Function}
  */
 export function addTransaction(submitData) {
-  return async (dispatch) => {
+  return async dispatch => {
     const config = {
       service: 'billing',
       method: 'POST',
@@ -260,7 +262,7 @@ export function addTransaction(submitData) {
  * @returns {function(*): Promise<any>}
  */
 export function getBillingOptionsForPolicy(paymentOptions) {
-  return async (dispatch) => {
+  return async dispatch => {
     try {
       const billingOptions = await fetchBillingOptions(paymentOptions);
       dispatch(setBillingOptions(billingOptions));
@@ -275,7 +277,7 @@ export function getBillingOptionsForPolicy(paymentOptions) {
  * @returns {Function}
  */
 export function getPaymentOptionsApplyPayments() {
-  return async (dispatch) => {
+  return async dispatch => {
     try {
       const paymentOptions = await fetchPaymentOptionsApplyPayments();
       dispatch(setPaymentOptions(paymentOptions));
@@ -291,7 +293,7 @@ export function getPaymentOptionsApplyPayments() {
  * @returns {function(*): Promise<any>}
  */
 export function getEndorsementHistory(policyNumber) {
-  return async (dispatch) => {
+  return async dispatch => {
     try {
       const endorsementHistory = await fetchEndorsementHistory(policyNumber);
       dispatch(setEndorsementHistory(endorsementHistory));
@@ -307,7 +309,7 @@ export function getEndorsementHistory(policyNumber) {
  * @returns {Function}
  */
 export function createTransaction(submitData) {
-  return async (dispatch) => {
+  return async dispatch => {
     try {
       // performance issues can arise from returning an 'await'ed function - https://eslint.org/docs/rules/no-return-await
       // noinspection UnnecessaryLocalVariableJS
@@ -325,7 +327,7 @@ export function createTransaction(submitData) {
  * @returns {Function}
  */
 export function updateBillPlan(paymentPlan) {
-  return async (dispatch) => {
+  return async dispatch => {
     try {
       const policy = await postUpdatedBillPlan(paymentPlan);
       // TODO: Implement some type of pub/sub for message queue
@@ -333,7 +335,9 @@ export function updateBillPlan(paymentPlan) {
       if (policy && policy.policyNumber) {
         dispatch(getPolicy(policy.policyNumber));
       } else {
-        dispatch(errorActions.setAppError({ message: 'Could not GET updated Policy' }));
+        dispatch(
+          errorActions.setAppError({ message: 'Could not GET updated Policy' })
+        );
       }
     } catch (error) {
       dispatch(errorActions.setAppError(error));
@@ -346,7 +350,7 @@ export function updateBillPlan(paymentPlan) {
  * @returns {Function}
  */
 export function getCancelOptions() {
-  return async (dispatch) => {
+  return async dispatch => {
     try {
       const cancelOptions = await fetchCancelOptions();
       dispatch(setCancelOptions(cancelOptions));
@@ -363,20 +367,36 @@ export function getCancelOptions() {
  * @returns {Function}
  */
 export function submitEndorsementForm(formData, formProps) {
-  return async (dispatch) => {
+  return async dispatch => {
     const submitData = endorsementUtils.generateModel(formData, formProps);
-    const forms = await fetchListOfForms(formProps.policy, submitData.rating, 'New Business');
+    const forms = await fetchListOfForms(
+      formProps.policy,
+      submitData.rating,
+      'New Business'
+    );
     submitData.forms = forms;
 
     // TODO: Make cg actions a utility rather than stored in state
-    const result = await dispatch(cgActions.startWorkflow('endorsePolicyModelSave'));
+    const result = await dispatch(
+      cgActions.startWorkflow('endorsePolicyModelSave')
+    );
 
-    const steps = [{
-      name: 'saveEndorsement',
-      data: submitData
-    }];
-    const startResult = result.payload ? result.payload[0].workflowData.endorsePolicyModelSave.data : {};
-    await dispatch(cgActions.batchCompleteTask(startResult.modelName, startResult.modelInstanceId, steps));
+    const steps = [
+      {
+        name: 'saveEndorsement',
+        data: submitData
+      }
+    ];
+    const startResult = result.payload
+      ? result.payload[0].workflowData.endorsePolicyModelSave.data
+      : {};
+    await dispatch(
+      cgActions.batchCompleteTask(
+        startResult.modelName,
+        startResult.modelInstanceId,
+        steps
+      )
+    );
     // TODO: Implement some type of pub/sub for message queue
     await new Promise(resolve => setTimeout(resolve, 2000));
     dispatch(getEndorsementHistory(submitData.policyNumber));
@@ -423,8 +443,13 @@ export async function fetchSummaryLedger(policyNumber) {
   };
 
   try {
-    const response = await serviceRunner.callService(config, 'fetchSummaryLedger');
-    return response && response.data && response.data.result ? response.data.result : {};
+    const response = await serviceRunner.callService(
+      config,
+      'fetchSummaryLedger'
+    );
+    return response && response.data && response.data.result
+      ? response.data.result
+      : {};
   } catch (error) {
     throw error;
   }
@@ -442,7 +467,10 @@ export async function fetchEffectiveDateChangeReasons() {
   };
 
   try {
-    const response = await serviceRunner.callService(config, 'fetchEffectiveDateChangeReasons');
+    const response = await serviceRunner.callService(
+      config,
+      'fetchEffectiveDateChangeReasons'
+    );
     return response && response.data ? response.data.effectiveDateReasons : [];
   } catch (error) {
     throw error;
@@ -461,7 +489,10 @@ export async function fetchPaymentHistory(policyNumber) {
     path: `payment-history/${policyNumber}`
   };
   try {
-    const response = await serviceRunner.callService(config, 'fetchPaymentHistory');
+    const response = await serviceRunner.callService(
+      config,
+      'fetchPaymentHistory'
+    );
     return response.data && response.data.result ? response.data.result : {};
   } catch (error) {
     throw error;
@@ -480,8 +511,13 @@ export async function fetchPaymentOptionsApplyPayments() {
   };
 
   try {
-    const response = await serviceRunner.callService(config, 'fetchPaymentOptionsApplyPayments');
-    return response.data && response.data.paymentOptions ? response.data.paymentOptions : {};
+    const response = await serviceRunner.callService(
+      config,
+      'fetchPaymentOptionsApplyPayments'
+    );
+    return response.data && response.data.paymentOptions
+      ? response.data.paymentOptions
+      : {};
   } catch (error) {
     throw error;
   }
@@ -509,8 +545,13 @@ export async function fetchListOfForms(policy, rating, transactionType) {
   };
 
   try {
-    const response = await serviceRunner.callService(config, 'fetchListOfForms');
-    return response.data && response.data.result && response.data.result.forms ? response.data.result.forms : [];
+    const response = await serviceRunner.callService(
+      config,
+      'fetchListOfForms'
+    );
+    return response.data && response.data.result && response.data.result.forms
+      ? response.data.result.forms
+      : [];
   } catch (error) {
     throw error;
   }
@@ -530,7 +571,10 @@ export async function fetchBillingOptions(paymentOptions) {
   };
 
   try {
-    const response = await serviceRunner.callService(config, 'fetchBillingOptions');
+    const response = await serviceRunner.callService(
+      config,
+      'fetchBillingOptions'
+    );
     return response.data && response.data.result ? response.data.result : {};
   } catch (error) {
     throw error;
@@ -550,7 +594,10 @@ export async function fetchEndorsementHistory(policyNumber) {
   };
 
   try {
-    const response = await serviceRunner.callService(config, 'fetchEndorsementHistory');
+    const response = await serviceRunner.callService(
+      config,
+      'fetchEndorsementHistory'
+    );
     return response.data || [];
   } catch (error) {
     throw error;
@@ -571,13 +618,15 @@ export async function postCreatTransaction(submitData) {
   };
 
   try {
-    const response = await serviceRunner.callService(config, 'postCreatTransaction');
+    const response = await serviceRunner.callService(
+      config,
+      'postCreatTransaction'
+    );
     return response.data && response.data.result ? response.data.result : {};
   } catch (error) {
     throw error;
   }
 }
-
 
 /**
  *
@@ -593,7 +642,10 @@ export async function postUpdatedBillPlan(paymentPlan) {
   };
 
   try {
-    const response = await serviceRunner.callService(config, 'postUpdatedBillPlan');
+    const response = await serviceRunner.callService(
+      config,
+      'postUpdatedBillPlan'
+    );
     return response.data && response.data.result ? response.data.result : {};
   } catch (error) {
     throw error;
@@ -612,13 +664,17 @@ export async function fetchCancelOptions() {
   };
 
   try {
-    const response = await serviceRunner.callService(config, 'fetchCancelOptions');
-    return response && response.data && response.data.cancelOptions ? response.data.cancelOptions : [];
+    const response = await serviceRunner.callService(
+      config,
+      'fetchCancelOptions'
+    );
+    return response && response.data && response.data.cancelOptions
+      ? response.data.cancelOptions
+      : [];
   } catch (error) {
     throw error;
   }
 }
-
 
 /**
  *
@@ -629,7 +685,13 @@ export async function fetchCancelOptions() {
  * @param policyNumber
  * @returns {Promise<{}>}
  */
-export async function fetchPoliciesForAgency({ agencyCode = '', state = 'FL', product = 'HO3', agentCode = '', policyNumber = ''}) {
+export async function fetchPoliciesForAgency({
+  agencyCode = '',
+  state = 'FL',
+  product = 'HO3',
+  agentCode = '',
+  policyNumber = ''
+}) {
   const config = {
     service: 'policy-data',
     method: 'GET',
@@ -637,7 +699,10 @@ export async function fetchPoliciesForAgency({ agencyCode = '', state = 'FL', pr
   };
 
   try {
-    const response = await serviceRunner.callService(config, 'fetchPoliciesForAgency');
+    const response = await serviceRunner.callService(
+      config,
+      'fetchPoliciesForAgency'
+    );
     return response ? response.data : {};
   } catch (error) {
     throw error;
@@ -653,10 +718,22 @@ export async function fetchPoliciesForAgency({ agencyCode = '', state = 'FL', pr
  * @param agentCode
  * @returns {Function}
  */
-export function getPoliciesForAgency({ policyNumber, agencyCode, state, product, agentCode}) {
-  return async (dispatch) => {
+export function getPoliciesForAgency({
+  policyNumber,
+  agencyCode,
+  state,
+  product,
+  agentCode
+}) {
+  return async dispatch => {
     try {
-      const results = await fetchPoliciesForAgency({ policyNumber, state, product, agentCode, agencyCode});
+      const results = await fetchPoliciesForAgency({
+        policyNumber,
+        state,
+        product,
+        agentCode,
+        agencyCode
+      });
       dispatch(setPoliciesForAgency(results.policies));
     } catch (error) {
       dispatch(errorActions.setAppError(error));
