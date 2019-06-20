@@ -8,7 +8,7 @@ configure({ adapter: new Adapter() });
 reactTestingConfigure({ testIdAttribute: 'data-test' });
 
 // TODO: Upgrade to react-dom@16.9 and then remove this
-const originalError = console.error
+const originalError = console.error;
 beforeAll(() => {
   console.error = (...args) => {
     if (/Warning.*not wrapped in act/.test(args[0])) {

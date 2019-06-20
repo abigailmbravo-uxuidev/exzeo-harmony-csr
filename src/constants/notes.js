@@ -1,4 +1,4 @@
-export const NOTE_TYPE = { 
+export const NOTE_TYPE = {
   notes: 'notes',
   files: 'files',
   diaries: 'diaries'

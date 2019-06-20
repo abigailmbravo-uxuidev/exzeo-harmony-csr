@@ -41,7 +41,7 @@ describe('Underwriting Error Testing', () => {
     // Override the exception manually.
       .get('section.msg-caution .fa-ul li input').should('have.attr', 'value', 'false').click()
       .get('.msg-caution button[type="submit"]').click()
-      .wait('@updateQuote').then(({ response: { body: { result }} }) => {
+      .wait('@updateQuote').then(({ response: { body: { result }}}) => {
         // Confirm that there exists an overridden exception
         expect(result.underwritingExceptions.filter(({ overridden }) => overridden).length).to.equal(1);
         // and that the quote is in a good state.

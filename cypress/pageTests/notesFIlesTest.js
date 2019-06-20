@@ -6,7 +6,7 @@ const addNoteCheck = text => cy.findDataTag('new-note').click({ force: true })
 export default () => {
   cy.get('td.note div').contains('Quote State Changed: Quote Created')
     .get('td.note div').contains('Quote State Changed: Quote Qualified')
-    .get('td.note div').contains('Quote State Changed: Application Ready')
+    .get('td.note div').contains('Quote State Changed: Application Ready');
 
   addNoteCheck('test note one');
 

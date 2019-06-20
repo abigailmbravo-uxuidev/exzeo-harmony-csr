@@ -208,7 +208,7 @@ describe('Summary Testing with Default Quote', () => {
         quoteInputState: 'Ready'
       }
     };
-    
+
     const { queryByText } = renderWithForm(<QuoteWorkflow {...newProps} />);
 
     expect(queryByText('Quote Summary cannot be sent due to Underwriting Validations')).toBeNull();

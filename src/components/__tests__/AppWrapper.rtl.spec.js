@@ -199,7 +199,7 @@ describe('Testing AppWrapper', () => {
     expect(getByText('Application'));
 
     fireEvent.click(getByText('Underwriting Conditions'));
-    expect(getByText('Please be aware that assumptions to this property have been made in order to provide you this quote. If any of the below assumptions are not correct, please contact us before continuing.'))
+    expect(getByText('Please be aware that assumptions to this property have been made in order to provide you this quote. If any of the below assumptions are not correct, please contact us before continuing.'));
     expect(getByText('All properties will be inspected within 30 days of the effective date.'));
     expect(getByText('Please be aware that assumptions to this property have been made in order to provide you this quote. If any of the below assumptions are not correct, please contact us before continuing.'));
     expect(getByText('Properties with pools (or similar structures), are to be completely fenced, walled, or screened. There are no slides or diving boards.'));

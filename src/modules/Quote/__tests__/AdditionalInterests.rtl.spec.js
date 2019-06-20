@@ -443,5 +443,5 @@ describe('Additional Interest Testing', () => {
     expect(getByText('Additional Interest')).toBeDisabled();
     expect(getByText('Premium Finance')).toBeDisabled();
     expect(getByText('Bill Payer')).toBeDisabled();
-  })
+  });
 });

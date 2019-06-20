@@ -11,7 +11,7 @@ describe('Skip to UW Testing', () => {
     setRouteAliases();
     navigateThroughNewQuote();
   });
-  
+
   it('Can fill out UW before Coverage', () => {
     fillOutUnderwriting();
     fillOutCoverage();
