@@ -41,7 +41,7 @@ export class SearchPage extends Component {
     this.props.resetSearch();
   }
 
-  setHasSearched = (hasSearched) => {
+  setHasSearched = hasSearched => {
     this.setState({ hasSearched });
   };
 
@@ -69,7 +69,7 @@ export class SearchPage extends Component {
     }
   };
 
-  changeSearchType = (searchType) => {
+  changeSearchType = searchType => {
     this.setState({
       searchType,
       searchConfig: searchType,
@@ -89,12 +89,15 @@ export class SearchPage extends Component {
     const initialValues = SEARCH_CONFIG[searchConfig].initialValues;
 
     return searchType === 'diaries'
-      ? {...initialValues,
-          assignees: [{
-            answer: userProfile.userId,
-            label: `${userProfile.profile.given_name} ${userProfile.profile.family_name}`,
-            type: 'user'
-          }]
+      ? {
+          ...initialValues,
+          assignees: [
+            {
+              answer: userProfile.userId,
+              label: `${userProfile.profile.given_name} ${userProfile.profile.family_name}`,
+              type: 'user'
+            }
+          ]
         }
       : initialValues;
   };
@@ -105,27 +108,22 @@ export class SearchPage extends Component {
       hasSearched,
       searchConfig,
       searchReady,
-      searchType,
+      searchType
     } = this.state;
 
     const SearchForm = SEARCH_FORMS[searchType];
 
     return (
       <React.Fragment>
-
         <div className={advancedSearch ? 'policy-advanced search' : 'search'}>
-          {searchReady &&
+          {searchReady && (
             <SearchBar
               advancedSearch={advancedSearch}
               changeSearchType={this.changeSearchType}
               initialValues={this.setInitialValues(searchType, searchConfig)}
               onSubmitSuccess={() => this.setHasSearched(true)}
               searchType={searchType}
-              render={({
-                changeSearchType,
-                handlePagination,
-                formProps
-              }) => (
+              render={({ changeSearchType, handlePagination, formProps }) => (
                 <SearchForm
                   advancedSearch={advancedSearch}
                   changeSearchType={changeSearchType}
@@ -133,23 +131,27 @@ export class SearchPage extends Component {
                   handlePagination={handlePagination}
                   hasSearched={hasSearched}
                   toggleAdvancedSearch={this.toggleAdvancedSearch}
-                  {...formProps} />
-              )} />
-          }
+                  {...formProps}
+                />
+              )}
+            />
+          )}
         </div>
-        <main role="document" className={advancedSearch ? 'policy-advanced' : ''}>
+        <main
+          role="document"
+          className={advancedSearch ? 'policy-advanced' : ''}
+        >
           <div className="content-wrapper">
             <div className="dashboard" role="article">
               <div className="route">
                 <div className="search route-content">
                   <div className="survey-wrapper scroll">
-
                     <SearchResults
                       hasSearched={hasSearched}
-                      searchType={searchType} />
+                      searchType={searchType}
+                    />
 
                     {this.props.children}
-
                   </div>
                 </div>
               </div>
@@ -161,10 +163,13 @@ export class SearchPage extends Component {
   }
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = state => {
   return {
     userProfile: state.authState.userProfile
   };
 };
 
-export default connect(mapStateToProps, { resetSearch })(SearchPage);
+export default connect(
+  mapStateToProps,
+  { resetSearch }
+)(SearchPage);

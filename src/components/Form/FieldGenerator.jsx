@@ -13,12 +13,7 @@ import {
   SelectFieldBilling
 } from './inputs';
 
-const FieldGenerator = ({
-  question,
-  data,
-  values,
-  onChange
-}) => {
+const FieldGenerator = ({ question, data, values, onChange }) => {
   const fieldOptions = dependencyHelper(question, data, values);
 
   const inputProps = {
@@ -44,13 +39,15 @@ const FieldGenerator = ({
       }
       const maxChars = window.innerWidth / (12 * inputProps.answers.length);
       let isDropdown = false;
-      inputProps.answers.some((a) => {
+      inputProps.answers.some(a => {
         isDropdown = a.answer && a.answer.length > maxChars;
         return isDropdown;
       });
-      return isDropdown ?
-        <SelectField {...inputProps} /> :
-        <RadioField {...inputProps} segmented />;
+      return isDropdown ? (
+        <SelectField {...inputProps} />
+      ) : (
+        <RadioField {...inputProps} segmented />
+      );
     }
     case 'bool':
       return <CheckField {...inputProps} isSwitch />;
@@ -83,7 +80,7 @@ FieldGenerator.propTypes = {
   }),
   onChange: PropTypes.func,
   data: PropTypes.any, // eslint-disable-line
-  values: PropTypes.any, // eslint-disable-line
+  values: PropTypes.any // eslint-disable-line
 };
 
 export default FieldGenerator;

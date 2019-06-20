@@ -58,8 +58,12 @@ describe('Testing Policy component', () => {
     const store = mockStore(initialState);
     const props = {
       match: { params: {}, path: '/quote', url: '/test' },
-      batchCompleteTask() { return Promise.resolve(); },
-      createTransaction() { return Promise.resolve(); },
+      batchCompleteTask() {
+        return Promise.resolve();
+      },
+      createTransaction() {
+        return Promise.resolve();
+      },
       getAgents() {},
       getAgency() {},
       getBillingOptionsForPolicy() {},
@@ -69,11 +73,26 @@ describe('Testing Policy component', () => {
       getPaymentHistory() {},
       getPaymentOptionsApplyPayments() {},
       getPolicy() {},
-      getSummaryLedger() { return Promise.resolve(); },
-      getZipCodeSettings() { return Promise.resolve(); },
+      getSummaryLedger() {
+        return Promise.resolve();
+      },
+      getZipCodeSettings() {
+        return Promise.resolve();
+      },
       getEffectiveDateChangeReasons() {},
       setAppState() {},
-      startWorkflow() { return Promise.resolve({ payload: [{ workflowData: { effectiveDateChangeModel: { data: {} }, endorsePolicyModelCalculate: { data: {} } } }] }); },
+      startWorkflow() {
+        return Promise.resolve({
+          payload: [
+            {
+              workflowData: {
+                effectiveDateChangeModel: { data: {} },
+                endorsePolicyModelCalculate: { data: {} }
+              }
+            }
+          ]
+        });
+      },
       appState: initialState.appState,
       dispatch: store.dispatch,
       policy: initialState.policyState.policy,
@@ -84,17 +103,20 @@ describe('Testing Policy component', () => {
       initialized: true
     };
 
-    const instance = shallow(<Policy store={{ dispatch: x => x }} {...props} />).instance();
+    const instance = shallow(
+      <Policy store={{ dispatch: x => x }} {...props} />
+    ).instance();
     expect(instance);
     instance.componentDidMount();
     instance.componentDidUpdate(props);
 
-     const wrapper = mount(
-       <Provider store={store}>
-         <Router>
-           <Policy {...props} />
-         </Router>
-       </Provider>);
+    const wrapper = mount(
+      <Provider store={store}>
+        <Router>
+          <Policy {...props} />
+        </Router>
+      </Provider>
+    );
     expect(wrapper);
   });
 });

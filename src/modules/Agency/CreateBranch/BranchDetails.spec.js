@@ -7,7 +7,9 @@ import { BranchDetails } from './BranchDetails';
 
 describe('Testing BranchDetails Base component', () => {
   it('should render', () => {
-    const wrapper = shallow(<BranchDetails agency={mockAgency} editContact={x => x} />);
+    const wrapper = shallow(
+      <BranchDetails agency={mockAgency} editContact={x => x} />
+    );
     expect(wrapper).toBeTruthy();
   });
 });

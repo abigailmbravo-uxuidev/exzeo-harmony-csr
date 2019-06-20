@@ -16,21 +16,24 @@ const Details = ({ isEditing }) => {
           styleName="agentCode"
           validate={[validation.isRequired, validation.isNumbersOnly]}
           disabled={isEditing}
-          thousandSeparator={false} />
+          thousandSeparator={false}
+        />
         <Field
           name="firstName"
           label="First Name"
           component={Input}
           dataTest="firstName"
           styleName="firstName"
-          validate={validation.isRequired} />
+          validate={validation.isRequired}
+        />
         <Field
           name="lastName"
           label="Last Name"
           component={Input}
           dataTest="lastName"
           styleName="lastName"
-          validate={validation.isRequired} />
+          validate={validation.isRequired}
+        />
       </div>
       <div className="agent-phone">
         <Field
@@ -39,25 +42,29 @@ const Details = ({ isEditing }) => {
           component={Phone}
           dataTest="primaryPhoneNumber"
           styleName="primaryPhoneNumber"
-          validate={validation.isRequired} />
+          validate={validation.isRequired}
+        />
         <Field
           name="primaryPhoneNumberExtension"
           label="Primary Phone Extension"
           component={Input}
           dataTest="primaryPhoneNumberExtension"
-          styleName="primaryPhoneNumberExtension" />
+          styleName="primaryPhoneNumberExtension"
+        />
         <Field
           name="secondaryPhoneNumber"
           label="Secondary Phone"
           component={Phone}
           dataTest="secondaryPhoneNumber"
-          styleName="secondaryPhoneNumber" />
+          styleName="secondaryPhoneNumber"
+        />
         <Field
           name="faxNumber"
           label="Fax Number"
           component={Phone}
           dataTest="faxNumber"
-          styleName="faxNumber" />
+          styleName="faxNumber"
+        />
       </div>
       <div className="agent-status-email">
         <Field
@@ -67,14 +74,16 @@ const Details = ({ isEditing }) => {
           dataTest="status"
           styleName="status"
           validate={validation.isRequired}
-          answers={STATUS} />
+          answers={STATUS}
+        />
         <Field
           name="emailAddress"
           label="Email Address"
           component={Input}
           dataTest="emailAddress"
           styleName="emailAddress"
-          validate={[validation.isRequired, validation.isEmail]} />
+          validate={[validation.isRequired, validation.isEmail]}
+        />
       </div>
     </React.Fragment>
   );

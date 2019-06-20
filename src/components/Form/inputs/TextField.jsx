@@ -26,18 +26,21 @@ export const TextInput = ({
     name,
     { disabled },
     { valid: touched && !error },
-    { error: touched && error },
+    { error: touched && error }
   );
 
-  const Hint = hint && (<FieldHint name={name} hint={hint} />);
+  const Hint = hint && <FieldHint name={name} hint={hint} />;
 
   const Error = touched && (error || warning) && (
     <span>{error || warning}</span>
   );
 
-  const Label = label && (<label htmlFor={name} for={input.name}>
-    {label}{Hint}
-  </label>);
+  const Label = label && (
+    <label htmlFor={name} for={input.name}>
+      {label}
+      {Hint}
+    </label>
+  );
 
   return (
     <div className={formGroupStyles}>
@@ -58,7 +61,6 @@ export const TextInput = ({
 };
 
 TextInput.propTypes = {
-
   /**
    * Hint for the user
    */
@@ -88,7 +90,7 @@ TextInput.propTypes = {
     warning: PropTypes.string
   }),
 
-    /**
+  /**
    * Max and min limit for range slider
    */
   max: PropTypes.number,
@@ -113,7 +115,6 @@ TextInput.propTypes = {
    * Stylename for form-group
    */
   styleName: PropTypes.string
-
 };
 
 TextInput.defaultProps = {

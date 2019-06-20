@@ -12,14 +12,22 @@ import Notes from '../Notes';
 describe('Notes Testing', () => {
   const props = {
     ...defaultInitialProps,
-    numbers: [], numberType: 'testNumType'
+    numbers: [],
+    numberType: 'testNumType'
   };
-  const notesColumns = ['Created', 'Author', 'Contact', 'Note', 'File Type', 'File'];
+  const notesColumns = [
+    'Created',
+    'Author',
+    'Contact',
+    'Note',
+    'File Type',
+    'File'
+  ];
 
   it('POS:Table Sorting', () => {
     const state = {
       ...defaultInitialState,
-      quoteState: { quote: { quoteNumber: '123' }},
+      quoteState: { quote: { quoteNumber: '123' } },
       appState: {},
       notes: [
         {
@@ -57,7 +65,9 @@ describe('Notes Testing', () => {
       ]
     };
 
-    const { getByText } = renderWithReduxAndRouter(<Notes {...props} />, { state });
+    const { getByText } = renderWithReduxAndRouter(<Notes {...props} />, {
+      state
+    });
 
     expect(getByText('03/21/2019 8:00 PM EDT'));
     expect(getByText('AAA user author'));
@@ -69,8 +79,9 @@ describe('Notes Testing', () => {
     expect(getByText('ZZZ content note'));
 
     const checkOrder = order =>
-      expect(document.querySelectorAll('tbody tr td.created-by')[0].textContent)
-        .toEqual(order === 'asc' ? 'AAA user author' : 'ZZZ user author');
+      expect(
+        document.querySelectorAll('tbody tr td.created-by')[0].textContent
+      ).toEqual(order === 'asc' ? 'AAA user author' : 'ZZZ user author');
 
     const checkArrows = (col, className = 'order dropup') =>
       expect(getByText(col).children[0].className).toEqual(className);
@@ -82,7 +93,8 @@ describe('Notes Testing', () => {
       notesColumns.forEach(col => checkArrows(col, 'order'));
 
       // Author, Filetype, and File sorts ascending, so if author is clicked we check sorting order ascending first.
-      if (['Author', 'File Type', 'File'].includes(columnToClick)) checkOrder('asc');
+      if (['Author', 'File Type', 'File'].includes(columnToClick))
+        checkOrder('asc');
       else checkOrder('desc');
 
       fireEvent.click(dropArrows);
@@ -98,7 +110,8 @@ describe('Notes Testing', () => {
         }
       });
       // Check our sorting order again.
-      if (['Author', 'File Type', 'File'].includes(columnToClick)) checkOrder('desc');
+      if (['Author', 'File Type', 'File'].includes(columnToClick))
+        checkOrder('desc');
       else checkOrder('asc');
     });
   });

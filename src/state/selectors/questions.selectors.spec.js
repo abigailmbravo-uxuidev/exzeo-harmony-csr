@@ -1,4 +1,8 @@
-import { getTopAnswers, getListAnswers, getListAnswersAsKey } from './questions.selectors';
+import {
+  getTopAnswers,
+  getListAnswers,
+  getListAnswersAsKey
+} from './questions.selectors';
 
 describe('Test questions selectors', () => {
   describe('Test getTopAnswers', () => {
@@ -10,8 +14,7 @@ describe('Test questions selectors', () => {
       expect(result).toEqual([]);
     });
 
-
-    it('should return an empty array if it can\'t find mortgagee questions', () => {
+    it("should return an empty array if it can't find mortgagee questions", () => {
       const state = {
         questions: {}
       };
@@ -24,13 +27,15 @@ describe('Test questions selectors', () => {
       const state = {
         questions: {
           mortgagee: {
-            answers: [{
-              AIName1: 'test',
-              AIAddress1: 'address',
-              AICity: 'city',
-              AIState: 'FL',
-              AIZip: 435435
-            }]
+            answers: [
+              {
+                AIName1: 'test',
+                AIAddress1: 'address',
+                AICity: 'city',
+                AIState: 'FL',
+                AIZip: 435435
+              }
+            ]
           }
         }
       };
@@ -84,38 +89,38 @@ describe('Test questions selectors', () => {
                 isActive: true
               }
             ]
-            }
           }
+        }
       };
 
       const result = getListAnswers(state);
       expect(result).toEqual({
-        "Agency_Addendum": [
+        Agency_Addendum: [
           {
-            "answer": "TT 03 16",
-            "label": "TT 03 16"
+            answer: 'TT 03 16',
+            label: 'TT 03 16'
           },
           {
-            "answer": "TT 02 18",
-            "label": "TT 02 18"
+            answer: 'TT 02 18',
+            label: 'TT 02 18'
           },
           {
-            "answer": "HC REV 120115",
-            "label": "HC REV 120115"
+            answer: 'HC REV 120115',
+            label: 'HC REV 120115'
           },
           {
-            "answer": "HC SAF PACS 05 18",
-            "label": "HC SAF PACS 05 18"
+            answer: 'HC SAF PACS 05 18',
+            label: 'HC SAF PACS 05 18'
           }
         ],
-        "US_States": [
+        US_States: [
           {
-            "answer": "FL",
-            "label": "Florida"
+            answer: 'FL',
+            label: 'Florida'
           },
           {
-            "answer": "GA",
-            "label": "Georgia"
+            answer: 'GA',
+            label: 'Georgia'
           }
         ]
       });
@@ -165,41 +170,40 @@ describe('Test questions selectors', () => {
                 isActive: true
               }
             ]
-            }
+          }
         }
       };
       const result = getListAnswersAsKey(state);
       expect(result).toEqual({
-        "Agency_Addendum": [
+        Agency_Addendum: [
           {
-            "answer": "TT 03 16",
-            "label": "TT 03 16"
+            answer: 'TT 03 16',
+            label: 'TT 03 16'
           },
           {
-            "answer": "TT 02 18",
-            "label": "TT 02 18"
+            answer: 'TT 02 18',
+            label: 'TT 02 18'
           },
           {
-            "answer": "HC REV 120115",
-            "label": "HC REV 120115"
+            answer: 'HC REV 120115',
+            label: 'HC REV 120115'
           },
           {
-            "answer": "HC SAF PACS 05 18",
-            "label": "HC SAF PACS 05 18"
+            answer: 'HC SAF PACS 05 18',
+            label: 'HC SAF PACS 05 18'
           }
         ],
-        "US_States": [
+        US_States: [
           {
-            "answer": "FL",
-            "label": "FL"
+            answer: 'FL',
+            label: 'FL'
           },
           {
-            "answer": "GA",
-            "label": "GA"
+            answer: 'GA',
+            label: 'GA'
           }
         ]
       });
     });
   });
 });
-

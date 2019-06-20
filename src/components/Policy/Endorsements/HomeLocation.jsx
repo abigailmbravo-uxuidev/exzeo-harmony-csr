@@ -1,7 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Field } from 'redux-form';
-import { validation, IntegerGroup, SelectGroup, SelectIntegerGroup, NumbersGroup } from '@exzeo/core-ui';
+import {
+  validation,
+  IntegerGroup,
+  SelectGroup,
+  SelectIntegerGroup,
+  NumbersGroup
+} from '@exzeo/core-ui';
 import { getAnswers } from '../../../utilities/forms';
 
 const HomeLocation = ({ questions }) => (
@@ -11,7 +17,9 @@ const HomeLocation = ({ questions }) => (
       {/* Col1 */}
       <div className="col-2">
         <div className="form-group labels">
-          <label /><label>Current</label><label>New</label>
+          <label />
+          <label>Current</label>
+          <label>New</label>
         </div>
         <Field
           name="property.yearBuilt"
@@ -27,7 +35,6 @@ const HomeLocation = ({ questions }) => (
           component={SelectGroup}
           answers={getAnswers('constructionType', questions)}
           dataTest="constructionType"
-
         />
         <Field
           name="property.protectionClass"
@@ -61,7 +68,9 @@ const HomeLocation = ({ questions }) => (
       {/* Col2 */}
       <div className="col-2">
         <div className="form-group labels">
-          <label /><label>Current</label><label>New</label>
+          <label />
+          <label>Current</label>
+          <label>New</label>
         </div>
         <Field
           name="property.distanceToTidalWater"

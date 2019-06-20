@@ -58,11 +58,18 @@ describe('Testing NoteUploader component', () => {
 
       store = mockStore(initialState);
       wrapper = shallow(<NoteUploader store={store} {...props} />);
-      instance = wrapper.dive().dive().dive().dive().instance();
+      instance = wrapper
+        .dive()
+        .dive()
+        .dive()
+        .dive()
+        .instance();
     });
 
     it('should map state to props', () => {
-      expect(wrapper.props().user).toEqual({ profile: { given_name: 'Test', family_name: 'Test' } });
+      expect(wrapper.props().user).toEqual({
+        profile: { given_name: 'Test', family_name: 'Test' }
+      });
     });
 
     it('should submit note', () => {

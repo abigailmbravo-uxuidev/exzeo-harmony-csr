@@ -1,22 +1,28 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Field } from 'redux-form';
-import { CurrencyGroup, SelectIntegerGroup, SelectGroup, RadioGroup, validation } from '@exzeo/core-ui';
+import {
+  CurrencyGroup,
+  SelectIntegerGroup,
+  SelectGroup,
+  RadioGroup,
+  validation
+} from '@exzeo/core-ui';
 
 import formUtils from '../../../utilities/forms';
-
 
 const baseYesNoAnswers = [
   { answer: false, label: 'No' },
   { answer: true, label: 'Yes' }
 ];
 
-const sinkholePerilCoverageAnswers = questions => (
-  [
-    { answer: false, label: 'Coverage Excluded' },
-    { answer: true, label: `10% of ${formUtils.getQuestionName('dwellingAmount', questions)}` }
-  ]
-);
+const sinkholePerilCoverageAnswers = questions => [
+  { answer: false, label: 'Coverage Excluded' },
+  {
+    answer: true,
+    label: `10% of ${formUtils.getQuestionName('dwellingAmount', questions)}`
+  }
+];
 
 const noPriorInsuranceSurchargeAnswers = [
   { answer: 'No', label: 'No' },
@@ -46,15 +52,25 @@ const Coverage = ({
       {/* Col1 */}
       <div className="col-2">
         <div className="form-group labels">
-          <label /><label>Current</label><label>New</label>
+          <label />
+          <label>Current</label>
+          <label>New</label>
         </div>
         <Field
           name="coverageLimits.dwelling.amount"
-          label={`Dwelling (A) ($ ${String(initialValues.coverageLimits ? initialValues.coverageLimits.dwelling.minAmount : '').replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')} - $ ${String(initialValues.coverageLimits ? initialValues.coverageLimits.dwelling.maxAmount : '').replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')})`}
+          label={`Dwelling (A) ($ ${String(
+            initialValues.coverageLimits
+              ? initialValues.coverageLimits.dwelling.minAmount
+              : ''
+          ).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')} - $ ${String(
+            initialValues.coverageLimits
+              ? initialValues.coverageLimits.dwelling.maxAmount
+              : ''
+          ).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')})`}
           component={CurrencyGroup}
           validate={[validation.isRequired, validation.isDwellingRange]}
           normalize={normalizeDwellingAmount}
-          dataTest='dwellingAmount'
+          dataTest="dwellingAmount"
         />
         <Field
           name="coverageLimits.otherStructures.amount"
@@ -63,7 +79,7 @@ const Coverage = ({
           styleName="coverage-b"
           validate={validation.isRequired}
           disabled
-          dataTest='otherStructuresAmount'
+          dataTest="otherStructuresAmount"
         />
         <Field
           name="coverageLimits.otherStructures.percentage"
@@ -72,8 +88,15 @@ const Coverage = ({
           styleName="coverage-b-percentage"
           answers={formUtils.getAnswers('otherStructuresAmount', questions)}
           validate={validation.isRequired}
-          normalize={(v, pv, av) => normalizeDwellingDependencies(v, pv, av, 'coverageLimits.otherStructures.amount')}
-          dataTest='otherStructures'
+          normalize={(v, pv, av) =>
+            normalizeDwellingDependencies(
+              v,
+              pv,
+              av,
+              'coverageLimits.otherStructures.amount'
+            )
+          }
+          dataTest="otherStructures"
         />
         <Field
           name="coverageLimits.personalProperty.amount"
@@ -82,7 +105,7 @@ const Coverage = ({
           styleName="coverage-c"
           validate={validation.isRequired}
           disabled
-          dataTest='personalPropertyAmount'
+          dataTest="personalPropertyAmount"
         />
         <Field
           name="coverageLimits.personalProperty.percentage"
@@ -91,8 +114,15 @@ const Coverage = ({
           styleName="coverage-c-percentage"
           answers={formUtils.getAnswers('personalPropertyAmount', questions)}
           validate={validation.isRequired}
-          normalize={(v, pv, av) => normalizePersonalPropertyPercentage(v, pv, av, 'coverageLimits.personalProperty.amount')}
-          dataTest='personalProperty'
+          normalize={(v, pv, av) =>
+            normalizePersonalPropertyPercentage(
+              v,
+              pv,
+              av,
+              'coverageLimits.personalProperty.amount'
+            )
+          }
+          dataTest="personalProperty"
         />
         <Field
           name="coverageLimits.lossOfUse.amount"
@@ -100,7 +130,7 @@ const Coverage = ({
           component={CurrencyGroup}
           validate={validation.isRequired}
           disabled
-          dataTest='lossOfUse'
+          dataTest="lossOfUse"
         />
         <Field
           name="coverageLimits.personalLiability.amount"
@@ -108,7 +138,7 @@ const Coverage = ({
           component={SelectIntegerGroup}
           answers={formUtils.getAnswers('personalLiability', questions)}
           validate={validation.isRequired}
-          dataTest='personalLiability'
+          dataTest="personalLiability"
         />
         <Field
           name="coverageLimits.medicalPayments.amount"
@@ -116,7 +146,7 @@ const Coverage = ({
           component={CurrencyGroup}
           validate={validation.isRequired}
           disabled
-          dataTest='medicalPayments'
+          dataTest="medicalPayments"
         />
         <Field
           name="coverageLimits.moldProperty.amount"
@@ -124,7 +154,7 @@ const Coverage = ({
           component={SelectIntegerGroup}
           answers={formUtils.getAnswers('moldProperty', questions)}
           validate={validation.isRequired}
-          dataTest='moldProperty'
+          dataTest="moldProperty"
         />
         <Field
           name="coverageLimits.moldLiability.amount"
@@ -132,7 +162,7 @@ const Coverage = ({
           component={SelectIntegerGroup}
           answers={formUtils.getAnswers('moldLiability', questions)}
           validate={validation.isRequired}
-          dataTest='moldLiability'
+          dataTest="moldLiability"
         />
         <Field
           name="deductibles.allOtherPerils.amount"
@@ -140,7 +170,7 @@ const Coverage = ({
           component={SelectIntegerGroup}
           answers={formUtils.getAnswers('allOtherPerils', questions)}
           validate={validation.isRequired}
-          dataTest='allOtherPerils'
+          dataTest="allOtherPerils"
         />
         <Field
           name="deductibles.hurricane.amount"
@@ -148,8 +178,15 @@ const Coverage = ({
           component={SelectIntegerGroup}
           answers={formUtils.getAnswers('hurricane', questions)}
           validate={validation.isRequired}
-          normalize={(v, pv, av) => normalizeDwellingDependencies(v, pv, av, 'deductibles.hurricane.calculatedAmount')}
-          dataTest='hurricane'
+          normalize={(v, pv, av) =>
+            normalizeDwellingDependencies(
+              v,
+              pv,
+              av,
+              'deductibles.hurricane.calculatedAmount'
+            )
+          }
+          dataTest="hurricane"
         />
         <Field
           name="coverageOptions.sinkholePerilCoverage.answer"
@@ -157,13 +194,15 @@ const Coverage = ({
           component={SelectGroup}
           answers={sinkholePerilCoverageAnswers(questions)}
           normalize={normalizeSinkholeAmount}
-          dataTest='sinkholePerilCoverage'
+          dataTest="sinkholePerilCoverage"
         />
       </div>
       {/* Col2 */}
       <div className="col-2">
         <div className="form-group labels">
-          <label /><label>Current</label><label>New</label>
+          <label />
+          <label>Current</label>
+          <label>New</label>
         </div>
         <Field
           name="coverageOptions.personalPropertyReplacementCost.answer"
@@ -173,7 +212,7 @@ const Coverage = ({
           styleName="billPlan"
           segmented
           disabled={personalPropertyNewVal === 0}
-          dataTest='personalPropertyReplacementCostCoverage'
+          dataTest="personalPropertyReplacementCostCoverage"
         />
         <Field
           name="coverageLimits.ordinanceOrLaw.amount"
@@ -181,7 +220,7 @@ const Coverage = ({
           answers={formUtils.getAnswers('ordinanceOrLaw', questions)}
           component={SelectIntegerGroup}
           validate={validation.isRequired}
-          dataTest='ordinanceOrLaw'
+          dataTest="ordinanceOrLaw"
         />
         <Field
           name="coverageOptions.propertyIncidentalOccupanciesMainDwelling.answer"
@@ -191,7 +230,7 @@ const Coverage = ({
           normalize={normalizeIncidentalOccupancies}
           styleName="billPlan"
           segmented
-          dataTest='propertyIncidentalOccupanciesMainDwelling'
+          dataTest="propertyIncidentalOccupanciesMainDwelling"
         />
         <Field
           name="coverageOptions.propertyIncidentalOccupanciesOtherStructures.answer"
@@ -201,7 +240,7 @@ const Coverage = ({
           normalize={normalizeIncidentalOccupancies}
           styleName="billPlan"
           segmented
-          dataTest='propertyIncidentalOccupanciesOtherStructures'
+          dataTest="propertyIncidentalOccupanciesOtherStructures"
         />
         <Field
           name="coverageOptions.liabilityIncidentalOccupancies.answer"
@@ -211,7 +250,7 @@ const Coverage = ({
           styleName="billPlan"
           segmented
           disabled
-          dataTest='liabilityIncidentalOccupancies'
+          dataTest="liabilityIncidentalOccupancies"
         />
         <Field
           name="property.townhouseRowhouse"
@@ -219,21 +258,27 @@ const Coverage = ({
           component={RadioGroup}
           segmented
           answers={baseYesNoAnswers}
-          dataTest='townhouseRowhouse'
+          dataTest="townhouseRowhouse"
         />
         <Field
           name="underwritingAnswers.rented.answer"
           label="Property Ever Rented"
           component={SelectGroup}
-          answers={formUtils.getUnderwritingAnswers('rented', underwritingQuestions)}
-          dataTest='rented'
+          answers={formUtils.getUnderwritingAnswers(
+            'rented',
+            underwritingQuestions
+          )}
+          dataTest="rented"
         />
         <Field
           name="underwritingAnswers.monthsOccupied.answer"
           label="Months Occupied"
           component={SelectGroup}
-          answers={formUtils.getUnderwritingAnswers('monthsOccupied', underwritingQuestions)}
-          dataTest='monthsOccupied'
+          answers={formUtils.getUnderwritingAnswers(
+            'monthsOccupied',
+            underwritingQuestions
+          )}
+          dataTest="monthsOccupied"
         />
         <Field
           name="underwritingAnswers.noPriorInsuranceSurcharge.answer"
@@ -241,7 +286,7 @@ const Coverage = ({
           component={RadioGroup}
           answers={noPriorInsuranceSurchargeAnswers}
           segmented
-          dataTest='noPriorInsurance'
+          dataTest="noPriorInsurance"
         />
         <Field
           name="property.burglarAlarm"
@@ -249,7 +294,7 @@ const Coverage = ({
           component={RadioGroup}
           answers={baseYesNoAnswers}
           segmented
-          dataTest='burglarAlarm'
+          dataTest="burglarAlarm"
         />
         <Field
           name="property.fireAlarm"
@@ -257,7 +302,7 @@ const Coverage = ({
           component={RadioGroup}
           answers={baseYesNoAnswers}
           segmented
-          dataTest='fireAlarm'
+          dataTest="fireAlarm"
         />
         <Field
           name="property.sprinkler"
@@ -265,12 +310,11 @@ const Coverage = ({
           component={RadioGroup}
           segmented
           answers={sprinklerAnswers}
-          dataTest='sprinkler'
+          dataTest="sprinkler"
         />
       </div>
     </div>
   </section>
-
 );
 
 Coverage.propTypes = {

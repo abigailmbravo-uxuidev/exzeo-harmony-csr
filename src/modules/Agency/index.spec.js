@@ -3,24 +3,25 @@ import { shallow } from 'enzyme';
 
 import mockAgency from './mockAgency';
 
-import { Agency,
+import {
+  Agency,
   CreateRender,
   CreateBranchRender,
   ContractsRender,
   AgentsRender,
-  OverviewRender } from './index';
+  OverviewRender
+} from './index';
 
 describe('Testing Agency Base component', () => {
   it('should render', () => {
-
     const props = {
       getTerritoryManagers() {},
       getAgency() {},
       getAgentsByAgencyCode() {},
       getListOfOrphanedAgents() {},
       searchSettingsByCSPAndZip() {},
-      getPoliciesForAgency(){},
-      getAgentListByAgencyCode(){},
+      getPoliciesForAgency() {},
+      getAgentListByAgencyCode() {},
       getLists() {},
       match: { params: { agencyCode: '123', branchCode: '0' } },
       agency: mockAgency
@@ -36,9 +37,9 @@ describe('Testing Agency Base component', () => {
       getAgentsByAgencyCode() {},
       getListOfOrphanedAgents() {},
       searchSettingsByCSPAndZip() {},
-      getPoliciesForAgency(){},
+      getPoliciesForAgency() {},
       getLists() {},
-      getAgentListByAgencyCode(){},
+      getAgentListByAgencyCode() {},
       match: { params: { agencyCode: '123', branchCode: '0' } },
       agency: null
     };

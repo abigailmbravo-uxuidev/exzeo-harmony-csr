@@ -7,10 +7,12 @@ describe('SliderInput', () => {
   it('should render "slider input" when given no props', () => {
     const wrapper = shallow(<SliderInput />);
 
-    expect(wrapper.containsAnyMatchingElements([
-      <input type="text" />,
-      <input type="range" />
-    ])).toEqual(true);
+    expect(
+      wrapper.containsAnyMatchingElements([
+        <input type="text" />,
+        <input type="range" />
+      ])
+    ).toEqual(true);
   });
 
   it('should render FieldHint when provided with a hint', () => {

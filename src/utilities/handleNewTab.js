@@ -1,7 +1,10 @@
 export function handleNewTab(resource, type) {
   // new quote
   if (type === 'address') {
-    window.open(`/quote/new/${resource.physicalAddress.state}/${resource.id}`, '_blank');
+    window.open(
+      `/quote/new/${resource.physicalAddress.state}/${resource.id}`,
+      '_blank'
+    );
     // quote
   } else if (type === 'quote') {
     window.open(`/quote/${resource.quoteNumber}/coverage`, '_blank');
@@ -11,7 +14,11 @@ export function handleNewTab(resource, type) {
     // agency
   } else if (type === 'agency') {
     window.open(`/agency/${resource.agencyCode}/0/overview`, '_blank');
-  } else if (type === 'agent' && Array.isArray(resource.agencies) && resource.agencies.length > 0) {
+  } else if (
+    type === 'agent' &&
+    Array.isArray(resource.agencies) &&
+    resource.agencies.length > 0
+  ) {
     const agency = resource.agencies[0];
     window.open(`/agency/${agency.agencyCode}/0/overview`, '_blank');
   }

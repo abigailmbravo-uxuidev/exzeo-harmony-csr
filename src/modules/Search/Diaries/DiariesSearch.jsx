@@ -1,12 +1,19 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Field } from 'redux-form';
-import { Select, MultiSelectTypeAhead, DateRange, Button, validation, emptyObject, emptyArray } from '@exzeo/core-ui';
+import {
+  Select,
+  MultiSelectTypeAhead,
+  DateRange,
+  Button,
+  validation,
+  emptyObject,
+  emptyArray
+} from '@exzeo/core-ui';
 
 import { REASONS, STATUS_ANSWERS } from '../../../constants/diaries';
 
 class DiariesSearch extends Component {
-
   /*
     TODO: redux-form initialize has a bug. We need to check back with this.
     For now we won't initialize a value for the current user.
@@ -25,10 +32,7 @@ class DiariesSearch extends Component {
   }*/
 
   render() {
-    const {
-      assigneeAnswers,
-      submitting
-    } = this.props;
+    const { assigneeAnswers, submitting } = this.props;
 
     return (
       <React.Fragment>
@@ -45,7 +49,8 @@ class DiariesSearch extends Component {
                 validate={validation.isRequired}
                 answers={STATUS_ANSWERS}
                 showPlaceholder={false}
-                errorHint />
+                errorHint
+              />
             </div>
             <div className="form-group reason">
               <Field
@@ -55,7 +60,8 @@ class DiariesSearch extends Component {
                 answers={REASONS}
                 placeholder="Please choose"
                 label="Reason"
-                errorHint />
+                errorHint
+              />
             </div>
             <div className="form-group dateRange">
               <Field
@@ -64,7 +70,8 @@ class DiariesSearch extends Component {
                 styleName="dateRange"
                 component={DateRange}
                 label="Date Range"
-                errorHint />
+                errorHint
+              />
             </div>
             <div className="form-group assignees">
               <Field
@@ -74,7 +81,8 @@ class DiariesSearch extends Component {
                 component={MultiSelectTypeAhead}
                 label="Assigned To"
                 answers={assigneeAnswers}
-                errorHint />
+                errorHint
+              />
             </div>
           </div>
           <Button
@@ -82,7 +90,10 @@ class DiariesSearch extends Component {
             customClass="multi-input"
             type="submit"
             disabled={submitting}
-            data-test="submit"><i className="fa fa-search" />Search
+            data-test="submit"
+          >
+            <i className="fa fa-search" />
+            Search
           </Button>
         </div>
       </React.Fragment>

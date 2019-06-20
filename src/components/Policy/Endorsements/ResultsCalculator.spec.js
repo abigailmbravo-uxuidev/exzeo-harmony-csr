@@ -54,10 +54,18 @@ describe('Testing ResultsCalculator component', () => {
       },
       ...propTypes
     };
-    const wrapper = shallow(<ResultsCalculatorComponent store={store} {...props} />);
+    const wrapper = shallow(
+      <ResultsCalculatorComponent store={store} {...props} />
+    );
 
-    wrapper.find('[name="newEndorsementAmount"]').simulate('change', { target: { value: 'ABC' } });
-    wrapper.find('[name="newEndorsementPremium"]').simulate('change', { target: { value: 'ABC' } });
-    wrapper.find('[name="newAnnualPremium"]').simulate('change', { target: { value: 'ABC' } });
+    wrapper
+      .find('[name="newEndorsementAmount"]')
+      .simulate('change', { target: { value: 'ABC' } });
+    wrapper
+      .find('[name="newEndorsementPremium"]')
+      .simulate('change', { target: { value: 'ABC' } });
+    wrapper
+      .find('[name="newAnnualPremium"]')
+      .simulate('change', { target: { value: 'ABC' } });
   });
 });

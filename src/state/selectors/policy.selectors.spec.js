@@ -18,10 +18,7 @@ describe('Test policy selectors', () => {
           paymentOptions: [
             {
               paymentType: 'test',
-              paymentDescription: [
-                "test 1",
-                "test 2"
-              ]
+              paymentDescription: ['test 1', 'test 2']
             }
           ]
         }
@@ -61,9 +58,7 @@ describe('Test policy selectors', () => {
         }
       };
       const result = policySelectors.getCashTypeAnswers(state);
-      const expectedResult = [
-        { answer: 'test', label: 'test' }
-      ];
+      const expectedResult = [{ answer: 'test', label: 'test' }];
       expect(result).toEqual(expectedResult);
     });
   });
@@ -81,9 +76,17 @@ describe('Test policy selectors', () => {
     });
 
     it('should return sorted additionalInterests', () => {
-      const additionalInterest1 = { active: true, type: 'Additional Interest', order: 0 };
+      const additionalInterest1 = {
+        active: true,
+        type: 'Additional Interest',
+        order: 0
+      };
       const additionalInterest2 = { active: true, type: 'Mortgagee', order: 2 };
-      const additionalInterest3 = { active: false, type: 'Mortgagee', order: 1 };
+      const additionalInterest3 = {
+        active: false,
+        type: 'Mortgagee',
+        order: 1
+      };
       const additionalInterest4 = { active: true, type: 'Mortgagee', order: 0 };
       const state = {
         policyState: {
@@ -101,10 +104,10 @@ describe('Test policy selectors', () => {
 
       // Mortgagees should be first, Additional Interest after (rank: 3)
       const expectedResult = [
-        { ...additionalInterest4, rank: 1,  sortInactive: false },
-        { ...additionalInterest2, rank: 1,  sortInactive: false },
-        { ...additionalInterest1, rank: 3,  sortInactive: false },
-        { ...additionalInterest3, rank: 1,  sortInactive: true },
+        { ...additionalInterest4, rank: 1, sortInactive: false },
+        { ...additionalInterest2, rank: 1, sortInactive: false },
+        { ...additionalInterest1, rank: 3, sortInactive: false },
+        { ...additionalInterest3, rank: 1, sortInactive: true }
       ];
 
       const result = policySelectors.getSortedAdditionalInterests(state);
@@ -126,23 +129,48 @@ describe('Test policy selectors', () => {
       const state = {
         policyState: {
           paymentHistory: [
-            { date: '01072017', createdAt: '125', amount: { $numberDecimal: 2003 } },
-            { date: '01072018', createdAt: '126', amount: { $numberDecimal: 2003 } },
-            { date: '01072018', createdAt: '123', amount: { $numberDecimal: 2000 } },
+            {
+              date: '01072017',
+              createdAt: '125',
+              amount: { $numberDecimal: 2003 }
+            },
+            {
+              date: '01072018',
+              createdAt: '126',
+              amount: { $numberDecimal: 2003 }
+            },
+            {
+              date: '01072018',
+              createdAt: '123',
+              amount: { $numberDecimal: 2000 }
+            }
           ]
         }
       };
 
       const expectedResult = [
-        { date: '01072018', createdAt: '126', amount: { $numberDecimal: 2003 }, amountDisplay: 2003 },
-        { date: '01072018', createdAt: '123', amount: { $numberDecimal: 2000 }, amountDisplay: 2000 },
-        { date: '01072017', createdAt: '125', amount: { $numberDecimal: 2003 }, amountDisplay: 2003 },
+        {
+          date: '01072018',
+          createdAt: '126',
+          amount: { $numberDecimal: 2003 },
+          amountDisplay: 2003
+        },
+        {
+          date: '01072018',
+          createdAt: '123',
+          amount: { $numberDecimal: 2000 },
+          amountDisplay: 2000
+        },
+        {
+          date: '01072017',
+          createdAt: '125',
+          amount: { $numberDecimal: 2003 },
+          amountDisplay: 2003
+        }
       ];
 
       const result = policySelectors.getFormattedPaymentHistory(state);
       expect(result).toEqual(expectedResult);
     });
   });
-
 });
-

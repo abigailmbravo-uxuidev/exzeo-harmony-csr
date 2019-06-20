@@ -11,7 +11,13 @@ import '../node_modules/font-awesome/scss/font-awesome.scss';
 import './sass/base.scss';
 
 const AUTH_CONFIG = {
-  publicPaths: ['/login', '/logout', '/accessDenied', '/loggedOut', '/callback'],
+  publicPaths: [
+    '/login',
+    '/logout',
+    '/accessDenied',
+    '/loggedOut',
+    '/callback'
+  ],
   profileLocation: 'user_profile',
   tokenLocation: 'id_token',
   unauthRedirect: '/login'
@@ -20,11 +26,16 @@ const AUTH_CONFIG = {
 const store = configureStore();
 
 const target = document.getElementById('root');
-const c = document.createComment(`Version: ${JSON.stringify(process.env.REACT_APP_VERSION)}`);
+const c = document.createComment(
+  `Version: ${JSON.stringify(process.env.REACT_APP_VERSION)}`
+);
 document.body.appendChild(c);
 render(
   <Provider store={store}>
-    <Authentication config={AUTH_CONFIG} render={({ auth }) => (<Routes auth={auth} />)} />
+    <Authentication
+      config={AUTH_CONFIG}
+      render={({ auth }) => <Routes auth={auth} />}
+    />
   </Provider>,
   target
 );

@@ -10,111 +10,127 @@ import XHRUpload from '@uppy/xhr-upload';
 import { Select, validation, Loader } from '@exzeo/core-ui';
 import { callService } from '@exzeo/core-ui/src/@Harmony';
 
-import { toggleNote, toggleDiary, setNotesSynced } from '../state/actions/ui.actions';
+import {
+  toggleNote,
+  toggleDiary,
+  setNotesSynced
+} from '../state/actions/ui.actions';
 import { fetchNotes } from '../state/actions/notes.actions';
 import { setAppError } from '../state/actions/error.actions';
 
 import '@uppy/core/dist/style.min.css';
 
-export const renderNotes = ({
-  input, label, meta: { touched, error }
-}) => (
+export const renderNotes = ({ input, label, meta: { touched, error } }) => (
   <div className={`${touched && error ? 'error' : ''} text-area-wrapper`}>
     <textarea {...input} placeholder={label} rows="10" cols="40" />
     {touched && error && <span className="error-message">{error}</span>}
   </div>
 );
 
-export const validate = (values) => {
+export const validate = values => {
   const errors = {};
   if (!values.noteContent) errors.noteContent = 'Note Content Required';
   return errors;
 };
 
 // TODO: Pull this from the list service
-  const contactTypeOptions = {
-    'Agency': ['Change name/FEIN', 'Change Agent', 'Change Other', 'Concern', 'Correspondence', 'Other'],
-    'Agent': ['Change', 'Concern', 'Correspondence', 'Other'],
-    'Quote': ['Agent', 'Policyholder', 'Inspector', 'Other'],
-    'Policy': ['Agent', 'Policyholder', 'Lienholder', 'Internal', 'Inspector', 'Other']
-  };
+const contactTypeOptions = {
+  Agency: [
+    'Change name/FEIN',
+    'Change Agent',
+    'Change Other',
+    'Concern',
+    'Correspondence',
+    'Other'
+  ],
+  Agent: ['Change', 'Concern', 'Correspondence', 'Other'],
+  Quote: ['Agent', 'Policyholder', 'Inspector', 'Other'],
+  Policy: [
+    'Agent',
+    'Policyholder',
+    'Lienholder',
+    'Internal',
+    'Inspector',
+    'Other'
+  ]
+};
 
-  const docTypeOptions = {
-    'Agency': [
-      'Addendum',
-      'Agreement',
-      'Application',
-      'Book of Business',
-      'Correspondence',
-      'Department of Insurance',
-      'Errors and Omissions',
-      'Finance',
-      'License',
-      'Miscellaneous',
-      'Update Request',
-      'W9',
-      'W9 EIN'
-    ],
-    'Agent': [],
-    'Quote': [
-      '4-pt Inspection',
-      'Claims Documentation',
-      'Correspondence',
-      'Elevation Certificate',
-      'Flood Selection Form',
-      'Flood Waiver Form',
-      'HUD Statement',
-      'New Business Application',
-      'Other',
-      'Proof Of Prior Insurance',
-      'Proof Of Repair',
-      'Property Inspection',
-      'Protection Device Certificate',
-      'Quote Summary',
-      'Reinstatement Correspondence',
-      'Replacement Cost Estimator',
-      'Roof Inspection/permit',
-      'Sinkhole Loss Questionnaire',
-      'Sinkhole Selection/rejection Form',
-      'Wind Exclusion',
-      'Wind Mitigation'
-    ],
-    'Policy': [
-      '4-pt Inspection',
-      'AI Change',
-      'AOR Change',
-      'Cancellation Request',
-      'Cancellation/non-renewal Notice',
-      'Claims Documentation',
-      'Correspondence',
-      'Electronic Payment Receipt',
-      'Elevation Certificate',
-      'Endorsement',
-      'Financial Document',
-      'Policy Packet',
-      'Flood Selection Form',
-      'Flood Waiver Form',
-      'HUD Statement',
-      'New Business Application',
-      'Occupancy Letter',
-      'Other',
-      'Proof Of Prior Insurance',
-      'Proof Of Repair',
-      'Property Inspection',
-      'Protection Device Certificate',
-      'Reinstatement Correspondence',
-      'Reinstatement Notice',
-      'Replacement Cost Estimator',
-      'Returned Mail',
-      'Roof Inspection/permit',
-      'Sinkhole Loss Questionnaire',
-      'Sinkhole Selection/rejection Form',
-      'Statement Of No Loss',
-      'UW Condition Letter',
-      'Wind Exclusion',
-      'Wind Mitigation'
-    ]
-  };
+const docTypeOptions = {
+  Agency: [
+    'Addendum',
+    'Agreement',
+    'Application',
+    'Book of Business',
+    'Correspondence',
+    'Department of Insurance',
+    'Errors and Omissions',
+    'Finance',
+    'License',
+    'Miscellaneous',
+    'Update Request',
+    'W9',
+    'W9 EIN'
+  ],
+  Agent: [],
+  Quote: [
+    '4-pt Inspection',
+    'Claims Documentation',
+    'Correspondence',
+    'Elevation Certificate',
+    'Flood Selection Form',
+    'Flood Waiver Form',
+    'HUD Statement',
+    'New Business Application',
+    'Other',
+    'Proof Of Prior Insurance',
+    'Proof Of Repair',
+    'Property Inspection',
+    'Protection Device Certificate',
+    'Quote Summary',
+    'Reinstatement Correspondence',
+    'Replacement Cost Estimator',
+    'Roof Inspection/permit',
+    'Sinkhole Loss Questionnaire',
+    'Sinkhole Selection/rejection Form',
+    'Wind Exclusion',
+    'Wind Mitigation'
+  ],
+  Policy: [
+    '4-pt Inspection',
+    'AI Change',
+    'AOR Change',
+    'Cancellation Request',
+    'Cancellation/non-renewal Notice',
+    'Claims Documentation',
+    'Correspondence',
+    'Electronic Payment Receipt',
+    'Elevation Certificate',
+    'Endorsement',
+    'Financial Document',
+    'Policy Packet',
+    'Flood Selection Form',
+    'Flood Waiver Form',
+    'HUD Statement',
+    'New Business Application',
+    'Occupancy Letter',
+    'Other',
+    'Proof Of Prior Insurance',
+    'Proof Of Repair',
+    'Property Inspection',
+    'Protection Device Certificate',
+    'Reinstatement Correspondence',
+    'Reinstatement Notice',
+    'Replacement Cost Estimator',
+    'Returned Mail',
+    'Roof Inspection/permit',
+    'Sinkhole Loss Questionnaire',
+    'Sinkhole Selection/rejection Form',
+    'Statement Of No Loss',
+    'UW Condition Letter',
+    'Wind Exclusion',
+    'Wind Mitigation'
+  ]
+};
 
 export class NoteUploader extends Component {
   constructor(props) {
@@ -160,16 +176,17 @@ export class NoteUploader extends Component {
     initialize({
       contactType: this.contactTypes[0],
       fileType: this.docTypes[defaultValues[resourceType]]
-    })
+    });
   }
 
-  handleMinimize = () => this.setState(state => ({
-    minimize: !state.minimize
-  }));
+  handleMinimize = () =>
+    this.setState(state => ({
+      minimize: !state.minimize
+    }));
 
   handleClose = () => this.props.toggleNote({});
 
-  validateFile = (file) => {
+  validateFile = file => {
     if (file.data.size === 0) {
       this.uppy.info('The file is empty.');
       return false;
@@ -181,8 +198,8 @@ export class NoteUploader extends Component {
     }
   };
 
-  validateUpload = (files) => {
-    if (Object.keys(files).some(id => (!files[id].meta.name.includes('.')))) {
+  validateUpload = files => {
+    if (Object.keys(files).some(id => !files[id].meta.name.includes('.'))) {
       this.uppy.info('The file name must have a file extension.');
       return false;
     }
@@ -200,7 +217,7 @@ export class NoteUploader extends Component {
       resourceType,
       fetchNotes,
       toggleDiary,
-      setNotesSynced,
+      setNotesSynced
     } = props;
 
     const mapResourceToNumber = {
@@ -218,7 +235,10 @@ export class NoteUploader extends Component {
       return false;
     }
 
-    const noteAttachments = uploads.map(file => ({ ...file.response.body, fileType: data.fileType }));
+    const noteAttachments = uploads.map(file => ({
+      ...file.response.body,
+      fileType: data.fileType
+    }));
     const noteData = {
       companyCode,
       state,
@@ -249,13 +269,14 @@ export class NoteUploader extends Component {
 
       if (window.location.pathname.includes('/notes')) {
         const numberType = mapResourceToNumber[resourceType];
-        const numbers = numberType === 'policyNumber'
-          ? [noteData.number, noteData.source]
-          : [noteData.number];
+        const numbers =
+          numberType === 'policyNumber'
+            ? [noteData.number, noteData.source]
+            : [noteData.number];
         // Update notes for Policy components (will be removed once Gandalf is added to Policy.
         fetchNotes(numbers, numberType);
         // Let Notes/Files page know to fetch list of notes
-        setNotesSynced()
+        setNotesSynced();
       }
 
       if (openDiary) {
@@ -278,23 +299,49 @@ export class NoteUploader extends Component {
     const { handleSubmit, noteType, submitting } = this.props;
 
     const contactTypeAnswers = this.contactTypes
-      ? this.contactTypes.map(c => ({ answer: c, label: c })) : [];
+      ? this.contactTypes.map(c => ({ answer: c, label: c }))
+      : [];
 
     const docTypeAnswers = this.docTypes
-      ? this.docTypes.map(d => ({ answer: d, label: d })) : [];
+      ? this.docTypes.map(d => ({ answer: d, label: d }))
+      : [];
 
     return (
-      <div className={classNames('new-note-file', {'minimize': this.state.minimize })} >
+      <div
+        className={classNames('new-note-file', {
+          minimize: this.state.minimize
+        })}
+      >
         <div className="title-bar">
-          <div className="title title-minimze-button" onClick={this.handleMinimize}>Note / File</div>
+          <div
+            className="title title-minimze-button"
+            onClick={this.handleMinimize}
+          >
+            Note / File
+          </div>
           <div className="controls note-file-header-button-group">
-            <button className="btn btn-icon minimize-button" onClick={this.handleMinimize}><i className="fa fa-window-minimize" aria-hidden="true" /></button>
-            <button className="btn btn-icon header-cancel-button" onClick={this.handleClose} type="submit"><i className="fa fa-times-circle" aria-hidden="true" /></button>
+            <button
+              className="btn btn-icon minimize-button"
+              onClick={this.handleMinimize}
+            >
+              <i className="fa fa-window-minimize" aria-hidden="true" />
+            </button>
+            <button
+              className="btn btn-icon header-cancel-button"
+              onClick={this.handleClose}
+              type="submit"
+            >
+              <i className="fa fa-times-circle" aria-hidden="true" />
+            </button>
           </div>
         </div>
         <div className="mainContainer">
           {submitting && <Loader />}
-          <Form id="NoteUploader" onSubmit={handleSubmit(this.submitNote)} noValidate>
+          <Form
+            id="NoteUploader"
+            onSubmit={handleSubmit(this.submitNote)}
+            noValidate
+          >
             <div className="content">
               <div className="note-details">
                 <div className="form-group contact">
@@ -307,14 +354,18 @@ export class NoteUploader extends Component {
                     dataTest="contactType"
                   />
                 </div>
-                {noteType !== 'Agency Note' &&
+                {noteType !== 'Agency Note' && (
                   <div className="form-group diary-checkbox">
                     <Field component="input" name="openDiary" type="checkbox" />
                     <label>Create & Open Diary On Save</label>
                   </div>
-                }
+                )}
               </div>
-              <Field name="noteContent" component={renderNotes} label="Note Content" />
+              <Field
+                name="noteContent"
+                component={renderNotes}
+                label="Note Content"
+              />
               <Field
                 name="fileType"
                 label="File Type"
@@ -327,13 +378,29 @@ export class NoteUploader extends Component {
                 uppy={this.uppy}
                 maxHeight={350}
                 proudlyDisplayPoweredByUppy={false}
-                metaFields={[{ id: 'name', name: 'Name', placeholder: 'file name' }]}
+                metaFields={[
+                  { id: 'name', name: 'Name', placeholder: 'file name' }
+                ]}
                 showProgressDetails
-                hideProgressAfterFinish />
+                hideProgressAfterFinish
+              />
             </div>
             <div className="buttons note-file-footer-button-group">
-              <button tabIndex="0" aria-label="cancel-btn form-newNote" className="btn btn-secondary cancel-button" onClick={this.handleClose}>Cancel</button>
-              <button tabIndex="0" aria-label="submit-btn form-newNote" className="btn btn-primary submit-button">Save</button>
+              <button
+                tabIndex="0"
+                aria-label="cancel-btn form-newNote"
+                className="btn btn-secondary cancel-button"
+                onClick={this.handleClose}
+              >
+                Cancel
+              </button>
+              <button
+                tabIndex="0"
+                aria-label="submit-btn form-newNote"
+                className="btn btn-primary submit-button"
+              >
+                Save
+              </button>
             </div>
           </Form>
         </div>
@@ -355,13 +422,18 @@ const mapStateToProps = state => ({
   user: state.authState.userProfile
 });
 
-export default connect(mapStateToProps, {
-  fetchNotes,
-  toggleNote,
-  toggleDiary,
-  setAppError,
-  setNotesSynced,
-})(reduxForm({
-  form: 'NoteUploader',
-  validate
-})(NoteUploader));
+export default connect(
+  mapStateToProps,
+  {
+    fetchNotes,
+    toggleNote,
+    toggleDiary,
+    setAppError,
+    setNotesSynced
+  }
+)(
+  reduxForm({
+    form: 'NoteUploader',
+    validate
+  })(NoteUploader)
+);

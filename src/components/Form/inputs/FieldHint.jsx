@@ -2,13 +2,12 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import ReactTooltip from 'react-tooltip';
 
-const FieldHint = ({
-  name,
-  hint
-}) => (
+const FieldHint = ({ name, hint }) => (
   <span>
     <i className="fa fa-info-circle" data-tip data-for={name} />
-    <ReactTooltip place="right" id={name} type="dark" effect="float">{hint}</ReactTooltip>
+    <ReactTooltip place="right" id={name} type="dark" effect="float">
+      {hint}
+    </ReactTooltip>
   </span>
 );
 

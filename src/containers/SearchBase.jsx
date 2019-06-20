@@ -16,19 +16,15 @@ export class SearchBase extends Component {
   }
 
   render() {
-    const {
- loading, auth, location, userProfile 
-} = this.props;
+    const { loading, auth, location, userProfile } = this.props;
     return (
       <div className="app-wrapper csr">
-        {loading &&
-          <Loader />
-        }
+        {loading && <Loader />}
         <Helmet>
           <title>Harmony - CSR Portal</title>
         </Helmet>
         <Header auth={auth} />
-        <Search pathName={location.pathname} userProfile={userProfile} >
+        <Search pathName={location.pathname} userProfile={userProfile}>
           <div className="basic-footer">
             <Footer />
           </div>
@@ -51,6 +47,9 @@ const mapStateToProps = state => ({
   userProfile: state.authState.userProfile
 });
 
-export default connect(mapStateToProps, {
-  getUIQuestions
-})(SearchBase);
+export default connect(
+  mapStateToProps,
+  {
+    getUIQuestions
+  }
+)(SearchBase);

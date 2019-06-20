@@ -9,7 +9,9 @@ describe('CheckInput', () => {
 
     expect(wrapper.find('input').prop('value')).toEqual(false);
     expect(wrapper.find('input').prop('onChange'));
-    expect(wrapper.containsMatchingElement(<input type="checkbox" />)).toEqual(true);
+    expect(wrapper.containsMatchingElement(<input type="checkbox" />)).toEqual(
+      true
+    );
   });
 
   it('should render "checkbox input" with label, when label and name are provided', () => {
@@ -21,7 +23,9 @@ describe('CheckInput', () => {
     };
     const wrapper = shallow(<CheckInput {...inputProps} />);
 
-    expect(wrapper.containsMatchingElement(<input type="checkbox" />)).toEqual(true);
+    expect(wrapper.containsMatchingElement(<input type="checkbox" />)).toEqual(
+      true
+    );
   });
 
   it('should render "checkbox input" with FieldHint, when name, label, and hint are provided', () => {
@@ -35,21 +39,25 @@ describe('CheckInput', () => {
     const wrapper = shallow(<CheckInput {...inputProps} />);
 
     expect(wrapper.find(FieldHint).length).toEqual(1);
-    expect(wrapper.containsAnyMatchingElements([
-      <input type="checkbox" name={inputProps.input.name} />,
-      <label htmlFor={inputProps.input.name}>{inputProps.label}</label>
-    ])).toEqual(true);
+    expect(
+      wrapper.containsAnyMatchingElements([
+        <input type="checkbox" name={inputProps.input.name} />,
+        <label htmlFor={inputProps.input.name}>{inputProps.label}</label>
+      ])
+    ).toEqual(true);
   });
 
   it('should render switch div if isSwitch is provided', () => {
     const wrapper = shallow(<CheckInput isSwitch />);
 
-    expect(wrapper.containsMatchingElement(<div className="switch-div" />)).toEqual(true);
+    expect(
+      wrapper.containsMatchingElement(<div className="switch-div" />)
+    ).toEqual(true);
   });
 
   it('should fire off onChange and change value when label is clicked, if onChange and value are provided', () => {
     let checkValue = false;
-    const onChange = (value) => {
+    const onChange = value => {
       checkValue = value;
     };
     const inputProps = {
@@ -67,7 +75,7 @@ describe('CheckInput', () => {
 
   it('should fire off onChange and change value when input is clicked, if onChange and value are provided', () => {
     let checkValue = false;
-    const onChange = (value) => {
+    const onChange = value => {
       checkValue = value;
     };
     const inputProps = {

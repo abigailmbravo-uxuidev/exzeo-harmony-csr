@@ -21,15 +21,16 @@ describe('Test diary.actions', () => {
   it('should call setDiaries', () => {
     const diaries = [{ _id: '1' }, { _id: '2' }, { _id: '3' }];
 
-    const stateObj = [{
-      type: types.SET_DIARIES,
-      diaries
-    }];
+    const stateObj = [
+      {
+        type: types.SET_DIARIES,
+        diaries
+      }
+    ];
 
     store.dispatch(diaryStateActions.setDiaries(diaries));
 
-    expect(store.getActions())
-      .toEqual(stateObj);
+    expect(store.getActions()).toEqual(stateObj);
   });
 
   describe('Test diary.actions async actions', () => {
@@ -41,12 +42,13 @@ describe('Test diary.actions', () => {
     let store;
     let httpStub;
 
-
     beforeEach(() => {
       initialState = {};
       store = mockStore(initialState);
       httpStub = sinon.stub();
-      sandbox.stub(serviceRunner, 'callService').callsFake((...args) => httpStub(...args));
+      sandbox
+        .stub(serviceRunner, 'callService')
+        .callsFake((...args) => httpStub(...args));
     });
 
     afterEach(() => {
@@ -61,19 +63,21 @@ describe('Test diary.actions', () => {
       };
       const diaries = [{ _id: '1' }, { _id: '2' }, { _id: '3' }];
 
-      const stateObj = [{
-        type: types.SET_DIARIES,
-        diaries
-      }];
+      const stateObj = [
+        {
+          type: types.SET_DIARIES,
+          diaries
+        }
+      ];
 
-      httpStub.onCall(0)
+      httpStub
+        .onCall(0)
         .returns(Promise.resolve({ data: { result: diaries } }));
 
       await store.dispatch(diaryStateActions.fetchDiaries(filter));
       // TODO remove the outer array and sub-0 lookup in stateObj once the serviceRequest action is removed
       const action = store.getActions();
-      expect([action[0]])
-        .toEqual(stateObj);
+      expect([action[0]]).toEqual(stateObj);
     });
 
     it('Should call dispatch on submitDiaries', async () => {
@@ -90,15 +94,19 @@ describe('Test diary.actions', () => {
         assignees: []
       };
 
-      const stateObj = [{
-        type: types.SET_DIARIES,
-        diaries: []
-      }];
+      const stateObj = [
+        {
+          type: types.SET_DIARIES,
+          diaries: []
+        }
+      ];
 
       httpStub.onCall(0).returns(Promise.resolve({ data: {} }));
       httpStub.onCall(1).returns(Promise.resolve({ data: { result: [] } }));
 
-      const returnVal = await store.dispatch(diaryStateActions.submitDiary(data, props));
+      const returnVal = await store.dispatch(
+        diaryStateActions.submitDiary(data, props)
+      );
 
       expect(returnVal).toBeTruthy();
     });

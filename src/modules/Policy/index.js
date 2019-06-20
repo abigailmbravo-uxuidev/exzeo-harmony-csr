@@ -6,7 +6,11 @@ import moment from 'moment-timezone';
 import { Loader } from '@exzeo/core-ui';
 
 import { setAppState } from '../../state/actions/appState.actions';
-import { getZipcodeSettings, getAgents, getAgency } from '../../state/actions/service.actions';
+import {
+  getZipcodeSettings,
+  getAgents,
+  getAgency
+} from '../../state/actions/service.actions';
 import { fetchNotes } from '../../state/actions/notes.actions';
 
 import {
@@ -19,7 +23,10 @@ import {
   getCancelOptions,
   getEndorsementHistory
 } from '../../state/actions/policy.actions';
-import { startWorkflow, batchCompleteTask } from '../../state/actions/cg.actions';
+import {
+  startWorkflow,
+  batchCompleteTask
+} from '../../state/actions/cg.actions';
 
 import EditEffectiveDataModal from '../../components/Policy/EditEffectiveDatePopup';
 import ReinstatePolicyModal from '../../components/Policy/ReinstatePolicyPopup';
@@ -48,7 +55,9 @@ export class Policy extends React.Component {
       getPaymentHistory,
       getPaymentOptionsApplyPayments,
       getEndorsementHistory,
-      match: { params: { policyNumber } }
+      match: {
+        params: { policyNumber }
+      }
     } = this.props;
     getEffectiveDateChangeReasons();
     getPolicy(policyNumber);
@@ -69,7 +78,12 @@ export class Policy extends React.Component {
     } = this.props;
 
     if (prevPolicy !== policy && !!policy) {
-      getZipCodeSettings(policy.companyCode, policy.state, policy.product, policy.property.physicalAddress.zip);
+      getZipCodeSettings(
+        policy.companyCode,
+        policy.state,
+        policy.product,
+        policy.property.physicalAddress.zip
+      );
       getAgents(policy.companyCode, policy.state);
       getAgency(policy.companyCode, policy.state, policy.agencyCode);
       fetchNotes([policy.policyNumber, policy.sourceNumber], 'policyNumber');
@@ -79,7 +93,9 @@ export class Policy extends React.Component {
           effectiveDate: policy.effectiveDate,
           policyHolders: policy.policyHolders,
           additionalInterests: policy.additionalInterests,
-          fullyEarnedFees: policy.rating.worksheet.fees.empTrustFee + policy.rating.worksheet.fees.mgaPolicyFee,
+          fullyEarnedFees:
+            policy.rating.worksheet.fees.empTrustFee +
+            policy.rating.worksheet.fees.mgaPolicyFee,
           currentPremium: summaryLedger.currentPremium
         };
         getBillingOptionsForPolicy(paymentOptions);
@@ -90,22 +106,22 @@ export class Policy extends React.Component {
   handleToggleDiaries = () => {
     this.setState(state => ({
       showDiaries: !state.showDiaries
-      }));
-  }
+    }));
+  };
 
   handleToggleReinstateModal = () => {
     this.setState(state => ({
       showReinstatePolicyModal: !state.showReinstatePolicyModal
-      }));
-  }
+    }));
+  };
 
   handleToggleEffectiveDateChangeModal = () => {
     this.setState(state => ({
       showEffectiveDateChangeModal: !state.showEffectiveDateChangeModal
-      }));
-  }
+    }));
+  };
 
-  changeEffectiveDate = async (data) => {
+  changeEffectiveDate = async data => {
     const {
       zipCodeSettings,
       policy,
@@ -114,33 +130,46 @@ export class Policy extends React.Component {
       startWorkflow
     } = this.props;
 
-    const effectiveDateUTC = moment.tz(moment.utc(data.effectiveDate).format('YYYY-MM-DD'), zipCodeSettings.timezone).format();
+    const effectiveDateUTC = moment
+      .tz(
+        moment.utc(data.effectiveDate).format('YYYY-MM-DD'),
+        zipCodeSettings.timezone
+      )
+      .format();
 
-    const result = await startWorkflow('effectiveDateChangeModel', { policyNumber: policy.policyNumber, policyID: policy.policyID });
+    const result = await startWorkflow('effectiveDateChangeModel', {
+      policyNumber: policy.policyNumber,
+      policyID: policy.policyID
+    });
 
-    const steps = [{
-      name: 'saveEffectiveDate',
-      data: {
-        policyNumber: policy.policyNumber, policyID: policy.policyID, effectiveDateChangeReason: data.effectiveDateChangeReason, effectiveDate: effectiveDateUTC
+    const steps = [
+      {
+        name: 'saveEffectiveDate',
+        data: {
+          policyNumber: policy.policyNumber,
+          policyID: policy.policyID,
+          effectiveDateChangeReason: data.effectiveDateChangeReason,
+          effectiveDate: effectiveDateUTC
+        }
       }
-    }];
-    const startResult = result.payload ? result.payload[0].workflowData.effectiveDateChangeModel.data : {};
+    ];
+    const startResult = result.payload
+      ? result.payload[0].workflowData.effectiveDateChangeModel.data
+      : {};
 
-    await batchCompleteTask(startResult.modelName, startResult.modelInstanceId, steps);
+    await batchCompleteTask(
+      startResult.modelName,
+      startResult.modelInstanceId,
+      steps
+    );
     //This gets scheduled so the status may not be changed yet when calling getPolicy. Reference HAR-5228
     await new Promise(resolve => setTimeout(resolve, 3000));
     await getPolicy(policy.policyNumber);
     this.handleToggleEffectiveDateChangeModal();
-
   };
 
-  reinstatePolicySubmit = async (data) => {
-    const {
-      policy,
-      summaryLedger,
-      createTransaction,
-      getPolicy
-    } = this.props;
+  reinstatePolicySubmit = async data => {
+    const { policy, summaryLedger, createTransaction, getPolicy } = this.props;
 
     const submitData = {
       policyID: policy.policyID,
@@ -151,27 +180,23 @@ export class Policy extends React.Component {
     await createTransaction(submitData);
     await getPolicy(policy.policyNumber);
     this.handleToggleReinstateModal();
-
   };
 
   render() {
-    const {
-      appState,
-      match,
-      policy,
-      initialized
-    } = this.props;
+    const { appState, match, policy, initialized } = this.props;
 
-    const { showDiaries, showReinstatePolicyModal, showEffectiveDateChangeModal } = this.state;
+    const {
+      showDiaries,
+      showReinstatePolicyModal,
+      showEffectiveDateChangeModal
+    } = this.state;
     const modalHandlers = {
       showEffectiveDateChangeModal: this.handleToggleEffectiveDateChangeModal,
       showReinstatePolicyModal: this.handleToggleReinstateModal
     };
     return (
       <div className="app-wrapper csr policy">
-        {(appState.data.submitting || !initialized) &&
-          <Loader />
-        }
+        {(appState.data.submitting || !initialized) && <Loader />}
         <App
           resourceType="Policy"
           resourceId={policy.policyNumber}
@@ -185,7 +210,11 @@ export class Policy extends React.Component {
             showEffectiveDateButton: true,
             showReinstateButton: true,
             fields: [
-              { value: 'policyHolder', component: 'Section', label: 'Policyholder' },
+              {
+                value: 'policyHolder',
+                component: 'Section',
+                label: 'Policyholder'
+              },
               { value: 'mailingAddress', component: 'Section' },
               { value: 'propertyAddress', component: 'Section' },
               { value: 'county', label: 'Property County' },
@@ -194,44 +223,86 @@ export class Policy extends React.Component {
               { value: 'effectiveDate' },
               { value: 'cancellation' },
               { value: 'finalPayment', label: 'Final Payment' },
-              { value: 'currentPremium', className:'premium' }
+              { value: 'currentPremium', className: 'premium' }
             ]
           }}
           render={() => (
             <React.Fragment>
-              {initialized &&
+              {initialized && (
                 <div className="content-wrapper">
-                  <Route exact path={`${match.url}/coverage`} render={props => <Coverage {...props} />} />
-                  <Route exact path={`${match.url}/policyholder`} render={props => <PolicyHolder {...props} />} />
-                  <Route exact path={`${match.url}/billing`} render={props => <Billing {...props} />} />
-                  <Route exact path={`${match.url}/notes`} render={props => <Notes numbers={[policy.policyNumber, policy.sourceNumber]} numberType="policyNumber" />} />
-                  <Route exact path={`${match.url}/cancel`} render={props => <Cancel {...props} />} />
-                  <Route exact path={`${match.url}/endorsements`} render={props => <Endorsements {...props} params={match.params} />} />
+                  <Route
+                    exact
+                    path={`${match.url}/coverage`}
+                    render={props => <Coverage {...props} />}
+                  />
+                  <Route
+                    exact
+                    path={`${match.url}/policyholder`}
+                    render={props => <PolicyHolder {...props} />}
+                  />
+                  <Route
+                    exact
+                    path={`${match.url}/billing`}
+                    render={props => <Billing {...props} />}
+                  />
+                  <Route
+                    exact
+                    path={`${match.url}/notes`}
+                    render={props => (
+                      <Notes
+                        numbers={[policy.policyNumber, policy.sourceNumber]}
+                        numberType="policyNumber"
+                      />
+                    )}
+                  />
+                  <Route
+                    exact
+                    path={`${match.url}/cancel`}
+                    render={props => <Cancel {...props} />}
+                  />
+                  <Route
+                    exact
+                    path={`${match.url}/endorsements`}
+                    render={props => (
+                      <Endorsements {...props} params={match.params} />
+                    )}
+                  />
                 </div>
-              }
+              )}
 
-              {initialized &&
-                <DiaryPolling filter={{ resourceId: [policy.policyNumber, policy.sourceNumber], resourceType: 'Policy' }} />
-              }
+              {initialized && (
+                <DiaryPolling
+                  filter={{
+                    resourceId: [policy.policyNumber, policy.sourceNumber],
+                    resourceType: 'Policy'
+                  }}
+                />
+              )}
 
-              {showReinstatePolicyModal &&
+              {showReinstatePolicyModal && (
                 <ReinstatePolicyModal
                   reinstatePolicySubmit={this.reinstatePolicySubmit}
-                  hideReinstatePolicyModal={this.handleToggleReinstateModal} />
-              }
+                  hideReinstatePolicyModal={this.handleToggleReinstateModal}
+                />
+              )}
 
-              {showEffectiveDateChangeModal &&
-              <EditEffectiveDataModal
-                changeEffectiveDateSubmit={this.changeEffectiveDate}
-                hideEffectiveDateModal={this.handleToggleEffectiveDateChangeModal} />
-          }
+              {showEffectiveDateChangeModal && (
+                <EditEffectiveDataModal
+                  changeEffectiveDateSubmit={this.changeEffectiveDate}
+                  hideEffectiveDateModal={
+                    this.handleToggleEffectiveDateChangeModal
+                  }
+                />
+              )}
               <OpenDiariesBar
                 entityEndDate={policy.endDate}
                 effectiveDate={policy.effectiveDate}
                 resourceId={policy.policyNumber}
-                resourceType="Policy" />
+                resourceType="Policy"
+              />
             </React.Fragment>
-        )} />
+          )}
+        />
       </div>
     );
   }
@@ -257,30 +328,35 @@ Policy.propTypes = {
   startWorkflow: PropTypes.func
 };
 
-const mapStateToProps = (state) => {
+const mapStateToProps = state => {
   return {
     appState: state.appState,
     authState: state.authState,
-    initialized: !!(state.policyState.policy.policyID && state.policyState.summaryLedger._id),
+    initialized: !!(
+      state.policyState.policy.policyID && state.policyState.summaryLedger._id
+    ),
     policy: state.policyState.policy,
     summaryLedger: state.policyState.summaryLedger,
     zipCodeSettings: state.service.getZipcodeSettings
   };
 };
 
-export default connect(mapStateToProps, {
-  batchCompleteTask,
-  createTransaction,
-  getAgents,
-  getAgency,
-  getEffectiveDateChangeReasons,
-  getBillingOptionsForPolicy,
-  getCancelOptions,
-  getEndorsementHistory,
-  getPaymentHistory,
-  getPaymentOptionsApplyPayments,
-  getPolicy,
-  getZipCodeSettings: getZipcodeSettings,
-  setAppState,
-  startWorkflow
-})(Policy);
+export default connect(
+  mapStateToProps,
+  {
+    batchCompleteTask,
+    createTransaction,
+    getAgents,
+    getAgency,
+    getEffectiveDateChangeReasons,
+    getBillingOptionsForPolicy,
+    getCancelOptions,
+    getEndorsementHistory,
+    getPaymentHistory,
+    getPaymentOptionsApplyPayments,
+    getPolicy,
+    getZipCodeSettings: getZipcodeSettings,
+    setAppState,
+    startWorkflow
+  }
+)(Policy);

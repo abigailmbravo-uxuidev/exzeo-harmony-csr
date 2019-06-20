@@ -27,11 +27,18 @@ const noteFileModalFields = [
     label: 'File Type',
     type: 'select',
     values: [
-      '4-pt Inspection', 'Claims Documentation', 'Correspondence', 'Elevation Certificate',
-      'Flood Selection Form', 'Flood Waiver Form', 'HUD Statement', 'New Business Application', 'Other'
+      '4-pt Inspection',
+      'Claims Documentation',
+      'Correspondence',
+      'Elevation Certificate',
+      'Flood Selection Form',
+      'Flood Waiver Form',
+      'HUD Statement',
+      'New Business Application',
+      'Other'
     ],
     required: true
-  },
+  }
 ];
 
 describe('Note Uploader Testing', () => {
@@ -39,7 +46,7 @@ describe('Note Uploader Testing', () => {
     handleSubmit: x => x,
     noteType: 'Quote Note',
     submitting: false,
-    documentId: '12-345-67',
+    documentId: '12-345-67'
   };
 
   it('Note/File Modal', () => {
@@ -55,20 +62,23 @@ describe('Note Uploader Testing', () => {
     };
 
     const NoteUploaderForm = reduxForm({
-      form: 'NoteUploader',
+      form: 'NoteUploader'
     })(NoteUploader);
 
-    const { getByTestId, getByPlaceholderText } = renderWithForm(<NoteUploaderForm {...props} />, { state });
+    const { getByTestId, getByPlaceholderText } = renderWithForm(
+      <NoteUploaderForm {...props} />,
+      { state }
+    );
 
     noteFileModalFields.forEach(field => {
       if (field.type === 'select') {
         checkLabel(getByTestId, field);
         checkSelect(getByTestId, field);
-      };
+      }
       if (field.type === 'text') {
         checkLabel(getByPlaceholderText, field);
         checkTextInput(getByPlaceholderText, field);
-      };
+      }
     });
   });
 });

@@ -1,9 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const Heading = ({
-  label
-}) => (
+const Heading = ({ label }) => (
   <span className="section-group-header">
     <i className={`fa ${label}`} />
     &nbsp;{label}

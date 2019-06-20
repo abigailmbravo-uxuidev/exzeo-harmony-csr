@@ -10,6 +10,8 @@ describe('Testing WindMitigation component', () => {
     expect(premiumEndorsementList).toContain('Discount Endorsement');
     expect(premiumEndorsementList).toContain('Wind Mitigation Endorsement');
     expect(premiumEndorsementList).toContain('Home / Location Endorsement');
-    expect(premiumEndorsementList).toContain('Multiple Endorsements Endorsement');
+    expect(premiumEndorsementList).toContain(
+      'Multiple Endorsements Endorsement'
+    );
   });
 });

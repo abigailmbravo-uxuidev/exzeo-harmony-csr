@@ -1,7 +1,13 @@
 import React from 'react';
 import { reduxForm } from 'redux-form';
 
-import { renderWithForm, checkLabel, checkTextInput, checkSelect, checkButton } from '../../../../test-utils';
+import {
+  renderWithForm,
+  checkLabel,
+  checkTextInput,
+  checkSelect,
+  checkButton
+} from '../../../../test-utils';
 import PolicySearch from '../PolicySearch';
 
 const fields = [
@@ -59,8 +65,13 @@ const fields = [
     label: 'Policy Status',
     selected: '',
     options: [
-      'Please Select...', 'Policy Issued', 'In Force', 'Pending Voluntary Cancellation',
-      'Pending Underwriting Cancellation', 'Pending Underwriting Non-Renewal', 'Cancelled',
+      'Please Select...',
+      'Policy Issued',
+      'In Force',
+      'Pending Voluntary Cancellation',
+      'Pending Underwriting Cancellation',
+      'Pending Underwriting Non-Renewal',
+      'Cancelled',
       'Not In Force'
     ]
   },
@@ -79,17 +90,29 @@ describe('Policy Search Testing', () => {
     submitting: false,
     advancedSearch: true,
     questions: {
-      diaryAssignees: [{ answer: 'auth0|5956365ec2b5082b9e613263', label: 'test user', type: 'user' }],
+      diaryAssignees: [
+        {
+          answer: 'auth0|5956365ec2b5082b9e613263',
+          label: 'test user',
+          type: 'user'
+        }
+      ],
       lists: {},
-      policyStatus: { answers: [
-        { answer: '0', label: 'Policy Issued' }, { answer: '1', label: 'In Force' },
-        { answer: '2', label: 'Pending Voluntary Cancellation' }, { answer: '3', label: 'Pending Underwriting Cancellation' },
-        { answer: '4', label: 'Pending Underwriting Non-Renewal' }, { answer: '8', label: 'Cancelled' }, { answer: '9', label: 'Not In Force' },
-      ]}
+      policyStatus: {
+        answers: [
+          { answer: '0', label: 'Policy Issued' },
+          { answer: '1', label: 'In Force' },
+          { answer: '2', label: 'Pending Voluntary Cancellation' },
+          { answer: '3', label: 'Pending Underwriting Cancellation' },
+          { answer: '4', label: 'Pending Underwriting Non-Renewal' },
+          { answer: '8', label: 'Cancelled' },
+          { answer: '9', label: 'Not In Force' }
+        ]
+      }
     },
     toggleAdvancedSearch: () => {},
     handlePagination: () => {},
-    search: { results: []},
+    search: { results: [] },
     searchTypeOptions: [
       { answer: 'address', label: 'New Quote' },
       { answer: 'quote', label: 'Quote Search' },
@@ -106,15 +129,25 @@ describe('Policy Search Testing', () => {
   const textFields = fields.filter(({ type }) => type === 'text');
 
   it('POS:Renders and has fields and labels', () => {
-    const { getByPlaceholderText, getByTestId } = renderWithForm(<SearchForm {...props} />);
+    const { getByPlaceholderText, getByTestId } = renderWithForm(
+      <SearchForm {...props} />
+    );
 
     fields.forEach(field => checkLabel(getByTestId, field));
-    textFields.forEach(({ placeholder }) => expect(getByPlaceholderText(placeholder)));
-    selectFields.forEach(({ dataTest, selected }) => expect(getByTestId(dataTest).getAttribute('data-selected')).toEqual(selected));
+    textFields.forEach(({ placeholder }) =>
+      expect(getByPlaceholderText(placeholder))
+    );
+    selectFields.forEach(({ dataTest, selected }) =>
+      expect(getByTestId(dataTest).getAttribute('data-selected')).toEqual(
+        selected
+      )
+    );
   });
 
   it('POS:Checks that all fields are working', () => {
-    const { getByPlaceholderText, getByTestId } = renderWithForm(<SearchForm {...props} />);
+    const { getByPlaceholderText, getByTestId } = renderWithForm(
+      <SearchForm {...props} />
+    );
     selectFields.forEach(field => checkSelect(getByTestId, field));
     textFields.forEach(field => checkTextInput(getByPlaceholderText, field));
   });

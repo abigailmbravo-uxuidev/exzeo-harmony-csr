@@ -13,8 +13,10 @@ import { QUOTE_RESOURCE_TYPE } from '../constants/diaries';
 import PlusButton from './PlusButton';
 import UWConditions from './UWconditions';
 
-export const newDiary = (props) => {
-  const { quoteData: { companyCode, state, product, quoteNumber, endDate } } = props;
+export const newDiary = props => {
+  const {
+    quoteData: { companyCode, state, product, quoteNumber, endDate }
+  } = props;
   props.actions.uiActions.toggleDiary({
     companyCode,
     state,
@@ -25,8 +27,10 @@ export const newDiary = (props) => {
   });
 };
 
-export const newNote = (props) => {
-  const { quoteData: { companyCode, state, product, quoteNumber } } = props;
+export const newNote = props => {
+  const {
+    quoteData: { companyCode, state, product, quoteNumber }
+  } = props;
   props.actions.uiActions.toggleNote({
     companyCode,
     state,
@@ -38,82 +42,113 @@ export const newNote = (props) => {
 };
 
 const getNavLinks = ({ quoteNumber }) => {
-  return [{
-    key: 'coverage',
-    to: `/quote/${quoteNumber}/coverage`,
-    label: 'Coverage / Rating',
-    styleName: 'coverage',
-    exact: true
-  }, {
-    key: 'underwriting',
-    to: `/quote/${quoteNumber}/underwriting`,
-    label: 'Underwriting',
-    styleName: 'underwriting',
-    exact: true
-  }, {
-    key: 'additionalInterests',
-    to: `/quote/${quoteNumber}/additionalInterests`,
-    label: 'Additional Interests',
-    styleName: 'additionalInterests',
-    exact: true
-  }, {
-    key: 'billing',
-    to: `/quote/${quoteNumber}/billing`,
-    label: 'Mailing / Billing',
-    styleName: 'billing',
-    exact: true
-  }, {
-    key: 'notes',
-    to: `/quote/${quoteNumber}/notes`,
-    label: 'Notes / Files / Diaries',
-    styleName: 'notes',
-    exact: true
-  }, {
-    key: 'summary',
-    to: `/quote/${quoteNumber}/summary`,
-    label: 'Quote Summary',
-    styleName: 'quote-summary'
-  }, {
-    key: 'application',
-    to: `/quote/${quoteNumber}/application`,
-    label: 'Application',
-    styleName: 'application',
-    exact: true
-  }];
+  return [
+    {
+      key: 'coverage',
+      to: `/quote/${quoteNumber}/coverage`,
+      label: 'Coverage / Rating',
+      styleName: 'coverage',
+      exact: true
+    },
+    {
+      key: 'underwriting',
+      to: `/quote/${quoteNumber}/underwriting`,
+      label: 'Underwriting',
+      styleName: 'underwriting',
+      exact: true
+    },
+    {
+      key: 'additionalInterests',
+      to: `/quote/${quoteNumber}/additionalInterests`,
+      label: 'Additional Interests',
+      styleName: 'additionalInterests',
+      exact: true
+    },
+    {
+      key: 'billing',
+      to: `/quote/${quoteNumber}/billing`,
+      label: 'Mailing / Billing',
+      styleName: 'billing',
+      exact: true
+    },
+    {
+      key: 'notes',
+      to: `/quote/${quoteNumber}/notes`,
+      label: 'Notes / Files / Diaries',
+      styleName: 'notes',
+      exact: true
+    },
+    {
+      key: 'summary',
+      to: `/quote/${quoteNumber}/summary`,
+      label: 'Quote Summary',
+      styleName: 'quote-summary'
+    },
+    {
+      key: 'application',
+      to: `/quote/${quoteNumber}/application`,
+      label: 'Application',
+      styleName: 'application',
+      exact: true
+    }
+  ];
 };
 
-export const NewNoteFileUploaderPopup = (props) => {
-  props.actions.newNoteActions.toggleNote({ noteType: 'Quote Note', documentId: props.quoteData.quoteNumber });
+export const NewNoteFileUploaderPopup = props => {
+  props.actions.newNoteActions.toggleNote({
+    noteType: 'Quote Note',
+    documentId: props.quoteData.quoteNumber
+  });
 };
 
-export const UWconditionsPopup = (props) => {
-  props.actions.appStateActions.setAppState(props.appState.modelName, props.match.params.workflowId, { ...props.appState.data, showUWconditions: true });
+export const UWconditionsPopup = props => {
+  props.actions.appStateActions.setAppState(
+    props.appState.modelName,
+    props.match.params.workflowId,
+    { ...props.appState.data, showUWconditions: true }
+  );
 };
 
-export const closeUWConditions = (props) => {
-  props.actions.appStateActions.setAppState(props.appState.modelName, props.match.params.workflowId, { ...props.appState.data, showUWconditions: false });
+export const closeUWConditions = props => {
+  props.actions.appStateActions.setAppState(
+    props.appState.modelName,
+    props.match.params.workflowId,
+    { ...props.appState.data, showUWconditions: false }
+  );
 };
 
-export const SideNav = (props) => {
+export const SideNav = props => {
   const { quoteData, match } = props;
-  const redirect = (props.activateRedirect)
-    ? <Redirect to={props.activateRedirectLink} />
-    : null;
+  const redirect = props.activateRedirect ? (
+    <Redirect to={props.activateRedirectLink} />
+  ) : null;
 
   return (
     <React.Fragment>
       <nav className="site-nav">
         {redirect}
-        <SideNavigation navLinks={getNavLinks({ quoteNumber: quoteData.quoteNumber })}>
+        <SideNavigation
+          navLinks={getNavLinks({ quoteNumber: quoteData.quoteNumber })}
+        >
           <hr className="nav-division" />
           <li>
-            <button tabIndex="0" aria-label="open-btn form-newNote" className="btn btn-secondary btn-xs btn-block" onClick={() => UWconditionsPopup(props)}>Underwriting Conditions</button>
+            <button
+              tabIndex="0"
+              aria-label="open-btn form-newNote"
+              className="btn btn-secondary btn-xs btn-block"
+              onClick={() => UWconditionsPopup(props)}
+            >
+              Underwriting Conditions
+            </button>
           </li>
         </SideNavigation>
-        {props.appState.data.showUWconditions === true &&
+        {props.appState.data.showUWconditions === true && (
           <UWConditions closeButtonHandler={() => closeUWConditions(props)} />
-        }
-        <PlusButton newNote={() => newNote(props)} newDiary={() => newDiary(props)} />
+        )}
+        <PlusButton
+          newNote={() => newNote(props)}
+          newDiary={() => newDiary(props)}
+        />
       </nav>
     </React.Fragment>
   );
@@ -148,4 +183,7 @@ const mapDispatchToProps = dispatch => ({
   }
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(SideNav);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(SideNav);

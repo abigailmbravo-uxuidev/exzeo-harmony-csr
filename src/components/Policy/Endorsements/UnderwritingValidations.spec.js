@@ -20,7 +20,9 @@ describe('Testing UnderwritingValidations component', () => {
         }
       ]
     };
-    const wrapper = shallow(<UnderwritingValidationsComponent store={store} {...props} />);
+    const wrapper = shallow(
+      <UnderwritingValidationsComponent store={store} {...props} />
+    );
     expect(wrapper.find('h4').text()).toEqual('Underwriting Validation');
   });
 });

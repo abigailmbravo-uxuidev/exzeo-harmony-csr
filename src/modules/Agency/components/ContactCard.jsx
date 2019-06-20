@@ -5,17 +5,19 @@ export const ContactCard = ({ contact, handleClick, isOfficer }) => (
   <div className="csr contact card">
     <div className="contact-title" data-test="contact-title">
       <i className="fa fa-address-card" />
-      {isOfficer &&
-      <small>
-        <i className="fa fa-certificate" />
-        <label>Officer</label>
-      </small>
-
-      }
+      {isOfficer && (
+        <small>
+          <i className="fa fa-certificate" />
+          <label>Officer</label>
+        </small>
+      )}
     </div>
     <div className="contact-details">
       <div className="card-name" data-test="contact-name">
-        <h4><strong>{`${contact.firstName} ${contact.lastName}`}</strong>{contact.title ? ` | ${contact.title}` : ''}</h4>
+        <h4>
+          <strong>{`${contact.firstName} ${contact.lastName}`}</strong>
+          {contact.title ? ` | ${contact.title}` : ''}
+        </h4>
       </div>
       <div className="additional-contacts">
         <ul>
@@ -27,15 +29,23 @@ export const ContactCard = ({ contact, handleClick, isOfficer }) => (
                   {contact.emailAddress}
                 </a>
               </p>
-              {contact.primaryPhoneNumber &&
+              {contact.primaryPhoneNumber && (
                 <p className="phone">
                   <i className="fa fa-phone-square" />
-                  <a href={`tel:${contact.primaryPhoneNumber}${contact.primaryPhoneNumberExtension ? `+${contact.primaryPhoneNumberExtension}` : ''}`}>
-                  {normalize.phone(contact.primaryPhoneNumber)} 
-                  {contact.primaryPhoneNumberExtension ? ` ext. ${contact.primaryPhoneNumberExtension}` : '' }
+                  <a
+                    href={`tel:${contact.primaryPhoneNumber}${
+                      contact.primaryPhoneNumberExtension
+                        ? `+${contact.primaryPhoneNumberExtension}`
+                        : ''
+                    }`}
+                  >
+                    {normalize.phone(contact.primaryPhoneNumber)}
+                    {contact.primaryPhoneNumberExtension
+                      ? ` ext. ${contact.primaryPhoneNumberExtension}`
+                      : ''}
                   </a>
                 </p>
-              }
+              )}
             </div>
           </li>
         </ul>
@@ -45,8 +55,10 @@ export const ContactCard = ({ contact, handleClick, isOfficer }) => (
       <button
         className="btn btn-link btn-sm"
         dataTest="edit-contact"
-        onClick={handleClick}>
-        <i className="fa fa-pencil-square" />Edit
+        onClick={handleClick}
+      >
+        <i className="fa fa-pencil-square" />
+        Edit
       </button>
     </div>
   </div>

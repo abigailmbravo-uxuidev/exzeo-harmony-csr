@@ -10,11 +10,21 @@ const TRANSFER_LIST_HEADER = {
   policyHolder1: 'Primary Policyholder',
   effectiveDate: 'Effective Date',
   terms: 'Terms'
-}
+};
 
 export class TransferList extends Component {
   render() {
-    const { policies, filteredPolicies, toggleTransferModal, checkPolicy, uncheckPolicy, checkAllPolicies, selectedPolicies, clearSelectedPolicies, fadePolicy } = this.props;
+    const {
+      policies,
+      filteredPolicies,
+      toggleTransferModal,
+      checkPolicy,
+      uncheckPolicy,
+      checkAllPolicies,
+      selectedPolicies,
+      clearSelectedPolicies,
+      fadePolicy
+    } = this.props;
     return (
       <div id="TransferList">
         <ul className="data-grid">
@@ -29,34 +39,55 @@ export class TransferList extends Component {
               <TransferListItem
                 key={`${p.policyNumber}`}
                 dataTest={`${p.policyNumber}_selected`}
-                listClassName={fadePolicy === p.policyNumber ? "data-row fade-out" : "data-row"}
+                listClassName={
+                  fadePolicy === p.policyNumber
+                    ? 'data-row fade-out'
+                    : 'data-row'
+                }
                 policy={p}
-                clickHandler={(e) => uncheckPolicy(p.policyNumber, e)}
+                clickHandler={e => uncheckPolicy(p.policyNumber, e)}
                 isChecked={true}
               />
-            )
-          })
-          }
+            );
+          })}
           {filteredPolicies.map(p => {
             return (
               <TransferListItem
                 key={`${p.policyNumber}`}
                 dataTest={`${p.policyNumber}_filtered`}
-                listClassName={fadePolicy === p.policyNumber ? "data-row fade-out" : "data-row"}
+                listClassName={
+                  fadePolicy === p.policyNumber
+                    ? 'data-row fade-out'
+                    : 'data-row'
+                }
                 policy={p}
-                clickHandler={(e) => checkPolicy(p.policyNumber, e)}
+                clickHandler={e => checkPolicy(p.policyNumber, e)}
                 isChecked={false}
               />
-            )
-          })
-          }
+            );
+          })}
         </ul>
         <div className="button-wrapper">
-          <button type='button' onClick={clearSelectedPolicies} className="btn btn-link"><i className="fa fa-rotate-left" />Clear Selections</button>
-          <button type='button' disabled={selectedPolicies.length === 0} onClick={toggleTransferModal} className="btn btn-link"><i className="fa fa-random" />Stage Selected For Transfer</button>
+          <button
+            type="button"
+            onClick={clearSelectedPolicies}
+            className="btn btn-link"
+          >
+            <i className="fa fa-rotate-left" />
+            Clear Selections
+          </button>
+          <button
+            type="button"
+            disabled={selectedPolicies.length === 0}
+            onClick={toggleTransferModal}
+            className="btn btn-link"
+          >
+            <i className="fa fa-random" />
+            Stage Selected For Transfer
+          </button>
         </div>
       </div>
-    )
+    );
   }
 }
 

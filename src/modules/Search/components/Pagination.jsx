@@ -1,5 +1,5 @@
 import React from 'react';
-import { Input } from '@exzeo/core-ui'
+import { Input } from '@exzeo/core-ui';
 
 function Pagination({
   changePageBack,
@@ -16,10 +16,12 @@ function Pagination({
         onClick={changePageBack}
         tabIndex="0"
         disabled={String(pageNumber) === '1'}
-      ><span className="fa fa-chevron-circle-left"/></button>
+      >
+        <span className="fa fa-chevron-circle-left" />
+      </button>
       <div className="pagination-count">
         <Input
-          input={{name: 'pageNumber', value: pageNumber}}
+          input={{ name: 'pageNumber', value: pageNumber }}
           label="Page"
           styleName="pageNumber"
           size="2"
@@ -28,7 +30,7 @@ function Pagination({
         />
         <span className="pagination-operand">of</span>
         <Input
-          input={{name: "totalPages", value: totalPages}}
+          input={{ name: 'totalPages', value: totalPages }}
           styleName="totalPages"
           size="2"
           disabled
@@ -42,7 +44,9 @@ function Pagination({
         onClick={changePageForward}
         tabIndex="0"
         disabled={String(pageNumber) === String(totalPages)}
-      ><span className="fa fa-chevron-circle-right"/></button>
+      >
+        <span className="fa fa-chevron-circle-right" />
+      </button>
     </div>
   );
 }

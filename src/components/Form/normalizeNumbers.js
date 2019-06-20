@@ -15,4 +15,3 @@ const normalizeNumbers = (value, previousValue) => {
 };
 
 export default normalizeNumbers;
-

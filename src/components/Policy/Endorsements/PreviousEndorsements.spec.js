@@ -20,7 +20,9 @@ describe('Testing PreviousEndorsements component', () => {
         }
       ]
     };
-    const wrapper = shallow(<PreviousEndorsementsComponent store={store} {...props} />);
+    const wrapper = shallow(
+      <PreviousEndorsementsComponent store={store} {...props} />
+    );
     expect(wrapper.find('h3').text()).toEqual('Previous Endorsements');
   });
 });

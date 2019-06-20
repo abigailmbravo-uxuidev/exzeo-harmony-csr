@@ -54,19 +54,45 @@ describe('Testing WindMitigation component', () => {
       },
       ...propTypes
     };
-    const wrapper = shallow(<WindMitigationComponent store={store} {...props} />);
+    const wrapper = shallow(
+      <WindMitigationComponent store={store} {...props} />
+    );
 
-    wrapper.find('[name="property.windMitigation.roofCovering"]').simulate('change', { target: { value: 'Other' } });
-    wrapper.find('[name="property.windMitigation.roofDeckAttachment"]').simulate('change', { target: { value: 'Other' } });
-    wrapper.find('[name="property.windMitigation.roofToWallConnection"]').simulate('change', { target: { value: 'Other' } });
-    wrapper.find('[name="property.windMitigation.roofGeometry"]').simulate('change', { target: { value: 'Other' } });
-    wrapper.find('[name="property.windMitigation.secondaryWaterResistance"]').simulate('change', { target: { value: '140' } });
-    wrapper.find('[name="property.windMitigation.openingProtection"]').simulate('change', { target: { value: '140' } });
-    wrapper.find('[name="property.windMitigation.floridaBuildingCodeWindSpeed"]').simulate('change', { target: { value: 'C' } });
-    wrapper.find('[name="property.windMitigation.floridaBuildingCodeWindSpeedDesign"]').simulate('change', { target: { value: 'Other' } });
-    wrapper.find('[name="property.windMitigation.terrain"]').simulate('change', { target: { value: 'Other' } });
-    wrapper.find('[name="property.windMitigation.internalPressureDesign"]').simulate('change', { target: { value: 'Other' } });
+    wrapper
+      .find('[name="property.windMitigation.roofCovering"]')
+      .simulate('change', { target: { value: 'Other' } });
+    wrapper
+      .find('[name="property.windMitigation.roofDeckAttachment"]')
+      .simulate('change', { target: { value: 'Other' } });
+    wrapper
+      .find('[name="property.windMitigation.roofToWallConnection"]')
+      .simulate('change', { target: { value: 'Other' } });
+    wrapper
+      .find('[name="property.windMitigation.roofGeometry"]')
+      .simulate('change', { target: { value: 'Other' } });
+    wrapper
+      .find('[name="property.windMitigation.secondaryWaterResistance"]')
+      .simulate('change', { target: { value: '140' } });
+    wrapper
+      .find('[name="property.windMitigation.openingProtection"]')
+      .simulate('change', { target: { value: '140' } });
+    wrapper
+      .find('[name="property.windMitigation.floridaBuildingCodeWindSpeed"]')
+      .simulate('change', { target: { value: 'C' } });
+    wrapper
+      .find(
+        '[name="property.windMitigation.floridaBuildingCodeWindSpeedDesign"]'
+      )
+      .simulate('change', { target: { value: 'Other' } });
+    wrapper
+      .find('[name="property.windMitigation.terrain"]')
+      .simulate('change', { target: { value: 'Other' } });
+    wrapper
+      .find('[name="property.windMitigation.internalPressureDesign"]')
+      .simulate('change', { target: { value: 'Other' } });
 
-    wrapper.find('[name="property.windMitigation.windBorneDebrisRegion"]').simulate('change', { target: { value: 'Other' } });
+    wrapper
+      .find('[name="property.windMitigation.windBorneDebrisRegion"]')
+      .simulate('change', { target: { value: 'Other' } });
   });
 });

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { reduxForm, Field } from 'redux-form';
 import { Input, Date, Select, validation } from '@exzeo/core-ui';
 
-export const LicenseModal = (props) => {
+export const LicenseModal = props => {
   const {
     closeModal,
     saveLicense,
@@ -23,7 +23,9 @@ export const LicenseModal = (props) => {
       <div className="card">
         <form noValidate onSubmit={handleSubmit(saveLicense)}>
           <div className="card-header">
-            <h4><i className="fa fa-file" /> {actionType} License</h4>
+            <h4>
+              <i className="fa fa-file" /> {actionType} License
+            </h4>
           </div>
           <div className="card-block">
             <section className="license-details">
@@ -34,14 +36,16 @@ export const LicenseModal = (props) => {
                 answers={stateAnswers}
                 component={Select}
                 dataTest="state"
-                validate={validation.isRequired} />
+                validate={validation.isRequired}
+              />
               <Field
                 label="License Number"
                 styleName="licenseNumber"
                 name="licenseNumber"
                 component={Input}
                 dataTest="licenseNumber"
-                validate={[validation.isRequired, validation.isUnique]} />
+                validate={[validation.isRequired, validation.isUnique]}
+              />
               <Field
                 label="Type"
                 styleName="licenseType"
@@ -49,20 +53,34 @@ export const LicenseModal = (props) => {
                 answers={typeAnswers}
                 component={Select}
                 dataTest="licenseType"
-                validate={validation.isRequired} />
+                validate={validation.isRequired}
+              />
               <Field
                 label="Effective Date"
                 styleName="licenseEffectiveDate"
                 name="licenseEffectiveDate"
                 component={Date}
                 dataTest="licenseEffectiveDate"
-                validate={[validation.isRequired, validation.isDateRange('1900','10000')]} />
+                validate={[
+                  validation.isRequired,
+                  validation.isDateRange('1900', '10000')
+                ]}
+              />
             </section>
           </div>
           <div className="card-footer">
             <div className="btn-footer">
-              <button tabIndex="0" className="btn btn-secondary" type="button" onClick={closeModal}>Cancel</button>
-              <button tabIndex="0" className="btn btn-primary" type="submit">Save</button>
+              <button
+                tabIndex="0"
+                className="btn btn-secondary"
+                type="button"
+                onClick={closeModal}
+              >
+                Cancel
+              </button>
+              <button tabIndex="0" className="btn btn-primary" type="submit">
+                Save
+              </button>
             </div>
           </div>
         </form>
@@ -86,4 +104,6 @@ LicenseModal.propTypes = {
   })
 };
 
-export default reduxForm({ form: 'LicenseModal', enableReinitialize: true })(LicenseModal);
+export default reduxForm({ form: 'LicenseModal', enableReinitialize: true })(
+  LicenseModal
+);

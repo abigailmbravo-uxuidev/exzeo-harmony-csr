@@ -23,10 +23,12 @@ describe('Test Agency Actions', () => {
   it('should call setAgencies', () => {
     const agencies = [{ id: '1234' }, { id: '4321' }];
 
-    const stateObj = [{
-      type: types.SET_AGENCIES,
-      agencies
-    }];
+    const stateObj = [
+      {
+        type: types.SET_AGENCIES,
+        agencies
+      }
+    ];
 
     store.dispatch(agencyActions.setAgencies(agencies));
 
@@ -36,24 +38,27 @@ describe('Test Agency Actions', () => {
   it('should call setAgency', () => {
     const agency = { id: '1234' };
 
-    const stateObj = [{
-      type: types.SET_AGENCY,
-      agency
-    }];
+    const stateObj = [
+      {
+        type: types.SET_AGENCY,
+        agency
+      }
+    ];
 
     store.dispatch(agencyActions.setAgency(agency));
 
     expect(store.getActions()).toEqual(stateObj);
   });
 
-
   it('should call set agents', () => {
     const agents = [{ id: '1234' }, { id: '4321' }];
 
-    const stateObj = [{
-      type: types.SET_AGENTS,
-      agents
-    }];
+    const stateObj = [
+      {
+        type: types.SET_AGENTS,
+        agents
+      }
+    ];
 
     store.dispatch(agencyActions.setAgents(agents));
 
@@ -69,12 +74,13 @@ describe('Test Agency Actions', () => {
     let store;
     let httpStub;
 
-
     beforeEach(() => {
       initialState = {};
       store = mockStore(initialState);
       httpStub = sinon.stub();
-      sandbox.stub(serviceRunner, 'callService').callsFake((...args) => httpStub(...args));
+      sandbox
+        .stub(serviceRunner, 'callService')
+        .callsFake((...args) => httpStub(...args));
     });
 
     afterEach(() => {
@@ -88,12 +94,16 @@ describe('Test Agency Actions', () => {
       const state = 'FL';
       const agencies = [{ id: '1234' }, { id: '4321' }];
 
-      const stateObj = [{
-        type: types.SET_AGENCIES,
-        agencies
-      }];
+      const stateObj = [
+        {
+          type: types.SET_AGENCIES,
+          agencies
+        }
+      ];
 
-      httpStub.onCall(0).returns(Promise.resolve({ data: { result: agencies } }));
+      httpStub
+        .onCall(0)
+        .returns(Promise.resolve({ data: { result: agencies } }));
 
       await store.dispatch(agencyActions.getAgencies(companyCode, state));
 
@@ -103,30 +113,34 @@ describe('Test Agency Actions', () => {
     it('Should call dispatch on getAgency', async () => {
       const agency = [{ agencyCode: '1234' }];
 
-      const stateObj = [{
-        type: types.SET_AGENCY,
-        agency: agency[0]
-      }];
+      const stateObj = [
+        {
+          type: types.SET_AGENCY,
+          agency: agency[0]
+        }
+      ];
 
-      httpStub.onCall(0).returns(Promise.resolve({ data: { result: agency[0] } }));
+      httpStub
+        .onCall(0)
+        .returns(Promise.resolve({ data: { result: agency[0] } }));
       await store.dispatch(agencyActions.getAgency('1234'));
       expect(store.getActions()).toEqual(stateObj);
     });
 
-
     it('Should call dispatch on getAgentsByAgencyCode', async () => {
       const agents = [{ agentCode: '1234' }];
 
-      const stateObj = [{
-        type: types.SET_AGENTS,
-        agents
-      }];
+      const stateObj = [
+        {
+          type: types.SET_AGENTS,
+          agents
+        }
+      ];
 
       httpStub.onCall(0).returns(Promise.resolve({ data: { result: agents } }));
       await store.dispatch(agencyActions.getAgentsByAgencyCode('1234'));
       expect(store.getActions()).toEqual(stateObj);
     });
-
 
     it('Should call dispatch on addAgent', async () => {
       const agent = { agentCode: '1234' };
@@ -140,8 +154,12 @@ describe('Test Agency Actions', () => {
 
     it('Should call dispatch on createBranch', async () => {
       const agency = [{ agencyCode: '1234' }];
-      httpStub.onCall(0).returns(Promise.resolve({ data: { result: agency[0] } }));
-      await store.dispatch(agencyActions.createBranch(mockAgency, mockAgency.agencyCode));
+      httpStub
+        .onCall(0)
+        .returns(Promise.resolve({ data: { result: agency[0] } }));
+      await store.dispatch(
+        agencyActions.createBranch(mockAgency, mockAgency.agencyCode)
+      );
     });
   });
 
@@ -167,7 +185,8 @@ describe('Test Agency Actions', () => {
     });
     agencyActions.createAgency(store.dispatch);
 
-    return agencyActions.createAgency(mockAgency)(store.dispatch)
+    return agencyActions
+      .createAgency(mockAgency)(store.dispatch)
       .then(() => {
         expect(store.getActions()[0].type).toEqual(types.SET_AGENCY);
       });
@@ -195,7 +214,8 @@ describe('Test Agency Actions', () => {
     });
     agencyActions.createAgency(store.dispatch);
 
-    return agencyActions.createAgency(null)(store.dispatch)
+    return agencyActions
+      .createAgency(null)(store.dispatch)
       .then(() => {
         expect(store.getActions()[0].type).toEqual(types.APP_ERROR);
       });
@@ -223,12 +243,12 @@ describe('Test Agency Actions', () => {
     });
     agencyActions.createBranch(store.dispatch);
 
-    return agencyActions.createBranch(null)(store.dispatch)
+    return agencyActions
+      .createBranch(null)(store.dispatch)
       .then(() => {
         expect(store.getActions()[0].type).toEqual(types.APP_ERROR);
       });
   });
-
 
   it('should call getListOfOrphanedAgents', () => {
     const mockAdapter = new MockAdapter(axios);
@@ -251,7 +271,8 @@ describe('Test Agency Actions', () => {
     });
     agencyActions.getListOfOrphanedAgents(store.dispatch);
 
-    return agencyActions.getListOfOrphanedAgents()(store.dispatch)
+    return agencyActions
+      .getListOfOrphanedAgents()(store.dispatch)
       .then(() => {
         expect(store.getActions()[0].type).toEqual(types.SET_ORPHANED_AGENTS);
       });
@@ -278,12 +299,14 @@ describe('Test Agency Actions', () => {
       data: []
     });
 
-    return agencyActions.updateAgent({ agentCode: 123, agencies: [] }, mockAgency.ag)(store.dispatch)
+    return agencyActions
+      .updateAgent({ agentCode: 123, agencies: [] }, mockAgency.ag)(
+        store.dispatch
+      )
       .then(() => {
         expect(store.getActions()[0].type).toEqual(types.APP_ERROR);
       });
   });
-
 
   it('should call getAgentList', () => {
     const mockAdapter = new MockAdapter(axios);
@@ -306,7 +329,8 @@ describe('Test Agency Actions', () => {
     });
     agencyActions.getAgentList(store.dispatch);
 
-    return agencyActions.getAgentList('TTIC', 'FL')(store.dispatch)
+    return agencyActions
+      .getAgentList('TTIC', 'FL')(store.dispatch)
       .then(() => {
         expect(store.getActions()[0].type).toEqual(types.SET_AGENTS_LIST);
       });
@@ -315,21 +339,19 @@ describe('Test Agency Actions', () => {
   it('should call transferPoliciesRequest', () => {
     const mockAdapter = new MockAdapter(axios);
     const transfers = [
-        {
-          "policyNumbers": [
-            "12-1014449-01"
-          ],
-          "agencyCodeTo": 20423,
-          "agentCodeTo": 60447,
-          "agencyCodeFrom": 20000,
-          "agentCodeFrom": 60000
-        }
-      ];
+      {
+        policyNumbers: ['12-1014449-01'],
+        agencyCodeTo: 20423,
+        agentCodeTo: 60447,
+        agencyCodeFrom: 20000,
+        agentCodeFrom: 60000
+      }
+    ];
 
     const transferConfig = {
-      "exchangeName": "harmony",
-      "routingKey": "harmony.agency.startBoBTransfers",
-      "data": {
+      exchangeName: 'harmony',
+      routingKey: 'harmony.agency.startBoBTransfers',
+      data: {
         transfers
       }
     };
@@ -344,18 +366,19 @@ describe('Test Agency Actions', () => {
     };
 
     mockAdapter.onPost(axiosOptions.url, axiosOptions.data).reply(200, {
-      data: { message: 'Ok'}
+      data: { message: 'Ok' }
     });
 
-    return agencyActions.transferPoliciesToAgent(transfers)(store.dispatch)
-      .then((result) => {
+    return agencyActions
+      .transferPoliciesToAgent(transfers)(store.dispatch)
+      .then(result => {
         expect(result.data.message).toEqual('Ok');
       });
   });
 
-
   it('should call clearAgentList', () => {
-    return agencyActions.clearAgentList()(store.dispatch)
+    return agencyActions
+      .clearAgentList()(store.dispatch)
       .then(() => {
         expect(store.getActions()[0].type).toEqual(types.SET_AGENTS_LIST);
         expect(store.getActions()[0].agentList).toEqual([]);
@@ -381,7 +404,11 @@ describe('Test Agency Actions', () => {
     mockAdapter.onPost(axiosOptions.url, axiosOptions.data).reply(200, {
       result: [mockAgency]
     });
-    const response =  await agencyActions.fetchAgenciesByAgencyCodeOrName('TTIC', 'FL', '60000');
+    const response = await agencyActions.fetchAgenciesByAgencyCodeOrName(
+      'TTIC',
+      'FL',
+      '60000'
+    );
     expect(response).toEqual([mockAgency]);
   });
 
@@ -404,7 +431,11 @@ describe('Test Agency Actions', () => {
     mockAdapter.onPost(axiosOptions.url, axiosOptions.data).reply(200, {
       result: [mockAgency]
     });
-    const response =  await agencyActions.fetchAgenciesByAgencyCodeOrName('TTIC', 'FL', 'TypTap');
+    const response = await agencyActions.fetchAgenciesByAgencyCodeOrName(
+      'TTIC',
+      'FL',
+      'TypTap'
+    );
     expect(response).toEqual([mockAgency]);
   });
 
@@ -427,9 +458,11 @@ describe('Test Agency Actions', () => {
     mockAdapter.onPost(axiosOptions.url, axiosOptions.data).reply(200, {
       result: [mockAgency]
     });
-    const response =  await agencyActions.fetchAgenciesByAgencyCodeOrName('TTIC', 'FL', '123 Agency');
+    const response = await agencyActions.fetchAgenciesByAgencyCodeOrName(
+      'TTIC',
+      'FL',
+      '123 Agency'
+    );
     expect(response).toEqual([mockAgency]);
   });
-  
 });
-

@@ -6,7 +6,7 @@ import { Radio, Select, Loader, validation } from '@exzeo/core-ui';
 
 const FORM_NAME = 'BillingEditModal';
 
-export const handleInitialize = (state) => {
+export const handleInitialize = state => {
   const { policy, billingOptions } = state.policyState;
 
   if (billingOptions.length === 1 && !policy.billTo && !policy.billPlan) {
@@ -28,41 +28,46 @@ export class BillingEditModal extends React.Component {
     super(props);
 
     this.modalStyle = { flexDirection: 'row' };
-    this.billToOptions = props.billingOptions.map(option => ({ label: option.displayText, answer: option.billToId }));
+    this.billToOptions = props.billingOptions.map(option => ({
+      label: option.displayText,
+      answer: option.billToId
+    }));
   }
 
   getBillingOptions() {
     const { billingOptions, billToIdValue } = this.props;
-    const payPlans = (billingOptions.find(option => option.billToId === billToIdValue) || {}).payPlans;
+    const payPlans = (
+      billingOptions.find(option => option.billToId === billToIdValue) || {}
+    ).payPlans;
     return (payPlans || []).map(plan => ({ label: plan, answer: plan }));
   }
 
-  handleBillingFormSubmit = async (data) => {
+  handleBillingFormSubmit = async data => {
     const { handleBillingSubmit } = this.props;
     await handleBillingSubmit(data);
   };
 
-  normalizeBilling = (value) => {
+  normalizeBilling = value => {
     const { billingOptions, change } = this.props;
-    const billToType = (billingOptions.find(o => o.billToId === value) || {}).billToType || '';
+    const billToType =
+      (billingOptions.find(o => o.billToId === value) || {}).billToType || '';
     change('billPlan', 'Annual');
     change('billToType', billToType);
     return value;
   };
 
   render() {
-    const {
-      handleSubmit,
-      hideBillingModal,
-      submitting,
-      pristine
-    } = this.props;
+    const { handleSubmit, hideBillingModal, submitting, pristine } = this.props;
 
     return (
       <div className="modal" style={this.modalStyle}>
         {submitting && <Loader />}
         <div className="card card-billing-edit-modal">
-          <form id="BillingEditModal" className="BillingEditModal" onSubmit={handleSubmit(this.handleBillingFormSubmit)}>
+          <form
+            id="BillingEditModal"
+            className="BillingEditModal"
+            onSubmit={handleSubmit(this.handleBillingFormSubmit)}
+          >
             <div className="card-header">
               <h4>Edit Billing</h4>
             </div>
@@ -74,7 +79,8 @@ export class BillingEditModal extends React.Component {
                 normalize={this.normalizeBilling}
                 validate={validation.isRequired}
                 answers={this.billToOptions}
-                dataTest="billToId" />
+                dataTest="billToId"
+              />
               <Field
                 name="billPlan"
                 label="Bill Plan"
@@ -82,7 +88,8 @@ export class BillingEditModal extends React.Component {
                 validate={validation.isRequired}
                 answers={this.getBillingOptions()}
                 dataTest="billPlan"
-                segmented />
+                segmented
+              />
             </div>
             <div className="card-footer">
               <div className="btn-group">
@@ -91,14 +98,18 @@ export class BillingEditModal extends React.Component {
                   aria-label="reset-btn form-editBilling"
                   className="btn btn-secondary"
                   type="button"
-                  onClick={hideBillingModal}>Cancel
+                  onClick={hideBillingModal}
+                >
+                  Cancel
                 </button>
                 <button
                   tabIndex="0"
                   aria-label="submit-btn form-editBilling"
                   className="btn btn-primary"
                   type="submit"
-                  disabled={submitting || pristine}>Update
+                  disabled={submitting || pristine}
+                >
+                  Update
                 </button>
               </div>
             </div>
@@ -129,8 +140,9 @@ const mapStateToProps = state => ({
   billToIdValue: selector(state, 'billToId')
 });
 
-export default connect(mapStateToProps)(reduxForm({
-  form: FORM_NAME,
-  enableReinitialize: true
-})(BillingEditModal));
-
+export default connect(mapStateToProps)(
+  reduxForm({
+    form: FORM_NAME,
+    enableReinitialize: true
+  })(BillingEditModal)
+);

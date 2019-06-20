@@ -5,7 +5,7 @@ import FieldHint from './FieldHint';
 
 describe('SelectField', () => {
   it('should render "select input" when nothing is provided', () => {
-    const wrapper = shallow(<SelectField  name="Test" label="test" />);
+    const wrapper = shallow(<SelectField name="Test" label="test" />);
     expect(wrapper.find('option').length).toEqual(0);
   });
 
@@ -13,13 +13,17 @@ describe('SelectField', () => {
     const inputProps = {
       name: 'test',
       label: 'test',
-      answers: [{
-        answer: 'One'
-      }, {
-        answer: 'Two'
-      }, {
-        answer: 'Three'
-      }]
+      answers: [
+        {
+          answer: 'One'
+        },
+        {
+          answer: 'Two'
+        },
+        {
+          answer: 'Three'
+        }
+      ]
     };
 
     const wrapper = shallow(<SelectField {...inputProps} />);

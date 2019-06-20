@@ -2,9 +2,7 @@ import React from 'react';
 import { mount } from 'enzyme';
 import ContactAddress from './ContactAddress';
 
-
 describe('Test the ContactAddress Component', () => {
-  
   it('Should Render with All Address Fields', () => {
     const mailingAddress = {
       address1: '123 Some Way',
@@ -15,7 +13,9 @@ describe('Test the ContactAddress Component', () => {
     };
     const wrapper = mount(<ContactAddress mailingAddress={mailingAddress} />);
     expect(wrapper.exists()).toBeTruthy();
-    expect(wrapper.find('.contact-address').text()).toMatch("123 Some Way, APT # 123, Tampa, FL 33600");
+    expect(wrapper.find('.contact-address').text()).toMatch(
+      '123 Some Way, APT # 123, Tampa, FL 33600'
+    );
   });
 
   it('Should Render with Missing Address 2 Field', () => {
@@ -27,6 +27,8 @@ describe('Test the ContactAddress Component', () => {
     };
     const wrapper = mount(<ContactAddress mailingAddress={mailingAddress} />);
     expect(wrapper.exists()).toBeTruthy();
-    expect(wrapper.find('.contact-address').text()).toMatch("123 Some Way, Tampa, FL 33600");
+    expect(wrapper.find('.contact-address').text()).toMatch(
+      '123 Some Way, Tampa, FL 33600'
+    );
   });
 });

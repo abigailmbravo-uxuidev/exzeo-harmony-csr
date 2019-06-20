@@ -23,72 +23,78 @@ export class Overview extends React.Component {
     showEditAgentModal: false,
     showSwitchAgentOfRecordModal: false,
     selectedAgent: null
-  }
+  };
 
   onHandleToggleEditDetailsModal = () => {
     this.setState({ showEditDetailsModal: !this.state.showEditDetailsModal });
-  }
+  };
 
   onHandleToggleEditAddressModal = () => {
     this.setState({ showEditAddressModal: !this.state.showEditAddressModal });
-  }
+  };
 
   onHandleToggleEditContactModal = () => {
     this.setState({ showEditContactModal: !this.state.showEditContactModal });
-  }
+  };
 
   onHandleToggleEditPrincipalModal = () => {
-    this.setState({ showEditPrincipalModal: !this.state.showEditPrincipalModal });
-  }
+    this.setState({
+      showEditPrincipalModal: !this.state.showEditPrincipalModal
+    });
+  };
 
   onHandleToggleEditAgentModal = () => {
     this.setState({ showEditAgentModal: !this.state.showEditAgentModal });
-  }
+  };
 
   onHandleToggleSwitchAgentOfRecordModal = agent => () => {
     this.setState({
       selectedAgent: agent,
       showSwitchAgentOfRecordModal: !this.state.showSwitchAgentOfRecordModal
     });
-  }
+  };
 
-  handleSwitchAOR = async (data) => {
-    const { agency: { agencyCode, branches }, updateAgency, branchCode } = this.props;
-    if(branchCode > 0){
-      const branchData = [ ...branches ];
-      const branchIndex = branchData.findIndex(b => Number(b.branchCode) === Number(branchCode))
+  handleSwitchAOR = async data => {
+    const {
+      agency: { agencyCode, branches },
+      updateAgency,
+      branchCode
+    } = this.props;
+    if (branchCode > 0) {
+      const branchData = [...branches];
+      const branchIndex = branchData.findIndex(
+        b => Number(b.branchCode) === Number(branchCode)
+      );
       branchData[branchIndex].agentOfRecord = data.selectedAgentCode;
       await updateAgency({ agencyCode, branches: branchData });
-    } 
-    else await updateAgency({ agencyCode, agentOfRecord: data.selectedAgentCode });
+    } else
+      await updateAgency({ agencyCode, agentOfRecord: data.selectedAgentCode });
     this.onHandleToggleSwitchAgentOfRecordModal(null)();
-  }
+  };
 
-  onHandleEditAgent = async (data) => {
-    const {
-      agency, updateAgent
-    } = this.props;
+  onHandleEditAgent = async data => {
+    const { agency, updateAgent } = this.props;
     await updateAgent(data, agency.agencyCode);
     this.onHandleToggleEditAgentModal();
   };
 
   render() {
     const {
-      agency, 
-      territoryManagers, 
-      agentOfRecord, 
-      addressInitialValues, 
-      agencyBranchData, 
-      branchCode, 
-      agentsList, 
+      agency,
+      territoryManagers,
+      agentOfRecord,
+      addressInitialValues,
+      agencyBranchData,
+      branchCode,
+      agentsList,
       updateAgency
     } = this.props;
-    
+
     const {
-      showEditDetailsModal, 
-      showEditAddressModal, 
-      showEditContactModal, 
-      showEditPrincipalModal, 
+      showEditDetailsModal,
+      showEditAddressModal,
+      showEditContactModal,
+      showEditPrincipalModal,
       showEditAgentModal
     } = this.state;
 
@@ -99,41 +105,74 @@ export class Overview extends React.Component {
         <div className="route-content">
           <div className="scroll">
             <div className="form-group survey-wrapper" role="group">
-              <h3 data-test="agency-details">Details
+              <h3 data-test="agency-details">
+                Details
                 <button
                   className="btn btn-link btn-sm"
-                  onClick={this.onHandleToggleEditDetailsModal}>
-                  <i className="fa fa-pencil-square" />Edit
+                  onClick={this.onHandleToggleEditDetailsModal}
+                >
+                  <i className="fa fa-pencil-square" />
+                  Edit
                 </button>
               </h3>
               <section className="agency-details">
-                <DetailView agency={agency} agencyBranchData={agencyBranchData} />
+                <DetailView
+                  agency={agency}
+                  agencyBranchData={agencyBranchData}
+                />
                 <hr />
-                <ContactView agency={agency} agencyBranchData={agencyBranchData} emailType="CSR" />
+                <ContactView
+                  agency={agency}
+                  agencyBranchData={agencyBranchData}
+                  emailType="CSR"
+                />
               </section>
-              <h3 data-test="agency-address">Address
+              <h3 data-test="agency-address">
+                Address
                 <button
                   className="btn btn-link btn-sm"
-                  onClick={this.onHandleToggleEditAddressModal}>
-                  <i className="fa fa-pencil-square" />Edit
+                  onClick={this.onHandleToggleEditAddressModal}
+                >
+                  <i className="fa fa-pencil-square" />
+                  Edit
                 </button>
               </h3>
               <section className="agency-address">
-                <AddressView agencyBranchData={agencyBranchData} territoryManagers={territoryManagers} />
+                <AddressView
+                  agencyBranchData={agencyBranchData}
+                  territoryManagers={territoryManagers}
+                />
               </section>
-              {agencyBranchData.principal && <h3 data-test="agency-officer">Officer</h3>}
-              {agencyBranchData.principal &&
-              <section className="agency-principal">
-                <ContactCard isOfficer contact={agencyBranchData.principal} handleClick={this.onHandleToggleEditPrincipalModal} />
-              </section>
-              }
+              {agencyBranchData.principal && (
+                <h3 data-test="agency-officer">Officer</h3>
+              )}
+              {agencyBranchData.principal && (
+                <section className="agency-principal">
+                  <ContactCard
+                    isOfficer
+                    contact={agencyBranchData.principal}
+                    handleClick={this.onHandleToggleEditPrincipalModal}
+                  />
+                </section>
+              )}
               <h3 data-test="agency-contact">Contact</h3>
               <section className="agency-contact">
-                <ContactCard contact={agencyBranchData.contact} handleClick={this.onHandleToggleEditContactModal} />
+                <ContactCard
+                  contact={agencyBranchData.contact}
+                  handleClick={this.onHandleToggleEditContactModal}
+                />
               </section>
               <h3 data-test="agency-aor">Agent Of Record</h3>
               <section name="agentOfRecord" className="agency-aor">
-                {agentOfRecord && agentOfRecord.agentCode && <AgentCard agent={agentOfRecord} handleSecondaryClick={this.onHandleToggleSwitchAgentOfRecordModal} handlePrimaryClick={this.onHandleToggleEditAgentModal} />}
+                {agentOfRecord && agentOfRecord.agentCode && (
+                  <AgentCard
+                    agent={agentOfRecord}
+                    handleSecondaryClick={
+                      this.onHandleToggleSwitchAgentOfRecordModal
+                    }
+                    handlePrimaryClick={this.onHandleToggleEditAgentModal}
+                  />
+                )}
               </section>
             </div>
           </div>
@@ -141,26 +180,66 @@ export class Overview extends React.Component {
         <div className="basic-footer">
           <Footer />
         </div>
-        {showEditDetailsModal && Number(branchCode) === 0 && <AgencyModal initialValues={agency} updateAgency={updateAgency} closeModal={this.onHandleToggleEditDetailsModal} />}
-        {showEditDetailsModal && Number(branchCode) > 0 && <BranchModal agency={agency} branchCode={branchCode} initialValues={agencyBranchData} closeModal={this.onHandleToggleEditDetailsModal} />}
-        {showEditAddressModal && <AgencyAddressModal agency={agency} initialValues={addressInitialValues} closeModal={this.onHandleToggleEditAddressModal} />}
-        {showEditContactModal &&
-          <AgencyContactModal agency={agency} branchCode={branchCode} header="Edit Contact" section="contact" initialValues={agencyBranchData} closeModal={this.onHandleToggleEditContactModal} />
-        }
-        {showEditPrincipalModal &&
-          <AgencyContactModal agency={agency} branchCode={branchCode} header="Edit Officer" section="principal" initialValues={agencyBranchData} closeModal={this.onHandleToggleEditPrincipalModal} />
-        }
-        {showEditAgentModal &&
-        <AgentModal isEditing agencyCode={agency.agencyCode} initialValues={agentOfRecord} closeModal={this.onHandleToggleEditAgentModal} handleSaveAgent={this.onHandleEditAgent} />
-        }
-        {this.state.showSwitchAgentOfRecordModal &&
-        <AddExistingAgentModal
-          header="Agent Of Record"
-          initialValues={{ selectedAgent: this.state.selectedAgent._id }}
-          listOfAgents={agentsList}
-          onToggleModal={this.onHandleToggleSwitchAgentOfRecordModal(null)}
-          handleSelection={this.handleSwitchAOR} />
-        }
+        {showEditDetailsModal && Number(branchCode) === 0 && (
+          <AgencyModal
+            initialValues={agency}
+            updateAgency={updateAgency}
+            closeModal={this.onHandleToggleEditDetailsModal}
+          />
+        )}
+        {showEditDetailsModal && Number(branchCode) > 0 && (
+          <BranchModal
+            agency={agency}
+            branchCode={branchCode}
+            initialValues={agencyBranchData}
+            closeModal={this.onHandleToggleEditDetailsModal}
+          />
+        )}
+        {showEditAddressModal && (
+          <AgencyAddressModal
+            agency={agency}
+            initialValues={addressInitialValues}
+            closeModal={this.onHandleToggleEditAddressModal}
+          />
+        )}
+        {showEditContactModal && (
+          <AgencyContactModal
+            agency={agency}
+            branchCode={branchCode}
+            header="Edit Contact"
+            section="contact"
+            initialValues={agencyBranchData}
+            closeModal={this.onHandleToggleEditContactModal}
+          />
+        )}
+        {showEditPrincipalModal && (
+          <AgencyContactModal
+            agency={agency}
+            branchCode={branchCode}
+            header="Edit Officer"
+            section="principal"
+            initialValues={agencyBranchData}
+            closeModal={this.onHandleToggleEditPrincipalModal}
+          />
+        )}
+        {showEditAgentModal && (
+          <AgentModal
+            isEditing
+            agencyCode={agency.agencyCode}
+            initialValues={agentOfRecord}
+            closeModal={this.onHandleToggleEditAgentModal}
+            handleSaveAgent={this.onHandleEditAgent}
+          />
+        )}
+        {this.state.showSwitchAgentOfRecordModal && (
+          <AddExistingAgentModal
+            header="Agent Of Record"
+            initialValues={{ selectedAgent: this.state.selectedAgent._id }}
+            listOfAgents={agentsList}
+            onToggleModal={this.onHandleToggleSwitchAgentOfRecordModal(null)}
+            handleSelection={this.handleSwitchAOR}
+          />
+        )}
       </div>
     );
   }

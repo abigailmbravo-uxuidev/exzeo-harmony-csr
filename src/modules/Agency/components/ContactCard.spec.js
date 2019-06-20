@@ -10,7 +10,12 @@ describe('Testing ContactCard component', () => {
   });
 
   it('should test officer with title', () => {
-    const wrapper = shallow(<ContactCard isOfficer contact={{ firstName: 'test', title: 'Officer' }} />);
+    const wrapper = shallow(
+      <ContactCard
+        isOfficer
+        contact={{ firstName: 'test', title: 'Officer' }}
+      />
+    );
     expect(wrapper).toBeTruthy();
   });
 });

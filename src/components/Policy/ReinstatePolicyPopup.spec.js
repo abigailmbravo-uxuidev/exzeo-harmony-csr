@@ -3,7 +3,10 @@ import configureStore from 'redux-mock-store';
 import { propTypes } from 'redux-form';
 import { shallow } from 'enzyme';
 
-import ConnectedApp, { ReinstatePolicyPopup, handleInitialize } from './ReinstatePolicyPopup';
+import ConnectedApp, {
+  ReinstatePolicyPopup,
+  handleInitialize
+} from './ReinstatePolicyPopup';
 
 const middlewares = [];
 const mockStore = configureStore(middlewares);
@@ -12,8 +15,7 @@ describe('Testing ReinstatePolicyPopup component', () => {
   it('should test connected app', () => {
     const initialState = {
       policyState: {},
-      authState: {
-      },
+      authState: {},
       cg: {
         bb: {
           data: {
@@ -27,8 +29,7 @@ describe('Testing ReinstatePolicyPopup component', () => {
         latestPolicy: {}
       },
       appState: {
-        data: {
-        },
+        data: {},
         modelName: 'bb'
       }
     };
@@ -52,8 +53,7 @@ describe('Testing ReinstatePolicyPopup component', () => {
 
   it('should test ReinstatePolicyPopup', () => {
     const initialState = {
-      authState: {
-      },
+      authState: {},
       cg: {
         bb: {
           data: {
@@ -67,8 +67,7 @@ describe('Testing ReinstatePolicyPopup component', () => {
         latestPolicy: {}
       },
       appState: {
-        data: {
-        },
+        data: {},
         modelName: 'bb'
       }
     };

@@ -5,15 +5,18 @@ import { SearchBase } from './SearchBase';
 describe('Policy Search', () => {
   it('renders Policy Search container', () => {
     const props = {
-      getUIQuestions() {x => x},
-      startWorkflow() {x => x},
+      getUIQuestions() {
+        x => x;
+      },
+      startWorkflow() {
+        x => x;
+      },
       location: { pathName: 'test' },
       auth: {},
       userProfile: {},
       loading: false
-    }
+    };
     const wrapper = shallow(<SearchBase {...props} />);
     expect(wrapper.exists()).toBeTruthy();
   });
 });
-

@@ -10,21 +10,24 @@ export const PrincipalFields = () => (
       name="principalFirstName"
       dataTest="principalFirstName"
       component={Input}
-      validate={validation.isRequired} />
+      validate={validation.isRequired}
+    />
     <Field
       label="Last Name"
       styleName="principalLastName"
       name="principalLastName"
       dataTest="principalLastName"
       component={Input}
-      validate={validation.isRequired} />
+      validate={validation.isRequired}
+    />
     <Field
       label="Email Address"
       styleName="principalEmailAddress flex-item"
       name="principalEmailAddress"
       dataTest="principalEmailAddress"
       component={Input}
-      validate={[validation.isRequired, validation.isEmail]} />
+      validate={[validation.isRequired, validation.isEmail]}
+    />
   </React.Fragment>
 );
 

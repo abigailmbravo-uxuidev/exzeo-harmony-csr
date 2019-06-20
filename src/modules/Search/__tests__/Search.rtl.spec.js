@@ -30,12 +30,17 @@ describe('Testing Policy Search Component', () => {
   };
 
   // Create a real store with our actual reducers so we have the formReducer
-  const store = createStore(rootReducer, { ...defaultInitialState, authState: { userProfile }}, applyMiddleware(thunk));
+  const store = createStore(
+    rootReducer,
+    { ...defaultInitialState, authState: { userProfile } },
+    applyMiddleware(thunk)
+  );
 
   it('POS:Policy Search', () => {
-    const { getByText, getByTestId } = renderWithReduxAndRouter(<ConnectedSearch
-      {...props}
-    />, { store });
+    const { getByText, getByTestId } = renderWithReduxAndRouter(
+      <ConnectedSearch {...props} />,
+      { store }
+    );
     expect(getByText('Search Context'));
     expect(getByText('Property Street Address'));
     expect(getByText('New Quote'));
@@ -43,27 +48,37 @@ describe('Testing Policy Search Component', () => {
     expect(getByText('Policy Search'));
 
     // Change search type
-    fireEvent.change(getByTestId('searchType'), { target: { value: 'address' }});
-    expect(getByTestId('searchType').getAttribute('data-selected')).toEqual('address');
-    expect(getByText('Property Address'));
-    newQuoteFields.filter(({ type }) => type === 'text').forEach(field => {
-      checkTextInput(getByTestId, field);
-      checkLabel(getByTestId, field);
+    fireEvent.change(getByTestId('searchType'), {
+      target: { value: 'address' }
     });
+    expect(getByTestId('searchType').getAttribute('data-selected')).toEqual(
+      'address'
+    );
+    expect(getByText('Property Address'));
+    newQuoteFields
+      .filter(({ type }) => type === 'text')
+      .forEach(field => {
+        checkTextInput(getByTestId, field);
+        checkLabel(getByTestId, field);
+      });
     checkButton(getByText, { text: 'Search', type: 'submit' });
     expect(getByText('Search').getAttribute('type')).toEqual('submit');
   });
 
-
   it('POS:Policy Advanced Search Open Arrow', async () => {
-    const { getByTestId, queryByTestId } = renderWithReduxAndRouter(<ConnectedSearch
-      {...props}
-    />, { store });
+    const { getByTestId, queryByTestId } = renderWithReduxAndRouter(
+      <ConnectedSearch {...props} />,
+      { store }
+    );
     fireEvent.click(getByTestId('policy-advanced-search'));
     await waitForElement(() => getByTestId('sortBy'));
-    expect(getByTestId('policy-advanced-search').querySelector('i').className).toEqual('fa fa-chevron-up');
+    expect(
+      getByTestId('policy-advanced-search').querySelector('i').className
+    ).toEqual('fa fa-chevron-up');
     fireEvent.click(getByTestId('policy-advanced-search'));
     await wait(() => expect(queryByTestId('[data-test="sortBy"]')).toBeNull());
-    expect(getByTestId('policy-advanced-search').querySelector('i').className).toEqual('fa fa-chevron-down');
+    expect(
+      getByTestId('policy-advanced-search').querySelector('i').className
+    ).toEqual('fa fa-chevron-down');
   });
 });

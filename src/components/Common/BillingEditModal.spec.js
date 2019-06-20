@@ -11,8 +11,7 @@ describe('Testing BillingEditModal component', () => {
   it('should test connected app', () => {
     const initialState = {
       policyState: { billingOptions: [], policy: {} },
-      authState: {
-      },
+      authState: {},
       cg: {
         bb: {
           data: {

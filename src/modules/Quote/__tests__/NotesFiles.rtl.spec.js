@@ -11,8 +11,24 @@ import {
 import { QuoteWorkflow } from '../QuoteWorkflow';
 
 const pageHeaders = [{ text: 'History' }];
-const notesColumns = ['Created', 'Author', 'Contact', 'Note', 'File Type', 'File'];
-const diariesColumns = ['Status', 'Due', 'Assignee', 'Reason', 'Message', 'Updated', 'Updated By', 'Actions'];
+const notesColumns = [
+  'Created',
+  'Author',
+  'Contact',
+  'Note',
+  'File Type',
+  'File'
+];
+const diariesColumns = [
+  'Status',
+  'Due',
+  'Assignee',
+  'Reason',
+  'Message',
+  'Updated',
+  'Updated By',
+  'Actions'
+];
 
 mockServiceRunner([]);
 
@@ -34,11 +50,13 @@ describe('Notes Files Testing', () => {
   });
 
   it('POS:Search Input', async () => {
-    const { getByText, getByPlaceholderText } = renderWithForm(<QuoteWorkflow {...props} />);
+    const { getByText, getByPlaceholderText } = renderWithForm(
+      <QuoteWorkflow {...props} />
+    );
     await waitForElement(() => getByText('Search Table Data'));
     const searchbar = getByPlaceholderText('Search');
 
-    fireEvent.change(searchbar, { target: { value: 'ZZZ' }});
+    fireEvent.change(searchbar, { target: { value: 'ZZZ' } });
 
     expect(searchbar.value).toBe('ZZZ');
   });
@@ -51,7 +69,9 @@ describe('Notes Files Testing', () => {
   });
 
   it('POS:Files', async () => {
-    const { getByText, queryByText } = renderWithForm(<QuoteWorkflow {...props} />);
+    const { getByText, queryByText } = renderWithForm(
+      <QuoteWorkflow {...props} />
+    );
     await waitForElement(() => getByText('Search Table Data'));
 
     fireEvent.click(getByText('Files'));
@@ -61,7 +81,9 @@ describe('Notes Files Testing', () => {
   });
 
   it('POS:Diaries', async () => {
-    const { getByText, queryByText } = renderWithForm(<QuoteWorkflow {...props} />);
+    const { getByText, queryByText } = renderWithForm(
+      <QuoteWorkflow {...props} />
+    );
     await waitForElement(() => getByText('Search Table Data'));
 
     fireEvent.click(getByText('Diaries'));
@@ -70,7 +92,8 @@ describe('Notes Files Testing', () => {
     notesColumns.forEach(col => expect(queryByText(col)).toBeNull());
     diariesColumns.forEach(col => {
       expect(getByText(col));
-      if (!['Message', 'Actions'].includes(col)) expect(getByText(col).children[0].className).toEqual('order');
+      if (!['Message', 'Actions'].includes(col))
+        expect(getByText(col).children[0].className).toEqual('order');
     });
   });
 
@@ -89,8 +112,9 @@ describe('Notes Files Testing', () => {
     expect(getByText('ZZZ content note'));
 
     const checkOrder = order =>
-      expect(document.querySelectorAll('tbody tr td.created-by')[0].textContent)
-        .toEqual(order === 'asc' ? 'AAA user author' : 'ZZZ user author');
+      expect(
+        document.querySelectorAll('tbody tr td.created-by')[0].textContent
+      ).toEqual(order === 'asc' ? 'AAA user author' : 'ZZZ user author');
 
     const checkArrows = (col, className = 'order dropup') =>
       expect(getByText(col).children[0].className).toEqual(className);
@@ -102,7 +126,8 @@ describe('Notes Files Testing', () => {
       notesColumns.forEach(col => checkArrows(col, 'order'));
 
       // Author, Filetype, and File sorts ascending, so if author is clicked we check sorting order ascending first.
-      if (['Author', 'File Type', 'File'].includes(columnToClick)) checkOrder('asc');
+      if (['Author', 'File Type', 'File'].includes(columnToClick))
+        checkOrder('asc');
       else checkOrder('desc');
 
       fireEvent.click(dropArrows);
@@ -118,7 +143,8 @@ describe('Notes Files Testing', () => {
         }
       });
       // Check our sorting order again.
-      if (['Author', 'File Type', 'File'].includes(columnToClick)) checkOrder('desc');
+      if (['Author', 'File Type', 'File'].includes(columnToClick))
+        checkOrder('desc');
       else checkOrder('asc');
     });
   });

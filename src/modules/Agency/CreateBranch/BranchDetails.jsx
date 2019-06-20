@@ -9,8 +9,7 @@ const mailAnswers = [
   { answer: true, label: 'Yes' }
 ];
 
-
-export const BranchDetails = (agencyCodeDisabled) => {
+export const BranchDetails = agencyCodeDisabled => {
   return (
     <React.Fragment>
       <Field
@@ -19,14 +18,16 @@ export const BranchDetails = (agencyCodeDisabled) => {
         styleName="branchName"
         label="Branch Name"
         validate={validation.isRequired}
-        component={Input} />
+        component={Input}
+      />
       <Field
         label="Web Address"
         styleName="webAddress"
         name="websiteUrl"
         dataTest="websiteUrl"
         component={Input}
-        validate={[validation.isRequired, validation.isWebAddress]} />
+        validate={[validation.isRequired, validation.isWebAddress]}
+      />
       <Field
         id="status"
         name="status"
@@ -35,7 +36,8 @@ export const BranchDetails = (agencyCodeDisabled) => {
         label="Status"
         component={Select}
         validate={validation.isRequired}
-        answers={STATUS} />
+        answers={STATUS}
+      />
       <Field
         name="mailCommissionChecksToBranch"
         dataTest="mailCommissionChecksToBranch"
@@ -43,7 +45,8 @@ export const BranchDetails = (agencyCodeDisabled) => {
         label="Mail Commission Checks to this Branch"
         component={Radio}
         segmented
-        answers={mailAnswers} />
+        answers={mailAnswers}
+      />
       <Field
         name="mailPolicyDocsToBranch"
         dataTest="mailPolicyDocsToBranch"
@@ -51,7 +54,8 @@ export const BranchDetails = (agencyCodeDisabled) => {
         label="Mail Policy Docs to this Branch"
         component={Radio}
         segmented
-        answers={mailAnswers} />
+        answers={mailAnswers}
+      />
       <hr />
       <Field
         label="Phone 1"
@@ -59,28 +63,32 @@ export const BranchDetails = (agencyCodeDisabled) => {
         name="primaryPhoneNumber"
         dataTest="primaryPhoneNumber"
         component={Phone}
-        validate={[validation.isRequired, validation.isPhone]} />
+        validate={[validation.isRequired, validation.isPhone]}
+      />
       <Field
         label="Phone 2"
         styleName="secondaryPhoneNumber"
         name="secondaryPhoneNumber"
         dataTest="secondaryPhoneNumber"
         component={Phone}
-        validate={[validation.isPhone]} />
+        validate={[validation.isPhone]}
+      />
       <Field
         label="Fax"
         styleName="faxNumber"
         name="faxNumber"
         dataTest="faxNumber"
         component={Phone}
-        validate={[validation.isPhone]} />
+        validate={[validation.isPhone]}
+      />
       <Field
         label="CSR Contact Email Address"
         styleName="customerServiceEmailAddress"
         name="customerServiceEmailAddress"
         dataTest="customerServiceEmailAddress"
         component={Input}
-        validate={[validation.isRequired, validation.isEmail]} />
+        validate={[validation.isRequired, validation.isEmail]}
+      />
     </React.Fragment>
   );
 };

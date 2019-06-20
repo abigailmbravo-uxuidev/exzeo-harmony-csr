@@ -41,24 +41,42 @@ export const clearSearchResults = (modelName, workflowData) => {
 };
 
 // helper function to check cg errors
-const checkCGError = (responseData) => {
-  if (responseData.activeTask && responseData.activeTask.link && responseData.activeTask.link === 'error') {
+const checkCGError = responseData => {
+  if (
+    responseData.activeTask &&
+    responseData.activeTask.link &&
+    responseData.activeTask.link === 'error'
+  ) {
     throw new Error(`CG responded with an error: ${responseData}`);
   }
 };
 
 const handleError = (dispatch, modelName, workflowId, err) => {
-  const error = err.response && err.response.data && err.response.data.result && err.response.data.result.error ? err.response.data.result.error : err;
-  const requestId = err.response && err.response.data ? err.response.data.requestId : '';
-  const status = err.response && err.response.data ? err.response.data.status : '';
+  const error =
+    err.response &&
+    err.response.data &&
+    err.response.data.result &&
+    err.response.data.result.error
+      ? err.response.data.result.error
+      : err;
+  const requestId =
+    err.response && err.response.data ? err.response.data.requestId : '';
+  const status =
+    err.response && err.response.data ? err.response.data.status : '';
 
-  return dispatch(batchActions([
-    errorActions.setAppError({ message: error.message, status, requestId }),
-    appStateActions.setAppState(modelName, workflowId, { submitting: false })
-  ]));
+  return dispatch(
+    batchActions([
+      errorActions.setAppError({ message: error.message, status, requestId }),
+      appStateActions.setAppState(modelName, workflowId, { submitting: false })
+    ])
+  );
 };
 
-export const startWorkflow = (modelName, data, dispatchAppState = true) => (dispatch) => {
+export const startWorkflow = (
+  modelName,
+  data,
+  dispatchAppState = true
+) => dispatch => {
   const axiosConfig = {
     method: 'POST',
     headers: {
@@ -72,14 +90,17 @@ export const startWorkflow = (modelName, data, dispatchAppState = true) => (disp
   };
 
   return http(axiosConfig)
-    .then((response) => {
+    .then(response => {
       const responseData = response.data.data;
       // check to see if the cg has returned an error as an ok
       checkCGError(responseData);
       if (dispatchAppState) {
-        return dispatch(batchActions([start(modelName, responseData),
-          errorActions.clearAppError()
-        ]));
+        return dispatch(
+          batchActions([
+            start(modelName, responseData),
+            errorActions.clearAppError()
+          ])
+        );
       }
       dispatch(errorActions.clearAppError());
       return dispatch(start(modelName, responseData));
@@ -108,7 +129,13 @@ export const startWorkflow = (modelName, data, dispatchAppState = true) => (disp
 //     .catch(error => handleError(dispatch, error));
 // };
 
-export const completeTask = (modelName, workflowId, stepName, data, dispatchAppState = true) => (dispatch) => {
+export const completeTask = (
+  modelName,
+  workflowId,
+  stepName,
+  data,
+  dispatchAppState = true
+) => dispatch => {
   const axiosConfig = {
     method: 'POST',
     headers: {
@@ -123,25 +150,33 @@ export const completeTask = (modelName, workflowId, stepName, data, dispatchAppS
   };
 
   return http(axiosConfig)
-    .then((response) => {
+    .then(response => {
       const responseData = response.data.data;
       // check to see if the cg has returned an error as an ok
       checkCGError(responseData);
       if (dispatchAppState) {
-        return dispatch(batchActions([complete(modelName, responseData),
-          appStateActions.setAppState(modelName, workflowId, {
-            submitting: false
-          })
-        ]));
+        return dispatch(
+          batchActions([
+            complete(modelName, responseData),
+            appStateActions.setAppState(modelName, workflowId, {
+              submitting: false
+            })
+          ])
+        );
       }
       return dispatch(complete(modelName, responseData));
     })
     .catch(error => handleError(dispatch, modelName, workflowId, error));
 };
 
-export const batchCompleteTask = (modelName, workflowId, stepsWithData, dispatchAppState = true) => (dispatch) => {
+export const batchCompleteTask = (
+  modelName,
+  workflowId,
+  stepsWithData,
+  dispatchAppState = true
+) => dispatch => {
   const axiosConfigs = [];
-  _.each(stepsWithData, (step) => {
+  _.each(stepsWithData, step => {
     const axiosConfig = {
       method: 'POST',
       headers: {
@@ -157,24 +192,36 @@ export const batchCompleteTask = (modelName, workflowId, stepsWithData, dispatch
     axiosConfigs.push(axiosConfig);
   });
 
-  return Promise.reduce(axiosConfigs, (response, axiosConfig) => http(axiosConfig), 0)
-    .then((response) => {
+  return Promise.reduce(
+    axiosConfigs,
+    (response, axiosConfig) => http(axiosConfig),
+    0
+  )
+    .then(response => {
       const responseData = response.data.data;
       // check to see if the cg has returned an error as an ok
       checkCGError(responseData);
       if (dispatchAppState) {
-        dispatch(batchActions([complete(modelName, responseData),
-          appStateActions.setAppState(modelName, workflowId, {
-            submitting: false
-          })
-        ]));
+        dispatch(
+          batchActions([
+            complete(modelName, responseData),
+            appStateActions.setAppState(modelName, workflowId, {
+              submitting: false
+            })
+          ])
+        );
       }
       dispatch(complete(modelName, responseData));
     })
     .catch(error => handleError(dispatch, modelName, workflowId, error));
 };
 
-export const moveToTask = (modelName, workflowId, stepName, dispatchAppState = true) => (dispatch) => {
+export const moveToTask = (
+  modelName,
+  workflowId,
+  stepName,
+  dispatchAppState = true
+) => dispatch => {
   const axiosConfig = {
     method: 'POST',
     headers: {
@@ -187,24 +234,33 @@ export const moveToTask = (modelName, workflowId, stepName, dispatchAppState = t
     }
   };
   return http(axiosConfig)
-    .then((response) => {
+    .then(response => {
       const responseData = response.data.data;
       // check to see if the cg has returned an error as an ok
       checkCGError(responseData);
       const instanceId = responseData.modelInstanceId;
       if (dispatchAppState) {
-        return dispatch(batchActions([complete(modelName, responseData),
-          appStateActions.setAppState(modelName, instanceId, {
-            submitting: false
-          })
-        ]));
+        return dispatch(
+          batchActions([
+            complete(modelName, responseData),
+            appStateActions.setAppState(modelName, instanceId, {
+              submitting: false
+            })
+          ])
+        );
       }
       return dispatch(complete(modelName, responseData));
     })
     .catch(error => handleError(dispatch, modelName, workflowId, error));
 };
 
-export const moveToTaskAndExecuteComplete = (modelName, workflowId, stepName, completeStep, dispatchAppState = true) => (dispatch) => {
+export const moveToTaskAndExecuteComplete = (
+  modelName,
+  workflowId,
+  stepName,
+  completeStep,
+  dispatchAppState = true
+) => dispatch => {
   const axiosConfig = {
     method: 'POST',
     headers: {
@@ -218,7 +274,7 @@ export const moveToTaskAndExecuteComplete = (modelName, workflowId, stepName, co
   };
   let newInstanceId = '';
   return http(axiosConfig)
-    .then((response) => {
+    .then(response => {
       const responseData = response.data.data;
       // check to see if the cg has returned an error as an ok
       checkCGError(responseData);
@@ -237,16 +293,19 @@ export const moveToTaskAndExecuteComplete = (modelName, workflowId, stepName, co
       };
       return http(axiosConfig2);
     })
-    .then((response) => {
+    .then(response => {
       const responseData = response.data.data;
       // check to see if the cg has returned an error as an ok
       checkCGError(responseData);
       if (dispatchAppState) {
-        return dispatch(batchActions([complete(modelName, responseData),
-          appStateActions.setAppState(modelName, newInstanceId, {
-            submitting: false
-          })
-        ]));
+        return dispatch(
+          batchActions([
+            complete(modelName, responseData),
+            appStateActions.setAppState(modelName, newInstanceId, {
+              submitting: false
+            })
+          ])
+        );
       }
       return dispatch(complete(modelName, responseData));
     })

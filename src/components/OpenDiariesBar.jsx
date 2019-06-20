@@ -8,9 +8,12 @@ import { getGroupedOpenDiaries } from '../state/selectors/diary.selectors';
 import Diaries from './Diaries';
 
 export class OpenDiariesBar extends React.Component {
-  handleOpenDiaries = (selectedDiary) => {
+  handleOpenDiaries = selectedDiary => {
     const {
-      toggleDiaryAction, resourceId, resourceType, entityEndDate
+      toggleDiaryAction,
+      resourceId,
+      resourceType,
+      entityEndDate
     } = this.props;
     toggleDiaryAction({
       resourceType,
@@ -26,28 +29,32 @@ export class OpenDiariesBar extends React.Component {
 
     return (
       <aside className="open-diaries">
-        <h4 className="open-diaries-header" data-test="open-diaries-header">Open Diaries</h4>
+        <h4 className="open-diaries-header" data-test="open-diaries-header">
+          Open Diaries
+        </h4>
         <div>
+          {pastDue.length > 0 && (
+            <Diaries
+              diaryLevel="pastDue"
+              diaries={pastDue}
+              onToggleDiary={this.handleOpenDiaries}
+            />
+          )}
+          {dueSoon.length > 0 && (
+            <Diaries
+              diaryLevel="dueSoon"
+              diaries={dueSoon}
+              onToggleDiary={this.handleOpenDiaries}
+            />
+          )}
 
-          {pastDue.length > 0 &&
-          <Diaries
-            diaryLevel="pastDue"
-            diaries={pastDue}
-            onToggleDiary={this.handleOpenDiaries} />
-            }
-          {dueSoon.length > 0 &&
-          <Diaries
-            diaryLevel="dueSoon"
-            diaries={dueSoon}
-            onToggleDiary={this.handleOpenDiaries} />
-            }
-
-          {upComing.length > 0 &&
-          <Diaries
-            diaryLevel="upComing"
-            diaries={upComing}
-            onToggleDiary={this.handleOpenDiaries} />
-            }
+          {upComing.length > 0 && (
+            <Diaries
+              diaryLevel="upComing"
+              diaries={upComing}
+              onToggleDiary={this.handleOpenDiaries}
+            />
+          )}
         </div>
       </aside>
     );
@@ -76,6 +83,9 @@ const mapStateToProps = (state, ownProps) => {
   };
 };
 
-export default connect(mapStateToProps, {
-  toggleDiaryAction: toggleDiary
-})(OpenDiariesBar);
+export default connect(
+  mapStateToProps,
+  {
+    toggleDiaryAction: toggleDiary
+  }
+)(OpenDiariesBar);

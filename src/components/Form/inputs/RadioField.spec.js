@@ -28,22 +28,28 @@ describe('RadioField', () => {
     };
     const wrapper = shallow(<RadioInput {...inputProps} />);
 
-    expect(wrapper.containsMatchingElement(
-      <input type="text" value={inputProps.displayValue} readOnly />
-    )).toEqual(true);
+    expect(
+      wrapper.containsMatchingElement(
+        <input type="text" value={inputProps.displayValue} readOnly />
+      )
+    ).toEqual(true);
   });
   it('should render RadioOption of length 2 when provided with 2 answers', () => {
     const inputProps = {
       input: {
         onChange: () => {}
       },
-      answers: [{
-        answer: 'One'
-      }, {
-        answer: 'Two'
-      }, {
-        answer: 'Three'
-      }]
+      answers: [
+        {
+          answer: 'One'
+        },
+        {
+          answer: 'Two'
+        },
+        {
+          answer: 'Three'
+        }
+      ]
     };
     const wrapper = shallow(<RadioInput {...inputProps} />);
     expect(wrapper.find(RadioOption).length).toEqual(3);

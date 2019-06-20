@@ -3,7 +3,6 @@ import { shallow } from 'enzyme';
 
 import License from './License';
 
-
 describe('Testing AgentsCard component', () => {
   it('should render', () => {
     const fields = [{}, {}];
@@ -11,7 +10,7 @@ describe('Testing AgentsCard component', () => {
     const props = { licenseValue: '123', fields, isAgency: true };
     const wrapper = shallow(<License {...props} />);
     expect(wrapper.exists()).toBeTruthy();
-    wrapper.find('.btn').everyWhere((x) => {
+    wrapper.find('.btn').everyWhere(x => {
       x.simulate('click');
       return x;
     });

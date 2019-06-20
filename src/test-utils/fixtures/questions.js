@@ -54,21 +54,11 @@ export const coverageRatingQuestions = {
       }
     ],
     group: [],
-    models: [
-      'quote'
-    ],
-    product: [
-      'HO3'
-    ],
-    state: [
-      'FL'
-    ],
-    companyId: [
-      'TTIC'
-    ],
-    steps: [
-      'askToCustomizeDefaultQuoteCSR'
-    ],
+    models: ['quote'],
+    product: ['HO3'],
+    state: ['FL'],
+    companyId: ['TTIC'],
+    steps: ['askToCustomizeDefaultQuoteCSR'],
     validations: []
   },
   familyUnits: {
@@ -96,21 +86,11 @@ export const coverageRatingQuestions = {
       }
     ],
     group: [],
-    models: [
-      'quote'
-    ],
-    product: [
-      'HO3'
-    ],
-    state: [
-      'FL'
-    ],
-    companyId: [
-      'TTIC'
-    ],
-    steps: [
-      'askToCustomizeDefaultQuoteCSR'
-    ],
+    models: ['quote'],
+    product: ['HO3'],
+    state: ['FL'],
+    companyId: ['TTIC'],
+    steps: ['askToCustomizeDefaultQuoteCSR'],
     validations: []
   },
   residenceType: {
@@ -130,21 +110,11 @@ export const coverageRatingQuestions = {
       }
     ],
     group: [],
-    models: [
-      'quote'
-    ],
-    product: [
-      'HO3'
-    ],
-    state: [
-      'FL'
-    ],
-    companyId: [
-      'TTIC'
-    ],
-    steps: [
-      'askToCustomizeDefaultQuoteCSR'
-    ],
+    models: ['quote'],
+    product: ['HO3'],
+    state: ['FL'],
+    companyId: ['TTIC'],
+    steps: ['askToCustomizeDefaultQuoteCSR'],
     validations: []
   },
   constructionType: {
@@ -180,21 +150,11 @@ export const coverageRatingQuestions = {
       }
     ],
     group: [],
-    models: [
-      'quote'
-    ],
-    product: [
-      'HO3'
-    ],
-    state: [
-      'FL'
-    ],
-    companyId: [
-      'TTIC'
-    ],
-    steps: [
-      'askToCustomizeDefaultQuoteCSR'
-    ],
+    models: ['quote'],
+    product: ['HO3'],
+    state: ['FL'],
+    companyId: ['TTIC'],
+    steps: ['askToCustomizeDefaultQuoteCSR'],
     validations: []
   },
   coverageLimits: {
@@ -205,24 +165,12 @@ export const coverageRatingQuestions = {
     question: 'Coverage Limits',
     answerType: 'heading',
     answers: [],
-    group: [
-      'coverageLimits'
-    ],
-    models: [
-      'quote'
-    ],
-    product: [
-      'HO3'
-    ],
-    state: [
-      'FL'
-    ],
-    companyId: [
-      'TTIC'
-    ],
-    steps: [
-      'askToCustomizeDefaultQuoteCSR'
-    ],
+    group: ['coverageLimits'],
+    models: ['quote'],
+    product: ['HO3'],
+    state: ['FL'],
+    companyId: ['TTIC'],
+    steps: ['askToCustomizeDefaultQuoteCSR'],
     validations: []
   },
   dwellingAmount: {
@@ -239,29 +187,16 @@ export const coverageRatingQuestions = {
         minLocation: 'coverageLimits.dwelling.minAmount'
       }
     },
-    description: 'This is the dollar amount of coverage for the structure of your home. This amount should represent the total cost to rebuild your home to its current state in the event of a loss. If you have a Declarations Page from your current  policy it may be listed as Coverage A.  (Based on basic information of your home, we provide you a guide for a recommended value. You can move this number up or down based on more detailed information. For example, if you have an upgraded kitchen and bathroom, you may want to increase this number to ensure that you have adequate coverage in the event of a loss.)  ',
+    description:
+      'This is the dollar amount of coverage for the structure of your home. This amount should represent the total cost to rebuild your home to its current state in the event of a loss. If you have a Declarations Page from your current  policy it may be listed as Coverage A.  (Based on basic information of your home, we provide you a guide for a recommended value. You can move this number up or down based on more detailed information. For example, if you have an upgraded kitchen and bathroom, you may want to increase this number to ensure that you have adequate coverage in the event of a loss.)  ',
     answers: [],
-    group: [
-      'coverageLimits'
-    ],
-    models: [
-      'quote'
-    ],
-    product: [
-      'HO3'
-    ],
-    state: [
-      'FL'
-    ],
-    companyId: [
-      'TTIC'
-    ],
-    steps: [
-      'askToCustomizeDefaultQuoteCSR'
-    ],
-    validations: [
-      'range'
-    ]
+    group: ['coverageLimits'],
+    models: ['quote'],
+    product: ['HO3'],
+    state: ['FL'],
+    companyId: ['TTIC'],
+    steps: ['askToCustomizeDefaultQuoteCSR'],
+    validations: ['range']
   },
   otherStructuresAmount: {
     _id: '5bbba314ec85020015b7dd75',
@@ -278,7 +213,8 @@ export const coverageRatingQuestions = {
         type: 'percent'
       }
     },
-    description: 'This is the dollar amount of coverage for the other structures on your property not attached to your home. This might include a fence, shed, or unattached garage. If you have a Declarations Page from your current  policy it may be listed as Coverage B.',
+    description:
+      'This is the dollar amount of coverage for the other structures on your property not attached to your home. This might include a fence, shed, or unattached garage. If you have a Declarations Page from your current  policy it may be listed as Coverage B.',
     answers: [
       {
         label: '0%',
@@ -297,24 +233,12 @@ export const coverageRatingQuestions = {
         answer: 10
       }
     ],
-    group: [
-      'coverageLimits'
-    ],
-    models: [
-      'quote'
-    ],
-    product: [
-      'HO3'
-    ],
-    state: [
-      'FL'
-    ],
-    companyId: [
-      'TTIC'
-    ],
-    steps: [
-      'askToCustomizeDefaultQuoteCSR'
-    ],
+    group: ['coverageLimits'],
+    models: ['quote'],
+    product: ['HO3'],
+    state: ['FL'],
+    companyId: ['TTIC'],
+    steps: ['askToCustomizeDefaultQuoteCSR'],
     validations: []
   },
   personalPropertyAmount: {
@@ -332,7 +256,8 @@ export const coverageRatingQuestions = {
         type: 'percent'
       }
     },
-    description: 'This is your personal belongings, or items located inside the home. This could include your furniture, clothing, bedding, dishes, etc. If you choose to have replacement cost coverage on Personal Property, you will be required to carry Personal Property limits at a minimum of 25% of your Dwelling limit.',
+    description:
+      'This is your personal belongings, or items located inside the home. This could include your furniture, clothing, bedding, dishes, etc. If you choose to have replacement cost coverage on Personal Property, you will be required to carry Personal Property limits at a minimum of 25% of your Dwelling limit.',
     answers: [
       {
         label: '0%',
@@ -351,24 +276,12 @@ export const coverageRatingQuestions = {
         answer: 50
       }
     ],
-    group: [
-      'coverageLimits'
-    ],
-    models: [
-      'quote'
-    ],
-    product: [
-      'HO3'
-    ],
-    state: [
-      'FL'
-    ],
-    companyId: [
-      'TTIC'
-    ],
-    steps: [
-      'askToCustomizeDefaultQuoteCSR'
-    ],
+    group: ['coverageLimits'],
+    models: ['quote'],
+    product: ['HO3'],
+    state: ['FL'],
+    companyId: ['TTIC'],
+    steps: ['askToCustomizeDefaultQuoteCSR'],
     validations: []
   },
   personalPropertyReplacementCostCoverage: {
@@ -378,7 +291,8 @@ export const coverageRatingQuestions = {
     question: 'Do you want Personal Property Replacement Cost Coverage?',
     order: 5,
     answerType: 'bool',
-    defaultValueLocation: 'coverageOptions.personalPropertyReplacementCost.answer',
+    defaultValueLocation:
+      'coverageOptions.personalPropertyReplacementCost.answer',
     conditional: {
       display: [
         {
@@ -389,26 +303,15 @@ export const coverageRatingQuestions = {
         }
       ]
     },
-    description: 'Replacement Cost Coverage replaces your damaged possessions at today\'s prices without deducting for depreciation. If you choose not to select this coverage, your loss for personal property will be paid out at Actual Cash Value.',
+    description:
+      "Replacement Cost Coverage replaces your damaged possessions at today's prices without deducting for depreciation. If you choose not to select this coverage, your loss for personal property will be paid out at Actual Cash Value.",
     answers: [],
-    group: [
-      'coverageLimits'
-    ],
-    models: [
-      'quote'
-    ],
-    product: [
-      'HO3'
-    ],
-    state: [
-      'FL'
-    ],
-    companyId: [
-      'TTIC'
-    ],
-    steps: [
-      'askToCustomizeDefaultQuoteCSR'
-    ],
+    group: ['coverageLimits'],
+    models: ['quote'],
+    product: ['HO3'],
+    state: ['FL'],
+    companyId: ['TTIC'],
+    steps: ['askToCustomizeDefaultQuoteCSR'],
     validations: []
   },
   lossOfUseAmount: {
@@ -427,24 +330,12 @@ export const coverageRatingQuestions = {
       }
     },
     answers: [],
-    group: [
-      'coverageLimits'
-    ],
-    models: [
-      'quote'
-    ],
-    product: [
-      'HO3'
-    ],
-    state: [
-      'FL'
-    ],
-    companyId: [
-      'TTIC'
-    ],
-    steps: [
-      'askToCustomizeDefaultQuoteCSR'
-    ],
+    group: ['coverageLimits'],
+    models: ['quote'],
+    product: ['HO3'],
+    state: ['FL'],
+    companyId: ['TTIC'],
+    steps: ['askToCustomizeDefaultQuoteCSR'],
     validations: []
   },
   personalLiability: {
@@ -465,24 +356,12 @@ export const coverageRatingQuestions = {
         answer: 300000
       }
     ],
-    group: [
-      'coverageLimits'
-    ],
-    models: [
-      'quote'
-    ],
-    product: [
-      'HO3'
-    ],
-    state: [
-      'FL'
-    ],
-    companyId: [
-      'TTIC'
-    ],
-    steps: [
-      'askToCustomizeDefaultQuoteCSR'
-    ],
+    group: ['coverageLimits'],
+    models: ['quote'],
+    product: ['HO3'],
+    state: ['FL'],
+    companyId: ['TTIC'],
+    steps: ['askToCustomizeDefaultQuoteCSR'],
     validations: []
   },
   protectionClass: {
@@ -534,24 +413,12 @@ export const coverageRatingQuestions = {
         answer: '10'
       }
     ],
-    group: [
-      'coverageLimits'
-    ],
-    models: [
-      'quote'
-    ],
-    product: [
-      'HO3'
-    ],
-    state: [
-      'FL'
-    ],
-    companyId: [
-      'TTIC'
-    ],
-    steps: [
-      'askToCustomizeDefaultQuoteCSR'
-    ],
+    group: ['coverageLimits'],
+    models: ['quote'],
+    product: ['HO3'],
+    state: ['FL'],
+    companyId: ['TTIC'],
+    steps: ['askToCustomizeDefaultQuoteCSR'],
     validations: []
   },
   medicalPayments: {
@@ -563,31 +430,20 @@ export const coverageRatingQuestions = {
     answerType: 'display',
     order: 8,
     answers: [],
-    group: [
-      'coverageLimits'
-    ],
-    models: [
-      'quote'
-    ],
-    product: [
-      'HO3'
-    ],
-    state: [
-      'FL'
-    ],
-    companyId: [
-      'TTIC'
-    ],
-    steps: [
-      'askToCustomizeDefaultQuoteCSR'
-    ],
+    group: ['coverageLimits'],
+    models: ['quote'],
+    product: ['HO3'],
+    state: ['FL'],
+    companyId: ['TTIC'],
+    steps: ['askToCustomizeDefaultQuoteCSR'],
     validations: []
   },
   moldProperty: {
     _id: '5bbba314ec85020015b7dd9d',
     __v: 0,
     name: 'moldProperty',
-    question: 'Limited Fungi, Wet or Dry Rot, Yeast or Bacteria Coverage - Property',
+    question:
+      'Limited Fungi, Wet or Dry Rot, Yeast or Bacteria Coverage - Property',
     order: 9,
     defaultValueLocation: 'coverageLimits.moldProperty.amount',
     answerType: 'radio',
@@ -605,30 +461,19 @@ export const coverageRatingQuestions = {
         answer: 50000
       }
     ],
-    group: [
-      'coverageLimits'
-    ],
-    models: [
-      'quote'
-    ],
-    product: [
-      'HO3'
-    ],
-    state: [
-      'FL'
-    ],
-    companyId: [
-      'TTIC'
-    ],
-    steps: [
-      'askToCustomizeDefaultQuoteCSR'
-    ],
+    group: ['coverageLimits'],
+    models: ['quote'],
+    product: ['HO3'],
+    state: ['FL'],
+    companyId: ['TTIC'],
+    steps: ['askToCustomizeDefaultQuoteCSR'],
     validations: []
   },
   moldLiability: {
     _id: '5bbba314ec85020015b7dd6e',
     __v: 0,
-    question: 'Limited Fungi, Wet or Dry Rot, Yeast or Bacteria Coverage - Liability',
+    question:
+      'Limited Fungi, Wet or Dry Rot, Yeast or Bacteria Coverage - Liability',
     name: 'moldLiability',
     defaultValueLocation: 'coverageLimits.moldLiability.amount',
     answerType: 'radio',
@@ -643,24 +488,12 @@ export const coverageRatingQuestions = {
         answer: 100000
       }
     ],
-    group: [
-      'coverageLimits'
-    ],
-    models: [
-      'quote'
-    ],
-    product: [
-      'HO3'
-    ],
-    state: [
-      'FL'
-    ],
-    companyId: [
-      'TTIC'
-    ],
-    steps: [
-      'askToCustomizeDefaultQuoteCSR'
-    ],
+    group: ['coverageLimits'],
+    models: ['quote'],
+    product: ['HO3'],
+    state: ['FL'],
+    companyId: ['TTIC'],
+    steps: ['askToCustomizeDefaultQuoteCSR'],
     validations: []
   },
   ordinanceOrLaw: {
@@ -681,24 +514,12 @@ export const coverageRatingQuestions = {
         answer: 50
       }
     ],
-    group: [
-      'coverageLimits'
-    ],
-    models: [
-      'quote'
-    ],
-    product: [
-      'HO3'
-    ],
-    state: [
-      'FL'
-    ],
-    companyId: [
-      'TTIC'
-    ],
-    steps: [
-      'askToCustomizeDefaultQuoteCSR'
-    ],
+    group: ['coverageLimits'],
+    models: ['quote'],
+    product: ['HO3'],
+    state: ['FL'],
+    companyId: ['TTIC'],
+    steps: ['askToCustomizeDefaultQuoteCSR'],
     validations: []
   },
   coverageOptions: {
@@ -709,24 +530,12 @@ export const coverageRatingQuestions = {
     question: 'Coverage Options',
     answerType: 'heading',
     answers: [],
-    group: [
-      'coverageOptions'
-    ],
-    models: [
-      'quote'
-    ],
-    product: [
-      'HO3'
-    ],
-    state: [
-      'FL'
-    ],
-    companyId: [
-      'TTIC'
-    ],
-    steps: [
-      'askToCustomizeDefaultQuoteCSR'
-    ],
+    group: ['coverageOptions'],
+    models: ['quote'],
+    product: ['HO3'],
+    state: ['FL'],
+    companyId: ['TTIC'],
+    steps: ['askToCustomizeDefaultQuoteCSR'],
     validations: []
   },
   propertyIncidentalOccupancies: {
@@ -749,24 +558,12 @@ export const coverageRatingQuestions = {
         answer: 'None'
       }
     ],
-    group: [
-      'coverageOptions'
-    ],
-    models: [
-      'quote'
-    ],
-    product: [
-      'HO3'
-    ],
-    state: [
-      'FL'
-    ],
-    companyId: [
-      'TTIC'
-    ],
-    steps: [
-      'askToCustomizeDefaultQuoteCSR'
-    ],
+    group: ['coverageOptions'],
+    models: ['quote'],
+    product: ['HO3'],
+    state: ['FL'],
+    companyId: ['TTIC'],
+    steps: ['askToCustomizeDefaultQuoteCSR'],
     validations: []
   },
   sinkholePerilCoverage: {
@@ -778,24 +575,12 @@ export const coverageRatingQuestions = {
     order: 14,
     answerType: 'bool',
     answers: [],
-    group: [
-      'coverageOptions'
-    ],
-    models: [
-      'quote'
-    ],
-    product: [
-      'HO3'
-    ],
-    state: [
-      'FL'
-    ],
-    companyId: [
-      'TTIC'
-    ],
-    steps: [
-      'askToCustomizeDefaultQuoteCSR'
-    ],
+    group: ['coverageOptions'],
+    models: ['quote'],
+    product: ['HO3'],
+    state: ['FL'],
+    companyId: ['TTIC'],
+    steps: ['askToCustomizeDefaultQuoteCSR'],
     validations: []
   },
   deductibles: {
@@ -806,24 +591,12 @@ export const coverageRatingQuestions = {
     question: 'Deductibles',
     answerType: 'heading',
     answers: [],
-    group: [
-      'deductibles'
-    ],
-    models: [
-      'quote'
-    ],
-    product: [
-      'HO3'
-    ],
-    state: [
-      'FL'
-    ],
-    companyId: [
-      'TTIC'
-    ],
-    steps: [
-      'askToCustomizeDefaultQuoteCSR'
-    ],
+    group: ['deductibles'],
+    models: ['quote'],
+    product: ['HO3'],
+    state: ['FL'],
+    companyId: ['TTIC'],
+    steps: ['askToCustomizeDefaultQuoteCSR'],
     validations: []
   },
   allOtherPerils: {
@@ -848,24 +621,12 @@ export const coverageRatingQuestions = {
         answer: 2500
       }
     ],
-    group: [
-      'deductibles'
-    ],
-    models: [
-      'quote'
-    ],
-    product: [
-      'HO3'
-    ],
-    state: [
-      'FL'
-    ],
-    companyId: [
-      'TTIC'
-    ],
-    steps: [
-      'askToCustomizeDefaultQuoteCSR'
-    ],
+    group: ['deductibles'],
+    models: ['quote'],
+    product: ['HO3'],
+    state: ['FL'],
+    companyId: ['TTIC'],
+    steps: ['askToCustomizeDefaultQuoteCSR'],
     validations: []
   },
   hurricane: {
@@ -897,24 +658,12 @@ export const coverageRatingQuestions = {
         answer: 10
       }
     ],
-    group: [
-      'deductibles'
-    ],
-    models: [
-      'quote'
-    ],
-    product: [
-      'HO3'
-    ],
-    state: [
-      'FL'
-    ],
-    companyId: [
-      'TTIC'
-    ],
-    steps: [
-      'askToCustomizeDefaultQuoteCSR'
-    ],
+    group: ['deductibles'],
+    models: ['quote'],
+    product: ['HO3'],
+    state: ['FL'],
+    companyId: ['TTIC'],
+    steps: ['askToCustomizeDefaultQuoteCSR'],
     validations: []
   },
   sinkhole: {
@@ -946,24 +695,12 @@ export const coverageRatingQuestions = {
         label: '10% of Dwelling Limit'
       }
     ],
-    group: [
-      'deductibles'
-    ],
-    models: [
-      'quote'
-    ],
-    product: [
-      'HO3'
-    ],
-    state: [
-      'FL'
-    ],
-    companyId: [
-      'TTIC'
-    ],
-    steps: [
-      'askToCustomizeDefaultQuoteCSR'
-    ],
+    group: ['deductibles'],
+    models: ['quote'],
+    product: ['HO3'],
+    state: ['FL'],
+    companyId: ['TTIC'],
+    steps: ['askToCustomizeDefaultQuoteCSR'],
     validations: []
   },
   windMitigation: {
@@ -974,24 +711,12 @@ export const coverageRatingQuestions = {
     answerType: 'heading',
     order: 30,
     answers: [],
-    group: [
-      'windMitigation'
-    ],
-    models: [
-      'quote'
-    ],
-    product: [
-      'HO3'
-    ],
-    state: [
-      'FL'
-    ],
-    companyId: [
-      'TTIC'
-    ],
-    steps: [
-      'askToCustomizeDefaultQuoteCSR'
-    ],
+    group: ['windMitigation'],
+    models: ['quote'],
+    product: ['HO3'],
+    state: ['FL'],
+    companyId: ['TTIC'],
+    steps: ['askToCustomizeDefaultQuoteCSR'],
     validations: []
   },
   roofCovering: {
@@ -1013,24 +738,12 @@ export const coverageRatingQuestions = {
         answer: 'Other'
       }
     ],
-    group: [
-      'windMitigation'
-    ],
-    models: [
-      'quote'
-    ],
-    product: [
-      'HO3'
-    ],
-    state: [
-      'FL'
-    ],
-    companyId: [
-      'TTIC'
-    ],
-    steps: [
-      'askToCustomizeDefaultQuoteCSR'
-    ],
+    group: ['windMitigation'],
+    models: ['quote'],
+    product: ['HO3'],
+    state: ['FL'],
+    companyId: ['TTIC'],
+    steps: ['askToCustomizeDefaultQuoteCSR'],
     validations: []
   },
   roofDeckAttachment: {
@@ -1061,24 +774,12 @@ export const coverageRatingQuestions = {
         answer: 'Other'
       }
     ],
-    group: [
-      'windMitigation'
-    ],
-    models: [
-      'quote'
-    ],
-    product: [
-      'HO3'
-    ],
-    state: [
-      'FL'
-    ],
-    companyId: [
-      'TTIC'
-    ],
-    steps: [
-      'askToCustomizeDefaultQuoteCSR'
-    ],
+    group: ['windMitigation'],
+    models: ['quote'],
+    product: ['HO3'],
+    state: ['FL'],
+    companyId: ['TTIC'],
+    steps: ['askToCustomizeDefaultQuoteCSR'],
     validations: []
   },
   roofToWallConnection: {
@@ -1106,24 +807,12 @@ export const coverageRatingQuestions = {
         answer: 'Other'
       }
     ],
-    group: [
-      'windMitigation'
-    ],
-    models: [
-      'quote'
-    ],
-    product: [
-      'HO3'
-    ],
-    state: [
-      'FL'
-    ],
-    companyId: [
-      'TTIC'
-    ],
-    steps: [
-      'askToCustomizeDefaultQuoteCSR'
-    ],
+    group: ['windMitigation'],
+    models: ['quote'],
+    product: ['HO3'],
+    state: ['FL'],
+    companyId: ['TTIC'],
+    steps: ['askToCustomizeDefaultQuoteCSR'],
     validations: []
   },
   roofGeometry: {
@@ -1148,24 +837,12 @@ export const coverageRatingQuestions = {
         answer: 'Other'
       }
     ],
-    group: [
-      'windMitigation'
-    ],
-    models: [
-      'quote'
-    ],
-    product: [
-      'HO3'
-    ],
-    state: [
-      'FL'
-    ],
-    companyId: [
-      'TTIC'
-    ],
-    steps: [
-      'askToCustomizeDefaultQuoteCSR'
-    ],
+    group: ['windMitigation'],
+    models: ['quote'],
+    product: ['HO3'],
+    state: ['FL'],
+    companyId: ['TTIC'],
+    steps: ['askToCustomizeDefaultQuoteCSR'],
     validations: []
   },
   secondaryWaterResistance: {
@@ -1187,24 +864,12 @@ export const coverageRatingQuestions = {
         answer: 'Other'
       }
     ],
-    group: [
-      'windMitigation'
-    ],
-    models: [
-      'quote'
-    ],
-    product: [
-      'HO3'
-    ],
-    state: [
-      'FL'
-    ],
-    companyId: [
-      'TTIC'
-    ],
-    steps: [
-      'askToCustomizeDefaultQuoteCSR'
-    ],
+    group: ['windMitigation'],
+    models: ['quote'],
+    product: ['HO3'],
+    state: ['FL'],
+    companyId: ['TTIC'],
+    steps: ['askToCustomizeDefaultQuoteCSR'],
     validations: []
   },
   openingProtection: {
@@ -1229,24 +894,12 @@ export const coverageRatingQuestions = {
         answer: 'Other'
       }
     ],
-    group: [
-      'windMitigation'
-    ],
-    models: [
-      'quote'
-    ],
-    product: [
-      'HO3'
-    ],
-    state: [
-      'FL'
-    ],
-    companyId: [
-      'TTIC'
-    ],
-    steps: [
-      'askToCustomizeDefaultQuoteCSR'
-    ],
+    group: ['windMitigation'],
+    models: ['quote'],
+    product: ['HO3'],
+    state: ['FL'],
+    companyId: ['TTIC'],
+    steps: ['askToCustomizeDefaultQuoteCSR'],
     validations: []
   },
   floridaBuildingCodeWindSpeed: {
@@ -1255,28 +908,17 @@ export const coverageRatingQuestions = {
     name: 'floridaBuildingCodeWindSpeed',
     question: 'What is the FBC wind speed for this property?',
     answerType: 'number',
-    defaultValueLocation: 'property.windMitigation.floridaBuildingCodeWindSpeed',
+    defaultValueLocation:
+      'property.windMitigation.floridaBuildingCodeWindSpeed',
     order: 37,
     hidden: true,
     answers: [],
-    group: [
-      'windMitigation'
-    ],
-    models: [
-      'quote'
-    ],
-    product: [
-      'HO3'
-    ],
-    state: [
-      'FL'
-    ],
-    companyId: [
-      'TTIC'
-    ],
-    steps: [
-      'askToCustomizeDefaultQuoteCSR'
-    ],
+    group: ['windMitigation'],
+    models: ['quote'],
+    product: ['HO3'],
+    state: ['FL'],
+    companyId: ['TTIC'],
+    steps: ['askToCustomizeDefaultQuoteCSR'],
     validations: []
   },
   floridaBuildingCodeWindSpeedDesign: {
@@ -1285,28 +927,17 @@ export const coverageRatingQuestions = {
     name: 'floridaBuildingCodeWindSpeedDesign',
     question: 'What is the FBC wind speed design for this property?',
     answerType: 'number',
-    defaultValueLocation: 'property.windMitigation.floridaBuildingCodeWindSpeedDesign',
+    defaultValueLocation:
+      'property.windMitigation.floridaBuildingCodeWindSpeedDesign',
     order: 38,
     hidden: true,
     answers: [],
-    group: [
-      'windMitigation'
-    ],
-    models: [
-      'quote'
-    ],
-    product: [
-      'HO3'
-    ],
-    state: [
-      'FL'
-    ],
-    companyId: [
-      'TTIC'
-    ],
-    steps: [
-      'askToCustomizeDefaultQuoteCSR'
-    ],
+    group: ['windMitigation'],
+    models: ['quote'],
+    product: ['HO3'],
+    state: ['FL'],
+    companyId: ['TTIC'],
+    steps: ['askToCustomizeDefaultQuoteCSR'],
     validations: []
   },
   windBorneDebrisRegion: {
@@ -1329,24 +960,12 @@ export const coverageRatingQuestions = {
         answer: 'Other'
       }
     ],
-    group: [
-      'windMitigation'
-    ],
-    models: [
-      'quote'
-    ],
-    product: [
-      'HO3'
-    ],
-    state: [
-      'FL'
-    ],
-    companyId: [
-      'TTIC'
-    ],
-    steps: [
-      'askToCustomizeDefaultQuoteCSR'
-    ],
+    group: ['windMitigation'],
+    models: ['quote'],
+    product: ['HO3'],
+    state: ['FL'],
+    companyId: ['TTIC'],
+    steps: ['askToCustomizeDefaultQuoteCSR'],
     validations: []
   },
   internalPressureDesign: {
@@ -1369,24 +988,12 @@ export const coverageRatingQuestions = {
         answer: 'Other'
       }
     ],
-    group: [
-      'windMitigation'
-    ],
-    models: [
-      'quote'
-    ],
-    product: [
-      'HO3'
-    ],
-    state: [
-      'FL'
-    ],
-    companyId: [
-      'TTIC'
-    ],
-    steps: [
-      'askToCustomizeDefaultQuoteCSR'
-    ],
+    group: ['windMitigation'],
+    models: ['quote'],
+    product: ['HO3'],
+    state: ['FL'],
+    companyId: ['TTIC'],
+    steps: ['askToCustomizeDefaultQuoteCSR'],
     validations: []
   },
   terrain: {
@@ -1412,24 +1019,12 @@ export const coverageRatingQuestions = {
         answer: 'Other'
       }
     ],
-    group: [
-      'windMitigation'
-    ],
-    models: [
-      'quote'
-    ],
-    product: [
-      'HO3'
-    ],
-    state: [
-      'FL'
-    ],
-    companyId: [
-      'TTIC'
-    ],
-    steps: [
-      'askToCustomizeDefaultQuoteCSR'
-    ],
+    group: ['windMitigation'],
+    models: ['quote'],
+    product: ['HO3'],
+    state: ['FL'],
+    companyId: ['TTIC'],
+    steps: ['askToCustomizeDefaultQuoteCSR'],
     validations: []
   },
   discounts: {
@@ -1440,24 +1035,12 @@ export const coverageRatingQuestions = {
     answerType: 'heading',
     order: 50,
     answers: [],
-    group: [
-      'discounts'
-    ],
-    models: [
-      'quote'
-    ],
-    product: [
-      'HO3'
-    ],
-    state: [
-      'FL'
-    ],
-    companyId: [
-      'TTIC'
-    ],
-    steps: [
-      'askToCustomizeDefaultQuoteCSR'
-    ],
+    group: ['discounts'],
+    models: ['quote'],
+    product: ['HO3'],
+    state: ['FL'],
+    companyId: ['TTIC'],
+    steps: ['askToCustomizeDefaultQuoteCSR'],
     validations: []
   },
   burglarAlarm: {
@@ -1469,24 +1052,12 @@ export const coverageRatingQuestions = {
     defaultValueLocation: 'property.burglarAlarm',
     order: 51,
     answers: [],
-    group: [
-      'discounts'
-    ],
-    models: [
-      'quote'
-    ],
-    product: [
-      'HO3'
-    ],
-    state: [
-      'FL'
-    ],
-    companyId: [
-      'TTIC'
-    ],
-    steps: [
-      'askToCustomizeDefaultQuoteCSR'
-    ],
+    group: ['discounts'],
+    models: ['quote'],
+    product: ['HO3'],
+    state: ['FL'],
+    companyId: ['TTIC'],
+    steps: ['askToCustomizeDefaultQuoteCSR'],
     validations: []
   },
   fireAlarm: {
@@ -1498,24 +1069,12 @@ export const coverageRatingQuestions = {
     defaultValueLocation: 'property.fireAlarm',
     order: 52,
     answers: [],
-    group: [
-      'discounts'
-    ],
-    models: [
-      'quote'
-    ],
-    product: [
-      'HO3'
-    ],
-    state: [
-      'FL'
-    ],
-    companyId: [
-      'TTIC'
-    ],
-    steps: [
-      'askToCustomizeDefaultQuoteCSR'
-    ],
+    group: ['discounts'],
+    models: ['quote'],
+    product: ['HO3'],
+    state: ['FL'],
+    companyId: ['TTIC'],
+    steps: ['askToCustomizeDefaultQuoteCSR'],
     validations: []
   },
   sprinkler: {
@@ -1537,24 +1096,12 @@ export const coverageRatingQuestions = {
         answer: 'B'
       }
     ],
-    group: [
-      'discounts'
-    ],
-    models: [
-      'quote'
-    ],
-    product: [
-      'HO3'
-    ],
-    state: [
-      'FL'
-    ],
-    companyId: [
-      'TTIC'
-    ],
-    steps: [
-      'askToCustomizeDefaultQuoteCSR'
-    ],
+    group: ['discounts'],
+    models: ['quote'],
+    product: ['HO3'],
+    state: ['FL'],
+    companyId: ['TTIC'],
+    steps: ['askToCustomizeDefaultQuoteCSR'],
     validations: []
   },
   floodZone: {
@@ -1585,33 +1132,19 @@ export const coverageRatingQuestions = {
         answer: 'U'
       }
     ],
-    group: [
-      'discounts'
-    ],
-    models: [
-      'quote'
-    ],
-    product: [
-      'HO3'
-    ],
-    state: [
-      'FL'
-    ],
-    companyId: [
-      'TTIC'
-    ],
-    steps: [
-      'askToCustomizeDefaultQuoteCSR'
-    ],
+    group: ['discounts'],
+    models: ['quote'],
+    product: ['HO3'],
+    state: ['FL'],
+    companyId: ['TTIC'],
+    steps: ['askToCustomizeDefaultQuoteCSR'],
     validations: []
   }
 };
 
 export const underwritingQuestions = [
   {
-    validations: [
-      'required'
-    ],
+    validations: ['required'],
     answers: [
       {
         answer: 'Yes'
@@ -1633,9 +1166,7 @@ export const underwritingQuestions = [
     hidden: false
   },
   {
-    validations: [
-      'required'
-    ],
+    validations: ['required'],
     answers: [
       {
         answer: 'No claims ever filed'
@@ -1663,9 +1194,7 @@ export const underwritingQuestions = [
     hidden: false
   },
   {
-    validations: [
-      'required'
-    ],
+    validations: ['required'],
     answers: [
       {
         answer: '0-3'
@@ -1690,13 +1219,11 @@ export const underwritingQuestions = [
     hidden: false
   },
   {
-    validations: [
-      'required'
-    ],
+    validations: ['required'],
     answers: [
       {
         answer: 'Yes',
-        'default': true
+        default: true
       },
       {
         answer: 'No'
@@ -1709,7 +1236,8 @@ export const underwritingQuestions = [
     name: 'fourPointUpdates',
     active: true,
     visible: true,
-    question: 'Have the wiring, plumbing, and HVAC been updated in the last 35 years?',
+    question:
+      'Have the wiring, plumbing, and HVAC been updated in the last 35 years?',
     ageOfHome: {
       max: 40
     },
@@ -1718,9 +1246,7 @@ export const underwritingQuestions = [
     hidden: false
   },
   {
-    validations: [
-      'required'
-    ],
+    validations: ['required'],
     answers: [
       {
         answer: 'Yes'

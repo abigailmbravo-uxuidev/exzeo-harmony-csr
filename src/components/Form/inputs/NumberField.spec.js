@@ -13,7 +13,12 @@ describe('NumberInput', () => {
       hint: 'Test Hint'
     };
     const wrapper = shallow(<NumberInput {...inputProps} />);
-    expect(wrapper.find(NumberFormat).first().props().disabled).toEqual(undefined);
+    expect(
+      wrapper
+        .find(NumberFormat)
+        .first()
+        .props().disabled
+    ).toEqual(undefined);
   });
 
   it('should render "disabled text input", when disabled is provided', () => {
@@ -21,6 +26,11 @@ describe('NumberInput', () => {
       disabled: true
     };
     const wrapper = shallow(<NumberInput {...inputProps} />);
-    expect(wrapper.find(NumberFormat).first().props().disabled).toEqual(true);
+    expect(
+      wrapper
+        .find(NumberFormat)
+        .first()
+        .props().disabled
+    ).toEqual(true);
   });
 });

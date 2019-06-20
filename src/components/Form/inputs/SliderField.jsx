@@ -17,13 +17,20 @@ export const SliderInput = ({
 }) => {
   const { name, value } = input;
 
-  const formGroupStyles = classNames('form-group', 'range-component', styleName, name);
+  const formGroupStyles = classNames(
+    'form-group',
+    'range-component',
+    styleName,
+    name
+  );
 
-  const Hint = hint && (<FieldHint name={name} hint={hint} />);
+  const Hint = hint && <FieldHint name={name} hint={hint} />;
 
-  const handleChange = function (event) {
+  const handleChange = function(event) {
     const val = Number(event.target.value.replace(/\D+/g, ''));
-    if (!Number.isNaN(val)) { input.onChange(val); }
+    if (!Number.isNaN(val)) {
+      input.onChange(val);
+    }
   };
 
   return (
@@ -61,7 +68,6 @@ export const SliderInput = ({
 };
 
 SliderInput.propTypes = {
-
   /**
    * Tooltip for user
    */
@@ -73,7 +79,7 @@ SliderInput.propTypes = {
   input: PropTypes.shape({
     name: PropTypes.string,
     onChange: PropTypes.func,
-    value: PropTypes.any, // eslint-disable-line
+    value: PropTypes.any // eslint-disable-line
   }),
 
   /**
@@ -106,7 +112,6 @@ SliderInput.propTypes = {
    * Style for form group
    */
   styleName: PropTypes.string
-
 };
 
 SliderInput.defaultProps = {

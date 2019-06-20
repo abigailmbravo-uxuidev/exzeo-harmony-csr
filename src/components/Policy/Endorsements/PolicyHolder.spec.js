@@ -54,15 +54,35 @@ describe('Testing PolicyHolder component', () => {
     };
     const wrapper = shallow(<PolicyHolderComponent store={store} {...props} />);
 
-    wrapper.find('[name="policyHolders[0].firstName"]').simulate('change', { target: { value: 'ABC' } });
-    wrapper.find('[name="policyHolders[0].lastName"]').simulate('change', { target: { value: 'ABC' } });
-    wrapper.find('[name="policyHolders[0].primaryPhoneNumber"]').simulate('change', { target: { value: 'ABC' } });
-    wrapper.find('[name="policyHolders[0].secondaryPhoneNumber"]').simulate('change', { target: { value: 'ABC' } });
-    wrapper.find('[name="policyHolders[0].emailAddress"]').simulate('change', { target: { value: 'ABC' } });
-    wrapper.find('[name="policyHolders[1].firstName"]').simulate('change', { target: { value: 'ABC' } });
-    wrapper.find('[name="policyHolders[1].lastName"]').simulate('change', { target: { value: 'ABC' } });
-    wrapper.find('[name="policyHolders[1].primaryPhoneNumber"]').simulate('change', { target: { value: 'ABC' } });
-    wrapper.find('[name="policyHolders[1].secondaryPhoneNumber"]').simulate('change', { target: { value: 'ABC' } });
-    wrapper.find('[name="policyHolders[1].emailAddress"]').simulate('change', { target: { value: 'ABC' } });
+    wrapper
+      .find('[name="policyHolders[0].firstName"]')
+      .simulate('change', { target: { value: 'ABC' } });
+    wrapper
+      .find('[name="policyHolders[0].lastName"]')
+      .simulate('change', { target: { value: 'ABC' } });
+    wrapper
+      .find('[name="policyHolders[0].primaryPhoneNumber"]')
+      .simulate('change', { target: { value: 'ABC' } });
+    wrapper
+      .find('[name="policyHolders[0].secondaryPhoneNumber"]')
+      .simulate('change', { target: { value: 'ABC' } });
+    wrapper
+      .find('[name="policyHolders[0].emailAddress"]')
+      .simulate('change', { target: { value: 'ABC' } });
+    wrapper
+      .find('[name="policyHolders[1].firstName"]')
+      .simulate('change', { target: { value: 'ABC' } });
+    wrapper
+      .find('[name="policyHolders[1].lastName"]')
+      .simulate('change', { target: { value: 'ABC' } });
+    wrapper
+      .find('[name="policyHolders[1].primaryPhoneNumber"]')
+      .simulate('change', { target: { value: 'ABC' } });
+    wrapper
+      .find('[name="policyHolders[1].secondaryPhoneNumber"]')
+      .simulate('change', { target: { value: 'ABC' } });
+    wrapper
+      .find('[name="policyHolders[1].emailAddress"]')
+      .simulate('change', { target: { value: 'ABC' } });
   });
 });

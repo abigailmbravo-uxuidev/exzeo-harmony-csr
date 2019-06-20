@@ -16,13 +16,17 @@ describe('SelectFieldBilling', () => {
     const inputProps = {
       name: 'test',
       label: 'test',
-      answers: [{
-        answer: 'One'
-      }, {
-        answer: 'Two'
-      }, {
-        answer: 'Three'
-      }]
+      answers: [
+        {
+          answer: 'One'
+        },
+        {
+          answer: 'Two'
+        },
+        {
+          answer: 'Three'
+        }
+      ]
     };
 
     const wrapper = shallow(<SelectFieldBill {...inputProps} />);
@@ -35,13 +39,17 @@ describe('SelectFieldBilling', () => {
       meta: {},
       name: 'test',
       label: 'test',
-      answers: [{
-        answer: 'One'
-      }, {
-        answer: 'Two'
-      }, {
-        answer: 'Three'
-      }]
+      answers: [
+        {
+          answer: 'One'
+        },
+        {
+          answer: 'Two'
+        },
+        {
+          answer: 'Three'
+        }
+      ]
     };
 
     const wrapper = shallow(<SelectFieldBilling {...inputProps} />);

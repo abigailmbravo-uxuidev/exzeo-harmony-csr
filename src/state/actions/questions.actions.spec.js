@@ -6,7 +6,6 @@ import thunk from 'redux-thunk';
 import * as types from './actionTypes';
 import * as questionsActions from './questions.actions';
 
-
 const middlewares = [thunk];
 const mockStore = configureStore(middlewares);
 
@@ -15,11 +14,12 @@ describe('Questions Actions', () => {
     const initialState = {};
     const store = mockStore(initialState);
 
-
-    const stateObj = [{
-      type: types.SET_QUESTIONS,
-      questions: []
-    }];
+    const stateObj = [
+      {
+        type: types.SET_QUESTIONS,
+        questions: []
+      }
+    ];
 
     store.dispatch(questionsActions.setQuestions([]));
     expect(store.getActions()).toEqual(stateObj);
@@ -60,12 +60,12 @@ describe('Questions Actions', () => {
     const initialState = {};
     const store = mockStore(initialState);
 
-    return questionsActions.getUIQuestions(step)(store.dispatch)
+    return questionsActions
+      .getUIQuestions(step)(store.dispatch)
       .then(() => {
         expect(store.getActions()[0].type).toEqual(types.SET_QUESTIONS);
       });
   });
-
 
   it('should call start getUIQuestions with error', () => {
     const mockAdapter = new MockAdapter(axios);
@@ -102,7 +102,8 @@ describe('Questions Actions', () => {
     const initialState = {};
     const store = mockStore(initialState);
 
-    return questionsActions.getUIQuestions(step)(store.dispatch)
+    return questionsActions
+      .getUIQuestions(step)(store.dispatch)
       .then(() => {
         expect(store.getActions()[0].type).toEqual(types.APP_ERROR);
       });
@@ -114,22 +115,24 @@ describe('Questions Actions', () => {
 
     const diaryAssignees = [{ _id: '1' }, { _id: '2' }, { _id: '3' }];
 
-    const stateObj = [{
-      type: types.SET_ASSIGNEE_OPTIONS,
-      diaryAssignees
-    }];
+    const stateObj = [
+      {
+        type: types.SET_ASSIGNEE_OPTIONS,
+        diaryAssignees
+      }
+    ];
 
     store.dispatch(questionsActions.setAssigneeOptions(diaryAssignees));
 
-    expect(store.getActions())
-      .toEqual(stateObj);
+    expect(store.getActions()).toEqual(stateObj);
   });
 
   it('should call setAssigneeOptions', () => {
-    const query = ',TTIC:FL:HO3:Diaries:DiariesService:*|READ,TTIC:FL:HO3:Diaries:DiariesService:*|INSERT,TTIC:FL:HO3:Diaries:DiariesService:*|UPDATE';
+    const query =
+      ',TTIC:FL:HO3:Diaries:DiariesService:*|READ,TTIC:FL:HO3:Diaries:DiariesService:*|INSERT,TTIC:FL:HO3:Diaries:DiariesService:*|UPDATE';
     const userProfile = {
       resources: [
-        { right:'READ', uri: 'TTIC:FL:HO3:Diaries:DiariesService:*' },
+        { right: 'READ', uri: 'TTIC:FL:HO3:Diaries:DiariesService:*' },
         { right: 'INSERT', uri: 'TTIC:FL:HO3:Diaries:DiariesService:*' },
         { right: 'UPDATE', uri: 'TTIC:FL:HO3:Diaries:DiariesService:*' }
       ]
@@ -157,10 +160,11 @@ describe('Questions Actions', () => {
     const initialState = {};
     const store = mockStore(initialState);
 
-    questionsActions.getDiaryAssigneeOptions(userProfile)(store.dispatch).then(() => {
-      expect(store.getActions()[0].type).toEqual(types.SET_ASSIGNEE_OPTIONS);
-    });
-
+    questionsActions
+      .getDiaryAssigneeOptions(userProfile)(store.dispatch)
+      .then(() => {
+        expect(store.getActions()[0].type).toEqual(types.SET_ASSIGNEE_OPTIONS);
+      });
   });
 
   it('should call setTerritoryManagers', () => {
@@ -169,31 +173,37 @@ describe('Questions Actions', () => {
 
     const inputProps = {
       state: 'FL',
-      territoryManagers: [{
-        _id: '5b7db9f6ff54fd6a5c619ee8',
-        territory: 'Northeast',
-        name: 'Jodi Kelley',
-        phoneNumber: '8134195220',
-        emailAddress: 'jkelley@hcpci.com',
-        states: [
-          {
-            state: 'FL',
-            counties: [
-              {
-                county: 'NASSAU'
-              }
-            ]
-          }
-        ]
-      }]
+      territoryManagers: [
+        {
+          _id: '5b7db9f6ff54fd6a5c619ee8',
+          territory: 'Northeast',
+          name: 'Jodi Kelley',
+          phoneNumber: '8134195220',
+          emailAddress: 'jkelley@hcpci.com',
+          states: [
+            {
+              state: 'FL',
+              counties: [
+                {
+                  county: 'NASSAU'
+                }
+              ]
+            }
+          ]
+        }
+      ]
     };
 
-    const stateObj = [{
-      type: types.SET_TERRITORY_MANAGERS,
-      territoryManagers: inputProps.territoryManagers
-    }];
+    const stateObj = [
+      {
+        type: types.SET_TERRITORY_MANAGERS,
+        territoryManagers: inputProps.territoryManagers
+      }
+    ];
 
-    store.dispatch(questionsActions.setTerritoryManagers(inputProps.territoryManagers));
+    store.dispatch(
+      questionsActions.setTerritoryManagers(inputProps.territoryManagers)
+    );
 
     expect(store.getActions()).toEqual(stateObj);
   });
@@ -222,9 +232,12 @@ describe('Questions Actions', () => {
     });
     questionsActions.getTerritoryManagers(store.dispatch);
 
-    return questionsActions.getTerritoryManagers('FL')(store.dispatch)
+    return questionsActions
+      .getTerritoryManagers('FL')(store.dispatch)
       .then(() => {
-        expect(store.getActions()[0].type).toEqual(types.SET_TERRITORY_MANAGERS);
+        expect(store.getActions()[0].type).toEqual(
+          types.SET_TERRITORY_MANAGERS
+        );
       });
   });
 
@@ -252,7 +265,8 @@ describe('Questions Actions', () => {
     });
     questionsActions.getTerritoryManagers(store.dispatch);
 
-    return questionsActions.getTerritoryManagers(null)(store.dispatch)
+    return questionsActions
+      .getTerritoryManagers(null)(store.dispatch)
       .then(() => {
         expect(store.getActions()[0].type).toEqual(types.APP_ERROR);
       });
@@ -281,7 +295,8 @@ describe('Questions Actions', () => {
     });
     questionsActions.getLists(store.dispatch);
 
-    return questionsActions.getLists()(store.dispatch)
+    return questionsActions
+      .getLists()(store.dispatch)
       .then(() => {
         expect(store.getActions()[0].type).toEqual(types.SET_LISTS);
       });
@@ -311,7 +326,8 @@ describe('Questions Actions', () => {
     });
     questionsActions.getLists(store.dispatch);
 
-    return questionsActions.getLists()(store.dispatch)
+    return questionsActions
+      .getLists()(store.dispatch)
       .then(() => {
         expect(store.getActions()[0].type).toEqual(types.APP_ERROR);
       });

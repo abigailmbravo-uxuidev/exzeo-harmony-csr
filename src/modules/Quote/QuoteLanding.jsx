@@ -9,14 +9,19 @@ import { createQuote } from '../../state/actions/quote.actions';
 export const QuoteLanding = ({ match: { params }, createQuote }) => {
   const [quote, setQuote] = useState({});
   useEffect(() => {
-    async function initializeQuote(){
+    async function initializeQuote() {
       try {
         const { stateCode, propertyId } = params;
         // TODO: fix user profile to match harmony-web userProfile.entity.companyCode
-        const newQuote = await createQuote('0', propertyId, stateCode, 'TTIC', 'HO3');
+        const newQuote = await createQuote(
+          '0',
+          propertyId,
+          stateCode,
+          'TTIC',
+          'HO3'
+        );
         setQuote(newQuote);
-      }
-      catch (error) {
+      } catch (error) {
         setAppError(error);
       }
     }
@@ -24,18 +29,21 @@ export const QuoteLanding = ({ match: { params }, createQuote }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-
   return (
     <React.Fragment>
-      {quote.quoteNumber
-        ? <Redirect replace to={`/quote/${quote.quoteNumber}/coverage`}/>
-        : <Loader/>
-      }
+      {quote.quoteNumber ? (
+        <Redirect replace to={`/quote/${quote.quoteNumber}/coverage`} />
+      ) : (
+        <Loader />
+      )}
     </React.Fragment>
   );
 };
 
-export default connect(null, {
-  createQuote,
-  setAppError
-})(QuoteLanding);
+export default connect(
+  null,
+  {
+    createQuote,
+    setAppError
+  }
+)(QuoteLanding);

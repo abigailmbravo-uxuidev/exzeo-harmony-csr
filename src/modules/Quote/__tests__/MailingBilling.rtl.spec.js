@@ -59,22 +59,32 @@ describe('Mailing Address Testing', () => {
     };
     const { getByText } = renderWithForm(<QuoteWorkflow {...newProps} />);
 
-    expect(getByText('Billing cannot be accessed until there is a rating on the quote.'));
+    expect(
+      getByText(
+        'Billing cannot be accessed until there is a rating on the quote.'
+      )
+    );
   });
 
   it('POS:Checks Page Headers', async () => {
-    const { getByTestId, getByText } = renderWithForm(<QuoteWorkflow {...props} />);
+    const { getByTestId, getByText } = renderWithForm(
+      <QuoteWorkflow {...props} />
+    );
     await waitForElement(() => [
-      getByTestId('billToId'), getByTestId('annual-plan')
+      getByTestId('billToId'),
+      getByTestId('annual-plan')
     ]);
 
     pageHeaders.forEach(header => checkHeader(getByText, header));
   });
 
   it('POS:Checks fields', async () => {
-    const { getByText, getByTestId, getByLabelText } = renderWithForm(<QuoteWorkflow {...props} />);
+    const { getByText, getByTestId, getByLabelText } = renderWithForm(
+      <QuoteWorkflow {...props} />
+    );
     await waitForElement(() => [
-      getByTestId('billToId'), getByTestId('billPlan_Annual')
+      getByTestId('billToId'),
+      getByTestId('billPlan_Annual')
     ]);
 
     [...propertyFields, ...billingFields].forEach(field => {

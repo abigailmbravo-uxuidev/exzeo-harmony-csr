@@ -17,6 +17,8 @@ describe('Testing AgentsModal component', () => {
     };
     const wrapper = shallow(<AgentModal {...props} />);
     expect(wrapper.exists()).toBeTruthy();
-    wrapper.instance().handleSave({ agencyLicense: ['5435435'] }, x => x, props);
+    wrapper
+      .instance()
+      .handleSave({ agencyLicense: ['5435435'] }, x => x, props);
   });
 });

@@ -16,14 +16,16 @@ describe('Search Actions', () => {
 
   beforeEach(() => {
     initialState = { loading: false };
-    store = mockStore(initialState)
+    store = mockStore(initialState);
   });
 
   it('should call toggleLoading', () => {
-    const stateObj = [{
-      type: types.TOGGLE_LOADING,
-      loading: true
-    }];
+    const stateObj = [
+      {
+        type: types.TOGGLE_LOADING,
+        loading: true
+      }
+    ];
 
     store.dispatch(searchActions.toggleLoading(true));
 
@@ -31,9 +33,11 @@ describe('Search Actions', () => {
   });
 
   it('should call resetSearch', () => {
-    const stateObj = [{
-      type: types.RESET_SEARCH
-    }];
+    const stateObj = [
+      {
+        type: types.RESET_SEARCH
+      }
+    ];
 
     store.dispatch(searchActions.resetSearch());
 
@@ -46,16 +50,20 @@ describe('Search Actions', () => {
       pageSize: 25,
       sortBy: 'policyNumber',
       sortDirection: 'desc',
-      results: [{
-        policyID: '1234'
-      }],
+      results: [
+        {
+          policyID: '1234'
+        }
+      ],
       totalRecords: 1,
       noResults: false
     };
-    const stateObj = [{
-      type: types.SET_SEARCH_RESULTS,
-      ...payload
-    }];
+    const stateObj = [
+      {
+        type: types.SET_SEARCH_RESULTS,
+        ...payload
+      }
+    ];
 
     store.dispatch(searchActions.setSearchResults(payload));
 
@@ -74,8 +82,10 @@ describe('Search Actions', () => {
       initialState = {};
       store = mockStore(initialState);
       httpStub = sinon.stub();
-      sandbox.stub(serviceRunner, 'callService').callsFake((...args) => httpStub(...args));
-      sandbox.stub(localStorage, 'setItem').callsFake(() => null)
+      sandbox
+        .stub(serviceRunner, 'callService')
+        .callsFake((...args) => httpStub(...args));
+      sandbox.stub(localStorage, 'setItem').callsFake(() => null);
     });
 
     afterEach(() => {
@@ -86,22 +96,27 @@ describe('Search Actions', () => {
 
     it('should call dispatch on handleAddressSearch', async () => {
       const addressSearch = '1234';
-      const addresses = [{id: '1234'}, {id: '4321'}];
-      const stubAddressData = { data: { result: { IndexResult: addresses, TotalCount: addresses.length } } };
+      const addresses = [{ id: '1234' }, { id: '4321' }];
+      const stubAddressData = {
+        data: {
+          result: { IndexResult: addresses, TotalCount: addresses.length }
+        }
+      };
       const payload = {
         results: addresses,
         totalRecords: 2,
         noResults: false
       };
-      const stateObj = [{
-        type: types.SET_SEARCH_RESULTS,
-        ...payload,
-        currentPage: 1,
-        pageSize: 0,
-        sortBy: '',
-        sortDirection: '',
-      }];
-
+      const stateObj = [
+        {
+          type: types.SET_SEARCH_RESULTS,
+          ...payload,
+          currentPage: 1,
+          pageSize: 0,
+          sortBy: '',
+          sortDirection: ''
+        }
+      ];
 
       httpStub.onCall(0).returns(Promise.resolve(stubAddressData));
 
@@ -111,25 +126,34 @@ describe('Search Actions', () => {
       expect(store.getActions()).toEqual(stateObj);
     });
 
-
     it('should call dispatch on searchQuotes', async () => {
       const quoteSearch = { quoteNumber: '1234' };
-      const quotes = [{id: '1234'}, {id: '4321'}];
+      const quotes = [{ id: '1234' }, { id: '4321' }];
       const payload = {
         results: quotes,
         totalRecords: 2,
         noResults: false
       };
-      const stateObj = [{
-        type: types.SET_SEARCH_RESULTS,
-        ...payload,
-        currentPage: 1,
-        pageSize: 0,
-        sortBy: '',
-        sortDirection: 'desc',
-      }];
+      const stateObj = [
+        {
+          type: types.SET_SEARCH_RESULTS,
+          ...payload,
+          currentPage: 1,
+          pageSize: 0,
+          sortBy: '',
+          sortDirection: 'desc'
+        }
+      ];
 
-      const stubReturnData = {data: {result: {quotes, sortDirection: -1, totalNumberOfRecords: quotes.length} } };
+      const stubReturnData = {
+        data: {
+          result: {
+            quotes,
+            sortDirection: -1,
+            totalNumberOfRecords: quotes.length
+          }
+        }
+      };
       httpStub.onCall(0).returns(Promise.resolve(stubReturnData));
 
       await store.dispatch(searchActions.handleQuoteSearch(quoteSearch));
@@ -140,22 +164,31 @@ describe('Search Actions', () => {
 
     it('should call dispatch on searchPolicies', async () => {
       const policySearch = { policyNumber: '1234', sortBy: 'policyNumber' };
-      const policies = [{ _id: 4321, policyNumber: '1234'}];
+      const policies = [{ _id: 4321, policyNumber: '1234' }];
       const payload = {
         results: policies,
         totalRecords: 1,
         noResults: false
       };
-      const stateObj = [{
-        type: types.SET_SEARCH_RESULTS,
-        ...payload,
-        currentPage: 0,
-        pageSize: 0,
-        sortBy: 'policyNumber',
-        sortDirection: 'desc',
-      }];
+      const stateObj = [
+        {
+          type: types.SET_SEARCH_RESULTS,
+          ...payload,
+          currentPage: 0,
+          pageSize: 0,
+          sortBy: 'policyNumber',
+          sortDirection: 'desc'
+        }
+      ];
 
-      const stubReturnData = { data: { policies, sortDirection: 'desc', totalNumberOfRecords: policies.length, sort: 'policyNumber' } };
+      const stubReturnData = {
+        data: {
+          policies,
+          sortDirection: 'desc',
+          totalNumberOfRecords: policies.length,
+          sort: 'policyNumber'
+        }
+      };
       httpStub.onCall(0).returns(Promise.resolve(stubReturnData));
 
       await store.dispatch(searchActions.handlePolicySearch(policySearch));
@@ -166,20 +199,22 @@ describe('Search Actions', () => {
 
     it('should call dispatch on searchAgents', async () => {
       const agentSearch = { agentCode: 1234 };
-      const agents = [{ _id: 4321, agentCode: 1234}];
+      const agents = [{ _id: 4321, agentCode: 1234 }];
       const payload = {
         results: agents,
         totalRecords: 1,
         noResults: false
       };
-      const stateObj = [{
-        type: types.SET_SEARCH_RESULTS,
-        ...payload,
-        currentPage: 1,
-        pageSize: 0,
-        sortBy: '',
-        sortDirection: '',
-      }];
+      const stateObj = [
+        {
+          type: types.SET_SEARCH_RESULTS,
+          ...payload,
+          currentPage: 1,
+          pageSize: 0,
+          sortBy: '',
+          sortDirection: ''
+        }
+      ];
 
       const stubReturnData = { data: { result: agents } };
       httpStub.onCall(0).returns(Promise.resolve(stubReturnData));
@@ -192,20 +227,22 @@ describe('Search Actions', () => {
 
     it('should call dispatch on searchAgencies', async () => {
       const agentSearch = { agencyCode: 1234 };
-      const agencies = [{ _id: 4321, agencyCode: 1234}];
+      const agencies = [{ _id: 4321, agencyCode: 1234 }];
       const payload = {
         results: agencies,
         totalRecords: 1,
         noResults: false
       };
-      const stateObj = [{
-        type: types.SET_SEARCH_RESULTS,
-        ...payload,
-        currentPage: 1,
-        pageSize: 0,
-        sortBy: '',
-        sortDirection: '',
-      }];
+      const stateObj = [
+        {
+          type: types.SET_SEARCH_RESULTS,
+          ...payload,
+          currentPage: 1,
+          pageSize: 0,
+          sortBy: '',
+          sortDirection: ''
+        }
+      ];
 
       const stubReturnData = { data: { result: agencies } };
       httpStub.onCall(0).returns(Promise.resolve(stubReturnData));
@@ -217,7 +254,7 @@ describe('Search Actions', () => {
     });
 
     it('should test handleSearchSubmit for newQuoteSearch', async () => {
-      const data = { address: '1234'};
+      const data = { address: '1234' };
       const props = { searchType: SEARCH_TYPES.newQuote };
       httpStub.onCall(0).returns(Promise.resolve({}));
 
@@ -266,5 +303,4 @@ describe('Search Actions', () => {
       expect(store.getActions().length).toEqual(3);
     });
   });
-
 });

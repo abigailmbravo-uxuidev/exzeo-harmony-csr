@@ -2,7 +2,10 @@ import React from 'react';
 import configureStore from 'redux-mock-store';
 import { shallow } from 'enzyme';
 
-import ConnectedApp, { EditEffectiveDatePopup, handleInitialize } from './EditEffectiveDatePopup';
+import ConnectedApp, {
+  EditEffectiveDatePopup,
+  handleInitialize
+} from './EditEffectiveDatePopup';
 
 const middlewares = [];
 const mockStore = configureStore(middlewares);
@@ -10,8 +13,7 @@ const mockStore = configureStore(middlewares);
 describe('Testing BillingEditModal component', () => {
   it('should test connected app', () => {
     const initialState = {
-      authState: {
-      },
+      authState: {},
       cg: {
         bb: {
           data: {

@@ -3,7 +3,6 @@ import { shallow } from 'enzyme';
 
 import { Bootstrap } from './Bootstrap';
 
-
 describe('Test the Bootstrap Component', () => {
   it('Should Render', () => {
     const props = {

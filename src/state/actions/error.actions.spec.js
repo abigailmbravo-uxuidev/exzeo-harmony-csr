@@ -13,10 +13,12 @@ describe('Error Actions', () => {
       error: 'my error'
     };
 
-    const stateObj = [{
-      type: types.APP_ERROR,
-      error: inputProps.error
-    }];
+    const stateObj = [
+      {
+        type: types.APP_ERROR,
+        error: inputProps.error
+      }
+    ];
 
     store.dispatch(errorActions.setAppError(inputProps.error));
 
@@ -27,13 +29,14 @@ describe('Error Actions', () => {
     const initialState = {};
     const store = mockStore(initialState);
 
-    const stateObj = [{
-      type: types.APP_ERROR_CLEAR,
-      error: {}
-    }];
+    const stateObj = [
+      {
+        type: types.APP_ERROR_CLEAR,
+        error: {}
+      }
+    ];
 
     store.dispatch(errorActions.clearAppError());
     expect(store.getActions()).toEqual(stateObj);
   });
-
 });

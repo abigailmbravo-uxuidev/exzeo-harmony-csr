@@ -25,7 +25,9 @@ describe('Rules', () => {
       expect(rules.optionalEmail('something@mail.com')).toBeUndefined();
     });
     it('should return "Not a valid email address" for invalid email', () => {
-      expect(rules.optionalEmail('something')).toEqual('Not a valid email address');
+      expect(rules.optionalEmail('something')).toEqual(
+        'Not a valid email address'
+      );
     });
   });
   describe('phone', () => {
@@ -57,7 +59,9 @@ describe('Rules', () => {
       expect(rules.minLength3('456')).toBeUndefined();
     });
     it('should return "is not a valid Date."', () => {
-      expect(rules.minLength3('4')).toEqual('Please enter at least 3 characters');
+      expect(rules.minLength3('4')).toEqual(
+        'Please enter at least 3 characters'
+      );
     });
   });
 
@@ -87,7 +91,9 @@ describe('Rules', () => {
       expect(rules.numberDashesOnly('456')).toBeUndefined();
     });
     it('should return Only numbers and dashes allowed', () => {
-      expect(rules.numberDashesOnly('|/&')).toEqual('Only numbers and dashes allowed');
+      expect(rules.numberDashesOnly('|/&')).toEqual(
+        'Only numbers and dashes allowed'
+      );
     });
   });
 
@@ -111,14 +117,19 @@ describe('Rules', () => {
 
   describe('date', () => {
     it('should return undefined when value is not undefined', () => {
-      const ruleArray = combineRules(['date'], { min: '12-12-2005', max: '12-12-2099' });
+      const ruleArray = combineRules(['date'], {
+        min: '12-12-2005',
+        max: '12-12-2099'
+      });
       expect(ruleArray[0].length).toEqual(1);
     });
   });
 
   describe('dateString', () => {
     it('should return undefined when value is not undefined', () => {
-      const ruleArray = combineRules(['matchDateMin10'], { dateString: '20170802' });
+      const ruleArray = combineRules(['matchDateMin10'], {
+        dateString: '20170802'
+      });
       expect(ruleArray[0].length).toEqual(1);
     });
   });
@@ -128,7 +139,9 @@ describe('Rules', () => {
       expect(rules.dateCheck('2017-08-01')).toBeUndefined();
     });
     it('should return error when date is less than 08/01/2017', () => {
-      expect(rules.dateCheck('2017-07-31')).toEqual('Date must be at least 08/01/2017');
+      expect(rules.dateCheck('2017-07-31')).toEqual(
+        'Date must be at least 08/01/2017'
+      );
     });
   });
 });

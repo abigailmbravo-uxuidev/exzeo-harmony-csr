@@ -23,7 +23,13 @@ const underwritingFields = [
   {
     dataTest: 'underwritingAnswers.previousClaims.answer',
     type: 'radio',
-    values: ['No claims ever filed', 'Less than 3 Years', '3-5 Years', 'Over 5 Years', 'Unknown'],
+    values: [
+      'No claims ever filed',
+      'Less than 3 Years',
+      '3-5 Years',
+      'Over 5 Years',
+      'Unknown'
+    ],
     label: 'When was the last claim filed?'
   },
   {
@@ -36,7 +42,8 @@ const underwritingFields = [
     dataTest: 'underwritingAnswers.fourPointUpdates.answer',
     type: 'radio',
     values: ['No', 'Unknown', 'Yes'],
-    label: 'Have the wiring, plumbing, and HVAC been updated in the last 35 years?'
+    label:
+      'Have the wiring, plumbing, and HVAC been updated in the last 35 years?'
   },
   {
     dataTest: 'underwritingAnswers.business.answer',
@@ -55,8 +62,12 @@ describe('Testing Underwriting', () => {
   };
 
   it('POS:Checks Header and Question Labels', async () => {
-    const { getByText, getByTestId } = renderWithForm(<QuoteWorkflow {...props} />);
-    await waitForElement(() => getByTestId('underwritingAnswers.rented.answer_Occasionally'));
+    const { getByText, getByTestId } = renderWithForm(
+      <QuoteWorkflow {...props} />
+    );
+    await waitForElement(() =>
+      getByTestId('underwritingAnswers.rented.answer_Occasionally')
+    );
 
     pageHeaders.forEach(header => checkHeader(getByText, header));
     underwritingFields.forEach(({ label }) => expect(getByText(label)));
@@ -64,7 +75,9 @@ describe('Testing Underwriting', () => {
 
   it('POS:Checks all field labels', async () => {
     const { getByTestId } = renderWithForm(<QuoteWorkflow {...props} />);
-    await waitForElement(() => getByTestId('underwritingAnswers.rented.answer_Occasionally'));
+    await waitForElement(() =>
+      getByTestId('underwritingAnswers.rented.answer_Occasionally')
+    );
 
     underwritingFields.forEach(field => checkRadio(getByTestId, field));
   });

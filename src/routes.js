@@ -27,10 +27,14 @@ import { QuoteLanding, QuoteWorkflow } from './modules/Quote';
 
 class Routes extends Component {
   setBackStep = (goToNext, callback) => {
-    this.props.actions.appStateActions.setAppState(this.props.appState.modelName, this.props.appState.instanceId, {
-      ...this.props.appState.data,
-      activateRedirect: false
-    });
+    this.props.actions.appStateActions.setAppState(
+      this.props.appState.modelName,
+      this.props.appState.instanceId,
+      {
+        ...this.props.appState.data,
+        activateRedirect: false
+      }
+    );
     callback(goToNext);
   };
 
@@ -45,7 +49,12 @@ class Routes extends Component {
 
   /* eslint-disable max-len */
   render() {
-    const { ui: { diary, note, minimizeNote, minimizeDiary }, auth, authState: { userProfile }, policyState: { policy } } = this.props;
+    const {
+      ui: { diary, note, minimizeNote, minimizeDiary },
+      auth,
+      authState: { userProfile },
+      policyState: { policy }
+    } = this.props;
     return (
       <div>
         <Modal
@@ -53,18 +62,30 @@ class Routes extends Component {
           contentLabel="Error Modal"
           style={this.modalStyles}
           className="card"
-          appElement={document.getElementById('root')}>
-          <div className="card-header"><h4><i className="fa fa-exclamation-circle" />&nbsp;Error</h4></div>
-          <div className="card-block"><p>{String(this.props.error.message)}</p></div>
+          appElement={document.getElementById('root')}
+        >
+          <div className="card-header">
+            <h4>
+              <i className="fa fa-exclamation-circle" />
+              &nbsp;Error
+            </h4>
+          </div>
+          <div className="card-block">
+            <p>{String(this.props.error.message)}</p>
+          </div>
           <div className="card-footer">
-            {this.props.error.requestId &&
-              <div className="footer-message"><p>Request ID: {this.props.error.requestId}</p></div>
-            }
-            <button className="btn-primary" onClick={this.handleClearError}>close</button>
+            {this.props.error.requestId && (
+              <div className="footer-message">
+                <p>Request ID: {this.props.error.requestId}</p>
+              </div>
+            )}
+            <button className="btn-primary" onClick={this.handleClearError}>
+              close
+            </button>
           </div>
         </Modal>
 
-        {diary && diary.resourceType &&
+        {diary && diary.resourceType && (
           <DiaryModal
             minimizeDiary={minimizeDiary}
             companyCode={diary.companyCode}
@@ -74,11 +95,14 @@ class Routes extends Component {
             diaryId={diary.selectedDiary ? diary.selectedDiary.diaryId : null}
             resourceType={diary.resourceType}
             resourceId={diary.resourceId}
-            sourceNumber={policy && policy.sourceNumber ? policy.sourceNumber : null}
-            entityEndDate={diary.entityEndDate} />
-        }
+            sourceNumber={
+              policy && policy.sourceNumber ? policy.sourceNumber : null
+            }
+            entityEndDate={diary.entityEndDate}
+          />
+        )}
 
-        {note && note.documentId &&
+        {note && note.documentId && (
           <NoteUploader
             minimizeNote={minimizeNote}
             companyCode={note.companyCode}
@@ -87,8 +111,9 @@ class Routes extends Component {
             noteType={note.noteType}
             documentId={note.documentId}
             sourceId={note.sourceNumber}
-            resourceType={note.resourceType} />
-        }
+            resourceType={note.resourceType}
+          />
+        )}
         <Router
           getUserConfirmation={(message, callback) => {
             ReactDOM.render(
@@ -96,25 +121,67 @@ class Routes extends Component {
                 {...this.props}
                 message={message}
                 setBackStep={this.setBackStep}
-                callback={callback} />,
+                callback={callback}
+              />,
               document.getElementById('modal')
             );
-          }}>
-
+          }}
+        >
           <div className="routes">
             {userProfile && <Bootstrap userProfile={userProfile} />}
             <Switch>
-              <Route exact path="/" render={props => <SearchPolicy auth={auth} {...props} />} />
-              <Route exact path="/agency" render={props => <SearchAgency auth={auth} {...props} />} />
-              <Route exact path="/diaries" render={props => <SearchDiaries auth={auth} {...props} />} />
-              <Route exact path="/quote/new/:stateCode/:propertyId" render={props => <QuoteLanding auth={auth} {...props} />} />
-              <Route path="/quote/:quoteNumber" render={props => <QuoteWorkflow auth={auth} {...props} />} />
-              <Route path="/policy/:policyNumber" render={props => <PolicyModule auth={auth} {...props} />} />
-              <Route path="/agency/:agencyCode/:branchCode" render={props => <Agency auth={auth} {...props} />} />
-              <Route exact path="/reports" render={props => <Reports auth={auth} {...props} />} />
-              <Route exact path="/login" render={props => <LoginPage auth={auth} {...props} />} />
-              <Route exact path="/accessDenied" render={props => <AccessDenied auth={auth} {...props} />} />
-              <Route exact path="/loggedOut" render={props => <LoggedOut auth={auth} {...props} />} />
+              <Route
+                exact
+                path="/"
+                render={props => <SearchPolicy auth={auth} {...props} />}
+              />
+              <Route
+                exact
+                path="/agency"
+                render={props => <SearchAgency auth={auth} {...props} />}
+              />
+              <Route
+                exact
+                path="/diaries"
+                render={props => <SearchDiaries auth={auth} {...props} />}
+              />
+              <Route
+                exact
+                path="/quote/new/:stateCode/:propertyId"
+                render={props => <QuoteLanding auth={auth} {...props} />}
+              />
+              <Route
+                path="/quote/:quoteNumber"
+                render={props => <QuoteWorkflow auth={auth} {...props} />}
+              />
+              <Route
+                path="/policy/:policyNumber"
+                render={props => <PolicyModule auth={auth} {...props} />}
+              />
+              <Route
+                path="/agency/:agencyCode/:branchCode"
+                render={props => <Agency auth={auth} {...props} />}
+              />
+              <Route
+                exact
+                path="/reports"
+                render={props => <Reports auth={auth} {...props} />}
+              />
+              <Route
+                exact
+                path="/login"
+                render={props => <LoginPage auth={auth} {...props} />}
+              />
+              <Route
+                exact
+                path="/accessDenied"
+                render={props => <AccessDenied auth={auth} {...props} />}
+              />
+              <Route
+                exact
+                path="/loggedOut"
+                render={props => <LoggedOut auth={auth} {...props} />}
+              />
               <Route
                 exact
                 path="/logout"
@@ -123,12 +190,11 @@ class Routes extends Component {
                   return <Callback />;
                 }}
               />
+              <Route exact path="/callback" render={() => <Callback />} />
               <Route
-                exact
-                path="/callback"
-                render={() => <Callback />}
+                path="*"
+                render={props => <NotFoundPage auth={auth} {...props} />}
               />
-              <Route path="*" render={props => <NotFoundPage auth={auth} {...props} />} />
             </Switch>
           </div>
         </Router>
@@ -153,4 +219,7 @@ const mapDispatchToProps = dispatch => ({
   }
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Routes);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Routes);

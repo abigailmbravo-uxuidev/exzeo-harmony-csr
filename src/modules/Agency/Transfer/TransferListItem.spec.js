@@ -8,7 +8,7 @@ describe('Testing Transfer Modal', () => {
   it('should render Transfer Modal', () => {
     const props = {
       policy: {}
-     };
+    };
     const wrapper = shallow(<TransferListItem {...props} />);
     expect(wrapper).toBeTruthy();
   });

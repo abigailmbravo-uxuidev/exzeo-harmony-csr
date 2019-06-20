@@ -268,7 +268,8 @@ export default {
     },
     {
       right: 'UPDATE',
-      uri: 'TTIC:FL:HO3:PolicyData:Transactions:TransactionType:EffectiveDateChange'
+      uri:
+        'TTIC:FL:HO3:PolicyData:Transactions:TransactionType:EffectiveDateChange'
     },
     {
       right: 'UPDATE',
@@ -396,7 +397,8 @@ export default {
     },
     {
       right: 'UPDATE',
-      uri: 'TTIC:FL:HO3:PolicyData:Transactions:TransactionType:UnderwritingCancellation'
+      uri:
+        'TTIC:FL:HO3:PolicyData:Transactions:TransactionType:UnderwritingCancellation'
     },
     {
       right: 'UPDATE',
@@ -412,7 +414,8 @@ export default {
     },
     {
       right: 'UPDATE',
-      uri: 'TTIC:FL:HO3:PolicyData:Transactions:TransactionType:UnderwritingNonRenewal'
+      uri:
+        'TTIC:FL:HO3:PolicyData:Transactions:TransactionType:UnderwritingNonRenewal'
     },
     {
       right: 'UPDATE',
@@ -428,7 +431,8 @@ export default {
     },
     {
       right: 'UPDATE',
-      uri: 'TTIC:FL:HO3:PolicyData:Transactions:TransactionType:VoluntaryCancellation'
+      uri:
+        'TTIC:FL:HO3:PolicyData:Transactions:TransactionType:VoluntaryCancellation'
     },
     {
       right: 'READ',
@@ -540,7 +544,8 @@ export default {
     },
     {
       right: 'UPDATE',
-      uri: 'TTIC:FL:HO3:PolicyData:Transactions:TransactionType:WindMitigationEndorsement'
+      uri:
+        'TTIC:FL:HO3:PolicyData:Transactions:TransactionType:WindMitigationEndorsement'
     },
     {
       right: 'READ',
@@ -632,7 +637,8 @@ export default {
     },
     {
       right: 'UPDATE',
-      uri: 'TTIC:FL:AF3:PolicyData:Transactions:TransactionType:EffectiveDateChange'
+      uri:
+        'TTIC:FL:AF3:PolicyData:Transactions:TransactionType:EffectiveDateChange'
     },
     {
       right: 'UPDATE',
@@ -664,15 +670,18 @@ export default {
     },
     {
       right: 'UPDATE',
-      uri: 'TTIC:FL:AF3:PolicyData:Transactions:TransactionType:UnderwritingCancellation'
+      uri:
+        'TTIC:FL:AF3:PolicyData:Transactions:TransactionType:UnderwritingCancellation'
     },
     {
       right: 'UPDATE',
-      uri: 'TTIC:FL:AF3:PolicyData:Transactions:TransactionType:UnderwritingNonRenewal'
+      uri:
+        'TTIC:FL:AF3:PolicyData:Transactions:TransactionType:UnderwritingNonRenewal'
     },
     {
       right: 'UPDATE',
-      uri: 'TTIC:FL:AF3:PolicyData:Transactions:TransactionType:VoluntaryCancellation'
+      uri:
+        'TTIC:FL:AF3:PolicyData:Transactions:TransactionType:VoluntaryCancellation'
     },
     {
       right: 'READ',
@@ -700,7 +709,8 @@ export default {
     },
     {
       right: 'UPDATE',
-      uri: 'TTIC:FL:AF3:PolicyData:Transactions:TransactionType:WindMitigationEndorsement'
+      uri:
+        'TTIC:FL:AF3:PolicyData:Transactions:TransactionType:WindMitigationEndorsement'
     },
     {
       right: 'READ',

@@ -3,12 +3,32 @@ import PropTypes from 'prop-types';
 import { Field } from 'redux-form';
 import { Input, Phone, validation, normalize } from '@exzeo/core-ui';
 
-const firstNameDepends = validation.dependsOn(['policyHolders[1].lastName', 'policyHolders[1].emailAddress', 'policyHolders[1].primaryPhoneNumber']);
-const lastNameDepends = validation.dependsOn(['policyHolders[1].firstName', 'policyHolders[1].emailAddress', 'policyHolders[1].primaryPhoneNumber']);
-const primaryPhoneDepends = validation.dependsOn(['policyHolders[1].firstName', 'policyHolders[1].lastName', 'policyHolders[1].emailAddress']);
-const emailAddressDepends = validation.dependsOn(['policyHolders[1].firstName', 'policyHolders[1].lastName', 'policyHolders[1].primaryPhoneNumber']);
+const firstNameDepends = validation.dependsOn([
+  'policyHolders[1].lastName',
+  'policyHolders[1].emailAddress',
+  'policyHolders[1].primaryPhoneNumber'
+]);
+const lastNameDepends = validation.dependsOn([
+  'policyHolders[1].firstName',
+  'policyHolders[1].emailAddress',
+  'policyHolders[1].primaryPhoneNumber'
+]);
+const primaryPhoneDepends = validation.dependsOn([
+  'policyHolders[1].firstName',
+  'policyHolders[1].lastName',
+  'policyHolders[1].emailAddress'
+]);
+const emailAddressDepends = validation.dependsOn([
+  'policyHolders[1].firstName',
+  'policyHolders[1].lastName',
+  'policyHolders[1].primaryPhoneNumber'
+]);
 
-const PolicyHolder = ({ setSecondaryPolicyHolder, policyHolders, setPHToggle }) => (
+const PolicyHolder = ({
+  setSecondaryPolicyHolder,
+  policyHolders,
+  setPHToggle
+}) => (
   <section name="policy" id="policy">
     <div className="flex-row">
       {/* Col1 */}
@@ -20,14 +40,14 @@ const PolicyHolder = ({ setSecondaryPolicyHolder, policyHolders, setPHToggle }) 
             label="First Name"
             component={Input}
             validate={validation.isRequired}
-            dataTest='pH1FirstName'
+            dataTest="pH1FirstName"
           />
           <Field
             name="policyHolders[0].lastName"
             label="Last Name"
             component={Input}
             validate={validation.isRequired}
-            dataTest='pH1LastName'
+            dataTest="pH1LastName"
           />
         </div>
         <div className="flex-row">
@@ -36,14 +56,14 @@ const PolicyHolder = ({ setSecondaryPolicyHolder, policyHolders, setPHToggle }) 
             label="Primary Phone"
             component={Phone}
             validate={[validation.isRequired, validation.isPhone]}
-            dataTest='pH1phone'
+            dataTest="pH1phone"
           />
           <Field
             name="policyHolders[0].secondaryPhoneNumber"
             label="Secondary Phone"
             component={Phone}
             validate={validation.isPhone}
-            dataTest='pH1secondaryPhone'
+            dataTest="pH1secondaryPhone"
           />
         </div>
         <div className="flex-row">
@@ -53,9 +73,9 @@ const PolicyHolder = ({ setSecondaryPolicyHolder, policyHolders, setPHToggle }) 
             component={Input}
             validate={[validation.isRequired, validation.isEmail]}
             normalize={normalize.email}
-            dataTest='pH1email'
+            dataTest="pH1email"
           />
-          {/* electronic delivery question placeholder */ }
+          {/* electronic delivery question placeholder */}
         </div>
       </div>
       {/* Col2 */}
@@ -70,7 +90,7 @@ const PolicyHolder = ({ setSecondaryPolicyHolder, policyHolders, setPHToggle }) 
               type="checkbox"
               normalize={setSecondaryPolicyHolder}
               disabled={!(policyHolders && policyHolders[1])}
-              data-test='clearFields'
+              data-test="clearFields"
             />
             <label htmlFor="clearFields">Remove</label>
           </div>
@@ -82,8 +102,7 @@ const PolicyHolder = ({ setSecondaryPolicyHolder, policyHolders, setPHToggle }) 
             component={Input}
             validate={firstNameDepends}
             onChange={setPHToggle}
-            dataTest='pH2FirstName'
-
+            dataTest="pH2FirstName"
           />
           <Field
             name="policyHolders[1].lastName"
@@ -91,7 +110,7 @@ const PolicyHolder = ({ setSecondaryPolicyHolder, policyHolders, setPHToggle }) 
             component={Input}
             validate={lastNameDepends}
             onChange={setPHToggle}
-            dataTest='pH2LastName'
+            dataTest="pH2LastName"
           />
         </div>
         <div className="flex-row">
@@ -101,7 +120,7 @@ const PolicyHolder = ({ setSecondaryPolicyHolder, policyHolders, setPHToggle }) 
             component={Phone}
             validate={[primaryPhoneDepends, validation.isPhone]}
             onChange={setPHToggle}
-            dataTest='pH2phone'
+            dataTest="pH2phone"
           />
           <Field
             name="policyHolders[1].secondaryPhoneNumber"
@@ -109,7 +128,7 @@ const PolicyHolder = ({ setSecondaryPolicyHolder, policyHolders, setPHToggle }) 
             component={Phone}
             validate={validation.isPhone}
             onChange={setPHToggle}
-            dataTest='pH2secondaryPhone'
+            dataTest="pH2secondaryPhone"
           />
         </div>
         <div className="flex-row">
@@ -119,7 +138,7 @@ const PolicyHolder = ({ setSecondaryPolicyHolder, policyHolders, setPHToggle }) 
             component={Input}
             validate={[emailAddressDepends, validation.isEmail]}
             onChange={setPHToggle}
-            dataTest='pH2email'
+            dataTest="pH2email"
           />
         </div>
       </div>

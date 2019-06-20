@@ -19,8 +19,7 @@ export const useFetchNotes = (numbers, numberType, notesSynced) => {
           };
         });
 
-        const filesQuery = numbers.map(number => number)
-          .join(',');
+        const filesQuery = numbers.map(number => number).join(',');
 
         const notesConfig = {
           exchangeName: 'harmony',
@@ -36,14 +35,15 @@ export const useFetchNotes = (numbers, numberType, notesSynced) => {
 
         const [notes, files] = await Promise.all([
           await serviceRunner.callService(notesConfig, 'fetchNotes'),
-          numberType === 'policyNumber' ? await serviceRunner.callService(filesConfig, 'fetchFiles') : []
+          numberType === 'policyNumber'
+            ? await serviceRunner.callService(filesConfig, 'fetchFiles')
+            : []
         ]);
         const allNotes = files.data
           ? mergeNotes(notes.data.result, files.data.result)
           : notes.data.result;
 
         setNotes(allNotes);
-
       } catch (error) {
         console.error('Error fetching notes: ', error);
       } finally {

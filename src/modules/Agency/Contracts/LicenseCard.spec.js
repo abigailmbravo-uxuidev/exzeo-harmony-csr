@@ -7,23 +7,27 @@ describe('Testing LicenseCard component', () => {
   it('should render', () => {
     const license = mockAgency.licenses[0];
     const wrapper = shallow(
-      <LicenseCard 
+      <LicenseCard
         key={license.licenseNumber}
-        license={license} 
-        editContract={() => {}} 
-      />);
+        license={license}
+        editContract={() => {}}
+      />
+    );
     expect(wrapper).toBeTruthy();
   });
 
   it('should render License info', () => {
     const license = mockAgency.licenses[0];
     const wrapper = shallow(
-      <LicenseCard 
+      <LicenseCard
         key={license.licenseNumber}
-        license={license} 
-        editContract={() => {}} 
-      />);
+        license={license}
+        editContract={() => {}}
+      />
+    );
     expect(wrapper.find('.license-csp')).toHaveLength(1);
-    expect(wrapper.find('.license-csp').text()).toEqual('TX - test040b | 10/27/2018');
+    expect(wrapper.find('.license-csp').text()).toEqual(
+      'TX - test040b | 10/27/2018'
+    );
   });
 });

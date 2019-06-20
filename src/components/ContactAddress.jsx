@@ -5,15 +5,17 @@ const ContactAddress = ({ mailingAddress, status, children }) => {
   return (
     <div className="contact-address">
       {mailingAddress.address1},&nbsp;
-      {mailingAddress.address2}{mailingAddress.address2 ? ', ' : ''}
+      {mailingAddress.address2}
+      {mailingAddress.address2 ? ', ' : ''}
       {mailingAddress.city},&nbsp;
       {mailingAddress.state}&nbsp;
       {mailingAddress.zip}
-      {status &&
-      <span className="additional-data status">
-        <label>STATUS:&nbsp;</label>{status}
-      </span>
-      }
+      {status && (
+        <span className="additional-data status">
+          <label>STATUS:&nbsp;</label>
+          {status}
+        </span>
+      )}
       {children}
     </div>
   );

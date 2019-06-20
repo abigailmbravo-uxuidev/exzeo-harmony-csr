@@ -1,5 +1,5 @@
 import configureStore from 'redux-mock-store';
-import { http as axios} from '@exzeo/core-ui';
+import { http as axios } from '@exzeo/core-ui';
 import MockAdapter from 'axios-mock-adapter';
 
 import * as types from './actionTypes';
@@ -16,10 +16,12 @@ describe('Zipcode Settings Actions', () => {
       zipCodeSettings: []
     };
 
-    const stateObj = [{
-      type: types.SET_ZIPCODE_SETTINGS,
-      zipCodeSettings: inputProps.zipCodeSettings
-    }];
+    const stateObj = [
+      {
+        type: types.SET_ZIPCODE_SETTINGS,
+        zipCodeSettings: inputProps.zipCodeSettings
+      }
+    ];
 
     store.dispatch(actions.setZipCodeSettings(inputProps.zipCodeSettings));
 
@@ -41,7 +43,10 @@ describe('Zipcode Settings Actions', () => {
       data: {
         service: 'zipcodesettings',
         method: 'GET',
-        path: `graphql?query=${actions.generateSearchSettingsByCSPAndZipQuery('33607', 'FL')}`
+        path: `graphql?query=${actions.generateSearchSettingsByCSPAndZipQuery(
+          '33607',
+          'FL'
+        )}`
       }
     };
 
@@ -50,11 +55,14 @@ describe('Zipcode Settings Actions', () => {
     });
     actions.searchSettingsByCSPAndZip(store.dispatch);
 
-    return actions.searchSettingsByCSPAndZip('33607', 'FL')(store.dispatch)
+    return actions
+      .searchSettingsByCSPAndZip('33607', 'FL')(store.dispatch)
       .then(() => {
         expect(store.getActions()[0].type).toEqual(types.SET_ZIPCODE_SETTINGS);
       })
-      .catch(err => console.error('Error in test: searchSettingsByCSPandZip: ', err));
+      .catch(err =>
+        console.error('Error in test: searchSettingsByCSPandZip: ', err)
+      );
   });
 
   it('should fail searchSettingsByCSPAndZip', () => {
@@ -72,7 +80,10 @@ describe('Zipcode Settings Actions', () => {
       data: {
         service: 'zipcodesettings',
         method: 'GET',
-        path: `graphql?query=${actions.generateSearchSettingsByCSPAndZipQuery('33607', 'FL')}`
+        path: `graphql?query=${actions.generateSearchSettingsByCSPAndZipQuery(
+          '33607',
+          'FL'
+        )}`
       }
     };
 
@@ -81,7 +92,8 @@ describe('Zipcode Settings Actions', () => {
     });
     actions.searchSettingsByCSPAndZip(store.dispatch);
 
-    return actions.searchSettingsByCSPAndZip(null)(store.dispatch)
+    return actions
+      .searchSettingsByCSPAndZip(null)(store.dispatch)
       .then(() => {
         expect(store.getActions()[0].type).toEqual(types.APP_ERROR);
       });

@@ -14,10 +14,9 @@ export const DEFAULT_ADDITIONAL_INTERESTS_MAP = {
   [ADDITIONAL_INTERESTS.premiumFinance]: []
 };
 
-export const AVAILABLE_QUOTE_STATES = [
-  'Policy Issued',
-  'Documents Recieved'
+export const AVAILABLE_QUOTE_STATES = ['Policy Issued', 'Documents Recieved'];
+
+export const PREMIUM_FINANCE_BILL_PAYER_TYPES = [
+  ADDITIONAL_INTERESTS.premiumFinance,
+  ADDITIONAL_INTERESTS.billPayer
 ];
-
-
-export const PREMIUM_FINANCE_BILL_PAYER_TYPES = [ADDITIONAL_INTERESTS.premiumFinance, ADDITIONAL_INTERESTS.billPayer];

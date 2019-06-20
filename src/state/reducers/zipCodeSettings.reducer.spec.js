@@ -1,4 +1,3 @@
-
 import * as types from '../actions/actionTypes';
 
 import initialState from './initialState';
@@ -13,7 +12,9 @@ describe('zipCodeSettingsReducer', () => {
       zipCodeSettings: inputProps
     };
 
-    expect(zipCodeSettingsReducer(state, action))
-      .toEqual({ ...initialState.zipCodeSettingsState, zipCodeSettings: inputProps });
+    expect(zipCodeSettingsReducer(state, action)).toEqual({
+      ...initialState.zipCodeSettingsState,
+      zipCodeSettings: inputProps
+    });
   });
 });

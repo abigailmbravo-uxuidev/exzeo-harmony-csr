@@ -2,7 +2,6 @@ import React from 'react';
 
 import logo from '../img/Harmony.svg';
 
-
 const Header = ({ title, children }) => (
   <header>
     <div role="banner">

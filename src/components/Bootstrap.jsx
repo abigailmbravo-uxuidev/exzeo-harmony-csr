@@ -15,6 +15,11 @@ export class Bootstrap extends React.Component {
   }
 }
 
-export default withRouter(connect(null, {
-  getAssignees: getDiaryAssigneeOptions
-})(Bootstrap));
+export default withRouter(
+  connect(
+    null,
+    {
+      getAssignees: getDiaryAssigneeOptions
+    }
+  )(Bootstrap)
+);

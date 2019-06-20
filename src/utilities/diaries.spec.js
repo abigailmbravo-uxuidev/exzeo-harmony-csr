@@ -50,8 +50,7 @@ describe('Test diaries utilities', () => {
         const dueDate = '2018-01-04';
         const result = utils.isUpcoming(dueDate);
 
-        expect(result)
-          .toBeFalsy();
+        expect(result).toBeFalsy();
       });
 
       it('should return false if date is 7 days away', () => {
@@ -59,8 +58,7 @@ describe('Test diaries utilities', () => {
         const dueDate = '2018-01-08';
         const result = utils.isUpcoming(dueDate);
 
-        expect(result)
-          .toBeFalsy();
+        expect(result).toBeFalsy();
       });
 
       it('should return true if date is more than 7 days away', () => {
@@ -68,8 +66,7 @@ describe('Test diaries utilities', () => {
         const dueDate = '2018-01-09';
         const result = utils.isUpcoming(dueDate);
 
-        expect(result)
-          .toBeTruthy();
+        expect(result).toBeTruthy();
       });
 
       it('should return false if date is in the past', () => {
@@ -77,8 +74,7 @@ describe('Test diaries utilities', () => {
         const dueDate = '2017-12-31';
         const result = utils.isUpcoming(dueDate);
 
-        expect(result)
-          .toBeFalsy();
+        expect(result).toBeFalsy();
       });
     });
 
@@ -96,8 +92,7 @@ describe('Test diaries utilities', () => {
         const dueDate = '2018-01-08';
         const result = utils.isDueSoon(dueDate);
 
-        expect(result)
-          .toBeTruthy();
+        expect(result).toBeTruthy();
       });
 
       it('should return false if date is more than 7 days away', () => {
@@ -105,8 +100,7 @@ describe('Test diaries utilities', () => {
         const dueDate = '2018-01-09';
         const result = utils.isDueSoon(dueDate);
 
-        expect(result)
-          .toBeFalsy();
+        expect(result).toBeFalsy();
       });
 
       it('should return false if date is in the past', () => {
@@ -114,8 +108,7 @@ describe('Test diaries utilities', () => {
         const dueDate = '2017-12-31';
         const result = utils.isDueSoon(dueDate);
 
-        expect(result)
-          .toBeFalsy();
+        expect(result).toBeFalsy();
       });
     });
 
@@ -133,8 +126,7 @@ describe('Test diaries utilities', () => {
         const dueDate = '2018-01-01';
         const result = utils.isPastDue(dueDate);
 
-        expect(result)
-          .toBeFalsy();
+        expect(result).toBeFalsy();
       });
 
       it('should return false if date is after today', () => {
@@ -142,8 +134,7 @@ describe('Test diaries utilities', () => {
         const dueDate = '2018-01-02';
         const result = utils.isPastDue(dueDate);
 
-        expect(result)
-          .toBeFalsy();
+        expect(result).toBeFalsy();
       });
     });
   });

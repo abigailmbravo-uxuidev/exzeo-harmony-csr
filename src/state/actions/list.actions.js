@@ -1,17 +1,19 @@
 import * as serviceRunner from '@exzeo/core-ui/src/@Harmony/Domain/Api/serviceRunner';
-import { searchAgencies, fetchAgentsByAgencyCode } from '@exzeo/core-ui/src/@Harmony';
+import {
+  searchAgencies,
+  fetchAgentsByAgencyCode
+} from '@exzeo/core-ui/src/@Harmony';
 
 import * as listTypes from '../actionTypes/list.actionTypes';
 import { setAppError } from './error.actions';
 import { fetchNotes } from './notes.actions';
 import { fetchDiaries } from './diary.actions';
 
-
 function setEnums(enums) {
   return {
     type: listTypes.SET_ENUMS,
     underwritingQuestions: enums.underwritingQuestions,
-    ...enums,
+    ...enums
   };
 }
 
@@ -25,18 +27,28 @@ function setEnums(enums) {
  * @param quoteNumber
  * @returns {Function}
  */
-export function getEnumsForQuoteWorkflow({ companyCode, state, product, agencyCode, agentCode, quoteNumber }) {
+export function getEnumsForQuoteWorkflow({
+  companyCode,
+  state,
+  product,
+  agencyCode,
+  agentCode,
+  quoteNumber
+}) {
   return async dispatch => {
     try {
-
-      dispatch(fetchDiaries({ resourceId: quoteNumber}));
+      dispatch(fetchDiaries({ resourceId: quoteNumber }));
       dispatch(fetchNotes([quoteNumber], 'quoteNumber'));
       // this pattern sets us up to "parallelize" the network requests in this function. We want to
       // fetch all enums/data needed for the quote workflow in here.
       // 1. assign async function(s) to variable(s) - calls the func
       const additionalInterestQuestions = fetchMortgagees();
       const agencyOption = searchAgencies({ companyCode, state, agencyCode });
-      const agentOption = fetchAgentsByAgencyCode({ companyCode, state, agencyCode });
+      const agentOption = fetchAgentsByAgencyCode({
+        companyCode,
+        state,
+        agencyCode
+      });
       // 2. new variable awaits the previous.
       const additionalInterestResponse = await additionalInterestQuestions;
       const agencyResponse = await agencyOption;
@@ -44,12 +56,13 @@ export function getEnumsForQuoteWorkflow({ companyCode, state, product, agencyCo
 
       const selectedAgent = agentResponse.filter(a => a.answer === agentCode);
 
-      dispatch(setEnums({
-        additionalInterestQuestions: additionalInterestResponse.data.data,
-        agency: agencyResponse,
-        agent: selectedAgent,
-      }));
-
+      dispatch(
+        setEnums({
+          additionalInterestQuestions: additionalInterestResponse.data.data,
+          agency: agencyResponse,
+          agent: selectedAgent
+        })
+      );
     } catch (error) {
       dispatch(setAppError(error));
     }
@@ -62,10 +75,9 @@ export function getEnumsForQuoteWorkflow({ companyCode, state, product, agencyCo
  */
 export async function fetchMortgagees() {
   const data = {
-    step: 'additionalInterestsCSR',
+    step: 'additionalInterestsCSR'
   };
 
   const response = await serviceRunner.callQuestions(data);
   return response;
 }
-

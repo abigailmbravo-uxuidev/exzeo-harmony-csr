@@ -18,6 +18,6 @@ describe('Test AddressCard component', () => {
     expect(wrapper.exists()).toBeTruthy();
     expect(link).toHaveLength(1);
     link.simulate('click');
-    link.simulate('keypress', { key: 'Enter' })
+    link.simulate('keypress', { key: 'Enter' });
   });
 });

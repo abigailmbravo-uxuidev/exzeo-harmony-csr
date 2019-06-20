@@ -18,7 +18,10 @@ export class ExistingAgentModal extends Component {
         <form onSubmit={handleSubmit(handleSelection)}>
           <div className="card">
             <div className="card-header">
-              <h4> <i className="fa fa-address-book" /> {header}</h4>
+              <h4>
+                {' '}
+                <i className="fa fa-address-book" /> {header}
+              </h4>
             </div>
             <div className="card-block">
               <section className="existing-agent-details">
@@ -32,7 +35,8 @@ export class ExistingAgentModal extends Component {
                     optionLabel="displayText"
                     component={SelectTypeAhead}
                     validate={validation.isRequired}
-                    answers={listOfAgents} />
+                    answers={listOfAgents}
+                  />
                 </div>
               </section>
             </div>
@@ -41,13 +45,17 @@ export class ExistingAgentModal extends Component {
                 <Button
                   className={Button.constants.classNames.secondary}
                   dataTest="modal-cancel"
-                  onClick={onToggleModal}>Cancel
+                  onClick={onToggleModal}
+                >
+                  Cancel
                 </Button>
                 <Button
                   className={Button.constants.classNames.primary}
                   type="submit"
                   dataTest="modal-submit"
-                  disabled={submitting}>Select
+                  disabled={submitting}
+                >
+                  Select
                 </Button>
               </div>
             </div>
@@ -57,7 +65,6 @@ export class ExistingAgentModal extends Component {
     );
   }
 }
-
 
 export default reduxForm({
   form: 'ExistingAgentModal',

@@ -9,7 +9,8 @@ export class DiaryPolling extends Component {
   componentDidMount() {
     if (!this.props.shouldPoll) return;
     // Set the name of the hidden property and the change event for visibility
-    if (typeof document.hidden !== 'undefined') { // Opera 12.10 and Firefox 18 and later support
+    if (typeof document.hidden !== 'undefined') {
+      // Opera 12.10 and Firefox 18 and later support
       this.hidden = 'hidden';
       this.visibilityChange = 'visibilitychange';
     } else if (typeof document.msHidden !== 'undefined') {
@@ -45,7 +46,7 @@ export class DiaryPolling extends Component {
   delegate = () => {};
 
   render() {
-    return (null);
+    return null;
   }
 }
 
@@ -54,14 +55,20 @@ DiaryPolling.propTypes = {
   filter: PropTypes.shape({
     userId: PropTypes.string,
     resourceType: PropTypes.string,
-    resourceId: PropTypes.oneOfType([PropTypes.string, PropTypes.arrayOf(PropTypes.string)])
+    resourceId: PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.arrayOf(PropTypes.string)
+    ])
   }).isRequired
 };
 
-const mapStateToProps = (state) => {
+const mapStateToProps = state => {
   return {
     shouldPoll: isPollingPermitted(state)
   };
 };
 
-export default connect(mapStateToProps, { fetchDiaries })(DiaryPolling);
+export default connect(
+  mapStateToProps,
+  { fetchDiaries }
+)(DiaryPolling);

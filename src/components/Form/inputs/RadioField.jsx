@@ -24,16 +24,24 @@ export const RadioInput = ({
     { segmented },
     name,
     styleName,
-    disabled ? 'disabled' : '',
+    disabled ? 'disabled' : ''
   );
 
-  const labelStyles = classNames('group-label', { 'label-segmented': segmented }, { disabled });
+  const labelStyles = classNames(
+    'group-label',
+    { 'label-segmented': segmented },
+    { disabled }
+  );
 
-  const answerWrapperStyles = classNames('segmented-answer-wrapper', { error: touched && error });
+  const answerWrapperStyles = classNames('segmented-answer-wrapper', {
+    error: touched && error
+  });
 
-  const Hint = hint && (<FieldHint name={name} hint={hint} />);
+  const Hint = hint && <FieldHint name={name} hint={hint} />;
 
-  const DisplayField = displayValue && (<input type="text" value={displayValue} readOnly />);
+  const DisplayField = displayValue && (
+    <input type="text" value={displayValue} readOnly />
+  );
 
   const onKeyPress = (event, answer) => {
     if (event.charCode === 13) {
@@ -49,35 +57,38 @@ export const RadioInput = ({
         {DisplayField}
       </label>
       <div className={answerWrapperStyles}>
-        {answers && answers.length > 0 && answers.map((answer, index) =>
-          <RadioOption
-            answer={answer}
-            key={index}
-            tabIndex={'0'}
-            size={answers.length}
-            onChange={onChange}
-            onKeyPress={onKeyPress}
-            name={name}
-            segmented={segmented}
-            disabled={disabled}
-            value={value}
-          />
-        )}
+        {answers &&
+          answers.length > 0 &&
+          answers.map((answer, index) => (
+            <RadioOption
+              answer={answer}
+              key={index}
+              tabIndex={'0'}
+              size={answers.length}
+              onChange={onChange}
+              onKeyPress={onKeyPress}
+              name={name}
+              segmented={segmented}
+              disabled={disabled}
+              value={value}
+            />
+          ))}
       </div>
     </div>
   );
 };
 
 RadioInput.propTypes = {
-
   /**
    * Answers used to generate options
    */
-  answers: PropTypes.arrayOf(PropTypes.shape({
-    answer: PropTypes.any, // eslint-disable-line
-    label: PropTypes.any, // eslint-disable-line
-    image: PropTypes.string
-  })),
+  answers: PropTypes.arrayOf(
+    PropTypes.shape({
+      answer: PropTypes.any, // eslint-disable-line
+      label: PropTypes.any, // eslint-disable-line
+      image: PropTypes.string
+    })
+  ),
 
   /**
    * Used for dependent radio field, activates
@@ -96,7 +107,7 @@ RadioInput.propTypes = {
   input: PropTypes.shape({
     name: PropTypes.string,
     onChange: PropTypes.func,
-    value: PropTypes.any, // eslint-disable-line
+    value: PropTypes.any // eslint-disable-line
   }),
 
   /**

@@ -27,13 +27,18 @@ export class Authentication extends Component {
 
       if (!userProfile) {
         try {
-          const profile = JSON.parse(localStorage.getItem(config.profileLocation));
+          const profile = JSON.parse(
+            localStorage.getItem(config.profileLocation)
+          );
           setUserProfileAction(profile);
         } catch (error) {
           setAppErrorAction({ message: error });
         }
       }
-    } else if (!isAuthenticated() && this.checkPublicPath(window.location.pathname)) {
+    } else if (
+      !isAuthenticated() &&
+      this.checkPublicPath(window.location.pathname)
+    ) {
       history.push(config.unauthRedirect);
       http.defaults.headers.common.authorization = undefined; // eslint-disable-line
     } else if (/access_token|id_token|error/.test(window.location.hash)) {
@@ -41,30 +46,29 @@ export class Authentication extends Component {
     }
   }
 
-  checkPublicPath = (path) => {
+  checkPublicPath = path => {
     const { config } = this.props;
-    return (config.publicPaths.indexOf(path) === -1);
+    return config.publicPaths.indexOf(path) === -1;
   };
 
   render() {
     const { userProfile } = this.props;
     const authenticated = auth.isAuthenticated();
 
-    return (
-      <React.Fragment>
-        {this.props.render({ auth })}
-      </React.Fragment>
-    );
+    return <React.Fragment>{this.props.render({ auth })}</React.Fragment>;
   }
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = state => {
   return {
     userProfile: state.authState.userProfile
   };
 };
 
-export default connect(mapStateToProps, {
-  setAppErrorAction: setAppError,
-  setUserProfileAction: setUserProfile
-})(Authentication);
+export default connect(
+  mapStateToProps,
+  {
+    setAppErrorAction: setAppError,
+    setUserProfileAction: setUserProfile
+  }
+)(Authentication);

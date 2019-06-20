@@ -4,7 +4,7 @@ import AddressTip from './AddressTip';
 
 describe('Test the AddressTip tooltip component', () => {
   it('renders when provided correctly structured agency', () => {
-    const wrapper = shallow(<AddressTip/>);
+    const wrapper = shallow(<AddressTip />);
     expect(wrapper.exists()).toBeTruthy();
   });
 });

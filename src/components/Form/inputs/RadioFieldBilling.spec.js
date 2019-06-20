@@ -29,9 +29,11 @@ describe('RadioFieldBilling', () => {
     };
     const wrapper = shallow(<RadioInputBilling {...inputProps} />);
 
-    expect(wrapper.containsMatchingElement(
-      <input type="text" value={inputProps.displayValue} readOnly />
-    )).toEqual(true);
+    expect(
+      wrapper.containsMatchingElement(
+        <input type="text" value={inputProps.displayValue} readOnly />
+      )
+    ).toEqual(true);
   });
   it('should render RadioOptionBilling of length 2 when provided with 2 answers', () => {
     const inputProps = {
@@ -39,13 +41,17 @@ describe('RadioFieldBilling', () => {
       input: {
         onChange: () => {}
       },
-      answers: [{
-        answer: 'One'
-      }, {
-        answer: 'Two'
-      }, {
-        answer: 'Three'
-      }]
+      answers: [
+        {
+          answer: 'One'
+        },
+        {
+          answer: 'Two'
+        },
+        {
+          answer: 'Three'
+        }
+      ]
     };
     const wrapper = shallow(<RadioInputBilling {...inputProps} />);
     expect(wrapper.find(RadioOptionBilling).length).toEqual(3);
