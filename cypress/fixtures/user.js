@@ -9,9 +9,9 @@ export default {
     displayText: 'United States of America'
   },
   customerInfo: {
-    FirstName: 'Batman',
-    LastName: 'Robin',
-    EmailAddress: 'Batman@gmail.com',
+    FirstName: 'Sandor',
+    LastName: 'Clegane',
+    EmailAddress: 'TheHound@gmail.com',
     phoneNumber: '123 456 7890'
   },
   agentCode: '60000'
