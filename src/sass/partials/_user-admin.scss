@@ -57,7 +57,7 @@
   flex-direction: column;
   flex-grow: 1;
   margin-bottom: $padding/2;
-  padding: $padding*2;
+  padding: $padding * 2;
   width: 100%;
 
   &.agency-list {
@@ -85,7 +85,7 @@
         @include transition(all 0.2s ease-in-out);
 
         &:hover {
-          right: -.04rem;
+          right: -0.04rem;
           color: $bright-blue-darken-04;
           font-size: 1.96rem;
           transform: scale(1.004);
@@ -124,7 +124,7 @@
       &.contact {
         flex-direction: row;
         margin: 0 0 $padding;
-        padding: $padding ($padding*1.5);
+        padding: $padding ($padding * 1.5);
 
         > .contact-title {
           display: flex;
@@ -165,7 +165,7 @@
         &.agent {
           .contact-title {
             i {
-              margin-bottom: $padding*.75;
+              margin-bottom: $padding * 0.75;
             }
 
             small {
@@ -184,7 +184,7 @@
 
         .contact-details {
           flex-grow: 1;
-          margin-left: $padding*2;
+          margin-left: $padding * 2;
 
           h4 {
             margin-bottom: 0;
@@ -203,7 +203,8 @@
                 font-weight: $font-weight-normal;
               }
 
-              .agency-legal-name {}
+              .agency-legal-name {
+              }
 
               .agent-license {
                 font-weight: $font-weight-normal;
@@ -249,10 +250,10 @@
                 p {
                   display: flex;
                   align-items: center;
-                  margin-right: $padding*2;
+                  margin-right: $padding * 2;
 
                   .contact-divider {
-                    margin: 0 ($padding*2) 0 0;
+                    margin: 0 ($padding * 2) 0 0;
                   }
 
                   small {
@@ -264,7 +265,7 @@
                     font-size: 70%;
 
                     sup {
-                      top: -.5em;
+                      top: -0.5em;
                       font-size: 50%;
                     }
 
@@ -297,7 +298,7 @@
                 div {
                   display: flex;
                   align-items: center;
-                  margin-right: $padding*2;
+                  margin-right: $padding * 2;
 
                   h5 {
                     margin: 0 $padding 0 0;

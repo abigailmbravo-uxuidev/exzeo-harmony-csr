@@ -127,7 +127,8 @@
     flex-direction: row;
     flex-grow: 1;
 
-    aside {}
+    aside {
+    }
 
     section {
       flex-grow: 1;
@@ -139,7 +140,7 @@
     flex-grow: 0;
     flex-shrink: 0;
     justify-content: flex-end;
-    padding: 0 ($padding*2) ($padding*2);
+    padding: 0 ($padding * 2) ($padding * 2);
 
     .btn {
       margin-left: $padding;

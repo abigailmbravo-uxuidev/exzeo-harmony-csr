@@ -3,14 +3,14 @@ header {
   flex-grow: 0;
   flex-shrink: 0;
   justify-content: center;
-  padding: $padding $padding*2;
+  padding: $padding $padding * 2;
   min-height: auto;
   width: 100%;
   height: auto;
   border-bottom: 2px solid $white;
   background: $bright-blue-darken-04;
 
-  div[role="banner"] {
+  div[role='banner'] {
     display: flex;
     align-items: center;
     width: 100%;
@@ -36,13 +36,13 @@ header {
       }
     }
 
-    .header-toggle-wrapper { 
+    .header-toggle-wrapper {
       position: relative;
       display: none;
       flex-direction: row-reverse;
       flex-grow: 1;
       flex-shrink: 1;
-      
+
       &.active-diaries {
         display: flex;
         button {
@@ -50,15 +50,14 @@ header {
           display: flex;
           align-items: center;
           flex-direction: column;
-          margin-top: -($padding*2);
+          margin-top: -($padding * 2);
           margin-left: $padding;
           padding: 0;
           width: 3.5rem;
           height: 3.75rem;
           border-width: 0;
 
-
-          .diary-btn-wrapper { 
+          .diary-btn-wrapper {
             position: absolute;
             top: 0;
             right: 0;
@@ -73,7 +72,6 @@ header {
             border-bottom: 1px solid $bright-blue;
             border-left: 1px solid $bright-blue;
             border-radius: 0 0 $btn-border-radius $btn-border-radius;
-
 
             &.panel-closed {
               background-color: $bright-blue-darken-04;
@@ -208,8 +206,8 @@ header {
       }
 
       .user-name {
-        margin: 0 ($padding/2) 0 ($padding*4);
-        color: rgba($white, .5);
+        margin: 0 ($padding/2) 0 ($padding * 4);
+        color: rgba($white, 0.5);
         font-size: $font-size-sm;
       }
 
@@ -222,7 +220,7 @@ header {
         }
 
         span {
-          +i {
+          + i {
             margin: 0 0 0 $padding;
           }
         }
@@ -265,7 +263,7 @@ header {
           flex-basis: auto;
           flex-grow: 0;
           flex-shrink: 0;
-          margin-right: $padding*2;
+          margin-right: $padding * 2;
           padding: ($padding/2) 0;
 
           &.agencyDetails {
@@ -311,7 +309,7 @@ header {
         border-bottom: 2px solid $white;
         background: $warm-gray-10;
         color: $white;
-        column-gap: $padding*2;
+        column-gap: $padding * 2;
 
         grid-template-columns: 12rem max-content max-content max-content max-content max-content max-content 1fr 7.5rem;
 
@@ -352,9 +350,9 @@ header {
           &.policyDetails,
           &.quoteDetails {
             display: flex;
-            padding: ($padding/2) ($padding/2) ($padding/2) ($padding*2);
+            padding: ($padding/2) ($padding/2) ($padding/2) ($padding * 2);
             width: 12rem;
-            background-color: rgba($black, .2);
+            background-color: rgba($black, 0.2);
             color: $yellow-lighten-05;
 
             dl {

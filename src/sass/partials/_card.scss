@@ -31,15 +31,17 @@
     background-color: $card-cap-bg;
 
     > h2,
-     > h3,
-     > h4,
-     > h5,
+    > h3,
+    > h4,
+    > h5,
     > h1 {
       margin: 0;
     }
 
     &:first-child {
-      @include border-radius($card-border-radius-inner $card-border-radius-inner 0 0);
+      @include border-radius(
+        $card-border-radius-inner $card-border-radius-inner 0 0
+      );
     }
 
     &.image {
@@ -48,7 +50,7 @@
       justify-content: flex-end;
       height: 8rem;
       background-color: $warm-gray-13;
-      background-image: url("../img/background.png");
+      background-image: url('../img/background.png');
       background-size: cover;
 
       &.lg {
@@ -92,7 +94,7 @@
         input {
           border-color: $red-darken-01;
         }
-  
+
         span {
           color: $red-darken-01;
           font-size: $font-size-sm;
@@ -128,7 +130,7 @@
     a,
     button {
       align-self: center;
-      margin-left: $padding*2;
+      margin-left: $padding * 2;
     }
 
     a {
@@ -148,7 +150,9 @@
     }
 
     &:last-child {
-      @include border-radius(0 0 $card-border-radius-inner $card-border-radius-inner);
+      @include border-radius(
+        0 0 $card-border-radius-inner $card-border-radius-inner
+      );
     }
 
     .footer-message {
@@ -211,11 +215,16 @@
 
 .gradient-bg {
   .card {
-    box-shadow: 0 0 40px 4px rgba($warm-gray-15, .9);
+    box-shadow: 0 0 40px 4px rgba($warm-gray-15, 0.9);
   }
 }
 
-.app-wrapper.csr.policy main .content-wrapper .route-content .form-group section,
+.app-wrapper.csr.policy
+  main
+  .content-wrapper
+  .route-content
+  .form-group
+  section,
 .app-wrapper.csr.quote main #AddAdditionalInterestPage .results-wrapper {
   ul {
     &.additional-interests-list,
@@ -293,7 +302,7 @@
 
 ul {
   &.results {
-    padding: $padding*2;
+    padding: $padding * 2;
     width: 100%;
 
     &.diary-list {
@@ -383,7 +392,7 @@ ul {
               align-items: center;
               flex-direction: column;
               justify-content: center;
-              padding: $padding ($padding*3);
+              padding: $padding ($padding * 3);
 
               i {
                 color: $bright-blue-darken-04;
@@ -501,7 +510,7 @@ ul {
                 &.diary-entry-list {
                   li {
                     &.data-row {
-                      background: rgba($bright-blue, .1);
+                      background: rgba($bright-blue, 0.1);
                     }
                   }
                 }
@@ -521,7 +530,7 @@ ul {
                 &.diary-entry-list {
                   li {
                     &.data-row {
-                      background: rgba($bright-blue, .1);
+                      background: rgba($bright-blue, 0.1);
                     }
                   }
                 }

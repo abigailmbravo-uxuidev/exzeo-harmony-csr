@@ -1,27 +1,22 @@
-
 // Toggles
 //
 // Used in conjunction with global variables to enable certain theme features.
 
 @mixin box-shadow($shadow...) {
-
-    box-shadow: $shadow;
-
+  box-shadow: $shadow;
 }
 
 @mixin transition($transition...) {
-
-    transition: $transition;
-
+  transition: $transition;
 }
 
 // Utilities
-@import "mixins/_tab-focus";
+@import 'mixins/_tab-focus';
 
 // // Components
-@import "mixins/_forms";
+@import 'mixins/_forms';
 
 // // Skins
-@import "mixins/_border-radius";
+@import 'mixins/_border-radius';
 
 // // Layout

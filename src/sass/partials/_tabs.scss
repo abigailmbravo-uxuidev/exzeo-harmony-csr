@@ -38,24 +38,24 @@
 }*/
 
 .btn-tabs {
-    .filter-tabs {
-        border-bottom: .125rem solid $bright-blue-darken-04;
-        margin: 0 0 ($padding*2);
-        .btn-tab {
-            background: rgba($warm-gray-01, 0);
-            border-width: 0;
-            font-size: $font-size-sm;
-            text-transform: none;
-            border-radius: 0;
+  .filter-tabs {
+    border-bottom: 0.125rem solid $bright-blue-darken-04;
+    margin: 0 0 ($padding * 2);
+    .btn-tab {
+      background: rgba($warm-gray-01, 0);
+      border-width: 0;
+      font-size: $font-size-sm;
+      text-transform: none;
+      border-radius: 0;
 
-            &:hover {
-                background: rgba($warm-gray-01, .5);
-            }
+      &:hover {
+        background: rgba($warm-gray-01, 0.5);
+      }
 
-            &.selected {
-                border-bottom: .25rem solid $bright-blue-darken-04;
-                padding-bottom: 2px;
-            }
-        }
+      &.selected {
+        border-bottom: 0.25rem solid $bright-blue-darken-04;
+        padding-bottom: 2px;
+      }
     }
+  }
 }

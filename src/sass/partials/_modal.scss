@@ -9,10 +9,14 @@
   align-items: center;
   flex-direction: column;
   justify-content: center;
-  background: rgba($warm-gray-15, .75);
+  background: rgba($warm-gray-15, 0.75);
 
   &.gradient-bg {
-    background: radial-gradient(ellipse at center, rgba($warm-gray-12, .75) 0%, rgba($warm-gray-15, .9) 100%);
+    background: radial-gradient(
+      ellipse at center,
+      rgba($warm-gray-12, 0.75) 0%,
+      rgba($warm-gray-15, 0.9) 100%
+    );
     /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
   }
 
@@ -22,7 +26,11 @@
     }
   }
 
-  &.modal-sm, &.modal-md, &.modal-lg, &.modal-xl, &.modal-alert {
+  &.modal-sm,
+  &.modal-md,
+  &.modal-lg,
+  &.modal-xl,
+  &.modal-alert {
     display: flex;
     align-items: center;
     flex-direction: column;
@@ -43,7 +51,6 @@
         flex-grow: 1;
         flex-shrink: 1;
         max-height: calc(100vh - 16rem);
-        
 
         .card-block {
           overflow-x: hidden;
@@ -52,7 +59,6 @@
           flex-shrink: 1;
           width: 100%;
           height: auto;
-
 
           .form-group {
             flex-grow: 1;
@@ -140,11 +146,9 @@
         }
       }
     }
-
   }
 
   &.modal-md {
-
     .card {
       max-width: 40rem;
       width: 50%;
@@ -152,7 +156,6 @@
   }
 
   &.modal-lg {
-
     .card {
       max-width: 60rem;
       width: 80%;
@@ -160,7 +163,6 @@
   }
 
   &.modal-xl {
-
     .card {
       max-width: 80rem;
       width: 80%;
@@ -221,7 +223,7 @@
     }
     .agencyCodeTo {
       z-index: 20;
-      
+
       .Select.TypeAhead {
         z-index: 20;
         .react-select__menu {
@@ -233,10 +235,10 @@
     }
     .agentCodeTo {
       z-index: 10;
-      
+
       .Select.TypeAhead {
         z-index: 10;
-        
+
         .react-select__menu {
           .react-select__menu-list {
             max-height: 140px;
@@ -316,7 +318,7 @@
     }
   }
   &.transfer-AOR-modal {
-    >.card {
+    > .card {
       width: 40rem;
       .card-block {
         overflow: visible;
@@ -360,7 +362,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba($warm-gray-15, .75) !important;
+  background: rgba($warm-gray-15, 0.75) !important;
   .ReactModal__Content--after-open {
     top: auto;
     right: auto;
@@ -376,7 +378,7 @@
   align-items: center;
   justify-content: center;
   height: 100vh;
-  background-image: url("../img/harmony-bg.jpg");
+  background-image: url('../img/harmony-bg.jpg');
   background-size: cover;
 }
 
@@ -386,7 +388,7 @@
     height: 80%;
     .card-block {
       ul {
-        margin: 0 ($padding*4);
+        margin: 0 ($padding * 4);
         list-style: disc;
         li {
           display: list-item;
@@ -402,11 +404,16 @@
   }
 }
 
-#root .app-wrapper.csr.quote main[role="document"] .content-wrapper .route-content .scroll {
+#root
+  .app-wrapper.csr.quote
+  main[role='document']
+  .content-wrapper
+  .route-content
+  .scroll {
   .AdditionalInterestModal {
     overflow: hidden;
     height: calc(90vh - 150px);
-    >form {
+    > form {
       display: flex;
       overflow: hidden;
       flex-direction: column;

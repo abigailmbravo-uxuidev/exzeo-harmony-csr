@@ -1,42 +1,40 @@
 #AdditionalInterestEditModal,
 #AdditionalInterestModal {
-
   .card-header {
     .fa {
       &.Mortgagee {
         &:before {
-          content: "\f19c";
+          content: '\f19c';
         }
       }
 
       &.Lienholder {
         &:before {
-          content: "\F27E";
+          content: '\F27E';
         }
       }
 
       &.Insured {
         &:before {
-          content: "\F234";
+          content: '\F234';
         }
       }
 
       &.Interest {
         &:before {
-          content: "\F2B5";
+          content: '\F2B5';
         }
       }
 
       &.Billpayer {
         &:before {
-          content: "\F0D6";
+          content: '\F0D6';
         }
       }
     }
   }
 
   .card-block {
-
     .flex-form {
       display: flex;
 
@@ -79,31 +77,31 @@
     .fa {
       &.Mortgagee {
         &:before {
-          content: "\f19c";
+          content: '\f19c';
         }
       }
 
       &.Premium {
         &:before {
-          content: "\F27E";
+          content: '\F27E';
         }
       }
 
       &.Insured {
         &:before {
-          content: "\F234";
+          content: '\F234';
         }
       }
 
       &.Interest {
         &:before {
-          content: "\F2B5";
+          content: '\F2B5';
         }
       }
 
       &.Bill {
         &:before {
-          content: "\F0D6";
+          content: '\F0D6';
         }
       }
     }

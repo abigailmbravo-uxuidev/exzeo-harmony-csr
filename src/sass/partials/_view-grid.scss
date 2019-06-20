@@ -10,20 +10,22 @@
   border-radius: $border-radius;
   color: $warm-gray-04;
 
-  &.loader-sm {}
+  &.loader-sm {
+  }
   &.loader-md {
     height: 16rem;
   }
-  &.loader-lg {}
-  &.loader-xl {}
-
+  &.loader-lg {
+  }
+  &.loader-xl {
+  }
 
   .spinner {
     margin: 0 auto;
     width: 150px;
     text-align: center;
   }
-  
+
   .spinner > div {
     display: inline-block;
     margin: 0 2px;
@@ -34,32 +36,39 @@
     -webkit-animation: sk-bouncedelay 1.4s infinite ease-in-out both;
     animation: sk-bouncedelay 1.4s infinite ease-in-out both;
   }
-  
+
   .spinner .bounce1 {
     -webkit-animation-delay: -0.32s;
     animation-delay: -0.32s;
   }
-  
+
   .spinner .bounce2 {
     -webkit-animation-delay: -0.16s;
     animation-delay: -0.16s;
   }
-  
-  
 }
 
 @-webkit-keyframes sk-bouncedelay {
-  0%, 80%, 100% { -webkit-transform: scale(0) }
-  40% { -webkit-transform: scale(1.0) }
+  0%,
+  80%,
+  100% {
+    -webkit-transform: scale(0);
+  }
+  40% {
+    -webkit-transform: scale(1);
+  }
 }
 
 @keyframes sk-bouncedelay {
-  0%, 80%, 100% { 
+  0%,
+  80%,
+  100% {
     -webkit-transform: scale(0);
     transform: scale(0);
-  } 40% { 
-    -webkit-transform: scale(1.0);
-    transform: scale(1.0);
+  }
+  40% {
+    -webkit-transform: scale(1);
+    transform: scale(1);
   }
 }
 
@@ -67,7 +76,7 @@
 /*------------------------------------------------------------------------------------*/
 .title {
   margin: 0 0 $padding;
-  padding: 0  $padding;
+  padding: 0 $padding;
   width: 100%;
   color: $bright-blue-darken-04;
   font-weight: $font-weight-bold;
@@ -89,13 +98,12 @@
 //section component
 /*------------------------------------------------------------------------------------*/
 .view-grid {
-
   section {
     display: flex;
     align-content: flex-start;
     flex-wrap: wrap;
-    margin-bottom: $padding*2;
-    padding-bottom: $padding*2;
+    margin-bottom: $padding * 2;
+    padding-bottom: $padding * 2;
 
     > section {
       margin: 0;
@@ -132,7 +140,6 @@
 
 .view-grid,
 .view-grid section {
-
   &:last-of-type {
     border-bottom-width: 0;
   }
@@ -216,11 +223,10 @@
 /*------------------------------------------------------------------------------------*/
 .view-grid {
   .additional-interests {
-
     &.results-wrapper {
       padding: 0;
     }
- 
+
     .title {
       padding: 0;
     }
@@ -264,7 +270,8 @@
           }
 
           > a {
-            &.edit, &.remove {
+            &.edit,
+            &.remove {
               flex-grow: 0;
               flex-shrink: 0;
               width: auto;
@@ -304,7 +311,6 @@
             }
 
             &.edit {
-
               i {
                 &:after {
                   content: '\f14b';
@@ -312,11 +318,10 @@
               }
 
               &:after {
-                content: 'EDIT'
+                content: 'EDIT';
               }
             }
             &.remove {
-
               i {
                 &:after {
                   content: '\f2d3';
@@ -324,7 +329,7 @@
               }
 
               &:after {
-                content: 'DELETE'
+                content: 'DELETE';
               }
             }
           }
@@ -356,7 +361,7 @@ section {
   .detail-group {
     display: flex;
     flex-direction: column;
-    padding: 0 ($padding*2);
+    padding: 0 ($padding * 2);
     min-height: 4rem;
     width: 100%;
 
@@ -370,10 +375,12 @@ section {
       }
     }
   }
-  &.produced-by, &.property-details, &.policyholder-details {
+  &.produced-by,
+  &.property-details,
+  &.policyholder-details {
     .detail-group {
       flex-direction: row;
-      
+
       dl {
         flex-grow: 1;
         flex-shrink: 1;
@@ -391,8 +398,8 @@ section {
       dl {
         margin-bottom: 0;
         padding: $padding;
-        width: calc(50% - .5rem);
-        
+        width: calc(50% - 0.5rem);
+
         &:nth-child(odd) {
           background: $warm-gray-01;
         }

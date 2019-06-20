@@ -1,80 +1,80 @@
 /*BASE LAYOUT & STYLES*/
 /*||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||*/
 /*||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||*/
-@import "partials/_mixins";
-@import "partials/_variables";
-@import "partials/mixins/_hover";
-@import "partials/mixins/_flexbox";
-@import "partials/mixins/_tab-focus";
-@import "partials/mixins/_buttons";
-@import "partials/mixins/_forms";
-@import "partials/utilities/_helper";
-@import "partials/_animations";
+@import 'partials/_mixins';
+@import 'partials/_variables';
+@import 'partials/mixins/_hover';
+@import 'partials/mixins/_flexbox';
+@import 'partials/mixins/_tab-focus';
+@import 'partials/mixins/_buttons';
+@import 'partials/mixins/_forms';
+@import 'partials/utilities/_helper';
+@import 'partials/_animations';
 /*Correct and normalize browser rendering*/
-@import "partials/_normalize";
-@import "partials/_reset";
+@import 'partials/_normalize';
+@import 'partials/_reset';
 /*Set base typography*/
-@import "partials/_type";
-@import url("https://fonts.googleapis.com/css?family=Roboto:100,300,500"); //base font
+@import 'partials/_type';
+@import url('https://fonts.googleapis.com/css?family=Roboto:100,300,500'); //base font
 /*Grid styles*/
-@import "partials/_grid";
-@import "partials/_tabs";
-@import "partials/_workflow";
-@import "partials/_notes-files-add";
-@import "partials/_csr-agency";
-@import "partials/_csr-quote";
-@import "partials/_csr-policy";
-@import "partials/_diaries-aside";
-@import "partials/_csr-reports";
-@import "partials/_additional-interests";
-@import "partials/_error";
-@import "partials/_uppy";
-@import "partials/_user-admin";
-@import "partials/_pagination";
-@import "partials/_user-script";
+@import 'partials/_grid';
+@import 'partials/_tabs';
+@import 'partials/_workflow';
+@import 'partials/_notes-files-add';
+@import 'partials/_csr-agency';
+@import 'partials/_csr-quote';
+@import 'partials/_csr-policy';
+@import 'partials/_diaries-aside';
+@import 'partials/_csr-reports';
+@import 'partials/_additional-interests';
+@import 'partials/_error';
+@import 'partials/_uppy';
+@import 'partials/_user-admin';
+@import 'partials/_pagination';
+@import 'partials/_user-script';
 //buttons and links
 /*------------------------------------------------------------------------------------*/
-@import "partials/_buttons";
+@import 'partials/_buttons';
 //icons
 /*------------------------------------------------------------------------------------*/
-@import "partials/_icons";
+@import 'partials/_icons';
 //inputs & forms
 /*------------------------------------------------------------------------------------*/
-@import "partials/_form";
+@import 'partials/_form';
 //vertical tabs
 /*------------------------------------------------------------------------------------*/
-@import "partials/_nav";
+@import 'partials/_nav';
 //details & surveys
 /*------------------------------------------------------------------------------------*/
-@import "partials/_detail-survey-wrapper";
+@import 'partials/_detail-survey-wrapper';
 //cards
 /*------------------------------------------------------------------------------------*/
-@import "partials/_card";
+@import 'partials/_card';
 //modal
 /*------------------------------------------------------------------------------------*/
-@import "partials/_modal";
+@import 'partials/_modal';
 //header - includes logo and main navigation
 /*------------------------------------------------------------------------------------*/
-@import "partials/_header";
+@import 'partials/_header';
 //search
 /*------------------------------------------------------------------------------------*/
-@import "partials/_search";
+@import 'partials/_search';
 //footer
 /*------------------------------------------------------------------------------------*/
-@import "partials/_footer";
+@import 'partials/_footer';
 //APP SPECIFIC STYLES
 /*||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||*/
 /*||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||*/
 //main structure
 /*------------------------------------------------------------------------------------*/
-@import "partials/_app-structure";
+@import 'partials/_app-structure';
 //Loader
 /*------------------------------------------------------------------------------------*/
-@import "partials/_loader";
+@import 'partials/_loader';
 //transfer
 /*------------------------------------------------------------------------------------*/
-@import "partials/_transfer";
-@import "partials/_view-grid";
+@import 'partials/_transfer';
+@import 'partials/_view-grid';
 
 //remove once the typeahead is updated
 /*------------------------------------------------------------------------------------*/
