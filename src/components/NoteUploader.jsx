@@ -308,17 +308,39 @@ export class NoteUploader extends Component {
 
     return (
       <Draggable handle=".title-bar">
-        <div className={this.state.minimize ? 'new-note-file minimize' : 'new-note-file'} >
+        <div
+          className={
+            this.state.minimize ? 'new-note-file minimize' : 'new-note-file'
+          }
+        >
           <div className="title-bar">
-            <div className="title"><i className="fa fa-th"/>Note / File</div>
+            <div className="title">
+              <i className="fa fa-th" />
+              Note / File
+            </div>
             <div className="controls note-file-header-button-group">
-              <button className="btn btn-icon minimize-button" onClick={this.handleMinimize}><i className="fa fa-window-minimize" aria-hidden="true" /></button>
-              <button className="btn btn-icon header-cancel-button" onClick={this.handleClose} type="submit"><i className="fa fa-times" aria-hidden="true" /></button>
+              <button
+                className="btn btn-icon minimize-button"
+                onClick={this.handleMinimize}
+              >
+                <i className="fa fa-window-minimize" aria-hidden="true" />
+              </button>
+              <button
+                className="btn btn-icon header-cancel-button"
+                onClick={this.handleClose}
+                type="submit"
+              >
+                <i className="fa fa-times" aria-hidden="true" />
+              </button>
             </div>
           </div>
           <div className="mainContainer">
             {submitting && <Loader />}
-            <Form id="NoteUploader" onSubmit={handleSubmit(this.submitNote)} noValidate>
+            <Form
+              id="NoteUploader"
+              onSubmit={handleSubmit(this.submitNote)}
+              noValidate
+            >
               <div className="content">
                 <div className="note-details">
                   <div className="form-group contact">
@@ -331,13 +353,22 @@ export class NoteUploader extends Component {
                       dataTest="contactType"
                     />
                   </div>
-                  {noteType !== 'Agency Note' &&
-                  <div className="form-group diary-checkbox">
-                    <Field component="input" name="openDiary" type="checkbox" />
-                    <label>Create & Open Diary On Save</label>
-                  </div>}
+                  {noteType !== 'Agency Note' && (
+                    <div className="form-group diary-checkbox">
+                      <Field
+                        component="input"
+                        name="openDiary"
+                        type="checkbox"
+                      />
+                      <label>Create & Open Diary On Save</label>
+                    </div>
+                  )}
                 </div>
-                <Field name="noteContent" component={renderNotes} label="Note Content" />
+                <Field
+                  name="noteContent"
+                  component={renderNotes}
+                  label="Note Content"
+                />
                 <Field
                   name="fileType"
                   label="File Type"
@@ -351,13 +382,29 @@ export class NoteUploader extends Component {
                   uppy={this.uppy}
                   maxHeight={350}
                   proudlyDisplayPoweredByUppy={false}
-                  metaFields={[{ id: 'name', name: 'Name', placeholder: 'file name' }]}
+                  metaFields={[
+                    { id: 'name', name: 'Name', placeholder: 'file name' }
+                  ]}
                   showProgressDetails
-                  hideProgressAfterFinish />
+                  hideProgressAfterFinish
+                />
               </div>
               <div className="buttons note-file-footer-button-group">
-                <button tabIndex="0" aria-label="cancel-btn form-newNote" className="btn btn-secondary cancel-button" onClick={this.handleClose}>Cancel</button>
-                <button tabIndex="0" aria-label="submit-btn form-newNote" className="btn btn-primary submit-button">Save</button>
+                <button
+                  tabIndex="0"
+                  aria-label="cancel-btn form-newNote"
+                  className="btn btn-secondary cancel-button"
+                  onClick={this.handleClose}
+                >
+                  Cancel
+                </button>
+                <button
+                  tabIndex="0"
+                  aria-label="submit-btn form-newNote"
+                  className="btn btn-primary submit-button"
+                >
+                  Save
+                </button>
               </div>
             </Form>
           </div>

@@ -8,7 +8,7 @@ export const getAnswers = (name, questions) => {
 
 export const getQuestionName = (key, questions) => {
   if (!questions) return '';
-  const name = questions[key] ? (questions[key].question || '') : '';
+  const name = questions[key] ? questions[key].question || '' : '';
   return Array.isArray(name) ? name[0] : name;
 };
 

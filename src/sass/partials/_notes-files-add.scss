@@ -56,10 +56,11 @@
     .btn {
       padding: 0 ($padding/2);
 
-      &:focus, &:hover {
+      &:focus,
+      &:hover {
         outline: none;
         outline-offset: 0;
-        background-color: rgba($bright-blue, .2);
+        background-color: rgba($bright-blue, 0.2);
       }
     }
 
@@ -68,7 +69,7 @@
       flex-grow: 1;
       flex-shrink: 1;
       order: 0;
-      padding: $padding ($padding*2);
+      padding: $padding ($padding * 2);
       cursor: grab;
 
       @include transition(all 0.2s ease-in-out);
@@ -93,7 +94,7 @@
       flex-grow: 0;
       flex-shrink: 0;
       order: 0;
-      padding: $padding ($padding*2) $padding 0;
+      padding: $padding ($padding * 2) $padding 0;
       width: auto;
       font-size: $font-size-h4;
 

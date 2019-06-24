@@ -24,7 +24,9 @@ const store = mockStore(initialState);
 const props = {
   actions: {
     cgActions: {
-      batchCompleteTask() { return Promise.resolve(); }
+      batchCompleteTask() {
+        return Promise.resolve();
+      }
     },
     appStateActions: {
       setAppState() {},
