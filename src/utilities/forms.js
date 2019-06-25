@@ -6,9 +6,10 @@ export const getAnswers = (name, questions) => {
   return questions[name] ? questions[name].answers || [] : [];
 };
 
-export const getQuestionName = (name, questions) => {
+export const getQuestionName = (key, questions) => {
   if (!questions) return '';
-  return questions[name] ? questions[name].question || '' : '';
+  const name = questions[key] ? questions[key].question || '' : '';
+  return Array.isArray(name) ? name[0] : name;
 };
 
 // TODO remove these once underwriting questions are moved from service

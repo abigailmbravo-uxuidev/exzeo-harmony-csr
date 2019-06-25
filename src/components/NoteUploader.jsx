@@ -7,7 +7,7 @@ import moment from 'moment';
 import Uppy from '@uppy/core';
 import Dashboard from '@uppy/react/lib/Dashboard';
 import XHRUpload from '@uppy/xhr-upload';
-import { Select, validation, Loader } from '@exzeo/core-ui';
+import { Draggable, Select, validation, Loader } from '@exzeo/core-ui';
 import { callService } from '@exzeo/core-ui/src/@Harmony';
 
 import {
@@ -307,104 +307,109 @@ export class NoteUploader extends Component {
       : [];
 
     return (
-      <div
-        className={classNames('new-note-file', {
-          minimize: this.state.minimize
-        })}
-      >
-        <div className="title-bar">
-          <div
-            className="title title-minimze-button"
-            onClick={this.handleMinimize}
-          >
-            Note / File
-          </div>
-          <div className="controls note-file-header-button-group">
-            <button
-              className="btn btn-icon minimize-button"
-              onClick={this.handleMinimize}
-            >
-              <i className="fa fa-window-minimize" aria-hidden="true" />
-            </button>
-            <button
-              className="btn btn-icon header-cancel-button"
-              onClick={this.handleClose}
-              type="submit"
-            >
-              <i className="fa fa-times-circle" aria-hidden="true" />
-            </button>
-          </div>
-        </div>
-        <div className="mainContainer">
-          {submitting && <Loader />}
-          <Form
-            id="NoteUploader"
-            onSubmit={handleSubmit(this.submitNote)}
-            noValidate
-          >
-            <div className="content">
-              <div className="note-details">
-                <div className="form-group contact">
-                  <Field
-                    name="contactType"
-                    label="Contact"
-                    component={Select}
-                    answers={contactTypeAnswers}
-                    validate={validation.isRequired}
-                    dataTest="contactType"
-                  />
-                </div>
-                {noteType !== 'Agency Note' && (
-                  <div className="form-group diary-checkbox">
-                    <Field component="input" name="openDiary" type="checkbox" />
-                    <label>Create & Open Diary On Save</label>
-                  </div>
-                )}
-              </div>
-              <Field
-                name="noteContent"
-                component={renderNotes}
-                label="Note Content"
-              />
-              <Field
-                name="fileType"
-                label="File Type"
-                component={Select}
-                answers={docTypeAnswers}
-                validate={validation.isRequired}
-                dataTest="fileType"
-              />
-              <Dashboard
-                uppy={this.uppy}
-                maxHeight={350}
-                proudlyDisplayPoweredByUppy={false}
-                metaFields={[
-                  { id: 'name', name: 'Name', placeholder: 'file name' }
-                ]}
-                showProgressDetails
-                hideProgressAfterFinish
-              />
+      <Draggable handle=".title-bar">
+        <div
+          className={
+            this.state.minimize ? 'new-note-file minimize' : 'new-note-file'
+          }
+        >
+          <div className="title-bar">
+            <div className="title">
+              <i className="fa fa-th" />
+              Note / File
             </div>
-            <div className="buttons note-file-footer-button-group">
+            <div className="controls note-file-header-button-group">
               <button
-                tabIndex="0"
-                aria-label="cancel-btn form-newNote"
-                className="btn btn-secondary cancel-button"
+                className="btn btn-icon minimize-button"
+                onClick={this.handleMinimize}
+              >
+                <i className="fa fa-window-minimize" aria-hidden="true" />
+              </button>
+              <button
+                className="btn btn-icon header-cancel-button"
                 onClick={this.handleClose}
+                type="submit"
               >
-                Cancel
-              </button>
-              <button
-                tabIndex="0"
-                aria-label="submit-btn form-newNote"
-                className="btn btn-primary submit-button"
-              >
-                Save
+                <i className="fa fa-times" aria-hidden="true" />
               </button>
             </div>
-          </Form>
+          </div>
+          <div className="mainContainer">
+            {submitting && <Loader />}
+            <Form
+              id="NoteUploader"
+              onSubmit={handleSubmit(this.submitNote)}
+              noValidate
+            >
+              <div className="content">
+                <div className="note-details">
+                  <div className="form-group contact">
+                    <Field
+                      name="contactType"
+                      label="Contact"
+                      component={Select}
+                      answers={contactTypeAnswers}
+                      validate={validation.isRequired}
+                      dataTest="contactType"
+                    />
+                  </div>
+                  {noteType !== 'Agency Note' && (
+                    <div className="form-group diary-checkbox">
+                      <Field
+                        component="input"
+                        name="openDiary"
+                        type="checkbox"
+                      />
+                      <label>Create & Open Diary On Save</label>
+                    </div>
+                  )}
+                </div>
+                <Field
+                  name="noteContent"
+                  component={renderNotes}
+                  label="Note Content"
+                />
+                <Field
+                  name="fileType"
+                  label="File Type"
+                  styleName="file-type"
+                  component={Select}
+                  answers={docTypeAnswers}
+                  validate={validation.isRequired}
+                  dataTest="fileType"
+                />
+                <Dashboard
+                  uppy={this.uppy}
+                  maxHeight={350}
+                  proudlyDisplayPoweredByUppy={false}
+                  metaFields={[
+                    { id: 'name', name: 'Name', placeholder: 'file name' }
+                  ]}
+                  showProgressDetails
+                  hideProgressAfterFinish
+                />
+              </div>
+              <div className="buttons note-file-footer-button-group">
+                <button
+                  tabIndex="0"
+                  aria-label="cancel-btn form-newNote"
+                  className="btn btn-secondary cancel-button"
+                  onClick={this.handleClose}
+                >
+                  Cancel
+                </button>
+                <button
+                  tabIndex="0"
+                  aria-label="submit-btn form-newNote"
+                  className="btn btn-primary submit-button"
+                >
+                  Save
+                </button>
+              </div>
+            </Form>
+          </div>
         </div>
-      </div>
+      </Draggable>
     );
   }
 }

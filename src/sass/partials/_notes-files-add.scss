@@ -1,5 +1,13 @@
 .new-diary-file,
 .new-note-file {
+  &.react-draggable-dragging {
+    .title-bar {
+      .title {
+        cursor: grabbing;
+      }
+    }
+  }
+
   &.minimize {
     top: calc(100vh - 2.4375rem);
 
@@ -28,6 +36,7 @@
 
   .title-bar {
     display: flex;
+    align-items: center;
     flex-direction: row;
     flex-grow: 0;
     flex-shrink: 0;
@@ -47,27 +56,46 @@
     .btn {
       padding: 0 ($padding/2);
 
-      &:focus {
+      &:focus,
+      &:hover {
         outline: none;
         outline-offset: 0;
-        background-color: rgba($bright-blue, 0.1);
+        background-color: rgba($bright-blue, 0.2);
       }
     }
 
     .title {
       align-self: auto;
-      flex: 1 1 auto;
+      flex-grow: 1;
+      flex-shrink: 1;
       order: 0;
       padding: $padding ($padding * 2);
-      cursor: pointer;
+      cursor: grab;
+
+      @include transition(all 0.2s ease-in-out);
+
+      .fa {
+        margin-right: $padding;
+        color: $bright-blue-darken-03;
+
+        @include transition(all 0.2s ease-in-out);
+      }
+
+      &:hover {
+        .fa {
+          color: $bright-blue-darken-01;
+        }
+      }
     }
 
     .controls {
       display: flex;
       align-self: auto;
-      flex: 0 1 auto;
+      flex-grow: 0;
+      flex-shrink: 0;
       order: 0;
       padding: $padding ($padding * 2) $padding 0;
+      width: auto;
       font-size: $font-size-h4;
 
       .btn {
@@ -148,6 +176,12 @@
             flex-grow: 1;
             flex-shrink: 1;
           }
+        }
+
+        .file-type {
+          flex-grow: 0;
+          flex-shrink: 0;
+          height: auto;
         }
 
         > div {

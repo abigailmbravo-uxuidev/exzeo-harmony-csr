@@ -10,7 +10,7 @@ export const navigateThroughNewQuote = (address = user.address1) => {
     // This makes it so we don't open up a new window
     .findDataTag(address).then($a => {
       $a.prop('onclick', () => cy.visit($a.prop('dataset').url)).click();
-      cy.wait('@createQuote');
+      cy.wait('@createQuote').wait('@reviewQuote').wait('@getZipcodeSettings');
     });
 };
 
