@@ -10,9 +10,8 @@ To change this behavior and point to a different environment, see below.
 
 Confirm that the following ENV variable is in `.env.local`
 ```bash
-# Modify Cypress behavior
-# CYPRESS_BASE_URL=http://csr.harmony-ins.com
-# CYPRESS_USE_MOCK_AUTH0=true
+# point cypress to a different environment
+#CYPRESS_BASE_URL=https://agency.harmony-ins.com
 ```
 **This variable can me modified to point to various harmony environments.*
 
@@ -34,28 +33,6 @@ Run cypress as above.
 
 ---
 
-### Docker
-
-This assumes you have docker installed on your computer.
-
-Modify `docker-compose.cypress.yml`.
-
-Edit the environment variables similar to above.
-
-Set `NPM_TOKEN` equal to the npm token from `.npmrc`.
-
-Build docker image (if image is not already built)
-```bash
-$ docker-compose -f docker-compose.cypress.yml build
-```
-
-Start the container
-```bash
-$ docker-compose -f docker-compose.cypress.yml up
-```
-
----
-
 ## Contributing
 
 Take a look at the 
@@ -71,11 +48,34 @@ cypress/
       -[feature-test].spec.js
 ```
 
-**Project Opinions**
+# Walkthrough
 
-To navigate to a page inside fo the app, use the `cy.quoteWorkflow()` fn detailed
-in `support/quoteWorkflow`. This should be written in your `before()` hook and will
-most likely be utilized on every test.
+1) Update your test plan by marking integration points in Google Doc
+
+2) Determine if you need a new test suite or not:
+
+  - Are you testing a new part of the app that Cypress currently doesn’t touch? => YES
+  - Is the test long, complicated, and will leave the app in a bad state? => Probably
+  - Is this testing something that is not generally used in the app, or that we don’t want to test every time? => Probably
+
+3) Determine where to put your new test:
+
+  - If you are testing a new piece of core integration, put the test inside of
+    one of the `pageTests/` -- these get run on every run through.
+
+  - If you are testing a new section of the app, add a new suite inside of `integration/`.
+
+# Project Opinions
+
+### **YOU ARE WRITING INTEGRATION TESTS**.
+ Leave small functionality checks to unit tests. You should only be checking if the ui is generally correct after
+ receiving some new updates from the back end.
+
+To navigate to a page inside of the app, use the **navigation helpers**.
+If you are navigating to a new part of the application, add a new navigation helper.
+This should be written in your `before()` hook
+(or `beforeEach() if you have to navigate away from the page inside of each test)
+and will most likely be utilized on every test.
 
 Whenever possible, use a reusable function listed in `support/inputs` or 
 `support/utils`. This should cover the majority of test cases. **Favor `findDataTag()` 
@@ -86,9 +86,15 @@ When creating a test, place any reusable functions at the top, inside the descri
 For example, if you are always typing on the same inputs, this is a good place
 to create a reusable call.
 
-Favor dot notation over callback notation. Only use `then` calls if necessary. A good
-place for then calls is when waiting on async calls, such as either a network request
-or getting a fixture from `cy/fixtures`. 
+**Favor dot notation over callback notation.** Only use `then` calls if necessary. 
+A good place for then calls is when waiting on async calls, such as a network request. For example:
+```js
+  cy.clickSubmit().wait('@searchPolicy').then(({ response }) =>
+    expect(response).toEqual(goodResponse));
+```
+
+Also avoid these `then` calls because they expost the
+element as a jQuery element, without the Cypress wrapper, requiring using the jQuery assertions.
 
 *Not this*:
 ```js
