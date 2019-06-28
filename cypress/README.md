@@ -23,18 +23,6 @@ Run test suite
 
 `npm run cypress -- --headless` **run in headless mode*
 
-### Run against HIT
-
-Follow directions
-[here](https://issuecenter.atlassian.net/wiki/spaces/SDLC/pages/577634574/Running+HIT)
-to get HIT set up on your computer.
-
-Configure your front end to point to HIT by adjusting `.env.local`.
-
-Run cypress as above.
-
----
-
 ## Contributing
 
 Take a look at the
