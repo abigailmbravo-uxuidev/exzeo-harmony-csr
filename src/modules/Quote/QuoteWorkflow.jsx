@@ -3,8 +3,7 @@ import { connect } from 'react-redux';
 import { Loader, FormSpy, remoteSubmit } from '@exzeo/core-ui';
 import {
   getConfigForJsonTransform,
-  Gandalf,
-  AgencyAgentSelect
+  Gandalf
 } from '@exzeo/core-ui/src/@Harmony';
 
 import { defaultMemoize } from 'reselect';
