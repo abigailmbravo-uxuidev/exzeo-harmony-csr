@@ -5,6 +5,11 @@ import { Input, Button, Select, validation } from '@exzeo/core-ui';
 
 const { isValidChar, isRequired } = validation;
 
+const productAnswers = [
+  { answer: 'HO3', label: 'HO3' },
+  { answer: 'AF3', label: 'AF3' }
+];
+
 const NewQuoteSearch = ({
   submitting,
   changeSearchType,
@@ -27,6 +32,16 @@ const NewQuoteSearch = ({
     </div>
 
     <div className="search-inputs fade-in">
+      <Field
+        name="product"
+        dataTest="product"
+        label="Product"
+        component={Select}
+        answers={productAnswers}
+        placeholder="Select..."
+        styleName="property-search"
+      />
+
       <Field
         name="address"
         dataTest="address"
