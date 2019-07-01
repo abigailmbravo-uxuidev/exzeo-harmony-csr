@@ -14,6 +14,8 @@ import {
   emptyArray
 } from '@exzeo/core-ui';
 
+import { AgencyTypeAhead } from '@exzeo/core-ui/src/@Harmony';
+
 import { getAnswers } from '../../../utilities/forms';
 import { STANDARD_DATE_FORMAT } from '../../../constants/dates';
 import Pagination from '../components/Pagination';
@@ -133,9 +135,8 @@ const PolicySearch = ({
             name="agencyCode"
             dataTest="agencyCode"
             label="Agency Name"
-            component={SelectTypeAhead}
+            component={AgencyTypeAhead}
             styleName="agencyCodeSelectField"
-            answers={agencyList}
           />
           <div className="form-group effectiveDate">
             <Field
