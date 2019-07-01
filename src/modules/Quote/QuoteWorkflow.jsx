@@ -4,8 +4,7 @@ import { connect } from 'react-redux';
 import { Loader, FormSpy, remoteSubmit } from '@exzeo/core-ui';
 import {
   getConfigForJsonTransform,
-  Gandalf,
-  AgencyAgentSelect
+  Gandalf
 } from '@exzeo/core-ui/src/@Harmony';
 import { defaultMemoize } from 'reselect';
 
@@ -65,8 +64,7 @@ export class QuoteWorkflow extends React.Component {
     this.customComponents = {
       $POLICYHOLDERS: PolicyHolders,
       $APPLICATION: Application,
-      $NOTES_FILES: NotesFiles,
-      $AGENCY_AGENT_SELECT: AgencyAgentSelect
+      $NOTES_FILES: NotesFiles
     };
   }
 
