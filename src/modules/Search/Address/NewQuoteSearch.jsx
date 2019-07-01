@@ -39,7 +39,7 @@ const NewQuoteSearch = ({
         component={Select}
         answers={productAnswers}
         placeholder="Select..."
-        styleName="property-search"
+        styleName="product-search"
       />
 
       <Field
