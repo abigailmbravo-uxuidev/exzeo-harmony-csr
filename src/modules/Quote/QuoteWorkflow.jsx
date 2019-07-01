@@ -68,7 +68,6 @@ export class QuoteWorkflow extends React.Component {
 
   formInstance = null;
 
-
   customComponents = {
     $POLICYHOLDERS: PolicyHolders,
     $APPLICATION: Application,
