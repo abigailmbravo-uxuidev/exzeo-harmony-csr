@@ -3,12 +3,6 @@ import { connect } from 'react-redux';
 import { reduxForm } from 'redux-form';
 
 import { DEFAULT_SEARCH_PARAMS, SEARCH_FORM } from '../../../constants/search';
-import { getAgencies } from '../../../state/actions/service.actions';
-import { clearAppError } from '../../../state/actions/error.actions';
-import {
-  handleSearchSubmit,
-  toggleLoading
-} from '../../../state/actions/search.actions';
 
 export class SearchBar extends Component {
   componentDidMount() {
@@ -40,14 +34,15 @@ export class SearchBar extends Component {
     const {
       formProps: { handleSubmit }
     } = this.props;
+
     return handleSubmit((data, dispatch, props) => {
       // submit function is looking for these two added properties to determine if this is an initial submit or pagination submit.
       const submitData = {
         ...data,
         isNext,
-        currentPage: props.search.currentPage
+        currentPage: props.currentPage
       };
-      dispatch(handleSearchSubmit(submitData, this.props));
+      props.handleSearchSubmit(submitData, this.props);
     });
   };
 
@@ -60,7 +55,8 @@ export class SearchBar extends Component {
   clearForm = () => {
     const {
       clearAppError,
-      formProps: { reset }
+      formProps: { reset },
+      toggleLoading
     } = this.props;
     reset();
     clearAppError();
@@ -87,24 +83,9 @@ export class SearchBar extends Component {
   }
 }
 
-const mapStateToProps = state => ({
-  search: state.search,
-  agencies: state.service.agencies || []
-});
-
-export default connect(
-  mapStateToProps,
-  {
-    clearAppError,
-    getAgencies,
-    toggleLoading,
-    handleSearchSubmit
-  }
-)(
-  reduxForm({
-    // 'initialValues' prop is being passed in from parent component based on route/pathName
-    form: SEARCH_FORM,
-    enableReinitialize: true,
-    propNamespace: 'formProps'
-  })(SearchBar)
-);
+export default reduxForm({
+  // 'initialValues' prop is being passed in from parent component based on route/pathName
+  form: SEARCH_FORM,
+  enableReinitialize: true,
+  propNamespace: 'formProps'
+})(SearchBar);
