@@ -136,7 +136,7 @@ const PolicySearch = ({
             dataTest="agencyCode"
             label="Agency Name"
             component={AgencyTypeAhead}
-            styleName="agencyCodeSelectField"
+            styleName="agencyCode agencyCodeSelectField"
           />
           <div className="form-group effectiveDate">
             <Field
