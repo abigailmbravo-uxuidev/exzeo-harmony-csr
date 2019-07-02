@@ -1,8 +1,15 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { emptyArray } from '@exzeo/core-ui';
 
 import { SEARCH_CONFIG, SEARCH_TYPES } from '../../constants/search';
-import { resetSearch } from '../../state/actions/search.actions';
+import {
+  resetSearch,
+  handleSearchSubmit,
+  toggleLoading
+} from '../../state/actions/search.actions';
+import { getAgencies } from '../../state/actions/service.actions';
+import { clearAppError } from '../../state/actions/error.actions';
 
 import SearchBar from './components/SearchBar';
 import SearchResults from './components/SearchResults';
@@ -30,7 +37,18 @@ export class SearchPage extends Component {
     hasSearched: false,
     searchType: SEARCH_TYPES.policy,
     searchConfig: SEARCH_TYPES.policy,
-    searchReady: false
+    searchReady: false,
+    searchResults: {
+      loading: false,
+      currentPage: 1,
+      noResults: false,
+      pageSize: 0,
+      results: [],
+      sortBy: '',
+      sortDirection: '',
+      totalPages: 0,
+      totalRecords: 0
+    }
   };
 
   componentDidMount() {
@@ -104,11 +122,20 @@ export class SearchPage extends Component {
 
   render() {
     const {
+      agencies,
+      clearAppError,
+      getAgencies,
+      handleSearchSubmit,
+      toggleLoading
+    } = this.props;
+
+    const {
       advancedSearch,
       hasSearched,
       searchConfig,
       searchReady,
-      searchType
+      searchType,
+      searchResults
     } = this.state;
 
     const SearchForm = SEARCH_FORMS[searchType];
@@ -123,6 +150,12 @@ export class SearchPage extends Component {
               initialValues={this.setInitialValues(searchType, searchConfig)}
               onSubmitSuccess={() => this.setHasSearched(true)}
               searchType={searchType}
+              clearAppError={clearAppError}
+              getAgencies={getAgencies}
+              agencies={agencies}
+              handleSearchSubmit={handleSearchSubmit}
+              toggleLoading={toggleLoading}
+              currentPage={searchResults.currentPage}
               render={({ changeSearchType, handlePagination, formProps }) => (
                 <SearchForm
                   advancedSearch={advancedSearch}
@@ -165,11 +198,18 @@ export class SearchPage extends Component {
 
 const mapStateToProps = state => {
   return {
-    userProfile: state.authState.userProfile
+    userProfile: state.authState.userProfile,
+    agencies: state.service.agencies || emptyArray
   };
 };
 
 export default connect(
   mapStateToProps,
-  { resetSearch }
+  {
+    clearAppError,
+    getAgencies,
+    handleSearchSubmit,
+    resetSearch,
+    toggleLoading
+  }
 )(SearchPage);
