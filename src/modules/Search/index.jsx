@@ -39,10 +39,11 @@ export class SearchPage extends Component {
     searchConfig: SEARCH_TYPES.policy,
     searchReady: false,
     searchResults: {
-      loading: false,
       currentPage: 1,
+      loading: false,
       noResults: false,
       pageSize: 0,
+      product: '',
       results: [],
       sortBy: '',
       sortDirection: '',
@@ -120,6 +121,17 @@ export class SearchPage extends Component {
       : initialValues;
   };
 
+  handleSubmit = async (data, dispatch, props) => {
+    try {
+      const { handleSearchSubmit } = this.props;
+      await handleSearchSubmit(data, props);
+    } catch (error) {
+      if (process.env.NODE_ENV !== 'production') {
+        console.error('Search error: ', error);
+      }
+    }
+  };
+
   render() {
     const {
       agencies,
@@ -153,7 +165,7 @@ export class SearchPage extends Component {
               clearAppError={clearAppError}
               getAgencies={getAgencies}
               agencies={agencies}
-              handleSearchSubmit={handleSearchSubmit}
+              handleSearchSubmit={this.handleSubmit}
               toggleLoading={toggleLoading}
               currentPage={searchResults.currentPage}
               render={({ changeSearchType, handlePagination, formProps }) => (

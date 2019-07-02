@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
 import { reduxForm } from 'redux-form';
 
 import { DEFAULT_SEARCH_PARAMS, SEARCH_FORM } from '../../../constants/search';
@@ -9,6 +8,7 @@ export class SearchBar extends Component {
     const {
       agencies,
       formProps: { handleSubmit },
+      handleSearchSubmit,
       getAgencies,
       toggleLoading,
       searchType
@@ -22,13 +22,10 @@ export class SearchBar extends Component {
       );
     }
 
-    if (searchType === 'diaries') handleSubmit(this.handleSearchFormSubmit)();
+    if (searchType === 'diaries') {
+      handleSubmit(handleSearchSubmit)();
+    }
   }
-
-  handleSearchFormSubmit = async (data, dispatch, props) => {
-    const { handleSearchSubmit } = this.props;
-    await handleSearchSubmit(data, props);
-  };
 
   handlePagination = isNext => {
     const {
@@ -64,11 +61,11 @@ export class SearchBar extends Component {
   };
 
   render() {
-    const { formProps } = this.props;
+    const { formProps, handleSearchSubmit } = this.props;
 
     return (
       <div id="SearchBar">
-        <form onSubmit={formProps.handleSubmit(this.handleSearchFormSubmit)}>
+        <form onSubmit={formProps.handleSubmit(handleSearchSubmit)}>
           <div className="search-input-wrapper">
             {// render the correct search form based on searchType (declared in Search/index.js)
             this.props.render({
