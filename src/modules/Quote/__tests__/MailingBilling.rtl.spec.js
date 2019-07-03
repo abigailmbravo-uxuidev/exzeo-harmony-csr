@@ -27,12 +27,15 @@ const pageHeaders = [
 const billingFields = [
   {
     dataTest: 'billToId',
+    text: 'Bill To',
     label: 'Bill To',
     type: 'select',
-    values: ['ab1234']
+    values: [{ value: 'ab1234', label: 'Policyholder: Fake Nameington' }]
   },
   {
     dataTest: 'billPlan',
+    defaultValue: 'Annual',
+    text: 'Bill Plan',
     label: 'Bill Plan',
     type: 'radio',
     values: ['Annual', 'Semi-Annual', 'Quarterly']

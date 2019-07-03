@@ -20,7 +20,7 @@ const newQuoteFields = [
     type: 'text',
     required: true,
     label: 'Property Address',
-    data: '4131 TEST ADDRESS'
+    value: '4131 TEST ADDRESS'
   }
 ];
 

@@ -22,43 +22,43 @@ const fields = [
     dataTest: 'agencyCode',
     type: 'text',
     label: 'Agency ID',
-    placeholder: 'Agency ID Search',
-    data: '1234'
+    placeholderText: 'Agency ID Search',
+    value: '1234'
   },
   {
     dataTest: 'displayName',
     type: 'text',
     label: 'Agency Name',
-    placeholder: 'Agency Name Search',
-    data: 'Randall Tex Cobb'
+    placeholderText: 'Agency Name Search',
+    value: 'Randall Tex Cobb'
   },
   {
     dataTest: 'address',
     type: 'text',
     label: 'Agency Address',
-    placeholder: 'Agency Address Search',
-    data: '1234 Mulholland Drive'
+    placeholderText: 'Agency Address Search',
+    value: '1234 Mulholland Drive'
   },
   {
     dataTest: 'licenseNumber',
     type: 'text',
     label: 'Lic Number',
-    placeholder: 'Lic No Search',
-    data: '123456'
+    placeholderText: 'Lic No Search',
+    value: '123456'
   },
   {
     dataTest: 'fein',
     type: 'text',
     label: 'FEIN Number',
-    placeholder: 'FEIN No Search',
-    data: '123'
+    placeholderText: 'FEIN No Search',
+    value: '123'
   },
   {
     dataTest: 'phone',
     type: 'text',
     label: 'Agency Phone Number',
-    placeholder: 'Phone No Search',
-    data: '(987) 655-1234'
+    placeholderText: 'Phone No Search',
+    value: '(987) 655-1234'
   }
 ];
 
@@ -85,8 +85,8 @@ describe('Agency Search Testing', () => {
     );
 
     fields.forEach(field => checkLabel(getByTestId, field));
-    textFields.forEach(({ placeholder }) =>
-      expect(getByPlaceholderText(placeholder))
+    textFields.forEach(({ placeholderText }) =>
+      expect(getByPlaceholderText(placeholderText))
     );
     selectFields.forEach(({ dataTest, selected }) =>
       expect(getByTestId(dataTest).getAttribute('data-selected')).toEqual(
@@ -105,6 +105,10 @@ describe('Agency Search Testing', () => {
 
   it('POS:Agency Search Button', () => {
     const { getByTestId } = renderWithForm(<SearchForm {...props} />);
-    checkButton(getByTestId, { dataTest: 'submit', type: 'submit' });
+    checkButton(getByTestId, {
+      dataTest: 'submit',
+      text: 'Search',
+      type: 'submit'
+    });
   });
 });
