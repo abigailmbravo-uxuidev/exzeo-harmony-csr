@@ -268,7 +268,7 @@ export const checkButton = (
   query,
   {
     dataTest = 'submit',
-    text = 'next',
+    text = 'Update',
     type = 'button',
     icon = 'fa fa-search',
     ...rest
