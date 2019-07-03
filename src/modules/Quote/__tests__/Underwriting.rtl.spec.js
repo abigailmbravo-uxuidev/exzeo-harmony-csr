@@ -1,5 +1,5 @@
 import React from 'react';
-import { waitForElement } from 'react-testing-library';
+import { waitForElement, fireEvent } from 'react-testing-library';
 
 import {
   renderWithForm,
@@ -7,7 +7,8 @@ import {
   mockServiceRunner,
   underwritingResult as result,
   checkHeader,
-  checkRadio
+  checkRadio,
+  checkButton
 } from '../../../test-utils';
 import { QuoteWorkflow } from '../QuoteWorkflow';
 
@@ -80,5 +81,34 @@ describe('Testing Underwriting', () => {
     );
 
     underwritingFields.forEach(field => checkRadio(getByTestId, field));
+  });
+
+  it('POS:Tests button', () => {
+    const { getByText } = renderWithForm(<QuoteWorkflow {...props} />);
+
+    checkButton(getByText, { dataTest: 'reset', text: 'Reset' });
+    checkButton(getByText);
+  });
+
+  it('POS:Checks that the Reset Button/Submit Button work', async () => {
+    const { getByTestId, getByText } = renderWithForm(
+      <QuoteWorkflow {...props} />
+    );
+    await waitForElement(() =>
+      getByTestId('underwritingAnswers.rented.answer_Occasionally')
+    );
+
+    expect(getByText('Update')).toBeDisabled();
+    underwritingFields.forEach(field =>
+      fireEvent.click(getByTestId(`${field.dataTest}_${field.values[0]}`))
+    );
+    expect(getByText('Update')).not.toBeDisabled();
+    fireEvent.click(getByText('Reset'));
+    underwritingFields.forEach(field =>
+      expect(
+        getByTestId(`${field.dataTest}_${field.values[0]}`).parentNode.className
+      ).toEqual('label-segmented')
+    );
+    expect(getByText('Update')).toBeDisabled();
   });
 });
