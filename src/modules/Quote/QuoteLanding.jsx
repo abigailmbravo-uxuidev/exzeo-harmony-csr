@@ -31,7 +31,7 @@ export const QuoteLanding = ({ match: { params }, createQuote }) => {
 
   return (
     <React.Fragment>
-      {quote.quoteNumber ? (
+      {quote && quote.quoteNumber ? (
         <Redirect replace to={`/quote/${quote.quoteNumber}/coverage`} />
       ) : (
         <Loader />

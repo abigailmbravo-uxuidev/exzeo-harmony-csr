@@ -1,5 +1,5 @@
 import React from 'react';
-import { fireEvent, prettyDOM } from 'react-testing-library';
+import { fireEvent } from 'react-testing-library';
 
 import {
   renderWithForm,
