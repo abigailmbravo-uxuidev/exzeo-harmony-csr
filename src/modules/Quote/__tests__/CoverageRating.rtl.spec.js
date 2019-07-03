@@ -40,7 +40,8 @@ const pageHeaders = [
   { text: 'Coverages' },
   { text: 'Other Coverages' },
   { text: 'Deductibles' },
-  { text: 'Discounts' }
+  { text: 'Discounts' },
+  { text: 'Wind Mitigation' }
 ];
 
 describe('Testing the Coverage/Rating Page', () => {
@@ -124,12 +125,8 @@ describe('Testing the Coverage/Rating Page', () => {
 
   it('POS:PolicyHolder Fields', () => {
     const { getByTestId } = renderWithForm(<QuoteWorkflow {...props} />);
-
-    primaryPolicyholderFields.forEach(field =>
-      checkTextInput(getByTestId, field)
-    );
-    secondaryPolicyholderFields.forEach(field =>
-      checkTextInput(getByTestId, field)
+    [...primaryPolicyholderFields, ...secondaryPolicyholderFields].forEach(
+      field => checkTextInput(getByTestId, field)
     );
   });
 
