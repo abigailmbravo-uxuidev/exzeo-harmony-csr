@@ -66,7 +66,7 @@ describe('Diaries Search Testing', () => {
     initialValues: {
       open: true,
       dateRange: { min: '', max: '' },
-      assignees: []
+      assignees: {}
     }
   })(DiariesSearch);
 
