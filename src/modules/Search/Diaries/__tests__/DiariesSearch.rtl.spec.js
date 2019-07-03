@@ -44,7 +44,7 @@ const fields = [
     dataTest: 'assignees',
     type: 'typeahead',
     label: 'Assigned To',
-    placeholder: 'Select...'
+    placeholderText: 'Select...'
   },
   {
     dataTest: 'date-range',
@@ -90,6 +90,10 @@ describe('Diaries Search Testing', () => {
 
   it('POS:Diary Search Button', () => {
     const { getByTestId } = renderWithForm(<SearchForm {...props} />);
-    checkButton(getByTestId, { dataTest: 'submit', type: 'submit' });
+    checkButton(getByTestId, {
+      dataTest: 'submit',
+      text: 'Search',
+      type: 'submit'
+    });
   });
 });

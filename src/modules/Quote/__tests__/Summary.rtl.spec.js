@@ -22,8 +22,8 @@ const pageHeaders = [
 ];
 
 const fields = [
-  { dataTest: 'name', label: 'Email To Name', data: 'Robert Pollard' },
-  { dataTest: 'email', label: 'Email Address', data: 'fake@aol.com' }
+  { dataTest: 'name', label: 'Email To Name', value: 'Robert Pollard' },
+  { dataTest: 'email', label: 'Email Address', value: 'fake@aol.com' }
 ];
 
 describe('Summary testing with finished Quote', () => {

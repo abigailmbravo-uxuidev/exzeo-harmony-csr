@@ -4,7 +4,7 @@ export const producedByFields = [
     type: 'text',
     required: true,
     label: 'Effective Date',
-    data: '2019-07-01'
+    value: '2019-07-01'
   },
   {
     dataTest: 'agencyCode',
@@ -28,34 +28,34 @@ export const primaryPolicyholderFields = [
     type: 'text',
     required: true,
     label: 'First Name',
-    data: 'Bruce'
+    value: 'Bruce'
   },
   {
     dataTest: 'policyHolders[0].lastName',
     type: 'text',
     required: true,
     label: 'Last Name',
-    data: 'Wayne'
+    value: 'Wayne'
   },
   {
     dataTest: 'policyHolders[0].primaryPhoneNumber',
     type: 'phone',
     required: true,
     label: 'Primary Phone',
-    data: '(999) 888-1231'
+    value: '(999) 888-1231'
   },
   {
     dataTest: 'policyHolders[0].secondaryPhoneNumber',
     type: 'phone',
     label: 'Secondary Phone',
-    data: '(123) 456-7890'
+    value: '(123) 456-7890'
   },
   {
     dataTest: 'policyHolders[0].emailAddress',
     type: 'email',
     required: true,
     label: 'Email Address',
-    data: 'batman@gmail.gov'
+    value: 'batman@gmail.gov'
   }
 ];
 
@@ -64,31 +64,31 @@ export const secondaryPolicyholderFields = [
     dataTest: 'policyHolders[1].firstName',
     type: 'text',
     label: 'First Name',
-    data: 'Dick'
+    value: 'Dick'
   },
   {
     dataTest: 'policyHolders[1].lastName',
     type: 'text',
     label: 'Last Name',
-    data: 'Grayson'
+    value: 'Grayson'
   },
   {
     dataTest: 'policyHolders[1].primaryPhoneNumber',
     type: 'phone',
     label: 'Primary Phone',
-    data: '(444) 444-4321'
+    value: '(444) 444-4321'
   },
   {
     dataTest: 'policyHolders[1].secondaryPhoneNumber',
     type: 'phone',
     label: 'Secondary Phone',
-    data: '(888) 567-1234'
+    value: '(888) 567-1234'
   },
   {
     dataTest: 'policyHolders[1].emailAddress',
     type: 'text',
     label: 'Email Address',
-    data: 'Robin@hotmail.notascam.rus'
+    value: 'Robin@hotmail.notascam.rus'
   }
 ];
 
@@ -99,7 +99,8 @@ export const propertyFields = [
     disabled: true,
     required: true,
     label: 'Address 1',
-    data: '1234 Test Address 1'
+    text: 'Address 1',
+    value: '1234 Test Address 1'
   },
   {
     dataTest: 'property.physicalAddress.address2',
@@ -107,7 +108,8 @@ export const propertyFields = [
     disabled: true,
     required: false,
     label: 'Address 2',
-    data: '1234 Test Address 2'
+    text: 'Address 2',
+    value: '1234 Test Address 2'
   },
   {
     dataTest: 'property.physicalAddress.city',
@@ -115,7 +117,8 @@ export const propertyFields = [
     disabled: true,
     required: true,
     label: 'City',
-    data: 'Paradise City'
+    text: 'City',
+    value: 'Paradise City'
   },
   {
     dataTest: 'property.physicalAddress.state',
@@ -123,7 +126,8 @@ export const propertyFields = [
     disabled: true,
     required: true,
     label: 'State',
-    data: 'PA'
+    text: 'State',
+    value: 'PA'
   },
   {
     dataTest: 'property.physicalAddress.zip',
@@ -131,7 +135,8 @@ export const propertyFields = [
     disabled: true,
     required: true,
     label: 'Zip',
-    data: '97531'
+    text: 'Zip',
+    value: '97531'
   }
 ];
 
@@ -222,13 +227,17 @@ export const coverageFields = [
     type: 'text',
     required: true,
     label: /Dwelling Limit/,
-    data: '$ 300,000'
+    value: '$ 300,000'
   },
   {
     dataTest: 'coverageLimits.otherStructures.value',
     type: 'select',
     required: true,
-    values: ['0', '2', '5'],
+    values: [
+      { value: '0', label: '0%' },
+      { value: '2', label: '2%' },
+      { value: '5', label: '5%' }
+    ],
     label: 'Percentage',
     output: {
       label: 'Other Structures Limit',
@@ -238,7 +247,11 @@ export const coverageFields = [
   {
     dataTest: 'coverageLimits.personalProperty.value',
     type: 'select',
-    values: ['0', '25', '35'],
+    values: [
+      { value: '0', label: '0%' },
+      { value: '25', label: '25%' },
+      { value: '35', label: '35%' }
+    ],
     label: 'Percentage',
     output: {
       label: 'Personal Property Limit',
@@ -252,7 +265,10 @@ export const coverageFields = [
   {
     dataTest: 'coverageLimits.personalLiability.value',
     type: 'select',
-    values: ['100000', '300000'],
+    values: [
+      { value: '100000', label: '$ 100,000' },
+      { value: '300000', label: '$ 300,000' }
+    ],
     label: 'Personal Liability Limit'
   },
   {
@@ -265,13 +281,19 @@ export const otherCoveragesFields = [
   {
     dataTest: 'coverageLimits.moldProperty.value',
     type: 'select',
-    values: ['10000', '25000'],
+    values: [
+      { value: '10000', label: '$ 10,000' },
+      { value: '25000', label: '$ 25,000' }
+    ],
     label: 'Mold Property'
   },
   {
     dataTest: 'coverageLimits.moldLiability.value',
     type: 'select',
-    values: ['50000', '100000'],
+    values: [
+      { value: '50000', label: '$ 50,000' },
+      { value: '100000', label: '$ 100,000' }
+    ],
     label: 'Mold Liability Limit'
   },
   {
@@ -281,7 +303,10 @@ export const otherCoveragesFields = [
   {
     dataTest: 'coverageLimits.ordinanceOrLaw.value',
     type: 'select',
-    values: ['25', '50'],
+    values: [
+      { value: '25', label: '25% of Dwelling Limit' },
+      { value: '50', label: '50% of Dwelling Limit' }
+    ],
     label: 'Ordinance or Law Coverage Limit'
   }
 ];
@@ -290,13 +315,19 @@ export const deductiblesFields = [
   {
     dataTest: 'deductibles.allOtherPerils.value',
     type: 'select',
-    values: ['500', '1000'],
+    values: [
+      { value: '500', label: '$ 500' },
+      { value: '1000', label: '$ 1,000' }
+    ],
     label: 'All Other Perils'
   },
   {
     dataTest: 'deductibles.hurricane.value',
     type: 'select',
-    values: ['2', '5'],
+    values: [
+      { value: '2', label: '2% of Dwelling Limit' },
+      { value: '5', label: '5% of Dwelling Limit' }
+    ],
     label: 'Hurricane Deductible',
     output: {
       label: 'Calculated Hurricane',
@@ -306,7 +337,10 @@ export const deductiblesFields = [
   {
     dataTest: 'coverageOptions.sinkholePerilCoverage.answer',
     type: 'select',
-    values: ['true', 'false'],
+    values: [
+      { value: 'true', label: '10% of Dwelling Limit' },
+      { value: 'false', label: 'Coverage Excluded' }
+    ],
     label: 'Sinkhole',
     output: {
       label: 'Calculated Sinkhole',
@@ -320,13 +354,15 @@ export const discountsFields = [
     dataTest: 'property.burglarAlarm',
     type: 'radio',
     values: ['false', 'true'],
-    label: 'Burglar Alarm'
+    label: 'Burglar Alarm',
+    format: str => (str === 'false' ? 'No' : 'Yes')
   },
   {
     dataTest: 'property.fireAlarm',
     type: 'radio',
     values: ['false', 'true'],
-    label: 'Fire Alarm'
+    label: 'Fire Alarm',
+    format: str => (str === 'false' ? 'No' : 'Yes')
   },
   {
     dataTest: 'property.sprinkler',
@@ -341,28 +377,32 @@ export const windFields = [
     dataTest: 'property.windMitigation.roofCovering',
     type: 'select',
     required: true,
-    values: ['Non-FBC', 'FBC', 'Other'],
+    values: [{ value: 'Non-FBC' }, { value: 'FBC' }, { value: 'Other' }],
     label: 'Roof Covering'
   },
   {
     dataTest: 'property.windMitigation.roofDeckAttachment',
     type: 'select',
     required: true,
-    values: ['A', 'B', 'C', 'D'],
+    values: [{ value: 'A' }, { value: 'B' }, { value: 'C' }, { value: 'D' }],
     label: 'Roof Deck Attachment'
   },
   {
     dataTest: 'property.windMitigation.roofToWallConnection',
     type: 'select',
     required: true,
-    values: ['Toe Nails', 'Clips', 'Single Wraps'],
+    values: [
+      { value: 'Toe Nails' },
+      { value: 'Clips' },
+      { value: 'Single Wraps' }
+    ],
     label: 'Roof to Wall Attachment'
   },
   {
     dataTest: 'property.windMitigation.roofGeometry',
     type: 'select',
     required: true,
-    values: ['Flat', 'Gable', 'Hip'],
+    values: [{ value: 'Flat' }, { value: 'Gable' }, { value: 'Hip' }],
     label: 'Roof Geometry'
   },
   {
@@ -375,35 +415,35 @@ export const windFields = [
     dataTest: 'property.windMitigation.openingProtection',
     type: 'select',
     required: true,
-    values: ['None', 'Basic', 'Hurricane'],
+    values: [{ value: 'None' }, { value: 'Basic' }, { value: 'Hurricane' }],
     label: 'Opening Protection'
   },
   {
     dataTest: 'property.windMitigation.floridaBuildingCodeWindSpeed',
     type: 'text',
     required: true,
-    data: '1300',
+    value: '1300',
     label: 'FBC Wind Speed'
   },
   {
     dataTest: 'property.windMitigation.floridaBuildingCodeWindSpeedDesign',
     type: 'text',
     required: true,
-    data: '1300',
+    value: '1300',
     label: 'FBC Wind Speed Design'
   },
   {
     dataTest: 'property.windMitigation.terrain',
     type: 'select',
     required: true,
-    values: ['B', 'C', 'HVHZ'],
+    values: [{ value: 'B' }, { value: 'C' }, { value: 'HVHZ' }],
     label: 'Terrain'
   },
   {
     dataTest: 'property.windMitigation.internalPressureDesign',
     type: 'select',
     required: true,
-    values: ['Enclosed', 'Partial'],
+    values: [{ value: 'Enclosed' }, { value: 'Partial' }],
     label: 'Internal Pressure Design'
   },
   {
