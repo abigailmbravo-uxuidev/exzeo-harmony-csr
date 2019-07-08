@@ -21,6 +21,19 @@ import AgentSearch from './Agent';
 import UserSearch from './User';
 import DiariesSearch from './Diaries';
 
+const initialSearchResults = {
+  currentPage: 1,
+  loading: false,
+  noResults: false,
+  pageSize: 0,
+  product: '',
+  results: [],
+  sortBy: '',
+  sortDirection: '',
+  totalPages: 0,
+  totalRecords: 0
+};
+
 const SEARCH_FORMS = {
   [SEARCH_TYPES.newQuote]: AddressSearch,
   [SEARCH_TYPES.policy]: PolicySearch,
@@ -38,18 +51,7 @@ export class SearchPage extends Component {
     searchType: SEARCH_TYPES.policy,
     searchConfig: SEARCH_TYPES.policy,
     searchReady: false,
-    searchResults: {
-      currentPage: 1,
-      loading: false,
-      noResults: false,
-      pageSize: 0,
-      product: '',
-      results: [],
-      sortBy: '',
-      sortDirection: '',
-      totalPages: 0,
-      totalRecords: 0
-    }
+    searchResults: initialSearchResults
   };
 
   componentDidMount() {
@@ -93,7 +95,8 @@ export class SearchPage extends Component {
       searchType,
       searchConfig: searchType,
       hasSearched: false,
-      advancedSearch: false
+      advancedSearch: false,
+      searchResults: initialSearchResults
     });
     this.props.resetSearch();
   };

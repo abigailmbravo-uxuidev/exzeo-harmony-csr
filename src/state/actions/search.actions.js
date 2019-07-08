@@ -13,10 +13,6 @@ import * as types from './actionTypes';
 import * as errorActions from './error.actions';
 
 /**
- *  TODO: THIS FILE HAS A TREMENDOUS AMOUNT OF REPETITION, WILL BE ADDRESSING THIS IN A SUBSEQUENT PR
- */
-
-/**
  * Adjust loading state
  * @param {boolean} loading
  * @returns {{type: string, loading: boolean}}
@@ -600,11 +596,14 @@ export function handleSearchSubmit(data, props) {
       const { searchType } = props;
       let searchResults = {};
 
+      // Explicitly adding 'product' to searchResults to track which searches handle the P in CSP
       if (searchType === SEARCH_TYPES.newQuote) {
         searchResults = await handleAddressSearch(data);
+        searchResults.product = data.product;
       }
       if (searchType === SEARCH_TYPES.quote) {
         searchResults = await handleQuoteSearch(data);
+        searchResults.product = data.product;
       }
       if (searchType === SEARCH_TYPES.policy) {
         searchResults = await handlePolicySearch(data);
