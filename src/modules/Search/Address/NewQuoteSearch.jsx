@@ -8,6 +8,7 @@ import { productAnswers } from '../constants';
 const { isValidChar, isRequired } = validation;
 
 const NewQuoteSearch = ({
+  beta,
   submitting,
   changeSearchType,
   searchTypeOptions
@@ -29,15 +30,17 @@ const NewQuoteSearch = ({
     </div>
 
     <div className="search-inputs fade-in">
-      <Field
-        name="product"
-        dataTest="product"
-        label="Product"
-        component={Select}
-        answers={productAnswers}
-        placeholder="Select..."
-        styleName="product-search"
-      />
+      {beta && (
+        <Field
+          name="product"
+          dataTest="product"
+          label="Product"
+          component={Select}
+          answers={productAnswers}
+          placeholder="Select..."
+          styleName="product-search"
+        />
+      )}
 
       <Field
         name="address"

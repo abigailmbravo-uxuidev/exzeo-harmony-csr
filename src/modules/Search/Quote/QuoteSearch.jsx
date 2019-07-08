@@ -15,6 +15,7 @@ const {
 } = validation;
 
 const QuoteSearch = ({
+  beta,
   submitting,
   questions,
   handlePagination,
@@ -88,15 +89,17 @@ const QuoteSearch = ({
         />
       </div>
 
-      <Field
-        name="product"
-        dataTest="product"
-        label="Product"
-        component={Select}
-        answers={productAnswers}
-        placeholder="Select..."
-        styleName="product-search"
-      />
+      {beta && (
+        <Field
+          name="product"
+          dataTest="product"
+          label="Product"
+          component={Select}
+          answers={productAnswers}
+          placeholder="Select..."
+          styleName="product-search"
+        />
+      )}
 
       <Button
         className={Button.constants.classNames.success}

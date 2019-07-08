@@ -137,8 +137,10 @@ export class SearchPage extends Component {
       agencies,
       clearAppError,
       getAgencies,
-      handleSearchSubmit,
-      toggleLoading
+      toggleLoading,
+      userProfile: {
+        profile: { beta }
+      }
     } = this.props;
 
     const {
@@ -171,6 +173,7 @@ export class SearchPage extends Component {
               render={({ changeSearchType, handlePagination, formProps }) => (
                 <SearchForm
                   advancedSearch={advancedSearch}
+                  beta={beta}
                   changeSearchType={changeSearchType}
                   searchTypeOptions={SEARCH_CONFIG[searchConfig].searchOptions}
                   handlePagination={handlePagination}
