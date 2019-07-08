@@ -124,7 +124,8 @@ export class SearchPage extends Component {
   handleSubmit = async (data, dispatch, props) => {
     try {
       const { handleSearchSubmit } = this.props;
-      await handleSearchSubmit(data, props);
+      const searchResults = await handleSearchSubmit(data, props);
+      this.setState({ searchResults });
     } catch (error) {
       if (process.env.NODE_ENV !== 'production') {
         console.error('Search error: ', error);
