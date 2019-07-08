@@ -3,12 +3,9 @@ import PropTypes from 'prop-types';
 import { Field } from 'redux-form';
 import { Input, Button, Select, validation } from '@exzeo/core-ui';
 
-const { isValidChar, isRequired } = validation;
+import { productAnswers } from '../constants';
 
-const productAnswers = [
-  { answer: 'HO3', label: 'HO3' },
-  { answer: 'AF3', label: 'AF3' }
-];
+const { isValidChar, isRequired } = validation;
 
 const NewQuoteSearch = ({
   submitting,
