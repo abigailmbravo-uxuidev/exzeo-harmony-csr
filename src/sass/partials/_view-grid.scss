@@ -262,6 +262,13 @@
               flex-grow: 0;
               flex-shrink: 0;
               min-width: 10rem;
+              max-width: 16rem;
+              white-space: nowrap;
+
+              > span {
+                overflow: hidden;
+                text-overflow: ellipsis;
+              }
             }
 
             h4 {
