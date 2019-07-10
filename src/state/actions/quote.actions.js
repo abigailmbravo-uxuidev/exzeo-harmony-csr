@@ -22,14 +22,13 @@ export function setRetrievedQuote(response) {
 
 /**
  * Create a quote
- * @param {string} address
  * @param {string} igdID
  * @param {string} stateCode
  * @param {string} companyCode
  * @param {string} product
  * @returns {Function}
  */
-export function createQuote(address, igdID, stateCode, companyCode, product) {
+export function createQuote(igdID, stateCode, companyCode, product) {
   return async dispatch => {
     try {
       const config = {

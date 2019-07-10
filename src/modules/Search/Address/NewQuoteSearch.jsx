@@ -39,6 +39,8 @@ const NewQuoteSearch = ({
           answers={productAnswers}
           placeholder="Select..."
           styleName="product-search"
+          validate={isRequired}
+          errorHint
         />
       )}
 

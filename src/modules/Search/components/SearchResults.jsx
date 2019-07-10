@@ -21,7 +21,7 @@ import DiaryList from './DiaryList';
 
 export function onKeyPressSubmit(event, data, props) {
   if (event.charCode === 13) {
-    handleNewTab(data, props.searchType);
+    handleNewTab(data, props.searchType, props.search.product);
   }
 }
 
@@ -30,7 +30,7 @@ export class SearchResults extends Component {
     const {
       hasSearched,
       searchType,
-      search: { results, noResults },
+      search: { results, noResults, product = '' },
       error
     } = this.props;
     return (
@@ -71,7 +71,9 @@ export class SearchResults extends Component {
                     handleKeyPress={e =>
                       onKeyPressSubmit(e, address, searchType)
                     }
-                    handleClick={() => handleNewTab(address, searchType)}
+                    handleClick={() =>
+                      handleNewTab(address, searchType, product)
+                    }
                   />
                 ))}
               <AddressTip />
@@ -181,8 +183,7 @@ SearchResults.propTypes = {
 };
 
 const mapStateToProps = state => ({
-  error: state.error,
-  search: state.search
+  error: state.error
 });
 
 export default connect(mapStateToProps)(SearchResults);
