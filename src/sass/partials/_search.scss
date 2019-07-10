@@ -58,15 +58,24 @@
             position: relative;
 
             &.error {
-              input {
+              input,
+              select {
                 border-width: 2px;
+                border-color: red;
                 background-color: mix($highlight, $red, 85%);
               }
 
               span {
                 position: absolute;
-                top: 1.875rem;
+                top: 1.6875rem;
                 right: $padding;
+                color: $red;
+              }
+
+              &.product-search {
+                span {
+                  right: $padding * 2;
+                }
               }
             }
           }
@@ -223,7 +232,7 @@
             flex-grow: 0;
             flex-shrink: 0;
             margin-right: $padding;
-            width: 5rem;
+            width: 6rem;
 
             select {
               width: 100%;
