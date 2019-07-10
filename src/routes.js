@@ -147,7 +147,7 @@ class Routes extends Component {
               />
               <Route
                 exact
-                path="/quote/new/:stateCode/:propertyId"
+                path="/quote/new/:stateCode/:product/:propertyId"
                 render={props => <QuoteLanding auth={auth} {...props} />}
               />
               <Route

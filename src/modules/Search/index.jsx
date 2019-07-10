@@ -201,6 +201,7 @@ export class SearchPage extends Component {
                     <SearchResults
                       hasSearched={hasSearched}
                       searchType={searchType}
+                      search={searchResults}
                     />
 
                     {this.props.children}
