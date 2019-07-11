@@ -29,8 +29,8 @@ const fields = [
 describe('Summary testing with finished Quote', () => {
   const props = {
     ...defaultQuoteWorkflowProps,
-    quoteData: {
-      ...defaultQuoteWorkflowProps.quoteData,
+    quote: {
+      ...defaultQuoteWorkflowProps.quote,
       quoteInputState: 'Qualified',
       rating
     },
@@ -138,8 +138,8 @@ describe('Summary testing with finished Quote', () => {
 describe('Summary Testing with Default Quote', () => {
   const props = {
     ...defaultQuoteWorkflowProps,
-    quoteData: {
-      ...defaultQuoteWorkflowProps.quoteData,
+    quote: {
+      ...defaultQuoteWorkflowProps.quote,
       rating
     },
     location: { pathname: '/quote/12-345-67/summary' }
@@ -156,8 +156,8 @@ describe('Summary Testing with Default Quote', () => {
   it('POS:Underwriting Violations Error Message in Underwriting State', () => {
     const newProps = {
       ...props,
-      quoteData: {
-        ...props.quoteData,
+      quote: {
+        ...props.quote,
         quoteInputState: 'Underwriting'
       }
     };
@@ -171,8 +171,8 @@ describe('Summary Testing with Default Quote', () => {
   it('POS:Underwriting Violations Error Message in Qualified State w/ UW Error', () => {
     const newProps = {
       ...props,
-      quoteData: {
-        ...props.quoteData,
+      quote: {
+        ...props.quote,
         quoteInputState: 'Qualified',
         hasUWError: true
       }
@@ -187,8 +187,8 @@ describe('Summary Testing with Default Quote', () => {
   it('NEG:No Error Message with Qualified State and no UW Errors', () => {
     const newProps = {
       ...props,
-      quoteData: {
-        ...props.quoteData,
+      quote: {
+        ...props.quote,
         quoteInputState: 'Qualified'
       }
     };
@@ -204,8 +204,8 @@ describe('Summary Testing with Default Quote', () => {
   it('POS:Underwriting Violations Error Message in Ready State w/ UW Error', () => {
     const newProps = {
       ...props,
-      quoteData: {
-        ...props.quoteData,
+      quote: {
+        ...props.quote,
         quoteInputState: 'Ready',
         hasUWError: true
       }
@@ -220,8 +220,8 @@ describe('Summary Testing with Default Quote', () => {
   it('NEG:No Error Message with Ready State and no UW Errors', () => {
     const newProps = {
       ...props,
-      quoteData: {
-        ...props.quoteData,
+      quote: {
+        ...props.quote,
         quoteInputState: 'Ready'
       }
     };

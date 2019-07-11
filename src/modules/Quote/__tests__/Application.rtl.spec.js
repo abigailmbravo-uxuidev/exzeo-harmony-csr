@@ -18,8 +18,8 @@ describe('Application Testing', () => {
   it('POS:Shows error with underwriting exceptions', () => {
     const newProps = {
       ...props,
-      quoteData: {
-        ...props.quoteData,
+      quote: {
+        ...props.quote,
         quoteInputState: 'Qualified',
         underwritingExceptions: [underwritingException]
       }
@@ -40,8 +40,8 @@ describe('Application Testing', () => {
   it('POS:Congratulations Modal Testing', async () => {
     const newProps = {
       ...props,
-      quoteData: {
-        ...props.quoteData,
+      quote: {
+        ...props.quote,
         quoteInputState: 'Qualified'
       }
     };

@@ -152,8 +152,8 @@ describe('Additional Interest Testing', () => {
   const props = {
     ...defaultQuoteWorkflowProps,
     location: { pathname: '/quote/12-345-67/additionalInterests' },
-    quoteData: {
-      ...defaultQuoteWorkflowProps.quoteData,
+    quote: {
+      ...defaultQuoteWorkflowProps.quote,
       rating
     },
     options: {
@@ -168,8 +168,8 @@ describe('Additional Interest Testing', () => {
   it('POS:Error Message exists with no quote data', () => {
     const newProps = {
       ...props,
-      quoteData: {
-        ...props.quoteData,
+      quote: {
+        ...props.quote,
         rating: {}
       }
     };
@@ -535,8 +535,8 @@ describe('Additional Interest Testing', () => {
   it('POS:Confirm Additional Interests Show Up In Order and Disable Buttons [Premium Finance]', () => {
     const newProps = {
       ...props,
-      quoteData: {
-        ...props.quoteData,
+      quote: {
+        ...props.quote,
         additionalInterests: [
           // Intentionally give a messed up order...
           { ...additionalInterest, order: 0, type: 'Premium Finance' },
@@ -583,8 +583,8 @@ describe('Additional Interest Testing', () => {
   it('POS:Confirm Additional Interests Show Up In Order and Disable Buttons [Bill Payer]', () => {
     const newProps = {
       ...props,
-      quoteData: {
-        ...props.quoteData,
+      quote: {
+        ...props.quote,
         additionalInterests: [
           { ...additionalInterest, order: 0, type: 'Bill Payer' },
           { ...additionalInterest, order: 1, type: 'Additional Interest' },
@@ -626,8 +626,8 @@ describe('Additional Interest Testing', () => {
   it('POS:All buttons disabled when editingDisabled is true', () => {
     const newProps = {
       ...props,
-      quoteData: {
-        ...props.quoteData,
+      quote: {
+        ...props.quote,
         editingDisabled: true
       }
     };
