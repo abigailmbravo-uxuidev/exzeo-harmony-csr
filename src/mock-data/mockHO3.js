@@ -102,7 +102,6 @@ const mock = {
             size: '4'
           },
           formData: {},
-          className: '',
           children: [
             {
               id: 8,
@@ -196,7 +195,6 @@ const mock = {
             size: '8'
           },
           formData: {},
-          className: '',
           children: [
             {
               id: 120,
