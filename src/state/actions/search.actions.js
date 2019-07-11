@@ -599,11 +599,11 @@ export function handleSearchSubmit(data, props) {
       // Explicitly adding 'product' to searchResults to track which searches handle the P in CSP
       if (searchType === SEARCH_TYPES.newQuote) {
         searchResults = await handleAddressSearch(data);
-        searchResults.product = data.product;
+        searchResults.product = data.product || 'HO3';
       }
       if (searchType === SEARCH_TYPES.quote) {
         searchResults = await handleQuoteSearch(data);
-        searchResults.product = data.product;
+        searchResults.product = data.product || 'HO3';
       }
       if (searchType === SEARCH_TYPES.policy) {
         searchResults = await handlePolicySearch(data);

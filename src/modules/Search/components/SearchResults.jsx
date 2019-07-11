@@ -68,6 +68,7 @@ export class SearchResults extends Component {
                   <AddressCard
                     key={address.id}
                     address={address}
+                    product={product}
                     handleKeyPress={e =>
                       onKeyPressSubmit(e, address, searchType)
                     }

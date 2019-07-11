@@ -5,7 +5,8 @@ import { user, pH1, underwriting } from '../fixtures';
 export const navigateThroughNewQuote = (address = user.address1) => {
   cy.task('log', 'Navigating through Quote')
     .findDataTag('searchType').select('address')
-    .findDataTag('product').select('HO3')
+    // This will be relevant once ALL users can see the product dropdown
+    // .findDataTag('product').select('HO3')
     .findDataTag('address').type(address)
     .clickSubmit().wait('@fetchAddresses')
     // This makes it so we don't open up a new window
