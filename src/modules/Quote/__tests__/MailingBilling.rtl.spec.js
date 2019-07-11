@@ -43,8 +43,8 @@ describe('Mailing Address Testing', () => {
   const props = {
     ...defaultQuoteWorkflowProps,
     location: { pathname: '/quote/12-345-67/billing' },
-    quoteData: {
-      ...defaultQuoteWorkflowProps.quoteData,
+    quote: {
+      ...defaultQuoteWorkflowProps.quote,
       rating
     }
   };
@@ -52,8 +52,8 @@ describe('Mailing Address Testing', () => {
   it('POS:Checks message with no rating options', () => {
     const newProps = {
       ...props,
-      quoteData: {
-        ...props.quoteData,
+      quote: {
+        ...props.quote,
         rating: {}
       }
     };

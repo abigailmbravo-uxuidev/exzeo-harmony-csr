@@ -4,6 +4,7 @@ export default {
   quoteInputState: 'Initial Data',
   underwritingExceptions: [],
   quoteNumber: '12-345-67',
+  product: 'HO3',
   effectiveDate: '2019-05-23T04:00:00.000Z',
   coverageLimits: {
     dwelling: { amount: 100 },
