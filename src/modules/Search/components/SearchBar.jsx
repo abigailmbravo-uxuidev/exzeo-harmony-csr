@@ -39,7 +39,7 @@ export class SearchBar extends Component {
         isNext,
         currentPage: props.currentPage
       };
-      props.handleSearchSubmit(submitData, this.props);
+      props.handleSearchSubmit(submitData, dispatch, props);
     });
   };
 
