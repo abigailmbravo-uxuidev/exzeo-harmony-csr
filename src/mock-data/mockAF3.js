@@ -1,14 +1,13 @@
 /* eslint-disable */
 const mock = {
   header: {
-    hideDeatailSummary: true,
+    hideDetailSummary: true,
     fields: [
       { value: 'policyHolder', component: 'Section', label: 'Policyholder' },
       { value: 'mailingAddress', component: 'Section' },
       { value: 'propertyAddress', component: 'Section' },
       { value: 'county', label: 'Property County' },
-      { value: 'territory' },
-      { value: 'floodZone' },
+      { value: 'floodZone', label: 'Flood Zone' },
       { value: 'effectiveDate', className: 'quoteEffectiveDate' },
       { value: 'currentPremium', label: 'Premium', className: 'premium' }
     ]
@@ -19,14 +18,15 @@ const mock = {
       step: {},
       components: [
         {
-          id: 100100,
+          name: 'ProducedBy',
+          id: '4ea7d1a1-80b8-4109-9d4b-4c2155a0a2b1',
           type: '$SECTION',
           dependencies: [],
-          data: { className: 'produced-by' },
+          data: {},
           formData: {},
           children: [
             {
-              id: 2,
+              id: 'ec744d52-d3e8-4ead-b030-d4eb99e9ba63',
               type: '$TITLE',
               dependencies: [],
               data: {
@@ -36,7 +36,7 @@ const mock = {
               children: []
             },
             {
-              id: 3,
+              id: 'ac46d884-491e-4c7e-b103-b2e1547a7e01',
               type: '$INPUT',
               path: 'effectiveDate',
               dependencies: [],
@@ -62,7 +62,7 @@ const mock = {
               children: []
             },
             {
-              id: 4,
+              id: 'ec8f821b-0cc4-4328-9e65-ad0d6f08305c',
               type: '$CUSTOM',
               dependencies: [],
               data: {
@@ -79,13 +79,13 @@ const mock = {
           ]
         },
         {
-          id: 6,
+          name: 'PropertyAddress',
+          id: 'b963aac4-936d-4290-9756-0a41819dccb4',
           type: '$CUSTOM',
           dependencies: [],
           data: {
             component: '$POLICYHOLDERS',
             extendedProperties: {
-              subscribe: true,
               watchField: 'removeSecondary'
             }
           },
@@ -93,29 +93,28 @@ const mock = {
           children: []
         },
         {
-          id: 10007,
+          name: 'PropertyAddress',
+          id: '0842592e-072d-4171-bc72-5141d43a1f39',
           type: '$SECTION',
           dependencies: [],
           data: {
             className: 'property-address',
-            size: '4'
+            size: '6'
           },
           formData: {},
-          className: '',
           children: [
             {
-              id: 8,
+              id: '8050ead1-bb21-4ffa-8a41-0547ef748ffb',
               type: '$TITLE',
               dependencies: [],
               data: {
-                text: 'Property Address',
-                children: []
+                text: 'Property Address'
               },
               formData: {},
               children: []
             },
             {
-              id: 18,
+              id: '12e86c6b-ed7c-45d1-9ad3-8f5ea403fadd',
               type: '$INPUT',
               path: 'property.physicalAddress.address1',
               dependencies: [],
@@ -129,7 +128,7 @@ const mock = {
               children: []
             },
             {
-              id: 19,
+              id: 'a38243d1-88f4-4647-be0b-04712c4abf5b',
               type: '$INPUT',
               path: 'property.physicalAddress.address2',
               dependencies: [],
@@ -143,7 +142,7 @@ const mock = {
               children: []
             },
             {
-              id: 20,
+              id: '1df85b3c-e673-4183-9e0e-dbd0923c8739',
               type: '$INPUT',
               path: 'property.physicalAddress.city',
               dependencies: [],
@@ -157,7 +156,7 @@ const mock = {
               children: []
             },
             {
-              id: 21,
+              id: '50427097-7889-49f8-be88-dc2a4f5531bd',
               type: '$INPUT',
               path: 'property.physicalAddress.state',
               dependencies: [],
@@ -171,7 +170,7 @@ const mock = {
               children: []
             },
             {
-              id: 22,
+              id: 'dbacf35a-97b7-4bd5-8c1b-571dd4d16ff4',
               type: '$INPUT',
               path: 'property.physicalAddress.zip',
               dependencies: [],
@@ -187,18 +186,18 @@ const mock = {
           ]
         },
         {
-          id: 100001,
+          name: 'Location',
+          id: 'b1614e7d-1657-424b-b206-d06bfbde38af',
           type: '$SECTION',
           dependencies: [],
           data: {
             className: 'home-location',
-            size: '8'
+            size: '6'
           },
           formData: {},
-          className: '',
           children: [
             {
-              id: 120,
+              id: '39209da0-1925-4802-95b8-aa945cd8ce38',
               type: '$TITLE',
               dependencies: [],
               data: {
@@ -209,228 +208,91 @@ const mock = {
               children: []
             },
             {
-              id: 121,
+              id: 'd5e9109b-3f9d-4e52-a5bc-bd19e064bd8c',
               type: '$INPUT',
               path: 'property.yearBuilt',
               dependencies: [],
               data: {
                 component: 'text',
                 label: 'Year Home Built',
-                size: '3',
+                size: '6',
                 disabled: true
               },
               formData: {},
               children: []
             },
             {
-              id: 122,
+              id: '44a250d8-a05e-4793-b5ee-c50d80d9b547',
               type: '$INPUT',
-              path: 'property.protectionClass',
+              path: 'property.floodZone',
               dependencies: [],
               data: {
                 component: 'text',
-                label: 'Protection Class',
-                size: '3',
+                label: 'Flood Zone',
+                size: '6',
                 disabled: true
               },
               formData: {},
               children: []
             },
             {
-              id: 123,
+              id: 'c67c0eab-8263-4de6-a382-3002cbb85250',
               type: '$INPUT',
-              path: 'property.distanceToTidalWater',
+              path: 'property.constructionType',
               dependencies: [],
               data: {
                 component: 'text',
-                label: 'Tidal Waters Dist.',
-                size: '3',
+                label: 'Construction',
+                size: '6',
                 disabled: true
               },
               formData: {},
               children: []
             },
             {
-              id: 124,
+              id: '7839181e-4413-442d-a273-e65c08a17a19',
+              type: '$INPUT',
+              path: 'property.baseFloodElevation',
+              dependencies: [],
+              data: {
+                component: 'text',
+                label: 'Base Flood Elevation',
+                size: '6',
+                disabled: true
+              },
+              formData: {},
+              children: []
+            },
+            {
+              id: '77874384-0638-43a8-9d76-671aa2f83438',
               type: '$INPUT',
               path: 'property.residenceType',
               dependencies: [],
               data: {
                 component: 'text',
                 label: 'Residence Type',
-                size: '3',
+                size: '6',
                 disabled: true
               },
               formData: {},
               children: []
             },
             {
-              id: 125,
-              type: '$INPUT',
-              path: 'property.constructionType',
-              dependencies: [],
-              data: {
-                component: 'select',
-                label: 'Construction',
-                size: '3',
-                disabled: true,
-                dataSource: [
-                  {
-                    label: 'Masonry',
-                    answer: 'MASONRY'
-                  },
-                  {
-                    label: 'Frame',
-                    answer: 'FRAME'
-                  },
-                  {
-                    label: 'Plastic Siding',
-                    answer: 'PLASTIC SIDING'
-                  },
-                  {
-                    label: 'Aluminum Siding',
-                    answer: 'ALUMINUM SIDING'
-                  },
-                  {
-                    label: 'Masonry Veneer',
-                    answer: 'MASONRY VENEER'
-                  },
-                  {
-                    label: 'Superior',
-                    answer: 'SUPERIOR'
-                  }
-                ]
-              },
-              formData: {},
-              children: []
-            },
-            {
-              id: 126,
-              type: '$INPUT',
-              path: 'property.buildingCodeEffectivenessGrading',
-              dependencies: [],
-              data: {
-                component: 'select',
-                label: 'BCEG',
-                size: '3',
-                disabled: true,
-                dataSource: [
-                  { label: '01', answer: '1' },
-                  { label: '02', answer: '2' },
-                  { label: '03', answer: '3' },
-                  { label: '04', answer: '4' },
-                  { label: '05', answer: '5' },
-                  { label: '06', answer: '6' },
-                  { label: '07', answer: '7' },
-                  { label: '08', answer: '8' },
-                  { label: '09', answer: '9' },
-                  { label: '98', answer: '98' },
-                  { label: '99', answer: '99' }
-                ]
-              },
-              formData: {},
-              children: []
-            },
-            {
-              id: 127,
-              type: '$INPUT',
-              path: 'property.distanceToFireHydrant',
-              dependencies: [],
-              data: {
-                component: 'text',
-                label: 'Fire Hydrant Dist.',
-                size: '3',
-                disabled: true
-              },
-              formData: {},
-              children: []
-            },
-            {
-              id: 128,
+              id: '8b35b7f1-e920-413b-9d73-9a1fc1086bbf',
               type: '$INPUT',
               path: 'property.squareFeet',
               dependencies: [],
               data: {
                 component: 'text',
-                label: 'Sq. Ft. of Home',
-                size: '3',
+                label: 'Square Footage',
+                size: '6',
                 disabled: true
               },
               formData: {},
               children: []
             },
             {
-              id: 129,
-              type: '$INPUT',
-              path: 'property.yearOfRoof',
-              dependencies: [],
-              data: {
-                component: 'text',
-                label: 'Year Roof Built',
-                size: '3',
-                disabled: true
-              },
-              formData: {},
-              children: []
-            },
-            {
-              id: 130,
-              type: '$INPUT',
-              path: 'property.familyUnits',
-              dependencies: [],
-              data: {
-                component: 'select',
-                label: 'Family Units',
-                size: '3',
-                disabled: true,
-                dataSource: [
-                  { answer: '1-2' },
-                  { answer: '3-4' },
-                  { answer: '5-8' },
-                  { answer: '9+' }
-                ]
-              },
-              formData: {},
-              children: []
-            },
-            {
-              id: 131,
-              type: '$INPUT',
-              path: 'property.distanceToFireStation',
-              dependencies: [],
-              data: {
-                component: 'text',
-                label: 'Fire Station Dist.',
-                size: '3',
-                disabled: true
-              },
-              formData: {},
-              children: []
-            },
-            {
-              id: 132,
-              type: '$INPUT',
-              path: 'property.floodZone',
-              dependencies: [],
-              data: {
-                component: 'select',
-                label: 'Flood Zone',
-                size: '3',
-                disabled: true,
-                dataSource: [
-                  { answer: 'V' },
-                  { answer: 'A' },
-                  { answer: 'B' },
-                  { answer: 'C' },
-                  { answer: 'X' },
-                  { answer: 'U' }
-                ]
-              },
-              formData: {},
-              children: []
-            },
-            {
-              id: 133,
+              id: '6b15e702-d810-4fc3-aa33-83c73aca0214',
               type: '$INPUT',
               path: 'property.id',
               dependencies: [],
@@ -454,7 +316,6 @@ const mock = {
             size: '5'
           },
           formData: {},
-          className: 'test',
           children: [
             {
               id: 135,
