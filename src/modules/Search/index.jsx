@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { emptyArray } from '@exzeo/core-ui';
+import { emptyArray, emptyObject } from '@exzeo/core-ui';
 
 import { SEARCH_CONFIG, SEARCH_TYPES } from '../../constants/search';
 import {
@@ -216,9 +216,11 @@ export class SearchPage extends Component {
   }
 }
 
+// TODO temp fix until Auth is updated
+const stubProfile = { profile: {} };
 const mapStateToProps = state => {
   return {
-    userProfile: state.authState.userProfile,
+    userProfile: state.authState.userProfile || stubProfile,
     agencies: state.service.agencies || emptyArray
   };
 };
