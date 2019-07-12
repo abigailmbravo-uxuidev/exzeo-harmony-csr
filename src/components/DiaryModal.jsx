@@ -69,7 +69,7 @@ export class DiaryModal extends Component {
 
     if (!defaultData) return value;
 
-    if (defaultData.assignee === 'Login User') {
+    if (defaultData.assignee === 'CURRENT_USER') {
       change('assignee.id', userId);
     } else {
       const selectedAssignee = assigneeAnswers.find(
