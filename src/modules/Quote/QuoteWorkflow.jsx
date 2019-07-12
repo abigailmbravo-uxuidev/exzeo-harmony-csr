@@ -5,7 +5,7 @@ import { Loader, FormSpy, remoteSubmit } from '@exzeo/core-ui';
 import {
   getConfigForJsonTransform,
   Gandalf,
-  AgencySelect
+  AgencyAgentSelect
 } from '@exzeo/core-ui/src/@Harmony';
 import { defaultMemoize } from 'reselect';
 
@@ -71,7 +71,7 @@ export class QuoteWorkflow extends React.Component {
     $POLICYHOLDERS: PolicyHolders,
     $APPLICATION: Application,
     $NOTES_FILES: NotesFiles,
-    $AGENCY_SELECT: AgencySelect
+    $AGENCY_SELECT: AgencyAgentSelect
   };
 
   getConfigForJsonTransform = defaultMemoize(getConfigForJsonTransform);
