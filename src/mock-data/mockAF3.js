@@ -1,7 +1,7 @@
 /* eslint-disable */
 const mock = {
   header: {
-    hideDetailSummary: true,
+    hideDetailSummary: false,
     fields: [
       { value: 'policyHolder', component: 'Section', label: 'Policyholder' },
       { value: 'mailingAddress', component: 'Section' },
@@ -79,7 +79,7 @@ const mock = {
           ]
         },
         {
-          name: 'PropertyAddress',
+          name: 'PolicyHolders',
           id: 'b963aac4-936d-4290-9756-0a41819dccb4',
           type: '$CUSTOM',
           dependencies: [],
@@ -308,17 +308,18 @@ const mock = {
           ]
         },
         {
-          id: 100034,
+          name: 'Coverages',
+          id: '79b48a18-4f4d-44e2-b778-9d02b6d827f6',
           type: '$SECTION',
           dependencies: [],
           data: {
             className: 'coverages',
-            size: '5'
+            size: '8'
           },
           formData: {},
           children: [
             {
-              id: 135,
+              id: 'f5a6c22b-6d65-453e-b446-2d5c461d14c2',
               type: '$TITLE',
               dependencies: [],
               data: {
@@ -328,25 +329,24 @@ const mock = {
               children: []
             },
             {
-              id: 136,
+              id: 'e532c398-a22d-4ff7-b459-10cc35b8a3d1',
               type: '$INPUT',
-              path: 'coverageLimits.dwelling.value',
+              path: 'coverageLimits.building.value',
               dependencies: [],
               data: {
                 component: 'currency',
-                label: 'Dwelling Limit',
-                size: '12',
-                className: '',
-                validation: ['isDwellingRange'],
+                label: 'Building Limit',
+                size: '6',
+                validation: ['isBuildingRange'],
                 extendedProperties: {
                   format: 'currency',
-                  min: 'coverageLimits.dwelling.minAmount',
-                  max: 'coverageLimits.dwelling.maxAmount',
-                  step: 1000
+                  displayRange: true,
+                  min: 'coverageLimits.building.minAmount',
+                  max: 'coverageLimits.building.maxAmount'
                 }
               },
               formData: {
-                path: 'coverageLimits.dwelling.value',
+                path: 'coverageLimits.building.value',
                 type: 'integer',
                 required: true,
                 metaData: {}
@@ -354,89 +354,59 @@ const mock = {
               children: []
             },
             {
-              id: 137,
+              id: '0855ca01-4f9c-4d3f-ac1b-3b550fead6b1',
               type: '$INPUT',
-              path: 'coverageLimits.otherStructures.value',
+              path: 'coverageLimits.increasedCompliance.value',
               dependencies: [],
               data: {
-                component: 'selectInteger',
-                label: 'Percentage',
-                size: '12',
-                dataSource: [
-                  { label: '0%', answer: 0 },
-                  { label: '2%', answer: 2 },
-                  { label: '5%', answer: 5 },
-                  { label: '10%', answer: 10 }
-                ],
+                component: 'display',
+                label: 'Increased Cost of Compliance Limit',
+                size: '6',
                 extendedProperties: {
-                  output: 'currency',
-                  outputLabel: 'Other Structures Limit'
+                  output: 'currency'
                 }
               },
               formData: {
-                path: 'coverageLimits.otherStructures.value',
+                path: 'coverageLimits.increasedCompliance.value',
                 type: 'integer',
-                required: true,
                 metaData: {
-                  target:
-                    '${Math.ceil(((it.coverageLimits.otherStructures.value / 100) * it.coverageLimits.dwelling.value))}'
+                  target: '${it.coverageLimits.increasedCompliance.value}'
                 }
               },
               children: []
             },
             {
-              id: 138,
+              id: 'ce8fa0c1-b13b-4c31-9377-3be2a124ff30',
               type: '$INPUT',
               path: 'coverageLimits.personalProperty.value',
               dependencies: [],
               data: {
-                component: 'selectInteger',
-                label: 'Percentage',
-                size: '12',
+                component: 'currency',
+                label: 'Personal Property Limit',
+                size: '6',
                 extendedProperties: {
-                  output: 'currency',
-                  outputLabel: 'Personal Property Limit'
-                },
-                dataSource: [
-                  {
-                    label: '0%',
-                    answer: 0
-                  },
-                  {
-                    label: '25%',
-                    answer: 25
-                  },
-                  {
-                    label: '35%',
-                    answer: 35
-                  },
-                  {
-                    label: '50%',
-                    answer: 50
-                  }
-                ]
+                  format: 'currency',
+                  displayRange: true,
+                  min: 'coverageLimits.personalProperty.minAmount',
+                  max: 'coverageLimits.personalProperty.maxAmount'
+                }
               },
               formData: {
                 path: 'coverageLimits.personalProperty.value',
                 type: 'integer',
-                required: true,
-                metaData: {
-                  target:
-                    '${Math.ceil(((it.coverageLimits.personalProperty.value / 100) * it.coverageLimits.dwelling.value))}'
-                }
+                required: true
               },
               children: []
             },
             {
-              id: 139,
+              id: '02ad7385-fa1d-4554-9cc8-7c7bbfa53d10',
               type: '$INPUT',
               path: 'coverageLimits.lossOfUse.value',
               dependencies: [],
               data: {
                 component: 'display',
                 label: 'Loss of Use Limit',
-                size: '12',
-                className: 'side-by-side',
+                size: '6',
                 extendedProperties: {
                   output: 'currency'
                 }
@@ -444,253 +414,48 @@ const mock = {
               formData: {
                 path: 'coverageLimits.lossOfUse.value',
                 type: 'integer',
-                required: true,
                 metaData: {
-                  target:
-                    '${Math.ceil(((it.coverageLimits.lossOfUse.value / 100) * it.coverageLimits.dwelling.value))}'
+                  target: '${it.coverageLimits.lossOfUse.value}'
                 }
               },
               children: []
             },
             {
-              id: 140,
-              type: '$INPUT',
-              path: 'coverageLimits.personalLiability.value',
-              dependencies: [],
-              data: {
-                component: 'selectInteger',
-                label: 'Personal Liability Limit',
-                size: '12',
-                className: 'side-by-side',
-                segmented: true
-              },
-              formData: {
-                path: 'coverageLimits.personalLiability.value',
-                type: 'integer',
-                required: true,
-                metaData: {
-                  enum: [
-                    { label: '$ 100,000', answer: 100000 },
-                    { label: '$ 300,000', answer: 300000 }
-                  ]
-                }
-              },
-              children: []
-            },
-            {
-              id: 141,
-              type: '$INPUT',
-              path: 'coverageLimits.medicalPayments.value',
-              dependencies: [],
-              data: {
-                component: 'display',
-                label: 'Medical Payments to Others Limit',
-                size: '12',
-                className: 'side-by-side',
-                segmented: true,
-                extendedProperties: {
-                  output: 'currency'
-                },
-                dataSource: []
-              },
-              formData: {
-                path: 'coverageLimits.medicalPayments.value',
-                type: 'integer',
-                required: true,
-                metaData: {
-                  target: '${2000}'
-                }
-              },
-              children: []
-            }
-          ]
-        },
-        {
-          id: 1000042,
-          type: '$SECTION',
-          dependencies: [],
-          data: {
-            className: 'other-coverages',
-            size: '3'
-          },
-          formData: {},
-          className: 'test',
-          children: [
-            {
-              id: 143,
-              type: '$TITLE',
-              dependencies: [],
-              data: {
-                text: 'Other Coverages'
-              },
-              formData: {},
-              children: []
-            },
-            {
-              id: 144,
-              type: '$INPUT',
-              path: 'coverageLimits.moldProperty.value',
-              dependencies: [],
-              data: {
-                component: 'selectInteger',
-                label: 'Mold Property',
-                size: '12'
-              },
-              formData: {
-                path: 'coverageLimits.moldProperty.value',
-                type: 'integer',
-                required: true,
-                metaData: {
-                  enum: [
-                    {
-                      label: '$ 10,000',
-                      answer: 10000
-                    },
-                    {
-                      label: '$ 25,000',
-                      answer: 25000
-                    },
-                    {
-                      label: '$ 50,000',
-                      answer: 50000
-                    }
-                  ]
-                }
-              },
-              children: []
-            },
-            {
-              id: 145,
-              type: '$INPUT',
-              path: 'coverageLimits.moldLiability.value',
-              dependencies: [],
-              data: {
-                component: 'selectInteger',
-                label: 'Mold Liability Limit',
-                size: '12'
-              },
-              formData: {
-                path: 'coverageLimits.moldLiability.value',
-                type: 'integer',
-                required: true,
-                metaData: {
-                  enum: [
-                    {
-                      label: '$ 50,000',
-                      answer: 50000
-                    },
-                    {
-                      label: '$ 100,000',
-                      answer: 100000
-                    }
-                  ]
-                }
-              },
-              children: []
-            },
-            {
-              id: 146,
+              id: '2d63a166-8e4f-4c4a-829d-d54c067e3c39',
               type: '$INPUT',
               path: 'coverageOptions.personalPropertyReplacementCost.answer',
               dependencies: [],
               data: {
-                disabled: {
-                  path: 'coverageLimits.personalProperty.value',
-                  value: '0',
-                  defaultValue: ''
-                },
                 component: 'radio',
+                label: 'Personal Property Repl Cost',
+                size: '6',
                 segmented: true,
-                label: 'Personal Property Replacement Cost',
-                size: '12',
-                extendedProperties: {
-                  watchFields: [
-                    {
-                      field: 'coverageLimits.personalProperty.value',
-                      becomes: 0,
-                      to: false
-                    },
-                    {
-                      field: 'coverageLimits.personalProperty.value',
-                      becomes: 25,
-                      to: true
-                    },
-                    {
-                      field: 'coverageLimits.personalProperty.value',
-                      becomes: 35,
-                      to: true
-                    },
-                    {
-                      field: 'coverageLimits.personalProperty.value',
-                      becomes: 50,
-                      to: true
-                    }
-                  ]
-                }
+                dataSource: [
+                  { label: 'No', answer: false },
+                  { label: 'Yes', answer: true }
+                ]
               },
               formData: {
                 path: 'coverageOptions.personalPropertyReplacementCost.answer',
                 type: 'boolean',
-                required: true,
-                metaData: {
-                  enum: [
-                    {
-                      label: 'No',
-                      answer: false
-                    },
-                    {
-                      label: 'Yes',
-                      answer: true
-                    }
-                  ]
-                }
-              },
-              children: []
-            },
-            {
-              id: 147,
-              type: '$INPUT',
-              path: 'coverageLimits.ordinanceOrLaw.value',
-              dependencies: [],
-              data: {
-                component: 'selectInteger',
-                label: 'Ordinance or Law Coverage Limit',
-                size: '12'
-              },
-              formData: {
-                path: 'coverageLimits.ordinanceOrLaw.value',
-                type: 'integer',
-                required: true,
-                metaData: {
-                  enum: [
-                    {
-                      label: '25% of Dwelling Limit',
-                      answer: 25
-                    },
-                    {
-                      label: '50% of Dwelling Limit',
-                      answer: 50
-                    }
-                  ]
-                }
+                required: true
               },
               children: []
             }
           ]
         },
         {
-          id: 1000048,
+          name: 'Deductibles',
+          id: '36c89c9e-5d95-465b-9426-308ebc1e8350',
           type: '$SECTION',
           dependencies: [],
           data: {
-            className: 'deductibles',
-            size: '2'
+            size: '4'
           },
           formData: {},
-          className: 'test',
           children: [
             {
-              id: 149,
+              id: '33ea1392-e18a-435c-8163-ba0e11a30f38',
               type: '$TITLE',
               dependencies: [],
               data: {
@@ -700,609 +465,54 @@ const mock = {
               children: []
             },
             {
-              id: 150,
-              component: '$INPUT',
-              path: 'deductibles.allOtherPerils.value',
+              id: 'e1b7d921-2e61-42cd-8e80-20808f610ca0',
+              type: '$INPUT',
+              path: 'deductibles.buildingDeductible.value',
               dependencies: [],
               data: {
                 component: 'selectInteger',
-                label: 'All Other Perils',
+                label: 'Building Deductible',
                 size: '12'
               },
               formData: {
-                path: 'deductibles.allOtherPerils.value',
+                path: 'deductibles.buildingDeductible.value',
                 type: 'integer',
                 required: true,
                 metaData: {
                   enum: [
-                    {
-                      label: '$ 500',
-                      answer: 500
-                    },
-                    {
-                      label: '$ 1,000',
-                      answer: 1000
-                    },
-                    {
-                      label: '$ 2,500',
-                      answer: 2500
-                    }
+                    { label: '$ 500', answer: 500 },
+                    { label: '$ 1,000', answer: 1000 },
+                    { label: '$ 2,000', answer: 2000 },
+                    { label: '$ 5,000', answer: 5000 },
+                    { label: '$ 10,000', answer: 10000 }
                   ]
                 }
               },
               children: []
             },
             {
-              id: 151,
+              id: '82cbb49d-e76b-41f3-a30e-92c283c27b00',
               type: '$INPUT',
-              path: 'deductibles.hurricane.value',
+              path: 'deductibles.personalPropertyDeductible.value',
               dependencies: [],
               data: {
                 component: 'selectInteger',
-                label: 'Hurricane Deductible',
-                size: '12',
-                extendedProperties: {
-                  outputLabel: 'Calculated Hurricane',
-                  output: 'currency'
-                }
+                label: 'Personal Property Deductible',
+                size: '12'
               },
               formData: {
-                path: 'deductibles.hurricane.value',
+                path: 'coverageLimits.moldLiability.value',
                 type: 'integer',
                 required: true,
                 metaData: {
                   enum: [
-                    {
-                      label: '2% of Dewlling Limit',
-                      answer: 2
-                    },
-                    {
-                      label: '5% of Dewlling Limit',
-                      answer: 5
-                    },
-                    {
-                      label: '10% of Dewlling Limit',
-                      answer: 10
-                    }
-                  ],
-                  target:
-                    '${Math.ceil(((it.deductibles.hurricane.value / 100) * it.coverageLimits.dwelling.value))}'
-                }
-              },
-              children: []
-            },
-            {
-              id: 152,
-              type: '$INPUT',
-              path: 'deductibles.sinkhole.value',
-              dependencies: [],
-              data: {
-                component: 'selectInteger',
-                label: 'Sinkhole',
-                size: '12',
-                dataSource: [
-                  {
-                    answer: 0,
-                    label: 'Coverage Excluded'
-                  },
-                  {
-                    answer: 10,
-                    label: '10% of Dwelling Limit'
-                  }
-                ],
-                extendedProperties: {
-                  outputLabel: 'Calculated Sinkhole',
-                  output: 'currency'
-                }
-              },
-              formData: {
-                path: 'deductibles.sinkhole.value',
-                type: 'integer',
-                required: true,
-                metaData: {
-                  target:
-                    '${Math.ceil(((it.deductibles.sinkhole.value / 100) * it.coverageLimits.dwelling.value))}'
-                }
-              },
-              children: []
-            }
-          ]
-        },
-        {
-          id: 1000053,
-          type: '$SECTION',
-          dependencies: [],
-          data: {
-            className: 'discounts',
-            size: '2'
-          },
-          formData: {},
-          className: 'test',
-          children: [
-            {
-              id: 154,
-              type: '$TITLE',
-              dependencies: [],
-              data: {
-                text: 'Discounts'
-              },
-              formData: {},
-              children: []
-            },
-            {
-              id: 155,
-              type: '$INPUT',
-              path: 'property.burglarAlarm',
-              dependencies: [],
-              data: {
-                segmented: true,
-                component: 'radio',
-                label: 'Burglar Alarm',
-                size: '12'
-              },
-              formData: {
-                path: 'property.burglarAlarm',
-                type: 'boolean',
-                metaData: {
-                  enum: [
-                    {
-                      label: 'No',
-                      answer: false
-                    },
-                    {
-                      label: 'Yes',
-                      answer: true
-                    }
-                  ]
-                },
-                children: []
-              },
-              children: []
-            },
-            {
-              id: 156,
-              type: '$INPUT',
-              path: 'property.fireAlarm',
-              dependencies: [],
-              data: {
-                segmented: true,
-                component: 'radio',
-                label: 'Fire Alarm',
-                size: '12'
-              },
-              formData: {
-                path: 'property.fireAlarm',
-                type: 'boolean',
-                metaData: {
-                  enum: [
-                    {
-                      label: 'No',
-                      answer: false
-                    },
-                    {
-                      label: 'Yes',
-                      answer: true
-                    }
-                  ]
-                },
-                children: []
-              },
-              children: []
-            },
-            {
-              id: 157,
-              type: '$INPUT',
-              path: 'property.sprinkler',
-              dependencies: [],
-              data: {
-                segmented: true,
-                component: 'radio',
-                label: 'Sprinkler',
-                size: '12'
-              },
-              formData: {
-                path: 'property.sprinkler',
-                type: 'string',
-                required: true,
-                metaData: {
-                  enum: [
-                    {
-                      label: 'N',
-                      answer: 'N'
-                    },
-                    {
-                      label: 'A',
-                      answer: 'A'
-                    },
-                    {
-                      label: 'B',
-                      answer: 'B'
-                    }
-                  ]
-                },
-                children: []
-              },
-              children: []
-            }
-          ]
-        },
-        {
-          id: 1000058,
-          type: '$SECTION',
-          dependencies: [],
-          data: {
-            className: 'wind-mit'
-          },
-          formData: {},
-          className: 'test',
-          children: [
-            {
-              id: 159,
-              type: '$TITLE',
-              dependencies: [],
-              data: {
-                text: 'Wind Mitigation'
-              },
-              formData: {},
-              children: []
-            },
-            {
-              id: 160,
-              component: '$INPUT',
-              path: 'property.windMitigation.roofCovering',
-              dependencies: [],
-              data: {
-                component: 'select',
-                label: 'Roof Covering',
-                size: '6'
-              },
-              formData: {
-                path: 'property.windMitigation.roofCovering',
-                type: 'string',
-                required: true,
-                metaData: {
-                  enum: [
-                    {
-                      label: 'Non-FBC',
-                      answer: 'Non-FBC'
-                    },
-                    {
-                      label: 'FBC',
-                      answer: 'FBC'
-                    },
-                    {
-                      label: 'Other',
-                      answer: 'Other'
-                    }
+                    { label: '$ 500', answer: 500 },
+                    { label: '$ 1,000', answer: 1000 },
+                    { label: '$ 2,000', answer: 2000 },
+                    { label: '$ 5,000', answer: 5000 },
+                    { label: '$ 10,000', answer: 10000 }
                   ]
                 }
-              },
-              children: []
-            },
-            {
-              id: 161,
-              type: '$INPUT',
-              path: 'property.windMitigation.floridaBuildingCodeWindSpeed',
-              dependencies: [],
-              data: {
-                component: 'number',
-                label: 'FBC Wind Speed',
-                size: '6'
-              },
-              formData: {},
-              children: []
-            },
-            {
-              id: 162,
-              type: '$INPUT',
-              path: 'property.windMitigation.roofDeckAttachment',
-              dependencies: [],
-              data: {
-                component: 'select',
-                label: 'Roof Deck Attachment',
-                size: '6'
-              },
-              formData: {
-                path: 'property.windMitigation.roofDeckAttachment',
-                type: 'integer',
-                required: true,
-                metaData: {
-                  enum: [
-                    {
-                      label: 'A',
-                      answer: 'A'
-                    },
-                    {
-                      label: 'B',
-                      answer: 'B'
-                    },
-                    {
-                      label: 'C',
-                      answer: 'C'
-                    },
-                    {
-                      label: 'D',
-                      answer: 'D'
-                    },
-                    {
-                      label: 'Concrete',
-                      answer: 'Concrete'
-                    },
-                    {
-                      label: 'Other',
-                      answer: 'Other'
-                    }
-                  ]
-                }
-              },
-              children: []
-            },
-            {
-              id: 163,
-              type: '$INPUT',
-              path:
-                'property.windMitigation.floridaBuildingCodeWindSpeedDesign',
-              dependencies: [],
-              data: {
-                component: 'number',
-                label: 'FBC Wind Speed Design',
-                size: '6'
-              },
-              formData: {},
-              children: []
-            },
-            {
-              id: 164,
-              type: '$INPUT',
-              path: 'property.windMitigation.roofToWallConnection',
-              dependencies: [],
-              data: {
-                component: 'select',
-                label: 'Roof to Wall Attachment',
-                size: '6'
-              },
-              formData: {
-                path: 'property.windMitigation.roofToWallConnection',
-                type: 'string',
-                required: true,
-                metaData: {
-                  enum: [
-                    {
-                      label: 'Toe Nails',
-                      answer: 'Toe Nails'
-                    },
-                    {
-                      label: 'Clips',
-                      answer: 'Clips'
-                    },
-                    {
-                      label: 'Single Wraps',
-                      answer: 'Single Wraps'
-                    },
-                    {
-                      label: 'Double Wraps',
-                      answer: 'Double Wraps'
-                    },
-                    {
-                      label: 'Other',
-                      answer: 'Other'
-                    }
-                  ]
-                }
-              },
-              children: []
-            },
-            {
-              id: 165,
-              type: '$INPUT',
-              path: 'property.windMitigation.terrain',
-              dependencies: [],
-              data: {
-                component: 'select',
-                label: 'Terrain',
-                size: '6',
-                segmented: true
-              },
-              formData: {
-                path: 'property.windMitigation.terrain',
-                type: 'string',
-                required: true,
-                metaData: {
-                  enum: [
-                    {
-                      label: 'B',
-                      answer: 'B'
-                    },
-                    {
-                      label: 'C',
-                      answer: 'C'
-                    },
-                    {
-                      label: 'HVHZ',
-                      answer: 'HVHZ'
-                    },
-                    {
-                      label: 'Other',
-                      answer: 'Other'
-                    }
-                  ]
-                }
-              },
-              children: []
-            },
-            {
-              id: 166,
-              type: '$INPUT',
-              path: 'property.windMitigation.roofGeometry',
-              dependencies: [],
-              data: {
-                component: 'select',
-                label: 'Roof Geometry',
-                size: '6'
-              },
-              formData: {
-                path: 'property.windMitigation.roofGeometry',
-                type: 'string',
-                required: true,
-                metaData: {
-                  enum: [
-                    {
-                      label: 'Flat',
-                      answer: 'Flat'
-                    },
-                    {
-                      label: 'Gable',
-                      answer: 'Gable'
-                    },
-                    {
-                      label: 'Hip',
-                      answer: 'Hip'
-                    },
-                    {
-                      label: 'Other',
-                      answer: 'Other'
-                    }
-                  ]
-                }
-              },
-              children: []
-            },
-            {
-              id: 167,
-              type: '$INPUT',
-              path: 'property.windMitigation.internalPressureDesign',
-              dependencies: [],
-              data: {
-                component: 'select',
-                label: 'Internal Pressure Design',
-                size: '6'
-              },
-              formData: {
-                path: 'property.windMitigation.internalPressureDesign',
-                type: 'string',
-                required: true,
-                metaData: {
-                  enum: [
-                    {
-                      label: 'Enclosed',
-                      answer: 'Enclosed'
-                    },
-                    {
-                      label: 'Partial',
-                      answer: 'Partial'
-                    },
-                    {
-                      label: 'Other',
-                      answer: 'Other'
-                    }
-                  ]
-                }
-              },
-              children: []
-            },
-            {
-              id: 168,
-              type: '$INPUT',
-              path: 'property.windMitigation.secondaryWaterResistance',
-              dependencies: [],
-              data: {
-                component: 'radio',
-                label: 'Secondary Water Resistance (SWR)',
-                size: '6',
-                segmented: true
-              },
-              formData: {
-                path: 'property.windMitigation.secondaryWaterResistance',
-                type: 'string',
-                required: true,
-                metaData: {
-                  enum: [
-                    {
-                      label: 'Yes',
-                      answer: 'Yes'
-                    },
-                    {
-                      label: 'No',
-                      answer: 'No'
-                    },
-                    {
-                      label: 'Other',
-                      answer: 'Other'
-                    }
-                  ]
-                }
-              },
-              children: []
-            },
-            {
-              id: 169,
-              type: '$INPUT',
-              path: 'property.windMitigation.windBorneDebrisRegion',
-              dependencies: [],
-              data: {
-                component: 'radio',
-                label: 'Wind Borne Debris Region (WBDR)',
-                size: '6',
-                segmented: true
-              },
-              formData: {
-                path: 'property.windMitigation.windBorneDebrisRegion',
-                type: 'string',
-                required: true,
-                metaData: {
-                  enum: [
-                    {
-                      label: 'Yes',
-                      answer: 'Yes'
-                    },
-                    {
-                      label: 'No',
-                      answer: 'No'
-                    },
-                    {
-                      label: 'Other',
-                      answer: 'Other'
-                    }
-                  ]
-                }
-              },
-              children: []
-            },
-            {
-              id: 170,
-              type: '$INPUT',
-              dependencies: [],
-              path: 'property.windMitigation.openingProtection',
-              data: {
-                component: 'select',
-                label: 'Opening Protection:',
-                size: '6'
-              },
-              formData: {
-                path: 'property.windMitigation.openingProtection',
-                type: 'string',
-                required: true,
-                metaData: {
-                  enum: [
-                    {
-                      label: 'None',
-                      answer: 'None'
-                    },
-                    {
-                      label: 'Basic',
-                      answer: 'Basic'
-                    },
-                    {
-                      label: 'Hurricane',
-                      answer: 'Hurricane'
-                    },
-                    {
-                      label: 'Other',
-                      answer: 'Other'
-                    }
-                  ]
-                },
-                children: []
               },
               children: []
             }
@@ -1327,63 +537,176 @@ const mock = {
       ]
     },
     {
-      name: 'mailingBilling',
+      name: 'additionalInterests',
       step: {},
-      meta: {},
       components: [
         {
-          id: 34576,
+          id: '3cd9ee83-7c45-45b2-87f3-6dabdfce260e',
           type: '$TITLE',
-          dependencies: [],
+          dependencies: [{ 'rating.worksheet': false }],
           data: {
-            text: 'Mailing Address',
-            icon: 'fa fa-envelope'
+            className: 'messages',
+            icon: 'fa fa-exclamation-circle',
+            text:
+              'Additional Interests cannot be accessed until Premium calculated.'
           },
           formData: {},
           children: []
         },
         {
-          id: 1,
-          type: '$CUSTOM',
-          dependencies: [],
+          id: 'fd4a8e5c-cb30-4342-9bec-adaa10887b86',
+          type: '$TITLE',
+          dependencies: [{ 'rating.worksheet': true }],
           data: {
-            component: '$ADDRESS',
+            text: 'Additional Interests'
+          },
+          formData: {},
+          children: []
+        },
+        {
+          id: 'f11b33f7-fd04-4a25-95ee-5a55c25a5ae3',
+          type: '$CUSTOM',
+          dependencies: [{ 'rating.worksheet': true }],
+          data: {
+            component: '$ADDITIONAL_INTERESTS',
             extendedProperties: {
-              watchFieldCustomClass: 'segmented-switch',
-              watchField: 'sameAsPropertyAddress',
-              fieldPrefix: 'policyHolderMailingAddress',
-              matchPrefix: 'property.physicalAddress'
+              types: [
+                'mortgagee',
+                'additionalInsured',
+                'additionalInterest',
+                'premiumFinance',
+                'billPayer'
+              ],
+              displayReferenceNumber: true
             }
           },
           formData: {},
           children: []
-        },
+        }
+      ]
+    },
+    {
+      name: 'mailingBilling',
+      step: {},
+      components: [
         {
-          id: 340933,
+          id: '1816b7dd-0a67-499f-86d0-d2a413a5517f',
           type: '$TITLE',
-          dependencies: [],
+          dependencies: [{ 'rating.worksheet': false }],
           data: {
-            text: 'Billing Information',
-            icon: 'fa fa-dollar'
+            className: 'messages',
+            icon: 'fa fa-exclamation-circle',
+            text:
+              'Billing cannot be accessed until there is a rating on the quote.'
           },
           formData: {},
           children: []
         },
         {
-          id: 348833,
-          type: '$CUSTOM',
-          dependencies: [],
+          id: 'a8d9f35c-27f1-4a26-b1a0-320ad7afddfc',
+          type: '$SECTION',
+          dependencies: [{ 'rating.worksheet': true }],
           data: {
-            component: '$BILLING',
-            dataSource: 'billPlans',
-            extendedProperties: {
-              subscribe: true
+            className: 'billing-address'
+          },
+          formData: {},
+          children: [
+            {
+              id: '4a9b2831-10b9-449e-aefe-90bd10180ceb',
+              type: '$TITLE',
+              dependencies: [],
+              data: {
+                text: 'Mailing Address'
+              },
+              formData: {},
+              children: []
+            },
+            {
+              id: '65345c40-2b54-4818-9778-d3f01404b16d',
+              type: '$CUSTOM',
+              dependencies: [],
+              data: {
+                component: '$ADDRESS',
+                extendedProperties: {
+                  watchFieldCustomClass: 'segmented-switch',
+                  watchField: 'sameAsPropertyAddress',
+                  fieldPrefix: 'policyHolderMailingAddress',
+                  matchPrefix: 'property.physicalAddress'
+                }
+              },
+              formData: {},
+              children: []
             }
+          ]
+        },
+        {
+          id: '71035517-5930-46b5-b2b9-d9c570c1181d',
+          type: '$SECTION',
+          dependencies: [{ 'rating.worksheet': true }],
+          data: {
+            className: 'billing-information'
           },
-          formData: {
-            required: true
-          },
-          children: []
+          formData: {},
+          children: [
+            {
+              id: '76e6ef7b-6ec4-4b1c-b823-a52fa0bf8da7',
+              type: '$TITLE',
+              dependencies: [],
+              data: {
+                text: 'Billing Information'
+              },
+              formData: {},
+              children: []
+            },
+            {
+              id: '18c6eba7-d5ef-4aa8-9ad3-3a9810d3f98e',
+              type: '$CUSTOM',
+              dependencies: [],
+              data: {
+                component: '$BILLING',
+                extendedProperties: {
+                  subscribe: true
+                }
+              },
+              formData: {
+                required: true
+              },
+              children: []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      name: 'notes',
+      step: {},
+      components: [
+        {
+          id: '22119960-d3a3-44aa-bc3e-0afe8fcbc870',
+          type: '$SECTION',
+          dependencies: [],
+          data: {},
+          formData: {},
+          children: [
+            {
+              id: 'ec826d85-475b-4155-b921-e9231df847c9',
+              type: '$TITLE',
+              dependencies: [],
+              data: {
+                text: 'History'
+              },
+              formData: {},
+              children: []
+            },
+            {
+              id: 'b8ade3d3-8e2d-49d6-92f8-d04e20879514',
+              type: '$NOTES_FILES',
+              dependencies: [],
+              data: {},
+              formData: {},
+              children: []
+            }
+          ]
         }
       ]
     },
@@ -1763,6 +1086,47 @@ const mock = {
           },
           formData: {},
           children: []
+        }
+      ]
+    },
+    {
+      name: 'application',
+      step: {},
+      components: [
+        {
+          id: 'cc01470d-8c90-4daf-9ac9-a465ca7184a5',
+          type: '$TITLE',
+          dependencies: [
+            { quoteInputState: 'Initial Data' },
+            { quoteInputState: 'Underwriting' }
+          ],
+          data: {
+            className: 'messages',
+            icon: 'fa fa-exclamation-circle',
+            text: 'Application cannot be sent due to Underwriting Validations'
+          },
+          formData: {},
+          children: []
+        },
+        {
+          id: 'caf7a9c2-2ba4-4815-87b6-21c48b596720',
+          type: '$SECTION',
+          dependencies: [
+            { quoteInputState: 'Qualified' },
+            { quoteInputState: 'Ready' }
+          ],
+          data: {},
+          formData: {},
+          children: [
+            {
+              id: '9593a84f-83bf-4895-8504-0eff1f4089bd',
+              type: '$APPLICATION',
+              dependencies: [],
+              data: {},
+              formData: {},
+              children: []
+            }
+          ]
         }
       ]
     }
