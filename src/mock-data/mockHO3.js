@@ -20,14 +20,14 @@ const mock = {
       components: [
         {
           name: 'ProducedBy',
-          id: 100100,
+          id: '3c74cf92-b61a-4498-8859-5d9cc8cb577e',
           type: '$SECTION',
           dependencies: [],
           data: {},
           formData: {},
           children: [
             {
-              id: 2,
+              id: '5edae808-9e75-4075-abf6-21e23c23c14d',
               type: '$TITLE',
               dependencies: [],
               data: {
@@ -37,7 +37,7 @@ const mock = {
               children: []
             },
             {
-              id: 3,
+              id: '05d5f45b-40ba-4acf-861c-2a165fa4b839',
               type: '$INPUT',
               path: 'effectiveDate',
               dependencies: [],
@@ -63,7 +63,7 @@ const mock = {
               children: []
             },
             {
-              id: 4,
+              id: '77e13b53-6bea-4576-bf24-5231d4d50a3f',
               type: '$CUSTOM',
               dependencies: [],
               data: {
@@ -80,7 +80,7 @@ const mock = {
         },
         {
           name: 'Policyholders',
-          id: 6,
+          id: '7639f8d4-3716-475e-9762-f94f03dd61c8',
           type: '$CUSTOM',
           dependencies: [],
           data: {
@@ -94,7 +94,7 @@ const mock = {
         },
         {
           name: 'PropertyAddress',
-          id: 10007,
+          id: '9911f280-424d-41d8-bf2b-534d6339f8f8',
           type: '$SECTION',
           dependencies: [],
           data: {
@@ -104,7 +104,7 @@ const mock = {
           formData: {},
           children: [
             {
-              id: 8,
+              id: 'cefdde5d-9032-48aa-994d-1f4bf3cd1fa6',
               type: '$TITLE',
               dependencies: [],
               data: {
@@ -114,7 +114,7 @@ const mock = {
               children: []
             },
             {
-              id: 18,
+              id: '57d97b8b-d82e-4261-8488-6dce86b6efdd',
               type: '$INPUT',
               path: 'property.physicalAddress.address1',
               dependencies: [],
@@ -128,7 +128,7 @@ const mock = {
               children: []
             },
             {
-              id: 19,
+              id: '807d2e0d-5c10-4c8b-bca2-8ce6d45ac8d0',
               type: '$INPUT',
               path: 'property.physicalAddress.address2',
               dependencies: [],
@@ -142,7 +142,7 @@ const mock = {
               children: []
             },
             {
-              id: 20,
+              id: '7f5600a8-97b0-4f88-9d87-f9d31a6cffbd',
               type: '$INPUT',
               path: 'property.physicalAddress.city',
               dependencies: [],
@@ -156,7 +156,7 @@ const mock = {
               children: []
             },
             {
-              id: 21,
+              id: '2df0ae71-dd13-4a5b-a861-4b8811896953',
               type: '$INPUT',
               path: 'property.physicalAddress.state',
               dependencies: [],
@@ -170,7 +170,7 @@ const mock = {
               children: []
             },
             {
-              id: 22,
+              id: 'fe820193-a6be-49d2-901f-e7bb0a850f0c',
               type: '$INPUT',
               path: 'property.physicalAddress.zip',
               dependencies: [],
@@ -187,7 +187,7 @@ const mock = {
         },
         {
           name: 'Location',
-          id: 100001,
+          id: 'b2a6bd25-8b63-4d7a-a8f6-063764f04d00',
           type: '$SECTION',
           dependencies: [],
           data: {
@@ -197,7 +197,7 @@ const mock = {
           formData: {},
           children: [
             {
-              id: 120,
+              id: 'a4f48952-aa46-44ef-9b5e-c5e6341fbbca',
               type: '$TITLE',
               dependencies: [],
               data: {
@@ -207,7 +207,7 @@ const mock = {
               children: []
             },
             {
-              id: 121,
+              id: 'a4efd131-5e31-4ab1-a7fd-55442aaa13c0',
               type: '$INPUT',
               path: 'property.yearBuilt',
               dependencies: [],
@@ -221,7 +221,7 @@ const mock = {
               children: []
             },
             {
-              id: 122,
+              id: '06a55c5c-fca2-4a49-8c8b-bb76cbab019a',
               type: '$INPUT',
               path: 'property.protectionClass',
               dependencies: [],
@@ -235,7 +235,7 @@ const mock = {
               children: []
             },
             {
-              id: 123,
+              id: '40808340-4da2-4b08-ab38-c0a969562027',
               type: '$INPUT',
               path: 'property.distanceToTidalWater',
               dependencies: [],
@@ -249,7 +249,7 @@ const mock = {
               children: []
             },
             {
-              id: 124,
+              id: '7f6a95dd-0848-4e22-8805-3c0e770eb7fe',
               type: '$INPUT',
               path: 'property.residenceType',
               dependencies: [],
@@ -263,7 +263,7 @@ const mock = {
               children: []
             },
             {
-              id: 125,
+              id: 'f5f12822-09c8-42e6-9cb0-87a49960d11a',
               type: '$INPUT',
               path: 'property.constructionType',
               dependencies: [],
@@ -303,7 +303,7 @@ const mock = {
               children: []
             },
             {
-              id: 126,
+              id: '6770a129-705d-4f38-9a8e-3f67a7bf92d4',
               type: '$INPUT',
               path: 'property.buildingCodeEffectivenessGrading',
               dependencies: [],
@@ -330,7 +330,7 @@ const mock = {
               children: []
             },
             {
-              id: 127,
+              id: '089600b6-6350-46d3-9ea3-8d5cfa0fe705',
               type: '$INPUT',
               path: 'property.distanceToFireHydrant',
               dependencies: [],
@@ -344,7 +344,7 @@ const mock = {
               children: []
             },
             {
-              id: 128,
+              id: 'c5bba8b4-da64-434d-9897-dba80a69160c',
               type: '$INPUT',
               path: 'property.squareFeet',
               dependencies: [],
@@ -358,7 +358,7 @@ const mock = {
               children: []
             },
             {
-              id: 129,
+              id: 'bf3d77ff-d6ea-4b29-8c4b-6347fbf91113',
               type: '$INPUT',
               path: 'property.yearOfRoof',
               dependencies: [],
@@ -372,7 +372,7 @@ const mock = {
               children: []
             },
             {
-              id: 130,
+              id: '26548d94-cb36-4244-a79c-7c734aa3bccc',
               type: '$INPUT',
               path: 'property.familyUnits',
               dependencies: [],
@@ -392,7 +392,7 @@ const mock = {
               children: []
             },
             {
-              id: 131,
+              id: '450aa423-f709-47b8-bbca-99dd94a74c08',
               type: '$INPUT',
               path: 'property.distanceToFireStation',
               dependencies: [],
@@ -406,7 +406,7 @@ const mock = {
               children: []
             },
             {
-              id: 132,
+              id: '75f752a8-8f5e-4d81-b3f2-228a4462d7dd',
               type: '$INPUT',
               path: 'property.floodZone',
               dependencies: [],
@@ -428,7 +428,7 @@ const mock = {
               children: []
             },
             {
-              id: 133,
+              id: '93a98349-6361-43cd-b525-03e16747b300',
               type: '$INPUT',
               path: 'property.id',
               dependencies: [],
@@ -445,7 +445,7 @@ const mock = {
         },
         {
           name: 'Coverages',
-          id: 100034,
+          id: '505c951c-5455-464f-be37-c5d019f381f0',
           type: '$SECTION',
           dependencies: [],
           data: {
@@ -453,10 +453,9 @@ const mock = {
             size: '5'
           },
           formData: {},
-          className: 'test',
           children: [
             {
-              id: 135,
+              id: 'ffca44fc-4798-4553-a724-90de74014445',
               type: '$TITLE',
               dependencies: [],
               data: {
@@ -466,7 +465,7 @@ const mock = {
               children: []
             },
             {
-              id: 136,
+              id: '869971a7-5f36-482c-9faf-0e099252b6bc',
               type: '$INPUT',
               path: 'coverageLimits.dwelling.value',
               dependencies: [],
@@ -474,14 +473,12 @@ const mock = {
                 component: 'currency',
                 label: 'Dwelling Limit',
                 size: '12',
-                className: '',
                 validation: ['isDwellingRange'],
                 extendedProperties: {
                   format: 'currency',
                   displayRange: true,
                   min: 'coverageLimits.dwelling.minAmount',
-                  max: 'coverageLimits.dwelling.maxAmount',
-                  step: 1000
+                  max: 'coverageLimits.dwelling.maxAmount'
                 }
               },
               formData: {
@@ -493,7 +490,7 @@ const mock = {
               children: []
             },
             {
-              id: 137,
+              id: '398ce68d-839c-4a49-bbf2-92fcc275da40',
               type: '$INPUT',
               path: 'coverageLimits.otherStructures.value',
               dependencies: [],
@@ -524,7 +521,7 @@ const mock = {
               children: []
             },
             {
-              id: 138,
+              id: '52e4217f-570c-4f7c-8c96-a50b509954a9',
               type: '$INPUT',
               path: 'coverageLimits.personalProperty.value',
               dependencies: [],
@@ -567,7 +564,7 @@ const mock = {
               children: []
             },
             {
-              id: 139,
+              id: '24ffebbf-541b-4228-8e31-497d18c6b502',
               type: '$INPUT',
               path: 'coverageLimits.lossOfUse.value',
               dependencies: [],
@@ -592,7 +589,7 @@ const mock = {
               children: []
             },
             {
-              id: 140,
+              id: 'f6afdf28-9cc8-472f-84f5-2d209c6517d2',
               type: '$INPUT',
               path: 'coverageLimits.personalLiability.value',
               dependencies: [],
@@ -617,7 +614,7 @@ const mock = {
               children: []
             },
             {
-              id: 141,
+              id: '0a81cf7f-a754-4fdb-8c67-2a2e31fd45e2',
               type: '$INPUT',
               path: 'coverageLimits.medicalPayments.value',
               dependencies: [],
@@ -646,7 +643,7 @@ const mock = {
         },
         {
           name: 'OtherCoverages',
-          id: 1000042,
+          id: '4a8b0f31-5bd5-481d-95db-be90dcb3b89b',
           type: '$SECTION',
           dependencies: [],
           data: {
@@ -654,10 +651,9 @@ const mock = {
             size: '3'
           },
           formData: {},
-          className: 'test',
           children: [
             {
-              id: 143,
+              id: '555ac19f-c411-44fb-a373-c3252a72d088',
               type: '$TITLE',
               dependencies: [],
               data: {
@@ -667,7 +663,7 @@ const mock = {
               children: []
             },
             {
-              id: 144,
+              id: '2bd854a5-47a1-4a91-b6ce-9b43f00f3b01',
               type: '$INPUT',
               path: 'coverageLimits.moldProperty.value',
               dependencies: [],
@@ -700,7 +696,7 @@ const mock = {
               children: []
             },
             {
-              id: 145,
+              id: '409966fe-20db-49d1-9b24-fa797a7d24b0',
               type: '$INPUT',
               path: 'coverageLimits.moldLiability.value',
               dependencies: [],
@@ -729,7 +725,7 @@ const mock = {
               children: []
             },
             {
-              id: 146,
+              id: 'b141e258-5074-4ba1-90bc-54864c4a69c6',
               type: '$INPUT',
               path: 'coverageOptions.personalPropertyReplacementCost.answer',
               dependencies: [],
@@ -788,7 +784,7 @@ const mock = {
               children: []
             },
             {
-              id: 147,
+              id: 'b5999281-fc47-410f-b5c5-763cec7c5907',
               type: '$INPUT',
               path: 'coverageLimits.ordinanceOrLaw.value',
               dependencies: [],
@@ -820,7 +816,7 @@ const mock = {
         },
         {
           name: 'Deductibles',
-          id: 1000048,
+          id: '30d719ce-9aa3-4e86-a40e-d5eadad535a0',
           type: '$SECTION',
           dependencies: [],
           data: {
@@ -828,10 +824,9 @@ const mock = {
             size: '2'
           },
           formData: {},
-          className: 'test',
           children: [
             {
-              id: 149,
+              id: '52685473-9060-4d6f-a957-e94338c0287e',
               type: '$TITLE',
               dependencies: [],
               data: {
@@ -841,7 +836,7 @@ const mock = {
               children: []
             },
             {
-              id: 150,
+              id: 'c03f149b-71df-4555-8dfa-2fc697fe3db8',
               component: '$INPUT',
               path: 'deductibles.allOtherPerils.value',
               dependencies: [],
@@ -874,7 +869,7 @@ const mock = {
               children: []
             },
             {
-              id: 151,
+              id: '6dab0dc0-6839-43da-8cb8-7108a6f4c00c',
               type: '$INPUT',
               path: 'deductibles.hurricane.value',
               dependencies: [],
@@ -913,7 +908,7 @@ const mock = {
               children: []
             },
             {
-              id: 152,
+              id: '4cbef727-5327-42f8-b62c-1e94556deefe',
               type: '$INPUT',
               path: 'coverageOptions.sinkholePerilCoverage.answer',
               dependencies: [],
@@ -951,7 +946,7 @@ const mock = {
         },
         {
           name: 'Discounts',
-          id: 1000053,
+          id: '6485a47b-e7a4-443f-9d43-ebbb1bd848e7',
           type: '$SECTION',
           dependencies: [],
           data: {
@@ -959,10 +954,9 @@ const mock = {
             size: '2'
           },
           formData: {},
-          className: 'test',
           children: [
             {
-              id: 154,
+              id: '1b525554-0138-4900-ba46-72de50984a88',
               type: '$TITLE',
               dependencies: [],
               data: {
@@ -972,7 +966,7 @@ const mock = {
               children: []
             },
             {
-              id: 155,
+              id: '597938ad-6ef4-4a19-977c-3cbaf857b055',
               type: '$INPUT',
               path: 'property.burglarAlarm',
               dependencies: [],
@@ -1002,7 +996,7 @@ const mock = {
               children: []
             },
             {
-              id: 156,
+              id: '70a40164-c71d-45b0-9029-b95a57a9291d',
               type: '$INPUT',
               path: 'property.fireAlarm',
               dependencies: [],
@@ -1032,7 +1026,7 @@ const mock = {
               children: []
             },
             {
-              id: 157,
+              id: '1ae18d58-26d3-49ea-af33-550100883f11',
               type: '$INPUT',
               path: 'property.sprinkler',
               dependencies: [],
@@ -1070,7 +1064,7 @@ const mock = {
         },
         {
           name: 'WindMitigation',
-          id: 1000058,
+          id: '598d0d15-42dc-4059-ad09-751dedb3b512',
           type: '$SECTION',
           dependencies: [],
           data: {
@@ -1079,7 +1073,7 @@ const mock = {
           formData: {},
           children: [
             {
-              id: 159,
+              id: '386a6cf2-afe0-40da-8c79-0a9106e26893',
               type: '$TITLE',
               dependencies: [],
               data: {
@@ -1089,7 +1083,7 @@ const mock = {
               children: []
             },
             {
-              id: 160,
+              id: '57f21212-7631-4dd7-9b42-55fe263b9491',
               component: '$INPUT',
               path: 'property.windMitigation.roofCovering',
               dependencies: [],
@@ -1122,7 +1116,7 @@ const mock = {
               children: []
             },
             {
-              id: 161,
+              id: '97f2109e-856c-4b86-8aa0-acba782b7c1e',
               type: '$INPUT',
               path: 'property.windMitigation.floridaBuildingCodeWindSpeed',
               dependencies: [],
@@ -1138,7 +1132,7 @@ const mock = {
               children: []
             },
             {
-              id: 162,
+              id: '45b74810-b565-4702-8d2e-f1fdf83833b2',
               type: '$INPUT',
               path: 'property.windMitigation.roofDeckAttachment',
               dependencies: [],
@@ -1183,7 +1177,7 @@ const mock = {
               children: []
             },
             {
-              id: 163,
+              id: '37fab2c3-0ed7-4538-910a-46aa9452f839',
               type: '$INPUT',
               path:
                 'property.windMitigation.floridaBuildingCodeWindSpeedDesign',
@@ -1201,7 +1195,7 @@ const mock = {
               children: []
             },
             {
-              id: 164,
+              id: 'df4710d0-2efb-4700-ac8d-74340f41f120',
               type: '$INPUT',
               path: 'property.windMitigation.roofToWallConnection',
               dependencies: [],
@@ -1242,7 +1236,7 @@ const mock = {
               children: []
             },
             {
-              id: 165,
+              id: '47e72599-1e7a-448a-b1e3-56d3fe244703',
               type: '$INPUT',
               path: 'property.windMitigation.terrain',
               dependencies: [],
@@ -1280,7 +1274,7 @@ const mock = {
               children: []
             },
             {
-              id: 166,
+              id: '01c51d1d-a6db-4976-b7d9-91442d81edb0',
               type: '$INPUT',
               path: 'property.windMitigation.roofGeometry',
               dependencies: [],
@@ -1317,7 +1311,7 @@ const mock = {
               children: []
             },
             {
-              id: 167,
+              id: 'cdcbaee8-bf97-4a1f-9a2d-a3c66b211635',
               type: '$INPUT',
               path: 'property.windMitigation.internalPressureDesign',
               dependencies: [],
@@ -1350,7 +1344,7 @@ const mock = {
               children: []
             },
             {
-              id: 168,
+              id: 'bc4be681-7e17-4eb5-8a61-c2f3229d7ed6',
               type: '$INPUT',
               path: 'property.windMitigation.secondaryWaterResistance',
               dependencies: [],
@@ -1384,7 +1378,7 @@ const mock = {
               children: []
             },
             {
-              id: 169,
+              id: '57723cd6-ec1c-40c9-97f7-aae75327e8e3',
               type: '$INPUT',
               path: 'property.windMitigation.windBorneDebrisRegion',
               dependencies: [],
@@ -1418,7 +1412,7 @@ const mock = {
               children: []
             },
             {
-              id: 170,
+              id: '85213569-d390-490a-bcfd-16791bde6d74',
               type: '$INPUT',
               dependencies: [],
               path: 'property.windMitigation.openingProtection',
@@ -1464,14 +1458,14 @@ const mock = {
       step: {},
       components: [
         {
-          id: 51320191033,
+          id: '7a4e45ee-7c2e-4f0f-9ac7-dc1b9aef8ee7',
           type: '$SECTION',
           dependencies: [],
           data: {},
           formData: {},
           children: [
             {
-              id: 0,
+              id: '0',
               type: '$TITLE',
               dependencies: [],
               data: {
@@ -1481,7 +1475,7 @@ const mock = {
               children: []
             },
             {
-              id: 1,
+              id: '1',
               type: '$CUSTOM',
               dependencies: [],
               data: {
@@ -1499,7 +1493,7 @@ const mock = {
       step: {},
       components: [
         {
-          id: 6560933,
+          id: '3cd9ee83-7c45-45b2-87f3-6dabdfce260e',
           type: '$TITLE',
           dependencies: [{ 'rating.worksheet': false }],
           data: {
@@ -1512,7 +1506,7 @@ const mock = {
           children: []
         },
         {
-          id: 6560955,
+          id: 'fd4a8e5c-cb30-4342-9bec-adaa10887b86',
           type: '$TITLE',
           dependencies: [{ 'rating.worksheet': true }],
           data: {
@@ -1522,7 +1516,7 @@ const mock = {
           children: []
         },
         {
-          id: 300,
+          id: 'f11b33f7-fd04-4a25-95ee-5a55c25a5ae3',
           type: '$CUSTOM',
           dependencies: [{ 'rating.worksheet': true }],
           data: {
@@ -1548,7 +1542,7 @@ const mock = {
       step: {},
       components: [
         {
-          id: 340933,
+          id: '1816b7dd-0a67-499f-86d0-d2a413a5517f',
           type: '$TITLE',
           dependencies: [{ 'rating.worksheet': false }],
           data: {
@@ -1561,7 +1555,7 @@ const mock = {
           children: []
         },
         {
-          id: 5152233354,
+          id: 'a8d9f35c-27f1-4a26-b1a0-320ad7afddfc',
           type: '$SECTION',
           dependencies: [{ 'rating.worksheet': true }],
           data: {
@@ -1570,7 +1564,7 @@ const mock = {
           formData: {},
           children: [
             {
-              id: 34576,
+              id: '4a9b2831-10b9-449e-aefe-90bd10180ceb',
               type: '$TITLE',
               dependencies: [],
               data: {
@@ -1580,7 +1574,7 @@ const mock = {
               children: []
             },
             {
-              id: 14436,
+              id: '65345c40-2b54-4818-9778-d3f01404b16d',
               type: '$CUSTOM',
               dependencies: [],
               data: {
@@ -1598,7 +1592,7 @@ const mock = {
           ]
         },
         {
-          id: 5152019254,
+          id: '71035517-5930-46b5-b2b9-d9c570c1181d',
           type: '$SECTION',
           dependencies: [{ 'rating.worksheet': true }],
           data: {
@@ -1607,7 +1601,7 @@ const mock = {
           formData: {},
           children: [
             {
-              id: 340934,
+              id: '76e6ef7b-6ec4-4b1c-b823-a52fa0bf8da7',
               type: '$TITLE',
               dependencies: [],
               data: {
@@ -1617,7 +1611,7 @@ const mock = {
               children: []
             },
             {
-              id: 348833,
+              id: '18c6eba7-d5ef-4aa8-9ad3-3a9810d3f98e',
               type: '$CUSTOM',
               dependencies: [],
               data: {
@@ -1640,14 +1634,14 @@ const mock = {
       step: {},
       components: [
         {
-          id: 5101254,
+          id: '22119960-d3a3-44aa-bc3e-0afe8fcbc870',
           type: '$SECTION',
           dependencies: [],
           data: {},
           formData: {},
           children: [
             {
-              id: 5152019255,
+              id: 'ec826d85-475b-4155-b921-e9231df847c9',
               type: '$TITLE',
               dependencies: [],
               data: {
@@ -1657,7 +1651,7 @@ const mock = {
               children: []
             },
             {
-              id: 515255,
+              id: 'b8ade3d3-8e2d-49d6-92f8-d04e20879514',
               type: '$NOTES_FILES',
               dependencies: [],
               data: {},
@@ -1673,7 +1667,7 @@ const mock = {
       step: {},
       components: [
         {
-          id: 340933,
+          id: '1f2f82b8-7b4b-4419-a147-a3c50b393e9a',
           type: '$TITLE',
           dependencies: [
             { hasUWError: true },
@@ -1689,7 +1683,7 @@ const mock = {
           children: []
         },
         {
-          id: 3402232,
+          id: '03d39ef5-010d-4ceb-8298-7f5d47ab0b99',
           type: '$GROUP',
           dependencies: [
             {
@@ -1705,7 +1699,7 @@ const mock = {
           formData: {},
           children: [
             {
-              id: 1023211113150,
+              id: 'b3f9079e-3400-475a-af04-3b4ba3d2ecd3',
               type: '$SECTION',
               dependencies: [],
               data: {
@@ -1714,7 +1708,7 @@ const mock = {
               formData: {},
               children: [
                 {
-                  id: 90339239393906,
+                  id: 'ea59c51d-f71e-4f1d-8198-178fe5499250',
                   type: '$TITLE',
                   dependencies: [],
                   data: {
@@ -1724,7 +1718,7 @@ const mock = {
                   children: []
                 },
                 {
-                  id: 102345224900,
+                  id: 'f4a1d4c4-d5ed-4551-accc-95eea2b52d0e',
                   type: '$CUSTOM',
                   dependencies: [],
                   data: {
@@ -1783,7 +1777,7 @@ const mock = {
               ]
             },
             {
-              id: 1005140,
+              id: '0248c645-acf8-462f-a22a-0df85a7d162f',
               type: '$SECTION',
               dependencies: [],
               data: {
@@ -1792,7 +1786,7 @@ const mock = {
               formData: {},
               children: [
                 {
-                  id: 9008264856,
+                  id: '0e6cab48-28c8-4878-bdaf-a5c49dfe7f08',
                   type: '$TITLE',
                   dependencies: [],
                   data: {
@@ -1802,7 +1796,7 @@ const mock = {
                   children: []
                 },
                 {
-                  id: 90854493201,
+                  id: 'a54b8722-7db3-4980-9674-10f8fd6f7318',
                   type: '$CUSTOM',
                   dependencies: [],
                   data: {
@@ -1963,7 +1957,7 @@ const mock = {
               ]
             },
             {
-              id: 100233140,
+              id: 'c62f27b9-517e-4f81-a366-c6a7890bcfad',
               type: '$SECTION',
               dependencies: [{ 'policyHolders[0].firstName': true }],
               data: {
@@ -1972,7 +1966,7 @@ const mock = {
               formData: {},
               children: [
                 {
-                  id: 903382406,
+                  id: 'ce642ba8-ce64-4d48-99cd-9dcb384c055f',
                   type: '$TITLE',
                   dependencies: [],
                   data: {
@@ -1982,7 +1976,7 @@ const mock = {
                   children: []
                 },
                 {
-                  id: 9000448302,
+                  id: 'caedcedb-6066-4aa6-8eba-8b7272751ee5',
                   type: '$CUSTOM',
                   dependencies: [],
                   data: {
@@ -2029,7 +2023,7 @@ const mock = {
               ]
             },
             {
-              id: 10022140,
+              id: 'f437d380-c77a-47c5-b434-a34ba2b2f279',
               type: '$SECTION',
               dependencies: [{ 'policyHolders[1].firstName': true }],
               data: {
@@ -2038,7 +2032,7 @@ const mock = {
               formData: {},
               children: [
                 {
-                  id: 905839506,
+                  id: '1913b679-6a02-4b15-881b-3a23501ec8b2',
                   type: '$TITLE',
                   dependencies: [],
                   data: {
@@ -2048,7 +2042,7 @@ const mock = {
                   children: []
                 },
                 {
-                  id: 909939503,
+                  id: 'c84f5a32-6a4a-4e73-beff-dff442dcea52',
                   type: '$CUSTOM',
                   dependencies: [],
                   data: {
@@ -2095,7 +2089,7 @@ const mock = {
               ]
             },
             {
-              id: 100140,
+              id: 'e4689ed9-9cff-415a-8885-c30ba47db7d8',
               type: '$SECTION',
               dependencies: [{ 'policyHolderMailingAddress.address1': true }],
               data: {
@@ -2104,7 +2098,7 @@ const mock = {
               formData: {},
               children: [
                 {
-                  id: 900623456,
+                  id: 'a78ce43c-f56f-48fb-9808-025069d5935f',
                   type: '$TITLE',
                   dependencies: [],
                   data: {
@@ -2114,7 +2108,7 @@ const mock = {
                   children: []
                 },
                 {
-                  id: 9004434,
+                  id: '687912d9-170d-4482-a4c5-22c1fce0bc68',
                   type: '$CUSTOM',
                   dependencies: [],
                   data: {
@@ -2164,7 +2158,7 @@ const mock = {
               ]
             },
             {
-              id: 90053453,
+              id: '9654c0cc-7373-45c3-ab51-2c0ce4cea0b3',
               type: '$SECTION',
               dependencies: [],
               data: {
@@ -2173,7 +2167,7 @@ const mock = {
               formData: {},
               children: [
                 {
-                  id: 90644206,
+                  id: 'c8b8eb90-aa5b-43cb-b94e-f48457524862',
                   type: '$TITLE',
                   dependencies: [],
                   data: {
@@ -2183,7 +2177,7 @@ const mock = {
                   children: []
                 },
                 {
-                  id: 90456207,
+                  id: '3780b829-d438-416d-8596-391d0959cb5f',
                   type: '$CUSTOM',
                   dependencies: [],
                   data: {
@@ -2206,7 +2200,7 @@ const mock = {
       step: {},
       components: [
         {
-          id: 340933,
+          id: 'cc01470d-8c90-4daf-9ac9-a465ca7184a5',
           type: '$TITLE',
           dependencies: [
             { quoteInputState: 'Initial Data' },
@@ -2221,7 +2215,7 @@ const mock = {
           children: []
         },
         {
-          id: 5142019254,
+          id: 'caf7a9c2-2ba4-4815-87b6-21c48b596720',
           type: '$SECTION',
           dependencies: [
             { quoteInputState: 'Qualified' },
@@ -2231,7 +2225,7 @@ const mock = {
           formData: {},
           children: [
             {
-              id: 5142019255,
+              id: '9593a84f-83bf-4895-8504-0eff1f4089bd',
               type: '$APPLICATION',
               dependencies: [],
               data: {},
