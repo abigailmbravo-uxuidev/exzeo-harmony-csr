@@ -14,7 +14,7 @@ export class AIDeleteReinstateModal extends React.Component {
     } = this.props;
 
     return (
-      <div className="modal">
+      <div className="modal modal-sm">
         <form id="AIDeleteReinstateModal" onSubmit={handleSubmit(handleAction)}>
           <div className="card">
             <div className="card-header">
@@ -23,7 +23,7 @@ export class AIDeleteReinstateModal extends React.Component {
               </h4>
             </div>
             <div className="card-block">
-              {`Are you sure that you want to ${actionType} ${selectedAI.type}: ${selectedAI.name1}?`}
+              {`Are you sure that you want to ${actionType} ${selectedAI.type}: ${selectedAI.name1} ${selectedAI.name2}?`}
             </div>
             <div className="card-footer">
               <div className="btn-group">
