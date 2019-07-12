@@ -94,7 +94,7 @@ export async function fetchAddresses(address) {
  * @param {string} firstName
  * @param {string} lastName
  * @param {string} address
- * @param {string} companyCode
+ * @param {string} product
  * @param {string} quoteNumber
  * @param {string} quoteState
  * @param {string} currentPage
@@ -112,13 +112,15 @@ export async function fetchQuotes({
   currentPage,
   pageSize,
   sort,
-  sortDirection
+  sortDirection,
+  product
 }) {
   // TODO: the service requires that companyCode and state are included in this query. Hard coding for now.
+  //       Also, quote-data is currently ignoring 'product'.
   const config = {
     service: 'quote-data',
     method: 'GET',
-    path: `/quotes?companyCode=TTIC&state=FL&quoteNumber=${quoteNumber}&lastName=${lastName}&firstName=${firstName}&propertyAddress=${address}&page=${currentPage}&pageSize=${pageSize}&sort=${sort}&sortDirection=${sortDirection}&quoteState=${quoteState}`
+    path: `/quotes?companyCode=TTIC&state=FL&product=${product}&quoteNumber=${quoteNumber}&lastName=${lastName}&firstName=${firstName}&propertyAddress=${address}&page=${currentPage}&pageSize=${pageSize}&sort=${sort}&sortDirection=${sortDirection}&quoteState=${quoteState}`
   };
 
   try {
@@ -462,8 +464,9 @@ export async function handleQuoteSearch(data) {
       currentPage: setPageNumber(data.currentPage, data.isNext),
       pageSize: RESULTS_PAGE_SIZE,
       sort: 'quoteNumber',
-      sortDirection: 'desc'
+      sortDirection: 'desc',
       //  TODO Currently not being used, keeping here for when C and P are added.
+      product: formatForURI(data.product)
       // companyCode: DEFAULT_SEARCH_PARAMS.companyCode,
       // state: DEFAULT_SEARCH_PARAMS.state,
     };
