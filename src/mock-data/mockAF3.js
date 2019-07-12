@@ -98,7 +98,6 @@ const mock = {
           type: '$SECTION',
           dependencies: [],
           data: {
-            className: 'property-address',
             size: '6'
           },
           formData: {},
@@ -191,7 +190,6 @@ const mock = {
           type: '$SECTION',
           dependencies: [],
           data: {
-            className: 'home-location',
             size: '6'
           },
           formData: {},
@@ -525,7 +523,7 @@ const mock = {
       step: {},
       components: [
         {
-          id: 200,
+          id: '6fb8975a-1a56-4280-8021-484d8da24dfd',
           type: '$CUSTOM',
           dependencies: [],
           data: {
@@ -715,7 +713,7 @@ const mock = {
       step: {},
       components: [
         {
-          id: 1000,
+          id: '3138607e-ebaa-42f8-85a6-145274897abc',
           type: '$CUSTOM',
           dependencies: [],
           data: {
