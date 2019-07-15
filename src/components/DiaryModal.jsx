@@ -75,7 +75,7 @@ export class DiaryModal extends Component {
       const selectedAssignee = assigneeAnswers.find(
         u => String(u.label) === String(defaultData.assignee)
       );
-      change('assignee.id', selectedAssignee.answer);
+      change('assignee.id', selectedAssignee ? selectedAssignee.answer : '');
     }
     change('reason', defaultData.reason);
 
@@ -90,7 +90,6 @@ export class DiaryModal extends Component {
 
   render() {
     const {
-      diaryId,
       assigneeAnswers,
       handleSubmit,
       submitting,
