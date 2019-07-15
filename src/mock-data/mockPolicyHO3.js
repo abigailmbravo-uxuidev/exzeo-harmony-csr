@@ -62,6 +62,17 @@ const mock = {
                       className: 'coverage',
                       details: [
                         {
+                          label: 'Coverage Limits',
+                          items: [
+                            {
+                              format: 'conditionalValue',
+                              path: 'none',
+                              conditions: [''],
+                              defaultValue: 'Value'
+                            }
+                          ]
+                        },
+                        {
                           label: 'Dwelling Limit',
                           items: [
                             {
@@ -140,6 +151,17 @@ const mock = {
                     extendedProperties: {
                       className: 'coverage',
                       details: [
+                        {
+                          label: 'Coverage Limits',
+                          items: [
+                            {
+                              format: 'conditionalValue',
+                              path: 'none',
+                              conditions: [''],
+                              defaultValue: 'Value'
+                            }
+                          ]
+                        },
                         {
                           label: 'Mold Property Limit',
                           items: [
@@ -231,7 +253,19 @@ const mock = {
                   data: {
                     extendedProperties: {
                       className: 'coverage',
-                      details: []
+                      details: [
+                        {
+                          label: 'Discount/Surcharge',
+                          items: [
+                            {
+                              format: 'conditionalValue',
+                              path: 'none',
+                              conditions: [''],
+                              defaultValue: 'Value'
+                            }
+                          ]
+                        }
+                      ]
                     }
                   },
                   formData: {},
