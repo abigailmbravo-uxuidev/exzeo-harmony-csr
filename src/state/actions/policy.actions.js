@@ -740,3 +740,23 @@ export function getPoliciesForAgency({
     }
   };
 }
+
+/**
+ *
+ * @param policyNumber
+ * @returns {Function}
+ */
+export function initializePolicyWorkflow(policyNumber) {
+  return async dispatch => {
+    try {
+      dispatch(getPolicy(policyNumber));
+      dispatch(getEffectiveDateChangeReasons());
+      dispatch(getPaymentHistory(policyNumber));
+      dispatch(getPaymentOptionsApplyPayments());
+      dispatch(getCancelOptions());
+      dispatch(getEndorsementHistory(policyNumber));
+    } catch (error) {
+      dispatch(errorActions.setAppError(error));
+    }
+  };
+}

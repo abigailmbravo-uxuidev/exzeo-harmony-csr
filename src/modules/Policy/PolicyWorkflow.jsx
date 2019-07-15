@@ -43,7 +43,8 @@ import {
   getPaymentOptionsApplyPayments,
   getPaymentHistory,
   getCancelOptions,
-  getEndorsementHistory
+  getEndorsementHistory,
+  initializePolicyWorkflow
 } from '../../state/actions/policy.actions';
 import {
   startWorkflow,
@@ -92,25 +93,16 @@ export class PolicyWorkflow extends React.Component {
   }
 
   getConfigForJsonTransform = defaultMemoize(getConfigForJsonTransform);
-  // TODO: next step is to make an 'initialize' action that does all of this. Then this component will only need to know about one action.
+
   componentDidMount() {
     const {
-      getEffectiveDateChangeReasons,
-      getCancelOptions,
-      getPolicy,
-      getPaymentHistory,
-      getPaymentOptionsApplyPayments,
-      getEndorsementHistory,
+      initializePolicyWorkflow,
       match: {
         params: { policyNumber }
       }
     } = this.props;
-    getEffectiveDateChangeReasons();
-    getPolicy(policyNumber);
-    getPaymentHistory(policyNumber);
-    getPaymentOptionsApplyPayments();
-    getCancelOptions();
-    getEndorsementHistory(policyNumber);
+
+    initializePolicyWorkflow(policyNumber);
     this.getTemplate();
   }
 
@@ -424,6 +416,7 @@ export default connect(
     getZipCodeSettings: getZipcodeSettings,
     setAppState,
     startWorkflow,
-    toggleDiary
+    toggleDiary,
+    initializePolicyWorkflow
   }
 )(PolicyWorkflow);
