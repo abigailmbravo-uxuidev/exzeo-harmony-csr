@@ -423,29 +423,23 @@ const mock = {
                   { label: '35%', answer: 35 },
                   { label: '36%', answer: 36 },
                   { label: '37%', answer: 37 },
-                  { label: '37%', answer: 37 },
                   { label: '38%', answer: 38 },
                   { label: '39%', answer: 39 },
                   { label: '40%', answer: 40 },
-                  { label: '40%', answer: 40 },
-                  { label: '40%', answer: 40 },
-                  { label: '40%', answer: 40 },
-                  { label: '40%', answer: 40 },
-                  { label: '40%', answer: 40 },
-                  { label: '40%', answer: 40 },
-                  { label: '40%', answer: 40 },
-                  { label: '40%', answer: 40 },
-                  { label: '40%', answer: 40 },
-                  { label: '40%', answer: 40 },
-                  { label: '5%', answer: 5 }
+                  { label: '41%', answer: 41 },
+                  { label: '42%', answer: 42 },
+                  { label: '43%', answer: 43 },
+                  { label: '44%', answer: 44 },
+                  { label: '45%', answer: 45 },
+                  { label: '46%', answer: 46 },
+                  { label: '47%', answer: 47 },
+                  { label: '48%', answer: 48 },
+                  { label: '49%', answer: 49 },
+                  { label: '50%', answer: 50 }
                 ],
                 extendedProperties: {
                   output: 'currency',
                   outputLabel: 'Personal Property Limit'
-                  // format: 'currency',
-                  // displayRange: true,
-                  // min: 'coverageLimits.personalProperty.minAmount',
-                  // max: 'coverageLimits.personalProperty.maxAmount'
                 }
               },
               formData: {
