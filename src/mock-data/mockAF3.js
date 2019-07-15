@@ -93,426 +93,452 @@ const mock = {
           children: []
         },
         {
-          name: 'PropertyAddress',
-          id: '0842592e-072d-4171-bc72-5141d43a1f39',
+          name: 'PropertyHomeLocation',
+          id: 'b1614e7d-1657-424b-b206-d06bfbde3',
           type: '$SECTION',
           dependencies: [],
           data: {
-            size: '6'
+            size: '12'
           },
           formData: {},
           children: [
             {
-              id: '8050ead1-bb21-4ffa-8a41-0547ef748ffb',
-              type: '$TITLE',
+              name: 'PropertyAddress',
+              id: '0842592e-072d-4171-bc72-5141d43a1f39',
+              type: '$SECTION',
               dependencies: [],
               data: {
-                text: 'Property Address'
+                size: '6'
               },
               formData: {},
-              children: []
+              children: [
+                {
+                  id: '8050ead1-bb21-4ffa-8a41-0547ef748ffb',
+                  type: '$TITLE',
+                  dependencies: [],
+                  data: {
+                    text: 'Property Address'
+                  },
+                  formData: {},
+                  children: []
+                },
+                {
+                  id: '12e86c6b-ed7c-45d1-9ad3-8f5ea403fadd',
+                  type: '$INPUT',
+                  path: 'property.physicalAddress.address1',
+                  dependencies: [],
+                  data: {
+                    component: 'text',
+                    label: 'Address 1',
+                    size: '12',
+                    disabled: true
+                  },
+                  formData: {},
+                  children: []
+                },
+                {
+                  id: 'a38243d1-88f4-4647-be0b-04712c4abf5b',
+                  type: '$INPUT',
+                  path: 'property.physicalAddress.address2',
+                  dependencies: [],
+                  data: {
+                    component: 'text',
+                    label: 'Address 2',
+                    size: '12',
+                    disabled: true
+                  },
+                  formData: {},
+                  children: []
+                },
+                {
+                  id: '1df85b3c-e673-4183-9e0e-dbd0923c8739',
+                  type: '$INPUT',
+                  path: 'property.physicalAddress.city',
+                  dependencies: [],
+                  data: {
+                    component: 'text',
+                    label: 'City',
+                    size: '12',
+                    disabled: true
+                  },
+                  formData: {},
+                  children: []
+                },
+                {
+                  id: '50427097-7889-49f8-be88-dc2a4f5531bd',
+                  type: '$INPUT',
+                  path: 'property.physicalAddress.state',
+                  dependencies: [],
+                  data: {
+                    component: 'text',
+                    label: 'State',
+                    size: '4',
+                    disabled: true
+                  },
+                  formData: {},
+                  children: []
+                },
+                {
+                  id: 'dbacf35a-97b7-4bd5-8c1b-571dd4d16ff4',
+                  type: '$INPUT',
+                  path: 'property.physicalAddress.zip',
+                  dependencies: [],
+                  data: {
+                    component: 'text',
+                    label: 'Zip',
+                    size: '8',
+                    disabled: true
+                  },
+                  formData: {},
+                  children: []
+                }
+              ]
             },
             {
-              id: '12e86c6b-ed7c-45d1-9ad3-8f5ea403fadd',
-              type: '$INPUT',
-              path: 'property.physicalAddress.address1',
+              name: 'Location',
+              id: 'b1614e7d-1657-424b-b206-d06bfbde38af',
+              type: '$SECTION',
               dependencies: [],
               data: {
-                component: 'text',
-                label: 'Address 1',
-                size: '12',
-                disabled: true
+                size: '6'
               },
               formData: {},
-              children: []
-            },
-            {
-              id: 'a38243d1-88f4-4647-be0b-04712c4abf5b',
-              type: '$INPUT',
-              path: 'property.physicalAddress.address2',
-              dependencies: [],
-              data: {
-                component: 'text',
-                label: 'Address 2',
-                size: '12',
-                disabled: true
-              },
-              formData: {},
-              children: []
-            },
-            {
-              id: '1df85b3c-e673-4183-9e0e-dbd0923c8739',
-              type: '$INPUT',
-              path: 'property.physicalAddress.city',
-              dependencies: [],
-              data: {
-                component: 'text',
-                label: 'City',
-                size: '12',
-                disabled: true
-              },
-              formData: {},
-              children: []
-            },
-            {
-              id: '50427097-7889-49f8-be88-dc2a4f5531bd',
-              type: '$INPUT',
-              path: 'property.physicalAddress.state',
-              dependencies: [],
-              data: {
-                component: 'text',
-                label: 'State',
-                size: '4',
-                disabled: true
-              },
-              formData: {},
-              children: []
-            },
-            {
-              id: 'dbacf35a-97b7-4bd5-8c1b-571dd4d16ff4',
-              type: '$INPUT',
-              path: 'property.physicalAddress.zip',
-              dependencies: [],
-              data: {
-                component: 'text',
-                label: 'Zip',
-                size: '8',
-                disabled: true
-              },
-              formData: {},
-              children: []
+              children: [
+                {
+                  id: '39209da0-1925-4802-95b8-aa945cd8ce38',
+                  type: '$TITLE',
+                  dependencies: [],
+                  data: {
+                    text: 'Home and Location',
+                    children: []
+                  },
+                  formData: {},
+                  children: []
+                },
+                {
+                  id: 'd5e9109b-3f9d-4e52-a5bc-bd19e064bd8c',
+                  type: '$INPUT',
+                  path: 'property.yearBuilt',
+                  dependencies: [],
+                  data: {
+                    component: 'text',
+                    label: 'Year Home Built',
+                    size: '6',
+                    disabled: true
+                  },
+                  formData: {},
+                  children: []
+                },
+                {
+                  id: '44a250d8-a05e-4793-b5ee-c50d80d9b547',
+                  type: '$INPUT',
+                  path: 'property.floodZone',
+                  dependencies: [],
+                  data: {
+                    component: 'text',
+                    label: 'Flood Zone',
+                    size: '6',
+                    disabled: true
+                  },
+                  formData: {},
+                  children: []
+                },
+                {
+                  id: 'c67c0eab-8263-4de6-a382-3002cbb85250',
+                  type: '$INPUT',
+                  path: 'property.constructionType',
+                  dependencies: [],
+                  data: {
+                    component: 'text',
+                    label: 'Construction',
+                    size: '6',
+                    disabled: true
+                  },
+                  formData: {},
+                  children: []
+                },
+                {
+                  id: '7839181e-4413-442d-a273-e65c08a17a19',
+                  type: '$INPUT',
+                  path: 'property.baseFloodElevation',
+                  dependencies: [],
+                  data: {
+                    component: 'text',
+                    label: 'Base Flood Elevation',
+                    size: '6',
+                    disabled: true
+                  },
+                  formData: {},
+                  children: []
+                },
+                {
+                  id: '77874384-0638-43a8-9d76-671aa2f83438',
+                  type: '$INPUT',
+                  path: 'property.residenceType',
+                  dependencies: [],
+                  data: {
+                    component: 'text',
+                    label: 'Residence Type',
+                    size: '6',
+                    disabled: true
+                  },
+                  formData: {},
+                  children: []
+                },
+                {
+                  id: '8b35b7f1-e920-413b-9d73-9a1fc1086bbf',
+                  type: '$INPUT',
+                  path: 'property.squareFeet',
+                  dependencies: [],
+                  data: {
+                    component: 'text',
+                    label: 'Square Footage',
+                    size: '6',
+                    disabled: true
+                  },
+                  formData: {},
+                  children: []
+                },
+                {
+                  id: '6b15e702-d810-4fc3-aa33-83c73aca0214',
+                  type: '$INPUT',
+                  path: 'property.id',
+                  dependencies: [],
+                  data: {
+                    component: 'text',
+                    label: 'IGD ID',
+                    size: '12',
+                    disabled: true
+                  },
+                  formData: {},
+                  children: []
+                }
+              ]
             }
           ]
         },
         {
-          name: 'Location',
-          id: 'b1614e7d-1657-424b-b206-d06bfbde38af',
+          name: 'CoverageDeductibles',
+          id: 'b1614e7d-1657-424b-b206-d06bfbde38af33333',
           type: '$SECTION',
           dependencies: [],
           data: {
-            size: '6'
+            size: '12'
           },
           formData: {},
           children: [
             {
-              id: '39209da0-1925-4802-95b8-aa945cd8ce38',
-              type: '$TITLE',
+              name: 'Coverages',
+              id: '79b48a18-4f4d-44e2-b778-9d02b6d827f6',
+              type: '$SECTION',
               dependencies: [],
               data: {
-                text: 'Home and Location',
-                children: []
+                className: 'coverages',
+                size: '8'
               },
               formData: {},
-              children: []
-            },
-            {
-              id: 'd5e9109b-3f9d-4e52-a5bc-bd19e064bd8c',
-              type: '$INPUT',
-              path: 'property.yearBuilt',
-              dependencies: [],
-              data: {
-                component: 'text',
-                label: 'Year Home Built',
-                size: '6',
-                disabled: true
-              },
-              formData: {},
-              children: []
-            },
-            {
-              id: '44a250d8-a05e-4793-b5ee-c50d80d9b547',
-              type: '$INPUT',
-              path: 'property.floodZone',
-              dependencies: [],
-              data: {
-                component: 'text',
-                label: 'Flood Zone',
-                size: '6',
-                disabled: true
-              },
-              formData: {},
-              children: []
-            },
-            {
-              id: 'c67c0eab-8263-4de6-a382-3002cbb85250',
-              type: '$INPUT',
-              path: 'property.constructionType',
-              dependencies: [],
-              data: {
-                component: 'text',
-                label: 'Construction',
-                size: '6',
-                disabled: true
-              },
-              formData: {},
-              children: []
-            },
-            {
-              id: '7839181e-4413-442d-a273-e65c08a17a19',
-              type: '$INPUT',
-              path: 'property.baseFloodElevation',
-              dependencies: [],
-              data: {
-                component: 'text',
-                label: 'Base Flood Elevation',
-                size: '6',
-                disabled: true
-              },
-              formData: {},
-              children: []
-            },
-            {
-              id: '77874384-0638-43a8-9d76-671aa2f83438',
-              type: '$INPUT',
-              path: 'property.residenceType',
-              dependencies: [],
-              data: {
-                component: 'text',
-                label: 'Residence Type',
-                size: '6',
-                disabled: true
-              },
-              formData: {},
-              children: []
-            },
-            {
-              id: '8b35b7f1-e920-413b-9d73-9a1fc1086bbf',
-              type: '$INPUT',
-              path: 'property.squareFeet',
-              dependencies: [],
-              data: {
-                component: 'text',
-                label: 'Square Footage',
-                size: '6',
-                disabled: true
-              },
-              formData: {},
-              children: []
-            },
-            {
-              id: '6b15e702-d810-4fc3-aa33-83c73aca0214',
-              type: '$INPUT',
-              path: 'property.id',
-              dependencies: [],
-              data: {
-                component: 'text',
-                label: 'IGD ID',
-                size: '12',
-                disabled: true
-              },
-              formData: {},
-              children: []
-            }
-          ]
-        },
-        {
-          name: 'Coverages',
-          id: '79b48a18-4f4d-44e2-b778-9d02b6d827f6',
-          type: '$SECTION',
-          dependencies: [],
-          data: {
-            className: 'coverages',
-            size: '8'
-          },
-          formData: {},
-          children: [
-            {
-              id: 'f5a6c22b-6d65-453e-b446-2d5c461d14c2',
-              type: '$TITLE',
-              dependencies: [],
-              data: {
-                text: 'Coverages'
-              },
-              formData: {},
-              children: []
-            },
-            {
-              id: 'e532c398-a22d-4ff7-b459-10cc35b8a3d1',
-              type: '$INPUT',
-              path: 'coverageLimits.building.value',
-              dependencies: [],
-              data: {
-                component: 'currency',
-                label: 'Building Limit',
-                size: '6',
-                validation: ['isBuildingRange'],
-                extendedProperties: {
-                  format: 'currency',
-                  displayRange: true,
-                  min: 'coverageLimits.building.minAmount',
-                  max: 'coverageLimits.building.maxAmount'
+              children: [
+                {
+                  id: 'f5a6c22b-6d65-453e-b446-2d5c461d14c2',
+                  type: '$TITLE',
+                  dependencies: [],
+                  data: {
+                    text: 'Coverages'
+                  },
+                  formData: {},
+                  children: []
+                },
+                {
+                  id: 'e532c398-a22d-4ff7-b459-10cc35b8a3d1',
+                  type: '$INPUT',
+                  path: 'coverageLimits.building.value',
+                  dependencies: [],
+                  data: {
+                    component: 'currency',
+                    label: 'Building Limit',
+                    size: '6',
+                    validation: ['isBuildingRange'],
+                    extendedProperties: {
+                      format: 'currency',
+                      displayRange: true,
+                      min: 'coverageLimits.building.minAmount',
+                      max: 'coverageLimits.building.maxAmount'
+                    }
+                  },
+                  formData: {
+                    path: 'coverageLimits.building.value',
+                    type: 'integer',
+                    required: true,
+                    metaData: {}
+                  },
+                  children: []
+                },
+                {
+                  id: '0855ca01-4f9c-4d3f-ac1b-3b550fead6b1',
+                  type: '$INPUT',
+                  path: 'coverageLimits.increasedCompliance.value',
+                  dependencies: [],
+                  data: {
+                    component: 'display',
+                    label: 'Increased Cost of Compliance Limit',
+                    size: '6',
+                    extendedProperties: {
+                      output: 'currency'
+                    }
+                  },
+                  formData: {
+                    path: 'coverageLimits.increasedCompliance.value',
+                    type: 'integer',
+                    metaData: {
+                      target: '${it.coverageLimits.increasedCompliance.value}'
+                    }
+                  },
+                  children: []
+                },
+                {
+                  id: 'ce8fa0c1-b13b-4c31-9377-3be2a124ff30',
+                  type: '$INPUT',
+                  path: 'coverageLimits.personalProperty.value',
+                  dependencies: [],
+                  data: {
+                    component: 'currency',
+                    label: 'Personal Property Limit',
+                    size: '6',
+                    extendedProperties: {
+                      format: 'currency',
+                      displayRange: true,
+                      min: 'coverageLimits.personalProperty.minAmount',
+                      max: 'coverageLimits.personalProperty.maxAmount'
+                    }
+                  },
+                  formData: {
+                    path: 'coverageLimits.personalProperty.value',
+                    type: 'integer',
+                    required: true
+                  },
+                  children: []
+                },
+                {
+                  id: '02ad7385-fa1d-4554-9cc8-7c7bbfa53d10',
+                  type: '$INPUT',
+                  path: 'coverageLimits.lossOfUse.value',
+                  dependencies: [],
+                  data: {
+                    component: 'display',
+                    label: 'Loss of Use Limit',
+                    size: '6',
+                    extendedProperties: {
+                      output: 'currency'
+                    }
+                  },
+                  formData: {
+                    path: 'coverageLimits.lossOfUse.value',
+                    type: 'integer',
+                    metaData: {
+                      target: '${it.coverageLimits.lossOfUse.value}'
+                    }
+                  },
+                  children: []
+                },
+                {
+                  id: '2d63a166-8e4f-4c4a-829d-d54c067e3c39',
+                  type: '$INPUT',
+                  path:
+                    'coverageOptions.personalPropertyReplacementCost.answer',
+                  dependencies: [],
+                  data: {
+                    component: 'radio',
+                    label: 'Personal Property Repl Cost',
+                    size: '6',
+                    segmented: true,
+                    dataSource: [
+                      { label: 'No', answer: false },
+                      { label: 'Yes', answer: true }
+                    ]
+                  },
+                  formData: {
+                    path:
+                      'coverageOptions.personalPropertyReplacementCost.answer',
+                    type: 'boolean',
+                    required: true
+                  },
+                  children: []
                 }
-              },
-              formData: {
-                path: 'coverageLimits.building.value',
-                type: 'integer',
-                required: true,
-                metaData: {}
-              },
-              children: []
+              ]
             },
             {
-              id: '0855ca01-4f9c-4d3f-ac1b-3b550fead6b1',
-              type: '$INPUT',
-              path: 'coverageLimits.increasedCompliance.value',
+              name: 'Deductibles',
+              id: '36c89c9e-5d95-465b-9426-308ebc1e8350',
+              type: '$SECTION',
               dependencies: [],
               data: {
-                component: 'display',
-                label: 'Increased Cost of Compliance Limit',
-                size: '6',
-                extendedProperties: {
-                  output: 'currency'
-                }
-              },
-              formData: {
-                path: 'coverageLimits.increasedCompliance.value',
-                type: 'integer',
-                metaData: {
-                  target: '${it.coverageLimits.increasedCompliance.value}'
-                }
-              },
-              children: []
-            },
-            {
-              id: 'ce8fa0c1-b13b-4c31-9377-3be2a124ff30',
-              type: '$INPUT',
-              path: 'coverageLimits.personalProperty.value',
-              dependencies: [],
-              data: {
-                component: 'currency',
-                label: 'Personal Property Limit',
-                size: '6',
-                extendedProperties: {
-                  format: 'currency',
-                  displayRange: true,
-                  min: 'coverageLimits.personalProperty.minAmount',
-                  max: 'coverageLimits.personalProperty.maxAmount'
-                }
-              },
-              formData: {
-                path: 'coverageLimits.personalProperty.value',
-                type: 'integer',
-                required: true
-              },
-              children: []
-            },
-            {
-              id: '02ad7385-fa1d-4554-9cc8-7c7bbfa53d10',
-              type: '$INPUT',
-              path: 'coverageLimits.lossOfUse.value',
-              dependencies: [],
-              data: {
-                component: 'display',
-                label: 'Loss of Use Limit',
-                size: '6',
-                extendedProperties: {
-                  output: 'currency'
-                }
-              },
-              formData: {
-                path: 'coverageLimits.lossOfUse.value',
-                type: 'integer',
-                metaData: {
-                  target: '${it.coverageLimits.lossOfUse.value}'
-                }
-              },
-              children: []
-            },
-            {
-              id: '2d63a166-8e4f-4c4a-829d-d54c067e3c39',
-              type: '$INPUT',
-              path: 'coverageOptions.personalPropertyReplacementCost.answer',
-              dependencies: [],
-              data: {
-                component: 'radio',
-                label: 'Personal Property Repl Cost',
-                size: '6',
-                segmented: true,
-                dataSource: [
-                  { label: 'No', answer: false },
-                  { label: 'Yes', answer: true }
-                ]
-              },
-              formData: {
-                path: 'coverageOptions.personalPropertyReplacementCost.answer',
-                type: 'boolean',
-                required: true
-              },
-              children: []
-            }
-          ]
-        },
-        {
-          name: 'Deductibles',
-          id: '36c89c9e-5d95-465b-9426-308ebc1e8350',
-          type: '$SECTION',
-          dependencies: [],
-          data: {
-            size: '4'
-          },
-          formData: {},
-          children: [
-            {
-              id: '33ea1392-e18a-435c-8163-ba0e11a30f38',
-              type: '$TITLE',
-              dependencies: [],
-              data: {
-                text: 'Deductibles'
+                size: '4'
               },
               formData: {},
-              children: []
-            },
-            {
-              id: 'e1b7d921-2e61-42cd-8e80-20808f610ca0',
-              type: '$INPUT',
-              path: 'deductibles.buildingDeductible.value',
-              dependencies: [],
-              data: {
-                component: 'selectInteger',
-                label: 'Building Deductible',
-                size: '12'
-              },
-              formData: {
-                path: 'deductibles.buildingDeductible.value',
-                type: 'integer',
-                required: true,
-                metaData: {
-                  enum: [
-                    { label: '$ 500', answer: 500 },
-                    { label: '$ 1,000', answer: 1000 },
-                    { label: '$ 2,000', answer: 2000 },
-                    { label: '$ 5,000', answer: 5000 },
-                    { label: '$ 10,000', answer: 10000 }
-                  ]
+              children: [
+                {
+                  id: '33ea1392-e18a-435c-8163-ba0e11a30f38',
+                  type: '$TITLE',
+                  dependencies: [],
+                  data: {
+                    text: 'Deductibles'
+                  },
+                  formData: {},
+                  children: []
+                },
+                {
+                  id: 'e1b7d921-2e61-42cd-8e80-20808f610ca0',
+                  type: '$INPUT',
+                  path: 'deductibles.buildingDeductible.value',
+                  dependencies: [],
+                  data: {
+                    component: 'selectInteger',
+                    label: 'Building Deductible',
+                    size: '12'
+                  },
+                  formData: {
+                    path: 'deductibles.buildingDeductible.value',
+                    type: 'integer',
+                    required: true,
+                    metaData: {
+                      enum: [
+                        { label: '$ 500', answer: 500 },
+                        { label: '$ 1,000', answer: 1000 },
+                        { label: '$ 2,000', answer: 2000 },
+                        { label: '$ 5,000', answer: 5000 },
+                        { label: '$ 10,000', answer: 10000 }
+                      ]
+                    }
+                  },
+                  children: []
+                },
+                {
+                  id: '82cbb49d-e76b-41f3-a30e-92c283c27b00',
+                  type: '$INPUT',
+                  path: 'deductibles.personalPropertyDeductible.value',
+                  dependencies: [],
+                  data: {
+                    component: 'selectInteger',
+                    label: 'Personal Property Deductible',
+                    size: '12'
+                  },
+                  formData: {
+                    path: 'coverageLimits.moldLiability.value',
+                    type: 'integer',
+                    required: true,
+                    metaData: {
+                      enum: [
+                        { label: '$ 500', answer: 500 },
+                        { label: '$ 1,000', answer: 1000 },
+                        { label: '$ 2,000', answer: 2000 },
+                        { label: '$ 5,000', answer: 5000 },
+                        { label: '$ 10,000', answer: 10000 }
+                      ]
+                    }
+                  },
+                  children: []
                 }
-              },
-              children: []
-            },
-            {
-              id: '82cbb49d-e76b-41f3-a30e-92c283c27b00',
-              type: '$INPUT',
-              path: 'deductibles.personalPropertyDeductible.value',
-              dependencies: [],
-              data: {
-                component: 'selectInteger',
-                label: 'Personal Property Deductible',
-                size: '12'
-              },
-              formData: {
-                path: 'coverageLimits.moldLiability.value',
-                type: 'integer',
-                required: true,
-                metaData: {
-                  enum: [
-                    { label: '$ 500', answer: 500 },
-                    { label: '$ 1,000', answer: 1000 },
-                    { label: '$ 2,000', answer: 2000 },
-                    { label: '$ 5,000', answer: 5000 },
-                    { label: '$ 10,000', answer: 10000 }
-                  ]
-                }
-              },
-              children: []
+              ]
             }
           ]
         }
