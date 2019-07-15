@@ -16,7 +16,7 @@ export const REASONS_DATA = {
     answer: 'information_needed',
     label: 'Information Needed',
     daysFromDueDate: 7,
-    assignee: 'Login User'
+    assignee: 'CURRENT_USER'
   },
   estate: {
     answer: 'estate',
@@ -34,13 +34,13 @@ export const REASONS_DATA = {
     answer: 'other',
     label: 'Other',
     daysFromDueDate: 0,
-    assignee: 'Login User'
+    assignee: 'CURRENT_USER'
   },
   exception: {
     answer: 'exception',
     label: 'Exception',
     daysFromDueDate: 10,
-    assignee: 'Login User'
+    assignee: 'CURRENT_USER'
   },
   new_policy: {
     answer: 'new_policy',
@@ -76,7 +76,7 @@ export const REASONS_DATA = {
     answer: 'underwriting_review',
     label: 'Underwriting Review',
     daysFromDueDate: 2,
-    assignee: 'Login User'
+    assignee: 'CURRENT_USER'
   },
   vacant_unoccupied: {
     answer: 'vacant_unoccupied',
@@ -94,7 +94,7 @@ export const REASONS_DATA = {
     answer: 'refund',
     label: 'Refund',
     daysFromDueDate: 7,
-    assignee: 'Login User'
+    assignee: 'CURRENT_USER'
   }
 };
 
