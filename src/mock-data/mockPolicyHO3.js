@@ -264,6 +264,85 @@ const mock = {
                               defaultValue: 'Value'
                             }
                           ]
+                        },
+                        {
+                          label: 'Townhouse/Rowhouse',
+                          items: [
+                            {
+                              format: 'bool',
+                              path: 'property.townhouseRowhouse'
+                            }
+                          ]
+                        },
+                        {
+                          label: 'Property Ever Rented',
+                          items: [
+                            {
+                              format: 'conditionalBool',
+                              path: 'underwritingAnswers.rented.answer',
+                              conditions: ['Yes']
+                            }
+                          ]
+                        },
+                        {
+                          label: 'Seasonally Occupied',
+                          items: [
+                            {
+                              format: 'conditionalBool',
+                              path: 'underwritingAnswers.monthsOccupied.answer',
+                              conditions: ['0-3', '4-6']
+                            }
+                          ]
+                        },
+                        {
+                          label: 'No Prior Insurance',
+                          items: [
+                            {
+                              format: 'conditionalBool',
+                              path:
+                                'underwritingAnswers.noPriorInsuranceSurcharge.answer',
+                              conditions: ['Yes']
+                            }
+                          ]
+                        },
+                        {
+                          label: 'Burglar Alarm',
+                          items: [
+                            {
+                              format: 'bool',
+                              path: 'property.burglarAlarm'
+                            }
+                          ]
+                        },
+                        {
+                          label: 'Fire Alarm',
+                          items: [
+                            {
+                              format: 'bool',
+                              path: 'property.fireAlarm'
+                            }
+                          ]
+                        },
+                        {
+                          label: 'Sprinkler',
+                          items: [
+                            {
+                              format: 'conditionalValue',
+                              path: 'property.sprinkler',
+                              conditions: ['N'],
+                              defaultValue: 'No'
+                            }
+                          ]
+                        },
+                        {
+                          label: 'Wind Mit Factor',
+                          items: [
+                            {
+                              format: '',
+                              path:
+                                'rating.worksheet.elements.windMitigationFactors.windMitigationDiscount'
+                            }
+                          ]
                         }
                       ]
                     }
