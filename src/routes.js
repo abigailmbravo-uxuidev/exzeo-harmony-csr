@@ -21,7 +21,7 @@ import NoteUploader from './components/NoteUploader';
 import ConfirmPopup from './components/Common/ConfirmPopup';
 import DiaryModal from './components/DiaryModal';
 import Bootstrap from './components/Bootstrap';
-import PolicyModule from './modules/Policy';
+import PolicyModule from './modules/Policy/PolicyWorkflow';
 import Agency from './modules/Agency';
 import { QuoteLanding, QuoteWorkflow } from './modules/Quote';
 

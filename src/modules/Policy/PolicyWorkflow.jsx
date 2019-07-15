@@ -6,24 +6,16 @@ import { Route } from 'react-router-dom';
 import { Loader, FormSpy, remoteSubmit } from '@exzeo/core-ui';
 import {
   getConfigForJsonTransform,
-  Gandalf,
-  AgencySelect
+  Gandalf
 } from '@exzeo/core-ui/src/@Harmony';
 import { defaultMemoize } from 'reselect';
 
-import UnderwritingValidationBar from './UnderwritingValidationBar';
 import App from '../../components/AppWrapper';
 import OpenDiariesBar from '../../components/OpenDiariesBar';
 import DiaryPolling from '../../components/DiaryPolling';
-import {
-  QUOTE_RESOURCE_TYPE,
-  POLICY_RESOURCE_TYPE
-} from '../../constants/diaries';
+import { POLICY_RESOURCE_TYPE } from '../../constants/diaries';
 import { toggleDiary } from '../../state/actions/ui.actions';
-import { setAppError } from '../../state/actions/error.actions';
-import { reviewQuote, updateQuote } from '../../state/actions/quote.actions';
 //import { getEnumsForPolicyWorkflow } from '../../state/actions/list.actions';
-import { getQuoteSelector } from '../../state/selectors/quote.selectors';
 import { getDiariesForTable } from '../../state/selectors/diary.selectors';
 
 import { setAppState } from '../../state/actions/appState.actions';
@@ -58,18 +50,14 @@ import {
   batchCompleteTask
 } from '../../state/actions/cg.actions';
 
-import MOCK_CONFIG_DATA from '../../mock-data/mockHO3';
+import MOCK_CONFIG_DATA from '../../mock-data/mockPolicyHO3';
 import {
   ROUTES_NOT_HANDLED_BY_GANDALF,
   PAGE_ROUTING
 } from './constants/workflowNavigation';
 
-import Application from './Application';
-import PolicyHolders from './PolicyHolders';
-import NotesFiles from '../NotesFiles';
-import QuoteFooter from './QuoteFooter';
-import NavigationPrompt from './NavigationPrompt';
-import { UNQUALIFIED_STATE } from '../../utilities/quoteState';
+// TODO: Move this into a component folder
+import NavigationPrompt from '../Quote/NavigationPrompt';
 
 const getCurrentStepAndPage = defaultMemoize(pathname => {
   const currentRouteName = pathname.split('/')[3];
@@ -99,20 +87,30 @@ export class PolicyWorkflow extends React.Component {
     this.formInstance = null;
 
     this.customComponents = {
-      $NOTES_FILES: NotesFiles
+      //  $NOTES_FILES: NotesFiles
     };
   }
 
   getConfigForJsonTransform = defaultMemoize(getConfigForJsonTransform);
-
+  // TODO: next step is to make an 'initialize' action that does all of this. Then this component will only need to know about one action.
   componentDidMount() {
     const {
-      match,
-      reviewQuote,
-      // getEnumsForPolicyWorkflow,
-      getZipcodeSettings
+      getEffectiveDateChangeReasons,
+      getCancelOptions,
+      getPolicy,
+      getPaymentHistory,
+      getPaymentOptionsApplyPayments,
+      getEndorsementHistory,
+      match: {
+        params: { policyNumber }
+      }
     } = this.props;
-    // TODO: Load Stuff
+    getEffectiveDateChangeReasons();
+    getPolicy(policyNumber);
+    getPaymentHistory(policyNumber);
+    getPaymentOptionsApplyPayments();
+    getCancelOptions();
+    getEndorsementHistory(policyNumber);
     this.getTemplate();
   }
 
@@ -210,7 +208,6 @@ export class PolicyWorkflow extends React.Component {
       options,
       policy,
       userProfile,
-      updateQuote,
       notesSynced,
       initialized
     } = this.props;
@@ -221,6 +218,12 @@ export class PolicyWorkflow extends React.Component {
       showReinstatePolicyModal,
       showEffectiveDateChangeModal
     } = this.state;
+
+    const modalHandlers = {
+      showEffectiveDateChangeModal: this.handleToggleEffectiveDateChangeModal,
+      showReinstatePolicyModal: this.handleToggleReinstateModal
+    };
+
     const { currentRouteName, currentStepNumber } = getCurrentStepAndPage(
       location.pathname
     );
@@ -250,10 +253,11 @@ export class PolicyWorkflow extends React.Component {
             context={match.path.split('/')[1]}
             resourceType={POLICY_RESOURCE_TYPE}
             resourceId={policy.policyNumber}
-            pageTitle={`Q: ${policy.policyNumber || ''}`}
+            pageTitle={`P: ${policy.policyNumber || ''}`}
             match={match}
             onToggleDiaries={this.handleToggleDiaries}
             showDiaries={showDiaries}
+            modalHandlers={modalHandlers}
           >
             <React.Fragment>
               {initialized && (
@@ -274,18 +278,7 @@ export class PolicyWorkflow extends React.Component {
                         transformConfig={transformConfig}
                         stickyFooter
                         renderFooter={({ pristine, submitting, form }) => (
-                          <QuoteFooter
-                            currentStep={currentRouteName}
-                            formInstance={form}
-                            isSubmitDisabled={this.isSubmitDisabled(
-                              pristine,
-                              submitting
-                            )}
-                            handlePrimaryClick={this.primaryClickHandler}
-                            handleApplicationClick={() =>
-                              this.setShowApplicationModal(true)
-                            }
-                          />
+                          <div />
                         )}
                         formListeners={() => (
                           <MemoizedFormListeners>
@@ -312,11 +305,7 @@ export class PolicyWorkflow extends React.Component {
                       />
                     </React.Fragment>
                   )}
-                  <Route
-                    exact
-                    path={`${match.url}/coverage`}
-                    render={props => <Coverage {...props} />}
-                  />
+
                   <Route
                     exact
                     path={`${match.url}/policyholder`}
