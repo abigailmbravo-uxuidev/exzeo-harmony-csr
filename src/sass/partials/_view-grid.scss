@@ -227,6 +227,10 @@
     &.view-grid {
       .deductibles {
         .deductible-wrapper {
+          margin-top: -$padding;
+          padding-top: $padding;
+          border: 1px solid $warm-gray-02;
+          border-radius: $border-radius;
           background: $warm-gray-01;
         }
       }
