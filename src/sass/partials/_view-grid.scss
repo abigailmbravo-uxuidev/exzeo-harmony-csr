@@ -219,6 +219,24 @@
 //end section component
 /*------------------------------------------------------------------------------------*/
 
+//coverage rating specific styles
+/*------------------------------------------------------------------------------------*/
+
+.app-wrapper.csr.quote {
+  #QuoteWorkflowCSR {
+    &.view-grid {
+      .deductibles {
+        .deductible-wrapper {
+          background: $warm-gray-01;
+        }
+      }
+    }
+  }
+}
+
+//end coverage rating specific styles
+/*------------------------------------------------------------------------------------*/
+
 //additional interests component
 /*------------------------------------------------------------------------------------*/
 .view-grid {

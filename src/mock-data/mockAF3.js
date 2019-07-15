@@ -472,6 +472,7 @@ const mock = {
               type: '$SECTION',
               dependencies: [],
               data: {
+                className: 'deductibles',
                 size: '4'
               },
               formData: {},
@@ -487,56 +488,69 @@ const mock = {
                   children: []
                 },
                 {
-                  id: 'e1b7d921-2e61-42cd-8e80-20808f610ca0',
-                  type: '$INPUT',
-                  path: 'deductibles.buildingDeductible.value',
+                  name: 'Deductibles',
+                  id: '36c89c9e-5d95-465b-9426-308ebc1e8350',
+                  type: '$SECTION',
                   dependencies: [],
                   data: {
-                    component: 'selectInteger',
-                    label: 'Building Deductible',
+                    className: 'deductible-wrapper',
                     size: '12'
                   },
-                  formData: {
-                    path: 'deductibles.buildingDeductible.value',
-                    type: 'integer',
-                    required: true,
-                    metaData: {
-                      enum: [
-                        { label: '$ 500', answer: 500 },
-                        { label: '$ 1,000', answer: 1000 },
-                        { label: '$ 2,000', answer: 2000 },
-                        { label: '$ 5,000', answer: 5000 },
-                        { label: '$ 10,000', answer: 10000 }
-                      ]
+                  formData: {},
+                  children: [
+                    {
+                      id: 'e1b7d921-2e61-42cd-8e80-20808f610ca0',
+                      type: '$INPUT',
+                      path: 'deductibles.buildingDeductible.value',
+                      dependencies: [],
+                      data: {
+                        component: 'selectInteger',
+                        label: 'Building Deductible',
+                        size: '12'
+                      },
+                      formData: {
+                        path: 'deductibles.buildingDeductible.value',
+                        type: 'integer',
+                        required: true,
+                        metaData: {
+                          enum: [
+                            { label: '$ 500', answer: 500 },
+                            { label: '$ 1,000', answer: 1000 },
+                            { label: '$ 2,000', answer: 2000 },
+                            { label: '$ 5,000', answer: 5000 },
+                            { label: '$ 10,000', answer: 10000 }
+                          ]
+                        }
+                      },
+                      children: []
+                    },
+                    {
+                      id: '82cbb49d-e76b-41f3-a30e-92c283c27b00',
+                      type: '$INPUT',
+                      path: 'deductibles.personalPropertyDeductible.value',
+                      dependencies: [],
+                      data: {
+                        component: 'selectInteger',
+                        label: 'Personal Property Deductible',
+                        size: '12'
+                      },
+                      formData: {
+                        path: 'coverageLimits.moldLiability.value',
+                        type: 'integer',
+                        required: true,
+                        metaData: {
+                          enum: [
+                            { label: '$ 500', answer: 500 },
+                            { label: '$ 1,000', answer: 1000 },
+                            { label: '$ 2,000', answer: 2000 },
+                            { label: '$ 5,000', answer: 5000 },
+                            { label: '$ 10,000', answer: 10000 }
+                          ]
+                        }
+                      },
+                      children: []
                     }
-                  },
-                  children: []
-                },
-                {
-                  id: '82cbb49d-e76b-41f3-a30e-92c283c27b00',
-                  type: '$INPUT',
-                  path: 'deductibles.personalPropertyDeductible.value',
-                  dependencies: [],
-                  data: {
-                    component: 'selectInteger',
-                    label: 'Personal Property Deductible',
-                    size: '12'
-                  },
-                  formData: {
-                    path: 'coverageLimits.moldLiability.value',
-                    type: 'integer',
-                    required: true,
-                    metaData: {
-                      enum: [
-                        { label: '$ 500', answer: 500 },
-                        { label: '$ 1,000', answer: 1000 },
-                        { label: '$ 2,000', answer: 2000 },
-                        { label: '$ 5,000', answer: 5000 },
-                        { label: '$ 10,000', answer: 10000 }
-                      ]
-                    }
-                  },
-                  children: []
+                  ]
                 }
               ]
             }
