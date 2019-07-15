@@ -250,7 +250,7 @@
     }
 
     .title {
-      padding: 0;
+      //padding: 0;
     }
 
     ul {
@@ -461,7 +461,7 @@ section {
   .detail-group {
     display: flex;
     flex-direction: column;
-    padding: 0 ($padding * 2);
+    padding: 0 $padding;
     min-height: 4rem;
     width: 100%;
 
@@ -518,6 +518,12 @@ section {
             text-align: right;
           }
         }
+      }
+    }
+
+    &.af3 {
+      .detail-group {
+        height: 10rem;
       }
     }
   }

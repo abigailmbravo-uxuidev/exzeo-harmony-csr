@@ -172,7 +172,7 @@ const mock = {
                   data: {
                     component: 'text',
                     label: 'State',
-                    size: '4',
+                    size: '2',
                     disabled: true
                   },
                   formData: {},
@@ -186,7 +186,7 @@ const mock = {
                   data: {
                     component: 'text',
                     label: 'Zip',
-                    size: '8',
+                    size: '3',
                     disabled: true
                   },
                   formData: {},
@@ -789,7 +789,7 @@ const mock = {
               type: '$SECTION',
               dependencies: [],
               data: {
-                className: 'produced-by'
+                className: 'produced-by af3'
               },
               formData: {},
               children: [
@@ -867,7 +867,7 @@ const mock = {
               type: '$SECTION',
               dependencies: [],
               data: {
-                className: 'coverage-rating'
+                className: 'coverage-rating af3'
               },
               formData: {},
               children: [
@@ -964,7 +964,7 @@ const mock = {
               type: '$SECTION',
               dependencies: [{ 'policyHolders[0].firstName': true }],
               data: {
-                className: 'policyholder-details'
+                className: 'policyholder-details af3'
               },
               formData: {},
               children: [
@@ -1030,7 +1030,7 @@ const mock = {
               type: '$SECTION',
               dependencies: [{ 'policyHolders[1].firstName': true }],
               data: {
-                className: 'property-details'
+                className: 'property-details af3'
               },
               formData: {},
               children: [
@@ -1096,7 +1096,7 @@ const mock = {
               type: '$SECTION',
               dependencies: [{ 'policyHolderMailingAddress.address1': true }],
               data: {
-                className: 'property-details'
+                className: 'property-details af3'
               },
               formData: {},
               children: [
@@ -1165,7 +1165,7 @@ const mock = {
               type: '$SECTION',
               dependencies: [],
               data: {
-                className: 'detail-group additional-interests'
+                className: 'detail-group additional-interests af3'
               },
               formData: {},
               children: [
