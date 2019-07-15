@@ -532,22 +532,10 @@ const mock = {
                   outputLabel: 'Personal Property Limit'
                 },
                 dataSource: [
-                  {
-                    label: '0%',
-                    answer: 0
-                  },
-                  {
-                    label: '25%',
-                    answer: 25
-                  },
-                  {
-                    label: '35%',
-                    answer: 35
-                  },
-                  {
-                    label: '50%',
-                    answer: 50
-                  }
+                  { label: '0%', answer: 0 },
+                  { label: '25%', answer: 25 },
+                  { label: '35%', answer: 35 },
+                  { label: '50%', answer: 50 }
                 ]
               },
               formData: {
@@ -673,18 +661,9 @@ const mock = {
                 required: true,
                 metaData: {
                   enum: [
-                    {
-                      label: '$ 10,000',
-                      answer: 10000
-                    },
-                    {
-                      label: '$ 25,000',
-                      answer: 25000
-                    },
-                    {
-                      label: '$ 50,000',
-                      answer: 50000
-                    }
+                    { label: '$ 10,000', answer: 10000 },
+                    { label: '$ 25,000', answer: 25000 },
+                    { label: '$ 50,000', answer: 50000 }
                   ]
                 }
               },
@@ -706,14 +685,8 @@ const mock = {
                 required: true,
                 metaData: {
                   enum: [
-                    {
-                      label: '$ 50,000',
-                      answer: 50000
-                    },
-                    {
-                      label: '$ 100,000',
-                      answer: 100000
-                    }
+                    { label: '$ 50,000', answer: 50000 },
+                    { label: '$ 100,000', answer: 100000 }
                   ]
                 }
               },
@@ -765,14 +738,8 @@ const mock = {
                 required: true,
                 metaData: {
                   enum: [
-                    {
-                      label: 'No',
-                      answer: false
-                    },
-                    {
-                      label: 'Yes',
-                      answer: true
-                    }
+                    { label: 'No', answer: false },
+                    { label: 'Yes', answer: true }
                   ]
                 }
               },
@@ -794,14 +761,8 @@ const mock = {
                 required: true,
                 metaData: {
                   enum: [
-                    {
-                      label: '25% of Dwelling Limit',
-                      answer: 25
-                    },
-                    {
-                      label: '50% of Dwelling Limit',
-                      answer: 50
-                    }
+                    { label: '25% of Dwelling Limit', answer: 25 },
+                    { label: '50% of Dwelling Limit', answer: 50 }
                   ]
                 }
               },
@@ -846,18 +807,9 @@ const mock = {
                 required: true,
                 metaData: {
                   enum: [
-                    {
-                      label: '$ 500',
-                      answer: 500
-                    },
-                    {
-                      label: '$ 1,000',
-                      answer: 1000
-                    },
-                    {
-                      label: '$ 2,500',
-                      answer: 2500
-                    }
+                    { label: '$ 500', answer: 500 },
+                    { label: '$ 1,000', answer: 1000 },
+                    { label: '$ 2,500', answer: 2500 }
                   ]
                 }
               },
@@ -883,18 +835,9 @@ const mock = {
                 required: true,
                 metaData: {
                   enum: [
-                    {
-                      label: '2% of Dwelling Limit',
-                      answer: 2
-                    },
-                    {
-                      label: '5% of Dwelling Limit',
-                      answer: 5
-                    },
-                    {
-                      label: '10% of Dwelling Limit',
-                      answer: 10
-                    }
+                    { label: '2% of Dwelling Limit', answer: 2 },
+                    { label: '5% of Dwelling Limit', answer: 5 },
+                    { label: '10% of Dwelling Limit', answer: 10 }
                   ],
                   target:
                     '${Math.ceil(((it.deductibles.hurricane.value / 100) * it.coverageLimits.dwelling.value))}'
@@ -912,14 +855,8 @@ const mock = {
                 label: 'Sinkhole',
                 size: '12',
                 dataSource: [
-                  {
-                    answer: false,
-                    label: 'Coverage Excluded'
-                  },
-                  {
-                    answer: true,
-                    label: '10% of Dwelling Limit'
-                  }
+                  { answer: false, label: 'Coverage Excluded' },
+                  { answer: true, label: '10% of Dwelling Limit' }
                 ],
                 extendedProperties: {
                   outputLabel: 'Calculated Sinkhole',
@@ -976,14 +913,8 @@ const mock = {
                 type: 'boolean',
                 metaData: {
                   enum: [
-                    {
-                      label: 'No',
-                      answer: false
-                    },
-                    {
-                      label: 'Yes',
-                      answer: true
-                    }
+                    { label: 'No', answer: false },
+                    { label: 'Yes', answer: true }
                   ]
                 },
                 children: []
@@ -1006,14 +937,8 @@ const mock = {
                 type: 'boolean',
                 metaData: {
                   enum: [
-                    {
-                      label: 'No',
-                      answer: false
-                    },
-                    {
-                      label: 'Yes',
-                      answer: true
-                    }
+                    { label: 'No', answer: false },
+                    { label: 'Yes', answer: true }
                   ]
                 },
                 children: []
@@ -1037,18 +962,9 @@ const mock = {
                 required: true,
                 metaData: {
                   enum: [
-                    {
-                      label: 'N',
-                      answer: 'N'
-                    },
-                    {
-                      label: 'A',
-                      answer: 'A'
-                    },
-                    {
-                      label: 'B',
-                      answer: 'B'
-                    }
+                    { label: 'N', answer: 'N' },
+                    { label: 'A', answer: 'A' },
+                    { label: 'B', answer: 'B' }
                   ]
                 },
                 children: []
@@ -1093,18 +1009,9 @@ const mock = {
                 required: true,
                 metaData: {
                   enum: [
-                    {
-                      label: 'Non-FBC',
-                      answer: 'Non-FBC'
-                    },
-                    {
-                      label: 'FBC',
-                      answer: 'FBC'
-                    },
-                    {
-                      label: 'Other',
-                      answer: 'Other'
-                    }
+                    { label: 'Non-FBC', answer: 'Non-FBC' },
+                    { label: 'FBC', answer: 'FBC' },
+                    { label: 'Other', answer: 'Other' }
                   ]
                 }
               },
@@ -1142,30 +1049,12 @@ const mock = {
                 required: true,
                 metaData: {
                   enum: [
-                    {
-                      label: 'A',
-                      answer: 'A'
-                    },
-                    {
-                      label: 'B',
-                      answer: 'B'
-                    },
-                    {
-                      label: 'C',
-                      answer: 'C'
-                    },
-                    {
-                      label: 'D',
-                      answer: 'D'
-                    },
-                    {
-                      label: 'Concrete',
-                      answer: 'Concrete'
-                    },
-                    {
-                      label: 'Other',
-                      answer: 'Other'
-                    }
+                    { label: 'A', answer: 'A' },
+                    { label: 'B', answer: 'B' },
+                    { label: 'C', answer: 'C' },
+                    { label: 'D', answer: 'D' },
+                    { label: 'Concrete', answer: 'Concrete' },
+                    { label: 'Other', answer: 'Other' }
                   ]
                 }
               },
@@ -1205,26 +1094,11 @@ const mock = {
                 required: true,
                 metaData: {
                   enum: [
-                    {
-                      label: 'Toe Nails',
-                      answer: 'Toe Nails'
-                    },
-                    {
-                      label: 'Clips',
-                      answer: 'Clips'
-                    },
-                    {
-                      label: 'Single Wraps',
-                      answer: 'Single Wraps'
-                    },
-                    {
-                      label: 'Double Wraps',
-                      answer: 'Double Wraps'
-                    },
-                    {
-                      label: 'Other',
-                      answer: 'Other'
-                    }
+                    { label: 'Toe Nails', answer: 'Toe Nails' },
+                    { label: 'Clips', answer: 'Clips' },
+                    { label: 'Single Wraps', answer: 'Single Wraps' },
+                    { label: 'Double Wraps', answer: 'Double Wraps' },
+                    { label: 'Other', answer: 'Other' }
                   ]
                 }
               },
@@ -1247,22 +1121,10 @@ const mock = {
                 required: true,
                 metaData: {
                   enum: [
-                    {
-                      label: 'B',
-                      answer: 'B'
-                    },
-                    {
-                      label: 'C',
-                      answer: 'C'
-                    },
-                    {
-                      label: 'HVHZ',
-                      answer: 'HVHZ'
-                    },
-                    {
-                      label: 'Other',
-                      answer: 'Other'
-                    }
+                    { label: 'B', answer: 'B' },
+                    { label: 'C', answer: 'C' },
+                    { label: 'HVHZ', answer: 'HVHZ' },
+                    { label: 'Other', answer: 'Other' }
                   ]
                 }
               },
@@ -1284,22 +1146,10 @@ const mock = {
                 required: true,
                 metaData: {
                   enum: [
-                    {
-                      label: 'Flat',
-                      answer: 'Flat'
-                    },
-                    {
-                      label: 'Gable',
-                      answer: 'Gable'
-                    },
-                    {
-                      label: 'Hip',
-                      answer: 'Hip'
-                    },
-                    {
-                      label: 'Other',
-                      answer: 'Other'
-                    }
+                    { label: 'Flat', answer: 'Flat' },
+                    { label: 'Gable', answer: 'Gable' },
+                    { label: 'Hip', answer: 'Hip' },
+                    { label: 'Other', answer: 'Other' }
                   ]
                 }
               },
@@ -1321,18 +1171,9 @@ const mock = {
                 required: true,
                 metaData: {
                   enum: [
-                    {
-                      label: 'Enclosed',
-                      answer: 'Enclosed'
-                    },
-                    {
-                      label: 'Partial',
-                      answer: 'Partial'
-                    },
-                    {
-                      label: 'Other',
-                      answer: 'Other'
-                    }
+                    { label: 'Enclosed', answer: 'Enclosed' },
+                    { label: 'Partial', answer: 'Partial' },
+                    { label: 'Other', answer: 'Other' }
                   ]
                 }
               },
@@ -1355,18 +1196,9 @@ const mock = {
                 required: true,
                 metaData: {
                   enum: [
-                    {
-                      label: 'Yes',
-                      answer: 'Yes'
-                    },
-                    {
-                      label: 'No',
-                      answer: 'No'
-                    },
-                    {
-                      label: 'Other',
-                      answer: 'Other'
-                    }
+                    { label: 'Yes', answer: 'Yes' },
+                    { label: 'No', answer: 'No' },
+                    { label: 'Other', answer: 'Other' }
                   ]
                 }
               },
@@ -1389,18 +1221,9 @@ const mock = {
                 required: true,
                 metaData: {
                   enum: [
-                    {
-                      label: 'Yes',
-                      answer: 'Yes'
-                    },
-                    {
-                      label: 'No',
-                      answer: 'No'
-                    },
-                    {
-                      label: 'Other',
-                      answer: 'Other'
-                    }
+                    { label: 'Yes', answer: 'Yes' },
+                    { label: 'No', answer: 'No' },
+                    { label: 'Other', answer: 'Other' }
                   ]
                 }
               },
@@ -1422,22 +1245,10 @@ const mock = {
                 required: true,
                 metaData: {
                   enum: [
-                    {
-                      label: 'None',
-                      answer: 'None'
-                    },
-                    {
-                      label: 'Basic',
-                      answer: 'Basic'
-                    },
-                    {
-                      label: 'Hurricane',
-                      answer: 'Hurricane'
-                    },
-                    {
-                      label: 'Other',
-                      answer: 'Other'
-                    }
+                    { label: 'None', answer: 'None' },
+                    { label: 'Basic', answer: 'Basic' },
+                    { label: 'Hurricane', answer: 'Hurricane' },
+                    { label: 'Other', answer: 'Other' }
                   ]
                 },
                 children: []
