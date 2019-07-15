@@ -643,7 +643,10 @@ const mock = {
         {
           id: 'a8d9f35c-27f1-4a26-b1a0-320ad7afddfc',
           type: '$SECTION',
-          dependencies: [{ 'rating.worksheet': true }],
+          dependencies: [
+            { quoteInputState: 'Qualified' },
+            { quoteInputState: 'Ready' }
+          ],
           data: {
             className: 'billing-address'
           },
