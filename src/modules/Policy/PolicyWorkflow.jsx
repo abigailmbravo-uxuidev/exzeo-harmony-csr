@@ -201,7 +201,8 @@ export class PolicyWorkflow extends React.Component {
       policy,
       userProfile,
       notesSynced,
-      initialized
+      initialized,
+      summaryLedger
     } = this.props;
 
     const {
@@ -263,7 +264,10 @@ export class PolicyWorkflow extends React.Component {
                         customComponents={this.customComponents}
                         customHandlers={customHandlers}
                         handleSubmit={this.handleGandalfSubmit}
-                        initialValues={policy}
+                        initialValues={{
+                          ...policy,
+                          billing: { ...summaryLedger }
+                        }}
                         options={{ diaries, notes, ...options }} // enums for select/radio fields
                         path={location.pathname}
                         template={gandalfTemplate}

@@ -416,6 +416,69 @@ const mock = {
                   children: []
                 }
               ]
+            },
+            {
+              id: 11,
+              type: '$SECTION',
+              dependencies: [],
+              data: {
+                className: 'premium'
+              },
+              formData: {},
+              children: [
+                {
+                  id: 12,
+                  type: '$ENTITY_DETAILS',
+                  dependencies: [],
+                  data: {
+                    extendedProperties: {
+                      className: 'premium',
+                      details: [
+                        {
+                          label: 'Premium',
+                          items: [
+                            {
+                              format: 'conditionalValue',
+                              path: 'none',
+                              conditions: [''],
+                              defaultValue: 'Value'
+                            }
+                          ]
+                        },
+                        {
+                          label: 'Current Premium',
+                          items: [
+                            {
+                              format: 'currencyDecimals',
+                              path: 'billing.currentPremium'
+                            }
+                          ]
+                        },
+                        {
+                          label: 'Initial Premium',
+                          items: [
+                            {
+                              format: 'currencyDecimals',
+                              path: 'billing.initialPremium'
+                            }
+                          ]
+                        },
+                        {
+                          label: 'Balance Due',
+                          items: [
+                            {
+                              format: 'currencyDecimals',
+                              path: 'billing.balance.$numberDecimal'
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  },
+                  formData: {},
+                  children: []
+                }
+              ]
             }
           ]
         }
