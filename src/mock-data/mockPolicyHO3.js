@@ -351,6 +351,71 @@ const mock = {
                   children: []
                 }
               ]
+            },
+            {
+              id: 9,
+              type: '$SECTION',
+              dependencies: [],
+              data: {
+                className: 'deductible'
+              },
+              formData: {},
+              children: [
+                {
+                  id: 10,
+                  type: '$ENTITY_DETAILS',
+                  dependencies: [],
+                  data: {
+                    extendedProperties: {
+                      className: 'deductible',
+                      details: [
+                        {
+                          label: 'Deductible',
+                          items: [
+                            {
+                              format: 'conditionalValue',
+                              path: 'none',
+                              conditions: [''],
+                              defaultValue: 'Value'
+                            }
+                          ]
+                        },
+                        {
+                          label: 'All Other Perils',
+                          items: [
+                            {
+                              format: 'currency',
+                              path: 'deductibles.allOtherPerils.amount'
+                            }
+                          ]
+                        },
+                        {
+                          label: 'Hurricane',
+                          items: [
+                            {
+                              format: 'percent',
+                              path: 'deductibles.hurricane.amount'
+                            }
+                          ]
+                        },
+                        {
+                          label: 'Sinkhole',
+                          items: [
+                            {
+                              format: 'conditionalPercent',
+                              path: 'deductibles.sinkhole.amount',
+                              conditions: [''],
+                              defaultValue: 'No'
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  },
+                  formData: {},
+                  children: []
+                }
+              ]
             }
           ]
         }
