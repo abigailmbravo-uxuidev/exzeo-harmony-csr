@@ -502,8 +502,7 @@ const mock = {
                   type: '$TITLE',
                   dependencies: [],
                   data: {
-                    text: 'Home and Location',
-                    icon: 'fa fa-map-marker'
+                    text: 'Home and Location'
                   },
                   formData: {},
                   children: []
