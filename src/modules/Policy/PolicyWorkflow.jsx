@@ -59,6 +59,7 @@ import {
 
 // TODO: Move this into a component folder
 import NavigationPrompt from '../Quote/NavigationPrompt';
+import BillingTable from './BillingTable';
 
 const getCurrentStepAndPage = defaultMemoize(pathname => {
   const currentRouteName = pathname.split('/')[3];
@@ -88,7 +89,7 @@ export class PolicyWorkflow extends React.Component {
     this.formInstance = null;
 
     this.customComponents = {
-      //  $NOTES_FILES: NotesFiles
+      $BILLING_TABLE: BillingTable
     };
   }
 
