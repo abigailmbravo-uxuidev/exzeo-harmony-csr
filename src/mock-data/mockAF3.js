@@ -601,6 +601,16 @@ const mock = {
       step: {},
       components: [
         {
+          id: '0',
+          type: '$TITLE',
+          dependencies: [],
+          data: {
+            text: 'Underwriting Questions'
+          },
+          formData: {},
+          children: []
+        },
+        {
           id: '6fb8975a-1a56-4280-8021-484d8da24dfd',
           type: '$CUSTOM',
           dependencies: [],
