@@ -481,12 +481,166 @@ const mock = {
               ]
             },
             {
-              id: 11,
+              id: 13,
               type: '$BILLING_TABLE',
               dependencies: [],
               data: {},
               formData: {},
               children: []
+            },
+            {
+              id: 14,
+              type: '$SECTION',
+              dependencies: [],
+              data: {
+                className: 'home-location-left'
+              },
+              formData: {},
+              children: [
+                {
+                  id: 15,
+                  type: '$TITLE',
+                  dependencies: [],
+                  data: {
+                    text: 'Home and Location',
+                    icon: 'fa fa-map-marker'
+                  },
+                  formData: {},
+                  children: []
+                },
+                {
+                  id: 16,
+                  type: '$ENTITY_DETAILS',
+                  dependencies: [],
+                  data: {
+                    extendedProperties: {
+                      className: 'home-and-location-1',
+                      details: [
+                        {
+                          label: 'Year Home Built',
+                          items: [{ format: '', path: 'property.yearBuilt' }]
+                        },
+                        {
+                          label: 'Protection Class',
+                          items: [
+                            { format: '', path: 'property.protectionClass' }
+                          ]
+                        },
+                        {
+                          label: 'Dist. to Tidal Waters',
+                          items: [
+                            {
+                              format: 'feet',
+                              path: 'property.distanceToTidalWater'
+                            }
+                          ]
+                        },
+                        {
+                          label: 'Residence Type',
+                          items: [
+                            { format: '', path: 'property.residenceType' }
+                          ]
+                        }
+                      ]
+                    }
+                  },
+                  formData: {},
+                  children: []
+                },
+                {
+                  id: 17,
+                  type: '$APPRAISER',
+                  dependencies: [],
+                  data: {},
+                  formData: {},
+                  children: []
+                },
+                {
+                  id: 18,
+                  type: '$ENTITY_DETAILS',
+                  dependencies: [],
+                  data: {
+                    extendedProperties: {
+                      className: 'home-and-location-2',
+                      details: [
+                        {
+                          label: 'Construction',
+                          items: [
+                            { format: '', path: 'property.constructionType' }
+                          ]
+                        },
+                        {
+                          label: 'BCEG',
+                          items: [
+                            {
+                              format: '',
+                              path: 'property.buildingCodeEffectivenessGrading'
+                            }
+                          ]
+                        },
+                        {
+                          label: 'Dist. to Fire Hydrant',
+                          items: [
+                            {
+                              format: 'feet',
+                              path: 'property.distanceToFireHydrant'
+                            }
+                          ]
+                        },
+                        {
+                          label: 'Square Footage',
+                          items: [{ format: '', path: 'property.squareFeet' }]
+                        },
+                        {
+                          label: 'Territory',
+                          items: [{ format: '', path: 'property.territory' }]
+                        }
+                      ]
+                    }
+                  },
+                  formData: {},
+                  children: []
+                },
+                {
+                  id: 19,
+                  type: '$ENTITY_DETAILS',
+                  dependencies: [],
+                  data: {
+                    extendedProperties: {
+                      className: 'home-and-location-3',
+                      details: [
+                        {
+                          label: 'Year Roof Built',
+                          items: [{ format: '', path: 'property.yearOfRoof' }]
+                        },
+                        {
+                          label: 'Family Units',
+                          items: [{ format: '', path: 'property.familyUnits' }]
+                        },
+                        {
+                          label: 'Dist. to Fire Station',
+                          items: [
+                            {
+                              format: 'miles',
+                              path: 'property.distanceToFireStation'
+                            }
+                          ]
+                        },
+                        {
+                          label: 'Flood Zone',
+                          items: [{ format: '', path: 'property.floodZone' }]
+                        },
+                        {
+                          label: 'IGD ID',
+                          items: [{ format: '', path: 'property.id' }]
+                        }
+                      ]
+                    }
+                  },
+                  formData: {},
+                  children: []
+                }
+              ]
             }
           ]
         }

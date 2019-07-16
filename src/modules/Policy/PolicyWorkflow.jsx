@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Route } from 'react-router-dom';
+import _find from 'lodash/find';
 
 import { Loader, FormSpy, remoteSubmit } from '@exzeo/core-ui';
 import {
@@ -15,7 +16,7 @@ import OpenDiariesBar from '../../components/OpenDiariesBar';
 import DiaryPolling from '../../components/DiaryPolling';
 import { POLICY_RESOURCE_TYPE } from '../../constants/diaries';
 import { toggleDiary } from '../../state/actions/ui.actions';
-//import { getEnumsForPolicyWorkflow } from '../../state/actions/list.actions';
+import { getUIQuestions } from '../../state/actions/questions.actions';
 import { getDiariesForTable } from '../../state/selectors/diary.selectors';
 
 import { setAppState } from '../../state/actions/appState.actions';
@@ -60,6 +61,7 @@ import {
 // TODO: Move this into a component folder
 import NavigationPrompt from '../Quote/NavigationPrompt';
 import BillingTable from './BillingTable';
+import Appraiser from './Appraiser';
 
 const getCurrentStepAndPage = defaultMemoize(pathname => {
   const currentRouteName = pathname.split('/')[3];
@@ -89,7 +91,8 @@ export class PolicyWorkflow extends React.Component {
     this.formInstance = null;
 
     this.customComponents = {
-      $BILLING_TABLE: BillingTable
+      $BILLING_TABLE: BillingTable,
+      $APPRAISER: Appraiser
     };
   }
 
@@ -98,12 +101,14 @@ export class PolicyWorkflow extends React.Component {
   componentDidMount() {
     const {
       initializePolicyWorkflow,
+      getUIQuestions,
       match: {
         params: { policyNumber }
       }
     } = this.props;
 
     initializePolicyWorkflow(policyNumber);
+    getUIQuestions('propertyAppraisalCSR');
     this.getTemplate();
   }
 
@@ -203,7 +208,8 @@ export class PolicyWorkflow extends React.Component {
       userProfile,
       notesSynced,
       initialized,
-      summaryLedger
+      summaryLedger,
+      questions
     } = this.props;
 
     const {
@@ -269,7 +275,7 @@ export class PolicyWorkflow extends React.Component {
                           ...policy,
                           summaryLedger
                         }}
-                        options={{ diaries, notes, ...options }} // enums for select/radio fields
+                        options={{ diaries, notes, ...options, questions }} // enums for select/radio fields
                         path={location.pathname}
                         template={gandalfTemplate}
                         transformConfig={transformConfig}
@@ -400,7 +406,8 @@ const mapStateToProps = state => {
     ),
     policy: state.policyState.policy,
     summaryLedger: state.policyState.summaryLedger,
-    zipCodeSettings: state.service.getZipcodeSettings
+    zipCodeSettings: state.service.getZipcodeSettings,
+    questions: state.questions
   };
 };
 
@@ -422,6 +429,7 @@ export default connect(
     setAppState,
     startWorkflow,
     toggleDiary,
-    initializePolicyWorkflow
+    initializePolicyWorkflow,
+    getUIQuestions
   }
 )(PolicyWorkflow);
