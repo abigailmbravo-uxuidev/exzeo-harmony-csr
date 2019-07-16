@@ -18,7 +18,7 @@ const mock = {
       step: {},
       components: [
         {
-          name: 'ProducedBy',
+          name: 'producedBy',
           id: '4ea7d1a1-80b8-4109-9d4b-4c2155a0a2b1',
           type: '$SECTION',
           dependencies: [],
@@ -79,7 +79,7 @@ const mock = {
           ]
         },
         {
-          name: 'PolicyHolders',
+          name: 'policyHolders',
           id: 'b963aac4-936d-4290-9756-0a41819dccb4',
           type: '$CUSTOM',
           dependencies: [],
@@ -94,7 +94,7 @@ const mock = {
         },
 
         {
-          name: 'PropertyAddress',
+          name: 'propertyAddress',
           id: '0842592e-072d-4171-bc72-5141d43a1f39',
           type: '$SECTION',
           dependencies: [],
@@ -121,7 +121,6 @@ const mock = {
               data: {
                 component: 'text',
                 label: 'Address 1',
-                size: '12',
                 disabled: true
               },
               formData: {},
@@ -135,7 +134,6 @@ const mock = {
               data: {
                 component: 'text',
                 label: 'Address 2',
-                size: '12',
                 disabled: true
               },
               formData: {},
@@ -149,7 +147,6 @@ const mock = {
               data: {
                 component: 'text',
                 label: 'City',
-                size: '12',
                 disabled: true
               },
               formData: {},
@@ -186,7 +183,7 @@ const mock = {
           ]
         },
         {
-          name: 'Location',
+          name: 'location',
           id: 'b1614e7d-1657-424b-b206-d06bfbde38af',
           type: '$SECTION',
           dependencies: [],
@@ -298,7 +295,6 @@ const mock = {
               data: {
                 component: 'text',
                 label: 'IGD ID',
-                size: '12',
                 disabled: true
               },
               formData: {},
@@ -308,7 +304,7 @@ const mock = {
         },
 
         {
-          name: 'Coverages',
+          name: 'coverages',
           id: '79b48a18-4f4d-44e2-b778-9d02b6d827f6',
           type: '$SECTION',
           dependencies: [],
@@ -485,10 +481,21 @@ const mock = {
                 label: 'Personal Property Repl Cost',
                 size: '6',
                 segmented: true,
+                disabled: '${it.coverageLimits.personalProperty.value === 0}',
                 dataSource: [
                   { label: 'No', answer: false },
                   { label: 'Yes', answer: true }
-                ]
+                ],
+                extendedProperties: {
+                  subscribe: true,
+                  watchFields: [
+                    {
+                      field: 'coverageLimits.personalProperty.value',
+                      becomes: 0,
+                      to: false
+                    }
+                  ]
+                }
               },
               formData: {
                 path: 'coverageOptions.personalPropertyReplacementCost.answer',
