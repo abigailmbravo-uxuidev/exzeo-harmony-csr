@@ -377,65 +377,12 @@ const mock = {
               path: 'coverageLimits.personalProperty.value',
               dependencies: [],
               data: {
-                component: 'selectInteger',
-                label: 'Percentage',
+                component: 'currency',
+                label: 'Personal Property Limit',
                 size: '7',
-                dataSource: [
-                  { label: '0%', answer: 0 },
-                  { label: '1%', answer: 1 },
-                  { label: '2%', answer: 2 },
-                  { label: '3%', answer: 3 },
-                  { label: '4%', answer: 4 },
-                  { label: '5%', answer: 5 },
-                  { label: '6%', answer: 6 },
-                  { label: '7%', answer: 7 },
-                  { label: '8%', answer: 8 },
-                  { label: '9%', answer: 9 },
-                  { label: '10%', answer: 10 },
-                  { label: '11%', answer: 11 },
-                  { label: '12%', answer: 12 },
-                  { label: '13%', answer: 13 },
-                  { label: '14%', answer: 14 },
-                  { label: '15%', answer: 15 },
-                  { label: '16%', answer: 16 },
-                  { label: '17%', answer: 17 },
-                  { label: '18%', answer: 18 },
-                  { label: '19%', answer: 19 },
-                  { label: '20%', answer: 20 },
-                  { label: '21%', answer: 21 },
-                  { label: '22%', answer: 22 },
-                  { label: '23%', answer: 23 },
-                  { label: '24%', answer: 24 },
-                  { label: '25%', answer: 25 },
-                  { label: '26%', answer: 26 },
-                  { label: '27%', answer: 27 },
-                  { label: '28%', answer: 28 },
-                  { label: '29%', answer: 29 },
-                  { label: '30%', answer: 30 },
-                  { label: '31%', answer: 31 },
-                  { label: '32%', answer: 32 },
-                  { label: '33%', answer: 33 },
-                  { label: '34%', answer: 34 },
-                  { label: '35%', answer: 35 },
-                  { label: '36%', answer: 36 },
-                  { label: '37%', answer: 37 },
-                  { label: '38%', answer: 38 },
-                  { label: '39%', answer: 39 },
-                  { label: '40%', answer: 40 },
-                  { label: '41%', answer: 41 },
-                  { label: '42%', answer: 42 },
-                  { label: '43%', answer: 43 },
-                  { label: '44%', answer: 44 },
-                  { label: '45%', answer: 45 },
-                  { label: '46%', answer: 46 },
-                  { label: '47%', answer: 47 },
-                  { label: '48%', answer: 48 },
-                  { label: '49%', answer: 49 },
-                  { label: '50%', answer: 50 }
-                ],
                 extendedProperties: {
-                  output: 'currency',
-                  outputLabel: 'Personal Property Limit'
+                  output: 'percent',
+                  outputLabel: 'Percentage'
                 }
               },
               formData: {
@@ -444,7 +391,7 @@ const mock = {
                 required: true,
                 metaData: {
                   target:
-                    '${Math.ceil(((it.coverageLimits.personalProperty.value / 100) * it.coverageLimits.building.value))}'
+                    '${Math.ceil((((it.coverageLimits.personalProperty.value || 0) / it.coverageLimits.building.value) * 100 ))}'
                 }
               },
               children: []
@@ -481,7 +428,8 @@ const mock = {
                 label: 'Personal Property Repl Cost',
                 size: '6',
                 segmented: true,
-                disabled: '${it.coverageLimits.personalProperty.value === 0}',
+                disabled:
+                  '${(it.coverageLimits.personalProperty.value || 0) <= Math.ceil((it.coverageLimits.building.value || 0) / 4)}',
                 dataSource: [
                   { label: 'No', answer: false },
                   { label: 'Yes', answer: true }
