@@ -120,7 +120,7 @@ const mock = {
               data: {
                 component: 'text',
                 label: 'Address 1',
-                size: '12',
+
                 disabled: true
               },
               formData: {},
@@ -134,7 +134,7 @@ const mock = {
               data: {
                 component: 'text',
                 label: 'Address 2',
-                size: '12',
+
                 disabled: true
               },
               formData: {},
@@ -148,7 +148,7 @@ const mock = {
               data: {
                 component: 'text',
                 label: 'City',
-                size: '12',
+
                 disabled: true
               },
               formData: {},
@@ -433,7 +433,7 @@ const mock = {
               data: {
                 component: 'text',
                 label: 'IGD ID',
-                size: '12',
+
                 disabled: true
               },
               formData: {},
@@ -470,7 +470,7 @@ const mock = {
               data: {
                 component: 'currency',
                 label: 'Dwelling Limit',
-                size: '12',
+
                 validation: ['isDwellingRange'],
                 extendedProperties: {
                   format: 'currency',
@@ -495,7 +495,7 @@ const mock = {
               data: {
                 component: 'selectInteger',
                 label: 'Percentage',
-                size: '12',
+
                 dataSource: [
                   { label: '0%', answer: 0 },
                   { label: '2%', answer: 2 },
@@ -526,7 +526,7 @@ const mock = {
               data: {
                 component: 'selectInteger',
                 label: 'Percentage',
-                size: '12',
+
                 extendedProperties: {
                   output: 'currency',
                   outputLabel: 'Personal Property Limit'
@@ -557,7 +557,7 @@ const mock = {
               data: {
                 component: 'display',
                 label: 'Loss of Use Limit',
-                size: '12',
+
                 extendedProperties: {
                   output: 'currency'
                 }
@@ -581,7 +581,6 @@ const mock = {
               data: {
                 component: 'selectInteger',
                 label: 'Personal Liability Limit',
-                size: '12',
                 segmented: true
               },
               formData: {
@@ -605,7 +604,6 @@ const mock = {
               data: {
                 component: 'display',
                 label: 'Medical Payments to Others Limit',
-                size: '12',
                 segmented: true,
                 extendedProperties: {
                   output: 'currency'
@@ -698,16 +696,12 @@ const mock = {
               path: 'coverageOptions.personalPropertyReplacementCost.answer',
               dependencies: [],
               data: {
-                disabled: {
-                  path: 'coverageLimits.personalProperty.value',
-                  value: '0',
-                  defaultValue: ''
-                },
                 component: 'radio',
-                segmented: true,
                 label: 'Personal Property Replacement Cost',
-                size: '12',
+                segmented: true,
+                disabled: '${it.coverageLimits.personalProperty.value === 0}',
                 extendedProperties: {
+                  subscribe: true,
                   watchFields: [
                     {
                       field: 'coverageLimits.personalProperty.value',
@@ -752,8 +746,7 @@ const mock = {
               dependencies: [],
               data: {
                 component: 'selectInteger',
-                label: 'Ordinance or Law Coverage Limit',
-                size: '12'
+                label: 'Ordinance or Law Coverage Limit'
               },
               formData: {
                 path: 'coverageLimits.ordinanceOrLaw.value',
@@ -798,8 +791,7 @@ const mock = {
               dependencies: [],
               data: {
                 component: 'selectInteger',
-                label: 'All Other Perils',
-                size: '12'
+                label: 'All Other Perils'
               },
               formData: {
                 path: 'deductibles.allOtherPerils.value',
@@ -823,7 +815,7 @@ const mock = {
               data: {
                 component: 'selectInteger',
                 label: 'Hurricane Deductible',
-                size: '12',
+
                 extendedProperties: {
                   outputLabel: 'Calculated Hurricane',
                   output: 'currency'
@@ -853,7 +845,7 @@ const mock = {
               data: {
                 component: 'select',
                 label: 'Sinkhole',
-                size: '12',
+
                 dataSource: [
                   { answer: false, label: 'Coverage Excluded' },
                   { answer: true, label: '10% of Dwelling Limit' }
