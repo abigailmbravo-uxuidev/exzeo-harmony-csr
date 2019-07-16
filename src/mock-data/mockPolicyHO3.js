@@ -641,6 +641,169 @@ const mock = {
                   children: []
                 }
               ]
+            },
+            {
+              id: 20,
+              type: '$SECTION',
+              dependencies: [],
+              data: {
+                className: 'wind-mitigation'
+              },
+              formData: {},
+              children: [
+                {
+                  id: 21,
+                  type: '$TITLE',
+                  dependencies: [],
+                  data: {
+                    text: 'Wind Mitigation'
+                  },
+                  formData: {},
+                  children: []
+                },
+                {
+                  id: 22,
+                  type: '$SECTION',
+                  dependencies: [],
+                  data: {
+                    className: 'wind-mitigation-1'
+                  },
+                  formData: {},
+                  children: [
+                    {
+                      id: 200000222222227,
+                      type: '$ENTITY_DETAILS',
+                      dependencies: [],
+                      data: {
+                        extendedProperties: {
+                          className: 'home-and-location',
+                          details: [
+                            {
+                              label: 'Roof Covering',
+                              items: [
+                                {
+                                  format: '',
+                                  path: 'property.windMitigation.roofCovering'
+                                }
+                              ]
+                            },
+                            {
+                              label: 'Roof Geometry',
+                              items: [
+                                {
+                                  format: '',
+                                  path: 'property.windMitigation.roofGeometry'
+                                }
+                              ]
+                            },
+                            {
+                              label: 'FBC Wind Speed',
+                              items: [
+                                {
+                                  format: '',
+                                  path:
+                                    'property.windMitigation.floridaBuildingCodeWindSpeed'
+                                }
+                              ]
+                            },
+                            {
+                              label: 'Internal Pressure Design',
+                              items: [
+                                {
+                                  format: '',
+                                  path:
+                                    'property.windMitigation.internalPressureDesign'
+                                }
+                              ]
+                            },
+                            {
+                              label: 'Roof Deck Attachment',
+                              items: [
+                                {
+                                  format: '',
+                                  path:
+                                    'property.windMitigation.roofDeckAttachment'
+                                }
+                              ]
+                            },
+                            {
+                              label: 'Secondary Water Resistance (SWR)',
+                              items: [
+                                {
+                                  format: '',
+                                  path:
+                                    'property.windMitigation.secondaryWaterResistance'
+                                }
+                              ]
+                            },
+                            {
+                              label: 'FBC Wind Speed Design',
+                              items: [
+                                {
+                                  format: '',
+                                  path:
+                                    'property.windMitigation.floridaBuildingCodeWindSpeedDesign'
+                                }
+                              ]
+                            },
+                            {
+                              label: 'Wind Borne Debris Region (WBDR)',
+                              items: [
+                                {
+                                  format: '',
+                                  path:
+                                    'property.windMitigation.windBorneDebrisRegion'
+                                }
+                              ]
+                            },
+                            {
+                              label: 'Roof to Wall Attachment',
+                              items: [
+                                {
+                                  format: '',
+                                  path:
+                                    'property.windMitigation.roofToWallConnection'
+                                }
+                              ]
+                            },
+                            {
+                              label: 'Opening Protection',
+                              items: [
+                                {
+                                  format: '',
+                                  path:
+                                    'property.windMitigation.openingProtection'
+                                }
+                              ]
+                            },
+                            {
+                              label: 'Terrain',
+                              items: [
+                                {
+                                  format: '',
+                                  path: 'property.windMitigation.terrain'
+                                }
+                              ]
+                            },
+                            {
+                              label: 'Wind Mit Factor',
+                              items: [
+                                {
+                                  format: '',
+                                  path:
+                                    'rating.worksheet.elements.windMitigationFactors.windMitigationDiscount'
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      },
+                      formData: {},
+                      children: []
+                    }
+                  ]
+                }
+              ]
             }
           ]
         }
