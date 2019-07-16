@@ -266,7 +266,7 @@ export class PolicyWorkflow extends React.Component {
                         handleSubmit={this.handleGandalfSubmit}
                         initialValues={{
                           ...policy,
-                          billing: { ...summaryLedger }
+                          summaryLedger
                         }}
                         options={{ diaries, notes, ...options }} // enums for select/radio fields
                         path={location.pathname}

@@ -450,7 +450,7 @@ const mock = {
                           items: [
                             {
                               format: 'currencyDecimals',
-                              path: 'billing.currentPremium'
+                              path: 'summaryLedger.currentPremium'
                             }
                           ]
                         },
@@ -459,7 +459,7 @@ const mock = {
                           items: [
                             {
                               format: 'currencyDecimals',
-                              path: 'billing.initialPremium'
+                              path: 'summaryLedger.initialPremium'
                             }
                           ]
                         },
@@ -468,7 +468,7 @@ const mock = {
                           items: [
                             {
                               format: 'currencyDecimals',
-                              path: 'billing.balance.$numberDecimal'
+                              path: 'summaryLedger.balance.$numberDecimal'
                             }
                           ]
                         }
