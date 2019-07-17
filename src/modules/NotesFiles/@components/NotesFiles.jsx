@@ -11,9 +11,17 @@ import Notes from './Notes';
 function NotesFiles({ options, customHandlers, initialValues }) {
   const [selectedTab, setSelectedTab] = useState(NOTE_TYPE.notes);
   const [hasMounted, setMounted] = useState(false);
+
+  const numbers = initialValues.policyNumber
+    ? [initialValues.policyNumber, initialValues.sourceNumber]
+    : [initialValues.quoteNumber];
+  const numberType = initialValues.policyNumber
+    ? 'policyNumber'
+    : 'quoteNumber';
+
   const { notes, notesLoaded } = useFetchNotes(
-    [initialValues.quoteNumber],
-    'quoteNumber',
+    numbers,
+    numberType,
     customHandlers.notesSynced
   );
 
