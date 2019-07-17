@@ -63,6 +63,7 @@ import NavigationPrompt from '../Quote/NavigationPrompt';
 import BillingTable from './BillingTable';
 import Appraiser from './Appraiser';
 import NotesFiles from '../NotesFiles';
+import PolicyholderAgent from './PolicyholderAgent';
 
 const getCurrentStepAndPage = defaultMemoize(pathname => {
   const currentRouteName = pathname.split('/')[3];
@@ -94,7 +95,8 @@ export class PolicyWorkflow extends React.Component {
     this.customComponents = {
       $BILLING_TABLE: BillingTable,
       $APPRAISER: Appraiser,
-      $NOTES_FILES: NotesFiles
+      $NOTES_FILES: NotesFiles,
+      $POLICYHOLDER_AGENT: PolicyholderAgent
     };
   }
 
@@ -310,27 +312,11 @@ export class PolicyWorkflow extends React.Component {
                       />
                     </React.Fragment>
                   )}
-
-                  <Route
-                    exact
-                    path={`${match.url}/policyholder`}
-                    render={props => <PolicyHolder {...props} />}
-                  />
                   <Route
                     exact
                     path={`${match.url}/billing`}
                     render={props => <Billing {...props} />}
                   />
-                  {/* <Route
-                    exact
-                    path={`${match.url}/notes`}
-                    render={props => (
-                      <Notes
-                        numbers={[policy.policyNumber, policy.sourceNumber]}
-                        numberType="policyNumber"
-                      />
-                    )}
-                  /> */}
                   <Route
                     exact
                     path={`${match.url}/cancel`}

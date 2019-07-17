@@ -1,10 +1,10 @@
 export const PAGE_ROUTING = {
   coverage: 0,
-  notes: 1
+  policyHolder: 1,
+  notes: 2
 };
 
 export const ROUTES_NOT_HANDLED_BY_GANDALF = [
-  'policyHolder',
   'billing',
   'cancel',
   'endorsements'
