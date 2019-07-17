@@ -626,7 +626,10 @@ const mock = {
         {
           id: '1816b7dd-0a67-499f-86d0-d2a413a5517f',
           type: '$TITLE',
-          dependencies: [{ 'rating.worksheet': false }],
+          dependencies: [
+            { quoteInputState: 'Initial Data' },
+            { quoteInputState: 'Underwriting' }
+          ],
           data: {
             className: 'messages',
             icon: 'fa fa-exclamation-circle',
@@ -637,78 +640,87 @@ const mock = {
           children: []
         },
         {
-          id: 'a8d9f35c-27f1-4a26-b1a0-320ad7afddfc',
-          type: '$SECTION',
+          id: '03d39ef5-010d-4ceb-8298-7f5d47ab0b99',
+          type: '$GROUP',
           dependencies: [
             { quoteInputState: 'Qualified' },
             { quoteInputState: 'Ready' }
           ],
-          data: {
-            className: 'billing-address'
-          },
+          data: {},
           formData: {},
           children: [
             {
-              id: '4a9b2831-10b9-449e-aefe-90bd10180ceb',
-              type: '$TITLE',
+              id: 'a8d9f35c-27f1-4a26-b1a0-320ad7afddfc',
+              type: '$SECTION',
               dependencies: [],
               data: {
-                text: 'Mailing Address'
+                className: 'billing-address'
               },
               formData: {},
-              children: []
+              children: [
+                {
+                  id: '4a9b2831-10b9-449e-aefe-90bd10180ceb',
+                  type: '$TITLE',
+                  dependencies: [],
+                  data: {
+                    text: 'Mailing Address'
+                  },
+                  formData: {},
+                  children: []
+                },
+                {
+                  id: '65345c40-2b54-4818-9778-d3f01404b16d',
+                  type: '$CUSTOM',
+                  dependencies: [],
+                  data: {
+                    component: '$ADDRESS',
+                    extendedProperties: {
+                      watchFieldCustomClass: 'segmented-switch',
+                      watchField: 'sameAsPropertyAddress',
+                      fieldPrefix: 'policyHolderMailingAddress',
+                      matchPrefix: 'property.physicalAddress'
+                    }
+                  },
+                  formData: {},
+                  children: []
+                }
+              ]
             },
             {
-              id: '65345c40-2b54-4818-9778-d3f01404b16d',
-              type: '$CUSTOM',
+              id: '71035517-5930-46b5-b2b9-d9c570c1181d',
+              type: '$SECTION',
               dependencies: [],
               data: {
-                component: '$ADDRESS',
-                extendedProperties: {
-                  watchFieldCustomClass: 'segmented-switch',
-                  watchField: 'sameAsPropertyAddress',
-                  fieldPrefix: 'policyHolderMailingAddress',
-                  matchPrefix: 'property.physicalAddress'
-                }
+                className: 'billing-information'
               },
               formData: {},
-              children: []
-            }
-          ]
-        },
-        {
-          id: '71035517-5930-46b5-b2b9-d9c570c1181d',
-          type: '$SECTION',
-          dependencies: [{ 'rating.worksheet': true }],
-          data: {
-            className: 'billing-information'
-          },
-          formData: {},
-          children: [
-            {
-              id: '76e6ef7b-6ec4-4b1c-b823-a52fa0bf8da7',
-              type: '$TITLE',
-              dependencies: [],
-              data: {
-                text: 'Billing Information'
-              },
-              formData: {},
-              children: []
-            },
-            {
-              id: '18c6eba7-d5ef-4aa8-9ad3-3a9810d3f98e',
-              type: '$CUSTOM',
-              dependencies: [],
-              data: {
-                component: '$BILLING',
-                extendedProperties: {
-                  subscribe: true
+              children: [
+                {
+                  id: '76e6ef7b-6ec4-4b1c-b823-a52fa0bf8da7',
+                  type: '$TITLE',
+                  dependencies: [],
+                  data: {
+                    text: 'Billing Information'
+                  },
+                  formData: {},
+                  children: []
+                },
+                {
+                  id: '18c6eba7-d5ef-4aa8-9ad3-3a9810d3f98e',
+                  type: '$CUSTOM',
+                  dependencies: [],
+                  data: {
+                    component: '$BILLING',
+                    extendedProperties: {
+                      subscribe: true
+                    }
+                  },
+                  formData: {
+                    required: true
+                  },
+                  children: []
                 }
-              },
-              formData: {
-                required: true
-              },
-              children: []
+              ]
             }
           ]
         }
