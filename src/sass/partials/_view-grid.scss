@@ -424,3 +424,55 @@ section {
 }
 //end summary page specific styles
 /*------------------------------------------------------------------------------------*/
+
+//POLICY
+/*------------------------------------------------------------------------------------*/
+
+//coverage/premium page specific styles
+/*------------------------------------------------------------------------------------*/
+#PolicyWorkflowCSR {
+  .coverage-rating {
+    .coverage-premium {
+      display: flex;
+      flex-direction: column;
+
+      .row {
+        .table {
+          dl {
+            div {
+              display: flex;
+
+              dt {
+                flex-grow: 1;
+                flex-shrink: 1;
+                font-weight: $font-weight-normal;
+              }
+              dd {
+                flex-grow: 0;
+                flex-shrink: 0;
+                margin: 0;
+                text-align: right;
+              }
+            }
+            &:first-of-type {
+              div {
+                background: $warm-gray-01;
+                dt {
+                  font-weight: $font-weight-bold;
+                }
+                dd {
+                  font-weight: $font-weight-bold;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+//end coverage/premium page specific styles
+/*------------------------------------------------------------------------------------*/
+
+//END POLICY
+/*------------------------------------------------------------------------------------*/
