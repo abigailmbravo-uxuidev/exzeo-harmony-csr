@@ -634,7 +634,7 @@ const mock = {
             className: 'messages',
             icon: 'fa fa-exclamation-circle',
             text:
-              'Billing cannot be accessed until there is a rating on the quote.'
+              'Billing cannot be accessed until policyholder information and underwriting questions are answered.'
           },
           formData: {},
           children: []
