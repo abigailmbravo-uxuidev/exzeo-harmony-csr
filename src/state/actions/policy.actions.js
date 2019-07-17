@@ -139,6 +139,7 @@ export function getPolicy(policyNumber) {
       const summaryLedger = await fetchSummaryLedger(policyNumber);
 
       dispatch(setPolicy(policy, summaryLedger));
+      return { policy, summaryLedger };
     } catch (error) {
       dispatch(errorActions.setAppError(error));
     }
@@ -749,12 +750,25 @@ export function getPoliciesForAgency({
 export function initializePolicyWorkflow(policyNumber) {
   return async dispatch => {
     try {
-      dispatch(getPolicy(policyNumber));
+      const { summaryLedger, policy } = await dispatch(getPolicy(policyNumber));
       dispatch(getEffectiveDateChangeReasons());
       dispatch(getPaymentHistory(policyNumber));
       dispatch(getPaymentOptionsApplyPayments());
       dispatch(getCancelOptions());
       dispatch(getEndorsementHistory(policyNumber));
+
+      if (summaryLedger) {
+        const paymentOptions = {
+          effectiveDate: policy.effectiveDate,
+          policyHolders: policy.policyHolders,
+          additionalInterests: policy.additionalInterests,
+          fullyEarnedFees:
+            policy.rating.worksheet.fees.empTrustFee +
+            policy.rating.worksheet.fees.mgaPolicyFee,
+          currentPremium: summaryLedger.currentPremium
+        };
+        dispatch(getBillingOptionsForPolicy(paymentOptions));
+      }
     } catch (error) {
       dispatch(errorActions.setAppError(error));
     }

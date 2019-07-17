@@ -72,7 +72,7 @@ const mock = {
                       formData: {},
                       children: [
                         {
-                          id: 4,
+                          id: 6,
                           type: '$ENTITY_DETAILS',
                           dependencies: [],
                           data: {
@@ -157,7 +157,7 @@ const mock = {
                       ]
                     },
                     {
-                      id: 6,
+                      id: 7,
                       type: '$SECTION',
                       dependencies: [],
                       data: {
@@ -167,7 +167,7 @@ const mock = {
                       formData: {},
                       children: [
                         {
-                          id: 6,
+                          id: 8,
                           type: '$ENTITY_DETAILS',
                           dependencies: [],
                           data: {
@@ -263,7 +263,7 @@ const mock = {
                       ]
                     },
                     {
-                      id: 7,
+                      id: 9,
                       type: '$SECTION',
                       dependencies: [],
                       data: {
@@ -273,7 +273,7 @@ const mock = {
                       formData: {},
                       children: [
                         {
-                          id: 8,
+                          id: 10,
                           type: '$ENTITY_DETAILS',
                           dependencies: [],
                           data: {
@@ -382,7 +382,7 @@ const mock = {
                   ]
                 },
                 {
-                  id: 8,
+                  id: 11,
                   type: '$SECTION',
                   dependencies: [],
                   data: {
@@ -391,7 +391,7 @@ const mock = {
                   formData: {},
                   children: [
                     {
-                      id: 9,
+                      id: 12,
                       type: '$SECTION',
                       dependencies: [],
                       data: {
@@ -401,7 +401,7 @@ const mock = {
                       formData: {},
                       children: [
                         {
-                          id: 10,
+                          id: 13,
                           type: '$ENTITY_DETAILS',
                           dependencies: [],
                           data: {
@@ -457,7 +457,7 @@ const mock = {
                       ]
                     },
                     {
-                      id: 11,
+                      id: 14,
                       type: '$SECTION',
                       dependencies: [],
                       data: {
@@ -467,7 +467,7 @@ const mock = {
                       formData: {},
                       children: [
                         {
-                          id: 12,
+                          id: 15,
                           type: '$ENTITY_DETAILS',
                           dependencies: [],
                           data: {
@@ -522,7 +522,7 @@ const mock = {
                       ]
                     },
                     {
-                      id: 12,
+                      id: 16,
                       type: '$SECTION',
                       dependencies: [],
                       data: {
@@ -532,7 +532,7 @@ const mock = {
                       formData: {},
                       children: [
                         {
-                          id: 13,
+                          id: 17,
                           type: '$BILLING_TABLE',
                           size: '4',
                           dependencies: [],
@@ -547,7 +547,7 @@ const mock = {
               ]
             },
             {
-              id: 14,
+              id: 18,
               type: '$SECTION',
               dependencies: [],
               data: {
@@ -556,7 +556,7 @@ const mock = {
               formData: {},
               children: [
                 {
-                  id: 15,
+                  id: 19,
                   type: '$TITLE',
                   dependencies: [],
                   data: {
@@ -566,7 +566,7 @@ const mock = {
                   children: []
                 },
                 {
-                  id: 16,
+                  id: 20,
                   type: '$ENTITY_DETAILS',
                   dependencies: [],
                   data: {
@@ -605,7 +605,7 @@ const mock = {
                   children: []
                 },
                 {
-                  id: 17,
+                  id: 21,
                   type: '$APPRAISER',
                   dependencies: [],
                   data: {},
@@ -613,7 +613,7 @@ const mock = {
                   children: []
                 },
                 {
-                  id: 18,
+                  id: 22,
                   type: '$ENTITY_DETAILS',
                   dependencies: [],
                   data: {
@@ -659,7 +659,7 @@ const mock = {
                   children: []
                 },
                 {
-                  id: 19,
+                  id: 23,
                   type: '$ENTITY_DETAILS',
                   dependencies: [],
                   data: {
@@ -700,7 +700,7 @@ const mock = {
               ]
             },
             {
-              id: 20,
+              id: 24,
               type: '$SECTION',
               dependencies: [],
               data: {
@@ -709,7 +709,7 @@ const mock = {
               formData: {},
               children: [
                 {
-                  id: 21,
+                  id: 25,
                   type: '$TITLE',
                   dependencies: [],
                   data: {
@@ -719,7 +719,7 @@ const mock = {
                   children: []
                 },
                 {
-                  id: 22,
+                  id: 26,
                   type: '$SECTION',
                   dependencies: [],
                   data: {
@@ -728,7 +728,7 @@ const mock = {
                   formData: {},
                   children: [
                     {
-                      id: 200000222222227,
+                      id: 27,
                       type: '$ENTITY_DETAILS',
                       dependencies: [],
                       data: {

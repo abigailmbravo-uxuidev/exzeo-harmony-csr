@@ -3,7 +3,7 @@ export const PAGE_ROUTING = {
 };
 
 export const ROUTES_NOT_HANDLED_BY_GANDALF = [
-  'policyholder',
+  'policyHolder',
   'billing',
   'notes',
   'cancel',
