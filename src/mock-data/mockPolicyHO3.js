@@ -522,13 +522,25 @@ const mock = {
                       ]
                     },
                     {
-                      id: 13,
-                      type: '$BILLING_TABLE',
-                      size: '4',
+                      id: 12,
+                      type: '$SECTION',
                       dependencies: [],
-                      data: {},
+                      data: {
+                        className: 'billing table',
+                        size: '4'
+                      },
                       formData: {},
-                      children: []
+                      children: [
+                        {
+                          id: 13,
+                          type: '$BILLING_TABLE',
+                          size: '4',
+                          dependencies: [],
+                          data: {},
+                          formData: {},
+                          children: []
+                        }
+                      ]
                     }
                   ]
                 }

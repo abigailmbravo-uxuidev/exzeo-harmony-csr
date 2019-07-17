@@ -439,19 +439,26 @@ section {
       .row {
         .table {
           dl {
+            margin-bottom: 0;
             div {
               display: flex;
 
               dt {
                 flex-grow: 1;
                 flex-shrink: 1;
+                padding: $padding $padding $padding ($padding * 1.5);
+                white-space: normal;
+                hyphens: auto;
                 font-weight: $font-weight-normal;
               }
               dd {
                 flex-grow: 0;
                 flex-shrink: 0;
                 margin: 0;
+                padding: $padding ($padding * 1.5) $padding 0;
                 text-align: right;
+                white-space: normal;
+                hyphens: auto;
               }
             }
             &:first-of-type {
