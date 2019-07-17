@@ -25,14 +25,13 @@ import {
   getAgents,
   getAgency
 } from '../../state/actions/service.actions';
-import { fetchNotes } from '../../state/actions/notes.actions';
 
 import EditEffectiveDataModal from '../../components/Policy/EditEffectiveDatePopup';
 import ReinstatePolicyModal from '../../components/Policy/ReinstatePolicyPopup';
 import Coverage from '../../components/Policy/Coverage';
 import PolicyHolder from '../../components/Policy/PolicyholderAgent';
 import Billing from '../../components/Policy/MortgageBilling';
-import Notes from '../../components/Notes';
+import NotesFiles from '../NotesFiles';
 import Cancel from '../../components/Policy/Cancel';
 import Endorsements from '../../components/Policy/Endorsements';
 
@@ -92,7 +91,8 @@ export class PolicyWorkflow extends React.Component {
 
     this.customComponents = {
       $BILLING_TABLE: BillingTable,
-      $APPRAISER: Appraiser
+      $APPRAISER: Appraiser,
+      $NOTES_FILES: NotesFiles
     };
   }
 
@@ -318,16 +318,6 @@ export class PolicyWorkflow extends React.Component {
                     exact
                     path={`${match.url}/billing`}
                     render={props => <Billing {...props} />}
-                  />
-                  <Route
-                    exact
-                    path={`${match.url}/notes`}
-                    render={props => (
-                      <Notes
-                        numbers={[policy.policyNumber, policy.sourceNumber]}
-                        numberType="policyNumber"
-                      />
-                    )}
                   />
                   <Route
                     exact
