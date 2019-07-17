@@ -302,178 +302,169 @@ const mock = {
             }
           ]
         },
-
         {
           name: 'coverages',
           id: '79b48a18-4f4d-44e2-b778-9d02b6d827f6',
           type: '$SECTION',
           dependencies: [],
           data: {
-            className: 'coverages',
-            size: '9'
+            className: 'coverages-deductibles',
+            size: '12'
           },
           formData: {},
           children: [
             {
-              id: 'f5a6c22b-6d65-453e-b446-2d5c461d14c2',
-              type: '$TITLE',
+              name: 'coverages',
+              id: '79b48a18-4f4d-44e2-b778-9QQQQQQQQQQQQd02b6d827f6',
+              type: '$SECTION',
               dependencies: [],
               data: {
-                text: 'Coverages'
+                className: 'coverages',
+                size: '9'
               },
               formData: {},
-              children: []
-            },
-            {
-              id: 'e532c398-a22d-4ff7-b459-10cc35b8a3d1',
-              type: '$INPUT',
-              path: 'coverageLimits.building.value',
-              dependencies: [],
-              data: {
-                component: 'currency',
-                label: 'Building Limit',
-                size: '7',
-                validation: ['isBuildingRange'],
-                extendedProperties: {
-                  format: 'currency',
-                  displayRange: true,
-                  min: 'coverageLimits.building.minAmount',
-                  max: 'coverageLimits.building.maxAmount'
-                }
-              },
-              formData: {
-                path: 'coverageLimits.building.value',
-                type: 'integer',
-                required: true,
-                metaData: {}
-              },
-              children: []
-            },
-            {
-              id: '0855ca01-4f9c-4d3f-ac1b-3b550fead6b1',
-              type: '$INPUT',
-              path: 'coverageLimits.increasedCompliance.value',
-              dependencies: [],
-              data: {
-                component: 'display',
-                label: 'Increased Cost of Compliance Limit',
-                size: '5',
-                extendedProperties: {
-                  output: 'currency'
-                }
-              },
-              formData: {
-                path: 'coverageLimits.increasedCompliance.value',
-                type: 'integer',
-                metaData: {
-                  target: '${it.coverageLimits.increasedCompliance.value}'
-                }
-              },
-              children: []
-            },
-            {
-              id: 'ce8fa0c1-b13b-4c31-9377-3be2a124ff30',
-              type: '$INPUT',
-              path: 'coverageLimits.personalProperty.value',
-              dependencies: [],
-              data: {
-                component: 'currency',
-                label: 'Personal Property Limit',
-                size: '7',
-                extendedProperties: {
-                  output: 'percent',
-                  outputLabel: 'Percentage'
-                }
-              },
-              formData: {
-                path: 'coverageLimits.personalProperty.value',
-                type: 'integer',
-                required: true,
-                metaData: {
-                  target:
-                    '${Math.ceil((((it.coverageLimits.personalProperty.value || 0) / it.coverageLimits.building.value) * 100 ))}'
-                }
-              },
-              children: []
-            },
-            {
-              id: '02ad7385-fa1d-4554-9cc8-7c7bbfa53d10',
-              type: '$INPUT',
-              path: 'coverageLimits.lossOfUse.value',
-              dependencies: [],
-              data: {
-                component: 'display',
-                label: 'Loss of Use Limit',
-                size: '5',
-                extendedProperties: {
-                  output: 'currency'
-                }
-              },
-              formData: {
-                path: 'coverageLimits.lossOfUse.value',
-                type: 'integer',
-                metaData: {
-                  target: '${it.coverageLimits.lossOfUse.value}'
-                }
-              },
-              children: []
-            },
-            {
-              id: '2d63a166-8e4f-4c4a-829d-d54c067e3c39',
-              type: '$INPUT',
-              path: 'coverageOptions.personalPropertyReplacementCost.answer',
-              dependencies: [],
-              data: {
-                component: 'radio',
-                label: 'Personal Property Repl Cost',
-                size: '6',
-                segmented: true,
-                disabled:
-                  '${(it.coverageLimits.personalProperty.value || 0) <= Math.ceil((it.coverageLimits.building.value || 0) / 4)}',
-                dataSource: [
-                  { label: 'No', answer: false },
-                  { label: 'Yes', answer: true }
-                ],
-                extendedProperties: {
-                  subscribe: true,
-                  watchFields: [
-                    {
-                      field: 'coverageLimits.personalProperty.value',
-                      becomes: 0,
-                      to: false
+              children: [
+                {
+                  id: 'f5a6c22b-6d65-453e-b446-2d5c461d14c2',
+                  type: '$TITLE',
+                  dependencies: [],
+                  data: {
+                    text: 'Coverages'
+                  },
+                  formData: {},
+                  children: []
+                },
+                {
+                  id: 'e532c398-a22d-4ff7-b459-10cc35b8a3d1',
+                  type: '$INPUT',
+                  path: 'coverageLimits.building.value',
+                  dependencies: [],
+                  data: {
+                    component: 'currency',
+                    label: 'Building Limit',
+                    size: '7',
+                    validation: ['isBuildingRange'],
+                    extendedProperties: {
+                      format: 'currency',
+                      displayRange: true,
+                      min: 'coverageLimits.building.minAmount',
+                      max: 'coverageLimits.building.maxAmount'
                     }
-                  ]
+                  },
+                  formData: {
+                    path: 'coverageLimits.building.value',
+                    type: 'integer',
+                    required: true,
+                    metaData: {}
+                  },
+                  children: []
+                },
+                {
+                  id: '0855ca01-4f9c-4d3f-ac1b-3b550fead6b1',
+                  type: '$INPUT',
+                  path: 'coverageLimits.increasedCompliance.value',
+                  dependencies: [],
+                  data: {
+                    component: 'display',
+                    label: 'Increased Cost of Compliance Limit',
+                    size: '5',
+                    extendedProperties: {
+                      output: 'currency'
+                    }
+                  },
+                  formData: {
+                    path: 'coverageLimits.increasedCompliance.value',
+                    type: 'integer',
+                    metaData: {
+                      target: '${it.coverageLimits.increasedCompliance.value}'
+                    }
+                  },
+                  children: []
+                },
+                {
+                  id: 'ce8fa0c1-b13b-4c31-9377-3be2a124ff30',
+                  type: '$INPUT',
+                  path: 'coverageLimits.personalProperty.value',
+                  dependencies: [],
+                  data: {
+                    component: 'currency',
+                    label: 'Personal Property Limit',
+                    size: '7',
+                    extendedProperties: {
+                      output: 'percent',
+                      outputLabel: 'Percentage'
+                    }
+                  },
+                  formData: {
+                    path: 'coverageLimits.personalProperty.value',
+                    type: 'integer',
+                    required: true,
+                    metaData: {
+                      target:
+                        '${Math.ceil((((it.coverageLimits.personalProperty.value || 0) / it.coverageLimits.building.value) * 100 ))}'
+                    }
+                  },
+                  children: []
+                },
+                {
+                  id: '02ad7385-fa1d-4554-9cc8-7c7bbfa53d10',
+                  type: '$INPUT',
+                  path: 'coverageLimits.lossOfUse.value',
+                  dependencies: [],
+                  data: {
+                    component: 'display',
+                    label: 'Loss of Use Limit',
+                    size: '5',
+                    extendedProperties: {
+                      output: 'currency'
+                    }
+                  },
+                  formData: {
+                    path: 'coverageLimits.lossOfUse.value',
+                    type: 'integer',
+                    metaData: {
+                      target: '${it.coverageLimits.lossOfUse.value}'
+                    }
+                  },
+                  children: []
+                },
+                {
+                  id: '2d63a166-8e4f-4c4a-829d-d54c067e3c39',
+                  type: '$INPUT',
+                  path:
+                    'coverageOptions.personalPropertyReplacementCost.answer',
+                  dependencies: [],
+                  data: {
+                    component: 'radio',
+                    label: 'Personal Property Repl Cost',
+                    size: '7',
+                    segmented: true,
+                    disabled:
+                      '${(it.coverageLimits.personalProperty.value || 0) <= Math.ceil((it.coverageLimits.building.value || 0) / 4)}',
+                    dataSource: [
+                      { label: 'No', answer: false },
+                      { label: 'Yes', answer: true }
+                    ],
+                    extendedProperties: {
+                      subscribe: true,
+                      watchFields: [
+                        {
+                          field: 'coverageLimits.personalProperty.value',
+                          becomes: 0,
+                          to: false
+                        }
+                      ]
+                    }
+                  },
+                  formData: {
+                    path:
+                      'coverageOptions.personalPropertyReplacementCost.answer',
+                    type: 'boolean',
+                    required: true
+                  },
+                  children: []
                 }
-              },
-              formData: {
-                path: 'coverageOptions.personalPropertyReplacementCost.answer',
-                type: 'boolean',
-                required: true
-              },
-              children: []
-            }
-          ]
-        },
-        {
-          name: 'Deductibles',
-          id: '36c89c9e-5d95-465b-9426-308ebc1e8350',
-          type: '$SECTION',
-          dependencies: [],
-          data: {
-            className: 'deductibles',
-            size: '3'
-          },
-          formData: {},
-          children: [
-            {
-              id: '33ea1392-e18a-435c-8163-ba0e11a30f38',
-              type: '$TITLE',
-              dependencies: [],
-              data: {
-                text: 'Deductibles'
-              },
-              formData: {},
-              children: []
+              ]
             },
             {
               name: 'Deductibles',
@@ -481,62 +472,85 @@ const mock = {
               type: '$SECTION',
               dependencies: [],
               data: {
-                className: 'deductible-wrapper',
-                size: '12'
+                className: 'deductibles',
+                size: '3'
               },
               formData: {},
               children: [
                 {
-                  id: 'e1b7d921-2e61-42cd-8e80-20808f610ca0',
-                  type: '$INPUT',
-                  path: 'deductibles.buildingDeductible.value',
+                  id: '33ea1392-e18a-435c-8163-ba0e11a30f38',
+                  type: '$TITLE',
                   dependencies: [],
                   data: {
-                    component: 'selectInteger',
-                    label: 'Building Deductible',
-                    size: '12'
+                    text: 'Deductibles'
                   },
-                  formData: {
-                    path: 'deductibles.buildingDeductible.value',
-                    type: 'integer',
-                    required: true,
-                    metaData: {
-                      enum: [
-                        { label: '$ 500', answer: 500 },
-                        { label: '$ 1,000', answer: 1000 },
-                        { label: '$ 2,000', answer: 2000 },
-                        { label: '$ 5,000', answer: 5000 },
-                        { label: '$ 10,000', answer: 10000 }
-                      ]
-                    }
-                  },
+                  formData: {},
                   children: []
                 },
                 {
-                  id: '82cbb49d-e76b-41f3-a30e-92c283c27b00',
-                  type: '$INPUT',
-                  path: 'deductibles.personalPropertyDeductible.value',
+                  name: 'Deductibles',
+                  id: '36c89c9e-5d95-465b-9426-308ebc1e8350',
+                  type: '$SECTION',
                   dependencies: [],
                   data: {
-                    component: 'selectInteger',
-                    label: 'Personal Property Deductible',
+                    className: 'deductible-wrapper',
                     size: '12'
                   },
-                  formData: {
-                    path: 'coverageLimits.moldLiability.value',
-                    type: 'integer',
-                    required: true,
-                    metaData: {
-                      enum: [
-                        { label: '$ 500', answer: 500 },
-                        { label: '$ 1,000', answer: 1000 },
-                        { label: '$ 2,000', answer: 2000 },
-                        { label: '$ 5,000', answer: 5000 },
-                        { label: '$ 10,000', answer: 10000 }
-                      ]
+                  formData: {},
+                  children: [
+                    {
+                      id: 'e1b7d921-2e61-42cd-8e80-20808f610ca0',
+                      type: '$INPUT',
+                      path: 'deductibles.buildingDeductible.value',
+                      dependencies: [],
+                      data: {
+                        component: 'selectInteger',
+                        label: 'Building Deductible',
+                        size: '12'
+                      },
+                      formData: {
+                        path: 'deductibles.buildingDeductible.value',
+                        type: 'integer',
+                        required: true,
+                        metaData: {
+                          enum: [
+                            { label: '$ 500', answer: 500 },
+                            { label: '$ 1,000', answer: 1000 },
+                            { label: '$ 2,000', answer: 2000 },
+                            { label: '$ 5,000', answer: 5000 },
+                            { label: '$ 10,000', answer: 10000 }
+                          ]
+                        }
+                      },
+                      children: []
+                    },
+                    {
+                      id: '82cbb49d-e76b-41f3-a30e-92c283c27b00',
+                      type: '$INPUT',
+                      path: 'deductibles.personalPropertyDeductible.value',
+                      dependencies: [],
+                      data: {
+                        component: 'selectInteger',
+                        label: 'Personal Property Deductible',
+                        size: '12'
+                      },
+                      formData: {
+                        path: 'coverageLimits.moldLiability.value',
+                        type: 'integer',
+                        required: true,
+                        metaData: {
+                          enum: [
+                            { label: '$ 500', answer: 500 },
+                            { label: '$ 1,000', answer: 1000 },
+                            { label: '$ 2,000', answer: 2000 },
+                            { label: '$ 5,000', answer: 5000 },
+                            { label: '$ 10,000', answer: 10000 }
+                          ]
+                        }
+                      },
+                      children: []
                     }
-                  },
-                  children: []
+                  ]
                 }
               ]
             }
