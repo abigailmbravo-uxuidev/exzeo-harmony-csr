@@ -166,6 +166,44 @@
                     }
                   }
                 }
+
+                > section {
+                  &.coverages {
+                    .form-group {
+                      &.has-output-label {
+                        flex-direction: row-reverse;
+                        flex-wrap: wrap;
+                        > * {
+                          width: calc(50% - 0.5rem);
+                        }
+
+                        select,
+                        input {
+                          order: 1;
+                        }
+
+                        label {
+                          margin-right: $padding;
+
+                          &:first-of-type {
+                            margin-right: 0;
+                            margin-left: $padding;
+                          }
+                        }
+
+                        select,
+                        input {
+                          margin-left: $padding;
+                        }
+
+                        output {
+                          order: 3;
+                          margin-right: $padding;
+                        }
+                      }
+                    }
+                  }
+                }
               }
             }
 
