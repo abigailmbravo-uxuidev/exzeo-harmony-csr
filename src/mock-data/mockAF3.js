@@ -532,12 +532,12 @@ const mock = {
                       data: {
                         component: 'selectInteger',
                         label: 'Personal Property Deductible',
-                        size: '12'
+                        size: '12',
+                        disabled: true
                       },
                       formData: {
-                        path: 'coverageLimits.moldLiability.value',
+                        path: 'deductibles.personalPropertyDeductible.value',
                         type: 'integer',
-                        required: true,
                         metaData: {
                           enum: [
                             { label: '$ 500', answer: 500 },
