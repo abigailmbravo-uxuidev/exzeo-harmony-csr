@@ -440,8 +440,10 @@ section {
         .table {
           dl {
             margin-bottom: 0;
+
             div {
               display: flex;
+              border-bottom: 1px dotted $warm-gray-03;
 
               dt {
                 flex-grow: 1;
@@ -461,9 +463,17 @@ section {
                 hyphens: auto;
               }
             }
-            &:first-of-type {
+
+            &:nth-of-type(odd) {
               div {
                 background: $warm-gray-01;
+              }
+            }
+
+            &:first-of-type {
+              div {
+                border-bottom-width: 0;
+                background: $warm-gray-02;
                 dt {
                   font-weight: $font-weight-bold;
                 }
@@ -471,6 +481,10 @@ section {
                   font-weight: $font-weight-bold;
                 }
               }
+            }
+
+            &:last-of-type {
+              margin-bottom: $padding * 2;
             }
           }
         }
