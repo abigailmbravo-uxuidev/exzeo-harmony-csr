@@ -1,45 +1,15 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { bindActionCreators } from 'redux';
+
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 import { SideNavigation } from '@exzeo/core-ui/src/@Harmony';
 
-import * as appStateActions from '../state/actions/appState.actions';
-import * as uiActions from '../state/actions/ui.actions';
-import * as cgActions from '../state/actions/cg.actions';
+import { toggleDiary, toggleNote } from '../state/actions/ui.actions';
 import { QUOTE_RESOURCE_TYPE } from '../constants/diaries';
 
 import PlusButton from './PlusButton';
 import UWConditions from './UWconditions';
-
-export const newDiary = props => {
-  const {
-    quoteData: { companyCode, state, product, quoteNumber, endDate }
-  } = props;
-  props.actions.uiActions.toggleDiary({
-    companyCode,
-    state,
-    product,
-    resourceType: QUOTE_RESOURCE_TYPE,
-    resourceId: quoteNumber,
-    entityEndDate: endDate
-  });
-};
-
-export const newNote = props => {
-  const {
-    quoteData: { companyCode, state, product, quoteNumber }
-  } = props;
-  props.actions.uiActions.toggleNote({
-    companyCode,
-    state,
-    product,
-    noteType: 'Quote Note',
-    documentId: quoteNumber,
-    resourceType: QUOTE_RESOURCE_TYPE
-  });
-};
 
 const getNavLinks = ({ quoteNumber }) => {
   return [
@@ -94,39 +64,43 @@ const getNavLinks = ({ quoteNumber }) => {
   ];
 };
 
-export const NewNoteFileUploaderPopup = props => {
-  props.actions.newNoteActions.toggleNote({
-    noteType: 'Quote Note',
-    documentId: props.quoteData.quoteNumber
-  });
-};
+export const SideNav = ({
+  quoteData,
+  toggleNote,
+  toggleDiary,
+  activateRedirect,
+  activateRedirectLink
+}) => {
+  const [showUWPopup, setUWPopup] = useState(false);
 
-export const UWconditionsPopup = props => {
-  props.actions.appStateActions.setAppState(
-    props.appState.modelName,
-    props.match.params.workflowId,
-    { ...props.appState.data, showUWconditions: true }
-  );
-};
+  function newNote() {
+    const { companyCode, state, product, quoteNumber } = quoteData;
+    toggleNote({
+      companyCode,
+      state,
+      product,
+      noteType: 'Quote Note',
+      documentId: quoteNumber,
+      resourceType: QUOTE_RESOURCE_TYPE
+    });
+  }
 
-export const closeUWConditions = props => {
-  props.actions.appStateActions.setAppState(
-    props.appState.modelName,
-    props.match.params.workflowId,
-    { ...props.appState.data, showUWconditions: false }
-  );
-};
-
-export const SideNav = props => {
-  const { quoteData, match } = props;
-  const redirect = props.activateRedirect ? (
-    <Redirect to={props.activateRedirectLink} />
-  ) : null;
+  function newDiary() {
+    const { companyCode, state, product, quoteNumber, endDate } = quoteData;
+    toggleDiary({
+      companyCode,
+      state,
+      product,
+      resourceType: QUOTE_RESOURCE_TYPE,
+      resourceId: quoteNumber,
+      entityEndDate: endDate
+    });
+  }
 
   return (
     <React.Fragment>
       <nav className="site-nav">
-        {redirect}
+        {activateRedirect && <Redirect to={activateRedirectLink} />}
         <SideNavigation
           navLinks={getNavLinks({ quoteNumber: quoteData.quoteNumber })}
         >
@@ -136,19 +110,16 @@ export const SideNav = props => {
               tabIndex="0"
               aria-label="open-btn form-newNote"
               className="btn btn-secondary btn-xs btn-block"
-              onClick={() => UWconditionsPopup(props)}
+              onClick={() => setUWPopup(true)}
             >
               Underwriting Conditions
             </button>
           </li>
         </SideNavigation>
-        {props.appState.data.showUWconditions === true && (
-          <UWConditions closeButtonHandler={() => closeUWConditions(props)} />
+        {showUWPopup && (
+          <UWConditions closeButtonHandler={() => setUWPopup(false)} />
         )}
-        <PlusButton
-          newNote={() => newNote(props)}
-          newDiary={() => newDiary(props)}
-        />
+        <PlusButton newNote={newNote} newDiary={newDiary} />
       </nav>
     </React.Fragment>
   );
@@ -157,33 +128,18 @@ export const SideNav = props => {
 SideNav.propTypes = {
   activateRedirectLink: PropTypes.string,
   activateRedirect: PropTypes.bool,
-  appState: PropTypes.shape({
-    instanceId: PropTypes.string,
-    modelName: PropTypes.string,
-    data: PropTypes.shape({
-      showUWconditions: PropTypes.bool,
-      quote: PropTypes.object,
-      updateUnderwriting: PropTypes.bool
-    })
-  })
+  quoteData: PropTypes.shape({})
 };
 
-const mapStateToProps = state => ({
-  appState: state.appState,
-  activateRedirectLink: state.appState.data.activateRedirectLink,
-  activateRedirect: state.appState.data.activateRedirect,
-  quoteData: state.quoteState.quote || {}
-});
-
-const mapDispatchToProps = dispatch => ({
-  actions: {
-    cgActions: bindActionCreators(cgActions, dispatch),
-    uiActions: bindActionCreators(uiActions, dispatch),
-    appStateActions: bindActionCreators(appStateActions, dispatch)
-  }
-});
+const mapStateToProps = state => {
+  return {
+    activateRedirectLink: state.appState.data.activateRedirectLink,
+    activateRedirect: state.appState.data.activateRedirect,
+    quoteData: state.quoteState.quote || {}
+  };
+};
 
 export default connect(
   mapStateToProps,
-  mapDispatchToProps
+  { toggleNote, toggleDiary }
 )(SideNav);
