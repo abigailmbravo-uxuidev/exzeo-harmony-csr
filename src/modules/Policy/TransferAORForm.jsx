@@ -1,25 +1,21 @@
 import React from 'react';
-import { Form } from '@exzeo/core-ui';
+import { Form, Loader } from '@exzeo/core-ui';
 import { AgencyAgentSelect } from '@exzeo/core-ui/src/@Harmony';
 
-const TransferAORForm = ({
-  children,
-  handleSubmit,
-  initialValues,
-  formValues
-}) => {
+const TransferAORForm = ({ children, handleSubmit, initialValues }) => {
   return (
     <Form
       initialValues={initialValues}
       onSubmit={handleSubmit}
-      subscription={{ submitting: true, pristine: true }}
+      subscription={{ submitting: true, pristine: true, values: true }}
     >
-      {({ handleSubmit, submitting, pristine }) => (
+      {({ handleSubmit, submitting, pristine, values: formValues }) => (
         <form
           id="TransferAORForm"
           className="application"
           onSubmit={handleSubmit}
         >
+          {submitting && <Loader />}
           <div className="card-block aor">
             <AgencyAgentSelect
               initialValues={initialValues}

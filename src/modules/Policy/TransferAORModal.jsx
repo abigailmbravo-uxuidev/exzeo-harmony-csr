@@ -4,12 +4,7 @@ import { Modal, Button } from '@exzeo/core-ui/src';
 
 import TransferAORForm from './TransferAORForm';
 
-const TransferAORModal = ({
-  initialValues,
-  formValues,
-  closeModal,
-  submitTransferAOR
-}) => {
+const TransferAORModal = ({ initialValues, closeModal, submitTransferAOR }) => {
   return (
     <Modal
       size={Modal.sizes.large}
@@ -22,7 +17,6 @@ const TransferAORModal = ({
     >
       <TransferAORForm
         initialValues={initialValues}
-        formValues={formValues}
         handleSubmit={submitTransferAOR}
         className="card-block"
       >
@@ -31,6 +25,7 @@ const TransferAORModal = ({
             <Button
               className={Button.constants.classNames.secondary}
               onClick={closeModal}
+              disabled={submitting}
               data-test="modal-cancel"
             >
               Cancel

@@ -11,7 +11,7 @@ import AgentCard from './AgentCard';
 import PolicyholderCard from './PolicyholderCard';
 import TransferAORModal from './TransferAORModal';
 
-const PolicyholderAgent = ({ initialValues, formValues, options }) => {
+const PolicyholderAgent = ({ customHandlers, initialValues }) => {
   const [showTransferAOR, setShowTransferAOR] = useState(false);
   const { agents } = useFetchAgents(initialValues.agencyCode);
   const { agency } = useFetchAgency(initialValues.agencyCode);
@@ -20,25 +20,23 @@ const PolicyholderAgent = ({ initialValues, formValues, options }) => {
   );
 
   const submitTransferAOR = async (data, dispatch, props) => {
-    const { policyNumber, getPolicy, setAppError } = props;
     const transferData = {
       service: 'policy-manager',
       method: 'POST',
       path: 'update-agent-of-record',
-      data: { ...data, policyNumber: policyNumber }
+      data: {
+        agencyCode: data.agencyCode,
+        agentCode: data.agentCode,
+        policyNumber: initialValues.policyNumber
+      }
     };
 
-    this.setState({ isLoading: true });
-
-    await callService(transferData).catch(err => setAppError(err));
-
-    await getPolicy(policyNumber);
-    await props.getAgency(data.agencyCode);
-    await props.getAgentsByAgencyCode(data.agencyCode);
-
-    this.setState({ isLoading: false });
-    this.props.toggleModal();
+    await callService(transferData).catch(err =>
+      customHandlers.setAppError(err)
+    );
+    setShowTransferAOR(false);
   };
+
   const {
     policyHolders,
     policyHolderMailingAddress,
@@ -50,7 +48,6 @@ const PolicyholderAgent = ({ initialValues, formValues, options }) => {
         <ModalPortal>
           <TransferAORModal
             initialValues={initialValues}
-            formValues={formValues}
             closeModal={() => setShowTransferAOR(false)}
             submitTransferAOR={submitTransferAOR}
           />

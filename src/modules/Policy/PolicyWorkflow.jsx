@@ -18,7 +18,7 @@ import { POLICY_RESOURCE_TYPE } from '../../constants/diaries';
 import { toggleDiary } from '../../state/actions/ui.actions';
 import { getUIQuestions } from '../../state/actions/questions.actions';
 import { getDiariesForTable } from '../../state/selectors/diary.selectors';
-
+import { setAppError } from '../../state/actions/error.actions';
 import { setAppState } from '../../state/actions/appState.actions';
 import {
   getZipcodeSettings,
@@ -47,10 +47,6 @@ import {
   getEndorsementHistory,
   initializePolicyWorkflow
 } from '../../state/actions/policy.actions';
-import {
-  startWorkflow,
-  batchCompleteTask
-} from '../../state/actions/cg.actions';
 
 import MOCK_CONFIG_DATA from '../../mock-data/mockPolicyHO3';
 import {
@@ -403,7 +399,6 @@ const mapStateToProps = state => {
 export default connect(
   mapStateToProps,
   {
-    batchCompleteTask,
     createTransaction,
     getAgents,
     getAgency,
@@ -416,9 +411,9 @@ export default connect(
     getPolicy,
     getZipCodeSettings: getZipcodeSettings,
     setAppState,
-    startWorkflow,
     toggleDiary,
     initializePolicyWorkflow,
-    getUIQuestions
+    getUIQuestions,
+    setAppError
   }
 )(PolicyWorkflow);
