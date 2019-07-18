@@ -64,6 +64,7 @@ import BillingTable from './BillingTable';
 import Appraiser from './Appraiser';
 import NotesFiles from '../NotesFiles';
 import PolicyholderAgent from './PolicyholderAgent';
+import PolicyFooter from './PolicyFooter';
 
 const getCurrentStepAndPage = defaultMemoize(pathname => {
   const currentRouteName = pathname.split('/')[3];
@@ -285,7 +286,7 @@ export class PolicyWorkflow extends React.Component {
                         transformConfig={transformConfig}
                         stickyFooter
                         renderFooter={({ pristine, submitting, form }) => (
-                          <div />
+                          <PolicyFooter />
                         )}
                         formListeners={() => (
                           <MemoizedFormListeners>
