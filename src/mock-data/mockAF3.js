@@ -440,7 +440,7 @@ const mock = {
                     size: '7',
                     segmented: true,
                     disabled:
-                      '${(it.coverageLimits.personalProperty.value || 0) <= Math.ceil((it.coverageLimits.building.value || 0) / 4)}',
+                      '${Math.ceil((it.coverageLimits.building.value || 0) / 4) > (it.coverageLimits.personalProperty.value || 0)}',
                     dataSource: [
                       { label: 'No', answer: false },
                       { label: 'Yes', answer: true }
