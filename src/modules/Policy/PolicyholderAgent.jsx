@@ -3,6 +3,7 @@ import { defaultMemoize } from 'reselect';
 import _find from 'lodash/find';
 import _get from 'lodash/get';
 import { callService } from '@exzeo/core-ui/src/@Harmony';
+import { ModalPortal } from '@exzeo/core-ui';
 
 import { useFetchAgents, useFetchAgency } from './hooks';
 import AgencyCard from './AgencyCard';
@@ -46,12 +47,14 @@ const PolicyholderAgent = ({ initialValues, formValues, options }) => {
   return (
     <React.Fragment>
       {showTransferAOR && (
-        <TransferAORModal
-          initialValues={initialValues}
-          formValues={formValues}
-          closeModal={() => setShowTransferAOR(false)}
-          submitTransferAOR={submitTransferAOR}
-        />
+        <ModalPortal>
+          <TransferAORModal
+            initialValues={initialValues}
+            formValues={formValues}
+            closeModal={() => setShowTransferAOR(false)}
+            submitTransferAOR={submitTransferAOR}
+          />
+        </ModalPortal>
       )}
       <section className="policyholder-cards">
         <h3>Policyholder</h3>
