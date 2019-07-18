@@ -435,7 +435,7 @@ section {
     > section {
       margin-bottom: 1rem;
       padding-bottom: 1rem;
-      border-bottom: 1px dashed $bright-blue-darken-04;
+      border-bottom: 1px dashed $bright-blue-darken-03;
 
       &:last-of-type {
         padding-bottom: 0;
@@ -495,6 +495,67 @@ section {
 
             &:last-of-type {
               margin-bottom: $padding * 2;
+            }
+          }
+
+          &.deductible {
+            dl {
+              &:nth-of-type(odd) {
+                div {
+                  dt,
+                  dd {
+                    background: rgba($orange-lighten-04, 0.2);
+                  }
+                }
+              }
+              &:first-of-type {
+                div {
+                  dt,
+                  dd {
+                    background: rgba($orange-lighten-04, 0.3);
+                  }
+                }
+              }
+            }
+          }
+          &.premium {
+            dl {
+              &:nth-of-type(odd) {
+                div {
+                  dt,
+                  dd {
+                    background: rgba($yellow-lighten-04, 0.2);
+                  }
+                }
+              }
+              &:first-of-type {
+                div {
+                  dt,
+                  dd {
+                    background: rgba($yellow-lighten-04, 0.3);
+                  }
+                }
+              }
+            }
+          }
+          &.billing {
+            dl {
+              &:nth-of-type(odd) {
+                div {
+                  dt,
+                  dd {
+                    background: rgba($green-lighten-04, 0.2);
+                  }
+                }
+              }
+              &:first-of-type {
+                div {
+                  dt,
+                  dd {
+                    background: rgba($green-lighten-04, 0.3);
+                  }
+                }
+              }
             }
           }
         }
