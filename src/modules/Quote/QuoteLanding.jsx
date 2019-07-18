@@ -30,10 +30,14 @@ export const QuoteLanding = ({ match: { params }, createQuote }) => {
 
   return (
     <React.Fragment>
-      {quote.quoteNumber ? (
-        <Redirect replace to={`/quote/${quote.quoteNumber}/coverage`} />
+      {quote ? (
+        quote.quoteNumber ? (
+          <Redirect replace to={`/quote/${quote.quoteNumber}/coverage`} />
+        ) : (
+          <Loader />
+        )
       ) : (
-        <Loader />
+        <div>There was a problem creating this quote.</div>
       )}
     </React.Fragment>
   );
