@@ -533,7 +533,16 @@ const mock = {
                         component: 'selectInteger',
                         label: 'Personal Property Deductible',
                         size: '12',
-                        disabled: true
+                        disabled: true,
+                        extendedProperties: {
+                          watchFields: [
+                            {
+                              field: 'deductibles.buildingDeductible.value',
+                              becomes: '$MATCH_FIELD',
+                              to: '$FIELD_VALUE'
+                            }
+                          ]
+                        }
                       },
                       formData: {
                         path: 'deductibles.personalPropertyDeductible.value',
