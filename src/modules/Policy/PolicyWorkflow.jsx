@@ -242,7 +242,8 @@ export class PolicyWorkflow extends React.Component {
       setAppError: this.props.setAppError,
       setShowApplicationModal: this.setShowApplicationModal,
       showApplicationModal: this.state.showApplicationModal,
-      toggleDiary: this.props.toggleDiary
+      toggleDiary: this.props.toggleDiary,
+      getPolicy: this.props.getPolicy
     };
     return (
       <div className="app-wrapper csr policy">

@@ -10,6 +10,7 @@ import AgencyCard from './AgencyCard';
 import AgentCard from './AgentCard';
 import PolicyholderCard from './PolicyholderCard';
 import TransferAORModal from './TransferAORModal';
+import { initializePolicyWorkflow } from '../../state/actions/policy.actions';
 
 const PolicyholderAgent = ({ customHandlers, initialValues }) => {
   const [showTransferAOR, setShowTransferAOR] = useState(false);
@@ -34,6 +35,9 @@ const PolicyholderAgent = ({ customHandlers, initialValues }) => {
     await callService(transferData).catch(err =>
       customHandlers.setAppError(err)
     );
+
+    await customHandlers.getPolicy(initialValues.policyNumber);
+
     setShowTransferAOR(false);
   };
 
