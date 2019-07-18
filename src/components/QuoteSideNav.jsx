@@ -72,9 +72,9 @@ export const SideNav = ({
   activateRedirectLink
 }) => {
   const [showUWPopup, setUWPopup] = useState(false);
+  const { companyCode, state, product, quoteNumber, endDate } = quoteData;
 
   function newNote() {
-    const { companyCode, state, product, quoteNumber } = quoteData;
     toggleNote({
       companyCode,
       state,
@@ -86,7 +86,6 @@ export const SideNav = ({
   }
 
   function newDiary() {
-    const { companyCode, state, product, quoteNumber, endDate } = quoteData;
     toggleDiary({
       companyCode,
       state,
@@ -105,16 +104,18 @@ export const SideNav = ({
           navLinks={getNavLinks({ quoteNumber: quoteData.quoteNumber })}
         >
           <hr className="nav-division" />
-          <li>
-            <button
-              tabIndex="0"
-              aria-label="open-btn form-newNote"
-              className="btn btn-secondary btn-xs btn-block"
-              onClick={() => setUWPopup(true)}
-            >
-              Underwriting Conditions
-            </button>
-          </li>
+          {product === 'HO3' && (
+            <li>
+              <button
+                tabIndex="0"
+                aria-label="open-btn form-newNote"
+                className="btn btn-secondary btn-xs btn-block"
+                onClick={() => setUWPopup(true)}
+              >
+                Underwriting Conditions
+              </button>
+            </li>
+          )}
         </SideNavigation>
         {showUWPopup && (
           <UWConditions closeButtonHandler={() => setUWPopup(false)} />
