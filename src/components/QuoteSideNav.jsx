@@ -104,7 +104,7 @@ export const SideNav = ({
           navLinks={getNavLinks({ quoteNumber: quoteData.quoteNumber })}
         >
           <hr className="nav-division" />
-          {product === 'HO3' && (
+          {product === 'HO3' && ( // TODO temporary fix for CSP specific navigation bar config
             <li>
               <button
                 tabIndex="0"
