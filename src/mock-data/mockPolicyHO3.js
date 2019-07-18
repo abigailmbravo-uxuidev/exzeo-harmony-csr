@@ -881,7 +881,11 @@ const mock = {
               id: 32393759439222,
               type: '$POLICYHOLDER_AGENT',
               dependencies: [],
-              data: {},
+              data: {
+                extendedProperties: {
+                  subscribe: true
+                }
+              },
               formData: {},
               children: []
             }

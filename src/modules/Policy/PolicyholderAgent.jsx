@@ -1,19 +1,43 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { defaultMemoize } from 'reselect';
 import _find from 'lodash/find';
 import _get from 'lodash/get';
-import { useFetchAgents, useFetchAgency } from './hooks';
+import { callService } from '@exzeo/core-ui/src/@Harmony';
 
+import { useFetchAgents, useFetchAgency } from './hooks';
 import AgencyCard from './AgencyCard';
 import AgentCard from './AgentCard';
 import PolicyholderCard from './PolicyholderCard';
+import TransferAORModal from './TransferAORModal';
 
-const PolicyholderAgent = ({ initialValues, options }) => {
+const PolicyholderAgent = ({ initialValues, formValues, options }) => {
+  const [showTransferAOR, setShowTransferAOR] = useState(false);
   const { agents } = useFetchAgents(initialValues.agencyCode);
   const { agency } = useFetchAgency(initialValues.agencyCode);
   const selectedAgent = agents.find(
     a => a.agentCode === initialValues.agentCode
   );
+
+  const submitTransferAOR = async (data, dispatch, props) => {
+    const { policyNumber, getPolicy, setAppError } = props;
+    const transferData = {
+      service: 'policy-manager',
+      method: 'POST',
+      path: 'update-agent-of-record',
+      data: { ...data, policyNumber: policyNumber }
+    };
+
+    this.setState({ isLoading: true });
+
+    await callService(transferData).catch(err => setAppError(err));
+
+    await getPolicy(policyNumber);
+    await props.getAgency(data.agencyCode);
+    await props.getAgentsByAgencyCode(data.agencyCode);
+
+    this.setState({ isLoading: false });
+    this.props.toggleModal();
+  };
   const {
     policyHolders,
     policyHolderMailingAddress,
@@ -21,6 +45,14 @@ const PolicyholderAgent = ({ initialValues, options }) => {
   } = initialValues;
   return (
     <React.Fragment>
+      {showTransferAOR && (
+        <TransferAORModal
+          initialValues={initialValues}
+          formValues={formValues}
+          closeModal={() => setShowTransferAOR(false)}
+          submitTransferAOR={submitTransferAOR}
+        />
+      )}
       <section className="policyholder-cards">
         <h3>Policyholder</h3>
         {policyHolders &&
@@ -39,7 +71,7 @@ const PolicyholderAgent = ({ initialValues, options }) => {
           Agency / Agent{' '}
           <button
             className="btn btn-link btn-sm"
-            onClick={null}
+            onClick={() => setShowTransferAOR(true)}
             disabled={false}
           >
             <i className="fa fa-exchange" />
