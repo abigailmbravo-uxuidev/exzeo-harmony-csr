@@ -10,7 +10,6 @@ import AgencyCard from './AgencyCard';
 import AgentCard from './AgentCard';
 import PolicyholderCard from './PolicyholderCard';
 import TransferAORModal from './TransferAORModal';
-import { initializePolicyWorkflow } from '../../state/actions/policy.actions';
 
 const PolicyholderAgent = ({ customHandlers, initialValues }) => {
   const [showTransferAOR, setShowTransferAOR] = useState(false);
@@ -20,24 +19,12 @@ const PolicyholderAgent = ({ customHandlers, initialValues }) => {
     a => a.agentCode === initialValues.agentCode
   );
 
-  const submitTransferAOR = async (data, dispatch, props) => {
-    const transferData = {
-      service: 'policy-manager',
-      method: 'POST',
-      path: 'update-agent-of-record',
-      data: {
-        agencyCode: data.agencyCode,
-        agentCode: data.agentCode,
-        policyNumber: initialValues.policyNumber
-      }
-    };
-
-    await callService(transferData).catch(err =>
-      customHandlers.setAppError(err)
-    );
-
-    await customHandlers.getPolicy(initialValues.policyNumber);
-
+  const submitTransferAOR = async data => {
+    await customHandlers.transferAOR({
+      agencyCode: data.agencyCode,
+      agentCode: data.agentCode,
+      policyNumber: initialValues.policyNumber
+    });
     setShowTransferAOR(false);
   };
 

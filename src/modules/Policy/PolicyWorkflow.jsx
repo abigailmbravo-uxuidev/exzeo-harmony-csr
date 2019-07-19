@@ -25,7 +25,6 @@ import {
   getAgents,
   getAgency
 } from '../../state/actions/service.actions';
-import { fetchNotes } from '../../state/actions/notes.actions';
 
 import EditEffectiveDataModal from '../../components/Policy/EditEffectiveDatePopup';
 import ReinstatePolicyModal from '../../components/Policy/ReinstatePolicyPopup';
@@ -45,7 +44,8 @@ import {
   getPaymentHistory,
   getCancelOptions,
   getEndorsementHistory,
-  initializePolicyWorkflow
+  initializePolicyWorkflow,
+  transferAOR
 } from '../../state/actions/policy.actions';
 
 import MOCK_CONFIG_DATA from '../../mock-data/mockPolicyHO3';
@@ -243,7 +243,8 @@ export class PolicyWorkflow extends React.Component {
       setShowApplicationModal: this.setShowApplicationModal,
       showApplicationModal: this.state.showApplicationModal,
       toggleDiary: this.props.toggleDiary,
-      getPolicy: this.props.getPolicy
+      getPolicy: this.props.getPolicy,
+      transferAOR: this.props.transferAOR
     };
     return (
       <div className="app-wrapper csr policy">
@@ -415,6 +416,7 @@ export default connect(
     toggleDiary,
     initializePolicyWorkflow,
     getUIQuestions,
-    setAppError
+    setAppError,
+    transferAOR
   }
 )(PolicyWorkflow);
