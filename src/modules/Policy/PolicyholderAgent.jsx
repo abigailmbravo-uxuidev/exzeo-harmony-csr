@@ -3,7 +3,7 @@ import { defaultMemoize } from 'reselect';
 import _find from 'lodash/find';
 import _get from 'lodash/get';
 import { callService } from '@exzeo/core-ui/src/@Harmony';
-import { ModalPortal } from '@exzeo/core-ui';
+import { ModalPortal, SectionLoader } from '@exzeo/core-ui';
 
 import { useFetchAgents, useFetchAgency } from './hooks';
 import AgencyCard from './AgencyCard';
@@ -13,8 +13,12 @@ import TransferAORModal from './TransferAORModal';
 
 const PolicyholderAgent = ({ customHandlers, initialValues }) => {
   const [showTransferAOR, setShowTransferAOR] = useState(false);
-  const { agents } = useFetchAgents(initialValues.agencyCode);
-  const { agency } = useFetchAgency(initialValues.agencyCode);
+  const { agents, loaded: agentsLoaded } = useFetchAgents(
+    initialValues.agencyCode
+  );
+  const { agency, loaded: agencyLoaded } = useFetchAgency(
+    initialValues.agencyCode
+  );
   const selectedAgent = agents.find(
     a => a.agentCode === initialValues.agentCode
   );
@@ -27,6 +31,10 @@ const PolicyholderAgent = ({ customHandlers, initialValues }) => {
     });
     setShowTransferAOR(false);
   };
+
+  if (!agentsLoaded || !agencyLoaded) {
+    return <SectionLoader />;
+  }
 
   const {
     policyHolders,
@@ -50,7 +58,7 @@ const PolicyholderAgent = ({ customHandlers, initialValues }) => {
           policyHolders.map((policyHolder, index) => (
             <PolicyholderCard
               policyHolder={policyHolder}
-              index={index}
+              key={index}
               label={`Policyholder ${index + 1}`}
               policyHolderMailingAddress={policyHolderMailingAddress}
               subject={`${policyNumber}%20${policyHolders[0].firstName}%20${policyHolders[0].lastName}`}

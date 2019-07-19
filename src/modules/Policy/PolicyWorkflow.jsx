@@ -246,6 +246,7 @@ export class PolicyWorkflow extends React.Component {
       getPolicy: this.props.getPolicy,
       transferAOR: this.props.transferAOR
     };
+
     return (
       <div className="app-wrapper csr policy">
         {(isLoading || !policy.policyNumber) && <Loader />}
