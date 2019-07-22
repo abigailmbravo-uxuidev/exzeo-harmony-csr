@@ -318,11 +318,6 @@ export class PolicyWorkflow extends React.Component {
                   )}
                   <Route
                     exact
-                    path={`${match.url}/cancel`}
-                    render={props => <Cancel {...props} />}
-                  />
-                  <Route
-                    exact
                     path={`${match.url}/endorsements`}
                     render={props => (
                       <Endorsements {...props} params={match.params} />

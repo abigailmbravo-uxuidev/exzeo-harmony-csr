@@ -1076,6 +1076,31 @@ const mock = {
           ]
         }
       ]
+    },
+    {
+      name: 'cancel',
+      step: {},
+      components: [
+        {
+          id: 100100,
+          type: '$SECTION',
+          dependencies: [],
+          data: {},
+          formData: {},
+          children: [
+            {
+              id: 100101,
+              type: '$TITLE',
+              dependencies: [],
+              data: {
+                text: 'Cancel Policy'
+              },
+              formData: {},
+              children: []
+            }
+          ]
+        }
+      ]
     }
   ]
 };
