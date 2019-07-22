@@ -5,10 +5,6 @@ export const PAGE_ROUTING = {
   billing: 3
 };
 
-export const ROUTES_NOT_HANDLED_BY_GANDALF = [
-  'billing',
-  'cancel',
-  'endorsements'
-];
+export const ROUTES_NOT_HANDLED_BY_GANDALF = ['cancel', 'endorsements'];
 
 export const ROUTES_NOT_USING_FOOTER = ['coverage'];
