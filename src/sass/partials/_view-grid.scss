@@ -617,11 +617,21 @@ section {
       }
 
       &.billing {
+        > div {
+          display: flex;
+
+          dl {
+            margin-right: $padding * 2;
+          }
+        }
       }
 
       &.additional-interests {
         .results-wrapper {
           border-width: 0;
+          .card {
+            margin: 0 $padding $padding;
+          }
         }
       }
     }
