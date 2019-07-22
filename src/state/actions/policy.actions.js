@@ -745,6 +745,34 @@ export function getPoliciesForAgency({
 /**
  *
  * @param policyNumber
+ * @param agencyCode
+ * @param agentCode
+ * @returns {Function}
+ */
+export function transferAOR({ policyNumber, agencyCode, agentCode }) {
+  return async dispatch => {
+    try {
+      const transferData = {
+        service: 'policy-manager',
+        method: 'POST',
+        path: 'update-agent-of-record',
+        data: {
+          agencyCode,
+          agentCode,
+          policyNumber
+        }
+      };
+      await serviceRunner.callService(transferData);
+      dispatch(getPolicy(policyNumber));
+    } catch (error) {
+      dispatch(errorActions.setAppError(error));
+    }
+  };
+}
+
+/**
+ *
+ * @param policyNumber
  * @returns {Function}
  */
 export function initializePolicyWorkflow(policyNumber) {

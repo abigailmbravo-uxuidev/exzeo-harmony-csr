@@ -21,7 +21,7 @@ import { POLICY_RESOURCE_TYPE } from '../../constants/diaries';
 import { toggleDiary } from '../../state/actions/ui.actions';
 import { getUIQuestions } from '../../state/actions/questions.actions';
 import { getDiariesForTable } from '../../state/selectors/diary.selectors';
-
+import { setAppError } from '../../state/actions/error.actions';
 import { setAppState } from '../../state/actions/appState.actions';
 import {
   getZipcodeSettings,
@@ -45,12 +45,9 @@ import {
   getPaymentHistory,
   getCancelOptions,
   getEndorsementHistory,
-  initializePolicyWorkflow
+  initializePolicyWorkflow,
+  transferAOR
 } from '../../state/actions/policy.actions';
-import {
-  startWorkflow,
-  batchCompleteTask
-} from '../../state/actions/cg.actions';
 
 import MOCK_CONFIG_DATA from '../../mock-data/mockPolicyHO3';
 import {
@@ -63,6 +60,8 @@ import NavigationPrompt from '../Quote/NavigationPrompt';
 import BillingTable from './BillingTable';
 import Appraiser from './Appraiser';
 import NotesFiles from '../NotesFiles';
+import PolicyholderAgent from './PolicyholderAgent';
+import PolicyFooter from './PolicyFooter';
 
 const getCurrentStepAndPage = defaultMemoize(pathname => {
   const currentRouteName = pathname.split('/')[3];
@@ -97,7 +96,8 @@ export class PolicyWorkflow extends React.Component {
       $PAYMENT: Payment,
       $PAYMENT_HISTORY_TABLE: PaymentHistoryTable,
       $APPRAISER: Appraiser,
-      $NOTES_FILES: NotesFiles
+      $NOTES_FILES: NotesFiles,
+      $POLICYHOLDER_AGENT: PolicyholderAgent
     };
   }
 
@@ -246,8 +246,11 @@ export class PolicyWorkflow extends React.Component {
       setAppError: this.props.setAppError,
       setShowApplicationModal: this.setShowApplicationModal,
       showApplicationModal: this.state.showApplicationModal,
-      toggleDiary: this.props.toggleDiary
+      toggleDiary: this.props.toggleDiary,
+      getPolicy: this.props.getPolicy,
+      transferAOR: this.props.transferAOR
     };
+
     return (
       <div className="app-wrapper csr policy">
         {(isLoading || !policy.policyNumber) && <Loader />}
@@ -286,7 +289,7 @@ export class PolicyWorkflow extends React.Component {
                         transformConfig={transformConfig}
                         stickyFooter
                         renderFooter={({ pristine, submitting, form }) => (
-                          <div />
+                          <PolicyFooter />
                         )}
                         formListeners={() => (
                           <MemoizedFormListeners>
@@ -313,12 +316,6 @@ export class PolicyWorkflow extends React.Component {
                       />
                     </React.Fragment>
                   )}
-
-                  <Route
-                    exact
-                    path={`${match.url}/policyholder`}
-                    render={props => <PolicyHolder {...props} />}
-                  />
                   <Route
                     exact
                     path={`${match.url}/cancel`}
@@ -404,7 +401,6 @@ const mapStateToProps = state => {
 export default connect(
   mapStateToProps,
   {
-    batchCompleteTask,
     createTransaction,
     getAgents,
     getAgency,
@@ -417,9 +413,10 @@ export default connect(
     getPolicy,
     getZipCodeSettings: getZipcodeSettings,
     setAppState,
-    startWorkflow,
     toggleDiary,
     initializePolicyWorkflow,
-    getUIQuestions
+    getUIQuestions,
+    setAppError,
+    transferAOR
   }
 )(PolicyWorkflow);

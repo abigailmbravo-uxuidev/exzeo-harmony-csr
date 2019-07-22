@@ -867,6 +867,33 @@ const mock = {
       ]
     },
     {
+      name: 'policyHolder',
+      step: {},
+      components: [
+        {
+          id: 230340305495959,
+          type: '$SECTION',
+          dependencies: [],
+          data: {},
+          formData: {},
+          children: [
+            {
+              id: 32393759439222,
+              type: '$POLICYHOLDER_AGENT',
+              dependencies: [],
+              data: {
+                extendedProperties: {
+                  subscribe: true
+                }
+              },
+              formData: {},
+              children: []
+            }
+          ]
+        }
+      ]
+    },
+    {
       name: 'notes',
       step: {},
       components: [
