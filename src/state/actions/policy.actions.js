@@ -518,7 +518,7 @@ export async function fetchPaymentOptionsApplyPayments() {
     );
     return response.data && response.data.paymentOptions
       ? response.data.paymentOptions
-      : {};
+      : [];
   } catch (error) {
     throw error;
   }

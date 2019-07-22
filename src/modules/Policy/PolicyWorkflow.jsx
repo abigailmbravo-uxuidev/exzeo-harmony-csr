@@ -7,7 +7,10 @@ import _find from 'lodash/find';
 import { Loader, FormSpy, remoteSubmit } from '@exzeo/core-ui';
 import {
   getConfigForJsonTransform,
-  Gandalf
+  Gandalf,
+  Payment,
+  PolicyBilling,
+  PaymentHistoryTable
 } from '@exzeo/core-ui/src/@Harmony';
 import { defaultMemoize } from 'reselect';
 
@@ -25,14 +28,11 @@ import {
   getAgents,
   getAgency
 } from '../../state/actions/service.actions';
-import { fetchNotes } from '../../state/actions/notes.actions';
 
 import EditEffectiveDataModal from '../../components/Policy/EditEffectiveDatePopup';
 import ReinstatePolicyModal from '../../components/Policy/ReinstatePolicyPopup';
-import Coverage from '../../components/Policy/Coverage';
 import PolicyHolder from '../../components/Policy/PolicyholderAgent';
 import Billing from '../../components/Policy/MortgageBilling';
-import Notes from '../../components/Notes';
 import Cancel from '../../components/Policy/Cancel';
 import Endorsements from '../../components/Policy/Endorsements';
 
@@ -93,6 +93,9 @@ export class PolicyWorkflow extends React.Component {
 
     this.customComponents = {
       $BILLING_TABLE: BillingTable,
+      $POLICY_BILLING: PolicyBilling,
+      $PAYMENT: Payment,
+      $PAYMENT_HISTORY_TABLE: PaymentHistoryTable,
       $APPRAISER: Appraiser,
       $NOTES_FILES: NotesFiles
     };
@@ -316,21 +319,6 @@ export class PolicyWorkflow extends React.Component {
                     path={`${match.url}/policyholder`}
                     render={props => <PolicyHolder {...props} />}
                   />
-                  <Route
-                    exact
-                    path={`${match.url}/billing`}
-                    render={props => <Billing {...props} />}
-                  />
-                  {/* <Route
-                    exact
-                    path={`${match.url}/notes`}
-                    render={props => (
-                      <Notes
-                        numbers={[policy.policyNumber, policy.sourceNumber]}
-                        numberType="policyNumber"
-                      />
-                    )}
-                  /> */}
                   <Route
                     exact
                     path={`${match.url}/cancel`}

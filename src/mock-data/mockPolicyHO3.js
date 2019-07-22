@@ -898,6 +898,157 @@ const mock = {
           ]
         }
       ]
+    },
+    {
+      name: 'billing',
+      step: {},
+      components: [
+        {
+          id: 1,
+          type: '$SECTION',
+          dependencies: [],
+          data: {
+            className: 'mortgage-billing'
+          },
+          formData: {},
+          children: [
+            {
+              id: 10,
+              type: '$SECTION',
+              dependencies: [],
+              data: {
+                className: 'add-payment'
+              },
+              formData: {},
+              children: [
+                {
+                  id: 100,
+                  type: '$TITLE',
+                  dependencies: [],
+                  data: {
+                    text: 'Add Payment'
+                  },
+                  formData: {}
+                },
+                {
+                  id: 101,
+                  type: '$PAYMENT',
+                  dependencies: [],
+                  data: {},
+                  formData: {}
+                }
+              ]
+            },
+            {
+              id: 20,
+              type: '$SECTION',
+              dependencies: [],
+              data: {
+                className: 'billing'
+              },
+              formData: {},
+              children: [
+                {
+                  id: 200,
+                  type: '$TITLE',
+                  dependencies: [],
+                  data: {
+                    text: 'Billing'
+                  },
+                  formData: {}
+                },
+                {
+                  id: 20,
+                  type: '$POLICY_BILLING',
+                  dependencies: [],
+                  data: {
+                    extendedProperties: {
+                      className: 'home-and-location-1',
+                      details: [
+                        {
+                          label: 'Year Home Built',
+                          items: [{ format: '', path: 'property.yearBuilt' }]
+                        }
+                      ]
+                    }
+                  },
+                  formData: {},
+                  children: []
+                }
+              ]
+            },
+            {
+              id: 30,
+              type: '$SECTION',
+              dependencies: [],
+              data: {
+                className: 'payments'
+              },
+              formData: {},
+              children: [
+                {
+                  id: 300,
+                  type: '$TITLE',
+                  dependencies: [],
+                  data: {
+                    text: 'Payments'
+                  },
+                  formData: {}
+                },
+                {
+                  id: 301,
+                  type: '$PAYMENT_HISTORY_TABLE',
+                  dependencies: [],
+                  data: {
+                    text: 'Payments'
+                  },
+                  formData: {}
+                }
+              ]
+            },
+            {
+              id: 40,
+              type: '$SECTION',
+              dependencies: [],
+              data: {
+                className: 'detail-group additional-interests'
+              },
+              formData: {},
+              children: [
+                {
+                  id: 400,
+                  type: '$TITLE',
+                  dependencies: [],
+                  data: {
+                    text: 'Additional Interests'
+                  },
+                  formData: {}
+                },
+                {
+                  id: 401,
+                  type: '$CUSTOM',
+                  dependencies: [{ 'rating.worksheet': true }],
+                  data: {
+                    component: '$ADDITIONAL_INTERESTS',
+                    extendedProperties: {
+                      types: [
+                        'mortgagee',
+                        'additionalInsured',
+                        'additionalInterest',
+                        'premiumFinance',
+                        'billPayer'
+                      ],
+                      displayReferenceNumber: true
+                    }
+                  },
+                  formData: {},
+                  children: []
+                }
+              ]
+            }
+          ]
+        }
+      ]
     }
   ]
 };
