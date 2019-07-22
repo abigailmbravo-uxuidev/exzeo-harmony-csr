@@ -81,7 +81,7 @@ export class QuoteWorkflow extends React.Component {
       match,
       reviewQuote,
       getEnumsForQuoteWorkflow,
-      getZipcodeSettings
+      getZipCodeSettings
     } = this.props;
     reviewQuote({ quoteNumber: match.params.quoteNumber }).then(quote => {
       if (quote && quote.property) {
@@ -102,7 +102,7 @@ export class QuoteWorkflow extends React.Component {
           agentCode,
           quoteNumber
         });
-        getZipcodeSettings(
+        getZipCodeSettings(
           companyCode,
           state,
           product,
@@ -363,7 +363,7 @@ export default connect(
   {
     setAppError,
     reviewQuote,
-    getZipcodeSettings,
+    getZipCodeSettings: getZipcodeSettings,
     getEnumsForQuoteWorkflow,
     updateQuote,
     toggleDiary
