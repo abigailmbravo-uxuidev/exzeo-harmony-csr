@@ -1,11 +1,10 @@
 import policyHolder from './policyHolder';
 
 export default {
-  quoteInputState: 'Initial Data',
-  underwritingExceptions: [],
-  quoteNumber: '12-345-67',
-  product: 'HO3',
-  effectiveDate: '2019-05-23T04:00:00.000Z',
+  additionalInterests: [],
+  agencyCode: 20000,
+  agentCode: 60000,
+  companyCode: 'TTIC',
   coverageLimits: {
     dwelling: { amount: 100 },
     lossOfUse: { amount: 666 },
@@ -20,6 +19,16 @@ export default {
   coverageOptions: {
     personalPropertyReplacementCost: { answer: true }
   },
+  createdAt: 'yyyy-mm-ddT00:00:00.0000',
+  createdBy: {
+    userId: 'test'
+  },
+  quoteInputState: 'Initial Data',
+  underwritingExceptions: [],
+  quoteNumber: '12-345-67',
+  product: 'HO3',
+  effectiveDate: '2019-05-23T04:00:00.000Z',
+
   deductibles: {
     allOtherPerils: {
       amount: 22,
