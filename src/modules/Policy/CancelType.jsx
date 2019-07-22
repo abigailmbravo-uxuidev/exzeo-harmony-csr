@@ -13,12 +13,16 @@ import {
 } from './constants/policy';
 
 const CancelType = ({ initialValues, options }) => {
-  const now = date.convertDateToTimeZone('', options.zipCodeSettings);
+  const now = date.convertDateToTimeZone(undefined, options.zipCodeSettings);
   const effectiveDate = date.convertDateToTimeZone(
     initialValues.summaryLedger.effectiveDate,
     options.zipCodeSettings
   );
   const notice = effectiveDate.isAfter(now) ? effectiveDate : now;
+  const endDate = date.convertDateToTimeZone(
+    initialValues.endDate,
+    options.zipCodeSettings
+  );
 
   return (
     <React.Fragment>
@@ -60,15 +64,23 @@ const CancelType = ({ initialValues, options }) => {
                   .add(90, 'days')
                   .isAfter(now)
               ) {
-                console.log(
-                  'notice',
-                  notice.add(20, 'days').format('YYYY-MM-DD')
+                onChange(
+                  notice
+                    .clone()
+                    .add(20, 'days')
+                    .format('YYYY-MM-DD')
                 );
-                onChange(notice.add(20, 'days').format('YYYY-MM-DD'));
               } else if (value === UNDERWRITING_CANCELLATION) {
-                console.log('now', now.add(20, 'days').format('YYYY-MM-DD'));
-
-                onChange(now.add(120, 'days').format('YYYY-MM-DD'));
+                onChange(
+                  now
+                    .clone()
+                    .add(120, 'days')
+                    .format('YYYY-MM-DD')
+                );
+              } else if (value === VOLUNTARY_CANCELLATION) {
+                onChange(notice.format('YYYY-MM-DD'));
+              } else if (value === UNDERWRITING_NON_RENEWAL) {
+                onChange(endDate.format('YYYY-MM-DD'));
               }
             }}
           </OnChangeListener>

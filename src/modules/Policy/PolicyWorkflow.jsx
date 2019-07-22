@@ -255,7 +255,7 @@ export class PolicyWorkflow extends React.Component {
       transferAOR: this.props.transferAOR
     };
 
-    const currentDate = date.convertDateToTimeZone('', zipCodeSettings);
+    const currentDate = date.convertDateToTimeZone(undefined, zipCodeSettings);
     const summaryLedgerEffectiveDate = date.convertDateToTimeZone(
       summaryLedger.effectiveDate,
       zipCodeSettings
