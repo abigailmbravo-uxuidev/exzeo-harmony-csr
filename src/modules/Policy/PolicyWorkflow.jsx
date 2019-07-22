@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { Route } from 'react-router-dom';
 import _find from 'lodash/find';
 
-import { Loader, FormSpy, remoteSubmit } from '@exzeo/core-ui';
+import { Loader, FormSpy, remoteSubmit, date } from '@exzeo/core-ui';
 import {
   getConfigForJsonTransform,
   Gandalf,
@@ -62,6 +62,7 @@ import Appraiser from './Appraiser';
 import NotesFiles from '../NotesFiles';
 import PolicyholderAgent from './PolicyholderAgent';
 import PolicyFooter from './PolicyFooter';
+import CancelType from './CancelType';
 
 const getCurrentStepAndPage = defaultMemoize(pathname => {
   const currentRouteName = pathname.split('/')[3];
@@ -97,7 +98,8 @@ export class PolicyWorkflow extends React.Component {
       $PAYMENT_HISTORY_TABLE: PaymentHistoryTable,
       $APPRAISER: Appraiser,
       $NOTES_FILES: NotesFiles,
-      $POLICYHOLDER_AGENT: PolicyholderAgent
+      $POLICYHOLDER_AGENT: PolicyholderAgent,
+      $CANCEL_TYPE: CancelType
     };
   }
 
@@ -214,7 +216,9 @@ export class PolicyWorkflow extends React.Component {
       notesSynced,
       initialized,
       summaryLedger,
-      questions
+      questions,
+      zipCodeSettings,
+      cancelOptions
     } = this.props;
 
     const {
@@ -251,6 +255,17 @@ export class PolicyWorkflow extends React.Component {
       transferAOR: this.props.transferAOR
     };
 
+    const currentDate = date.convertDateToTimeZone('', zipCodeSettings);
+    const summaryLedgerEffectiveDate = date.convertDateToTimeZone(
+      summaryLedger.effectiveDate,
+      zipCodeSettings
+    );
+
+    const latestDate =
+      currentDate > summaryLedgerEffectiveDate
+        ? currentDate.format('YYYY-MM-DD')
+        : summaryLedgerEffectiveDate.format('YYYY-MM-DD');
+
     return (
       <div className="app-wrapper csr policy">
         {(isLoading || !policy.policyNumber) && <Loader />}
@@ -281,9 +296,23 @@ export class PolicyWorkflow extends React.Component {
                         handleSubmit={this.handleGandalfSubmit}
                         initialValues={{
                           ...policy,
-                          summaryLedger
+                          summaryLedger,
+                          cancel: {
+                            equityDate: date.formattedDate(
+                              summaryLedger.equityDate,
+                              'MM/DD/YYYY'
+                            ),
+                            effectiveDate: latestDate
+                          }
                         }}
-                        options={{ diaries, notes, ...options, questions }} // enums for select/radio fields
+                        options={{
+                          diaries,
+                          notes,
+                          ...options,
+                          questions,
+                          cancelOptions,
+                          zipCodeSettings
+                        }} // enums for select/radio fields
                         path={location.pathname}
                         template={gandalfTemplate}
                         transformConfig={transformConfig}
@@ -388,8 +417,9 @@ const mapStateToProps = state => {
     ),
     policy: state.policyState.policy,
     summaryLedger: state.policyState.summaryLedger,
-    zipCodeSettings: state.service.getZipcodeSettings,
-    questions: state.questions
+    zipCodeSettings: state.service.getZipcodeSettings || {},
+    questions: state.questions,
+    cancelOptions: state.policyState.cancelOptions
   };
 };
 

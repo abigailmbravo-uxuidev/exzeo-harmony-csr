@@ -6,6 +6,7 @@ import * as types from './actionTypes';
 import * as errorActions from './error.actions';
 import * as cgActions from './cg.actions';
 import endorsementUtils from '../../utilities/endorsementModel';
+import { getZipcodeSettings } from './service.actions';
 
 /**
  * Reset policyState
@@ -784,6 +785,14 @@ export function initializePolicyWorkflow(policyNumber) {
       dispatch(getPaymentOptionsApplyPayments());
       dispatch(getCancelOptions());
       dispatch(getEndorsementHistory(policyNumber));
+      dispatch(
+        getZipcodeSettings(
+          policy.companyCode,
+          policy.state,
+          policy.product,
+          policy.property.physicalAddress.zip
+        )
+      );
 
       if (summaryLedger) {
         const paymentOptions = {

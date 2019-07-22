@@ -1097,6 +1097,41 @@ const mock = {
               },
               formData: {},
               children: []
+            },
+            {
+              id: 100102,
+              type: '$CANCEL_TYPE',
+              dependencies: [],
+              data: {
+                extendedProperties: {
+                  subscribe: true
+                }
+              },
+              formData: {},
+              children: []
+            },
+            {
+              id: 3,
+              type: '$INPUT',
+              path: 'cancel.effectiveDate',
+              dependencies: [],
+              data: {
+                component: 'date',
+                label: 'Effective Date',
+                size: '2',
+                extendedProperties: {},
+                validation: ['isValidDate']
+              },
+              formData: {
+                path: 'effectiveDate',
+                type: 'string',
+                required: true,
+                metaData: {
+                  format: 'date-time'
+                  // also need min-date for underwriting
+                }
+              },
+              children: []
             }
           ]
         }
