@@ -6,10 +6,6 @@ export const PAGE_ROUTING = {
   cancel: 4
 };
 
-export const ROUTES_NOT_HANDLED_BY_GANDALF = [
-  'policyHolder',
-  'cancel',
-  'endorsements'
-];
+export const ROUTES_NOT_HANDLED_BY_GANDALF = ['cancel', 'endorsements'];
 
 export const ROUTES_NOT_USING_FOOTER = ['coverage'];
