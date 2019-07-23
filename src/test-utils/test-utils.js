@@ -54,9 +54,9 @@ export const defaultQuoteWorkflowProps = {
   getZipCodeSettings: jestResolve(),
   getEnumsForQuoteWorkflow: () => {},
   updateQuote: jestResolve(),
-  // fetchNotes: jestResolve(),
+  fetchNotes: jestResolve(),
   toggleDiary: () => {},
-  // fetchDiaries: jestResolve(),
+  fetchDiaries: jestResolve(),
   diaries: [],
   notes: []
 };

@@ -39,29 +39,30 @@ const billingFields = [
   }
 ];
 
-describe('Mailing Address Testing', () => {
+describe('Mailing/Billing Page Testing', () => {
   const props = {
     ...defaultQuoteWorkflowProps,
     location: { pathname: '/quote/12-345-67/billing' },
     quote: {
       ...defaultQuoteWorkflowProps.quote,
+      quoteInputState: 'Qualified',
       rating
     }
   };
 
-  it('POS:Checks message with no rating options', () => {
+  it("Shows a warning message when page can't be accessed due to quote input state ", () => {
     const newProps = {
       ...props,
       quote: {
         ...props.quote,
-        rating: {}
+        quoteInputState: 'Initial Data'
       }
     };
     const { getByText } = renderWithForm(<QuoteWorkflow {...newProps} />);
 
     expect(
       getByText(
-        'Billing cannot be accessed until there is a rating on the quote.'
+        'Billing cannot be accessed until policyholder information and underwriting questions are answered.'
       )
     );
   });
