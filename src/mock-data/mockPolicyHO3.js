@@ -1166,15 +1166,27 @@ const mock = {
               formData: {}
             },
             {
-              id: 20,
-              type: '$POLICY_BILLING',
+              id: 54543543353,
+              type: '$SECTION',
               dependencies: [],
               data: {
                 className: 'payments-cancel-policy',
+                size: '8',
                 extendedProperties: {}
               },
               formData: {},
-              children: []
+              children: [
+                {
+                  id: 20,
+                  type: '$POLICY_BILLING',
+                  dependencies: [],
+                  data: {
+                    extendedProperties: {}
+                  },
+                  formData: {},
+                  children: []
+                }
+              ]
             },
             {
               id: 454333335323,
@@ -1184,7 +1196,7 @@ const mock = {
               data: {
                 component: 'text',
                 label: 'Equity Date',
-                size: '2',
+                size: '4',
                 disabled: true
               },
               formData: {},
