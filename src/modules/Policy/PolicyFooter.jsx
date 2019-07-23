@@ -12,7 +12,7 @@ function PolicyFooter({
   if (currentStep === 'cancel') {
     return (
       <React.Fragment>
-        <div className="basic-footer">
+        <div className="basic-footer btn-footer">
           <Footer />
           <Button
             onClick={formInstance.reset}
