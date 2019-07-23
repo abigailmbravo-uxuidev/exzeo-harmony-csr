@@ -157,8 +157,14 @@ export class QuoteWorkflow extends React.Component {
 
     if (currentRouteName === 'application') {
       this.setApplicationSent(true);
-      this.setShowApplicationModal(false);
+      this.setState({ showApplicationModal: false });
     }
+  };
+
+  handleReviewQuote = async () => {
+    const { quote, reviewQuote } = this.props;
+    await reviewQuote({ quoteNumber: quote.quoteNumber });
+    this.setState({ showApplicationModal: true });
   };
 
   handleToggleDiaries = () => {
@@ -279,9 +285,7 @@ export class QuoteWorkflow extends React.Component {
                             submitting
                           )}
                           handlePrimaryClick={this.primaryClickHandler}
-                          handleApplicationClick={() =>
-                            this.setShowApplicationModal(true)
-                          }
+                          handleApplicationClick={this.handleReviewQuote}
                         />
                       )}
                       formListeners={() => (
