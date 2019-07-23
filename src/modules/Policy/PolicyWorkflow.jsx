@@ -148,13 +148,12 @@ export class PolicyWorkflow extends React.Component {
     const { currentRouteName, currentStepNumber } = getCurrentStepAndPage(
       location.pathname
     );
-    // await this.props.updateQuote({
-    //   data: values,
-    //   options: {
-    //     step: currentStepNumber,
-    //     shouldSendApplication: currentRouteName === 'application'
-    //   }
-    // });
+    await this.props.updatePolicy({
+      data: values,
+      options: {
+        step: currentStepNumber
+      }
+    });
 
     // if (currentRouteName === 'application') {
     //   this.setApplicationSent(true);
@@ -322,7 +321,15 @@ export class PolicyWorkflow extends React.Component {
                         transformConfig={transformConfig}
                         stickyFooter
                         renderFooter={({ pristine, submitting, form }) => (
-                          <PolicyFooter />
+                          <PolicyFooter
+                            currentStep={currentRouteName}
+                            formInstance={form}
+                            isSubmitDisabled={this.isSubmitDisabled(
+                              pristine,
+                              submitting
+                            )}
+                            handlePrimaryClick={this.primaryClickHandler}
+                          />
                         )}
                         formListeners={() => (
                           <MemoizedFormListeners>
