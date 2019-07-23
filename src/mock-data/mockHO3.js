@@ -495,7 +495,6 @@ const mock = {
               data: {
                 component: 'selectInteger',
                 label: 'Percentage',
-
                 dataSource: [
                   { label: '0%', answer: 0 },
                   { label: '2%', answer: 2 },
