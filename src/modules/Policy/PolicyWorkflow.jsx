@@ -47,7 +47,8 @@ import {
   getCancelOptions,
   getEndorsementHistory,
   initializePolicyWorkflow,
-  transferAOR
+  transferAOR,
+  updatePolicy
 } from '../../state/actions/policy.actions';
 
 import MOCK_CONFIG_DATA from '../../mock-data/mockPolicyHO3';
@@ -151,7 +152,8 @@ export class PolicyWorkflow extends React.Component {
     await this.props.updatePolicy({
       data: values,
       options: {
-        step: currentStepNumber
+        step: currentStepNumber,
+        cancelPolicy: currentRouteName === 'cancel'
       }
     });
 
@@ -453,6 +455,7 @@ export default connect(
     initializePolicyWorkflow,
     getUIQuestions,
     setAppError,
-    transferAOR
+    transferAOR,
+    updatePolicy
   }
 )(PolicyWorkflow);
