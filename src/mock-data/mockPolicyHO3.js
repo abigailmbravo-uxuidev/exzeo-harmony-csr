@@ -1170,6 +1170,7 @@ const mock = {
               type: '$POLICY_BILLING',
               dependencies: [],
               data: {
+                className: 'payments-cancel-policy',
                 extendedProperties: {}
               },
               formData: {},
