@@ -10,7 +10,8 @@ import {
   Gandalf,
   Payment,
   PolicyBilling,
-  PaymentHistoryTable
+  PaymentHistoryTable,
+  ClaimsTable
 } from '@exzeo/core-ui/src/@Harmony';
 import { defaultMemoize } from 'reselect';
 
@@ -101,7 +102,8 @@ export class PolicyWorkflow extends React.Component {
       $NOTES_FILES: NotesFiles,
       $POLICYHOLDER_AGENT: PolicyholderAgent,
       $CANCEL_TYPE: CancelType,
-      $CANCEL_REASON: CancelReason
+      $CANCEL_REASON: CancelReason,
+      $CLAIMS_TABLE: ClaimsTable
     };
   }
 

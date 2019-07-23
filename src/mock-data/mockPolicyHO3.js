@@ -1218,6 +1218,13 @@ const mock = {
               },
               formData: {},
               children: []
+            },
+            {
+              id: 5497775432943355,
+              type: '$CLAIMS_TABLE',
+              dependencies: [],
+              data: {},
+              formData: {}
             }
           ]
         }
