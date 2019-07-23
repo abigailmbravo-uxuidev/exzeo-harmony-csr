@@ -11,7 +11,12 @@ import ConnectedSearchResults from '../SearchResults';
 describe('POS:Results Search', () => {
   const props = {
     hasSearched: true,
-    searchType: 'address'
+    searchType: 'address',
+    search: {
+      // for now will use this copy since we are syncing redux state with local state anyway.
+      ...defaultInitialState.search,
+      results
+    }
   };
 
   const state = {
