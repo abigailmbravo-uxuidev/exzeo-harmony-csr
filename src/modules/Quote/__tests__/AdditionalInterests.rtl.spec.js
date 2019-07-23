@@ -1,5 +1,5 @@
 import React from 'react';
-import { fireEvent } from 'react-testing-library';
+import { fireEvent, wait } from 'react-testing-library';
 
 import {
   renderWithForm,
@@ -141,12 +141,16 @@ const mortgageeFields = [
 describe('Additional Interest Testing', () => {
   const baseRequiredFields = baseAiFields.filter(({ required }) => required);
 
-  const openAndCloseModal = (getByText, modal) => {
+  const openAndCloseModal = async (getByText, modal) => {
     fireEvent.click(getByText(modal));
-    expect(getByText('save'));
-    expect(document.querySelector('form#AdditionalInterestModal'));
+    await wait(() => {
+      expect(document.querySelector('modal').toBeInTheDocument());
+      expect(
+        document.querySelector(`card.AdditionalInterestModal.${modal}`)
+      ).toBeInTheDocument();
+    });
     fireEvent.click(getByText('cancel'));
-    expect(document.querySelector('form#AdditionalInterestModal')).toBeNull();
+    await wait(() => expect(document.querySelector('modal')).toBeNull());
   };
 
   const props = {
