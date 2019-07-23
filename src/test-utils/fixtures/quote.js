@@ -49,7 +49,12 @@ export default {
     }
   },
   property: {
-    physicalAddress: { address1: '4131 TEST ADDRESS' },
+    physicalAddress: {
+      address1: '4131 TEST ADDRESS',
+      city: 'WINTER FELL',
+      state: 'WS',
+      zip: '11111'
+    },
     yearBuilt: 1958,
     floodZone: 'A'
   },

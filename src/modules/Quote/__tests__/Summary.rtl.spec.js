@@ -1,5 +1,5 @@
 import React from 'react';
-import { fireEvent } from 'react-testing-library';
+import { fireEvent, waitForElement } from 'react-testing-library';
 
 import {
   renderWithForm,
@@ -9,7 +9,8 @@ import {
   checkTextInput,
   checkButton,
   clearText,
-  checkError
+  checkError,
+  mockServiceRunner
 } from '../../../test-utils';
 import { QuoteWorkflow } from '../QuoteWorkflow';
 
@@ -26,11 +27,22 @@ const fields = [
   { dataTest: 'email', label: 'Email Address', value: 'fake@aol.com' }
 ];
 
+const agencyResult = [
+  {
+    agentCode: 60000,
+    firstName: 'WALLY',
+    lastName: 'WAGONER'
+  }
+];
+
+mockServiceRunner(agencyResult);
+
 describe('Summary testing with finished Quote', () => {
   const props = {
     ...defaultQuoteWorkflowProps,
     quote: {
       ...defaultQuoteWorkflowProps.quote,
+      agencyCode: '',
       quoteInputState: 'Qualified',
       rating
     },
@@ -43,7 +55,7 @@ describe('Summary testing with finished Quote', () => {
     pageHeaders.forEach(header => checkHeader(getByText, header));
   });
 
-  it('POS:Quote Details', () => {
+  it('Displays quote details', () => {
     const { getByText } = renderWithForm(<QuoteWorkflow {...props} />);
 
     expect(getByText('Quote Number'));
