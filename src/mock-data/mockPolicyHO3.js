@@ -1146,6 +1146,80 @@ const mock = {
               children: []
             }
           ]
+        },
+        {
+          id: 54543543353,
+          type: '$SECTION',
+          dependencies: [],
+          data: {
+            className: 'payments'
+          },
+          formData: {},
+          children: [
+            {
+              id: 4543543353,
+              type: '$TITLE',
+              dependencies: [],
+              data: {
+                text: 'Payments'
+              },
+              formData: {}
+            },
+            {
+              id: 20,
+              type: '$POLICY_BILLING',
+              dependencies: [],
+              data: {
+                extendedProperties: {}
+              },
+              formData: {},
+              children: []
+            },
+            {
+              id: 454333335323,
+              type: '$INPUT',
+              path: 'cancel.equityDate',
+              dependencies: [],
+              data: {
+                component: 'text',
+                label: 'Equity Date',
+                size: '2',
+                disabled: true
+              },
+              formData: {},
+              children: []
+            },
+            {
+              id: 454337878853231,
+              type: '$PAYMENT_HISTORY_TABLE',
+              dependencies: [],
+              data: {
+                text: 'Payments'
+              },
+              formData: {}
+            }
+          ]
+        },
+        {
+          id: 5497775432943353,
+          type: '$SECTION',
+          dependencies: [],
+          data: {
+            className: 'claims'
+          },
+          formData: {},
+          children: [
+            {
+              id: 5497775432943354,
+              type: '$TITLE',
+              dependencies: [],
+              data: {
+                text: 'Claims'
+              },
+              formData: {},
+              children: []
+            }
+          ]
         }
       ]
     }
