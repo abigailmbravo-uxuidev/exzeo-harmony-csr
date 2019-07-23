@@ -63,6 +63,7 @@ import NotesFiles from '../NotesFiles';
 import PolicyholderAgent from './PolicyholderAgent';
 import PolicyFooter from './PolicyFooter';
 import CancelType from './CancelType';
+import CancelReason from './CancelReason';
 
 const getCurrentStepAndPage = defaultMemoize(pathname => {
   const currentRouteName = pathname.split('/')[3];
@@ -99,7 +100,8 @@ export class PolicyWorkflow extends React.Component {
       $APPRAISER: Appraiser,
       $NOTES_FILES: NotesFiles,
       $POLICYHOLDER_AGENT: PolicyholderAgent,
-      $CANCEL_TYPE: CancelType
+      $CANCEL_TYPE: CancelType,
+      $CANCEL_REASON: CancelReason
     };
   }
 

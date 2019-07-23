@@ -1111,7 +1111,7 @@ const mock = {
               children: []
             },
             {
-              id: 3,
+              id: 1001023,
               type: '$INPUT',
               path: 'cancel.effectiveDate',
               dependencies: [],
@@ -1131,6 +1131,18 @@ const mock = {
                   // also need min-date for underwriting
                 }
               },
+              children: []
+            },
+            {
+              id: 1001024,
+              type: '$CANCEL_REASON',
+              dependencies: [],
+              data: {
+                extendedProperties: {
+                  subscribe: true
+                }
+              },
+              formData: {},
               children: []
             }
           ]
