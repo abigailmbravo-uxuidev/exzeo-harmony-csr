@@ -1171,7 +1171,7 @@ const mock = {
               dependencies: [],
               data: {
                 className: 'payments-cancel-policy',
-                size: '8',
+                size: '10',
                 extendedProperties: {}
               },
               formData: {},
@@ -1196,7 +1196,7 @@ const mock = {
               data: {
                 component: 'text',
                 label: 'Equity Date',
-                size: '4',
+                size: '2',
                 disabled: true
               },
               formData: {},

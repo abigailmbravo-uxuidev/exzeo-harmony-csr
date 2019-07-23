@@ -645,8 +645,17 @@ section {
 #PolicyWorkflowCSR {
   > section {
     &.payments {
-      > div {
-        display: flex;
+      display: flex;
+      flex-wrap: wrap;
+
+      .payments-cancel-policy {
+        > div {
+          display: flex;
+          > dl {
+            flex-grow: 1;
+            flex-shrink: 1;
+          }
+        }
       }
     }
   }
