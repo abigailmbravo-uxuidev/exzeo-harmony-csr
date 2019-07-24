@@ -1,5 +1,5 @@
 import React from 'react';
-import { waitForElement } from 'react-testing-library';
+import { waitForElement, fireEvent } from 'react-testing-library';
 
 import {
   renderWithForm,
@@ -12,7 +12,8 @@ import {
   checkLabel,
   checkTextInput,
   checkSelect,
-  checkRadio
+  checkRadio,
+  checkButton
 } from '../../../test-utils';
 import { QuoteWorkflow } from '../QuoteWorkflow';
 
@@ -27,12 +28,15 @@ const pageHeaders = [
 const billingFields = [
   {
     dataTest: 'billToId',
+    text: 'Bill To',
     label: 'Bill To',
     type: 'select',
-    values: ['ab1234']
+    values: [{ value: 'ab1234', label: 'Policyholder: Fake Nameington' }]
   },
   {
     dataTest: 'billPlan',
+    defaultValue: 'Annual',
+    text: 'Bill Plan',
     label: 'Bill Plan',
     type: 'radio',
     values: ['Annual', 'Semi-Annual', 'Quarterly']
@@ -94,5 +98,52 @@ describe('Mailing/Billing Page Testing', () => {
       if (field.type === 'select') return checkSelect(getByLabelText, field);
       if (field.type === 'radio') return checkRadio(getByTestId, field);
     });
+  });
+
+  it('POS:Tests button', async () => {
+    const { getByText, getByTestId } = renderWithForm(
+      <QuoteWorkflow {...props} />
+    );
+    await waitForElement(() => [
+      getByTestId('billToId'),
+      getByTestId('billPlan_Annual')
+    ]);
+
+    checkButton(getByText, { dataTest: 'reset', text: 'Reset' });
+    checkButton(getByText);
+  });
+
+  it('POS:Checks that the Reset Button works', async () => {
+    const newProps = {
+      ...props,
+      quoteData: {
+        ...props.quoteData,
+        policyHolderMailingAddress: {}
+      }
+    };
+    const { getByTestId, getByText, getByLabelText } = renderWithForm(
+      <QuoteWorkflow {...newProps} />
+    );
+    await waitForElement(() => [
+      getByTestId('billToId'),
+      getByTestId('billPlan_Annual')
+    ]);
+
+    expect(getByText('Update')).toBeDisabled();
+    propertyFields.forEach(({ label, value }) =>
+      fireEvent.change(getByLabelText(label), {
+        target: { value }
+      })
+    );
+    expect(getByText('Update')).not.toBeDisabled();
+
+    fireEvent.click(getByText('Reset'));
+    waitForElement(() => {
+      propertyFields.forEach(({ label }) =>
+        expect(getByLabelText(label).value).toEqual('')
+      );
+    });
+
+    expect(getByText('Update')).toBeDisabled();
   });
 });

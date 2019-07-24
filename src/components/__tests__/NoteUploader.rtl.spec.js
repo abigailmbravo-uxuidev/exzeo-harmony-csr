@@ -14,28 +14,33 @@ const noteFileModalFields = [
     dataTest: 'contactType',
     label: 'Contact',
     type: 'select',
-    values: ['Agent', 'Policyholder', 'Inspector', 'Other'],
+    values: [
+      { value: 'Agent' },
+      { value: 'Policyholder' },
+      { value: 'Inspector' },
+      { value: 'Other' }
+    ],
     required: true
   },
   {
-    placeholder: 'Note Content',
+    placeholderText: 'Note Content',
     required: true,
-    data: 'Test note content'
+    value: 'Test note content'
   },
   {
     dataTest: 'fileType',
     label: 'File Type',
     type: 'select',
     values: [
-      '4-pt Inspection',
-      'Claims Documentation',
-      'Correspondence',
-      'Elevation Certificate',
-      'Flood Selection Form',
-      'Flood Waiver Form',
-      'HUD Statement',
-      'New Business Application',
-      'Other'
+      { value: '4-pt Inspection' },
+      { value: 'Claims Documentation' },
+      { value: 'Correspondence' },
+      { value: 'Elevation Certificate' },
+      { value: 'Flood Selection Form' },
+      { value: 'Flood Waiver Form' },
+      { value: 'HUD Statement' },
+      { value: 'New Business Application' },
+      { value: 'Other' }
     ],
     required: true
   }

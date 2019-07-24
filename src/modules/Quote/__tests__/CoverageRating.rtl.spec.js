@@ -27,7 +27,8 @@ import {
   otherCoveragesFields,
   deductiblesFields,
   discountsFields,
-  windFields
+  windFields,
+  checkButton
 } from '../../../test-utils';
 import { QuoteWorkflow } from '../QuoteWorkflow';
 
@@ -40,7 +41,8 @@ const pageHeaders = [
   { text: 'Coverages' },
   { text: 'Other Coverages' },
   { text: 'Deductibles' },
-  { text: 'Discounts' }
+  { text: 'Discounts' },
+  { text: 'Wind Mitigation' }
 ];
 
 describe('Testing the Coverage/Rating Page', () => {
@@ -124,12 +126,8 @@ describe('Testing the Coverage/Rating Page', () => {
 
   it('POS:PolicyHolder Fields', () => {
     const { getByTestId } = renderWithForm(<QuoteWorkflow {...props} />);
-
-    primaryPolicyholderFields.forEach(field =>
-      checkTextInput(getByTestId, field)
-    );
-    secondaryPolicyholderFields.forEach(field =>
-      checkTextInput(getByTestId, field)
+    [...primaryPolicyholderFields, ...secondaryPolicyholderFields].forEach(
+      field => checkTextInput(getByTestId, field)
     );
   });
 
@@ -219,5 +217,41 @@ describe('Testing the Coverage/Rating Page', () => {
 
     primaryPolicyholderFields.forEach(field => clearText(getByTestId, field));
     expect(getByTestId('submit')).toBeDisabled();
+  });
+
+  it('POS:Tests button', () => {
+    const { getByText } = renderWithForm(<QuoteWorkflow {...props} />);
+
+    checkButton(getByText, { dataTest: 'reset', text: 'Reset' });
+    checkButton(getByText);
+  });
+
+  it('POS:Checks that the Reset Button works', () => {
+    const newProps = {
+      ...props,
+      quoteData: {
+        ...props.quoteData,
+        policyHolders: []
+      }
+    };
+    const { getByText, getByLabelText } = renderWithForm(
+      <QuoteWorkflow {...newProps} />
+    );
+
+    expect(getByText('Update')).toBeDisabled();
+    primaryPolicyholderFields.forEach(({ label, value }) =>
+      fireEvent.change(getByLabelText(label), {
+        target: { value }
+      })
+    );
+    expect(getByText('Update')).not.toBeDisabled();
+    fireEvent.click(getByText('Reset'));
+    waitForElement(() => {
+      primaryPolicyholderFields.forEach(({ label }) =>
+        expect(getByLabelText(label).value).toEqual('')
+      );
+    });
+
+    expect(getByText('Update')).toBeDisabled();
   });
 });
