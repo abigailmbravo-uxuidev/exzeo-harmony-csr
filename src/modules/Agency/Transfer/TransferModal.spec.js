@@ -11,6 +11,7 @@ describe('Testing Transfer Modal', () => {
       agencyCode: 123,
       clearSelectedPolicies() {},
       getAgentListByAgencyCode() {},
+      transferPoliciesToAgent: Promise.resolve({}),
       handleSubmit() {},
       toggleModal() {},
       activeAgencyCode: 123,

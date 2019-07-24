@@ -138,9 +138,12 @@ describe('Mailing/Billing Page Testing', () => {
     expect(getByText('Update')).not.toBeDisabled();
 
     fireEvent.click(getByText('Reset'));
-    propertyFields.forEach(({ label }) =>
-      expect(getByLabelText(label).value).toEqual('')
-    );
+    waitForElement(() => {
+      propertyFields.forEach(({ label }) =>
+        expect(getByLabelText(label).value).toEqual('')
+      );
+    });
+
     expect(getByText('Update')).toBeDisabled();
   });
 });
