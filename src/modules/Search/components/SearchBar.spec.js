@@ -27,7 +27,6 @@ describe('Test SearchBar component', () => {
     const instance = wrapper.instance();
 
     expect(wrapper.exists()).toBeTruthy();
-    instance.handleSearchFormSubmit({}, () => {}, props);
     instance.handlePagination(true);
     instance.changeSearchType({}, 'quote');
   });

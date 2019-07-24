@@ -1,8 +1,8 @@
-export function handleNewTab(resource, type) {
+export function handleNewTab(resource, type, product) {
   // new quote
   if (type === 'address') {
     window.open(
-      `/quote/new/${resource.physicalAddress.state}/${resource.id}`,
+      `/quote/new/${resource.physicalAddress.state}/${product}/${resource.id}`,
       '_blank'
     );
     // quote

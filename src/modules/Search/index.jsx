@@ -1,8 +1,15 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { emptyArray, emptyObject } from '@exzeo/core-ui';
 
 import { SEARCH_CONFIG, SEARCH_TYPES } from '../../constants/search';
-import { resetSearch } from '../../state/actions/search.actions';
+import {
+  resetSearch,
+  handleSearchSubmit,
+  toggleLoading
+} from '../../state/actions/search.actions';
+import { getAgencies } from '../../state/actions/service.actions';
+import { clearAppError } from '../../state/actions/error.actions';
 
 import SearchBar from './components/SearchBar';
 import SearchResults from './components/SearchResults';
@@ -13,6 +20,19 @@ import AgencySearch from './Agency';
 import AgentSearch from './Agent';
 import UserSearch from './User';
 import DiariesSearch from './Diaries';
+
+const initialSearchResults = {
+  currentPage: 1,
+  loading: false,
+  noResults: false,
+  pageSize: 0,
+  product: '',
+  results: [],
+  sortBy: '',
+  sortDirection: '',
+  totalPages: 0,
+  totalRecords: 0
+};
 
 const SEARCH_FORMS = {
   [SEARCH_TYPES.newQuote]: AddressSearch,
@@ -30,7 +50,8 @@ export class SearchPage extends Component {
     hasSearched: false,
     searchType: SEARCH_TYPES.policy,
     searchConfig: SEARCH_TYPES.policy,
-    searchReady: false
+    searchReady: false,
+    searchResults: initialSearchResults
   };
 
   componentDidMount() {
@@ -74,7 +95,8 @@ export class SearchPage extends Component {
       searchType,
       searchConfig: searchType,
       hasSearched: false,
-      advancedSearch: false
+      advancedSearch: false,
+      searchResults: initialSearchResults
     });
     this.props.resetSearch();
   };
@@ -102,13 +124,36 @@ export class SearchPage extends Component {
       : initialValues;
   };
 
+  handleSubmit = async (data, dispatch, props) => {
+    try {
+      const { handleSearchSubmit } = this.props;
+      const searchResults = await handleSearchSubmit(data, props);
+      this.setState({ searchResults });
+    } catch (error) {
+      if (process.env.NODE_ENV !== 'production') {
+        console.error('Search error: ', error);
+      }
+    }
+  };
+
   render() {
+    const {
+      agencies,
+      clearAppError,
+      getAgencies,
+      toggleLoading,
+      userProfile: {
+        profile: { beta }
+      }
+    } = this.props;
+
     const {
       advancedSearch,
       hasSearched,
       searchConfig,
       searchReady,
-      searchType
+      searchType,
+      searchResults
     } = this.state;
 
     const SearchForm = SEARCH_FORMS[searchType];
@@ -123,9 +168,16 @@ export class SearchPage extends Component {
               initialValues={this.setInitialValues(searchType, searchConfig)}
               onSubmitSuccess={() => this.setHasSearched(true)}
               searchType={searchType}
+              clearAppError={clearAppError}
+              getAgencies={getAgencies}
+              agencies={agencies}
+              handleSearchSubmit={this.handleSubmit}
+              toggleLoading={toggleLoading}
+              currentPage={searchResults.currentPage}
               render={({ changeSearchType, handlePagination, formProps }) => (
                 <SearchForm
                   advancedSearch={advancedSearch}
+                  beta={beta}
                   changeSearchType={changeSearchType}
                   searchTypeOptions={SEARCH_CONFIG[searchConfig].searchOptions}
                   handlePagination={handlePagination}
@@ -149,6 +201,7 @@ export class SearchPage extends Component {
                     <SearchResults
                       hasSearched={hasSearched}
                       searchType={searchType}
+                      search={searchResults}
                     />
 
                     {this.props.children}
@@ -163,13 +216,22 @@ export class SearchPage extends Component {
   }
 }
 
+// TODO temp fix until Auth is updated
+const stubProfile = { profile: {} };
 const mapStateToProps = state => {
   return {
-    userProfile: state.authState.userProfile
+    userProfile: state.authState.userProfile || stubProfile,
+    agencies: state.service.agencies || emptyArray
   };
 };
 
 export default connect(
   mapStateToProps,
-  { resetSearch }
+  {
+    clearAppError,
+    getAgencies,
+    handleSearchSubmit,
+    resetSearch,
+    toggleLoading
+  }
 )(SearchPage);

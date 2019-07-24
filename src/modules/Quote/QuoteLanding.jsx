@@ -11,14 +11,13 @@ export const QuoteLanding = ({ match: { params }, createQuote }) => {
   useEffect(() => {
     async function initializeQuote() {
       try {
-        const { stateCode, propertyId } = params;
+        const { stateCode, propertyId, product } = params;
         // TODO: fix user profile to match harmony-web userProfile.entity.companyCode
         const newQuote = await createQuote(
-          '0',
           propertyId,
           stateCode,
           'TTIC',
-          'HO3'
+          product
         );
         setQuote(newQuote);
       } catch (error) {
@@ -31,10 +30,14 @@ export const QuoteLanding = ({ match: { params }, createQuote }) => {
 
   return (
     <React.Fragment>
-      {quote.quoteNumber ? (
-        <Redirect replace to={`/quote/${quote.quoteNumber}/coverage`} />
+      {quote ? (
+        quote.quoteNumber ? (
+          <Redirect replace to={`/quote/${quote.quoteNumber}/coverage`} />
+        ) : (
+          <Loader />
+        )
       ) : (
-        <Loader />
+        <div>There was a problem creating this quote.</div>
       )}
     </React.Fragment>
   );

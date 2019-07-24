@@ -1,5 +1,5 @@
 import React from 'react';
-import { fireEvent } from 'react-testing-library';
+import { fireEvent, wait } from 'react-testing-library';
 
 import {
   renderWithForm,
@@ -141,19 +141,23 @@ const mortgageeFields = [
 describe('Additional Interest Testing', () => {
   const baseRequiredFields = baseAiFields.filter(({ required }) => required);
 
-  const openAndCloseModal = (getByText, modal) => {
+  const openAndCloseModal = async (getByText, modal) => {
     fireEvent.click(getByText(modal));
-    expect(getByText('save'));
-    expect(document.querySelector('form#AdditionalInterestModal'));
+    await wait(() => {
+      expect(document.querySelector('modal').toBeInTheDocument());
+      expect(
+        document.querySelector(`card.AdditionalInterestModal.${modal}`)
+      ).toBeInTheDocument();
+    });
     fireEvent.click(getByText('cancel'));
-    expect(document.querySelector('form#AdditionalInterestModal')).toBeNull();
+    await wait(() => expect(document.querySelector('modal')).toBeNull());
   };
 
   const props = {
     ...defaultQuoteWorkflowProps,
     location: { pathname: '/quote/12-345-67/additionalInterests' },
-    quoteData: {
-      ...defaultQuoteWorkflowProps.quoteData,
+    quote: {
+      ...defaultQuoteWorkflowProps.quote,
       rating
     }
   };
@@ -164,8 +168,8 @@ describe('Additional Interest Testing', () => {
   it('POS:Error Message exists with no quote data', () => {
     const newProps = {
       ...props,
-      quoteData: {
-        ...props.quoteData,
+      quote: {
+        ...props.quote,
         rating: {}
       }
     };
@@ -530,8 +534,8 @@ describe('Additional Interest Testing', () => {
   it('POS:Confirm Additional Interests Show Up In Order and Disable Buttons [Premium Finance]', () => {
     const newProps = {
       ...props,
-      quoteData: {
-        ...props.quoteData,
+      quote: {
+        ...props.quote,
         additionalInterests: [
           // Intentionally give a messed up order...
           { ...additionalInterest, order: 0, type: 'Premium Finance' },
@@ -578,8 +582,8 @@ describe('Additional Interest Testing', () => {
   it('POS:Confirm Additional Interests Show Up In Order and Disable Buttons [Bill Payer]', () => {
     const newProps = {
       ...props,
-      quoteData: {
-        ...props.quoteData,
+      quote: {
+        ...props.quote,
         additionalInterests: [
           { ...additionalInterest, order: 0, type: 'Bill Payer' },
           { ...additionalInterest, order: 1, type: 'Additional Interest' },
@@ -621,8 +625,8 @@ describe('Additional Interest Testing', () => {
   it('POS:All buttons disabled when editingDisabled is true', () => {
     const newProps = {
       ...props,
-      quoteData: {
-        ...props.quoteData,
+      quote: {
+        ...props.quote,
         editingDisabled: true
       }
     };

@@ -48,17 +48,17 @@ export const defaultQuoteWorkflowProps = {
   history: { replace: x => x },
   location: { pathname: '' },
   isLoading: false,
-  quoteData: quote,
+  quote: quote,
   reviewQuote: jestResolve(),
-  setAppState: () => {},
   setAppError: () => {},
-  getZipcodeSettings: jestResolve(),
+  getZipCodeSettings: jestResolve(),
   getEnumsForQuoteWorkflow: () => {},
   updateQuote: jestResolve(),
   fetchNotes: jestResolve(),
   toggleDiary: () => {},
   fetchDiaries: jestResolve(),
-  diaries: []
+  diaries: [],
+  notes: []
 };
 
 export const renderWithReduxAndRouter = (
