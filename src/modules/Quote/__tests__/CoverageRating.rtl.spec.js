@@ -246,9 +246,12 @@ describe('Testing the Coverage/Rating Page', () => {
     );
     expect(getByText('Update')).not.toBeDisabled();
     fireEvent.click(getByText('Reset'));
-    primaryPolicyholderFields.forEach(({ label }) =>
-      expect(getByLabelText(label).value).toEqual('')
-    );
+    waitForElement(() => {
+      primaryPolicyholderFields.forEach(({ label }) =>
+        expect(getByLabelText(label).value).toEqual('')
+      );
+    });
+
     expect(getByText('Update')).toBeDisabled();
   });
 });
