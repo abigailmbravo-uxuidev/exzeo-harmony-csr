@@ -48,8 +48,8 @@ const pageHeaders = [
 describe('Testing the Coverage/Rating Page', () => {
   const props = {
     ...defaultQuoteWorkflowProps,
-    quoteData: {
-      ...defaultQuoteWorkflowProps.quoteData,
+    quote: {
+      ...defaultQuoteWorkflowProps.quote,
       agencyCode: 20000,
       agentCode: 60000
     },
@@ -182,15 +182,15 @@ describe('Testing the Coverage/Rating Page', () => {
   it('POS:Remove Secondary Policyholder button works correctly when toggled twice', () => {
     const newProps = {
       ...props,
-      quoteData: {
-        ...props.quoteData,
-        policyHolders: [...props.quoteData.policyHolders, policyHolder]
+      quote: {
+        ...props.quote,
+        policyHolders: [...props.quote.policyHolders, policyHolder]
       }
     };
     const { getByTestId } = renderWithForm(<QuoteWorkflow {...newProps} />);
 
     expect(getByTestId('policyHolders[1].firstName').value).toEqual(
-      newProps.quoteData.policyHolders[1].firstName
+      newProps.quote.policyHolders[1].firstName
     );
     expect(getByTestId('submit')).toBeDisabled();
 
@@ -200,7 +200,7 @@ describe('Testing the Coverage/Rating Page', () => {
 
     fireEvent.click(getByTestId('removeSecondary'));
     expect(getByTestId('policyHolders[1].firstName').value).toEqual(
-      newProps.quoteData.policyHolders[1].firstName
+      newProps.quote.policyHolders[1].firstName
     );
     expect(getByTestId('submit')).toBeDisabled();
   });
@@ -208,8 +208,8 @@ describe('Testing the Coverage/Rating Page', () => {
   it('POS:Cannot be modified when editingDisabled is true', () => {
     const newProps = {
       ...props,
-      quoteData: {
-        ...props.quoteData,
+      quote: {
+        ...props.quote,
         editingDisabled: true
       }
     };

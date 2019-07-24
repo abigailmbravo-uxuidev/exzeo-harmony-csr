@@ -5,6 +5,7 @@ import { Input, Select, Button, validation } from '@exzeo/core-ui';
 
 import { getAnswers } from '../../../utilities/forms';
 import Pagination from '../components/Pagination';
+import { productAnswers } from '../constants';
 
 const {
   isValidNameFormat,
@@ -14,6 +15,7 @@ const {
 } = validation;
 
 const QuoteSearch = ({
+  beta,
   submitting,
   questions,
   handlePagination,
@@ -86,6 +88,18 @@ const QuoteSearch = ({
           answers={getAnswers('quoteState', questions)}
         />
       </div>
+
+      {beta && (
+        <Field
+          name="product"
+          dataTest="product"
+          label="Product"
+          component={Select}
+          answers={productAnswers}
+          placeholder="Select..."
+          styleName="product-search"
+        />
+      )}
 
       <Button
         className={Button.constants.classNames.success}

@@ -5,7 +5,7 @@ import { Loader, FormSpy, remoteSubmit } from '@exzeo/core-ui';
 import {
   getConfigForJsonTransform,
   Gandalf,
-  AgencySelect
+  AgencyAgentSelect
 } from '@exzeo/core-ui/src/@Harmony';
 import { defaultMemoize } from 'reselect';
 
@@ -22,7 +22,9 @@ import { getEnumsForQuoteWorkflow } from '../../state/actions/list.actions';
 import { getQuoteSelector } from '../../state/selectors/quote.selectors';
 import { getDiariesForTable } from '../../state/selectors/diary.selectors';
 
-import MOCK_CONFIG_DATA from '../../mock-data/mockHO3';
+import MOCK_HO3 from '../../mock-data/mockHO3';
+import MOCK_AF3 from '../../mock-data/mockAF3';
+
 import {
   ROUTES_NOT_HANDLED_BY_GANDALF,
   PAGE_ROUTING
@@ -48,27 +50,29 @@ const MemoizedFormListeners = React.memo(({ children }) => (
   <React.Fragment>{children}</React.Fragment>
 ));
 
+const TEMPLATES = {
+  AF3: MOCK_AF3,
+  HO3: MOCK_HO3
+};
+
 const FORM_ID = 'QuoteWorkflowCSR';
 
 export class QuoteWorkflow extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      gandalfTemplate: null,
-      showDiaries: false,
-      applicationSent: false,
-      showApplicationModal: false
-    };
+  state = {
+    gandalfTemplate: null,
+    showDiaries: false,
+    applicationSent: false,
+    showApplicationModal: false
+  };
 
-    this.formInstance = null;
+  formInstance = null;
 
-    this.customComponents = {
-      $POLICYHOLDERS: PolicyHolders,
-      $APPLICATION: Application,
-      $NOTES_FILES: NotesFiles,
-      $AGENCY_SELECT: AgencySelect
-    };
-  }
+  customComponents = {
+    $POLICYHOLDERS: PolicyHolders,
+    $APPLICATION: Application,
+    $NOTES_FILES: NotesFiles,
+    $AGENCY_SELECT: AgencyAgentSelect
+  };
 
   getConfigForJsonTransform = defaultMemoize(getConfigForJsonTransform);
 
@@ -77,10 +81,10 @@ export class QuoteWorkflow extends React.Component {
       match,
       reviewQuote,
       getEnumsForQuoteWorkflow,
-      getZipcodeSettings
+      getZipCodeSettings
     } = this.props;
-    reviewQuote({ quoteNumber: match.params.quoteNumber }).then(quoteData => {
-      if (quoteData && quoteData.property) {
+    reviewQuote({ quoteNumber: match.params.quoteNumber }).then(quote => {
+      if (quote && quote.property) {
         const {
           companyCode,
           state,
@@ -89,7 +93,7 @@ export class QuoteWorkflow extends React.Component {
           agencyCode,
           agentCode,
           quoteNumber
-        } = quoteData;
+        } = quote;
         getEnumsForQuoteWorkflow({
           companyCode,
           state,
@@ -98,7 +102,7 @@ export class QuoteWorkflow extends React.Component {
           agentCode,
           quoteNumber
         });
-        getZipcodeSettings(
+        getZipCodeSettings(
           companyCode,
           state,
           product,
@@ -109,8 +113,16 @@ export class QuoteWorkflow extends React.Component {
     this.getTemplate();
   }
 
+  componentDidUpdate(prevProps) {
+    const { quote } = this.props;
+    const { quote: prevQuote } = prevProps;
+    if ((quote || {}).product !== (prevQuote || {}).product) {
+      this.getTemplate();
+    }
+  }
+
   getTemplate = async () => {
-    // const { userProfile: { entity: { companyCode, state }} } = this.props;
+    const { quote } = this.props;
 
     // const transferConfig = {
     //   exchangeName: 'harmony',
@@ -126,7 +138,8 @@ export class QuoteWorkflow extends React.Component {
     // };
 
     // const response = await serviceRunner.callService(transferConfig, 'retrieveDocumentTemplate');
-    this.setState(() => ({ gandalfTemplate: MOCK_CONFIG_DATA }));
+    const { product } = quote;
+    this.setState(() => ({ gandalfTemplate: TEMPLATES[product] }));
   };
 
   handleGandalfSubmit = async values => {
@@ -144,8 +157,14 @@ export class QuoteWorkflow extends React.Component {
 
     if (currentRouteName === 'application') {
       this.setApplicationSent(true);
-      this.setShowApplicationModal(false);
+      this.setState({ showApplicationModal: false });
     }
+  };
+
+  handleReviewQuote = async () => {
+    const { quote, reviewQuote } = this.props;
+    await reviewQuote({ quoteNumber: quote.quoteNumber });
+    this.setState({ showApplicationModal: true });
   };
 
   handleToggleDiaries = () => {
@@ -153,22 +172,21 @@ export class QuoteWorkflow extends React.Component {
   };
 
   isSubmitDisabled = (pristine, submitting) => {
-    const { location, quoteData } = this.props;
-    if (quoteData.editingDisabled || this.state.applicationSent) return true;
+    const { location, quote } = this.props;
+    if (quote.editingDisabled || this.state.applicationSent) return true;
 
     const { currentStepNumber } = getCurrentStepAndPage(location.pathname);
 
     if (currentStepNumber === PAGE_ROUTING.application) {
       return (
-        UNQUALIFIED_STATE.includes(quoteData.quoteInputState) ||
-        quoteData.hasActiveExceptions
+        UNQUALIFIED_STATE.includes(quote.quoteInputState) ||
+        quote.hasActiveExceptions
       );
     }
 
     if (currentStepNumber === PAGE_ROUTING.summary) {
       return (
-        UNQUALIFIED_STATE.includes(quoteData.quoteInputState) ||
-        quoteData.hasUWError
+        UNQUALIFIED_STATE.includes(quote.quoteInputState) || quote.hasUWError
       );
     }
 
@@ -200,7 +218,7 @@ export class QuoteWorkflow extends React.Component {
       match,
       notes,
       options,
-      quoteData,
+      quote,
       userProfile,
       updateQuote,
       notesSynced
@@ -217,7 +235,7 @@ export class QuoteWorkflow extends React.Component {
     // TODO going to use Context to pass these directly to custom components,
     //  so Gandalf does not need to know about these.
     const customHandlers = {
-      editingDisabled: quoteData.editingDisabled,
+      editingDisabled: quote.editingDisabled,
       handleSubmit: this.handleGandalfSubmit,
       history: history,
       notesSynced: notesSynced,
@@ -228,15 +246,15 @@ export class QuoteWorkflow extends React.Component {
     };
     return (
       <div className="app-wrapper csr quote">
-        {(isLoading || !quoteData.quoteNumber) && <Loader />}
+        {(isLoading || !quote.quoteNumber) && <Loader />}
 
-        {quoteData.quoteNumber && gandalfTemplate && (
+        {quote.quoteNumber && gandalfTemplate && (
           <App
             header={gandalfTemplate.header}
             context={match.path.split('/')[1]}
             resourceType={QUOTE_RESOURCE_TYPE}
-            resourceId={quoteData.quoteNumber}
-            pageTitle={`Q: ${quoteData.quoteNumber || ''}`}
+            resourceId={quote.quoteNumber}
+            pageTitle={`Q: ${quote.quoteNumber || ''}`}
             match={match}
             onToggleDiaries={this.handleToggleDiaries}
             showDiaries={showDiaries}
@@ -252,7 +270,7 @@ export class QuoteWorkflow extends React.Component {
                       customComponents={this.customComponents}
                       customHandlers={customHandlers}
                       handleSubmit={this.handleGandalfSubmit}
-                      initialValues={quoteData}
+                      initialValues={quote}
                       options={{ diaries, notes, ...options }} // enums for select/radio fields
                       path={location.pathname}
                       template={gandalfTemplate}
@@ -267,9 +285,7 @@ export class QuoteWorkflow extends React.Component {
                             submitting
                           )}
                           handlePrimaryClick={this.primaryClickHandler}
-                          handleApplicationClick={() =>
-                            this.setShowApplicationModal(true)
-                          }
+                          handleApplicationClick={this.handleReviewQuote}
                         />
                       )}
                       formListeners={() => (
@@ -300,21 +316,21 @@ export class QuoteWorkflow extends React.Component {
               </div>
 
               <UnderwritingValidationBar
-                quoteData={quoteData}
+                quoteData={quote}
                 userProfile={userProfile}
                 updateQuote={updateQuote}
               />
 
               <OpenDiariesBar
-                entityEndDate={quoteData.endDate}
-                resourceId={quoteData.quoteNumber}
+                entityEndDate={quote.endDate}
+                resourceId={quote.quoteNumber}
                 resourceType={QUOTE_RESOURCE_TYPE}
               />
 
-              {quoteData && quoteData.quoteNumber && (
+              {quote && quote.quoteNumber && (
                 <DiaryPolling
                   filter={{
-                    resourceId: quoteData.quoteNumber,
+                    resourceId: quote.quoteNumber,
                     resourceType: QUOTE_RESOURCE_TYPE
                   }}
                 />
@@ -336,7 +352,7 @@ QuoteWorkflow.propTypes = {
 
 const mapStateToProps = state => {
   return {
-    quoteData: getQuoteSelector(state),
+    quote: getQuoteSelector(state),
     options: state.list,
     isLoading: state.ui.isLoading,
     diaries: getDiariesForTable(state),
@@ -351,7 +367,7 @@ export default connect(
   {
     setAppError,
     reviewQuote,
-    getZipcodeSettings,
+    getZipCodeSettings: getZipcodeSettings,
     getEnumsForQuoteWorkflow,
     updateQuote,
     toggleDiary

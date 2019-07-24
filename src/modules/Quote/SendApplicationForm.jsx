@@ -2,12 +2,7 @@ import React from 'react';
 import moment from 'moment-timezone';
 import { Form, date } from '@exzeo/core-ui';
 
-const SendApplicationForm = ({
-  className,
-  children,
-  handleSubmit,
-  initialValues
-}) => {
+const SendApplicationForm = ({ children, handleSubmit, initialValues }) => {
   return (
     <Form
       initialValues={initialValues}

@@ -1,6 +1,6 @@
 import React from 'react';
 
-function AddressCard({ handleKeyPress, handleClick, address }) {
+function AddressCard({ handleKeyPress, handleClick, address, product }) {
   return (
     <li id={address.id} tabIndex="0" onKeyPress={handleKeyPress}>
       <a
@@ -8,7 +8,7 @@ function AddressCard({ handleKeyPress, handleClick, address }) {
         data-test={address.physicalAddress.address1}
         className={address.physicalAddress.address1}
         onClick={handleClick}
-        data-url={`/quote/new/${address.physicalAddress.state}/${address.id}`}
+        data-url={`/quote/new/${address.physicalAddress.state}/${product}/${address.id}`}
       >
         <i className="card-icon fa fa-map-marker" />
         <section>

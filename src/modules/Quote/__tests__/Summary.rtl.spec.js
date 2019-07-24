@@ -1,5 +1,5 @@
 import React from 'react';
-import { fireEvent } from 'react-testing-library';
+import { fireEvent, waitForElement } from 'react-testing-library';
 
 import {
   renderWithForm,
@@ -9,7 +9,8 @@ import {
   checkTextInput,
   checkButton,
   clearText,
-  checkError
+  checkError,
+  mockServiceRunner
 } from '../../../test-utils';
 import { QuoteWorkflow } from '../QuoteWorkflow';
 
@@ -26,11 +27,22 @@ const fields = [
   { dataTest: 'email', label: 'Email Address', value: 'fake@aol.com' }
 ];
 
+const agencyResult = [
+  {
+    agentCode: 60000,
+    firstName: 'WALLY',
+    lastName: 'WAGONER'
+  }
+];
+
+mockServiceRunner(agencyResult);
+
 describe('Summary testing with finished Quote', () => {
   const props = {
     ...defaultQuoteWorkflowProps,
-    quoteData: {
-      ...defaultQuoteWorkflowProps.quoteData,
+    quote: {
+      ...defaultQuoteWorkflowProps.quote,
+      agencyCode: '',
       quoteInputState: 'Qualified',
       rating
     },
@@ -43,7 +55,7 @@ describe('Summary testing with finished Quote', () => {
     pageHeaders.forEach(header => checkHeader(getByText, header));
   });
 
-  it('POS:Quote Details', () => {
+  it('Displays quote details', () => {
     const { getByText } = renderWithForm(<QuoteWorkflow {...props} />);
 
     expect(getByText('Quote Number'));
@@ -138,8 +150,8 @@ describe('Summary testing with finished Quote', () => {
 describe('Summary Testing with Default Quote', () => {
   const props = {
     ...defaultQuoteWorkflowProps,
-    quoteData: {
-      ...defaultQuoteWorkflowProps.quoteData,
+    quote: {
+      ...defaultQuoteWorkflowProps.quote,
       rating
     },
     location: { pathname: '/quote/12-345-67/summary' }
@@ -156,8 +168,8 @@ describe('Summary Testing with Default Quote', () => {
   it('POS:Underwriting Violations Error Message in Underwriting State', () => {
     const newProps = {
       ...props,
-      quoteData: {
-        ...props.quoteData,
+      quote: {
+        ...props.quote,
         quoteInputState: 'Underwriting'
       }
     };
@@ -171,8 +183,8 @@ describe('Summary Testing with Default Quote', () => {
   it('POS:Underwriting Violations Error Message in Qualified State w/ UW Error', () => {
     const newProps = {
       ...props,
-      quoteData: {
-        ...props.quoteData,
+      quote: {
+        ...props.quote,
         quoteInputState: 'Qualified',
         hasUWError: true
       }
@@ -187,8 +199,8 @@ describe('Summary Testing with Default Quote', () => {
   it('NEG:No Error Message with Qualified State and no UW Errors', () => {
     const newProps = {
       ...props,
-      quoteData: {
-        ...props.quoteData,
+      quote: {
+        ...props.quote,
         quoteInputState: 'Qualified'
       }
     };
@@ -204,8 +216,8 @@ describe('Summary Testing with Default Quote', () => {
   it('POS:Underwriting Violations Error Message in Ready State w/ UW Error', () => {
     const newProps = {
       ...props,
-      quoteData: {
-        ...props.quoteData,
+      quote: {
+        ...props.quote,
         quoteInputState: 'Ready',
         hasUWError: true
       }
@@ -220,8 +232,8 @@ describe('Summary Testing with Default Quote', () => {
   it('NEG:No Error Message with Ready State and no UW Errors', () => {
     const newProps = {
       ...props,
-      quoteData: {
-        ...props.quoteData,
+      quote: {
+        ...props.quote,
         quoteInputState: 'Ready'
       }
     };

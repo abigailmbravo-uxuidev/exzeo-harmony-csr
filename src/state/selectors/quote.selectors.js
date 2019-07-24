@@ -70,6 +70,8 @@ export const getQuoteSelector = createSelector(
       EDITING_ENABLED.indexOf(quoteData.quoteState) === -1;
 
     if (quoteData.product === 'AF3') {
+      quoteData.deductibles.personalPropertyDeductible.value =
+        quoteData.deductibles.buildingDeductible.value;
       return quoteData;
     }
 

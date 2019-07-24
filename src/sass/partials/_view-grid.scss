@@ -219,6 +219,28 @@
 //end section component
 /*------------------------------------------------------------------------------------*/
 
+//coverage rating specific styles
+/*------------------------------------------------------------------------------------*/
+
+.app-wrapper.csr.quote {
+  #QuoteWorkflowCSR {
+    &.view-grid {
+      .deductibles {
+        .deductible-wrapper {
+          margin-top: -$padding;
+          padding-top: $padding;
+          border: 1px solid $warm-gray-02;
+          border-radius: $border-radius;
+          background: $warm-gray-01;
+        }
+      }
+    }
+  }
+}
+
+//end coverage rating specific styles
+/*------------------------------------------------------------------------------------*/
+
 //additional interests component
 /*------------------------------------------------------------------------------------*/
 .view-grid {
@@ -228,7 +250,7 @@
     }
 
     .title {
-      padding: 0;
+      //padding: 0;
     }
 
     ul {
@@ -361,7 +383,7 @@ section {
   .detail-group {
     display: flex;
     flex-direction: column;
-    padding: 0 ($padding * 2);
+    padding: 0 $padding;
     min-height: 4rem;
     width: 100%;
 
@@ -418,6 +440,12 @@ section {
             text-align: right;
           }
         }
+      }
+    }
+
+    &.af3 {
+      .detail-group {
+        height: 10rem;
       }
     }
   }
