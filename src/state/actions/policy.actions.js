@@ -1,13 +1,16 @@
 // temporary full path import until we can find a better way to mock network requests
 import * as serviceRunner from '@exzeo/core-ui/src/@Harmony/Domain/Api/serviceRunner';
+import { date } from '@exzeo/core-ui/src';
 
 import { convertToRateData } from '../../utilities/endorsementModel';
+
 import * as types from './actionTypes';
 import * as errorActions from './error.actions';
 import * as cgActions from './cg.actions';
 import endorsementUtils from '../../utilities/endorsementModel';
 import { getZipcodeSettings } from './service.actions';
-
+import { toggleLoading } from './ui.actions';
+import { startWorkflow, batchCompleteTask } from './cg.actions';
 /**
  * Reset policyState
  * @returns {{type: string}}
@@ -808,6 +811,66 @@ export function initializePolicyWorkflow(policyNumber) {
       }
     } catch (error) {
       dispatch(errorActions.setAppError(error));
+    }
+  };
+}
+
+/**
+ *
+ * @param data
+ * @param options
+ * @returns {Function}
+ */
+export function updatePolicy({ data = {}, options = {} }) {
+  return async function(dispatch) {
+    try {
+      dispatch(toggleLoading(true));
+
+      if (options.cancelPolicy) {
+        const submitData = {
+          policyID: data.policyID,
+          policyNumber: data.policyNumber,
+          cancelDate: date.formatDate(
+            data.cancel.effectiveDate,
+            date.FORMATS.SECONDARY
+          ),
+          cancelReason: data.cancelReason,
+          transactionType: `Pending ${data.cancel.cancelType}`,
+          equityDate: date.formatDate(
+            data.cancel.equityDate,
+            date.FORMATS.SECONDARY
+          ),
+          billingStatus: data.summaryLedger.status.code
+        };
+        const result = await dispatch(
+          startWorkflow('cancelPolicyModelUI', {
+            policyNumber: data.policyNumber,
+            policyID: data.policyID
+          })
+        );
+
+        const steps = [{ name: 'cancelPolicySubmit', data: submitData }];
+        const startResult = result.payload
+          ? result.payload[0].workflowData.cancelPolicyModelUI.data
+          : {};
+
+        await dispatch(
+          batchCompleteTask(
+            startResult.modelName,
+            startResult.modelInstanceId,
+            steps
+          )
+        );
+        await dispatch(getPolicy(data.policyNumber));
+      }
+    } catch (error) {
+      if (process.env.NODE_ENV !== 'production') {
+        console.log('Error updating policy: ', error);
+      }
+      dispatch(errorActions.setAppError(error));
+      return null;
+    } finally {
+      dispatch(toggleLoading(false));
     }
   };
 }

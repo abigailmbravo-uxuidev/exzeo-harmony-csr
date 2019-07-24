@@ -10,7 +10,8 @@ import {
   Gandalf,
   Payment,
   PolicyBilling,
-  PaymentHistoryTable
+  PaymentHistoryTable,
+  ClaimsTable
 } from '@exzeo/core-ui/src/@Harmony';
 import { defaultMemoize } from 'reselect';
 
@@ -44,7 +45,8 @@ import {
   getCancelOptions,
   getEndorsementHistory,
   initializePolicyWorkflow,
-  transferAOR
+  transferAOR,
+  updatePolicy
 } from '../../state/actions/policy.actions';
 
 import MOCK_CONFIG_DATA from '../../mock-data/mockPolicyHO3';
@@ -61,6 +63,7 @@ import NotesFiles from '../NotesFiles';
 import PolicyholderAgent from './PolicyholderAgent';
 import PolicyFooter from './PolicyFooter';
 import CancelType from './CancelType';
+import CancelReason from './CancelReason';
 
 const getCurrentStepAndPage = defaultMemoize(pathname => {
   const currentRouteName = pathname.split('/')[3];
@@ -97,7 +100,9 @@ export class PolicyWorkflow extends React.Component {
       $APPRAISER: Appraiser,
       $NOTES_FILES: NotesFiles,
       $POLICYHOLDER_AGENT: PolicyholderAgent,
-      $CANCEL_TYPE: CancelType
+      $CANCEL_TYPE: CancelType,
+      $CANCEL_REASON: CancelReason,
+      $CLAIMS_TABLE: ClaimsTable
     };
   }
 
@@ -142,13 +147,13 @@ export class PolicyWorkflow extends React.Component {
     const { currentRouteName, currentStepNumber } = getCurrentStepAndPage(
       location.pathname
     );
-    // await this.props.updateQuote({
-    //   data: values,
-    //   options: {
-    //     step: currentStepNumber,
-    //     shouldSendApplication: currentRouteName === 'application'
-    //   }
-    // });
+    await this.props.updatePolicy({
+      data: values,
+      options: {
+        step: currentStepNumber,
+        cancelPolicy: currentRouteName === 'cancel'
+      }
+    });
 
     // if (currentRouteName === 'application') {
     //   this.setApplicationSent(true);
@@ -316,7 +321,15 @@ export class PolicyWorkflow extends React.Component {
                         transformConfig={transformConfig}
                         stickyFooter
                         renderFooter={({ pristine, submitting, form }) => (
-                          <PolicyFooter />
+                          <PolicyFooter
+                            currentStep={currentRouteName}
+                            formInstance={form}
+                            isSubmitDisabled={this.isSubmitDisabled(
+                              pristine,
+                              submitting
+                            )}
+                            handlePrimaryClick={this.primaryClickHandler}
+                          />
                         )}
                         formListeners={() => (
                           <MemoizedFormListeners>
@@ -438,6 +451,7 @@ export default connect(
     initializePolicyWorkflow,
     getUIQuestions,
     setAppError,
-    transferAOR
+    transferAOR,
+    updatePolicy
   }
 )(PolicyWorkflow);

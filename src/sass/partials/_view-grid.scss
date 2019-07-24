@@ -640,5 +640,28 @@ section {
 //end policyholder/agent page specific styles
 /*------------------------------------------------------------------------------------*/
 
+//cancel policy page specific styles
+/*------------------------------------------------------------------------------------*/
+#PolicyWorkflowCSR {
+  > section {
+    &.payments {
+      display: flex;
+      flex-wrap: wrap;
+
+      .payments-cancel-policy {
+        > div {
+          display: flex;
+          > dl {
+            flex-grow: 1;
+            flex-shrink: 1;
+          }
+        }
+      }
+    }
+  }
+}
+//end cancel policy page specific styles
+/*------------------------------------------------------------------------------------*/
+
 //END POLICY
 /*------------------------------------------------------------------------------------*/
