@@ -988,17 +988,7 @@ const mock = {
                   id: 20,
                   type: '$POLICY_BILLING',
                   dependencies: [],
-                  data: {
-                    extendedProperties: {
-                      className: 'home-and-location-1',
-                      details: [
-                        {
-                          label: 'Year Home Built',
-                          items: [{ format: '', path: 'property.yearBuilt' }]
-                        }
-                      ]
-                    }
-                  },
+                  data: {},
                   formData: {},
                   children: []
                 }
@@ -1054,7 +1044,7 @@ const mock = {
                 {
                   id: 401,
                   type: '$CUSTOM',
-                  dependencies: [{ 'rating.worksheet': true }],
+                  dependencies: [],
                   data: {
                     component: '$ADDITIONAL_INTERESTS',
                     extendedProperties: {
