@@ -8,7 +8,9 @@ import { Loader, FormSpy, remoteSubmit, date } from '@exzeo/core-ui';
 import {
   getConfigForJsonTransform,
   Gandalf,
-  ClaimsTable
+  ClaimsTable,
+  PolicyBilling,
+  PaymentHistoryTable
 } from '@exzeo/core-ui/src/@Harmony';
 import { defaultMemoize } from 'reselect';
 
@@ -95,7 +97,9 @@ export class PolicyWorkflow extends React.Component {
       $POLICYHOLDER_AGENT: PolicyholderAgent,
       $CANCEL_TYPE: CancelType,
       $CANCEL_REASON: CancelReason,
-      $CLAIMS_TABLE: ClaimsTable
+      $CLAIMS_TABLE: ClaimsTable,
+      $POLICY_BILLING: PolicyBilling,
+      $PAYMENT_HISTORY_TABLE: PaymentHistoryTable
     };
   }
 
