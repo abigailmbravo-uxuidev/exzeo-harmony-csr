@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { Route } from 'react-router-dom';
 import _find from 'lodash/find';
 
-import { Loader, FormSpy, remoteSubmit, date } from '@exzeo/core-ui';
+import { Loader, FormSpy, remoteSubmit } from '@exzeo/core-ui';
 import {
   getConfigForJsonTransform,
   Gandalf,
@@ -20,20 +20,13 @@ import { toggleDiary } from '../../state/actions/ui.actions';
 import { getUIQuestions } from '../../state/actions/questions.actions';
 import { getDiariesForTable } from '../../state/selectors/diary.selectors';
 import { setAppError } from '../../state/actions/error.actions';
-import { setAppState } from '../../state/actions/appState.actions';
-import {
-  getZipcodeSettings,
-  getAgents,
-  getAgency
-} from '../../state/actions/service.actions';
+import { getAgents, getAgency } from '../../state/actions/service.actions';
 import EditEffectiveDataModal from '../../components/Policy/EditEffectiveDatePopup';
 import ReinstatePolicyModal from '../../components/Policy/ReinstatePolicyPopup';
 import Endorsements from '../../components/Policy/Endorsements';
 
 import {
   createTransaction,
-  getBillingOptionsForPolicy,
-  getEffectiveDateChangeReasons,
   getPolicy,
   getCancelOptions,
   getEndorsementHistory,
@@ -58,6 +51,7 @@ import PolicyholderAgent from './PolicyholderAgent';
 import PolicyFooter from './PolicyFooter';
 import CancelType from './CancelType';
 import CancelReason from './CancelReason';
+import { getPolicyFormData } from '../../state/selectors/policy.selectors';
 
 const getCurrentStepAndPage = defaultMemoize(pathname => {
   const currentRouteName = pathname.split('/')[3];
@@ -153,7 +147,7 @@ export class PolicyWorkflow extends React.Component {
   };
 
   isSubmitDisabled = (pristine, submitting) => {
-    const { location, policy } = this.props;
+    const { policy } = this.props;
     if (policy.editingDisabled) return true;
     return pristine || submitting;
   };
@@ -204,7 +198,7 @@ export class PolicyWorkflow extends React.Component {
       policy,
       notesSynced,
       initialized,
-      summaryLedger,
+      policyFormData,
       questions,
       zipCodeSettings,
       cancelOptions
@@ -244,12 +238,6 @@ export class PolicyWorkflow extends React.Component {
       transferAOR: this.props.transferAOR
     };
 
-    const currentDate = date.convertDateToTimeZone(undefined, zipCodeSettings);
-    const summaryLedgerEffectiveDate = date.convertDateToTimeZone(
-      summaryLedger.effectiveDate,
-      zipCodeSettings
-    );
-
     return (
       <div className="app-wrapper csr policy">
         {(isLoading || !policy.policyNumber) && <Loader />}
@@ -278,22 +266,7 @@ export class PolicyWorkflow extends React.Component {
                         customComponents={this.customComponents}
                         customHandlers={customHandlers}
                         handleSubmit={this.handleGandalfSubmit}
-                        initialValues={{
-                          ...policy,
-                          summaryLedger,
-                          cancel: {
-                            equityDate: date.formattedDate(
-                              summaryLedger.equityDate,
-                              'MM/DD/YYYY'
-                            ),
-                            effectiveDate:
-                              currentDate > summaryLedgerEffectiveDate
-                                ? currentDate.format('YYYY-MM-DD')
-                                : summaryLedgerEffectiveDate.format(
-                                    'YYYY-MM-DD'
-                                  )
-                          }
-                        }}
+                        initialValues={policyFormData}
                         options={{
                           diaries,
                           notes,
@@ -412,8 +385,8 @@ const mapStateToProps = state => {
     initialized: !!(
       state.policyState.policy.policyID && state.policyState.summaryLedger._id
     ),
+    policyFormData: getPolicyFormData(state),
     policy: state.policyState.policy,
-    summaryLedger: state.policyState.summaryLedger,
     zipCodeSettings: state.service.getZipcodeSettings || {},
     questions: state.questions,
     cancelOptions: state.policyState.cancelOptions
@@ -426,13 +399,9 @@ export default connect(
     createTransaction,
     getAgents,
     getAgency,
-    getEffectiveDateChangeReasons,
-    getBillingOptionsForPolicy,
     getCancelOptions,
     getEndorsementHistory,
     getPolicy,
-    getZipCodeSettings: getZipcodeSettings,
-    setAppState,
     toggleDiary,
     initializePolicyWorkflow,
     getUIQuestions,
