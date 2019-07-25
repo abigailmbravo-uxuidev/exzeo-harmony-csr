@@ -612,6 +612,9 @@ section {
 /*------------------------------------------------------------------------------------*/
 #PolicyWorkflowCSR {
   .mortgage-billing {
+    margin-bottom: 0;
+    padding-bottom: 0;
+
     > section {
       margin-bottom: 1rem;
       padding-bottom: 1rem;
@@ -623,21 +626,22 @@ section {
       }
 
       &.billing {
-        > div {
-          display: flex;
+        display: flex;
 
-          dl {
-            margin-right: $padding * 2;
+        dl {
+          flex-grow: 0;
+          flex-shrink: 0;
+          margin-right: $padding * 2;
+          width: auto;
+
+          dt {
+            color: $warm-gray-08;
           }
         }
       }
-
-      &.additional-interests {
-        .results-wrapper {
-          border-width: 0;
-          .card {
-            margin: 0 $padding $padding;
-          }
+      &#AddAdditionalInterestPage {
+        .results-wrapper.additional-interests {
+          border-top-width: 0;
         }
       }
     }

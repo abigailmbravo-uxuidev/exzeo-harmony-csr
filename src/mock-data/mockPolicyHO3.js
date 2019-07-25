@@ -936,7 +936,9 @@ const mock = {
           id: 1,
           type: '$SECTION',
           dependencies: [],
-          data: {},
+          data: {
+            className: 'mortgage-billing'
+          },
           formData: {},
           children: [
             {
