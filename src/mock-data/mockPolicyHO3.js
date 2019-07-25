@@ -946,7 +946,9 @@ const mock = {
               type: '$BILLING',
               dependencies: [],
               data: {
-                className: 'billing'
+                className: 'billing',
+                billingHeader: 'Billing',
+                paymentHistoryHeader: 'Payments'
               },
               formData: {}
             },
@@ -964,6 +966,7 @@ const mock = {
               data: {
                 component: '$ADDITIONAL_INTERESTS',
                 extendedProperties: {
+                  isPolicy: true,
                   types: [
                     'mortgagee',
                     'additionalInsured',

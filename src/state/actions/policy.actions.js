@@ -815,6 +815,23 @@ export function initializePolicyWorkflow(policyNumber) {
   };
 }
 
+async function updateAdditionalInterestStatus({
+  additionalInterest,
+  policyID,
+  policyNumber,
+  dispatch
+}) {
+  const submitData = {
+    policyID,
+    policyNumber,
+    additionalInterestId: additionalInterest._id,
+    transactionType: additionalInterest.active
+      ? 'AI Removal'
+      : 'AI Reinstatement'
+  };
+  await dispatch(createTransaction(submitData));
+}
+
 /**
  *
  * @param data
@@ -861,6 +878,16 @@ export function updatePolicy({ data = {}, options = {} }) {
             steps
           )
         );
+        await dispatch(getPolicy(data.policyNumber));
+      }
+
+      if (data.deleteReinstateAI) {
+        await updateAdditionalInterestStatus({
+          additionalInterest: data.deleteReinstateAI,
+          policyID: data.policyID,
+          policyNumber: data.policyNumber,
+          dispatch
+        });
         await dispatch(getPolicy(data.policyNumber));
       }
     } catch (error) {
