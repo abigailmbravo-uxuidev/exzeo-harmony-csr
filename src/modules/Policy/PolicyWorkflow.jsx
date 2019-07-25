@@ -258,7 +258,8 @@ export class PolicyWorkflow extends React.Component {
       questions,
       zipCodeSettings,
       cancelOptions,
-      effectiveDateReasons
+      effectiveDateReasons,
+      summaryLedger
     } = this.props;
 
     const {
@@ -412,10 +413,10 @@ export class PolicyWorkflow extends React.Component {
                 />
               )}
 
-              {policy && policy.policyNumber && (
+              {policy && policy.policyNumber && policy.sourceNumber && (
                 <DiaryPolling
                   filter={{
-                    resourceId: policy.policyNumber,
+                    resourceId: [policy.policyNumber, policy.sourceNumber],
                     resourceType: POLICY_RESOURCE_TYPE
                   }}
                 />
@@ -450,6 +451,7 @@ const mapStateToProps = state => {
     ),
     policyFormData: getPolicyFormData(state),
     policy: state.policyState.policy,
+    summaryLedger: state.policyState.summaryLedger,
     zipCodeSettings: state.service.getZipcodeSettings || {},
     questions: state.questions,
     cancelOptions: state.policyState.cancelOptions,
