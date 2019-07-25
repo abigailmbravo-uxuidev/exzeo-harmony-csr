@@ -26,7 +26,6 @@ import {
   getAgents,
   getAgency
 } from '../../state/actions/service.actions';
-
 import EditEffectiveDataModal from '../../components/Policy/EditEffectiveDatePopup';
 import ReinstatePolicyModal from '../../components/Policy/ReinstatePolicyPopup';
 import Endorsements from '../../components/Policy/Endorsements';
@@ -44,11 +43,11 @@ import {
 } from '../../state/actions/policy.actions';
 
 import MOCK_CONFIG_DATA from '../../mock-data/mockPolicyHO3';
+
 import {
   ROUTES_NOT_HANDLED_BY_GANDALF,
   PAGE_ROUTING
 } from './constants/workflowNavigation';
-
 // TODO: Move this into a component folder
 import NavigationPrompt from '../Quote/NavigationPrompt';
 import Billing from './Billing';
@@ -147,11 +146,6 @@ export class PolicyWorkflow extends React.Component {
         cancelPolicy: currentRouteName === 'cancel'
       }
     });
-
-    // if (currentRouteName === 'application') {
-    //   this.setApplicationSent(true);
-    //   this.setShowApplicationModal(false);
-    // }
   };
 
   handleToggleDiaries = () => {
@@ -208,7 +202,6 @@ export class PolicyWorkflow extends React.Component {
       notes,
       options,
       policy,
-      userProfile,
       notesSynced,
       initialized,
       summaryLedger,
@@ -257,11 +250,6 @@ export class PolicyWorkflow extends React.Component {
       zipCodeSettings
     );
 
-    const latestDate =
-      currentDate > summaryLedgerEffectiveDate
-        ? currentDate.format('YYYY-MM-DD')
-        : summaryLedgerEffectiveDate.format('YYYY-MM-DD');
-
     return (
       <div className="app-wrapper csr policy">
         {(isLoading || !policy.policyNumber) && <Loader />}
@@ -298,7 +286,12 @@ export class PolicyWorkflow extends React.Component {
                               summaryLedger.equityDate,
                               'MM/DD/YYYY'
                             ),
-                            effectiveDate: latestDate
+                            effectiveDate:
+                              currentDate > summaryLedgerEffectiveDate
+                                ? currentDate.format('YYYY-MM-DD')
+                                : summaryLedgerEffectiveDate.format(
+                                    'YYYY-MM-DD'
+                                  )
                           }
                         }}
                         options={{
