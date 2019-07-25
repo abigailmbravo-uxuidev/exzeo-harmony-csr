@@ -934,134 +934,42 @@ const mock = {
           id: 1,
           type: '$SECTION',
           dependencies: [],
-          data: {
-            className: 'mortgage-billing'
-          },
+          data: {},
           formData: {},
           children: [
             {
               id: 10,
-              type: '$SECTION',
+              type: '$BILLING',
               dependencies: [],
-              data: {
-                className: 'add-payment'
-              },
-              formData: {},
-              children: [
-                {
-                  id: 100,
-                  type: '$TITLE',
-                  dependencies: [],
-                  data: {
-                    text: 'Add Payment'
-                  },
-                  formData: {}
-                },
-                {
-                  id: 101,
-                  type: '$PAYMENT',
-                  dependencies: [],
-                  data: {},
-                  formData: {}
-                }
-              ]
+              data: {},
+              formData: {}
             },
             {
-              id: 20,
-              type: '$SECTION',
+              id: 11,
+              type: '$TITLE',
               dependencies: [],
-              data: {
-                className: 'billing'
-              },
-              formData: {},
-              children: [
-                {
-                  id: 200,
-                  type: '$TITLE',
-                  dependencies: [],
-                  data: {
-                    text: 'Billing'
-                  },
-                  formData: {}
-                },
-                {
-                  id: 20,
-                  type: '$POLICY_BILLING',
-                  dependencies: [],
-                  data: {},
-                  formData: {},
-                  children: []
-                }
-              ]
+              data: { text: 'Additional Interests' },
+              formData: {}
             },
             {
-              id: 30,
-              type: '$SECTION',
-              dependencies: [],
+              id: 12,
+              type: '$CUSTOM',
+              dependencies: [{ 'rating.worksheet': true }],
               data: {
-                className: 'payments'
+                component: '$ADDITIONAL_INTERESTS',
+                extendedProperties: {
+                  types: [
+                    'mortgagee',
+                    'additionalInsured',
+                    'additionalInterest',
+                    'premiumFinance',
+                    'billPayer'
+                  ],
+                  displayReferenceNumber: true
+                }
               },
               formData: {},
-              children: [
-                {
-                  id: 300,
-                  type: '$TITLE',
-                  dependencies: [],
-                  data: {
-                    text: 'Payments'
-                  },
-                  formData: {}
-                },
-                {
-                  id: 301,
-                  type: '$PAYMENT_HISTORY_TABLE',
-                  dependencies: [],
-                  data: {
-                    text: 'Payments'
-                  },
-                  formData: {}
-                }
-              ]
-            },
-            {
-              id: 40,
-              type: '$SECTION',
-              dependencies: [],
-              data: {
-                className: 'detail-group additional-interests'
-              },
-              formData: {},
-              children: [
-                {
-                  id: 400,
-                  type: '$TITLE',
-                  dependencies: [],
-                  data: {
-                    text: 'Additional Interests'
-                  },
-                  formData: {}
-                },
-                {
-                  id: 401,
-                  type: '$CUSTOM',
-                  dependencies: [],
-                  data: {
-                    component: '$ADDITIONAL_INTERESTS',
-                    extendedProperties: {
-                      types: [
-                        'mortgagee',
-                        'additionalInsured',
-                        'additionalInterest',
-                        'premiumFinance',
-                        'billPayer'
-                      ],
-                      displayReferenceNumber: true
-                    }
-                  },
-                  formData: {},
-                  children: []
-                }
-              ]
+              children: []
             }
           ]
         }

@@ -8,9 +8,6 @@ import { Loader, FormSpy, remoteSubmit, date } from '@exzeo/core-ui';
 import {
   getConfigForJsonTransform,
   Gandalf,
-  Payment,
-  PolicyBilling,
-  PaymentHistoryTable,
   ClaimsTable
 } from '@exzeo/core-ui/src/@Harmony';
 import { defaultMemoize } from 'reselect';
@@ -32,9 +29,6 @@ import {
 
 import EditEffectiveDataModal from '../../components/Policy/EditEffectiveDatePopup';
 import ReinstatePolicyModal from '../../components/Policy/ReinstatePolicyPopup';
-import PolicyHolder from '../../components/Policy/PolicyholderAgent';
-import Billing from '../../components/Policy/MortgageBilling';
-import Cancel from '../../components/Policy/Cancel';
 import Endorsements from '../../components/Policy/Endorsements';
 
 import {
@@ -57,6 +51,7 @@ import {
 
 // TODO: Move this into a component folder
 import NavigationPrompt from '../Quote/NavigationPrompt';
+import Billing from './Billing';
 import BillingTable from './BillingTable';
 import Appraiser from './Appraiser';
 import NotesFiles from '../NotesFiles';
@@ -93,10 +88,8 @@ export class PolicyWorkflow extends React.Component {
     this.formInstance = null;
 
     this.customComponents = {
+      $BILLING: Billing,
       $BILLING_TABLE: BillingTable,
-      $POLICY_BILLING: PolicyBilling,
-      $PAYMENT: Payment,
-      $PAYMENT_HISTORY_TABLE: PaymentHistoryTable,
       $APPRAISER: Appraiser,
       $NOTES_FILES: NotesFiles,
       $POLICYHOLDER_AGENT: PolicyholderAgent,
