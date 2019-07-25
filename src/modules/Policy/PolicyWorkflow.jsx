@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { Route } from 'react-router-dom';
 import _find from 'lodash/find';
 
-import { Loader, FormSpy, remoteSubmit } from '@exzeo/core-ui';
+import { Loader, FormSpy, remoteSubmit, date } from '@exzeo/core-ui';
 import {
   getConfigForJsonTransform,
   Gandalf,
@@ -21,9 +21,16 @@ import { getUIQuestions } from '../../state/actions/questions.actions';
 import { getDiariesForTable } from '../../state/selectors/diary.selectors';
 import { setAppError } from '../../state/actions/error.actions';
 import { getAgents, getAgency } from '../../state/actions/service.actions';
-import EditEffectiveDataModal from '../../components/Policy/EditEffectiveDatePopup';
+import {
+  startWorkflow,
+  batchCompleteTask
+} from '../../state/actions/cg.actions';
 import ReinstatePolicyModal from '../../components/Policy/ReinstatePolicyPopup';
 import Endorsements from '../../components/Policy/Endorsements';
+import {
+  getPolicyFormData,
+  getPolicyEffectiveDateReasons
+} from '../../state/selectors/policy.selectors';
 
 import {
   createTransaction,
@@ -51,7 +58,7 @@ import PolicyholderAgent from './PolicyholderAgent';
 import PolicyFooter from './PolicyFooter';
 import CancelType from './CancelType';
 import CancelReason from './CancelReason';
-import { getPolicyFormData } from '../../state/selectors/policy.selectors';
+import EffectiveDateModal from './EffectiveDateModal';
 
 const getCurrentStepAndPage = defaultMemoize(pathname => {
   const currentRouteName = pathname.split('/')[3];
@@ -166,7 +173,7 @@ export class PolicyWorkflow extends React.Component {
     }));
   };
 
-  handleToggleEffectiveDateChangeModal = () => {
+  toggleEffectiveDateChangeModal = () => {
     this.setState(state => ({
       showEffectiveDateChangeModal: !state.showEffectiveDateChangeModal
     }));
@@ -186,6 +193,51 @@ export class PolicyWorkflow extends React.Component {
     this.handleToggleReinstateModal();
   };
 
+  changeEffectiveDate = async data => {
+    const {
+      zipCodeSettings,
+      policy,
+      batchCompleteTask,
+      getPolicy,
+      startWorkflow
+    } = this.props;
+
+    const effectiveDateUTC = date.formattedDate(
+      data.effectiveDate,
+      date.FORMATS.SECONDARY,
+      zipCodeSettings.timezone
+    );
+    const result = await startWorkflow('effectiveDateChangeModel', {
+      policyNumber: policy.policyNumber,
+      policyID: policy.policyID
+    });
+
+    const steps = [
+      {
+        name: 'saveEffectiveDate',
+        data: {
+          policyNumber: policy.policyNumber,
+          policyID: policy.policyID,
+          effectiveDateChangeReason: data.effectiveDateChangeReason,
+          effectiveDate: effectiveDateUTC
+        }
+      }
+    ];
+    const startResult = result.payload
+      ? result.payload[0].workflowData.effectiveDateChangeModel.data
+      : {};
+
+    await batchCompleteTask(
+      startResult.modelName,
+      startResult.modelInstanceId,
+      steps
+    );
+    //This gets scheduled so the status may not be changed yet when calling getPolicy. Reference HAR-5228
+    await new Promise(resolve => setTimeout(resolve, 3000));
+    await getPolicy(policy.policyNumber);
+    this.toggleEffectiveDateChangeModal();
+  };
+
   render() {
     const {
       diaries,
@@ -201,7 +253,8 @@ export class PolicyWorkflow extends React.Component {
       policyFormData,
       questions,
       zipCodeSettings,
-      cancelOptions
+      cancelOptions,
+      effectiveDateReasons
     } = this.props;
 
     const {
@@ -212,7 +265,7 @@ export class PolicyWorkflow extends React.Component {
     } = this.state;
 
     const modalHandlers = {
-      showEffectiveDateChangeModal: this.handleToggleEffectiveDateChangeModal,
+      showEffectiveDateChangeModal: this.toggleEffectiveDateChangeModal,
       showReinstatePolicyModal: this.handleToggleReinstateModal
     };
 
@@ -341,11 +394,17 @@ export class PolicyWorkflow extends React.Component {
               )}
 
               {showEffectiveDateChangeModal && (
-                <EditEffectiveDataModal
+                <EffectiveDateModal
+                  initialValues={{
+                    effectiveDate: date.formatDate(
+                      policy.effectiveDate,
+                      date.FORMATS.SECONDARY
+                    ),
+                    effectiveDateChangeReason: ''
+                  }}
+                  effectiveDateReasons={effectiveDateReasons}
                   changeEffectiveDateSubmit={this.changeEffectiveDate}
-                  hideEffectiveDateModal={
-                    this.handleToggleEffectiveDateChangeModal
-                  }
+                  closeModal={this.toggleEffectiveDateChangeModal}
                 />
               )}
 
@@ -389,7 +448,8 @@ const mapStateToProps = state => {
     policy: state.policyState.policy,
     zipCodeSettings: state.service.getZipcodeSettings || {},
     questions: state.questions,
-    cancelOptions: state.policyState.cancelOptions
+    cancelOptions: state.policyState.cancelOptions,
+    effectiveDateReasons: getPolicyEffectiveDateReasons(state)
   };
 };
 
@@ -407,6 +467,8 @@ export default connect(
     getUIQuestions,
     setAppError,
     transferAOR,
-    updatePolicy
+    updatePolicy,
+    startWorkflow,
+    batchCompleteTask
   }
 )(PolicyWorkflow);

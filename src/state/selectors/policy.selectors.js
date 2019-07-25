@@ -11,7 +11,8 @@ import {
   getPaymentOptions,
   getPolicy,
   getSummaryLedger,
-  getAgencyPolicies
+  getAgencyPolicies,
+  getEffectiveDateChangeReasons
 } from './entity.selectors';
 import { formattedDate } from '@exzeo/core-ui/src/Utilities';
 import { getZipcodeSettings } from '../actions/service.actions';
@@ -117,6 +118,14 @@ export const getPolicyNumberList = createSelector(
     return policies.map(p => {
       return { answer: p.policyNumber, label: p.policyNumber };
     });
+  }
+);
+
+export const getPolicyEffectiveDateReasons = createSelector(
+  [getEffectiveDateChangeReasons],
+  reasons => {
+    if (!Array.isArray(reasons) || !reasons.length) return defaultArr;
+    return reasons.map(reason => ({ answer: reason, label: reason }));
   }
 );
 
