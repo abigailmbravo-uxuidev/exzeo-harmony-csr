@@ -941,7 +941,9 @@ const mock = {
               id: 10,
               type: '$BILLING',
               dependencies: [],
-              data: {},
+              data: {
+                className: 'billing'
+              },
               formData: {}
             },
             {
