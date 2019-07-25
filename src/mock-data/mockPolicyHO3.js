@@ -874,7 +874,9 @@ const mock = {
           id: 230340305495959,
           type: '$SECTION',
           dependencies: [],
-          data: {},
+          data: {
+            className: 'policyholder-agent'
+          },
           formData: {},
           children: [
             {

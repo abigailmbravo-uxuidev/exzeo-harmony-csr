@@ -587,22 +587,27 @@ section {
 //policyholder/agent page specific styles
 /*------------------------------------------------------------------------------------*/
 #PolicyWorkflowCSR {
-  .policyholder-cards,
-  .agency-cards {
-    .card {
-      flex-grow: 1;
-      flex-shrink: 1;
-      margin: 0 $padding $padding;
+  .policyholder-agent {
+    margin-bottom: 0;
+    padding-bottom: 0;
+    .policyholder-cards {
+      padding-bottom: 1rem;
+      border-bottom: 1px dashed $bright-blue-darken-03;
+    }
+    .policyholder-cards,
+    .agency-cards {
+      .card {
+        flex-grow: 1;
+        flex-shrink: 1;
+        margin: 0 $padding $padding;
+      }
     }
   }
 }
 //end policyholder/agent page specific styles
 /*------------------------------------------------------------------------------------*/
 
-.mortgage-billing {
-}
-
-//policyholder/agent page specific styles
+//mortgage/billing page specific styles
 /*------------------------------------------------------------------------------------*/
 #PolicyWorkflowCSR {
   .mortgage-billing {
@@ -637,7 +642,7 @@ section {
     }
   }
 }
-//end policyholder/agent page specific styles
+//end mortgage/billing page specific styles
 /*------------------------------------------------------------------------------------*/
 
 //cancel policy page specific styles
