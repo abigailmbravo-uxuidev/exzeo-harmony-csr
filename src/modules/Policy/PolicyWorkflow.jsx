@@ -8,7 +8,9 @@ import { Loader, FormSpy, remoteSubmit, date } from '@exzeo/core-ui';
 import {
   getConfigForJsonTransform,
   Gandalf,
-  ClaimsTable
+  ClaimsTable,
+  PolicyBilling,
+  PaymentHistoryTable
 } from '@exzeo/core-ui/src/@Harmony';
 import { defaultMemoize } from 'reselect';
 
@@ -20,21 +22,20 @@ import { toggleDiary } from '../../state/actions/ui.actions';
 import { getUIQuestions } from '../../state/actions/questions.actions';
 import { getDiariesForTable } from '../../state/selectors/diary.selectors';
 import { setAppError } from '../../state/actions/error.actions';
-import { setAppState } from '../../state/actions/appState.actions';
+import { getAgents, getAgency } from '../../state/actions/service.actions';
 import {
-  getZipcodeSettings,
-  getAgents,
-  getAgency
-} from '../../state/actions/service.actions';
-
-import EditEffectiveDataModal from '../../components/Policy/EditEffectiveDatePopup';
+  startWorkflow,
+  batchCompleteTask
+} from '../../state/actions/cg.actions';
 import ReinstatePolicyModal from '../../components/Policy/ReinstatePolicyPopup';
 import Endorsements from '../../components/Policy/Endorsements';
+import {
+  getPolicyFormData,
+  getPolicyEffectiveDateReasons
+} from '../../state/selectors/policy.selectors';
 
 import {
   createTransaction,
-  getBillingOptionsForPolicy,
-  getEffectiveDateChangeReasons,
   getPolicy,
   getCancelOptions,
   getEndorsementHistory,
@@ -44,11 +45,11 @@ import {
 } from '../../state/actions/policy.actions';
 
 import MOCK_CONFIG_DATA from '../../mock-data/mockPolicyHO3';
+
 import {
   ROUTES_NOT_HANDLED_BY_GANDALF,
   PAGE_ROUTING
 } from './constants/workflowNavigation';
-
 // TODO: Move this into a component folder
 import NavigationPrompt from '../Quote/NavigationPrompt';
 import Billing from './Billing';
@@ -59,6 +60,7 @@ import PolicyholderAgent from './PolicyholderAgent';
 import PolicyFooter from './PolicyFooter';
 import CancelType from './CancelType';
 import CancelReason from './CancelReason';
+import EffectiveDateModal from './EffectiveDateModal';
 
 const getCurrentStepAndPage = defaultMemoize(pathname => {
   const currentRouteName = pathname.split('/')[3];
@@ -95,7 +97,9 @@ export class PolicyWorkflow extends React.Component {
       $POLICYHOLDER_AGENT: PolicyholderAgent,
       $CANCEL_TYPE: CancelType,
       $CANCEL_REASON: CancelReason,
-      $CLAIMS_TABLE: ClaimsTable
+      $CLAIMS_TABLE: ClaimsTable,
+      $POLICY_BILLING: PolicyBilling,
+      $PAYMENT_HISTORY_TABLE: PaymentHistoryTable
     };
   }
 
@@ -147,11 +151,6 @@ export class PolicyWorkflow extends React.Component {
         cancelPolicy: currentRouteName === 'cancel'
       }
     });
-
-    // if (currentRouteName === 'application') {
-    //   this.setApplicationSent(true);
-    //   this.setShowApplicationModal(false);
-    // }
   };
 
   handleToggleDiaries = () => {
@@ -159,7 +158,7 @@ export class PolicyWorkflow extends React.Component {
   };
 
   isSubmitDisabled = (pristine, submitting) => {
-    const { location, policy } = this.props;
+    const { policy } = this.props;
     if (policy.editingDisabled) return true;
     return pristine || submitting;
   };
@@ -178,7 +177,7 @@ export class PolicyWorkflow extends React.Component {
     }));
   };
 
-  handleToggleEffectiveDateChangeModal = () => {
+  toggleEffectiveDateChangeModal = () => {
     this.setState(state => ({
       showEffectiveDateChangeModal: !state.showEffectiveDateChangeModal
     }));
@@ -198,6 +197,51 @@ export class PolicyWorkflow extends React.Component {
     this.handleToggleReinstateModal();
   };
 
+  changeEffectiveDate = async data => {
+    const {
+      zipCodeSettings,
+      policy,
+      batchCompleteTask,
+      getPolicy,
+      startWorkflow
+    } = this.props;
+
+    const effectiveDateUTC = date.formattedDate(
+      data.effectiveDate,
+      date.FORMATS.SECONDARY,
+      zipCodeSettings.timezone
+    );
+    const result = await startWorkflow('effectiveDateChangeModel', {
+      policyNumber: policy.policyNumber,
+      policyID: policy.policyID
+    });
+
+    const steps = [
+      {
+        name: 'saveEffectiveDate',
+        data: {
+          policyNumber: policy.policyNumber,
+          policyID: policy.policyID,
+          effectiveDateChangeReason: data.effectiveDateChangeReason,
+          effectiveDate: effectiveDateUTC
+        }
+      }
+    ];
+    const startResult = result.payload
+      ? result.payload[0].workflowData.effectiveDateChangeModel.data
+      : {};
+
+    await batchCompleteTask(
+      startResult.modelName,
+      startResult.modelInstanceId,
+      steps
+    );
+    //This gets scheduled so the status may not be changed yet when calling getPolicy. Reference HAR-5228
+    await new Promise(resolve => setTimeout(resolve, 3000));
+    await getPolicy(policy.policyNumber);
+    this.toggleEffectiveDateChangeModal();
+  };
+
   render() {
     const {
       diaries,
@@ -208,13 +252,14 @@ export class PolicyWorkflow extends React.Component {
       notes,
       options,
       policy,
-      userProfile,
       notesSynced,
       initialized,
-      summaryLedger,
+      policyFormData,
       questions,
       zipCodeSettings,
-      cancelOptions
+      cancelOptions,
+      effectiveDateReasons,
+      summaryLedger
     } = this.props;
 
     const {
@@ -225,7 +270,7 @@ export class PolicyWorkflow extends React.Component {
     } = this.state;
 
     const modalHandlers = {
-      showEffectiveDateChangeModal: this.handleToggleEffectiveDateChangeModal,
+      showEffectiveDateChangeModal: this.toggleEffectiveDateChangeModal,
       showReinstatePolicyModal: this.handleToggleReinstateModal
     };
 
@@ -250,17 +295,6 @@ export class PolicyWorkflow extends React.Component {
       getPolicy: this.props.getPolicy,
       transferAOR: this.props.transferAOR
     };
-
-    const currentDate = date.convertDateToTimeZone(undefined, zipCodeSettings);
-    const summaryLedgerEffectiveDate = date.convertDateToTimeZone(
-      summaryLedger.effectiveDate,
-      zipCodeSettings
-    );
-
-    const latestDate =
-      currentDate > summaryLedgerEffectiveDate
-        ? currentDate.format('YYYY-MM-DD')
-        : summaryLedgerEffectiveDate.format('YYYY-MM-DD');
 
     return (
       <div className="app-wrapper csr policy">
@@ -290,17 +324,7 @@ export class PolicyWorkflow extends React.Component {
                         customComponents={this.customComponents}
                         customHandlers={customHandlers}
                         handleSubmit={this.handleGandalfSubmit}
-                        initialValues={{
-                          ...policy,
-                          summaryLedger,
-                          cancel: {
-                            equityDate: date.formattedDate(
-                              summaryLedger.equityDate,
-                              'MM/DD/YYYY'
-                            ),
-                            effectiveDate: latestDate
-                          }
-                        }}
+                        initialValues={policyFormData}
                         options={{
                           diaries,
                           notes,
@@ -375,18 +399,24 @@ export class PolicyWorkflow extends React.Component {
               )}
 
               {showEffectiveDateChangeModal && (
-                <EditEffectiveDataModal
+                <EffectiveDateModal
+                  initialValues={{
+                    effectiveDate: date.formatDate(
+                      policy.effectiveDate,
+                      date.FORMATS.SECONDARY
+                    ),
+                    effectiveDateChangeReason: ''
+                  }}
+                  effectiveDateReasons={effectiveDateReasons}
                   changeEffectiveDateSubmit={this.changeEffectiveDate}
-                  hideEffectiveDateModal={
-                    this.handleToggleEffectiveDateChangeModal
-                  }
+                  closeModal={this.toggleEffectiveDateChangeModal}
                 />
               )}
 
-              {policy && policy.policyNumber && (
+              {policy && policy.policyNumber && policy.sourceNumber && (
                 <DiaryPolling
                   filter={{
-                    resourceId: policy.policyNumber,
+                    resourceId: [policy.policyNumber, policy.sourceNumber],
                     resourceType: POLICY_RESOURCE_TYPE
                   }}
                 />
@@ -419,11 +449,13 @@ const mapStateToProps = state => {
     initialized: !!(
       state.policyState.policy.policyID && state.policyState.summaryLedger._id
     ),
+    policyFormData: getPolicyFormData(state),
     policy: state.policyState.policy,
     summaryLedger: state.policyState.summaryLedger,
     zipCodeSettings: state.service.getZipcodeSettings || {},
     questions: state.questions,
-    cancelOptions: state.policyState.cancelOptions
+    cancelOptions: state.policyState.cancelOptions,
+    effectiveDateReasons: getPolicyEffectiveDateReasons(state)
   };
 };
 
@@ -433,18 +465,16 @@ export default connect(
     createTransaction,
     getAgents,
     getAgency,
-    getEffectiveDateChangeReasons,
-    getBillingOptionsForPolicy,
     getCancelOptions,
     getEndorsementHistory,
     getPolicy,
-    getZipCodeSettings: getZipcodeSettings,
-    setAppState,
     toggleDiary,
     initializePolicyWorkflow,
     getUIQuestions,
     setAppError,
     transferAOR,
-    updatePolicy
+    updatePolicy,
+    startWorkflow,
+    batchCompleteTask
   }
 )(PolicyWorkflow);

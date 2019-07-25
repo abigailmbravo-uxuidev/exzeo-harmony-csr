@@ -2,6 +2,7 @@ import { createSelector } from 'reselect';
 import sortBy from 'lodash/sortBy';
 import cloneDeep from 'lodash/cloneDeep';
 import orderBy from 'lodash/orderBy';
+import { date } from '@exzeo/core-ui';
 
 import { applyAdditionalInterestRanking } from '../../utilities/additionalInterests';
 
@@ -9,9 +10,12 @@ import {
   getPaymentHistory,
   getPaymentOptions,
   getPolicy,
-  getAgencyPolicies
+  getSummaryLedger,
+  getAgencyPolicies,
+  getEffectiveDateChangeReasons
 } from './entity.selectors';
 import { formattedDate } from '@exzeo/core-ui/src/Utilities';
+import { getZipcodeSettings } from '../actions/service.actions';
 
 export const getCashDescriptionOptions = createSelector(
   [getPaymentOptions],
@@ -114,5 +118,36 @@ export const getPolicyNumberList = createSelector(
     return policies.map(p => {
       return { answer: p.policyNumber, label: p.policyNumber };
     });
+  }
+);
+
+export const getPolicyEffectiveDateReasons = createSelector(
+  [getEffectiveDateChangeReasons],
+  reasons => {
+    if (!Array.isArray(reasons) || !reasons.length) return defaultArr;
+    return reasons.map(reason => ({ answer: reason, label: reason }));
+  }
+);
+
+export const getPolicyFormData = createSelector(
+  [getPolicy, getSummaryLedger, getZipcodeSettings],
+  (policy, summaryLedger, zipCodeSettings) => {
+    const currentDate = date.convertDateToTimeZone(undefined, zipCodeSettings);
+    const summaryLedgerEffectiveDate = date.convertDateToTimeZone(
+      summaryLedger.effectiveDate,
+      zipCodeSettings
+    );
+
+    return {
+      ...policy,
+      summaryLedger,
+      cancel: {
+        equityDate: date.formattedDate(summaryLedger.equityDate, 'MM/DD/YYYY'),
+        effectiveDate:
+          currentDate > summaryLedgerEffectiveDate
+            ? currentDate.format('YYYY-MM-DD')
+            : summaryLedgerEffectiveDate.format('YYYY-MM-DD')
+      }
+    };
   }
 );
