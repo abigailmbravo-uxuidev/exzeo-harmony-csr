@@ -346,6 +346,62 @@
               }
             }
           }
+
+          &.inactive {
+            border-color: $warm-gray-03;
+            background: $warm-gray-00;
+            color: $btn-link-disabled-color;
+
+            .card-icon {
+              i,
+              label {
+                color: $btn-link-disabled-color;
+              }
+            }
+            h4,
+            p {
+              color: $btn-link-disabled-color;
+            }
+            .ref-number {
+              label,
+              span {
+                color: $btn-link-disabled-color;
+              }
+            }
+            > a {
+              background: $warm-gray-00;
+
+              &.edit {
+                color: $btn-link-disabled-color;
+
+                i {
+                  color: $btn-link-disabled-color;
+                  &:after {
+                    color: $btn-link-disabled-color;
+                  }
+                }
+
+                &:hover {
+                  color: $btn-link-disabled-color;
+                  text-decoration: none;
+
+                  &:after {
+                    color: $btn-link-disabled-color;
+                    text-decoration: none;
+                  }
+
+                  i {
+                    color: $btn-link-disabled-color;
+                    text-decoration: none;
+                    &:after {
+                      color: $btn-link-disabled-color;
+                      text-decoration: none;
+                    }
+                  }
+                }
+              }
+            }
+          }
         }
       }
     }
