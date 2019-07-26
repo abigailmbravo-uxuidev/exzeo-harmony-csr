@@ -19,7 +19,6 @@ import OpenDiariesBar from '../../components/OpenDiariesBar';
 import DiaryPolling from '../../components/DiaryPolling';
 import { POLICY_RESOURCE_TYPE } from '../../constants/diaries';
 import { toggleDiary } from '../../state/actions/ui.actions';
-import { getUIQuestions } from '../../state/actions/questions.actions';
 import { getDiariesForTable } from '../../state/selectors/diary.selectors';
 import { setAppError } from '../../state/actions/error.actions';
 import { getAgents, getAgency } from '../../state/actions/service.actions';
@@ -58,6 +57,7 @@ import CancelType from './CancelType';
 import CancelReason from './CancelReason';
 import EffectiveDateModal from './EffectiveDateModal';
 import { startWorkflow, completeTask } from '../../utilities/cg';
+import { getEnumsForPolicyWorkflow } from '../../state/actions/list.actions';
 
 const getCurrentStepAndPage = defaultMemoize(pathname => {
   const currentRouteName = pathname.split('/')[3];
@@ -104,15 +104,15 @@ export class PolicyWorkflow extends React.Component {
 
   componentDidMount() {
     const {
+      getEnumsForPolicyWorkflow,
       initializePolicyWorkflow,
-      getUIQuestions,
       match: {
         params: { policyNumber }
       }
     } = this.props;
 
     initializePolicyWorkflow(policyNumber);
-    getUIQuestions('propertyAppraisalCSR');
+    getEnumsForPolicyWorkflow({ policyNumber });
     this.getTemplate();
   }
 
@@ -233,17 +233,14 @@ export class PolicyWorkflow extends React.Component {
       isLoading,
       location,
       match,
-      notes,
       options,
       policy,
       notesSynced,
       initialized,
       policyFormData,
-      questions,
       zipCodeSettings,
       cancelOptions,
-      effectiveDateReasons,
-      summaryLedger
+      effectiveDateReasons
     } = this.props;
 
     const {
@@ -311,9 +308,7 @@ export class PolicyWorkflow extends React.Component {
                         initialValues={policyFormData}
                         options={{
                           diaries,
-                          notes,
                           ...options,
-                          questions,
                           cancelOptions,
                           zipCodeSettings
                         }} // enums for select/radio fields
@@ -425,11 +420,8 @@ const mapStateToProps = state => {
     options: state.list,
     isLoading: state.ui.isLoading,
     diaries: getDiariesForTable(state),
-    notes: state.notes,
     notesSynced: state.ui.notesSynced,
     userProfile: state.authState.userProfile,
-    appState: state.appState,
-    authState: state.authState,
     initialized: !!(
       state.policyState.policy.policyID && state.policyState.summaryLedger._id
     ),
@@ -437,7 +429,6 @@ const mapStateToProps = state => {
     policy: state.policyState.policy,
     summaryLedger: state.policyState.summaryLedger,
     zipCodeSettings: state.service.getZipcodeSettings || {},
-    questions: state.questions,
     cancelOptions: state.policyState.cancelOptions,
     effectiveDateReasons: getPolicyEffectiveDateReasons(state)
   };
@@ -454,9 +445,9 @@ export default connect(
     getPolicy,
     toggleDiary,
     initializePolicyWorkflow,
-    getUIQuestions,
     setAppError,
     transferAOR,
-    updatePolicy
+    updatePolicy,
+    getEnumsForPolicyWorkflow
   }
 )(PolicyWorkflow);
