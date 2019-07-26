@@ -81,3 +81,44 @@ export async function fetchMortgagees() {
   const response = await serviceRunner.callQuestions(data);
   return response;
 }
+
+/**
+ *
+ * @returns {Promise<void>}
+ */
+export async function fetchPropertyAppriasals() {
+  const data = {
+    step: 'propertyAppraisalCSR'
+  };
+
+  const response = await serviceRunner.callQuestions(data);
+  return response;
+}
+
+/**
+ *
+ * @param policyNumber
+ * @returns {Function}
+ */
+export function getEnumsForPolicyWorkflow({ policyNumber }) {
+  return async dispatch => {
+    try {
+      dispatch(fetchDiaries({ resourceId: policyNumber }));
+      const additionalInterestQuestions = await fetchMortgagees();
+      const propertyAppraisals = await fetchPropertyAppriasals();
+
+      const additionalInterestResponse = await additionalInterestQuestions;
+      const propertyAppraisalsResponse = await propertyAppraisals;
+
+      dispatch(
+        setEnums({
+          additionalInterestQuestions: additionalInterestResponse.data.data,
+          propertyAppraisalQuestions:
+            propertyAppraisalsResponse.data.data[0].answers
+        })
+      );
+    } catch (error) {
+      dispatch(setAppError(error));
+    }
+  };
+}

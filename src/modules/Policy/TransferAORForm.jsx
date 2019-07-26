@@ -5,6 +5,7 @@ import { AgencyAgentSelect } from '@exzeo/core-ui/src/@Harmony';
 const TransferAORForm = ({ children, handleSubmit, initialValues }) => {
   return (
     <Form
+      keepDirtyOnReinitialize
       initialValues={initialValues}
       onSubmit={handleSubmit}
       subscription={{ submitting: true, pristine: true, values: true }}

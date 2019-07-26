@@ -53,7 +53,7 @@ const PolicyholderAgent = ({ customHandlers, initialValues }) => {
         </ModalPortal>
       )}
       <section className="policyholder-cards">
-        <h3>Policyholder</h3>
+        <h3 className="title">Policyholder</h3>
         {policyHolders &&
           policyHolders.map((policyHolder, index) => (
             <PolicyholderCard
@@ -66,7 +66,7 @@ const PolicyholderAgent = ({ customHandlers, initialValues }) => {
           ))}
       </section>
       <section className="agency-cards">
-        <h3>
+        <h3 className="title">
           Agency / Agent{' '}
           <button
             className="btn btn-link btn-sm"

@@ -138,16 +138,16 @@ export const getPolicyFormData = createSelector(
       zipCodeSettings
     );
 
-    return {
-      ...policy,
-      summaryLedger,
-      cancel: {
-        equityDate: date.formattedDate(summaryLedger.equityDate, 'MM/DD/YYYY'),
-        effectiveDate:
-          currentDate > summaryLedgerEffectiveDate
-            ? currentDate.format('YYYY-MM-DD')
-            : summaryLedgerEffectiveDate.format('YYYY-MM-DD')
-      }
+    const cancel = {
+      equityDate: date.formattedDate(summaryLedger.equityDate, 'MM/DD/YYYY'),
+      effectiveDate:
+        currentDate > summaryLedgerEffectiveDate
+          ? currentDate.format('YYYY-MM-DD')
+          : summaryLedgerEffectiveDate.format('YYYY-MM-DD')
     };
+
+    policy.summaryLedger = summaryLedger;
+    policy.cancel = cancel;
+    return policy;
   }
 );

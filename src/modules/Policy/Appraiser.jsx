@@ -4,10 +4,8 @@ import _find from 'lodash/find';
 import _get from 'lodash/get';
 
 const Appraiser = ({ initialValues, options }) => {
-  const getPropertyAppraisalLink = defaultMemoize((county, questions) => {
-    const question = questions.propertyAppraisal || {};
-    const answers = question.answers || [];
-    return _find(answers, { label: county }) || {};
+  const getPropertyAppraisalLink = defaultMemoize((county, appraisers) => {
+    return _find(appraisers || [], { label: county }) || {};
   });
 
   return (
@@ -21,14 +19,14 @@ const Appraiser = ({ initialValues, options }) => {
             href={
               getPropertyAppraisalLink(
                 initialValues.property.physicalAddress.county,
-                options.questions
+                options.appraisers
               ).answer
             }
           >
             {
               getPropertyAppraisalLink(
                 initialValues.property.physicalAddress.county,
-                options.questions
+                options.appraisers
               ).label
             }
           </a>

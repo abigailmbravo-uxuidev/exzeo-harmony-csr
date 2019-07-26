@@ -489,7 +489,7 @@ const mock = {
                                   label: 'Current Premium',
                                   items: [
                                     {
-                                      format: 'currencyDecimals',
+                                      format: 'currency',
                                       path: 'summaryLedger.currentPremium'
                                     }
                                   ]
@@ -498,7 +498,7 @@ const mock = {
                                   label: 'Initial Premium',
                                   items: [
                                     {
-                                      format: 'currencyDecimals',
+                                      format: 'currency',
                                       path: 'summaryLedger.initialPremium'
                                     }
                                   ]
@@ -507,7 +507,7 @@ const mock = {
                                   label: 'Balance Due',
                                   items: [
                                     {
-                                      format: 'currencyDecimals',
+                                      format: 'currency',
                                       path:
                                         'summaryLedger.balance.$numberDecimal'
                                     }
@@ -874,7 +874,9 @@ const mock = {
           id: 230340305495959,
           type: '$SECTION',
           dependencies: [],
-          data: {},
+          data: {
+            className: 'policyholder-agent'
+          },
           formData: {},
           children: [
             {
@@ -934,7 +936,9 @@ const mock = {
           id: 1,
           type: '$SECTION',
           dependencies: [],
-          data: {},
+          data: {
+            className: 'mortgage-billing'
+          },
           formData: {},
           children: [
             {
@@ -942,7 +946,9 @@ const mock = {
               type: '$BILLING',
               dependencies: [],
               data: {
-                className: 'billing'
+                className: 'billing',
+                billingHeader: 'Billing',
+                paymentHistoryHeader: 'Payments'
               },
               formData: {}
             },
@@ -960,6 +966,7 @@ const mock = {
               data: {
                 component: '$ADDITIONAL_INTERESTS',
                 extendedProperties: {
+                  isPolicy: true,
                   types: [
                     'mortgagee',
                     'additionalInsured',
