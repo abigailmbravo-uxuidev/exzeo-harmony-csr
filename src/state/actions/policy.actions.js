@@ -10,7 +10,6 @@ import * as cgActions from './cg.actions';
 import endorsementUtils from '../../utilities/endorsementModel';
 import { getZipcodeSettings } from './service.actions';
 import { toggleLoading } from './ui.actions';
-import { startWorkflow, batchCompleteTask } from './cg.actions';
 import cg from '../../utilities/cg';
 /**
  * Reset policyState
