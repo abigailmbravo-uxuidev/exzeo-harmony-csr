@@ -654,6 +654,15 @@ section {
 /*------------------------------------------------------------------------------------*/
 #PolicyWorkflowCSR {
   > section {
+    margin-bottom: 1rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px dashed $bright-blue-darken-03;
+
+    &:last-of-type {
+      padding-bottom: 0;
+      border-bottom-width: 0;
+    }
+
     &.payments {
       display: flex;
       flex-wrap: wrap;

@@ -992,7 +992,9 @@ const mock = {
           id: 100100,
           type: '$SECTION',
           dependencies: [],
-          data: {},
+          data: {
+            className: 'cancel'
+          },
           formData: {},
           children: [
             {
@@ -1077,7 +1079,7 @@ const mock = {
               type: '$SECTION',
               dependencies: [],
               data: {
-                className: 'payments-cancel-policy',
+                className: 'billing',
                 size: '10',
                 extendedProperties: {}
               },
