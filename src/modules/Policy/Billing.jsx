@@ -13,15 +13,25 @@ const Billing = ({
   formInstance,
   customHandlers: { updateBillPlan }
 }) => {
+  const [paymentAdded, setPaymentAdded] = useState();
+
   return (
     <React.Fragment>
-      <Payment initialValues={initialValues} formInstance={formInstance} />
+      <Payment
+        initialValues={initialValues}
+        formInstance={formInstance}
+        setPaymentAdded={setPaymentAdded}
+      />
       <PolicyBilling
         initialValues={initialValues}
         updateBillPlan={updateBillPlan}
         config={config}
       />
-      <PaymentHistoryTable initialValues={initialValues} config={config} />
+      <PaymentHistoryTable
+        initialValues={initialValues}
+        paymentAdded={paymentAdded}
+        config={config}
+      />
     </React.Fragment>
   );
 };
