@@ -650,7 +650,13 @@ const mock = {
                         },
                         {
                           label: 'Territory',
-                          items: [{ format: '', path: 'property.territory' }]
+                          items: [
+                            {
+                              format: '',
+                              path:
+                                'rating.worksheet.elements.territoryFactors.name'
+                            }
+                          ]
                         }
                       ]
                     }
