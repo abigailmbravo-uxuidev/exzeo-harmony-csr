@@ -7,11 +7,20 @@ import {
   PaymentHistoryTable
 } from '@exzeo/core-ui/src/@Harmony';
 
-const Billing = ({ initialValues, config, formInstance }) => {
+const Billing = ({
+  initialValues,
+  config,
+  formInstance,
+  customHandlers: { updateBillPlan }
+}) => {
   return (
     <React.Fragment>
       <Payment initialValues={initialValues} formInstance={formInstance} />
-      <PolicyBilling initialValues={initialValues} config={config} />
+      <PolicyBilling
+        initialValues={initialValues}
+        updateBillPlan={updateBillPlan}
+        config={config}
+      />
       <PaymentHistoryTable initialValues={initialValues} config={config} />
     </React.Fragment>
   );

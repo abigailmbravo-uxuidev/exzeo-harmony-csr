@@ -36,7 +36,8 @@ import {
   getEndorsementHistory,
   initializePolicyWorkflow,
   transferAOR,
-  updatePolicy
+  updatePolicy,
+  updateBillPlan
 } from '../../state/actions/policy.actions';
 
 import MOCK_CONFIG_DATA from '../../mock-data/mockPolicyHO3';
@@ -274,7 +275,8 @@ export class PolicyWorkflow extends React.Component {
       showApplicationModal: this.state.showApplicationModal,
       toggleDiary: this.props.toggleDiary,
       getPolicy: this.props.getPolicy,
-      transferAOR: this.props.transferAOR
+      transferAOR: this.props.transferAOR,
+      updateBillPlan: this.props.updateBillPlan
     };
 
     return (
@@ -448,6 +450,7 @@ export default connect(
     setAppError,
     transferAOR,
     updatePolicy,
+    updateBillPlan,
     getEnumsForPolicyWorkflow
   }
 )(PolicyWorkflow);
