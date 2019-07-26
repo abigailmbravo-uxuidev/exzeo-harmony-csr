@@ -667,12 +667,18 @@ section {
       display: flex;
       flex-wrap: wrap;
 
-      .payments-cancel-policy {
-        > div {
+      .billing {
+        > section {
           display: flex;
           > dl {
             flex-grow: 1;
             flex-shrink: 1;
+            width: auto;
+
+            dt {
+              margin-bottom: $padding;
+              color: $warm-gray-08;
+            }
           }
         }
       }
