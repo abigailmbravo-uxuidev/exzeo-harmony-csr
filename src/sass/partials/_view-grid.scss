@@ -243,6 +243,7 @@
           width: 100%;
 
           > div {
+            align-self: center;
             flex-grow: 1;
             flex-shrink: 1;
             padding: $padding $padding $padding 0;
@@ -271,7 +272,8 @@
 
           > a {
             &.edit,
-            &.remove {
+            &.remove,
+            &.reactivate {
               flex-grow: 0;
               flex-shrink: 0;
               width: auto;
@@ -330,6 +332,17 @@
 
               &:after {
                 content: 'DELETE';
+              }
+            }
+            &.reactivate {
+              i {
+                &:after {
+                  content: '\f0fe';
+                }
+              }
+
+              &:after {
+                content: 'REACTIVATE';
               }
             }
           }
