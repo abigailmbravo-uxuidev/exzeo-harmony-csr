@@ -784,7 +784,6 @@ export function initializePolicyWorkflow(policyNumber) {
     try {
       const { summaryLedger, policy } = await dispatch(getPolicy(policyNumber));
       dispatch(getEffectiveDateChangeReasons());
-      dispatch(getPaymentHistory(policyNumber));
       dispatch(getPaymentOptionsApplyPayments());
       dispatch(getCancelOptions());
       dispatch(getEndorsementHistory(policyNumber));
