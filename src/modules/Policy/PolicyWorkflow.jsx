@@ -23,10 +23,6 @@ import { getUIQuestions } from '../../state/actions/questions.actions';
 import { getDiariesForTable } from '../../state/selectors/diary.selectors';
 import { setAppError } from '../../state/actions/error.actions';
 import { getAgents, getAgency } from '../../state/actions/service.actions';
-import {
-  startWorkflow,
-  batchCompleteTask
-} from '../../state/actions/cg.actions';
 import ReinstatePolicyModal from '../../components/Policy/ReinstatePolicyPopup';
 import Endorsements from '../../components/Policy/Endorsements';
 import {
@@ -61,6 +57,7 @@ import PolicyFooter from './PolicyFooter';
 import CancelType from './CancelType';
 import CancelReason from './CancelReason';
 import EffectiveDateModal from './EffectiveDateModal';
+import { startWorkflow, completeTask } from '../../utilities/cg';
 
 const getCurrentStepAndPage = defaultMemoize(pathname => {
   const currentRouteName = pathname.split('/')[3];
@@ -198,44 +195,31 @@ export class PolicyWorkflow extends React.Component {
   };
 
   changeEffectiveDate = async data => {
-    const {
-      zipCodeSettings,
-      policy,
-      batchCompleteTask,
-      getPolicy,
-      startWorkflow
-    } = this.props;
+    const { zipCodeSettings, policy, getPolicy } = this.props;
 
     const effectiveDateUTC = date.formattedDate(
       data.effectiveDate,
       date.FORMATS.SECONDARY,
       zipCodeSettings.timezone
     );
-    const result = await startWorkflow('effectiveDateChangeModel', {
-      policyNumber: policy.policyNumber,
-      policyID: policy.policyID
+    const startResult = await startWorkflow({
+      modelName: 'effectiveDateChangeModel',
+      data: {
+        policyNumber: policy.policyNumber,
+        policyID: policy.policyID
+      }
     });
 
-    const steps = [
-      {
-        name: 'saveEffectiveDate',
-        data: {
-          policyNumber: policy.policyNumber,
-          policyID: policy.policyID,
-          effectiveDateChangeReason: data.effectiveDateChangeReason,
-          effectiveDate: effectiveDateUTC
-        }
+    await completeTask({
+      stepName: 'saveEffectiveDate',
+      workflowId: startResult.modelInstanceId,
+      data: {
+        policyNumber: policy.policyNumber,
+        policyID: policy.policyID,
+        effectiveDateChangeReason: data.effectiveDateChangeReason,
+        effectiveDate: effectiveDateUTC
       }
-    ];
-    const startResult = result.payload
-      ? result.payload[0].workflowData.effectiveDateChangeModel.data
-      : {};
-
-    await batchCompleteTask(
-      startResult.modelName,
-      startResult.modelInstanceId,
-      steps
-    );
+    });
     //This gets scheduled so the status may not be changed yet when calling getPolicy. Reference HAR-5228
     await new Promise(resolve => setTimeout(resolve, 3000));
     await getPolicy(policy.policyNumber);
@@ -473,8 +457,6 @@ export default connect(
     getUIQuestions,
     setAppError,
     transferAOR,
-    updatePolicy,
-    startWorkflow,
-    batchCompleteTask
+    updatePolicy
   }
 )(PolicyWorkflow);
