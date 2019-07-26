@@ -22,36 +22,36 @@ const fields = [
     dataTest: 'agentCode',
     type: 'text',
     label: 'Agent ID',
-    placeholder: 'Agent ID Search',
-    data: '1234'
+    placeholderText: 'Agent ID Search',
+    value: '1234'
   },
   {
     dataTest: 'firstName',
     type: 'text',
     label: 'First Name',
-    placeholder: 'First Name Search',
-    data: 'Holly'
+    placeholderText: 'First Name Search',
+    value: 'Holly'
   },
   {
     dataTest: 'lastName',
     type: 'text',
     label: 'Last Name',
-    placeholder: 'Last Name Search',
-    data: 'Hunter'
+    placeholderText: 'Last Name Search',
+    value: 'Hunter'
   },
   {
     dataTest: 'address',
     type: 'text',
     label: 'Agent Address',
-    placeholder: 'Agent Address Search',
-    data: '1234 Mulholland Drive'
+    placeholderText: 'Agent Address Search',
+    value: '1234 Mulholland Drive'
   },
   {
     dataTest: 'licenseNumber',
     type: 'text',
     label: 'Lic Number',
-    placeholder: 'Lic No Search',
-    data: '123456'
+    placeholderText: 'Lic No Search',
+    value: '123456'
   }
 ];
 
@@ -78,8 +78,8 @@ describe('Agent Search Testing', () => {
     );
 
     fields.forEach(field => checkLabel(getByTestId, field));
-    textFields.forEach(({ placeholder }) =>
-      expect(getByPlaceholderText(placeholder))
+    textFields.forEach(({ placeholderText }) =>
+      expect(getByPlaceholderText(placeholderText))
     );
     selectFields.forEach(({ dataTest, selected }) =>
       expect(getByTestId(dataTest).getAttribute('data-selected')).toEqual(
@@ -98,6 +98,10 @@ describe('Agent Search Testing', () => {
 
   it('POS:Agent Search Button', () => {
     const { getByTestId } = renderWithForm(<SearchForm {...props} />);
-    checkButton(getByTestId, { dataTest: 'submit', type: 'submit' });
+    checkButton(getByTestId, {
+      dataTest: 'submit',
+      text: 'Search',
+      type: 'submit'
+    });
   });
 });

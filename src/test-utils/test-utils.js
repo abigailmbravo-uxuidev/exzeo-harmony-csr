@@ -48,19 +48,30 @@ export const defaultQuoteWorkflowProps = {
   history: { replace: x => x },
   location: { pathname: '' },
   isLoading: false,
-  quoteData: quote,
+  quote: quote,
   reviewQuote: jestResolve(),
-  setAppState: () => {},
   setAppError: () => {},
-  getZipcodeSettings: jestResolve(),
+  getZipCodeSettings: jestResolve(),
   getEnumsForQuoteWorkflow: () => {},
   updateQuote: jestResolve(),
   fetchNotes: jestResolve(),
   toggleDiary: () => {},
   fetchDiaries: jestResolve(),
-  diaries: []
+  diaries: [],
+  notes: [],
+  options: {
+    agents: [],
+    mortgagee: [],
+    order: [],
+    uiQuestions: {}
+  }
 };
 
+/**
+ * @param {Object} ui - React component to be Rendered
+ * @param {Object} [{ state = defaultInitialState, store = mockStore(state) }={}] - The state and store, both optional, to be used.
+ * If state is provided but store is not, store will be mocked from the given state.
+ */
 export const renderWithReduxAndRouter = (
   ui,
   { state = defaultInitialState, store = mockStore(state) } = {}
@@ -92,140 +103,213 @@ export const renderWithForm = (
   } = {}
 ) => renderWithReduxAndRouter(ui, { state, store });
 
-const parseQueryType = (query, field, queryOptions) => {
+/**
+ * A function to handle your query and your field and find the correct DOM element.
+ * This way the check functions below can handle any query type from react-testing-library.
+ * @param {Object} query - The function from react-testing-library to be used.
+ * @param {Object} field - The field object to find and test.
+ * @returns {Object} Node - The DOM node found via the query.
+ */
+const parseQueryType = (query, field) => {
   // We determine which field value to use based on query name
   const queryName = query.name.replace(/bound /g, '');
-  switch (queryName) {
-    case 'getByTestId':
-      return query(field.dataTest, queryOptions);
-    case 'getByText':
-      return query(field.text, queryOptions);
-    case 'getByLabelText':
-      return query(field.label, queryOptions);
-    case 'getByPlaceholderText':
-      return query(field.placeholder, queryOptions);
-    default:
-      return query(field.dataTest, queryOptions);
-  }
+
+  if (queryName.includes('ByTestId')) return query(field.dataTest);
+  if (queryName.includes('ByText')) return query(field.text);
+  if (queryName.includes('ByLabelText')) return query(field.label);
+  if (queryName.includes('ByPlaceholderText'))
+    return query(field.placeholderText);
+  else return query(field.dataTest);
 };
 
-export const checkLabel = (
-  query,
-  { dataTest = '', text = '', label },
-  queryOptions
-) =>
-  expect(
-    parseQueryType(
-      query,
-      { dataTest: `${dataTest}_label`, text, label },
-      queryOptions
-    )
-  ).toHaveTextContent(label);
-
-export const checkError = (
-  query,
-  { dataTest = '', text = '', label = '', error = 'Field Required' } = {},
-  queryOptions
-) =>
-  expect(
-    parseQueryType(
-      query,
-      { dataTest: `${dataTest}_error`, text, label, error },
-      queryOptions
-    )
-  ).toHaveTextContent(error);
-
-export const checkTextInput = (query, field, queryOptions) => {
-  const input = parseQueryType(query, field, queryOptions);
-  fireEvent.change(input, { target: { value: field.data } });
-  expect(input.value).toBe(field.data);
-};
-
-export const checkSelect = (query, field, queryOptions) => {
-  const select = parseQueryType(query, field, queryOptions);
-  field.values &&
-    field.values.forEach(value => {
-      fireEvent.change(select, { target: { value } });
-      expect(select.getAttribute('data-selected')).toEqual(value);
-    });
-};
-
+/**
+ * @param {Object} query - The function from react-testing-library to be used.
+ * @param {regex} [button=/submit/] - The regex used to find the button.
+ */
 export const submitForm = (query, button = /submit/) =>
   fireEvent.click(query(button));
 
+/**
+ * @param {Object} query - The function from react-testing-library to be used.
+ * @param {Object} field - The field object to find and test.
+ */
 export const clearText = (query, field) =>
   fireEvent.change(parseQueryType(query, field), { target: { value: '' } });
 
+/**
+ * @param {Object} query - The function from react-testing-library to be used.
+ * @param {Object} field [{ dataTest, error = 'Field Required', ...rest }] - The field object to find and test.
+ */
+export const checkError = (
+  query,
+  { dataTest, error = 'Field Required', ...rest } = {}
+) =>
+  expect(
+    parseQueryType(query, { ...rest, dataTest: `${dataTest}_error`, error })
+  ).toHaveTextContent(error);
+
+/**
+ * @param {Object} query - The function from react-testing-library to be used.
+ * @param {Object} field { dataTest, label, ...rest } - The field object to find and test.
+ */
+export const checkLabel = (query, { dataTest, label, ...rest }) =>
+  expect(
+    parseQueryType(query, { ...rest, dataTest: `${dataTest}_label`, label })
+  ).toHaveTextContent(label);
+
+/**
+ * @param {Object} query - The function from react-testing-library to be used.
+ * @param {Object} field { defaultValue, value, ...rest } - The field object to find and test.
+ */
+export const checkTextInput = (query, { defaultValue, value, ...rest }) => {
+  const input = parseQueryType(query, { ...rest });
+  defaultValue && expect(input.value).toBe(defaultValue);
+  fireEvent.change(input, { target: { value } });
+  expect(input.value).toBe(value);
+};
+
+/**
+ * @param {Object} query - The function from react-testing-library to be used.
+ * @param {Object} field { defaultValue, values = [], ...rest } - The field object to find and test.
+ */
+export const checkSelect = (query, { defaultValue, values = [], ...rest }) => {
+  const select = parseQueryType(query, { ...rest });
+  if (defaultValue) {
+    expect(select.getAttribute('data-selected')).toEqual(defaultValue.value);
+    expect(
+      select.querySelector(`option[value="${defaultValue.value}"]`).textContent
+    ).toEqual(defaultValue.label);
+  }
+  values.forEach(({ value, label = value }) => {
+    fireEvent.change(select, { target: { value } });
+    expect(select.getAttribute('data-selected')).toEqual(value);
+    expect(
+      select.querySelector(`option[value="${value}"]`).textContent
+    ).toEqual(label);
+  });
+};
+
+/**
+ * @param {Object} query - The function from react-testing-library to be used.
+ * @param {Object} field { dataTest = '', text = '', label = '', values } - The field object to find and test.
+ */
 export const checkRadio = (
   query,
-  { dataTest = '', label = '', values },
-  // Account for the same answer text appearing in multiple questions and select only current question
-  queryOptions = { selector: `[for="${dataTest}"] span` }
-) => {
-  values.forEach(value => {
-    // Get the option to select and click it
-    const selectedOption = parseQueryType(
-      query,
-      { dataTest: `${dataTest}_${value}`, text: value, label },
-      queryOptions
-    );
+  {
+    dataTest,
+    values,
+    defaultValue,
+    format = x => x,
+    outputValues = [],
+    ...rest
+  }
+) =>
+  values.forEach((value, i) => {
+    // Get the option to select
+    const selectedOption = parseQueryType(query, {
+      ...rest,
+      dataTest: `${dataTest}_${value}`
+    });
+    const unselectedClass = 'label-segmented';
+    const selectedClass = 'label-segmented selected';
+    // Expect the value of the text is equal to the formatted value
+    expect(selectedOption.textContent).toEqual(format(value));
+    // If this is the default value it should be checked already, otherwise it should not be
+    value === defaultValue
+      ? expect(selectedOption.parentNode.className).toEqual(selectedClass)
+      : expect(selectedOption.parentNode.className).toEqual(unselectedClass);
+
+    // Click the option
     fireEvent.click(selectedOption);
+    // If there is an output field, check it now
+    outputValues[i] &&
+      expect(
+        parseQueryType(query, {
+          dataTest: `${dataTest}_wrapper`
+        }).querySelector('output').textContent
+      ).toEqual(outputValues[i]);
     // Expect the parent wrapper to be selected
-    expect(selectedOption.parentNode.className).toEqual(
-      'label-segmented selected'
-    );
+    expect(selectedOption.parentNode.className).toEqual(selectedClass);
     // Expect all other values' parents to be unchecked
     values
       .filter(uncheckedValue => value !== uncheckedValue)
       .forEach(uncheckedValue =>
         expect(
-          parseQueryType(
-            query,
-            {
-              dataTest: `${dataTest}_${uncheckedValue}`,
-              text: uncheckedValue,
-              label
-            },
-            queryOptions
-          ).parentNode.className
-        ).toEqual('label-segmented')
+          parseQueryType(query, {
+            ...rest,
+            dataTest: `${dataTest}_${uncheckedValue}`
+          }).parentNode.className
+        ).toEqual(unselectedClass)
       );
   });
+
+/**
+ * @param {Object} query - The function from react-testing-library to be used.
+ * @param {Object} field { dataTest, icon = false, text, ...rest } - The field object to find and test.
+ */
+export const checkHeader = (
+  query,
+  { dataTest, icon = false, text, ...rest }
+) => {
+  const header = parseQueryType(query, { ...rest, dataTest, text });
+  expect(header).toHaveTextContent(text);
+  if (icon) {
+    // find the first icon element and check that it's classname is the icon value in the field
+    const iconElement = Object.values(header.childNodes).find(
+      node => node.tagName === 'I'
+    );
+    expect(iconElement.className).toEqual(icon);
+  }
 };
 
-export const checkButton = (query, field, queryOptions) => {
-  const button = parseQueryType(query, field, queryOptions);
-  expect(button.getAttribute('type')).toEqual(field.type || 'button');
+/**
+ * @param {Object} query - The function from react-testing-library to be used.
+ * @param {Object} button { dataTest, text, type, ...rest } = {} - The button object to find and test.
+ */
+export const checkButton = (
+  query,
+  {
+    dataTest = 'submit',
+    text = 'Update',
+    type = 'button',
+    icon = 'fa fa-search',
+    ...rest
+  } = {}
+) => {
+  const button = parseQueryType(query, { ...rest, dataTest, text });
+  expect(button.getAttribute('type')).toEqual(type);
+  expect(button.textContent).toEqual(text);
   // Find the first icon element and, if it exists, check that it's classname is the icon value in the field, or the search default.
   const iconElement = Object.values(button.childNodes).find(
     node => node.tagName === 'I'
   );
-  iconElement &&
-    expect(iconElement.className).toEqual(field.icon || 'fa fa-search');
+  iconElement && expect(iconElement.className).toEqual(icon);
 };
 
-export const checkHeader = (query, field, queryOptions) => {
-  const header = parseQueryType(query, field, queryOptions);
-  expect(header).toHaveTextContent(field.text);
-  if (field.icon) {
-    // Find the first icon element and check that it's classname is the icon value in the field
-    const iconElement = Object.values(header.childNodes).find(
-      node => node.tagName === 'I'
-    );
-    expect(iconElement.className).toEqual(field.icon);
-  }
+/**
+ * @param {Object} query - The function from react-testing-library to be used.
+ * @param {Object} field - The field object to find and test.
+ */
+export const checkStaticField = (query, field) =>
+  expect(parseQueryType(query, field)).toBeDisabled();
+
+/**
+ * @param {Object} query - The function from react-testing-library to be used.
+ * @param {Object} field { output, ...rest } - The field object to find and test.
+ */
+export const checkOutput = (query, { output, ...rest }) => {
+  const input = parseQueryType(query, { ...rest });
+  expect(input.nextSibling).toHaveTextContent(output.label);
+  expect(input.nextSibling.nextSibling).toHaveTextContent(output.value);
 };
 
-export const checkStaticField = (query, field, queryOptions) =>
-  expect(parseQueryType(query, field, queryOptions)).toBeDisabled();
-
-export const checkOutput = (query, field) => {
-  const input = parseQueryType(query, field);
-  expect(input.nextSibling).toHaveTextContent(field.output.label);
-  expect(input.nextSibling.nextSibling).toHaveTextContent(field.output.value);
-};
-
-// This function is used to verify specific submit errors for one field as well
+/**
+ * This function is used to verify specific submit errors for one field as well
+ * @param {Object} query - The function from react-testing-library to be used.
+ * @param {Array} [baseFields=[]] - Array of field objects to fill out.
+ * @param {Array} [fieldsLeftBlank=[]] - Array of field objects to leave blank.
+ * @param {regex|string} button - The regex/string used to find the button.
+ */
 export const verifyForm = (
   query,
   baseFields = [],
@@ -237,9 +321,9 @@ export const verifyForm = (
   // Fills all fields out not in fieldsLeftBlank array based on 'data' key
   baseFields
     .filter(field => fieldsLeftBlank.indexOf(field) === -1)
-    .forEach(field =>
-      fireEvent.change(parseQueryType(query, field), {
-        target: { value: field.data }
+    .forEach(({ value, ...rest }) =>
+      fireEvent.change(parseQueryType(query, { ...rest }), {
+        target: { value }
       })
     );
   // Submit form

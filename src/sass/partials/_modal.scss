@@ -36,11 +36,105 @@
     flex-direction: column;
     justify-content: center;
 
+    > form {
+      display: flex;
+      overflow: hidden;
+      align-items: center;
+      flex-direction: column;
+      flex-grow: 1;
+      flex-shrink: 1;
+      justify-content: center;
+      max-height: calc(100vh - 16rem);
+
+      .card-block {
+        overflow-x: hidden;
+        overflow-y: auto;
+        flex-grow: 1;
+        flex-shrink: 1;
+        width: 100%;
+        height: auto;
+
+        .form-group {
+          flex-grow: 1;
+          flex-shrink: 1;
+          width: auto;
+          height: auto;
+
+          label {
+            width: 100%;
+          }
+          input {
+            width: 100%;
+          }
+
+          &.switch {
+            label {
+              width: auto;
+            }
+          }
+        }
+
+        .flex-form {
+          display: flex;
+          flex-grow: 1;
+          flex-shrink: 1;
+          width: auto;
+
+          .form-group {
+            flex-grow: 1;
+            flex-shrink: 1;
+
+            &.state {
+              flex-grow: 0;
+              flex-shrink: 0;
+              width: 8rem;
+            }
+            &.zip {
+              flex-grow: 0;
+              flex-shrink: 0;
+              width: 16rem;
+            }
+            &.phone {
+              flex-grow: 0;
+              flex-shrink: 0;
+              width: 20rem;
+            }
+
+            &.order {
+              flex-grow: 0;
+              flex-shrink: 0;
+              width: 20rem;
+            }
+          }
+        }
+      }
+
+      .card-footer {
+        flex-grow: 0;
+        flex-shrink: 0;
+        height: auto;
+
+        .btn-group {
+          flex-grow: 0;
+          flex-shrink: 0;
+          margin-bottom: 0;
+          height: auto;
+
+          .btn {
+            flex-grow: 0;
+            flex-shrink: 0;
+            height: auto;
+          }
+        }
+      }
+    }
+
     .card {
       display: flex;
       flex-grow: 0;
       flex-shrink: 0;
       margin: 0;
+      max-height: calc(100vh - 16rem);
       width: 100%;
       height: auto;
 
@@ -201,6 +295,8 @@
   }
   &.additional-interest {
     form {
+      align-items: center;
+      justify-content: center;
       height: 90%;
       .card {
         max-height: 45rem;

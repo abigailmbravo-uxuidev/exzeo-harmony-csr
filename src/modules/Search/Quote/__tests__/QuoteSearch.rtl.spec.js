@@ -22,36 +22,36 @@ const fields = [
     dataTest: 'firstName',
     type: 'text',
     label: 'First Name',
-    placeholder: 'First Name Search',
-    data: 'Kim'
+    placeholderText: 'First Name Search',
+    value: 'Kim'
   },
   {
     dataTest: 'lastName',
     type: 'text',
     label: 'Last Name',
-    placeholder: 'Last Name Search',
-    data: 'Gordon'
+    placeholderText: 'Last Name Search',
+    value: 'Gordon'
   },
   {
     dataTest: 'address',
     type: 'text',
     label: 'Property Street Address',
-    placeholder: 'Property Street Address Search',
-    data: '9876 test address'
+    placeholderText: 'Property Street Address Search',
+    value: '9876 test address'
   },
   {
     dataTest: 'quoteNumber',
     type: 'text',
     label: 'Quote Number',
-    placeholder: 'Quote No Search',
-    data: '123'
+    placeholderText: 'Quote No Search',
+    value: '123'
   },
   {
     dataTest: 'quoteState',
     type: 'select',
     label: 'Quote Status',
     selected: '',
-    placeholder: 'Please Select...',
+    placeholderText: 'Please Select...',
     options: [
       'Please Select...',
       'Quote Started',
@@ -121,8 +121,8 @@ describe('Quote Search Testing', () => {
     );
 
     fields.forEach(field => checkLabel(getByTestId, field));
-    textFields.forEach(({ placeholder }) =>
-      expect(getByPlaceholderText(placeholder))
+    textFields.forEach(({ placeholderText }) =>
+      expect(getByPlaceholderText(placeholderText))
     );
     selectFields.forEach(({ dataTest, selected }) =>
       expect(getByTestId(dataTest).getAttribute('data-selected')).toEqual(
@@ -141,6 +141,10 @@ describe('Quote Search Testing', () => {
 
   it('POS:Quote Search Button', () => {
     const { getByTestId } = renderWithForm(<SearchForm {...props} />);
-    checkButton(getByTestId, { dataTest: 'submit', type: 'submit' });
+    checkButton(getByTestId, {
+      dataTest: 'submit',
+      text: 'Search',
+      type: 'submit'
+    });
   });
 });

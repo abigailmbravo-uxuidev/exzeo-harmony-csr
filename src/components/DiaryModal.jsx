@@ -69,13 +69,13 @@ export class DiaryModal extends Component {
 
     if (!defaultData) return value;
 
-    if (!defaultData.assignee) {
+    if (defaultData.assignee === 'CURRENT_USER') {
       change('assignee.id', userId);
     } else {
       const selectedAssignee = assigneeAnswers.find(
         u => String(u.label) === String(defaultData.assignee)
       );
-      change('assignee.id', selectedAssignee.answer);
+      change('assignee.id', selectedAssignee ? selectedAssignee.answer : '');
     }
     change('reason', defaultData.reason);
 
@@ -90,7 +90,6 @@ export class DiaryModal extends Component {
 
   render() {
     const {
-      diaryId,
       assigneeAnswers,
       handleSubmit,
       submitting,

@@ -78,31 +78,37 @@ export class TransferModal extends Component {
   }
 
   submitTransfer = async (data, dispatch, props) => {
-    const { agentCodeTo, agencyCodeTo } = data;
-    const { selectedPolicies, activeAgencyCode } = props;
+    try {
+      const { agentCodeTo, agencyCodeTo } = data;
+      const { selectedPolicies, activeAgencyCode } = props;
 
-    const groupedPolices = this.groupPolicyByAgentCode(selectedPolicies);
-    const transfers = [];
-    Object.keys(groupedPolices).forEach(p => {
-      const policies = groupedPolices[p] || [];
-      const {
-        agencyCode: agencyCodeFrom,
-        agentCode: agentCodeFrom
-      } = policies[0];
-      transfers.push({
-        policyNumbers: policies.map(p => p.policyNumber),
-        agencyCodeTo,
-        agentCodeTo: Number(agentCodeTo),
-        agencyCodeFrom,
-        agentCodeFrom
+      const groupedPolices = this.groupPolicyByAgentCode(selectedPolicies);
+      const transfers = [];
+      Object.keys(groupedPolices).forEach(p => {
+        const policies = groupedPolices[p] || [];
+        const {
+          agencyCode: agencyCodeFrom,
+          agentCode: agentCodeFrom
+        } = policies[0];
+        transfers.push({
+          policyNumbers: policies.map(p => p.policyNumber),
+          agencyCodeTo,
+          agentCodeTo: Number(agentCodeTo),
+          agencyCodeFrom,
+          agentCodeFrom
+        });
       });
-    });
 
-    await props.transferPoliciesToAgent(transfers);
-    await props.getAgentListByAgencyCode(activeAgencyCode);
-    await props.getPoliciesForAgency({ agencyCode: activeAgencyCode });
-    props.clearSelectedPolicies();
-    props.toggleModal();
+      await props.transferPoliciesToAgent(transfers);
+      await props.getAgentListByAgencyCode(activeAgencyCode);
+      await props.getPoliciesForAgency({ agencyCode: activeAgencyCode });
+      props.clearSelectedPolicies();
+      props.toggleModal();
+    } catch (err) {
+      if (process.env.NODE_ENV !== 'production') {
+        console.error('Error in submitTransfer (TransferModal): ', err);
+      }
+    }
   };
 
   closeModal = () => {

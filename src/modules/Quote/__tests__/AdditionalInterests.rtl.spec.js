@@ -1,5 +1,5 @@
 import React from 'react';
-import { fireEvent } from 'react-testing-library';
+import { fireEvent, wait } from 'react-testing-library';
 
 import {
   renderWithForm,
@@ -20,59 +20,59 @@ const baseAiFields = [
     type: 'text',
     required: true,
     label: 'First Name',
-    data: 'test last names'
+    value: 'test last names'
   },
   {
     dataTest: 'name2',
     type: 'text',
     label: 'Last Name',
-    data: 'test first name'
+    value: 'test first name'
   },
   {
     dataTest: 'address1',
     type: 'text',
     required: true,
     label: 'Address 1',
-    data: 'test adress 1'
+    value: 'test adress 1'
   },
   {
     dataTest: 'address2',
     type: 'text',
     label: 'Address 2',
-    data: 'test address 2'
+    value: 'test address 2'
   },
   {
     dataTest: 'city',
     type: 'text',
     required: true,
     label: 'City',
-    data: 'test city'
+    value: 'test city'
   },
   {
     dataTest: 'state',
     type: 'text',
     required: true,
     label: 'State',
-    data: 'FL'
+    value: 'FL'
   },
   {
     dataTest: 'zip',
     type: 'text',
     required: true,
     label: 'Zip Code',
-    data: 'test name 1'
+    value: 'test name 1'
   },
   {
     dataTest: 'phoneNumber',
     type: 'text',
     label: 'Phone Number',
-    data: '(123) 123-1231'
+    value: '(123) 123-1231'
   },
   {
     dataTest: 'referenceNumber',
     type: 'text',
     label: 'Reference Number',
-    data: '123'
+    value: '123'
   }
 ];
 
@@ -82,79 +82,87 @@ const mortgageeFields = [
     type: 'text',
     required: true,
     label: 'Name 1',
-    data: 'test name 1'
+    value: 'test name 1'
   },
   {
     dataTest: 'name2',
     type: 'text',
     label: 'Name 2',
-    data: 'test name 2'
+    value: 'test name 2'
   },
   {
     dataTest: 'address1',
     type: 'text',
     required: true,
     label: 'Address 1',
-    data: 'test adress 1'
+    value: 'test adress 1'
   },
   {
     dataTest: 'address2',
     type: 'text',
     label: 'Address 2',
-    data: 'test address 2'
+    value: 'test address 2'
   },
   {
     dataTest: 'city',
     type: 'text',
     required: true,
     label: 'City',
-    data: 'test city'
+    value: 'test city'
   },
   {
     dataTest: 'state',
     type: 'text',
     required: true,
     label: 'State',
-    data: 'FL'
+    value: 'FL'
   },
   {
     dataTest: 'zip',
     type: 'text',
     required: true,
     label: 'Zip Code',
-    data: 'test name 1'
+    value: 'test name 1'
   },
   {
     dataTest: 'phoneNumber',
     type: 'text',
     label: 'Phone Number',
-    data: '(123) 123-1231'
+    value: '(123) 123-1231'
   },
   {
     dataTest: 'referenceNumber',
     type: 'text',
     label: 'Reference Number',
-    data: '1`23'
+    value: '1`23'
   }
 ];
 
 describe('Additional Interest Testing', () => {
   const baseRequiredFields = baseAiFields.filter(({ required }) => required);
 
-  const openAndCloseModal = (getByText, modal) => {
+  const openAndCloseModal = async (getByText, modal) => {
     fireEvent.click(getByText(modal));
-    expect(getByText('save'));
-    expect(document.querySelector('form#AdditionalInterestModal'));
+    await wait(() => {
+      expect(document.querySelector('modal').toBeInTheDocument());
+      expect(
+        document.querySelector(`card.AdditionalInterestModal.${modal}`)
+      ).toBeInTheDocument();
+    });
     fireEvent.click(getByText('cancel'));
-    expect(document.querySelector('form#AdditionalInterestModal')).toBeNull();
+    await wait(() => expect(document.querySelector('modal')).toBeNull());
   };
 
   const props = {
     ...defaultQuoteWorkflowProps,
     location: { pathname: '/quote/12-345-67/additionalInterests' },
-    quoteData: {
-      ...defaultQuoteWorkflowProps.quoteData,
+    quote: {
+      ...defaultQuoteWorkflowProps.quote,
       rating
+    },
+    options: {
+      ...defaultQuoteWorkflowProps.options,
+      order: [{ answer: '0', label: 'First Mortgagee' }]
     }
   };
 
@@ -164,8 +172,8 @@ describe('Additional Interest Testing', () => {
   it('POS:Error Message exists with no quote data', () => {
     const newProps = {
       ...props,
-      quoteData: {
-        ...props.quoteData,
+      quote: {
+        ...props.quote,
         rating: {}
       }
     };
@@ -205,7 +213,7 @@ describe('Additional Interest Testing', () => {
       [
         {
           ...stateField,
-          data: 'abc',
+          value: 'abc',
           error: 'Only 2 letters allowed'
         }
       ],
@@ -217,7 +225,7 @@ describe('Additional Interest Testing', () => {
       [
         {
           ...zipField,
-          data: '1234567890',
+          value: '1234567890',
           error: 'Only 8 letters or numbers allowed'
         }
       ],
@@ -253,7 +261,7 @@ describe('Additional Interest Testing', () => {
       [
         {
           ...stateField,
-          data: 'abc',
+          value: 'abc',
           error: 'Only 2 letters allowed'
         }
       ],
@@ -265,7 +273,7 @@ describe('Additional Interest Testing', () => {
       [
         {
           ...zipField,
-          data: '1234567890',
+          value: '1234567890',
           error: 'Only 8 letters or numbers allowed'
         }
       ],
@@ -301,7 +309,7 @@ describe('Additional Interest Testing', () => {
       [
         {
           ...stateField,
-          data: 'abc',
+          value: 'abc',
           error: 'Only 2 letters allowed'
         }
       ],
@@ -313,7 +321,7 @@ describe('Additional Interest Testing', () => {
       [
         {
           ...zipField,
-          data: '1234567890',
+          value: '1234567890',
           error: 'Only 8 letters or numbers allowed'
         }
       ],
@@ -349,7 +357,7 @@ describe('Additional Interest Testing', () => {
       [
         {
           ...stateField,
-          data: 'abc',
+          value: 'abc',
           error: 'Only 2 letters allowed'
         }
       ],
@@ -361,7 +369,7 @@ describe('Additional Interest Testing', () => {
       [
         {
           ...zipField,
-          data: '1234567890',
+          value: '1234567890',
           error: 'Only 8 letters or numbers allowed'
         }
       ],
@@ -397,7 +405,7 @@ describe('Additional Interest Testing', () => {
       [
         {
           ...stateField,
-          data: 'abc',
+          value: 'abc',
           error: 'Only 2 letters allowed'
         }
       ],
@@ -409,7 +417,7 @@ describe('Additional Interest Testing', () => {
       [
         {
           ...zipField,
-          data: '1234567890',
+          value: '1234567890',
           error: 'Only 8 letters or numbers allowed'
         }
       ],
@@ -450,8 +458,9 @@ describe('Additional Interest Testing', () => {
     checkLabel(getByTestId, { dataTest: 'mortgage', label: 'Top Mortgagees' });
     checkSelect(getByTestId, {
       dataTest: 'order',
+      defaultValue: { value: '0', label: 'First Mortgagee' },
       type: 'select',
-      values: ['0']
+      values: [{ value: '0', label: 'First Mortgagee' }]
     });
   });
 
@@ -530,8 +539,8 @@ describe('Additional Interest Testing', () => {
   it('POS:Confirm Additional Interests Show Up In Order and Disable Buttons [Premium Finance]', () => {
     const newProps = {
       ...props,
-      quoteData: {
-        ...props.quoteData,
+      quote: {
+        ...props.quote,
         additionalInterests: [
           // Intentionally give a messed up order...
           { ...additionalInterest, order: 0, type: 'Premium Finance' },
@@ -578,8 +587,8 @@ describe('Additional Interest Testing', () => {
   it('POS:Confirm Additional Interests Show Up In Order and Disable Buttons [Bill Payer]', () => {
     const newProps = {
       ...props,
-      quoteData: {
-        ...props.quoteData,
+      quote: {
+        ...props.quote,
         additionalInterests: [
           { ...additionalInterest, order: 0, type: 'Bill Payer' },
           { ...additionalInterest, order: 1, type: 'Additional Interest' },
@@ -621,8 +630,8 @@ describe('Additional Interest Testing', () => {
   it('POS:All buttons disabled when editingDisabled is true', () => {
     const newProps = {
       ...props,
-      quoteData: {
-        ...props.quoteData,
+      quote: {
+        ...props.quote,
         editingDisabled: true
       }
     };

@@ -1,7 +1,12 @@
 import React from 'react';
 import { fireEvent } from 'react-testing-library';
 
-import { renderWithReduxAndRouter, renderWithForm } from '../../test-utils';
+import {
+  renderWithReduxAndRouter,
+  renderWithForm,
+  defaultInitialState,
+  quote
+} from '../../test-utils';
 import { AppWrapper } from '../AppWrapper';
 
 describe('Testing AppWrapper', () => {
@@ -197,7 +202,9 @@ describe('Testing AppWrapper', () => {
       context: 'quote'
     };
 
-    const { getByText } = renderWithForm(<AppWrapper {...props} />);
+    const state = { ...defaultInitialState, quoteState: { quote } };
+
+    const { getByText } = renderWithForm(<AppWrapper {...props} />, { state });
     expect(getByText('Coverage / Rating'));
     expect(getByText('Underwriting'));
     expect(getByText('Additional Interests'));

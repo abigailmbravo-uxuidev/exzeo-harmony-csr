@@ -3,9 +3,12 @@ import PropTypes from 'prop-types';
 import { Field } from 'redux-form';
 import { Input, Button, Select, validation } from '@exzeo/core-ui';
 
+import { productAnswers } from '../constants';
+
 const { isValidChar, isRequired } = validation;
 
 const NewQuoteSearch = ({
+  beta,
   submitting,
   changeSearchType,
   searchTypeOptions
@@ -27,6 +30,20 @@ const NewQuoteSearch = ({
     </div>
 
     <div className="search-inputs fade-in">
+      {beta && (
+        <Field
+          name="product"
+          dataTest="product"
+          label="Product"
+          component={Select}
+          answers={productAnswers}
+          placeholder="Select..."
+          styleName="product-search"
+          validate={isRequired}
+          errorHint
+        />
+      )}
+
       <Field
         name="address"
         dataTest="address"
