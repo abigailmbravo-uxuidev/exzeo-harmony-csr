@@ -12,7 +12,7 @@ const Billing = ({ initialValues, config, formInstance }) => {
     <React.Fragment>
       <Payment initialValues={initialValues} formInstance={formInstance} />
       <PolicyBilling initialValues={initialValues} config={config} />
-      <PaymentHistoryTable initialValues={initialValues} />
+      <PaymentHistoryTable initialValues={initialValues} config={config} />
     </React.Fragment>
   );
 };
