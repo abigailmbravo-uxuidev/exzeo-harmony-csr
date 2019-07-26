@@ -11,6 +11,7 @@ import endorsementUtils from '../../utilities/endorsementModel';
 import { getZipcodeSettings } from './service.actions';
 import { toggleLoading } from './ui.actions';
 import { startWorkflow, batchCompleteTask } from './cg.actions';
+import cg from '../../utilities/cg';
 /**
  * Reset policyState
  * @returns {{type: string}}
@@ -858,25 +859,20 @@ export function updatePolicy({ data = {}, options = {} }) {
           ),
           billingStatus: data.summaryLedger.status.code
         };
-        const result = await dispatch(
-          startWorkflow('cancelPolicyModelUI', {
+        const startResult = await cg.startWorkflow({
+          modelName: 'cancelPolicyModelUI',
+          data: {
             policyNumber: data.policyNumber,
             policyID: data.policyID
-          })
-        );
+          }
+        });
 
-        const steps = [{ name: 'cancelPolicySubmit', data: submitData }];
-        const startResult = result.payload
-          ? result.payload[0].workflowData.cancelPolicyModelUI.data
-          : {};
+        await cg.completeTask({
+          workflowId: startResult.modelInstanceId,
+          stepName: 'cancelPolicySubmit',
+          data: submitData
+        });
 
-        await dispatch(
-          batchCompleteTask(
-            startResult.modelName,
-            startResult.modelInstanceId,
-            steps
-          )
-        );
         await dispatch(getPolicy(data.policyNumber));
       }
 
