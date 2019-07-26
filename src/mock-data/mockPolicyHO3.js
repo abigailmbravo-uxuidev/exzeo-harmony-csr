@@ -489,7 +489,7 @@ const mock = {
                                   label: 'Current Premium',
                                   items: [
                                     {
-                                      format: 'currencyDecimals',
+                                      format: 'currency',
                                       path: 'summaryLedger.currentPremium'
                                     }
                                   ]
@@ -498,7 +498,7 @@ const mock = {
                                   label: 'Initial Premium',
                                   items: [
                                     {
-                                      format: 'currencyDecimals',
+                                      format: 'currency',
                                       path: 'summaryLedger.initialPremium'
                                     }
                                   ]
@@ -507,7 +507,7 @@ const mock = {
                                   label: 'Balance Due',
                                   items: [
                                     {
-                                      format: 'currencyDecimals',
+                                      format: 'currency',
                                       path:
                                         'summaryLedger.balance.$numberDecimal'
                                     }
