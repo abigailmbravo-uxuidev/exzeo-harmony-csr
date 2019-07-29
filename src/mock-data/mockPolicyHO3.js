@@ -1102,7 +1102,9 @@ const mock = {
                   type: '$POLICY_BILLING',
                   dependencies: [],
                   data: {
-                    extendedProperties: {}
+                    extendedProperties: {
+                      subscribe: true
+                    }
                   },
                   formData: {},
                   children: []
