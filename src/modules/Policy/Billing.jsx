@@ -13,7 +13,7 @@ const Billing = ({
   formInstance,
   customHandlers: { updateBillPlan }
 }) => {
-  const [paymentAdded, setPaymentAdded] = useState();
+  const [paymentAdded, setPaymentAdded] = useState(0);
 
   return (
     <React.Fragment>
