@@ -385,6 +385,7 @@
                 &:hover {
                   color: $btn-link-disabled-color;
                   text-decoration: none;
+                  cursor: not-allowed;
 
                   &:after {
                     color: $btn-link-disabled-color;
