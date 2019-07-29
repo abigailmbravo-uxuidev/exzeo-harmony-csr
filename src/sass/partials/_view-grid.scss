@@ -241,8 +241,10 @@
           flex-direction: row;
           margin: 0;
           width: 100%;
+          cursor: default;
 
           > div {
+            align-self: center;
             flex-grow: 1;
             flex-shrink: 1;
             padding: $padding $padding $padding 0;
@@ -271,7 +273,8 @@
 
           > a {
             &.edit,
-            &.remove {
+            &.remove,
+            &.reactivate {
               flex-grow: 0;
               flex-shrink: 0;
               width: auto;
@@ -330,6 +333,73 @@
 
               &:after {
                 content: 'DELETE';
+              }
+            }
+            &.reactivate {
+              i {
+                &:after {
+                  content: '\f0fe';
+                }
+              }
+
+              &:after {
+                content: 'REACTIVATE';
+              }
+            }
+          }
+
+          &.inactive {
+            border-color: $warm-gray-03;
+            background: $warm-gray-00;
+            color: $btn-link-disabled-color;
+
+            .card-icon {
+              i,
+              label {
+                color: $btn-link-disabled-color;
+              }
+            }
+            h4,
+            p {
+              color: $btn-link-disabled-color;
+            }
+            .ref-number {
+              label,
+              span {
+                color: $btn-link-disabled-color;
+              }
+            }
+            > a {
+              background: $warm-gray-00;
+
+              &.edit {
+                color: $btn-link-disabled-color;
+
+                i {
+                  color: $btn-link-disabled-color;
+                  &:after {
+                    color: $btn-link-disabled-color;
+                  }
+                }
+
+                &:hover {
+                  color: $btn-link-disabled-color;
+                  text-decoration: none;
+
+                  &:after {
+                    color: $btn-link-disabled-color;
+                    text-decoration: none;
+                  }
+
+                  i {
+                    color: $btn-link-disabled-color;
+                    text-decoration: none;
+                    &:after {
+                      color: $btn-link-disabled-color;
+                      text-decoration: none;
+                    }
+                  }
+                }
               }
             }
           }
@@ -667,12 +737,18 @@ section {
       display: flex;
       flex-wrap: wrap;
 
-      .payments-cancel-policy {
-        > div {
+      .billing {
+        > section {
           display: flex;
           > dl {
             flex-grow: 1;
             flex-shrink: 1;
+            width: auto;
+
+            dt {
+              margin-bottom: $padding;
+              color: $warm-gray-08;
+            }
           }
         }
       }
