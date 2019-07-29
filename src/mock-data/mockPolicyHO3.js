@@ -949,14 +949,20 @@ const mock = {
           children: [
             {
               id: 10,
-              type: '$BILLING',
+              type: '$CUSTOM',
               dependencies: [],
               data: {
+                component: '$BILLING',
                 className: 'billing',
                 billingHeader: 'Billing',
-                paymentHistoryHeader: 'Payments'
+                paymentHistoryHeader: 'Payments',
+                extendedProperties: {
+                  subscribe: true
+                }
               },
-              formData: {}
+              formData: {
+                required: true
+              }
             },
             {
               id: 11,

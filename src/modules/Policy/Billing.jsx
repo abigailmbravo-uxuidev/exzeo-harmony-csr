@@ -9,6 +9,7 @@ import {
 
 const Billing = ({
   initialValues,
+  formValues,
   config,
   formInstance,
   customHandlers: { updateBillPlan }
@@ -22,7 +23,7 @@ const Billing = ({
         setPaymentAdded={setPaymentAdded}
       />
       <PolicyBilling
-        initialValues={initialValues}
+        formValues={formValues}
         updateBillPlan={updateBillPlan}
         config={config}
       />
