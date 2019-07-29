@@ -19,7 +19,6 @@ const Billing = ({
     <React.Fragment>
       <Payment
         initialValues={initialValues}
-        formInstance={formInstance}
         setPaymentAdded={setPaymentAdded}
       />
       <PolicyBilling
