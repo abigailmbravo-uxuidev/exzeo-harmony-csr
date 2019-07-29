@@ -696,6 +696,10 @@ section {
         border-bottom-width: 0;
       }
 
+      &:first-of-type {
+        min-height: 265px;
+      }
+
       &.billing {
         display: flex;
 
