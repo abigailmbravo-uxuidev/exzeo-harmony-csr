@@ -22,7 +22,6 @@ import { toggleDiary } from '../../state/actions/ui.actions';
 import { getDiariesForTable } from '../../state/selectors/diary.selectors';
 import { setAppError } from '../../state/actions/error.actions';
 import { getAgents, getAgency } from '../../state/actions/service.actions';
-import ReinstatePolicyModal from '../../components/Policy/ReinstatePolicyPopup';
 import Endorsements from '../../components/Policy/Endorsements';
 import {
   getPolicyFormData,
@@ -59,6 +58,7 @@ import CancelReason from './CancelReason';
 import EffectiveDateModal from './EffectiveDateModal';
 import { startWorkflow, completeTask } from '../../utilities/cg';
 import { getEnumsForPolicyWorkflow } from '../../state/actions/list.actions';
+import ReinstatePolicyModal from './ReinstatePolicyModal';
 
 const getCurrentStepAndPage = defaultMemoize(pathname => {
   const currentRouteName = pathname.split('/')[3];
@@ -375,7 +375,8 @@ export class PolicyWorkflow extends React.Component {
               {showReinstatePolicyModal && (
                 <ReinstatePolicyModal
                   reinstatePolicySubmit={this.reinstatePolicySubmit}
-                  hideReinstatePolicyModal={this.handleToggleReinstateModal}
+                  closeModal={this.handleToggleReinstateModal}
+                  policyNumber={policy.policyNumber}
                 />
               )}
 
