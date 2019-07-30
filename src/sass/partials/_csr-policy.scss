@@ -974,9 +974,10 @@
           flex-grow: 1;
           flex-shrink: 1;
           flex-wrap: nowrap;
-          padding: 0.5rem;
+          padding: 0;
           width: 100%;
           form {
+            padding: $padding;
             &.view-grid {
               flex-grow: 0;
               flex-shrink: 0;
