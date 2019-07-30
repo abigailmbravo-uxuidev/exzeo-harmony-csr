@@ -696,7 +696,7 @@ section {
         border-bottom-width: 0;
       }
 
-      &.add-payment {
+      &:first-of-type {
         min-height: 265px;
       }
 
@@ -713,6 +713,10 @@ section {
             color: $warm-gray-08;
           }
         }
+      }
+
+      &.table-view {
+        min-height: 118px;
       }
       &#AddAdditionalInterestPage {
         .results-wrapper.additional-interests {
