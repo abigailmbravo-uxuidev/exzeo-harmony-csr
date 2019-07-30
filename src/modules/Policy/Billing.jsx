@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import PropTypes from 'prop-types';
+
 import * as serviceRunner from '@exzeo/core-ui/src/@Harmony/Domain/Api/serviceRunner';
 
 import {
@@ -34,6 +36,16 @@ const Billing = ({
       />
     </React.Fragment>
   );
+};
+
+Billing.propTypes = {
+  initialValues: PropTypes.object.isRequired,
+  formValues: PropTypes.object.isRequired,
+  config: PropTypes.object.isRequired,
+  formInstance: PropTypes.object.isRequired,
+  customHandlers: PropTypes.shape({
+    updateBillPlan: PropTypes.func.isRequired
+  })
 };
 
 export default Billing;
