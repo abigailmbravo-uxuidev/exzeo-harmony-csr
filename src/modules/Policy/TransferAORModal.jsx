@@ -7,7 +7,7 @@ import TransferAORForm from './TransferAORForm';
 const TransferAORModal = ({ initialValues, closeModal, submitTransferAOR }) => {
   return (
     <Modal
-      size={Modal.sizes.large}
+      size={Modal.sizes.medium}
       className="transfer-aor fade-in"
       header={
         <h4>
