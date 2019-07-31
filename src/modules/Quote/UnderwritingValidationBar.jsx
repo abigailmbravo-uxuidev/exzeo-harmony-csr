@@ -80,8 +80,6 @@ const UnderwritingValidationBar = ({ userProfile, updateQuote, quoteData }) => {
     underwritingReview,
     fatalError
   } = getGroupedUnderwritingExceptions(quoteData);
-
-  console.log(info, underwritingReview, fatalError);
   return (
     <Form
       initialValues={{
