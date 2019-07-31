@@ -22,7 +22,7 @@ const EffectiveDateModal = ({
         effectiveDateReasons={effectiveDateReasons}
         className="card-block"
       >
-        {({ submitting }) => (
+        {({ submitting, pristine }) => (
           <div className="card-footer">
             <Button
               className={Button.constants.classNames.secondary}
@@ -35,10 +35,10 @@ const EffectiveDateModal = ({
             <Button
               className={Button.constants.classNames.primary}
               type="submit"
-              disabled={submitting}
+              disabled={submitting || pristine}
               data-test="modal-submit"
             >
-              Send
+              Update
             </Button>
           </div>
         )}
