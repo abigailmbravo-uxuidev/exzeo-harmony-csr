@@ -12,37 +12,42 @@ const UnderwritingValidationBar = ({ userProfile, updateQuote, quoteData }) => {
 
     return quoteData.underwritingExceptions.reduce(
       (data, exception) => {
-        if (exception.action === 'Missing Info') {
+        if (
+          exception.action === 'Missing Info' ||
+          exception.action === 'Informational'
+        ) {
           return {
             ...data,
-            warnings: [...data.warnings, exception]
+            info: [...data.info, exception]
+          };
+        } else if (exception.action === 'Fatal Error') {
+          return {
+            ...data,
+            fatalError: orderBy(
+              [...data.fatalError, exception],
+              ['overridden'],
+              ['asc']
+            )
+          };
+        } else if (exception.action === 'Underwriting Review') {
+          return {
+            ...data,
+            underwritingReview: orderBy(
+              [...data.underwritingReview, exception],
+              ['overridden'],
+              ['asc']
+            )
           };
         }
-        return exception.canOverride
-          ? {
-              ...data,
-              overridableExceptions: orderBy(
-                [...data.overridableExceptions, exception],
-                ['overridden'],
-                ['asc']
-              )
-            }
-          : {
-              ...data,
-              nonOverridableExceptions: [
-                ...data.nonOverridableExceptions,
-                exception
-              ]
-            };
       },
-      { warnings: [], overridableExceptions: [], nonOverridableExceptions: [] }
+      { info: [], underwritingReview: [], fatalError: [] }
     );
   });
 
   const handleFormSubmit = async data => {
-    const { warnings, nonOverridableExceptions, overridableExceptions } = data;
+    const { info, underwritingReview, fatalError } = data;
 
-    overridableExceptions.forEach(exception => {
+    fatalError.forEach(exception => {
       if (exception.overridden && !exception.overriddenAt) {
         exception.overriddenAt = date.formatToUTC();
         exception.overriddenBy = {
@@ -51,29 +56,38 @@ const UnderwritingValidationBar = ({ userProfile, updateQuote, quoteData }) => {
         };
       }
     });
+
+    underwritingReview.forEach(exception => {
+      if (exception.overridden && !exception.overriddenAt) {
+        exception.overriddenAt = date.formatToUTC();
+        exception.overriddenBy = {
+          userId: userProfile.userId,
+          userName: userProfile.userName
+        };
+      }
+    });
+
     await updateQuote({
       data: {
         ...quoteData,
-        underwritingExceptions: [
-          ...warnings,
-          ...nonOverridableExceptions,
-          ...overridableExceptions
-        ]
+        underwritingExceptions: [...info, ...underwritingReview, ...fatalError]
       }
     });
   };
 
   const {
-    warnings,
-    nonOverridableExceptions,
-    overridableExceptions
+    info,
+    underwritingReview,
+    fatalError
   } = getGroupedUnderwritingExceptions(quoteData);
+
+  console.log(info, underwritingReview, fatalError);
   return (
     <Form
       initialValues={{
-        warnings,
-        nonOverridableExceptions,
-        overridableExceptions
+        info,
+        underwritingReview,
+        fatalError
       }}
       onSubmit={handleFormSubmit}
       subscription={{ pristine: true }}
@@ -83,41 +97,60 @@ const UnderwritingValidationBar = ({ userProfile, updateQuote, quoteData }) => {
           <aside className="underwriting-validation">
             <h4 className="uw-validation-header">Qualifier Status</h4>
             <div>
-              {warnings.length > 0 && (
+              {info.length > 0 && (
                 <UnderwritingExceptions
-                  exceptionLevel="warning"
-                  exceptions={warnings}
+                  exceptionLevel="info"
+                  exceptions={info}
                 />
               )}
 
-              {nonOverridableExceptions.length > 0 && (
+              {fatalError.length > 0 && (
                 <UnderwritingExceptions
-                  exceptionLevel="nonOverridable"
-                  exceptions={nonOverridableExceptions}
-                />
-              )}
-
-              {overridableExceptions.length > 0 && (
-                <UnderwritingExceptions
-                  exceptionLevel="overridable"
-                  exceptions={overridableExceptions}
+                  exceptionLevel="fatalError"
+                  exceptions={fatalError}
                   pristine={pristine}
-                  render={(exception, index) => (
-                    <div className="check-box-wrapper">
-                      <Field
-                        name={`overridableExceptions[${index}].overridden`}
-                        component="input"
-                        type="checkbox"
-                        data-test={`overridableExceptions[${index}].overridden`}
-                      />
-                      <label
-                        htmlFor={`overridableExceptions[${index}].overridden`}
-                      >
-                        {' '}
-                        Override
-                      </label>
-                    </div>
-                  )}
+                  render={(exception, index) =>
+                    exception.canOverride && (
+                      <div className="check-box-wrapper">
+                        <Field
+                          name={`fatalError[${index}].overridden`}
+                          component="input"
+                          type="checkbox"
+                          data-test={`fatalError[${index}].overridden`}
+                        />
+                        <label htmlFor={`fatalError[${index}].overridden`}>
+                          {' '}
+                          Override
+                        </label>
+                      </div>
+                    )
+                  }
+                />
+              )}
+
+              {underwritingReview.length > 0 && (
+                <UnderwritingExceptions
+                  exceptionLevel="underwritingReview"
+                  exceptions={underwritingReview}
+                  pristine={pristine}
+                  render={(exception, index) =>
+                    exception.canOverride && (
+                      <div className="check-box-wrapper">
+                        <Field
+                          name={`underwritingReview[${index}].overridden`}
+                          component="input"
+                          type="checkbox"
+                          data-test={`underwritingReview[${index}].overridden`}
+                        />
+                        <label
+                          htmlFor={`underwritingReview[${index}].overridden`}
+                        >
+                          {' '}
+                          Override
+                        </label>
+                      </div>
+                    )
+                  }
                 />
               )}
             </div>

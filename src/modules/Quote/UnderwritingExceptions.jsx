@@ -3,19 +3,19 @@ import propTypes from 'prop-types';
 import classNames from 'classnames';
 
 const EXCEPTION_LEVELS = {
-  warning: {
+  info: {
     sectionClass: 'msg-info',
     iconClass: 'fa fa-info-circle',
     label: 'Info',
     listIconClass: 'fa-li fa fa-info-circle'
   },
-  nonOverridable: {
+  fatalError: {
     sectionClass: 'msg-error',
     iconClass: 'fa fa-exclamation-circle',
     label: 'Error',
     listIconClass: 'fa-li fa fa-exclamation-circle'
   },
-  overridable: {
+  underwritingReview: {
     canShowButton: true,
     sectionClass: 'msg-caution',
     iconClass: 'fa fa-exclamation-triangle',
