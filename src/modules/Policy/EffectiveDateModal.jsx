@@ -12,7 +12,7 @@ const EffectiveDateModal = ({
 }) => {
   return (
     <Modal
-      size={Modal.sizes.large}
+      size={Modal.sizes.small}
       className="effective-date"
       header={<h4>Edit Effective Date</h4>}
     >

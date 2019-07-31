@@ -176,6 +176,13 @@
     }
   }
 
+  &.modal-sm {
+    .card {
+      max-width: 26rem;
+      width: 30%;
+    }
+  }
+
   &.modal-md {
     .card {
       max-width: 40rem;
