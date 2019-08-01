@@ -12,28 +12,32 @@ const UnderwritingValidationBar = ({ userProfile, updateQuote, quoteData }) => {
 
     return quoteData.underwritingExceptions.reduce(
       (data, exception) => {
+        const uwException = {
+          ...exception,
+          overridden: !!exception.overridden
+        };
         if (
-          exception.action === 'Missing Info' ||
-          exception.action === 'Informational'
+          uwException.action === 'Missing Info' ||
+          uwException.action === 'Informational'
         ) {
           return {
             ...data,
-            info: [...data.info, exception]
+            info: [...data.info, uwException]
           };
-        } else if (exception.action === 'Fatal Error') {
+        } else if (uwException.action === 'Fatal Error') {
           return {
             ...data,
             fatalError: orderBy(
-              [...data.fatalError, exception],
+              [...data.fatalError, uwException],
               ['overridden'],
               ['asc']
             )
           };
-        } else if (exception.action === 'Underwriting Review') {
+        } else if (uwException.action === 'Underwriting Review') {
           return {
             ...data,
             underwritingReview: orderBy(
-              [...data.underwritingReview, exception],
+              [...data.underwritingReview, uwException],
               ['overridden'],
               ['asc']
             )
