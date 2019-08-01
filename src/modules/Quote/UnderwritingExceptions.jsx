@@ -36,7 +36,7 @@ class UnderwritingExceptions extends React.Component {
         <h5>
           <i className={severity.iconClass} aria-hidden="true" />
           <span>{severity.label}</span>
-          {!pristine && severity.canShowButton && (
+          {/* {!pristine && severity.canShowButton && (
             <button
               tabIndex="0"
               className="btn btn-sm btn-primary"
@@ -44,7 +44,7 @@ class UnderwritingExceptions extends React.Component {
             >
               Save
             </button>
-          )}
+          )} */}
         </h5>
         <div>
           <ul className="fa-ul">
