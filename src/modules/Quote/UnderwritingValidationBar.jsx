@@ -1,6 +1,6 @@
 import React from 'react';
 import orderBy from 'lodash/orderBy';
-import { Form, Field, date } from '@exzeo/core-ui';
+import { Form, Field, date, Button } from '@exzeo/core-ui';
 import { defaultMemoize } from 'reselect';
 
 import UnderwritingExceptions from './UnderwritingExceptions';
@@ -98,6 +98,13 @@ const UnderwritingValidationBar = ({ userProfile, updateQuote, quoteData }) => {
         <form id="UnderwritingOverride" onSubmit={handleSubmit}>
           <aside className="underwriting-validation">
             <h4 className="uw-validation-header">Qualifier Status</h4>
+            {!pristine && (
+              <Button
+                data-test="submit"
+                className={Button.constants.classNames.primary}
+                label="Save"
+              />
+            )}
             <div>
               {info.length > 0 && (
                 <UnderwritingExceptions
