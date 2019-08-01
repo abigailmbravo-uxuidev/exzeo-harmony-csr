@@ -98,6 +98,7 @@ const UnderwritingValidationBar = ({ userProfile, updateQuote, quoteData }) => {
             <h4 className="uw-validation-header">Qualifier Status</h4>
             {!pristine && (
               <Button
+                type="submit"
                 data-test="submit"
                 className={Button.constants.classNames.primary}
                 label="Save"
