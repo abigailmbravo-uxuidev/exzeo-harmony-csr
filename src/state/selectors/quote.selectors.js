@@ -60,7 +60,9 @@ export const getQuoteSelector = createSelector(
     );
     quoteData.removeSecondary = false;
     quoteData.hasActiveExceptions =
-      quoteData.underwritingExceptions.filter(uw => !uw.overridden).length > 0;
+      quoteData.underwritingExceptions.filter(
+        uw => uw.canOverride && !uw.overridden
+      ).length > 0;
     quoteData.hasUWError =
       quoteData.underwritingExceptions.filter(
         uw => !uw.overridden && uw.action !== 'Missing Info'
