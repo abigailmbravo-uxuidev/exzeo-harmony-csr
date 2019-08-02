@@ -7,12 +7,12 @@ import {
   toggleNote,
   toggleDiary,
   setNotesSynced
-} from '../../state/actions/ui.actions';
-import { startWorkflow } from '../../state/actions/cg.actions';
-import { setAppError } from '../../state/actions/error.actions';
-import { POLICY_RESOURCE_TYPE } from '../../constants/diaries';
+} from '../state/actions/ui.actions';
+import { startWorkflow } from '../state/actions/cg.actions';
+import { setAppError } from '../state/actions/error.actions';
+import { POLICY_RESOURCE_TYPE } from '../constants/diaries';
 
-import PlusButton from '../PlusButton';
+import PlusButton from './PlusButton';
 import GenerateDocsForm from './GenerateDocsForm';
 
 const getNavLinks = ({ policyNumber }) => [
