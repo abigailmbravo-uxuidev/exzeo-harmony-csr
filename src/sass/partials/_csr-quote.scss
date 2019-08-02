@@ -388,6 +388,7 @@
 
             section {
               h5 {
+                margin: ($padding * 2) 0;
                 background: $warm-gray-02;
                 color: $warm-gray-08;
                 font-size: 14px;
@@ -401,15 +402,21 @@
 
               div {
                 ul {
-                  margin: 0 0 ($padding * 4) ($padding * 2);
+                  margin: 0 0 ($padding * 2) ($padding * 2);
 
                   li {
                     display: flex;
                     flex-direction: column;
-                    margin: ($padding * 2.25);
-                    padding: 0;
+                    margin: $padding ($padding * 2.25);
+                    padding: 0 0 $padding;
+                    border-bottom: 1px dotted $warm-gray-02;
                     list-style: none;
                     font-size: $font-size-base;
+
+                    &:last-of-type {
+                      padding: 0;
+                      border-bottom-width: 0;
+                    }
 
                     &.overridden {
                       i.fa {
