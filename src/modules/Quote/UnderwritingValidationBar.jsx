@@ -95,16 +95,19 @@ const UnderwritingValidationBar = ({ userProfile, updateQuote, quoteData }) => {
       {({ handleSubmit, pristine }) => (
         <form id="UnderwritingOverride" onSubmit={handleSubmit}>
           <aside className="underwriting-validation">
-            <h4 className="uw-validation-header">Qualifier Status</h4>
-            {!pristine && (
-              <Button
-                type="submit"
-                data-test="submit"
-                className={Button.constants.classNames.primary}
-                label="Save"
-              />
-            )}
-            <div>
+            <header className="uw-validation-header">
+              <h4>Qualifier Status</h4>
+              {!pristine && (
+                <Button
+                  type="submit"
+                  data-test="submit"
+                  size="btn-sm"
+                  className={Button.constants.classNames.primary}
+                  label="Save"
+                />
+              )}
+            </header>
+            <div className="exception-list">
               {info.length > 0 && (
                 <UnderwritingExceptions
                   exceptionLevel="info"
