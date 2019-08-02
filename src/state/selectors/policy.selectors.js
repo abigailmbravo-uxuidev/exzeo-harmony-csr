@@ -139,7 +139,7 @@ export const getPolicyFormData = createSelector(
     );
 
     const cancel = {
-      equityDate: date.formattedDate(summaryLedger.equityDate, 'MM/DD/YYYY'),
+      equityDate: date.formatDate(summaryLedger.equityDate, 'MM/DD/YYYY'),
       effectiveDate:
         currentDate > summaryLedgerEffectiveDate
           ? currentDate.format('YYYY-MM-DD')
