@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Route } from 'react-router-dom';
 import { Loader, FormSpy, remoteSubmit, date } from '@exzeo/core-ui';
@@ -12,20 +11,10 @@ import {
 } from '@exzeo/core-ui/src/@Harmony';
 import { defaultMemoize } from 'reselect';
 
+import { POLICY_RESOURCE_TYPE } from '../../constants/diaries';
 import { toggleDiary } from '../../state/actions/ui.actions';
 import { setAppError } from '../../state/actions/error.actions';
-import { getDiariesForTable } from '../../state/selectors/diary.selectors';
-import {
-  getPolicyFormData,
-  getPolicyEffectiveDateReasons
-} from '../../state/selectors/policy.selectors';
-
-import { POLICY_RESOURCE_TYPE } from '../../constants/diaries';
-import App from '../../components/AppWrapper';
-import OpenDiariesBar from '../../components/OpenDiariesBar';
-import DiaryPolling from '../../components/DiaryPolling';
-import Endorsements from '../../components/Policy/Endorsements';
-
+import { getEnumsForPolicyWorkflow } from '../../state/actions/list.actions';
 import {
   createTransaction,
   getPolicy,
@@ -34,15 +23,22 @@ import {
   updatePolicy,
   updateBillPlan
 } from '../../state/actions/policy.actions';
+import { getDiariesForTable } from '../../state/selectors/diary.selectors';
+import {
+  getPolicyFormData,
+  getPolicyEffectiveDateReasons
+} from '../../state/selectors/policy.selectors';
 
-import MOCK_CONFIG_DATA from '../../mock-data/mockPolicyHO3';
+import App from '../../components/AppWrapper';
+import OpenDiariesBar from '../../components/OpenDiariesBar';
+import DiaryPolling from '../../components/DiaryPolling';
+import NavigationPrompt from '../../components/NavigationPrompt';
 
 import {
   ROUTES_NOT_HANDLED_BY_GANDALF,
   PAGE_ROUTING
 } from './constants/workflowNavigation';
-// TODO: Move this into a component folder
-import NavigationPrompt from '../Quote/NavigationPrompt';
+
 import Billing from './Billing';
 import BillingTable from './BillingTable';
 import Appraiser from './Appraiser';
@@ -52,9 +48,12 @@ import PolicyFooter from './PolicyFooter';
 import CancelType from './CancelType';
 import CancelReason from './CancelReason';
 import EffectiveDateModal from './EffectiveDateModal';
-import { startWorkflow, completeTask } from '../../utilities/cg';
-import { getEnumsForPolicyWorkflow } from '../../state/actions/list.actions';
 import ReinstatePolicyModal from './ReinstatePolicyModal';
+
+// TODO these will be removed in subsequent PR's
+import Endorsements from '../../components/Policy/Endorsements';
+import { startWorkflow, completeTask } from '../../utilities/cg';
+import MOCK_CONFIG_DATA from '../../mock-data/mockPolicyHO3';
 
 const getCurrentStepAndPage = defaultMemoize(pathname => {
   const currentRouteName = pathname.split('/')[3];
@@ -72,30 +71,27 @@ const MemoizedFormListeners = React.memo(({ children }) => (
 const FORM_ID = 'PolicyWorkflowCSR';
 
 export class PolicyWorkflow extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      gandalfTemplate: null,
-      showDiaries: false,
-      showReinstatePolicyModal: false,
-      showEffectiveDateChangeModal: false
-    };
+  state = {
+    gandalfTemplate: null,
+    showDiaries: false,
+    showReinstatePolicyModal: false,
+    showEffectiveDateChangeModal: false
+  };
 
-    this.formInstance = null;
+  formInstance = null;
 
-    this.customComponents = {
-      $BILLING: Billing,
-      $BILLING_TABLE: BillingTable,
-      $APPRAISER: Appraiser,
-      $NOTES_FILES: NotesFiles,
-      $POLICYHOLDER_AGENT: PolicyholderAgent,
-      $CANCEL_TYPE: CancelType,
-      $CANCEL_REASON: CancelReason,
-      $CLAIMS_TABLE: ClaimsTable,
-      $POLICY_BILLING: PolicyBilling,
-      $PAYMENT_HISTORY_TABLE: PaymentHistoryTable
-    };
-  }
+  customComponents = {
+    $BILLING: Billing,
+    $BILLING_TABLE: BillingTable,
+    $APPRAISER: Appraiser,
+    $NOTES_FILES: NotesFiles,
+    $POLICYHOLDER_AGENT: PolicyholderAgent,
+    $CANCEL_TYPE: CancelType,
+    $CANCEL_REASON: CancelReason,
+    $CLAIMS_TABLE: ClaimsTable,
+    $POLICY_BILLING: PolicyBilling,
+    $PAYMENT_HISTORY_TABLE: PaymentHistoryTable
+  };
 
   getConfigForJsonTransform = defaultMemoize(getConfigForJsonTransform);
 
@@ -436,6 +432,7 @@ export default connect(
     setAppError,
     transferAOR,
     toggleDiary,
-    updatePolicy
+    updatePolicy,
+    updateBillPlan
   }
 )(PolicyWorkflow);
