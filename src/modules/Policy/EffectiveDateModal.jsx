@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Modal, Button } from '@exzeo/core-ui/src';
+import { Modal, Button } from '@exzeo/core-ui';
 
 import EffectiveDateForm from './EffectiveDateForm';
 

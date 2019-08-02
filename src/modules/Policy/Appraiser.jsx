@@ -1,7 +1,6 @@
 import React from 'react';
 import { defaultMemoize } from 'reselect';
 import _find from 'lodash/find';
-import _get from 'lodash/get';
 
 const Appraiser = ({ initialValues, options }) => {
   const getPropertyAppraisalLink = defaultMemoize((county, appraisers) => {

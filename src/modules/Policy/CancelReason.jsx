@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { defaultMemoize } from 'reselect';
-
 import {
   Field,
   OnChangeListener,
@@ -8,6 +7,7 @@ import {
   Select,
   Input
 } from '@exzeo/core-ui';
+
 import {
   UNDERWRITING_CANCELLATION,
   UNDERWRITING_NON_RENEWAL

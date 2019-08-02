@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 
-import * as serviceRunner from '@exzeo/core-ui/src/@Harmony/Domain/Api/serviceRunner';
-
 import {
   Payment,
   PolicyBilling,
@@ -13,7 +11,6 @@ const Billing = ({
   initialValues,
   formValues,
   config,
-  formInstance,
   customHandlers: { updateBillPlan, getPolicy }
 }) => {
   const [paymentAdded, setPaymentAdded] = useState(0);

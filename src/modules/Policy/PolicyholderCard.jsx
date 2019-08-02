@@ -1,6 +1,7 @@
 import React from 'react';
-import ContactAddress from '../../components/ContactAddress';
 import { normalize } from '@exzeo/core-ui';
+
+import ContactAddress from '../../components/ContactAddress';
 
 function PolicyholderCard({
   label,

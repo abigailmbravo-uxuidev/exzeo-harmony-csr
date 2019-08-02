@@ -2,8 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Route } from 'react-router-dom';
-import _find from 'lodash/find';
-
 import { Loader, FormSpy, remoteSubmit, date } from '@exzeo/core-ui';
 import {
   getConfigForJsonTransform,
@@ -14,25 +12,23 @@ import {
 } from '@exzeo/core-ui/src/@Harmony';
 import { defaultMemoize } from 'reselect';
 
-import App from '../../components/AppWrapper';
-import OpenDiariesBar from '../../components/OpenDiariesBar';
-import DiaryPolling from '../../components/DiaryPolling';
-import { POLICY_RESOURCE_TYPE } from '../../constants/diaries';
 import { toggleDiary } from '../../state/actions/ui.actions';
-import { getDiariesForTable } from '../../state/selectors/diary.selectors';
 import { setAppError } from '../../state/actions/error.actions';
-import { getAgents, getAgency } from '../../state/actions/service.actions';
-import Endorsements from '../../components/Policy/Endorsements';
+import { getDiariesForTable } from '../../state/selectors/diary.selectors';
 import {
   getPolicyFormData,
   getPolicyEffectiveDateReasons
 } from '../../state/selectors/policy.selectors';
 
+import { POLICY_RESOURCE_TYPE } from '../../constants/diaries';
+import App from '../../components/AppWrapper';
+import OpenDiariesBar from '../../components/OpenDiariesBar';
+import DiaryPolling from '../../components/DiaryPolling';
+import Endorsements from '../../components/Policy/Endorsements';
+
 import {
   createTransaction,
   getPolicy,
-  getCancelOptions,
-  getEndorsementHistory,
   initializePolicyWorkflow,
   transferAOR,
   updatePolicy,
@@ -411,29 +407,22 @@ export class PolicyWorkflow extends React.Component {
   }
 }
 
-PolicyWorkflow.propTypes = {
-  children: PropTypes.oneOfType([
-    PropTypes.arrayOf(PropTypes.node),
-    PropTypes.node
-  ])
-};
-
 const mapStateToProps = state => {
   return {
-    options: state.list,
-    isLoading: state.ui.isLoading,
+    cancelOptions: state.policyState.cancelOptions,
     diaries: getDiariesForTable(state),
-    notesSynced: state.ui.notesSynced,
-    userProfile: state.authState.userProfile,
+    effectiveDateReasons: getPolicyEffectiveDateReasons(state),
     initialized: !!(
       state.policyState.policy.policyID && state.policyState.summaryLedger._id
     ),
-    policyFormData: getPolicyFormData(state),
+    isLoading: state.ui.isLoading,
+    notesSynced: state.ui.notesSynced,
+    options: state.list,
     policy: state.policyState.policy,
+    policyFormData: getPolicyFormData(state),
     summaryLedger: state.policyState.summaryLedger,
-    zipCodeSettings: state.service.getZipcodeSettings || {},
-    cancelOptions: state.policyState.cancelOptions,
-    effectiveDateReasons: getPolicyEffectiveDateReasons(state)
+    userProfile: state.authState.userProfile,
+    zipCodeSettings: state.service.getZipcodeSettings || {}
   };
 };
 
@@ -441,17 +430,12 @@ export default connect(
   mapStateToProps,
   {
     createTransaction,
-    getAgents,
-    getAgency,
-    getCancelOptions,
-    getEndorsementHistory,
     getPolicy,
-    toggleDiary,
+    getEnumsForPolicyWorkflow,
     initializePolicyWorkflow,
     setAppError,
     transferAOR,
-    updatePolicy,
-    updateBillPlan,
-    getEnumsForPolicyWorkflow
+    toggleDiary,
+    updatePolicy
   }
 )(PolicyWorkflow);
