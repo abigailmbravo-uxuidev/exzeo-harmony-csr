@@ -212,6 +212,9 @@ export class PolicyWorkflow extends React.Component {
         effectiveDateChangeReason: data.effectiveDateChangeReason,
         effectiveDate: effectiveDateUTC
       }
+    }).catch(err => {
+      this.props.setAppError(err);
+      this.toggleEffectiveDateChangeModal;
     });
     //This gets scheduled so the status may not be changed yet when calling getPolicy. Reference HAR-5228
     await new Promise(resolve => setTimeout(resolve, 3000));
