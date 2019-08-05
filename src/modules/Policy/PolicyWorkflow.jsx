@@ -190,11 +190,17 @@ export class PolicyWorkflow extends React.Component {
   changeEffectiveDate = async data => {
     const { zipCodeSettings, policy, getPolicy } = this.props;
 
-    const effectiveDateUTC = date.formattedDate(
-      data.effectiveDate,
-      date.FORMATS.SECONDARY,
+    // const effectiveDateUTC = date.formattedDate(
+    //   data.effectiveDate,
+    //   date.FORMATS.SECONDARY,
+    //   zipCodeSettings.timezone
+    // );
+
+    const effectiveDateUTC = date.formatToUTC(
+      date.formatDate(data.effectiveDate, date.FORMATS.SECONDARY),
       zipCodeSettings.timezone
     );
+
     const startResult = await startWorkflow({
       modelName: 'effectiveDateChangeModel',
       data: {
