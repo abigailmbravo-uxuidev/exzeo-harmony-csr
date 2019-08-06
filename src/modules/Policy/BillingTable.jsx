@@ -7,7 +7,7 @@ const BillingTable = ({ initialValues }) => {
     const { summaryLedger, additionalInterests, policyHolders } = initialValues;
     let billToName = '';
 
-    if (summaryLedger.billToType === 'Additional Interest') {
+    if (initialValues.billToType === 'Additional Interest') {
       const ai = additionalInterests.find(
         p => initialValues.billToId === p._id
       );
