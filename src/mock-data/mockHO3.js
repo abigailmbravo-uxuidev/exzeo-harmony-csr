@@ -2012,27 +2012,9 @@ const mock = {
       step: {},
       components: [
         {
-          id: 'cc01470d-8c90-4daf-9ac9-a465ca7184a5',
-          type: '$TITLE',
-          dependencies: [
-            { quoteInputState: 'Initial Data' },
-            { quoteInputState: 'Underwriting' }
-          ],
-          data: {
-            className: 'messages',
-            icon: 'fa fa-exclamation-circle',
-            text: 'Application cannot be sent due to Underwriting Validations'
-          },
-          formData: {},
-          children: []
-        },
-        {
           id: 'caf7a9c2-2ba4-4815-87b6-21c48b596720',
           type: '$SECTION',
-          dependencies: [
-            { quoteInputState: 'Qualified' },
-            { quoteInputState: 'Ready' }
-          ],
+          dependencies: [],
           data: {},
           formData: {},
           children: [

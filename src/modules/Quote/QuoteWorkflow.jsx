@@ -16,6 +16,7 @@ import DiaryPolling from '../../components/DiaryPolling';
 import { QUOTE_RESOURCE_TYPE } from '../../constants/diaries';
 import { toggleDiary } from '../../state/actions/ui.actions';
 import { setAppError } from '../../state/actions/error.actions';
+// import { retrieveQuote, updateQuote } from '../../state/actions/quote.actions';
 import { reviewQuote, updateQuote } from '../../state/actions/quote.actions';
 import { getZipcodeSettings } from '../../state/actions/service.actions';
 import { getEnumsForQuoteWorkflow } from '../../state/actions/list.actions';
@@ -79,11 +80,13 @@ export class QuoteWorkflow extends React.Component {
   componentDidMount() {
     const {
       match,
+      // retrieveQuote,
       reviewQuote,
       getEnumsForQuoteWorkflow,
       getZipCodeSettings
     } = this.props;
     reviewQuote({ quoteNumber: match.params.quoteNumber }).then(quote => {
+      //retrieveQuote({ quoteNumber: match.params.quoteNumber }).then(quote => {
       if (quote && quote.property) {
         const {
           companyCode,
@@ -161,9 +164,12 @@ export class QuoteWorkflow extends React.Component {
     }
   };
 
-  handleReviewQuote = async () => {
+  handleRetrieveQuote = async () => {
+    // const { quote, retrieveQuote } = this.props;
+    // await retrieveQuote({ quoteNumber: quote.quoteNumber });
     const { quote, reviewQuote } = this.props;
     await reviewQuote({ quoteNumber: quote.quoteNumber });
+
     this.setState({ showApplicationModal: true });
   };
 
@@ -285,7 +291,7 @@ export class QuoteWorkflow extends React.Component {
                             submitting
                           )}
                           handlePrimaryClick={this.primaryClickHandler}
-                          handleApplicationClick={this.handleReviewQuote}
+                          handleApplicationClick={this.handleRetrieveQuote}
                         />
                       )}
                       formListeners={() => (
@@ -366,6 +372,7 @@ export default connect(
   mapStateToProps,
   {
     setAppError,
+    // retrieveQuote,
     reviewQuote,
     getZipCodeSettings: getZipcodeSettings,
     getEnumsForQuoteWorkflow,
