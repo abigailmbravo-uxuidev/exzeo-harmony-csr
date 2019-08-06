@@ -9,7 +9,6 @@ import {
 
 const Billing = ({
   initialValues,
-  formValues,
   config,
   customHandlers: { updateBillPlan, getPolicy }
 }) => {
@@ -23,7 +22,7 @@ const Billing = ({
         setPaymentAdded={setPaymentAdded}
       />
       <PolicyBilling
-        formValues={formValues}
+        formValues={initialValues}
         updateBillPlan={updateBillPlan}
         config={config}
       />
@@ -38,7 +37,6 @@ const Billing = ({
 
 Billing.propTypes = {
   initialValues: PropTypes.object.isRequired,
-  formValues: PropTypes.object.isRequired,
   config: PropTypes.object.isRequired,
   formInstance: PropTypes.object.isRequired,
   customHandlers: PropTypes.shape({
