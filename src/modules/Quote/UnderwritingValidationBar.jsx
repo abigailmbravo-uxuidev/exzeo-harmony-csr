@@ -41,6 +41,7 @@ const getGroupedUnderwritingExceptions = defaultMemoize(quoteData => {
           )
         };
       }
+      return data;
     },
     { info: [], underwritingReview: [], fatalError: [] }
   );
