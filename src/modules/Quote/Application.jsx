@@ -1,21 +1,37 @@
 import React from 'react';
-import { ModalPortal } from '@exzeo/core-ui';
+import { ModalPortal, SectionLoader } from '@exzeo/core-ui';
 import SendApplicationModal from './SendApplicationModal';
+import { useVerifyQuote } from './hooks';
 
 const Application = ({ initialValues, customHandlers }) => {
+  const { quote, quoteLoaded } = useVerifyQuote({
+    quoteNumber: initialValues.quoteNumber
+  });
+
+  console.log(quote);
+
+  if (!quoteLoaded) {
+    return <SectionLoader />;
+  }
+
+  const blockQuote =
+    quote.quoteInputState === 'Initial Data' ||
+    quote.quoteInputState === 'Underwriting';
+
   return (
     <div className="detail-wrapper">
-      {Array.isArray(initialValues.underwritingExceptions) &&
-        initialValues.underwritingExceptions.filter(
-          uw => uw.canOverride && !uw.overridden
-        ).length > 0 && (
-          <div className="messages">
-            <div className="message error">
-              <i className="fa fa-exclamation-circle" aria-hidden="true" />
-              &nbsp;Application cannot be sent due to Underwriting Validations.
-            </div>
+      {(blockQuote ||
+        (Array.isArray(quote.underwritingExceptions) &&
+          quote.underwritingExceptions.filter(
+            uw => uw.canOverride && !uw.overridden
+          ).length > 0)) && (
+        <div className="messages">
+          <div className="message error">
+            <i className="fa fa-exclamation-circle" aria-hidden="true" />
+            &nbsp;Application cannot be sent due to Underwriting Validations.
           </div>
-        )}
+        </div>
+      )}
       {customHandlers.showApplicationModal && (
         <ModalPortal>
           <SendApplicationModal

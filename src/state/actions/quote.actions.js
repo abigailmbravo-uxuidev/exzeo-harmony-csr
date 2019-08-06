@@ -92,7 +92,7 @@ export function retrieveQuote({ quoteNumber, quoteId }) {
         'quoteManager.retrieveQuote'
       );
       const result = response.data.result;
-      dispatch(setRetrievedQuote(result));
+      dispatch(setQuote(result));
       return result.quote;
     } catch (error) {
       if (process.env.NODE_ENV !== 'production') {
