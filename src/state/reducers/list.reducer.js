@@ -59,13 +59,16 @@ function setEnums(state, action) {
   );
   const order = orderAnswers.answers;
 
+  const appraisers = action.propertyAppraisalQuestions;
+
   return {
     ...state,
     premiumFinance,
     mortgagee,
     order,
     agent: action.agent,
-    agency: action.agency
+    agency: action.agency,
+    appraisers
   };
 }
 

@@ -269,12 +269,12 @@ describe('Policy State Actions', () => {
       expect(store.getActions()).toEqual(res);
     });
 
-    it('should call dispatch on getBillingOptionsForPolicy', async () => {
+    it('should call dispatch on getPaymentOptionsApplyPayments', async () => {
       httpStub.onCall(0).returns(Promise.resolve({ data: { result: [] } }));
 
       await store.dispatch(policyStateActions.getPaymentOptionsApplyPayments());
       sinon.assert.calledOnce(serviceRunner.callService);
-      const res = [{ paymentOptions: {}, type: 'SET_PAYMENT_OPTIONS' }];
+      const res = [{ paymentOptions: [], type: 'SET_PAYMENT_OPTIONS' }];
       expect(store.getActions()).toEqual(res);
     });
 
