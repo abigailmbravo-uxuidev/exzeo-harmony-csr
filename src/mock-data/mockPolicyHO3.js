@@ -956,9 +956,7 @@ const mock = {
                 className: 'billing',
                 billingHeader: 'Billing',
                 paymentHistoryHeader: 'Payments',
-                extendedProperties: {
-                  subscribe: true
-                }
+                extendedProperties: {}
               },
               formData: {
                 required: true
