@@ -9,6 +9,7 @@ const SendApplicationModal = ({
   closeModal,
   submitApplication
 }) => {
+  const isApplicationReady = initialValues.quoteState === 'Application Ready';
   return (
     <Modal
       size={Modal.sizes.large}
@@ -36,7 +37,7 @@ const SendApplicationModal = ({
             <Button
               className={Button.constants.classNames.primary}
               type="submit"
-              disabled={submitting}
+              disabled={!isApplicationReady || submitting}
               data-test="modal-submit"
             >
               Send

@@ -11,7 +11,11 @@ import { defaultMemoize } from 'reselect';
 import { QUOTE_RESOURCE_TYPE } from '../../constants/diaries';
 import { toggleDiary } from '../../state/actions/ui.actions';
 import { setAppError } from '../../state/actions/error.actions';
-import { retrieveQuote, updateQuote } from '../../state/actions/quote.actions';
+import {
+  retrieveQuote,
+  updateQuote,
+  verifyQuote
+} from '../../state/actions/quote.actions';
 import { getZipcodeSettings } from '../../state/actions/service.actions';
 import { getEnumsForQuoteWorkflow } from '../../state/actions/list.actions';
 import { getQuoteSelector } from '../../state/selectors/quote.selectors';
@@ -163,8 +167,8 @@ export class QuoteWorkflow extends React.Component {
   };
 
   handleRetrieveQuote = async () => {
-    const { quote, retrieveQuote } = this.props;
-    await retrieveQuote({ quoteNumber: quote.quoteNumber });
+    const { quote, verifyQuote } = this.props;
+    await verifyQuote({ quoteNumber: quote.quoteNumber });
     this.setState({ showApplicationModal: true });
   };
 
@@ -361,6 +365,7 @@ export default connect(
   {
     setAppError,
     retrieveQuote,
+    verifyQuote,
     getZipCodeSettings: getZipcodeSettings,
     getEnumsForQuoteWorkflow,
     updateQuote,

@@ -1,23 +1,12 @@
 import React from 'react';
-import { ModalPortal, SectionLoader } from '@exzeo/core-ui';
+import { ModalPortal } from '@exzeo/core-ui';
 import SendApplicationModal from './SendApplicationModal';
-import { useVerifyQuote } from './hooks';
 
 const Application = ({ initialValues, customHandlers }) => {
-  const { quote, quoteLoaded } = useVerifyQuote({
-    quoteNumber: initialValues.quoteNumber
-  });
-
-  console.log(quote);
-
-  if (!quoteLoaded) {
-    return <SectionLoader />;
-  }
-
   return (
     <div className="detail-wrapper">
-      {Array.isArray(quote.underwritingExceptions) &&
-        quote.underwritingExceptions.filter(
+      {Array.isArray(initialValues.underwritingExceptions) &&
+        initialValues.underwritingExceptions.filter(
           uw => uw.canOverride && !uw.overridden
         ).length > 0 && (
           <div className="messages">
