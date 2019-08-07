@@ -953,10 +953,11 @@ const mock = {
               dependencies: [],
               data: {
                 component: '$BILLING',
-                className: 'billing',
-                billingHeader: 'Billing',
-                paymentHistoryHeader: 'Payments',
-                extendedProperties: {}
+                extendedProperties: {
+                  billingHeader: 'Billing',
+                  billingClassName: 'billing',
+                  paymentHistoryHeader: 'Payments'
+                }
               },
               formData: {
                 required: true

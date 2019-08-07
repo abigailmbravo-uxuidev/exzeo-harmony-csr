@@ -24,12 +24,13 @@ const Billing = ({
       <PolicyBilling
         formValues={initialValues}
         updateBillPlan={updateBillPlan}
-        config={config}
+        className={config.extendedProperties.billingClassName}
+        header={config.extendedProperties.billingHeader}
       />
       <PaymentHistoryTable
         initialValues={initialValues}
         paymentAdded={paymentAdded}
-        config={config}
+        header={config.extendedProperties.paymentHistoryHeader}
       />
     </React.Fragment>
   );
