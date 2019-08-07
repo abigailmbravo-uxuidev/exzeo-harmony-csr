@@ -290,3 +290,41 @@ export function getQuote({ quoteNumber, quoteId }) {
     }
   };
 }
+
+/**
+ *
+ * @param quoteNumber
+ * @param quoteId
+ * @returns {Function}
+ */
+export function verifyQuote({ quoteNumber, quoteId }) {
+  return async dispatch => {
+    try {
+      const config = {
+        exchangeName: 'harmony',
+        routingKey: 'harmony.quote.verifyQuote',
+        data: {
+          quoteId,
+          quoteNumber
+        }
+      };
+
+      dispatch(toggleLoading(true));
+      const response = await serviceRunner.callService(
+        config,
+        'quoteManager.verifyQuote'
+      );
+      const result = response.data.result;
+      dispatch(setQuote(result));
+      return result.quote;
+    } catch (error) {
+      if (process.env.NODE_ENV !== 'production') {
+        console.log('Error with verify quote: ', error);
+      }
+      dispatch(errorActions.setAppError(error));
+      return null;
+    } finally {
+      dispatch(toggleLoading(false));
+    }
+  };
+}
