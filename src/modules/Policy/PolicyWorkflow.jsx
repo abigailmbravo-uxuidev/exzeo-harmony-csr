@@ -130,7 +130,7 @@ export class PolicyWorkflow extends React.Component {
   };
 
   handleGandalfSubmit = async values => {
-    const { location } = this.props;
+    const { location, zipCodeSettings } = this.props;
     const { currentRouteName, currentStepNumber } = getCurrentStepAndPage(
       location.pathname
     );
@@ -138,7 +138,8 @@ export class PolicyWorkflow extends React.Component {
       data: values,
       options: {
         step: currentStepNumber,
-        cancelPolicy: currentRouteName === 'cancel'
+        cancelPolicy: currentRouteName === 'cancel',
+        zipCodeSettings
       }
     });
   };

@@ -846,15 +846,15 @@ export function updatePolicy({ data = {}, options = {} }) {
         const submitData = {
           policyID: data.policyID,
           policyNumber: data.policyNumber,
-          cancelDate: date.formatDate(
-            data.cancel.effectiveDate,
-            date.FORMATS.SECONDARY
+          cancelDate: date.formatToUTC(
+            date.formatDate(data.cancel.effectiveDate, date.FORMATS.SECONDARY),
+            options.zipCodeSettings.timezone
           ),
           cancelReason: data.cancelReason,
           transactionType: `Pending ${data.cancel.cancelType}`,
-          equityDate: date.formatDate(
-            data.cancel.equityDate,
-            date.FORMATS.SECONDARY
+          equityDate: date.formatToUTC(
+            date.formatDate(data.cancel.equityDate, date.FORMATS.SECONDARY),
+            options.zipCodeSettings.timezone
           ),
           billingStatus: data.summaryLedger.status.code
         };
