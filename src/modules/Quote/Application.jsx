@@ -14,24 +14,19 @@ const Application = ({ initialValues, customHandlers }) => {
     return <SectionLoader />;
   }
 
-  const blockQuote =
-    quote.quoteInputState === 'Initial Data' ||
-    quote.quoteInputState === 'Underwriting';
-
   return (
     <div className="detail-wrapper">
-      {(blockQuote ||
-        (Array.isArray(quote.underwritingExceptions) &&
-          quote.underwritingExceptions.filter(
-            uw => uw.canOverride && !uw.overridden
-          ).length > 0)) && (
-        <div className="messages">
-          <div className="message error">
-            <i className="fa fa-exclamation-circle" aria-hidden="true" />
-            &nbsp;Application cannot be sent due to Underwriting Validations.
+      {Array.isArray(quote.underwritingExceptions) &&
+        quote.underwritingExceptions.filter(
+          uw => uw.canOverride && !uw.overridden
+        ).length > 0 && (
+          <div className="messages">
+            <div className="message error">
+              <i className="fa fa-exclamation-circle" aria-hidden="true" />
+              &nbsp;Application cannot be sent due to Underwriting Validations.
+            </div>
           </div>
-        </div>
-      )}
+        )}
       {customHandlers.showApplicationModal && (
         <ModalPortal>
           <SendApplicationModal
