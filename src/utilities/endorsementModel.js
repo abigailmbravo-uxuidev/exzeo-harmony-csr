@@ -1,4 +1,5 @@
 import moment from 'moment-timezone';
+import _cloneDeep from 'lodash/cloneDeep';
 
 const BUSINESS = {
   question: 'Is a business conducted on the property?',
@@ -59,7 +60,8 @@ export function initializeEndorsementForm(policy = {}) {
   const personalProperty = policy.coverageLimits.personalProperty.amount;
 
   // Use the policy object as initial values for Endorsement Form
-  const values = { ...policy };
+  // spread operator was still mutating the redux state of the object passed in
+  const values = _cloneDeep(policy);
   // Initialize values for form
   values.clearFields = false;
   values.transactionType = 'Endorsement';
