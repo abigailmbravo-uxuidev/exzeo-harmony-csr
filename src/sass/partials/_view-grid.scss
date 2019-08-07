@@ -800,6 +800,18 @@ section {
           }
         }
       }
+
+      .table-view {
+        min-height: 118px;
+
+        .total {
+          display: flex;
+          justify-content: flex-end;
+          margin: $padding 0;
+          color: $bright-blue-darken-04;
+          font-weight: $font-weight-bold;
+        }
+      }
     }
   }
 }
