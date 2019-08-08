@@ -67,7 +67,7 @@ const mock = {
               dependencies: [],
               data: {
                 size: '9',
-                component: '$AGENCY_AGENT_SELECT',
+                component: '$AGENCY_SELECT',
                 dataSource: 'agencies',
                 extendedProperties: {
                   subscribe: true
