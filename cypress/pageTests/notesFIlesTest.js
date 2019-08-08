@@ -6,7 +6,7 @@ const addNoteCheck = text => cy.findDataTag('new-note').click({ force: true })
 export default () => {
   cy.get('td.note div').contains('Quote State Changed: Quote Created')
     .get('td.note div').contains('Quote State Changed: Quote Qualified')
-    .get('td.note div').contains('Quote State Changed: Application Ready');
+    .get('td.note div').contains('Quote State Changed: Application Started');
 
   addNoteCheck('test note one');
 
@@ -19,7 +19,7 @@ export default () => {
     .get('.new-diary-file').should('not.exist')
     .get('button').contains('Diaries').click()
     .get('td.message').contains('new diary')
-    .checkQuoteState('Application Ready')
+    .checkQuoteState('Application Started')
     .goToNav('coverage');
 
   addNoteCheck('another note');

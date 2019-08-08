@@ -239,6 +239,41 @@
           }
         }
       }
+
+      &.transfer-aor {
+        .card-block {
+          overflow: visible;
+        }
+        .agencyCode {
+          z-index: 20;
+          .Select.TypeAhead {
+            z-index: 20;
+            .react-select__menu {
+              .react-select__menu-list {
+                max-height: 160px;
+              }
+            }
+          }
+        }
+        .agentCode {
+          z-index: 10;
+          .Select.TypeAhead {
+            z-index: 10;
+            .react-select__menu {
+              .react-select__menu-list {
+                max-height: 90px;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  &.modal-sm {
+    .card {
+      max-width: 26rem;
+      width: 30%;
     }
   }
 

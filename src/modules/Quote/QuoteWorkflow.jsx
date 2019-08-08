@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Loader, FormSpy, remoteSubmit } from '@exzeo/core-ui';
 import {
@@ -10,10 +9,6 @@ import {
 
 import { defaultMemoize } from 'reselect';
 
-import UnderwritingValidationBar from './UnderwritingValidationBar';
-import App from '../../components/AppWrapper';
-import OpenDiariesBar from '../../components/OpenDiariesBar';
-import DiaryPolling from '../../components/DiaryPolling';
 import { QUOTE_RESOURCE_TYPE } from '../../constants/diaries';
 import { toggleDiary } from '../../state/actions/ui.actions';
 import { setAppError } from '../../state/actions/error.actions';
@@ -22,9 +17,12 @@ import { getZipcodeSettings } from '../../state/actions/service.actions';
 import { getEnumsForQuoteWorkflow } from '../../state/actions/list.actions';
 import { getQuoteSelector } from '../../state/selectors/quote.selectors';
 import { getDiariesForTable } from '../../state/selectors/diary.selectors';
+import { UNQUALIFIED_STATE } from '../../utilities/quoteState';
 
-import MOCK_HO3 from '../../mock-data/mockHO3';
-import MOCK_AF3 from '../../mock-data/mockAF3';
+import App from '../../components/AppWrapper';
+import OpenDiariesBar from '../../components/OpenDiariesBar';
+import DiaryPolling from '../../components/DiaryPolling';
+import NavigationPrompt from '../../components/NavigationPrompt';
 
 import {
   ROUTES_NOT_HANDLED_BY_GANDALF,
@@ -35,8 +33,11 @@ import Application from './Application';
 import PolicyHolders from './PolicyHolders';
 import NotesFiles from '../NotesFiles';
 import QuoteFooter from './QuoteFooter';
-import NavigationPrompt from './NavigationPrompt';
-import { UNQUALIFIED_STATE } from '../../utilities/quoteState';
+import UnderwritingValidationBar from './UnderwritingValidationBar';
+
+// TODO these will be removed in subsequent PR's
+import MOCK_HO3 from '../../mock-data/mockHO3';
+import MOCK_AF3 from '../../mock-data/mockAF3';
 
 const getCurrentStepAndPage = defaultMemoize(pathname => {
   const currentRouteName = pathname.split('/')[3];
@@ -343,13 +344,6 @@ export class QuoteWorkflow extends React.Component {
     );
   }
 }
-
-QuoteWorkflow.propTypes = {
-  children: PropTypes.oneOfType([
-    PropTypes.arrayOf(PropTypes.node),
-    PropTypes.node
-  ])
-};
 
 const mapStateToProps = state => {
   return {

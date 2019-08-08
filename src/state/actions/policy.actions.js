@@ -1,12 +1,16 @@
 // temporary full path import until we can find a better way to mock network requests
 import * as serviceRunner from '@exzeo/core-ui/src/@Harmony/Domain/Api/serviceRunner';
+import { date } from '@exzeo/core-ui/src';
 
 import { convertToRateData } from '../../utilities/endorsementModel';
+
 import * as types from './actionTypes';
 import * as errorActions from './error.actions';
 import * as cgActions from './cg.actions';
 import endorsementUtils from '../../utilities/endorsementModel';
-
+import { getZipcodeSettings } from './service.actions';
+import { toggleLoading } from './ui.actions';
+import cg from '../../utilities/cg';
 /**
  * Reset policyState
  * @returns {{type: string}}
@@ -139,6 +143,7 @@ export function getPolicy(policyNumber) {
       const summaryLedger = await fetchSummaryLedger(policyNumber);
 
       dispatch(setPolicy(policy, summaryLedger));
+      return { policy, summaryLedger };
     } catch (error) {
       dispatch(errorActions.setAppError(error));
     }
@@ -517,7 +522,7 @@ export async function fetchPaymentOptionsApplyPayments() {
     );
     return response.data && response.data.paymentOptions
       ? response.data.paymentOptions
-      : {};
+      : [];
   } catch (error) {
     throw error;
   }
@@ -737,6 +742,157 @@ export function getPoliciesForAgency({
       dispatch(setPoliciesForAgency(results.policies));
     } catch (error) {
       dispatch(errorActions.setAppError(error));
+    }
+  };
+}
+
+/**
+ *
+ * @param policyNumber
+ * @param agencyCode
+ * @param agentCode
+ * @returns {Function}
+ */
+export function transferAOR({ policyNumber, agencyCode, agentCode }) {
+  return async dispatch => {
+    try {
+      const transferData = {
+        service: 'policy-manager',
+        method: 'POST',
+        path: 'update-agent-of-record',
+        data: {
+          agencyCode,
+          agentCode,
+          policyNumber
+        }
+      };
+      await serviceRunner.callService(transferData);
+      dispatch(getPolicy(policyNumber));
+    } catch (error) {
+      dispatch(errorActions.setAppError(error));
+    }
+  };
+}
+
+/**
+ *
+ * @param policyNumber
+ * @returns {Function}
+ */
+export function initializePolicyWorkflow(policyNumber) {
+  return async dispatch => {
+    try {
+      const { summaryLedger, policy } = await dispatch(getPolicy(policyNumber));
+      dispatch(getEffectiveDateChangeReasons());
+      dispatch(getPaymentOptionsApplyPayments());
+      dispatch(getCancelOptions());
+      dispatch(getEndorsementHistory(policyNumber));
+      dispatch(
+        getZipcodeSettings(
+          policy.companyCode,
+          policy.state,
+          policy.product,
+          policy.property.physicalAddress.zip
+        )
+      );
+
+      if (summaryLedger) {
+        const paymentOptions = {
+          effectiveDate: policy.effectiveDate,
+          policyHolders: policy.policyHolders,
+          additionalInterests: policy.additionalInterests,
+          fullyEarnedFees:
+            policy.rating.worksheet.fees.empTrustFee +
+            policy.rating.worksheet.fees.mgaPolicyFee,
+          currentPremium: summaryLedger.currentPremium
+        };
+        dispatch(getBillingOptionsForPolicy(paymentOptions));
+      }
+    } catch (error) {
+      dispatch(errorActions.setAppError(error));
+    }
+  };
+}
+
+async function updateAdditionalInterest({
+  additionalInterest,
+  policyID,
+  policyNumber,
+  transactionType,
+  dispatch
+}) {
+  const submitData = {
+    ...additionalInterest,
+    policyID,
+    policyNumber,
+    additionalInterestId: additionalInterest._id,
+    transactionType
+  };
+  await dispatch(createTransaction(submitData));
+}
+
+/**
+ *
+ * @param data
+ * @param options
+ * @returns {Function}
+ */
+export function updatePolicy({ data = {}, options = {} }) {
+  return async function(dispatch) {
+    try {
+      dispatch(toggleLoading(true));
+
+      if (options.cancelPolicy) {
+        const submitData = {
+          policyID: data.policyID,
+          policyNumber: data.policyNumber,
+          cancelDate: date.formatToUTC(
+            date.formatDate(data.cancel.effectiveDate, date.FORMATS.SECONDARY),
+            options.zipCodeSettings.timezone
+          ),
+          cancelReason: data.cancelReason,
+          transactionType: `Pending ${data.cancel.cancelType}`,
+          equityDate: date.formatToUTC(
+            date.formatDate(data.cancel.equityDate, date.FORMATS.SECONDARY),
+            options.zipCodeSettings.timezone
+          ),
+          billingStatus: data.summaryLedger.status.code
+        };
+        const startResult = await cg.startWorkflow({
+          modelName: 'cancelPolicyModelUI',
+          data: {
+            policyNumber: data.policyNumber,
+            policyID: data.policyID
+          }
+        });
+
+        await cg.completeTask({
+          workflowId: startResult.modelInstanceId,
+          stepName: 'cancelPolicySubmit',
+          data: submitData
+        });
+
+        await dispatch(getPolicy(data.policyNumber));
+      }
+
+      if (data.selectedAI) {
+        await updateAdditionalInterest({
+          additionalInterest: data.selectedAI,
+          policyID: data.policyID,
+          policyNumber: data.policyNumber,
+          transactionType: data.transactionType,
+          dispatch
+        });
+        await dispatch(getPolicy(data.policyNumber));
+      }
+    } catch (error) {
+      if (process.env.NODE_ENV !== 'production') {
+        console.log('Error updating policy: ', error);
+      }
+      dispatch(errorActions.setAppError(error));
+      return null;
+    } finally {
+      dispatch(toggleLoading(false));
     }
   };
 }
