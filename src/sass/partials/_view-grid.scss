@@ -642,6 +642,15 @@ section {
           }
           &.billing {
             dl {
+              div {
+                dt {
+                  white-space: nowrap;
+                }
+                dd {
+                  overflow: hidden;
+                  max-width: 70%;
+                }
+              }
               &:nth-of-type(odd) {
                 div {
                   dt,
