@@ -3,11 +3,14 @@ import { ModalPortal } from '@exzeo/core-ui';
 import SendApplicationModal from './SendApplicationModal';
 
 const Application = ({ initialValues, customHandlers }) => {
+  const isApplicationReady = initialValues.quoteState === 'Application Ready';
   return (
     <div className="detail-wrapper">
       {Array.isArray(initialValues.underwritingExceptions) &&
         initialValues.underwritingExceptions.filter(
-          uw => uw.canOverride && !uw.overridden
+          uw =>
+            (uw.canOverride && !uw.overridden) ||
+            (uw.action === 'Fatal Error' && !uw.canOverride)
         ).length > 0 && (
           <div className="messages">
             <div className="message error">
@@ -16,7 +19,7 @@ const Application = ({ initialValues, customHandlers }) => {
             </div>
           </div>
         )}
-      {customHandlers.showApplicationModal && (
+      {customHandlers.showApplicationModal && isApplicationReady && (
         <ModalPortal>
           <SendApplicationModal
             initialValues={initialValues}

@@ -61,7 +61,9 @@ export const getQuoteSelector = createSelector(
     quoteData.removeSecondary = false;
     quoteData.hasActiveExceptions =
       quoteData.underwritingExceptions.filter(
-        uw => uw.canOverride && !uw.overridden
+        uw =>
+          (uw.canOverride && !uw.overridden) ||
+          (uw.action === 'Fatal Error' && !uw.canOverride)
       ).length > 0;
     quoteData.hasUWError =
       quoteData.underwritingExceptions.filter(
