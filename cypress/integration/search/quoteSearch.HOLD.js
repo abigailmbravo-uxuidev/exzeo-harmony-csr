@@ -1,6 +1,6 @@
 import { setRouteAliases, confirmPolicyOrQuote } from '../../helpers';
 
-describe('Policy Search testing', () => {
+describe('Quote Search testing', () => {
   const fields = [
     { name: 'firstName', data: 'batman' },
     { name: 'lastName', data: 'robin' },
