@@ -8,7 +8,7 @@ WORKDIR /app
 
 COPY cypress/package.json /app/package.json
 RUN echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" >> .npmrc
-RUN npm ci
+RUN npm install
 
 ADD cypress.json /app/
 ADD cypress/ /app/cypress
