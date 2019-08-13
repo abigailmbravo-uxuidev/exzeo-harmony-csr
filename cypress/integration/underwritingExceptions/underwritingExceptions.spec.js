@@ -40,7 +40,7 @@ describe('Underwriting Error Testing', () => {
     cy.get('section.msg-caution .fa-ul li label').should('contain', 'Override')
     // Override the exception manually.
       .get('section.msg-caution .fa-ul li input').should('have.attr', 'value', 'false').click()
-      .get('.msg-caution button[type="submit"]').click()
+      .get('.uw-validation-header button[type="submit"]').click()
       .wait('@updateQuote').then(({ response: { body: { result }}}) => {
         // Confirm that there exists an overridden exception
         expect(result.underwritingExceptions.filter(({ overridden }) => overridden).length).to.equal(1);
