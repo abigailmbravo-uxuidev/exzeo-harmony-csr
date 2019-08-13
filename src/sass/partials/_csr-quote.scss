@@ -61,7 +61,7 @@
             flex-grow: 1;
             flex-shrink: 1;
             flex-wrap: nowrap;
-            padding: $padding;
+            //padding: $padding;
             width: 100%;
 
             .modal.quote-summary {
@@ -75,6 +75,7 @@
             form {
               flex-grow: 0;
               flex-shrink: 0;
+              padding: $padding;
 
               > section {
                 border-bottom: 1px dashed $green-darken-04;

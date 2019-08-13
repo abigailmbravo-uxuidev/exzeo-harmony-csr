@@ -21,9 +21,9 @@ import NoteUploader from './components/NoteUploader';
 import ConfirmPopup from './components/Common/ConfirmPopup';
 import DiaryModal from './components/DiaryModal';
 import Bootstrap from './components/Bootstrap';
-import PolicyModule from './modules/Policy';
 import Agency from './modules/Agency';
 import { QuoteLanding, QuoteWorkflow } from './modules/Quote';
+import { PolicyWorkflow } from './modules/Policy';
 
 class Routes extends Component {
   setBackStep = (goToNext, callback) => {
@@ -156,7 +156,7 @@ class Routes extends Component {
               />
               <Route
                 path="/policy/:policyNumber"
-                render={props => <PolicyModule auth={auth} {...props} />}
+                render={props => <PolicyWorkflow auth={auth} {...props} />}
               />
               <Route
                 path="/agency/:agencyCode/:branchCode"

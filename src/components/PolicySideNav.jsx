@@ -1,16 +1,18 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { SideNavigation } from '@exzeo/core-ui/src/@Harmony';
 
-import { toggleNote, toggleDiary } from '../../state/actions/ui.actions';
-import { fetchNotes } from '../../state/actions/notes.actions';
-import { startWorkflow } from '../../state/actions/cg.actions';
-import { setAppError } from '../../state/actions/error.actions';
-import { POLICY_RESOURCE_TYPE } from '../../constants/diaries';
+import {
+  toggleNote,
+  toggleDiary,
+  setNotesSynced
+} from '../state/actions/ui.actions';
+import { startWorkflow } from '../state/actions/cg.actions';
+import { setAppError } from '../state/actions/error.actions';
+import { POLICY_RESOURCE_TYPE } from '../constants/diaries';
 
-import PlusButton from '../PlusButton';
+import PlusButton from './PlusButton';
 import GenerateDocsForm from './GenerateDocsForm';
 
 const getNavLinks = ({ policyNumber }) => [
@@ -65,7 +67,6 @@ export class SideNav extends React.Component {
 
   newDiary = () => {
     const {
-      actions,
       toggleDiary,
       policy: { companyCode, state, product, policyNumber, endDate }
     } = this.props;
@@ -81,7 +82,6 @@ export class SideNav extends React.Component {
 
   newNote = () => {
     const {
-      actions,
       toggleNote,
       policy: { companyCode, state, product, policyNumber, sourceNumber }
     } = this.props;
@@ -101,14 +101,14 @@ export class SideNav extends React.Component {
   };
 
   updateNotes = () => {
-    const { actions, policy, fetchNotes } = this.props;
+    const { setNotesSynced } = this.props;
     return () => {
-      fetchNotes([policy.policyNumber, policy.sourceNumber], 'policyNumber');
+      setNotesSynced();
     };
   };
 
   render() {
-    const { actions, policy, startWorkflow, setAppError } = this.props;
+    const { policy, startWorkflow, setAppError } = this.props;
     return (
       <nav className="site-nav">
         <SideNavigation
@@ -167,7 +167,7 @@ export default connect(
     startWorkflow,
     toggleNote,
     toggleDiary,
-    fetchNotes,
-    setAppError
+    setAppError,
+    setNotesSynced
   }
 )(SideNav);
