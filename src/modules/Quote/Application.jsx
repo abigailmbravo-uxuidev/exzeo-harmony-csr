@@ -1,9 +1,9 @@
 import React from 'react';
 import { ModalPortal } from '@exzeo/core-ui';
 import SendApplicationModal from './SendApplicationModal';
+import { isApplicationReady } from '../../utilities/quoteState';
 
 const Application = ({ initialValues, customHandlers }) => {
-  const isApplicationReady = initialValues.quoteState === 'Application Ready';
   return (
     <div className="detail-wrapper">
       {Array.isArray(initialValues.underwritingExceptions) &&
@@ -19,15 +19,16 @@ const Application = ({ initialValues, customHandlers }) => {
             </div>
           </div>
         )}
-      {customHandlers.showApplicationModal && isApplicationReady && (
-        <ModalPortal>
-          <SendApplicationModal
-            initialValues={initialValues}
-            submitApplication={customHandlers.handleSubmit}
-            closeModal={() => customHandlers.setShowApplicationModal(false)}
-          />
-        </ModalPortal>
-      )}
+      {customHandlers.showApplicationModal &&
+        isApplicationReady(initialValues.quoteState) && (
+          <ModalPortal>
+            <SendApplicationModal
+              initialValues={initialValues}
+              submitApplication={customHandlers.handleSubmit}
+              closeModal={() => customHandlers.setShowApplicationModal(false)}
+            />
+          </ModalPortal>
+        )}
     </div>
   );
 };

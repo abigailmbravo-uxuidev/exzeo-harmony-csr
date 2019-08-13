@@ -23,3 +23,6 @@ export const UNQUALIFIED_STATE = [
   QUOTE_INPUT_STATE.InitialData,
   QUOTE_INPUT_STATE.Underwriting
 ];
+
+export const isApplicationReady = quoteState =>
+  quoteState === QUOTE_STATE.ApplicationReady;
