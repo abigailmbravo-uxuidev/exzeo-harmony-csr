@@ -8,9 +8,7 @@ const Application = ({ initialValues, customHandlers }) => {
     <div className="detail-wrapper">
       {Array.isArray(initialValues.underwritingExceptions) &&
         initialValues.underwritingExceptions.filter(
-          uw =>
-            (uw.canOverride && !uw.overridden) ||
-            (uw.action === 'Fatal Error' && !uw.canOverride)
+          uw => (uw.canOverride && !uw.overridden) || !uw.canOverride
         ).length > 0 && (
           <div className="messages">
             <div className="message error">

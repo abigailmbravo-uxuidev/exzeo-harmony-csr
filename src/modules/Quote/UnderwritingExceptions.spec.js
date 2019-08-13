@@ -3,7 +3,7 @@ import { shallow } from 'enzyme';
 
 import UnderwritingExceptions from './UnderwritingExceptions';
 
-const warnings = [
+const info = [
   {
     _id: 'name3',
     canOverride: false,
@@ -11,14 +11,14 @@ const warnings = [
     action: 'Missing Info'
   }
 ];
-const overridableExceptions = [
+const underwritingReview = [
   {
     _id: 'name1',
     canOverride: true,
     fields: [{ name: 'rating.netPremium', value: 'null' }]
   }
 ];
-const nonOverridableExceptions = [
+const fatalError = [
   {
     _id: 'name2',
     canOverride: false,
@@ -29,18 +29,18 @@ const nonOverridableExceptions = [
 describe('Testing UnderwritingExceptions component', () => {
   it('should render given correctly formatted props', () => {
     const warningWrapper = shallow(
-      <UnderwritingExceptions exceptionLevel="warning" exceptions={warnings} />
+      <UnderwritingExceptions exceptionLevel="info" exceptions={info} />
     );
     const overridableWrapper = shallow(
       <UnderwritingExceptions
-        exceptionLevel="overridable"
-        exceptions={overridableExceptions}
+        exceptionLevel="underwritingReview"
+        exceptions={underwritingReview}
       />
     );
     const nonOverridableWrapper = shallow(
       <UnderwritingExceptions
-        exceptionLevel="nonOverridable"
-        exceptions={nonOverridableExceptions}
+        exceptionLevel="fatalError"
+        exceptions={fatalError}
       />
     );
 
