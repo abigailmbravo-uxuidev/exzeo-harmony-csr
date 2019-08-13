@@ -12,7 +12,7 @@ export const navigateThroughNewQuote = (address = user.address1) => {
     // This makes it so we don't open up a new window
     .findDataTag(address).then($a => {
       $a.prop('onclick', () => cy.visit($a.prop('dataset').url)).click();
-      cy.wait('@createQuote').wait('@reviewQuote').wait('@getZipcodeSettings');
+      cy.wait('@createQuote').wait('@retrieveQuote').wait('@getZipcodeSettings');
     });
 };
 
@@ -45,5 +45,7 @@ export const fillOutApplication = () => cy.task('log', 'Filling out Application 
 
 export const navigateThroughDocusign = () =>
   cy.task('log', 'Navigating through Docusign').clickSubmit('body', 'send-application')
+    .wait('@verifyQuote')
+    .checkQuoteState('Application Ready')
     .clickSubmit('#sendApplicationForm', 'modal-submit').wait('@sendApplication')
     .wait('@updateQuote').get('button[data-test="send-application"]').should('be.disabled');

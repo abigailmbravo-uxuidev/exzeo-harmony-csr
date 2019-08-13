@@ -1,2 +1,2 @@
 export default () =>
-  cy.checkQuoteState('Application Ready');
+  cy.checkQuoteState('Application Started');
