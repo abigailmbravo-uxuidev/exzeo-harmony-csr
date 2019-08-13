@@ -42,7 +42,8 @@ describe('Application Testing', () => {
       ...props,
       quote: {
         ...props.quote,
-        quoteInputState: 'Qualified'
+        quoteInputState: 'Qualified',
+        quoteState: 'Application Ready'
       }
     };
     const { getByText, getByTestId } = renderWithForm(

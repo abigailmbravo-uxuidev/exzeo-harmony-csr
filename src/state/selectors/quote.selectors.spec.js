@@ -50,7 +50,11 @@ describe('Test Quote Selectors', () => {
           quote: {
             ...quote,
             underwritingExceptions: [
-              { overridden: false, actions: 'Not Missing Info' }
+              {
+                canOverride: false,
+                overridden: false,
+                actions: 'Not Missing Info'
+              }
             ]
           }
         }
@@ -65,7 +69,7 @@ describe('Test Quote Selectors', () => {
           quote: {
             ...quote,
             underwritingExceptions: [
-              { overridden: true, actions: 'Missing Info' }
+              { canOverride: true, overridden: true, actions: 'Missing Info' }
             ]
           }
         }

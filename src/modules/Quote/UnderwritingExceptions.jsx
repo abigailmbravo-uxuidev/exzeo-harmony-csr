@@ -60,7 +60,7 @@ class UnderwritingExceptions extends React.Component {
 }
 
 UnderwritingExceptions.propTypes = {
-  exceptionLevel: propTypes.oneOf(['warning', 'overridable', 'nonOverridable'])
+  exceptionLevel: propTypes.oneOf(['info', 'underwritingReview', 'fatalError'])
     .isRequired,
   exceptions: propTypes.arrayOf(
     propTypes.shape({
