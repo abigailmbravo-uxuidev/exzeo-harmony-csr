@@ -3,13 +3,13 @@ import PropTypes from 'prop-types';
 
 import SendApplicationForm from './SendApplicationForm';
 import { Modal, Button } from '@exzeo/core-ui/src';
+import { isApplicationReady } from '../../utilities/quoteState';
 
 const SendApplicationModal = ({
   initialValues,
   closeModal,
   submitApplication
 }) => {
-  const isApplicationReady = initialValues.quoteState === 'Application Ready';
   return (
     <Modal
       size={Modal.sizes.large}
@@ -37,7 +37,9 @@ const SendApplicationModal = ({
             <Button
               className={Button.constants.classNames.primary}
               type="submit"
-              disabled={!isApplicationReady || submitting}
+              disabled={
+                !isApplicationReady(initialValues.quoteState) || submitting
+              }
               data-test="modal-submit"
             >
               Send
