@@ -382,7 +382,7 @@ const mock = {
               type: '$SECTION',
               dependencies: [],
               data: {
-                className: 'home-location'
+                className: 'home-location-af3'
               },
               formData: {},
               children: [
