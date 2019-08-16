@@ -191,13 +191,14 @@ export class QuoteWorkflow extends React.Component {
     if (currentStepNumber === PAGE_ROUTING.application) {
       return (
         UNQUALIFIED_STATE.includes(quote.quoteInputState) ||
-        quote.hasActiveExceptions
+        quote.blockSendApplication
       );
     }
 
     if (currentStepNumber === PAGE_ROUTING.summary) {
       return (
-        UNQUALIFIED_STATE.includes(quote.quoteInputState) || quote.hasUWError
+        UNQUALIFIED_STATE.includes(quote.quoteInputState) ||
+        quote.blockQuoteSummary
       );
     }
 

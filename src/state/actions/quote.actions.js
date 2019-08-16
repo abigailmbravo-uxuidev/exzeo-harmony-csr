@@ -156,8 +156,8 @@ function formatQuoteForSubmit(data, options) {
     remainOnStep,
     shouldNav,
     removeSecondary,
-    hasActiveExceptions,
-    hasUWError,
+    blockSendApplication,
+    blockQuoteSummary,
     editingDisabled,
     ...quote
   } = data;

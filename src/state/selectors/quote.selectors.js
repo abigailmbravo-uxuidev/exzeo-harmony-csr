@@ -59,13 +59,15 @@ export const getQuoteSelector = createSelector(
       FORMATS.SECONDARY
     );
     quoteData.removeSecondary = false;
-    quoteData.hasActiveExceptions =
+    quoteData.blockSendApplication =
       quoteData.underwritingExceptions.filter(
         uw => (uw.canOverride && !uw.overridden) || !uw.canOverride
       ).length > 0;
-    quoteData.hasUWError =
+    quoteData.blockQuoteSummary =
       quoteData.underwritingExceptions.filter(
-        uw => !uw.overridden && uw.action !== 'Missing Info'
+        uw =>
+          !uw.overridden &&
+          !['Missing Info', 'Informational'].includes(uw.action)
       ).length > 0;
 
     quoteData.editingDisabled =

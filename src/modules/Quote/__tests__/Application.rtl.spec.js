@@ -21,6 +21,7 @@ describe('Application Testing', () => {
       quote: {
         ...props.quote,
         quoteInputState: 'Qualified',
+        blockSendApplication: true,
         underwritingExceptions: [underwritingException]
       }
     };
