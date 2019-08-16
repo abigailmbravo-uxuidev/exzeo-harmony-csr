@@ -66,8 +66,8 @@ export default {
     country: { displayText: 'test country' }
   },
   policyHolders: [policyHolder],
-  hasUWError: false,
-  hasActiveExceptions: false,
+  blockQuoteSummary: false,
+  blockSendApplication: false,
   removeSecondary: false,
   editingDisabled: false
 };

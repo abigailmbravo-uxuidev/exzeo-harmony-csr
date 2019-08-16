@@ -10,14 +10,12 @@ const EXCEPTION_LEVELS = {
     listIconClass: 'fa-li fa fa-info-circle'
   },
   fatalError: {
-    canShowButton: true,
     sectionClass: 'msg-error',
     iconClass: 'fa fa-exclamation-circle',
     label: 'Error',
     listIconClass: 'fa-li fa fa-exclamation-circle'
   },
   underwritingReview: {
-    canShowButton: true,
     sectionClass: 'msg-caution',
     iconClass: 'fa fa-exclamation-triangle',
     label: 'Caution',

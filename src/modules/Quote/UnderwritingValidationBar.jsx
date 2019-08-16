@@ -5,47 +5,50 @@ import { defaultMemoize } from 'reselect';
 
 import UnderwritingExceptions from './UnderwritingExceptions';
 
-const getGroupedUnderwritingExceptions = defaultMemoize(quoteData => {
-  if (!quoteData || !Array.isArray(quoteData.underwritingExceptions)) return [];
+const getGroupedUnderwritingExceptions = defaultMemoize(
+  underwritingExceptions => {
+    if (!underwritingExceptions || !Array.isArray(underwritingExceptions))
+      return [];
 
-  return quoteData.underwritingExceptions.reduce(
-    (data, exception) => {
-      const uwException = {
-        ...exception,
-        overridden: !!exception.overridden
-      };
-      if (
-        uwException.action === 'Missing Info' ||
-        uwException.action === 'Informational'
-      ) {
-        return {
-          ...data,
-          info: [...data.info, uwException]
+    return underwritingExceptions.reduce(
+      (data, exception) => {
+        const uwException = {
+          ...exception,
+          overridden: !!exception.overridden
         };
-      } else if (uwException.action === 'Fatal Error') {
-        return {
-          ...data,
-          fatalError: orderBy(
-            [...data.fatalError, uwException],
-            ['overridden'],
-            ['asc']
-          )
-        };
-      } else if (uwException.action === 'Underwriting Review') {
-        return {
-          ...data,
-          underwritingReview: orderBy(
-            [...data.underwritingReview, uwException],
-            ['overridden'],
-            ['asc']
-          )
-        };
-      }
-      return data;
-    },
-    { info: [], underwritingReview: [], fatalError: [] }
-  );
-});
+        if (
+          uwException.action === 'Missing Info' ||
+          uwException.action === 'Informational'
+        ) {
+          return {
+            ...data,
+            info: [...data.info, uwException]
+          };
+        } else if (uwException.action === 'Fatal Error') {
+          return {
+            ...data,
+            fatalError: orderBy(
+              [...data.fatalError, uwException],
+              ['overridden'],
+              ['asc']
+            )
+          };
+        } else if (uwException.action === 'Underwriting Review') {
+          return {
+            ...data,
+            underwritingReview: orderBy(
+              [...data.underwritingReview, uwException],
+              ['overridden'],
+              ['asc']
+            )
+          };
+        }
+        return data;
+      },
+      { info: [], underwritingReview: [], fatalError: [] }
+    );
+  }
+);
 
 const UnderwritingValidationBar = ({ userProfile, updateQuote, quoteData }) => {
   const handleFormSubmit = async data => {
@@ -80,7 +83,7 @@ const UnderwritingValidationBar = ({ userProfile, updateQuote, quoteData }) => {
   };
 
   const groupedUnderwritingExceptions = getGroupedUnderwritingExceptions(
-    quoteData
+    quoteData.underwritingExceptions
   );
   const {
     info,
