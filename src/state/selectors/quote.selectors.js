@@ -61,7 +61,9 @@ export const getQuoteSelector = createSelector(
     quoteData.removeSecondary = false;
     quoteData.blockSendApplication =
       quoteData.underwritingExceptions.filter(
-        uw => (uw.canOverride && !uw.overridden) || !uw.canOverride
+        uw =>
+          (uw.canOverride && !uw.overridden) ||
+          (!uw.canOverride && !['Informational'].includes(uw.action))
       ).length > 0;
     quoteData.blockQuoteSummary =
       quoteData.underwritingExceptions.filter(
