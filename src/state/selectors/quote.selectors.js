@@ -54,6 +54,14 @@ export const getQuoteSelector = createSelector(
   quoteData => {
     if (!quoteData || !quoteData.quoteNumber) return {};
 
+    if (quoteData.policyHolders.length === 0) {
+      quoteData.policyHolders.push({
+        order: 0,
+        entityType: 'Person',
+        electronicDelivery: false
+      });
+    }
+
     quoteData.effectiveDate = formatDate(
       quoteData.effectiveDate,
       FORMATS.SECONDARY
