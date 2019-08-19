@@ -6,7 +6,7 @@ import {
 
 import * as listTypes from '../actionTypes/list.actionTypes';
 import { setAppError } from './error.actions';
-import { fetchNotes } from './notes.actions';
+import { fetchNotes, fetchNoteOptions } from './notes.actions';
 import { fetchDiaries } from './diary.actions';
 
 function setEnums(enums) {
@@ -49,10 +49,13 @@ export function getEnumsForQuoteWorkflow({
         state,
         agencyCode
       });
+      const noteOption = fetchNoteOptions('quoteNumber');
+
       // 2. new variable awaits the previous.
       const additionalInterestResponse = await additionalInterestQuestions;
       const agencyResponse = await agencyOption;
       const agentResponse = await agentOption;
+      const noteOptionResponse = await noteOption;
 
       const selectedAgent = agentResponse.filter(a => a.answer === agentCode);
 
@@ -60,7 +63,8 @@ export function getEnumsForQuoteWorkflow({
         setEnums({
           additionalInterestQuestions: additionalInterestResponse.data.data,
           agency: agencyResponse,
-          agent: selectedAgent
+          agent: selectedAgent,
+          noteOptions: noteOptionResponse
         })
       );
     } catch (error) {
@@ -110,11 +114,14 @@ export function getEnumsForPolicyWorkflow({ policyNumber }) {
       const additionalInterestResponse = await additionalInterestQuestions;
       const propertyAppraisalsResponse = await propertyAppraisals;
 
+      const noteOptions = await fetchNoteOptions('policyNumber');
+
       dispatch(
         setEnums({
           additionalInterestQuestions: additionalInterestResponse.data.data,
           propertyAppraisalQuestions:
-            propertyAppraisalsResponse.data.data[0].answers
+            propertyAppraisalsResponse.data.data[0].answers,
+          noteOptions
         })
       );
     } catch (error) {

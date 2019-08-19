@@ -61,6 +61,8 @@ function setEnums(state, action) {
 
   const appraisers = action.propertyAppraisalQuestions;
 
+  const noteOptions = action.noteOptions;
+
   return {
     ...state,
     premiumFinance,
@@ -68,7 +70,8 @@ function setEnums(state, action) {
     order,
     agent: action.agent,
     agency: action.agency,
-    appraisers
+    appraisers,
+    noteOptions
   };
 }
 

@@ -53,7 +53,8 @@ class Routes extends Component {
       ui: { diary, note, minimizeNote, minimizeDiary },
       auth,
       authState: { userProfile },
-      policyState: { policy }
+      policyState: { policy },
+      options: { validFileTypes, validContactTypes }
     } = this.props;
     return (
       <div>
@@ -104,6 +105,7 @@ class Routes extends Component {
 
         {note && note.documentId && (
           <NoteUploader
+            noteOptions={{ validFileTypes, validContactTypes }}
             minimizeNote={minimizeNote}
             companyCode={note.companyCode}
             state={note.state}
@@ -208,6 +210,7 @@ const mapStateToProps = state => ({
   appState: state.appState,
   authState: state.authState,
   ui: state.ui,
+  options: state.list,
   policyState: state.policyState
 });
 

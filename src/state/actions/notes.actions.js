@@ -89,3 +89,49 @@ export function fetchNotes(numbers, numberType) {
     }
   };
 }
+
+/**
+ *
+ * @param numberType
+ * @returns {Object}
+ */
+export function fetchNoteOptions(numberType) {
+  const notesConfig = {
+    exchangeName: 'harmony',
+    routingKey: 'harmony.note.getNoteOptions',
+    data: { data: { numberType } }
+  };
+
+  try {
+    // const noteOptions = await callService(notesConfig, 'getNoteOptions'),
+    const noteOptions = {
+      validContactTypes: ['Agent', 'Policyholder', 'Inspector', 'Other'],
+      validFileTypes: [
+        '4-pt Inspection',
+        'Claims Documentation',
+        'Correspondence',
+        'Elevation Certificate',
+        'Flood Selection Form',
+        'Flood Waiver Form',
+        'HUD Statement',
+        'New Business Application',
+        'Other',
+        'Proof Of Prior Insurance',
+        'Proof Of Repair',
+        'Property Inspection',
+        'Protection Device Certificate',
+        'Quote Summary',
+        'Reinstatement Correspondence',
+        'Replacement Cost Estimator',
+        'Roof Inspection/permit',
+        'Sinkhole Loss Questionnaire',
+        'Sinkhole Selection/rejection Form',
+        'Wind Exclusion',
+        'Wind Mitigation'
+      ]
+    };
+    return noteOptions;
+  } catch (err) {
+    return err;
+  }
+}
