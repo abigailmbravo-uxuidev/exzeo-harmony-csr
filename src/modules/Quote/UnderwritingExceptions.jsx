@@ -39,7 +39,7 @@ class UnderwritingExceptions extends React.Component {
           <ul className="fa-ul">
             {exceptions.map((exception, index) => (
               <li
-                key={exception._id}
+                key={exception.code}
                 className={classNames({
                   overridden: exception.canOverride && exception.overridden
                 })}
