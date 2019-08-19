@@ -65,8 +65,8 @@ export class NoteUploader extends Component {
   componentDidMount() {
     const { initialize, resourceType, noteOptions } = this.props;
 
-    this.contactTypes = resourceType ? noteOptions.validContactTypes : [];
-    this.docTypes = resourceType ? noteOptions.validFileTypes : [];
+    this.contactTypes = noteOptions.validContactTypes || [];
+    this.docTypes = noteOptions.validFileTypes || [];
 
     const defaultValues = {
       Agency: 0,
@@ -325,7 +325,8 @@ NoteUploader.propTypes = {
 
 const mapStateToProps = state => ({
   notes: state.notes,
-  user: state.authState.userProfile
+  user: state.authState.userProfile,
+  noteOptions: state.list.noteOptions || {}
 });
 
 export default connect(
