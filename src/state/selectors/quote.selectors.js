@@ -56,6 +56,10 @@ export const getQuoteSelector = createSelector(
 
     if (quoteData.policyHolders.length === 0) {
       quoteData.policyHolders.push({
+        firstName: '',
+        lastName: '',
+        emailAddress: '',
+        primaryPhoneNumber: '',
         order: 0,
         entityType: 'Person',
         electronicDelivery: false
