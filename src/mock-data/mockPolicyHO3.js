@@ -2343,6 +2343,155 @@ const mock = {
                         }
                       },
                       children: []
+                    },
+                    {
+                      id: 'f5f12822-09c8-42e6-9cb0-87a49960d13a',
+                      type: '$INPUT',
+                      path: 'property.protectionClass',
+                      dependencies: [],
+                      data: {
+                        component: 'select',
+                        label: 'Protection Class',
+                        size: '12',
+                        dataSource: [
+                          {
+                            label: '01',
+                            answer: 1
+                          },
+                          {
+                            label: '02',
+                            answer: 2
+                          },
+                          {
+                            label: '03',
+                            answer: 3
+                          },
+                          {
+                            label: '04',
+                            answer: 4
+                          },
+                          {
+                            label: '05',
+                            answer: 5
+                          },
+                          {
+                            label: '06',
+                            answer: 6
+                          },
+                          {
+                            label: '07',
+                            answer: 7
+                          },
+                          {
+                            label: '08',
+                            answer: 8
+                          },
+                          {
+                            label: '09',
+                            answer: 9
+                          },
+                          {
+                            label: '10',
+                            answer: 10
+                          }
+                        ]
+                      },
+                      formData: {
+                        path: 'property.protectionClass',
+                        required: true,
+                        metaData: {
+                          target:
+                            '${it._TEMP_INITIAL_VALUES.property.protectionClass}'
+                        }
+                      },
+                      children: []
+                    },
+                    {
+                      id: '6770a129-705d-4f38-9a8e-3f67a7bf92d4',
+                      type: '$INPUT',
+                      path: 'property.buildingCodeEffectivenessGrading',
+                      dependencies: [],
+                      data: {
+                        component: 'select',
+                        label: 'BCEG',
+                        size: '12',
+                        dataSource: [
+                          { label: '01', answer: '1' },
+                          { label: '02', answer: '2' },
+                          { label: '03', answer: '3' },
+                          { label: '04', answer: '4' },
+                          { label: '05', answer: '5' },
+                          { label: '06', answer: '6' },
+                          { label: '07', answer: '7' },
+                          { label: '08', answer: '8' },
+                          { label: '09', answer: '9' },
+                          { label: '98', answer: '98' },
+                          { label: '99', answer: '99' }
+                        ]
+                      },
+                      formData: {
+                        path: 'property.buildingCodeEffectivenessGrading',
+                        required: true,
+                        metaData: {
+                          target:
+                            '${it._TEMP_INITIAL_VALUES.property.buildingCodeEffectivenessGrading}'
+                        }
+                      },
+                      children: []
+                    },
+                    {
+                      id: '26548d94-cb36-4244-a79c-7c734aa3bccc',
+                      type: '$INPUT',
+                      path: 'property.familyUnits',
+                      dependencies: [],
+                      data: {
+                        component: 'select',
+                        label: 'Family Units',
+                        size: '12',
+                        dataSource: [
+                          { answer: '1-2' },
+                          { answer: '3-4' },
+                          { answer: '5-8' },
+                          { answer: '9+' }
+                        ]
+                      },
+                      formData: {
+                        path: 'property.familyUnits',
+                        required: true,
+                        metaData: {
+                          target:
+                            '${it._TEMP_INITIAL_VALUES.property.familyUnits}'
+                        }
+                      },
+                      children: []
+                    },
+                    {
+                      id: '75f752a8-8f5e-4d81-b3f2-228a4462d7dd',
+                      type: '$INPUT',
+                      path: 'property.floodZone',
+                      dependencies: [],
+                      data: {
+                        component: 'select',
+                        label: 'Flood Zone',
+                        size: '12',
+                        dataSource: [
+                          { answer: 'V' },
+                          { answer: 'A' },
+                          { answer: 'B' },
+                          { answer: 'C' },
+                          { answer: 'X' },
+                          { answer: 'U' }
+                        ]
+                      },
+                      formData: {
+                        path: 'property.floodZone',
+                        required: true,
+                        metaData: {
+                          target:
+                            '${it._TEMP_INITIAL_VALUES.property.floodZone}'
+                        }
+                      },
+                      children: []
                     }
                   ]
                 }
