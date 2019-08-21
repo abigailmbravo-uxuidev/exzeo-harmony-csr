@@ -2246,6 +2246,107 @@ const mock = {
                   children: []
                 }
               ]
+            },
+            {
+              name: 'HomeLocation',
+              id: '598d0d15-42dc-4059-ad09-751dedb3c613',
+              type: '$SECTION',
+              dependencies: [],
+              data: {
+                className: 'home-location-scroll'
+              },
+              formData: {},
+              children: [
+                {
+                  id: '386a6cf2-afe0-40da-8c79-751dedb3v678',
+                  type: '$TITLE',
+                  dependencies: [],
+                  data: {
+                    text: 'Home / Location'
+                  },
+                  formData: {},
+                  children: []
+                },
+                {
+                  id: '598d0d15-42dc-4059-ad09-741deda4c613',
+                  type: '$SECTION',
+                  dependencies: [],
+                  data: {
+                    className: 'home-location-left',
+                    size: '6'
+                  },
+                  formData: {},
+                  children: [
+                    {
+                      id: '741deda4c333-0ed7-4538-910a-598d0d15',
+                      type: '$INPUT',
+                      path: 'property.yearBuilt',
+                      dependencies: [],
+                      data: {
+                        component: 'text',
+                        label: 'Year Home Built',
+                        size: '12',
+                        validation: ['isNumbersOnly']
+                      },
+                      formData: {
+                        path: 'property.yearBuilt',
+                        required: true,
+                        metaData: {
+                          target:
+                            '${it._TEMP_INITIAL_VALUES.property.yearBuilt}'
+                        }
+                      },
+                      children: []
+                    },
+                    {
+                      id: 'f5f12822-09c8-42e6-9cb0-87a49960d11a',
+                      type: '$INPUT',
+                      path: 'property.constructionType',
+                      dependencies: [],
+                      data: {
+                        component: 'select',
+                        label: 'Construction',
+                        size: '12',
+                        dataSource: [
+                          {
+                            label: 'Masonry',
+                            answer: 'MASONRY'
+                          },
+                          {
+                            label: 'Frame',
+                            answer: 'FRAME'
+                          },
+                          {
+                            label: 'Plastic Siding',
+                            answer: 'PLASTIC SIDING'
+                          },
+                          {
+                            label: 'Aluminum Siding',
+                            answer: 'ALUMINUM SIDING'
+                          },
+                          {
+                            label: 'Masonry Veneer',
+                            answer: 'MASONRY VENEER'
+                          },
+                          {
+                            label: 'Superior',
+                            answer: 'SUPERIOR'
+                          }
+                        ]
+                      },
+                      formData: {
+                        path: 'property.yearBuilt',
+                        required: true,
+                        metaData: {
+                          target:
+                            '${it._TEMP_INITIAL_VALUES.property.constructionType}'
+                        }
+                      },
+                      children: []
+                    }
+                  ]
+                }
+              ]
             }
           ]
         }
