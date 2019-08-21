@@ -1262,7 +1262,7 @@ const mock = {
                         required: true,
                         metaData: {
                           target:
-                            '${format.toCurrency(it._TEMP_INITIAL_VALUES.coverageLimits.otherStructures.amount)}'
+                            '${format.toCurrency(Math.ceil(((it.coverageLimits.otherStructures.value / 100) * it.coverageLimits.dwelling.value)))}'
                         }
                       },
                       children: []
@@ -1311,7 +1311,7 @@ const mock = {
                         required: true,
                         metaData: {
                           target:
-                            '${format.toCurrency(it._TEMP_INITIAL_VALUES.coverageLimits.personalProperty.amount)}'
+                            '${format.toCurrency(Math.ceil(((it.coverageLimits.personalProperty.value / 100) * it.coverageLimits.dwelling.value)))}'
                         }
                       },
                       children: []
@@ -1360,7 +1360,7 @@ const mock = {
                         required: true,
                         metaData: {
                           target:
-                            '${format.toCurrency(it._TEMP_INITIAL_VALUES.coverageLimits.lossOfUse.amount)}'
+                            '${format.toCurrency(Math.ceil(((it.coverageLimits.lossOfUse.value / 100) * it.coverageLimits.dwelling.value)))}'
                         }
                       },
                       children: []
@@ -1386,6 +1386,157 @@ const mock = {
                         metaData: {
                           target:
                             '${format.toCurrency(it._TEMP_INITIAL_VALUES.coverageLimits.personalLiability.value)}'
+                        }
+                      },
+                      children: []
+                    },
+                    {
+                      id: '398ce68d-839c-4a49-bbf2-92fcc275da55',
+                      type: '$INPUT',
+                      path: 'coverageLimits.medicalPayments.amount',
+                      dependencies: [],
+                      data: {
+                        disabled: true,
+                        component: 'currency',
+                        label: 'Medical Payments (F)',
+                        extendedProperties: {}
+                      },
+                      formData: {
+                        path: 'coverageLimits.medicalPayments.amount',
+                        type: 'integer',
+                        required: true,
+                        metaData: {
+                          target:
+                            '${format.toCurrency(it._TEMP_INITIAL_VALUES.coverageLimits.medicalPayments.amount)}'
+                        }
+                      },
+                      children: []
+                    },
+                    {
+                      id: '398ce68d-839c-4a49-bbf2-92fcc275da56',
+                      type: '$INPUT',
+                      path: 'coverageLimits.moldProperty.amount',
+                      dependencies: [],
+                      data: {
+                        component: 'selectInteger',
+                        label: 'Mold Property',
+                        extendedProperties: {},
+                        dataSource: [
+                          { label: '$ 10,000', answer: 10000 },
+                          { label: '$ 25,000', answer: 25000 },
+                          { label: '$ 50,000', answer: 50000 }
+                        ]
+                      },
+                      formData: {
+                        path: 'coverageLimits.moldProperty.amount',
+                        type: 'integer',
+                        required: true,
+                        metaData: {
+                          target:
+                            '${format.toCurrency(it._TEMP_INITIAL_VALUES.coverageLimits.moldProperty.amount)}'
+                        }
+                      },
+                      children: []
+                    },
+                    {
+                      id: '398ce68d-839c-4a49-bbf2-92fcc275da57',
+                      type: '$INPUT',
+                      path: 'coverageLimits.moldLiability.amount',
+                      dependencies: [],
+                      data: {
+                        component: 'selectInteger',
+                        label: 'Mold Liability',
+                        extendedProperties: {},
+                        dataSource: [
+                          { label: '$ 50,000', answer: 50000 },
+                          { label: '$ 100,000', answer: 100000 }
+                        ]
+                      },
+                      formData: {
+                        path: 'coverageLimits.moldLiability.amount',
+                        type: 'integer',
+                        required: true,
+                        metaData: {
+                          target:
+                            '${format.toCurrency(it._TEMP_INITIAL_VALUES.coverageLimits.moldLiability.amount)}'
+                        }
+                      },
+                      children: []
+                    },
+                    {
+                      id: '398ce68d-839c-4a49-bbf2-92fcc275da58',
+                      type: '$INPUT',
+                      path: 'deductibles.allOtherPerils.value',
+                      dependencies: [],
+                      data: {
+                        component: 'selectInteger',
+                        label: 'AOP Deductible',
+                        extendedProperties: {},
+                        dataSource: [
+                          { label: '$ 500', answer: 500 },
+                          { label: '$ 1,000', answer: 1000 },
+                          { label: '$ 2,500', answer: 2500 }
+                        ]
+                      },
+                      formData: {
+                        path: 'deductibles.allOtherPerils.value',
+                        type: 'integer',
+                        required: true,
+                        metaData: {
+                          target:
+                            '${format.toCurrency(it._TEMP_INITIAL_VALUES.deductibles.allOtherPerils.value)}'
+                        }
+                      },
+                      children: []
+                    },
+                    {
+                      id: '398ce68d-839c-4a49-bbf2-92fcc275da59',
+                      type: '$INPUT',
+                      path: 'deductibles.allOtherPerils.value',
+                      dependencies: [],
+                      data: {
+                        component: 'selectInteger',
+                        label: 'Hurricane Deductible',
+                        extendedProperties: {},
+                        dataSource: [
+                          { label: '2% of Dwelling Limit', answer: 2 },
+                          { label: '5% of Dwelling Limit', answer: 5 },
+                          { label: '10% of Dwelling Limit', answer: 10 }
+                        ]
+                      },
+                      formData: {
+                        path: 'deductibles.allOtherPerils.value',
+                        type: 'integer',
+                        required: true,
+                        metaData: {
+                          target:
+                            '${format.toCurrency(it._TEMP_INITIAL_VALUES.deductibles.allOtherPerils.value)}'
+                        }
+                      },
+                      children: []
+                    },
+                    {
+                      id: '4cbef727-5327-42f8-b62c-92fcc275da60',
+                      type: '$INPUT',
+                      path: 'coverageOptions.sinkholePerilCoverage.answer',
+                      dependencies: [],
+                      data: {
+                        component: 'select',
+                        label: 'Sinkhole',
+
+                        dataSource: [
+                          { answer: false, label: 'Coverage Excluded' },
+                          { answer: true, label: '10% of Dwelling Limit' }
+                        ],
+                        extendedProperties: {}
+                      },
+                      formData: {
+                        path: 'coverageOptions.sinkholePerilCoverage.answer',
+                        type: 'integer',
+                        required: true,
+                        metaData: {
+                          target:
+                            "${it._TEMP_INITIAL_VALUES.coverageOptions.sinkholePerilCoverage.answer === 'true' || it._TEMP_INITIAL_VALUES.coverageOptions.sinkholePerilCoverage.answer === true ? '10% of Dwelling Limit' : 0}"
                         }
                       },
                       children: []
