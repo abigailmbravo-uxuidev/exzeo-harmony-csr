@@ -1686,6 +1686,7 @@ const mock = {
                         'coverageOptions.liabilityIncidentalOccupancies.answer',
                       dependencies: [],
                       data: {
+                        disabled: true,
                         component: 'radio',
                         label: 'Incidental Occ Liability',
                         segmented: true,
