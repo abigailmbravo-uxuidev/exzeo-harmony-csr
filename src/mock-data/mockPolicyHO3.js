@@ -1609,7 +1609,7 @@ const mock = {
                         ]
                       },
                       formData: {
-                        path: 'dcoverageLimits.ordinanceOrLaw.amount',
+                        path: 'coverageLimits.ordinanceOrLaw.amount',
                         type: 'integer',
                         required: true,
                         metaData: {
@@ -1706,6 +1706,202 @@ const mock = {
                           ],
                           target:
                             '${format.boolToYesNo(it._TEMP_INITIAL_VALUES.coverageOptions.liabilityIncidentalOccupancies.answer)}'
+                        }
+                      },
+                      children: []
+                    },
+                    {
+                      id: 'b141e258-5074-4ba1-90bc-54864c4a69d4',
+                      type: '$INPUT',
+                      path: 'property.townhouseRowhouse',
+                      dependencies: [],
+                      data: {
+                        component: 'radio',
+                        label: 'Townhouse / Rowhouse',
+                        segmented: true,
+                        extendedProperties: {
+                          subscribe: true
+                        }
+                      },
+                      formData: {
+                        path: 'property.townhouseRowhouse',
+                        type: 'boolean',
+                        required: true,
+                        metaData: {
+                          enum: [
+                            { label: 'No', answer: false },
+                            { label: 'Yes', answer: true }
+                          ],
+                          target:
+                            '${format.boolToYesNo(it._TEMP_INITIAL_VALUES.property.townhouseRowhouse)}'
+                        }
+                      },
+                      children: []
+                    },
+                    {
+                      id: '398ce68d-839c-4a49-bbf2-54864c4a69d5',
+                      type: '$INPUT',
+                      path: 'underwritingAnswers.rented.answer',
+                      dependencies: [],
+                      data: {
+                        component: 'select',
+                        label: 'Property Ever Rented',
+                        extendedProperties: {},
+                        dataSource: [
+                          { label: 'Yes', answer: 'Yes' },
+                          { label: 'Occasionally', answer: 'Occasionally' },
+                          { label: 'Never', answer: 'Never' }
+                        ]
+                      },
+                      formData: {
+                        path: 'underwritingAnswers.rented.answer',
+                        type: 'integer',
+                        required: true,
+                        metaData: {
+                          target:
+                            '${it._TEMP_INITIAL_VALUES.underwritingAnswers.rented.answer}'
+                        }
+                      },
+                      children: []
+                    },
+                    {
+                      id: '398ce68d-839c-4a49-bbf2-54864c4a69d6',
+                      type: '$INPUT',
+                      path: 'underwritingAnswers.monthsOccupied.answer',
+                      dependencies: [],
+                      data: {
+                        component: 'select',
+                        label: 'Months Occupied',
+                        extendedProperties: {},
+                        dataSource: [
+                          { label: '0-3', answer: '0-3' },
+                          { label: '4-6', answer: '4-6' },
+                          { label: '7-9', answer: '7-9' },
+                          { label: '10+', answer: '10+' }
+                        ]
+                      },
+                      formData: {
+                        path: 'underwritingAnswers.monthsOccupied.answer',
+                        type: 'integer',
+                        required: true,
+                        metaData: {
+                          target:
+                            '${it._TEMP_INITIAL_VALUES.underwritingAnswers.monthsOccupied.answer}'
+                        }
+                      },
+                      children: []
+                    },
+                    {
+                      id: 'b141e258-5074-4ba1-90bc-54864c4a69d7',
+                      type: '$INPUT',
+                      path:
+                        'underwritingAnswers.noPriorInsuranceSurcharge.answer',
+                      dependencies: [],
+                      data: {
+                        component: 'radio',
+                        label: 'No Prior Insurance',
+                        segmented: true,
+                        extendedProperties: {
+                          subscribe: true
+                        }
+                      },
+                      formData: {
+                        path:
+                          'underwritingAnswers.noPriorInsuranceSurcharge.answer',
+                        type: 'boolean',
+                        required: true,
+                        metaData: {
+                          enum: [
+                            { label: 'No', answer: 'No' },
+                            { label: 'Yes', answer: 'Yes' }
+                          ],
+                          target:
+                            '${it._TEMP_INITIAL_VALUES.underwritingAnswers.noPriorInsuranceSurcharge.answer}'
+                        }
+                      },
+                      children: []
+                    },
+                    {
+                      id: 'b141e258-5074-4ba1-90bc-54864c4a69d8',
+                      type: '$INPUT',
+                      path: 'property.burglarAlarm',
+                      dependencies: [],
+                      data: {
+                        component: 'radio',
+                        label: 'Burglar Alarm',
+                        segmented: true,
+                        extendedProperties: {
+                          subscribe: true
+                        }
+                      },
+                      formData: {
+                        path: 'property.burglarAlarm',
+                        type: 'boolean',
+                        required: true,
+                        metaData: {
+                          enum: [
+                            { label: 'No', answer: false },
+                            { label: 'Yes', answer: true }
+                          ],
+                          target:
+                            '${format.boolToYesNo(it._TEMP_INITIAL_VALUES.property.burglarAlarm)}'
+                        }
+                      },
+                      children: []
+                    },
+                    {
+                      id: 'b141e258-5074-4ba1-90bc-54864c4a69d9',
+                      type: '$INPUT',
+                      path: 'property.fireAlarm',
+                      dependencies: [],
+                      data: {
+                        component: 'radio',
+                        label: 'Fire Alarm',
+                        segmented: true,
+                        extendedProperties: {
+                          subscribe: true
+                        }
+                      },
+                      formData: {
+                        path: 'property.fireAlarm',
+                        type: 'boolean',
+                        required: true,
+                        metaData: {
+                          enum: [
+                            { label: 'No', answer: false },
+                            { label: 'Yes', answer: true }
+                          ],
+                          target:
+                            '${format.boolToYesNo(it._TEMP_INITIAL_VALUES.property.fireAlarm)}'
+                        }
+                      },
+                      children: []
+                    },
+                    {
+                      id: 'b141e258-5074-4ba1-90bc-54864c4a69c1',
+                      type: '$INPUT',
+                      path: 'property.sprinkler',
+                      dependencies: [],
+                      data: {
+                        component: 'radio',
+                        label: 'Sprinkler',
+                        segmented: true,
+                        extendedProperties: {
+                          subscribe: true
+                        }
+                      },
+                      formData: {
+                        path: 'property.sprinkler',
+                        type: 'boolean',
+                        required: true,
+                        metaData: {
+                          enum: [
+                            { label: 'N', answer: 'N' },
+                            { label: 'A', answer: 'A' },
+                            { label: 'B', answer: 'B' }
+                          ],
+                          target:
+                            '${it._TEMP_INITIAL_VALUES.property.sprinkler}'
                         }
                       },
                       children: []
