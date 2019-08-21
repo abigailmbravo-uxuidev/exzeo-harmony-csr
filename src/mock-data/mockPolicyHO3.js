@@ -1212,24 +1212,25 @@ const mock = {
               formData: {},
               children: [
                 {
+                  id: '34895439847239849',
+                  type: '$TITLE',
+                  dependencies: [],
+                  data: {
+                    text: 'Coverage'
+                  },
+                  formData: {},
+                  children: []
+                },
+                {
                   id: 34895539847239855,
                   type: '$SECTION',
                   dependencies: [],
                   data: {
-                    className: 'coverage-left'
+                    className: 'coverage-left',
+                    size: '6'
                   },
                   formData: {},
                   children: [
-                    {
-                      id: '34895439847239849',
-                      type: '$TITLE',
-                      dependencies: [],
-                      data: {
-                        text: 'Coverage'
-                      },
-                      formData: {},
-                      children: []
-                    },
                     {
                       id: '398ce68d-839c-4a49-bbf2-92fcc275da40',
                       type: '$INPUT',
@@ -1560,7 +1561,8 @@ const mock = {
                   type: '$SECTION',
                   dependencies: [],
                   data: {
-                    className: 'coverage-right'
+                    className: 'coverage-right',
+                    size: '6'
                   },
                   formData: {},
                   children: [
