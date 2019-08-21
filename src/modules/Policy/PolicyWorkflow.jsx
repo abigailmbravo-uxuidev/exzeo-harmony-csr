@@ -54,6 +54,7 @@ import ReinstatePolicyModal from './ReinstatePolicyModal';
 import { startWorkflow, completeTask } from '../../utilities/cg';
 import MOCK_CONFIG_DATA from '../../mock-data/mockPolicyHO3';
 import EndorsementsMenu from './EndorsementsMenu';
+import EndorsementsWatcher from './EndorsementsWatcher';
 
 const getCurrentStepAndPage = defaultMemoize(pathname => {
   const currentRouteName = pathname.split('/')[3];
@@ -96,7 +97,8 @@ export class PolicyWorkflow extends React.Component {
     $CLAIMS_TABLE: ClaimsTable,
     $POLICY_BILLING: PolicyBilling,
     $PAYMENT_HISTORY_TABLE: PaymentHistoryTable,
-    $ENDORSEMENTS_MENU: EndorsementsMenu
+    $ENDORSEMENTS_MENU: EndorsementsMenu,
+    $ENDORSEMENTS_WATCHER: EndorsementsWatcher
   };
 
   getConfigForJsonTransform = defaultMemoize(getConfigForJsonTransform);

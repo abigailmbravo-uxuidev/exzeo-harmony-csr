@@ -1191,6 +1191,18 @@ const mock = {
               children: []
             },
             {
+              id: 44895439847239848,
+              type: '$ENDORSEMENTS_WATCHER',
+              dependencies: [],
+              data: {
+                extendedProperties: {
+                  subscribe: true
+                }
+              },
+              formData: {},
+              children: []
+            },
+            {
               id: 34895439847239849,
               type: '$SECTION',
               dependencies: [],
@@ -1537,6 +1549,162 @@ const mock = {
                         metaData: {
                           target:
                             "${it._TEMP_INITIAL_VALUES.coverageOptions.sinkholePerilCoverage.answer === 'true' || it._TEMP_INITIAL_VALUES.coverageOptions.sinkholePerilCoverage.answer === true ? '10% of Dwelling Limit' : 0}"
+                        }
+                      },
+                      children: []
+                    }
+                  ]
+                },
+                {
+                  id: 34895539847239855,
+                  type: '$SECTION',
+                  dependencies: [],
+                  data: {
+                    className: 'coverage-right'
+                  },
+                  formData: {},
+                  children: [
+                    {
+                      id: 'b141e258-5074-4ba1-90bc-54864c4a69c6',
+                      type: '$INPUT',
+                      path:
+                        'coverageOptions.personalPropertyReplacementCost.answer',
+                      dependencies: [],
+                      data: {
+                        component: 'radio',
+                        label: 'Personal Property Repl Cost',
+                        segmented: true,
+                        extendedProperties: {
+                          subscribe: true
+                        }
+                      },
+                      formData: {
+                        path:
+                          'coverageOptions.personalPropertyReplacementCost.answer',
+                        type: 'boolean',
+                        required: true,
+                        metaData: {
+                          enum: [
+                            { label: 'No', answer: false },
+                            { label: 'Yes', answer: true }
+                          ],
+                          target:
+                            '${format.boolToYesNo(it._TEMP_INITIAL_VALUES.coverageOptions.personalPropertyReplacementCost.answer)}'
+                        }
+                      },
+                      children: []
+                    },
+                    {
+                      id: '398ce68d-839c-4a49-bbf2-54864c4a69c7',
+                      type: '$INPUT',
+                      path: 'coverageLimits.ordinanceOrLaw.amount',
+                      dependencies: [],
+                      data: {
+                        component: 'selectInteger',
+                        label: 'Ordinance or Law',
+                        extendedProperties: {},
+                        dataSource: [
+                          { label: '25% of Dwelling Limit', answer: 25 },
+                          { label: '50% of Dwelling Limit', answer: 50 }
+                        ]
+                      },
+                      formData: {
+                        path: 'dcoverageLimits.ordinanceOrLaw.amount',
+                        type: 'integer',
+                        required: true,
+                        metaData: {
+                          target:
+                            '${format.toCurrency(it._TEMP_INITIAL_VALUES.coverageLimits.ordinanceOrLaw.amount)}'
+                        }
+                      },
+                      children: []
+                    },
+                    {
+                      id: 'b141e258-5074-4ba1-90bc-54864c4a69d1',
+                      type: '$INPUT',
+                      path:
+                        'coverageOptions.propertyIncidentalOccupanciesMainDwelling.answer',
+                      dependencies: [],
+                      data: {
+                        component: 'radio',
+                        label: 'Incidental Occ Main',
+                        segmented: true,
+                        extendedProperties: {
+                          subscribe: true
+                        }
+                      },
+                      formData: {
+                        path:
+                          'coverageOptions.propertyIncidentalOccupanciesMainDwelling.answer',
+                        type: 'boolean',
+                        required: true,
+                        metaData: {
+                          enum: [
+                            { label: 'No', answer: false },
+                            { label: 'Yes', answer: true }
+                          ],
+                          target:
+                            '${format.boolToYesNo(it._TEMP_INITIAL_VALUES.coverageOptions.propertyIncidentalOccupanciesMainDwelling.answer)}'
+                        }
+                      },
+                      children: []
+                    },
+                    {
+                      id: 'b141e258-5074-4ba1-90bc-54864c4a69d2',
+                      type: '$INPUT',
+                      path:
+                        'coverageOptions.propertyIncidentalOccupanciesOtherStructures.answer',
+                      dependencies: [],
+                      data: {
+                        component: 'radio',
+                        label: 'Incidental Occ Other',
+                        segmented: true,
+                        extendedProperties: {
+                          subscribe: true
+                        }
+                      },
+                      formData: {
+                        path:
+                          'coverageOptions.propertyIncidentalOccupanciesOtherStructures.answer',
+                        type: 'boolean',
+                        required: true,
+                        metaData: {
+                          enum: [
+                            { label: 'No', answer: false },
+                            { label: 'Yes', answer: true }
+                          ],
+                          target:
+                            '${format.boolToYesNo(it._TEMP_INITIAL_VALUES.coverageOptions.propertyIncidentalOccupanciesOtherStructures.answer)}'
+                        }
+                      },
+                      children: []
+                    },
+                    {
+                      id: 'b141e258-5074-4ba1-90bc-54864c4a69d3',
+                      type: '$INPUT',
+                      path:
+                        'coverageOptions.liabilityIncidentalOccupancies.answer',
+                      dependencies: [],
+                      data: {
+                        component: 'radio',
+                        label: 'Incidental Occ Liability',
+                        segmented: true,
+                        extendedProperties: {
+                          subscribe: true
+                        }
+                      },
+                      formData: {
+                        path:
+                          'coverageOptions.liabilityIncidentalOccupancies.answer',
+                        type: 'boolean',
+                        required: true,
+                        metaData: {
+                          enum: [
+                            { label: 'No', answer: false },
+                            { label: 'Yes', answer: true }
+                          ],
+                          target:
+                            '${format.boolToYesNo(it._TEMP_INITIAL_VALUES.coverageOptions.liabilityIncidentalOccupancies.answer)}'
                         }
                       },
                       children: []
