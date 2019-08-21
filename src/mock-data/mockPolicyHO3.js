@@ -1200,90 +1200,197 @@ const mock = {
               formData: {},
               children: [
                 {
-                  id: '34895439847239849',
-                  type: '$TITLE',
+                  id: 34895539847239855,
+                  type: '$SECTION',
                   dependencies: [],
                   data: {
-                    text: 'Coverage'
+                    className: 'coverage-left'
                   },
                   formData: {},
-                  children: []
-                },
-                {
-                  id: '398ce68d-839c-4a49-bbf2-92fcc275da40',
-                  type: '$INPUT',
-                  path: 'coverageLimits.dwelling.value',
-                  dependencies: [],
-                  data: {
-                    component: 'currency',
-                    label: 'Dwelling (A)',
-                    validation: ['isDwellingRange'],
-                    extendedProperties: {
-                      format: 'currency',
-                      displayRange: true,
-                      min: 'coverageLimits.dwelling.minAmount',
-                      max: 'coverageLimits.dwelling.maxAmount'
+                  children: [
+                    {
+                      id: '34895439847239849',
+                      type: '$TITLE',
+                      dependencies: [],
+                      data: {
+                        text: 'Coverage'
+                      },
+                      formData: {},
+                      children: []
+                    },
+                    {
+                      id: '398ce68d-839c-4a49-bbf2-92fcc275da40',
+                      type: '$INPUT',
+                      path: 'coverageLimits.dwelling.value',
+                      dependencies: [],
+                      data: {
+                        component: 'currency',
+                        label: 'Dwelling (A)',
+                        validation: ['isDwellingRange'],
+                        extendedProperties: {
+                          format: 'currency',
+                          displayRange: true,
+                          min: 'coverageLimits.dwelling.minAmount',
+                          max: 'coverageLimits.dwelling.maxAmount'
+                        }
+                      },
+                      formData: {
+                        path: 'coverageLimits.dwelling.value',
+                        type: 'integer',
+                        required: true,
+                        metaData: {
+                          target:
+                            '${format.toCurrency(it._TEMP_INITIAL_VALUES.coverageLimits.dwelling.value)}'
+                        }
+                      },
+                      children: []
+                    },
+                    {
+                      id: '398ce68d-839c-4a49-bbf2-92fcc275da40',
+                      type: '$INPUT',
+                      path: 'coverageLimits.otherStructures.amount',
+                      dependencies: [],
+                      data: {
+                        disabled: true,
+                        component: 'currency',
+                        label: 'Other Structures (B)',
+                        extendedProperties: {}
+                      },
+                      formData: {
+                        path: 'coverageLimits.otherStructures.amount',
+                        type: 'integer',
+                        required: true,
+                        metaData: {
+                          target:
+                            '${format.toCurrency(it._TEMP_INITIAL_VALUES.coverageLimits.otherStructures.amount)}'
+                        }
+                      },
+                      children: []
+                    },
+                    {
+                      id: '498ce68d-839c-4a49-bbf2-92fcc275da49',
+                      type: '$INPUT',
+                      path: 'coverageLimits.otherStructures.value',
+                      dependencies: [],
+                      data: {
+                        component: 'selectInteger',
+                        label: 'Other Structures %',
+                        dataSource: [
+                          { label: '0%', answer: 0 },
+                          { label: '2%', answer: 2 },
+                          { label: '5%', answer: 5 },
+                          { label: '10%', answer: 10 }
+                        ],
+                        extendedProperties: {}
+                      },
+                      formData: {
+                        path: 'coverageLimits.otherStructures.value',
+                        type: 'integer',
+                        required: true,
+                        metaData: {
+                          target:
+                            '${format.toPercent(it._TEMP_INITIAL_VALUES.coverageLimits.otherStructures.value)}'
+                        }
+                      },
+                      children: []
+                    },
+                    {
+                      id: '398ce68d-839c-4a49-bbf2-92fcc275da51',
+                      type: '$INPUT',
+                      path: 'coverageLimits.personalProperty.amount',
+                      dependencies: [],
+                      data: {
+                        disabled: true,
+                        component: 'currency',
+                        label: 'Personal Property (C)',
+                        extendedProperties: {}
+                      },
+                      formData: {
+                        path: 'coverageLimits.personalProperty.amount',
+                        type: 'integer',
+                        required: true,
+                        metaData: {
+                          target:
+                            '${format.toCurrency(it._TEMP_INITIAL_VALUES.coverageLimits.personalProperty.amount)}'
+                        }
+                      },
+                      children: []
+                    },
+                    {
+                      id: '398ce68d-839c-4a49-bbf2-92fcc275da52',
+                      type: '$INPUT',
+                      path: 'coverageLimits.personalProperty.value',
+                      dependencies: [],
+                      data: {
+                        component: 'selectInteger',
+                        label: 'Personal Property %',
+                        dataSource: [
+                          { label: '0%', answer: 0 },
+                          { label: '25%', answer: 25 },
+                          { label: '35%', answer: 35 },
+                          { label: '50%', answer: 50 }
+                        ],
+                        extendedProperties: {}
+                      },
+                      formData: {
+                        path: 'coverageLimits.personalProperty.value',
+                        type: 'integer',
+                        required: true,
+                        metaData: {
+                          target:
+                            '${format.toPercent(it._TEMP_INITIAL_VALUES.coverageLimits.personalProperty.value)}'
+                        }
+                      },
+                      children: []
+                    },
+                    {
+                      id: '398ce68d-839c-4a49-bbf2-92fcc275da53',
+                      type: '$INPUT',
+                      path: 'coverageLimits.lossOfUse.amount',
+                      dependencies: [],
+                      data: {
+                        disabled: true,
+                        component: 'currency',
+                        label: 'Loss of Use (D)',
+                        extendedProperties: {}
+                      },
+                      formData: {
+                        path: 'coverageLimits.lossOfUse.amount',
+                        type: 'integer',
+                        required: true,
+                        metaData: {
+                          target:
+                            '${format.toCurrency(it._TEMP_INITIAL_VALUES.coverageLimits.lossOfUse.amount)}'
+                        }
+                      },
+                      children: []
+                    },
+                    {
+                      id: '398ce68d-839c-4a49-bbf2-92fcc275da52',
+                      type: '$INPUT',
+                      path: 'coverageLimits.personalLiability.value',
+                      dependencies: [],
+                      data: {
+                        component: 'selectInteger',
+                        label: 'Personal Liability (E)',
+                        dataSource: [
+                          { label: '$ 100,000', answer: 100000 },
+                          { label: '$ 300,000', answer: 300000 }
+                        ],
+                        extendedProperties: {}
+                      },
+                      formData: {
+                        path: 'coverageLimits.personalLiability.value',
+                        type: 'integer',
+                        required: true,
+                        metaData: {
+                          target:
+                            '${format.toCurrency(it._TEMP_INITIAL_VALUES.coverageLimits.personalLiability.value)}'
+                        }
+                      },
+                      children: []
                     }
-                  },
-                  formData: {
-                    path: 'coverageLimits.dwelling.value',
-                    type: 'integer',
-                    required: true,
-                    metaData: {
-                      target:
-                        '${format.toCurrency(it._TEMP_INITIAL_VALUES.coverageLimits.dwelling.value)}'
-                    }
-                  },
-                  children: []
-                },
-                {
-                  id: '398ce68d-839c-4a49-bbf2-92fcc275da40',
-                  type: '$INPUT',
-                  path: 'coverageLimits.otherStructures.amount',
-                  dependencies: [],
-                  data: {
-                    disabled: true,
-                    component: 'currency',
-                    label: 'Other Structures (B)',
-                    extendedProperties: {}
-                  },
-                  formData: {
-                    path: 'coverageLimits.otherStructures.amount',
-                    type: 'integer',
-                    required: true,
-                    metaData: {
-                      target:
-                        '${format.toCurrency(it._TEMP_INITIAL_VALUES.coverageLimits.otherStructures.amount)}'
-                    }
-                  },
-                  children: []
-                },
-                {
-                  id: '498ce68d-839c-4a49-bbf2-92fcc275da49',
-                  type: '$INPUT',
-                  path: 'coverageLimits.otherStructures.value',
-                  dependencies: [],
-                  data: {
-                    component: 'selectInteger',
-                    label: 'Percentage',
-                    dataSource: [
-                      { label: '0%', answer: 0 },
-                      { label: '2%', answer: 2 },
-                      { label: '5%', answer: 5 },
-                      { label: '10%', answer: 10 }
-                    ],
-                    extendedProperties: {}
-                  },
-                  formData: {
-                    path: 'coverageLimits.otherStructures.value',
-                    type: 'integer',
-                    required: true,
-                    metaData: {
-                      target:
-                        '${format.toPercent(it._TEMP_INITIAL_VALUES.coverageLimits.otherStructures.value)}'
-                    }
-                  },
-                  children: []
+                  ]
                 }
               ]
             }
