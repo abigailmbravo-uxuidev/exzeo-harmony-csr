@@ -1911,6 +1911,341 @@ const mock = {
                   ]
                 }
               ]
+            },
+            {
+              name: 'WindMitigation',
+              id: '598d0d15-42dc-4059-ad09-751dedb3b512',
+              type: '$SECTION',
+              dependencies: [],
+              data: {
+                className: 'wind-mitigation-scroll'
+              },
+              formData: {},
+              children: [
+                {
+                  id: '386a6cf2-afe0-40da-8c79-0a9106e26893',
+                  type: '$TITLE',
+                  dependencies: [],
+                  data: {
+                    text: 'Wind Mitigation'
+                  },
+                  formData: {},
+                  children: []
+                },
+                {
+                  id: '57f21212-7631-4dd7-9b42-55fe263b9491',
+                  component: '$INPUT',
+                  path: 'property.windMitigation.roofCovering',
+                  dependencies: [],
+                  data: {
+                    component: 'select',
+                    label: 'Roof Covering',
+                    size: '6'
+                  },
+                  formData: {
+                    path: 'property.windMitigation.roofCovering',
+                    type: 'string',
+                    required: true,
+                    metaData: {
+                      enum: [
+                        { label: 'Non-FBC', answer: 'Non-FBC' },
+                        { label: 'FBC', answer: 'FBC' },
+                        { label: 'Other', answer: 'Other' }
+                      ],
+                      target:
+                        '${it._TEMP_INITIAL_VALUES.property.windMitigation.roofCovering}'
+                    }
+                  },
+                  children: []
+                },
+                {
+                  id: '97f2109e-856c-4b86-8aa0-acba782b7c1e',
+                  type: '$INPUT',
+                  path: 'property.windMitigation.floridaBuildingCodeWindSpeed',
+                  dependencies: [],
+                  data: {
+                    component: 'number',
+                    label: 'FBC Wind Speed',
+                    size: '6'
+                  },
+                  formData: {
+                    path:
+                      'property.windMitigation.floridaBuildingCodeWindSpeed',
+                    required: true,
+                    metaData: {
+                      target:
+                        '${it._TEMP_INITIAL_VALUES.property.windMitigation.floridaBuildingCodeWindSpeed}'
+                    }
+                  },
+                  children: []
+                },
+                {
+                  id: '45b74810-b565-4702-8d2e-f1fdf83833b2',
+                  type: '$INPUT',
+                  path: 'property.windMitigation.roofDeckAttachment',
+                  dependencies: [],
+                  data: {
+                    component: 'select',
+                    label: 'Roof Deck Attachment',
+                    size: '6'
+                  },
+                  formData: {
+                    path: 'property.windMitigation.roofDeckAttachment',
+                    type: 'integer',
+                    required: true,
+                    metaData: {
+                      target:
+                        '${it._TEMP_INITIAL_VALUES.property.windMitigation.roofDeckAttachment}',
+                      enum: [
+                        { label: 'A', answer: 'A' },
+                        { label: 'B', answer: 'B' },
+                        { label: 'C', answer: 'C' },
+                        { label: 'D', answer: 'D' },
+                        { label: 'Concrete', answer: 'Concrete' },
+                        { label: 'Other', answer: 'Other' }
+                      ]
+                    }
+                  },
+                  children: []
+                },
+                {
+                  id: '37fab2c3-0ed7-4538-910a-46aa9452f839',
+                  type: '$INPUT',
+                  path:
+                    'property.windMitigation.floridaBuildingCodeWindSpeedDesign',
+                  dependencies: [],
+                  data: {
+                    component: 'number',
+                    label: 'FBC Wind Speed Design',
+                    size: '6'
+                  },
+                  formData: {
+                    path:
+                      'property.windMitigation.floridaBuildingCodeWindSpeedDesign',
+                    required: true,
+                    metaData: {
+                      target:
+                        '${it._TEMP_INITIAL_VALUES.property.windMitigation.floridaBuildingCodeWindSpeedDesign}'
+                    }
+                  },
+                  children: []
+                },
+                {
+                  id: 'df4710d0-2efb-4700-ac8d-74340f41f120',
+                  type: '$INPUT',
+                  path: 'property.windMitigation.roofToWallConnection',
+                  dependencies: [],
+                  data: {
+                    component: 'select',
+                    label: 'Roof to Wall Attachment',
+                    size: '6'
+                  },
+                  formData: {
+                    path: 'property.windMitigation.roofToWallConnection',
+                    type: 'string',
+                    required: true,
+                    metaData: {
+                      enum: [
+                        { label: 'Toe Nails', answer: 'Toe Nails' },
+                        { label: 'Clips', answer: 'Clips' },
+                        { label: 'Single Wraps', answer: 'Single Wraps' },
+                        { label: 'Double Wraps', answer: 'Double Wraps' },
+                        { label: 'Other', answer: 'Other' }
+                      ],
+                      target:
+                        '${it._TEMP_INITIAL_VALUES.property.windMitigation.roofToWallConnection}'
+                    }
+                  },
+                  children: []
+                },
+                {
+                  id: '47e72599-1e7a-448a-b1e3-56d3fe244703',
+                  type: '$INPUT',
+                  path: 'property.windMitigation.terrain',
+                  dependencies: [],
+                  data: {
+                    component: 'select',
+                    label: 'Terrain',
+                    size: '6',
+                    segmented: true
+                  },
+                  formData: {
+                    path: 'property.windMitigation.terrain',
+                    type: 'string',
+                    required: true,
+                    metaData: {
+                      enum: [
+                        { label: 'B', answer: 'B' },
+                        { label: 'C', answer: 'C' },
+                        { label: 'HVHZ', answer: 'HVHZ' },
+                        { label: 'Other', answer: 'Other' }
+                      ],
+                      target:
+                        '${it._TEMP_INITIAL_VALUES.property.windMitigation.terrain}'
+                    }
+                  },
+                  children: []
+                },
+                {
+                  id: '01c51d1d-a6db-4976-b7d9-91442d81edb0',
+                  type: '$INPUT',
+                  path: 'property.windMitigation.roofGeometry',
+                  dependencies: [],
+                  data: {
+                    component: 'select',
+                    label: 'Roof Geometry',
+                    size: '6'
+                  },
+                  formData: {
+                    path: 'property.windMitigation.roofGeometry',
+                    type: 'string',
+                    required: true,
+                    metaData: {
+                      enum: [
+                        { label: 'Flat', answer: 'Flat' },
+                        { label: 'Gable', answer: 'Gable' },
+                        { label: 'Hip', answer: 'Hip' },
+                        { label: 'Other', answer: 'Other' }
+                      ],
+                      target:
+                        '${it._TEMP_INITIAL_VALUES.property.windMitigation.roofGeometry}'
+                    }
+                  },
+                  children: []
+                },
+                {
+                  id: 'cdcbaee8-bf97-4a1f-9a2d-a3c66b211635',
+                  type: '$INPUT',
+                  path: 'property.windMitigation.internalPressureDesign',
+                  dependencies: [],
+                  data: {
+                    component: 'select',
+                    label: 'Internal Pressure Design',
+                    size: '6'
+                  },
+                  formData: {
+                    path: 'property.windMitigation.internalPressureDesign',
+                    type: 'string',
+                    required: true,
+                    metaData: {
+                      enum: [
+                        { label: 'Enclosed', answer: 'Enclosed' },
+                        { label: 'Partial', answer: 'Partial' },
+                        { label: 'Other', answer: 'Other' }
+                      ],
+                      target:
+                        '${it._TEMP_INITIAL_VALUES.property.windMitigation.internalPressureDesign}'
+                    }
+                  },
+                  children: []
+                },
+                {
+                  id: 'bc4be681-7e17-4eb5-8a61-c2f3229d7ed6',
+                  type: '$INPUT',
+                  path: 'property.windMitigation.secondaryWaterResistance',
+                  dependencies: [],
+                  data: {
+                    component: 'radio',
+                    label: 'Secondary Water Resistance (SWR)',
+                    size: '6',
+                    segmented: true
+                  },
+                  formData: {
+                    path: 'property.windMitigation.secondaryWaterResistance',
+                    type: 'string',
+                    required: true,
+                    metaData: {
+                      enum: [
+                        { label: 'Yes', answer: 'Yes' },
+                        { label: 'No', answer: 'No' },
+                        { label: 'Other', answer: 'Other' }
+                      ],
+                      target:
+                        '${it._TEMP_INITIAL_VALUES.property.windMitigation.secondaryWaterResistance}'
+                    }
+                  },
+                  children: []
+                },
+                {
+                  id: '57723cd6-ec1c-40c9-97f7-aae75327e8e3',
+                  type: '$INPUT',
+                  path: 'property.windMitigation.windBorneDebrisRegion',
+                  dependencies: [],
+                  data: {
+                    component: 'radio',
+                    label: 'Wind Borne Debris Region (WBDR)',
+                    size: '6',
+                    segmented: true
+                  },
+                  formData: {
+                    path: 'property.windMitigation.windBorneDebrisRegion',
+                    type: 'string',
+                    required: true,
+                    metaData: {
+                      enum: [
+                        { label: 'Yes', answer: 'Yes' },
+                        { label: 'No', answer: 'No' },
+                        { label: 'Other', answer: 'Other' }
+                      ],
+                      target:
+                        '${it._TEMP_INITIAL_VALUES.property.windMitigation.windBorneDebrisRegion}'
+                    }
+                  },
+                  children: []
+                },
+                {
+                  id: '85213569-d390-490a-bcfd-16791bde6d74',
+                  type: '$INPUT',
+                  dependencies: [],
+                  path: 'property.windMitigation.openingProtection',
+                  data: {
+                    component: 'select',
+                    label: 'Opening Protection:',
+                    size: '6'
+                  },
+                  formData: {
+                    path: 'property.windMitigation.openingProtection',
+                    type: 'string',
+                    required: true,
+                    metaData: {
+                      enum: [
+                        { label: 'None', answer: 'None' },
+                        { label: 'Basic', answer: 'Basic' },
+                        { label: 'Hurricane', answer: 'Hurricane' },
+                        { label: 'Other', answer: 'Other' }
+                      ],
+                      target:
+                        '${it._TEMP_INITIAL_VALUES.property.windMitigation.openingProtection}'
+                    },
+                    children: []
+                  },
+                  children: []
+                },
+                {
+                  id: '37fab2c3-0ed7-4538-910a-46aa9452g333',
+                  type: '$INPUT',
+                  path:
+                    'rating.worksheet.elements.windMitigationFactors.windMitigationDiscount',
+                  dependencies: [],
+                  data: {
+                    disabled: true,
+                    component: 'number',
+                    label: 'Wind Mit Factor',
+                    size: '6'
+                  },
+                  formData: {
+                    type: 'integer',
+                    path:
+                      'rating.worksheet.elements.windMitigationFactors.windMitigationDiscount',
+                    required: true,
+                    metaData: {
+                      target:
+                        '${it._TEMP_INITIAL_VALUES.rating.worksheet.elements.windMitigationFactors.windMitigationDiscount}'
+                    }
+                  },
+                  children: []
+                }
+              ]
             }
           ]
         }
