@@ -842,7 +842,12 @@ section {
   > section {
     &.endorsements {
       > section {
-        &.coverage-scroll {
+        &.coverage-scroll,
+        &.wind-mitigation-scroll {
+          margin-bottom: 1rem;
+          padding-bottom: 1rem;
+          border-bottom: 1px dashed $bright-blue-darken-03;
+
           .form-group {
             flex-direction: row;
 
