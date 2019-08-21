@@ -1164,6 +1164,35 @@ const mock = {
           ]
         }
       ]
+    },
+    {
+      name: 'endorsements',
+      step: {},
+      components: [
+        {
+          id: 34895439847239847,
+          type: '$SECTION',
+          dependencies: [],
+          data: {
+            className: 'endorsements'
+          },
+          formData: {},
+          children: [
+            {
+              id: 34895439847239848,
+              type: '$ENDORSEMENTS',
+              dependencies: [],
+              data: {
+                extendedProperties: {
+                  subscribe: true
+                }
+              },
+              formData: {},
+              children: []
+            }
+          ]
+        }
+      ]
     }
   ]
 };

@@ -51,10 +51,9 @@ import EffectiveDateModal from './EffectiveDateModal';
 import ReinstatePolicyModal from './ReinstatePolicyModal';
 
 // TODO these will be removed in subsequent PR's
-import Endorsements from '../../components/Policy/Endorsements';
 import { startWorkflow, completeTask } from '../../utilities/cg';
-import MOCK_HO3 from '../../mock-data/mockPolicyHO3';
-import MOCK_AF3 from '../../mock-data/mockPolicyAF3';
+import MOCK_CONFIG_DATA from '../../mock-data/mockPolicyHO3';
+import Endorsements from './Endorsements';
 
 const getCurrentStepAndPage = defaultMemoize(pathname => {
   const currentRouteName = pathname.split('/')[3];
@@ -96,7 +95,8 @@ export class PolicyWorkflow extends React.Component {
     $CANCEL_REASON: CancelReason,
     $CLAIMS_TABLE: ClaimsTable,
     $POLICY_BILLING: PolicyBilling,
-    $PAYMENT_HISTORY_TABLE: PaymentHistoryTable
+    $PAYMENT_HISTORY_TABLE: PaymentHistoryTable,
+    $ENDORSEMENTS: Endorsements
   };
 
   getConfigForJsonTransform = defaultMemoize(getConfigForJsonTransform);
@@ -375,13 +375,6 @@ export class PolicyWorkflow extends React.Component {
                       />
                     </React.Fragment>
                   )}
-                  <Route
-                    exact
-                    path={`${match.url}/endorsements`}
-                    render={props => (
-                      <Endorsements {...props} params={match.params} />
-                    )}
-                  />
                 </div>
               )}
 
