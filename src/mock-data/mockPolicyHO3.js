@@ -2634,6 +2634,30 @@ const mock = {
                   ]
                 }
               ]
+            },
+            {
+              name: 'PreviousEndorsements',
+              id: '598d0d15-42dc-4059-ad09-751fddb3b512',
+              type: '$SECTION',
+              dependencies: [],
+              data: {
+                className: 'previous-endorsements-scroll'
+              },
+              formData: {},
+              children: [
+                {
+                  id: '598d0a99-42dc-4059-ad09-751fddb3b512',
+                  type: '$PREVIOUS_ENDORSEMENTS',
+                  dependencies: [],
+                  data: {
+                    extendedProperties: {
+                      subscribe: true
+                    }
+                  },
+                  formData: {},
+                  children: []
+                }
+              ]
             }
           ]
         }

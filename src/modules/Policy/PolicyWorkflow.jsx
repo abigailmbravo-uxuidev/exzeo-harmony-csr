@@ -26,7 +26,8 @@ import {
 import { getDiariesForTable } from '../../state/selectors/diary.selectors';
 import {
   getPolicyFormData,
-  getPolicyEffectiveDateReasons
+  getPolicyEffectiveDateReasons,
+  getPolicyEndorsementHistory
 } from '../../state/selectors/policy.selectors';
 
 import App from '../../components/AppWrapper';
@@ -55,6 +56,7 @@ import { startWorkflow, completeTask } from '../../utilities/cg';
 import MOCK_CONFIG_DATA from '../../mock-data/mockPolicyHO3';
 import EndorsementsMenu from './EndorsementsMenu';
 import EndorsementsWatcher from './EndorsementsWatcher';
+import PreviousEndorsements from './PreviousEndorsements';
 
 const getCurrentStepAndPage = defaultMemoize(pathname => {
   const currentRouteName = pathname.split('/')[3];
@@ -98,7 +100,8 @@ export class PolicyWorkflow extends React.Component {
     $POLICY_BILLING: PolicyBilling,
     $PAYMENT_HISTORY_TABLE: PaymentHistoryTable,
     $ENDORSEMENTS_MENU: EndorsementsMenu,
-    $ENDORSEMENTS_WATCHER: EndorsementsWatcher
+    $ENDORSEMENTS_WATCHER: EndorsementsWatcher,
+    $PREVIOUS_ENDORSEMENTS: PreviousEndorsements
   };
 
   getConfigForJsonTransform = defaultMemoize(getConfigForJsonTransform);
@@ -264,7 +267,8 @@ export class PolicyWorkflow extends React.Component {
       policyFormData,
       zipCodeSettings,
       cancelOptions,
-      effectiveDateReasons
+      effectiveDateReasons,
+      endorsementHistory
     } = this.props;
 
     const {
@@ -338,7 +342,8 @@ export class PolicyWorkflow extends React.Component {
                           diaries,
                           ...options,
                           cancelOptions,
-                          zipCodeSettings
+                          zipCodeSettings,
+                          endorsementHistory
                         }} // enums for select/radio fields
                         path={location.pathname}
                         template={gandalfTemplate}
@@ -442,6 +447,7 @@ const mapStateToProps = state => {
     notesSynced: state.ui.notesSynced,
     options: state.list,
     policy: state.policyState.policy,
+    endorsementHistory: getPolicyEndorsementHistory(state),
     policyFormData: getPolicyFormData(state),
     summaryLedger: state.policyState.summaryLedger,
     userProfile: state.authState.userProfile,

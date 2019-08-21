@@ -8,6 +8,8 @@ export const getPaymentHistory = state => state.policyState.paymentHistory;
 export const getAgencyPolicies = state => state.policyState.agencyPolices;
 export const getEffectiveDateChangeReasons = state =>
   state.policyState.effectiveDateReasons;
+export const getEndorsementHistory = state =>
+  state.policyState.endorsementHistory;
 // QUOTE
 export const getQuote = state => state.quoteState.quote || emptyObject;
 // DIARY
