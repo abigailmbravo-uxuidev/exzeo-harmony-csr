@@ -149,7 +149,7 @@ const mock = {
                                   label: 'Increased Cost of Compliance Limit',
                                   items: [
                                     {
-                                      format: 'percent',
+                                      format: 'currency',
                                       path:
                                         'coverageLimits.increasedCompliance.amount'
                                     }
