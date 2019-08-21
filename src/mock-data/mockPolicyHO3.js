@@ -1616,7 +1616,7 @@ const mock = {
                         required: true,
                         metaData: {
                           target:
-                            '${format.toCurrency(it._TEMP_INITIAL_VALUES.coverageLimits.ordinanceOrLaw.amount)}'
+                            '${it._TEMP_INITIAL_VALUES.coverageLimits.ordinanceOrLaw.amount}% of Dwelling Limit'
                         }
                       },
                       children: []
@@ -2489,6 +2489,144 @@ const mock = {
                         metaData: {
                           target:
                             '${it._TEMP_INITIAL_VALUES.property.floodZone}'
+                        }
+                      },
+                      children: []
+                    }
+                  ]
+                },
+                {
+                  id: '598d0d15-42dc-4059-ad09-741deda3b502',
+                  type: '$SECTION',
+                  dependencies: [],
+                  data: {
+                    className: 'home-location-right',
+                    size: '6'
+                  },
+                  formData: {},
+                  children: [
+                    {
+                      id: '40808340-4da2-4b08-ab38-c0a969562027',
+                      type: '$INPUT',
+                      path: 'property.distanceToTidalWater',
+                      dependencies: [],
+                      data: {
+                        component: 'number',
+                        label: 'Tidal Waters Dist.',
+                        size: '12'
+                      },
+                      formData: {
+                        path: 'property.distanceToTidalWater',
+                        required: true,
+                        metaData: {
+                          target:
+                            '${it._TEMP_INITIAL_VALUES.property.distanceToTidalWater}'
+                        }
+                      },
+                      children: []
+                    },
+                    {
+                      id: '40808340-4da2-4b08-ab38-c0a969562028',
+                      type: '$INPUT',
+                      path: 'property.distanceToFireHydrant',
+                      dependencies: [],
+                      data: {
+                        component: 'text',
+                        label: 'Fire Hydrant Dist.',
+                        size: '12'
+                      },
+                      formData: {
+                        path: 'property.distanceToFireHydrant',
+                        metaData: {
+                          target:
+                            '${it._TEMP_INITIAL_VALUES.property.distanceToFireHydrant || " "}'
+                        }
+                      },
+                      children: []
+                    },
+                    {
+                      id: '40808340-4da2-4b08-ab38-c0a969562029',
+                      type: '$INPUT',
+                      path: 'property.distanceToFireStation',
+                      dependencies: [],
+                      data: {
+                        component: 'text',
+                        label: 'Fire Station Dist.',
+                        size: '12'
+                      },
+                      formData: {
+                        path: 'property.distanceToFireStation',
+                        metaData: {
+                          target:
+                            '${it._TEMP_INITIAL_VALUES.property.distanceToFireStation || " "}'
+                        }
+                      },
+                      children: []
+                    },
+                    {
+                      id: 'f5f12822-09c8-42e6-9cb0-97b49960d11a',
+                      type: '$INPUT',
+                      path: 'property.residenceType',
+                      dependencies: [],
+                      data: {
+                        component: 'select',
+                        label: 'Residence Type',
+                        size: '12',
+                        dataSource: [
+                          {
+                            label: 'Single Family',
+                            answer: 'SINGLE FAMILY'
+                          },
+                          {
+                            label: 'Commercial',
+                            answer: 'COMMERCIAL'
+                          }
+                        ]
+                      },
+                      formData: {
+                        path: 'property.residenceType',
+                        required: true,
+                        metaData: {
+                          target:
+                            '${it._TEMP_INITIAL_VALUES.property.residenceType}'
+                        }
+                      },
+                      children: []
+                    },
+                    {
+                      id: '40808340-4da2-5b17-ab38-c0a969562029',
+                      type: '$INPUT',
+                      path: 'property.squareFeet',
+                      dependencies: [],
+                      data: {
+                        component: 'number',
+                        label: 'Sq. Ft. of Home',
+                        size: '12'
+                      },
+                      formData: {
+                        path: 'property.squareFeet',
+                        metaData: {
+                          target:
+                            '${format.appendUnit(it._TEMP_INITIAL_VALUES.property.squareFeet || "", "")}'
+                        }
+                      },
+                      children: []
+                    },
+                    {
+                      id: '40808340-4da2-5b17-ab38-c0a969562029',
+                      type: '$INPUT',
+                      path: 'property.yearOfRoof',
+                      dependencies: [],
+                      data: {
+                        component: 'text',
+                        label: 'Year Roof Built',
+                        size: '12'
+                      },
+                      formData: {
+                        path: 'property.yearOfRoof',
+                        metaData: {
+                          target:
+                            '${it._TEMP_INITIAL_VALUES.property.yearOfRoof || " "}'
                         }
                       },
                       children: []
