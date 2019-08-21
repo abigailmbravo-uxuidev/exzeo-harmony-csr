@@ -1235,6 +1235,55 @@ const mock = {
                     }
                   },
                   children: []
+                },
+                {
+                  id: '398ce68d-839c-4a49-bbf2-92fcc275da40',
+                  type: '$INPUT',
+                  path: 'coverageLimits.otherStructures.amount',
+                  dependencies: [],
+                  data: {
+                    disabled: true,
+                    component: 'currency',
+                    label: 'Other Structures (B)',
+                    extendedProperties: {}
+                  },
+                  formData: {
+                    path: 'coverageLimits.otherStructures.amount',
+                    type: 'integer',
+                    required: true,
+                    metaData: {
+                      target:
+                        '${format.toCurrency(it._TEMP_INITIAL_VALUES.coverageLimits.otherStructures.amount)}'
+                    }
+                  },
+                  children: []
+                },
+                {
+                  id: '498ce68d-839c-4a49-bbf2-92fcc275da49',
+                  type: '$INPUT',
+                  path: 'coverageLimits.otherStructures.value',
+                  dependencies: [],
+                  data: {
+                    component: 'selectInteger',
+                    label: 'Percentage',
+                    dataSource: [
+                      { label: '0%', answer: 0 },
+                      { label: '2%', answer: 2 },
+                      { label: '5%', answer: 5 },
+                      { label: '10%', answer: 10 }
+                    ],
+                    extendedProperties: {}
+                  },
+                  formData: {
+                    path: 'coverageLimits.otherStructures.value',
+                    type: 'integer',
+                    required: true,
+                    metaData: {
+                      target:
+                        '${format.toPercent(it._TEMP_INITIAL_VALUES.coverageLimits.otherStructures.value)}'
+                    }
+                  },
+                  children: []
                 }
               ]
             }
