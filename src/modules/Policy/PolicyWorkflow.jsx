@@ -53,7 +53,7 @@ import ReinstatePolicyModal from './ReinstatePolicyModal';
 // TODO these will be removed in subsequent PR's
 import { startWorkflow, completeTask } from '../../utilities/cg';
 import MOCK_CONFIG_DATA from '../../mock-data/mockPolicyHO3';
-import Endorsements from './Endorsements';
+import EndorsementsMenu from './EndorsementsMenu';
 
 const getCurrentStepAndPage = defaultMemoize(pathname => {
   const currentRouteName = pathname.split('/')[3];
@@ -96,7 +96,7 @@ export class PolicyWorkflow extends React.Component {
     $CLAIMS_TABLE: ClaimsTable,
     $POLICY_BILLING: PolicyBilling,
     $PAYMENT_HISTORY_TABLE: PaymentHistoryTable,
-    $ENDORSEMENTS: Endorsements
+    $ENDORSEMENTS_MENU: EndorsementsMenu
   };
 
   getConfigForJsonTransform = defaultMemoize(getConfigForJsonTransform);
@@ -283,7 +283,10 @@ export class PolicyWorkflow extends React.Component {
     const shouldUseGandalf =
       gandalfTemplate &&
       ROUTES_NOT_HANDLED_BY_GANDALF.indexOf(currentRouteName) === -1;
-    const transformConfig = this.getConfigForJsonTransform(gandalfTemplate);
+    const transformConfig = this.getConfigForJsonTransform(
+      gandalfTemplate,
+      policyFormData
+    );
     // TODO going to use Context to pass these directly to custom components,
     //  so Gandalf does not need to know about these.
     const customHandlers = {

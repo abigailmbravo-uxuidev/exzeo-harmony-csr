@@ -1180,7 +1180,7 @@ const mock = {
           children: [
             {
               id: 34895439847239848,
-              type: '$ENDORSEMENTS',
+              type: '$ENDORSEMENTS_MENU',
               dependencies: [],
               data: {
                 extendedProperties: {
@@ -1189,6 +1189,54 @@ const mock = {
               },
               formData: {},
               children: []
+            },
+            {
+              id: 34895439847239849,
+              type: '$SECTION',
+              dependencies: [],
+              data: {
+                className: 'coverage-scroll'
+              },
+              formData: {},
+              children: [
+                {
+                  id: '34895439847239849',
+                  type: '$TITLE',
+                  dependencies: [],
+                  data: {
+                    text: 'Coverage'
+                  },
+                  formData: {},
+                  children: []
+                },
+                {
+                  id: '398ce68d-839c-4a49-bbf2-92fcc275da40',
+                  type: '$INPUT',
+                  path: 'coverageLimits.dwelling.value',
+                  dependencies: [],
+                  data: {
+                    component: 'currency',
+                    label: 'Dwelling (A)',
+                    validation: ['isDwellingRange'],
+                    extendedProperties: {
+                      format: 'currency',
+                      displayRange: true,
+                      min: 'coverageLimits.dwelling.minAmount',
+                      max: 'coverageLimits.dwelling.maxAmount'
+                    }
+                  },
+                  formData: {
+                    path: 'coverageLimits.dwelling.value',
+                    type: 'integer',
+                    required: true,
+                    metaData: {
+                      target:
+                        '${format.toCurrency(it._TEMP_INITIAL_VALUES.coverageLimits.dwelling.value)}'
+                    }
+                  },
+                  children: []
+                }
+              ]
             }
           ]
         }
