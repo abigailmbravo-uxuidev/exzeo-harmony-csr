@@ -1184,7 +1184,16 @@ const mock = {
               dependencies: [],
               data: {
                 extendedProperties: {
-                  subscribe: true
+                  subscribe: true,
+                  links: [
+                    { id: 'coverage-scroll-section', label: 'Coverage' },
+                    { id: 'home-scroll-section', label: 'Home / Location' },
+                    {
+                      id: 'policyholder-scroll-section',
+                      label: 'Policyholders'
+                    },
+                    { id: 'address-scroll-section', label: 'Addresses' }
+                  ]
                 }
               },
               formData: {},
@@ -1207,6 +1216,7 @@ const mock = {
               type: '$SECTION',
               dependencies: [],
               data: {
+                id: 'coverage-scroll-section',
                 className: 'coverage-scroll'
               },
               formData: {},
@@ -2253,6 +2263,7 @@ const mock = {
               type: '$SECTION',
               dependencies: [],
               data: {
+                id: 'home-scroll-section',
                 className: 'home-location-scroll'
               },
               formData: {},
@@ -2665,6 +2676,7 @@ const mock = {
               type: '$SECTION',
               dependencies: [],
               data: {
+                id: 'policyholder-scroll-section',
                 className: 'policyholder-scroll'
               },
               formData: {},
@@ -2691,6 +2703,7 @@ const mock = {
               type: '$SECTION',
               dependencies: [],
               data: {
+                id: 'address-scroll-section',
                 className: 'address-scroll'
               },
               formData: {},
