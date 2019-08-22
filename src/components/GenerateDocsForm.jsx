@@ -20,7 +20,7 @@ const documentTypeAnswers = [
   { label: 'Policy Invoice', answer: 'invoice' }
 ];
 
-const customTransactionTypes = ['invoice', 'fullPolicyPacket'];
+const customTransactionTypes = ['invoice', 'decPage'];
 
 export class GenerateDocsForm extends Component {
   generateDoc = async values => {
