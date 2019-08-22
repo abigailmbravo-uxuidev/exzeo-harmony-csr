@@ -945,6 +945,50 @@ section {
     }
   }
 }
+//endorsements footer specific styles
+/*------------------------------------------------------------------------------------*/
+.endo-results-calc {
+  flex-grow: 1;
+  flex-shrink: 1;
+  padding: $padding;
+  width: auto;
+  border-top: 1px dotted $warm-gray-04;
+  background: $warm-gray-01;
+
+  .endorsement-date-wrapper {
+    flex-grow: 0;
+    flex-shrink: 0;
+    width: 14rem;
+  }
+
+  .btn-secondary {
+    margin-right: $padding;
+  }
+
+  .flex-parent {
+    .form-group {
+      margin: 0 $padding 0 0;
+
+      label {
+        font-size: $font-size-sm;
+      }
+
+      input {
+        &[disabled='disabled'],
+        &:disabled {
+          border-color: $warm-gray-03;
+          background: $warm-gray-00;
+        }
+      }
+    }
+
+    .btn {
+      margin-top: 1.5rem;
+    }
+  }
+}
+//end endorsements footer specific styles
+/*------------------------------------------------------------------------------------*/
 //end endorsements page specific styles
 /*------------------------------------------------------------------------------------*/
 //END POLICY
