@@ -1,0 +1,34 @@
+.content-wrapper {
+  &.finance {
+    .scroll {
+      display: flex;
+      overflow-x: hidden;
+      overflow-y: auto;
+      flex-direction: column;
+      flex-grow: 1;
+      flex-shrink: 1;
+      padding: $padding;
+
+      section {
+        border-bottom: 1px dashed $bright-blue-darken-03;
+
+        .title {
+          flex-grow: 0;
+          flex-shrink: 0;
+        }
+
+        .btn-wrapper {
+          display: flex;
+          align-items: flex-end;
+          margin-bottom: 1rem;
+
+          .btn {
+            + .btn {
+              margin-left: $padding;
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -10,8 +10,8 @@ const PolicyCard = ({ policy }) => {
   } = policy;
 
   return (
-    <div className="card-wrapper">
-      <div className="policy-card">
+    <div className="results">
+      <div className="policy-card card">
         <div className="icon-name">
           <i className="card-icon fa fa-file-text" />
         </div>
