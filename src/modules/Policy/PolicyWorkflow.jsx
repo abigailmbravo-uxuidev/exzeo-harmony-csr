@@ -57,6 +57,7 @@ import MOCK_CONFIG_DATA from '../../mock-data/mockPolicyHO3';
 import EndorsementsMenu from './EndorsementsMenu';
 import EndorsementsWatcher from './EndorsementsWatcher';
 import PreviousEndorsements from './PreviousEndorsements';
+import PolicyHolders from '../Quote/PolicyHolders';
 
 const getCurrentStepAndPage = defaultMemoize(pathname => {
   const currentRouteName = pathname.split('/')[3];
@@ -101,7 +102,8 @@ export class PolicyWorkflow extends React.Component {
     $PAYMENT_HISTORY_TABLE: PaymentHistoryTable,
     $ENDORSEMENTS_MENU: EndorsementsMenu,
     $ENDORSEMENTS_WATCHER: EndorsementsWatcher,
-    $PREVIOUS_ENDORSEMENTS: PreviousEndorsements
+    $PREVIOUS_ENDORSEMENTS: PreviousEndorsements,
+    $POLICYHOLDERS: PolicyHolders
   };
 
   getConfigForJsonTransform = defaultMemoize(getConfigForJsonTransform);

@@ -2658,6 +2658,212 @@ const mock = {
                   children: []
                 }
               ]
+            },
+            {
+              name: 'PolicyHolder',
+              id: '598d0d15-42dc-4059-ad09-64jddb3b512',
+              type: '$SECTION',
+              dependencies: [],
+              data: {
+                className: 'policyholder-scroll'
+              },
+              formData: {},
+              children: [
+                {
+                  name: 'Policyholders',
+                  id: '64jddda3b512-3716-475e-9762-42dcdds',
+                  type: '$CUSTOM',
+                  dependencies: [],
+                  data: {
+                    component: '$POLICYHOLDERS',
+                    extendedProperties: {
+                      watchField: 'removeSecondary'
+                    }
+                  },
+                  formData: {},
+                  children: []
+                }
+              ]
+            },
+            {
+              name: 'Addresses',
+              id: '598d0d15-42dc-4059-ad09-64jddb3b655',
+              type: '$SECTION',
+              dependencies: [],
+              data: {
+                className: 'address-scroll'
+              },
+              formData: {},
+              children: [
+                {
+                  name: 'PropertyAddress',
+                  id: '9911f280-424d-41d8-bf2b-534d6339f8f8',
+                  type: '$SECTION',
+                  dependencies: [],
+                  data: {
+                    size: '12'
+                  },
+                  formData: {},
+                  children: [
+                    {
+                      id: 'cefdde5d-9032-48aa-994d-1f4bf3cd1fa6',
+                      type: '$TITLE',
+                      dependencies: [],
+                      data: {
+                        text: 'Property Address'
+                      },
+                      formData: {},
+                      children: []
+                    },
+                    {
+                      id: '57d97b8b-d82e-4261-8488-6dce86b6efdd',
+                      type: '$INPUT',
+                      path: 'property.physicalAddress.address1',
+                      dependencies: [],
+                      data: {
+                        component: 'text',
+                        label: 'Address 1'
+                      },
+                      formData: {},
+                      children: []
+                    },
+                    {
+                      id: '807d2e0d-5c10-4c8b-bca2-8ce6d45ac8d0',
+                      type: '$INPUT',
+                      path: 'property.physicalAddress.address2',
+                      dependencies: [],
+                      data: {
+                        component: 'text',
+                        label: 'Address 2'
+                      },
+                      formData: {},
+                      children: []
+                    },
+                    {
+                      id: '7f5600a8-97b0-4f88-9d87-f9d31a6cffbd',
+                      type: '$INPUT',
+                      path: 'property.physicalAddress.city',
+                      dependencies: [],
+                      data: {
+                        component: 'text',
+                        label: 'City'
+                      },
+                      formData: {},
+                      children: []
+                    },
+                    {
+                      id: '2df0ae71-dd13-4a5b-a861-4b8811896953',
+                      type: '$INPUT',
+                      path: 'property.physicalAddress.state',
+                      dependencies: [],
+                      data: {
+                        component: 'text',
+                        label: 'State',
+                        size: '4'
+                      },
+                      formData: {},
+                      children: []
+                    },
+                    {
+                      id: 'fe820193-a6be-49d2-901f-e7bb0a850f0c',
+                      type: '$INPUT',
+                      path: 'property.physicalAddress.zip',
+                      dependencies: [],
+                      data: {
+                        component: 'text',
+                        label: 'Zip',
+                        size: '8'
+                      },
+                      formData: {},
+                      children: []
+                    }
+                  ]
+                },
+                {
+                  name: 'MailingAddress',
+                  id: '8811f280-424d-41d8-bf2b-534d6339f8f8',
+                  type: '$SECTION',
+                  dependencies: [],
+                  data: {
+                    size: '12'
+                  },
+                  formData: {},
+                  children: [
+                    {
+                      id: '88fdde5d-9032-48aa-994d-1f4bf3cd1fa6',
+                      type: '$TITLE',
+                      dependencies: [],
+                      data: {
+                        text: 'Mailing Address'
+                      },
+                      formData: {},
+                      children: []
+                    },
+                    {
+                      id: '88d97b8b-d82e-4261-8488-6dce86b6efdd',
+                      type: '$INPUT',
+                      path: 'policyHolderMailingAddress.address1',
+                      dependencies: [],
+                      data: {
+                        component: 'text',
+                        label: 'Address 1'
+                      },
+                      formData: {},
+                      children: []
+                    },
+                    {
+                      id: '888d2e0d-5c10-4c8b-bca2-8ce6d45ac8d0',
+                      type: '$INPUT',
+                      path: 'policyHolderMailingAddress.address2',
+                      dependencies: [],
+                      data: {
+                        component: 'text',
+                        label: 'Address 2'
+                      },
+                      formData: {},
+                      children: []
+                    },
+                    {
+                      id: '888600a8-97b0-4f88-9d87-f9d31a6cffbd',
+                      type: '$INPUT',
+                      path: 'policyHolderMailingAddress.city',
+                      dependencies: [],
+                      data: {
+                        component: 'text',
+                        label: 'City'
+                      },
+                      formData: {},
+                      children: []
+                    },
+                    {
+                      id: '88f0ae71-dd13-4a5b-a861-4b8811896953',
+                      type: '$INPUT',
+                      path: 'policyHolderMailingAddress.state',
+                      dependencies: [],
+                      data: {
+                        component: 'text',
+                        label: 'State',
+                        size: '4'
+                      },
+                      formData: {},
+                      children: []
+                    },
+                    {
+                      id: '88820193-a6be-49d2-901f-e7bb0a850f0c',
+                      type: '$INPUT',
+                      path: 'policyHolderMailingAddress.zip',
+                      dependencies: [],
+                      data: {
+                        component: 'text',
+                        label: 'Zip',
+                        size: '8'
+                      },
+                      formData: {},
+                      children: []
+                    }
+                  ]
+                }
+              ]
             }
           ]
         }
