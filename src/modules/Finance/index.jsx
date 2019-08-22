@@ -5,6 +5,7 @@ import { Route } from 'react-router-dom';
 
 import Header from '../../components/Common/Header';
 import NotFoundPage from '../../containers/NotFound';
+import SideNav from './@components/SideNav';
 import BulkPayments from './@components/BulkPayments';
 
 const Finance = ({ auth, ...opts }) => {
@@ -15,6 +16,7 @@ const Finance = ({ auth, ...opts }) => {
       </Helmet>
       <Header auth={auth} />
       <main role="document" className="policy-advanced">
+        <SideNav />
         <Route
           exact
           path="/finance/payments"
