@@ -841,7 +841,30 @@ section {
 #PolicyWorkflowCSR {
   > section {
     &.endorsements {
+      .endo-jump-menu {
+        position: fixed;
+        top: 9rem;
+        left: calc(((100vw - 42rem) / 2) + 12rem);
+        display: flex;
+        align-content: space-between;
+        padding: $padding;
+        width: 30rem;
+        border-radius: 1.5rem;
+        background-color: rgba($white, 0.9);
+        box-shadow: 0 0 4px rgba($black, 0.25);
+
+        * {
+          flex-basis: auto;
+          flex-grow: 1;
+          flex-shrink: 1;
+          margin: 0 ($padding/2);
+          color: $bright-blue-darken-04;
+        }
+      }
       > section {
+        &.coverage-scroll {
+          margin-top: 2rem;
+        }
         &.coverage-scroll,
         &.home-location-scroll,
         &.wind-mitigation-scroll {
@@ -862,14 +885,21 @@ section {
               margin-bottom: 0;
               width: calc(33.33% - 0.5rem);
               text-align: right;
-              font-size: $font-size-sm;
+              font-size: $font-size-base;
             }
+
+            @media (max-width: 1600px) {
+              label {
+                font-size: $font-size-sm;
+              }
+            }
+
             input,
             select,
             .segmented-answer-wrapper {
               flex-grow: 0;
               flex-shrink: 0;
-              margin-right: $padding;
+              order: 3;
               width: calc(33.33% - 0.5rem);
 
               .label-segmented {
@@ -879,6 +909,7 @@ section {
             output {
               flex-grow: 0;
               flex-shrink: 0;
+              margin-right: $padding;
               width: calc(33.33% - 0.5rem);
             }
           }

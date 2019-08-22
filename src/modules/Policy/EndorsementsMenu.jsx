@@ -15,7 +15,7 @@ const GoToMenu = () => (
       data-test="coverage-scroll"
       type="button"
       onClick={() => scrollToView('coverage')}
-      className="btn btn-secondary btn-xs"
+      className="btn btn-xs btn-link"
     >
       Coverage
     </button>
@@ -24,7 +24,7 @@ const GoToMenu = () => (
       data-test="home-scroll"
       type="button"
       onClick={() => scrollToView('home')}
-      className="btn btn-secondary btn-xs"
+      className="btn btn-xs btn-link"
     >
       Home / Location
     </button>
@@ -33,7 +33,7 @@ const GoToMenu = () => (
       data-test="policy-scroll"
       type="button"
       onClick={() => scrollToView('policy')}
-      className="btn btn-secondary btn-xs"
+      className="btn btn-xs btn-link"
     >
       Policyholders
     </button>
@@ -42,7 +42,7 @@ const GoToMenu = () => (
       data-test="addresses-scroll"
       type="button"
       onClick={() => scrollToView('addresses')}
-      className="btn btn-secondary btn-xs"
+      className="btn btn-xs btn-link"
     >
       Addresses
     </button>
