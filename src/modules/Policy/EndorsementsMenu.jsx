@@ -8,7 +8,6 @@ const scrollToView = elementName => {
   }
 };
 
-//TODO : Make dynamic with template
 const GoToMenu = props => {
   const {
     config: {
