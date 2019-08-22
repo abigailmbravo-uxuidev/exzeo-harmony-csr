@@ -291,10 +291,7 @@ export class PolicyWorkflow extends React.Component {
     const shouldUseGandalf =
       gandalfTemplate &&
       ROUTES_NOT_HANDLED_BY_GANDALF.indexOf(currentRouteName) === -1;
-    const transformConfig = this.getConfigForJsonTransform(
-      gandalfTemplate,
-      policyFormData
-    );
+    const transformConfig = this.getConfigForJsonTransform(gandalfTemplate);
     // TODO going to use Context to pass these directly to custom components,
     //  so Gandalf does not need to know about these.
     const customHandlers = {
@@ -350,7 +347,7 @@ export class PolicyWorkflow extends React.Component {
                         path={location.pathname}
                         template={gandalfTemplate}
                         transformConfig={transformConfig}
-                        stickyFooter
+                        stickyFooter={true}
                         renderFooter={({ pristine, submitting, form }) => (
                           <PolicyFooter
                             currentStep={currentRouteName}

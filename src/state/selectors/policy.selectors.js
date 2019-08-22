@@ -152,6 +152,10 @@ export const getPolicyFormData = createSelector(
     policy._TEMP_INITIAL_VALUES = cloneDeep(policy);
     policy.summaryLedger = summaryLedger;
     policy.cancel = cancel;
+    policy.endorsementEffectiveDate = date.formatDate(
+      policy.effectiveDate,
+      date.FORMATS.SECONDARY
+    );
     return policy;
   }
 );
