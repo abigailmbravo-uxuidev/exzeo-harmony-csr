@@ -51,6 +51,7 @@ export class GenerateDocsForm extends Component {
     };
 
     try {
+      // Create the file
       const {
         data: { result }
       } = await callService(config, 'getDocumentPacketFiles');
