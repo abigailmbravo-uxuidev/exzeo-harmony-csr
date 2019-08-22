@@ -16,6 +16,7 @@ function PolicyFooter({
   if (currentStep === 'endorsements') {
     return (
       <EndorsementFooter>
+        <Footer />
         <Button
           className={Button.constants.classNames.secondary}
           onClick={handleEndorsementReset}
