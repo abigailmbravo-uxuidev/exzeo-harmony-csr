@@ -1740,14 +1740,15 @@ const mock = {
                           label: 'Calculated Hurricane Deductible'
                         },
                         {
+                          label: 'Sinkhole Deductible',
                           items: [
                             {
-                              hideNoValuePath: 'deductibles.sinkhole.amount',
-                              format: 'percent',
-                              path: 'deductibles.sinkhole.amount'
+                              format: 'conditionalPercent',
+                              path: 'deductibles.sinkhole.amount',
+                              conditions: [''],
+                              defaultValue: 'Coverage Excluded'
                             }
-                          ],
-                          label: 'Sinkhole Deductible'
+                          ]
                         },
                         {
                           items: [
