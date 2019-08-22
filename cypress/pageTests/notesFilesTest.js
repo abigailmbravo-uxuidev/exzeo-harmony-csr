@@ -12,8 +12,12 @@ const addNoteCheck = text =>
     .contains(text);
 
 export default () => {
+  //TODO: Check for quote started only
   cy.get('td.note div')
-    .contains('Quote State Changed: Quote Started')
+    .should('have.any', [
+      'Quote State Changed: Quote Started',
+      'Quote State Changed: Quote Created'
+    ])
     .get('td.note div')
     .contains('Quote State Changed: Quote Qualified')
     .get('td.note div')
