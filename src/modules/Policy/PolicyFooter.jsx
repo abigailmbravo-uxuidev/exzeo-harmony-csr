@@ -15,25 +15,29 @@ function PolicyFooter({
 }) {
   if (currentStep === 'endorsements') {
     return (
-      <EndorsementFooter>
-        <Footer />
-        <Button
-          className={Button.constants.classNames.secondary}
-          onClick={handleEndorsementReset}
-          data-test="modal-cancel"
-        >
-          Cancel
-        </Button>
-        <Button
-          className={Button.constants.classNames.primary}
-          type="submit"
-          onClick={handleEndorsementSubmit}
-          disabled={isSubmitDisabled}
-          data-test="modal-submit"
-        >
-          {isEndorsementCalculated ? 'Save' : 'Review'}
-        </Button>
-      </EndorsementFooter>
+      <React.Fragment>
+        <EndorsementFooter>
+          <Button
+            className={Button.constants.classNames.secondary}
+            onClick={handleEndorsementReset}
+            data-test="modal-cancel"
+          >
+            Cancel
+          </Button>
+          <Button
+            className={Button.constants.classNames.primary}
+            type="submit"
+            onClick={handleEndorsementSubmit}
+            disabled={isSubmitDisabled}
+            data-test="modal-submit"
+          >
+            {isEndorsementCalculated ? 'Save' : 'Review'}
+          </Button>
+        </EndorsementFooter>
+        <div className="basic-footer btn-footer">
+          <Footer />
+        </div>
+      </React.Fragment>
     );
   }
   if (currentStep === 'cancel') {
