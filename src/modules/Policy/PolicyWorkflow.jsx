@@ -84,7 +84,8 @@ export class PolicyWorkflow extends React.Component {
     gandalfTemplate: null,
     showDiaries: false,
     showReinstatePolicyModal: false,
-    showEffectiveDateChangeModal: false
+    showEffectiveDateChangeModal: false,
+    isEndorsementCalculated: false
   };
 
   formInstance = null;
@@ -255,6 +256,19 @@ export class PolicyWorkflow extends React.Component {
     this.toggleEffectiveDateChangeModal();
   };
 
+  handleEndorsementSubmit = async data => {
+    this.setState(state => ({
+      isEndorsementCalculated: !state.isEndorsementCalculated
+    }));
+  };
+
+  handleEndoresementReset = async data => {
+    this.formInstance.reset();
+    this.setState(state => ({
+      isEndorsementCalculated: false
+    }));
+  };
+
   render() {
     const {
       diaries,
@@ -352,6 +366,15 @@ export class PolicyWorkflow extends React.Component {
                           <PolicyFooter
                             currentStep={currentRouteName}
                             formInstance={form}
+                            isEndorsementCalculated={
+                              this.state.isEndorsementCalculated
+                            }
+                            handleEndorsementSubmit={
+                              this.handleEndorsementSubmit
+                            }
+                            handleEndorsementReset={
+                              this.handleEndoresementReset
+                            }
                             isSubmitDisabled={this.isSubmitDisabled(
                               pristine,
                               submitting
