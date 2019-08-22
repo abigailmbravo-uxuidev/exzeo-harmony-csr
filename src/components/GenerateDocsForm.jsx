@@ -20,6 +20,8 @@ const documentTypeAnswers = [
   { label: 'Policy Invoice', answer: 'invoice' }
 ];
 
+const customTransactionTypes = ['invoice', 'fullPolicyPacket'];
+
 export class GenerateDocsForm extends Component {
   generateDoc = async values => {
     const {
@@ -27,6 +29,10 @@ export class GenerateDocsForm extends Component {
       updateNotes,
       errorHandler
     } = this.props;
+
+    const transactionType = customTransactionTypes.includes(values.documentType)
+      ? values.documentType
+      : undefined;
     const packetName = values.documentType;
 
     const config = {
@@ -38,7 +44,8 @@ export class GenerateDocsForm extends Component {
         state,
         product,
         args: {
-          policyTransactionId: policyID
+          policyTransactionId: policyID,
+          ...(transactionType && { transactionType })
         }
       }
     };
