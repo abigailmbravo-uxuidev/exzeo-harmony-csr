@@ -914,6 +914,12 @@ section {
             }
           }
         }
+        &.previous-endorsements-scroll,
+        &.policyholder-scroll {
+          margin-bottom: 1rem;
+          padding-bottom: 1rem;
+          border-bottom: 1px dashed $bright-blue-darken-03;
+        }
       }
     }
   }
