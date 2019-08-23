@@ -268,23 +268,23 @@ export class PolicyWorkflow extends React.Component {
         zipCodeSettings: { timezone }
       } = this.props;
 
-      values.effectiveDate = date.formatToUTC(
-        date.formatDate(
-          values.endorsementEffectiveDate,
-          date.FORMATS.SECONDARY
-        ),
+      values.endorsementDate = date.formatToUTC(
+        date.formatDate(values.endorsementDate, date.FORMATS.SECONDARY),
         timezone
       );
 
+      delete values._TEMP_INITIAL_VALUES;
+      delete values.cancel;
+
       const transferConfig = {
         exchangeName: 'harmony',
-        routingKey: 'harmony.policy.quoteEndorsement',
-        data: values
+        routingKey: 'harmony.policy.rateEndorsement',
+        data: { modifiedTransaction: values }
       };
 
       const response = await serviceRunner.callService(
         transferConfig,
-        'quoteEndorsement'
+        'rateEndorsement'
       );
     } else {
       // const transferConfig = {

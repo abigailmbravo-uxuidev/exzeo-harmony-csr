@@ -20,16 +20,13 @@ const EndorsementFooter = props => {
     <div className="endo-results-calc">
       <div className="flex-parent">
         <div className="form-group endorsement-date-wrapper">
-          <Field
-            name="endorsementEffectiveDate"
-            validate={validateEndorsementDate}
-          >
+          <Field name="endorsementDate" validate={validateEndorsementDate}>
             {({ input, meta }) => (
               <Date
                 input={input}
                 meta={meta}
-                styleName="endorsementEffectiveDate"
-                dataTest="endorsementEffectiveDate"
+                styleName="endorsementDate"
+                dataTest="endorsementDate"
                 label="Endorsement Effective Date"
               />
             )}
