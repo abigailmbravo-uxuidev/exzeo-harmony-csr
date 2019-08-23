@@ -1359,7 +1359,8 @@ const mock = {
           type: '$GROUP',
           dependencies: [
             { quoteInputState: 'Qualified' },
-            { quoteInputState: 'Ready' }
+            { quoteInputState: 'Ready' },
+            { quoteInputState: 'AppStarted' }
           ],
           data: {},
           formData: {},
