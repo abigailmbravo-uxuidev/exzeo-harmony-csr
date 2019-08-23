@@ -172,7 +172,7 @@ const BulkPayments = () => {
               <span className="amount">$2.00</span>
             </div>
           </div>
-          <div className="btn-wrapper">
+          <div className="btn-wrapper download">
             <button
               className="btn btn-secondary"
               type="button"
