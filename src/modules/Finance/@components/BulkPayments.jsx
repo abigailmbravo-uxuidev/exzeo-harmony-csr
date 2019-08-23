@@ -139,19 +139,23 @@ const BulkPayments = () => {
         <section className="section-policy">
           <PolicyCard batch={batch} />
         </section>
-        <section className="section-current-values">
-          <div>
-            <div>
-              <span>Cash Date</span> <span>Batch Number</span>Cash Type
-              <span>Payment Description</span>
-            </div>
-            <div>
-              <span>12/12/2020</span> <span>20201212-01</span>Paper Deposit
-              <span>Payment Received</span>
-            </div>
-          </div>
-        </section>
         <section className="section-payment-list">
+          <div className="form-group">
+            <label>Cash Date</label>
+            <span>12/12/2020</span>
+          </div>
+          <div className="form-group">
+            <label>Batch Number</label>
+            <span>20201212-01</span>
+          </div>
+          <div className="form-group">
+            <label>Cash Type</label>
+            <span>Paper Deposit</span>
+          </div>
+          <div className="form-group">
+            <label>Payment Description</label>
+            <span>Payment Received</span>
+          </div>
           <div>
             <div>
               <span>Polcy Number</span> <span>Policyholder</span>
