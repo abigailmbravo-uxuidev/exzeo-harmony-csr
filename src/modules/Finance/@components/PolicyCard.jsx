@@ -1,8 +1,9 @@
-import React, { Fragment } from 'react';
+import React, { useState, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { Form, Field, Input, validation } from '@exzeo/core-ui';
 
-const PolicyCard = ({ policy }) => {
+const PolicyCard = ({ batch }) => {
+  const [policy, setPolicy] = useState({});
   const {
     effectiveDate,
     policyHolders: { firstName, lastName } = {},
@@ -10,7 +11,6 @@ const PolicyCard = ({ policy }) => {
     summaryLedger: { balance = {}, status: billingStatus = {} } = {}
   } = policy;
 
-  console.logFragment;
   return (
     <Form
       initialValues={{}}
@@ -18,8 +18,19 @@ const PolicyCard = ({ policy }) => {
       subscription={{ submitting: true, pristine: true, values: true }}
     >
       {({ reset }) => (
-        <form id="batch-form">
+        <form id="payment-form">
           <div className="fade-in view-grid">
+            <Field name="policyNumber">
+              {({ input, meta }) => (
+                <Input
+                  input={input}
+                  meta={meta}
+                  label="Policy Number"
+                  styleName="input"
+                  dataTest="policyNumber"
+                />
+              )}
+            </Field>
             <div className="results">
               <div className="policy-card card">
                 {policy && Object.entries(policy).length > 0 && (
