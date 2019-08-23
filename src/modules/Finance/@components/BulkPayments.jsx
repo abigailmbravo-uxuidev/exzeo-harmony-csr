@@ -172,6 +172,16 @@ const BulkPayments = () => {
               <span className="amount">$2.00</span>
             </div>
           </div>
+          <div className="btn-wrapper">
+            <button
+              className="btn btn-secondary"
+              type="button"
+              onClick={() => setActive(false)}
+              disabled={!active}
+            >
+              Download
+            </button>
+          </div>
         </section>
       </div>
     </div>
