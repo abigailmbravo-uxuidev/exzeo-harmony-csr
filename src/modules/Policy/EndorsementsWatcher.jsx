@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React from 'react';
 import { OnChangeListener, Field } from '@exzeo/core-ui/src';
 import _get from 'lodash/get';
@@ -40,6 +41,66 @@ const EndorsementsWatcher = ({ formValues }) => {
                   )
                 ) {
                   onChange(false);
+                }
+              }}
+            </OnChangeListener>
+          </React.Fragment>
+        )}
+      </Field>
+      <Field name="coverageLimits.otherStructures.amount" subscription={{}}>
+        {({ input: { onChange } }) => (
+          <React.Fragment>
+            <OnChangeListener name="coverageLimits.dwelling.value">
+              {dwellingValue => {
+                if (dwellingValue) {
+                  onChange(
+                    Math.ceil(
+                      (formValues.coverageLimits.otherStructures.value / 100) *
+                        dwellingValue
+                    )
+                  );
+                }
+              }}
+            </OnChangeListener>
+            <OnChangeListener name="coverageLimits.otherStructures.value">
+              {otherStructuresValue => {
+                if (otherStructuresValue) {
+                  onChange(
+                    Math.ceil(
+                      (otherStructuresValue / 100) *
+                        formValues.coverageLimits.dwelling.value
+                    )
+                  );
+                }
+              }}
+            </OnChangeListener>
+          </React.Fragment>
+        )}
+      </Field>
+      <Field name="coverageLimits.personalProperty.amount" subscription={{}}>
+        {({ input: { onChange } }) => (
+          <React.Fragment>
+            <OnChangeListener name="coverageLimits.dwelling.value">
+              {dwellingValue => {
+                if (dwellingValue) {
+                  onChange(
+                    Math.ceil(
+                      (formValues.coverageLimits.personalProperty.value / 100) *
+                        dwellingValue
+                    )
+                  );
+                }
+              }}
+            </OnChangeListener>
+            <OnChangeListener name="coverageLimits.personalProperty.value">
+              {personalPropertyValue => {
+                if (personalPropertyValue) {
+                  onChange(
+                    Math.ceil(
+                      (personalPropertyValue / 100) *
+                        formValues.coverageLimits.dwelling.value
+                    )
+                  );
                 }
               }}
             </OnChangeListener>
