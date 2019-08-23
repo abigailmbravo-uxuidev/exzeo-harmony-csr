@@ -43,6 +43,7 @@
               align-items: center;
               flex-direction: column;
               justify-content: center;
+              padding-left: $padding * 4;
               border-bottom-width: 0;
               background-color: $white;
 
@@ -58,6 +59,37 @@
               }
             }
             .card-block {
+              padding: $padding;
+              .policy-details,
+              .policy-status {
+                display: flex;
+                justify-content: space-between;
+
+                label {
+                  margin-bottom: 0;
+                  font-size: $font-size-sm;
+                }
+
+                .btn.btn-xs {
+                  padding: 0 0 0 $padding;
+                }
+              }
+
+              .policyholder {
+                display: flex;
+                margin: $padding 0;
+                font-weight: $font-weight-bold;
+                font-size: $font-size-h4;
+
+                strong {
+                  margin-right: $padding/2;
+                  color: $bright-blue-darken-04;
+                }
+                span {
+                  margin-left: $padding/2;
+                  font-weight: $font-weight-normal;
+                }
+              }
             }
             .card-footer {
               flex-direction: row;

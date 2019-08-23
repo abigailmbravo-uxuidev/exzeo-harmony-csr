@@ -20,27 +20,34 @@ const PolicyCard = ({ policy }) => {
         <div className="card-block">
           <div className="policy-details">
             <div>
-              {policy.company} | {policy.policyNumber}
-              <a href="#" target="_blank">
+              <strong>{policy.company}</strong> | {policy.policyNumber}
+              <a className="btn btn-link btn-xs" href="#" target="_blank">
+                <i className="fa fa-external-link-square" />
                 Open Policy
               </a>
             </div>
-            <div>
-              <span>Effective Date:</span> {policy.effectiveDate}
+            <div className="effective-date">
+              <label>Effective Date:</label> {policy.effectiveDate}
             </div>
-            <div>
-              <span>Balance Due:</span> {summaryLedger.balance.$numberDecimal}
+            <div className="balance-due">
+              <label>Balance Due:</label> {summaryLedger.balance.$numberDecimal}
             </div>
           </div>
           <div className="policyholder">
-            {firstName} {lastName}| {address1} {city}, {state} {zip}
+            <strong>
+              JOHN DOEMMDIBUFBWEIFUBUWEFBUHWFBUWEFVUWVBU{firstName} {lastName}
+            </strong>{' '}
+            | {address1},{' '}
+            <span>
+              {city}, {state} {zip}
+            </span>
           </div>
           <div className="policy-status">
             <div>
-              <span>Policy Status:</span> {policy.status}
+              <label>Policy Status:</label> {policy.status}
             </div>
             <div>
-              <span>Billing Status:</span> {summaryLedger.status.displayText}
+              <label>Billing Status:</label> {summaryLedger.status.displayText}
             </div>
           </div>
         </div>
