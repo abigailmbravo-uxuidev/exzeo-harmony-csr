@@ -18,3 +18,49 @@ export async function getPaymentOptions() {
     throw error;
   }
 }
+
+export async function fetchPolicy(policyNumber) {
+  const config = {
+    service: 'policy-data',
+    method: 'GET',
+    path: `transactions/${policyNumber}/latest`
+  };
+
+  try {
+    const response = await serviceRunner.callService(config, 'fetchPolicy');
+    return response ? response.data : {};
+  } catch (error) {
+    throw error;
+  }
+}
+
+export async function fetchSummaryLedger(policyNumber) {
+  const config = {
+    service: 'billing',
+    method: 'GET',
+    path: `summary-ledgers/${policyNumber}/latest`
+  };
+
+  try {
+    const response = await serviceRunner.callService(
+      config,
+      'fetchSummaryLedger'
+    );
+    return response && response.data && response.data.result
+      ? response.data.result
+      : {};
+  } catch (error) {
+    throw error;
+  }
+}
+
+export async function getPolicy(policyNumber) {
+  try {
+    const policy = await fetchPolicy(policyNumber);
+    const summaryLedger = await fetchSummaryLedger(policyNumber);
+    policy.summaryLedger = summaryLedger;
+    return policy;
+  } catch (error) {
+    throw error;
+  }
+}

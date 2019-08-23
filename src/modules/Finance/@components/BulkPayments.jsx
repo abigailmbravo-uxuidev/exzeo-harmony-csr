@@ -137,7 +137,7 @@ const BulkPayments = () => {
           )}
         </Form>
         <section className="section-policy">
-          <PolicyCard batch={batch} />
+          <PolicyCard active={active} batch={batch} />
         </section>
         <section className="section-payment-list">
           <div className="form-group">
