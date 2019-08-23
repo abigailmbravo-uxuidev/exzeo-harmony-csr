@@ -1,6 +1,7 @@
 import React from 'react';
 import { normalize } from '@exzeo/core-ui';
 import ContactAddress from '../../components/ContactAddress';
+import { formatUrl } from '../../utilities/format';
 
 function AgencyCard({ agency, policyNumber, policyHolders }) {
   return (
@@ -32,7 +33,11 @@ function AgencyCard({ agency, policyNumber, policyHolders }) {
           {agency.websiteUrl ? (
             <span className="additional-data website">
               <label>WEBSITE:&nbsp;</label>
-              <a href={`${agency.websiteUrl}`} target="_blank">
+              <a
+                href={formatUrl(agency.websiteUrl)}
+                rel="noopener noreferrer"
+                target="_blank"
+              >
                 {agency.websiteUrl}
               </a>
             </span>
