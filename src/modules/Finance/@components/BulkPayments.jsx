@@ -143,6 +143,7 @@ const BulkPayments = () => {
                           input={input}
                           meta={meta}
                           label="Policy Number"
+                          placeholder="Enter Complete Policy Number"
                           styleName="input view-col-4"
                           dataTest="policyNumber"
                         />
