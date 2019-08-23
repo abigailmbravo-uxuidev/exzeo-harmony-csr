@@ -156,14 +156,16 @@ const BulkPayments = () => {
             <label>Payment Description</label>
             <span>Payment Received</span>
           </div>
-          <div>
-            <div>
-              <span>Polcy Number</span> <span>Policyholder</span>
-              <span>Amount</span>
+          <div className="payment-table">
+            <div className="table-header">
+              <span className="policy-number">Polcy Number</span>
+              <span className="policyholder">Policyholder</span>
+              <span className="amount">Amount</span>
             </div>
-            <div>
-              <span>12-00000001-01</span> <span>Lane Myer</span>
-              <span>$2.00</span>
+            <div className="table-row">
+              <span className="policy-number">12-00000001-01</span>
+              <span className="policyholder">Lane Myer</span>
+              <span className="amount">$2.00</span>
             </div>
           </div>
         </section>

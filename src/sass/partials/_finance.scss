@@ -18,6 +18,24 @@
           }
         }
 
+        &.section-payment-list {
+          display: flex;
+          flex-wrap: wrap;
+          border-bottom-width: 0;
+
+          .form-group {
+            width: auto;
+
+            label {
+              margin-bottom: $padding/2;
+            }
+          }
+
+          .payment-table {
+            width: 100%;
+          }
+        }
+
         form {
           &#payment-form {
             padding: 0 $padding;
