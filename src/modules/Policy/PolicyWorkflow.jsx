@@ -275,6 +275,7 @@ export class PolicyWorkflow extends React.Component {
 
       delete values._TEMP_INITIAL_VALUES;
       delete values.cancel;
+      delete values.summaryLedger;
 
       const transferConfig = {
         exchangeName: 'harmony',
