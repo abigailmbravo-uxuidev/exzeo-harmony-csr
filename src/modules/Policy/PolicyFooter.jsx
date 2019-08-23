@@ -10,7 +10,6 @@ function PolicyFooter({
   currentStep,
   formInstance,
   isEndorsementCalculated,
-  handleEndorsementSubmit,
   handleEndorsementReset
 }) {
   if (currentStep === 'endorsements') {
@@ -27,7 +26,7 @@ function PolicyFooter({
           <Button
             className={Button.constants.classNames.primary}
             type="submit"
-            onClick={handleEndorsementSubmit}
+            onClick={handlePrimaryClick}
             disabled={isSubmitDisabled}
             data-test="modal-submit"
           >

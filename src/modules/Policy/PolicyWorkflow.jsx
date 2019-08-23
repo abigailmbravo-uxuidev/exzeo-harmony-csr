@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Route } from 'react-router-dom';
 import { Loader, FormSpy, remoteSubmit, date } from '@exzeo/core-ui';
+import * as serviceRunner from '@exzeo/core-ui/src/@Harmony/Domain/Api/serviceRunner';
 import {
   getConfigForJsonTransform,
   Gandalf,
@@ -161,14 +162,19 @@ export class PolicyWorkflow extends React.Component {
     const { currentRouteName, currentStepNumber } = getCurrentStepAndPage(
       location.pathname
     );
-    await this.props.updatePolicy({
-      data: values,
-      options: {
-        step: currentStepNumber,
-        cancelPolicy: currentRouteName === 'cancel',
-        zipCodeSettings
-      }
-    });
+
+    if (currentRouteName === 'endorsements') {
+      await this.handleEndorsementSubmit(values);
+    } else {
+      await this.props.updatePolicy({
+        data: values,
+        options: {
+          step: currentStepNumber,
+          cancelPolicy: currentRouteName === 'cancel',
+          zipCodeSettings
+        }
+      });
+    }
   };
 
   handleToggleDiaries = () => {
@@ -256,7 +262,45 @@ export class PolicyWorkflow extends React.Component {
     this.toggleEffectiveDateChangeModal();
   };
 
-  handleEndorsementSubmit = async data => {
+  handleEndorsementSubmit = async values => {
+    if (!this.state.isEndorsementCalculated) {
+      const {
+        zipCodeSettings: { timezone }
+      } = this.props;
+
+      values.effectiveDate = date.formatToUTC(
+        date.formatDate(
+          values.endorsementEffectiveDate,
+          date.FORMATS.SECONDARY
+        ),
+        timezone
+      );
+
+      const transferConfig = {
+        exchangeName: 'harmony',
+        routingKey: 'harmony.policy.quoteEndorsement',
+        data: values
+      };
+
+      const response = await serviceRunner.callService(
+        transferConfig,
+        'quoteEndorsement'
+      );
+    } else {
+      // const transferConfig = {
+      //   exchangeName: 'harmony',
+      //   routingKey:  'harmony.policy.retrieveDocumentTemplate',
+      //   data: {
+      //     companyCode,
+      //     state,
+      //     product: 'HO3',
+      //     application: 'CSR',
+      //     formName: 'quoteModel',
+      //     version: date.formattedDate(undefined, date.FORMATS.SECONDARY)
+      //   }
+      // };
+      // const response = await serviceRunner.callService(transferConfig, 'retrieveDocumentTemplate');
+    }
     this.setState(state => ({
       isEndorsementCalculated: !state.isEndorsementCalculated
     }));
@@ -368,9 +412,6 @@ export class PolicyWorkflow extends React.Component {
                             formInstance={form}
                             isEndorsementCalculated={
                               this.state.isEndorsementCalculated
-                            }
-                            handleEndorsementSubmit={
-                              this.handleEndorsementSubmit
                             }
                             handleEndorsementReset={
                               this.handleEndoresementReset
