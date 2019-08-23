@@ -64,3 +64,20 @@ export async function getPolicy(policyNumber) {
     throw error;
   }
 }
+
+export async function postPayment(data) {
+  try {
+    const config = {
+      service: 'billing',
+      method: 'POST',
+      path: `post-payment-transaction`,
+      data
+    };
+    const response = await serviceRunner.callService(
+      config,
+      'postPaymentTransaction'
+    );
+  } catch (error) {
+    throw error;
+  }
+}
