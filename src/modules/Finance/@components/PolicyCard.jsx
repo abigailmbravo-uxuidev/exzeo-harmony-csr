@@ -12,7 +12,7 @@ const PolicyCard = ({ policy }) => {
 
   return (
     <div className="results">
-      <div className={`policy-card card ${policy.status}`}>
+      <div className={`policy-card card ${summaryLedger.status.displayText}`}>
         <div className="icon-name card-header">
           <i className="icon fa fa-file-text" />
           <h5>HO3</h5>

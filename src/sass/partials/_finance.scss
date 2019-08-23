@@ -38,6 +38,16 @@
             flex-direction: row;
             margin: 0 0 $padding;
 
+            &.Cancellation,
+            &.Expired,
+            &.Non-Renewal {
+              .policy-status {
+                > div {
+                  color: $red;
+                }
+              }
+            }
+
             .card-header {
               display: flex;
               align-items: center;
