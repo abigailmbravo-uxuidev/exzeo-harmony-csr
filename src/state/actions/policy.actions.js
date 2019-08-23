@@ -1,5 +1,6 @@
 // temporary full path import until we can find a better way to mock network requests
 import * as serviceRunner from '@exzeo/core-ui/src/@Harmony/Domain/Api/serviceRunner';
+import _cloneDeep from 'lodash/cloneDeep';
 import { date } from '@exzeo/core-ui/src';
 
 import { convertToRateData } from '../../utilities/endorsementModel';
@@ -841,6 +842,38 @@ export function updatePolicy({ data = {}, options = {} }) {
   return async function(dispatch) {
     try {
       dispatch(toggleLoading(true));
+
+      if (options.endorsePolicy && !options.isRateCalculated) {
+        const calculatedData = _cloneDeep(data);
+
+        data.endorsementDate = date.formatToUTC(
+          date.formatDate(data.endorsementDate, date.FORMATS.SECONDARY),
+          options.zipCodeSettings.timezone
+        );
+
+        delete data._TEMP_INITIAL_VALUES;
+        delete data.cancel;
+        delete data.summaryLedger;
+
+        const transferConfig = {
+          exchangeName: 'harmony',
+          routingKey: 'harmony.policy.rateEndorsement',
+          data
+        };
+
+        const response = await serviceRunner.callService(
+          transferConfig,
+          'rateEndorsement'
+        );
+
+        const rating = response.data.result.rating;
+
+        const { summaryLedger, _TEMP_INITIAL_VALUES } = calculatedData;
+
+        await dispatch(
+          setPolicy({ ..._TEMP_INITIAL_VALUES, rating }, summaryLedger)
+        );
+      }
 
       if (options.cancelPolicy) {
         const submitData = {

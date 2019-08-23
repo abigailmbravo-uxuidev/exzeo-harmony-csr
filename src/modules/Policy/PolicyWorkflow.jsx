@@ -163,17 +163,21 @@ export class PolicyWorkflow extends React.Component {
       location.pathname
     );
 
+    await this.props.updatePolicy({
+      data: values,
+      options: {
+        step: currentStepNumber,
+        cancelPolicy: currentRouteName === 'cancel',
+        endorsePolicy: currentRouteName === 'endorsements',
+        isRateCalculated: this.state.isEndorsementCalculated,
+        zipCodeSettings
+      }
+    });
+
     if (currentRouteName === 'endorsements') {
-      await this.handleEndorsementSubmit(values);
-    } else {
-      await this.props.updatePolicy({
-        data: values,
-        options: {
-          step: currentStepNumber,
-          cancelPolicy: currentRouteName === 'cancel',
-          zipCodeSettings
-        }
-      });
+      this.setState(state => ({
+        isEndorsementCalculated: !state.isEndorsementCalculated
+      }));
     }
   };
 
@@ -260,51 +264,6 @@ export class PolicyWorkflow extends React.Component {
     await new Promise(resolve => setTimeout(resolve, 3000));
     await getPolicy(policy.policyNumber);
     this.toggleEffectiveDateChangeModal();
-  };
-
-  handleEndorsementSubmit = async values => {
-    if (!this.state.isEndorsementCalculated) {
-      const {
-        zipCodeSettings: { timezone }
-      } = this.props;
-
-      values.endorsementDate = date.formatToUTC(
-        date.formatDate(values.endorsementDate, date.FORMATS.SECONDARY),
-        timezone
-      );
-
-      delete values._TEMP_INITIAL_VALUES;
-      delete values.cancel;
-      delete values.summaryLedger;
-
-      const transferConfig = {
-        exchangeName: 'harmony',
-        routingKey: 'harmony.policy.rateEndorsement',
-        data: values
-      };
-
-      const response = await serviceRunner.callService(
-        transferConfig,
-        'rateEndorsement'
-      );
-    } else {
-      // const transferConfig = {
-      //   exchangeName: 'harmony',
-      //   routingKey:  'harmony.policy.retrieveDocumentTemplate',
-      //   data: {
-      //     companyCode,
-      //     state,
-      //     product: 'HO3',
-      //     application: 'CSR',
-      //     formName: 'quoteModel',
-      //     version: date.formattedDate(undefined, date.FORMATS.SECONDARY)
-      //   }
-      // };
-      // const response = await serviceRunner.callService(transferConfig, 'retrieveDocumentTemplate');
-    }
-    this.setState(state => ({
-      isEndorsementCalculated: !state.isEndorsementCalculated
-    }));
   };
 
   handleEndoresementReset = async data => {

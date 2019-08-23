@@ -31,32 +31,32 @@ const EndorsementFooter = props => {
             )}
           </Field>
         </div>
-        <Field name="newEndorsementAmount">
+        <Field name="rating.endorsementAmount">
           {({ input, meta }) => (
             <Field
-              name="newEndorsementAmount"
+              name="rating.endorsementAmount"
               label="New End Amount"
               component={Currency}
               disabled
-              dataTest="newEndorsementAmount"
+              dataTest="endorsementAmount"
             />
           )}
         </Field>
-        <Field name="newEndorsementPremium">
+        <Field name="rating.newCurrentPremium">
           {({ input, meta }) => (
             <Field
-              name="newEndorsementPremium"
+              name="rating.newCurrentPremium"
               label="New End Premium"
               component={Currency}
               disabled
-              dataTest="newEndorsementPremium"
+              dataTest="newCurrentPremium"
             />
           )}
         </Field>
-        <Field name="newAnnualPremium">
+        <Field name="rating.newAnnualPremium">
           {({ input, meta }) => (
             <Field
-              name="newAnnualPremium"
+              name="rating.newAnnualPremium"
               label="New Annual Premium"
               component={Currency}
               disabled
