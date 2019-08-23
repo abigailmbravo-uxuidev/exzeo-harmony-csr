@@ -108,6 +108,11 @@
               margin-left: $padding;
             }
           }
+
+          &.download {
+            justify-content: flex-end;
+            padding-top: $padding * 2;
+          }
         }
 
         .results {
