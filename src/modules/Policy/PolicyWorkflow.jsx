@@ -279,7 +279,7 @@ export class PolicyWorkflow extends React.Component {
       const transferConfig = {
         exchangeName: 'harmony',
         routingKey: 'harmony.policy.rateEndorsement',
-        data: { modifiedTransaction: values }
+        data: values
       };
 
       const response = await serviceRunner.callService(

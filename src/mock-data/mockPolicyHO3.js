@@ -1285,7 +1285,7 @@ const mock = {
                         required: true,
                         metaData: {
                           target:
-                            '${format.toCurrency(Math.ceil(((it.coverageLimits.otherStructures.value / 100) * it.coverageLimits.dwelling.value)))}'
+                            '${format.toCurrency(Math.round(Math.ceil(((it.coverageLimits.otherStructures.value / 100) * it.coverageLimits.dwelling.value)) / 1000) * 1000)}'
                         }
                       },
                       children: []
@@ -1334,7 +1334,7 @@ const mock = {
                         required: true,
                         metaData: {
                           target:
-                            '${format.toCurrency(Math.ceil(((it.coverageLimits.personalProperty.value / 100) * it.coverageLimits.dwelling.value)))}'
+                            '${format.toCurrency(Math.round(Math.ceil(((it.coverageLimits.personalProperty.value / 100) * it.coverageLimits.dwelling.value)) / 1000) * 1000)}'
                         }
                       },
                       children: []
@@ -1383,7 +1383,7 @@ const mock = {
                         required: true,
                         metaData: {
                           target:
-                            '${format.toCurrency(Math.ceil(((it.coverageLimits.lossOfUse.value / 100) * it.coverageLimits.dwelling.value)))}'
+                            '${format.toCurrency(Math.round(Math.ceil(((it.coverageLimits.lossOfUse.value / 100) * it.coverageLimits.dwelling.value)) / 1000) * 1000)}'
                         }
                       },
                       children: []
