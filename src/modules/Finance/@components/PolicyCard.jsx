@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Field, Input, validation } from '@exzeo/core-ui';
 
 const PolicyCard = ({ policy }) => {
   const {
@@ -39,6 +40,22 @@ const PolicyCard = ({ policy }) => {
           <div>
             <span>Billing Status:</span> {summaryLedger.status.displayText}
           </div>
+        </div>
+        <div>
+          <Field name="amount" validate={validation.isRequired}>
+            {({ input, meta }) => (
+              <Input
+                input={input}
+                meta={meta}
+                label="Amount"
+                styleName="input"
+                dataTest="amount"
+              />
+            )}
+          </Field>
+          <button className="btn btn-primary" type="button" form="">
+            APPLY
+          </button>
         </div>
       </div>
     </div>
