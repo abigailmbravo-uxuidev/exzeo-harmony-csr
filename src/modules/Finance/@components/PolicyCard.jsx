@@ -26,7 +26,7 @@ const PolicyCard = ({ batch }) => {
                   input={input}
                   meta={meta}
                   label="Policy Number"
-                  styleName="input"
+                  styleName="input view-col-4"
                   dataTest="policyNumber"
                 />
               )}

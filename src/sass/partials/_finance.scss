@@ -12,8 +12,16 @@
       section {
         border-bottom: 1px dashed $bright-blue-darken-03;
 
-        &:last-of-type {
-          border-bottom-width: 0;
+        &.section-payment {
+          .form-group {
+            margin-bottom: 0;
+          }
+        }
+
+        form {
+          &#payment-form {
+            padding: 0 $padding;
+          }
         }
 
         .title {
@@ -23,8 +31,8 @@
 
         .btn-wrapper {
           display: flex;
-          align-items: flex-end;
-          margin-bottom: 1rem;
+          align-items: flex-start;
+          padding-top: 30px;
 
           .btn {
             + .btn {
@@ -37,7 +45,7 @@
           .card {
             flex-direction: row;
             justify-content: flex-end;
-            margin: 0 0 $padding;
+            margin: 0;
 
             &.Cancellation,
             &.Expired,

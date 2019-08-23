@@ -47,7 +47,7 @@ const BulkPayments = () => {
 
   return (
     <div className="content-wrapper finance">
-      <div className="scroll">
+      <div className="scroll view-grid">
         <Form
           initialValues={initialValues}
           onSubmit={handlePayment}
