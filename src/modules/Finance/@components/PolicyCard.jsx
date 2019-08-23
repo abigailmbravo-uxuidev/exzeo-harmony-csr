@@ -111,7 +111,7 @@ const PolicyCard = ({ active, batch: { valid, values } }) => {
                       />
                     )}
                   </Field>
-                  <button className="btn btn-primary" type="button" form="">
+                  <button className="btn btn-primary" type="submit" form="">
                     APPLY
                   </button>
                 </div>
