@@ -27,7 +27,6 @@ function inputBatch(batchNumber, cashDate) {
 const BulkPayments = () => {
   const [active, setActive] = useState(false);
   const [batch, setBatch] = useState({});
-  const [policy, setPolicy] = useState({});
   const { cashTypes } = useFetchPaymentOptions();
 
   const initialValues = {
@@ -138,7 +137,7 @@ const BulkPayments = () => {
           )}
         </Form>
         <section className="section-policy">
-          <PolicyCard policy={policy} />
+          <PolicyCard batch={batch} />
         </section>
         <section className="section-current-values">
           <div>
