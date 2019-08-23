@@ -12,6 +12,10 @@
       section {
         border-bottom: 1px dashed $bright-blue-darken-03;
 
+        &:last-of-type {
+          border-bottom-width: 0;
+        }
+
         .title {
           flex-grow: 0;
           flex-shrink: 0;
