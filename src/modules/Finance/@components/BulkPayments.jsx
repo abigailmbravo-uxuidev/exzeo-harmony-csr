@@ -55,7 +55,7 @@ const BulkPayments = () => {
           subscription={{ submitting: true, pristine: true, values: true }}
         >
           {({ reset }) => (
-            <form id="bulk-payments">
+            <form id="batch-form">
               <div className="fade-in view-grid">
                 <h3 className="title">Bulk Payments</h3>
                 <section className="section-payment">
@@ -133,38 +133,37 @@ const BulkPayments = () => {
                     </button>
                   </div>
                 </section>
-                <section className="section-policy">
-                  <PolicyCard policy={policy} />}
-                </section>
-                <section className="section-current-values">
-                  <div>
-                    <div>
-                      <span>Cash Date</span> <span>Batch Number</span>Cash Type
-                      <span>Payment Description</span>
-                    </div>
-                    <div>
-                      <span>12/12/2020</span> <span>20201212-01</span>Paper
-                      Deposit
-                      <span>Payment Received</span>
-                    </div>
-                  </div>
-                </section>
-                <section className="section-payment-list">
-                  <div>
-                    <div>
-                      <span>Polcy Number</span> <span>Policyholder</span>
-                      <span>Amount</span>
-                    </div>
-                    <div>
-                      <span>12-00000001-01</span> <span>Lane Myer</span>
-                      <span>$2.00</span>
-                    </div>
-                  </div>
-                </section>
               </div>
             </form>
           )}
         </Form>
+        <section className="section-policy">
+          <PolicyCard policy={policy} />
+        </section>
+        <section className="section-current-values">
+          <div>
+            <div>
+              <span>Cash Date</span> <span>Batch Number</span>Cash Type
+              <span>Payment Description</span>
+            </div>
+            <div>
+              <span>12/12/2020</span> <span>20201212-01</span>Paper Deposit
+              <span>Payment Received</span>
+            </div>
+          </div>
+        </section>
+        <section className="section-payment-list">
+          <div>
+            <div>
+              <span>Polcy Number</span> <span>Policyholder</span>
+              <span>Amount</span>
+            </div>
+            <div>
+              <span>12-00000001-01</span> <span>Lane Myer</span>
+              <span>$2.00</span>
+            </div>
+          </div>
+        </section>
       </div>
     </div>
   );
