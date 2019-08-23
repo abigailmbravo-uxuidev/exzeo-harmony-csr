@@ -1,8 +1,10 @@
 import React, { useState, Fragment } from 'react';
 import PropTypes from 'prop-types';
-import { Form, Field, Input, validation } from '@exzeo/core-ui';
+import { Form, Field, Input, OnBlurListener, validation } from '@exzeo/core-ui';
 
-const PolicyCard = ({ batch }) => {
+import { getPolicy } from '../data';
+
+const PolicyCard = ({ active, batch: { valid, values } }) => {
   const [policy, setPolicy] = useState({});
   const {
     effectiveDate,
@@ -11,29 +13,43 @@ const PolicyCard = ({ batch }) => {
     summaryLedger: { balance = {}, status: billingStatus = {} } = {}
   } = policy;
 
+  const hasPolicy = policy && Object.entries(policy).length > 0;
+  const handlePolicySearch = async policyNumber => {
+    const search = await getPolicy(policyNumber);
+    setPolicy(search);
+  };
   return (
     <Form
       initialValues={{}}
-      onSubmit={() => {}}
-      subscription={{ submitting: true, pristine: true, values: true }}
+      onSubmit={handlePolicySearch}
+      subscription={{ values: true }}
     >
       {({ reset }) => (
         <form id="payment-form">
           <div className="fade-in view-grid">
-            <Field name="policyNumber">
+            <Field
+              name="policyNumber"
+              onBlur={props => console.log('proppa: ', props)}
+            >
               {({ input, meta }) => (
-                <Input
-                  input={input}
-                  meta={meta}
-                  label="Policy Number"
-                  styleName="input view-col-4"
-                  dataTest="policyNumber"
-                />
+                <Fragment>
+                  <Input
+                    input={input}
+                    meta={meta}
+                    label="Policy Number"
+                    styleName="input view-col-4"
+                    dataTest="policyNumber"
+                    disabled={!active}
+                  />
+                  <OnBlurListener name="policyNumber">
+                    {() => handlePolicySearch(input.value)}
+                  </OnBlurListener>
+                </Fragment>
               )}
             </Field>
             <div className="results">
               <div className="policy-card card">
-                {policy && Object.entries(policy).length > 0 && (
+                {hasPolicy && (
                   <Fragment>
                     <div className="icon-name card-header">
                       <i className="icon fa fa-file-text" />
@@ -91,6 +107,7 @@ const PolicyCard = ({ batch }) => {
                         label="Amount"
                         styleName="input"
                         dataTest="amount"
+                        disabled={!active}
                       />
                     )}
                   </Field>

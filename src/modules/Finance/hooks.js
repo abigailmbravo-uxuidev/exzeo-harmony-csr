@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-import { getPaymentOptions } from './data';
+import { getPaymentOptions, getPolicy } from './data';
 
 export const useFetchPaymentOptions = () => {
   const [cashTypes, setCashTypes] = useState([]);
