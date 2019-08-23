@@ -78,8 +78,7 @@ const PolicyCard = ({ active, batch: { valid, values } }) => {
                       </div>
                       <div className="policyholder">
                         <strong>
-                          JOHN DOEMMDIBUFBWEIFUBUWEFBUHWFBUWEFVUWVBU{firstName}{' '}
-                          {lastName}
+                          {firstName} {lastName}
                         </strong>{' '}
                         | {address1},{' '}
                         <span>
