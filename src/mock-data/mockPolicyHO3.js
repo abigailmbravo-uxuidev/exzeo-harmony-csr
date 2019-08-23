@@ -1334,7 +1334,7 @@ const mock = {
                         required: true,
                         metaData: {
                           target:
-                            '${format.toPercent(it._TEMP_INITIAL_VALUES.coverageLimits.personalProperty.amount)}'
+                            '${format.toCurrency(it._TEMP_INITIAL_VALUES.coverageLimits.personalProperty.amount)}'
                         }
                       },
                       children: []
@@ -1383,7 +1383,7 @@ const mock = {
                         required: true,
                         metaData: {
                           target:
-                            '${format.toCurrency(Math.round(Math.ceil(((it.coverageLimits.lossOfUse.value / 100) * it.coverageLimits.dwelling.value)) / 1000) * 1000)}'
+                            '${format.toCurrency(it._TEMP_INITIAL_VALUES.coverageLimits.lossOfUse.amount)}'
                         }
                       },
                       children: []

@@ -107,6 +107,24 @@ const EndorsementsWatcher = ({ formValues }) => {
           </React.Fragment>
         )}
       </Field>
+      <Field name="coverageLimits.lossOfUse.amount" subscription={{}}>
+        {({ input: { onChange } }) => (
+          <React.Fragment>
+            <OnChangeListener name="coverageLimits.dwelling.value">
+              {dwellingValue => {
+                if (dwellingValue) {
+                  onChange(
+                    Math.ceil(
+                      (formValues.coverageLimits.lossOfUse.value / 100) *
+                        dwellingValue
+                    )
+                  );
+                }
+              }}
+            </OnChangeListener>
+          </React.Fragment>
+        )}
+      </Field>
     </React.Fragment>
   );
 };

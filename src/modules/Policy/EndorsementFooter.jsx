@@ -2,7 +2,6 @@ import React from 'react';
 import { Field, Date, validation, Currency } from '@exzeo/core-ui';
 
 const EndorsementFooter = props => {
-  console.log(props);
   const validateEndorsementDate = (...args) => {
     // we shouldn't need to do this, waiting for a patch from redux-form
     const { initialValues } = props;
