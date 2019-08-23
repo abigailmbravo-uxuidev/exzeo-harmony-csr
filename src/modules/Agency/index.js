@@ -16,7 +16,7 @@ import {
   getLists
 } from '../../state/actions/questions.actions';
 import { getPoliciesForAgency } from '../../state/actions/policy.actions';
-
+import { getEnumsForAgencyWorkflow } from '../../state/actions/list.actions';
 import AgencyHeader from './AgencyHeader';
 import AgencySideNav from './AgencySideNav';
 import AgencyDetailHeader from './DetailHeader';
@@ -87,6 +87,7 @@ export class Agency extends Component {
     this.props.searchSettingsByCSPAndZip('', 'FL');
     this.props.getTerritoryManagers('FL');
     this.props.getLists();
+    this.props.getEnumsForAgencyWorkflow();
   }
 
   render() {
@@ -175,6 +176,7 @@ export default connect(
     getTerritoryManagers,
     searchSettingsByCSPAndZip,
     getLists,
-    getPoliciesForAgency
+    getPoliciesForAgency,
+    getEnumsForAgencyWorkflow
   }
 )(Agency);

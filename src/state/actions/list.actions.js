@@ -129,3 +129,23 @@ export function getEnumsForPolicyWorkflow({ policyNumber }) {
     }
   };
 }
+
+/**
+ *
+ * @returns {Function}
+ */
+export function getEnumsForAgencyWorkflow() {
+  return async dispatch => {
+    try {
+      const noteOptions = await fetchNoteOptions('agencyCode');
+
+      dispatch(
+        setEnums({
+          noteOptions
+        })
+      );
+    } catch (error) {
+      dispatch(setAppError(error));
+    }
+  };
+}
