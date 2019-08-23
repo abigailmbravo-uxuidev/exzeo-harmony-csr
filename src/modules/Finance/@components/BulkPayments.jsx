@@ -143,7 +143,7 @@ const BulkPayments = () => {
                           input={input}
                           meta={meta}
                           label="Policy Number"
-                          styleName="input"
+                          styleName="input view-col-4"
                           dataTest="policyNumber"
                         />
                       </Fragment>
@@ -151,17 +151,6 @@ const BulkPayments = () => {
                   </Field>
                 </div>
                 <PolicyCard policy={policy} />
-                <Field name="amount" validate={validation.isRequired}>
-                  {({ input, meta }) => (
-                    <Input
-                      input={input}
-                      meta={meta}
-                      label="Amount"
-                      styleName="input"
-                      dataTest="amount"
-                    />
-                  )}
-                </Field>
               </section>
               <section className="section-current-values">
                 <div>
