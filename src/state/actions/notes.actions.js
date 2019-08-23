@@ -93,44 +93,18 @@ export function fetchNotes(numbers, numberType) {
 /**
  *
  * @param numberType
- * @returns {Object}
+ * @returns {Promise<Object>}
  */
-export function fetchNoteOptions(numberType) {
+export async function fetchNoteOptions(numberType) {
   const notesConfig = {
-    exchangeName: 'harmony',
-    routingKey: 'harmony.note.getNoteOptions',
-    data: { data: { numberType } }
+    service: 'notes',
+    method: 'GET',
+    path: `v1/noteOptions?numberType=${numberType}`
   };
 
   try {
-    // const noteOptions = await callService(notesConfig, 'getNoteOptions'),
-    const noteOptions = {
-      validContactTypes: ['Agent', 'Policyholder', 'Inspector', 'Other'],
-      validFileTypes: [
-        '4-pt Inspection',
-        'Claims Documentation',
-        'Correspondence',
-        'Elevation Certificate',
-        'Flood Selection Form',
-        'Flood Waiver Form',
-        'HUD Statement',
-        'New Business Application',
-        'Other',
-        'Proof Of Prior Insurance',
-        'Proof Of Repair',
-        'Property Inspection',
-        'Protection Device Certificate',
-        'Quote Summary',
-        'Reinstatement Correspondence',
-        'Replacement Cost Estimator',
-        'Roof Inspection/permit',
-        'Sinkhole Loss Questionnaire',
-        'Sinkhole Selection/rejection Form',
-        'Wind Exclusion',
-        'Wind Mitigation'
-      ]
-    };
-    return noteOptions;
+    const response = await callService(notesConfig, 'getNoteOptions');
+    return response.data.result;
   } catch (err) {
     return err;
   }
