@@ -36,6 +36,7 @@
         .results {
           .card {
             flex-direction: row;
+            justify-content: flex-end;
             margin: 0 0 $padding;
 
             &.Cancellation,
