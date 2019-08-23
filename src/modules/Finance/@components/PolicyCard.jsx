@@ -5,9 +5,9 @@ import { Field, Input, validation } from '@exzeo/core-ui';
 const PolicyCard = ({ policy }) => {
   const {
     effectiveDate,
-    policyHolders: { firstName, lastName },
-    policyHolderMailingAddress: { address1, city, state, zip },
-    summaryLedger
+    policyHolders: { firstName, lastName } = {},
+    policyHolderMailingAddress: { address1, city, state, zip } = {},
+    summaryLedger: { balance = {}, status: billingStatus = {} } = {}
   } = policy;
 
   return (
@@ -30,7 +30,7 @@ const PolicyCard = ({ policy }) => {
               <label>Effective Date:</label> {policy.effectiveDate}
             </div>
             <div className="balance-due">
-              <label>Balance Due:</label> {summaryLedger.balance.$numberDecimal}
+              <label>Balance Due:</label> {balance.$numberDecimal}
             </div>
           </div>
           <div className="policyholder">
@@ -47,7 +47,7 @@ const PolicyCard = ({ policy }) => {
               <label>Policy Status:</label> {policy.status}
             </div>
             <div>
-              <label>Billing Status:</label> {summaryLedger.status.displayText}
+              <label>Billing Status:</label> {billingStatus.displayText}
             </div>
           </div>
         </div>
