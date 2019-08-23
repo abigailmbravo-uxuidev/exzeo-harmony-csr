@@ -12,7 +12,7 @@ const PolicyCard = ({ policy }) => {
 
   return (
     <div className="results">
-      <div className="policy-card card">
+      <div className={`policy-card card ${policy.status}`}>
         <div className="icon-name card-header">
           <i className="icon fa fa-file-text" />
           <h5>HO3</h5>
@@ -35,7 +35,7 @@ const PolicyCard = ({ policy }) => {
           </div>
           <div className="policyholder">
             <strong>
-              JOHN DOEMMDIBUFBWEIFUBUWEFBUHWFBUWEFVUWVBU{firstName} {lastName}
+              {firstName} {lastName}
             </strong>{' '}
             | {address1},{' '}
             <span>
