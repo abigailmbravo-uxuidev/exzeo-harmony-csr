@@ -33,6 +33,57 @@
 
           .payment-table {
             width: 100%;
+
+            span {
+              flex-grow: 0;
+              flex-shrink: 0;
+
+              &.policy-number {
+                width: 12rem;
+              }
+              &.policyholder {
+                flex-grow: 1;
+                flex-shrink: 1;
+              }
+              &.amount {
+                width: 6rem;
+                text-align: right;
+              }
+              &.footer-label {
+                flex-grow: 1;
+                flex-shrink: 1;
+                text-align: right;
+              }
+            }
+
+            .table-header {
+              display: flex;
+              padding: ($padding / 2) $padding;
+              background: $warm-gray-02;
+
+              span {
+                font-weight: $font-weight-bold;
+              }
+            }
+            .table-row {
+              display: flex;
+              padding: ($padding / 2) $padding;
+              border-bottom: 1px dotted $warm-gray-02;
+
+              &:nth-of-type(odd) {
+                background: $warm-gray-01;
+              }
+            }
+            .table-footer {
+              display: flex;
+              padding: ($padding / 2) $padding;
+              border-top: 2px solid $warm-gray-08;
+              background: rgba($yellow-darken-01, 0.2);
+
+              .amount {
+                font-weight: $font-weight-bold;
+              }
+            }
           }
         }
 

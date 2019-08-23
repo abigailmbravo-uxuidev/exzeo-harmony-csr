@@ -167,6 +167,10 @@ const BulkPayments = () => {
               <span className="policyholder">Lane Myer</span>
               <span className="amount">$2.00</span>
             </div>
+            <div className="table-footer">
+              <span className="footer-label">[X] entires totaling</span>
+              <span className="amount">$2.00</span>
+            </div>
           </div>
         </section>
       </div>

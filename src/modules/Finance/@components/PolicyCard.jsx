@@ -38,6 +38,7 @@ const PolicyCard = ({ active, batch: { valid, values } }) => {
                     meta={meta}
                     label="Policy Number"
                     styleName="input view-col-4"
+                    placeholder="Enter Complete Policy Number"
                     dataTest="policyNumber"
                     disabled={!active}
                   />
