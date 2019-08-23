@@ -32,6 +32,47 @@
             }
           }
         }
+
+        .results {
+          .card {
+            flex-direction: row;
+            margin: 0 0 $padding;
+
+            .card-header {
+              display: flex;
+              align-items: center;
+              flex-direction: column;
+              justify-content: center;
+              border-bottom-width: 0;
+              background-color: $white;
+
+              h5 {
+                flex-basis: auto;
+              }
+
+              .icon {
+                margin-bottom: $padding;
+                width: auto;
+                color: $bright-blue-darken-04;
+                font-size: $font-size-h3;
+              }
+            }
+            .card-block {
+            }
+            .card-footer {
+              flex-direction: row;
+              margin: $padding 0;
+              border-top-width: 0;
+              border-left: $card-border-width dotted $card-border-color;
+              background-color: $white;
+
+              .form-group.input {
+                margin-bottom: 0;
+                width: auto;
+              }
+            }
+          }
+        }
       }
     }
   }
