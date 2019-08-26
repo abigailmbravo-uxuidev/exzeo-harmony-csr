@@ -135,19 +135,14 @@ const PolicyCard = ({
                             {policy.policyNumber}
                             <a
                               className="btn btn-link btn-xs"
-                              href="#"
+                              href={`/policy/${policy.policyNumber}/coverage`}
                               target="_blank"
                             >
                               <i className="fa fa-external-link-square" />
                               Open Policy
                             </a>
                           </div>
-                          <div className="effective-date">
-                            <label>Effective Date:</label>&nbsp;
-                            {moment
-                              .utc(policy.effectiveDate)
-                              .format(STANDARD_DATE_FORMAT)}
-                          </div>
+
                           <div className="balance-due">
                             <label>Balance Due:</label>&nbsp;
                             {balance.$numberDecimal}
@@ -164,6 +159,12 @@ const PolicyCard = ({
                           </span>
                         </div>
                         <div className="policy-status">
+                          <div className="effective-date">
+                            <label>Effective Date:</label>&nbsp;
+                            {moment
+                              .utc(policy.effectiveDate)
+                              .format(STANDARD_DATE_FORMAT)}
+                          </div>
                           <div>
                             <label>Policy Status:</label>&nbsp;
                             {policy.status}

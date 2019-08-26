@@ -181,10 +181,10 @@
               }
 
               .policy-status {
-                justify-content: flex-end;
+                justify-content: space-between;
 
                 div {
-                  margin-left: $padding * 4;
+                  //margin-left: $padding * 4;
                 }
               }
 
