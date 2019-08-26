@@ -1,11 +1,19 @@
 import React, { useState, Fragment } from 'react';
 import PropTypes from 'prop-types';
-import { Form, Field, Input, OnBlurListener, validation } from '@exzeo/core-ui';
+import {
+  date,
+  Form,
+  Field,
+  Input,
+  OnBlurListener,
+  validation
+} from '@exzeo/core-ui';
 
-import { getPolicy } from '../data';
+import { getPolicy, postPayment } from '../data';
 
-const PolicyCard = ({ active, batch: { valid, values } }) => {
+const PolicyCard = ({ active, batch, batchResults, setBatchResults }) => {
   const [policy, setPolicy] = useState({});
+  const [loading, setLoading] = useState(false);
   const {
     effectiveDate,
     policyHolders: { firstName, lastName } = {},
@@ -14,23 +22,64 @@ const PolicyCard = ({ active, batch: { valid, values } }) => {
   } = policy;
 
   const hasPolicy = policy && Object.entries(policy).length > 0;
+
   const handlePolicySearch = async policyNumber => {
     const search = await getPolicy(policyNumber);
     setPolicy(search);
   };
+
+  const handlePayment = async ({ amount, policyNumber }) => {
+    const {
+      values: { cashDate, batchNumber, cashType }
+    } = batch;
+    const {
+      policyTerm,
+      property,
+      policyAccountCode,
+      companyCode,
+      state,
+      product
+    } = policy;
+
+    setLoading(true);
+    const payment = {
+      date: date.formatToUTC(cashDate, property.timezone),
+      batch: String(batchNumber),
+      amount: Number(String(amount).replace(/[^\d.-]/g, '')),
+      type: String(cashType),
+      description: 'Payment Received',
+      policyNumber: policyNumber,
+      policyTerm: policyTerm,
+      policyAccountCode: policyAccountCode,
+      companyCode: companyCode,
+      state: state,
+      product: product
+    };
+
+    const { policyHolders } = policy;
+
+    const batchDetails = {
+      policyNumber,
+      amount,
+      policyHolder: `${policyHolders[0].firstName} ${policyHolders[0].lastName}`
+    };
+
+    try {
+      await postPayment(payment);
+      setBatchResults([...batchResults, batchDetails]);
+    } catch (error) {
+      //return errorHandler(error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
-    <Form
-      initialValues={{}}
-      onSubmit={handlePolicySearch}
-      subscription={{ values: true }}
-    >
-      {({ reset }) => (
+    <Form onSubmit={handlePayment} subscription={{ values: true }}>
+      {({ handleSubmit, reset }) => (
         <form id="payment-form">
           <div className="fade-in view-grid">
-            <Field
-              name="policyNumber"
-              onBlur={props => console.log('proppa: ', props)}
-            >
+            <Field name="policyNumber" validate={validation.isRequired}>
               {({ input, meta }) => (
                 <Fragment>
                   <Input
@@ -111,7 +160,12 @@ const PolicyCard = ({ active, batch: { valid, values } }) => {
                       />
                     )}
                   </Field>
-                  <button className="btn btn-primary" type="submit" form="">
+                  <button
+                    className="btn btn-primary"
+                    type="submit"
+                    onClick={handleSubmit}
+                    form="payment-form"
+                  >
                     APPLY
                   </button>
                 </div>

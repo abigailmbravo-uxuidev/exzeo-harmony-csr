@@ -25,8 +25,9 @@ function inputBatch(batchNumber, cashDate) {
 }
 
 const BulkPayments = () => {
+  const [batchResults, setBatchResults] = useState([]);
   const [active, setActive] = useState(false);
-  const [batch, setBatch] = useState({});
+  const [batch, setBatch] = useState({ valid: false, values: {} });
   const { cashTypes } = useFetchPaymentOptions();
 
   const initialValues = {
@@ -35,22 +36,14 @@ const BulkPayments = () => {
     cashTypes
   };
 
-  const handleActivity = () => {
-    console.log('activity');
-    setActive(true);
-  };
-
-  const handlePayment = async values => {
-    console.log('submit');
-    const payment = {};
-  };
+  const handleActivity = () => setActive(true);
 
   return (
     <div className="content-wrapper finance">
       <div className="scroll view-grid">
         <Form
           initialValues={initialValues}
-          onSubmit={handlePayment}
+          onSubmit={handleActivity}
           subscription={{ submitting: true, pristine: true, values: true }}
         >
           {({ reset }) => (
@@ -137,20 +130,25 @@ const BulkPayments = () => {
           )}
         </Form>
         <section className="section-policy">
-          <PolicyCard active={active} batch={batch} />
+          <PolicyCard
+            active={active}
+            batch={batch}
+            batchResults={batchResults}
+            setBatchResults={setBatchResults}
+          />
         </section>
         <section className="section-payment-list">
           <div className="form-group">
             <label>Cash Date</label>
-            <span>12/12/2020</span>
+            <span>{batch.values.cashDate}</span>
           </div>
           <div className="form-group">
             <label>Batch Number</label>
-            <span>20201212-01</span>
+            <span>{batch.values.batchNumber}</span>
           </div>
           <div className="form-group">
             <label>Cash Type</label>
-            <span>Paper Deposit</span>
+            <span>{batch.values.cashType}</span>
           </div>
           <div className="form-group">
             <label>Payment Description</label>
@@ -162,10 +160,14 @@ const BulkPayments = () => {
               <span className="policyholder">Policyholder</span>
               <span className="amount">Amount</span>
             </div>
-            <div className="table-row">
-              <span className="policy-number">12-00000001-01</span>
-              <span className="policyholder">Lane Myer</span>
-              <span className="amount">$2.00</span>
+            <div>
+              {batchResults.map(result => (
+                <Fragment key={result.policyNumber}>
+                  <span className="policy-number">{result.policyNumber}</span>
+                  <span className="policyholder">{result.policyHolder}</span>
+                  <span className="amount">{result.amount}</span>
+                </Fragment>
+              ))}
             </div>
             <div className="table-footer">
               <span className="footer-label">[X] entires totaling</span>
