@@ -6,15 +6,11 @@ import {
   Field,
   Date,
   Currency,
-  validation
+  validation,
+  Loader
 } from '@exzeo/core-ui';
 
-const EndorsementForm = ({
-  children,
-  handleSubmit,
-  initialValues,
-  setEndorsementFormInstance
-}) => {
+const EndorsementForm = ({ children, handleSubmit, initialValues }) => {
   const validateEndorsementDate = (...args) => {
     // we shouldn't need to do this, waiting for a patch from redux-form
     if (!initialValues) return undefined;
@@ -27,13 +23,6 @@ const EndorsementForm = ({
     );
   };
 
-  const clacluateEndorsementRate = () => {
-    //rate endorsem
-    // get rate object
-    // formisntace of parent reinitialize
-    //set local state of rating object
-  };
-
   return (
     <Form
       initialValues={initialValues}
@@ -42,12 +31,7 @@ const EndorsementForm = ({
     >
       {({ handleSubmit, submitting, pristine }) => (
         <React.Fragment>
-          <FormSpy subscription={{}}>
-            {({ form }) => {
-              setEndorsementFormInstance(form);
-              return null;
-            }}
-          </FormSpy>
+          {submitting && <Loader />}
           <form
             id="EndorsePolicy"
             className="endorse-policy"

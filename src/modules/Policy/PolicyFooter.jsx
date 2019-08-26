@@ -9,19 +9,17 @@ function PolicyFooter({
   handlePrimaryClick,
   currentStep,
   formInstance,
-  calculatedRate,
-  handleEndorsementReset,
-  setEndorsementFormInstance
+  timezone,
+  getPolicy
 }) {
   if (currentStep === 'endorsements') {
     return (
       <React.Fragment>
         <EndorsementFooter
-          setEndorsementFormInstance={setEndorsementFormInstance}
-          calculatedRate={calculatedRate}
+          getPolicy={getPolicy}
           parentFormInstance={formInstance}
           handlePrimaryClick={handlePrimaryClick}
-          handleReset={handleEndorsementReset}
+          timezone={timezone}
         />
         <div className="basic-footer btn-footer">
           <Footer />

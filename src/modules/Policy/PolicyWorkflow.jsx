@@ -86,8 +86,7 @@ export class PolicyWorkflow extends React.Component {
     showDiaries: false,
     showReinstatePolicyModal: false,
     showEffectiveDateChangeModal: false,
-    isEndorsementCalculated: false,
-    calculatedRate: null
+    isEndorsementCalculated: false
   };
 
   formInstance = null;
@@ -169,25 +168,9 @@ export class PolicyWorkflow extends React.Component {
       options: {
         step: currentStepNumber,
         cancelPolicy: currentRouteName === 'cancel',
-        endorsePolicy: currentRouteName === 'endorsements',
-        zipCodeSettings,
-        isRateCalculated: this.state.calculatedRate
+        zipCodeSettings
       }
     });
-
-    if (response && response.rating) {
-      this.setState(state => ({
-        calculatedRate: response.rating
-      }));
-    } else if (
-      currentRouteName === 'endorsements' &&
-      response &&
-      !response.error
-    ) {
-      this.setState(state => ({
-        calculatedRate: null
-      }));
-    }
   };
 
   handleToggleDiaries = () => {
@@ -206,10 +189,6 @@ export class PolicyWorkflow extends React.Component {
 
   setFormInstance = formInstance => {
     this.formInstance = formInstance;
-  };
-
-  setEndorsementFormInstance = formInstance => {
-    this.endorsementFormInstance = formInstance;
   };
 
   handleToggleReinstateModal = () => {
@@ -277,13 +256,6 @@ export class PolicyWorkflow extends React.Component {
     await new Promise(resolve => setTimeout(resolve, 3000));
     await getPolicy(policy.policyNumber);
     this.toggleEffectiveDateChangeModal();
-  };
-
-  handleEndoresementReset = async data => {
-    this.formInstance.reset();
-    this.setState(state => ({
-      calculatedRate: null
-    }));
   };
 
   render() {
@@ -379,15 +351,10 @@ export class PolicyWorkflow extends React.Component {
                         stickyFooter={true}
                         renderFooter={({ pristine, submitting, form }) => (
                           <PolicyFooter
-                            setEndorsementFormInstance={
-                              this.setEndorsementFormInstance
-                            }
+                            getPolicy={customHandlers.getPolicy}
+                            timezone={zipCodeSettings.timezone}
                             currentStep={currentRouteName}
                             formInstance={form}
-                            calculatedRate={this.state.calculatedRate}
-                            handleEndorsementReset={
-                              this.handleEndoresementReset
-                            }
                             isSubmitDisabled={this.isSubmitDisabled(
                               pristine,
                               submitting
@@ -400,27 +367,6 @@ export class PolicyWorkflow extends React.Component {
                             <FormSpy subscription={{}}>
                               {({ form }) => {
                                 this.setFormInstance(form);
-                                return null;
-                              }}
-                            </FormSpy>
-
-                            <FormSpy
-                              subscription={{
-                                dirtySinceLastSubmit: true,
-                                dirty: true
-                              }}
-                            >
-                              {({ dirtySinceLastSubmit, dirty }) => {
-                                console.log(dirtySinceLastSubmit, dirty);
-                                if (
-                                  this.state.calculatedRate &&
-                                  dirtySinceLastSubmit
-                                ) {
-                                  this.endorsementFormInstance.reset();
-                                  this.setState(state => ({
-                                    calculatedRate: null
-                                  }));
-                                }
                                 return null;
                               }}
                             </FormSpy>

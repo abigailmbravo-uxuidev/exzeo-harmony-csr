@@ -843,58 +843,6 @@ export function updatePolicy({ data = {}, options = {} }) {
     try {
       dispatch(toggleLoading(true));
 
-      if (options.endorsePolicy && !options.isRateCalculated) {
-        const calculatedData = _cloneDeep(data);
-
-        calculatedData.endorsementDate = date.formatToUTC(
-          date.formatDate(data.endorsementDate, date.FORMATS.SECONDARY),
-          options.zipCodeSettings.timezone
-        );
-
-        delete calculatedData._TEMP_INITIAL_VALUES;
-        delete calculatedData.cancel;
-        delete calculatedData.summaryLedger;
-
-        const transferConfig = {
-          exchangeName: 'harmony',
-          routingKey: 'harmony.policy.rateEndorsement',
-          data: calculatedData
-        };
-
-        const response = await serviceRunner.callService(
-          transferConfig,
-          'rateEndorsement'
-        );
-
-        const rating = response.data.result.rating;
-        return { rating };
-      } else if (options.endorsePolicy && options.isRateCalculated) {
-        const calculatedData = _cloneDeep(data);
-
-        calculatedData.endorsementDate = date.formatToUTC(
-          date.formatDate(data.endorsementDate, date.FORMATS.SECONDARY),
-          options.zipCodeSettings.timezone
-        );
-
-        delete calculatedData._TEMP_INITIAL_VALUES;
-        delete calculatedData.cancel;
-        delete calculatedData.summaryLedger;
-
-        const transferConfig = {
-          exchangeName: 'harmony',
-          routingKey: 'harmony.policy.saveEndorsement',
-          data: calculatedData
-        };
-
-        const response = await serviceRunner.callService(
-          transferConfig,
-          'saveEndorsement'
-        );
-
-        await dispatch(getPolicy(data.policyNumber));
-        return null;
-      }
-
       if (options.cancelPolicy) {
         const submitData = {
           policyID: data.policyID,

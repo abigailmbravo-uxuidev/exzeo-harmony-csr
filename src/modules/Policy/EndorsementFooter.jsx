@@ -1,32 +1,58 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Field, Date, validation, Currency, Button } from '@exzeo/core-ui';
 import EndorsementForm from './EndorsementForm';
+import { rateEndorsement } from './utilities';
 
 const EndorsementFooter = ({
+  getPolicy,
   parentFormInstance,
-  handleReset,
   handlePrimaryClick,
-  calculatedRate,
-  setEndorsementFormInstance
+  timezone
 }) => {
-  const { initialValues: policy } = parentFormInstance.getState();
+  const [calculatedRate, setCalculateRate] = useState(null);
+  const {
+    values: policy,
+    pristine: parentPristine
+  } = parentFormInstance.getState();
   const initialValues = {
     ...policy,
     rating: calculatedRate
   };
 
+  const clacluateEndorsementRate = async () => {
+    const rating = await rateEndorsement(policy, timezone);
+    parentFormInstance.initialize(policy);
+    setCalculateRate(rating, timezone);
+  };
+
+  const resetEndorsementForm = () => {
+    setCalculateRate(null);
+    getPolicy(policy.policyNumber);
+  };
+
+  useEffect(() => {
+    if (!parentPristine && calculatedRate) {
+      setCalculateRate(null);
+    }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [parentPristine]);
+
   return (
     <EndorsementForm
-      setEndorsementFormInstance={setEndorsementFormInstance}
       initialValues={initialValues}
-      handleSubmit={handlePrimaryClick}
+      handleSubmit={
+        calculatedRate && parentPristine
+          ? handlePrimaryClick
+          : clacluateEndorsementRate
+      }
       className="share-inputs"
     >
       {({ submitting, pristine }) => (
         <React.Fragment>
           <Button
             className={Button.constants.classNames.secondary}
-            onClick={handleReset}
+            onClick={resetEndorsementForm}
             data-test="modal-cancel"
           >
             Cancel
@@ -34,11 +60,15 @@ const EndorsementFooter = ({
           <Button
             className={Button.constants.classNames.primary}
             type="submit"
-            onClick={handlePrimaryClick}
+            onClick={
+              calculatedRate && parentPristine
+                ? handlePrimaryClick
+                : clacluateEndorsementRate
+            }
             disabled={null}
             data-test="modal-submit"
           >
-            {calculatedRate ? 'Save' : 'Review'}
+            {calculatedRate && parentPristine ? 'Save' : 'Review'}
           </Button>
         </React.Fragment>
       )}
