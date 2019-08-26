@@ -113,6 +113,13 @@ const PolicyCard = ({
                     <OnBlurListener name="policyNumber">
                       {() => handlePolicySearch(input.value)}
                     </OnBlurListener>
+                    <button
+                      className="btn btn-link clear-policy"
+                      disabled={!active}
+                      onClick={reset}
+                    >
+                      <i className="fa fa-times" />
+                    </button>
                   </Fragment>
                 )}
               </Field>

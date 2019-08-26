@@ -90,6 +90,39 @@
         form {
           &#payment-form {
             padding: 0 $padding;
+
+            .view-grid {
+              position: relative;
+
+              .clear-policy {
+                position: absolute;
+                top: 2.25rem;
+                right: calc(66% + 0.625rem);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                padding: 0;
+                width: 2rem;
+                height: 1.5rem;
+                border-left: 1px solid $warm-gray-02;
+                color: $warm-gray-04;
+                i {
+                  margin: 0;
+                }
+
+                &:hover {
+                  color: $warm-gray-08;
+                  text-decoration: none;
+                }
+
+                &[disabled='disabled'],
+                &:disabled {
+                  &:hover {
+                    color: $warm-gray-04;
+                  }
+                }
+              }
+            }
           }
         }
 
