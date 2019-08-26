@@ -160,15 +160,13 @@ const BulkPayments = () => {
               <span className="policyholder">Policyholder</span>
               <span className="amount">Amount</span>
             </div>
-            <div>
-              {batchResults.map(result => (
-                <Fragment key={result.policyNumber}>
-                  <span className="policy-number">{result.policyNumber}</span>
-                  <span className="policyholder">{result.policyHolder}</span>
-                  <span className="amount">{result.amount}</span>
-                </Fragment>
-              ))}
-            </div>
+            {batchResults.map(result => (
+              <div className="table-row" key={result.policyNumber}>
+                <span className="policy-number">{result.policyNumber}</span>
+                <span className="policyholder">{result.policyHolder}</span>
+                <span className="amount">{result.amount}</span>
+              </div>
+            ))}
             <div className="table-footer">
               <span className="footer-label">[X] entires totaling</span>
               <span className="amount">$2.00</span>
