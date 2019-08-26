@@ -170,13 +170,22 @@ export class PolicyWorkflow extends React.Component {
         step: currentStepNumber,
         cancelPolicy: currentRouteName === 'cancel',
         endorsePolicy: currentRouteName === 'endorsements',
-        zipCodeSettings
+        zipCodeSettings,
+        isRateCalculated: this.state.calculatedRate
       }
     });
 
     if (response && response.rating) {
       this.setState(state => ({
         calculatedRate: response.rating
+      }));
+    } else if (
+      currentRouteName === 'endorsements' &&
+      response &&
+      !response.error
+    ) {
+      this.setState(state => ({
+        calculatedRate: null
       }));
     }
   };
