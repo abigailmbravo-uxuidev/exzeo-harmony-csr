@@ -19,12 +19,22 @@ import {
 import PolicyCard from './PolicyCard';
 import { useFetchPaymentOptions } from '../hooks';
 
-function inputBatch(batchNumber, cashDate) {
+const inputBatch = (batchNumber, cashDate) => {
   const suffix = batchNumber.length > 8 ? batchNumber.substring(8) : '';
   const newBatch = date.formatDate(String(cashDate), 'YYYYMMDD');
 
   return `${newBatch}${suffix}`;
-}
+};
+
+const handleDownload = data => {
+  const headers = `Policy Number, Policyholder, Amount \r\n`;
+  const body = data.map(
+    line => `${line.policyNumber}, ${line.policyHolder}, ${line.amount} \r\n`
+  );
+  const csv = `data:text/csv;charset=utf-8,${headers}${body}`;
+  const encodedUri = encodeURI(csv);
+  window.open(encodedUri);
+};
 
 const BulkPayments = ({ errorHandler }) => {
   const [batchResults, setBatchResults] = useState([]);
@@ -38,14 +48,12 @@ const BulkPayments = ({ errorHandler }) => {
     cashTypes
   };
 
-  const handleActivity = () => setActive(true);
-
   return (
     <div className="content-wrapper finance">
       <div className="scroll view-grid">
         <Form
           initialValues={initialValues}
-          onSubmit={handleActivity}
+          onSubmit={() => setActive(true)}
           subscription={{ submitting: true, pristine: true, values: true }}
         >
           {({ reset }) => (
@@ -181,8 +189,8 @@ const BulkPayments = ({ errorHandler }) => {
             <button
               className="btn btn-secondary"
               type="button"
-              onClick={() => setActive(false)}
-              disabled={!active}
+              onClick={() => handleDownload(batchResults)}
+              disabled={!batchResults || batchResults.length === 0}
             >
               Download
             </button>
