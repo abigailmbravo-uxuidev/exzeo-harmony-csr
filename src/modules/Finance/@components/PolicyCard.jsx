@@ -117,6 +117,7 @@ const PolicyCard = ({
                       className="btn btn-link clear-policy"
                       disabled={!active}
                       onClick={reset}
+                      tabindex="-1"
                     >
                       <i className="fa fa-times" />
                     </button>
