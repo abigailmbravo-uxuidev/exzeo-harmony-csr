@@ -124,10 +124,9 @@
             &.Cancellation,
             &.Expired,
             &.Non-Renewal {
-              .policy-status {
-                > div {
-                  color: $red;
-                }
+              .policy-status,
+              .billing-status {
+                color: $red;
               }
             }
 
@@ -163,8 +162,9 @@
             .card-block {
               padding: $padding ($padding * 2) $padding $padding;
               .policy-details,
-              .policy-status {
+              .status {
                 display: flex;
+                justify-content: space-between;
 
                 label {
                   margin-bottom: 0;
@@ -173,18 +173,6 @@
 
                 .btn.btn-xs {
                   padding: 0 0 0 $padding;
-                }
-              }
-
-              .policy-details {
-                justify-content: space-between;
-              }
-
-              .policy-status {
-                justify-content: space-between;
-
-                div {
-                  //margin-left: $padding * 4;
                 }
               }
 
@@ -198,6 +186,7 @@
                 strong {
                   margin-right: $padding/2;
                   color: $bright-blue-darken-04;
+                  text-transform: uppercase;
                 }
                 span {
                   margin-left: $padding/2;
