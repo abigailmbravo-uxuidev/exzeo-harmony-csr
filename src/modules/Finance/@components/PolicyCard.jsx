@@ -159,18 +159,18 @@ const PolicyCard = ({
                             {city},&nbsp;{state}&nbsp;{zip}
                           </span>
                         </div>
-                        <div className="policy-status">
+                        <div className="status">
                           <div className="effective-date">
                             <label>Effective Date:</label>&nbsp;
                             {moment
                               .utc(policy.effectiveDate)
                               .format(STANDARD_DATE_FORMAT)}
                           </div>
-                          <div>
+                          <div className="policy-status">
                             <label>Policy Status:</label>&nbsp;
                             {policy.status}
                           </div>
-                          <div>
+                          <div className="billing-status">
                             <label>Billing Status:</label>&nbsp;
                             {billingStatus.displayText}
                           </div>
