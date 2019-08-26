@@ -131,7 +131,7 @@ const PolicyCard = ({
                       <div className="card-block">
                         <div className="policy-details">
                           <div>
-                            <strong>{policy.company}</strong>&nbsp;|&nbsp;
+                            <strong>{policy.companyCode}</strong>&nbsp;|&nbsp;
                             {policy.policyNumber}
                             <a
                               className="btn btn-link btn-xs"
@@ -155,7 +155,8 @@ const PolicyCard = ({
                         </div>
                         <div className="policyholder">
                           <strong>
-                            {firstName}&nbsp;{lastName}
+                            {policy.policyHolders[0].firstName}&nbsp;
+                            {policy.policyHolders[0].lastName}
                           </strong>
                           &nbsp; |&nbsp;{address1},&nbsp;
                           <span>
