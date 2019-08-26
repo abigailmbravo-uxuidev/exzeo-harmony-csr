@@ -6,6 +6,7 @@ import {
   date,
   Form,
   Field,
+  Currency,
   Input,
   OnBlurListener,
   validation,
@@ -180,10 +181,11 @@ const PolicyCard = ({
                   <div className="card-footer">
                     <Field name="amount" validate={validation.isRequired}>
                       {({ input, meta }) => (
-                        <Input
+                        <Currency
                           input={input}
                           meta={meta}
                           label="Amount"
+                          noDecimal={false}
                           styleName="input"
                           dataTest="amount"
                           disabled={!active}
