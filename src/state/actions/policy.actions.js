@@ -846,19 +846,19 @@ export function updatePolicy({ data = {}, options = {} }) {
       if (options.endorsePolicy && !options.isRateCalculated) {
         const calculatedData = _cloneDeep(data);
 
-        data.endorsementDate = date.formatToUTC(
+        calculatedData.endorsementDate = date.formatToUTC(
           date.formatDate(data.endorsementDate, date.FORMATS.SECONDARY),
           options.zipCodeSettings.timezone
         );
 
-        delete data._TEMP_INITIAL_VALUES;
-        delete data.cancel;
-        delete data.summaryLedger;
+        delete calculatedData._TEMP_INITIAL_VALUES;
+        delete calculatedData.cancel;
+        delete calculatedData.summaryLedger;
 
         const transferConfig = {
           exchangeName: 'harmony',
           routingKey: 'harmony.policy.rateEndorsement',
-          data
+          data: calculatedData
         };
 
         const response = await serviceRunner.callService(
