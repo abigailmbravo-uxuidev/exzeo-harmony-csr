@@ -131,7 +131,7 @@ const PolicyCard = ({
                       <div className="card-block">
                         <div className="policy-details">
                           <div>
-                            <strong>{policy.company}</strong> |{' '}
+                            <strong>{policy.company}</strong>&nbsp;|&nbsp;
                             {policy.policyNumber}
                             <a
                               className="btn btn-link btn-xs"
@@ -143,30 +143,32 @@ const PolicyCard = ({
                             </a>
                           </div>
                           <div className="effective-date">
-                            <label>Effective Date:</label>{' '}
+                            <label>Effective Date:</label>&nbsp;
                             {moment
                               .utc(policy.effectiveDate)
                               .format(STANDARD_DATE_FORMAT)}
                           </div>
                           <div className="balance-due">
-                            <label>Balance Due:</label> {balance.$numberDecimal}
+                            <label>Balance Due:</label>&nbsp;
+                            {balance.$numberDecimal}
                           </div>
                         </div>
                         <div className="policyholder">
                           <strong>
-                            {firstName} {lastName}
-                          </strong>{' '}
-                          | {address1},{' '}
+                            {firstName}&nbsp;{lastName}
+                          </strong>
+                          &nbsp; |&nbsp;{address1},&nbsp;
                           <span>
-                            {city}, {state} {zip}
+                            {city},&nbsp;{state}&nbsp;{zip}
                           </span>
                         </div>
                         <div className="policy-status">
                           <div>
-                            <label>Policy Status:</label> {policy.status}
+                            <label>Policy Status:</label>&nbsp;
+                            {policy.status}
                           </div>
                           <div>
-                            <label>Billing Status:</label>{' '}
+                            <label>Billing Status:</label>&nbsp;
                             {billingStatus.displayText}
                           </div>
                         </div>
