@@ -24,7 +24,7 @@ function inputBatch(batchNumber, cashDate) {
   return `${newBatch}${suffix}`;
 }
 
-const BulkPayments = () => {
+const BulkPayments = ({ errorHandler }) => {
   const [batchResults, setBatchResults] = useState([]);
   const [active, setActive] = useState(false);
   const [batch, setBatch] = useState({ valid: false, values: {} });
@@ -135,6 +135,7 @@ const BulkPayments = () => {
             batch={batch}
             batchResults={batchResults}
             setBatchResults={setBatchResults}
+            errorHandler={errorHandler}
           />
         </section>
         <section className="section-payment-list">
