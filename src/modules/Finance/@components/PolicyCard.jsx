@@ -1,5 +1,7 @@
 import React, { useState, Fragment } from 'react';
 import PropTypes from 'prop-types';
+import moment from 'moment';
+import { STANDARD_DATE_FORMAT } from '../../../constants/dates';
 import {
   date,
   Form,
@@ -142,7 +144,9 @@ const PolicyCard = ({
                           </div>
                           <div className="effective-date">
                             <label>Effective Date:</label>{' '}
-                            {policy.effectiveDate}
+                            {moment
+                              .utc(policy.effectiveDate)
+                              .format(STANDARD_DATE_FORMAT)}
                           </div>
                           <div className="balance-due">
                             <label>Balance Due:</label> {balance.$numberDecimal}

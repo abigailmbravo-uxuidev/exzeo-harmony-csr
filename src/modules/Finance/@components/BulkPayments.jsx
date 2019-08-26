@@ -1,5 +1,7 @@
 import React, { useEffect, useState, Fragment } from 'react';
 import PropTypes from 'prop-types';
+import moment from 'moment';
+import { STANDARD_DATE_FORMAT } from '../../../constants/dates';
 import {
   Form,
   Loader,
@@ -141,7 +143,9 @@ const BulkPayments = ({ errorHandler }) => {
         <section className="section-payment-list">
           <div className="form-group">
             <label>Cash Date</label>
-            <span>{batch.values.cashDate}</span>
+            <span>
+              {moment.utc(batch.values.cashDate).format(STANDARD_DATE_FORMAT)}
+            </span>
           </div>
           <div className="form-group">
             <label>Batch Number</label>
