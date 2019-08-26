@@ -667,7 +667,8 @@ const mock = {
           type: '$GROUP',
           dependencies: [
             { quoteInputState: 'Qualified' },
-            { quoteInputState: 'Ready' }
+            { quoteInputState: 'Ready' },
+            { quoteInputState: 'AppStarted' }
           ],
           data: {},
           formData: {},
@@ -792,7 +793,8 @@ const mock = {
           dependencies: [
             { blockQuoteSummary: true },
             { quoteInputState: 'Initial Data' },
-            { quoteInputState: 'Underwriting' }
+            { quoteInputState: 'Underwriting' },
+            { quoteInputState: 'AppStarted' }
           ],
           data: {
             className: 'messages',
@@ -1242,7 +1244,8 @@ const mock = {
           dependencies: [
             { blockSendApplication: true },
             { quoteInputState: 'Initial Data' },
-            { quoteInputState: 'Underwriting' }
+            { quoteInputState: 'Underwriting' },
+            { quoteInputState: 'AppStarted' }
           ],
           data: {
             className: 'messages',
