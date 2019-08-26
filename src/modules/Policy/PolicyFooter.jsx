@@ -10,12 +10,14 @@ function PolicyFooter({
   currentStep,
   formInstance,
   calculatedRate,
-  handleEndorsementReset
+  handleEndorsementReset,
+  setEndorsementFormInstance
 }) {
   if (currentStep === 'endorsements') {
     return (
       <React.Fragment>
         <EndorsementFooter
+          setEndorsementFormInstance={setEndorsementFormInstance}
           calculatedRate={calculatedRate}
           parentFormInstance={formInstance}
           handlePrimaryClick={handlePrimaryClick}

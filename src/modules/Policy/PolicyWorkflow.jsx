@@ -208,6 +208,10 @@ export class PolicyWorkflow extends React.Component {
     this.formInstance = formInstance;
   };
 
+  setEndorsementFormInstance = formInstance => {
+    this.endorsementFormInstance = formInstance;
+  };
+
   handleToggleReinstateModal = () => {
     this.setState(state => ({
       showReinstatePolicyModal: !state.showReinstatePolicyModal
@@ -375,6 +379,9 @@ export class PolicyWorkflow extends React.Component {
                         stickyFooter={true}
                         renderFooter={({ pristine, submitting, form }) => (
                           <PolicyFooter
+                            setEndorsementFormInstance={
+                              this.setEndorsementFormInstance
+                            }
                             currentStep={currentRouteName}
                             formInstance={form}
                             calculatedRate={this.state.calculatedRate}
@@ -393,6 +400,23 @@ export class PolicyWorkflow extends React.Component {
                             <FormSpy subscription={{}}>
                               {({ form }) => {
                                 this.setFormInstance(form);
+                                return null;
+                              }}
+                            </FormSpy>
+
+                            <FormSpy
+                              subscription={{ dirtySinceLastSubmit: true }}
+                            >
+                              {({ dirtySinceLastSubmit }) => {
+                                if (
+                                  this.state.calculatedRate &&
+                                  dirtySinceLastSubmit
+                                ) {
+                                  this.endorsementFormInstance.reset();
+                                  this.setState(state => ({
+                                    calculatedRate: null
+                                  }));
+                                }
                                 return null;
                               }}
                             </FormSpy>

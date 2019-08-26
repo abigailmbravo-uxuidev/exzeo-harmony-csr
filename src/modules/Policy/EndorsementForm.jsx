@@ -1,8 +1,20 @@
 // @ts-nocheck
 import React from 'react';
-import { Form, Field, Date, Currency, validation } from '@exzeo/core-ui';
+import {
+  FormSpy,
+  Form,
+  Field,
+  Date,
+  Currency,
+  validation
+} from '@exzeo/core-ui';
 
-const EndorsementForm = ({ children, handleSubmit, initialValues }) => {
+const EndorsementForm = ({
+  children,
+  handleSubmit,
+  initialValues,
+  setEndorsementFormInstance
+}) => {
   const validateEndorsementDate = (...args) => {
     // we shouldn't need to do this, waiting for a patch from redux-form
     if (!initialValues) return undefined;
@@ -23,6 +35,12 @@ const EndorsementForm = ({ children, handleSubmit, initialValues }) => {
     >
       {({ handleSubmit, submitting, pristine }) => (
         <React.Fragment>
+          <FormSpy subscription={{}}>
+            {({ form }) => {
+              setEndorsementFormInstance(form);
+              return null;
+            }}
+          </FormSpy>
           <form
             id="EndorsePolicy"
             className="endorse-policy"

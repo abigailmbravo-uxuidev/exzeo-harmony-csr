@@ -6,7 +6,8 @@ const EndorsementFooter = ({
   parentFormInstance,
   handleReset,
   handlePrimaryClick,
-  calculatedRate
+  calculatedRate,
+  setEndorsementFormInstance
 }) => {
   const { initialValues: policy } = parentFormInstance.getState();
   const initialValues = {
@@ -16,6 +17,7 @@ const EndorsementFooter = ({
 
   return (
     <EndorsementForm
+      setEndorsementFormInstance={setEndorsementFormInstance}
       initialValues={initialValues}
       handleSubmit={handlePrimaryClick}
       className="share-inputs"
