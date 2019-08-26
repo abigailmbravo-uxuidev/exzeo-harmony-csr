@@ -131,6 +131,15 @@
               }
             }
 
+            .error-message {
+              display: flex;
+              align-items: center;
+              flex-grow: 1;
+              flex-shrink: 1;
+              justify-content: center;
+              font-weight: $font-weight-bold;
+            }
+
             .card-header {
               display: flex;
               align-items: center;
@@ -156,7 +165,6 @@
               .policy-details,
               .policy-status {
                 display: flex;
-                justify-content: space-between;
 
                 label {
                   margin-bottom: 0;
@@ -165,6 +173,18 @@
 
                 .btn.btn-xs {
                   padding: 0 0 0 $padding;
+                }
+              }
+
+              .policy-details {
+                justify-content: space-between;
+              }
+
+              .policy-status {
+                justify-content: flex-end;
+
+                div {
+                  margin-left: $padding * 4;
                 }
               }
 
