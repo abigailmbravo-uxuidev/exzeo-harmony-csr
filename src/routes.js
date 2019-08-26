@@ -165,7 +165,13 @@ class Routes extends Component {
               />
               <Route
                 path="/finance"
-                render={props => <Finance auth={auth} {...props} />}
+                render={props => (
+                  <Finance
+                    auth={auth}
+                    {...props}
+                    errorHandler={this.props.actions.errorActions.setAppError}
+                  />
+                )}
               />
               <Route
                 exact

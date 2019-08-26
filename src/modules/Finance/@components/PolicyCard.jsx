@@ -6,13 +6,21 @@ import {
   Field,
   Input,
   OnBlurListener,
-  validation
+  validation,
+  Loader
 } from '@exzeo/core-ui';
 
 import { getPolicy, postPayment } from '../data';
 
-const PolicyCard = ({ active, batch, batchResults, setBatchResults }) => {
+const PolicyCard = ({
+  active,
+  batch,
+  batchResults,
+  setBatchResults,
+  errorHandler
+}) => {
   const [policy, setPolicy] = useState({});
+  const [errorMessage, setErrorMessage] = useState();
   const [loading, setLoading] = useState(false);
   const {
     effectiveDate,
@@ -24,8 +32,16 @@ const PolicyCard = ({ active, batch, batchResults, setBatchResults }) => {
   const hasPolicy = policy && Object.entries(policy).length > 0;
 
   const handlePolicySearch = async policyNumber => {
-    const search = await getPolicy(policyNumber);
-    setPolicy(search);
+    setLoading(true);
+    try {
+      const search = await getPolicy(policyNumber);
+      setPolicy(search);
+      setErrorMessage();
+    } catch (error) {
+      setErrorMessage(error.message);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handlePayment = async ({ amount, policyNumber }) => {
@@ -34,7 +50,7 @@ const PolicyCard = ({ active, batch, batchResults, setBatchResults }) => {
     } = batch;
     const {
       policyTerm,
-      property,
+      property = {},
       policyAccountCode,
       companyCode,
       state,
@@ -56,125 +72,128 @@ const PolicyCard = ({ active, batch, batchResults, setBatchResults }) => {
       product: product
     };
 
-    const { policyHolders } = policy;
-
-    const batchDetails = {
-      policyNumber,
-      amount,
-      policyHolder: `${policyHolders[0].firstName} ${policyHolders[0].lastName}`
-    };
-
     try {
       await postPayment(payment);
+      const { policyHolders } = policy;
+      const batchDetails = {
+        policyNumber,
+        amount,
+        policyHolder: `${policyHolders[0].firstName} ${policyHolders[0].lastName}`
+      };
       setBatchResults([...batchResults, batchDetails]);
     } catch (error) {
-      //return errorHandler(error);
+      return errorHandler(error);
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <Form onSubmit={handlePayment} subscription={{ values: true }}>
-      {({ handleSubmit, reset }) => (
-        <form id="payment-form">
-          <div className="fade-in view-grid">
-            <Field name="policyNumber" validate={validation.isRequired}>
-              {({ input, meta }) => (
-                <Fragment>
-                  <Input
-                    input={input}
-                    meta={meta}
-                    label="Policy Number"
-                    styleName="input view-col-4"
-                    placeholder="Enter Complete Policy Number"
-                    dataTest="policyNumber"
-                    disabled={!active}
-                  />
-                  <OnBlurListener name="policyNumber">
-                    {() => handlePolicySearch(input.value)}
-                  </OnBlurListener>
-                </Fragment>
-              )}
-            </Field>
-            <div className="results">
-              <div className="policy-card card">
-                {hasPolicy && (
+    <Fragment>
+      {loading && <Loader />}
+      <Form onSubmit={handlePayment} subscription={{ values: true }}>
+        {({ handleSubmit, reset }) => (
+          <form id="payment-form">
+            <div className="fade-in view-grid">
+              <Field name="policyNumber" validate={validation.isRequired}>
+                {({ input, meta }) => (
                   <Fragment>
-                    <div className="icon-name card-header">
-                      <i className="icon fa fa-file-text" />
-                      <h5>HO3</h5>
-                    </div>
-                    <div className="card-block">
-                      <div className="policy-details">
-                        <div>
-                          <strong>{policy.company}</strong> |{' '}
-                          {policy.policyNumber}
-                          <a
-                            className="btn btn-link btn-xs"
-                            href="#"
-                            target="_blank"
-                          >
-                            <i className="fa fa-external-link-square" />
-                            Open Policy
-                          </a>
-                        </div>
-                        <div className="effective-date">
-                          <label>Effective Date:</label> {policy.effectiveDate}
-                        </div>
-                        <div className="balance-due">
-                          <label>Balance Due:</label> {balance.$numberDecimal}
-                        </div>
-                      </div>
-                      <div className="policyholder">
-                        <strong>
-                          {firstName} {lastName}
-                        </strong>{' '}
-                        | {address1},{' '}
-                        <span>
-                          {city}, {state} {zip}
-                        </span>
-                      </div>
-                      <div className="policy-status">
-                        <div>
-                          <label>Policy Status:</label> {policy.status}
-                        </div>
-                        <div>
-                          <label>Billing Status:</label>{' '}
-                          {billingStatus.displayText}
-                        </div>
-                      </div>
-                    </div>
+                    <Input
+                      input={input}
+                      meta={meta}
+                      label="Policy Number"
+                      styleName="input view-col-4"
+                      placeholder="Enter Complete Policy Number"
+                      dataTest="policyNumber"
+                      disabled={!active}
+                    />
+                    <OnBlurListener name="policyNumber">
+                      {() => handlePolicySearch(input.value)}
+                    </OnBlurListener>
                   </Fragment>
                 )}
-                <div className="card-footer">
-                  <Field name="amount" validate={validation.isRequired}>
-                    {({ input, meta }) => (
-                      <Input
-                        input={input}
-                        meta={meta}
-                        label="Amount"
-                        styleName="input"
-                        dataTest="amount"
-                        disabled={!active}
-                      />
-                    )}
-                  </Field>
-                  <button
-                    className="btn btn-primary"
-                    type="submit"
-                    onClick={handleSubmit}
-                    form="payment-form"
-                  >
-                    APPLY
-                  </button>
+              </Field>
+              <div className="results">
+                <div className="policy-card card">
+                  {errorMessage && <div>{errorMessage}</div>}
+                  {hasPolicy && (
+                    <Fragment>
+                      <div className="icon-name card-header">
+                        <i className="icon fa fa-file-text" />
+                        <h5>HO3</h5>
+                      </div>
+                      <div className="card-block">
+                        <div className="policy-details">
+                          <div>
+                            <strong>{policy.company}</strong> |{' '}
+                            {policy.policyNumber}
+                            <a
+                              className="btn btn-link btn-xs"
+                              href="#"
+                              target="_blank"
+                            >
+                              <i className="fa fa-external-link-square" />
+                              Open Policy
+                            </a>
+                          </div>
+                          <div className="effective-date">
+                            <label>Effective Date:</label>{' '}
+                            {policy.effectiveDate}
+                          </div>
+                          <div className="balance-due">
+                            <label>Balance Due:</label> {balance.$numberDecimal}
+                          </div>
+                        </div>
+                        <div className="policyholder">
+                          <strong>
+                            {firstName} {lastName}
+                          </strong>{' '}
+                          | {address1},{' '}
+                          <span>
+                            {city}, {state} {zip}
+                          </span>
+                        </div>
+                        <div className="policy-status">
+                          <div>
+                            <label>Policy Status:</label> {policy.status}
+                          </div>
+                          <div>
+                            <label>Billing Status:</label>{' '}
+                            {billingStatus.displayText}
+                          </div>
+                        </div>
+                      </div>
+                    </Fragment>
+                  )}
+                  <div className="card-footer">
+                    <Field name="amount" validate={validation.isRequired}>
+                      {({ input, meta }) => (
+                        <Input
+                          input={input}
+                          meta={meta}
+                          label="Amount"
+                          styleName="input"
+                          dataTest="amount"
+                          disabled={!active}
+                        />
+                      )}
+                    </Field>
+                    <button
+                      className="btn btn-primary"
+                      type="submit"
+                      onClick={handleSubmit}
+                      form="payment-form"
+                    >
+                      APPLY
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-        </form>
-      )}
-    </Form>
+          </form>
+        )}
+      </Form>
+    </Fragment>
   );
 };
 
