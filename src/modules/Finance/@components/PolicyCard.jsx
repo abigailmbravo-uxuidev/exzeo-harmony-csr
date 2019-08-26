@@ -114,8 +114,12 @@ const PolicyCard = ({
                 )}
               </Field>
               <div className="results">
-                <div className="policy-card card">
-                  {errorMessage && <div>{errorMessage}</div>}
+                <div
+                  className={`policy-card card ${billingStatus.displayText}`}
+                >
+                  {errorMessage && (
+                    <div className="error-message">{errorMessage}</div>
+                  )}
                   {hasPolicy && (
                     <Fragment>
                       <div className="icon-name card-header">
