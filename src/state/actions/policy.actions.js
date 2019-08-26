@@ -867,12 +867,7 @@ export function updatePolicy({ data = {}, options = {} }) {
         );
 
         const rating = response.data.result.rating;
-
-        const { summaryLedger, _TEMP_INITIAL_VALUES } = calculatedData;
-
-        await dispatch(
-          setPolicy({ ..._TEMP_INITIAL_VALUES, rating }, summaryLedger)
-        );
+        return { rating };
       }
 
       if (options.cancelPolicy) {
@@ -918,12 +913,13 @@ export function updatePolicy({ data = {}, options = {} }) {
         });
         await dispatch(getPolicy(data.policyNumber));
       }
+      return null;
     } catch (error) {
       if (process.env.NODE_ENV !== 'production') {
         console.log('Error updating policy: ', error);
       }
       dispatch(errorActions.setAppError(error));
-      return null;
+      return { error };
     } finally {
       dispatch(toggleLoading(false));
     }

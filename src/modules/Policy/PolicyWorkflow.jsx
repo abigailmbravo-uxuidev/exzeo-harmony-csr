@@ -86,7 +86,8 @@ export class PolicyWorkflow extends React.Component {
     showDiaries: false,
     showReinstatePolicyModal: false,
     showEffectiveDateChangeModal: false,
-    isEndorsementCalculated: false
+    isEndorsementCalculated: false,
+    calculatedRate: null
   };
 
   formInstance = null;
@@ -163,20 +164,19 @@ export class PolicyWorkflow extends React.Component {
       location.pathname
     );
 
-    await this.props.updatePolicy({
+    const response = await this.props.updatePolicy({
       data: values,
       options: {
         step: currentStepNumber,
         cancelPolicy: currentRouteName === 'cancel',
         endorsePolicy: currentRouteName === 'endorsements',
-        isRateCalculated: this.state.isEndorsementCalculated,
         zipCodeSettings
       }
     });
 
-    if (currentRouteName === 'endorsements') {
+    if (response && response.rating) {
       this.setState(state => ({
-        isEndorsementCalculated: !state.isEndorsementCalculated
+        calculatedRate: response.rating
       }));
     }
   };
@@ -269,7 +269,7 @@ export class PolicyWorkflow extends React.Component {
   handleEndoresementReset = async data => {
     this.formInstance.reset();
     this.setState(state => ({
-      isEndorsementCalculated: false
+      calculatedRate: null
     }));
   };
 
@@ -318,8 +318,6 @@ export class PolicyWorkflow extends React.Component {
       history: history,
       notesSynced: notesSynced,
       setAppError: this.props.setAppError,
-      setShowApplicationModal: this.setShowApplicationModal,
-      showApplicationModal: this.state.showApplicationModal,
       toggleDiary: this.props.toggleDiary,
       getPolicy: this.props.getPolicy,
       transferAOR: this.props.transferAOR,
@@ -370,9 +368,7 @@ export class PolicyWorkflow extends React.Component {
                           <PolicyFooter
                             currentStep={currentRouteName}
                             formInstance={form}
-                            isEndorsementCalculated={
-                              this.state.isEndorsementCalculated
-                            }
+                            calculatedRate={this.state.calculatedRate}
                             handleEndorsementReset={
                               this.handleEndoresementReset
                             }

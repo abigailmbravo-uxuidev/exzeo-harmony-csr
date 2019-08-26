@@ -9,30 +9,18 @@ function PolicyFooter({
   handlePrimaryClick,
   currentStep,
   formInstance,
-  isEndorsementCalculated,
+  calculatedRate,
   handleEndorsementReset
 }) {
   if (currentStep === 'endorsements') {
     return (
       <React.Fragment>
-        <EndorsementFooter>
-          <Button
-            className={Button.constants.classNames.secondary}
-            onClick={handleEndorsementReset}
-            data-test="modal-cancel"
-          >
-            Cancel
-          </Button>
-          <Button
-            className={Button.constants.classNames.primary}
-            type="submit"
-            onClick={handlePrimaryClick}
-            disabled={isSubmitDisabled}
-            data-test="modal-submit"
-          >
-            {isEndorsementCalculated ? 'Save' : 'Review'}
-          </Button>
-        </EndorsementFooter>
+        <EndorsementFooter
+          calculatedRate={calculatedRate}
+          parentFormInstance={formInstance}
+          handlePrimaryClick={handlePrimaryClick}
+          handleReset={handleEndorsementReset}
+        />
         <div className="basic-footer btn-footer">
           <Footer />
         </div>
