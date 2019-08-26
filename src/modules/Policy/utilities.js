@@ -4,10 +4,9 @@ import { date } from '@exzeo/core-ui/src';
 /**
  *
  * @param values
- * @param form
  * @returns {Promise<void>}
  */
-export async function rateEndorsement(data, timezone) {
+export async function rateEndorsement(data, timezone, setAppError) {
   try {
     const calculatedData = _cloneDeep(data);
 
@@ -32,36 +31,12 @@ export async function rateEndorsement(data, timezone) {
     );
     const {
       data: {
-        result: { rating }
+        result: { rating, instanceId }
       }
     } = response;
-    return rating;
-  } catch {
-    console.error('Error attempting to Rate Endorsement');
-  }
-}
-
-/**
- *
- * @param values
- * @param form
- * @returns {Promise<void>}
- */
-export async function saveEndorsement(values, form) {
-  try {
-    const transferConfig = {
-      exchangeName: 'harmony',
-      routingKey: 'harmony.policy.saveEndorsement',
-      data: values
-    };
-
-    const response = await serviceRunner.callService(
-      transferConfig,
-      'saveEndorsement'
-    );
-    // recommended fix from final-form while using form.reset() inside of onSubmit()
-    setTimeout(form.reset);
-  } catch {
-    console.error('Error attempting to Submit Endorsement');
+    return { rating, instanceId };
+  } catch (err) {
+    setAppError(err);
+    return {};
   }
 }

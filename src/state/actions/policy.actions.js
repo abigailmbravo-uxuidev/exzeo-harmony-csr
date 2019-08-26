@@ -843,6 +843,32 @@ export function updatePolicy({ data = {}, options = {} }) {
     try {
       dispatch(toggleLoading(true));
 
+      if (options.endorsePolicy) {
+        const calculatedData = _cloneDeep(data);
+
+        calculatedData.endorsementDate = date.formatToUTC(
+          date.formatDate(data.endorsementDate, date.FORMATS.SECONDARY),
+          options.zipCodeSettings.timezone
+        );
+
+        delete calculatedData._TEMP_INITIAL_VALUES;
+        delete calculatedData.cancel;
+        delete calculatedData.summaryLedger;
+
+        const transferConfig = {
+          exchangeName: 'harmony',
+          routingKey: 'harmony.policy.saveEndorsement',
+          data: calculatedData
+        };
+
+        const response = await serviceRunner.callService(
+          transferConfig,
+          'saveEndorsement'
+        );
+
+        dispatch(initializePolicyWorkflow(data.policyNumber));
+      }
+
       if (options.cancelPolicy) {
         const submitData = {
           policyID: data.policyID,

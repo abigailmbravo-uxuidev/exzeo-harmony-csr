@@ -7,32 +7,44 @@ const EndorsementFooter = ({
   getPolicy,
   parentFormInstance,
   handlePrimaryClick,
-  timezone
+  timezone,
+  setAppError
 }) => {
   const [calculatedRate, setCalculateRate] = useState(null);
+  const [instanceId, setInstanceId] = useState(null);
+
   const {
     values: policy,
     pristine: parentPristine
   } = parentFormInstance.getState();
   const initialValues = {
     ...policy,
-    rating: calculatedRate
+    rating: calculatedRate,
+    instanceId
   };
 
-  const clacluateEndorsementRate = async () => {
-    const rating = await rateEndorsement(policy, timezone);
-    parentFormInstance.initialize(policy);
+  const calculateEndorsementRate = async () => {
+    const { rating, instanceId } = await rateEndorsement(
+      policy,
+      timezone,
+      setAppError
+    );
+    if (!rating) return;
+    parentFormInstance.initialize({ ...policy, rating, instanceId });
     setCalculateRate(rating, timezone);
+    setInstanceId(instanceId);
   };
 
   const resetEndorsementForm = () => {
     setCalculateRate(null);
+    setInstanceId(null);
     getPolicy(policy.policyNumber);
   };
 
   useEffect(() => {
     if (!parentPristine && calculatedRate) {
       setCalculateRate(null);
+      setInstanceId(null);
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -44,7 +56,7 @@ const EndorsementFooter = ({
       handleSubmit={
         calculatedRate && parentPristine
           ? handlePrimaryClick
-          : clacluateEndorsementRate
+          : calculateEndorsementRate
       }
       className="share-inputs"
     >
@@ -63,7 +75,7 @@ const EndorsementFooter = ({
             onClick={
               calculatedRate && parentPristine
                 ? handlePrimaryClick
-                : clacluateEndorsementRate
+                : calculateEndorsementRate
             }
             disabled={null}
             data-test="modal-submit"

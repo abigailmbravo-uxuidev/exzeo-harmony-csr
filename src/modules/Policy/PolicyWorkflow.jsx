@@ -168,6 +168,7 @@ export class PolicyWorkflow extends React.Component {
       options: {
         step: currentStepNumber,
         cancelPolicy: currentRouteName === 'cancel',
+        endorsePolicy: currentRouteName === 'endorsements',
         zipCodeSettings
       }
     });
@@ -351,6 +352,7 @@ export class PolicyWorkflow extends React.Component {
                         stickyFooter={true}
                         renderFooter={({ pristine, submitting, form }) => (
                           <PolicyFooter
+                            setAppError={customHandlers.setAppError}
                             getPolicy={customHandlers.getPolicy}
                             timezone={zipCodeSettings.timezone}
                             currentStep={currentRouteName}

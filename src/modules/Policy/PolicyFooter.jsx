@@ -10,12 +10,14 @@ function PolicyFooter({
   currentStep,
   formInstance,
   timezone,
-  getPolicy
+  getPolicy,
+  setAppError
 }) {
   if (currentStep === 'endorsements') {
     return (
       <React.Fragment>
         <EndorsementFooter
+          setAppError={setAppError}
           getPolicy={getPolicy}
           parentFormInstance={formInstance}
           handlePrimaryClick={handlePrimaryClick}
