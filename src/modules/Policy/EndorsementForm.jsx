@@ -27,6 +27,13 @@ const EndorsementForm = ({
     );
   };
 
+  const clacluateEndorsementRate = () => {
+    //rate endorsem
+    // get rate object
+    // formisntace of parent reinitialize
+    //set local state of rating object
+  };
+
   return (
     <Form
       initialValues={initialValues}

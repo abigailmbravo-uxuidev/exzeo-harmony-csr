@@ -405,9 +405,13 @@ export class PolicyWorkflow extends React.Component {
                             </FormSpy>
 
                             <FormSpy
-                              subscription={{ dirtySinceLastSubmit: true }}
+                              subscription={{
+                                dirtySinceLastSubmit: true,
+                                dirty: true
+                              }}
                             >
-                              {({ dirtySinceLastSubmit }) => {
+                              {({ dirtySinceLastSubmit, dirty }) => {
+                                console.log(dirtySinceLastSubmit, dirty);
                                 if (
                                   this.state.calculatedRate &&
                                   dirtySinceLastSubmit
