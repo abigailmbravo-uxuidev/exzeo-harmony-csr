@@ -48,6 +48,8 @@ const BulkPayments = ({ errorHandler }) => {
     cashTypes
   };
 
+  let count = 0;
+  let total = 0;
   return (
     <div className="content-wrapper finance">
       <div className="scroll view-grid">
@@ -173,16 +175,20 @@ const BulkPayments = ({ errorHandler }) => {
               <span className="policyholder">Policyholder</span>
               <span className="amount">Amount</span>
             </div>
-            {batchResults.map(result => (
-              <div className="table-row" key={result.policyNumber}>
-                <span className="policy-number">{result.policyNumber}</span>
-                <span className="policyholder">{result.policyHolder}</span>
-                <span className="amount">{result.amount}</span>
-              </div>
-            ))}
+            {batchResults.map(result => {
+              count += 1;
+              total += parseFloat(result.amount, 10);
+              return (
+                <div className="table-row" key={result.policyNumber}>
+                  <span className="policy-number">{result.policyNumber}</span>
+                  <span className="policyholder">{result.policyHolder}</span>
+                  <span className="amount">${result.amount}</span>
+                </div>
+              );
+            })}
             <div className="table-footer">
-              <span className="footer-label">[X] entires totaling</span>
-              <span className="amount">$2.00</span>
+              <span className="footer-label">{count} entires totaling</span>
+              <span className="amount">$ {total.toFixed(2)}</span>
             </div>
           </div>
           <div className="btn-wrapper download">
