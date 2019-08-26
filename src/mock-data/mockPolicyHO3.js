@@ -1212,7 +1212,7 @@ const mock = {
               children: []
             },
             {
-              id: 34895439847239849,
+              id: '5435535-fdsfdsf-234324324324-sss',
               type: '$SECTION',
               dependencies: [],
               data: {
@@ -1222,7 +1222,7 @@ const mock = {
               formData: {},
               children: [
                 {
-                  id: '34895439847239849',
+                  id: '398ce68d-234324324324-4354353-34895439847239849',
                   type: '$TITLE',
                   dependencies: [],
                   data: {
@@ -1232,7 +1232,7 @@ const mock = {
                   children: []
                 },
                 {
-                  id: 34895539847239855,
+                  id: '398ce68d-234324324324-',
                   type: '$SECTION',
                   dependencies: [],
                   data: {
@@ -1242,7 +1242,7 @@ const mock = {
                   formData: {},
                   children: [
                     {
-                      id: '398ce68d-839c-4a49-bbf2-92fcc275da40',
+                      id: '398ce68d-839c-4a49-bbf2-4545454543',
                       type: '$INPUT',
                       path: 'coverageLimits.dwelling.value',
                       dependencies: [],
@@ -1269,7 +1269,7 @@ const mock = {
                       children: []
                     },
                     {
-                      id: '398ce68d-839c-4a49-bbf2-92fcc275da40',
+                      id: '398ce68d-839c-4a49-bbf2-92fcc275324234234da40',
                       type: '$INPUT',
                       path: 'coverageLimits.otherStructures.amount',
                       dependencies: [],
@@ -1340,7 +1340,7 @@ const mock = {
                       children: []
                     },
                     {
-                      id: '398ce68d-839c-4a49-bbf2-92fcc275da52',
+                      id: '398ce68d-839c-4a49-bbf2-4444455',
                       type: '$INPUT',
                       path: 'coverageLimits.personalProperty.value',
                       dependencies: [],
@@ -1389,7 +1389,7 @@ const mock = {
                       children: []
                     },
                     {
-                      id: '398ce68d-839c-4a49-bbf2-92fcc275da52',
+                      id: '398ce68d-839c-4a49-bbf2-6546546645',
                       type: '$INPUT',
                       path: 'coverageLimits.personalLiability.value',
                       dependencies: [],
@@ -1567,7 +1567,7 @@ const mock = {
                   ]
                 },
                 {
-                  id: 34895539847239855,
+                  id: '54864c4a69c6-4354355435354353',
                   type: '$SECTION',
                   dependencies: [],
                   data: {
@@ -2556,7 +2556,7 @@ const mock = {
                       children: []
                     },
                     {
-                      id: '40808340-4da2-4b08-ab38-c0a969562029',
+                      id: '40808340-4da2-4b08-ab38-c0a969562030',
                       type: '$INPUT',
                       path: 'property.distanceToFireStation',
                       dependencies: [],
@@ -2605,7 +2605,7 @@ const mock = {
                       children: []
                     },
                     {
-                      id: '40808340-4da2-5b17-ab38-c0a969562029',
+                      id: '40808340-4da2-5b17-ab38-c0a969562032',
                       type: '$INPUT',
                       path: 'property.squareFeet',
                       dependencies: [],
@@ -2624,7 +2624,7 @@ const mock = {
                       children: []
                     },
                     {
-                      id: '40808340-4da2-5b17-ab38-c0a969562029',
+                      id: '40808340-4da2-5b17-ab383453535',
                       type: '$INPUT',
                       path: 'property.yearOfRoof',
                       dependencies: [],
