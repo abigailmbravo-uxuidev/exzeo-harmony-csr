@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Field, Date, validation, Currency, Button } from '@exzeo/core-ui';
+import { FormSpy, Button } from '@exzeo/core-ui';
 import EndorsementForm from './EndorsementForm';
 import { rateEndorsement } from './utilities';
 
@@ -10,17 +10,23 @@ const EndorsementFooter = ({
   timezone,
   setAppError
 }) => {
+  let formInstance;
   const [calculatedRate, setCalculateRate] = useState(null);
   const [instanceId, setInstanceId] = useState(null);
 
   const {
     values: policy,
-    pristine: parentPristine
+    pristine: parentPristine,
+    submitSucceeded: parentSubmitSuceeded
   } = parentFormInstance.getState();
   const initialValues = {
     ...policy,
     rating: calculatedRate,
     instanceId
+  };
+
+  const setFormInstance = form => {
+    formInstance = form;
   };
 
   const calculateEndorsementRate = async () => {
@@ -36,19 +42,24 @@ const EndorsementFooter = ({
   };
 
   const resetEndorsementForm = () => {
-    setCalculateRate(null);
+    setCalculateRate(null, '');
     setInstanceId(null);
     getPolicy(policy.policyNumber);
   };
 
   useEffect(() => {
     if (!parentPristine && calculatedRate) {
-      setCalculateRate(null);
+      setCalculateRate(null, '');
+      setInstanceId(null);
+    }
+    if (parentSubmitSuceeded) {
+      formInstance.reset();
+      setCalculateRate(null, '');
       setInstanceId(null);
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [parentPristine]);
+  }, [parentPristine, parentSubmitSuceeded]);
 
   return (
     <EndorsementForm
@@ -60,8 +71,14 @@ const EndorsementFooter = ({
       }
       className="share-inputs"
     >
-      {({ submitting, pristine }) => (
+      {({ submitting }) => (
         <React.Fragment>
+          <FormSpy subscription={{}}>
+            {({ form }) => {
+              setFormInstance(form);
+              return null;
+            }}
+          </FormSpy>
           <Button
             className={Button.constants.classNames.secondary}
             onClick={resetEndorsementForm}
