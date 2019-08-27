@@ -2,14 +2,26 @@ import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { date } from '@exzeo/core-ui';
 
-const handleDownload = data => {
-  const headers = `Policy Number, Policyholder, Amount \r\n`;
-  const body = data.map(
-    line => `${line.policyNumber}, ${line.policyHolder}, ${line.amount} \r\n`
-  );
-  const csv = `data:text/csv;charset=utf-8,${headers}${body}`;
-  const encodedUri = encodeURI(csv);
-  window.open(encodedUri);
+const handleDownload = (batch, data) => {
+  if (!data || data.length === 0) return;
+  const headers = ['Policy Number', 'Policyholder', 'Amount'];
+  const arr = data.map(line => [
+    line.policyNumber,
+    line.policyHolder,
+    line.amount
+  ]);
+  arr.unshift(headers);
+  const csv = arr.join('\r\n');
+
+  const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+  const link = document.createElement('a');
+  const url = URL.createObjectURL(blob);
+  link.setAttribute('href', url);
+  link.setAttribute('download', batch.batchNumber);
+  link.style.visibility = 'hidden';
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
 };
 
 const PaymentList = ({ batch, batchResults }) => {
@@ -60,7 +72,7 @@ const PaymentList = ({ batch, batchResults }) => {
         <button
           className="btn btn-secondary"
           type="button"
-          onClick={() => handleDownload(batchResults)}
+          onClick={() => handleDownload(batch.values, batchResults)}
           disabled={!batchResults || batchResults.length === 0}
         >
           Download
