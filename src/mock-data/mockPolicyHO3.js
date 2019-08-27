@@ -1254,7 +1254,8 @@ const mock = {
                           format: 'currency',
                           displayRange: true,
                           min: 'coverageLimits.dwelling.minAmount',
-                          max: 'coverageLimits.dwelling.maxAmount'
+                          max: 'coverageLimits.dwelling.maxAmount',
+                          output: 'initial'
                         }
                       },
                       formData: {
@@ -1277,7 +1278,9 @@ const mock = {
                         disabled: true,
                         component: 'currency',
                         label: 'Other Structures (B)',
-                        extendedProperties: {}
+                        extendedProperties: {
+                          output: 'initial'
+                        }
                       },
                       formData: {
                         path: 'coverageLimits.otherStructures.amount',
@@ -1328,7 +1331,7 @@ const mock = {
                         disabled: true,
                         component: 'currency',
                         label: 'Personal Property (C)',
-                        extendedProperties: {}
+                        extendedProperties: { output: 'initial' }
                       },
                       formData: {
                         path: 'coverageLimits.personalProperty.amount',
@@ -1355,7 +1358,7 @@ const mock = {
                           { label: '35%', answer: 35 },
                           { label: '50%', answer: 50 }
                         ],
-                        extendedProperties: {}
+                        extendedProperties: { output: 'initial' }
                       },
                       formData: {
                         path: 'coverageLimits.personalProperty.value',
@@ -1377,7 +1380,7 @@ const mock = {
                         disabled: true,
                         component: 'currency',
                         label: 'Loss of Use (D)',
-                        extendedProperties: {}
+                        extendedProperties: { output: 'initial' }
                       },
                       formData: {
                         path: 'coverageLimits.lossOfUse.amount',
@@ -1402,7 +1405,7 @@ const mock = {
                           { label: '$ 100,000', answer: 100000 },
                           { label: '$ 300,000', answer: 300000 }
                         ],
-                        extendedProperties: {}
+                        extendedProperties: { output: 'initial' }
                       },
                       formData: {
                         path: 'coverageLimits.personalLiability.value',
@@ -1424,7 +1427,7 @@ const mock = {
                         disabled: true,
                         component: 'currency',
                         label: 'Medical Payments (F)',
-                        extendedProperties: {}
+                        extendedProperties: { output: 'initial' }
                       },
                       formData: {
                         path: 'coverageLimits.medicalPayments.amount',
@@ -1445,7 +1448,7 @@ const mock = {
                       data: {
                         component: 'selectInteger',
                         label: 'Mold Property',
-                        extendedProperties: {},
+                        extendedProperties: { output: 'initial' },
                         dataSource: [
                           { label: '$ 10,000', answer: 10000 },
                           { label: '$ 25,000', answer: 25000 },
@@ -1471,7 +1474,7 @@ const mock = {
                       data: {
                         component: 'selectInteger',
                         label: 'Mold Liability',
-                        extendedProperties: {},
+                        extendedProperties: { output: 'initial' },
                         dataSource: [
                           { label: '$ 50,000', answer: 50000 },
                           { label: '$ 100,000', answer: 100000 }
@@ -1496,7 +1499,7 @@ const mock = {
                       data: {
                         component: 'selectInteger',
                         label: 'AOP Deductible',
-                        extendedProperties: {},
+                        extendedProperties: { output: 'initial' },
                         dataSource: [
                           { label: '$ 500', answer: 500 },
                           { label: '$ 1,000', answer: 1000 },
@@ -1522,7 +1525,7 @@ const mock = {
                       data: {
                         component: 'selectInteger',
                         label: 'Hurricane Deductible',
-                        extendedProperties: {},
+                        extendedProperties: { output: 'initial' },
                         dataSource: [
                           { label: '2% of Dwelling Limit', answer: 2 },
                           { label: '5% of Dwelling Limit', answer: 5 },
@@ -1553,7 +1556,7 @@ const mock = {
                           { answer: false, label: 'Coverage Excluded' },
                           { answer: true, label: '10% of Dwelling Limit' }
                         ],
-                        extendedProperties: {}
+                        extendedProperties: { output: 'initial' }
                       },
                       formData: {
                         path: 'coverageOptions.sinkholePerilCoverage.answer',
@@ -1589,7 +1592,8 @@ const mock = {
                         label: 'Personal Property Repl Cost',
                         segmented: true,
                         extendedProperties: {
-                          subscribe: true
+                          subscribe: true,
+                          output: 'initial'
                         }
                       },
                       formData: {
@@ -1616,7 +1620,7 @@ const mock = {
                       data: {
                         component: 'selectInteger',
                         label: 'Ordinance or Law',
-                        extendedProperties: {},
+                        extendedProperties: { output: 'initial' },
                         dataSource: [
                           { label: '25% of Dwelling Limit', answer: 25 },
                           { label: '50% of Dwelling Limit', answer: 50 }
@@ -1644,7 +1648,8 @@ const mock = {
                         label: 'Incidental Occ Main',
                         segmented: true,
                         extendedProperties: {
-                          subscribe: true
+                          subscribe: true,
+                          output: 'initial'
                         }
                       },
                       formData: {
@@ -1674,7 +1679,8 @@ const mock = {
                         label: 'Incidental Occ Other',
                         segmented: true,
                         extendedProperties: {
-                          subscribe: true
+                          subscribe: true,
+                          output: 'initial'
                         }
                       },
                       formData: {
@@ -1705,7 +1711,8 @@ const mock = {
                         label: 'Incidental Occ Liability',
                         segmented: true,
                         extendedProperties: {
-                          subscribe: true
+                          subscribe: true,
+                          output: 'initial'
                         }
                       },
                       formData: {
@@ -1734,7 +1741,8 @@ const mock = {
                         label: 'Townhouse / Rowhouse',
                         segmented: true,
                         extendedProperties: {
-                          subscribe: true
+                          subscribe: true,
+                          output: 'initial'
                         }
                       },
                       formData: {
@@ -1760,7 +1768,7 @@ const mock = {
                       data: {
                         component: 'select',
                         label: 'Property Ever Rented',
-                        extendedProperties: {},
+                        extendedProperties: { output: 'initial' },
                         dataSource: [
                           { label: 'Yes', answer: 'Yes' },
                           { label: 'Occasionally', answer: 'Occasionally' },
@@ -1786,7 +1794,7 @@ const mock = {
                       data: {
                         component: 'select',
                         label: 'Months Occupied',
-                        extendedProperties: {},
+                        extendedProperties: { output: 'initial' },
                         dataSource: [
                           { label: '0-3', answer: '0-3' },
                           { label: '4-6', answer: '4-6' },
@@ -1816,7 +1824,8 @@ const mock = {
                         label: 'No Prior Insurance',
                         segmented: true,
                         extendedProperties: {
-                          subscribe: true
+                          subscribe: true,
+                          output: 'initial'
                         }
                       },
                       formData: {
@@ -1845,7 +1854,8 @@ const mock = {
                         label: 'Burglar Alarm',
                         segmented: true,
                         extendedProperties: {
-                          subscribe: true
+                          subscribe: true,
+                          output: 'initial'
                         }
                       },
                       formData: {
@@ -1873,7 +1883,8 @@ const mock = {
                         label: 'Fire Alarm',
                         segmented: true,
                         extendedProperties: {
-                          subscribe: true
+                          subscribe: true,
+                          output: 'initial'
                         }
                       },
                       formData: {
@@ -1901,7 +1912,8 @@ const mock = {
                         label: 'Sprinkler',
                         segmented: true,
                         extendedProperties: {
-                          subscribe: true
+                          subscribe: true,
+                          output: 'initial'
                         }
                       },
                       formData: {
@@ -2079,6 +2091,7 @@ const mock = {
                     component: 'select',
                     label: 'Terrain',
                     size: '6',
+                    extendedProperties: { output: 'initial' },
                     segmented: true
                   },
                   formData: {
@@ -2106,7 +2119,8 @@ const mock = {
                   data: {
                     component: 'select',
                     label: 'Roof Geometry',
-                    size: '6'
+                    size: '6',
+                    extendedProperties: { output: 'initial' }
                   },
                   formData: {
                     path: 'property.windMitigation.roofGeometry',
@@ -2133,7 +2147,8 @@ const mock = {
                   data: {
                     component: 'select',
                     label: 'Internal Pressure Design',
-                    size: '6'
+                    size: '6',
+                    extendedProperties: { output: 'initial' }
                   },
                   formData: {
                     path: 'property.windMitigation.internalPressureDesign',
@@ -2160,7 +2175,8 @@ const mock = {
                     component: 'radio',
                     label: 'Secondary Water Resistance (SWR)',
                     size: '6',
-                    segmented: true
+                    segmented: true,
+                    extendedProperties: { output: 'initial' }
                   },
                   formData: {
                     path: 'property.windMitigation.secondaryWaterResistance',
@@ -2187,7 +2203,8 @@ const mock = {
                     component: 'radio',
                     label: 'Wind Borne Debris Region (WBDR)',
                     size: '6',
-                    segmented: true
+                    segmented: true,
+                    extendedProperties: { output: 'initial' }
                   },
                   formData: {
                     path: 'property.windMitigation.windBorneDebrisRegion',
@@ -2213,7 +2230,8 @@ const mock = {
                   data: {
                     component: 'select',
                     label: 'Opening Protection:',
-                    size: '6'
+                    size: '6',
+                    extendedProperties: { output: 'initial' }
                   },
                   formData: {
                     path: 'property.windMitigation.openingProtection',
@@ -2243,7 +2261,8 @@ const mock = {
                     disabled: true,
                     component: 'number',
                     label: 'Wind Mit Factor',
-                    size: '6'
+                    size: '6',
+                    extendedProperties: { output: 'initial' }
                   },
                   formData: {
                     type: 'integer',
