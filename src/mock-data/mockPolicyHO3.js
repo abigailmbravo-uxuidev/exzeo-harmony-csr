@@ -1304,7 +1304,9 @@ const mock = {
                           { label: '5%', answer: 5 },
                           { label: '10%', answer: 10 }
                         ],
-                        extendedProperties: {}
+                        extendedProperties: {
+                          output: 'initial'
+                        }
                       },
                       formData: {
                         path: 'coverageLimits.otherStructures.value',
@@ -1312,7 +1314,7 @@ const mock = {
                         required: true,
                         metaData: {
                           target:
-                            '${format.toPercent(it._TEMP_INITIAL_VALUES.coverageLimits.otherStructures.value)}'
+                            '${format.toPercent(it._TEMP_INITIAL_VALUES.coverageLimits.otherStructures.value) || "0%"}'
                         }
                       },
                       children: []
@@ -1361,7 +1363,7 @@ const mock = {
                         required: true,
                         metaData: {
                           target:
-                            '${format.toPercent(it._TEMP_INITIAL_VALUES.coverageLimits.personalProperty.value)}'
+                            '${format.toPercent(it._TEMP_INITIAL_VALUES.coverageLimits.personalProperty.value) || "0%"}'
                         }
                       },
                       children: []
