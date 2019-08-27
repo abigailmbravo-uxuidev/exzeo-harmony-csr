@@ -8,7 +8,7 @@ import NotFoundPage from '../../containers/NotFound';
 import SideNav from './@components/SideNav';
 import BulkPayments from './@components/BulkPayments';
 
-const Finance = ({ auth, ...opts }) => {
+const Finance = ({ auth, errorHandler }) => {
   return (
     <div className="app-wrapper csr">
       <Helmet>
@@ -20,7 +20,7 @@ const Finance = ({ auth, ...opts }) => {
         <Route
           exact
           path="/finance/payments"
-          render={props => <BulkPayments {...props} />}
+          render={props => <BulkPayments errorHandler={errorHandler} />}
         />
       </main>
     </div>
@@ -28,7 +28,8 @@ const Finance = ({ auth, ...opts }) => {
 };
 
 Finance.propTypes = {
-  auth: PropTypes.object.isRequired
+  auth: PropTypes.object.isRequired,
+  errorHandler: PropTypes.func.isRequired
 };
 
 export default Finance;

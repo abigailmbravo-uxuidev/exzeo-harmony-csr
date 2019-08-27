@@ -79,6 +79,7 @@ const PaymentForm = ({
       await postPayment(payment);
       const { policyHolders } = policy;
       const batchDetails = {
+        id: `${policyNumber}-${batchResults.length}`,
         policyNumber,
         amount,
         policyHolder: `${policyHolders[0].firstName} ${policyHolders[0].lastName}`
@@ -232,6 +233,14 @@ const PaymentForm = ({
       </Form>
     </Fragment>
   );
+};
+
+PaymentForm.propTypes = {
+  active: PropTypes.bool.isRequired,
+  batch: PropTypes.object.isRequired,
+  batchResults: PropTypes.array.isRequired,
+  setBatchResults: PropTypes.func.isRequired,
+  errorHandler: PropTypes.func.isRequired
 };
 
 export default PaymentForm;

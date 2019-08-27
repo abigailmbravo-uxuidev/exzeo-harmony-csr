@@ -56,7 +56,7 @@ const PaymentList = ({ batch, batchResults }) => {
           count += 1;
           total += parseFloat(result.amount, 10);
           return (
-            <div className="table-row" key={result.policyNumber}>
+            <div className="table-row" key={result.id}>
               <span className="policy-number">{result.policyNumber}</span>
               <span className="policyholder">{result.policyHolder}</span>
               <span className="amount">${result.amount}</span>
@@ -80,6 +80,11 @@ const PaymentList = ({ batch, batchResults }) => {
       </div>
     </section>
   );
+};
+
+PaymentList.propTypes = {
+  batch: PropTypes.object.isRequired,
+  batchResults: PropTypes.array.isRequired
 };
 
 export default PaymentList;
