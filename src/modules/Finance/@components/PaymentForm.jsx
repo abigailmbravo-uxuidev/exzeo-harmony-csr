@@ -8,7 +8,7 @@ import {
   Input,
   OnBlurListener,
   validation,
-  Loader
+  SectionLoader
 } from '@exzeo/core-ui';
 
 import { getPolicy, postPayment } from '../data';
@@ -93,7 +93,6 @@ const PaymentForm = ({
 
   return (
     <Fragment>
-      {loading && <Loader />}
       <Form
         onSubmit={handlePayment}
         subscription={{ submitting: true, pristine: true, values: true }}
@@ -136,6 +135,7 @@ const PaymentForm = ({
                 <div
                   className={`policy-card card ${billingStatus.displayText}`}
                 >
+                  {loading && <SectionLoader />}
                   {errorMessage && (
                     <div className="error-message">{errorMessage}</div>
                   )}
