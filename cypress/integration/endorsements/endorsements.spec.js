@@ -31,7 +31,7 @@ describe('CSR_policyEnd_happyPath_multiEnd1', () => {
         //const quoteId = xhr.response.body.result._id;
         const quoteNumber = xhr.request.body.data.quoteNumber;
 
-        const endpointURL = Cypress.env('CYPRESS_SVC_URL');
+        const endpointURL = Cypress.env('SVC_URL');
 
         bindPolicyRequest(quoteNumber, cookie.value, endpointURL).then(response => {
           cy.goToNav('coverage').reload();
