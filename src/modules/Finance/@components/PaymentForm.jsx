@@ -171,7 +171,7 @@ const PaymentForm = ({
                             {policy.policyHolders[0].firstName}&nbsp;
                             {policy.policyHolders[0].lastName}
                           </strong>
-                          &nbsp; |&nbsp;{address1},&nbsp;
+                          &nbsp;|&nbsp;{address1},&nbsp;
                           <span>
                             {city},&nbsp;{state}&nbsp;{zip}
                           </span>
