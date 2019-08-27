@@ -10,6 +10,7 @@ import {
 import {
   afterDocuSignTest
 } from '../../pageTests';
+import { bindPolicyRequest } from './bindPolicyRequest';
 
 describe('CSR_policyEnd_happyPath_multiEnd1', () => {
   before('Login', () => cy.login());
@@ -21,19 +22,28 @@ describe('CSR_policyEnd_happyPath_multiEnd1', () => {
     fillOutUnderwriting();
     fillOutMailingBilling();
     fillOutApplication();
+    navigateThroughDocusign();
 
-    cy.task('log', 'Navigating through \'Send to Docusign\'').clickSubmit('body', 'send-application')
-    .clickSubmit('#sendApplicationForm', 'modal-submit').wait('@sendApplication')
-    .wait('@reviewQuote').get('button[data-test="send-application"]').should('be.disabled');
+    cy.wait(20000);
+
+    cy.getCookie('id_token').then(cookie => {
+      cy.get('@reviewQuote').then(function (xhr) {
+        //const quoteId = xhr.response.body.result._id;
+        const quoteNumber = xhr.request.body.data.quoteNumber;
+
+        const endpointURL = Cypress.env('CYPRESS_SVC_URL');
+
+        bindPolicyRequest(quoteNumber, cookie.value, endpointURL).then(response => {
+          cy.goToNav('coverage').reload();
+        });
+      });
+    });
     
-    cy.goToNav('coverage')
-    .wait(20000)
-    .reload();
+    
+
   });
 
   it('Select Policy', () => {
-      
     cy.task('log', 'Select Policy').findDataTag('selectPolicy').click({ force: true })
-    
   })
 });

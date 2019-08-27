@@ -48,4 +48,4 @@ export const navigateThroughDocusign = () =>
     .wait('@verifyQuote')
     .checkQuoteState('Application Ready')
     .clickSubmit('#sendApplicationForm', 'modal-submit').wait('@sendApplication')
-    .wait('@updateQuote').get('button[data-test="send-application"]').should('be.disabled');
+    .wait('@reviewQuote').get('button[data-test="send-application"]').should('be.disabled');
