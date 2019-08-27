@@ -57,7 +57,14 @@ const PaymentList = ({ batch, batchResults }) => {
           total += parseFloat(result.amount, 10);
           return (
             <div className="table-row" key={result.id}>
-              <span className="policy-number">{result.policyNumber}</span>
+              <span className="policy-number">
+                <a
+                  href={`/policy/${result.policyNumber}/coverage`}
+                  target="_blank"
+                >
+                  {result.policyNumber}
+                </a>
+              </span>
               <span className="policyholder">{result.policyHolder}</span>
               <span className="amount">${result.amount}</span>
             </div>
