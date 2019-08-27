@@ -34,7 +34,7 @@ describe('CSR_policyEnd_happyPath_multiEnd1', () => {
         const endpointURL = Cypress.env('SVC_URL');
 
         bindPolicyRequest(quoteNumber, cookie.value, endpointURL).then(response => {
-          cy.goToNav('coverage').reload();
+          cy.visit(`/policy/${response.result.policyNumber}/endorsements`);
         });
       });
     });
@@ -43,7 +43,7 @@ describe('CSR_policyEnd_happyPath_multiEnd1', () => {
 
   });
 
-  it('Select Policy', () => {
-    cy.task('log', 'Select Policy').findDataTag('selectPolicy').click({ force: true })
+  it('Test Endorsement Page', () => {
+
   })
 });

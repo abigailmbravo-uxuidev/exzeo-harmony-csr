@@ -20,7 +20,10 @@ export async function bindPolicyRequest(quoteNumber, idToken, endpointURL) {
     xhr.onload = function () {
       var status = xhr.status;
       if (status === 200) {
-          resolve(status);
+        cy.task('log', xhr.response)
+        cy.task('log', JSON.parse(xhr.response))
+
+        resolve(JSON.parse(xhr.response));
       } else {
           reject(status);
       }
