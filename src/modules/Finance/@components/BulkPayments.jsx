@@ -1,7 +1,5 @@
 import React, { useEffect, useState, Fragment } from 'react';
 import PropTypes from 'prop-types';
-import moment from 'moment';
-import { STANDARD_DATE_FORMAT } from '../../../constants/dates';
 import {
   Form,
   Loader,
@@ -16,7 +14,8 @@ import {
   validation
 } from '@exzeo/core-ui';
 
-import PolicyCard from './PolicyCard';
+import PaymentForm from './PaymentForm';
+import PaymentList from './PaymentList';
 import { useFetchPaymentOptions } from '../hooks';
 
 const inputBatch = (batchNumber, cashDate) => {
@@ -24,16 +23,6 @@ const inputBatch = (batchNumber, cashDate) => {
   const newBatch = date.formatDate(String(cashDate), 'YYYYMMDD');
 
   return `${newBatch}${suffix}`;
-};
-
-const handleDownload = data => {
-  const headers = `Policy Number, Policyholder, Amount \r\n`;
-  const body = data.map(
-    line => `${line.policyNumber}, ${line.policyHolder}, ${line.amount} \r\n`
-  );
-  const csv = `data:text/csv;charset=utf-8,${headers}${body}`;
-  const encodedUri = encodeURI(csv);
-  window.open(encodedUri);
 };
 
 const BulkPayments = ({ errorHandler }) => {
@@ -48,8 +37,6 @@ const BulkPayments = ({ errorHandler }) => {
     cashTypes
   };
 
-  let count = 0;
-  let total = 0;
   return (
     <div className="content-wrapper finance">
       <div className="scroll view-grid">
@@ -58,7 +45,7 @@ const BulkPayments = ({ errorHandler }) => {
           onSubmit={() => setActive(true)}
           subscription={{ submitting: true, pristine: true, values: true }}
         >
-          {({ reset }) => (
+          {({ form: { reset } }) => (
             <form id="batch-form">
               <div className="fade-in view-grid">
                 <h3 className="title">Bulk Payments</h3>
@@ -130,7 +117,10 @@ const BulkPayments = ({ errorHandler }) => {
                     <button
                       className="btn btn-primary"
                       type="button"
-                      onClick={() => setActive(false)}
+                      onClick={() => {
+                        setActive(false);
+                        reset();
+                      }}
                       disabled={!active}
                     >
                       Stop
@@ -142,7 +132,7 @@ const BulkPayments = ({ errorHandler }) => {
           )}
         </Form>
         <section className="section-policy">
-          <PolicyCard
+          <PaymentForm
             active={active}
             batch={batch}
             batchResults={batchResults}
@@ -150,58 +140,7 @@ const BulkPayments = ({ errorHandler }) => {
             errorHandler={errorHandler}
           />
         </section>
-        <section className="section-payment-list">
-          <div className="form-group">
-            <label>Cash Date</label>
-            <span>
-              {moment.utc(batch.values.cashDate).format(STANDARD_DATE_FORMAT)}
-            </span>
-          </div>
-          <div className="form-group">
-            <label>Batch Number</label>
-            <span>{batch.values.batchNumber}</span>
-          </div>
-          <div className="form-group">
-            <label>Cash Type</label>
-            <span>{batch.values.cashType}</span>
-          </div>
-          <div className="form-group">
-            <label>Payment Description</label>
-            <span>Payment Received</span>
-          </div>
-          <div className="payment-table">
-            <div className="table-header">
-              <span className="policy-number">Polcy Number</span>
-              <span className="policyholder">Policyholder</span>
-              <span className="amount">Amount</span>
-            </div>
-            {batchResults.map(result => {
-              count += 1;
-              total += parseFloat(result.amount, 10);
-              return (
-                <div className="table-row" key={result.policyNumber}>
-                  <span className="policy-number">{result.policyNumber}</span>
-                  <span className="policyholder">{result.policyHolder}</span>
-                  <span className="amount">${result.amount}</span>
-                </div>
-              );
-            })}
-            <div className="table-footer">
-              <span className="footer-label">{count} entires totaling</span>
-              <span className="amount">$ {total.toFixed(2)}</span>
-            </div>
-          </div>
-          <div className="btn-wrapper download">
-            <button
-              className="btn btn-secondary"
-              type="button"
-              onClick={() => handleDownload(batchResults)}
-              disabled={!batchResults || batchResults.length === 0}
-            >
-              Download
-            </button>
-          </div>
-        </section>
+        <PaymentList batch={batch} batchResults={batchResults} />
       </div>
     </div>
   );
