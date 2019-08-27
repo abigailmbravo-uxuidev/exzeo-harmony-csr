@@ -52,22 +52,28 @@ const EndorsementsWatcher = ({ formValues }) => {
           <React.Fragment>
             <OnChangeListener name="coverageLimits.dwelling.value">
               {dwellingValue => {
-                onChange(
-                  Math.ceil(
-                    (formValues.coverageLimits.otherStructures.value / 100) *
-                      dwellingValue
-                  )
-                );
+                if (dwellingValue) {
+                  onChange(
+                    Math.ceil(
+                      (formValues.coverageLimits.otherStructures.value / 100) *
+                        dwellingValue
+                    )
+                  );
+                }
               }}
             </OnChangeListener>
             <OnChangeListener name="coverageLimits.otherStructures.value">
               {otherStructuresValue => {
-                onChange(
-                  Math.ceil(
-                    (otherStructuresValue / 100) *
-                      formValues.coverageLimits.dwelling.value
-                  )
-                );
+                if (otherStructuresValue) {
+                  onChange(
+                    Math.ceil(
+                      (otherStructuresValue / 100) *
+                        formValues.coverageLimits.dwelling.value
+                    )
+                  );
+                } else {
+                  onChange(0);
+                }
               }}
             </OnChangeListener>
           </React.Fragment>
@@ -78,22 +84,26 @@ const EndorsementsWatcher = ({ formValues }) => {
           <React.Fragment>
             <OnChangeListener name="coverageLimits.dwelling.value">
               {dwellingValue => {
-                onChange(
-                  Math.ceil(
-                    (formValues.coverageLimits.personalProperty.value / 100) *
-                      dwellingValue
-                  )
-                );
+                if (dwellingValue) {
+                  onChange(
+                    Math.ceil(
+                      (formValues.coverageLimits.personalProperty.value / 100) *
+                        dwellingValue
+                    )
+                  );
+                }
               }}
             </OnChangeListener>
             <OnChangeListener name="coverageLimits.personalProperty.value">
               {personalPropertyValue => {
-                onChange(
-                  Math.ceil(
-                    (personalPropertyValue / 100) *
-                      formValues.coverageLimits.dwelling.value
-                  )
-                );
+                if (personalPropertyValue) {
+                  onChange(
+                    Math.ceil(
+                      (personalPropertyValue / 100) *
+                        formValues.coverageLimits.dwelling.value
+                    )
+                  );
+                }
               }}
             </OnChangeListener>
           </React.Fragment>
@@ -104,14 +114,15 @@ const EndorsementsWatcher = ({ formValues }) => {
           <React.Fragment>
             <OnChangeListener name="coverageLimits.dwelling.value">
               {dwellingValue => {
-                onChange(
-                  Math.ceil(
-                    (formValues.coverageLimits.lossOfUse.value / 100) *
-                      dwellingValue
-                  )
-                );
+                if (dwellingValue) {
+                  onChange(
+                    Math.ceil(
+                      (formValues.coverageLimits.lossOfUse.value / 100) *
+                        dwellingValue
+                    )
+                  );
+                }
               }}
-              }
             </OnChangeListener>
           </React.Fragment>
         )}
