@@ -1,7 +1,5 @@
 import React, { useState, Fragment } from 'react';
 import PropTypes from 'prop-types';
-import moment from 'moment';
-import { STANDARD_DATE_FORMAT } from '../../../constants/dates';
 import {
   date,
   Form,
@@ -15,7 +13,7 @@ import {
 
 import { getPolicy, postPayment } from '../data';
 
-const PolicyCard = ({
+const PaymentForm = ({
   active,
   batch,
   batchResults,
@@ -80,6 +78,7 @@ const PolicyCard = ({
       const { policyHolders } = policy;
       const batchDetails = {
         policyNumber,
+
         amount,
         policyHolder: `${policyHolders[0].firstName} ${policyHolders[0].lastName}`
       };
@@ -94,8 +93,11 @@ const PolicyCard = ({
   return (
     <Fragment>
       {loading && <Loader />}
-      <Form onSubmit={handlePayment} subscription={{ values: true }}>
-        {({ handleSubmit, reset }) => (
+      <Form
+        onSubmit={handlePayment}
+        subscription={{ submitting: true, pristine: true, values: true }}
+      >
+        {({ handleSubmit, form: { reset } }) => (
           <form id="payment-form">
             <div className="fade-in view-grid">
               <Field name="policyNumber" validate={validation.isRequired}>
@@ -116,14 +118,19 @@ const PolicyCard = ({
                     <button
                       className="btn btn-link clear-policy"
                       disabled={!active}
-                      onClick={reset}
                       tabindex="-1"
+                      type="button"
+                      onClick={() => {
+                        reset();
+                        setPolicy({});
+                      }}
                     >
                       <i className="fa fa-times" />
                     </button>
                   </Fragment>
                 )}
               </Field>
+
               <div className="results">
                 <div
                   className={`policy-card card ${billingStatus.displayText}`}
@@ -135,7 +142,7 @@ const PolicyCard = ({
                     <Fragment>
                       <div className="icon-name card-header">
                         <i className="icon fa fa-file-text" />
-                        <h5>HO3</h5>
+                        <h5>{policy.product}</h5>
                       </div>
                       <div className="card-block">
                         <div className="policy-details">
@@ -170,9 +177,10 @@ const PolicyCard = ({
                         <div className="status">
                           <div className="effective-date">
                             <label>Effective Date:</label>&nbsp;
-                            {moment
-                              .utc(policy.effectiveDate)
-                              .format(STANDARD_DATE_FORMAT)}
+                            {date.formattedDate(
+                              policy.effectiveDate,
+                              'MM/DD/YYYY'
+                            )}
                           </div>
                           <div className="policy-status">
                             <label>Policy Status:</label>&nbsp;
@@ -219,4 +227,4 @@ const PolicyCard = ({
   );
 };
 
-export default PolicyCard;
+export default PaymentForm;
