@@ -153,6 +153,7 @@ const PaymentForm = ({
                               className="btn btn-link btn-xs"
                               href={`/policy/${policy.policyNumber}/coverage`}
                               target="_blank"
+                              tabindex="-1"
                             >
                               <i className="fa fa-external-link-square" />
                               Open Policy
