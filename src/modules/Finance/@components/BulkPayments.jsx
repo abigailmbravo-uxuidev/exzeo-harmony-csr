@@ -119,6 +119,7 @@ const BulkPayments = ({ errorHandler }) => {
                       type="button"
                       onClick={() => {
                         setActive(false);
+                        setBatchResults([]);
                         reset();
                       }}
                       disabled={!active}

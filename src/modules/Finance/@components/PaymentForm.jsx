@@ -39,18 +39,19 @@ const PaymentForm = ({
       setPolicy(search);
       setErrorMessage();
     } catch (error) {
+      reset();
       setErrorMessage(error.message);
     } finally {
       setLoading(false);
-      reset();
     }
   };
 
-  const handlePayment = async ({ amount, policyNumber }) => {
+  const handlePayment = async ({ amount }) => {
     const {
       values: { cashDate, batchNumber, cashType }
     } = batch;
     const {
+      policyNumber,
       policyTerm,
       property = {},
       policyAccountCode,
@@ -79,7 +80,6 @@ const PaymentForm = ({
       const { policyHolders } = policy;
       const batchDetails = {
         policyNumber,
-
         amount,
         policyHolder: `${policyHolders[0].firstName} ${policyHolders[0].lastName}`
       };
@@ -98,7 +98,14 @@ const PaymentForm = ({
         subscription={{ submitting: true, pristine: true, values: true }}
       >
         {({ handleSubmit, form: { reset } }) => (
-          <form id="payment-form">
+          <form
+            id="payment-form"
+            onSubmit={async event => {
+              await handleSubmit(event);
+              reset();
+              setPolicy({});
+            }}
+          >
             <div className="fade-in view-grid">
               <Field name="policyNumber" validate={validation.isRequired}>
                 {({ input, meta }) => (
@@ -115,22 +122,21 @@ const PaymentForm = ({
                     <OnBlurListener name="policyNumber">
                       {() => handlePolicySearch(input.value, reset)}
                     </OnBlurListener>
-                    <button
-                      className="btn btn-link clear-policy"
-                      disabled={!active}
-                      tabIndex="-1"
-                      type="button"
-                      onClick={() => {
-                        reset();
-                        setPolicy({});
-                      }}
-                    >
-                      <i className="fa fa-times" />
-                    </button>
                   </Fragment>
                 )}
               </Field>
-
+              <button
+                className="btn btn-link clear-policy"
+                disabled={!active}
+                tabIndex="-1"
+                type="button"
+                onClick={() => {
+                  reset();
+                  setPolicy({});
+                }}
+              >
+                <i className="fa fa-times" />
+              </button>
               <div className="results">
                 <div
                   className={`policy-card card ${billingStatus.displayText}`}
@@ -154,7 +160,7 @@ const PaymentForm = ({
                               className="btn btn-link btn-xs"
                               href={`/policy/${policy.policyNumber}/coverage`}
                               target="_blank"
-                              tabindex="-1"
+                              tabIndex="-1"
                             >
                               <i className="fa fa-external-link-square" />
                               Open Policy
@@ -213,7 +219,6 @@ const PaymentForm = ({
                     <button
                       className="btn btn-primary"
                       type="submit"
-                      onClick={handleSubmit}
                       form="payment-form"
                     >
                       APPLY
