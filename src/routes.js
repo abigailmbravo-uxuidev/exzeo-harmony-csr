@@ -52,6 +52,7 @@ class Routes extends Component {
   render() {
     const {
       ui: { diary, note, minimizeNote, minimizeDiary },
+      actions: { errorActions },
       auth,
       authState: { userProfile },
       policyState: { policy }
@@ -168,8 +169,8 @@ class Routes extends Component {
                 render={props => (
                   <Finance
                     auth={auth}
+                    errorHandler={errorActions.setAppError}
                     {...props}
-                    errorHandler={this.props.actions.errorActions.setAppError}
                   />
                 )}
               />

@@ -147,4 +147,8 @@ const BulkPayments = ({ errorHandler }) => {
   );
 };
 
+BulkPayments.propTypes = {
+  errorHandler: PropTypes.func.isRequired
+};
+
 export default BulkPayments;
