@@ -13,12 +13,19 @@
         border-bottom: 1px dashed $bright-blue-darken-03;
 
         &.section-payment {
+          z-index: 6;
+
           .form-group {
             margin-bottom: 0;
           }
         }
 
+        &.section-policy {
+          z-index: 5;
+        }
+
         &.section-payment-list {
+          z-index: 1;
           display: flex;
           flex-wrap: wrap;
           border-bottom-width: 0;
@@ -150,6 +157,7 @@
 
         .results {
           .card {
+            position: relative;
             flex-direction: row;
             justify-content: flex-end;
             margin: 0;
@@ -161,6 +169,17 @@
               .billing-status {
                 color: $red;
               }
+            }
+
+            .component-loader {
+              position: absolute;
+              top: 0;
+              right: 20rem;
+              bottom: 0;
+              left: 0;
+              z-index: 1000;
+              height: auto;
+              background: $white;
             }
 
             .error-message {
@@ -231,6 +250,7 @@
               align-content: flex-start;
               flex-direction: row;
               margin: $padding 0;
+              width: 20rem;
               border-top-width: 0;
               border-left: $card-border-width dotted $card-border-color;
               background-color: $white;
