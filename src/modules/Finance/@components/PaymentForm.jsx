@@ -32,7 +32,7 @@ const PaymentForm = ({
 
   const hasPolicy = policy && Object.entries(policy).length > 0;
 
-  const handlePolicySearch = async policyNumber => {
+  const handlePolicySearch = async (policyNumber, reset) => {
     setLoading(true);
     try {
       const search = await getPolicy(policyNumber);
@@ -42,6 +42,7 @@ const PaymentForm = ({
       setErrorMessage(error.message);
     } finally {
       setLoading(false);
+      reset();
     }
   };
 
@@ -113,12 +114,12 @@ const PaymentForm = ({
                       disabled={!active}
                     />
                     <OnBlurListener name="policyNumber">
-                      {() => handlePolicySearch(input.value)}
+                      {() => handlePolicySearch(input.value, reset)}
                     </OnBlurListener>
                     <button
                       className="btn btn-link clear-policy"
                       disabled={!active}
-                      tabindex="-1"
+                      tabIndex="-1"
                       type="button"
                       onClick={() => {
                         reset();
