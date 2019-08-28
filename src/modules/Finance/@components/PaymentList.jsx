@@ -4,11 +4,11 @@ import { date } from '@exzeo/core-ui';
 
 const handleDownload = (batch, data) => {
   if (!data || data.length === 0) return;
-  const { cashDate, batchNumber, cashType, cashDescription } = batch;
+  const { cashDate, batchNumber, cashType } = batch;
   const headers = [
     'Batch Number',
     'Cash Date',
-    'Cash Description',
+    'Payment Description',
     'Policy Number',
     'Policyholder',
     'Cash Type',
@@ -18,7 +18,7 @@ const handleDownload = (batch, data) => {
   const arr = data.map(line => [
     batchNumber,
     cashDate,
-    cashDescription,
+    'Payment Received',
     line.policyNumber,
     line.policyHolder,
     cashType,

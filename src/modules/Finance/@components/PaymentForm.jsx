@@ -26,7 +26,9 @@ const PaymentForm = ({
   const {
     effectiveDate = '',
     policyHolders: { firstName, lastName } = {},
-    policyHolderMailingAddress: { address1, city, state, zip } = {},
+    property: {
+      physicalAddress: { address1, address2, city, state, zip } = {}
+    } = {},
     summaryLedger: { balance = {}, status: billingStatus = {} } = {}
   } = policy;
 
