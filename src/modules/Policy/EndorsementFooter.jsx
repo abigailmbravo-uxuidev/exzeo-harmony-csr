@@ -30,13 +30,15 @@ const EndorsementFooter = ({
   };
 
   const calculateEndorsementRate = async () => {
+    const { values: formValues } = parentFormInstance.getState();
+
     const { rating, instanceId } = await rateEndorsement(
-      policy,
+      formValues,
       timezone,
       setAppError
     );
     if (!rating) return;
-    parentFormInstance.initialize({ ...policy, rating, instanceId });
+    parentFormInstance.initialize({ ...formValues, rating, instanceId });
     setCalculateRate(rating, timezone);
     setInstanceId(instanceId);
   };
@@ -53,7 +55,7 @@ const EndorsementFooter = ({
       setInstanceId(null);
     }
     if (parentSubmitSuceeded) {
-      formInstance.reset();
+      setTimeout(formInstance.reset);
       setCalculateRate(null, '');
       setInstanceId(null);
     }
