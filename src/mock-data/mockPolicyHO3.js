@@ -1242,6 +1242,40 @@ const mock = {
                   formData: {},
                   children: [
                     {
+                      id: '398ce68d-234324324324-33344',
+                      type: '$SECTION',
+                      dependencies: [],
+                      data: {
+                        extendedProperties: {
+                          className: 'form-group labels'
+                        },
+                        size: '12'
+                      },
+                      formData: {},
+                      children: [
+                        {
+                          id: '398ce68d-234324324324-22222',
+                          type: '$LABEL',
+                          dependencies: [],
+                          data: {
+                            text: 'Current'
+                          },
+                          formData: {},
+                          children: []
+                        },
+                        {
+                          id: '398ce68d-234324324324-22222233',
+                          type: '$LABEL',
+                          dependencies: [],
+                          data: {
+                            text: 'New'
+                          },
+                          formData: {},
+                          children: []
+                        }
+                      ]
+                    },
+                    {
                       id: '398ce68d-839c-4a49-bbf2-4545454543',
                       type: '$INPUT',
                       path: 'coverageLimits.dwelling.value',
