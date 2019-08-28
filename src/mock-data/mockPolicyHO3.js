@@ -1564,7 +1564,7 @@ const mock = {
                         required: true,
                         metaData: {
                           target:
-                            "${it._TEMP_INITIAL_VALUES.coverageOptions.sinkholePerilCoverage.answer === 'true' || it._TEMP_INITIAL_VALUES.coverageOptions.sinkholePerilCoverage.answer === true ? '10% of Dwelling Limit' : 0}"
+                            "${it._TEMP_INITIAL_VALUES.coverageOptions.sinkholePerilCoverage.answer === 'true' || it._TEMP_INITIAL_VALUES.coverageOptions.sinkholePerilCoverage.answer === true ? '10% of Dwelling Limit' : 'Coverage Excluded'}"
                         }
                       },
                       children: []
