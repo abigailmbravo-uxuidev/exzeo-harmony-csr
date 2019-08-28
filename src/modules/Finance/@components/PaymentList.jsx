@@ -86,7 +86,7 @@ const PaymentList = ({ batch, batchResults }) => {
           );
         })}
         <div className="table-footer">
-          <span className="footer-label">{count} entires totaling</span>
+          <span className="footer-label">{count} entries totaling</span>
           <span className="amount">$ {total.toFixed(2)}</span>
         </div>
       </div>
