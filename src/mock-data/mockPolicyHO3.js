@@ -1443,7 +1443,7 @@ const mock = {
                     {
                       id: '398ce68d-839c-4a49-bbf2-92fcc275da56',
                       type: '$INPUT',
-                      path: 'coverageLimits.moldProperty.amount',
+                      path: 'coverageLimits.moldProperty.value',
                       dependencies: [],
                       data: {
                         component: 'selectInteger',
@@ -1456,7 +1456,7 @@ const mock = {
                         ]
                       },
                       formData: {
-                        path: 'coverageLimits.moldProperty.amount',
+                        path: 'coverageLimits.moldProperty.value',
                         type: 'integer',
                         required: true,
                         metaData: {
@@ -1469,7 +1469,7 @@ const mock = {
                     {
                       id: '398ce68d-839c-4a49-bbf2-92fcc275da57',
                       type: '$INPUT',
-                      path: 'coverageLimits.moldLiability.amount',
+                      path: 'coverageLimits.moldLiability.value',
                       dependencies: [],
                       data: {
                         component: 'selectInteger',
@@ -1481,7 +1481,7 @@ const mock = {
                         ]
                       },
                       formData: {
-                        path: 'coverageLimits.moldLiability.amount',
+                        path: 'coverageLimits.moldLiability.value',
                         type: 'integer',
                         required: true,
                         metaData: {
