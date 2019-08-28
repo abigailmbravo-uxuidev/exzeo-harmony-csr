@@ -24,7 +24,7 @@ const PaymentForm = ({
   const [errorMessage, setErrorMessage] = useState();
   const [loading, setLoading] = useState(false);
   const {
-    effectiveDate,
+    effectiveDate = '',
     policyHolders: { firstName, lastName } = {},
     policyHolderMailingAddress: { address1, city, state, zip } = {},
     summaryLedger: { balance = {}, status: billingStatus = {} } = {}
@@ -32,7 +32,44 @@ const PaymentForm = ({
 
   const hasPolicy = policy && Object.entries(policy).length > 0;
 
-  const handlePolicySearch = async (policyNumber, reset) => {
+  const normalizePolicyNumber = policyNumber => {
+    const bits = policyNumber.split('-');
+    const len = bits.length;
+
+    if (len > 3) return policyNumber;
+
+    if (len > 2) {
+      return bits[0].toLowerCase() === 'ttic' && bits[1].toLowerCase() === 'af3'
+        ? `${policyNumber}-1`
+        : bits[0].toLowerCase() === 'af3'
+        ? `TTIC-${policyNumber}`
+        : policyNumber;
+    }
+
+    if (len === 2) {
+      const firstBit = bits[0].length;
+
+      if (bits[0].toLowerCase() === 'af3') return `TTIC-${policyNumber}-1`;
+      return firstBit === 6
+        ? `TTIC-AF3-${bits[0]}-${bits[1]}`
+        : firstBit === 7
+        ? `12-${bits[0]}-${bits[1]}`
+        : `${bits[0]}-${bits[1]}-01`;
+    }
+
+    if (len === 1) {
+      if (['af3', 'ttic'].includes(bits[0].toLowerCase())) return policyNumber;
+      return bits[0].length === 6
+        ? `TTIC-AF3-${policyNumber}-1`
+        : `12-${policyNumber}-01`;
+    }
+
+    return policyNumber;
+  };
+
+  const handlePolicySearch = async (policyNum, reset) => {
+    if (!policyNum) return false;
+    const policyNumber = normalizePolicyNumber(policyNum);
     setLoading(true);
     try {
       const search = await getPolicy(policyNumber);
@@ -40,6 +77,7 @@ const PaymentForm = ({
       setErrorMessage();
     } catch (error) {
       reset();
+      setPolicy({});
       setErrorMessage(error.message);
     } finally {
       setLoading(false);
@@ -96,14 +134,17 @@ const PaymentForm = ({
     <Fragment>
       <Form
         onSubmit={handlePayment}
-        subscription={{ submitting: true, pristine: true, values: true }}
+        subscription={{ values: true, errors: true, invalid: true }}
       >
-        {({ handleSubmit, form: { reset } }) => (
+        {({ handleSubmit, form, errors }) => (
           <form
             id="payment-form"
             onSubmit={async event => {
               await handleSubmit(event);
-              reset();
+              if (errors.amount && !errors.policyNumber) {
+                return form.blur('policyNumber');
+              }
+              form.reset();
               setPolicy({});
             }}
           >
@@ -121,7 +162,9 @@ const PaymentForm = ({
                       disabled={!active}
                     />
                     <OnBlurListener name="policyNumber">
-                      {() => handlePolicySearch(input.value, reset)}
+                      {() => {
+                        handlePolicySearch(input.value, form.reset);
+                      }}
                     </OnBlurListener>
                   </Fragment>
                 )}
@@ -132,7 +175,7 @@ const PaymentForm = ({
                 tabIndex="-1"
                 type="button"
                 onClick={() => {
-                  reset();
+                  form.reset();
                   setPolicy({});
                 }}
               >
