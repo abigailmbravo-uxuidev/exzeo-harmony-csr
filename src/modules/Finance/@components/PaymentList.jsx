@@ -4,12 +4,27 @@ import { date } from '@exzeo/core-ui';
 
 const handleDownload = (batch, data) => {
   if (!data || data.length === 0) return;
-  const headers = ['Policy Number', 'Policyholder', 'Amount'];
+  const { cashDate, batchNumber, cashType, cashDescription } = batch;
+  const headers = [
+    'Policy Number',
+    'Policyholder',
+    'Amount',
+    'Cash Date',
+    'Batch Number',
+    'Cash Type',
+    'Cash Description'
+  ];
+
   const arr = data.map(line => [
     line.policyNumber,
     line.policyHolder,
-    line.amount
+    line.amount,
+    cashDate,
+    batchNumber,
+    cashType,
+    cashDescription
   ]);
+
   arr.unshift(headers);
   const csv = arr.join('\r\n');
 
@@ -17,7 +32,7 @@ const handleDownload = (batch, data) => {
   const link = document.createElement('a');
   const url = URL.createObjectURL(blob);
   link.setAttribute('href', url);
-  link.setAttribute('download', batch.batchNumber);
+  link.setAttribute('download', batchNumber);
   link.style.visibility = 'hidden';
   document.body.appendChild(link);
   link.click();
@@ -66,7 +81,7 @@ const PaymentList = ({ batch, batchResults }) => {
                 </a>
               </span>
               <span className="policyholder">{result.policyHolder}</span>
-              <span className="amount">${result.amount}</span>
+              <span className="amount">${result.amount.toFixed(2)}</span>
             </div>
           );
         })}
