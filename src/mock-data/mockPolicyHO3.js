@@ -1246,9 +1246,7 @@ const mock = {
                       type: '$SECTION',
                       dependencies: [],
                       data: {
-                        extendedProperties: {
-                          className: 'form-group labels'
-                        },
+                        className: 'form-group labels',
                         size: '12'
                       },
                       formData: {},
@@ -1615,6 +1613,38 @@ const mock = {
                   },
                   formData: {},
                   children: [
+                    {
+                      id: '398ce68d-234324324324-33345',
+                      type: '$SECTION',
+                      dependencies: [],
+                      data: {
+                        className: 'form-group labels',
+                        size: '12'
+                      },
+                      formData: {},
+                      children: [
+                        {
+                          id: '398ce68d-234324324324-22225',
+                          type: '$LABEL',
+                          dependencies: [],
+                          data: {
+                            text: 'Current'
+                          },
+                          formData: {},
+                          children: []
+                        },
+                        {
+                          id: '398ce68d-234324324324-22222235',
+                          type: '$LABEL',
+                          dependencies: [],
+                          data: {
+                            text: 'New'
+                          },
+                          formData: {},
+                          children: []
+                        }
+                      ]
+                    },
                     {
                       id: 'b141e258-5074-4ba1-90bc-54864c4a69c6',
                       type: '$INPUT',
@@ -1991,6 +2021,70 @@ const mock = {
                   children: []
                 },
                 {
+                  id: '398ce68d-234324324324-33347',
+                  type: '$SECTION',
+                  dependencies: [],
+                  data: {
+                    className: 'form-group labels',
+                    size: '6'
+                  },
+                  formData: {},
+                  children: [
+                    {
+                      id: '398ce68d-234324324324-22227',
+                      type: '$LABEL',
+                      dependencies: [],
+                      data: {
+                        text: 'Current'
+                      },
+                      formData: {},
+                      children: []
+                    },
+                    {
+                      id: '398ce68d-234324324324-22222237',
+                      type: '$LABEL',
+                      dependencies: [],
+                      data: {
+                        text: 'New'
+                      },
+                      formData: {},
+                      children: []
+                    }
+                  ]
+                },
+                {
+                  id: '398ce68d-234324324324-33348',
+                  type: '$SECTION',
+                  dependencies: [],
+                  data: {
+                    className: 'form-group labels',
+                    size: '6'
+                  },
+                  formData: {},
+                  children: [
+                    {
+                      id: '398ce68d-234324324324-22228',
+                      type: '$LABEL',
+                      dependencies: [],
+                      data: {
+                        text: 'Current'
+                      },
+                      formData: {},
+                      children: []
+                    },
+                    {
+                      id: '398ce68d-234324324324-22222238',
+                      type: '$LABEL',
+                      dependencies: [],
+                      data: {
+                        text: 'New'
+                      },
+                      formData: {},
+                      children: []
+                    }
+                  ]
+                },
+                {
                   id: '57f21212-7631-4dd7-9b42-55fe263b9491',
                   component: '$INPUT',
                   path: 'property.windMitigation.roofCovering',
@@ -2344,7 +2438,39 @@ const mock = {
                   formData: {},
                   children: [
                     {
-                      id: '741deda4c333-0ed7-4538-910a-598d0d15',
+                      id: '398ce68d-234324324324-33347',
+                      type: '$SECTION',
+                      dependencies: [],
+                      data: {
+                        className: 'form-group labels',
+                        size: '12'
+                      },
+                      formData: {},
+                      children: [
+                        {
+                          id: '398ce68d-234324324324-22999',
+                          type: '$LABEL',
+                          dependencies: [],
+                          data: {
+                            text: 'Current'
+                          },
+                          formData: {},
+                          children: []
+                        },
+                        {
+                          id: '398ce68d-234324324324-22222999',
+                          type: '$LABEL',
+                          dependencies: [],
+                          data: {
+                            text: 'New'
+                          },
+                          formData: {},
+                          children: []
+                        }
+                      ]
+                    },
+                    {
+                      id: '741deda4c333-0ed7-4538-910a-598d0999',
                       type: '$INPUT',
                       path: 'property.yearBuilt',
                       dependencies: [],
@@ -2571,6 +2697,38 @@ const mock = {
                   },
                   formData: {},
                   children: [
+                    {
+                      id: '44448ce68d-234324324324-33347',
+                      type: '$SECTION',
+                      dependencies: [],
+                      data: {
+                        className: 'form-group labels',
+                        size: '12'
+                      },
+                      formData: {},
+                      children: [
+                        {
+                          id: '4448ce68d-234324324324-22999',
+                          type: '$LABEL',
+                          dependencies: [],
+                          data: {
+                            text: 'Current'
+                          },
+                          formData: {},
+                          children: []
+                        },
+                        {
+                          id: '4448ce68d-234324324324-22222999',
+                          type: '$LABEL',
+                          dependencies: [],
+                          data: {
+                            text: 'New'
+                          },
+                          formData: {},
+                          children: []
+                        }
+                      ]
+                    },
                     {
                       id: '40808340-4da2-4b08-ab38-c0a969562027',
                       type: '$INPUT',
