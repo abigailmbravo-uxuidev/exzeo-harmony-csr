@@ -1520,7 +1520,7 @@ const mock = {
                     {
                       id: '398ce68d-839c-4a49-bbf2-92fcc275da59',
                       type: '$INPUT',
-                      path: 'deductibles.allOtherPerils.value',
+                      path: 'deductibles.hurricane.value',
                       dependencies: [],
                       data: {
                         component: 'selectInteger',
@@ -1533,12 +1533,12 @@ const mock = {
                         ]
                       },
                       formData: {
-                        path: 'deductibles.allOtherPerils.value',
+                        path: 'deductibles.hurricane.value',
                         type: 'integer',
                         required: true,
                         metaData: {
                           target:
-                            '${format.toCurrency(it._TEMP_INITIAL_VALUES.deductibles.allOtherPerils.value)}'
+                            '${format.toCurrency(it._TEMP_INITIAL_VALUES.deductibles.hurricane.value)}'
                         }
                       },
                       children: []
