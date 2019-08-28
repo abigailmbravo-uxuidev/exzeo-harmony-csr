@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Loader, FormSpy, remoteSubmit } from '@exzeo/core-ui';
 import {
+  AgencyAgentSelect,
   getConfigForJsonTransform,
   Gandalf
 } from '@exzeo/core-ui/src/@Harmony';
