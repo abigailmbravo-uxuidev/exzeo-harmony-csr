@@ -352,6 +352,7 @@ export class PolicyWorkflow extends React.Component {
                         stickyFooter={true}
                         renderFooter={({ pristine, submitting, form }) => (
                           <PolicyFooter
+                            history={customHandlers.history}
                             setAppError={customHandlers.setAppError}
                             getPolicy={customHandlers.getPolicy}
                             timezone={zipCodeSettings.timezone}

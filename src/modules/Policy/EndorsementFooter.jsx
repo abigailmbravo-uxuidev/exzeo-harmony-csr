@@ -2,13 +2,15 @@ import React, { useState, useEffect } from 'react';
 import { FormSpy, Button } from '@exzeo/core-ui';
 import EndorsementForm from './EndorsementForm';
 import { rateEndorsement } from './utilities';
+import CustomNavigationPrompt from '../../components/CustomNavigationPrompt';
 
 const EndorsementFooter = ({
   getPolicy,
   parentFormInstance,
   handlePrimaryClick,
   timezone,
-  setAppError
+  setAppError,
+  history
 }) => {
   let formInstance;
   const [calculatedRate, setCalculateRate] = useState(null);
@@ -81,6 +83,11 @@ const EndorsementFooter = ({
               return null;
             }}
           </FormSpy>
+          <CustomNavigationPrompt
+            whenValue={instanceId}
+            history={history}
+            confirmNavigationHandler={resetEndorsementForm}
+          />
           <Button
             className={Button.constants.classNames.secondary}
             onClick={resetEndorsementForm}

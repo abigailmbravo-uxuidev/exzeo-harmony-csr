@@ -140,6 +140,7 @@ export function setPoliciesForAgency(agencyPolices) {
 export function getPolicy(policyNumber) {
   return async dispatch => {
     try {
+      dispatch(toggleLoading(true));
       const policy = await fetchPolicy(policyNumber);
       const summaryLedger = await fetchSummaryLedger(policyNumber);
 
@@ -147,6 +148,8 @@ export function getPolicy(policyNumber) {
       return { policy, summaryLedger };
     } catch (error) {
       dispatch(errorActions.setAppError(error));
+    } finally {
+      dispatch(toggleLoading(false));
     }
   };
 }
