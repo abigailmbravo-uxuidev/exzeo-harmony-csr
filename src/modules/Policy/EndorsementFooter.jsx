@@ -98,7 +98,7 @@ const EndorsementFooter = ({
           <Button
             className={Button.constants.classNames.primary}
             type="submit"
-            disabled={submitting}
+            disabled={(parentPristine && !calculatedRate) || submitting}
             data-test="modal-submit"
           >
             {calculatedRate && parentPristine ? 'Save' : 'Review'}
