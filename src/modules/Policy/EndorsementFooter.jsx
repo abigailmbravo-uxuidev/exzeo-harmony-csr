@@ -14,12 +14,10 @@ const EndorsementFooter = ({
 }) => {
   let formInstance;
   const [endorsementState, setCalculateRate] = useState({});
-  const [instanceId, setInstanceId] = useState(null);
 
   const {
     values: policy,
-    pristine: parentPristine,
-    submitSucceeded: parentSubmitSuceeded
+    pristine: parentPristine
   } = parentFormInstance.getState();
   const initialValues = {
     ...policy,
@@ -27,7 +25,7 @@ const EndorsementFooter = ({
       ? endorsementState.endorsementDate
       : date.formatDate(policy.effectiveDate, date.FORMATS.SECONDARY),
     rating: endorsementState.rating,
-    instanceId
+    instanceId: endorsementState.instanceId
   };
 
   const setFormInstance = form => {
@@ -48,20 +46,17 @@ const EndorsementFooter = ({
     );
     if (!rating) return;
     parentFormInstance.initialize({ ...formValues, rating, instanceId });
-    setCalculateRate({ rating, endorsementDate });
-    setInstanceId(instanceId);
+    setCalculateRate({ rating, endorsementDate, instanceId });
   };
 
   const resetEndorsementForm = () => {
     setCalculateRate({});
-    setInstanceId(null);
     parentFormInstance.initialize(policyFormData);
   };
 
   useEffect(() => {
     if (!parentPristine && endorsementState.rating) {
       setCalculateRate({});
-      setInstanceId(null);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [parentPristine]);
@@ -78,11 +73,11 @@ const EndorsementFooter = ({
 
     setTimeout(formInstance.reset);
     setCalculateRate({});
-    setInstanceId(null);
   };
 
   return (
     <EndorsementForm
+      hasCalculatedRate={endorsementState.rating}
       initialValues={initialValues}
       handleSubmit={
         endorsementState.rating && parentPristine
@@ -100,7 +95,7 @@ const EndorsementFooter = ({
             }}
           </FormSpy>
           <CustomNavigationPrompt
-            whenValue={instanceId}
+            whenValue={endorsementState.instanceId}
             history={history}
             confirmNavigationHandler={resetEndorsementForm}
           />

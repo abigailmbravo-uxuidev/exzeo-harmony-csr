@@ -10,7 +10,12 @@ import {
   Loader
 } from '@exzeo/core-ui';
 
-const EndorsementForm = ({ children, handleSubmit, initialValues }) => {
+const EndorsementForm = ({
+  children,
+  handleSubmit,
+  initialValues,
+  hasCalculatedRate
+}) => {
   const validateEndorsementDate = (...args) => {
     // we shouldn't need to do this, waiting for a patch from redux-form
     if (!initialValues) return undefined;
@@ -31,7 +36,7 @@ const EndorsementForm = ({ children, handleSubmit, initialValues }) => {
     >
       {({ handleSubmit, submitting, pristine }) => (
         <React.Fragment>
-          {submitting && <Loader />}
+          {!hasCalculatedRate && submitting && <Loader />}
           <form
             id="EndorsePolicy"
             className="endorse-policy"
