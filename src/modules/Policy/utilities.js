@@ -41,4 +41,5 @@ export function formatEndorsementData(data, timezone) {
   delete calculatedData._TEMP_INITIAL_VALUES;
   delete calculatedData.cancel;
   delete calculatedData.summaryLedger;
+  return calculatedData;
 }

@@ -63,14 +63,8 @@ const EndorsementFooter = ({
       setCalculateRate({});
       setInstanceId(null);
     }
-    if (parentSubmitSuceeded) {
-      setTimeout(formInstance.reset);
-      setCalculateRate({});
-      setInstanceId(null);
-    }
-
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [parentPristine, parentSubmitSuceeded]);
+  }, [parentPristine]);
 
   const handleSaveEndorsement = async data => {
     const { values: formValues } = parentFormInstance.getState();
@@ -81,6 +75,10 @@ const EndorsementFooter = ({
     );
 
     await handlePrimaryClick({ ...formValues, endorsementDate });
+
+    setTimeout(formInstance.reset);
+    setCalculateRate({});
+    setInstanceId(null);
   };
 
   return (
