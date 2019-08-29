@@ -1,8 +1,21 @@
 import React from 'react';
-import { render, fireEvent } from 'react-testing-library';
+import { render, fireEvent, waitForElement } from 'react-testing-library';
 import { date } from '@exzeo/core-ui';
 
 import BulkPayments from '../@components/BulkPayments';
+
+jest.mock('../hooks', () => ({
+  __esModule: true,
+  useFetchPaymentOptions: jest.fn(() => [
+    { answer: 'Paper Deposit', label: 'Paper Deposit' },
+    { answer: 'Electronic Deposit', label: 'Electronic Deposit' },
+    { answer: 'Paper Deposit Charge Back', label: 'Paper Deposit Charge Back' },
+    {
+      answer: 'Electronic Deposit Charge Back',
+      label: 'Electronic Deposit Charge Back'
+    }
+  ])
+}));
 
 const today = date.toUTC();
 const initialBatchNumber = date.currentDay('YYYYMMDD');
@@ -43,5 +56,20 @@ describe('BulkPayments testing', () => {
     expect(getByText('0 entries totaling'));
     expect(getByText('$ 0.00'));
     expect(getByText('Download')).toBeDisabled();
+  });
+
+  it('Test BulkPayments forms', async () => {
+    const props = {
+      errorHandler: jest.fn()
+    };
+
+    const { getByText, getByLabelText, getAllByText, container } = render(
+      <BulkPayments {...props} />
+    );
+
+    fireEvent.click(getByLabelText('Cash Type'));
+    fireEvent.mouseDown(getByLabelText('Cash Type'), {
+      target: { value: 'Paper Deposit' }
+    });
   });
 });
