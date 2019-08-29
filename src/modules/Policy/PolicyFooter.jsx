@@ -10,7 +10,7 @@ function PolicyFooter({
   currentStep,
   formInstance,
   timezone,
-  getPolicy,
+  policyFormData,
   setAppError,
   history
 }) {
@@ -20,7 +20,7 @@ function PolicyFooter({
         <EndorsementFooter
           history={history}
           setAppError={setAppError}
-          getPolicy={getPolicy}
+          policyFormData={policyFormData}
           parentFormInstance={formInstance}
           handlePrimaryClick={handlePrimaryClick}
           timezone={timezone}

@@ -354,7 +354,7 @@ export class PolicyWorkflow extends React.Component {
                           <PolicyFooter
                             history={customHandlers.history}
                             setAppError={customHandlers.setAppError}
-                            getPolicy={customHandlers.getPolicy}
+                            policyFormData={policyFormData}
                             timezone={zipCodeSettings.timezone}
                             currentStep={currentRouteName}
                             formInstance={form}

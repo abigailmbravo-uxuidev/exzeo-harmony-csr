@@ -5,7 +5,7 @@ import { rateEndorsement } from './utilities';
 import CustomNavigationPrompt from '../../components/CustomNavigationPrompt';
 
 const EndorsementFooter = ({
-  getPolicy,
+  policyFormData,
   parentFormInstance,
   handlePrimaryClick,
   timezone,
@@ -48,7 +48,7 @@ const EndorsementFooter = ({
   const resetEndorsementForm = () => {
     setCalculateRate(null, '');
     setInstanceId(null);
-    getPolicy(policy.policyNumber);
+    parentFormInstance.initialize(policyFormData);
   };
 
   useEffect(() => {
