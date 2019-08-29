@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { FormSpy, Button } from '@exzeo/core-ui';
+import { FormSpy, Button, date } from '@exzeo/core-ui';
 import EndorsementForm from './EndorsementForm';
-import { rateEndorsement } from './utilities';
+import { rateEndorsement, formatEndorsementData } from './utilities';
 import CustomNavigationPrompt from '../../components/CustomNavigationPrompt';
 
 const EndorsementFooter = ({
@@ -13,7 +13,7 @@ const EndorsementFooter = ({
   history
 }) => {
   let formInstance;
-  const [calculatedRate, setCalculateRate] = useState(null);
+  const [endorsementState, setCalculateRate] = useState({});
   const [instanceId, setInstanceId] = useState(null);
 
   const {
@@ -23,7 +23,10 @@ const EndorsementFooter = ({
   } = parentFormInstance.getState();
   const initialValues = {
     ...policy,
-    rating: calculatedRate,
+    endorsementDate: endorsementState.endorsementDate
+      ? endorsementState.endorsementDate
+      : date.formatDate(policy.effectiveDate, date.FORMATS.SECONDARY),
+    rating: endorsementState.rating,
     instanceId
   };
 
@@ -31,46 +34,61 @@ const EndorsementFooter = ({
     formInstance = form;
   };
 
-  const calculateEndorsementRate = async () => {
+  const calculateEndorsementRate = async ({ endorsementDate }) => {
     const { values: formValues } = parentFormInstance.getState();
 
+    const formattedData = formatEndorsementData(
+      { ...formValues, endorsementDate },
+      timezone
+    );
+
     const { rating, instanceId } = await rateEndorsement(
-      formValues,
-      timezone,
+      formattedData,
       setAppError
     );
     if (!rating) return;
     parentFormInstance.initialize({ ...formValues, rating, instanceId });
-    setCalculateRate(rating, timezone);
+    setCalculateRate({ rating, endorsementDate });
     setInstanceId(instanceId);
   };
 
   const resetEndorsementForm = () => {
-    setCalculateRate(null, '');
+    setCalculateRate({});
     setInstanceId(null);
     parentFormInstance.initialize(policyFormData);
   };
 
   useEffect(() => {
-    if (!parentPristine && calculatedRate) {
-      setCalculateRate(null, '');
+    if (!parentPristine && endorsementState.rating) {
+      setCalculateRate({});
       setInstanceId(null);
     }
     if (parentSubmitSuceeded) {
       setTimeout(formInstance.reset);
-      setCalculateRate(null, '');
+      setCalculateRate({});
       setInstanceId(null);
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [parentPristine, parentSubmitSuceeded]);
 
+  const handleSaveEndorsement = async data => {
+    const { values: formValues } = parentFormInstance.getState();
+
+    const endorsementDate = date.formatToUTC(
+      date.formatDate(data.endorsementDate, date.FORMATS.SECONDARY),
+      timezone
+    );
+
+    await handlePrimaryClick({ ...formValues, endorsementDate });
+  };
+
   return (
     <EndorsementForm
       initialValues={initialValues}
       handleSubmit={
-        calculatedRate && parentPristine
-          ? handlePrimaryClick
+        endorsementState.rating && parentPristine
+          ? handleSaveEndorsement
           : calculateEndorsementRate
       }
       className="share-inputs"
@@ -98,10 +116,12 @@ const EndorsementFooter = ({
           <Button
             className={Button.constants.classNames.primary}
             type="submit"
-            disabled={(parentPristine && !calculatedRate) || submitting}
+            disabled={
+              (parentPristine && !endorsementState.rating) || submitting
+            }
             data-test="modal-submit"
           >
-            {calculatedRate && parentPristine ? 'Save' : 'Review'}
+            {endorsementState.rating && parentPristine ? 'Save' : 'Review'}
           </Button>
         </React.Fragment>
       )}

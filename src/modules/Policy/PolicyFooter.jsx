@@ -7,6 +7,7 @@ import EndorsementFooter from './EndorsementFooter';
 function PolicyFooter({
   isSubmitDisabled,
   handlePrimaryClick,
+  handleGandalfSubmit,
   currentStep,
   formInstance,
   timezone,
@@ -22,7 +23,7 @@ function PolicyFooter({
           setAppError={setAppError}
           policyFormData={policyFormData}
           parentFormInstance={formInstance}
-          handlePrimaryClick={handlePrimaryClick}
+          handlePrimaryClick={handleGandalfSubmit}
           timezone={timezone}
         />
         <div className="basic-footer btn-footer">

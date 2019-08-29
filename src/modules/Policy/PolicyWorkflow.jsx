@@ -362,6 +362,7 @@ export class PolicyWorkflow extends React.Component {
                               pristine,
                               submitting
                             )}
+                            handleGandalfSubmit={this.handleGandalfSubmit}
                             handlePrimaryClick={this.primaryClickHandler}
                           />
                         )}

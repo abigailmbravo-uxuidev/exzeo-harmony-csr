@@ -12,6 +12,7 @@ import endorsementUtils from '../../utilities/endorsementModel';
 import { getZipcodeSettings } from './service.actions';
 import { toggleLoading } from './ui.actions';
 import cg from '../../utilities/cg';
+import { formatEndorsementData } from '../../modules/Policy/utilities';
 /**
  * Reset policyState
  * @returns {{type: string}}
@@ -844,21 +845,15 @@ export function updatePolicy({ data = {}, options = {} }) {
       dispatch(toggleLoading(true));
 
       if (options.endorsePolicy) {
-        const calculatedData = _cloneDeep(data);
-
-        calculatedData.endorsementDate = date.formatToUTC(
-          date.formatDate(data.endorsementDate, date.FORMATS.SECONDARY),
+        const formattedData = formatEndorsementData(
+          data,
           options.zipCodeSettings.timezone
         );
-
-        delete calculatedData._TEMP_INITIAL_VALUES;
-        delete calculatedData.cancel;
-        delete calculatedData.summaryLedger;
 
         const transferConfig = {
           exchangeName: 'harmony',
           routingKey: 'harmony.policy.saveEndorsement',
-          data: calculatedData
+          data: formattedData
         };
 
         const response = await serviceRunner.callService(
