@@ -29,7 +29,7 @@ const PaymentForm = ({
     property: {
       physicalAddress: { address1, address2, city, state, zip } = {}
     } = {},
-    summaryLedger: { balance = {}, status: billingStatus = {} } = {}
+    summaryLedger: { balance = {}, status: billingStatus = '' } = {}
   } = policy;
 
   const hasPolicy = policy && Object.entries(policy).length > 0;
@@ -266,6 +266,7 @@ const PaymentForm = ({
                       className="btn btn-primary"
                       type="submit"
                       form="payment-form"
+                      disabled={!active}
                     >
                       APPLY
                     </button>

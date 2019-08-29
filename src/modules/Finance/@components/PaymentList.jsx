@@ -63,7 +63,7 @@ const PaymentList = ({ batch, batchResults }) => {
       </div>
       <div className="payment-table">
         <div className="table-header">
-          <span className="policy-number">Polcy Number</span>
+          <span className="policy-number">Policy Number</span>
           <span className="policyholder">Policyholder</span>
           <span className="amount">Amount</span>
         </div>
