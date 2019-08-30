@@ -54,16 +54,34 @@ export const getQuoteSelector = createSelector(
   quoteData => {
     if (!quoteData || !quoteData.quoteNumber) return {};
 
+    if (quoteData.policyHolders.length === 0) {
+      quoteData.policyHolders.push({
+        firstName: '',
+        lastName: '',
+        emailAddress: '',
+        primaryPhoneNumber: '',
+        order: 0,
+        entityType: 'Person',
+        electronicDelivery: false
+      });
+    }
+
     quoteData.effectiveDate = formatDate(
       quoteData.effectiveDate,
       FORMATS.SECONDARY
     );
     quoteData.removeSecondary = false;
-    quoteData.hasActiveExceptions =
-      quoteData.underwritingExceptions.filter(uw => !uw.overridden).length > 0;
-    quoteData.hasUWError =
+    quoteData.blockSendApplication =
       quoteData.underwritingExceptions.filter(
-        uw => !uw.overridden && uw.action !== 'Missing Info'
+        uw =>
+          (uw.canOverride && !uw.overridden) ||
+          (!uw.canOverride && !['Informational'].includes(uw.action))
+      ).length > 0;
+    quoteData.blockQuoteSummary =
+      quoteData.underwritingExceptions.filter(
+        uw =>
+          !uw.overridden &&
+          !['Missing Info', 'Informational'].includes(uw.action)
       ).length > 0;
 
     quoteData.editingDisabled =

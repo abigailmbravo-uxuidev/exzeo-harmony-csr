@@ -21,145 +21,168 @@
     .open-diaries {
       position: absolute;
       right: 0;
-      overflow-y: auto;
+      display: flex;
+      overflow: hidden;
       align-self: stretch;
+      flex-direction: column;
       flex-grow: 0;
       flex-shrink: 0;
+      padding: 0;
+      min-height: calc(100vh - 8.125rem);
       width: 0;
       height: calc(100vh - 8.125rem);
-      min-height: calc(100vh - 8.125rem);
-      padding: 0 0 ($padding * 2) ($padding * 2);
       border-left: dotted 1px $warm-gray-04;
       background: $white;
+
       @include transition(all 0.1s ease-in-out);
 
       .open-diaries-header {
-        margin: ($padding * 1.5) 0;
-      }
+        display: flex;
+        align-items: center;
+        flex-grow: 0;
+        flex-shrink: 0;
+        height: 3rem;
+        border-bottom: 1px dotted $warm-gray-04;
+        background: $white;
 
-      section {
-        > h5 {
-          display: flex;
-          align-items: center;
-          color: $warm-gray-08;
-          background: $warm-gray-02;
-          font-size: 14px;
-
-          i.fa {
-            margin: 0 ($padding * 2) 0 0;
-            padding: ($padding * 2);
-            color: $white;
-          }
+        h4 {
+          margin: 0;
+          padding: 0;
         }
+      }
+      .diaries-list {
+        overflow-y: auto;
+        flex-grow: 1;
+        flex-shrink: 1;
+        padding: 0 0 0 ($padding * 2);
+        width: 100%;
 
-        ul {
-          &.diary-list {
-            margin-right: $padding;
+        section {
+          > h5 {
+            display: flex;
+            align-items: center;
+            margin: 1rem 0;
+            background: $warm-gray-02;
+            color: $warm-gray-08;
+            font-size: 14px;
+
+            i.fa {
+              margin: 0 ($padding * 2) 0 0;
+              padding: ($padding * 2);
+              color: $white;
+            }
           }
 
-          li {
-            margin-bottom: $padding;
-            border-bottom: 1px dotted $warm-gray-02;
-
-            &:last-of-type {
-              border-bottom-width: 0;
+          ul {
+            &.diary-list {
+              margin-right: $padding;
             }
 
-            .diary-header {
-              display: flex;
-              align-items: center;
-              color: $warm-gray-08;
-              font-size: $font-size-sm;
+            li {
+              margin-bottom: $padding;
+              border-bottom: 1px dotted $warm-gray-02;
 
-              > i {
+              &:last-of-type {
+                border-bottom-width: 0;
+              }
+
+              .diary-header {
                 display: flex;
                 align-items: center;
-                justify-content: center;
-                height: 1.125rem;
-              }
+                color: $warm-gray-08;
+                font-size: $font-size-sm;
 
-              .diary-due-date {
-                font-weight: $font-weight-bold;
-              }
+                > i {
+                  display: flex;
+                  align-items: center;
+                  justify-content: center;
+                  height: 1.125rem;
+                  font-size: $font-size-base;
+                }
 
-              a.btn-link {
-                color: $bright-blue;
+                .diary-due-date {
+                  font-weight: $font-weight-bold;
+                }
 
-                i {
-                  margin-right: $padding;
+                a.btn-link {
                   color: $bright-blue;
+
+                  i {
+                    margin-right: $padding;
+                    color: $bright-blue;
+                  }
+                }
+              }
+
+              .diary-type {
+                color: $warm-gray-08;
+                font-weight: $font-weight-bold;
+                font-size: $font-size-sm;
+              }
+
+              .diary-reason {
+                color: $warm-gray-10;
+                font-size: $font-size-sm;
+              }
+
+              p {
+                margin: 0;
+                font-size: $font-size-sm;
+              }
+
+              .diary-assignee {
+                margin-bottom: $padding;
+                color: $warm-gray-08;
+                font-weight: $font-weight-bold;
+                font-size: $font-size-sm;
+              }
+            }
+          }
+
+          &.diaries-pastDue {
+            > h5 {
+              > i.fa {
+                background-color: $red-darken-01;
+              }
+            }
+
+            li {
+              .diary-header {
+                > i {
+                  color: $red-darken-01;
                 }
               }
             }
-
-            .diary-type {
-              color: $warm-gray-08;
-              font-size: $font-size-sm;
-              font-weight: $font-weight-bold;
-            }
-
-            .diary-reason {
-              color: $warm-gray-10;
-              font-size: $font-size-sm;
-            }
-
-            p {
-              margin: 0;
-              font-size: $font-size-sm;
-            }
-
-            .diary-assignee {
-              margin-bottom: $padding;
-              color: $warm-gray-08;
-              font-size: $font-size-sm;
-              font-weight: $font-weight-bold;
-            }
-          }
-        }
-
-        &.diaries-pastDue {
-          > h5 {
-            > i.fa {
-              background-color: $red-darken-01;
-            }
           }
 
-          li {
-            .diary-header {
-              > i {
-                color: $red-darken-01;
+          &.diaries-dueSoon {
+            > h5 {
+              > i.fa {
+                background-color: $orange-lighten-01;
+              }
+            }
+
+            li {
+              .diary-header {
+                > i {
+                  color: $orange-lighten-01;
+                }
               }
             }
           }
-        }
 
-        &.diaries-dueSoon {
-          > h5 {
-            > i.fa {
-              background-color: $orange-lighten-01;
-            }
-          }
-
-          li {
-            .diary-header {
-              > i {
-                color: $orange-lighten-01;
+          &.diaries-upcoming {
+            > h5 {
+              > i.fa {
+                background-color: $green-darken-02;
               }
             }
-          }
-        }
 
-        &.diaries-upcoming {
-          > h5 {
-            > i.fa {
-              background-color: $green-darken-02;
-            }
-          }
-
-          li {
-            .diary-header {
-              > i {
-                color: $green-darken-02;
+            li {
+              .diary-header {
+                > i {
+                  color: $green-darken-02;
+                }
               }
             }
           }
@@ -179,9 +202,9 @@
 
       .open-diaries {
         overflow: hidden;
-        width: 0;
         margin: 0;
         padding: 0;
+        width: 0;
         border-width: 0;
         box-shadow: 0 0 0 0 rgba($black, 0);
       }

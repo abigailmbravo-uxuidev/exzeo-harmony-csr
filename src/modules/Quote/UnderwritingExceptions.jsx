@@ -3,20 +3,19 @@ import propTypes from 'prop-types';
 import classNames from 'classnames';
 
 const EXCEPTION_LEVELS = {
-  warning: {
+  info: {
     sectionClass: 'msg-info',
     iconClass: 'fa fa-info-circle',
     label: 'Info',
     listIconClass: 'fa-li fa fa-info-circle'
   },
-  nonOverridable: {
+  fatalError: {
     sectionClass: 'msg-error',
     iconClass: 'fa fa-exclamation-circle',
     label: 'Error',
     listIconClass: 'fa-li fa fa-exclamation-circle'
   },
-  overridable: {
-    canShowButton: true,
+  underwritingReview: {
     sectionClass: 'msg-caution',
     iconClass: 'fa fa-exclamation-triangle',
     label: 'Caution',
@@ -35,21 +34,12 @@ class UnderwritingExceptions extends React.Component {
         <h5>
           <i className={severity.iconClass} aria-hidden="true" />
           <span>{severity.label}</span>
-          {!pristine && severity.canShowButton && (
-            <button
-              tabIndex="0"
-              className="btn btn-sm btn-primary"
-              type="submit"
-            >
-              Save
-            </button>
-          )}
         </h5>
         <div>
           <ul className="fa-ul">
             {exceptions.map((exception, index) => (
               <li
-                key={exception._id}
+                key={exception.code}
                 className={classNames({
                   overridden: exception.canOverride && exception.overridden
                 })}
@@ -68,7 +58,7 @@ class UnderwritingExceptions extends React.Component {
 }
 
 UnderwritingExceptions.propTypes = {
-  exceptionLevel: propTypes.oneOf(['warning', 'overridable', 'nonOverridable'])
+  exceptionLevel: propTypes.oneOf(['info', 'underwritingReview', 'fatalError'])
     .isRequired,
   exceptions: propTypes.arrayOf(
     propTypes.shape({

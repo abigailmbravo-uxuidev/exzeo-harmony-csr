@@ -50,7 +50,10 @@ describe('Base Path', () => {
     applicationTest();
 
     if (Cypress.env('CI')) {
-      cy.task('log', 'CI is set to true - not testing for \'Application Sent DocuSign\'')
+      cy.task(
+        'log',
+        "CI is set to true - not testing for 'Application Sent DocuSign'"
+      );
     } else {
       navigateThroughDocusign();
       afterDocuSignTest();

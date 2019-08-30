@@ -186,7 +186,7 @@ describe('Summary Testing with Default Quote', () => {
       quote: {
         ...props.quote,
         quoteInputState: 'Qualified',
-        hasUWError: true
+        blockQuoteSummary: true
       }
     };
     const { getByText } = renderWithForm(<QuoteWorkflow {...newProps} />);
@@ -219,7 +219,7 @@ describe('Summary Testing with Default Quote', () => {
       quote: {
         ...props.quote,
         quoteInputState: 'Ready',
-        hasUWError: true
+        blockQuoteSummary: true
       }
     };
     const { getByText } = renderWithForm(<QuoteWorkflow {...newProps} />);
