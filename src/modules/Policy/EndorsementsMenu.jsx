@@ -21,7 +21,7 @@ const GoToMenu = props => {
         links.map(link => (
           <Button
             key={link.id}
-            dataTest={link.label}
+            dataTest={link.id}
             onClick={() => scrollToView(link.id)}
             className={BUTTON_CLASS.link}
             size={BUTTON_SIZE.xsmall}
