@@ -86,9 +86,8 @@ describe('CSR_policyEnd_happyPath_multiEnd1', () => {
 
       .findDataTag('modal-submit')
       .click({ force: true })
-      .wait('@rateEndorsement');
-
-    cy.viewport(1000, 660);
+      .wait('@rateEndorsement')
+      .viewport(1000, 660);
 
     // .findDisabledDataTag('endorsementAmount')
     // .should('have.value', '-$ 211')
