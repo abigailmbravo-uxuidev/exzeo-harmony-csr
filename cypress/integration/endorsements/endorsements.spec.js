@@ -15,34 +15,36 @@ describe('CSR_policyEnd_happyPath_multiEnd1', () => {
   beforeEach('Set aliases', () => setRouteAliases());
 
   it('Bind a quote to a policy for Address 4131 Test Address, Sarasota, FL 00001 using default coverages on the quote', () => {
-    // navigateThroughNewQuote();
-    // fillOutCoverage();
-    // fillOutUnderwriting();
-    // fillOutMailingBilling();
-    // fillOutApplication();
-    // navigateThroughDocusign();
-    // cy.wait(20000);
-    // cy.getCookie('id_token').then(cookie => {
-    //   cy.get('@reviewQuote').then(function (xhr) {
-    //     const quoteNumber = xhr.request.body.data.quoteNumber;
-    //     cy.task('log', 'quoteNumber')
-    //     cy.task('log', quoteNumber)
-    //     const endpointURL = Cypress.env('SVC_URL');
-    //     cy.task('log', 'endpointURL')
-    //     cy.task('log', endpointURL)
-    //     cy.task('log', 'cookie.value')
-    //     cy.task('log', cookie.value)
-    //     bindPolicyRequest(quoteNumber, cookie.value, endpointURL).then(response => {
-    //       cy.task('log', 'bindPolicyRequest')
-    //       cy.task('log', response.result.policyNumber)
-    //       cy.visit(`/policy/${response.result.policyNumber}/endorsements`);
-    //     });
-    //   });
-    // });
+    navigateThroughNewQuote();
+    fillOutCoverage();
+    fillOutUnderwriting();
+    fillOutMailingBilling();
+    fillOutApplication();
+    navigateThroughDocusign();
+    cy.wait(20000);
+    cy.getCookie('id_token').then(cookie => {
+      cy.get('@reviewQuote').then(function(xhr) {
+        const quoteNumber = xhr.request.body.data.quoteNumber;
+        cy.task('log', 'quoteNumber');
+        cy.task('log', quoteNumber);
+        const endpointURL = Cypress.env('SVC_URL');
+        cy.task('log', 'endpointURL');
+        cy.task('log', endpointURL);
+        cy.task('log', 'cookie.value');
+        cy.task('log', cookie.value);
+        bindPolicyRequest(quoteNumber, cookie.value, endpointURL).then(
+          response => {
+            cy.task('log', 'bindPolicyRequest');
+            cy.task('log', response.result.policyNumber);
+            cy.visit(`/policy/${response.result.policyNumber}/endorsements`);
+          }
+        );
+      });
+    });
   });
 
   it('Test Endorsement Page', () => {
-    cy.visit(`/policy/12-1019546-01/endorsements`);
+    // cy.visit(`/policy/12-1019546-01/endorsements`);
     cy.viewport(3000, 3000);
 
     cy.task('log', 'Filling out Endorsements')
@@ -80,8 +82,23 @@ describe('CSR_policyEnd_happyPath_multiEnd1', () => {
       .findDataTag('policyHolderMailingAddress.address2')
       .type(`{selectall}{backspace}${'APT 101'}`)
       .findDataTag('property.physicalAddress.address2')
-      .type(`{selectall}{backspace}${'APT 101'}`);
+      .type(`{selectall}{backspace}${'APT 101'}`)
 
-    cy.viewport(1000, 660);
+      .findDataTag('modal-submit')
+      .click({ force: true })
+      .wait('@rateEndorsement');
+
+    cy.viewport(1000, 660)
+
+      .findDisabledDataTag('endorsementAmount')
+      .should('have.value', '-$ 211')
+      .findDisabledDataTag('newCurrentPremium')
+      .should('have.value', '$ 2,456')
+      .findDisabledDataTag('newAnnualPremium')
+      .should('have.value', '$ 2,456');
+
+    // .findDisabledDataTag('endorsementAmount').should('have.value', '$ 548')
+    // .findDisabledDataTag('newCurrentPremium').should('have.value', '$ 2,233')
+    // .findDisabledDataTag('newAnnualPremium').should('have.value', '$ 1,685')
   });
 });
