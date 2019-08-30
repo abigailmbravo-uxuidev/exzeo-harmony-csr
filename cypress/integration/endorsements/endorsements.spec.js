@@ -62,10 +62,10 @@ describe('CSR_policyEnd_happyPath_multiEnd1', () => {
     .findDataTag('coverageLimits.dwelling.value').type(`{selectall}{backspace}${400000}`)
     .findDataTag('coverageLimits.personalProperty.value').select('50')
 
-    cy.get('#coverage-scroll-section').scrollTo('bottom')
+    cy.first('.scroll').scrollTo(0,500)
 
-    .findDataTag('property.burglarAlarm_true').click({ force: true })
     .findDataTag('coverageOptions.sinkholePerilCoverage.answer').select('false')
+    .findDataTag('property.burglarAlarm_true').click({ force: true })
 
     .findDataTag('home-scroll-section').click({ force: true })
 
