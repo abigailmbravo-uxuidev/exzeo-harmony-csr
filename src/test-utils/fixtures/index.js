@@ -7,3 +7,4 @@ export { default as rating } from './rating';
 export { newQuoteResults } from './searchResults';
 export { default as underwritingException } from './underwritingException';
 export { default as userProfile } from './userProfile';
+export { default as paymentOptions } from './paymentOptions';
