@@ -37,6 +37,7 @@ describe('CSR_policyEnd_happyPath_multiEnd1', () => {
             cy.task('log', 'bindPolicyRequest');
             cy.task('log', response.result.policyNumber);
             cy.visit(`/policy/${response.result.policyNumber}/endorsements`);
+            cy.wait('@fetchSummaryLedger');
           }
         );
       });
@@ -45,7 +46,9 @@ describe('CSR_policyEnd_happyPath_multiEnd1', () => {
 
   it('Test Endorsement Page', () => {
     //cy.visit(`/policy/12-1019546-01/endorsements`);
+
     cy.task('log', 'Filling out Endorsements')
+
       .findDataTag('coverageLimits.dwelling.value')
       .type(`{selectall}{backspace}${400000}`)
       .findDataTag('coverageLimits.personalProperty.value')
@@ -85,7 +88,7 @@ describe('CSR_policyEnd_happyPath_multiEnd1', () => {
       .findDataTag('property.protectionClass')
       .select('7')
 
-      .findDataTag('policyHolders[0].primaryPhoneNumber_wrapper')
+      .findDataTag('policyHolders[0].emailAddress_wrapper')
       .scrollIntoView()
       .should('be.visible')
 

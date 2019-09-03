@@ -26,4 +26,6 @@ export const setRouteAliases = () =>
     .route('POST', '/svc?quoteManager.reviewQuote')
     .as('reviewQuote')
     .route('POST', '/svc?rateEndorsement')
-    .as('rateEndorsement');
+    .as('rateEndorsement')
+    .route('POST', '/svc?fetchSummaryLedger')
+    .as('fetchSummaryLedger');
