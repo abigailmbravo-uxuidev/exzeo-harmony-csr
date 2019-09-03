@@ -5,7 +5,7 @@ const dateFormatter = cell => `${cell.substring(0, 10)}`;
 
 const PreviousEndorsements = ({ options: { endorsementHistory } }) => (
   <section>
-    <h3>Previous Endorsements</h3>
+    <h3 data-test="Previous Endorsements">Previous Endorsements</h3>
     <BootstrapTable data={endorsementHistory}>
       <TableHeaderColumn
         width="25%"
