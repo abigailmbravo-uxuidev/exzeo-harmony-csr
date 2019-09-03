@@ -3,6 +3,7 @@ export * from './mockServiceRunnerResults';
 export { default as policyHolder } from './policyHolder';
 export { coverageRatingQuestions, underwritingQuestions } from './questions';
 export { default as quote } from './quote';
+export { default as policy } from './policy';
 export { default as rating } from './rating';
 export { newQuoteResults } from './searchResults';
 export { default as underwritingException } from './underwritingException';
