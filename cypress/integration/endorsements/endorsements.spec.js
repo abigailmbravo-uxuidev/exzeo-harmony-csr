@@ -45,9 +45,8 @@ describe('CSR_policyEnd_happyPath_multiEnd1', () => {
 
   it('Test Endorsement Page', () => {
     // cy.visit(`/policy/12-1019546-01/endorsements`);
-    cy.viewport(3000, 3000);
-
     cy.task('log', 'Filling out Endorsements')
+      .viewport(3000, 3000)
       .findDataTag('coverageLimits.dwelling.value')
       .type(`{selectall}{backspace}${400000}`)
       .findDataTag('coverageLimits.personalProperty.value')
