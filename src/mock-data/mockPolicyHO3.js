@@ -1582,7 +1582,7 @@ const mock = {
                       dependencies: [],
                       data: {
                         component: 'select',
-                        label: 'Sinkhole',
+                        label: 'Sinkhole Deductible',
 
                         dataSource: [
                           { answer: false, label: 'Coverage Excluded' },
