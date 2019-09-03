@@ -7,7 +7,6 @@ import {
   fillOutApplication,
   navigateThroughDocusign
 } from '../../helpers';
-import { afterDocuSignTest } from '../../pageTests';
 import { bindPolicyRequest } from './bindPolicyRequest';
 
 describe('CSR_policyEnd_happyPath_multiEnd1', () => {
@@ -53,6 +52,75 @@ describe('CSR_policyEnd_happyPath_multiEnd1', () => {
                   cy.visit($a.prop('dataset').url)
                 ).click();
                 cy.goToNav('endorsements');
+
+                cy.task('log', 'Filling out Endorsements')
+
+                  .findDataTag('coverageLimits.dwelling.value')
+                  .type(`{selectall}{backspace}${400000}`)
+                  .findDataTag('coverageLimits.personalProperty.value')
+                  .select('50')
+
+                  .findDataTag('property.burglarAlarm_true')
+                  .click({ force: true })
+
+                  .get('#root')
+                  .scrollTo('left')
+
+                  .findDataTag(
+                    'coverageOptions.sinkholePerilCoverage.answer_wrapper'
+                  )
+                  .scrollIntoView()
+                  .should('be.visible')
+
+                  .findDataTag('coverageOptions.sinkholePerilCoverage.answer')
+                  .select('false')
+
+                  .findDataTag('property.windMitigation.roofCovering_wrapper')
+                  .scrollIntoView()
+                  .should('be.visible')
+
+                  .findDataTag('property.windMitigation.roofCovering')
+                  .select('FBC')
+
+                  .findDataTag('property.windMitigation.roofGeometry_wrapper')
+                  .scrollIntoView()
+                  .should('be.visible')
+
+                  .findDataTag('property.windMitigation.roofGeometry')
+                  .select('Hip')
+
+                  .findDataTag('property.protectionClass_wrapper')
+                  .scrollIntoView()
+                  .should('be.visible')
+
+                  .findDataTag('property.protectionClass')
+                  .select('7')
+
+                  .findDataTag('policyHolders[0].emailAddress_wrapper')
+                  .scrollIntoView()
+                  .should('be.visible')
+
+                  .findDataTag('policyHolders[0].primaryPhoneNumber')
+                  .type(`{selectall}{backspace}${'2224445555'}`)
+                  .findDataTag('policyHolders[0].secondaryPhoneNumber')
+                  .type(`{selectall}{backspace}${'3337778888'}`)
+
+                  .findDataTag('policyHolderMailingAddress.city_wrapper')
+                  .scrollIntoView()
+                  .should('be.visible')
+
+                  .findDataTag('policyHolderMailingAddress.address2')
+                  .type(`{selectall}{backspace}${'APT 101'}`)
+
+                  .findDataTag('property.physicalAddress.city_wrapper')
+                  .scrollIntoView()
+                  .should('be.visible')
+                  .findDataTag('property.physicalAddress.address2')
+                  .type(`{selectall}{backspace}${'APT 101'}`)
+
+                  .findDataTag('modal-submit')
+                  .click({ force: true })
+                  .wait('@rateEndorsement');
               });
           }
         );
@@ -60,85 +128,18 @@ describe('CSR_policyEnd_happyPath_multiEnd1', () => {
     });
   });
 
-  it('Test Endorsement Page', () => {
-    //cy.visit(`/policy/12-1019546-01/endorsements`);
+  //it('Test Endorsement Page', () => {
+  // cy.visit(`/policy/12-1019697-01/endorsements`);
 
-    cy.task('log', 'Filling out Endorsements')
+  // .findDisabledDataTag('endorsementAmount')
+  // .should('have.value', '-$ 211')
+  // .findDisabledDataTag('newCurrentPremium')
+  // .should('have.value', '$ 2,456')
+  // .findDisabledDataTag('newAnnualPremium')
+  // .should('have.value', '$ 2,456');
 
-      .findDataTag('coverageLimits.dwelling.value')
-      .type(`{selectall}{backspace}${400000}`)
-      .findDataTag('coverageLimits.personalProperty.value')
-      .select('50')
-
-      .findDataTag('property.burglarAlarm_true')
-      .click({ force: true })
-
-      .get('#root')
-      .scrollTo('left')
-
-      .findDataTag('coverageOptions.sinkholePerilCoverage.answer_wrapper')
-      .scrollIntoView()
-      .should('be.visible')
-
-      .findDataTag('coverageOptions.sinkholePerilCoverage.answer')
-      .select('false')
-
-      .findDataTag('property.windMitigation.roofCovering_wrapper')
-      .scrollIntoView()
-      .should('be.visible')
-
-      .findDataTag('property.windMitigation.roofCovering')
-      .select('FBC')
-
-      .findDataTag('property.windMitigation.roofGeometry_wrapper')
-      .scrollIntoView()
-      .should('be.visible')
-
-      .findDataTag('property.windMitigation.roofGeometry')
-      .select('Hip')
-
-      .findDataTag('property.protectionClass_wrapper')
-      .scrollIntoView()
-      .should('be.visible')
-
-      .findDataTag('property.protectionClass')
-      .select('7')
-
-      .findDataTag('policyHolders[0].emailAddress_wrapper')
-      .scrollIntoView()
-      .should('be.visible')
-
-      .findDataTag('policyHolders[0].primaryPhoneNumber')
-      .type(`{selectall}{backspace}${'2224445555'}`)
-      .findDataTag('policyHolders[0].secondaryPhoneNumber')
-      .type(`{selectall}{backspace}${'3337778888'}`)
-
-      .findDataTag('policyHolderMailingAddress.city_wrapper')
-      .scrollIntoView()
-      .should('be.visible')
-
-      .findDataTag('policyHolderMailingAddress.address2')
-      .type(`{selectall}{backspace}${'APT 101'}`)
-
-      .findDataTag('property.physicalAddress.city_wrapper')
-      .scrollIntoView()
-      .should('be.visible')
-      .findDataTag('property.physicalAddress.address2')
-      .type(`{selectall}{backspace}${'APT 101'}`)
-
-      .findDataTag('modal-submit')
-      .click({ force: true })
-      .wait('@rateEndorsement');
-
-    // .findDisabledDataTag('endorsementAmount')
-    // .should('have.value', '-$ 211')
-    // .findDisabledDataTag('newCurrentPremium')
-    // .should('have.value', '$ 2,456')
-    // .findDisabledDataTag('newAnnualPremium')
-    // .should('have.value', '$ 2,456');
-
-    // .findDisabledDataTag('endorsementAmount').should('have.value', '$ 548')
-    // .findDisabledDataTag('newCurrentPremium').should('have.value', '$ 2,233')
-    // .findDisabledDataTag('newAnnualPremium').should('have.value', '$ 1,685')
-  });
+  // .findDisabledDataTag('endorsementAmount').should('have.value', '$ 548')
+  // .findDisabledDataTag('newCurrentPremium').should('have.value', '$ 2,233')
+  // .findDisabledDataTag('newAnnualPremium').should('have.value', '$ 1,685')
+  //});
 });
