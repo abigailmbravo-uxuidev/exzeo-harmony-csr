@@ -2357,7 +2357,7 @@ const mock = {
                   path: 'property.windMitigation.openingProtection',
                   data: {
                     component: 'select',
-                    label: 'Opening Protection:',
+                    label: 'Opening Protection',
                     size: '6',
                     extendedProperties: { output: 'initial' }
                   },
