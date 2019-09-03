@@ -5,7 +5,7 @@ const dateFormatter = cell => `${cell.substring(0, 10)}`;
 
 const PreviousEndorsements = props => (
   <section>
-    <h3>Previous Endorsements</h3>
+    <h3 data-test="Previous Endorsements">Previous Endorsements</h3>
     <BootstrapTable data={props.mappedEndorsementHistory}>
       <TableHeaderColumn
         width="25%"

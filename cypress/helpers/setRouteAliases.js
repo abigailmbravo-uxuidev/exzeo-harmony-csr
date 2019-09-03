@@ -28,4 +28,6 @@ export const setRouteAliases = () =>
     .route('POST', '/svc?rateEndorsement')
     .as('rateEndorsement')
     .route('POST', '/svc?fetchSummaryLedger')
-    .as('fetchSummaryLedger');
+    .as('fetchSummaryLedger')
+    .route('POST', '/svc?fetchPolicies')
+    .as('fetchPolicies');

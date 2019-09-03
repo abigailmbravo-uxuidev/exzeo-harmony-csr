@@ -36,8 +36,24 @@ describe('CSR_policyEnd_happyPath_multiEnd1', () => {
           response => {
             cy.task('log', 'bindPolicyRequest');
             cy.task('log', response.result.policyNumber);
-            cy.visit(`/policy/${response.result.policyNumber}/endorsements`);
-            cy.wait('@fetchSummaryLedger');
+            //cy.visit(`/policy/${response.result.policyNumber}/endorsements`)
+            cy.visit(`/`);
+            cy.task('log', 'Search Policy and open')
+              .findDataTag('searchType')
+              .select('policy')
+              // This will be relevant once ALL users can see the product dropdown
+              .findDataTag('policyNumber')
+              .type(response.result.policyNumber)
+              .clickSubmit()
+              .wait('@fetchPolicies')
+              // This makes it so we don't open up a new window
+              .findDataTag(response.result.policyNumber)
+              .then($a => {
+                $a.prop('onclick', () =>
+                  cy.visit($a.prop('dataset').url)
+                ).click();
+                cy.goToNav('endorsements');
+              });
           }
         );
       });
