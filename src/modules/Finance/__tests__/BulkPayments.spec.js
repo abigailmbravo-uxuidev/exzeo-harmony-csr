@@ -1,18 +1,59 @@
 import React from 'react';
-import { render, fireEvent, waitForElement } from 'react-testing-library';
+import { render, fireEvent, waitForElement, wait } from 'react-testing-library';
 import { date } from '@exzeo/core-ui';
 
 import BulkPayments from '../@components/BulkPayments';
 
-jest.mock('../hooks', () => ({
+jest.mock('../data', () => ({
   __esModule: true,
-  useFetchPaymentOptions: jest.fn(() => [
-    { answer: 'Paper Deposit', label: 'Paper Deposit' },
-    { answer: 'Electronic Deposit', label: 'Electronic Deposit' },
-    { answer: 'Paper Deposit Charge Back', label: 'Paper Deposit Charge Back' },
+  getPaymentOptions: jest.fn(() => [
     {
-      answer: 'Electronic Deposit Charge Back',
-      label: 'Electronic Deposit Charge Back'
+      paymentType: 'Paper Deposit',
+      paymentDescription: [
+        'Duplicate Payment Applied in Error',
+        'Misapplied Payment',
+        'Misapplied Transfer',
+        'Payment Received',
+        'Payment Removed from Deposit',
+        'Payment Transfer'
+      ]
+    },
+    {
+      paymentType: 'Electronic Deposit',
+      paymentDescription: [
+        'Duplicate Payment Applied in Error',
+        'Misapplied Payment',
+        'Misapplied Transfer',
+        'Payment Received',
+        'Payment Removed from Deposit',
+        'Payment Transfer'
+      ]
+    },
+    {
+      paymentType: 'Paper Deposit Charge Back',
+      paymentDescription: [
+        'Account Closed',
+        'Bank Adjustment',
+        'Currency Conversion',
+        'No Account',
+        'NSF Payment',
+        'Payment Stopped',
+        'Refer to Maker',
+        'Unable to Locate Account'
+      ]
+    },
+    {
+      paymentType: 'Electronic Deposit Charge Back',
+      paymentDescription: [
+        'Account Closed',
+        'Bank Adjustment',
+        'Currency Conversion',
+        'No Account',
+        'NSF Payment',
+        'Payment Stopped',
+        'Refer to Maker',
+        'Unable to Locate Account'
+      ]
     }
   ])
 }));
@@ -63,13 +104,37 @@ describe('BulkPayments testing', () => {
       errorHandler: jest.fn()
     };
 
-    const { getByText, getByLabelText, getAllByText, container } = render(
-      <BulkPayments {...props} />
-    );
+    const {
+      debug,
+      getByText,
+      getByLabelText,
+      getAllByText,
+      container
+    } = render(<BulkPayments {...props} />);
 
-    fireEvent.click(getByLabelText('Cash Type'));
-    fireEvent.mouseDown(getByLabelText('Cash Type'), {
+    fireEvent.change(await getByLabelText('Cash Type'), {
       target: { value: 'Paper Deposit' }
     });
+    fireEvent.change(getByLabelText('Batch Number'), {
+      target: { value: `${initialBatchNumber}99` }
+    });
+    fireEvent.blur(await getByLabelText('Batch Number'));
+
+    expect(await getByText(/start/i)).toBeEnabled();
+    fireEvent.click(getByText(/start/i));
+
+    fireEvent.change(getByLabelText('Policy Number'), {
+      target: { value: '12-0000000-01' }
+    });
+    fireEvent.blur(await getByLabelText('Policy Number'));
+    fireEvent.click(await getByText(/apply/i));
+
+    //const errorMessage = await container.querySelector('.error-message');
+    expect(
+      await waitForElement(() => container.querySelector('.error-message'))
+    );
+    //console.log(errorElement)
+    //expect(errorMessage[0]).toBeDefined();
+    //debug()
   });
 });

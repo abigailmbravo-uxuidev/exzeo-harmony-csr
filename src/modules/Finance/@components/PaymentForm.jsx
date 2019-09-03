@@ -138,13 +138,13 @@ const PaymentForm = ({
         onSubmit={handlePayment}
         subscription={{ values: true, errors: true, invalid: true }}
       >
-        {({ handleSubmit, form, errors }) => (
+        {({ handleSubmit, form, errors, values }) => (
           <form
             id="payment-form"
             onSubmit={async event => {
               await handleSubmit(event);
               if (errors.amount && !errors.policyNumber) {
-                return form.blur('policyNumber');
+                handlePolicySearch(values.policyNumber, form.reset);
               }
               form.reset();
               setPolicy({});
@@ -185,7 +185,9 @@ const PaymentForm = ({
               </button>
               <div className="results">
                 <div
-                  className={`policy-card card ${billingStatus.displayText}`}
+                  className={`policy-card card ${
+                    hasPolicy ? billingStatus.displayText : ''
+                  }`}
                 >
                   {loading && <SectionLoader />}
                   {errorMessage && (
