@@ -119,6 +119,13 @@ describe('CSR_policyEnd_happyPath_multiEnd1', () => {
               .findDataTag('modal-submit')
               .click({ force: true })
               .wait('@rateEndorsement');
+
+            // .findDisabledDataTag('endorsementAmount')
+            // .should('have.value', '-$ 211')
+            // .findDisabledDataTag('newCurrentPremium')
+            // .should('have.value', '$ 2,456')
+            // .findDisabledDataTag('newAnnualPremium')
+            // .should('have.value', '$ 2,456');
           });
       });
     });
