@@ -145,9 +145,10 @@ const PaymentForm = ({
               await handleSubmit(event);
               if (errors.amount && !errors.policyNumber) {
                 handlePolicySearch(values.policyNumber, form.reset);
+              } else {
+                form.reset();
+                setPolicy({});
               }
-              form.reset();
-              setPolicy({});
             }}
           >
             <div className="fade-in view-grid">
