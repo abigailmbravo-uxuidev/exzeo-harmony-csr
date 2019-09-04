@@ -20,110 +20,106 @@ describe('CSR_policyEnd_happyPath_multiEnd1', () => {
     fillOutMailingBilling();
     fillOutApplication();
     navigateThroughDocusign();
+    const idToken = localStorage.getItem('id_token');
     cy.wait(20000);
-    cy.getCookie('id_token').then(cookie => {
-      cy.get('@reviewQuote').then(function(xhr) {
-        const quoteNumber = xhr.request.body.data.quoteNumber;
-        cy.task('log', 'quoteNumber');
-        cy.task('log', quoteNumber);
-        const endpointURL = Cypress.env('SVC_URL');
-        cy.task('log', 'endpointURL');
-        cy.task('log', endpointURL);
-        cy.task('log', 'cookie.value');
-        cy.task('log', cookie.value);
-        bindPolicyRequest(quoteNumber, cookie.value, endpointURL).then(
-          response => {
-            cy.task('log', 'bindPolicyRequest');
-            cy.task('log', response.result.policyNumber);
-            //cy.visit(`/policy/${response.result.policyNumber}/endorsements`)
-            cy.visit(`/`);
-            cy.task('log', 'Search Policy and open')
-              .findDataTag('searchType')
-              .select('policy')
-              // This will be relevant once ALL users can see the product dropdown
-              .findDataTag('policyNumber')
-              .type(response.result.policyNumber)
-              .clickSubmit()
-              .wait('@fetchPolicies')
-              // This makes it so we don't open up a new window
-              .findDataTag(response.result.policyNumber)
-              .then($a => {
-                $a.prop('onclick', () =>
-                  cy.visit($a.prop('dataset').url)
-                ).click();
-                cy.goToNav('endorsements');
 
-                cy.task('log', 'Filling out Endorsements')
+    cy.get('@reviewQuote').then(function(xhr) {
+      const quoteNumber = xhr.request.body.data.quoteNumber;
+      cy.task('log', 'quoteNumber');
+      cy.task('log', quoteNumber);
+      const endpointURL = Cypress.env('SVC_URL');
+      cy.task('log', 'endpointURL');
+      cy.task('log', endpointURL);
+      cy.task('log', 'cookie.value');
+      cy.task('log', idToken);
+      bindPolicyRequest(quoteNumber, idToken, endpointURL).then(response => {
+        cy.task('log', 'bindPolicyRequest');
+        cy.task('log', response.result.policyNumber);
+        //cy.visit(`/policy/${response.result.policyNumber}/endorsements`)
+        cy.visit(`/`);
+        cy.task('log', 'Search Policy and open')
+          .findDataTag('searchType')
+          .select('policy')
+          // This will be relevant once ALL users can see the product dropdown
+          .findDataTag('policyNumber')
+          .type(response.result.policyNumber)
+          .clickSubmit()
+          .wait('@fetchPolicies')
+          // This makes it so we don't open up a new window
+          .findDataTag(response.result.policyNumber)
+          .then($a => {
+            $a.prop('onclick', () => cy.visit($a.prop('dataset').url)).click();
+            cy.goToNav('endorsements');
 
-                  .findDataTag('coverageLimits.dwelling.value')
-                  .type(`{selectall}{backspace}${400000}`)
-                  .findDataTag('coverageLimits.personalProperty.value')
-                  .select('50')
+            cy.task('log', 'Filling out Endorsements')
 
-                  .findDataTag('property.burglarAlarm_true')
-                  .click({ force: true })
+              .findDataTag('coverageLimits.dwelling.value')
+              .type(`{selectall}{backspace}${400000}`)
+              .findDataTag('coverageLimits.personalProperty.value')
+              .select('50')
 
-                  .get('#root')
-                  .scrollTo('left')
+              .findDataTag('property.burglarAlarm_true')
+              .click({ force: true })
 
-                  .findDataTag(
-                    'coverageOptions.sinkholePerilCoverage.answer_wrapper'
-                  )
-                  .scrollIntoView()
-                  .should('be.visible')
+              .get('#root')
+              .scrollTo('left')
 
-                  .findDataTag('coverageOptions.sinkholePerilCoverage.answer')
-                  .select('false')
+              .findDataTag(
+                'coverageOptions.sinkholePerilCoverage.answer_wrapper'
+              )
+              .scrollIntoView()
+              .should('be.visible')
 
-                  .findDataTag('property.windMitigation.roofCovering_wrapper')
-                  .scrollIntoView()
-                  .should('be.visible')
+              .findDataTag('coverageOptions.sinkholePerilCoverage.answer')
+              .select('false')
 
-                  .findDataTag('property.windMitigation.roofCovering')
-                  .select('FBC')
+              .findDataTag('property.windMitigation.roofCovering_wrapper')
+              .scrollIntoView()
+              .should('be.visible')
 
-                  .findDataTag('property.windMitigation.roofGeometry_wrapper')
-                  .scrollIntoView()
-                  .should('be.visible')
+              .findDataTag('property.windMitigation.roofCovering')
+              .select('FBC')
 
-                  .findDataTag('property.windMitigation.roofGeometry')
-                  .select('Hip')
+              .findDataTag('property.windMitigation.roofGeometry_wrapper')
+              .scrollIntoView()
+              .should('be.visible')
 
-                  .findDataTag('property.protectionClass_wrapper')
-                  .scrollIntoView()
-                  .should('be.visible')
+              .findDataTag('property.windMitigation.roofGeometry')
+              .select('Hip')
 
-                  .findDataTag('property.protectionClass')
-                  .select('7')
+              .findDataTag('property.protectionClass_wrapper')
+              .scrollIntoView()
+              .should('be.visible')
 
-                  .findDataTag('policyHolders[0].emailAddress_wrapper')
-                  .scrollIntoView()
-                  .should('be.visible')
+              .findDataTag('property.protectionClass')
+              .select('7')
 
-                  .findDataTag('policyHolders[0].primaryPhoneNumber')
-                  .type(`{selectall}{backspace}${'2224445555'}`)
-                  .findDataTag('policyHolders[0].secondaryPhoneNumber')
-                  .type(`{selectall}{backspace}${'3337778888'}`)
+              .findDataTag('policyHolders[0].emailAddress_wrapper')
+              .scrollIntoView()
+              .should('be.visible')
 
-                  .findDataTag('policyHolderMailingAddress.city_wrapper')
-                  .scrollIntoView()
-                  .should('be.visible')
+              .findDataTag('policyHolders[0].primaryPhoneNumber')
+              .type(`{selectall}{backspace}${'2224445555'}`)
+              .findDataTag('policyHolders[0].secondaryPhoneNumber')
+              .type(`{selectall}{backspace}${'3337778888'}`)
 
-                  .findDataTag('policyHolderMailingAddress.address2')
-                  .type(`{selectall}{backspace}${'APT 101'}`)
+              .findDataTag('policyHolderMailingAddress.city_wrapper')
+              .scrollIntoView()
+              .should('be.visible')
 
-                  .findDataTag('property.physicalAddress.city_wrapper')
-                  .scrollIntoView()
-                  .should('be.visible')
-                  .findDataTag('property.physicalAddress.address2')
-                  .type(`{selectall}{backspace}${'APT 101'}`)
+              .findDataTag('policyHolderMailingAddress.address2')
+              .type(`{selectall}{backspace}${'APT 101'}`)
 
-                  .findDataTag('modal-submit')
-                  .click({ force: true })
-                  .wait('@rateEndorsement');
-              });
-          }
-        );
+              .findDataTag('property.physicalAddress.city_wrapper')
+              .scrollIntoView()
+              .should('be.visible')
+              .findDataTag('property.physicalAddress.address2')
+              .type(`{selectall}{backspace}${'APT 101'}`)
+
+              .findDataTag('modal-submit')
+              .click({ force: true })
+              .wait('@rateEndorsement');
+          });
       });
     });
   });
