@@ -12,13 +12,16 @@ import {
 jest.mock('../data', () => ({
   __esModule: true,
   getPaymentOptions: jest.fn(() => mockPaymentOptions),
-  getPolicy: jest.fn(() => Promise.reject({ message: 'Resource Not Found' }))
+  getPolicy: jest.fn(() => Promise.reject({ message: 'Resource Not Found' })),
+  postPayment: jest.fn(() => Promise.resolve())
 }));
 
 const today = date.toUTC();
 const initialBatchNumber = date.currentDay('YYYYMMDD');
 
 describe('BulkPayments testing', () => {
+  beforeEach(() => jest.resetModules());
+
   it('Test BulkPayments initial render', () => {
     const props = {
       errorHandler: jest.fn()
@@ -38,8 +41,7 @@ describe('BulkPayments testing', () => {
 
     // Payment form
     expect(getByLabelText('Policy Number')).toBeDisabled();
-    // The The CurrencyFormat component in core-ui needs to an id attribute for this to work
-    //expect(getByLabelText('Amount')).toBeDisabled();
+    expect(getByLabelText('Amount')).toBeDisabled();
     expect(getByText(/apply/i)).toBeDisabled();
 
     //Payment results table
@@ -91,7 +93,7 @@ describe('BulkPayments testing', () => {
     );
   });
 
-  it('Test BulkPayments forms - fetch successful', async () => {
+  it('Test BulkPayments fetch policy and add payment', async () => {
     getPolicy.mockImplementation(() => mockPolicy);
 
     const props = {
@@ -126,6 +128,17 @@ describe('BulkPayments testing', () => {
     expect(
       await waitForElement(() => container.querySelector('.policy-details'))
     );
+
+    fireEvent.click(await getByText(/apply/i));
+
+    fireEvent.change(await getByLabelText('Amount'), {
+      target: { value: '200.00' }
+    });
+    await fireEvent.click(await getByText(/apply/i));
+
+    expect(getByText('1 entries totaling'));
+    expect(getByText('$ 200.00'));
+    expect(getByText('Download')).toBeEnabled();
 
     //debug()
   });

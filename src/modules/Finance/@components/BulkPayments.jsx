@@ -11,6 +11,7 @@ import {
   FormSpy,
   OnChangeListener,
   date,
+  composeValidators,
   validation
 } from '@exzeo/core-ui';
 
@@ -54,7 +55,13 @@ const BulkPayments = ({ errorHandler }) => {
                     subscription={{ valid: true, values: true }}
                     onChange={props => setBatch(props)}
                   />
-                  <Field name="cashDate" validate={validation.isRequired}>
+                  <Field
+                    name="cashDate"
+                    validate={composeValidators([
+                      validation.isRequired,
+                      validation.isDateRange('1900', '10000')
+                    ])}
+                  >
                     {({ input, meta }) => (
                       <Date
                         input={input}
