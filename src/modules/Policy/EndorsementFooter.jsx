@@ -15,15 +15,12 @@ const EndorsementFooter = ({
   let formInstance;
   const [endorsementState, setCalculateRate] = useState({});
 
-  const {
-    values: policy,
-    pristine: parentPristine
-  } = parentFormInstance.getState();
+  const { pristine: parentPristine } = parentFormInstance.getState();
   const initialValues = {
-    ...policy,
+    ...policyFormData,
     endorsementDate: endorsementState.endorsementDate
       ? endorsementState.endorsementDate
-      : date.formatDate(policy.effectiveDate, date.FORMATS.SECONDARY),
+      : date.formatDate(policyFormData.effectiveDate, date.FORMATS.SECONDARY),
     rating: endorsementState.rating,
     instanceId: endorsementState.instanceId
   };
@@ -52,6 +49,7 @@ const EndorsementFooter = ({
   const resetEndorsementForm = () => {
     setCalculateRate({});
     parentFormInstance.initialize(policyFormData);
+    if (formInstance) formInstance.reset();
   };
 
   useEffect(() => {
