@@ -1,12 +1,14 @@
 import React from 'react';
-import { render, fireEvent, waitForElement, wait } from 'react-testing-library';
+import { render, fireEvent, waitForElement } from 'react-testing-library';
+import 'jest-dom/extend-expect';
 import { date } from '@exzeo/core-ui';
 
 import BulkPayments from '../@components/BulkPayments';
 import { getPolicy } from '../data';
 import {
-  paymentOptions as mockPaymentOptions,
-  policy as mockPolicy
+  mockPaymentOptions,
+  mockPolicy,
+  mockCancelledPolicy
 } from '../../../test-utils';
 
 jest.mock('../data', () => ({
@@ -77,24 +79,100 @@ describe('BulkPayments testing', () => {
     fireEvent.change(getByLabelText('Batch Number'), {
       target: { value: `${initialBatchNumber}99` }
     });
-    fireEvent.blur(await getByLabelText('Batch Number'));
 
-    expect(await getByText(/start/i)).toBeEnabled();
+    expect(getByText(/start/i)).toBeEnabled();
     fireEvent.click(getByText(/start/i));
 
     fireEvent.change(getByLabelText('Policy Number'), {
       target: { value: '12-0000000-01' }
     });
-    fireEvent.blur(await getByLabelText('Policy Number'));
-    fireEvent.click(await getByText(/apply/i));
+
+    fireEvent.click(getByText(/apply/i));
 
     expect(
-      await waitForElement(() => container.querySelector('.error-message'))
+      await waitForElement(() => [
+        container.querySelector('.error-message'),
+        getByText('Resource Not Found')
+      ])
     );
   });
 
   it('Test BulkPayments fetch policy and add payment', async () => {
     getPolicy.mockImplementation(() => mockPolicy);
+
+    const props = {
+      errorHandler: jest.fn()
+    };
+
+    const {
+      property: {
+        physicalAddress: { address1, address2, city, state, zip }
+      }
+    } = mockPolicy;
+
+    const {
+      debug,
+      getByText,
+      getByLabelText,
+      getAllByText,
+      container
+    } = render(<BulkPayments {...props} />);
+
+    fireEvent.change(await getByLabelText('Cash Type'), {
+      target: { value: 'Paper Deposit' }
+    });
+    fireEvent.change(getByLabelText('Batch Number'), {
+      target: { value: `${initialBatchNumber}99` }
+    });
+
+    expect(getByText(/start/i)).toBeEnabled();
+    fireEvent.click(getByText(/start/i));
+
+    fireEvent.change(getByLabelText('Policy Number'), {
+      target: { value: '12-0000000-01' }
+    });
+
+    fireEvent.click(getByText(/apply/i));
+
+    expect(
+      await waitForElement(() => [
+        container.querySelector('.policy-details'),
+        getByText(mockPolicy.product),
+        getByText(mockPolicy.companyCode),
+        getByText(`| ${mockPolicy.policyNumber}`),
+        getByText('Open Policy'),
+        getByText('Balance Due:'),
+        getByText(mockPolicy.summaryLedger.balance.$numberDecimal),
+        getByText(
+          `${mockPolicy.policyHolders[0].firstName} ${mockPolicy.policyHolders[0].lastName}`
+        ),
+        getByText(`| ${mockPolicy.property.physicalAddress.address1},`),
+        getByText(`${city}, ${state} ${zip}`),
+        getByText('Effective Date:'),
+        getByText(date.formattedDate(mockPolicy.effectiveDate, 'MM/DD/YYYY')),
+        getByText('Policy Status:'),
+        getByText(mockPolicy.status),
+        getByText('Billing Status:'),
+        getByText(mockPolicy.summaryLedger.status.displayText)
+      ])
+    );
+
+    fireEvent.click(await getByText(/apply/i));
+
+    fireEvent.change(await getByLabelText('Amount'), {
+      target: { value: '200.00' }
+    });
+    await fireEvent.click(getByText(/apply/i));
+
+    expect(getByText('1 entries totaling'));
+    expect(getByText('$ 200.00'));
+    expect(getByText('Download')).toBeEnabled();
+
+    //debug()
+  });
+
+  it('Test BulkPayments with cancelled policy', async () => {
+    getPolicy.mockImplementation(() => mockCancelledPolicy);
 
     const props = {
       errorHandler: jest.fn()
@@ -114,32 +192,19 @@ describe('BulkPayments testing', () => {
     fireEvent.change(getByLabelText('Batch Number'), {
       target: { value: `${initialBatchNumber}99` }
     });
-    fireEvent.blur(await getByLabelText('Batch Number'));
 
-    expect(await getByText(/start/i)).toBeEnabled();
+    expect(getByText(/start/i)).toBeEnabled();
     fireEvent.click(getByText(/start/i));
 
     fireEvent.change(getByLabelText('Policy Number'), {
       target: { value: '12-0000000-01' }
     });
-    fireEvent.blur(await getByLabelText('Policy Number'));
-    fireEvent.click(await getByText(/apply/i));
 
-    expect(
-      await waitForElement(() => container.querySelector('.policy-details'))
+    fireEvent.click(getByText(/apply/i));
+
+    expect(await waitForElement(() => getByText('Cancelled'))).toHaveStyle(
+      'color: rgb(216, 70, 73);'
     );
-
-    fireEvent.click(await getByText(/apply/i));
-
-    fireEvent.change(await getByLabelText('Amount'), {
-      target: { value: '200.00' }
-    });
-    await fireEvent.click(await getByText(/apply/i));
-
-    expect(getByText('1 entries totaling'));
-    expect(getByText('$ 200.00'));
-    expect(getByText('Download')).toBeEnabled();
-
     //debug()
   });
 });
