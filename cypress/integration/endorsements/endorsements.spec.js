@@ -23,7 +23,7 @@ describe('CSR_policyEnd_happyPath_multiEnd1', () => {
     const idToken = localStorage.getItem('id_token');
     cy.wait(20000);
 
-    cy.get('@reviewQuote').then(function(xhr) {
+    cy.get('@verifyQuote').then(function(xhr) {
       const quoteNumber = xhr.request.body.data.quoteNumber;
       cy.task('log', 'quoteNumber');
       cy.task('log', quoteNumber);

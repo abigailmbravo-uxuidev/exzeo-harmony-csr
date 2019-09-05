@@ -45,10 +45,11 @@ export const fillOutApplication = () => cy.task('log', 'Filling out Application 
 
 export const navigateThroughDocusign = () =>
   cy
-    .task('log', "Navigating through 'Send to Docusign'")
+    .task('log', 'Navigating through Docusign')
     .clickSubmit('body', 'send-application')
+    .wait('@verifyQuote')
+    .checkQuoteState('Application Ready')
     .clickSubmit('#sendApplicationForm', 'modal-submit')
     .wait('@sendApplication')
-    .wait('@reviewQuote')
     .get('button[data-test="send-application"]')
     .should('be.disabled');
