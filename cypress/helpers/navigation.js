@@ -43,9 +43,12 @@ export const fillOutSummary = () => cy.task('log', 'Filling out Summary').goToNa
 
 export const fillOutApplication = () => cy.task('log', 'Filling out Application Page').goToNav('application');
 
-export const navigateThroughDocusign = () =>   
-  cy.task('log', 'Navigating through \'Send to Docusign\'').clickSubmit('body', 'send-application')
-    .wait('@verifyQuote')
-    .checkQuoteState('Application Ready')
-    .clickSubmit('#sendApplicationForm', 'modal-submit').wait('@sendApplication')
-    .wait('@reviewQuote').get('button[data-test="send-application"]').should('be.disabled');
+export const navigateThroughDocusign = () =>
+  cy
+    .task('log', "Navigating through 'Send to Docusign'")
+    .clickSubmit('body', 'send-application')
+    .clickSubmit('#sendApplicationForm', 'modal-submit')
+    .wait('@sendApplication')
+    .wait('@reviewQuote')
+    .get('button[data-test="send-application"]')
+    .should('be.disabled');

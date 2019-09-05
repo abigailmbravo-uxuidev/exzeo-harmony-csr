@@ -30,4 +30,8 @@ export const setRouteAliases = () =>
     .route('POST', '/svc?fetchSummaryLedger')
     .as('fetchSummaryLedger')
     .route('POST', '/svc?fetchPolicies')
-    .as('fetchPolicies');
+    .as('fetchPolicies')
+    .route('POST', '/svc?quoteManager.retrieveQuote')
+    .as('retrieveQuote')
+    .route('POST', '/svc?quoteManager.verifyQuote')
+    .as('verifyQuote');
