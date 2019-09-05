@@ -59,7 +59,7 @@ const BulkPayments = ({ errorHandler }) => {
                     name="cashDate"
                     validate={composeValidators([
                       validation.isRequired,
-                      validation.isDateRange('1900', '10000')
+                      validation.isDateRange('1900-01-01', '9999-12-31')
                     ])}
                   >
                     {({ input, meta }) => (
