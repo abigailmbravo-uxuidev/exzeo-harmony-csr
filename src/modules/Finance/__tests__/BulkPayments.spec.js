@@ -1,6 +1,5 @@
 import React from 'react';
 import { render, fireEvent, waitForElement } from 'react-testing-library';
-import 'jest-dom/extend-expect';
 import { date } from '@exzeo/core-ui';
 
 import BulkPayments from '../@components/BulkPayments';
@@ -65,13 +64,9 @@ describe('BulkPayments testing', () => {
       errorHandler: jest.fn()
     };
 
-    const {
-      debug,
-      getByText,
-      getByLabelText,
-      getAllByText,
-      container
-    } = render(<BulkPayments {...props} />);
+    const { getByText, getByLabelText, getAllByText } = render(
+      <BulkPayments {...props} />
+    );
 
     fireEvent.change(await getByLabelText('Cash Type'), {
       target: { value: 'Paper Deposit' }
@@ -91,7 +86,7 @@ describe('BulkPayments testing', () => {
 
     expect(
       await waitForElement(() => [
-        container.querySelector('.error-message'),
+        document.querySelector('.error-message'),
         getByText('Resource Not Found')
       ])
     );
@@ -110,13 +105,9 @@ describe('BulkPayments testing', () => {
       }
     } = mockPolicy;
 
-    const {
-      debug,
-      getByText,
-      getByLabelText,
-      getAllByText,
-      container
-    } = render(<BulkPayments {...props} />);
+    const { getByText, getByLabelText, getAllByText } = render(
+      <BulkPayments {...props} />
+    );
 
     fireEvent.change(await getByLabelText('Cash Type'), {
       target: { value: 'Paper Deposit' }
@@ -136,7 +127,7 @@ describe('BulkPayments testing', () => {
 
     expect(
       await waitForElement(() => [
-        container.querySelector('.policy-details'),
+        document.querySelector('.policy-details'),
         getByText(mockPolicy.product),
         getByText(mockPolicy.companyCode),
         getByText(`| ${mockPolicy.policyNumber}`),
@@ -178,13 +169,9 @@ describe('BulkPayments testing', () => {
       errorHandler: jest.fn()
     };
 
-    const {
-      debug,
-      getByText,
-      getByLabelText,
-      getAllByText,
-      container
-    } = render(<BulkPayments {...props} />);
+    const { getByText, getByLabelText, getAllByText } = render(
+      <BulkPayments {...props} />
+    );
 
     fireEvent.change(await getByLabelText('Cash Type'), {
       target: { value: 'Paper Deposit' }
@@ -202,9 +189,6 @@ describe('BulkPayments testing', () => {
 
     fireEvent.click(getByText(/apply/i));
 
-    expect(await waitForElement(() => getByText('Cancelled'))).toHaveStyle(
-      'color: rgb(216, 70, 73);'
-    );
-    //debug()
+    expect(await waitForElement(() => document.querySelector('.Cancellation')));
   });
 });
