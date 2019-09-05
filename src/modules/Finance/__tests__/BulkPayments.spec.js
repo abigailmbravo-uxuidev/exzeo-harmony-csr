@@ -19,18 +19,22 @@ jest.mock('../data', () => ({
 
 const today = date.toUTC();
 const initialBatchNumber = date.currentDay('YYYYMMDD');
-
+const yesterday = new Date(new Date().setDate(new Date().getDate() - 1));
+console.log(date.toUTC());
 describe('BulkPayments testing', () => {
   beforeEach(() => jest.resetModules());
 
-  it('Test BulkPayments initial render', () => {
+  it('Test BulkPayments initial render', async () => {
     const props = {
       errorHandler: jest.fn()
     };
 
-    const { getByText, getByLabelText, getAllByText } = render(
-      <BulkPayments {...props} />
-    );
+    const {
+      getByText,
+      getByLabelText,
+      getAllByText,
+      getByPlaceholderText
+    } = render(<BulkPayments {...props} />);
 
     // Batch form
     expect(getByText('Bulk Payments'));
@@ -51,6 +55,8 @@ describe('BulkPayments testing', () => {
     expect(getAllByText('Batch Number')[1]);
     expect(getByText(initialBatchNumber));
     expect(getAllByText('Cash Type')[1]);
+    expect(getByText('Payment Description'));
+    expect(getByText('Payment Received'));
     expect(getByText('Policy Number'));
     expect(getByText('Policyholder'));
     expect(getByText('Amount'));
@@ -77,6 +83,9 @@ describe('BulkPayments testing', () => {
 
     expect(getByText(/start/i)).toBeEnabled();
     fireEvent.click(getByText(/start/i));
+
+    expect(getByText(/start/i)).toBeDisabled();
+    expect(getByText(/stop/i)).toBeEnabled();
 
     fireEvent.change(getByLabelText('Policy Number'), {
       target: { value: '12-0000000-01' }
@@ -105,7 +114,7 @@ describe('BulkPayments testing', () => {
       }
     } = mockPolicy;
 
-    const { getByText, getByLabelText, getAllByText } = render(
+    const { debug, getByText, getByLabelText, getAllByText } = render(
       <BulkPayments {...props} />
     );
 
@@ -118,6 +127,9 @@ describe('BulkPayments testing', () => {
 
     expect(getByText(/start/i)).toBeEnabled();
     fireEvent.click(getByText(/start/i));
+
+    expect(getByText(/start/i)).toBeDisabled();
+    expect(getByText(/stop/i)).toBeEnabled();
 
     fireEvent.change(getByLabelText('Policy Number'), {
       target: { value: '12-0000000-01' }
@@ -159,7 +171,16 @@ describe('BulkPayments testing', () => {
     expect(getByText('$ 200.00'));
     expect(getByText('Download')).toBeEnabled();
 
-    //debug()
+    fireEvent.click(await getByText(/stop/i));
+    expect(getByLabelText('Cash Date').value).toBe(today.format('YYYY-MM-DD'));
+    expect(getByLabelText('Batch Number').value).toBe(initialBatchNumber);
+    expect(getByLabelText('Cash Type'));
+    expect(getByLabelText('Cash Type').children[0].text).toBe(
+      'Please Select...'
+    );
+    expect(getByText(/start/i)).toBeDisabled();
+    expect(getByText(/stop/i)).toBeDisabled();
+    expect(getByText('Download')).toBeDisabled();
   });
 
   it('Test BulkPayments with cancelled policy', async () => {
