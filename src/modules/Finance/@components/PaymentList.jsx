@@ -8,20 +8,20 @@ const handleDownload = (batch, data) => {
   const headers = [
     'Batch Number',
     'Cash Date',
+    'Cash Type',
     'Payment Description',
     'Policy Number',
     'Policyholder',
-    'Cash Type',
     'Amount'
   ];
 
   const arr = data.map(line => [
     batchNumber,
     cashDate,
+    cashType,
     'Payment Received',
     line.policyNumber,
     line.policyHolder,
-    cashType,
     line.amount
   ]);
 
