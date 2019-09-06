@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, fireEvent, waitForElement } from 'react-testing-library';
+import { render, fireEvent, waitForElement, wait } from 'react-testing-library';
 import { date } from '@exzeo/core-ui';
 
 import BulkPayments from '../@components/BulkPayments';
@@ -20,7 +20,7 @@ jest.mock('../data', () => ({
 const today = date.toUTC();
 const initialBatchNumber = date.currentDay('YYYYMMDD');
 const yesterday = new Date(new Date().setDate(new Date().getDate() - 1));
-console.log(date.toUTC());
+
 describe('BulkPayments testing', () => {
   beforeEach(() => jest.resetModules());
 
@@ -91,7 +91,7 @@ describe('BulkPayments testing', () => {
       target: { value: '12-0000000-01' }
     });
 
-    fireEvent.click(getByText(/apply/i));
+    fireEvent.blur(getByLabelText('Policy Number'));
 
     expect(
       await waitForElement(() => [
@@ -135,7 +135,7 @@ describe('BulkPayments testing', () => {
       target: { value: '12-0000000-01' }
     });
 
-    fireEvent.click(getByText(/apply/i));
+    await fireEvent.blur(getByLabelText('Policy Number'));
 
     expect(
       await waitForElement(() => [
@@ -160,17 +160,27 @@ describe('BulkPayments testing', () => {
       ])
     );
 
-    fireEvent.click(await getByText(/apply/i));
-
     fireEvent.change(await getByLabelText('Amount'), {
       target: { value: '200.00' }
     });
     await fireEvent.click(getByText(/apply/i));
 
+    // check PaymentList
     expect(getByText('1 entries totaling'));
     expect(getByText('$ 200.00'));
     expect(getByText('Download')).toBeEnabled();
 
+    // check clear button
+    /*await fireEvent.click(document.querySelector('.clear-policy'));
+    
+    expect(
+      await waitForElement(() => [
+        expect(getByLabelText('Policy Number').value).toBe(''),
+        expect(getByLabelText('Amount').value).toBe('')
+      ])
+    );*/
+
+    // check Stop button
     fireEvent.click(await getByText(/stop/i));
     expect(getByLabelText('Cash Date').value).toBe(today.format('YYYY-MM-DD'));
     expect(getByLabelText('Batch Number').value).toBe(initialBatchNumber);
@@ -208,7 +218,7 @@ describe('BulkPayments testing', () => {
       target: { value: '12-0000000-01' }
     });
 
-    fireEvent.click(getByText(/apply/i));
+    fireEvent.blur(getByLabelText('Policy Number'));
 
     expect(await waitForElement(() => document.querySelector('.Cancellation')));
   });

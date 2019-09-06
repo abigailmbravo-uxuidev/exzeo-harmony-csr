@@ -6,7 +6,6 @@ import {
   Field,
   Currency,
   Input,
-  OnBlurListener,
   validation,
   SectionLoader
 } from '@exzeo/core-ui';
@@ -32,7 +31,7 @@ const PaymentForm = ({
     summaryLedger: { balance = {}, status: billingStatus = '' } = {}
   } = policy;
 
-  const hasPolicy = policy && Object.entries(policy).length > 0;
+  const hasPolicy = policy && active && Object.entries(policy).length > 0;
 
   const normalizePolicyNumber = policyNumber => {
     const bits = policyNumber.split('-');
@@ -78,7 +77,7 @@ const PaymentForm = ({
       setPolicy(search);
       setErrorMessage();
     } catch (error) {
-      reset();
+      //reset();
       setPolicy({});
       setErrorMessage(error.message);
     } finally {
@@ -143,33 +142,23 @@ const PaymentForm = ({
             id="payment-form"
             onSubmit={async event => {
               await handleSubmit(event);
-              if (errors.amount && !errors.policyNumber) {
-                handlePolicySearch(values.policyNumber, form.reset);
-              } else {
-                form.reset();
-                setPolicy({});
-              }
+              form.reset();
+              setPolicy({});
             }}
           >
             <div className="fade-in view-grid">
               <Field name="policyNumber" validate={validation.isRequired}>
                 {({ input, meta }) => (
-                  <Fragment>
-                    <Input
-                      input={input}
-                      meta={meta}
-                      label="Policy Number"
-                      styleName="input view-col-4"
-                      placeholder="Enter Complete Policy Number"
-                      dataTest="policyNumber"
-                      disabled={!active}
-                    />
-                    <OnBlurListener name="policyNumber">
-                      {() => {
-                        handlePolicySearch(input.value, form.reset);
-                      }}
-                    </OnBlurListener>
-                  </Fragment>
+                  <Input
+                    input={input}
+                    meta={meta}
+                    label="Policy Number"
+                    styleName="input view-col-4"
+                    placeholder="Enter Complete Policy Number"
+                    dataTest="policyNumber"
+                    disabled={!active}
+                    onBlur={() => handlePolicySearch(input.value, form.reset)}
+                  />
                 )}
               </Field>
               <button
