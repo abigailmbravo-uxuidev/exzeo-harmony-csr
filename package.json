@@ -12,7 +12,7 @@
   },
   "dependencies": {
     "@exzeo/core-ui": "^0.8.15-f82380",
-    "@exzeo/react-scripts": "2.1.0",
+    "@exzeo/react-scripts": "2.2.3",
     "@fortawesome/fontawesome": "~1.0.0",
     "@fortawesome/react-fontawesome": "~0.0.14",
     "@uppy/core": "^0.26.0",
@@ -74,9 +74,15 @@
     ],
     "coverageThreshold": {
       "global": {
-        "statements": 70
+        "statements": 69
       }
     }
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "./.eslintrc"
+    ]
   },
   "husky": {
     "hooks": {
@@ -93,10 +99,18 @@
       "git add"
     ]
   },
-  "browserslist": [
-    ">0.2%",
-    "not dead",
-    "not ie <= 10",
-    "not op_mini all"
-  ]
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all",
+      "ie 11"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version",
+      "ie 11"
+    ]
+  }
 }
