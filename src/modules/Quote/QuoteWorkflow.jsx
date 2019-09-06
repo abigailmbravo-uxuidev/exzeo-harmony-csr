@@ -77,7 +77,7 @@ export class QuoteWorkflow extends React.Component {
     $POLICYHOLDERS: PolicyHolders,
     $APPLICATION: Application,
     $NOTES_FILES: NotesFiles,
-    $AGENCY_SELECT: AgencyAgentSelect
+    $AGENCY_AGENT_SELECT: AgencyAgentSelect
   };
 
   getConfigForJsonTransform = defaultMemoize(getConfigForJsonTransform);
