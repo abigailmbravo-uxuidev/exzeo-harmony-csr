@@ -142,7 +142,7 @@ const PaymentForm = ({
             id="payment-form"
             onSubmit={async event => {
               await handleSubmit(event);
-              form.reset();
+              if (values.policyNumber && values.amount) form.reset();
               setPolicy({});
             }}
           >
@@ -167,7 +167,7 @@ const PaymentForm = ({
                 tabIndex="-1"
                 type="button"
                 onClick={() => {
-                  form.reset();
+                  setTimeout(form.reset);
                   setPolicy({});
                 }}
               >
