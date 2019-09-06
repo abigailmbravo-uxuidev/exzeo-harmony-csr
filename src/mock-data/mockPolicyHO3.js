@@ -1570,7 +1570,7 @@ const mock = {
                         required: true,
                         metaData: {
                           target:
-                            '${format.toCurrency(it._TEMP_INITIAL_VALUES.deductibles.hurricane.value)}'
+                            '${format.toPercent(it._TEMP_INITIAL_VALUES.deductibles.hurricane.value)} of Dwelling Limit'
                         }
                       },
                       children: []
