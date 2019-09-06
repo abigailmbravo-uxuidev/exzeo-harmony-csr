@@ -143,11 +143,7 @@ const PaymentForm = ({
             id="payment-form"
             onSubmit={async event => {
               await handleSubmit(event);
-<<<<<<< HEAD
               if (values.policyNumber && values.amount) setTimeout(form.reset);
-=======
-              if (values.policyNumber && values.amount) form.reset();
->>>>>>> Upgrade core-ui.
               setPolicy({});
             }}
           >
