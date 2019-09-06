@@ -30,6 +30,7 @@ describe('BulkPayments testing', () => {
     };
 
     const {
+      debug,
       getByText,
       getByLabelText,
       getAllByText,
@@ -63,6 +64,12 @@ describe('BulkPayments testing', () => {
     expect(getByText('0 entries totaling'));
     expect(getByText('$ 0.00'));
     expect(getByText('Download')).toBeDisabled();
+
+    const cashTypeEl = await getByLabelText('Cash Type');
+    expect(cashTypeEl.options[1].value).toBe('Paper Deposit');
+    expect(cashTypeEl.options[2].value).toBe('Electronic Deposit');
+    expect(cashTypeEl.options[3].value).toBe('Paper Deposit Charge Back');
+    expect(cashTypeEl.options[4].value).toBe('Electronic Deposit Charge Back');
   });
 
   it('Test BulkPayments forms - fetch error', async () => {
@@ -160,6 +167,8 @@ describe('BulkPayments testing', () => {
       ])
     );
 
+    expect(getByText('Open Policy').href).toBeDefined();
+
     fireEvent.change(await getByLabelText('Amount'), {
       target: { value: '200.00' }
     });
@@ -171,14 +180,14 @@ describe('BulkPayments testing', () => {
     expect(getByText('Download')).toBeEnabled();
 
     // check clear button
-    /*await fireEvent.click(document.querySelector('.clear-policy'));
-    
+    await fireEvent.click(document.querySelector('.clear-policy'));
+
     expect(
       await waitForElement(() => [
         expect(getByLabelText('Policy Number').value).toBe(''),
         expect(getByLabelText('Amount').value).toBe('')
       ])
-    );*/
+    );
 
     // check Stop button
     fireEvent.click(await getByText(/stop/i));
