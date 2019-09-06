@@ -2744,7 +2744,7 @@ const mock = {
                         required: true,
                         metaData: {
                           target:
-                            '${it._TEMP_INITIAL_VALUES.property.distanceToTidalWater}'
+                            '${it._TEMP_INITIAL_VALUES.property.distanceToTidalWater ? format.appendUnit(it._TEMP_INITIAL_VALUES.property.distanceToTidalWater, ""): " "}'
                         }
                       },
                       children: []
@@ -2763,7 +2763,7 @@ const mock = {
                         path: 'property.distanceToFireHydrant',
                         metaData: {
                           target:
-                            '${it._TEMP_INITIAL_VALUES.property.distanceToFireHydrant || " "}'
+                            '${it._TEMP_INITIAL_VALUES.property.distanceToFireHydrant ? format.appendUnit(it._TEMP_INITIAL_VALUES.property.distanceToFireHydrant, "") : " "}'
                         }
                       },
                       children: []
@@ -2782,7 +2782,7 @@ const mock = {
                         path: 'property.distanceToFireStation',
                         metaData: {
                           target:
-                            '${it._TEMP_INITIAL_VALUES.property.distanceToFireStation || " "}'
+                            '${it._TEMP_INITIAL_VALUES.property.distanceToFireStation ? format.appendUnit(it._TEMP_INITIAL_VALUES.property.distanceToFireStation, ""): " "}'
                         }
                       },
                       children: []
@@ -2831,7 +2831,7 @@ const mock = {
                         path: 'property.squareFeet',
                         metaData: {
                           target:
-                            '${format.appendUnit(it._TEMP_INITIAL_VALUES.property.squareFeet || "", "")}'
+                            '${it._TEMP_INITIAL_VALUES.property.squareFeet ? format.appendUnit(it._TEMP_INITIAL_VALUES.property.squareFeet, "") : " "}'
                         }
                       },
                       children: []
