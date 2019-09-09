@@ -1107,121 +1107,47 @@ const mock = {
                     {
                       id: '398ce68d-839c-4a49-bbf2-4545454543',
                       type: '$INPUT',
-                      path: 'coverageLimits.dwelling.value',
+                      path: 'coverageLimits.building.value',
                       dependencies: [],
                       data: {
                         component: 'currency',
-                        label: 'Dwelling (A)',
+                        label: 'Building Limit',
                         validation: ['isDwellingRange'],
                         extendedProperties: {
                           format: 'currency',
                           displayRange: true,
-                          min: 'coverageLimits.dwelling.minAmount',
-                          max: 'coverageLimits.dwelling.maxAmount',
+                          min: 'coverageLimits.building.minAmount',
+                          max: 'coverageLimits.building.maxAmount',
                           output: 'initial'
                         }
                       },
                       formData: {
-                        path: 'coverageLimits.dwelling.value',
+                        path: 'coverageLimits.building.value',
                         type: 'integer',
                         required: true,
                         metaData: {
                           target:
-                            '${format.toCurrency(it._TEMP_INITIAL_VALUES.coverageLimits.dwelling.value)}'
+                            '${format.toCurrency(it._TEMP_INITIAL_VALUES.coverageLimits.building.value)}'
                         }
                       },
                       children: []
                     },
                     {
-                      id: '398ce68d-839c-4a49-bbf2-92fcc275324234234da40',
-                      type: '$INPUT',
-                      path: 'coverageLimits.otherStructures.amount',
-                      dependencies: [],
-                      data: {
-                        disabled: true,
-                        component: 'currency',
-                        label: 'Other Structures (B)',
-                        extendedProperties: {
-                          output: 'initial'
-                        }
-                      },
-                      formData: {
-                        path: 'coverageLimits.otherStructures.amount',
-                        type: 'integer',
-                        required: true,
-                        metaData: {
-                          target:
-                            '${format.toCurrency(it._TEMP_INITIAL_VALUES.coverageLimits.otherStructures.amount)}'
-                        }
-                      },
-                      children: []
-                    },
-                    {
-                      id: '498ce68d-839c-4a49-bbf2-92fcc275da49',
-                      type: '$INPUT',
-                      path: 'coverageLimits.otherStructures.value',
-                      dependencies: [],
-                      data: {
-                        component: 'selectInteger',
-                        label: 'Other Structures %',
-                        dataSource: [
-                          { label: '0%', answer: 0 },
-                          { label: '2%', answer: 2 },
-                          { label: '5%', answer: 5 },
-                          { label: '10%', answer: 10 }
-                        ],
-                        extendedProperties: {
-                          output: 'initial'
-                        }
-                      },
-                      formData: {
-                        path: 'coverageLimits.otherStructures.value',
-                        type: 'integer',
-                        required: true,
-                        metaData: {
-                          target:
-                            '${format.toPercent(it._TEMP_INITIAL_VALUES.coverageLimits.otherStructures.value) || "0%"}'
-                        }
-                      },
-                      children: []
-                    },
-                    {
-                      id: '398ce68d-839c-4a49-bbf2-92fcc275da51',
-                      type: '$INPUT',
-                      path: 'coverageLimits.personalProperty.amount',
-                      dependencies: [],
-                      data: {
-                        disabled: true,
-                        component: 'currency',
-                        label: 'Personal Property (C)',
-                        extendedProperties: { output: 'initial' }
-                      },
-                      formData: {
-                        path: 'coverageLimits.personalProperty.amount',
-                        type: 'integer',
-                        required: true,
-                        metaData: {
-                          target:
-                            '${format.toCurrency(it._TEMP_INITIAL_VALUES.coverageLimits.personalProperty.amount)}'
-                        }
-                      },
-                      children: []
-                    },
-                    {
-                      id: '398ce68d-839c-4a49-bbf2-4444455',
+                      id: '398ce68d-839c-4a49-bbf2-11111113',
                       type: '$INPUT',
                       path: 'coverageLimits.personalProperty.value',
                       dependencies: [],
                       data: {
-                        component: 'selectInteger',
-                        label: 'Personal Property %',
-                        dataSource: [
-                          { label: '0%', answer: 0 },
-                          { label: '25%', answer: 25 },
-                          { label: '35%', answer: 35 },
-                          { label: '50%', answer: 50 }
-                        ],
-                        extendedProperties: { output: 'initial' }
+                        component: 'currency',
+                        label: 'Personal Property Limit',
+                        validation: ['isDwellingRange'],
+                        extendedProperties: {
+                          format: 'currency',
+                          displayRange: true,
+                          min: 'coverageLimits.personalProperty.minAmount',
+                          max: 'coverageLimits.personalProperty.maxAmount',
+                          output: 'initial'
+                        }
                       },
                       formData: {
                         path: 'coverageLimits.personalProperty.value',
@@ -1229,205 +1155,62 @@ const mock = {
                         required: true,
                         metaData: {
                           target:
-                            '${format.toPercent(it._TEMP_INITIAL_VALUES.coverageLimits.personalProperty.value) || "0%"}'
+                            '${format.toCurrency(it._TEMP_INITIAL_VALUES.coverageLimits.personalProperty.value)}'
                         }
                       },
                       children: []
                     },
                     {
-                      id: '398ce68d-839c-4a49-bbf2-92fcc275da53',
+                      id: '498ce68d-839c-4a49-bbf2-92fcc275da49',
                       type: '$INPUT',
-                      path: 'coverageLimits.lossOfUse.amount',
-                      dependencies: [],
-                      data: {
-                        disabled: true,
-                        component: 'currency',
-                        label: 'Loss of Use (D)',
-                        extendedProperties: { output: 'initial' }
-                      },
-                      formData: {
-                        path: 'coverageLimits.lossOfUse.amount',
-                        type: 'integer',
-                        required: true,
-                        metaData: {
-                          target:
-                            '${format.toCurrency(it._TEMP_INITIAL_VALUES.coverageLimits.lossOfUse.amount)}'
-                        }
-                      },
-                      children: []
-                    },
-                    {
-                      id: '398ce68d-839c-4a49-bbf2-6546546645',
-                      type: '$INPUT',
-                      path: 'coverageLimits.personalLiability.value',
+                      path: 'deductibles.building.value',
                       dependencies: [],
                       data: {
                         component: 'selectInteger',
-                        label: 'Personal Liability (E)',
+                        label: 'Building Deductible',
                         dataSource: [
-                          { label: '$ 100,000', answer: 100000 },
-                          { label: '$ 300,000', answer: 300000 }
-                        ],
-                        extendedProperties: { output: 'initial' }
-                      },
-                      formData: {
-                        path: 'coverageLimits.personalLiability.value',
-                        type: 'integer',
-                        required: true,
-                        metaData: {
-                          target:
-                            '${format.toCurrency(it._TEMP_INITIAL_VALUES.coverageLimits.personalLiability.value)}'
-                        }
-                      },
-                      children: []
-                    },
-                    {
-                      id: '398ce68d-839c-4a49-bbf2-92fcc275da55',
-                      type: '$INPUT',
-                      path: 'coverageLimits.medicalPayments.amount',
-                      dependencies: [],
-                      data: {
-                        disabled: true,
-                        component: 'currency',
-                        label: 'Medical Payments (F)',
-                        extendedProperties: { output: 'initial' }
-                      },
-                      formData: {
-                        path: 'coverageLimits.medicalPayments.amount',
-                        type: 'integer',
-                        required: true,
-                        metaData: {
-                          target:
-                            '${format.toCurrency(it._TEMP_INITIAL_VALUES.coverageLimits.medicalPayments.amount)}'
-                        }
-                      },
-                      children: []
-                    },
-                    {
-                      id: '398ce68d-839c-4a49-bbf2-92fcc275da56',
-                      type: '$INPUT',
-                      path: 'coverageLimits.moldProperty.value',
-                      dependencies: [],
-                      data: {
-                        component: 'selectInteger',
-                        label: 'Mold Property',
-                        extendedProperties: { output: 'initial' },
-                        dataSource: [
-                          { label: '$ 10,000', answer: 10000 },
-                          { label: '$ 25,000', answer: 25000 },
-                          { label: '$ 50,000', answer: 50000 }
-                        ]
-                      },
-                      formData: {
-                        path: 'coverageLimits.moldProperty.value',
-                        type: 'integer',
-                        required: true,
-                        metaData: {
-                          target:
-                            '${format.toCurrency(it._TEMP_INITIAL_VALUES.coverageLimits.moldProperty.amount)}'
-                        }
-                      },
-                      children: []
-                    },
-                    {
-                      id: '398ce68d-839c-4a49-bbf2-92fcc275da57',
-                      type: '$INPUT',
-                      path: 'coverageLimits.moldLiability.value',
-                      dependencies: [],
-                      data: {
-                        component: 'selectInteger',
-                        label: 'Mold Liability',
-                        extendedProperties: { output: 'initial' },
-                        dataSource: [
-                          { label: '$ 50,000', answer: 50000 },
-                          { label: '$ 100,000', answer: 100000 }
-                        ]
-                      },
-                      formData: {
-                        path: 'coverageLimits.moldLiability.value',
-                        type: 'integer',
-                        required: true,
-                        metaData: {
-                          target:
-                            '${format.toCurrency(it._TEMP_INITIAL_VALUES.coverageLimits.moldLiability.amount)}'
-                        }
-                      },
-                      children: []
-                    },
-                    {
-                      id: '398ce68d-839c-4a49-bbf2-92fcc275da58',
-                      type: '$INPUT',
-                      path: 'deductibles.allOtherPerils.value',
-                      dependencies: [],
-                      data: {
-                        component: 'selectInteger',
-                        label: 'AOP Deductible',
-                        extendedProperties: { output: 'initial' },
-                        dataSource: [
-                          { label: '$ 500', answer: 500 },
                           { label: '$ 1,000', answer: 1000 },
-                          { label: '$ 2,500', answer: 2500 }
-                        ]
+                          { label: '$ 2,000', answer: 2000 }
+                        ],
+                        extendedProperties: {
+                          output: 'initial'
+                        }
                       },
                       formData: {
-                        path: 'deductibles.allOtherPerils.value',
+                        path: 'deductibles.building.value',
                         type: 'integer',
                         required: true,
                         metaData: {
                           target:
-                            '${format.toCurrency(it._TEMP_INITIAL_VALUES.deductibles.allOtherPerils.value)}'
+                            '${format.toCurrency(it._TEMP_INITIAL_VALUES.deductibles.building.amount)}'
                         }
                       },
                       children: []
                     },
                     {
-                      id: '398ce68d-839c-4a49-bbf2-92fcc275da59',
+                      id: '498ce68d-839c-4a49-bbf2-455427875685',
                       type: '$INPUT',
-                      path: 'deductibles.hurricane.value',
+                      path: 'deductibles.personalPropertyReplacementCost.value',
                       dependencies: [],
                       data: {
                         component: 'selectInteger',
-                        label: 'Hurricane Deductible',
-                        extendedProperties: { output: 'initial' },
+                        label: 'Personal Property Deductible',
                         dataSource: [
-                          { label: '2% of Dwelling Limit', answer: 2 },
-                          { label: '5% of Dwelling Limit', answer: 5 },
-                          { label: '10% of Dwelling Limit', answer: 10 }
-                        ]
-                      },
-                      formData: {
-                        path: 'deductibles.hurricane.value',
-                        type: 'integer',
-                        required: true,
-                        metaData: {
-                          target:
-                            '${format.toPercent(it._TEMP_INITIAL_VALUES.deductibles.hurricane.value)} of Dwelling Limit'
+                          { label: '$ 1,000', answer: 1000 },
+                          { label: '$ 2,000', answer: 2000 }
+                        ],
+                        extendedProperties: {
+                          output: 'initial'
                         }
                       },
-                      children: []
-                    },
-                    {
-                      id: '4cbef727-5327-42f8-b62c-92fcc275da60',
-                      type: '$INPUT',
-                      path: 'coverageOptions.sinkholePerilCoverage.answer',
-                      dependencies: [],
-                      data: {
-                        component: 'select',
-                        label: 'Sinkhole Deductible',
-
-                        dataSource: [
-                          { answer: false, label: 'Coverage Excluded' },
-                          { answer: true, label: '10% of Dwelling Limit' }
-                        ],
-                        extendedProperties: { output: 'initial' }
-                      },
                       formData: {
-                        path: 'coverageOptions.sinkholePerilCoverage.answer',
+                        path:
+                          'deductibles.personalPropertyReplacementCost.value',
                         type: 'integer',
                         required: true,
                         metaData: {
                           target:
-                            "${it._TEMP_INITIAL_VALUES.coverageOptions.sinkholePerilCoverage.answer === 'true' || it._TEMP_INITIAL_VALUES.coverageOptions.sinkholePerilCoverage.answer === true ? '10% of Dwelling Limit' : 'Coverage Excluded'}"
+                            '${format.toCurrency(it._TEMP_INITIAL_VALUES.deductibles.personalPropertyReplacementCost.amount)}'
                         }
                       },
                       children: []
@@ -1508,732 +1291,50 @@ const mock = {
                       children: []
                     },
                     {
-                      id: '398ce68d-839c-4a49-bbf2-54864c4a69c7',
+                      id: '398ce444467768d-839c-4a490890-cc275da53',
                       type: '$INPUT',
-                      path: 'coverageLimits.ordinanceOrLaw.amount',
-                      dependencies: [],
-                      data: {
-                        component: 'selectInteger',
-                        label: 'Ordinance or Law',
-                        extendedProperties: { output: 'initial' },
-                        dataSource: [
-                          { label: '25% of Dwelling Limit', answer: 25 },
-                          { label: '50% of Dwelling Limit', answer: 50 }
-                        ]
-                      },
-                      formData: {
-                        path: 'coverageLimits.ordinanceOrLaw.amount',
-                        type: 'integer',
-                        required: true,
-                        metaData: {
-                          target:
-                            '${it._TEMP_INITIAL_VALUES.coverageLimits.ordinanceOrLaw.amount}% of Dwelling Limit'
-                        }
-                      },
-                      children: []
-                    },
-                    {
-                      id: 'b141e258-5074-4ba1-90bc-54864c4a69d1',
-                      type: '$INPUT',
-                      path:
-                        'coverageOptions.propertyIncidentalOccupanciesMainDwelling.answer',
-                      dependencies: [],
-                      data: {
-                        component: 'radio',
-                        label: 'Incidental Occ Main',
-                        segmented: true,
-                        extendedProperties: {
-                          subscribe: true,
-                          output: 'initial'
-                        }
-                      },
-                      formData: {
-                        path:
-                          'coverageOptions.propertyIncidentalOccupanciesMainDwelling.answer',
-                        type: 'boolean',
-                        required: true,
-                        metaData: {
-                          enum: [
-                            { label: 'No', answer: false },
-                            { label: 'Yes', answer: true }
-                          ],
-                          target:
-                            '${format.boolToYesNo(it._TEMP_INITIAL_VALUES.coverageOptions.propertyIncidentalOccupanciesMainDwelling.answer)}'
-                        }
-                      },
-                      children: []
-                    },
-                    {
-                      id: 'b141e258-5074-4ba1-90bc-54864c4a69d2',
-                      type: '$INPUT',
-                      path:
-                        'coverageOptions.propertyIncidentalOccupanciesOtherStructures.answer',
-                      dependencies: [],
-                      data: {
-                        component: 'radio',
-                        label: 'Incidental Occ Other',
-                        segmented: true,
-                        extendedProperties: {
-                          subscribe: true,
-                          output: 'initial'
-                        }
-                      },
-                      formData: {
-                        path:
-                          'coverageOptions.propertyIncidentalOccupanciesOtherStructures.answer',
-                        type: 'boolean',
-                        required: true,
-                        metaData: {
-                          enum: [
-                            { label: 'No', answer: false },
-                            { label: 'Yes', answer: true }
-                          ],
-                          target:
-                            '${format.boolToYesNo(it._TEMP_INITIAL_VALUES.coverageOptions.propertyIncidentalOccupanciesOtherStructures.answer)}'
-                        }
-                      },
-                      children: []
-                    },
-                    {
-                      id: 'b141e258-5074-4ba1-90bc-54864c4a69d3',
-                      type: '$INPUT',
-                      path:
-                        'coverageOptions.liabilityIncidentalOccupancies.answer',
+                      path: 'coverageLimits.increasedCostOfCompliance.amount',
                       dependencies: [],
                       data: {
                         disabled: true,
-                        component: 'radio',
-                        label: 'Incidental Occ Liability',
-                        segmented: true,
-                        extendedProperties: {
-                          subscribe: true,
-                          output: 'initial'
-                        }
+                        component: 'currency',
+                        label: 'Increased Cost of Compliance Limit',
+                        extendedProperties: { output: 'initial' }
                       },
                       formData: {
-                        path:
-                          'coverageOptions.liabilityIncidentalOccupancies.answer',
-                        type: 'boolean',
-                        required: true,
-                        metaData: {
-                          enum: [
-                            { label: 'No', answer: false },
-                            { label: 'Yes', answer: true }
-                          ],
-                          target:
-                            '${format.boolToYesNo(it._TEMP_INITIAL_VALUES.coverageOptions.liabilityIncidentalOccupancies.answer)}'
-                        }
-                      },
-                      children: []
-                    },
-                    {
-                      id: 'b141e258-5074-4ba1-90bc-54864c4a69d4',
-                      type: '$INPUT',
-                      path: 'property.townhouseRowhouse',
-                      dependencies: [],
-                      data: {
-                        component: 'radio',
-                        label: 'Townhouse / Rowhouse',
-                        segmented: true,
-                        extendedProperties: {
-                          subscribe: true,
-                          output: 'initial'
-                        }
-                      },
-                      formData: {
-                        path: 'property.townhouseRowhouse',
-                        type: 'boolean',
-                        required: true,
-                        metaData: {
-                          enum: [
-                            { label: 'No', answer: false },
-                            { label: 'Yes', answer: true }
-                          ],
-                          target:
-                            '${format.boolToYesNo(it._TEMP_INITIAL_VALUES.property.townhouseRowhouse)}'
-                        }
-                      },
-                      children: []
-                    },
-                    {
-                      id: '398ce68d-839c-4a49-bbf2-54864c4a69d5',
-                      type: '$INPUT',
-                      path: 'underwritingAnswers.rented.answer',
-                      dependencies: [],
-                      data: {
-                        component: 'select',
-                        label: 'Property Ever Rented',
-                        extendedProperties: { output: 'initial' },
-                        dataSource: [
-                          { label: 'Yes', answer: 'Yes' },
-                          { label: 'Occasionally', answer: 'Occasionally' },
-                          { label: 'Never', answer: 'Never' }
-                        ]
-                      },
-                      formData: {
-                        path: 'underwritingAnswers.rented.answer',
+                        path: 'coverageLimits.increasedCostOfCompliance.amount',
                         type: 'integer',
                         required: true,
                         metaData: {
                           target:
-                            '${it._TEMP_INITIAL_VALUES.underwritingAnswers.rented.answer}'
+                            '${format.toCurrency(it._TEMP_INITIAL_VALUES.coverageLimits.increasedCostOfCompliance.amount)}'
                         }
                       },
                       children: []
                     },
                     {
-                      id: '398ce68d-839c-4a49-bbf2-54864c4a69d6',
+                      id: '398ce68d-839c-4a49-bbf2-92fcc275da53',
                       type: '$INPUT',
-                      path: 'underwritingAnswers.monthsOccupied.answer',
+                      path: 'coverageLimits.lossOfUse.amount',
                       dependencies: [],
                       data: {
-                        component: 'select',
-                        label: 'Months Occupied',
-                        extendedProperties: { output: 'initial' },
-                        dataSource: [
-                          { label: '0-3', answer: '0-3' },
-                          { label: '4-6', answer: '4-6' },
-                          { label: '7-9', answer: '7-9' },
-                          { label: '10+', answer: '10+' }
-                        ]
+                        disabled: true,
+                        component: 'currency',
+                        label: 'Loss of Use Limit',
+                        extendedProperties: { output: 'initial' }
                       },
                       formData: {
-                        path: 'underwritingAnswers.monthsOccupied.answer',
+                        path: 'coverageLimits.lossOfUse.amount',
                         type: 'integer',
                         required: true,
                         metaData: {
                           target:
-                            '${it._TEMP_INITIAL_VALUES.underwritingAnswers.monthsOccupied.answer}'
-                        }
-                      },
-                      children: []
-                    },
-                    {
-                      id: 'b141e258-5074-4ba1-90bc-54864c4a69d7',
-                      type: '$INPUT',
-                      path:
-                        'underwritingAnswers.noPriorInsuranceSurcharge.answer',
-                      dependencies: [],
-                      data: {
-                        component: 'radio',
-                        label: 'No Prior Insurance',
-                        segmented: true,
-                        extendedProperties: {
-                          subscribe: true,
-                          output: 'initial'
-                        }
-                      },
-                      formData: {
-                        path:
-                          'underwritingAnswers.noPriorInsuranceSurcharge.answer',
-                        type: 'boolean',
-                        required: true,
-                        metaData: {
-                          enum: [
-                            { label: 'No', answer: 'No' },
-                            { label: 'Yes', answer: 'Yes' }
-                          ],
-                          target:
-                            '${it._TEMP_INITIAL_VALUES.underwritingAnswers.noPriorInsuranceSurcharge.answer}'
-                        }
-                      },
-                      children: []
-                    },
-                    {
-                      id: 'b141e258-5074-4ba1-90bc-54864c4a69d8',
-                      type: '$INPUT',
-                      path: 'property.burglarAlarm',
-                      dependencies: [],
-                      data: {
-                        component: 'radio',
-                        label: 'Burglar Alarm',
-                        segmented: true,
-                        extendedProperties: {
-                          subscribe: true,
-                          output: 'initial'
-                        }
-                      },
-                      formData: {
-                        path: 'property.burglarAlarm',
-                        type: 'boolean',
-                        required: true,
-                        metaData: {
-                          enum: [
-                            { label: 'No', answer: false },
-                            { label: 'Yes', answer: true }
-                          ],
-                          target:
-                            '${format.boolToYesNo(it._TEMP_INITIAL_VALUES.property.burglarAlarm)}'
-                        }
-                      },
-                      children: []
-                    },
-                    {
-                      id: 'b141e258-5074-4ba1-90bc-54864c4a69d9',
-                      type: '$INPUT',
-                      path: 'property.fireAlarm',
-                      dependencies: [],
-                      data: {
-                        component: 'radio',
-                        label: 'Fire Alarm',
-                        segmented: true,
-                        extendedProperties: {
-                          subscribe: true,
-                          output: 'initial'
-                        }
-                      },
-                      formData: {
-                        path: 'property.fireAlarm',
-                        type: 'boolean',
-                        required: true,
-                        metaData: {
-                          enum: [
-                            { label: 'No', answer: false },
-                            { label: 'Yes', answer: true }
-                          ],
-                          target:
-                            '${format.boolToYesNo(it._TEMP_INITIAL_VALUES.property.fireAlarm)}'
-                        }
-                      },
-                      children: []
-                    },
-                    {
-                      id: 'b141e258-5074-4ba1-90bc-54864c4a69c1',
-                      type: '$INPUT',
-                      path: 'property.sprinkler',
-                      dependencies: [],
-                      data: {
-                        component: 'radio',
-                        label: 'Sprinkler',
-                        segmented: true,
-                        extendedProperties: {
-                          subscribe: true,
-                          output: 'initial'
-                        }
-                      },
-                      formData: {
-                        path: 'property.sprinkler',
-                        type: 'boolean',
-                        required: true,
-                        metaData: {
-                          enum: [
-                            { label: 'N', answer: 'N' },
-                            { label: 'A', answer: 'A' },
-                            { label: 'B', answer: 'B' }
-                          ],
-                          target:
-                            '${it._TEMP_INITIAL_VALUES.property.sprinkler}'
+                            '${format.toCurrency(it._TEMP_INITIAL_VALUES.coverageLimits.lossOfUse.amount)}'
                         }
                       },
                       children: []
                     }
                   ]
-                }
-              ]
-            },
-            {
-              name: 'WindMitigation',
-              id: '598d0d15-42dc-4059-ad09-751dedb3b512',
-              type: '$SECTION',
-              dependencies: [],
-              data: {
-                className: 'wind-mitigation-scroll'
-              },
-              formData: {},
-              children: [
-                {
-                  id: '386a6cf2-afe0-40da-8c79-0a9106e26893',
-                  type: '$TITLE',
-                  dependencies: [],
-                  data: {
-                    text: 'Wind Mitigation'
-                  },
-                  formData: {},
-                  children: []
-                },
-                {
-                  id: '398ce68d-234324324324-33347',
-                  type: '$SECTION',
-                  dependencies: [],
-                  data: {
-                    className: 'form-group labels',
-                    size: '6'
-                  },
-                  formData: {},
-                  children: [
-                    {
-                      id: '398ce68d-234324324324-22227',
-                      type: '$LABEL',
-                      dependencies: [],
-                      data: {
-                        text: 'Current'
-                      },
-                      formData: {},
-                      children: []
-                    },
-                    {
-                      id: '398ce68d-234324324324-22222237',
-                      type: '$LABEL',
-                      dependencies: [],
-                      data: {
-                        text: 'New'
-                      },
-                      formData: {},
-                      children: []
-                    }
-                  ]
-                },
-                {
-                  id: '398ce68d-234324324324-33348',
-                  type: '$SECTION',
-                  dependencies: [],
-                  data: {
-                    className: 'form-group labels',
-                    size: '6'
-                  },
-                  formData: {},
-                  children: [
-                    {
-                      id: '398ce68d-234324324324-22228',
-                      type: '$LABEL',
-                      dependencies: [],
-                      data: {
-                        text: 'Current'
-                      },
-                      formData: {},
-                      children: []
-                    },
-                    {
-                      id: '398ce68d-234324324324-22222238',
-                      type: '$LABEL',
-                      dependencies: [],
-                      data: {
-                        text: 'New'
-                      },
-                      formData: {},
-                      children: []
-                    }
-                  ]
-                },
-                {
-                  id: '57f21212-7631-4dd7-9b42-55fe263b9491',
-                  component: '$INPUT',
-                  path: 'property.windMitigation.roofCovering',
-                  dependencies: [],
-                  data: {
-                    component: 'select',
-                    label: 'Roof Covering',
-                    size: '6'
-                  },
-                  formData: {
-                    path: 'property.windMitigation.roofCovering',
-                    type: 'string',
-                    required: true,
-                    metaData: {
-                      enum: [
-                        { label: 'Non-FBC', answer: 'Non-FBC' },
-                        { label: 'FBC', answer: 'FBC' },
-                        { label: 'Other', answer: 'Other' }
-                      ],
-                      target:
-                        '${it._TEMP_INITIAL_VALUES.property.windMitigation.roofCovering}'
-                    }
-                  },
-                  children: []
-                },
-                {
-                  id: '97f2109e-856c-4b86-8aa0-acba782b7c1e',
-                  type: '$INPUT',
-                  path: 'property.windMitigation.floridaBuildingCodeWindSpeed',
-                  dependencies: [],
-                  data: {
-                    component: 'number',
-                    label: 'FBC Wind Speed',
-                    size: '6'
-                  },
-                  formData: {
-                    path:
-                      'property.windMitigation.floridaBuildingCodeWindSpeed',
-                    required: true,
-                    metaData: {
-                      target:
-                        '${it._TEMP_INITIAL_VALUES.property.windMitigation.floridaBuildingCodeWindSpeed}'
-                    }
-                  },
-                  children: []
-                },
-                {
-                  id: '45b74810-b565-4702-8d2e-f1fdf83833b2',
-                  type: '$INPUT',
-                  path: 'property.windMitigation.roofDeckAttachment',
-                  dependencies: [],
-                  data: {
-                    component: 'select',
-                    label: 'Roof Deck Attachment',
-                    size: '6'
-                  },
-                  formData: {
-                    path: 'property.windMitigation.roofDeckAttachment',
-                    type: 'integer',
-                    required: true,
-                    metaData: {
-                      target:
-                        '${it._TEMP_INITIAL_VALUES.property.windMitigation.roofDeckAttachment}',
-                      enum: [
-                        { label: 'A', answer: 'A' },
-                        { label: 'B', answer: 'B' },
-                        { label: 'C', answer: 'C' },
-                        { label: 'D', answer: 'D' },
-                        { label: 'Concrete', answer: 'Concrete' },
-                        { label: 'Other', answer: 'Other' }
-                      ]
-                    }
-                  },
-                  children: []
-                },
-                {
-                  id: '37fab2c3-0ed7-4538-910a-46aa9452f839',
-                  type: '$INPUT',
-                  path:
-                    'property.windMitigation.floridaBuildingCodeWindSpeedDesign',
-                  dependencies: [],
-                  data: {
-                    component: 'number',
-                    label: 'FBC Wind Speed Design',
-                    size: '6'
-                  },
-                  formData: {
-                    path:
-                      'property.windMitigation.floridaBuildingCodeWindSpeedDesign',
-                    required: true,
-                    metaData: {
-                      target:
-                        '${it._TEMP_INITIAL_VALUES.property.windMitigation.floridaBuildingCodeWindSpeedDesign}'
-                    }
-                  },
-                  children: []
-                },
-                {
-                  id: 'df4710d0-2efb-4700-ac8d-74340f41f120',
-                  type: '$INPUT',
-                  path: 'property.windMitigation.roofToWallConnection',
-                  dependencies: [],
-                  data: {
-                    component: 'select',
-                    label: 'Roof to Wall Attachment',
-                    size: '6'
-                  },
-                  formData: {
-                    path: 'property.windMitigation.roofToWallConnection',
-                    type: 'string',
-                    required: true,
-                    metaData: {
-                      enum: [
-                        { label: 'Toe Nails', answer: 'Toe Nails' },
-                        { label: 'Clips', answer: 'Clips' },
-                        { label: 'Single Wraps', answer: 'Single Wraps' },
-                        { label: 'Double Wraps', answer: 'Double Wraps' },
-                        { label: 'Other', answer: 'Other' }
-                      ],
-                      target:
-                        '${it._TEMP_INITIAL_VALUES.property.windMitigation.roofToWallConnection}'
-                    }
-                  },
-                  children: []
-                },
-                {
-                  id: '47e72599-1e7a-448a-b1e3-56d3fe244703',
-                  type: '$INPUT',
-                  path: 'property.windMitigation.terrain',
-                  dependencies: [],
-                  data: {
-                    component: 'select',
-                    label: 'Terrain',
-                    size: '6',
-                    extendedProperties: { output: 'initial' },
-                    segmented: true
-                  },
-                  formData: {
-                    path: 'property.windMitigation.terrain',
-                    type: 'string',
-                    required: true,
-                    metaData: {
-                      enum: [
-                        { label: 'B', answer: 'B' },
-                        { label: 'C', answer: 'C' },
-                        { label: 'HVHZ', answer: 'HVHZ' },
-                        { label: 'Other', answer: 'Other' }
-                      ],
-                      target:
-                        '${it._TEMP_INITIAL_VALUES.property.windMitigation.terrain}'
-                    }
-                  },
-                  children: []
-                },
-                {
-                  id: '01c51d1d-a6db-4976-b7d9-91442d81edb0',
-                  type: '$INPUT',
-                  path: 'property.windMitigation.roofGeometry',
-                  dependencies: [],
-                  data: {
-                    component: 'select',
-                    label: 'Roof Geometry',
-                    size: '6',
-                    extendedProperties: { output: 'initial' }
-                  },
-                  formData: {
-                    path: 'property.windMitigation.roofGeometry',
-                    type: 'string',
-                    required: true,
-                    metaData: {
-                      enum: [
-                        { label: 'Flat', answer: 'Flat' },
-                        { label: 'Gable', answer: 'Gable' },
-                        { label: 'Hip', answer: 'Hip' },
-                        { label: 'Other', answer: 'Other' }
-                      ],
-                      target:
-                        '${it._TEMP_INITIAL_VALUES.property.windMitigation.roofGeometry}'
-                    }
-                  },
-                  children: []
-                },
-                {
-                  id: 'cdcbaee8-bf97-4a1f-9a2d-a3c66b211635',
-                  type: '$INPUT',
-                  path: 'property.windMitigation.internalPressureDesign',
-                  dependencies: [],
-                  data: {
-                    component: 'select',
-                    label: 'Internal Pressure Design',
-                    size: '6',
-                    extendedProperties: { output: 'initial' }
-                  },
-                  formData: {
-                    path: 'property.windMitigation.internalPressureDesign',
-                    type: 'string',
-                    required: true,
-                    metaData: {
-                      enum: [
-                        { label: 'Enclosed', answer: 'Enclosed' },
-                        { label: 'Partial', answer: 'Partial' },
-                        { label: 'Other', answer: 'Other' }
-                      ],
-                      target:
-                        '${it._TEMP_INITIAL_VALUES.property.windMitigation.internalPressureDesign}'
-                    }
-                  },
-                  children: []
-                },
-                {
-                  id: 'bc4be681-7e17-4eb5-8a61-c2f3229d7ed6',
-                  type: '$INPUT',
-                  path: 'property.windMitigation.secondaryWaterResistance',
-                  dependencies: [],
-                  data: {
-                    component: 'radio',
-                    label: 'Secondary Water Resistance (SWR)',
-                    size: '6',
-                    segmented: true,
-                    extendedProperties: { output: 'initial' }
-                  },
-                  formData: {
-                    path: 'property.windMitigation.secondaryWaterResistance',
-                    type: 'string',
-                    required: true,
-                    metaData: {
-                      enum: [
-                        { label: 'Yes', answer: 'Yes' },
-                        { label: 'No', answer: 'No' },
-                        { label: 'Other', answer: 'Other' }
-                      ],
-                      target:
-                        '${it._TEMP_INITIAL_VALUES.property.windMitigation.secondaryWaterResistance}'
-                    }
-                  },
-                  children: []
-                },
-                {
-                  id: '57723cd6-ec1c-40c9-97f7-aae75327e8e3',
-                  type: '$INPUT',
-                  path: 'property.windMitigation.windBorneDebrisRegion',
-                  dependencies: [],
-                  data: {
-                    component: 'radio',
-                    label: 'Wind Borne Debris Region (WBDR)',
-                    size: '6',
-                    segmented: true,
-                    extendedProperties: { output: 'initial' }
-                  },
-                  formData: {
-                    path: 'property.windMitigation.windBorneDebrisRegion',
-                    type: 'string',
-                    required: true,
-                    metaData: {
-                      enum: [
-                        { label: 'Yes', answer: 'Yes' },
-                        { label: 'No', answer: 'No' },
-                        { label: 'Other', answer: 'Other' }
-                      ],
-                      target:
-                        '${it._TEMP_INITIAL_VALUES.property.windMitigation.windBorneDebrisRegion}'
-                    }
-                  },
-                  children: []
-                },
-                {
-                  id: '85213569-d390-490a-bcfd-16791bde6d74',
-                  type: '$INPUT',
-                  dependencies: [],
-                  path: 'property.windMitigation.openingProtection',
-                  data: {
-                    component: 'select',
-                    label: 'Opening Protection',
-                    size: '6',
-                    extendedProperties: { output: 'initial' }
-                  },
-                  formData: {
-                    path: 'property.windMitigation.openingProtection',
-                    type: 'string',
-                    required: true,
-                    metaData: {
-                      enum: [
-                        { label: 'None', answer: 'None' },
-                        { label: 'Basic', answer: 'Basic' },
-                        { label: 'Hurricane', answer: 'Hurricane' },
-                        { label: 'Other', answer: 'Other' }
-                      ],
-                      target:
-                        '${it._TEMP_INITIAL_VALUES.property.windMitigation.openingProtection}'
-                    },
-                    children: []
-                  },
-                  children: []
-                },
-                {
-                  id: '37fab2c3-0ed7-4538-910a-46aa9452g333',
-                  type: '$INPUT',
-                  path:
-                    'rating.worksheet.elements.windMitigationFactors.windMitigationDiscount',
-                  dependencies: [],
-                  data: {
-                    disabled: true,
-                    component: 'number',
-                    label: 'Wind Mit Factor',
-                    size: '6',
-                    extendedProperties: { output: 'initial' }
-                  },
-                  formData: {
-                    type: 'integer',
-                    path:
-                      'rating.worksheet.elements.windMitigationFactors.windMitigationDiscount',
-                    required: true,
-                    metaData: {
-                      target:
-                        '${it._TEMP_INITIAL_VALUES.rating.worksheet.elements.windMitigationFactors.windMitigationDiscount}'
-                    }
-                  },
-                  children: []
                 }
               ]
             },
@@ -2362,258 +1463,7 @@ const mock = {
                         required: true,
                         metaData: {
                           target:
-                            '${it._TEMP_INITIAL_VALUES.property.constructionType}'
-                        }
-                      },
-                      children: []
-                    },
-                    {
-                      id: 'f5f12822-09c8-42e6-9cb0-87a49960d13a',
-                      type: '$INPUT',
-                      path: 'property.protectionClass',
-                      dependencies: [],
-                      data: {
-                        component: 'select',
-                        label: 'Protection Class',
-                        size: '12',
-                        dataSource: [
-                          {
-                            label: '01',
-                            answer: 1
-                          },
-                          {
-                            label: '02',
-                            answer: 2
-                          },
-                          {
-                            label: '03',
-                            answer: 3
-                          },
-                          {
-                            label: '04',
-                            answer: 4
-                          },
-                          {
-                            label: '05',
-                            answer: 5
-                          },
-                          {
-                            label: '06',
-                            answer: 6
-                          },
-                          {
-                            label: '07',
-                            answer: 7
-                          },
-                          {
-                            label: '08',
-                            answer: 8
-                          },
-                          {
-                            label: '09',
-                            answer: 9
-                          },
-                          {
-                            label: '10',
-                            answer: 10
-                          }
-                        ]
-                      },
-                      formData: {
-                        path: 'property.protectionClass',
-                        required: true,
-                        metaData: {
-                          target:
-                            '${it._TEMP_INITIAL_VALUES.property.protectionClass}'
-                        }
-                      },
-                      children: []
-                    },
-                    {
-                      id: '6770a129-705d-4f38-9a8e-3f67a7bf92d4',
-                      type: '$INPUT',
-                      path: 'property.buildingCodeEffectivenessGrading',
-                      dependencies: [],
-                      data: {
-                        component: 'select',
-                        label: 'BCEG',
-                        size: '12',
-                        dataSource: [
-                          { label: '01', answer: '1' },
-                          { label: '02', answer: '2' },
-                          { label: '03', answer: '3' },
-                          { label: '04', answer: '4' },
-                          { label: '05', answer: '5' },
-                          { label: '06', answer: '6' },
-                          { label: '07', answer: '7' },
-                          { label: '08', answer: '8' },
-                          { label: '09', answer: '9' },
-                          { label: '98', answer: '98' },
-                          { label: '99', answer: '99' }
-                        ]
-                      },
-                      formData: {
-                        path: 'property.buildingCodeEffectivenessGrading',
-                        required: true,
-                        metaData: {
-                          target:
-                            '${it._TEMP_INITIAL_VALUES.property.buildingCodeEffectivenessGrading}'
-                        }
-                      },
-                      children: []
-                    },
-                    {
-                      id: '26548d94-cb36-4244-a79c-7c734aa3bccc',
-                      type: '$INPUT',
-                      path: 'property.familyUnits',
-                      dependencies: [],
-                      data: {
-                        component: 'select',
-                        label: 'Family Units',
-                        size: '12',
-                        dataSource: [
-                          { answer: '1-2' },
-                          { answer: '3-4' },
-                          { answer: '5-8' },
-                          { answer: '9+' }
-                        ]
-                      },
-                      formData: {
-                        path: 'property.familyUnits',
-                        required: true,
-                        metaData: {
-                          target:
-                            '${it._TEMP_INITIAL_VALUES.property.familyUnits}'
-                        }
-                      },
-                      children: []
-                    },
-                    {
-                      id: '75f752a8-8f5e-4d81-b3f2-228a4462d7dd',
-                      type: '$INPUT',
-                      path: 'property.floodZone',
-                      dependencies: [],
-                      data: {
-                        component: 'select',
-                        label: 'Flood Zone',
-                        size: '12',
-                        dataSource: [
-                          { answer: 'V' },
-                          { answer: 'A' },
-                          { answer: 'B' },
-                          { answer: 'C' },
-                          { answer: 'X' },
-                          { answer: 'U' }
-                        ]
-                      },
-                      formData: {
-                        path: 'property.floodZone',
-                        required: true,
-                        metaData: {
-                          target:
-                            '${it._TEMP_INITIAL_VALUES.property.floodZone}'
-                        }
-                      },
-                      children: []
-                    }
-                  ]
-                },
-                {
-                  id: '598d0d15-42dc-4059-ad09-741deda3b502',
-                  type: '$SECTION',
-                  dependencies: [],
-                  data: {
-                    className: 'home-location-right',
-                    size: '6'
-                  },
-                  formData: {},
-                  children: [
-                    {
-                      id: '44448ce68d-234324324324-33347',
-                      type: '$SECTION',
-                      dependencies: [],
-                      data: {
-                        className: 'form-group labels',
-                        size: '12'
-                      },
-                      formData: {},
-                      children: [
-                        {
-                          id: '4448ce68d-234324324324-22999',
-                          type: '$LABEL',
-                          dependencies: [],
-                          data: {
-                            text: 'Current'
-                          },
-                          formData: {},
-                          children: []
-                        },
-                        {
-                          id: '4448ce68d-234324324324-22222999',
-                          type: '$LABEL',
-                          dependencies: [],
-                          data: {
-                            text: 'New'
-                          },
-                          formData: {},
-                          children: []
-                        }
-                      ]
-                    },
-                    {
-                      id: '40808340-4da2-4b08-ab38-c0a969562027',
-                      type: '$INPUT',
-                      path: 'property.distanceToTidalWater',
-                      dependencies: [],
-                      data: {
-                        component: 'number',
-                        label: 'Tidal Waters Dist.',
-                        size: '12'
-                      },
-                      formData: {
-                        path: 'property.distanceToTidalWater',
-                        required: true,
-                        metaData: {
-                          target:
-                            '${it._TEMP_INITIAL_VALUES.property.distanceToTidalWater ? format.appendUnit(it._TEMP_INITIAL_VALUES.property.distanceToTidalWater, ""): " "}'
-                        }
-                      },
-                      children: []
-                    },
-                    {
-                      id: '40808340-4da2-4b08-ab38-c0a969562028',
-                      type: '$INPUT',
-                      path: 'property.distanceToFireHydrant',
-                      dependencies: [],
-                      data: {
-                        component: 'text',
-                        label: 'Fire Hydrant Dist.',
-                        size: '12'
-                      },
-                      formData: {
-                        path: 'property.distanceToFireHydrant',
-                        metaData: {
-                          target:
-                            '${it._TEMP_INITIAL_VALUES.property.distanceToFireHydrant ? format.appendUnit(it._TEMP_INITIAL_VALUES.property.distanceToFireHydrant, "") : " "}'
-                        }
-                      },
-                      children: []
-                    },
-                    {
-                      id: '40808340-4da2-4b08-ab38-c0a969562030',
-                      type: '$INPUT',
-                      path: 'property.distanceToFireStation',
-                      dependencies: [],
-                      data: {
-                        component: 'text',
-                        label: 'Fire Station Dist.',
-                        size: '12'
-                      },
-                      formData: {
-                        path: 'property.distanceToFireStation',
-                        metaData: {
-                          target:
-                            '${it._TEMP_INITIAL_VALUES.property.distanceToFireStation ? format.appendUnit(it._TEMP_INITIAL_VALUES.property.distanceToFireStation, ""): " "}'
+                            '${it._TEMP_INITIAL_VALUES.property.constructionType || " "}'
                         }
                       },
                       children: []
@@ -2666,22 +1516,96 @@ const mock = {
                         }
                       },
                       children: []
-                    },
+                    }
+                  ]
+                },
+                {
+                  id: '598d0d15-42dc-4059-ad09-741deda3b502',
+                  type: '$SECTION',
+                  dependencies: [],
+                  data: {
+                    className: 'home-location-right',
+                    size: '6'
+                  },
+                  formData: {},
+                  children: [
                     {
-                      id: '40808340-4da2-5b17-ab383453535',
-                      type: '$INPUT',
-                      path: 'property.yearOfRoof',
+                      id: '44448ce68d-234324324324-33347',
+                      type: '$SECTION',
                       dependencies: [],
                       data: {
-                        component: 'text',
-                        label: 'Year Roof Built',
+                        className: 'form-group labels',
                         size: '12'
                       },
+                      formData: {},
+                      children: [
+                        {
+                          id: '4448ce68d-234324324324-22999',
+                          type: '$LABEL',
+                          dependencies: [],
+                          data: {
+                            text: 'Current'
+                          },
+                          formData: {},
+                          children: []
+                        },
+                        {
+                          id: '4448ce68d-234324324324-22222999',
+                          type: '$LABEL',
+                          dependencies: [],
+                          data: {
+                            text: 'New'
+                          },
+                          formData: {},
+                          children: []
+                        }
+                      ]
+                    },
+                    {
+                      id: '75f752a8-8f5e-4d81-b3f2-228a4462d7dd',
+                      type: '$INPUT',
+                      path: 'property.floodZone',
+                      dependencies: [],
+                      data: {
+                        component: 'select',
+                        label: 'Flood Zone',
+                        size: '12',
+                        dataSource: [
+                          { answer: 'V' },
+                          { answer: 'A' },
+                          { answer: 'B' },
+                          { answer: 'C' },
+                          { answer: 'X' },
+                          { answer: 'U' }
+                        ]
+                      },
                       formData: {
-                        path: 'property.yearOfRoof',
+                        path: 'property.floodZone',
+                        required: true,
                         metaData: {
                           target:
-                            '${it._TEMP_INITIAL_VALUES.property.yearOfRoof || " "}'
+                            '${it._TEMP_INITIAL_VALUES.property.floodZone}'
+                        }
+                      },
+                      children: []
+                    },
+                    {
+                      id: '75f752a8-44465678-4d81-b3f2-55465468788',
+                      type: '$INPUT',
+                      path: 'property.baseFloodElevation',
+                      dependencies: [],
+                      data: {
+                        component: 'select',
+                        label: 'Base Flood Elevation',
+                        size: '12',
+                        dataSource: [{ answer: '1' }]
+                      },
+                      formData: {
+                        path: 'property.baseFloodElevation',
+                        required: true,
+                        metaData: {
+                          target:
+                            '${it._TEMP_INITIAL_VALUES.property.baseFloodElevation || " "}'
                         }
                       },
                       children: []
