@@ -91,21 +91,11 @@ const mock = {
                                   ]
                                 },
                                 {
-                                  label: 'Dwelling Limit',
+                                  label: 'Building Limit',
                                   items: [
                                     {
                                       format: 'currency',
-                                      path: 'coverageLimits.dwelling.amount'
-                                    }
-                                  ]
-                                },
-                                {
-                                  label: 'Other Structures Limit',
-                                  items: [
-                                    {
-                                      format: 'currency',
-                                      path:
-                                        'coverageLimits.otherStructures.amount'
+                                      path: 'coverageLimits.building.amount'
                                     }
                                   ]
                                 },
@@ -116,35 +106,6 @@ const mock = {
                                       format: 'currency',
                                       path:
                                         'coverageLimits.personalProperty.amount'
-                                    }
-                                  ]
-                                },
-                                {
-                                  label: 'Loss of Use Limit',
-                                  items: [
-                                    {
-                                      format: 'currency',
-                                      path: 'coverageLimits.lossOfUse.amount'
-                                    }
-                                  ]
-                                },
-                                {
-                                  label: 'Personal Liability Limit',
-                                  items: [
-                                    {
-                                      format: 'currency',
-                                      path:
-                                        'coverageLimits.personalLiability.amount'
-                                    }
-                                  ]
-                                },
-                                {
-                                  label: 'Medical Payments to Others Limit',
-                                  items: [
-                                    {
-                                      format: 'currency',
-                                      path:
-                                        'coverageLimits.medicalPayments.amount'
                                     }
                                   ]
                                 }
@@ -186,71 +147,21 @@ const mock = {
                                   ]
                                 },
                                 {
-                                  label: 'Mold Property Limit',
-                                  items: [
-                                    {
-                                      format: 'currency',
-                                      path: 'coverageLimits.moldProperty.amount'
-                                    }
-                                  ]
-                                },
-                                {
-                                  label: 'Mold Liability Limit',
+                                  label: 'Increased Cost of Compliance Limit',
                                   items: [
                                     {
                                       format: 'currency',
                                       path:
-                                        'coverageLimits.moldLiability.amount'
+                                        'coverageLimits.indreasedCostOfCompliance.amount'
                                     }
                                   ]
                                 },
                                 {
-                                  label: 'Personal Property Repl Cost',
+                                  label: 'Loss of Use Limit',
                                   items: [
                                     {
-                                      format: 'bool',
-                                      path:
-                                        'coverageOptions.personalPropertyReplacementCost.answer'
-                                    }
-                                  ]
-                                },
-                                {
-                                  label: 'Ordinance or Law Coverage Limit',
-                                  items: [
-                                    {
-                                      format: 'percent',
-                                      path:
-                                        'coverageLimits.ordinanceOrLaw.amount'
-                                    }
-                                  ]
-                                },
-                                {
-                                  label: 'Incidental Occ Main',
-                                  items: [
-                                    {
-                                      format: 'bool',
-                                      path:
-                                        'coverageOptions.propertyIncidentalOccupanciesMainDwelling.answer'
-                                    }
-                                  ]
-                                },
-                                {
-                                  label: 'Incidental Occ Other',
-                                  items: [
-                                    {
-                                      format: 'bool',
-                                      path:
-                                        'coverageOptions.propertyIncidentalOccupanciesOtherStructures.answer'
-                                    }
-                                  ]
-                                },
-                                {
-                                  label: 'Incidental Occ Liability',
-                                  items: [
-                                    {
-                                      format: 'bool',
-                                      path:
-                                        'coverageOptions.liabilityIncidentalOccupancies.answer'
+                                      format: 'currency',
+                                      path: 'coverageLimits.lossOfUse.amount'
                                     }
                                   ]
                                 }
@@ -281,7 +192,7 @@ const mock = {
                               className: 'coverage',
                               details: [
                                 {
-                                  label: 'Discount/Surcharge',
+                                  label: 'Coverage Limits',
                                   items: [
                                     {
                                       format: 'conditionalValue',
@@ -292,82 +203,12 @@ const mock = {
                                   ]
                                 },
                                 {
-                                  label: 'Townhouse/Rowhouse',
+                                  label: 'Personal Property Repl Cost',
                                   items: [
                                     {
                                       format: 'bool',
-                                      path: 'property.townhouseRowhouse'
-                                    }
-                                  ]
-                                },
-                                {
-                                  label: 'Property Ever Rented',
-                                  items: [
-                                    {
-                                      format: 'conditionalBool',
-                                      path: 'underwritingAnswers.rented.answer',
-                                      conditions: ['Yes']
-                                    }
-                                  ]
-                                },
-                                {
-                                  label: 'Seasonally Occupied',
-                                  items: [
-                                    {
-                                      format: 'conditionalBool',
                                       path:
-                                        'underwritingAnswers.monthsOccupied.answer',
-                                      conditions: ['0-3', '4-6']
-                                    }
-                                  ]
-                                },
-                                {
-                                  label: 'No Prior Insurance',
-                                  items: [
-                                    {
-                                      format: 'conditionalBool',
-                                      path:
-                                        'underwritingAnswers.noPriorInsuranceSurcharge.answer',
-                                      conditions: ['Yes']
-                                    }
-                                  ]
-                                },
-                                {
-                                  label: 'Burglar Alarm',
-                                  items: [
-                                    {
-                                      format: 'bool',
-                                      path: 'property.burglarAlarm'
-                                    }
-                                  ]
-                                },
-                                {
-                                  label: 'Fire Alarm',
-                                  items: [
-                                    {
-                                      format: 'bool',
-                                      path: 'property.fireAlarm'
-                                    }
-                                  ]
-                                },
-                                {
-                                  label: 'Sprinkler',
-                                  items: [
-                                    {
-                                      format: 'conditionalValue',
-                                      path: 'property.sprinkler',
-                                      conditions: ['N'],
-                                      defaultValue: 'No'
-                                    }
-                                  ]
-                                },
-                                {
-                                  label: 'Wind Mit Factor',
-                                  items: [
-                                    {
-                                      format: '',
-                                      path:
-                                        'rating.worksheet.elements.windMitigationFactors.windMitigationDiscount'
+                                        'coverageOptions.personalPropertyReplacementCost.answer'
                                     }
                                   ]
                                 }
@@ -420,31 +261,21 @@ const mock = {
                                   ]
                                 },
                                 {
-                                  label: 'All Other Perils',
+                                  label: 'Building',
                                   items: [
                                     {
                                       format: 'currency',
-                                      path: 'deductibles.allOtherPerils.amount'
+                                      path: 'deductibles.building.amount'
                                     }
                                   ]
                                 },
                                 {
-                                  label: 'Hurricane',
+                                  label: 'Personal Property',
                                   items: [
                                     {
-                                      format: 'percent',
-                                      path: 'deductibles.hurricane.amount'
-                                    }
-                                  ]
-                                },
-                                {
-                                  label: 'Sinkhole',
-                                  items: [
-                                    {
-                                      format: 'conditionalPercent',
-                                      path: 'deductibles.sinkhole.amount',
-                                      conditions: [''],
-                                      defaultValue: 'No'
+                                      format: 'currency',
+                                      path:
+                                        'deductibles.personalPropertyReplacementCost.amount'
                                     }
                                   ]
                                 }
@@ -507,7 +338,7 @@ const mock = {
                                   label: 'Balance Due',
                                   items: [
                                     {
-                                      format: 'currency',
+                                      format: 'currencyDecimals',
                                       path:
                                         'summaryLedger.balance.$numberDecimal'
                                     }
