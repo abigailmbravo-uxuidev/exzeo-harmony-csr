@@ -102,7 +102,7 @@ describe('BulkPayments testing', () => {
 
     expect(
       await waitForElement(() => [
-        document.querySelector('.error-message'),
+        document.querySelector('.error-messageuuu'),
         getByText('Resource Not Found')
       ])
     );

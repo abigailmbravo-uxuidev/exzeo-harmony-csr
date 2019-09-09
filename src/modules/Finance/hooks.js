@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 
 import { getPaymentOptions, getPolicy } from './data';
 
-export const useFetchPaymentOptions = () => {
+export const useFetchPaymentOptions = errorHandler => {
   const [cashTypes, setCashTypes] = useState([]);
   const [loaded, setLoaded] = useState(false);
   useEffect(() => {
@@ -21,14 +21,14 @@ export const useFetchPaymentOptions = () => {
 
         setCashTypes(answers);
       } catch (error) {
-        console.error('Error fetching Payment Options: ', error);
+        return errorHandler(error);
       } finally {
         setLoaded(true);
       }
     };
 
     fetchPaymentOptions();
-  }, []);
+  }, [errorHandler]);
 
   return { cashTypes, loaded };
 };
