@@ -30,7 +30,7 @@ const BulkPayments = ({ errorHandler }) => {
   const [batchResults, setBatchResults] = useState([]);
   const [active, setActive] = useState(false);
   const [batch, setBatch] = useState({ valid: false, values: {} });
-  const { cashTypes } = useFetchPaymentOptions();
+  const { cashTypes } = useFetchPaymentOptions(errorHandler);
 
   const initialValues = {
     batchNumber: date.currentDay('YYYYMMDD'),

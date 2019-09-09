@@ -7,6 +7,7 @@ import {
   Currency,
   Input,
   validation,
+  OnBlurListener,
   SectionLoader
 } from '@exzeo/core-ui';
 
@@ -149,16 +150,23 @@ const PaymentForm = ({
             <div className="fade-in view-grid">
               <Field name="policyNumber" validate={validation.isRequired}>
                 {({ input, meta }) => (
-                  <Input
-                    input={input}
-                    meta={meta}
-                    label="Policy Number"
-                    styleName="input view-col-4"
-                    placeholder="Enter Complete Policy Number"
-                    dataTest="policyNumber"
-                    disabled={!active}
-                    onBlur={() => handlePolicySearch(input.value, form.reset)}
-                  />
+                  <Fragment>
+                    <Input
+                      input={input}
+                      meta={meta}
+                      label="Policy Number"
+                      styleName="input view-col-4"
+                      placeholder="Enter Complete Policy Number"
+                      dataTest="policyNumber"
+                      disabled={!active}
+                      onBlur={() => handlePolicySearch(input.value, form.reset)}
+                    />
+                    <OnBlurListener name="policyNumber">
+                      {() => {
+                        handlePolicySearch(input.value, form.reset);
+                      }}
+                    </OnBlurListener>
+                  </Fragment>
                 )}
               </Field>
               <button
