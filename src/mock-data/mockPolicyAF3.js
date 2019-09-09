@@ -1031,18 +1031,18 @@ const mock = {
               formData: {},
               children: []
             },
-            {
-              id: 44895439847239848,
-              type: '$ENDORSEMENTS_WATCHER',
-              dependencies: [],
-              data: {
-                extendedProperties: {
-                  subscribe: true
-                }
-              },
-              formData: {},
-              children: []
-            },
+            // {
+            //   id: 44895439847239848,
+            //   type: '$ENDORSEMENTS_WATCHER',
+            //   dependencies: [],
+            //   data: {
+            //     extendedProperties: {
+            //       subscribe: true
+            //     }
+            //   },
+            //   formData: {},
+            //   children: []
+            // },
             {
               id: '5435535-fdsfdsf-234324324324-sss',
               type: '$SECTION',
