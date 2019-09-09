@@ -152,7 +152,7 @@ const mock = {
                                     {
                                       format: 'currency',
                                       path:
-                                        'coverageLimits.indreasedCostOfCompliance.amount'
+                                        'coverageLimits.increasedCompliance.value'
                                     }
                                   ]
                                 },
@@ -265,7 +265,8 @@ const mock = {
                                   items: [
                                     {
                                       format: 'currency',
-                                      path: 'deductibles.building.amount'
+                                      path:
+                                        'deductibles.buildingDeductible.value'
                                     }
                                   ]
                                 },
@@ -275,7 +276,7 @@ const mock = {
                                     {
                                       format: 'currency',
                                       path:
-                                        'deductibles.personalPropertyReplacementCost.amount'
+                                        'deductibles.personalPropertyDeductible.value'
                                     }
                                   ]
                                 }
@@ -1163,26 +1164,29 @@ const mock = {
                     {
                       id: '498ce68d-839c-4a49-bbf2-92fcc275da49',
                       type: '$INPUT',
-                      path: 'deductibles.building.value',
+                      path: 'deductibles.buildingDeductible.value',
                       dependencies: [],
                       data: {
                         component: 'selectInteger',
                         label: 'Building Deductible',
                         dataSource: [
                           { label: '$ 1,000', answer: 1000 },
-                          { label: '$ 2,000', answer: 2000 }
+                          { label: '$ 2,000', answer: 2000 },
+                          { label: '$ 3,000', answer: 3000 },
+                          { label: '$ 4,000', answer: 4000 },
+                          { label: '$ 5,000', answer: 5000 }
                         ],
                         extendedProperties: {
                           output: 'initial'
                         }
                       },
                       formData: {
-                        path: 'deductibles.building.value',
+                        path: 'deductibles.buildingDeductible.value',
                         type: 'integer',
                         required: true,
                         metaData: {
                           target:
-                            '${format.toCurrency(it._TEMP_INITIAL_VALUES.deductibles.building.amount)}'
+                            '${format.toCurrency(it._TEMP_INITIAL_VALUES.deductibles.buildingDeductible.value)}'
                         }
                       },
                       children: []
@@ -1190,27 +1194,29 @@ const mock = {
                     {
                       id: '498ce68d-839c-4a49-bbf2-455427875685',
                       type: '$INPUT',
-                      path: 'deductibles.personalPropertyReplacementCost.value',
+                      path: 'deductibles.personalPropertyDeductible.value',
                       dependencies: [],
                       data: {
                         component: 'selectInteger',
                         label: 'Personal Property Deductible',
                         dataSource: [
                           { label: '$ 1,000', answer: 1000 },
-                          { label: '$ 2,000', answer: 2000 }
+                          { label: '$ 2,000', answer: 2000 },
+                          { label: '$ 3,000', answer: 3000 },
+                          { label: '$ 4,000', answer: 4000 },
+                          { label: '$ 5,000', answer: 5000 }
                         ],
                         extendedProperties: {
                           output: 'initial'
                         }
                       },
                       formData: {
-                        path:
-                          'deductibles.personalPropertyReplacementCost.value',
+                        path: 'deductibles.personalPropertyDeductible.value',
                         type: 'integer',
                         required: true,
                         metaData: {
                           target:
-                            '${format.toCurrency(it._TEMP_INITIAL_VALUES.deductibles.personalPropertyReplacementCost.amount)}'
+                            '${format.toCurrency(it._TEMP_INITIAL_VALUES.deductibles.personalPropertyDeductible.value)}'
                         }
                       },
                       children: []
@@ -1293,7 +1299,7 @@ const mock = {
                     {
                       id: '398ce444467768d-839c-4a490890-cc275da53',
                       type: '$INPUT',
-                      path: 'coverageLimits.increasedCostOfCompliance.amount',
+                      path: 'coverageLimits.increasedCompliance.value',
                       dependencies: [],
                       data: {
                         disabled: true,
@@ -1302,12 +1308,12 @@ const mock = {
                         extendedProperties: { output: 'initial' }
                       },
                       formData: {
-                        path: 'coverageLimits.increasedCostOfCompliance.amount',
+                        path: 'coverageLimits.increasedCompliance.value',
                         type: 'integer',
                         required: true,
                         metaData: {
                           target:
-                            '${format.toCurrency(it._TEMP_INITIAL_VALUES.coverageLimits.increasedCostOfCompliance.amount)}'
+                            '${format.toCurrency(it._TEMP_INITIAL_VALUES.coverageLimits.increasedCompliance.value)}'
                         }
                       },
                       children: []
