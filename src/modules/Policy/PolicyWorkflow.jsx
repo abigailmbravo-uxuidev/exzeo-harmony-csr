@@ -54,7 +54,9 @@ import ReinstatePolicyModal from './ReinstatePolicyModal';
 
 // TODO these will be removed in subsequent PR's
 import { startWorkflow, completeTask } from '../../utilities/cg';
-import MOCK_CONFIG_DATA from '../../mock-data/mockPolicyHO3';
+import MOCK_HO3 from '../../mock-data/mockPolicyHO3';
+import MOCK_AF3 from '../../mock-data/mockPolicyAF3';
+
 import EndorsementsMenu from './EndorsementsMenu';
 import EndorsementsWatcher from './EndorsementsWatcher';
 import PreviousEndorsements from './PreviousEndorsements';
@@ -79,6 +81,11 @@ const TEMPLATES = {
 };
 
 const FORM_ID = 'PolicyWorkflowCSR';
+
+const TEMPLATES = {
+  AF3: MOCK_AF3,
+  HO3: MOCK_HO3
+};
 
 export class PolicyWorkflow extends React.Component {
   state = {
@@ -121,10 +128,8 @@ export class PolicyWorkflow extends React.Component {
 
     initializePolicyWorkflow(policyNumber);
     getEnumsForPolicyWorkflow({ policyNumber });
-    this.getTemplate();
   }
 
-  // Temp fix for quote not being in state when component mounts on refresh (mostly a development time problem)
   componentDidUpdate(prevProps) {
     const { policy } = this.props;
     const { policy: prevPolicy } = prevProps;
@@ -135,26 +140,23 @@ export class PolicyWorkflow extends React.Component {
 
   getTemplate = async () => {
     const { policy } = this.props;
-    // const { userProfile: { entity: { companyCode, state }} } = this.props;
-
     // const transferConfig = {
     //   exchangeName: 'harmony',
     //   routingKey:  'harmony.policy.retrieveDocumentTemplate',
     //   data: {
     //     companyCode,
     //     state,
-    //     product: 'HO3',
+    //     product: 'AF3',
     //     application: 'CSR',
-    //     formName: 'quoteModel',
+    //     formName: 'policyModel',
     //     version: date.formattedDate(undefined, date.FORMATS.SECONDARY)
     //   }
     // };
 
     // const response = await serviceRunner.callService(transferConfig, 'retrieveDocumentTemplate');
     const { product } = policy;
-    if (product) {
-      this.setState(() => ({ gandalfTemplate: TEMPLATES[product] }));
-    }
+    console.log(policy);
+    this.setState(() => ({ gandalfTemplate: TEMPLATES[product] }));
   };
 
   handleGandalfSubmit = async values => {
