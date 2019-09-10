@@ -119,6 +119,16 @@ const QuoteSearch = ({
       />
       )
       <ResetButton reset={reset} />
+      <Button
+        className={Button.constants.classNames.success}
+        customClass="multi-input"
+        type="submit"
+        disabled={submitting}
+        data-test="submit"
+      >
+        <i className="fa fa-search" />
+        Search
+      </Button>
     </div>
     {!!search.results.length && search.totalPages > 1 && (
       <Pagination
