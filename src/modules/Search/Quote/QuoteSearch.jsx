@@ -5,6 +5,7 @@ import { Input, Select, Button, validation } from '@exzeo/core-ui';
 
 import { getAnswers } from '../../../utilities/forms';
 import Pagination from '../components/Pagination';
+import ResetButton from '../components/ResetButton';
 import { productAnswers } from '../constants';
 
 const {
@@ -21,7 +22,8 @@ const QuoteSearch = ({
   handlePagination,
   search,
   changeSearchType,
-  searchTypeOptions
+  searchTypeOptions,
+  reset
 }) => (
   <React.Fragment>
     <div className="form-group search-context">
@@ -100,17 +102,7 @@ const QuoteSearch = ({
           styleName="product-search"
         />
       )}
-
-      <Button
-        className={Button.constants.classNames.success}
-        customClass="multi-input"
-        type="submit"
-        disabled={submitting}
-        data-test="submit"
-      >
-        <i className="fa fa-search" />
-        Search
-      </Button>
+      <ResetButton reset={reset} />
     </div>
     {!!search.results.length && search.totalPages > 1 && (
       <Pagination

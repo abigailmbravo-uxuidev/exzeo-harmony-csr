@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Field } from 'redux-form';
 import { Input, Button, Select, validation } from '@exzeo/core-ui';
 
+import ResetButton from '../components/ResetButton';
 import { productAnswers } from '../constants';
 
 const { isValidChar, isRequired } = validation;
