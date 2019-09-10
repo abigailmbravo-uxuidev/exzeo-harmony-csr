@@ -15,7 +15,7 @@ const ResetButton = ({ reset }) => (
 );
 
 ResetButton.propTypes = {
-  reset: PropTypes.func
+  reset: PropTypes.func.isRequired
 };
 
 export default ResetButton;

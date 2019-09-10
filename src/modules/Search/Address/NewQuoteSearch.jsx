@@ -3,8 +3,7 @@ import PropTypes from 'prop-types';
 import { Field } from 'redux-form';
 import { Input, Button, Select, validation } from '@exzeo/core-ui';
 
-import ResetButton from '../components/ResetButton';
-import { productAnswers } from '../constants';
+import { companyAnswers, stateAnswers, productAnswers } from '../constants';
 
 const { isValidChar, isRequired } = validation;
 
@@ -31,19 +30,27 @@ const NewQuoteSearch = ({
     </div>
 
     <div className="search-inputs fade-in">
-      {beta && (
-        <Field
-          name="product"
-          dataTest="product"
-          label="Product"
-          component={Select}
-          answers={productAnswers}
-          placeholder="Select..."
-          styleName="product-search"
-          validate={isRequired}
-          errorHint
-        />
-      )}
+      <Field
+        name="companyCode"
+        dataTest="company"
+        label="Company"
+        component={Select}
+        answers={companyAnswers}
+        placeholder="Select..."
+        styleName="company-search"
+      />
+
+      <Field
+        name="product"
+        dataTest="product"
+        label="Product"
+        component={Select}
+        answers={productAnswers}
+        placeholder="Select..."
+        styleName="product-search"
+        validate={isRequired}
+        errorHint
+      />
 
       <Field
         name="address"
@@ -54,6 +61,16 @@ const NewQuoteSearch = ({
         styleName="property-search"
         validate={[isValidChar, isRequired]}
         errorHint
+      />
+
+      <Field
+        name="state"
+        dataTest="state"
+        label="State"
+        component={Select}
+        answers={stateAnswers}
+        placeholder="Select..."
+        styleName="state-search"
       />
 
       <Button

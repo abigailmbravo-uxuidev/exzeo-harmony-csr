@@ -6,7 +6,7 @@ import { Input, Select, Button, validation } from '@exzeo/core-ui';
 import { getAnswers } from '../../../utilities/forms';
 import Pagination from '../components/Pagination';
 import ResetButton from '../components/ResetButton';
-import { productAnswers } from '../constants';
+import { companyAnswers, stateAnswers, productAnswers } from '../constants';
 
 const {
   isValidNameFormat,
@@ -90,18 +90,34 @@ const QuoteSearch = ({
           answers={getAnswers('quoteState', questions)}
         />
       </div>
-
-      {beta && (
-        <Field
-          name="product"
-          dataTest="product"
-          label="Product"
-          component={Select}
-          answers={productAnswers}
-          placeholder="Select..."
-          styleName="product-search"
-        />
-      )}
+      <Field
+        name="state"
+        dataTest="state"
+        label="State"
+        component={Select}
+        answers={stateAnswers}
+        placeholder="Select..."
+        styleName="state-search"
+      />
+      <Field
+        name="companyCode"
+        dataTest="company"
+        label="Company"
+        component={Select}
+        answers={companyAnswers}
+        placeholder="Select..."
+        styleName="company-search"
+      />
+      <Field
+        name="product"
+        dataTest="product"
+        label="Product"
+        component={Select}
+        answers={productAnswers}
+        placeholder="Select..."
+        styleName="product-search"
+      />
+      )
       <ResetButton reset={reset} />
     </div>
     {!!search.results.length && search.totalPages > 1 && (

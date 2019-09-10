@@ -113,6 +113,8 @@ export async function fetchQuotes({
   pageSize,
   sort,
   sortDirection,
+  companyCode,
+  state,
   product
 }) {
   // TODO: the service requires that companyCode and state are included in this query. Hard coding for now.
@@ -120,7 +122,7 @@ export async function fetchQuotes({
   const config = {
     service: 'quote-data',
     method: 'GET',
-    path: `/quotes?companyCode=TTIC&state=FL&product=${product}&quoteNumber=${quoteNumber}&lastName=${lastName}&firstName=${firstName}&propertyAddress=${address}&page=${currentPage}&pageSize=${pageSize}&sort=${sort}&sortDirection=${sortDirection}&quoteState=${quoteState}`
+    path: `/quotes?companyCode=${companyCode}&state=${state}&product=${product}&quoteNumber=${quoteNumber}&lastName=${lastName}&firstName=${firstName}&propertyAddress=${address}&page=${currentPage}&pageSize=${pageSize}&sort=${sort}&sortDirection=${sortDirection}&quoteState=${quoteState}`
   };
 
   try {
@@ -160,13 +162,16 @@ export async function fetchPolicies({
   currentPage,
   pageSize,
   sortBy,
-  sortDirection
+  sortDirection,
+  companyCode,
+  state,
+  product
 }) {
   // TODO: the service requires that companyCode and state are included in this query. Hard coding for now.
   const config = {
     service: 'policy-data',
     method: 'GET',
-    path: `/transactions?companyCode=TTIC&state=FL&policyNumber=${policyNumber}&firstName=${firstName}&lastName=${lastName}&propertyAddress=${address}&page=${currentPage}&pageSize=${pageSize}&sort=${sortBy}&sortDirection=${sortDirection}&effectiveDate=${effectiveDate}&agencyCode=${agencyCode}&status=${policyStatus}`
+    path: `/transactions?companyCode=${companyCode}&state=${state}$product=${product}&policyNumber=${policyNumber}&firstName=${firstName}&lastName=${lastName}&propertyAddress=${address}&page=${currentPage}&pageSize=${pageSize}&sort=${sortBy}&sortDirection=${sortDirection}&effectiveDate=${effectiveDate}&agencyCode=${agencyCode}&status=${policyStatus}`
   };
 
   try {
@@ -465,10 +470,9 @@ export async function handleQuoteSearch(data) {
       pageSize: RESULTS_PAGE_SIZE,
       sort: 'quoteNumber',
       sortDirection: 'desc',
-      //  TODO Currently not being used, keeping here for when C and P are added.
-      product: formatForURI(data.product)
-      // companyCode: DEFAULT_SEARCH_PARAMS.companyCode,
-      // state: DEFAULT_SEARCH_PARAMS.state,
+      product: formatForURI(data.product),
+      companyCode: data.companyCode,
+      state: data.state
     };
 
     const results = await fetchQuotes(searchQuery);
@@ -501,11 +505,10 @@ export async function handlePolicySearch(data) {
       currentPage: setPageNumber(data.currentPage, data.isNext),
       pageSize: RESULTS_PAGE_SIZE,
       sortBy: data.sortBy,
-      sortDirection: data.sortBy === 'policyNumber' ? 'desc' : 'asc'
-
-      //  TODO Currently not being used, keeping here for when C and P are added.
-      // companyCode: DEFAULT_SEARCH_PARAMS.companyCode,
-      // state: DEFAULT_SEARCH_PARAMS.state
+      sortDirection: data.sortBy === 'policyNumber' ? 'desc' : 'asc',
+      product: formatForURI(data.product),
+      companyCode: data.companyCode,
+      state: data.state
     };
 
     const results = await fetchPolicies(searchQuery);
@@ -599,14 +602,13 @@ export function handleSearchSubmit(data, props) {
       const { searchType } = props;
       let searchResults = {};
 
-      // Explicitly adding 'product' to searchResults to track which searches handle the P in CSP
       if (searchType === SEARCH_TYPES.newQuote) {
         searchResults = await handleAddressSearch(data);
-        searchResults.product = data.product || 'HO3';
+        searchResults.product = data.product;
       }
       if (searchType === SEARCH_TYPES.quote) {
         searchResults = await handleQuoteSearch(data);
-        searchResults.product = data.product || 'HO3';
+        searchResults.product = data.product;
       }
       if (searchType === SEARCH_TYPES.policy) {
         searchResults = await handlePolicySearch(data);

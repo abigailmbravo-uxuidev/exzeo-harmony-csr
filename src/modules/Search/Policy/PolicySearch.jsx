@@ -20,6 +20,7 @@ import { getAnswers } from '../../../utilities/forms';
 import { STANDARD_DATE_FORMAT } from '../../../constants/dates';
 import Pagination from '../components/Pagination';
 import ResetButton from '../components/ResetButton';
+import { companyAnswers, stateAnswers, productAnswers } from '../constants';
 
 const {
   isValidNameFormat,
@@ -46,7 +47,8 @@ const PolicySearch = ({
   handlePagination,
   search,
   changeSearchType,
-  searchTypeOptions
+  searchTypeOptions,
+  reset
 }) => {
   return (
     <React.Fragment>
@@ -105,6 +107,34 @@ const PolicySearch = ({
           validate={isNumberDashOnly}
           errorHint
         />
+        <Field
+          name="state"
+          dataTest="state"
+          label="State"
+          component={Select}
+          answers={stateAnswers}
+          placeholder="Select..."
+          styleName="state-search"
+        />
+        <Field
+          name="companyCode"
+          dataTest="company"
+          label="Company"
+          component={Select}
+          answers={companyAnswers}
+          placeholder="Select..."
+          styleName="company-search"
+        />
+        <Field
+          name="product"
+          dataTest="product"
+          label="Product"
+          component={Select}
+          answers={productAnswers}
+          placeholder="Select..."
+          styleName="product-search"
+        />
+        <ResetButton reset={reset} />
         <Button
           className={Button.constants.classNames.success}
           customClass="multi-input"
