@@ -138,12 +138,14 @@ export class NoteUploader extends Component {
 
     const idToken = localStorage.getItem('id_token');
 
+    const { companyCode, state, product } = props;
+
     this.uppy = new Uppy({
       autoProceed: false,
       restrictions: {
         maxFileSize: process.env.REACT_APP_REQUEST_SIZE.slice(0, -2) * 1000000
       },
-      meta: { documentId: this.props.documentId },
+      meta: { documentId: this.props.documentId, companyCode, state, product },
       onBeforeFileAdded: this.validateFile,
       onBeforeUpload: this.validateUpload
     }).use(XHRUpload, {
