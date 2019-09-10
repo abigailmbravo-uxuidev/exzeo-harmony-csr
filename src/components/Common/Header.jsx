@@ -46,6 +46,14 @@ const Header = props => (
         >
           Agency
         </NavLink>
+        <NavLink
+          activeClassName="active"
+          exact
+          to="/finance/payments"
+          data-test="bulk-payments-link"
+        >
+          Finance
+        </NavLink>
         <NavLink activeClassName="active" exact to="/" data-test="policy-link">
           Policy
         </NavLink>

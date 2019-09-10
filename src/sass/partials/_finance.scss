@@ -1,0 +1,275 @@
+.content-wrapper {
+  &.finance {
+    .scroll {
+      display: flex;
+      overflow-x: hidden;
+      overflow-y: auto;
+      flex-direction: column;
+      flex-grow: 1;
+      flex-shrink: 1;
+      flex-wrap: nowrap;
+      padding: $padding;
+
+      section {
+        border-bottom: 1px dashed $bright-blue-darken-03;
+
+        &.section-payment {
+          z-index: 6;
+
+          .form-group {
+            margin-bottom: 0;
+          }
+        }
+
+        &.section-policy {
+          z-index: 5;
+        }
+
+        &.section-payment-list {
+          z-index: 1;
+          display: flex;
+          flex-wrap: wrap;
+          border-bottom-width: 0;
+
+          .form-group {
+            width: auto;
+
+            label {
+              margin-bottom: $padding/2;
+            }
+          }
+
+          .payment-table {
+            width: 100%;
+
+            span {
+              flex-grow: 0;
+              flex-shrink: 0;
+
+              &.policy-number {
+                width: 12rem;
+              }
+              &.policyholder {
+                flex-grow: 1;
+                flex-shrink: 1;
+              }
+              &.amount {
+                width: 6rem;
+                text-align: right;
+              }
+              &.footer-label {
+                flex-grow: 1;
+                flex-shrink: 1;
+                text-align: right;
+              }
+            }
+
+            .table-header {
+              display: flex;
+              padding: ($padding / 2) $padding;
+              background: $warm-gray-02;
+
+              span {
+                font-weight: $font-weight-bold;
+              }
+            }
+            .table-row {
+              display: flex;
+              padding: ($padding / 2) $padding;
+              border-bottom: 1px dotted $warm-gray-02;
+
+              &:nth-of-type(odd) {
+                background: $warm-gray-01;
+              }
+            }
+            .table-footer {
+              display: flex;
+              padding: ($padding / 2) $padding;
+              border-top: 2px solid $warm-gray-08;
+              background: rgba($yellow-darken-01, 0.2);
+
+              .amount {
+                font-weight: $font-weight-bold;
+              }
+            }
+          }
+        }
+
+        form {
+          &#payment-form {
+            padding: 0 $padding;
+
+            .view-grid {
+              position: relative;
+
+              .clear-policy {
+                position: absolute;
+                top: 2.25rem;
+                right: calc(66% + 0.625rem);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                padding: 0;
+                width: 2rem;
+                height: 1.375rem;
+                border-left: 1px solid $warm-gray-02;
+                color: $warm-gray-04;
+                i {
+                  margin: 0;
+                }
+
+                &:hover {
+                  color: $warm-gray-08;
+                  text-decoration: none;
+                }
+
+                &[disabled='disabled'],
+                &:disabled {
+                  &:hover {
+                    color: $warm-gray-04;
+                  }
+                }
+              }
+            }
+          }
+        }
+
+        .title {
+          flex-grow: 0;
+          flex-shrink: 0;
+        }
+
+        .btn-wrapper {
+          display: flex;
+          align-items: flex-start;
+          padding-top: 30px;
+
+          .btn {
+            + .btn {
+              margin-left: $padding;
+            }
+          }
+
+          &.download {
+            justify-content: flex-end;
+            padding-top: $padding * 2;
+          }
+        }
+
+        .results {
+          .card {
+            position: relative;
+            flex-direction: row;
+            justify-content: flex-end;
+            margin: 0;
+
+            &.Cancellation,
+            &.Expired,
+            &.Non-Renewal {
+              .policy-status,
+              .billing-status {
+                color: $red-lighten-01;
+                font-weight: $font-weight-bold;
+              }
+            }
+
+            .component-loader {
+              position: absolute;
+              top: 0;
+              right: 21rem;
+              bottom: 0;
+              left: 0;
+              z-index: 1000;
+              height: auto;
+              background: $white;
+            }
+
+            .error-message {
+              display: flex;
+              align-items: center;
+              flex-grow: 1;
+              flex-shrink: 1;
+              justify-content: center;
+              font-weight: $font-weight-bold;
+            }
+
+            .card-header {
+              display: flex;
+              align-items: center;
+              flex-direction: column;
+              justify-content: center;
+              padding-left: $padding * 4;
+              border-bottom-width: 0;
+              background-color: $white;
+
+              h5 {
+                flex-basis: auto;
+              }
+
+              .icon {
+                margin-bottom: $padding;
+                width: auto;
+                color: $bright-blue-darken-04;
+                font-size: $font-size-h3;
+              }
+            }
+            .card-block {
+              padding: $padding ($padding * 2) $padding $padding;
+              .policy-details,
+              .status {
+                display: flex;
+                justify-content: space-between;
+
+                label {
+                  margin-bottom: 0;
+                  font-size: $font-size-sm;
+                }
+
+                .btn.btn-xs {
+                  padding: 0 0 0 $padding;
+                }
+              }
+
+              .policyholder {
+                display: flex;
+                flex-wrap: wrap;
+                margin: $padding 0;
+                font-weight: $font-weight-bold;
+                font-size: $font-size-h4;
+
+                strong {
+                  margin-right: $padding/2;
+                  color: $bright-blue-darken-04;
+                  text-transform: uppercase;
+                }
+                span {
+                  margin-left: $padding/2;
+                  font-weight: $font-weight-normal;
+                }
+              }
+            }
+            .card-footer {
+              align-content: flex-start;
+              flex-direction: row;
+              margin: $padding 0;
+              width: 21rem;
+              border-top-width: 0;
+              border-left: $card-border-width dotted $card-border-color;
+              background-color: $white;
+
+              .form-group.input {
+                margin-bottom: 0;
+                width: auto;
+              }
+
+              .btn {
+                align-self: flex-start;
+                margin-top: 30px;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

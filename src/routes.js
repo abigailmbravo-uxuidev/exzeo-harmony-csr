@@ -24,6 +24,7 @@ import Bootstrap from './components/Bootstrap';
 import Agency from './modules/Agency';
 import { QuoteLanding, QuoteWorkflow } from './modules/Quote';
 import { PolicyWorkflow } from './modules/Policy';
+import Finance from './modules/Finance';
 
 class Routes extends Component {
   setBackStep = (goToNext, callback) => {
@@ -51,6 +52,7 @@ class Routes extends Component {
   render() {
     const {
       ui: { diary, note, minimizeNote, minimizeDiary },
+      actions: { errorActions },
       auth,
       authState: { userProfile },
       policyState: { policy }
@@ -161,6 +163,16 @@ class Routes extends Component {
               <Route
                 path="/agency/:agencyCode/:branchCode"
                 render={props => <Agency auth={auth} {...props} />}
+              />
+              <Route
+                path="/finance"
+                render={props => (
+                  <Finance
+                    auth={auth}
+                    errorHandler={errorActions.setAppError}
+                    {...props}
+                  />
+                )}
               />
               <Route
                 exact

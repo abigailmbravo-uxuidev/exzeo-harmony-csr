@@ -2,9 +2,9 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Loader, FormSpy, remoteSubmit } from '@exzeo/core-ui';
 import {
+  AgencyAgentSelect,
   getConfigForJsonTransform,
-  Gandalf,
-  AgencyAgentSelect
+  Gandalf
 } from '@exzeo/core-ui/src/@Harmony';
 
 import { defaultMemoize } from 'reselect';
@@ -77,7 +77,7 @@ export class QuoteWorkflow extends React.Component {
     $POLICYHOLDERS: PolicyHolders,
     $APPLICATION: Application,
     $NOTES_FILES: NotesFiles,
-    $AGENCY_SELECT: AgencyAgentSelect
+    $AGENCY_AGENT_SELECT: AgencyAgentSelect
   };
 
   getConfigForJsonTransform = defaultMemoize(getConfigForJsonTransform);
