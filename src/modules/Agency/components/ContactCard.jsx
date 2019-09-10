@@ -54,7 +54,7 @@ export const ContactCard = ({ contact, handleClick, isOfficer }) => (
     <div className="contact-actions">
       <button
         className="btn btn-link btn-sm"
-        dataTest="edit-contact"
+        data-test="edit-contact"
         onClick={handleClick}
       >
         <i className="fa fa-pencil-square" />
