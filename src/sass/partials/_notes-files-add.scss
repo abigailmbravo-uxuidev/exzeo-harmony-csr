@@ -717,6 +717,16 @@
         }
       }
     }
+
+    > div {
+      p {
+        margin-bottom: $padding/4;
+
+        &:last-of-type {
+          margin-bottom: 0;
+        }
+      }
+    }
   }
 }
 
