@@ -38,6 +38,24 @@ export function formatEndorsementData(data, timezone) {
     timezone
   );
 
+  // ensure that the second policyholder is removed if there is no data entered
+  if (
+    calculatedData.policyHolders.length > 1 &&
+    (!calculatedData.policyHolders[1].firstName ||
+      !calculatedData.policyHolders[1].lastName ||
+      !calculatedData.policyHolders[1].emailAddress ||
+      !calculatedData.policyHolders[1].primaryPhoneNumber)
+  ) {
+    calculatedData.policyHolders.pop();
+  }
+  // ensure that we have order and entityType properties set for secondary policyHolder if there is one.
+  if (calculatedData.policyHolders.length > 1) {
+    const order = calculatedData.policyHolders[1].order;
+    const entityType = calculatedData.policyHolders[1].entityType;
+    calculatedData.policyHolders[1].order = order || 1;
+    calculatedData.policyHolders[1].entityType = entityType || 'Person';
+  }
+
   delete calculatedData._TEMP_INITIAL_VALUES;
   delete calculatedData.cancel;
   delete calculatedData.summaryLedger;
