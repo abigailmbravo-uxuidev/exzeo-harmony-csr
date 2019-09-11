@@ -6,7 +6,8 @@ describe('Quote Search', () => {
   it('renders Quote Search', () => {
     const wrapper = shallow(
       <QuoteSearch
-        handlePagination={x => x}
+        handlePagination={jest.fn()}
+        reset={jest.fn()}
         search={{ totalPages: 0, results: [], currentPage: 1 }}
       />
     );
@@ -16,7 +17,8 @@ describe('Quote Search', () => {
   it('renders pagination when there are results', () => {
     const wrapper = shallow(
       <QuoteSearch
-        handlePagination={x => x}
+        handlePagination={jest.fn()}
+        reset={jest.fn()}
         search={{ totalPages: 5, results: [{}], currentPage: 1 }}
       />
     );

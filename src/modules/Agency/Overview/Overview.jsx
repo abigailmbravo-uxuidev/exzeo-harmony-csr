@@ -162,7 +162,18 @@ export class Overview extends React.Component {
                   handleClick={this.onHandleToggleEditContactModal}
                 />
               </section>
-              <h3 data-test="agency-aor">Agent Of Record</h3>
+              <h3 data-test="agency-aor">
+                Agent Of Record
+                <button
+                  className="btn btn-link btn-sm"
+                  onClick={this.onHandleToggleSwitchAgentOfRecordModal(
+                    agentOfRecord.agentCode
+                  )}
+                >
+                  <i className="fa fa-pencil-square" />
+                  Switch AOR
+                </button>
+              </h3>
               <section name="agentOfRecord" className="agency-aor">
                 {agentOfRecord && agentOfRecord.agentCode && (
                   <AgentCard

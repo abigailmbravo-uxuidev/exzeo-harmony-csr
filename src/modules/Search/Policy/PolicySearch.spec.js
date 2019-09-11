@@ -5,9 +5,10 @@ import PolicySearch from './PolicySearch';
 
 describe('Test PolicySearch component', () => {
   const baseProps = {
-    handlePagination: x => x,
-    toggleAdvancedSearch: x => x,
+    handlePagination: jest.fn(),
+    toggleAdvancedSearch: jest.fn(),
     advancedSearch: false,
+    reset: jest.fn(),
     search: { results: [], totalPages: 0, currentPage: 1 },
     submitting: false
   };

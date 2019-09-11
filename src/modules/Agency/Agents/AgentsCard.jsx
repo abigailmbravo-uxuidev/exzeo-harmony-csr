@@ -91,15 +91,17 @@ export const AgentsCard = ({
           </div>
         </div>
         <div className="card-actions">
-          <Button
-            className={Button.constants.classNames.link}
-            size={Button.constants.sizes.small}
-            data-test="switchAOR"
-            onClick={() => handleSwitchAOR(agent.agentCode)}
-          >
-            <i className="fa fa-exchange" />
-            Switch AOR
-          </Button>
+          {String(agency.agentOfRecord) === String(agent.agentCode) && (
+            <Button
+              className={Button.constants.classNames.link}
+              size={Button.constants.sizes.small}
+              data-test="switchAOR"
+              onClick={() => handleSwitchAOR(agent.agentCode)}
+            >
+              <i className="fa fa-exchange" />
+              Switch AOR
+            </Button>
+          )}
           <Button
             className={Button.constants.classNames.link}
             size={Button.constants.sizes.small}

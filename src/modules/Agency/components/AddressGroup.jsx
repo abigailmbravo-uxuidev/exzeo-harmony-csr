@@ -179,7 +179,7 @@ export class AddressGroup extends Component {
               component="input"
               id={this.getFieldPath('sameAsMailing')}
               type="checkbox"
-              dataTest={this.getFieldPath('sameAsMailing')}
+              data-test={this.getFieldPath('sameAsMailing')}
               normalize={this.handleSameAsMailing}
             />
             <label htmlFor={this.getFieldPath('sameAsMailing')}>
@@ -206,7 +206,7 @@ export class AddressGroup extends Component {
               label="Territory Managers"
               name="territoryManagerId"
               styleName="territoryManagerId"
-              dataTest="territoryManager"
+              data-test="territoryManager"
               component={SelectTypeAhead}
               optionValue="_id"
               optionLabel="name"
