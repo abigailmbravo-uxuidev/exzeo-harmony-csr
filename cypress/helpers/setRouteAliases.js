@@ -23,5 +23,7 @@ export const setRouteAliases = () =>
     .as('fetchQuotes')
     .route('POST', '/svc?getZipcodeSettings')
     .as('getZipcodeSettings')
+    .route('POST', '/svc?quoteManager.retrieveQuote')
+    .as('retrieveQuote')
     .route('POST', '/svc?quoteManager.verifyQuote')
     .as('verifyQuote');
