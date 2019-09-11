@@ -127,7 +127,7 @@ const PolicySearch = ({
             component={Select}
             answers={stateAnswers}
             placeholder="Select..."
-            styleName="state-search"
+            styleName="state-search disabled"
           />
 
           <ResetButton reset={reset} />
@@ -140,7 +140,7 @@ const PolicySearch = ({
             component={Select}
             answers={companyAnswers}
             placeholder="Select..."
-            styleName="company-search"
+            styleName="company-search disabled"
           />
           <Field
             name="product"
