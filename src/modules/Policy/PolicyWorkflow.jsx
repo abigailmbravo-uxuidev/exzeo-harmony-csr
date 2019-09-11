@@ -155,7 +155,6 @@ export class PolicyWorkflow extends React.Component {
 
     // const response = await serviceRunner.callService(transferConfig, 'retrieveDocumentTemplate');
     const { product } = policy;
-    console.log(policy);
     this.setState(() => ({ gandalfTemplate: TEMPLATES[product] }));
   };
 
