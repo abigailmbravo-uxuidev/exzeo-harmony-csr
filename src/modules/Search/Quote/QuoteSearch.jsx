@@ -41,7 +41,7 @@ const QuoteSearch = ({
           errorHint
         />
       </div>
-      <div className="form-group sort-by">
+      <div className="form-group sortBy">
         <Field
           name="sortBy"
           dataTest="sortBy"
