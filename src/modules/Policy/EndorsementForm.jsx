@@ -1,5 +1,9 @@
 // @ts-nocheck
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import { FormSpy, Button, date } from '@exzeo/core-ui';
+import { rateEndorsement, formatEndorsementData } from './utilities';
+import CustomNavigationPrompt from '../../components/CustomNavigationPrompt';
+
 import {
   OnChangeListener,
   Form,
@@ -11,12 +15,76 @@ import {
 } from '@exzeo/core-ui';
 
 const EndorsementForm = ({
-  children,
-  handleSubmit,
-  initialValues,
-  hasCalculatedRate,
-  setCalculateRate
+  policyFormData,
+  parentFormInstance,
+  timezone,
+  setAppError,
+  history,
+  handlePrimaryClick
 }) => {
+  let formInstance;
+  const [endorsementState, setCalculateRate] = useState({});
+
+  const { pristine: parentPristine } = parentFormInstance.getState();
+
+  const initialValues = {
+    ...policyFormData,
+    endorsementDate: endorsementState.endorsementDate
+      ? endorsementState.endorsementDate
+      : date.formatDate(policyFormData.effectiveDate, date.FORMATS.SECONDARY),
+    rating: endorsementState.rating,
+    instanceId: endorsementState.instanceId
+  };
+
+  const setFormInstance = form => {
+    formInstance = form;
+  };
+
+  const calculateEndorsementRate = async ({ endorsementDate }) => {
+    const { values: formValues } = parentFormInstance.getState();
+
+    const formattedData = formatEndorsementData(
+      { ...formValues, endorsementDate },
+      timezone
+    );
+
+    const { rating, instanceId } = await rateEndorsement(
+      formattedData,
+      setAppError
+    );
+    if (!rating) return;
+    parentFormInstance.initialize({ ...formValues, rating, instanceId });
+    setCalculateRate({ rating, endorsementDate, instanceId });
+  };
+
+  const resetEndorsementForm = () => {
+    setCalculateRate({});
+    parentFormInstance.initialize(policyFormData);
+    if (formInstance) formInstance.reset();
+  };
+
+  useEffect(() => {
+    if (!parentPristine && endorsementState.rating) {
+      setCalculateRate({ endorsementDate: endorsementState.endorsementDate });
+    }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [parentPristine]);
+
+  const handleSaveEndorsement = async data => {
+    const { values: formValues } = parentFormInstance.getState();
+
+    const endorsementDate = date.formatToUTC(
+      date.formatDate(data.endorsementDate, date.FORMATS.SECONDARY),
+      timezone
+    );
+
+    await handlePrimaryClick({ ...formValues, endorsementDate });
+
+    setTimeout(formInstance.reset);
+    setCalculateRate({});
+  };
+
   const validateEndorsementDate = (...args) => {
     // we shouldn't need to do this, waiting for a patch from redux-form
     if (!initialValues) return undefined;
@@ -33,12 +101,16 @@ const EndorsementForm = ({
     <Form
       keepDirtyOnReinitialize
       initialValues={initialValues}
-      onSubmit={handleSubmit}
+      onSubmit={
+        endorsementState.rating && parentPristine
+          ? handleSaveEndorsement
+          : calculateEndorsementRate
+      }
       subscription={{ submitting: true, pristine: true, values: true }}
     >
-      {({ handleSubmit, submitting, pristine, form, values }) => (
+      {({ handleSubmit, submitting }) => (
         <React.Fragment>
-          {!hasCalculatedRate && submitting && <Loader />}
+          {!endorsementState.rating && submitting && <Loader />}
           <form
             id="EndorsePolicy"
             className="endorse-policy"
@@ -95,12 +167,46 @@ const EndorsementForm = ({
                     />
                   )}
                 </Field>
-                {children({ submitting, pristine })}
+                <FormSpy subscription={{}}>
+                  {({ form }) => {
+                    setFormInstance(form);
+                    return null;
+                  }}
+                </FormSpy>
+                <CustomNavigationPrompt
+                  whenValue={endorsementState.instanceId}
+                  history={history}
+                  confirmNavigationHandler={resetEndorsementForm}
+                />
+                <Button
+                  className={Button.constants.classNames.secondary}
+                  onClick={resetEndorsementForm}
+                  data-test="modal-cancel"
+                >
+                  Cancel
+                </Button>
+                <Button
+                  className={Button.constants.classNames.primary}
+                  type="submit"
+                  disabled={
+                    (parentPristine &&
+                      !endorsementState.hasEndorsementDateChanged &&
+                      !endorsementState.rating) ||
+                    submitting
+                  }
+                  data-test="modal-submit"
+                >
+                  {endorsementState.rating &&
+                  (parentPristine &&
+                    !endorsementState.hasEndorsementDateChanged)
+                    ? 'Save'
+                    : 'Review'}
+                </Button>
               </div>
             </div>
             <OnChangeListener name="endorsementDate">
               {value => {
-                if (hasCalculatedRate) {
+                if (endorsementState.rating) {
                   setCalculateRate({ hasEndorsementDateChanged: true });
                 }
               }}

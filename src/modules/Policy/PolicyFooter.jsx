@@ -2,7 +2,7 @@ import React from 'react';
 import { Button } from '@exzeo/core-ui';
 
 import Footer from '../../components/Common/Footer';
-import EndorsementFooter from './EndorsementFooter';
+import EndorsementForm from './EndorsementForm';
 
 function PolicyFooter({
   isSubmitDisabled,
@@ -18,7 +18,7 @@ function PolicyFooter({
   if (currentStep === 'endorsements') {
     return (
       <React.Fragment>
-        <EndorsementFooter
+        <EndorsementForm
           history={history}
           setAppError={setAppError}
           policyFormData={policyFormData}
