@@ -1,7 +1,7 @@
 // @ts-nocheck
 import React from 'react';
 import {
-  FormSpy,
+  OnChangeListener,
   Form,
   Field,
   Date,
@@ -14,7 +14,8 @@ const EndorsementForm = ({
   children,
   handleSubmit,
   initialValues,
-  hasCalculatedRate
+  hasCalculatedRate,
+  setCalculateRate
 }) => {
   const validateEndorsementDate = (...args) => {
     // we shouldn't need to do this, waiting for a patch from redux-form
@@ -30,11 +31,12 @@ const EndorsementForm = ({
 
   return (
     <Form
+      keepDirtyOnReinitialize
       initialValues={initialValues}
       onSubmit={handleSubmit}
-      subscription={{ submitting: true, pristine: true }}
+      subscription={{ submitting: true, pristine: true, values: true }}
     >
-      {({ handleSubmit, submitting, pristine }) => (
+      {({ handleSubmit, submitting, pristine, form, values }) => (
         <React.Fragment>
           {!hasCalculatedRate && submitting && <Loader />}
           <form
@@ -96,6 +98,13 @@ const EndorsementForm = ({
                 {children({ submitting, pristine })}
               </div>
             </div>
+            <OnChangeListener name="endorsementDate">
+              {value => {
+                if (hasCalculatedRate) {
+                  setCalculateRate({ hasEndorsementDateChanged: true });
+                }
+              }}
+            </OnChangeListener>
           </form>
         </React.Fragment>
       )}

@@ -16,6 +16,7 @@ const EndorsementFooter = ({
   const [endorsementState, setCalculateRate] = useState({});
 
   const { pristine: parentPristine } = parentFormInstance.getState();
+
   const initialValues = {
     ...policyFormData,
     endorsementDate: endorsementState.endorsementDate
@@ -54,8 +55,9 @@ const EndorsementFooter = ({
 
   useEffect(() => {
     if (!parentPristine && endorsementState.rating) {
-      setCalculateRate({});
+      setCalculateRate({ endorsementDate: endorsementState.endorsementDate });
     }
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [parentPristine]);
 
@@ -76,6 +78,7 @@ const EndorsementFooter = ({
   return (
     <EndorsementForm
       hasCalculatedRate={endorsementState.rating}
+      setCalculateRate={setCalculateRate}
       initialValues={initialValues}
       handleSubmit={
         endorsementState.rating && parentPristine
@@ -108,11 +111,17 @@ const EndorsementFooter = ({
             className={Button.constants.classNames.primary}
             type="submit"
             disabled={
-              (parentPristine && !endorsementState.rating) || submitting
+              (parentPristine &&
+                !endorsementState.hasEndorsementDateChanged &&
+                !endorsementState.rating) ||
+              submitting
             }
             data-test="modal-submit"
           >
-            {endorsementState.rating && parentPristine ? 'Save' : 'Review'}
+            {endorsementState.rating &&
+            (parentPristine && !endorsementState.hasEndorsementDateChanged)
+              ? 'Save'
+              : 'Review'}
           </Button>
         </React.Fragment>
       )}
