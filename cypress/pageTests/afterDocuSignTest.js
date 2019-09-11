@@ -1,11 +1,16 @@
 const aiButtons = [
-  'mortgagee', 'additionalInsured', 'additionalInterest',
-  'premiumFinance', 'billPayer'
+  'mortgagee',
+  'additionalInsured',
+  'additionalInterest',
+  'premiumFinance',
+  'billPayer'
 ];
 
 export default () =>
-  cy.goToNav('additionalInterests')
+  cy
+    .goToNav('additionalInterests')
     .wait(20000)
     .reload()
     .checkQuoteState('Application Sent DocuSign')
-    .wrap(aiButtons).each(button => cy.get(`[data-test=${button}]`).should('be.disabled'));
+    .wrap(aiButtons)
+    .each(button => cy.get(`[data-test=${button}]`).should('be.disabled'));
