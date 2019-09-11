@@ -40,19 +40,51 @@
 
       .search-input-wrapper {
         display: flex;
-        align-items: flex-end;
         flex-grow: 1;
         flex-shrink: 1;
         flex-wrap: nowrap;
-        padding: $padding ($padding * 2);
+        padding: 0;
         height: auto;
         border-bottom: 2px solid $white;
         background-color: $warm-gray-10;
+
+        .search-context-sort {
+          display: flex;
+          flex-direction: column;
+          flex-grow: 0;
+          flex-shrink: 0;
+          padding: $padding $padding $padding ($padding * 2);
+          padding-right: $padding;
+          width: 12rem;
+          background: rgba($black, 0.2);
+
+          > .form-group {
+            &.search-context {
+              margin: 0 0 $padding 0;
+            }
+          }
+        }
 
         .search-inputs {
           display: flex;
           align-self: flex-start;
           flex-grow: 1;
+          flex-shrink: 1;
+          flex-wrap: wrap;
+          padding: $padding ($padding * 2) $padding $padding;
+
+          .search-input-row {
+            display: flex;
+            flex-grow: 0;
+            flex-shrink: 0;
+            width: 100%;
+
+            &.margin {
+              &.bottom {
+                margin-bottom: $padding;
+              }
+            }
+          }
 
           .form-group {
             position: relative;
@@ -85,6 +117,14 @@
             flex-grow: 0;
             flex-shrink: 0;
             margin-top: 1.25rem;
+
+            &.btn-reset {
+              display: flex;
+              align-items: center;
+              flex-direction: column;
+              margin-top: 0;
+              padding: 0;
+            }
           }
 
           .input-wrapper {
@@ -187,12 +227,24 @@
             }
           }
 
+          &.disabled {
+            label {
+              color: rgba($yellow-lighten-05, 0.6);
+            }
+            input,
+            select {
+              border-color: rgba($warm-gray-06, 0.6) !important;
+              background-color: rgba($input-bg-disabled, 0.4) !important;
+              cursor: not-allowed;
+            }
+          }
+
           &.search-context {
             align-self: flex-start;
             flex-grow: 0;
             flex-shrink: 0;
             margin-right: $padding;
-            width: 12rem;
+            width: 100%;
 
             select {
               width: 100%;
@@ -245,7 +297,6 @@
             flex-grow: 1;
             flex-shrink: 1;
             margin-right: $padding;
-            width: auto;
           }
 
           &.policy-no-search {
@@ -281,6 +332,32 @@
             flex-shrink: 0;
             margin-right: $padding;
             width: 10rem;
+          }
+
+          &.state-search {
+            flex-grow: 0;
+            flex-shrink: 0;
+            margin-right: $padding;
+            width: 6rem;
+
+            select {
+              width: 100%;
+              height: 2.375rem;
+              background: $white;
+            }
+          }
+
+          &.company-search {
+            flex-grow: 0;
+            flex-shrink: 0;
+            margin-right: $padding;
+            width: 6rem;
+
+            select {
+              width: 100%;
+              height: 2.375rem;
+              background: $white;
+            }
           }
 
           &.zip-search {
@@ -365,37 +442,6 @@
           &.multi-input {
             border-top-left-radius: 0.25rem;
             border-bottom-left-radius: 0.25rem;
-          }
-
-          &.advanced-search-btn {
-            display: flex;
-            align-items: center;
-            flex-grow: 0;
-            flex-shrink: 0;
-            justify-content: center;
-            margin: ($padding * 3) 0 0 $padding;
-            padding: 0;
-            width: 2rem;
-            height: 2rem;
-            border-radius: 50%;
-
-            @include button-variant(
-              $bright-blue-darken-03,
-              $warm-gray-01,
-              $warm-gray-01
-            );
-
-            &:hover {
-              @include button-variant(
-                $bright-blue-darken-04,
-                $warm-gray-00,
-                $warm-gray-00
-              );
-            }
-
-            > i {
-              margin-right: 0;
-            }
           }
         }
       }

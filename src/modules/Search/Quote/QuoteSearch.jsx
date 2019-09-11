@@ -26,109 +26,124 @@ const QuoteSearch = ({
   reset
 }) => (
   <React.Fragment>
-    <div className="form-group search-context">
-      <Field
-        name="searchType"
-        dataTest="searchType"
-        label="Search Context"
-        component={Select}
-        id="searchType"
-        validate={isRequired}
-        onChange={changeSearchType}
-        answers={searchTypeOptions}
-        showPlaceholder={false}
-        errorHint
-      />
-    </div>
-    <div className="search-inputs fade-in">
-      <Field
-        name="firstName"
-        dataTest="firstName"
-        label="First Name"
-        placeholder="First Name Search"
-        component={Input}
-        styleName="first-name-search"
-        validate={isValidNameFormat}
-        errorHint
-      />
-      <Field
-        name="lastName"
-        dataTest="lastName"
-        label="Last Name"
-        placeholder="Last Name Search"
-        component={Input}
-        styleName="last-name-search"
-        validate={isValidNameFormat}
-        errorHint
-      />
-      <Field
-        name="address"
-        dataTest="address"
-        label="Property Street Address"
-        placeholder="Property Street Address Search"
-        component={Input}
-        styleName="property-search"
-        validate={isValidChar}
-        errorHint
-      />
-      <Field
-        name="quoteNumber"
-        dataTest="quoteNumber"
-        label="Quote Number"
-        placeholder="Quote No Search"
-        component={Input}
-        styleName="quote-no-search"
-        validate={isNumberDashOnly}
-        errorHint
-      />
-      <div className="form-group quote-state">
+    <div className="search-context-sort">
+      <div className="form-group search-context">
         <Field
-          name="quoteState"
-          dataTest="quoteState"
-          label="Quote Status"
+          name="searchType"
+          dataTest="searchType"
+          label="Search Context"
           component={Select}
-          answers={getAnswers('quoteState', questions)}
+          id="searchType"
+          validate={isRequired}
+          onChange={changeSearchType}
+          answers={searchTypeOptions}
+          showPlaceholder={false}
+          errorHint
         />
       </div>
-      <Field
-        name="state"
-        dataTest="state"
-        label="State"
-        component={Select}
-        answers={stateAnswers}
-        placeholder="Select..."
-        styleName="state-search"
-      />
-      <Field
-        name="companyCode"
-        dataTest="company"
-        label="Company"
-        component={Select}
-        answers={companyAnswers}
-        placeholder="Select..."
-        styleName="company-search"
-      />
-      <Field
-        name="product"
-        dataTest="product"
-        label="Product"
-        component={Select}
-        answers={productAnswers}
-        placeholder="Select..."
-        styleName="product-search"
-      />
-      )
-      <ResetButton reset={reset} />
-      <Button
-        className={Button.constants.classNames.success}
-        customClass="multi-input"
-        type="submit"
-        disabled={submitting}
-        data-test="submit"
-      >
-        <i className="fa fa-search" />
-        Search
-      </Button>
+      <div className="form-group search-context">
+        <Field
+          name="sortBy"
+          dataTest="sortBy"
+          label="Sort By"
+          component={Select}
+          id="sort"
+          errorHint
+        />
+      </div>
+    </div>
+    <div className="search-inputs fade-in">
+      <div className="search-input-row margin bottom">
+        <Field
+          name="quoteNumber"
+          dataTest="quoteNumber"
+          label="Quote Number"
+          placeholder="Quote No Search"
+          component={Input}
+          styleName="quote-no-search"
+          validate={isNumberDashOnly}
+          errorHint
+        />
+        <Field
+          name="firstName"
+          dataTest="firstName"
+          label="First Name"
+          placeholder="First Name Search"
+          component={Input}
+          styleName="first-name-search"
+          validate={isValidNameFormat}
+          errorHint
+        />
+        <Field
+          name="lastName"
+          dataTest="lastName"
+          label="Last Name"
+          placeholder="Last Name Search"
+          component={Input}
+          styleName="last-name-search"
+          validate={isValidNameFormat}
+          errorHint
+        />
+        <Field
+          name="address"
+          dataTest="address"
+          label="Property Street Address"
+          placeholder="Property Street Address Search"
+          component={Input}
+          styleName="property-search"
+          validate={isValidChar}
+          errorHint
+        />
+        <Field
+          name="state"
+          dataTest="state"
+          label="State"
+          component={Select}
+          answers={stateAnswers}
+          placeholder="Select..."
+          styleName="state-search disabled"
+        />
+        <ResetButton reset={reset} />
+      </div>
+      <div className="search-input-row">
+        <Field
+          name="companyCode"
+          dataTest="company"
+          label="Company"
+          component={Select}
+          answers={companyAnswers}
+          placeholder="Select..."
+          styleName="company-search disabled"
+        />
+        <Field
+          name="product"
+          dataTest="product"
+          label="Product"
+          component={Select}
+          answers={productAnswers}
+          placeholder="Select..."
+          styleName="product-search"
+        />
+        <div className="form-group quote-state">
+          <Field
+            name="quoteState"
+            dataTest="quoteState"
+            label="Quote Status"
+            component={Select}
+            answers={getAnswers('quoteState', questions)}
+          />
+        </div>
+        <Button
+          className={Button.constants.classNames.success}
+          customClass="multi-input"
+          type="submit"
+          disabled={submitting}
+          data-test="submit"
+        >
+          <i className="fa fa-search" />
+          Search
+        </Button>
+      </div>
     </div>
     {!!search.results.length && search.totalPages > 1 && (
       <Pagination

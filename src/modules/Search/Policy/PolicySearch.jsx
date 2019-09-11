@@ -52,19 +52,21 @@ const PolicySearch = ({
 }) => {
   return (
     <React.Fragment>
-      <div className="form-group search-context">
-        <Field
-          name="searchType"
-          dataTest="searchType"
-          label="Search Context"
-          component={Select}
-          id="searchType"
-          validate={isRequired}
-          onChange={changeSearchType}
-          answers={searchTypeOptions}
-          showPlaceholder={false}
-          errorHint
-        />
+      <div className="search-context-sort">
+        <div className="form-group search-context">
+          <Field
+            name="searchType"
+            dataTest="searchType"
+            label="Search Context"
+            component={Select}
+            id="searchType"
+            validate={isRequired}
+            onChange={changeSearchType}
+            answers={searchTypeOptions}
+            showPlaceholder={false}
+            errorHint
+          />
+        </div>
       </div>
       <div className="search-inputs  p">
         <Field
@@ -144,19 +146,6 @@ const PolicySearch = ({
         >
           <i className="fa fa-search" />
           Search
-        </Button>
-        <Button
-          className={Button.constants.classNames.icon}
-          size={Button.constants.sizes.small}
-          customClass="advanced-search-btn"
-          data-test="policy-advanced-search"
-          onClick={toggleAdvancedSearch}
-        >
-          <i
-            className={classNames(
-              advancedSearch ? 'fa fa-chevron-up' : 'fa fa-chevron-down'
-            )}
-          />
         </Button>
       </div>
 

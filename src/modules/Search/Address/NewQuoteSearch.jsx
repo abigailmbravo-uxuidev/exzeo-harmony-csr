@@ -28,7 +28,6 @@ const NewQuoteSearch = ({
         errorHint
       />
     </div>
-
     <div className="search-inputs fade-in">
       <Field
         name="companyCode"

@@ -2,16 +2,14 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 const ResetButton = ({ reset }) => (
-  <h3 className="title">
-    <button
-      className="btn btn-link btn-sm"
-      type="button"
-      onClick={() => reset()}
-    >
-      <i className="fa fa-circle" />
-      RESET
-    </button>
-  </h3>
+  <button
+    className="btn btn-link btn-reset"
+    type="button"
+    onClick={() => reset()}
+  >
+    <i className="fa fa-refresh" />
+    RESET
+  </button>
 );
 
 ResetButton.propTypes = {

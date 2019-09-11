@@ -46,7 +46,6 @@ const SEARCH_FORMS = {
 
 export class SearchPage extends Component {
   state = {
-    advancedSearch: false,
     hasSearched: false,
     searchType: SEARCH_TYPES.policy,
     searchConfig: SEARCH_TYPES.policy,
@@ -95,15 +94,9 @@ export class SearchPage extends Component {
       searchType,
       searchConfig: searchType,
       hasSearched: false,
-      advancedSearch: false,
       searchResults: initialSearchResults
     });
     this.props.resetSearch();
-  };
-
-  toggleAdvancedSearch = () => {
-    const { advancedSearch } = this.state;
-    this.setState({ advancedSearch: !advancedSearch });
   };
 
   setInitialValues = (searchType, searchConfig) => {
@@ -148,7 +141,6 @@ export class SearchPage extends Component {
     } = this.props;
 
     const {
-      advancedSearch,
       hasSearched,
       searchConfig,
       searchReady,
@@ -160,10 +152,9 @@ export class SearchPage extends Component {
 
     return (
       <React.Fragment>
-        <div className={advancedSearch ? 'policy-advanced search' : 'search'}>
+        <div className="search">
           {searchReady && (
             <SearchBar
-              advancedSearch={advancedSearch}
               changeSearchType={this.changeSearchType}
               initialValues={this.setInitialValues(searchType, searchConfig)}
               onSubmitSuccess={() => this.setHasSearched(true)}
@@ -176,23 +167,18 @@ export class SearchPage extends Component {
               currentPage={searchResults.currentPage}
               render={({ changeSearchType, handlePagination, formProps }) => (
                 <SearchForm
-                  advancedSearch={advancedSearch}
                   beta={beta}
                   changeSearchType={changeSearchType}
                   searchTypeOptions={SEARCH_CONFIG[searchConfig].searchOptions}
                   handlePagination={handlePagination}
                   hasSearched={hasSearched}
-                  toggleAdvancedSearch={this.toggleAdvancedSearch}
                   {...formProps}
                 />
               )}
             />
           )}
         </div>
-        <main
-          role="document"
-          className={advancedSearch ? 'policy-advanced' : ''}
-        >
+        <main role="document">
           <div className="content-wrapper">
             <div className="dashboard" role="article">
               <div className="route">
