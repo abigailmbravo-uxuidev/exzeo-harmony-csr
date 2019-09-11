@@ -41,7 +41,7 @@ const QuoteSearch = ({
           errorHint
         />
       </div>
-      <div className="form-group search-context">
+      <div className="form-group sort-by">
         <Field
           name="sortBy"
           dataTest="sortBy"
@@ -53,7 +53,7 @@ const QuoteSearch = ({
       </div>
     </div>
     <div className="search-inputs fade-in">
-      <div className="search-input-row margin bottom">
+      <div className="search-input-row margin bottom full-width">
         <Field
           name="quoteNumber"
           dataTest="quoteNumber"
@@ -133,17 +133,17 @@ const QuoteSearch = ({
             answers={getAnswers('quoteState', questions)}
           />
         </div>
-        <Button
-          className={Button.constants.classNames.success}
-          customClass="multi-input"
-          type="submit"
-          disabled={submitting}
-          data-test="submit"
-        >
-          <i className="fa fa-search" />
-          Search
-        </Button>
       </div>
+      <Button
+        className={Button.constants.classNames.success}
+        customClass="multi-input"
+        type="submit"
+        disabled={submitting}
+        data-test="submit"
+      >
+        <i className="fa fa-search" />
+        Search
+      </Button>
     </div>
     {!!search.results.length && search.totalPages > 1 && (
       <Pagination
