@@ -843,6 +843,7 @@ describe('Detail Header selectors', () => {
         label: undefined,
         value: undefined
       },
+      floodZone: 'X',
       constructionType: 'SUPERIOR',
       county: 'PALM BEACH',
       currentPremium: '$ 3,055',

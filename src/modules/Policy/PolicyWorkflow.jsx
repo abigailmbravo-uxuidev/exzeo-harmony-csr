@@ -53,7 +53,8 @@ import ReinstatePolicyModal from './ReinstatePolicyModal';
 // TODO these will be removed in subsequent PR's
 import Endorsements from '../../components/Policy/Endorsements';
 import { startWorkflow, completeTask } from '../../utilities/cg';
-import MOCK_CONFIG_DATA from '../../mock-data/mockPolicyHO3';
+import MOCK_HO3 from '../../mock-data/mockPolicyHO3';
+import MOCK_AF3 from '../../mock-data/mockPolicyAF3';
 
 const getCurrentStepAndPage = defaultMemoize(pathname => {
   const currentRouteName = pathname.split('/')[3];
@@ -67,6 +68,11 @@ const getCurrentStepAndPage = defaultMemoize(pathname => {
 const MemoizedFormListeners = React.memo(({ children }) => (
   <React.Fragment>{children}</React.Fragment>
 ));
+
+const TEMPLATES = {
+  AF3: MOCK_AF3,
+  HO3: MOCK_HO3
+};
 
 const FORM_ID = 'PolicyWorkflowCSR';
 
@@ -109,7 +115,17 @@ export class PolicyWorkflow extends React.Component {
     this.getTemplate();
   }
 
+  // Temp fix for quote not being in state when component mounts on refresh (mostly a development time problem)
+  componentDidUpdate(prevProps) {
+    const { policy } = this.props;
+    const { policy: prevPolicy } = prevProps;
+    if ((policy || {}).product !== (prevPolicy || {}).product) {
+      this.getTemplate();
+    }
+  }
+
   getTemplate = async () => {
+    const { policy } = this.props;
     // const { userProfile: { entity: { companyCode, state }} } = this.props;
 
     // const transferConfig = {
@@ -126,7 +142,10 @@ export class PolicyWorkflow extends React.Component {
     // };
 
     // const response = await serviceRunner.callService(transferConfig, 'retrieveDocumentTemplate');
-    this.setState(() => ({ gandalfTemplate: MOCK_CONFIG_DATA }));
+    const { product } = policy;
+    if (product) {
+      this.setState(() => ({ gandalfTemplate: TEMPLATES[product] }));
+    }
   };
 
   handleGandalfSubmit = async values => {

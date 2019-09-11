@@ -41,7 +41,12 @@ export const getPolicyDetails = createSelector(
       status: { displayText, code }
     } = summaryLedger;
 
-    const { constructionType, physicalAddress, territory } = property;
+    const {
+      constructionType,
+      physicalAddress,
+      floodZone,
+      territory
+    } = property;
 
     const mapQuery = detailUtils.getMapQuery(physicalAddress);
     const cancellationDate = detailUtils.getCancellationDate(
@@ -63,6 +68,7 @@ export const getPolicyDetails = createSelector(
       policyNumber,
       sourceNumber,
       territory,
+      floodZone,
       county: physicalAddress.county,
       currentPremium: detailUtils.getCurrentPremium(currentPremium),
       effectiveDate: moment.utc(effectiveDate).format(STANDARD_DATE_FORMAT),

@@ -58,7 +58,11 @@ export const canceledBillingStatuses = [
  * @returns {string}
  */
 export function getProductName(product) {
-  return product === 'HO3' ? `${product} Homeowners` : product;
+  return product === 'HO3'
+    ? `${product} Homeowners`
+    : product === 'AF3'
+    ? `${product} Flood`
+    : product;
 }
 
 /**
