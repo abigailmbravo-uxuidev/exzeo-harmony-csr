@@ -1,19 +1,23 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Field } from 'redux-form';
-import { Input, Select, Button, validation } from '@exzeo/core-ui';
+import { Input, Select, Button, validation, normalize } from '@exzeo/core-ui';
 
 import { getAnswers } from '../../../utilities/forms';
 import Pagination from '../components/Pagination';
 import ResetButton from '../components/ResetButton';
+import { STANDARD_DATE_FORMAT } from '../../../constants/dates';
 import { companyAnswers, stateAnswers, productAnswers } from '../constants';
 
 const {
   isValidNameFormat,
   isValidChar,
   isRequired,
+  isValidDateFormat,
   isNumberDashOnly
 } = validation;
+
+const isValidDate = isValidDateFormat(STANDARD_DATE_FORMAT);
 
 const QuoteSearch = ({
   beta,
@@ -130,6 +134,18 @@ const QuoteSearch = ({
             label="Quote Status"
             component={Select}
             answers={getAnswers('quoteState', questions)}
+          />
+        </div>
+        <div className="form-group effectiveDate">
+          <Field
+            name="effectiveDate"
+            dataTest="effectiveDate"
+            label="Effective Date"
+            component={Input}
+            placeholder={STANDARD_DATE_FORMAT}
+            normalize={normalize.date}
+            validate={isValidDate}
+            errorHint
           />
         </div>
       </div>

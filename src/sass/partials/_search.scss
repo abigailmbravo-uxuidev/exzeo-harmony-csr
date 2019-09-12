@@ -752,54 +752,6 @@ main[role='document'] {
     }
   }
 }
-//refactor these when cards are standardized based on core card
-.result-cards,
-ul.list-cards {
-  li {
-    margin-bottom: $padding/2;
-
-    > div {
-      section {
-        flex-direction: column;
-        flex-grow: 1;
-
-        h2,
-        h3,
-        h4,
-        h5,
-        p {
-          margin: 0;
-          color: $warm-gray-08;
-        }
-      }
-
-      i {
-        color: $bright-blue-darken-04;
-      }
-
-      &:hover {
-        cursor: pointer;
-
-        section {
-          h2,
-          h3,
-          h4,
-          h5 {
-            color: $bright-blue-darken-04;
-          }
-
-          p {
-            color: $bright-blue-darken-04;
-          }
-        }
-
-        i {
-          color: $bright-blue-darken-04;
-        }
-      }
-    }
-  }
-}
 
 .policy-list,
 .quote-list {
@@ -906,7 +858,7 @@ ul.list-cards {
 
           .policy-no,
           .quote-no {
-            flex-basis: 8rem;
+            flex-basis: 9rem;
             flex-grow: 0;
             flex-shrink: 0;
             padding-left: $padding;
@@ -1047,7 +999,8 @@ ul.list-cards {
   li {
     margin-bottom: $padding/2;
 
-    a {
+    a,
+    > div {
       align-items: center;
       padding: $padding $padding * 1.5;
       border: $card-border-width solid $card-border-color;
@@ -1201,7 +1154,7 @@ ul.list-cards {
 
           .policy-no,
           .quote-no {
-            flex-basis: 8rem;
+            flex-basis: 10rem;
             flex-grow: 0;
             flex-shrink: 0;
             padding-left: $padding;
