@@ -142,7 +142,8 @@
                 font-size: $font-size-lg;
               }
 
-              &:hover {
+              &:hover,
+              &:focus {
                 color: $bright-blue-lighten-03;
                 text-decoration: none;
               }
