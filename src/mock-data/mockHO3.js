@@ -226,8 +226,7 @@ const mock = {
               data: {
                 component: 'text',
                 label: 'Protection Class',
-                size: '3',
-                disabled: true
+                size: '3'
               },
               formData: {},
               children: []
@@ -269,7 +268,6 @@ const mock = {
                 component: 'select',
                 label: 'Construction',
                 size: '3',
-                disabled: true,
                 dataSource: [
                   {
                     label: 'Masonry',
