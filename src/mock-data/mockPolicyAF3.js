@@ -12,8 +12,7 @@ const mock = {
       { value: 'mailingAddress', component: 'Section' },
       { value: 'propertyAddress', component: 'Section' },
       { value: 'county', label: 'Property County' },
-      { value: 'territory' },
-      { value: 'constructionType' },
+      { value: 'floodZone' },
       { value: 'effectiveDate' },
       { value: 'cancellation' },
       { value: 'finalPayment', label: 'Final Payment' },
@@ -152,7 +151,7 @@ const mock = {
                                     {
                                       format: 'currency',
                                       path:
-                                        'coverageLimits.increasedCompliance.value'
+                                        'coverageLimits.increasedCompliance.amount'
                                     }
                                   ]
                                 },
@@ -178,7 +177,7 @@ const mock = {
                       type: '$SECTION',
                       dependencies: [],
                       data: {
-                        className: 'discount-surcharge table',
+                        className: 'coverage table',
                         size: '4'
                       },
                       formData: {},
@@ -266,7 +265,7 @@ const mock = {
                                     {
                                       format: 'currency',
                                       path:
-                                        'deductibles.buildingDeductible.value'
+                                        'deductibles.buildingDeductible.amount'
                                     }
                                   ]
                                 },
@@ -276,7 +275,7 @@ const mock = {
                                     {
                                       format: 'currency',
                                       path:
-                                        'deductibles.personalPropertyDeductible.value'
+                                        'deductibles.personalPropertyDeductible.amount'
                                     }
                                   ]
                                 }
@@ -339,7 +338,7 @@ const mock = {
                                   label: 'Balance Due',
                                   items: [
                                     {
-                                      format: 'currencyDecimals',
+                                      format: 'currency',
                                       path:
                                         'summaryLedger.balance.$numberDecimal'
                                     }
@@ -383,7 +382,7 @@ const mock = {
               type: '$SECTION',
               dependencies: [],
               data: {
-                className: 'home-location'
+                className: 'home-location-af3'
               },
               formData: {},
               children: [
@@ -410,19 +409,8 @@ const mock = {
                           items: [{ format: '', path: 'property.yearBuilt' }]
                         },
                         {
-                          label: 'Protection Class',
-                          items: [
-                            { format: '', path: 'property.protectionClass' }
-                          ]
-                        },
-                        {
-                          label: 'Dist. to Tidal Waters',
-                          items: [
-                            {
-                              format: 'feet',
-                              path: 'property.distanceToTidalWater'
-                            }
-                          ]
+                          label: 'Flood Zone',
+                          items: [{ format: '', path: 'property.floodZone' }]
                         },
                         {
                           label: 'Residence Type',
@@ -459,71 +447,14 @@ const mock = {
                           ]
                         },
                         {
-                          label: 'BCEG',
+                          label: 'Base Flood Elevation',
                           items: [
-                            {
-                              format: '',
-                              path: 'property.buildingCodeEffectivenessGrading'
-                            }
-                          ]
-                        },
-                        {
-                          label: 'Dist. to Fire Hydrant',
-                          items: [
-                            {
-                              format: 'feet',
-                              path: 'property.distanceToFireHydrant'
-                            }
+                            { format: '', path: 'property.baseFloodElevation' }
                           ]
                         },
                         {
                           label: 'Square Footage',
                           items: [{ format: '', path: 'property.squareFeet' }]
-                        },
-                        {
-                          label: 'Territory',
-                          items: [
-                            {
-                              format: '',
-                              path:
-                                'rating.worksheet.elements.territoryFactors.name'
-                            }
-                          ]
-                        }
-                      ]
-                    }
-                  },
-                  formData: {},
-                  children: []
-                },
-                {
-                  id: 23,
-                  type: '$ENTITY_DETAILS',
-                  dependencies: [],
-                  data: {
-                    extendedProperties: {
-                      className: 'home-and-location-3',
-                      details: [
-                        {
-                          label: 'Year Roof Built',
-                          items: [{ format: '', path: 'property.yearOfRoof' }]
-                        },
-                        {
-                          label: 'Family Units',
-                          items: [{ format: '', path: 'property.familyUnits' }]
-                        },
-                        {
-                          label: 'Dist. to Fire Station',
-                          items: [
-                            {
-                              format: 'miles',
-                              path: 'property.distanceToFireStation'
-                            }
-                          ]
-                        },
-                        {
-                          label: 'Flood Zone',
-                          items: [{ format: '', path: 'property.floodZone' }]
                         },
                         {
                           label: 'IGD ID',
@@ -534,169 +465,6 @@ const mock = {
                   },
                   formData: {},
                   children: []
-                }
-              ]
-            },
-            {
-              id: 24,
-              type: '$SECTION',
-              dependencies: [],
-              data: {
-                className: 'wind-mitigation'
-              },
-              formData: {},
-              children: [
-                {
-                  id: 25,
-                  type: '$TITLE',
-                  dependencies: [],
-                  data: {
-                    text: 'Wind Mitigation'
-                  },
-                  formData: {},
-                  children: []
-                },
-                {
-                  id: 26,
-                  type: '$SECTION',
-                  dependencies: [],
-                  data: {
-                    className: 'wind-mitigation-1'
-                  },
-                  formData: {},
-                  children: [
-                    {
-                      id: 27,
-                      type: '$ENTITY_DETAILS',
-                      dependencies: [],
-                      data: {
-                        extendedProperties: {
-                          className: 'home-and-location',
-                          details: [
-                            {
-                              label: 'Roof Covering',
-                              items: [
-                                {
-                                  format: '',
-                                  path: 'property.windMitigation.roofCovering'
-                                }
-                              ]
-                            },
-                            {
-                              label: 'Roof Geometry',
-                              items: [
-                                {
-                                  format: '',
-                                  path: 'property.windMitigation.roofGeometry'
-                                }
-                              ]
-                            },
-                            {
-                              label: 'FBC Wind Speed',
-                              items: [
-                                {
-                                  format: '',
-                                  path:
-                                    'property.windMitigation.floridaBuildingCodeWindSpeed'
-                                }
-                              ]
-                            },
-                            {
-                              label: 'Internal Pressure Design',
-                              items: [
-                                {
-                                  format: '',
-                                  path:
-                                    'property.windMitigation.internalPressureDesign'
-                                }
-                              ]
-                            },
-                            {
-                              label: 'Roof Deck Attachment',
-                              items: [
-                                {
-                                  format: '',
-                                  path:
-                                    'property.windMitigation.roofDeckAttachment'
-                                }
-                              ]
-                            },
-                            {
-                              label: 'Secondary Water Resistance (SWR)',
-                              items: [
-                                {
-                                  format: '',
-                                  path:
-                                    'property.windMitigation.secondaryWaterResistance'
-                                }
-                              ]
-                            },
-                            {
-                              label: 'FBC Wind Speed Design',
-                              items: [
-                                {
-                                  format: '',
-                                  path:
-                                    'property.windMitigation.floridaBuildingCodeWindSpeedDesign'
-                                }
-                              ]
-                            },
-                            {
-                              label: 'Wind Borne Debris Region (WBDR)',
-                              items: [
-                                {
-                                  format: '',
-                                  path:
-                                    'property.windMitigation.windBorneDebrisRegion'
-                                }
-                              ]
-                            },
-                            {
-                              label: 'Roof to Wall Attachment',
-                              items: [
-                                {
-                                  format: '',
-                                  path:
-                                    'property.windMitigation.roofToWallConnection'
-                                }
-                              ]
-                            },
-                            {
-                              label: 'Opening Protection',
-                              items: [
-                                {
-                                  format: '',
-                                  path:
-                                    'property.windMitigation.openingProtection'
-                                }
-                              ]
-                            },
-                            {
-                              label: 'Terrain',
-                              items: [
-                                {
-                                  format: '',
-                                  path: 'property.windMitigation.terrain'
-                                }
-                              ]
-                            },
-                            {
-                              label: 'Wind Mit Factor',
-                              items: [
-                                {
-                                  format: '',
-                                  path:
-                                    'rating.worksheet.elements.windMitigationFactors.windMitigationDiscount'
-                                }
-                              ]
-                            }
-                          ]
-                        }
-                      },
-                      formData: {},
-                      children: []
-                    }
-                  ]
                 }
               ]
             }

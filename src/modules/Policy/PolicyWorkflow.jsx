@@ -82,11 +82,6 @@ const TEMPLATES = {
 
 const FORM_ID = 'PolicyWorkflowCSR';
 
-const TEMPLATES = {
-  AF3: MOCK_AF3,
-  HO3: MOCK_HO3
-};
-
 export class PolicyWorkflow extends React.Component {
   state = {
     gandalfTemplate: null,
@@ -350,7 +345,7 @@ export class PolicyWorkflow extends React.Component {
                         path={location.pathname}
                         template={gandalfTemplate}
                         transformConfig={transformConfig}
-                        stickyFooter={true}
+                        stickyFooter
                         renderFooter={({ pristine, submitting, form }) => (
                           <PolicyFooter
                             history={customHandlers.history}
