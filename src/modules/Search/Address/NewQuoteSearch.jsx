@@ -76,9 +76,8 @@ const NewQuoteSearch = ({
           placeholder="Select..."
           styleName="state-search disabled"
         />
-        <ResetButton reset={reset} />
       </div>
-
+      <ResetButton reset={reset} />
       <Button
         className={Button.constants.classNames.success}
         customClass="multi-input"

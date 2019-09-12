@@ -129,8 +129,6 @@ const PolicySearch = ({
             placeholder="Select..."
             styleName="state-search disabled"
           />
-
-          <ResetButton reset={reset} />
         </div>
         <div className="search-input-row">
           <Field
@@ -180,6 +178,7 @@ const PolicySearch = ({
             styleName="agencyCode agencyCodeSelectField"
           />
         </div>
+        <ResetButton reset={reset} />
         <Button
           className={Button.constants.classNames.success}
           customClass="multi-input"

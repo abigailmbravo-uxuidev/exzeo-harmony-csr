@@ -127,10 +127,16 @@
               align-items: center;
               flex-direction: column;
               margin-top: 1.25rem;
+              margin-right: $padding;
               padding: 0;
 
               i {
                 margin: 0 0 ($padding / 2) 0;
+              }
+
+              &:hover {
+                color: $bright-blue-lighten-03;
+                text-decoration: none;
               }
             }
           }
@@ -362,7 +368,6 @@
           &.state-search {
             flex-grow: 0;
             flex-shrink: 0;
-            margin-right: $padding;
             width: 3.25rem;
 
             select {

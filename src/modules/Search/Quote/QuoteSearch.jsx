@@ -103,7 +103,6 @@ const QuoteSearch = ({
           placeholder="Select..."
           styleName="state-search disabled"
         />
-        <ResetButton reset={reset} />
       </div>
       <div className="search-input-row">
         <Field
@@ -134,6 +133,7 @@ const QuoteSearch = ({
           />
         </div>
       </div>
+      <ResetButton reset={reset} />
       <Button
         className={Button.constants.classNames.success}
         customClass="multi-input"
