@@ -74,6 +74,12 @@
           flex-wrap: wrap;
           padding: $padding;
 
+          &.diary {
+            .search-input-row {
+              margin-left: $padding;
+            }
+          }
+
           .search-input-row {
             display: flex;
             flex-grow: 1;
