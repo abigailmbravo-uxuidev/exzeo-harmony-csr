@@ -74,6 +74,10 @@
           flex-wrap: wrap;
           padding: $padding;
 
+          &.diary {
+            padding-left: $padding * 2;
+          }
+
           .search-input-row {
             display: flex;
             flex-grow: 1;
@@ -253,6 +257,10 @@
             flex-shrink: 0;
             margin-right: $padding;
 
+            &.search-context {
+              width: 8rem;
+            }
+
             select {
               width: 100%;
               height: 2.375rem;
@@ -391,7 +399,6 @@
           &.assignees {
             flex-grow: 1;
             flex-shrink: 1;
-            margin-top: $padding;
             margin-right: $padding;
           }
 
@@ -411,7 +418,6 @@
           &.dateRange {
             flex-grow: 0;
             flex-shrink: 0;
-            margin-right: $padding;
             width: 22.25rem;
 
             .date-range-inputs {
