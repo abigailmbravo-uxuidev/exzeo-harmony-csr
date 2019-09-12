@@ -41,9 +41,7 @@ const sortByOptions = [
 const PolicySearch = ({
   agencyList,
   submitting,
-  advancedSearch,
   questions,
-  toggleAdvancedSearch,
   handlePagination,
   search,
   changeSearchType,
@@ -204,9 +202,7 @@ const PolicySearch = ({
 };
 
 PolicySearch.propTypes = {
-  advancedSearch: PropTypes.bool.isRequired,
   handlePagination: PropTypes.func.isRequired,
-  toggleAdvancedSearch: PropTypes.func.isRequired,
   agencyList: PropTypes.array,
   changeSearchType: PropTypes.func,
   questions: PropTypes.object,

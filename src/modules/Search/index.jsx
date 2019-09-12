@@ -50,7 +50,8 @@ export class SearchPage extends Component {
     searchType: SEARCH_TYPES.policy,
     searchConfig: SEARCH_TYPES.policy,
     searchReady: false,
-    searchResults: initialSearchResults
+    searchResults: initialSearchResults,
+    answers: {}
   };
 
   componentDidMount() {
@@ -63,6 +64,31 @@ export class SearchPage extends Component {
 
   setHasSearched = hasSearched => {
     this.setState({ hasSearched });
+  };
+
+  setAnswers = () => {
+    const {
+      userProfile: { resources = [] }
+    } = this.props;
+    const searchTypes = {};
+    const answers = {
+      quote: {
+        company: [],
+        state: [],
+        product: []
+      },
+      policy: {
+        company: [],
+        state: [],
+        product: []
+      }
+    };
+
+    resources.forEach(resource => {
+      const uri = resource.uri.split(':');
+    });
+
+    return answers;
   };
 
   setSearchConfig = () => {
