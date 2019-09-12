@@ -74,10 +74,6 @@
           flex-wrap: wrap;
           padding: $padding;
 
-          &.diary {
-            padding-left: $padding * 2;
-          }
-
           .search-input-row {
             display: flex;
             flex-grow: 1;
@@ -257,7 +253,7 @@
             flex-shrink: 0;
             margin-right: $padding;
 
-            &.search-context {
+            &.diary {
               width: 8rem;
             }
 

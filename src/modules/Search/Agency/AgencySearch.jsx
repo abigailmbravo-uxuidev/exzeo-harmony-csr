@@ -1,6 +1,6 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { Field } from 'redux-form';
+import React from "react";
+import PropTypes from "prop-types";
+import { Field } from "redux-form";
 import {
   Input,
   Integer,
@@ -8,7 +8,7 @@ import {
   Select,
   Button,
   validation
-} from '@exzeo/core-ui';
+} from "@exzeo/core-ui";
 
 const { isValidChar, isRequired } = validation;
 
@@ -88,8 +88,7 @@ const AgencySearch = ({ submitting, changeSearchType, searchTypeOptions }) => {
           customClass="multi-input"
           type="submit"
           disabled={submitting}
-          dataTest="submit"
-        >
+          dataTest="submit">
           <i className="fa fa-search" />
           Search
         </Button>
