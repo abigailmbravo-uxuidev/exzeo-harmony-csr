@@ -52,7 +52,8 @@ describe('Search Actions', () => {
       sortDirection: 'desc',
       results: [
         {
-          policyID: '1234'
+          policyID: '1234',
+          currentPage: 1
         }
       ],
       totalRecords: 1,
