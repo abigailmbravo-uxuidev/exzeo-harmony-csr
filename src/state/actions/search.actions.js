@@ -140,14 +140,14 @@ function buildQuerystring({
 // TODO the 'fetch*' methods below are being moved to core-ui to be shared amongst the UI apps
 /**
  * Build query string and call address search service
- * @param {string} address
+ * @param {string} query
  * @returns {Promise<{}>}
  */
-export async function fetchAddresses(address) {
+export async function fetchAddresses(query) {
   const config = {
     service: 'property-search',
     method: 'GET',
-    path: `/v1/search/${address}/1/10`
+    path: `/v1/search/${query}/1/10`
   };
 
   try {
@@ -437,10 +437,11 @@ function formatDiaryResults(results) {
  * @returns {Function}
  */
 export async function handleAddressSearch(data) {
+  const { company, product, state, address } = data;
   try {
-    const address = formatForURI(String(data.address).trim());
+    const query = formatForURI(`${String(address).trim()}, ${state}`);
 
-    const results = await fetchAddresses(address);
+    const results = await fetchAddresses(query);
     return formatAddressResults(results);
   } catch (error) {
     throw error;
