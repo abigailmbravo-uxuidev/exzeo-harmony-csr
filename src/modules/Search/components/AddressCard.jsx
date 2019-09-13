@@ -18,7 +18,9 @@ function AddressCard({ handleKeyPress, handleClick, address, product }) {
             {address.physicalAddress.zip}
           </p>
         </section>
-        <i className="fa fa-chevron-circle-right" />
+        <footer>
+          <i className="footer-icon fa fa-chevron-right" />
+        </footer>
       </a>
     </li>
   );

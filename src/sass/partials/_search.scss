@@ -919,26 +919,5 @@ ul.list-cards {
         justify-content: flex-start;
       }
     }
-
-    &:hover {
-      cursor: pointer;
-
-      section {
-        h2,
-        h3,
-        h4,
-        h5 {
-          color: $bright-blue-darken-02;
-        }
-
-        p {
-          color: $bright-blue-darken-02;
-        }
-      }
-
-      i {
-        color: $bright-blue-darken-02;
-      }
-    }
   }
 }
