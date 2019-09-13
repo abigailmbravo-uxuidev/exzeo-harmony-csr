@@ -863,10 +863,16 @@ ul.list-cards {
       color: $bright-blue-darken-04;
       font-size: $font-size-h3;
     }
+
+    &:hover {
+      z-index: 2;
+      box-shadow: $card-box-shadow-hover;
+      cursor: pointer;
+      transform: scale(1.004);
+    }
   }
 
   a {
-    align-items: center;
     align-items: flex-start;
     padding: $padding $padding * 1.5;
     border: $card-border-width solid $card-border-color;
