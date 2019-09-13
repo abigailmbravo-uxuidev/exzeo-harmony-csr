@@ -82,6 +82,9 @@ export function setSearchResults({
  * @param agencyCode
  * @param agentCode
  * @param licenseNumber
+ * @param displayName
+ * @param taxIdNumber
+ * @param primaryPhoneNumber,
  * @returns {string} querystring
  */
 function buildQuerystring({
@@ -100,7 +103,10 @@ function buildQuerystring({
   product,
   agencyCode,
   agentCode,
-  licenseNumber
+  licenseNumber,
+  displayName,
+  taxIdNumber,
+  primaryPhoneNumber
 }) {
   const fields = {
     ...(firstName && { firstName }),
@@ -118,12 +124,15 @@ function buildQuerystring({
     ...(product && { product }),
     ...(agencyCode && { agencyCode }),
     ...(agentCode && { agentCode }),
-    ...(licenseNumber && { licenseNumber })
+    ...(licenseNumber && { licenseNumber }),
+    ...(displayName && { displayName }),
+    ...(taxIdNumber && { taxIdNumber }),
+    ...(primaryPhoneNumber && { primaryPhoneNumber })
   };
 
   return encodeURI(
     Object.keys(fields)
-      .map(key => key + '=' + fields[key])
+      .map(key => `${key}=${fields[key]}`)
       .join('&')
   );
 }
@@ -175,7 +184,7 @@ export async function fetchQuotes(query) {
 }
 
 /**
- * Call quote search service
+ * Call policy search service
  * @param {object} query
  * @returns {Promise<{}>}
  */
@@ -196,29 +205,16 @@ export async function fetchPolicies(query) {
 }
 
 /**
- * Build query string and call agency service to search agents
- * @param {string} companyCode
- * @param {string} state
- * @param {string} firstName
- * @param {string} lastName
- * @param {string} agentCode
- * @param {string} address
- * @param {string} licenseNumber
+ * Call agency service
+ * @param {object} query
  * @returns {Promise<{}>}
  */
-export async function fetchAgents({
-  companyCode,
-  state,
-  firstName,
-  lastName,
-  agentCode,
-  address,
-  licenseNumber
-}) {
+export async function fetchAgents(query) {
+  const querystring = buildQuerystring(query);
   const config = {
     service: 'agency',
     method: 'GET',
-    path: `agents?companyCode=${companyCode}&state=${state}&firstName=${firstName}&lastName=${lastName}&agentCode=${agentCode}&mailingAddress=${address}&licenseNumber=${licenseNumber}`
+    path: `agents?${querystring}`
   };
 
   try {
@@ -232,31 +228,16 @@ export async function fetchAgents({
 }
 
 /**
- * Build query string and call agency service to search agencies
- * @param {string} companyCode
- * @param {string} state
- * @param {string} displayName
- * @param {string} agencyCode
- * @param {string} address
- * @param {string} licenseNumber
- * @param {string} fein
- * @param {string} phone
+ * Call agency service
+ * @param {object} query
  * @returns {Promise<{}>}
  */
-export async function fetchAgencies({
-  companyCode,
-  state,
-  displayName,
-  agencyCode,
-  address,
-  licenseNumber,
-  fein,
-  phone
-}) {
+export async function fetchAgencies(query) {
+  const querystring = buildQuerystring(query);
   const config = {
     service: 'agency',
     method: 'GET',
-    path: `agencies?companyCode=${companyCode}&state=${state}&displayName=${displayName}&agencyCode=${agencyCode}&mailingAddress=${address}&licenseNumber=${licenseNumber}&taxIdNumber=${fein}&primaryPhoneNumber=${phone}`
+    path: `agencies?${querystring}`
   };
 
   try {
@@ -553,10 +534,10 @@ export async function handleAgencySearch(data) {
       state: DEFAULT_SEARCH_PARAMS.state,
       displayName: formatForURI(data.displayName),
       agencyCode: formatForURI(data.agencyCode),
-      address: formatForURI(String(data.address).trim()),
+      mailingAddress: formatForURI(String(data.address).trim()),
       licenseNumber: formatForURI(data.licenseNumber),
-      fein: formatForURI(data.fein),
-      phone: formatForURI(data.phone)
+      taxIdNumber: formatForURI(data.fein),
+      primaryPhoneNumber: formatForURI(data.phone)
     };
 
     const results = await fetchAgencies(searchQuery);
