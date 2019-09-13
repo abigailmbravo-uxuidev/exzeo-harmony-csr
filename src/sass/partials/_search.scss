@@ -748,7 +748,7 @@ ul.list-cards {
     display: flex;
     flex-direction: row;
     margin: 0 0 ($padding * 2);
-    padding: $padding $padding * 1.5;
+    padding: ($padding * 1.5) 0;
 
     @include transition(all 0.2s ease-in-out);
 
@@ -860,6 +860,7 @@ ul.list-cards {
       display: flex;
       align-items: center;
       justify-content: center;
+      width: 3rem;
       color: $bright-blue-darken-04;
       font-size: $font-size-h3;
     }
@@ -869,61 +870,6 @@ ul.list-cards {
       box-shadow: $card-box-shadow-hover;
       cursor: pointer;
       transform: scale(1.004);
-    }
-  }
-
-  a {
-    align-items: flex-start;
-    padding: $padding $padding * 1.5;
-    border: $card-border-width solid $card-border-color;
-    border-radius: $card-border-radius;
-    background: $white;
-
-    section {
-      display: flex;
-      flex-direction: row;
-      flex-grow: 1;
-
-      h2,
-      h3,
-      h4,
-      h5 {
-        display: flex;
-        flex-basis: 20%;
-        flex-grow: 0;
-        flex-shrink: 0;
-        margin: 0;
-        width: 20%;
-      }
-
-      p {
-        margin: 0;
-      }
-
-      ul {
-        display: flex;
-        flex-basis: 80%;
-        flex-direction: column;
-        margin: 0;
-        padding: 0;
-        width: 80%;
-      }
-    }
-
-    i {
-      display: flex;
-      justify-content: center;
-      width: 2rem;
-      height: 2rem;
-      font-size: $font-size-h2;
-
-      &.card-icon {
-        margin-right: $padding;
-      }
-
-      &.fa-map-marker {
-        justify-content: flex-start;
-      }
     }
   }
 }
