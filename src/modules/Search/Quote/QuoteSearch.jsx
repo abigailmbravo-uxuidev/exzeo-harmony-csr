@@ -20,7 +20,6 @@ const {
 const isValidDate = isValidDateFormat(STANDARD_DATE_FORMAT);
 
 const QuoteSearch = ({
-  beta,
   submitting,
   questions,
   handlePagination,
@@ -104,8 +103,8 @@ const QuoteSearch = ({
           label="State"
           component={Select}
           answers={stateAnswers}
-          placeholder="Select..."
-          styleName="state-search disabled"
+          showPlaceholder={false}
+          styleName="state-search"
         />
       </div>
       <div className="search-input-row">
@@ -115,8 +114,8 @@ const QuoteSearch = ({
           label="Company"
           component={Select}
           answers={companyAnswers}
-          placeholder="Select..."
-          styleName="company-search disabled"
+          showPlaceholder={false}
+          styleName="company-search"
         />
         <Field
           name="product"

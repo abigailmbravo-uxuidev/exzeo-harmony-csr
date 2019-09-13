@@ -9,7 +9,6 @@ import { companyAnswers, stateAnswers, productAnswers } from '../constants';
 const { isValidChar, isRequired } = validation;
 
 const NewQuoteSearch = ({
-  beta,
   submitting,
   changeSearchType,
   searchTypeOptions,
