@@ -66,6 +66,68 @@ export function setSearchResults({
   };
 }
 
+/**
+ * Build query string and encodeURI
+ * @param firstName
+ * @param lastName
+ * @param address
+ * @param companyCode
+ * @param effectiveDate
+ * @param policyNumber
+ * @param policyStatus
+ * @param currentPage
+ * @param pageSize
+ * @param sortBy
+ * @param sortDirection
+ * @param agencyCode
+ * @param agentCode
+ * @param licenseNumber
+ * @returns {string} querystring
+ */
+function buildQuerystring({
+  firstName,
+  lastName,
+  address,
+  effectiveDate,
+  policyNumber,
+  policyStatus,
+  currentPage,
+  pageSize,
+  sortBy,
+  sortDirection,
+  companyCode,
+  state,
+  product,
+  agencyCode,
+  agentCode,
+  licenseNumber
+}) {
+  const fields = {
+    ...(firstName && { firstName }),
+    ...(lastName && { lastName }),
+    ...(address && { address }),
+    ...(effectiveDate && { effectiveDate }),
+    ...(policyNumber && { policyNumber }),
+    ...(policyStatus && { policyStatus }),
+    ...(currentPage && { currentPage }),
+    ...(pageSize && { pageSize }),
+    ...(sortBy && { sortBy }),
+    ...(sortDirection && { sortDirection }),
+    ...(companyCode && { companyCode }),
+    ...(state && { state }),
+    ...(product && { product }),
+    ...(agencyCode && { agencyCode }),
+    ...(agentCode && { agentCode }),
+    ...(licenseNumber && { licenseNumber })
+  };
+
+  return encodeURI(
+    Object.keys(fields)
+      .map(key => key + '=' + fields[key])
+      .join('&')
+  );
+}
+
 // TODO the 'fetch*' methods below are being moved to core-ui to be shared amongst the UI apps
 /**
  * Build query string and call address search service
@@ -90,39 +152,16 @@ export async function fetchAddresses(address) {
 }
 
 /**
- * Build query string and call quote search service
- * @param {string} firstName
- * @param {string} lastName
- * @param {string} address
- * @param {string} product
- * @param {string} quoteNumber
- * @param {string} quoteState
- * @param {string} currentPage
- * @param {string} pageSize
- * @param {string} sort
- * @param {string} sortDirection
+ * Call quote search service
+ * @param {object} query
  * @returns {Promise<{}>}
  */
-export async function fetchQuotes({
-  firstName,
-  lastName,
-  address,
-  quoteNumber,
-  quoteState,
-  currentPage,
-  pageSize,
-  sort,
-  sortDirection,
-  companyCode,
-  state,
-  product
-}) {
-  // TODO: the service requires that companyCode and state are included in this query. Hard coding for now.
-  //       Also, quote-data is currently ignoring 'product'.
+export async function fetchQuotes(query) {
+  const querystring = buildQuerystring(query);
   const config = {
     service: 'quote-data',
     method: 'GET',
-    path: `/quotes?companyCode=${companyCode}&state=${state}&product=${product}&quoteNumber=${quoteNumber}&lastName=${lastName}&firstName=${firstName}&propertyAddress=${address}&page=${currentPage}&pageSize=${pageSize}&sort=${sort}&sortDirection=${sortDirection}&quoteState=${quoteState}`
+    path: `/quotes?${querystring}`
   };
 
   try {
@@ -136,42 +175,16 @@ export async function fetchQuotes({
 }
 
 /**
- * Build query string and call policy service
- * @param firstName
- * @param lastName
- * @param address
- * @param agencyCode
- * @param companyCode
- * @param effectiveDate
- * @param policyNumber
- * @param policyStatus
- * @param currentPage
- * @param pageSize
- * @param sortBy
- * @param sortDirection
+ * Call quote search service
+ * @param {object} query
  * @returns {Promise<{}>}
  */
-export async function fetchPolicies({
-  firstName,
-  lastName,
-  address,
-  agencyCode,
-  effectiveDate,
-  policyNumber,
-  policyStatus,
-  currentPage,
-  pageSize,
-  sortBy,
-  sortDirection,
-  companyCode,
-  state,
-  product
-}) {
-  // TODO: the service requires that companyCode and state are included in this query. Hard coding for now.
+export async function fetchPolicies(query) {
+  const queryString = buildQuerystring(query);
   const config = {
     service: 'policy-data',
     method: 'GET',
-    path: `/transactions?companyCode=${companyCode}&state=${state}$product=${product}&policyNumber=${policyNumber}&firstName=${firstName}&lastName=${lastName}&propertyAddress=${address}&page=${currentPage}&pageSize=${pageSize}&sort=${sortBy}&sortDirection=${sortDirection}&effectiveDate=${effectiveDate}&agencyCode=${agencyCode}&status=${policyStatus}`
+    path: `/transactions?${queryString}`
   };
 
   try {
@@ -461,18 +474,12 @@ export async function handleAddressSearch(data) {
 export async function handleQuoteSearch(data) {
   try {
     const searchQuery = {
-      firstName: formatForURI(data.firstName),
-      lastName: formatForURI(data.lastName),
-      address: formatForURI(String(data.address).trim()),
-      quoteNumber: formatForURI(data.quoteNumber),
-      quoteState: formatForURI(data.quoteState),
+      ...data,
+      address: String(data.address).trim(),
       currentPage: setPageNumber(data.currentPage, data.isNext),
       pageSize: RESULTS_PAGE_SIZE,
       sort: 'quoteNumber',
-      sortDirection: 'desc',
-      product: formatForURI(data.product),
-      companyCode: data.companyCode,
-      state: data.state
+      sortDirection: 'desc'
     };
 
     const results = await fetchQuotes(searchQuery);
@@ -490,25 +497,17 @@ export async function handleQuoteSearch(data) {
 export async function handlePolicySearch(data) {
   try {
     const searchQuery = {
-      firstName: formatForURI(data.firstName),
-      lastName: formatForURI(data.lastName),
-      address: formatForURI(String(data.address).trim()),
-      agencyCode: formatForURI(data.agencyCode),
-      effectiveDate: formatForURI(
+      ...data,
+      address: String(data.address).trim(),
+      effectiveDate:
         data.effectiveDate &&
-          moment(data.effectiveDate)
-            .utc()
-            .format(SECONDARY_DATE_FORMAT)
-      ),
-      policyNumber: formatForURI(data.policyNumber),
-      policyStatus: formatForURI(data.policyStatus),
+        moment(data.effectiveDate)
+          .utc()
+          .format(SECONDARY_DATE_FORMAT),
       currentPage: setPageNumber(data.currentPage, data.isNext),
       pageSize: RESULTS_PAGE_SIZE,
       sortBy: data.sortBy,
-      sortDirection: data.sortBy === 'policyNumber' ? 'desc' : 'asc',
-      product: formatForURI(data.product),
-      companyCode: data.companyCode,
-      state: data.state
+      sortDirection: data.sortBy === 'policyNumber' ? 'desc' : 'asc'
     };
 
     const results = await fetchPolicies(searchQuery);
@@ -604,11 +603,9 @@ export function handleSearchSubmit(data, props) {
 
       if (searchType === SEARCH_TYPES.newQuote) {
         searchResults = await handleAddressSearch(data);
-        searchResults.product = data.product;
       }
       if (searchType === SEARCH_TYPES.quote) {
         searchResults = await handleQuoteSearch(data);
-        searchResults.product = data.product;
       }
       if (searchType === SEARCH_TYPES.policy) {
         searchResults = await handlePolicySearch(data);
@@ -622,6 +619,7 @@ export function handleSearchSubmit(data, props) {
       if (searchType === SEARCH_TYPES.diaries) {
         searchResults = await handleDiariesSearch(data);
       }
+      searchResults.product = data.product;
       // Setting search results in redux for backwards compat with other search types/features - will be removed  when search is refactored into core-ui
       dispatch(setSearchResults(searchResults));
       return searchResults;
