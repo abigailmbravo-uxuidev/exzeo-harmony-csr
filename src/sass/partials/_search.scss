@@ -598,62 +598,6 @@
     }
   }
 
-  &.policy-advanced {
-    overflow: visible;
-    height: auto;
-
-    #SearchBar {
-      overflow: visible;
-      height: auto;
-
-      > form {
-        height: auto;
-
-        .search-input-wrapper {
-          overflow: visible;
-          flex-wrap: wrap;
-          height: auto;
-        }
-
-        .advanced-search {
-          display: flex;
-          overflow: visible;
-          padding: $padding 10rem 0 0;
-          width: 100%;
-          height: auto;
-          animation-duration: 0.8s;
-
-          input {
-            -ms-flex-preferred-size: 1.75rem;
-            flex-grow: 0;
-            flex-shrink: 0;
-            padding: $padding;
-            width: 100%;
-            height: 2.375rem;
-            line-height: 1.75;
-          }
-
-          .form-group {
-            position: relative;
-
-            &.error {
-              input {
-                border-width: 2px;
-                background-color: mix($highlight, $red, 85%);
-              }
-
-              span {
-                position: absolute;
-                top: 1.875rem;
-                right: $padding;
-              }
-            }
-          }
-        }
-      }
-    }
-  }
-
   .results,
   .results-wrapper {
     flex-basis: 100%;
@@ -671,28 +615,12 @@
 }
 
 main[role='document'] {
-  &.policy-advanced {
-    min-height: auto;
-    //height: calc(100vh - 12.375rem);
-    //min-height: calc(100vh - 12.375rem);
-    height: auto;
-  }
-
   .survey-wrapper {
     &.scroll {
       flex-grow: 1;
       flex-shrink: 1;
       padding: 0;
       width: 100%;
-
-      .results-wrapper {
-        ul {
-          &.property-search-results {
-            padding: 1rem;
-            width: 100%;
-          }
-        }
-      }
     }
   }
 
@@ -871,7 +799,8 @@ ul.list-cards {
             font-size: $font-size-sm;
           }
 
-          &.quote-no {
+          &.quote-no,
+          &.policy-no {
             width: 14rem;
 
             strong {
@@ -892,6 +821,10 @@ ul.list-cards {
           }
 
           &.quote-status {
+            width: 20rem;
+          }
+
+          &.policy-status {
             width: 20rem;
           }
         }
