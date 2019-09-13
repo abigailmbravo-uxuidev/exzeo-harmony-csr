@@ -39,9 +39,10 @@ function PolicyCard({ handleKeyPress, handleClick, policy }) {
                 {`${policy.policyHolders[0].firstName} ${policy.policyHolders[0].lastName}`}
                 &nbsp;|&nbsp;
                 <span className="propertyAddress">
-                  {`${policy.property.physicalAddress.address1}
-                      ${policy.property.physicalAddress.city}, ${policy.property.physicalAddress.state}
-                      ${policy.property.physicalAddress.zip}`}
+                  {`${policy.property.physicalAddress.address1}`}&nbsp;
+                  <span className="propertyCityStateZip">
+                    {`${policy.property.physicalAddress.city}, ${policy.property.physicalAddress.state} ${policy.property.physicalAddress.zip}`}
+                  </span>
                 </span>
               </h4>
             )}
