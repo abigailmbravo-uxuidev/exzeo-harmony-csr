@@ -2604,21 +2604,21 @@ const mock = {
                       path: 'property.buildingCodeEffectivenessGrading',
                       dependencies: [],
                       data: {
-                        component: 'select',
+                        component: 'selectInteger',
                         label: 'BCEG',
                         size: '12',
                         dataSource: [
-                          { label: '01', answer: '1' },
-                          { label: '02', answer: '2' },
-                          { label: '03', answer: '3' },
-                          { label: '04', answer: '4' },
-                          { label: '05', answer: '5' },
-                          { label: '06', answer: '6' },
-                          { label: '07', answer: '7' },
-                          { label: '08', answer: '8' },
-                          { label: '09', answer: '9' },
-                          { label: '98', answer: '98' },
-                          { label: '99', answer: '99' }
+                          { label: '01', answer: 1 },
+                          { label: '02', answer: 2 },
+                          { label: '03', answer: 3 },
+                          { label: '04', answer: 4 },
+                          { label: '05', answer: 5 },
+                          { label: '06', answer: 6 },
+                          { label: '07', answer: 7 },
+                          { label: '08', answer: 8 },
+                          { label: '09', answer: 9 },
+                          { label: '98', answer: 98 },
+                          { label: '99', answer: 99 }
                         ]
                       },
                       formData: {
@@ -2845,9 +2845,10 @@ const mock = {
                       path: 'property.yearOfRoof',
                       dependencies: [],
                       data: {
-                        component: 'text',
+                        component: 'number',
                         label: 'Year Roof Built',
-                        size: '12'
+                        size: '12',
+                        thousandSeparator: false
                       },
                       formData: {
                         path: 'property.yearOfRoof',
