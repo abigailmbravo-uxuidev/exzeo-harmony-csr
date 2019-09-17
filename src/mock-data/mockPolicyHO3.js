@@ -2143,7 +2143,7 @@ const mock = {
                   },
                   formData: {
                     path: 'property.windMitigation.roofDeckAttachment',
-                    type: 'integer',
+                    type: 'string',
                     required: true,
                     metaData: {
                       target:
