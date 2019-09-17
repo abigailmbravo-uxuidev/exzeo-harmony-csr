@@ -2737,14 +2737,15 @@ const mock = {
                       data: {
                         component: 'number',
                         label: 'Tidal Waters Dist.',
-                        size: '12'
+                        size: '12',
+                        decimalScale: 2
                       },
                       formData: {
                         path: 'property.distanceToTidalWater',
                         required: true,
                         metaData: {
                           target:
-                            '${it._TEMP_INITIAL_VALUES.property.distanceToTidalWater ? format.appendUnit(it._TEMP_INITIAL_VALUES.property.distanceToTidalWater, ""): " "}'
+                            '${it._TEMP_INITIAL_VALUES.property.distanceToTidalWater ? format.appendUnitMaxDigits(it._TEMP_INITIAL_VALUES.property.distanceToTidalWater, "", 2): " "}'
                         }
                       },
                       children: []
@@ -2755,15 +2756,16 @@ const mock = {
                       path: 'property.distanceToFireHydrant',
                       dependencies: [],
                       data: {
-                        component: 'text',
+                        component: 'number',
                         label: 'Fire Hydrant Dist.',
-                        size: '12'
+                        size: '12',
+                        decimalScale: 2
                       },
                       formData: {
                         path: 'property.distanceToFireHydrant',
                         metaData: {
                           target:
-                            '${it._TEMP_INITIAL_VALUES.property.distanceToFireHydrant ? format.appendUnit(it._TEMP_INITIAL_VALUES.property.distanceToFireHydrant, "") : " "}'
+                            '${it._TEMP_INITIAL_VALUES.property.distanceToFireHydrant ? format.appendUnitMaxDigits(it._TEMP_INITIAL_VALUES.property.distanceToFireHydrant, "", 2) : " "}'
                         }
                       },
                       children: []
@@ -2776,13 +2778,14 @@ const mock = {
                       data: {
                         component: 'text',
                         label: 'Fire Station Dist.',
-                        size: '12'
+                        size: '12',
+                        decimalScale: 2
                       },
                       formData: {
                         path: 'property.distanceToFireStation',
                         metaData: {
                           target:
-                            '${it._TEMP_INITIAL_VALUES.property.distanceToFireStation ? format.appendUnit(it._TEMP_INITIAL_VALUES.property.distanceToFireStation, ""): " "}'
+                            '${it._TEMP_INITIAL_VALUES.property.distanceToFireStation ? format.appendUnitMaxDigits(it._TEMP_INITIAL_VALUES.property.distanceToFireStation, "", 2): " "}'
                         }
                       },
                       children: []
