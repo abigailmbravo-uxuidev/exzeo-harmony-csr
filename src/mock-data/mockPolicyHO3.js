@@ -1679,7 +1679,7 @@ const mock = {
                     {
                       id: '398ce68d-839c-4a49-bbf2-54864c4a69c7',
                       type: '$INPUT',
-                      path: 'coverageLimits.ordinanceOrLaw.amount',
+                      path: 'coverageLimits.ordinanceOrLaw.value',
                       dependencies: [],
                       data: {
                         component: 'selectInteger',
@@ -1691,7 +1691,7 @@ const mock = {
                         ]
                       },
                       formData: {
-                        path: 'coverageLimits.ordinanceOrLaw.amount',
+                        path: 'coverageLimits.ordinanceOrLaw.value',
                         type: 'integer',
                         required: true,
                         metaData: {
