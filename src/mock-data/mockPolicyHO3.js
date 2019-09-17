@@ -2399,7 +2399,7 @@ const mock = {
                     required: true,
                     metaData: {
                       target:
-                        '${it._TEMP_INITIAL_VALUES.rating.worksheet.elements.windMitigationFactors.windMitigationDiscount}'
+                        '${it._TEMP_INITIAL_VALUES.rating.worksheet.elements.windMitigationFactors.windMitigationDiscount || "0"}'
                     }
                   },
                   children: []
