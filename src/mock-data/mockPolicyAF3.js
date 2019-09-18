@@ -799,18 +799,18 @@ const mock = {
               formData: {},
               children: []
             },
-            // {
-            //   id: 44895439847239848,
-            //   type: '$ENDORSEMENTS_WATCHER',
-            //   dependencies: [],
-            //   data: {
-            //     extendedProperties: {
-            //       subscribe: true
-            //     }
-            //   },
-            //   formData: {},
-            //   children: []
-            // },
+            {
+              id: 44895439847239848,
+              type: '$ENDORSEMENTS_WATCHER_AF3',
+              dependencies: [],
+              data: {
+                extendedProperties: {
+                  subscribe: true
+                }
+              },
+              formData: {},
+              children: []
+            },
             {
               id: '5435535-fdsfdsf-234324324324-sss',
               type: '$SECTION',
@@ -938,11 +938,11 @@ const mock = {
                         component: 'selectInteger',
                         label: 'Building Deductible',
                         dataSource: [
+                          { label: '$ 500', answer: 500 },
                           { label: '$ 1,000', answer: 1000 },
                           { label: '$ 2,000', answer: 2000 },
-                          { label: '$ 3,000', answer: 3000 },
-                          { label: '$ 4,000', answer: 4000 },
-                          { label: '$ 5,000', answer: 5000 }
+                          { label: '$ 5,000', answer: 5000 },
+                          { label: '$ 10,000', answer: 10000 }
                         ],
                         extendedProperties: {
                           output: 'initial'
@@ -965,14 +965,15 @@ const mock = {
                       path: 'deductibles.personalPropertyDeductible.value',
                       dependencies: [],
                       data: {
+                        disabled: true,
                         component: 'selectInteger',
                         label: 'Personal Property Deductible',
                         dataSource: [
+                          { label: '$ 500', answer: 500 },
                           { label: '$ 1,000', answer: 1000 },
                           { label: '$ 2,000', answer: 2000 },
-                          { label: '$ 3,000', answer: 3000 },
-                          { label: '$ 4,000', answer: 4000 },
-                          { label: '$ 5,000', answer: 5000 }
+                          { label: '$ 5,000', answer: 5000 },
+                          { label: '$ 10,000', answer: 10000 }
                         ],
                         extendedProperties: {
                           output: 'initial'

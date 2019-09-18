@@ -3,7 +3,7 @@ import React from 'react';
 import { OnChangeListener, Field } from '@exzeo/core-ui/src';
 import _get from 'lodash/get';
 
-const EndorsementsWatcher = ({ formValues }) => {
+const EndorsementsWatcherHO3 = ({ formValues }) => {
   return (
     <React.Fragment>
       <Field
@@ -131,4 +131,4 @@ const EndorsementsWatcher = ({ formValues }) => {
   );
 };
 
-export default EndorsementsWatcher;
+export default EndorsementsWatcherHO3;

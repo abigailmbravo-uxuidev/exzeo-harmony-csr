@@ -1201,7 +1201,7 @@ const mock = {
             },
             {
               id: 44895439847239848,
-              type: '$ENDORSEMENTS_WATCHER',
+              type: '$ENDORSEMENTS_WATCHER_HO3',
               dependencies: [],
               data: {
                 extendedProperties: {

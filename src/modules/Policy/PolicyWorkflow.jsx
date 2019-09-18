@@ -58,7 +58,8 @@ import MOCK_HO3 from '../../mock-data/mockPolicyHO3';
 import MOCK_AF3 from '../../mock-data/mockPolicyAF3';
 
 import EndorsementsMenu from './EndorsementsMenu';
-import EndorsementsWatcher from './EndorsementsWatcher';
+import EndorsementsWatcherHO3 from './EndorsementsWatcherHO3';
+import EndorsementsWatcherAF3 from './EndorsementsWatcherAF3';
 import PreviousEndorsements from './PreviousEndorsements';
 import PolicyHolders from '../Quote/PolicyHolders';
 
@@ -105,7 +106,8 @@ export class PolicyWorkflow extends React.Component {
     $POLICY_BILLING: PolicyBilling,
     $PAYMENT_HISTORY_TABLE: PaymentHistoryTable,
     $ENDORSEMENTS_MENU: EndorsementsMenu,
-    $ENDORSEMENTS_WATCHER: EndorsementsWatcher,
+    $ENDORSEMENTS_WATCHER_HO3: EndorsementsWatcherHO3,
+    $ENDORSEMENTS_WATCHER_AF3: EndorsementsWatcherAF3,
     $PREVIOUS_ENDORSEMENTS: PreviousEndorsements,
     $POLICYHOLDERS: PolicyHolders
   };
