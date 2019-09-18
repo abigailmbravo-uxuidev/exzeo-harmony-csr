@@ -27,6 +27,8 @@ export const setRouteAliases = () =>
     .as('reviewQuote')
     .route('POST', '/svc?rateEndorsement')
     .as('rateEndorsement')
+    .route('POST', '/svc?saveEndorsement')
+    .as('saveEndorsement')
     .route('POST', '/svc?fetchSummaryLedger')
     .as('fetchSummaryLedger')
     .route('POST', '/svc?fetchPolicies')
