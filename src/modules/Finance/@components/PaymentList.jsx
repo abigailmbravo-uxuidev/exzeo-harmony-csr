@@ -92,6 +92,7 @@ const PaymentList = ({ batch, batchResults }) => {
       </div>
       <div className="btn-wrapper download">
         <button
+          data-test="download-payments"
           className="btn btn-secondary"
           type="button"
           onClick={() => handleDownload(batch.values, batchResults)}

@@ -35,15 +35,14 @@ describe('Bulk Payments Test', () => {
       bindPolicyRequest(quoteNumber, idToken, endpointURL).then(response => {
         cy.task('log', 'bindPolicyRequest');
         cy.task('log', response.result.policyNumber);
-        //cy.visit(`/policy/${response.result.policyNumber}/endorsements`)
         cy.visit(`/`);
         cy.findDataTag('bulk-payments-link').click();
 
         cy.task('log', 'Bulk Payments Batch Form');
         cy.get('h3.title')
           .should('contain', 'Bulk Payments')
-          .get('button[data-test="startButton"]')
-          .should('be.disabled')
+
+          .findDisabledDataTag('startButton')
 
           .findDataTag('cashDate')
           .type('2019-11-20')
@@ -52,12 +51,45 @@ describe('Bulk Payments Test', () => {
           .findDataTag('cashType')
           .select('Paper Deposit')
 
-          .get('button[data-test="startButton"]')
-          .should('be.enabled')
-          .click()
+          .findDataTag('startButton')
+          .click({ force: true })
           .findDataTag('policyNumber')
-          .type('12-0000000-01')
-          .blur();
+          .type(`{selectall}{backspace}${response.result.policyNumber}`)
+          .blur()
+          .wait('@fetchPolicy')
+          .wait('@fetchSummaryLedger')
+
+          .get('#root')
+          .scrollTo('right')
+          .findDataTag('amount')
+
+          .type(`{selectall}{backspace}${100}`)
+          .findDataTag('payment-form-submit')
+          .click({ force: true })
+          .wait('@postPaymentTransaction')
+          .get('#root')
+          .scrollTo('left')
+
+          .findDataTag('policyNumber')
+          .type(`{selectall}{backspace}${response.result.policyNumber}`)
+          .blur()
+          .wait('@fetchPolicy')
+          .wait('@fetchSummaryLedger')
+
+          .get('#root')
+          .scrollTo('right')
+          .findDataTag('amount')
+
+          .type(`{selectall}{backspace}${500}`)
+          .findDataTag('payment-form-submit')
+          .click({ force: true })
+          .wait('@postPaymentTransaction')
+
+          .findDataTag('download-payments')
+          .click({ force: true })
+
+          .findDataTag('stopButton')
+          .click({ force: true });
       });
     });
   });

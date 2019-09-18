@@ -34,4 +34,8 @@ export const setRouteAliases = () =>
     .route('POST', '/svc?quoteManager.retrieveQuote')
     .as('retrieveQuote')
     .route('POST', '/svc?quoteManager.verifyQuote')
-    .as('verifyQuote');
+    .as('verifyQuote')
+    .route('POST', '/svc?fetchPolicy')
+    .as('fetchPolicy')
+    .route('POST', '/svc?postPaymentTransaction')
+    .as('postPaymentTransaction');

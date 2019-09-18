@@ -263,6 +263,7 @@ const PaymentForm = ({
                       )}
                     </Field>
                     <button
+                      data-test="payment-form-submit"
                       className="btn btn-primary"
                       type="submit"
                       form="payment-form"
