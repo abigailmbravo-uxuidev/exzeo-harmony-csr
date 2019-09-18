@@ -115,9 +115,9 @@ function buildQuerystring({
     ...(effectiveDate && { effectiveDate }),
     ...(policyNumber && { policyNumber }),
     ...(policyStatus && { policyStatus }),
-    ...(currentPage && { currentPage }),
+    ...(page && { page }),
     ...(pageSize && { pageSize }),
-    ...(sortBy && { sortBy }),
+    ...(sort && { sort }),
     ...(sortDirection && { sortDirection }),
     ...(companyCode && { companyCode }),
     ...(state && { state }),
@@ -458,7 +458,7 @@ export async function handleQuoteSearch(data) {
     const searchQuery = {
       ...data,
       propertyAddress: String(data.address).trim(),
-      currentPage: setPageNumber(data.currentPage, data.isNext),
+      page: setPageNumber(data.currentPage, data.isNext),
       pageSize: RESULTS_PAGE_SIZE,
       sort: 'quoteNumber',
       sortDirection: 'desc'
@@ -486,7 +486,7 @@ export async function handlePolicySearch(data) {
         moment(data.effectiveDate)
           .utc()
           .format(SECONDARY_DATE_FORMAT),
-      currentPage: setPageNumber(data.currentPage, data.isNext),
+      page: setPageNumber(data.currentPage, data.isNext),
       pageSize: RESULTS_PAGE_SIZE,
       sort: data.sortBy,
       sortDirection: data.sortBy === 'policyNumber' ? 'desc' : 'asc'
