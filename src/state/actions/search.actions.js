@@ -75,9 +75,9 @@ export function setSearchResults({
  * @param effectiveDate
  * @param policyNumber
  * @param policyStatus
- * @param currentPage
+ * @param page
  * @param pageSize
- * @param sortBy
+ * @param sort
  * @param sortDirection
  * @param agencyCode
  * @param agentCode
@@ -94,9 +94,9 @@ function buildQuerystring({
   effectiveDate,
   policyNumber,
   policyStatus,
-  currentPage,
+  page,
   pageSize,
-  sortBy,
+  sort,
   sortDirection,
   companyCode,
   state,
@@ -457,7 +457,7 @@ export async function handleQuoteSearch(data) {
   try {
     const searchQuery = {
       ...data,
-      address: String(data.address).trim(),
+      propertyAddress: String(data.address).trim(),
       currentPage: setPageNumber(data.currentPage, data.isNext),
       pageSize: RESULTS_PAGE_SIZE,
       sort: 'quoteNumber',
@@ -480,7 +480,7 @@ export async function handlePolicySearch(data) {
   try {
     const searchQuery = {
       ...data,
-      address: String(data.address).trim(),
+      propertyAddress: String(data.address).trim(),
       effectiveDate:
         data.effectiveDate &&
         moment(data.effectiveDate)
@@ -488,7 +488,7 @@ export async function handlePolicySearch(data) {
           .format(SECONDARY_DATE_FORMAT),
       currentPage: setPageNumber(data.currentPage, data.isNext),
       pageSize: RESULTS_PAGE_SIZE,
-      sortBy: data.sortBy,
+      sort: data.sortBy,
       sortDirection: data.sortBy === 'policyNumber' ? 'desc' : 'asc'
     };
 
