@@ -4,7 +4,7 @@ import { Field } from 'redux-form';
 import { Input, Button, Select, validation } from '@exzeo/core-ui';
 import ResetButton from '../components/ResetButton';
 
-import { companyAnswers, stateAnswers, productAnswers } from '../constants';
+import { companyAnswers, stateAnswers } from '../constants';
 
 const { isValidChar, isRequired } = validation;
 
@@ -12,6 +12,7 @@ const NewQuoteSearch = ({
   submitting,
   changeSearchType,
   searchTypeOptions,
+  productAnswers,
   reset
 }) => (
   <React.Fragment>

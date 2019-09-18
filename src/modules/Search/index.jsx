@@ -56,39 +56,33 @@ export class SearchPage extends Component {
 
   componentDidMount() {
     this.setSearchConfig();
+    this.productAnswers = this.getProducts();
   }
 
   componentWillUnmount() {
     this.props.resetSearch();
   }
 
-  setHasSearched = hasSearched => {
-    this.setState({ hasSearched });
-  };
-
-  setAnswers = () => {
+  getProducts() {
     const {
       userProfile: { resources = [] }
     } = this.props;
-    const searchTypes = {};
-    const answers = {
-      quote: {
-        company: [],
-        state: [],
-        product: []
-      },
-      policy: {
-        company: [],
-        state: [],
-        product: []
-      }
-    };
 
-    resources.forEach(resource => {
-      const uri = resource.uri.split(':');
-    });
+    return resources
+      .filter(
+        res =>
+          res.uri.includes('QuoteData') &&
+          res.right === 'INSERT' &&
+          !res.conditions
+      )
+      .map(res => {
+        const { 2: state } = res.uri.split(':');
+        return { answer: state, label: state };
+      });
+  }
 
-    return answers;
+  setHasSearched = hasSearched => {
+    this.setState({ hasSearched });
   };
 
   setSearchConfig = () => {
@@ -189,6 +183,7 @@ export class SearchPage extends Component {
                   searchTypeOptions={SEARCH_CONFIG[searchConfig].searchOptions}
                   handlePagination={handlePagination}
                   hasSearched={hasSearched}
+                  productAnswers={this.productAnswers}
                   {...formProps}
                 />
               )}
