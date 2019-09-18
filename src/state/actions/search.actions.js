@@ -1,6 +1,6 @@
-import moment from 'moment/moment';
-
+import { date } from '@exzeo/core-ui';
 import * as serviceRunner from '@exzeo/core-ui/src/@Harmony/Domain/Api/serviceRunner';
+
 import { sortDiariesByDate } from '../../utilities/diaries';
 import { SECONDARY_DATE_FORMAT } from '../../constants/dates';
 import {
@@ -495,11 +495,7 @@ export async function handlePolicySearch(data) {
               .trim()
           : '',
       status: data.policyStatus,
-      effectiveDate:
-        data.effectiveDate &&
-        moment(data.effectiveDate)
-          .utc()
-          .format(SECONDARY_DATE_FORMAT),
+      effectiveDate: date.formatDate(data.effectiveDate, SECONDARY_DATE_FORMAT),
       page: setPageNumber(data.currentPage, data.isNext),
       pageSize: RESULTS_PAGE_SIZE,
       sort: data.sortBy,
