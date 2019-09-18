@@ -139,6 +139,11 @@ describe('CSR_policyEnd_happyPath_multiEnd1', () => {
               .findDataTag('currentPremiumDetail')
               .get('dl div dd')
               .contains('$ 2,456');
+
+            // .findDataTag('policyHolderDetail')
+            // .get('dl div')
+            // .find('dd')[1]
+            // .contains('(222) 444-5555');
           });
       });
     });
