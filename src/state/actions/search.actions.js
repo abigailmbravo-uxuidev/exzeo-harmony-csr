@@ -70,11 +70,12 @@ export function setSearchResults({
  * Build query string and encodeURI
  * @param firstName
  * @param lastName
- * @param address
+ * @param propertyAddress
  * @param companyCode
  * @param effectiveDate
  * @param policyNumber
- * @param policyStatus
+ * @param status
+ * @param quoteState
  * @param page
  * @param pageSize
  * @param sort
@@ -90,10 +91,11 @@ export function setSearchResults({
 function buildQuerystring({
   firstName,
   lastName,
-  address,
+  propertyAddress,
   effectiveDate,
   policyNumber,
-  policyStatus,
+  status,
+  quoteState,
   page,
   pageSize,
   sort,
@@ -111,10 +113,11 @@ function buildQuerystring({
   const fields = {
     ...(firstName && { firstName }),
     ...(lastName && { lastName }),
-    ...(address && { address }),
+    ...(propertyAddress && { propertyAddress }),
     ...(effectiveDate && { effectiveDate }),
     ...(policyNumber && { policyNumber }),
-    ...(policyStatus && { policyStatus }),
+    ...(status && { status }),
+    ...(quoteState && { quoteState }),
     ...(page && { page }),
     ...(pageSize && { pageSize }),
     ...(sort && { sort }),
@@ -457,7 +460,12 @@ export async function handleQuoteSearch(data) {
   try {
     const searchQuery = {
       ...data,
-      propertyAddress: String(data.address).trim(),
+      propertyAddress:
+        data.address && data.address !== 'undefined'
+          ? String(data.address)
+              .replace(/\./g, '')
+              .trim()
+          : '',
       page: setPageNumber(data.currentPage, data.isNext),
       pageSize: RESULTS_PAGE_SIZE,
       sort: 'quoteNumber',
@@ -480,7 +488,13 @@ export async function handlePolicySearch(data) {
   try {
     const searchQuery = {
       ...data,
-      propertyAddress: String(data.address).trim(),
+      propertyAddress:
+        data.address && data.address !== 'undefined'
+          ? String(data.address)
+              .replace(/\./g, '')
+              .trim()
+          : '',
+      status: data.policyStatus,
       effectiveDate:
         data.effectiveDate &&
         moment(data.effectiveDate)
