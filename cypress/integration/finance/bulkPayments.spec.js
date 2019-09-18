@@ -7,7 +7,7 @@ import {
   fillOutApplication,
   navigateThroughDocusign
 } from '../../helpers';
-import { bindPolicyRequest } from './bindPolicyRequest';
+import { bindPolicyRequest } from '../endorsements/bindPolicyRequest';
 
 describe('Bulk Payments Test', () => {
   before('Login', () => cy.login());
@@ -37,20 +37,27 @@ describe('Bulk Payments Test', () => {
         cy.task('log', response.result.policyNumber);
         //cy.visit(`/policy/${response.result.policyNumber}/endorsements`)
         cy.visit(`/`);
-        cy.task('log', 'Search Policy and open')
-          .findDataTag('searchType')
-          .select('policy')
-          // This will be relevant once ALL users can see the product dropdown
+        cy.findDataTag('bulk-payments-link').click();
+
+        cy.task('log', 'Bulk Payments Batch Form');
+        cy.get('h3.title')
+          .should('contain', 'Bulk Payments')
+          .get('button[data-test="startButton"]')
+          .should('be.disabled')
+
+          .findDataTag('cashDate')
+          .type('2019-11-20')
+          .findDataTag('batchNumber')
+          .type('-99')
+          .findDataTag('cashType')
+          .select('Paper Deposit')
+
+          .get('button[data-test="startButton"]')
+          .should('be.enabled')
+          .click()
           .findDataTag('policyNumber')
-          .type(response.result.policyNumber)
-          .clickSubmit()
-          .wait('@fetchPolicies')
-          // This makes it so we don't open up a new window
-          .findDataTag(response.result.policyNumber)
-          .then($a => {
-            $a.prop('onclick', () => cy.visit($a.prop('dataset').url)).click();
-            cy.goToNav('bulkPayments');
-          });
+          .type('12-0000000-01')
+          .blur();
       });
     });
   });
