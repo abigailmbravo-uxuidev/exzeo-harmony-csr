@@ -2542,7 +2542,7 @@ const mock = {
                       path: 'property.protectionClass',
                       dependencies: [],
                       data: {
-                        component: 'select',
+                        component: 'selectInteger',
                         label: 'Protection Class',
                         size: '12',
                         dataSource: [

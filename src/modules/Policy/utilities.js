@@ -56,6 +56,13 @@ export function formatEndorsementData(data, timezone) {
     calculatedData.policyHolders[1].entityType = entityType || 'Person';
   }
 
+  calculatedData.coverageOptions.sinkholePerilCoverage.answer =
+    String(calculatedData.coverageOptions.sinkholePerilCoverage.answer) ===
+    'true';
+  if (calculatedData.coverageOptions.sinkholePerilCoverage) {
+    calculatedData.deductibles.sinkhole = { value: 10 };
+  }
+
   delete calculatedData._TEMP_INITIAL_VALUES;
   delete calculatedData.cancel;
   delete calculatedData.summaryLedger;
