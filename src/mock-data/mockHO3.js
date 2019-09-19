@@ -226,7 +226,11 @@ const mock = {
               data: {
                 component: 'number',
                 label: 'Protection Class',
-                validation: ['isNumbersOnly', 'isRequired'],
+                validation: [
+                  'isNumbersOnly',
+                  'isProtectionClassRange',
+                  'isRequired'
+                ],
                 size: '3'
               },
               formData: {},
