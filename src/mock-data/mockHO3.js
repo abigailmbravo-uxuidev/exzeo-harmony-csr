@@ -224,7 +224,7 @@ const mock = {
               path: 'property.protectionClass',
               dependencies: [],
               data: {
-                component: 'text',
+                component: 'number',
                 label: 'Protection Class',
                 size: '3'
               },
