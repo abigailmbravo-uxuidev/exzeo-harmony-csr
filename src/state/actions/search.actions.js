@@ -498,7 +498,9 @@ export async function handlePolicySearch(data) {
               .trim()
           : '',
       status: data.policyStatus,
-      effectiveDate: date.formatDate(data.effectiveDate, SECONDARY_DATE_FORMAT),
+      effectiveDate:
+        data.effectiveDate &&
+        date.formatDate(data.effectiveDate, SECONDARY_DATE_FORMAT),
       page: setPageNumber(data.currentPage, data.isNext),
       pageSize: RESULTS_PAGE_SIZE,
       sort: data.sortBy,
