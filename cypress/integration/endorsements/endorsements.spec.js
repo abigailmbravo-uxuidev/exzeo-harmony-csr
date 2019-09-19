@@ -35,6 +35,7 @@ describe('CSR_policyEnd_happyPath_multiEnd1', () => {
       bindPolicyRequest(quoteNumber, idToken, endpointURL).then(response => {
         cy.task('log', 'bindPolicyRequest');
         cy.task('log', response.result.policyNumber);
+
         //cy.visit(`/policy/${response.result.policyNumber}/endorsements`)
         cy.visit(`/`);
         cy.task('log', 'Search Policy and open')
@@ -136,14 +137,48 @@ describe('CSR_policyEnd_happyPath_multiEnd1', () => {
               .wait('@fetchPolicy')
               .wait('@fetchSummaryLedger')
 
+              .wait(3000)
+
               .findDataTag('currentPremiumDetail')
               .get('dl div dd')
-              .contains('$ 2,456');
+              .contains('$ 2,456')
 
-            // .findDataTag('policyHolderDetail')
-            // .get('dl div')
-            // .find('dd')[1]
-            // .contains('(222) 444-5555');
+              .findDataTag('policyHolderDetail')
+              .get('dl div')
+              .find('dd')
+              .contains('(222) 444-5555')
+
+              .findDataTag('propertyAddressDetail')
+              .get('dl div')
+              .find('dd')
+              .contains('APT 101')
+
+              .findDataTag('mailingAddressDetail')
+              .get('dl div')
+              .find('dd')
+              .contains('APT 101')
+
+              .get('.table tbody')
+              .find('tr')
+              .find('td')
+              .contains(
+                response.result.transaction.effectiveDate.substring(0, 10)
+              )
+
+              .get('.table tbody')
+              .find('tr')
+              .find('td')
+              .contains('-$211.00')
+
+              .get('.table tbody')
+              .find('tr')
+              .find('td')
+              .contains('Multiple Endorsements Endorsement')
+
+              .get('.table tbody')
+              .find('tr')
+              .find('td')
+              .contains(response.result.transaction.issueDate.substring(0, 10));
           });
       });
     });

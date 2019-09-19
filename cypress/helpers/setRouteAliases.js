@@ -40,4 +40,6 @@ export const setRouteAliases = () =>
     .route('POST', '/svc?fetchPolicy')
     .as('fetchPolicy')
     .route('POST', '/svc?postPaymentTransaction')
-    .as('postPaymentTransaction');
+    .as('postPaymentTransaction')
+    .route('POST', '/svc?fetchEndorsementHistory')
+    .as('fetchEndorsementHistory');
