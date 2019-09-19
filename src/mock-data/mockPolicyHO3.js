@@ -1991,7 +1991,7 @@ const mock = {
                             { label: 'B', answer: 'B' }
                           ],
                           target:
-                            '${it._TEMP_INITIAL_VALUES.property.sprinkler}'
+                            '${it._TEMP_INITIAL_VALUES.property.sprinkler === "N" ? "No" : it._TEMP_INITIAL_VALUES.property.sprinkler}'
                         }
                       },
                       children: []

@@ -129,6 +129,24 @@ const EndorsementsWatcherHO3 = ({ formValues }) => {
           </React.Fragment>
         )}
       </Field>
+      <Field
+        name="coverageOptions.personalPropertyReplacementCost.answer"
+        subscription={{}}
+      >
+        {({ input: { onChange } }) => (
+          <React.Fragment>
+            <OnChangeListener name="coverageLimits.personalProperty.value">
+              {personalPropertyValue => {
+                if (!personalPropertyValue) {
+                  onChange(false);
+                } else {
+                  onChange(true);
+                }
+              }}
+            </OnChangeListener>
+          </React.Fragment>
+        )}
+      </Field>
     </React.Fragment>
   );
 };
