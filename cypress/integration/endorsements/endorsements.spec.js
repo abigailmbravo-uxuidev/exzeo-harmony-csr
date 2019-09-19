@@ -134,10 +134,8 @@ describe('CSR_policyEnd_happyPath_multiEnd1', () => {
               .findDataTag('modal-submit')
               .click({ force: true })
               .wait('@saveEndorsement')
-              .wait('@fetchPolicy')
-              .wait('@fetchSummaryLedger')
 
-              .wait(3000)
+              .wait(5000)
 
               .findDataTag('currentPremiumDetail')
               .get('dl div dd')
@@ -201,6 +199,16 @@ describe('CSR_policyEnd_happyPath_multiEnd1', () => {
               .find('tr')
               .find('td')
               .contains(created);
+
+            cy.get('.table tbody')
+              .find('tr')
+              .find('td')
+              .contains('System');
+
+            cy.get('.table tbody')
+              .find('tr')
+              .find('td')
+              .contains('tticcsr');
 
             cy.get('.table tbody')
               .find('tr')
