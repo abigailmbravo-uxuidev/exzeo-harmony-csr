@@ -178,7 +178,50 @@ describe('CSR_policyEnd_happyPath_multiEnd1', () => {
               .get('.table tbody')
               .find('tr')
               .find('td')
-              .contains(response.result.transaction.issueDate.substring(0, 10));
+              .contains(response.result.transaction.issueDate.substring(0, 10))
+
+              .goToNav('notes')
+              .wait('@fetchFiles')
+
+              .get('.table tbody')
+              .find('tr')
+              .find('td')
+              .contains(
+                'Multiple Endorsements Endorsement Effective 10/19/2019.'
+              );
+
+            const effectiveDate = new Date(
+              response.result.transaction.effectiveDate
+            ).toLocaleDateString();
+            const created = new Date(
+              response.result.transaction.issueDate
+            ).toLocaleDateString();
+
+            cy.get('.table tbody')
+              .find('tr')
+              .find('td')
+              .contains(created);
+
+            cy.get('.table tbody')
+              .find('tr')
+              .find('td')
+              .contains(
+                `Multiple Endorsements Endorsement Effective ${effectiveDate}.`
+              );
+
+            cy.get('.table tbody')
+              .find('tr')
+              .find('td')
+              .contains(
+                `Prior - Dwelling (A): 314000, Other Structures (B): 6280, Personal Property (C): 78500, Loss of Use (D): 31400, Sinkhole Deductible: Yes, Sinkhole Deductible: 10, Burglar Alarm: No, Roof Covering: Other, Roof Geometry: Other, Protection Class: 3, PH 1 Primary Phone: 1234567890, PH 1 Secondary Phone: , Mailing Address 2: , Property 2: Null.`
+              );
+
+            cy.get('.table tbody')
+              .find('tr')
+              .find('td')
+              .contains(
+                `New - Dwelling (A): 400000, Other Structures (B): 8000, Personal Property (C): 200000, Loss of Use (D): 40000, Sinkhole Deductible: No, Sinkhole Deductible: Null, Burglar Alarm: Yes, Roof Covering: FBC, Roof Geometry: Hip, Protection Class: 7, PH 1 Primary Phone: 2224445555, PH 1 Secondary Phone: 3337778888, Mailing Address 2: APT 101, Property 2: APT 101`
+              );
           });
       });
     });
