@@ -74,6 +74,7 @@ export function setSearchResults({
  * @param companyCode
  * @param effectiveDate
  * @param policyNumber
+ * @param quoteNumber
  * @param status
  * @param quoteState
  * @param page
@@ -94,6 +95,7 @@ function buildQuerystring({
   propertyAddress,
   effectiveDate,
   policyNumber,
+  quoteNumber,
   status,
   quoteState,
   page,
@@ -116,6 +118,7 @@ function buildQuerystring({
     ...(propertyAddress && { propertyAddress }),
     ...(effectiveDate && { effectiveDate }),
     ...(policyNumber && { policyNumber }),
+    ...(quoteNumber && { quoteNumber }),
     ...(status && { status }),
     ...(quoteState && { quoteState }),
     ...(page && { page }),
