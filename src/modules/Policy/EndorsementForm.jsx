@@ -25,7 +25,7 @@ const EndorsementForm = ({
   let formInstance;
   const [endorsementState, setCalculateRate] = useState({});
 
-  const { pristine: parentPristine } = parentFormInstance.getState();
+  const { pristine: parentPristine, invalid } = parentFormInstance.getState();
 
   const initialValues = {
     ...policyFormData,
@@ -189,6 +189,7 @@ const EndorsementForm = ({
                   className={Button.constants.classNames.primary}
                   type="submit"
                   disabled={
+                    invalid ||
                     (parentPristine &&
                       !endorsementState.hasEndorsementDateChanged &&
                       !endorsementState.rating) ||
