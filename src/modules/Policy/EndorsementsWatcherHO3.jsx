@@ -103,6 +103,8 @@ const EndorsementsWatcherHO3 = ({ formValues }) => {
                         formValues.coverageLimits.dwelling.value
                     )
                   );
+                } else {
+                  onChange(0);
                 }
               }}
             </OnChangeListener>
