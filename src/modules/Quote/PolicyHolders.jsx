@@ -8,7 +8,6 @@ import PolicyHoldersWatcher from './PolicyHoldersWatcher';
 const PolicyHolders = ({ config, initialValues, size, ...props }) => {
   const { watchField } = config.extendedProperties;
 
-  console.log(props);
   return (
     <section
       className={classNames('policyholder-component', size)}

@@ -77,7 +77,10 @@ const EndorsementForm = ({
       dirtyFields
     } = parentFormInstance.getState();
 
-    const originalInitial = getDirtyFieldValues(dirtyFields, initialValues);
+    const originalInitial = getDirtyFieldValues(
+      { ...endorsementState.dirtyFields, ...dirtyFields },
+      initialValues._TEMP_INITIAL_VALUES
+    );
 
     const formattedData = formatEndorsementData(
       { ...formValues, endorsementDate },
@@ -92,6 +95,7 @@ const EndorsementForm = ({
     parentFormInstance.initialize({ ...formValues, rating, instanceId });
     setCalculateRate(state => ({
       ...state,
+      dirtyFields: { ...state.dirtyFields, ...dirtyFields },
       rating,
       endorsementDate,
       instanceId,
@@ -110,7 +114,10 @@ const EndorsementForm = ({
   useEffect(() => {
     if (!endorsementState.reviewPending) return;
 
-    const newModifed = getDirtyFieldValues(dirtyFields, formValues);
+    const newModifed = getDirtyFieldValues(
+      { ...endorsementState.dirtyFields, ...dirtyFields },
+      formValues
+    );
 
     if (_isEqual(newModifed, endorsementState.originalInitial)) {
       setDisableReview(true);
