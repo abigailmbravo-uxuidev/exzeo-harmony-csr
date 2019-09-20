@@ -1986,7 +1986,7 @@ const mock = {
                         required: true,
                         metaData: {
                           enum: [
-                            { label: 'N', answer: 'N' },
+                            { label: 'No', answer: 'N' },
                             { label: 'A', answer: 'A' },
                             { label: 'B', answer: 'B' }
                           ],
