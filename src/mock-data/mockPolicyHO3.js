@@ -2908,7 +2908,8 @@ const mock = {
                   data: {
                     component: '$POLICYHOLDERS',
                     extendedProperties: {
-                      watchField: 'removeSecondary'
+                      watchField: 'removeSecondary',
+                      subscribe: true
                     }
                   },
                   formData: {},
