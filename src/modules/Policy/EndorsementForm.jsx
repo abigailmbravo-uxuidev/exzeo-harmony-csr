@@ -3,8 +3,6 @@ import React, { useState, useEffect } from 'react';
 import { FormSpy, Button, date } from '@exzeo/core-ui';
 import _get from 'lodash/get';
 import _isEqual from 'lodash/isEqual';
-import { rateEndorsement, formatEndorsementData } from './utilities';
-import CustomNavigationPrompt from '../../components/CustomNavigationPrompt';
 
 import {
   OnChangeListener,
@@ -15,6 +13,11 @@ import {
   validation,
   Loader
 } from '@exzeo/core-ui';
+
+import CustomNavigationPrompt from '../../components/CustomNavigationPrompt';
+import { setEndorsementDate } from '../../utilities/endorsementModel';
+
+import { rateEndorsement, formatEndorsementData } from './utilities';
 
 const getDirtyFieldValues = (dirtyFields, values) => {
   const map = {};
@@ -61,7 +64,10 @@ const EndorsementForm = ({
     ...policyFormData,
     endorsementDate: endorsementState.endorsementDate
       ? endorsementState.endorsementDate
-      : date.formatDate(policyFormData.effectiveDate, date.FORMATS.SECONDARY),
+      : setEndorsementDate(
+          policyFormData.effectiveDate,
+          policyFormData.endDate
+        ),
     rating: endorsementState.rating,
     instanceId: endorsementState.instanceId
   };
