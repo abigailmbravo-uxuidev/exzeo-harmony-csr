@@ -32,7 +32,6 @@ export async function rateEndorsement(data, setAppError) {
 
 export function formatEndorsementData(data, timezone) {
   const calculatedData = _cloneDeep(data);
-
   calculatedData.endorsementDate = date.formatToUTC(
     date.formatDate(data.endorsementDate, date.FORMATS.SECONDARY),
     timezone
@@ -60,9 +59,15 @@ export function formatEndorsementData(data, timezone) {
     String(calculatedData.coverageOptions.sinkholePerilCoverage.answer) ===
     'true';
   if (calculatedData.coverageOptions.sinkholePerilCoverage.answer) {
-    calculatedData.deductibles.sinkhole = { value: 10 };
+    calculatedData.deductibles.sinkhole = {
+      ...calculatedData.deductibles.sinkhole,
+      value: 10
+    };
   } else {
-    calculatedData.deductibles.sinkhole = { value: 0 };
+    calculatedData.deductibles.sinkhole = {
+      ...calculatedData.deductibles.sinkhole,
+      value: 0
+    };
   }
 
   delete calculatedData._TEMP_INITIAL_VALUES;
