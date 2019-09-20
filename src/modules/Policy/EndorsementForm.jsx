@@ -16,6 +16,26 @@ import {
   Loader
 } from '@exzeo/core-ui';
 
+const getDirtyFieldValues = (dirtyFields, values) => {
+  const map = {};
+
+  Object.keys(dirtyFields).map(p => {
+    if (_get(dirtyFields, p)) {
+      map[p] = _get(values, p);
+    }
+  });
+
+  return map;
+};
+
+const initialState = {
+  originalInitial: {},
+  reviewPending: false,
+  rating: null,
+  endorsementDate: null,
+  instanceId: null
+};
+
 const EndorsementForm = ({
   policyFormData,
   parentFormInstance,
@@ -27,15 +47,13 @@ const EndorsementForm = ({
   let formInstance;
   const [disableReview, setDisableReview] = useState(false);
 
-  const [endorsementState, setCalculateRate] = useState({
-    originalInitial: {}
-  });
+  const [endorsementState, setCalculateRate] = useState(initialState);
 
   const {
     pristine: parentPristine,
-    invalid,
     dirtyFields,
-    values: formValues
+    values: formValues,
+    invalid: parentInvalid
   } = parentFormInstance.getState();
 
   const initialValues = {
@@ -58,13 +76,7 @@ const EndorsementForm = ({
       dirtyFields
     } = parentFormInstance.getState();
 
-    const originalInitial = {};
-
-    Object.keys(dirtyFields).map(p => {
-      if (_get(dirtyFields, p)) {
-        originalInitial[p] = _get(initialValues, p);
-      }
-    });
+    const originalInitial = getDirtyFieldValues(dirtyFields, initialValues);
 
     const formattedData = formatEndorsementData(
       { ...formValues, endorsementDate },
@@ -77,17 +89,18 @@ const EndorsementForm = ({
     );
     if (!rating) return;
     parentFormInstance.initialize({ ...formValues, rating, instanceId });
-    setCalculateRate({
+    setCalculateRate(state => ({
+      ...state,
       rating,
       endorsementDate,
       instanceId,
       originalInitial,
       reviewPending: true
-    });
+    }));
   }
 
   const resetEndorsementForm = () => {
-    setCalculateRate({ reviewPending: false });
+    setCalculateRate(initialState);
     parentFormInstance.initialize(policyFormData);
     if (formInstance) formInstance.reset();
   };
@@ -95,13 +108,7 @@ const EndorsementForm = ({
   useEffect(() => {
     if (!endorsementState.reviewPending) return;
 
-    const newModifed = {};
-
-    Object.keys(dirtyFields).map(p => {
-      if (_get(dirtyFields, p)) {
-        newModifed[p] = _get(formValues, p);
-      }
-    });
+    const newModifed = getDirtyFieldValues(dirtyFields, formValues);
 
     if (_isEqual(newModifed, endorsementState.originalInitial)) {
       setDisableReview(true);
@@ -135,20 +142,13 @@ const EndorsementForm = ({
     await handlePrimaryClick({ ...formValues, endorsementDate });
 
     setTimeout(formInstance.reset);
-    setCalculateRate({ reviewPending: false });
+    setCalculateRate(initialState);
   };
 
-  const validateEndorsementDate = (...args) => {
-    // we shouldn't need to do this, waiting for a patch from redux-form
-    if (!initialValues) return undefined;
-    return (
-      validation.isDate(...args) &&
-      validation.isDateRange(
-        initialValues.effectiveDate,
-        initialValues.endDate
-      )(...args)
-    );
-  };
+  const isEffectiveDateRange = validation.isDateRange(
+    initialValues.effectiveDate,
+    initialValues.endDate
+  );
 
   return (
     <Form
@@ -172,10 +172,7 @@ const EndorsementForm = ({
             <div className="endo-results-calc">
               <div className="flex-parent">
                 <div className="form-group endorsement-date-wrapper">
-                  <Field
-                    name="endorsementDate"
-                    validate={validateEndorsementDate}
-                  >
+                  <Field name="endorsementDate" validate={isEffectiveDateRange}>
                     {({ input, meta }) => (
                       <Date
                         input={input}
@@ -227,7 +224,7 @@ const EndorsementForm = ({
                   }}
                 </FormSpy>
                 <CustomNavigationPrompt
-                  whenValue={endorsementState.instanceId}
+                  whenValue={endorsementState.reviewPending}
                   history={history}
                   confirmNavigationHandler={resetEndorsementForm}
                 />
@@ -242,6 +239,7 @@ const EndorsementForm = ({
                   className={Button.constants.classNames.primary}
                   type="submit"
                   disabled={
+                    parentInvalid ||
                     submitting ||
                     ((parentPristine && !endorsementState.reviewPending) ||
                       (!parentPristine && disableReview))

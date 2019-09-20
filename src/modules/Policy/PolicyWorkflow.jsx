@@ -348,21 +348,32 @@ export class PolicyWorkflow extends React.Component {
                         template={gandalfTemplate}
                         transformConfig={transformConfig}
                         stickyFooter
-                        renderFooter={({ pristine, submitting, form }) => (
-                          <PolicyFooter
-                            history={customHandlers.history}
-                            setAppError={customHandlers.setAppError}
-                            policyFormData={policyFormData}
-                            timezone={zipCodeSettings.timezone}
-                            currentStep={currentRouteName}
-                            formInstance={form}
-                            isSubmitDisabled={this.isSubmitDisabled(
-                              pristine,
-                              submitting
+                        renderFooter={() => (
+                          <FormSpy
+                            subscription={{
+                              pristine: true,
+                              submitting: true,
+                              dirtyFields: true,
+                              invalid: true
+                            }}
+                          >
+                            {({ form, pristine, submitting }) => (
+                              <PolicyFooter
+                                history={customHandlers.history}
+                                setAppError={customHandlers.setAppError}
+                                policyFormData={policyFormData}
+                                timezone={zipCodeSettings.timezone}
+                                currentStep={currentRouteName}
+                                formInstance={form}
+                                isSubmitDisabled={this.isSubmitDisabled(
+                                  pristine,
+                                  submitting
+                                )}
+                                handleGandalfSubmit={this.handleGandalfSubmit}
+                                handlePrimaryClick={this.primaryClickHandler}
+                              />
                             )}
-                            handleGandalfSubmit={this.handleGandalfSubmit}
-                            handlePrimaryClick={this.primaryClickHandler}
-                          />
+                          </FormSpy>
                         )}
                         formListeners={() => (
                           <MemoizedFormListeners>
