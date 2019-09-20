@@ -41,7 +41,7 @@ const EndorsementForm = ({
   };
 
   const calculateEndorsementRate = async ({ endorsementDate }) => {
-    const { values: formValues } = parentFormInstance.getState();
+    const { values: formValues, initialValues } = parentFormInstance.getState();
 
     const formattedData = formatEndorsementData(
       { ...formValues, endorsementDate },

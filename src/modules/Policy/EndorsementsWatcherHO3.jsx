@@ -3,7 +3,7 @@ import React from 'react';
 import { OnChangeListener, Field } from '@exzeo/core-ui/src';
 import _get from 'lodash/get';
 
-const EndorsementsWatcherHO3 = ({ formValues }) => {
+const EndorsementsWatcherHO3 = ({ formValues, initialValues }) => {
   return (
     <React.Fragment>
       <Field
@@ -139,7 +139,14 @@ const EndorsementsWatcherHO3 = ({ formValues }) => {
               {personalPropertyValue => {
                 if (!personalPropertyValue) {
                   onChange(false);
-                } else {
+                } else if (
+                  personalPropertyValue &&
+                  _get(
+                    initialValues,
+                    'coverageOptions.personalPropertyReplacementCost.answer',
+                    false
+                  )
+                ) {
                   onChange(true);
                 }
               }}
