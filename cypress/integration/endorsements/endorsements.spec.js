@@ -179,18 +179,19 @@ describe('CSR_policyEnd_happyPath_multiEnd1', () => {
               .contains(response.result.transaction.issueDate.substring(0, 10))
 
               .goToNav('notes')
-              .wait('@fetchFiles')
-
-              .get('.table tbody')
-              .find('tr')
-              .find('td')
-              .contains(
-                'Multiple Endorsements Endorsement Effective 10/19/2019.'
-              );
+              .wait('@fetchFiles');
 
             const effectiveDate = new Date(
               response.result.transaction.effectiveDate
             ).toLocaleDateString();
+
+            cy.get('.table tbody')
+              .find('tr')
+              .find('td')
+              .contains(
+                `Multiple Endorsements Endorsement Effective ${effectiveDate}.`
+              );
+
             const created = new Date(
               response.result.transaction.issueDate
             ).toLocaleDateString();
@@ -228,7 +229,7 @@ describe('CSR_policyEnd_happyPath_multiEnd1', () => {
               .find('tr')
               .find('td')
               .contains(
-                `New - Dwelling (A): 400000, Other Structures (B): 8000, Personal Property (C): 200000, Loss of Use (D): 40000, Sinkhole Deductible: No, Sinkhole Deductible: Null, Burglar Alarm: Yes, Roof Covering: FBC, Roof Geometry: Hip, Protection Class: 7, PH 1 Primary Phone: 2224445555, PH 1 Secondary Phone: 3337778888, Mailing Address 2: APT 101, Property 2: APT 101`
+                `New - Dwelling (A): 400000, Other Structures (B): 8000, Personal Property (C): 200000, Loss of Use (D): 40000, Sinkhole Deductible: No, Sinkhole Deductible: 0, Burglar Alarm: Yes, Roof Covering: FBC, Roof Geometry: Hip, Protection Class: 7, PH 1 Primary Phone: 2224445555, PH 1 Secondary Phone: 3337778888, Mailing Address 2: APT 101, Property 2: APT 101`
               );
           });
       });
