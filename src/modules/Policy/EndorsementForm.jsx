@@ -104,6 +104,7 @@ const EndorsementForm = ({
     setCalculateRate(initialState);
     parentFormInstance.initialize(policyFormData);
     if (formInstance) formInstance.reset();
+    setDisableReview(false);
   };
 
   useEffect(() => {
