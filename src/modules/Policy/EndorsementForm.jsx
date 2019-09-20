@@ -23,6 +23,7 @@ const getDirtyFieldValues = (dirtyFields, values) => {
     if (_get(dirtyFields, p)) {
       map[p] = _get(values, p);
     }
+    return p;
   });
 
   return map;
