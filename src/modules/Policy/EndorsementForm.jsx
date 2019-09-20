@@ -234,7 +234,7 @@ const EndorsementForm = ({
                   onClick={resetEndorsementForm}
                   data-test="modal-cancel"
                 >
-                  [Cancel]
+                  Cancel
                 </Button>
                 <Button
                   className={Button.constants.classNames.primary}
