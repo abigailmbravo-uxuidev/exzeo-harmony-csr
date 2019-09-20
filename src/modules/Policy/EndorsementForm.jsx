@@ -1,6 +1,8 @@
 // @ts-nocheck
 import React, { useState, useEffect } from 'react';
 import { FormSpy, Button, date } from '@exzeo/core-ui';
+import _get from 'lodash/get';
+import _isEqual from 'lodash/isEqual';
 import { rateEndorsement, formatEndorsementData } from './utilities';
 import CustomNavigationPrompt from '../../components/CustomNavigationPrompt';
 
@@ -23,9 +25,18 @@ const EndorsementForm = ({
   handlePrimaryClick
 }) => {
   let formInstance;
-  const [endorsementState, setCalculateRate] = useState({});
+  const [disableReview, setDisableReview] = useState(false);
 
-  const { pristine: parentPristine, invalid } = parentFormInstance.getState();
+  const [endorsementState, setCalculateRate] = useState({
+    originalInitial: {}
+  });
+
+  const {
+    pristine: parentPristine,
+    invalid,
+    dirtyFields,
+    values: formValues
+  } = parentFormInstance.getState();
 
   const initialValues = {
     ...policyFormData,
@@ -40,8 +51,20 @@ const EndorsementForm = ({
     formInstance = form;
   };
 
-  const calculateEndorsementRate = async ({ endorsementDate }) => {
-    const { values: formValues, initialValues } = parentFormInstance.getState();
+  async function calculateEndorsementRate({ endorsementDate }) {
+    const {
+      values: formValues,
+      initialValues,
+      dirtyFields
+    } = parentFormInstance.getState();
+
+    const originalInitial = {};
+
+    Object.keys(dirtyFields).map(p => {
+      if (_get(dirtyFields, p)) {
+        originalInitial[p] = _get(initialValues, p);
+      }
+    });
 
     const formattedData = formatEndorsementData(
       { ...formValues, endorsementDate },
@@ -54,18 +77,48 @@ const EndorsementForm = ({
     );
     if (!rating) return;
     parentFormInstance.initialize({ ...formValues, rating, instanceId });
-    setCalculateRate({ rating, endorsementDate, instanceId });
-  };
+    setCalculateRate({
+      rating,
+      endorsementDate,
+      instanceId,
+      originalInitial,
+      reviewPending: true
+    });
+  }
 
   const resetEndorsementForm = () => {
-    setCalculateRate({});
+    setCalculateRate({ reviewPending: false });
     parentFormInstance.initialize(policyFormData);
     if (formInstance) formInstance.reset();
   };
 
   useEffect(() => {
+    if (!endorsementState.reviewPending) return;
+
+    const newModifed = {};
+
+    Object.keys(dirtyFields).map(p => {
+      if (_get(dirtyFields, p)) {
+        newModifed[p] = _get(formValues, p);
+      }
+    });
+
+    if (_isEqual(newModifed, endorsementState.originalInitial)) {
+      setDisableReview(true);
+    } else {
+      setDisableReview(false);
+    }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [dirtyFields]);
+
+  useEffect(() => {
     if (!parentPristine && endorsementState.rating) {
-      setCalculateRate({ endorsementDate: endorsementState.endorsementDate });
+      setCalculateRate(state => ({
+        ...state,
+        rating: null,
+        endorsementDate: endorsementState.endorsementDate
+      }));
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -82,7 +135,7 @@ const EndorsementForm = ({
     await handlePrimaryClick({ ...formValues, endorsementDate });
 
     setTimeout(formInstance.reset);
-    setCalculateRate({});
+    setCalculateRate({ reviewPending: false });
   };
 
   const validateEndorsementDate = (...args) => {
@@ -189,11 +242,9 @@ const EndorsementForm = ({
                   className={Button.constants.classNames.primary}
                   type="submit"
                   disabled={
-                    invalid ||
-                    (parentPristine &&
-                      !endorsementState.hasEndorsementDateChanged &&
-                      !endorsementState.rating) ||
-                    submitting
+                    submitting ||
+                    ((parentPristine && !endorsementState.reviewPending) ||
+                      (!parentPristine && disableReview))
                   }
                   data-test="modal-submit"
                 >
