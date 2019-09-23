@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { http } from '@exzeo/core-ui';
 import {
+  http,
   Select,
   Loader,
   Button,
@@ -9,61 +9,74 @@ import {
   Field,
   validation
 } from '@exzeo/core-ui';
+import { callService } from '@exzeo/core-ui/src/@Harmony';
 
 const validate = values =>
   !values.documentType ? { documentType: 'Required' } : null;
+
 const documentTypeAnswers = [
-  { label: 'Full Policy Packet', answer: 'generateFullPolicyPacket' },
-  { label: 'Dec Page', answer: 'generateDecPage' },
-  { label: 'Policy Invoice', answer: 'policyInvoiceGenerator' }
+  { label: 'Full Policy Packet', answer: 'fullPolicyPacket' },
+  { label: 'Dec Page', answer: 'decPage' },
+  { label: 'Policy Invoice', answer: 'invoice' }
 ];
 
-export class GenerateDocsForm extends Component {
-  generateDoc = values => {
-    const {
-      errorHandler,
-      policyNumber,
-      policyID,
-      updateNotes,
-      startWorkflow
-    } = this.props;
-    const model = values.documentType;
+const customTransactionTypes = ['invoice', 'decPage'];
 
-    return startWorkflow(model, { policyNumber, policyID }, false)
-      .then(result => {
-        if (window.location.pathname.includes('/notes')) updateNotes();
-        if (
-          !result.workflowData ||
-          !result.workflowData[model] ||
-          !result.workflowData[model].data
-        ) {
-          const documentName = documentTypeAnswers.find(
-            doc => doc.answer === values.documentType
-          ).label;
-          errorHandler({
-            message: `There was an error generating the ${documentName}`
-          });
+export class GenerateDocsForm extends Component {
+  generateDoc = async values => {
+    const {
+      policy: { companyCode, state, product, policyID },
+      updateNotes,
+      errorHandler
+    } = this.props;
+
+    const transactionType = customTransactionTypes.includes(values.documentType)
+      ? values.documentType
+      : undefined;
+    const packetName = values.documentType;
+
+    const config = {
+      exchangeName: 'harmony',
+      routingKey: 'harmony.documents.getDocumentPacketFiles',
+      data: {
+        packetName,
+        companyCode,
+        state,
+        product,
+        args: {
+          policyTransactionId: policyID,
+          ...(transactionType && { transactionType })
         }
-        const fileUrl =
-          result.workflowData[model].data.previousTask.value.result[0].fileUrl;
-        const proxyUrl = `${process.env.REACT_APP_API_URL}/download`;
-        const params = { url: fileUrl };
-        return http.get(proxyUrl, { responseType: 'blob', params });
-      })
-      .then(res => {
-        const contentDisposition = res.headers['content-disposition'];
-        const filename =
-          contentDisposition.match(/filename="(.+)"/)[1] || policyNumber;
-        const blobUrl = window.URL.createObjectURL(res.data);
-        const link = window.document.createElement('a');
-        link.href = blobUrl;
-        link.download = filename;
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-        return true;
-      })
-      .catch(err => errorHandler({ message: err.message }));
+      }
+    };
+
+    try {
+      // Create the file
+      const {
+        data: { result }
+      } = await callService(config, 'getDocumentPacketFiles');
+      if (window.location.pathname.includes('/notes')) updateNotes();
+      const { fileName, fileUrl } = result[0];
+
+      // GET the file
+      const res = await http.get(`${process.env.REACT_APP_API_URL}/download`, {
+        responseType: 'blob',
+        params: { url: fileUrl }
+      });
+
+      // Download the BLOB
+      const blobUrl = window.URL.createObjectURL(res.data);
+      const link = window.document.createElement('a');
+      link.href = blobUrl;
+      link.download = fileName;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    } catch (error) {
+      errorHandler({
+        message: `There was an error generating the ${packetName}`
+      });
+    }
   };
 
   render() {
@@ -102,10 +115,8 @@ export class GenerateDocsForm extends Component {
 }
 
 GenerateDocsForm.propTypes = {
-  policyNumber: PropTypes.string.isRequired,
-  policyID: PropTypes.string.isRequired,
+  policy: PropTypes.object.isRequired,
   updateNotes: PropTypes.func.isRequired,
-  startWorkflow: PropTypes.func.isRequired,
   errorHandler: PropTypes.func.isRequired
 };
 
