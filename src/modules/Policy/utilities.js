@@ -66,7 +66,7 @@ export function formatEndorsementData(data, timezone) {
   } else {
     calculatedData.deductibles.sinkhole = {
       ...calculatedData.deductibles.sinkhole,
-      value: 0
+      value: null
     };
   }
 
