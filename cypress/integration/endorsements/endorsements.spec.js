@@ -22,7 +22,7 @@ describe('CSR_policyEnd_happyPath_multiEnd1', () => {
     navigateThroughDocusign();
     const idToken = localStorage.getItem('id_token');
     cy.wait(20000);
-
+    cy.viewport(1024, 768);
     cy.get('@sendApplication').then(function(xhr) {
       const quoteNumber = xhr.request.body.data.quoteNumber;
       cy.task('log', 'quoteNumber');
@@ -229,7 +229,7 @@ describe('CSR_policyEnd_happyPath_multiEnd1', () => {
               .find('tr')
               .find('td')
               .contains(
-                `New - Dwelling (A): 400000, Other Structures (B): 8000, Personal Property (C): 200000, Loss of Use (D): 40000, Sinkhole Deductible: No, Sinkhole Deductible: 0, Burglar Alarm: Yes, Roof Covering: FBC, Roof Geometry: Hip, Protection Class: 7, PH 1 Primary Phone: 2224445555, PH 1 Secondary Phone: 3337778888, Mailing Address 2: APT 101, Property 2: APT 101`
+                `New - Dwelling (A): 400000, Other Structures (B): 8000, Personal Property (C): 200000, Loss of Use (D): 40000, Sinkhole Deductible: No, Sinkhole Deductible: Null, Burglar Alarm: Yes, Roof Covering: FBC, Roof Geometry: Hip, Protection Class: 7, PH 1 Primary Phone: 2224445555, PH 1 Secondary Phone: 3337778888, Mailing Address 2: APT 101, Property 2: APT 101`
               );
           });
       });
