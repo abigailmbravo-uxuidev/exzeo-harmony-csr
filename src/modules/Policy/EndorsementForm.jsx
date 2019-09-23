@@ -37,7 +37,8 @@ const initialState = {
   reviewPending: false,
   rating: null,
   endorsementDate: null,
-  instanceId: null
+  instanceId: null,
+  hasEndorsementDateChanged: false
 };
 
 const EndorsementForm = ({
@@ -106,7 +107,8 @@ const EndorsementForm = ({
       endorsementDate,
       instanceId,
       originalInitial,
-      reviewPending: true
+      reviewPending: true,
+      hasEndorsementDateChanged: false
     }));
   }
 
@@ -165,15 +167,16 @@ const EndorsementForm = ({
     initialValues.endDate
   );
 
+  const inSaveState =
+    endorsementState.rating &&
+    parentPristine &&
+    !endorsementState.hasEndorsementDateChanged;
+
   return (
     <Form
       keepDirtyOnReinitialize
       initialValues={initialValues}
-      onSubmit={
-        endorsementState.rating && parentPristine
-          ? handleSaveEndorsement
-          : calculateEndorsementRate
-      }
+      onSubmit={inSaveState ? handleSaveEndorsement : calculateEndorsementRate}
       subscription={{ submitting: true, pristine: true, values: true }}
     >
       {({ handleSubmit, submitting }) => (
@@ -261,11 +264,7 @@ const EndorsementForm = ({
                   }
                   data-test="modal-submit"
                 >
-                  {endorsementState.rating &&
-                  (parentPristine &&
-                    !endorsementState.hasEndorsementDateChanged)
-                    ? 'Save'
-                    : 'Review'}
+                  {inSaveState ? 'Save' : 'Review'}
                 </Button>
               </div>
             </div>
@@ -274,6 +273,7 @@ const EndorsementForm = ({
                 if (endorsementState.rating) {
                   setCalculateRate(state => ({
                     ...state,
+                    rating: null,
                     hasEndorsementDateChanged: true
                   }));
                 }
