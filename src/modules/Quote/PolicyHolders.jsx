@@ -33,11 +33,7 @@ const PolicyHolders = ({ config, initialValues, size, formValues }) => {
                 name={watchField}
                 component="input"
                 type="checkbox"
-                disabled={
-                  initialValues.policyHolders.length === 1 ||
-                  (_get(formValues, watchField) &&
-                    !_get(formValues, 'policyHolders[1].firstName'))
-                }
+                disabled={initialValues.policyHolders.length === 1}
                 data-test={watchField}
               />
               <label htmlFor={watchField}> Remove</label>

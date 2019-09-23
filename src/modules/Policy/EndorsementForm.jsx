@@ -165,6 +165,18 @@ const EndorsementForm = ({
     initialValues.endDate
   );
 
+  const checkRemovePhField = () => {
+    if (
+      initialValues.policyHolders.length === 1 ||
+      (_get(formValues, 'removeSecondary') &&
+        !_get(formValues, 'policyHolders[1].firstName'))
+    ) {
+      return true;
+    }
+
+    return false;
+  };
+
   return (
     <Form
       keepDirtyOnReinitialize

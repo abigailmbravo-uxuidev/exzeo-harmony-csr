@@ -149,6 +149,7 @@ export const getPolicyFormData = createSelector(
           : summaryLedgerEffectiveDate.format('YYYY-MM-DD')
     };
 
+    policy.removeSecondary = false;
     policy._TEMP_INITIAL_VALUES = cloneDeep(policy);
     policy.summaryLedger = summaryLedger;
     policy.cancel = cancel;
