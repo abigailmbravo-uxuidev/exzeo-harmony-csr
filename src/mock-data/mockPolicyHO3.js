@@ -443,7 +443,7 @@ const mock = {
                                     {
                                       format: 'conditionalPercent',
                                       path: 'deductibles.sinkhole.amount',
-                                      conditions: [0],
+                                      conditions: [0, '', undefined, null],
                                       defaultValue: 'No'
                                     }
                                   ]
