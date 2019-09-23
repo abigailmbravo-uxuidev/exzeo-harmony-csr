@@ -245,7 +245,11 @@ export class Overview extends React.Component {
         {this.state.showSwitchAgentOfRecordModal && (
           <AddExistingAgentModal
             header="Agent Of Record"
-            initialValues={{ selectedAgent: this.state.selectedAgent._id }}
+            initialValues={{
+              selectedAgent: this.state.selectedAgent
+                ? this.state.selectedAgent._id
+                : ''
+            }}
             listOfAgents={agentsList}
             onToggleModal={this.onHandleToggleSwitchAgentOfRecordModal(null)}
             handleSelection={this.handleSwitchAOR}
