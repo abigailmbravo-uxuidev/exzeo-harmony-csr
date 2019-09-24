@@ -247,13 +247,6 @@ describe('CSR_policyEnd_happyPath_multiEnd1', () => {
               .find('tr')
               .find('td')
               .contains(
-                'Multiple Endorsements Endorsement Effective 10/24/2019.'
-              );
-
-            cy.get('.table tbody')
-              .find('tr')
-              .find('td')
-              .contains(
                 'Prior - Dwelling (A): 314000, Other Structures (B): 6280, Personal Property (C): 78500, Loss of Use (D): 31400, Sinkhole Deductible: Yes, Sinkhole Deductible: 10, Burglar Alarm: No, Roof Covering: Other, Roof Geometry: Other, Protection Class: 3, PH 1 Primary Phone: 1234567890, PH 1 Secondary Phone: , PH 2 First Name: Null, PH 2 Last Name: Null, PH 2 Primary Phone: Null, PH 2 Secondary Phone: Null, PH 2 Email Address: Null, Mailing Address 2: , Property 2: Null.'
               );
 
