@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Route } from 'react-router-dom';
 import { Loader, FormSpy, remoteSubmit, date } from '@exzeo/core-ui';
+import * as serviceRunner from '@exzeo/core-ui/src/@Harmony/Domain/Api/serviceRunner';
 import {
   getConfigForJsonTransform,
   Gandalf,
@@ -26,7 +27,8 @@ import {
 import { getDiariesForTable } from '../../state/selectors/diary.selectors';
 import {
   getPolicyFormData,
-  getPolicyEffectiveDateReasons
+  getPolicyEffectiveDateReasons,
+  getPolicyEndorsementHistory
 } from '../../state/selectors/policy.selectors';
 
 import App from '../../components/AppWrapper';
@@ -51,10 +53,15 @@ import EffectiveDateModal from './EffectiveDateModal';
 import ReinstatePolicyModal from './ReinstatePolicyModal';
 
 // TODO these will be removed in subsequent PR's
-import Endorsements from '../../components/Policy/Endorsements';
 import { startWorkflow, completeTask } from '../../utilities/cg';
 import MOCK_HO3 from '../../mock-data/mockPolicyHO3';
 import MOCK_AF3 from '../../mock-data/mockPolicyAF3';
+
+import EndorsementsMenu from './EndorsementsMenu';
+import EndorsementsWatcherHO3 from './EndorsementsWatcherHO3';
+import EndorsementsWatcherAF3 from './EndorsementsWatcherAF3';
+import PreviousEndorsements from './PreviousEndorsements';
+import PolicyHolders from '../Quote/PolicyHolders';
 
 const getCurrentStepAndPage = defaultMemoize(pathname => {
   const currentRouteName = pathname.split('/')[3];
@@ -81,7 +88,8 @@ export class PolicyWorkflow extends React.Component {
     gandalfTemplate: null,
     showDiaries: false,
     showReinstatePolicyModal: false,
-    showEffectiveDateChangeModal: false
+    showEffectiveDateChangeModal: false,
+    isEndorsementCalculated: false
   };
 
   formInstance = null;
@@ -96,7 +104,12 @@ export class PolicyWorkflow extends React.Component {
     $CANCEL_REASON: CancelReason,
     $CLAIMS_TABLE: ClaimsTable,
     $POLICY_BILLING: PolicyBilling,
-    $PAYMENT_HISTORY_TABLE: PaymentHistoryTable
+    $PAYMENT_HISTORY_TABLE: PaymentHistoryTable,
+    $ENDORSEMENTS_MENU: EndorsementsMenu,
+    $ENDORSEMENTS_WATCHER_HO3: EndorsementsWatcherHO3,
+    $ENDORSEMENTS_WATCHER_AF3: EndorsementsWatcherAF3,
+    $PREVIOUS_ENDORSEMENTS: PreviousEndorsements,
+    $POLICYHOLDERS: PolicyHolders
   };
 
   getConfigForJsonTransform = defaultMemoize(getConfigForJsonTransform);
@@ -112,10 +125,8 @@ export class PolicyWorkflow extends React.Component {
 
     initializePolicyWorkflow(policyNumber);
     getEnumsForPolicyWorkflow({ policyNumber });
-    this.getTemplate();
   }
 
-  // Temp fix for quote not being in state when component mounts on refresh (mostly a development time problem)
   componentDidUpdate(prevProps) {
     const { policy } = this.props;
     const { policy: prevPolicy } = prevProps;
@@ -126,26 +137,22 @@ export class PolicyWorkflow extends React.Component {
 
   getTemplate = async () => {
     const { policy } = this.props;
-    // const { userProfile: { entity: { companyCode, state }} } = this.props;
-
     // const transferConfig = {
     //   exchangeName: 'harmony',
     //   routingKey:  'harmony.policy.retrieveDocumentTemplate',
     //   data: {
     //     companyCode,
     //     state,
-    //     product: 'HO3',
+    //     product: 'AF3',
     //     application: 'CSR',
-    //     formName: 'quoteModel',
+    //     formName: 'policyModel',
     //     version: date.formattedDate(undefined, date.FORMATS.SECONDARY)
     //   }
     // };
 
     // const response = await serviceRunner.callService(transferConfig, 'retrieveDocumentTemplate');
     const { product } = policy;
-    if (product) {
-      this.setState(() => ({ gandalfTemplate: TEMPLATES[product] }));
-    }
+    this.setState(() => ({ gandalfTemplate: TEMPLATES[product] }));
   };
 
   handleGandalfSubmit = async values => {
@@ -153,11 +160,13 @@ export class PolicyWorkflow extends React.Component {
     const { currentRouteName, currentStepNumber } = getCurrentStepAndPage(
       location.pathname
     );
-    await this.props.updatePolicy({
+
+    const response = await this.props.updatePolicy({
       data: values,
       options: {
         step: currentStepNumber,
         cancelPolicy: currentRouteName === 'cancel',
+        endorsePolicy: currentRouteName === 'endorsements',
         zipCodeSettings
       }
     });
@@ -262,7 +271,8 @@ export class PolicyWorkflow extends React.Component {
       policyFormData,
       zipCodeSettings,
       cancelOptions,
-      effectiveDateReasons
+      effectiveDateReasons,
+      endorsementHistory
     } = this.props;
 
     const {
@@ -292,8 +302,6 @@ export class PolicyWorkflow extends React.Component {
       history: history,
       notesSynced: notesSynced,
       setAppError: this.props.setAppError,
-      setShowApplicationModal: this.setShowApplicationModal,
-      showApplicationModal: this.state.showApplicationModal,
       toggleDiary: this.props.toggleDiary,
       getPolicy: this.props.getPolicy,
       transferAOR: this.props.transferAOR,
@@ -333,22 +341,39 @@ export class PolicyWorkflow extends React.Component {
                           diaries,
                           ...options,
                           cancelOptions,
-                          zipCodeSettings
+                          zipCodeSettings,
+                          endorsementHistory
                         }} // enums for select/radio fields
                         path={location.pathname}
                         template={gandalfTemplate}
                         transformConfig={transformConfig}
                         stickyFooter
-                        renderFooter={({ pristine, submitting, form }) => (
-                          <PolicyFooter
-                            currentStep={currentRouteName}
-                            formInstance={form}
-                            isSubmitDisabled={this.isSubmitDisabled(
-                              pristine,
-                              submitting
+                        renderFooter={() => (
+                          <FormSpy
+                            subscription={{
+                              pristine: true,
+                              submitting: true,
+                              dirtyFields: true,
+                              invalid: true
+                            }}
+                          >
+                            {({ form, pristine, submitting }) => (
+                              <PolicyFooter
+                                history={customHandlers.history}
+                                setAppError={customHandlers.setAppError}
+                                policyFormData={policyFormData}
+                                timezone={zipCodeSettings.timezone}
+                                currentStep={currentRouteName}
+                                formInstance={form}
+                                isSubmitDisabled={this.isSubmitDisabled(
+                                  pristine,
+                                  submitting
+                                )}
+                                handleGandalfSubmit={this.handleGandalfSubmit}
+                                handlePrimaryClick={this.primaryClickHandler}
+                              />
                             )}
-                            handlePrimaryClick={this.primaryClickHandler}
-                          />
+                          </FormSpy>
                         )}
                         formListeners={() => (
                           <MemoizedFormListeners>
@@ -375,13 +400,6 @@ export class PolicyWorkflow extends React.Component {
                       />
                     </React.Fragment>
                   )}
-                  <Route
-                    exact
-                    path={`${match.url}/endorsements`}
-                    render={props => (
-                      <Endorsements {...props} params={match.params} />
-                    )}
-                  />
                 </div>
               )}
 
@@ -444,6 +462,7 @@ const mapStateToProps = state => {
     notesSynced: state.ui.notesSynced,
     options: state.list,
     policy: state.policyState.policy,
+    endorsementHistory: getPolicyEndorsementHistory(state),
     policyFormData: getPolicyFormData(state),
     summaryLedger: state.policyState.summaryLedger,
     userProfile: state.authState.userProfile,

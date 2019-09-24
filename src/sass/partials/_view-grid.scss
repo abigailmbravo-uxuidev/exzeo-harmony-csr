@@ -92,6 +92,27 @@
     font-size: $font-size-h5;
   }
 }
+
+.title-check-box-wrapper {
+  display: flex;
+  align-items: flex-end;
+
+  .title {
+    flex-grow: 0;
+    flex-shrink: 0;
+    padding: 0;
+    max-width: fit-content;
+  }
+  .check-box-wrapper {
+    flex-grow: 1;
+    flex-shrink: 1;
+    margin-bottom: $padding/4;
+
+    input {
+      margin-right: $padding/2;
+    }
+  }
+}
 //end title component
 /*------------------------------------------------------------------------------------*/
 
@@ -836,5 +857,169 @@ section {
 //end cancel policy page specific styles
 /*------------------------------------------------------------------------------------*/
 
+//endorsements page specific styles
+/*------------------------------------------------------------------------------------*/
+#PolicyWorkflowCSR {
+  > section {
+    &.endorsements {
+      .endo-jump-menu {
+        position: fixed;
+        top: 9rem;
+        left: calc(((100vw - 42rem) / 2) + 12rem);
+        display: flex;
+        align-content: space-between;
+        padding: $padding;
+        width: 30rem;
+        border-radius: 1.5rem;
+        background-color: rgba($white, 0.9);
+        box-shadow: 0 0 4px rgba($black, 0.25);
+
+        * {
+          flex-basis: auto;
+          flex-grow: 1;
+          flex-shrink: 1;
+          margin: 0 ($padding/2);
+          color: $bright-blue-darken-04;
+        }
+      }
+      > section {
+        &.coverage-scroll {
+          margin-top: 2rem;
+        }
+        &.coverage-scroll,
+        &.home-location-scroll,
+        &.wind-mitigation-scroll {
+          margin-bottom: 1rem;
+          padding-bottom: 1rem;
+          border-bottom: 1px dashed $bright-blue-darken-03;
+
+          .form-group {
+            flex-direction: row;
+            flex-wrap: wrap;
+
+            &.labels {
+              justify-content: flex-end;
+              margin-bottom: $padding;
+
+              label {
+                justify-content: flex-start;
+              }
+            }
+
+            label {
+              display: flex;
+              align-items: center;
+              flex-grow: 0;
+              flex-shrink: 0;
+              justify-content: flex-end;
+              margin-right: $padding;
+              margin-bottom: 0;
+              width: calc(33.33% - 0.5rem);
+              text-align: right;
+              font-size: $font-size-base;
+            }
+
+            @media (max-width: 1600px) {
+              label {
+                font-size: $font-size-sm;
+              }
+            }
+
+            input,
+            select,
+            .segmented-answer-wrapper {
+              flex-grow: 0;
+              flex-shrink: 0;
+              order: 3;
+              width: 33%;
+
+              .label-segmented {
+                width: 100%;
+              }
+            }
+            output {
+              flex-grow: 0;
+              flex-shrink: 0;
+              margin-right: $padding;
+              width: calc(33.33% - 0.5rem);
+            }
+
+            > span {
+              order: 3;
+              margin-left: 67%;
+              width: 33%;
+            }
+          }
+        }
+        &.previous-endorsements-scroll,
+        &.policyholder-scroll {
+          margin-bottom: 1rem;
+          padding-bottom: 1rem;
+          border-bottom: 1px dashed $bright-blue-darken-03;
+        }
+      }
+    }
+  }
+}
+//endorsements footer specific styles
+/*------------------------------------------------------------------------------------*/
+.endo-results-calc {
+  flex-grow: 1;
+  flex-shrink: 1;
+  padding: $padding;
+  width: auto;
+  border-top: 1px dotted $warm-gray-04;
+  background: $warm-gray-01;
+
+  .endorsement-date-wrapper {
+    flex-grow: 0;
+    flex-shrink: 0;
+    width: 14rem;
+  }
+
+  .btn-secondary {
+    margin-right: $padding;
+  }
+
+  .flex-parent {
+    .form-group {
+      margin: 0 $padding 0 0;
+
+      label {
+        font-size: $font-size-sm;
+      }
+
+      input {
+        &[disabled='disabled'],
+        &:disabled {
+          border-color: $warm-gray-03;
+          background: $warm-gray-00;
+        }
+      }
+    }
+
+    .btn {
+      margin-top: 1.5rem;
+    }
+  }
+}
+//end endorsements footer specific styles
+/*------------------------------------------------------------------------------------*/
+//end endorsements page specific styles
+/*------------------------------------------------------------------------------------*/
 //END POLICY
 /*------------------------------------------------------------------------------------*/
+//policyholder component
+.policyholder-component {
+  section {
+    padding: 0;
+
+    .form-group {
+      width: 50%;
+
+      &.email {
+        width: 100%;
+      }
+    }
+  }
+}

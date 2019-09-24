@@ -72,19 +72,6 @@
           flex-shrink: 1;
 
           .endo-jump-menu {
-            display: flex;
-            align-content: space-between;
-            flex: 1 0 auto;
-            padding: $padding;
-            border-bottom: dotted 1px $warm-gray-04;
-            background: $white;
-
-            * {
-              flex-basis: auto;
-              flex-grow: 1;
-              flex-shrink: 1;
-              margin: 0 ($padding);
-            }
           }
 
           .scroll {

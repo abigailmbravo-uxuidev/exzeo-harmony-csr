@@ -1,5 +1,6 @@
 // temporary full path import until we can find a better way to mock network requests
 import * as serviceRunner from '@exzeo/core-ui/src/@Harmony/Domain/Api/serviceRunner';
+import _cloneDeep from 'lodash/cloneDeep';
 import { date } from '@exzeo/core-ui/src';
 
 import { convertToRateData } from '../../utilities/endorsementModel';
@@ -11,6 +12,7 @@ import endorsementUtils from '../../utilities/endorsementModel';
 import { getZipcodeSettings } from './service.actions';
 import { toggleLoading } from './ui.actions';
 import cg from '../../utilities/cg';
+import { formatEndorsementData } from '../../modules/Policy/utilities';
 /**
  * Reset policyState
  * @returns {{type: string}}
@@ -842,6 +844,26 @@ export function updatePolicy({ data = {}, options = {} }) {
     try {
       dispatch(toggleLoading(true));
 
+      if (options.endorsePolicy) {
+        const formattedData = formatEndorsementData(
+          data,
+          options.zipCodeSettings.timezone
+        );
+
+        const transferConfig = {
+          exchangeName: 'harmony',
+          routingKey: 'harmony.policy.saveEndorsement',
+          data: formattedData
+        };
+
+        const response = await serviceRunner.callService(
+          transferConfig,
+          'saveEndorsement'
+        );
+
+        dispatch(initializePolicyWorkflow(data.policyNumber));
+      }
+
       if (options.cancelPolicy) {
         const submitData = {
           policyID: data.policyID,
@@ -885,12 +907,13 @@ export function updatePolicy({ data = {}, options = {} }) {
         });
         await dispatch(getPolicy(data.policyNumber));
       }
+      return null;
     } catch (error) {
       if (process.env.NODE_ENV !== 'production') {
         console.log('Error updating policy: ', error);
       }
       dispatch(errorActions.setAppError(error));
-      return null;
+      return { error };
     } finally {
       dispatch(toggleLoading(false));
     }

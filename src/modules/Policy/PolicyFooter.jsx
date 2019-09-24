@@ -2,13 +2,36 @@ import React from 'react';
 import { Button } from '@exzeo/core-ui';
 
 import Footer from '../../components/Common/Footer';
+import EndorsementForm from './EndorsementForm';
 
 function PolicyFooter({
   isSubmitDisabled,
   handlePrimaryClick,
+  handleGandalfSubmit,
   currentStep,
-  formInstance
+  formInstance,
+  timezone,
+  policyFormData,
+  setAppError,
+  history
 }) {
+  if (currentStep === 'endorsements') {
+    return (
+      <React.Fragment>
+        <EndorsementForm
+          history={history}
+          setAppError={setAppError}
+          policyFormData={policyFormData}
+          parentFormInstance={formInstance}
+          handlePrimaryClick={handleGandalfSubmit}
+          timezone={timezone}
+        />
+        <div className="basic-footer btn-footer">
+          <Footer />
+        </div>
+      </React.Fragment>
+    );
+  }
   if (currentStep === 'cancel') {
     return (
       <React.Fragment>

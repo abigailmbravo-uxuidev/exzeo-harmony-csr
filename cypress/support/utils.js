@@ -10,6 +10,17 @@ Cypress.Commands.add('findDataTag', (name, { timeout = 15000, ...rest } = {}) =>
 );
 
 /**
+ * @param {string} name - String name of data-test tag.
+ * @param {Object} options - Native cy.get options.
+ * @returns {Object} DOM element(s) found.
+ */
+Cypress.Commands.add(
+  'findDisabledDataTag',
+  (name, { timeout = 15000, ...rest } = {}) =>
+    cy.get(`[data-test="${name}"]:disabled`, { timeout, ...rest })
+);
+
+/**
  * @param {string} form - Name of form to submit.
  * @returns {Object} DOM element(s) found.
  */

@@ -488,7 +488,7 @@ const mock = {
               children: []
             },
             {
-              id: '398ce68d-839c-4a49-bbf2-92fcc275da40',
+              id: '398ce68d-839c-4a49-bbf2-6546546456',
               type: '$INPUT',
               path: 'coverageLimits.otherStructures.value',
               dependencies: [],

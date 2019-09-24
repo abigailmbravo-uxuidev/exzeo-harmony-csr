@@ -98,7 +98,9 @@ describe('BulkPayments testing', () => {
       target: { value: '12-0000000-01' }
     });
 
-    fireEvent.blur(getByLabelText('Policy Number'));
+    getByLabelText('Policy Number').focus();
+
+    getByLabelText('Policy Number').blur();
 
     expect(
       await waitForElement(() => [
@@ -138,11 +140,13 @@ describe('BulkPayments testing', () => {
     expect(getByText(/start/i)).toBeDisabled();
     expect(getByText(/stop/i)).toBeEnabled();
 
+    getByLabelText('Policy Number').focus();
+
     fireEvent.change(getByLabelText('Policy Number'), {
       target: { value: '12-0000000-01' }
     });
 
-    await fireEvent.blur(getByLabelText('Policy Number'));
+    getByLabelText('Policy Number').blur();
 
     expect(
       await waitForElement(() => [
@@ -172,20 +176,16 @@ describe('BulkPayments testing', () => {
     fireEvent.change(await getByLabelText('Amount'), {
       target: { value: '200.00' }
     });
+
     await fireEvent.click(getByText(/apply/i));
-
-    // check PaymentList
-    expect(getByText('1 entries totaling'));
-    expect(getByText('$ 200.00'));
-    expect(getByText('Download')).toBeEnabled();
-
-    // check clear button
-    await fireEvent.click(document.querySelector('.clear-policy'));
 
     expect(
       await waitForElement(() => [
         expect(getByLabelText('Policy Number').value).toBe(''),
-        expect(getByLabelText('Amount').value).toBe('')
+        expect(getByLabelText('Amount').value).toBe(''),
+        expect(getByText('1 entries totaling')),
+        expect(getByText('$ 200.00')),
+        expect(getByText('Download')).toBeEnabled()
       ])
     );
 
@@ -227,7 +227,9 @@ describe('BulkPayments testing', () => {
       target: { value: '12-0000000-01' }
     });
 
-    fireEvent.blur(getByLabelText('Policy Number'));
+    getByLabelText('Policy Number').focus();
+
+    getByLabelText('Policy Number').blur();
 
     expect(await waitForElement(() => document.querySelector('.Cancellation')));
   });

@@ -114,6 +114,7 @@ const BulkPayments = ({ errorHandler }) => {
                   </Field>
                   <div className="btn-wrapper view-col-2">
                     <button
+                      data-test="startButton"
                       className="btn btn-secondary"
                       type="button"
                       onClick={() => setActive(true)}
@@ -122,6 +123,7 @@ const BulkPayments = ({ errorHandler }) => {
                       Start
                     </button>
                     <button
+                      data-test="stopButton"
                       className="btn btn-primary"
                       type="button"
                       onClick={() => {
