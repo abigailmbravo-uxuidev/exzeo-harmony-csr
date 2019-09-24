@@ -21,8 +21,8 @@ const isValidDate = isValidDateFormat(STANDARD_DATE_FORMAT);
 
 const sortByOptions = [
   { answer: 'quoteNumber', label: 'Quote Number' },
-  { answer: 'firstName', label: 'First Name' },
-  { answer: 'lastName', label: 'Last Name' }
+  { answer: 'policyHolders.firstName', label: 'First Name' },
+  { answer: 'policyHolders.lastName', label: 'Last Name' }
 ];
 
 const QuoteSearch = ({

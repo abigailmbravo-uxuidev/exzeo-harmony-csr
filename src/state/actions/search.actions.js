@@ -474,7 +474,7 @@ export async function handleQuoteSearch(data) {
         date.formatDate(data.effectiveDate, SECONDARY_DATE_FORMAT),
       page: setPageNumber(data.currentPage, data.isNext),
       pageSize: RESULTS_PAGE_SIZE,
-      sort: data.sortBy,
+      sort: data.sortBy ? data.sortBy : 'quoteNumber',
       sortDirection: data.sortBy === 'quoteNumber' ? 'desc' : 'asc'
     };
 
