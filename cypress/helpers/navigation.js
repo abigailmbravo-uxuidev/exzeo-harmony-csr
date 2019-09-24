@@ -6,8 +6,8 @@ export const navigateThroughNewQuote = (address = user.address1) => {
   cy.task('log', 'Navigating through Quote')
     .findDataTag('searchType')
     .select('address')
-    // This will be relevant once ALL users can see the product dropdown
-    // .findDataTag('product').select('HO3')
+    .findDataTag('product')
+    .select('HO3')
     .findDataTag('address')
     .type(address)
     .clickSubmit()
@@ -69,11 +69,12 @@ export const fillOutApplication = () =>
 
 export const navigateThroughDocusign = () =>
   cy
-    .task('log', 'Navigating through Docusign')
+    .task('log', "Navigating through 'Send to Docusign'")
     .clickSubmit('body', 'send-application')
     .wait('@verifyQuote')
     .checkQuoteState('Application Ready')
     .clickSubmit('#sendApplicationForm', 'modal-submit')
     .wait('@sendApplication')
+    .wait('@updateQuote')
     .get('button[data-test="send-application"]')
     .should('be.disabled');
