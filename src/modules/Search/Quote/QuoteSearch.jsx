@@ -58,6 +58,7 @@ const QuoteSearch = ({
           component={Select}
           answers={sortByOptions}
           id="sort"
+          showPlaceholder={false}
           errorHint
         />
       </div>

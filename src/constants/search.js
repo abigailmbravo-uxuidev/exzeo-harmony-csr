@@ -19,6 +19,7 @@ export const POLICY_INITIAL_VALUES = {
 
 export const QUOTE_INITIAL_VALUES = {
   searchType: SEARCH_TYPES.quote,
+  sortBy: 'quoteNumber',
   companyCode: 'TTIC',
   state: 'FL'
 };
