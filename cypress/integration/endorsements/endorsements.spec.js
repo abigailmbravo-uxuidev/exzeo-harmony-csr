@@ -104,6 +104,31 @@ describe('CSR_policyEnd_happyPath_multiEnd1', () => {
               .findDataTag('policyHolders[0].secondaryPhoneNumber')
               .type(`{selectall}{backspace}${'3337778888'}`)
 
+              .get('#root')
+              .scrollTo('right')
+
+              .findDataTag('policyHolders[1].emailAddress')
+              .scrollIntoView()
+              .should('be.visible')
+
+              .findDataTag('policyHolders[1].firstName')
+              .type(`{selectall}{backspace}${'Batman 2'}`)
+
+              .findDataTag('policyHolders[1].lastName')
+              .type(`{selectall}{backspace}${'Robin 2'}`)
+
+              .findDataTag('policyHolders[1].emailAddress')
+              .type(`{selectall}{backspace}${'exzeoqa@exzeo.com'}`)
+
+              .findDataTag('policyHolders[1].primaryPhoneNumber')
+              .type(`{selectall}{backspace}${'9994445555'}`)
+
+              .findDataTag('policyHolders[1].secondaryPhoneNumber')
+              .type(`{selectall}{backspace}${'3337776543'}`)
+
+              .get('#root')
+              .scrollTo('left')
+
               .findDataTag('policyHolderMailingAddress.city_wrapper')
               .scrollIntoView()
               .should('be.visible')
@@ -222,14 +247,21 @@ describe('CSR_policyEnd_happyPath_multiEnd1', () => {
               .find('tr')
               .find('td')
               .contains(
-                `Prior - Dwelling (A): 314000, Other Structures (B): 6280, Personal Property (C): 78500, Loss of Use (D): 31400, Sinkhole Deductible: Yes, Sinkhole Deductible: 10, Burglar Alarm: No, Roof Covering: Other, Roof Geometry: Other, Protection Class: 3, PH 1 Primary Phone: 1234567890, PH 1 Secondary Phone: , Mailing Address 2: , Property 2: Null.`
+                'Multiple Endorsements Endorsement Effective 10/24/2019.'
               );
 
             cy.get('.table tbody')
               .find('tr')
               .find('td')
               .contains(
-                `New - Dwelling (A): 400000, Other Structures (B): 8000, Personal Property (C): 200000, Loss of Use (D): 40000, Sinkhole Deductible: No, Sinkhole Deductible: Null, Burglar Alarm: Yes, Roof Covering: FBC, Roof Geometry: Hip, Protection Class: 7, PH 1 Primary Phone: 2224445555, PH 1 Secondary Phone: 3337778888, Mailing Address 2: APT 101, Property 2: APT 101`
+                'Prior - Dwelling (A): 314000, Other Structures (B): 6280, Personal Property (C): 78500, Loss of Use (D): 31400, Sinkhole Deductible: Yes, Sinkhole Deductible: 10, Burglar Alarm: No, Roof Covering: Other, Roof Geometry: Other, Protection Class: 3, PH 1 Primary Phone: 1234567890, PH 1 Secondary Phone: , PH 2 First Name: Null, PH 2 Last Name: Null, PH 2 Primary Phone: Null, PH 2 Secondary Phone: Null, PH 2 Email Address: Null, Mailing Address 2: , Property 2: Null.'
+              );
+
+            cy.get('.table tbody')
+              .find('tr')
+              .find('td')
+              .contains(
+                'New - Dwelling (A): 400000, Other Structures (B): 8000, Personal Property (C): 200000, Loss of Use (D): 40000, Sinkhole Deductible: No, Sinkhole Deductible: Null, Burglar Alarm: Yes, Roof Covering: FBC, Roof Geometry: Hip, Protection Class: 7, PH 1 Primary Phone: 2224445555, PH 1 Secondary Phone: 3337778888, PH 2 First Name: Batman 2, PH 2 Last Name: Robin 2, PH 2 Primary Phone: 9994445555, PH 2 Secondary Phone: 3337776543, PH 2 Email Address: exzeoqa@exzeo.com, Mailing Address 2: APT 101, Property 2: APT 101'
               );
           });
       });
