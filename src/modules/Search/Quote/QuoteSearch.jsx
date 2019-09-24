@@ -19,6 +19,12 @@ const {
 
 const isValidDate = isValidDateFormat(STANDARD_DATE_FORMAT);
 
+const sortByOptions = [
+  { answer: 'quoteNumber', label: 'Quote Number' },
+  { answer: 'policyHolders.firstName', label: 'First Name' },
+  { answer: 'policyHolders.lastName', label: 'Last Name' }
+];
+
 const QuoteSearch = ({
   submitting,
   questions,
@@ -50,6 +56,7 @@ const QuoteSearch = ({
           dataTest="sortBy"
           label="Sort By"
           component={Select}
+          answers={sortByOptions}
           id="sort"
           errorHint
         />

@@ -469,10 +469,13 @@ export async function handleQuoteSearch(data) {
               .replace(/\./g, '')
               .trim()
           : '',
+      effectiveDate:
+        data.effectiveDate &&
+        date.formatDate(data.effectiveDate, SECONDARY_DATE_FORMAT),
       page: setPageNumber(data.currentPage, data.isNext),
       pageSize: RESULTS_PAGE_SIZE,
-      sort: 'quoteNumber',
-      sortDirection: 'desc'
+      sort: data.sortBy,
+      sortDirection: data.sortBy === 'quoteNumber' ? 'desc' : 'asc'
     };
 
     const results = await fetchQuotes(searchQuery);
