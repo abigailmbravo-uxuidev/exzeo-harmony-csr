@@ -55,19 +55,21 @@ export function formatEndorsementData(data, timezone) {
     calculatedData.policyHolders[1].entityType = entityType || 'Person';
   }
 
-  calculatedData.coverageOptions.sinkholePerilCoverage.answer =
-    String(calculatedData.coverageOptions.sinkholePerilCoverage.answer) ===
-    'true';
-  if (calculatedData.coverageOptions.sinkholePerilCoverage.answer) {
-    calculatedData.deductibles.sinkhole = {
-      ...calculatedData.deductibles.sinkhole,
-      value: 10
-    };
-  } else {
-    calculatedData.deductibles.sinkhole = {
-      ...calculatedData.deductibles.sinkhole,
-      value: null
-    };
+  if (calculatedData.product === 'HO3') {
+    calculatedData.coverageOptions.sinkholePerilCoverage.answer =
+      String(calculatedData.coverageOptions.sinkholePerilCoverage.answer) ===
+      'true';
+    if (calculatedData.coverageOptions.sinkholePerilCoverage.answer) {
+      calculatedData.deductibles.sinkhole = {
+        ...calculatedData.deductibles.sinkhole,
+        value: 10
+      };
+    } else {
+      calculatedData.deductibles.sinkhole = {
+        ...calculatedData.deductibles.sinkhole,
+        value: null
+      };
+    }
   }
 
   delete calculatedData._TEMP_INITIAL_VALUES;
