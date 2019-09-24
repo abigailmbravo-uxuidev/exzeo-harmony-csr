@@ -72,163 +72,165 @@ describe('BulkPayments testing', () => {
     expect(cashTypeEl.options[4].value).toBe('Electronic Deposit Charge Back');
   });
 
-  // it('Test BulkPayments forms - fetch error', async () => {
-  //   const props = {
-  //     errorHandler: jest.fn()
-  //   };
+  it('Test BulkPayments forms - fetch error', async () => {
+    const props = {
+      errorHandler: jest.fn()
+    };
 
-  //   const { getByText, getByLabelText, getAllByText } = render(
-  //     <BulkPayments {...props} />
-  //   );
+    const { getByText, getByLabelText, getAllByText } = render(
+      <BulkPayments {...props} />
+    );
 
-  //   fireEvent.change(await getByLabelText('Cash Type'), {
-  //     target: { value: 'Paper Deposit' }
-  //   });
-  //   fireEvent.change(getByLabelText('Batch Number'), {
-  //     target: { value: `${initialBatchNumber}99` }
-  //   });
+    fireEvent.change(await getByLabelText('Cash Type'), {
+      target: { value: 'Paper Deposit' }
+    });
+    fireEvent.change(getByLabelText('Batch Number'), {
+      target: { value: `${initialBatchNumber}99` }
+    });
 
-  //   expect(getByText(/start/i)).toBeEnabled();
-  //   fireEvent.click(getByText(/start/i));
+    expect(getByText(/start/i)).toBeEnabled();
+    fireEvent.click(getByText(/start/i));
 
-  //   expect(getByText(/start/i)).toBeDisabled();
-  //   expect(getByText(/stop/i)).toBeEnabled();
+    expect(getByText(/start/i)).toBeDisabled();
+    expect(getByText(/stop/i)).toBeEnabled();
 
-  //   fireEvent.change(getByLabelText('Policy Number'), {
-  //     target: { value: '12-0000000-01' }
-  //   });
+    fireEvent.change(getByLabelText('Policy Number'), {
+      target: { value: '12-0000000-01' }
+    });
 
-  //   fireEvent.blur(getByLabelText('Policy Number'));
+    getByLabelText('Policy Number').focus();
 
-  //   expect(
-  //     await waitForElement(() => [
-  //       document.querySelector('.error-messageuuu'),
-  //       getByText('Resource Not Found')
-  //     ])
-  //   );
-  // });
+    getByLabelText('Policy Number').blur();
 
-  // it('Test BulkPayments fetch policy and add payment', async () => {
-  //   getPolicy.mockImplementation(() => mockPolicy);
+    expect(
+      await waitForElement(() => [
+        document.querySelector('.error-messageuuu'),
+        getByText('Resource Not Found')
+      ])
+    );
+  });
 
-  //   const props = {
-  //     errorHandler: jest.fn()
-  //   };
+  it('Test BulkPayments fetch policy and add payment', async () => {
+    getPolicy.mockImplementation(() => mockPolicy);
 
-  //   const {
-  //     property: {
-  //       physicalAddress: { address1, address2, city, state, zip }
-  //     }
-  //   } = mockPolicy;
+    const props = {
+      errorHandler: jest.fn()
+    };
 
-  //   const { debug, getByText, getByLabelText, getAllByText } = render(
-  //     <BulkPayments {...props} />
-  //   );
+    const {
+      property: {
+        physicalAddress: { address1, address2, city, state, zip }
+      }
+    } = mockPolicy;
 
-  //   fireEvent.change(await getByLabelText('Cash Type'), {
-  //     target: { value: 'Paper Deposit' }
-  //   });
-  //   fireEvent.change(getByLabelText('Batch Number'), {
-  //     target: { value: `${initialBatchNumber}99` }
-  //   });
+    const { debug, getByText, getByLabelText, getAllByText } = render(
+      <BulkPayments {...props} />
+    );
 
-  //   expect(getByText(/start/i)).toBeEnabled();
-  //   fireEvent.click(getByText(/start/i));
+    fireEvent.change(await getByLabelText('Cash Type'), {
+      target: { value: 'Paper Deposit' }
+    });
+    fireEvent.change(getByLabelText('Batch Number'), {
+      target: { value: `${initialBatchNumber}99` }
+    });
 
-  //   expect(getByText(/start/i)).toBeDisabled();
-  //   expect(getByText(/stop/i)).toBeEnabled();
+    expect(getByText(/start/i)).toBeEnabled();
+    fireEvent.click(getByText(/start/i));
 
-  //   fireEvent.change(getByLabelText('Policy Number'), {
-  //     target: { value: '12-0000000-01' }
-  //   });
+    expect(getByText(/start/i)).toBeDisabled();
+    expect(getByText(/stop/i)).toBeEnabled();
 
-  //   await fireEvent.blur(getByLabelText('Policy Number'));
+    getByLabelText('Policy Number').focus();
 
-  //   expect(
-  //     await waitForElement(() => [
-  //       document.querySelector('.policy-details'),
-  //       getByText(mockPolicy.product),
-  //       getByText(mockPolicy.companyCode),
-  //       getByText(`| ${mockPolicy.policyNumber}`),
-  //       getByText('Open Policy'),
-  //       getByText('Balance Due:'),
-  //       getByText(mockPolicy.summaryLedger.balance.$numberDecimal),
-  //       getByText(
-  //         `${mockPolicy.policyHolders[0].firstName} ${mockPolicy.policyHolders[0].lastName}`
-  //       ),
-  //       getByText(`| ${mockPolicy.property.physicalAddress.address1},`),
-  //       getByText(`${city}, ${state} ${zip}`),
-  //       getByText('Effective Date:'),
-  //       getByText(date.formattedDate(mockPolicy.effectiveDate, 'MM/DD/YYYY')),
-  //       getByText('Policy Status:'),
-  //       getByText(mockPolicy.status),
-  //       getByText('Billing Status:'),
-  //       getByText(mockPolicy.summaryLedger.status.displayText)
-  //     ])
-  //   );
+    fireEvent.change(getByLabelText('Policy Number'), {
+      target: { value: '12-0000000-01' }
+    });
 
-  //   expect(getByText('Open Policy').href).toBeDefined();
+    getByLabelText('Policy Number').blur();
 
-  //   fireEvent.change(await getByLabelText('Amount'), {
-  //     target: { value: '200.00' }
-  //   });
-  //   await fireEvent.click(getByText(/apply/i));
+    expect(
+      await waitForElement(() => [
+        document.querySelector('.policy-details'),
+        getByText(mockPolicy.product),
+        getByText(mockPolicy.companyCode),
+        getByText(`| ${mockPolicy.policyNumber}`),
+        getByText('Open Policy'),
+        getByText('Balance Due:'),
+        getByText(mockPolicy.summaryLedger.balance.$numberDecimal),
+        getByText(
+          `${mockPolicy.policyHolders[0].firstName} ${mockPolicy.policyHolders[0].lastName}`
+        ),
+        getByText(`| ${mockPolicy.property.physicalAddress.address1},`),
+        getByText(`${city}, ${state} ${zip}`),
+        getByText('Effective Date:'),
+        getByText(date.formattedDate(mockPolicy.effectiveDate, 'MM/DD/YYYY')),
+        getByText('Policy Status:'),
+        getByText(mockPolicy.status),
+        getByText('Billing Status:'),
+        getByText(mockPolicy.summaryLedger.status.displayText)
+      ])
+    );
 
-  //   // check PaymentList
-  //   expect(getByText('1 entries totaling'));
-  //   expect(getByText('$ 200.00'));
-  //   expect(getByText('Download')).toBeEnabled();
+    expect(getByText('Open Policy').href).toBeDefined();
 
-  //   // check clear button
-  //   await fireEvent.click(document.querySelector('.clear-policy'));
+    fireEvent.change(await getByLabelText('Amount'), {
+      target: { value: '200.00' }
+    });
 
-  //   expect(
-  //     await waitForElement(() => [
-  //       expect(getByLabelText('Policy Number').value).toBe(''),
-  //       expect(getByLabelText('Amount').value).toBe('')
-  //     ])
-  //   );
+    await fireEvent.click(getByText(/apply/i));
 
-  //   // check Stop button
-  //   fireEvent.click(await getByText(/stop/i));
-  //   expect(getByLabelText('Cash Date').value).toBe(today.format('YYYY-MM-DD'));
-  //   expect(getByLabelText('Batch Number').value).toBe(initialBatchNumber);
-  //   expect(getByLabelText('Cash Type'));
-  //   expect(getByLabelText('Cash Type').children[0].text).toBe(
-  //     'Please Select...'
-  //   );
-  //   expect(getByText(/start/i)).toBeDisabled();
-  //   expect(getByText(/stop/i)).toBeDisabled();
-  //   expect(getByText('Download')).toBeDisabled();
-  // });
+    expect(
+      await waitForElement(() => [
+        expect(getByLabelText('Policy Number').value).toBe(''),
+        expect(getByLabelText('Amount').value).toBe(''),
+        expect(getByText('1 entries totaling')),
+        expect(getByText('$ 200.00')),
+        expect(getByText('Download')).toBeEnabled()
+      ])
+    );
 
-  // it('Test BulkPayments with cancelled policy', async () => {
-  //   getPolicy.mockImplementation(() => mockCancelledPolicy);
+    // check Stop button
+    fireEvent.click(await getByText(/stop/i));
+    expect(getByLabelText('Cash Date').value).toBe(today.format('YYYY-MM-DD'));
+    expect(getByLabelText('Batch Number').value).toBe(initialBatchNumber);
+    expect(getByLabelText('Cash Type'));
+    expect(getByLabelText('Cash Type').children[0].text).toBe(
+      'Please Select...'
+    );
+    expect(getByText(/start/i)).toBeDisabled();
+    expect(getByText(/stop/i)).toBeDisabled();
+    expect(getByText('Download')).toBeDisabled();
+  });
 
-  //   const props = {
-  //     errorHandler: jest.fn()
-  //   };
+  it('Test BulkPayments with cancelled policy', async () => {
+    getPolicy.mockImplementation(() => mockCancelledPolicy);
 
-  //   const { getByText, getByLabelText, getAllByText } = render(
-  //     <BulkPayments {...props} />
-  //   );
+    const props = {
+      errorHandler: jest.fn()
+    };
 
-  //   fireEvent.change(await getByLabelText('Cash Type'), {
-  //     target: { value: 'Paper Deposit' }
-  //   });
-  //   fireEvent.change(getByLabelText('Batch Number'), {
-  //     target: { value: `${initialBatchNumber}99` }
-  //   });
+    const { getByText, getByLabelText, getAllByText } = render(
+      <BulkPayments {...props} />
+    );
 
-  //   expect(getByText(/start/i)).toBeEnabled();
-  //   fireEvent.click(getByText(/start/i));
+    fireEvent.change(await getByLabelText('Cash Type'), {
+      target: { value: 'Paper Deposit' }
+    });
+    fireEvent.change(getByLabelText('Batch Number'), {
+      target: { value: `${initialBatchNumber}99` }
+    });
 
-  //   fireEvent.change(getByLabelText('Policy Number'), {
-  //     target: { value: '12-0000000-01' }
-  //   });
+    expect(getByText(/start/i)).toBeEnabled();
+    fireEvent.click(getByText(/start/i));
 
-  //   fireEvent.blur(getByLabelText('Policy Number'));
+    fireEvent.change(getByLabelText('Policy Number'), {
+      target: { value: '12-0000000-01' }
+    });
 
-  //   expect(await waitForElement(() => document.querySelector('.Cancellation')));
-  // });
+    getByLabelText('Policy Number').focus();
+
+    getByLabelText('Policy Number').blur();
+
+    expect(await waitForElement(() => document.querySelector('.Cancellation')));
+  });
 });
