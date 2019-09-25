@@ -19,6 +19,7 @@ import { AgencyTypeAhead } from '@exzeo/core-ui/src/@Harmony';
 import { getAnswers } from '../../../utilities/forms';
 import { STANDARD_DATE_FORMAT } from '../../../constants/dates';
 import Pagination from '../components/Pagination';
+import { productAnswers } from '../constants';
 
 const {
   isValidNameFormat,
@@ -37,7 +38,7 @@ const sortByOptions = [
 ];
 
 const PolicySearch = ({
-  agencyList,
+  beta,
   submitting,
   advancedSearch,
   questions,
@@ -104,6 +105,19 @@ const PolicySearch = ({
           validate={isNumberDashOnly}
           errorHint
         />
+
+        {beta && (
+          <Field
+            name="product"
+            dataTest="product"
+            label="Product"
+            component={Select}
+            answers={productAnswers}
+            placeholder="Select..."
+            styleName="product-search"
+          />
+        )}
+
         <Button
           className={Button.constants.classNames.success}
           customClass="multi-input"

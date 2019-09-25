@@ -160,13 +160,14 @@ export async function fetchPolicies({
   currentPage,
   pageSize,
   sortBy,
-  sortDirection
+  sortDirection,
+  product
 }) {
   // TODO: the service requires that companyCode and state are included in this query. Hard coding for now.
   const config = {
     service: 'policy-data',
     method: 'GET',
-    path: `/transactions?companyCode=TTIC&state=FL&policyNumber=${policyNumber}&firstName=${firstName}&lastName=${lastName}&propertyAddress=${address}&page=${currentPage}&pageSize=${pageSize}&sort=${sortBy}&sortDirection=${sortDirection}&effectiveDate=${effectiveDate}&agencyCode=${agencyCode}&status=${policyStatus}`
+    path: `/transactions?companyCode=TTIC&state=FL&policyNumber=${policyNumber}&firstName=${firstName}&lastName=${lastName}&propertyAddress=${address}&page=${currentPage}&pageSize=${pageSize}&sort=${sortBy}&sortDirection=${sortDirection}&effectiveDate=${effectiveDate}&agencyCode=${agencyCode}&status=${policyStatus}&product=${product}`
   };
 
   try {
@@ -501,7 +502,8 @@ export async function handlePolicySearch(data) {
       currentPage: setPageNumber(data.currentPage, data.isNext),
       pageSize: RESULTS_PAGE_SIZE,
       sortBy: data.sortBy,
-      sortDirection: data.sortBy === 'policyNumber' ? 'desc' : 'asc'
+      sortDirection: data.sortBy === 'policyNumber' ? 'desc' : 'asc',
+      product: formatForURI(data.product)
 
       //  TODO Currently not being used, keeping here for when C and P are added.
       // companyCode: DEFAULT_SEARCH_PARAMS.companyCode,
