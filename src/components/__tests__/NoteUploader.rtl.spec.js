@@ -51,7 +51,21 @@ describe('Note Uploader Testing', () => {
     handleSubmit: x => x,
     noteType: 'Quote Note',
     submitting: false,
-    documentId: '12-345-67'
+    documentId: '12-345-67',
+    noteOptions: {
+      validContactTypes: ['Agent', 'Policyholder', 'Inspector', 'Other'],
+      validFileTypes: [
+        '4-pt Inspection',
+        'Claims Documentation',
+        'Correspondence',
+        'Elevation Certificate',
+        'Flood Selection Form',
+        'Flood Waiver Form',
+        'HUD Statement',
+        'New Business Application',
+        'Other'
+      ]
+    }
   };
 
   it('Note/File Modal', () => {

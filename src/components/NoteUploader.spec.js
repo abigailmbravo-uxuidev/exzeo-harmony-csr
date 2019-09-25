@@ -20,6 +20,22 @@ describe('Testing NoteUploader component', () => {
 
     beforeEach(() => {
       initialState = {
+        list: {
+          noteOptions: {
+            validContactTypes: ['Agent', 'Policyholder', 'Inspector', 'Other'],
+            validFileTypes: [
+              '4-pt Inspection',
+              'Claims Documentation',
+              'Correspondence',
+              'Elevation Certificate',
+              'Flood Selection Form',
+              'Flood Waiver Form',
+              'HUD Statement',
+              'New Business Application',
+              'Other'
+            ]
+          }
+        },
         ui: {
           diary: {},
           note: {},
