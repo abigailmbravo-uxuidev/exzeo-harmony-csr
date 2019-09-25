@@ -68,7 +68,7 @@ const mock = {
               dependencies: [],
               data: {
                 size: '9',
-                component: '$AGENCY_SELECT',
+                component: '$AGENCY_AGENT_SELECT',
                 extendedProperties: {
                   subscribe: true
                 }
@@ -488,7 +488,7 @@ const mock = {
               children: []
             },
             {
-              id: '398ce68d-839c-4a49-bbf2-92fcc275da40',
+              id: '398ce68d-839c-4a49-bbf2-6546546456',
               type: '$INPUT',
               path: 'coverageLimits.otherStructures.value',
               dependencies: [],
@@ -1359,7 +1359,8 @@ const mock = {
           type: '$GROUP',
           dependencies: [
             { quoteInputState: 'Qualified' },
-            { quoteInputState: 'Ready' }
+            { quoteInputState: 'Ready' },
+            { quoteInputState: 'AppStarted' }
           ],
           data: {},
           formData: {},
@@ -1482,9 +1483,10 @@ const mock = {
           id: '1f2f82b8-7b4b-4419-a147-a3c50b393e9a',
           type: '$TITLE',
           dependencies: [
-            { hasUWError: true },
+            { blockQuoteSummary: true },
             { quoteInputState: 'Initial Data' },
-            { quoteInputState: 'Underwriting' }
+            { quoteInputState: 'Underwriting' },
+            { quoteInputState: 'AppStarted' }
           ],
           data: {
             className: 'messages',
@@ -1500,11 +1502,11 @@ const mock = {
           dependencies: [
             {
               quoteInputState: 'Qualified',
-              hasUWError: false
+              blockQuoteSummary: false
             },
             {
               quoteInputState: 'Ready',
-              hasUWError: false
+              blockQuoteSummary: false
             }
           ],
           data: {},
@@ -1849,7 +1851,7 @@ const mock = {
                   type: '$TITLE',
                   dependencies: [],
                   data: {
-                    text: 'Secondary PolicyHolder'
+                    text: 'Secondary Policyholder'
                   },
                   formData: {},
                   children: []
@@ -2013,26 +2015,28 @@ const mock = {
       step: {},
       components: [
         {
-          id: 'cc01470d-8c90-4daf-9ac9-a465ca7184a5',
+          id: 'caf7a9c2-2ba4-4815-87b6-21c48b596720',
           type: '$TITLE',
           dependencies: [
+            { blockSendApplication: true },
             { quoteInputState: 'Initial Data' },
-            { quoteInputState: 'Underwriting' }
+            { quoteInputState: 'Underwriting' },
+            { quoteInputState: 'AppStarted' }
           ],
           data: {
             className: 'messages',
             icon: 'fa fa-exclamation-circle',
-            text: 'Application cannot be sent due to Underwriting Validations'
+            text: 'Application cannot be sent due to Underwriting Validations.'
           },
           formData: {},
           children: []
         },
         {
-          id: 'caf7a9c2-2ba4-4815-87b6-21c48b596720',
+          id: '9593a84f-83bf-4895-8504-0eff1f4089bc',
           type: '$SECTION',
           dependencies: [
-            { quoteInputState: 'Qualified' },
-            { quoteInputState: 'Ready' }
+            { quoteInputState: 'Qualified', blockSendApplication: false },
+            { quoteInputState: 'Ready', blockSendApplication: false }
           ],
           data: {},
           formData: {},

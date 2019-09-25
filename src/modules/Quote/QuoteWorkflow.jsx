@@ -2,9 +2,9 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Loader, FormSpy, remoteSubmit } from '@exzeo/core-ui';
 import {
+  AgencyAgentSelect,
   getConfigForJsonTransform,
-  Gandalf,
-  AgencyAgentSelect
+  Gandalf
 } from '@exzeo/core-ui/src/@Harmony';
 
 import { defaultMemoize } from 'reselect';
@@ -12,7 +12,11 @@ import { defaultMemoize } from 'reselect';
 import { QUOTE_RESOURCE_TYPE } from '../../constants/diaries';
 import { toggleDiary } from '../../state/actions/ui.actions';
 import { setAppError } from '../../state/actions/error.actions';
-import { reviewQuote, updateQuote } from '../../state/actions/quote.actions';
+import {
+  retrieveQuote,
+  updateQuote,
+  verifyQuote
+} from '../../state/actions/quote.actions';
 import { getZipcodeSettings } from '../../state/actions/service.actions';
 import { getEnumsForQuoteWorkflow } from '../../state/actions/list.actions';
 import { getQuoteSelector } from '../../state/selectors/quote.selectors';
@@ -73,7 +77,7 @@ export class QuoteWorkflow extends React.Component {
     $POLICYHOLDERS: PolicyHolders,
     $APPLICATION: Application,
     $NOTES_FILES: NotesFiles,
-    $AGENCY_SELECT: AgencyAgentSelect
+    $AGENCY_AGENT_SELECT: AgencyAgentSelect
   };
 
   getConfigForJsonTransform = defaultMemoize(getConfigForJsonTransform);
@@ -81,11 +85,11 @@ export class QuoteWorkflow extends React.Component {
   componentDidMount() {
     const {
       match,
-      reviewQuote,
+      retrieveQuote,
       getEnumsForQuoteWorkflow,
       getZipCodeSettings
     } = this.props;
-    reviewQuote({ quoteNumber: match.params.quoteNumber }).then(quote => {
+    retrieveQuote({ quoteNumber: match.params.quoteNumber }).then(quote => {
       if (quote && quote.property) {
         const {
           companyCode,
@@ -163,10 +167,16 @@ export class QuoteWorkflow extends React.Component {
     }
   };
 
-  handleReviewQuote = async () => {
-    const { quote, reviewQuote } = this.props;
-    await reviewQuote({ quoteNumber: quote.quoteNumber });
-    this.setState({ showApplicationModal: true });
+  handleRetrieveQuote = async () => {
+    const { quote, verifyQuote } = this.props;
+    try {
+      await verifyQuote({ quoteNumber: quote.quoteNumber });
+      this.setState({ showApplicationModal: true });
+    } catch (error) {
+      if (process.env.NODE_ENV !== 'production') {
+        console.log('Error with verify quote: ', error);
+      }
+    }
   };
 
   handleToggleDiaries = () => {
@@ -182,13 +192,14 @@ export class QuoteWorkflow extends React.Component {
     if (currentStepNumber === PAGE_ROUTING.application) {
       return (
         UNQUALIFIED_STATE.includes(quote.quoteInputState) ||
-        quote.hasActiveExceptions
+        quote.blockSendApplication
       );
     }
 
     if (currentStepNumber === PAGE_ROUTING.summary) {
       return (
-        UNQUALIFIED_STATE.includes(quote.quoteInputState) || quote.hasUWError
+        UNQUALIFIED_STATE.includes(quote.quoteInputState) ||
+        quote.blockQuoteSummary
       );
     }
 
@@ -287,7 +298,7 @@ export class QuoteWorkflow extends React.Component {
                             submitting
                           )}
                           handlePrimaryClick={this.primaryClickHandler}
-                          handleApplicationClick={this.handleReviewQuote}
+                          handleApplicationClick={this.handleRetrieveQuote}
                         />
                       )}
                       formListeners={() => (
@@ -361,7 +372,8 @@ export default connect(
   mapStateToProps,
   {
     setAppError,
-    reviewQuote,
+    retrieveQuote,
+    verifyQuote,
     getZipCodeSettings: getZipcodeSettings,
     getEnumsForQuoteWorkflow,
     updateQuote,

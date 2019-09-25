@@ -20,5 +20,5 @@ RUN npm ci && \
 
 RUN rm -f .npmrc
 
-CMD ["npm", "run", "server"]
+CMD ["npm", "run", "start"]
 

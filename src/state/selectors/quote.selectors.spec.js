@@ -34,14 +34,14 @@ describe('Test Quote Selectors', () => {
         editingDisabled,
         effectiveDate,
         removeSecondary,
-        hasActiveExceptions,
-        hasUWError
+        blockSendApplication,
+        blockQuoteSummary
       } = getQuoteSelector(state);
       expect(editingDisabled).toEqual(true);
       expect(effectiveDate).toEqual('2001-01-10');
       expect(removeSecondary).toEqual(false);
-      expect(hasActiveExceptions).toEqual(true);
-      expect(hasUWError).toEqual(false);
+      expect(blockSendApplication).toEqual(true);
+      expect(blockQuoteSummary).toEqual(false);
     });
 
     it('Confirms UW Exceptions filters Missing Info', () => {
@@ -50,29 +50,35 @@ describe('Test Quote Selectors', () => {
           quote: {
             ...quote,
             underwritingExceptions: [
-              { overridden: false, actions: 'Not Missing Info' }
+              {
+                canOverride: false,
+                overridden: false,
+                actions: 'Not Missing Info'
+              }
             ]
           }
         }
       };
-      const { hasUWError } = getQuoteSelector(state);
-      expect(hasUWError).toEqual(true);
+      const { blockQuoteSummary } = getQuoteSelector(state);
+      expect(blockQuoteSummary).toEqual(true);
     });
 
-    it('Confirms hasActiveExceptions & UW Exception filters overriden', () => {
+    it('Confirms blockSendApplication & UW Exception filters overriden', () => {
       const state = {
         quoteState: {
           quote: {
             ...quote,
             underwritingExceptions: [
-              { overridden: true, actions: 'Missing Info' }
+              { canOverride: true, overridden: true, actions: 'Missing Info' }
             ]
           }
         }
       };
-      const { hasUWError, hasActiveExceptions } = getQuoteSelector(state);
-      expect(hasUWError).toEqual(false);
-      expect(hasActiveExceptions).toEqual(false);
+      const { blockQuoteSummary, blockSendApplication } = getQuoteSelector(
+        state
+      );
+      expect(blockQuoteSummary).toEqual(false);
+      expect(blockSendApplication).toEqual(false);
     });
   });
 });

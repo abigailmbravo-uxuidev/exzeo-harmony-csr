@@ -29,10 +29,10 @@ export class OpenDiariesBar extends React.Component {
 
     return (
       <aside className="open-diaries">
-        <h4 className="open-diaries-header" data-test="open-diaries-header">
-          Open Diaries
-        </h4>
-        <div>
+        <header className="open-diaries-header">
+          <h4 data-test="open-diaries-header">Open Diaries</h4>
+        </header>
+        <div className="diaries-list">
           {pastDue.length > 0 && (
             <Diaries
               diaryLevel="pastDue"

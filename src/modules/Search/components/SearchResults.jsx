@@ -98,7 +98,7 @@ export class SearchResults extends Component {
           <div className="policy-list" data-test="policy-list">
             {results.map(policy => (
               <PolicyCard
-                key={policy.policyID}
+                key={policy.policyNumber}
                 policy={policy}
                 handleKeyPress={e => onKeyPressSubmit(e, policy, searchType)}
                 handleClick={() => handleNewTab(policy, searchType)}

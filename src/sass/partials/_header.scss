@@ -420,6 +420,13 @@ header {
             grid-row: 1;
           }
 
+          &.floodZone {
+            max-width: 10rem;
+
+            grid-column: 6;
+            grid-row: 1;
+          }
+
           &.territory {
             grid-column: 6;
             grid-row: 1;

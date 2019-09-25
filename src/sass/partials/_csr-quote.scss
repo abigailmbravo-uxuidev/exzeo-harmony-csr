@@ -85,41 +85,6 @@
                   border-bottom-width: 0;
                 }
 
-                &.policyholder-component {
-                  section {
-                    padding: 0;
-
-                    .title-check-box-wrapper {
-                      display: flex;
-                      align-items: flex-end;
-                      padding: 0;
-
-                      .title {
-                        flex-grow: 0;
-                        flex-shrink: 0;
-                        max-width: fit-content;
-                      }
-                      .check-box-wrapper {
-                        flex-grow: 1;
-                        flex-shrink: 1;
-                        margin-bottom: $padding/4;
-
-                        input {
-                          margin-right: $padding/2;
-                        }
-                      }
-                    }
-
-                    .form-group {
-                      width: 50%;
-
-                      &.email {
-                        width: 100%;
-                      }
-                    }
-                  }
-                }
-
                 &.coverages {
                   .form-group {
                     &.has-output-label {
@@ -356,98 +321,105 @@
         flex-shrink: 0;
 
         .underwriting-validation {
-          overflow-y: auto;
+          display: flex;
+          overflow: hidden;
           align-self: stretch;
-          flex-basis: 240px;
+          flex-direction: column;
           flex-grow: 0;
           flex-shrink: 0;
-          //height: calc(100vh - 8.125rem);
-          padding: 0 0 ($padding * 2) ($padding * 2);
+          padding: 0;
           width: 240px;
           border-left: dotted 1px $warm-gray-04;
 
           .uw-validation-header {
-            margin: ($padding * 1.5) 0;
-          }
+            display: flex;
+            align-items: center;
+            flex-grow: 0;
+            flex-shrink: 0;
+            height: 3rem;
+            border-bottom: 1px dotted $warm-gray-04;
+            background: $white;
 
-          section {
-            h5 {
-              background: $warm-gray-02;
-              color: $warm-gray-08;
-              font-size: 14px;
-
-              i.fa {
-                margin: 0 ($padding * 2) 0 0;
-                padding: ($padding * 2);
-                color: $white;
-              }
+            h4 {
+              margin: 0;
+              padding: 0;
             }
           }
+          .exception-list {
+            overflow-y: auto;
+            flex-grow: 1;
+            flex-shrink: 1;
+            padding: 0 0 0 ($padding * 2);
+            width: 100%;
 
-          div {
-            ul {
-              margin: 0 0 ($padding * 4) ($padding * 2);
+            section {
+              h5 {
+                margin: ($padding * 2) 0;
+                background: $warm-gray-02;
+                color: $warm-gray-08;
+                font-size: 14px;
 
-              li {
-                display: flex;
-                flex-direction: column;
-                margin: ($padding * 2.25);
-                padding: 0;
-                list-style: none;
-                font-size: $font-size-base;
-
-                &.overridden {
-                  i.fa {
-                    color: $warm-gray-03;
-                  }
-
-                  span {
-                    color: $warm-gray-04;
-                  }
+                i.fa {
+                  margin: 0 ($padding * 2) 0 0;
+                  padding: ($padding * 2);
+                  color: $white;
                 }
+              }
 
-                .override-wrapper {
-                  position: relative;
-                  display: flex;
-                  flex-grow: 0;
-                  flex-shrink: 0;
-                  margin: $padding 0;
-                  height: auto;
+              div {
+                ul {
+                  margin: 0 0 ($padding * 2) ($padding * 2);
 
-                  input {
-                    display: none;
+                  li {
+                    display: flex;
+                    flex-direction: column;
+                    margin: $padding ($padding * 2.25);
+                    padding: 0 0 $padding;
+                    border-bottom: 1px dotted $warm-gray-02;
+                    list-style: none;
+                    font-size: $font-size-base;
 
-                    &:checked {
-                      + label {
-                        &:before {
-                          color: $bright-blue;
-                          content: '\f14a';
-                        }
+                    &:last-of-type {
+                      padding: 0;
+                      border-bottom-width: 0;
+                    }
+
+                    &.overridden {
+                      i.fa {
+                        color: $warm-gray-03;
+                      }
+
+                      span {
+                        color: $warm-gray-04;
+                      }
+                    }
+
+                    .check-box-wrapper {
+                      position: relative;
+                      display: flex;
+                      align-items: center;
+                      flex-grow: 0;
+                      flex-shrink: 0;
+                      margin: ($padding/2) 0 0;
+                      height: auto;
+
+                      input {
+                        margin: 0;
+                      }
+
+                      label {
+                        position: relative;
+                        margin-bottom: 0;
+                        padding-left: $padding/2;
+                        line-height: 1;
                       }
                     }
                   }
 
-                  label {
-                    position: relative;
-                    margin-bottom: 0;
-                    padding-left: $padding * 3;
-
-                    &:before {
-                      position: absolute;
-                      top: -1px;
-                      left: 0;
-                      width: 1.5rem;
-                      color: $warm-gray-10;
-                      content: '\f096';
-                      font-size: $font-size-h4;
-                      font-family: $font-family-icon;
-                    }
+                  li:last-child {
+                    border: 0;
                   }
                 }
-              }
-
-              li:last-child {
-                border: 0;
               }
             }
           }
@@ -645,64 +617,6 @@
 .coverages-other-structures-limit-percent,
 .coverages-personal-property-limit-percent {
   width: 32%;
-}
-//Route Specific
-/*------------------------------------------------------------------------------------*/
-//Additional Interests
-/*------------------------------------------------------------------------------------*/
-#AddAdditionalInterestPage,
-.additional-interests {
-  /*   .detail-wrapper {
-    flex-direction: column;
-  } */
-  /*   ul.results.result-cards {
-    margin: 0;
-    padding: 0;
-    list-style: none;
-
-    li {
-      .card {
-        flex-direction: row;
-        margin: 0;
-        padding: $padding 0;
-        width: 100%;
-
-        > div {
-          flex-grow: 1;
-          flex-shrink: 1;
-
-          h4 {
-            margin: 0;
-          }
-
-          &.card-icon {
-            flex-grow: 0;
-            flex-shrink: 0;
-          }
-
-          &.ref-number {
-            flex-grow: 0;
-            flex-shrink: 0;
-          }
-        }
-
-        .edit-btn {
-          &:hover {
-            color: $bright-blue-darken-04;
-
-            i {
-              color: $bright-blue-darken-04;
-
-              &:before {
-                display: inline-block;
-                text-decoration: none;
-              }
-            }
-          }
-        }
-      }
-    }
-  } */
 }
 
 #AddAdditionalInterestPage {

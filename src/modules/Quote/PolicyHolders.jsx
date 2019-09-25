@@ -1,11 +1,12 @@
 import React from 'react';
 import classNames from 'classnames';
+import _get from 'lodash/get';
 import { Field } from '@exzeo/core-ui/src';
 import { PolicyHolder } from '@exzeo/core-ui/src/@Harmony';
 
 import PolicyHoldersWatcher from './PolicyHoldersWatcher';
 
-const PolicyHolders = ({ config, initialValues, size }) => {
+const PolicyHolders = ({ config, initialValues, size, formValues }) => {
   const { watchField } = config.extendedProperties;
   return (
     <section
@@ -32,6 +33,7 @@ const PolicyHolders = ({ config, initialValues, size }) => {
                 name={watchField}
                 component="input"
                 type="checkbox"
+                disabled={initialValues.policyHolders.length === 1}
                 data-test={watchField}
               />
               <label htmlFor={watchField}> Remove</label>

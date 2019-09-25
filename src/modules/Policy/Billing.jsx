@@ -10,7 +10,7 @@ import {
 const Billing = ({
   initialValues,
   config,
-  customHandlers: { updateBillPlan, getPolicy }
+  customHandlers: { updateBillPlan, getPolicy, setAppError }
 }) => {
   const [paymentAdded, setPaymentAdded] = useState(0);
 
@@ -18,6 +18,7 @@ const Billing = ({
     <React.Fragment>
       <Payment
         getPolicy={getPolicy}
+        errorHandler={setAppError}
         initialValues={initialValues}
         setPaymentAdded={setPaymentAdded}
       />
