@@ -61,6 +61,8 @@ const EndorsementForm = ({
     invalid: parentInvalid
   } = parentFormInstance.getState();
 
+  console.log(parentFormInstance.getState());
+
   const initialValues = {
     ...policyFormData,
     endorsementDate: endorsementState.endorsementDate

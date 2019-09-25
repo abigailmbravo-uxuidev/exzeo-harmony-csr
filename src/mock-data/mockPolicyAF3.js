@@ -909,7 +909,6 @@ const mock = {
                       data: {
                         component: 'currency',
                         label: 'Personal Property Limit',
-                        validation: ['isDwellingRange'],
                         extendedProperties: {
                           format: 'currency',
                           displayRange: true,
@@ -1377,7 +1376,6 @@ const mock = {
                       },
                       formData: {
                         path: 'property.baseFloodElevation',
-                        required: true,
                         metaData: {
                           target:
                             '${it._TEMP_INITIAL_VALUES.property.baseFloodElevation || " "}'
