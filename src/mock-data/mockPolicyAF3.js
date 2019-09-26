@@ -1181,10 +1181,11 @@ const mock = {
                       path: 'property.yearBuilt',
                       dependencies: [],
                       data: {
-                        component: 'text',
+                        component: 'number',
                         label: 'Year Home Built',
                         size: '12',
-                        validation: ['isNumbersOnly']
+                        validation: ['isNumbersOnly'],
+                        thousandSeparator: false
                       },
                       formData: {
                         path: 'property.yearBuilt',
