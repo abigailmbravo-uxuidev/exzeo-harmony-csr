@@ -1370,10 +1370,15 @@ const mock = {
                       path: 'property.baseFloodElevation',
                       dependencies: [],
                       data: {
-                        component: 'select',
+                        // component: 'selectInteger',
+                        // label: 'Base Flood Elevation',
+                        // size: '12',
+                        // dataSource: [{ answer: 1 }, { answer: 12 }]
+                        component: 'number',
                         label: 'Base Flood Elevation',
                         size: '12',
-                        dataSource: [{ answer: '1' }]
+                        validation: ['isNumbersOnly'],
+                        thousandSeparator: false
                       },
                       formData: {
                         path: 'property.baseFloodElevation',
