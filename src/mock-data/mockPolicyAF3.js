@@ -909,6 +909,7 @@ const mock = {
                       data: {
                         component: 'currency',
                         label: 'Personal Property Limit',
+                        validation: ['isPersonalPropertyRange'],
                         extendedProperties: {
                           format: 'currency',
                           displayRange: true,
@@ -918,11 +919,8 @@ const mock = {
                         }
                       },
                       formData: {
-                        path: 'coverageLimits.personalProperty.value',
-                        max: 'coverageLimits.personalProperty.maxAmount',
                         type: 'integer',
                         required: true,
-                        isPersonalPropertyRange: true,
                         metaData: {
                           target:
                             '${format.toCurrency(it._TEMP_INITIAL_VALUES.coverageLimits.personalProperty.value)}'

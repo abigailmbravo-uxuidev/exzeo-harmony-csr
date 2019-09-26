@@ -389,6 +389,7 @@ const mock = {
                   data: {
                     component: 'currency',
                     label: 'Personal Property Limit',
+                    validation: ['isPersonalPropertyRange'],
                     size: '7',
                     extendedProperties: {
                       output: 'percent',
