@@ -22,6 +22,19 @@ const EndorsementsWatcherAF3 = () => {
           </React.Fragment>
         )}
       </Field>
+      <Field name="coverageLimits.personalProperty.value" subscription={{}}>
+        {({ input: { onBlur } }) => (
+          <React.Fragment>
+            <OnChangeListener name="coverageLimits.building.value">
+              {value => {
+                if (value) {
+                  onBlur();
+                }
+              }}
+            </OnChangeListener>
+          </React.Fragment>
+        )}
+      </Field>
     </React.Fragment>
   );
 };
