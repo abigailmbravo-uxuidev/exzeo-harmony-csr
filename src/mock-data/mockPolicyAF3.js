@@ -12,7 +12,6 @@ const mock = {
       { value: 'mailingAddress', component: 'Section' },
       { value: 'propertyAddress', component: 'Section' },
       { value: 'county', label: 'Property County' },
-      { value: 'floodZone' },
       { value: 'effectiveDate' },
       { value: 'cancellation' },
       { value: 'finalPayment', label: 'Final Payment' },
@@ -409,26 +408,28 @@ const mock = {
                           items: [{ format: '', path: 'property.yearBuilt' }]
                         },
                         {
-                          label: 'Flood Zone',
-                          items: [{ format: '', path: 'property.floodZone' }]
-                        },
-                        {
                           label: 'Residence Type',
                           items: [
                             { format: '', path: 'property.residenceType' }
                           ]
+                        },
+                        {
+                          label: 'Flood Zone',
+                          items: [{ format: '', path: 'property.floodZone' }]
+                        },
+                        {
+                          label: 'FEMA Flood Zone',
+                          items: [
+                            { format: '', path: 'property.FEMAfloodZone' }
+                          ]
+                        },
+                        {
+                          label: 'IGD ID',
+                          items: [{ format: '', path: 'property.id' }]
                         }
                       ]
                     }
                   },
-                  formData: {},
-                  children: []
-                },
-                {
-                  id: 21,
-                  type: '$APPRAISER',
-                  dependencies: [],
-                  data: {},
                   formData: {},
                   children: []
                 },
@@ -447,18 +448,18 @@ const mock = {
                           ]
                         },
                         {
-                          label: 'Base Flood Elevation',
+                          label: 'Square Footage',
+                          items: [{ format: '', path: 'property.squareFeet' }]
+                        },
+                        {
+                          label: 'BFE Indicator',
                           items: [
                             { format: '', path: 'property.baseFloodElevation' }
                           ]
                         },
                         {
-                          label: 'Square Footage',
-                          items: [{ format: '', path: 'property.squareFeet' }]
-                        },
-                        {
-                          label: 'IGD ID',
-                          items: [{ format: '', path: 'property.id' }]
+                          label: 'Territory',
+                          items: [{ format: '', path: 'property.territory' }]
                         }
                       ]
                     }
@@ -1337,7 +1338,60 @@ const mock = {
                       ]
                     },
                     {
-                      id: '75f752a8-8f5e-4d81-b3f2-228a4462d7dd',
+                      id: '75f752a8-8f5e-4d81-b3f2-435435435dd',
+                      type: '$INPUT',
+                      path: 'property.territory',
+                      dependencies: [],
+                      data: {
+                        component: 'select',
+                        label: 'Territory',
+                        size: '12',
+                        dataSource: [
+                          { answer: '15000' },
+                          { answer: '25000' },
+                          { answer: '35000' },
+                          { answer: '45000' }
+                        ]
+                      },
+                      formData: {
+                        path: 'property.territory',
+                        required: true,
+                        metaData: {
+                          target:
+                            '${it._TEMP_INITIAL_VALUES.property.territory}'
+                        }
+                      },
+                      children: []
+                    },
+                    {
+                      id: '75f752a8-44465678-4d81-b3f2-554654687444',
+                      type: '$INPUT',
+                      path: 'property.FEMAfloodZone',
+                      dependencies: [],
+                      data: {
+                        component: 'select',
+                        label: 'FEMA Flood Zone',
+                        size: '12',
+                        dataSource: [
+                          { answer: 'V' },
+                          { answer: 'A' },
+                          { answer: 'B' },
+                          { answer: 'C' },
+                          { answer: 'X' },
+                          { answer: 'U' }
+                        ]
+                      },
+                      formData: {
+                        path: 'property.FEMAfloodZone',
+                        metaData: {
+                          target:
+                            '${it._TEMP_INITIAL_VALUES.property.FEMAfloodZone || " "}'
+                        }
+                      },
+                      children: []
+                    },
+                    {
+                      id: '75f752a8-8f5e-4d81-b3f2-228a446444sd7dd',
                       type: '$INPUT',
                       path: 'property.floodZone',
                       dependencies: [],
