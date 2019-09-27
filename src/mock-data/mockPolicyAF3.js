@@ -1470,12 +1470,12 @@ const mock = {
                         label: 'Flood Zone',
                         size: '12',
                         dataSource: [
-                          { answer: 'V' },
                           { answer: 'A' },
                           { answer: 'B' },
                           { answer: 'C' },
+                          { answer: 'V' },
                           { answer: 'X' },
-                          { answer: 'U' }
+                          { answer: 'Z' }
                         ]
                       },
                       formData: {
