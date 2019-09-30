@@ -1,10 +1,12 @@
 import moment from 'moment-timezone';
 import { date } from '@exzeo/core-ui';
 
-export const removeTerm = id =>
-  id && id.replace
-    ? id.replace(/(\d{2}-\d{7})-\d{2}/g, (_, group) => group)
+export const removeTerm = id => {
+  const group = String(id).split('-');
+  return group.length === 3 || group.length === 4
+    ? `${group[0]}-${group[1]}-${group[2]}`
     : id;
+};
 
 export const mergeNotes = (notes, files) => {
   const fileList = notes
