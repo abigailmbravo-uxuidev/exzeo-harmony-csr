@@ -707,21 +707,6 @@ const mock = {
                       becomes: 0,
                       to: false
                     }
-                    // {
-                    //   field: 'coverageLimits.personalProperty.value',
-                    //   becomes: 25,
-                    //   to: true
-                    // },
-                    // {
-                    //   field: 'coverageLimits.personalProperty.value',
-                    //   becomes: 35,
-                    //   to: true
-                    // },
-                    // {
-                    //   field: 'coverageLimits.personalProperty.value',
-                    //   becomes: 50,
-                    //   to: true
-                    // }
                   ]
                 }
               },
