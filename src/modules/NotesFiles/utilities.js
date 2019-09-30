@@ -3,9 +3,9 @@ import { date } from '@exzeo/core-ui';
 
 export const removeTerm = id => {
   const group = String(id).split('-');
-  return group.length === 3 || group.length === 4
-    ? `${group[0]}-${group[1]}-${group[2]}`
-    : id;
+  if (group.length === 3) return `${group[0]}-${group[1]}`;
+  if (group.length === 4) return `${group[0]}-${group[1]}-${group[2]}`;
+  return id;
 };
 
 export const mergeNotes = (notes, files) => {
