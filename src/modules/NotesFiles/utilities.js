@@ -1,16 +1,6 @@
 import moment from 'moment-timezone';
 import { date } from '@exzeo/core-ui';
 
-export const removeTerm = id => {
-  if (!id) return id;
-
-  const group = String(id).split('-');
-  if (group.length === 1) return id;
-
-  group.pop();
-  return group.join('-');
-};
-
 export const mergeNotes = (notes, files) => {
   const fileList = notes
     .reduce((list, note) => [...list, ...note.noteAttachments], [])

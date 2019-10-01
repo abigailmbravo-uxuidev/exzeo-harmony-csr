@@ -3,10 +3,10 @@ import {
   POLICY_RESOURCE_TYPE,
   QUOTE_RESOURCE_TYPE
 } from '../../constants/diaries';
+import { removeTerm } from '../../utilities/format';
 
 import * as types from './actionTypes';
 import * as errorActions from './error.actions';
-import { removeTerm } from '../../modules/NotesFiles/utilities';
 /**
  * Set Diaries
  * @param {array} diaries
