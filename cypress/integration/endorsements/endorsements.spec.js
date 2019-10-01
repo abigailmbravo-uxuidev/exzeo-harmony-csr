@@ -7,7 +7,8 @@ import {
   fillOutApplication,
   navigateThroughDocusign
 } from '../../helpers';
-import { bindPolicyRequest } from './bindPolicyRequest';
+import { quoteToBindRequest, bindPolicyRequest } from '../../helpers/requests';
+import quoteDefaults from '../../fixtures/quoteDefaults';
 
 describe('CSR_policyEnd_happyPath_multiEnd1', () => {
   before('Login', () => cy.login());
@@ -15,26 +16,30 @@ describe('CSR_policyEnd_happyPath_multiEnd1', () => {
 
   it('Bind a quote to a policy for Address 4131 Test Address, Sarasota, FL 00001 using default coverages on the quote', () => {
     navigateThroughNewQuote();
-    fillOutCoverage();
-    fillOutUnderwriting();
-    fillOutMailingBilling();
-    fillOutApplication();
-    navigateThroughDocusign();
-    const idToken = localStorage.getItem('id_token');
-    cy.wait(20000);
-    cy.viewport(1024, 768);
-    cy.get('@sendApplication').then(function(xhr) {
-      const quoteNumber = xhr.request.body.data.quoteNumber;
-      cy.task('log', 'quoteNumber');
-      cy.task('log', quoteNumber);
+
+    cy.get('@retrieveQuote').then(function(xhr) {
+      const idToken = localStorage.getItem('id_token');
+      const quote = xhr.response.body.result;
       const endpointURL = Cypress.env('SVC_URL');
+
+      cy.task('log', 'quote');
+      cy.task('log', JSON.stringify(quote));
+
       cy.task('log', 'endpointURL');
       cy.task('log', endpointURL);
       cy.task('log', 'cookie.value');
       cy.task('log', idToken);
-      bindPolicyRequest(quoteNumber, idToken, endpointURL).then(response => {
-        cy.task('log', 'bindPolicyRequest');
-        cy.task('log', response.result.policyNumber);
+
+      quoteToBindRequest(
+        { ...quote, ...quoteDefaults },
+        idToken,
+        endpointURL
+      ).then(response => {
+        cy.task('log', 'quoteToBindRequest');
+
+        // bindPolicyRequest(quote.quoteNumber, idToken, endpointURL).then(response => {
+        //   cy.task('log', 'bindPolicyRequest');
+        //   cy.task('log', response.result.policyNumber);
 
         //cy.visit(`/policy/${response.result.policyNumber}/endorsements`)
         cy.visit(`/`);
@@ -260,19 +265,4 @@ describe('CSR_policyEnd_happyPath_multiEnd1', () => {
       });
     });
   });
-
-  //it('Test Endorsement Page', () => {
-  // cy.visit(`/policy/12-1019697-01/endorsements`);
-
-  // .findDisabledDataTag('endorsementAmount')
-  // .should('have.value', '-$ 211')
-  // .findDisabledDataTag('newCurrentPremium')
-  // .should('have.value', '$ 2,456')
-  // .findDisabledDataTag('newAnnualPremium')
-  // .should('have.value', '$ 2,456');
-
-  // .findDisabledDataTag('endorsementAmount').should('have.value', '$ 548')
-  // .findDisabledDataTag('newCurrentPremium').should('have.value', '$ 2,233')
-  // .findDisabledDataTag('newAnnualPremium').should('have.value', '$ 1,685')
-  //});
 });
