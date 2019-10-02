@@ -1,5 +1,5 @@
 import { setRouteAliases } from '../../helpers';
-import { quoteToBindRequest, bindPolicyRequest } from '../../helpers/requests';
+import { quoteToBindRequest } from '../../helpers/requests';
 import quoteDefaults from '../../fixtures/quoteDefaults';
 
 describe('CSR_policyEnd_happyPath_multiEnd1', () => {
