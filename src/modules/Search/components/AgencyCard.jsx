@@ -8,7 +8,7 @@ function AgencyCard({ handleKeyPress, handleClick, agency }) {
   return (
     <div className="card-wrapper" onKeyPress={handleKeyPress} tabIndex="0">
       <span
-        className="fa fa-chevron-circle-right"
+        className="fa fa-chevron-right"
         id={`agency-code-${agency.agencyCode}`}
         onClick={handleClick}
         data-url={`/agency/${agency.agencyCode}/0/overview`}

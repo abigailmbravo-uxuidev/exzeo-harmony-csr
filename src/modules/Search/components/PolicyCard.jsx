@@ -14,43 +14,43 @@ function PolicyCard({ handleKeyPress, handleClick, policy }) {
       data-url={`/policy/${policy.policyNumber}/coverage`}
     >
       <div className="icon-name">
-        {/*<i className="card-icon fa fa-user-circle" />*/}
         <i className="card-icon fa fa-file-text" />
+        <h5 className="product">{policy.product}</h5>
       </div>
       <section>
-        <div className="card-name">
+        <div id={policy.PolicyID} className="details">
+          <span className="policy-no">
+            <strong>{policy.companyCode}</strong>&nbsp;|&nbsp;
+            {policy.policyNumber}
+          </span>
+          <span className="effective-date">
+            <strong>Effective Date:</strong>&nbsp;
+            {moment.utc(policy.effectiveDate).format(STANDARD_DATE_FORMAT)}
+          </span>
+          <span className="policy-status">
+            <strong>Policy Status:</strong>&nbsp;
+            {policy.status}
+          </span>
+        </div>
+        <div className="title">
           {Array.isArray(policy.policyHolders) &&
             policy.policyHolders.length > 0 && (
-              <h5
-                title={`${policy.policyHolders[0].firstName} ${policy.policyHolders[0].lastName}`}
-              >
+              <h4>
                 {`${policy.policyHolders[0].firstName} ${policy.policyHolders[0].lastName}`}
-              </h5>
+                &nbsp;|&nbsp;
+                <span className="propertyAddress">
+                  {`${policy.property.physicalAddress.address1}`}&nbsp;
+                  <span className="propertyCityStateZip">
+                    {`${policy.property.physicalAddress.city}, ${policy.property.physicalAddress.state} ${policy.property.physicalAddress.zip}`}
+                  </span>
+                </span>
+              </h4>
             )}
         </div>
-        <ul id="policy-search-results" className="policy-search-results">
-          <li className="header">
-            <span className="policy-no">Policy No.</span>
-            <span className="property-address">Property Address</span>
-            <span className="policy-status">Policy Status</span>
-            <span className="effective-date">Effective Date</span>
-          </li>
-          <li>
-            <div id={policy.PolicyID} className="row">
-              <span className="quote-no">{policy.policyNumber}</span>
-              <span className="property-address">
-                {`${policy.property.physicalAddress.address1}
-                ${policy.property.physicalAddress.city}, ${policy.property.physicalAddress.state}
-                ${policy.property.physicalAddress.zip}`}
-              </span>
-              <span className="policy-status">{policy.status}</span>
-              <span className="effective-date">
-                {moment.utc(policy.effectiveDate).format(STANDARD_DATE_FORMAT)}
-              </span>
-            </div>
-          </li>
-        </ul>
       </section>
+      <footer>
+        <i className="footer-icon fa fa-chevron-right" />
+      </footer>
     </div>
   );
 }

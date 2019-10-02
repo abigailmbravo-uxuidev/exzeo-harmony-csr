@@ -88,7 +88,6 @@ describe('Policy Search Testing', () => {
   const props = {
     agencyList: [],
     submitting: false,
-    advancedSearch: true,
     questions: {
       diaryAssignees: [
         {
@@ -110,7 +109,6 @@ describe('Policy Search Testing', () => {
         ]
       }
     },
-    toggleAdvancedSearch: () => {},
     handlePagination: () => {},
     search: { results: [] },
     searchTypeOptions: [

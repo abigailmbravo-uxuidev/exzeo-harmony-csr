@@ -5,16 +5,23 @@ export const SEARCH_TYPES = RESOURCES;
 export const SEARCH_FORM = 'SEARCH_BAR';
 
 export const ADDRESS_INITIAL_VALUES = {
-  searchType: SEARCH_TYPES.newQuote
+  searchType: SEARCH_TYPES.newQuote,
+  companyCode: 'TTIC',
+  state: 'FL'
 };
 
 export const POLICY_INITIAL_VALUES = {
   searchType: SEARCH_TYPES.policy,
-  sortBy: 'policyNumber'
+  sortBy: 'policyNumber',
+  companyCode: 'TTIC',
+  state: 'FL'
 };
 
 export const QUOTE_INITIAL_VALUES = {
-  searchType: SEARCH_TYPES.quote
+  searchType: SEARCH_TYPES.quote,
+  sortBy: 'quoteNumber',
+  companyCode: 'TTIC',
+  state: 'FL'
 };
 
 export const AGENCY_INITIAL_VALUES = {

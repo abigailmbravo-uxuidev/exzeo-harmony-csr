@@ -15,19 +15,21 @@ const { isValidChar, isRequired } = validation;
 const AgencySearch = ({ submitting, changeSearchType, searchTypeOptions }) => {
   return (
     <React.Fragment>
-      <div className="form-group search-context">
-        <Field
-          name="searchType"
-          dataTest="searchType"
-          label="Search Context"
-          component={Select}
-          id="searchType"
-          validate={isRequired}
-          onChange={changeSearchType}
-          answers={searchTypeOptions}
-          showPlaceholder={false}
-          errorHint
-        />
+      <div className="search-context-sort">
+        <div className="form-group search-context">
+          <Field
+            name="searchType"
+            dataTest="searchType"
+            label="Search Context"
+            component={Select}
+            id="searchType"
+            validate={isRequired}
+            onChange={changeSearchType}
+            answers={searchTypeOptions}
+            showPlaceholder={false}
+            errorHint
+          />
+        </div>
       </div>
       <div className="search-inputs fade-in">
         <Field

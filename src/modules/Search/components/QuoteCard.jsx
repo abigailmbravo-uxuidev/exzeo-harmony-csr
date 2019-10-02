@@ -16,14 +16,38 @@ function QuoteCard({ handleKeyPress, handleClick, quote }) {
       <div className="icon-name">
         {/*<i className="card-icon fa fa-user-circle" />*/}
         <i className="card-icon fa fa-quote-left" />
+        <h5 className="product">{quote.product}</h5>
       </div>
       <section>
-        <div className="card-name">
+        <div
+          id={quote.quoteNumber + quote.property.physicalAddress.address1}
+          className="details"
+        >
+          <span className="quote-no">
+            <strong>{quote.companyCode}</strong>&nbsp;|&nbsp;
+            {quote.quoteNumber}
+          </span>
+          <span className="started-on">
+            <strong>Started On:</strong>&nbsp;
+            {moment.utc(quote.createdAt).format(STANDARD_DATE_FORMAT)}
+          </span>
+          <span className="premium">
+            <strong>Premium:</strong>&nbsp; ${' '}
+            {quote.rating ? quote.rating.totalPremium : '-'}
+          </span>
+          <span className="effective-date">
+            <strong>Effective Date:</strong>&nbsp;
+            {moment.utc(quote.effectiveDate).format(STANDARD_DATE_FORMAT)}
+          </span>
+          <span className="quote-status">
+            <strong>Quote Status:</strong>&nbsp;
+            {quote.quoteState}
+          </span>
+        </div>
+        <div className="title">
           {Array.isArray(quote.policyHolders) &&
             quote.policyHolders.length > 0 && (
-              <h5
-                title={`${quote.policyHolders[0].firstName} ${quote.policyHolders[0].lastName}`}
-              >
+              <h4>
                 {`${quote.policyHolders[0].firstName.replace(
                   /(^.{20}).*$/,
                   '$1...'
@@ -31,39 +55,18 @@ function QuoteCard({ handleKeyPress, handleClick, quote }) {
                   /(^.{20}).*$/,
                   '$1...'
                 )}`}
-              </h5>
+                &nbsp;|&nbsp;
+                <span className="propertyAddress">
+                  {`${quote.property.physicalAddress.address1}`},&nbsp;
+                  <span className="propertyCityStateZip">{`${quote.property.physicalAddress.city}, ${quote.property.physicalAddress.state} ${quote.property.physicalAddress.zip}`}</span>
+                </span>
+              </h4>
             )}
         </div>
-        <ul id="quote-search-results" className="quote-search-results">
-          <li className="header">
-            <span className="quote-no">Quote No.</span>
-            <span className="property-address">Property Address</span>
-            <span className="quote-state">Quote Status</span>
-            <span className="effective-date">Effective Date</span>
-            <span className="started-on">Started On</span>
-            <span className="premium">Premium</span>
-          </li>
-          <li>
-            <div
-              id={quote.quoteNumber + quote.property.physicalAddress.address1}
-              className="row"
-            >
-              <span className="quote-no">{quote.quoteNumber}</span>
-              <span className="property-address">{`${quote.property.physicalAddress.address1} ${quote.property.physicalAddress.city}, ${quote.property.physicalAddress.state} ${quote.property.physicalAddress.zip}`}</span>
-              <span className="quote-state">{quote.quoteState}</span>
-              <span className="effective-date">
-                {moment.utc(quote.effectiveDate).format(STANDARD_DATE_FORMAT)}
-              </span>
-              <span className="started-on">
-                {moment.utc(quote.createdAt).format(STANDARD_DATE_FORMAT)}
-              </span>
-              <span className="premium">
-                $ {quote.rating ? quote.rating.totalPremium : '-'}
-              </span>
-            </div>
-          </li>
-        </ul>
       </section>
+      <footer>
+        <i className="footer-icon fa fa-chevron-right" />
+      </footer>
     </div>
   );
 }

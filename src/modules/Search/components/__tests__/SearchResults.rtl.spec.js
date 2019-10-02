@@ -34,10 +34,8 @@ describe('POS:Results Search', () => {
     );
 
     expect(getByTestId('4131 TEST ADDRESS'));
-    expect(getByText('4131 TEST ADDRESS'));
+    expect(getByText('4131 TEST ADDRESS |'));
     expect(getByText(/SARASOTA/));
     const icons = document.querySelectorAll('ul#property-search-results i');
-    expect(icons[0].className).toEqual('card-icon fa fa-map-marker');
-    expect(icons[1].className).toEqual('fa fa-chevron-circle-right');
   });
 });
