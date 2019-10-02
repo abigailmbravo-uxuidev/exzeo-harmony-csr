@@ -1,12 +1,4 @@
-import {
-  setRouteAliases,
-  navigateThroughNewQuote,
-  fillOutCoverage,
-  fillOutUnderwriting,
-  fillOutMailingBilling,
-  fillOutApplication,
-  navigateThroughDocusign
-} from '../../helpers';
+import { setRouteAliases } from '../../helpers';
 import { quoteToBindRequest } from '../../helpers/requests';
 import quoteDefaults from '../../fixtures/quoteDefaults';
 

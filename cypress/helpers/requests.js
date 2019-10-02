@@ -1,13 +1,4 @@
-export async function bindPolicyRequest(quoteNumber, idToken, endpointURL) {
-  var data = JSON.stringify({
-    exchangeName: 'harmony',
-    routingKey: 'harmony.policy.bindPolicy',
-    data: {
-      quoteId: quoteNumber,
-      force: true
-    }
-  });
-
+export async function serviceRequest(data, idToken, endpointURL) {
   const result = await fetch(endpointURL, {
     method: 'POST',
     body: data,
@@ -20,6 +11,19 @@ export async function bindPolicyRequest(quoteNumber, idToken, endpointURL) {
   return result.json();
 }
 
+export async function bindPolicyRequest(quoteNumber, idToken, endpointURL) {
+  var data = JSON.stringify({
+    exchangeName: 'harmony',
+    routingKey: 'harmony.policy.bindPolicy',
+    data: {
+      quoteId: quoteNumber,
+      force: true
+    }
+  });
+
+  return await serviceRequest(data, idToken, endpointURL);
+}
+
 export async function updateQuoteRequest(quote, idToken, endpointURL) {
   var data = JSON.stringify({
     exchangeName: 'harmony',
@@ -30,14 +34,7 @@ export async function updateQuoteRequest(quote, idToken, endpointURL) {
     }
   });
 
-  await fetch(endpointURL, {
-    method: 'POST',
-    body: data,
-    headers: {
-      'Content-Type': 'application/json',
-      authorization: 'bearer ' + idToken
-    }
-  });
+  return await serviceRequest(data, idToken, endpointURL);
 }
 
 export async function createQuoteRequest(idToken, endpointURL) {
@@ -53,15 +50,7 @@ export async function createQuoteRequest(idToken, endpointURL) {
     }
   });
 
-  const result = await fetch(endpointURL, {
-    method: 'POST',
-    body: data,
-    headers: {
-      'Content-Type': 'application/json',
-      authorization: 'bearer ' + idToken
-    }
-  });
-  return result.json();
+  return await serviceRequest(data, idToken, endpointURL);
 }
 
 export async function verifyQuoteRequest(quoteNumber, idToken, endpointURL) {
@@ -73,14 +62,7 @@ export async function verifyQuoteRequest(quoteNumber, idToken, endpointURL) {
     }
   });
 
-  await fetch(endpointURL, {
-    method: 'POST',
-    body: data,
-    headers: {
-      'Content-Type': 'application/json',
-      authorization: 'bearer ' + idToken
-    }
-  });
+  return await serviceRequest(data, idToken, endpointURL);
 }
 
 export async function sendApplicationRequest(
@@ -97,26 +79,25 @@ export async function sendApplicationRequest(
     }
   });
 
-  await fetch(endpointURL, {
-    method: 'POST',
-    body: data,
-    headers: {
-      'Content-Type': 'application/json',
-      authorization: 'bearer ' + idToken
-    }
-  });
+  return await serviceRequest(data, idToken, endpointURL);
 }
 
 export async function quoteToBindRequest(quoteDefaults, idToken, endpointURL) {
+  // create quote
   const { result: quote } = await createQuoteRequest(idToken, endpointURL);
+  // update quote with defaults passed in to finish a quote
   await updateQuoteRequest(
     { ...quote, ...quoteDefaults },
     idToken,
     endpointURL
   );
+  // verify quote
   await verifyQuoteRequest(quote.quoteNumber, idToken, endpointURL);
+  // send to docusign
   await sendApplicationRequest(quote.quoteNumber, idToken, endpointURL);
+  // wait for docusign to do some things on the backend before its ready to bind
   await new Promise(resolve => setTimeout(resolve, 15000));
+  // force a policy to bind
   const result = await bindPolicyRequest(
     quote.quoteNumber,
     idToken,
