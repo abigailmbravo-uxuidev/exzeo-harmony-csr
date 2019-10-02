@@ -1,6 +1,6 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { Field } from 'redux-form';
+import React from "react";
+import PropTypes from "prop-types";
+import { Field } from "redux-form";
 import {
   Input,
   Integer,
@@ -8,26 +8,28 @@ import {
   Select,
   Button,
   validation
-} from '@exzeo/core-ui';
+} from "@exzeo/core-ui";
 
 const { isValidChar, isRequired } = validation;
 
 const AgencySearch = ({ submitting, changeSearchType, searchTypeOptions }) => {
   return (
     <React.Fragment>
-      <div className="form-group search-context">
-        <Field
-          name="searchType"
-          dataTest="searchType"
-          label="Search Context"
-          component={Select}
-          id="searchType"
-          validate={isRequired}
-          onChange={changeSearchType}
-          answers={searchTypeOptions}
-          showPlaceholder={false}
-          errorHint
-        />
+      <div className="search-context-sort">
+        <div className="form-group search-context">
+          <Field
+            name="searchType"
+            dataTest="searchType"
+            label="Search Context"
+            component={Select}
+            id="searchType"
+            validate={isRequired}
+            onChange={changeSearchType}
+            answers={searchTypeOptions}
+            showPlaceholder={false}
+            errorHint
+          />
+        </div>
       </div>
       <div className="search-inputs fade-in">
         <Field
@@ -86,8 +88,7 @@ const AgencySearch = ({ submitting, changeSearchType, searchTypeOptions }) => {
           customClass="multi-input"
           type="submit"
           disabled={submitting}
-          dataTest="submit"
-        >
+          dataTest="submit">
           <i className="fa fa-search" />
           Search
         </Button>

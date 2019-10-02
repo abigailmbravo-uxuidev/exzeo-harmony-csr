@@ -13,7 +13,6 @@ describe('Test Search component class', () => {
     );
 
     expect(wrapper.exists()).toBeTruthy();
-    expect(wrapper.state().advancedSearch).toEqual(false);
     expect(wrapper.state().searchType).toEqual(SEARCH_TYPES.policy);
   });
 
@@ -39,17 +38,5 @@ describe('Test Search component class', () => {
     instance.changeSearchType(SEARCH_TYPES.newQuote);
 
     expect(wrapper.state().searchType).toEqual(SEARCH_TYPES.newQuote);
-  });
-
-  it('should handle toggling advancedSearch', () => {
-    const wrapper = shallow(
-      <SearchPage pathName="/" userProfile={stubProfile} />
-    );
-    const initialAdvancedSearch = wrapper.state().advancedSearch;
-    const instance = wrapper.instance();
-
-    instance.toggleAdvancedSearch();
-
-    expect(wrapper.state().advancedSearch).toEqual(!initialAdvancedSearch);
   });
 });

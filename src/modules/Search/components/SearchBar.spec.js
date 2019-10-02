@@ -17,8 +17,6 @@ describe('Test SearchBar component', () => {
       changeSearchType() {},
       resetSearch() {},
       clearAppError() {},
-      advancedSearch: true,
-      toggleAdvancedSearch() {},
       initialize() {},
       handleSearchSubmit() {}
     };

@@ -64,21 +64,4 @@ describe('Testing Policy Search Component', () => {
     checkButton(getByText, { text: 'Search', type: 'submit' });
     expect(getByText('Search').getAttribute('type')).toEqual('submit');
   });
-
-  it('POS:Policy Advanced Search Open Arrow', async () => {
-    const { getByTestId, queryByTestId } = renderWithReduxAndRouter(
-      <ConnectedSearch {...props} />,
-      { store }
-    );
-    fireEvent.click(getByTestId('policy-advanced-search'));
-    await waitForElement(() => getByTestId('sortBy'));
-    expect(
-      getByTestId('policy-advanced-search').querySelector('i').className
-    ).toEqual('fa fa-chevron-up');
-    fireEvent.click(getByTestId('policy-advanced-search'));
-    await wait(() => expect(queryByTestId('[data-test="sortBy"]')).toBeNull());
-    expect(
-      getByTestId('policy-advanced-search').querySelector('i').className
-    ).toEqual('fa fa-chevron-down');
-  });
 });

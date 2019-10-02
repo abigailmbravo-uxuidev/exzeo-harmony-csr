@@ -150,7 +150,6 @@ export const homeAndLocationFields = [
   {
     dataTest: 'property.protectionClass',
     type: 'select',
-    disabled: true,
     label: 'Protection Class'
   },
   {
@@ -168,7 +167,6 @@ export const homeAndLocationFields = [
   {
     dataTest: 'property.constructionType',
     type: 'select',
-    disabled: true,
     label: 'Construction'
   },
   {

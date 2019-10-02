@@ -4,7 +4,9 @@ import NewQuoteSearch from './NewQuoteSearch';
 
 describe('Test NewQuoteSearch component', () => {
   it('renders without props being passed', () => {
-    const wrapper = shallow(<NewQuoteSearch submitting={false} />);
+    const wrapper = shallow(
+      <NewQuoteSearch reset={jest.fn()} submitting={false} />
+    );
     expect(wrapper.exists()).toBeTruthy();
   });
 });

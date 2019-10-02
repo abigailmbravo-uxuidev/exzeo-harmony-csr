@@ -19,65 +19,69 @@ class DiariesSearch extends Component {
 
     return (
       <React.Fragment>
-        <div className="search-inputs fade-in">
+        <div className="search-inputs fade-in diary">
           <div className="input-wrapper">
-            <div className="form-group search-context">
-              <Field
-                name="open"
-                dataTest="status"
-                label="Diary Status"
-                styleName="open"
-                component={Select}
-                id="status"
-                validate={validation.isRequired}
-                answers={STATUS_ANSWERS}
-                showPlaceholder={false}
-                errorHint
-              />
+            <div className="search-input-row margin bottom full-width">
+              <div className="form-group search-context diary">
+                <Field
+                  name="open"
+                  dataTest="status"
+                  label="Diary Status"
+                  styleName="open"
+                  component={Select}
+                  id="status"
+                  validate={validation.isRequired}
+                  answers={STATUS_ANSWERS}
+                  showPlaceholder={false}
+                  errorHint
+                />
+              </div>
+              <div className="form-group reason">
+                <Field
+                  name="reason"
+                  dataTest="reason"
+                  component={Select}
+                  answers={REASONS}
+                  placeholder="Please choose"
+                  label="Reason"
+                  errorHint
+                />
+              </div>
+              <div className="form-group dateRange">
+                <Field
+                  name="dateRange"
+                  dataTest="date-range"
+                  styleName="dateRange"
+                  component={DateRange}
+                  label="Date Range"
+                  errorHint
+                />
+              </div>
             </div>
-            <div className="form-group reason">
-              <Field
-                name="reason"
-                dataTest="reason"
-                component={Select}
-                answers={REASONS}
-                placeholder="Please choose"
-                label="Reason"
-                errorHint
-              />
+            <div className="search-input-row">
+              <div className="form-group assignees">
+                <Field
+                  name="assignees"
+                  dataTest="assignees"
+                  styleName="assignees"
+                  component={MultiSelectTypeAhead}
+                  label="Assigned To"
+                  answers={assigneeAnswers}
+                  errorHint
+                />
+              </div>
             </div>
-            <div className="form-group dateRange">
-              <Field
-                name="dateRange"
-                dataTest="date-range"
-                styleName="dateRange"
-                component={DateRange}
-                label="Date Range"
-                errorHint
-              />
-            </div>
-            <div className="form-group assignees">
-              <Field
-                name="assignees"
-                dataTest="assignees"
-                styleName="assignees"
-                component={MultiSelectTypeAhead}
-                label="Assigned To"
-                answers={assigneeAnswers}
-                errorHint
-              />
-            </div>
+            <Button
+              className={Button.constants.classNames.success}
+              customClass="multi-input"
+              type="submit"
+              disabled={submitting}
+              data-test="submit"
+            >
+              <i className="fa fa-search" />
+              Search
+            </Button>
           </div>
-          <Button
-            className={Button.constants.classNames.success}
-            customClass="multi-input"
-            type="submit"
-            disabled={submitting}
-            data-test="submit"
-          >
-            <i className="fa fa-search" />
-            Search
-          </Button>
         </div>
       </React.Fragment>
     );

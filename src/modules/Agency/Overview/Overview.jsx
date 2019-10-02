@@ -162,7 +162,18 @@ export class Overview extends React.Component {
                   handleClick={this.onHandleToggleEditContactModal}
                 />
               </section>
-              <h3 data-test="agency-aor">Agent Of Record</h3>
+              <h3 data-test="agency-aor">
+                Agent Of Record
+                <button
+                  className="btn btn-link btn-sm"
+                  onClick={this.onHandleToggleSwitchAgentOfRecordModal(
+                    agentOfRecord.agentCode
+                  )}
+                >
+                  <i className="fa fa-pencil-square" />
+                  Switch AOR
+                </button>
+              </h3>
               <section name="agentOfRecord" className="agency-aor">
                 {agentOfRecord && agentOfRecord.agentCode && (
                   <AgentCard
@@ -234,7 +245,11 @@ export class Overview extends React.Component {
         {this.state.showSwitchAgentOfRecordModal && (
           <AddExistingAgentModal
             header="Agent Of Record"
-            initialValues={{ selectedAgent: this.state.selectedAgent._id }}
+            initialValues={{
+              selectedAgent: this.state.selectedAgent
+                ? this.state.selectedAgent._id
+                : ''
+            }}
             listOfAgents={agentsList}
             onToggleModal={this.onHandleToggleSwitchAgentOfRecordModal(null)}
             handleSelection={this.handleSwitchAOR}

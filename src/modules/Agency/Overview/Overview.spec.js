@@ -9,6 +9,7 @@ describe('Testing Overview component', () => {
   it('should test onHandleSaveAgency', () => {
     const props = {
       agencyBranchData: mockAgency,
+      agentOfRecord: { agentCode: 1000 },
       updateAgent() {},
       closeModal() {},
       updateAgency() {},
