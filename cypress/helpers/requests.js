@@ -1,9 +1,9 @@
-export async function bindPolicyRequest(quoteId, idToken, endpointURL) {
+export async function bindPolicyRequest(quoteNumber, idToken, endpointURL) {
   var data = JSON.stringify({
     exchangeName: 'harmony',
-    routingKey: 'harmony.quote.bindPolicy',
+    routingKey: 'harmony.policy.bindPolicy',
     data: {
-      quoteId,
+      quoteId: quoteNumber,
       force: true
     }
   });
@@ -116,5 +116,11 @@ export async function quoteToBindRequest(quoteDefaults, idToken, endpointURL) {
   );
   await verifyQuoteRequest(quote.quoteNumber, idToken, endpointURL);
   await sendApplicationRequest(quote.quoteNumber, idToken, endpointURL);
-  return quote._id;
+  await new Promise(resolve => setTimeout(resolve, 15000));
+  const result = await bindPolicyRequest(
+    quote.quoteNumber,
+    idToken,
+    endpointURL
+  );
+  return result;
 }

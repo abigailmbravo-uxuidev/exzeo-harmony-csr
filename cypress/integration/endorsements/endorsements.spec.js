@@ -5,7 +5,6 @@ import quoteDefaults from '../../fixtures/quoteDefaults';
 describe('CSR_policyEnd_happyPath_multiEnd1', () => {
   let idToken;
   let endpointURL;
-  let quoteId;
   let response;
 
   before('Login', () => cy.login());
@@ -20,18 +19,10 @@ describe('CSR_policyEnd_happyPath_multiEnd1', () => {
     cy.task('log', endpointURL);
     cy.task('log', 'cookie.value');
     cy.task('log', idToken);
-
-    quoteId = await quoteToBindRequest(quoteDefaults, idToken, endpointURL);
-
-    cy.task('log', 'quoteId');
-    cy.task('log', quoteId);
-
-    await new Promise(resolve => setTimeout(resolve, 20000));
-
-    response = await bindPolicyRequest(quoteId, idToken, endpointURL);
+    response = await quoteToBindRequest(quoteDefaults, idToken, endpointURL);
   });
 
-  it('Bind a quote to a policy for Address 4131 Test Address, Sarasota, FL 00001 using default coverages on the quote', async () => {
+  it('Bind a quote to a policy for Address 4131 Test Address, Sarasota, FL 00001 using default coverages on the quote', () => {
     //navigateThroughNewQuote();
 
     //cy.get('@retrieveQuote').then(function(xhr) {
@@ -209,7 +200,11 @@ describe('CSR_policyEnd_happyPath_multiEnd1', () => {
 
         const effectiveDate = new Date(
           response.result.transaction.effectiveDate
-        ).toLocaleDateString();
+        ).toLocaleDateString('en-US', {
+          year: 'numeric',
+          month: '2-digit',
+          day: '2-digit'
+        });
 
         cy.get('.table tbody')
           .find('tr')
@@ -220,7 +215,11 @@ describe('CSR_policyEnd_happyPath_multiEnd1', () => {
 
         const created = new Date(
           response.result.transaction.issueDate
-        ).toLocaleDateString();
+        ).toLocaleDateString('en-US', {
+          year: 'numeric',
+          month: '2-digit',
+          day: '2-digit'
+        });
 
         cy.get('.table tbody')
           .find('tr')
