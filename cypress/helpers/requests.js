@@ -1,14 +1,14 @@
-export async function bindPolicyRequest(quoteNumber, idToken, endpointURL) {
+export async function bindPolicyRequest(quoteId, idToken, endpointURL) {
   var data = JSON.stringify({
     exchangeName: 'harmony',
     routingKey: 'harmony.quote.bindPolicy',
     data: {
-      quoteId: quoteNumber,
+      quoteId,
       force: true
     }
   });
 
-  await fetch(endpointURL, {
+  const result = await fetch(endpointURL, {
     method: 'POST',
     body: data,
     headers: {
@@ -16,6 +16,8 @@ export async function bindPolicyRequest(quoteNumber, idToken, endpointURL) {
       authorization: 'bearer ' + idToken
     }
   });
+
+  return result.json();
 }
 
 export async function updateQuoteRequest(quote, idToken, endpointURL) {
@@ -36,6 +38,30 @@ export async function updateQuoteRequest(quote, idToken, endpointURL) {
       authorization: 'bearer ' + idToken
     }
   });
+}
+
+export async function createQuoteRequest(idToken, endpointURL) {
+  var data = JSON.stringify({
+    exchangeName: 'harmony',
+    routingKey: 'harmony.quote.createQuote',
+    data: {
+      companyCode: 'TTIC',
+      state: 'FL',
+      product: 'HO3',
+      propertyId: '12000000000000001',
+      runUnderwriting: true
+    }
+  });
+
+  const result = await fetch(endpointURL, {
+    method: 'POST',
+    body: data,
+    headers: {
+      'Content-Type': 'application/json',
+      authorization: 'bearer ' + idToken
+    }
+  });
+  return result.json();
 }
 
 export async function verifyQuoteRequest(quoteNumber, idToken, endpointURL) {
@@ -81,10 +107,14 @@ export async function sendApplicationRequest(
   });
 }
 
-export async function quoteToBindRequest(quote, idToken, endpointURL) {
-  await updateQuoteRequest(quote, idToken, endpointURL);
+export async function quoteToBindRequest(quoteDefaults, idToken, endpointURL) {
+  const { result: quote } = await createQuoteRequest(idToken, endpointURL);
+  await updateQuoteRequest(
+    { ...quote, ...quoteDefaults },
+    idToken,
+    endpointURL
+  );
   await verifyQuoteRequest(quote.quoteNumber, idToken, endpointURL);
   await sendApplicationRequest(quote.quoteNumber, idToken, endpointURL);
-  await new Promise(resolve => setTimeout(resolve, 20000));
-  return await bindPolicyRequest(quote.quoteNumber, idToken, endpointURL);
+  return quote._id;
 }

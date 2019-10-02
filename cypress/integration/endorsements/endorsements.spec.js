@@ -1,268 +1,262 @@
-import {
-  setRouteAliases,
-  navigateThroughNewQuote,
-  fillOutCoverage,
-  fillOutUnderwriting,
-  fillOutMailingBilling,
-  fillOutApplication,
-  navigateThroughDocusign
-} from '../../helpers';
+import { setRouteAliases } from '../../helpers';
 import { quoteToBindRequest, bindPolicyRequest } from '../../helpers/requests';
 import quoteDefaults from '../../fixtures/quoteDefaults';
 
 describe('CSR_policyEnd_happyPath_multiEnd1', () => {
+  let idToken;
+  let endpointURL;
+  let quoteId;
+  let response;
+
   before('Login', () => cy.login());
-  beforeEach('Set aliases', () => setRouteAliases());
 
-  it('Bind a quote to a policy for Address 4131 Test Address, Sarasota, FL 00001 using default coverages on the quote', () => {
-    navigateThroughNewQuote();
+  beforeEach('Set aliases', async () => {
+    setRouteAliases();
 
-    cy.get('@retrieveQuote').then(function(xhr) {
-      const idToken = localStorage.getItem('id_token');
-      const quote = xhr.response.body.result;
-      const endpointURL = Cypress.env('SVC_URL');
+    idToken = localStorage.getItem('id_token');
+    endpointURL = Cypress.env('SVC_URL');
 
-      cy.task('log', 'quote');
-      cy.task('log', JSON.stringify(quote));
+    cy.task('log', 'endpointURL');
+    cy.task('log', endpointURL);
+    cy.task('log', 'cookie.value');
+    cy.task('log', idToken);
 
-      cy.task('log', 'endpointURL');
-      cy.task('log', endpointURL);
-      cy.task('log', 'cookie.value');
-      cy.task('log', idToken);
+    quoteId = await quoteToBindRequest(quoteDefaults, idToken, endpointURL);
 
-      quoteToBindRequest(
-        { ...quote, ...quoteDefaults },
-        idToken,
-        endpointURL
-      ).then(response => {
-        cy.task('log', 'quoteToBindRequest');
+    cy.task('log', 'quoteId');
+    cy.task('log', quoteId);
 
-        // bindPolicyRequest(quote.quoteNumber, idToken, endpointURL).then(response => {
-        //   cy.task('log', 'bindPolicyRequest');
-        //   cy.task('log', response.result.policyNumber);
+    await new Promise(resolve => setTimeout(resolve, 20000));
 
-        //cy.visit(`/policy/${response.result.policyNumber}/endorsements`)
-        cy.visit(`/`);
-        cy.task('log', 'Search Policy and open')
-          .findDataTag('searchType')
-          .select('policy')
-          // This will be relevant once ALL users can see the product dropdown
-          .findDataTag('policyNumber')
-          .type(response.result.policyNumber)
-          .clickSubmit()
-          .wait('@fetchPolicies')
-          // This makes it so we don't open up a new window
-          .findDataTag(response.result.policyNumber)
-          .then($a => {
-            $a.prop('onclick', () => cy.visit($a.prop('dataset').url)).click();
-            cy.goToNav('endorsements');
+    response = await bindPolicyRequest(quoteId, idToken, endpointURL);
+  });
 
-            cy.task('log', 'Filling out Endorsements')
+  it('Bind a quote to a policy for Address 4131 Test Address, Sarasota, FL 00001 using default coverages on the quote', async () => {
+    //navigateThroughNewQuote();
 
-              .findDataTag('coverageLimits.dwelling.value')
-              .type(`{selectall}{backspace}${400000}`)
-              .findDataTag('coverageLimits.personalProperty.value')
-              .select('50')
+    //cy.get('@retrieveQuote').then(function(xhr) {
 
-              .findDataTag('property.burglarAlarm_true')
-              .click({ force: true })
+    //   cy.task('log', 'quoteToBindRequest');
+    //   // bindPolicyRequest(quote.quoteNumber, idToken, endpointURL).then(response => {
+    //   //   cy.task('log', 'bindPolicyRequest');
+    //   //   cy.task('log', response.result.policyNumber);
 
-              .get('#root')
-              .scrollTo('left')
+    //cy.visit(`/policy/${response.result.policyNumber}/endorsements`)
+    cy.visit(`/`);
+    cy.task('log', 'Search Policy and open')
+      .findDataTag('searchType')
+      .select('policy')
+      // This will be relevant once ALL users can see the product dropdown
+      .findDataTag('policyNumber')
+      .type(response.result.transaction.policyNumber)
+      .clickSubmit()
+      .wait('@fetchPolicies')
+      // This makes it so we don't open up a new window
+      .findDataTag(response.result.transaction.policyNumber)
+      .then($a => {
+        $a.prop('onclick', () => cy.visit($a.prop('dataset').url)).click();
+        cy.goToNav('endorsements');
 
-              .findDataTag(
-                'coverageOptions.sinkholePerilCoverage.answer_wrapper'
-              )
-              .scrollIntoView()
-              .should('be.visible')
+        cy.task('log', 'Filling out Endorsements')
 
-              .findDataTag('coverageOptions.sinkholePerilCoverage.answer')
-              .select('false')
+          .findDataTag('coverageLimits.dwelling.value')
+          .type(`{selectall}{backspace}${400000}`)
+          .findDataTag('coverageLimits.personalProperty.value')
+          .select('50')
 
-              .findDataTag('property.windMitigation.roofCovering_wrapper')
-              .scrollIntoView()
-              .should('be.visible')
+          .findDataTag('property.burglarAlarm_true')
+          .click({ force: true })
 
-              .findDataTag('property.windMitigation.roofCovering')
-              .select('FBC')
+          .get('#root')
+          .scrollTo('left')
 
-              .findDataTag('property.windMitigation.roofGeometry_wrapper')
-              .scrollIntoView()
-              .should('be.visible')
+          .findDataTag('coverageOptions.sinkholePerilCoverage.answer_wrapper')
+          .scrollIntoView()
+          .should('be.visible')
 
-              .findDataTag('property.windMitigation.roofGeometry')
-              .select('Hip')
+          .findDataTag('coverageOptions.sinkholePerilCoverage.answer')
+          .select('false')
 
-              .findDataTag('property.protectionClass_wrapper')
-              .scrollIntoView()
-              .should('be.visible')
+          .findDataTag('property.windMitigation.roofCovering_wrapper')
+          .scrollIntoView()
+          .should('be.visible')
 
-              .findDataTag('property.protectionClass')
-              .select('7')
+          .findDataTag('property.windMitigation.roofCovering')
+          .select('FBC')
 
-              .findDataTag('policyHolders[0].emailAddress_wrapper')
-              .scrollIntoView()
-              .should('be.visible')
+          .findDataTag('property.windMitigation.roofGeometry_wrapper')
+          .scrollIntoView()
+          .should('be.visible')
 
-              .findDataTag('policyHolders[0].primaryPhoneNumber')
-              .type(`{selectall}{backspace}${'2224445555'}`)
-              .findDataTag('policyHolders[0].secondaryPhoneNumber')
-              .type(`{selectall}{backspace}${'3337778888'}`)
+          .findDataTag('property.windMitigation.roofGeometry')
+          .select('Hip')
 
-              .get('#root')
-              .scrollTo('right')
+          .findDataTag('property.protectionClass_wrapper')
+          .scrollIntoView()
+          .should('be.visible')
 
-              .findDataTag('policyHolders[1].emailAddress')
-              .scrollIntoView()
-              .should('be.visible')
+          .findDataTag('property.protectionClass')
+          .select('7')
 
-              .findDataTag('policyHolders[1].firstName')
-              .type(`{selectall}{backspace}${'Batman 2'}`)
+          .findDataTag('policyHolders[0].emailAddress_wrapper')
+          .scrollIntoView()
+          .should('be.visible')
 
-              .findDataTag('policyHolders[1].lastName')
-              .type(`{selectall}{backspace}${'Robin 2'}`)
+          .findDataTag('policyHolders[0].primaryPhoneNumber')
+          .type(`{selectall}{backspace}${'2224445555'}`)
+          .findDataTag('policyHolders[0].secondaryPhoneNumber')
+          .type(`{selectall}{backspace}${'3337778888'}`)
 
-              .findDataTag('policyHolders[1].emailAddress')
-              .type(`{selectall}{backspace}${'exzeoqa@exzeo.com'}`)
+          .get('#root')
+          .scrollTo('right')
 
-              .findDataTag('policyHolders[1].primaryPhoneNumber')
-              .type(`{selectall}{backspace}${'9994445555'}`)
+          .findDataTag('policyHolders[1].emailAddress')
+          .scrollIntoView()
+          .should('be.visible')
 
-              .findDataTag('policyHolders[1].secondaryPhoneNumber')
-              .type(`{selectall}{backspace}${'3337776543'}`)
+          .findDataTag('policyHolders[1].firstName')
+          .type(`{selectall}{backspace}${'Batman 2'}`)
 
-              .get('#root')
-              .scrollTo('left')
+          .findDataTag('policyHolders[1].lastName')
+          .type(`{selectall}{backspace}${'Robin 2'}`)
 
-              .findDataTag('policyHolderMailingAddress.city_wrapper')
-              .scrollIntoView()
-              .should('be.visible')
+          .findDataTag('policyHolders[1].emailAddress')
+          .type(`{selectall}{backspace}${'exzeoqa@exzeo.com'}`)
 
-              .findDataTag('policyHolderMailingAddress.address2')
-              .type(`{selectall}{backspace}${'APT 101'}`)
+          .findDataTag('policyHolders[1].primaryPhoneNumber')
+          .type(`{selectall}{backspace}${'9994445555'}`)
 
-              .findDataTag('property.physicalAddress.city_wrapper')
-              .scrollIntoView()
-              .should('be.visible')
-              .findDataTag('property.physicalAddress.address2')
-              .type(`{selectall}{backspace}${'APT 101'}`)
+          .findDataTag('policyHolders[1].secondaryPhoneNumber')
+          .type(`{selectall}{backspace}${'3337776543'}`)
 
-              .findDataTag('modal-submit')
-              .click({ force: true })
-              .wait('@rateEndorsement')
+          .get('#root')
+          .scrollTo('left')
 
-              .findDisabledDataTag('endorsementAmount')
-              .should('have.value', '-$ 211')
-              .findDisabledDataTag('newCurrentPremium')
-              .should('have.value', '$ 2,456')
-              .findDisabledDataTag('newAnnualPremium')
-              .should('have.value', '$ 2,456')
+          .findDataTag('policyHolderMailingAddress.city_wrapper')
+          .scrollIntoView()
+          .should('be.visible')
 
-              .get('#root')
-              .scrollTo('right')
+          .findDataTag('policyHolderMailingAddress.address2')
+          .type(`{selectall}{backspace}${'APT 101'}`)
 
-              .findDataTag('modal-submit')
-              .click({ force: true })
-              .wait('@saveEndorsement')
+          .findDataTag('property.physicalAddress.city_wrapper')
+          .scrollIntoView()
+          .should('be.visible')
+          .findDataTag('property.physicalAddress.address2')
+          .type(`{selectall}{backspace}${'APT 101'}`)
 
-              .wait(5000)
+          .findDataTag('modal-submit')
+          .click({ force: true })
+          .wait('@rateEndorsement')
 
-              .findDataTag('currentPremiumDetail')
-              .get('dl div dd')
-              .contains('$ 2,456')
+          .findDisabledDataTag('endorsementAmount')
+          .should('have.value', '-$ 211')
+          .findDisabledDataTag('newCurrentPremium')
+          .should('have.value', '$ 2,456')
+          .findDisabledDataTag('newAnnualPremium')
+          .should('have.value', '$ 2,456')
 
-              .findDataTag('policyHolderDetail')
-              .get('dl div')
-              .find('dd')
-              .contains('(222) 444-5555')
+          .get('#root')
+          .scrollTo('right')
 
-              .findDataTag('propertyAddressDetail')
-              .get('dl div')
-              .find('dd')
-              .contains('APT 101')
+          .findDataTag('modal-submit')
+          .click({ force: true })
+          .wait('@saveEndorsement')
 
-              .findDataTag('mailingAddressDetail')
-              .get('dl div')
-              .find('dd')
-              .contains('APT 101')
+          .wait(5000)
 
-              .get('.table tbody')
-              .find('tr')
-              .find('td')
-              .contains(
-                response.result.transaction.effectiveDate.substring(0, 10)
-              )
+          .findDataTag('currentPremiumDetail')
+          .get('dl div dd')
+          .contains('$ 2,456')
 
-              .get('.table tbody')
-              .find('tr')
-              .find('td')
-              .contains('-$211.00')
+          .findDataTag('policyHolderDetail')
+          .get('dl div')
+          .find('dd')
+          .contains('(222) 444-5555')
 
-              .get('.table tbody')
-              .find('tr')
-              .find('td')
-              .contains('Multiple Endorsements Endorsement')
+          .findDataTag('propertyAddressDetail')
+          .get('dl div')
+          .find('dd')
+          .contains('APT 101')
 
-              .get('.table tbody')
-              .find('tr')
-              .find('td')
-              .contains(response.result.transaction.issueDate.substring(0, 10))
+          .findDataTag('mailingAddressDetail')
+          .get('dl div')
+          .find('dd')
+          .contains('APT 101')
 
-              .goToNav('notes')
-              .wait('@fetchFiles');
+          .get('.table tbody')
+          .find('tr')
+          .find('td')
+          .contains(response.result.transaction.effectiveDate.substring(0, 10))
 
-            const effectiveDate = new Date(
-              response.result.transaction.effectiveDate
-            ).toLocaleDateString();
+          .get('.table tbody')
+          .find('tr')
+          .find('td')
+          .contains('-$211.00')
 
-            cy.get('.table tbody')
-              .find('tr')
-              .find('td')
-              .contains(
-                `Multiple Endorsements Endorsement Effective ${effectiveDate}.`
-              );
+          .get('.table tbody')
+          .find('tr')
+          .find('td')
+          .contains('Multiple Endorsements Endorsement')
 
-            const created = new Date(
-              response.result.transaction.issueDate
-            ).toLocaleDateString();
+          .get('.table tbody')
+          .find('tr')
+          .find('td')
+          .contains(response.result.transaction.issueDate.substring(0, 10))
 
-            cy.get('.table tbody')
-              .find('tr')
-              .find('td')
-              .contains(created);
+          .goToNav('notes')
+          .wait('@fetchFiles');
 
-            cy.get('.table tbody')
-              .find('tr')
-              .find('td')
-              .contains('System');
+        const effectiveDate = new Date(
+          response.result.transaction.effectiveDate
+        ).toLocaleDateString();
 
-            cy.get('.table tbody')
-              .find('tr')
-              .find('td')
-              .contains('tticcsr');
+        cy.get('.table tbody')
+          .find('tr')
+          .find('td')
+          .contains(
+            `Multiple Endorsements Endorsement Effective ${effectiveDate}.`
+          );
 
-            cy.get('.table tbody')
-              .find('tr')
-              .find('td')
-              .contains(
-                `Multiple Endorsements Endorsement Effective ${effectiveDate}.`
-              );
+        const created = new Date(
+          response.result.transaction.issueDate
+        ).toLocaleDateString();
 
-            cy.get('.table tbody')
-              .find('tr')
-              .find('td')
-              .contains(
-                'Prior - Dwelling (A): 314000, Other Structures (B): 6280, Personal Property (C): 78500, Loss of Use (D): 31400, Sinkhole Deductible: Yes, Sinkhole Deductible: 10, Burglar Alarm: No, Roof Covering: Other, Roof Geometry: Other, Protection Class: 3, PH 1 Primary Phone: 1234567890, PH 1 Secondary Phone: , PH 2 First Name: Null, PH 2 Last Name: Null, PH 2 Primary Phone: Null, PH 2 Secondary Phone: Null, PH 2 Email Address: Null, Mailing Address 2: , Property 2: Null.'
-              );
+        cy.get('.table tbody')
+          .find('tr')
+          .find('td')
+          .contains(created);
 
-            cy.get('.table tbody')
-              .find('tr')
-              .find('td')
-              .contains(
-                'New - Dwelling (A): 400000, Other Structures (B): 8000, Personal Property (C): 200000, Loss of Use (D): 40000, Sinkhole Deductible: No, Sinkhole Deductible: Null, Burglar Alarm: Yes, Roof Covering: FBC, Roof Geometry: Hip, Protection Class: 7, PH 1 Primary Phone: 2224445555, PH 1 Secondary Phone: 3337778888, PH 2 First Name: Batman 2, PH 2 Last Name: Robin 2, PH 2 Primary Phone: 9994445555, PH 2 Secondary Phone: 3337776543, PH 2 Email Address: exzeoqa@exzeo.com, Mailing Address 2: APT 101, Property 2: APT 101'
-              );
-          });
+        cy.get('.table tbody')
+          .find('tr')
+          .find('td')
+          .contains('System');
+
+        cy.get('.table tbody')
+          .find('tr')
+          .find('td')
+          .contains('tticcsr');
+
+        cy.get('.table tbody')
+          .find('tr')
+          .find('td')
+          .contains(
+            `Multiple Endorsements Endorsement Effective ${effectiveDate}.`
+          );
+
+        cy.get('.table tbody')
+          .find('tr')
+          .find('td')
+          .contains(
+            'Prior - Dwelling (A): 314000, Other Structures (B): 6280, Personal Property (C): 78500, Loss of Use (D): 31400, Sinkhole Deductible: Yes, Sinkhole Deductible: 10, Burglar Alarm: No, Roof Covering: Other, Roof Geometry: Other, Protection Class: 3, PH 1 Primary Phone: 1234567890, PH 1 Secondary Phone: , PH 2 First Name: Null, PH 2 Last Name: Null, PH 2 Primary Phone: Null, PH 2 Secondary Phone: Null, PH 2 Email Address: Null, Mailing Address 2: , Property 2: Null.'
+          );
+
+        cy.get('.table tbody')
+          .find('tr')
+          .find('td')
+          .contains(
+            'New - Dwelling (A): 400000, Other Structures (B): 8000, Personal Property (C): 200000, Loss of Use (D): 40000, Sinkhole Deductible: No, Sinkhole Deductible: Null, Burglar Alarm: Yes, Roof Covering: FBC, Roof Geometry: Hip, Protection Class: 7, PH 1 Primary Phone: 2224445555, PH 1 Secondary Phone: 3337778888, PH 2 First Name: Batman 2, PH 2 Last Name: Robin 2, PH 2 Primary Phone: 9994445555, PH 2 Secondary Phone: 3337776543, PH 2 Email Address: exzeoqa@exzeo.com, Mailing Address 2: APT 101, Property 2: APT 101'
+          );
       });
-    });
   });
 });
