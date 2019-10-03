@@ -27,7 +27,7 @@ describe('Bulk Payments Test', () => {
       const quoteNumber = xhr.request.body.data.quoteNumber;
       cy.task('log', 'quoteNumber');
       cy.task('log', quoteNumber);
-      const endpointURL = Cypress.env('SVC_URL');
+      const endpointURL = `${Cypress.env('API_URL')}/svc`;
       cy.task('log', 'endpointURL');
       cy.task('log', endpointURL);
       cy.task('log', 'cookie.value');
