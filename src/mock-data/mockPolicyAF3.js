@@ -882,7 +882,7 @@ const mock = {
                       data: {
                         component: 'currency',
                         label: 'Building Limit',
-                        validation: ['isDwellingRange'],
+                        validation: ['isBuildingRange'],
                         extendedProperties: {
                           format: 'currency',
                           displayRange: true,
