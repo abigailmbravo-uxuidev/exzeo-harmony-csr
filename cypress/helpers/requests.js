@@ -83,25 +83,18 @@ export async function sendApplicationRequest(
 }
 
 export async function quoteToBindRequest(quoteDefaults, idToken, endpointURL) {
+  const URL = `${endpointURL}/svc`;
   // create quote
-  const { result: quote } = await createQuoteRequest(idToken, endpointURL);
+  const { result: quote } = await createQuoteRequest(idToken, URL);
   // update quote with defaults passed in to finish a quote
-  await updateQuoteRequest(
-    { ...quote, ...quoteDefaults },
-    idToken,
-    endpointURL
-  );
+  await updateQuoteRequest({ ...quote, ...quoteDefaults }, idToken, URL);
   // verify quote
-  await verifyQuoteRequest(quote.quoteNumber, idToken, endpointURL);
+  await verifyQuoteRequest(quote.quoteNumber, idToken, URL);
   // send to docusign
-  await sendApplicationRequest(quote.quoteNumber, idToken, endpointURL);
+  await sendApplicationRequest(quote.quoteNumber, idToken, URL);
   // wait for docusign to do some things on the backend before its ready to bind
   await new Promise(resolve => setTimeout(resolve, 15000));
   // force a policy to bind
-  const result = await bindPolicyRequest(
-    quote.quoteNumber,
-    idToken,
-    endpointURL
-  );
+  const result = await bindPolicyRequest(quote.quoteNumber, idToken, URL);
   return result;
 }

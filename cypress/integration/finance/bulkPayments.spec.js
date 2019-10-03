@@ -13,7 +13,7 @@ describe('Bulk Payments Test', () => {
     setRouteAliases();
 
     idToken = localStorage.getItem('id_token');
-    endpointURL = Cypress.env('SVC_URL');
+    endpointURL = Cypress.env('API_URL');
 
     cy.task('log', 'endpointURL');
     cy.task('log', endpointURL);
