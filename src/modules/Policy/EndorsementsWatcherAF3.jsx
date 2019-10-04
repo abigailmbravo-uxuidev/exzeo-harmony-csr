@@ -54,6 +54,23 @@ const EndorsementsWatcherAF3 = ({ formValues }) => {
                 }
               }}
             </OnChangeListener>
+
+            <OnChangeListener name="coverageLimits.building.value">
+              {value => {
+                if (
+                  Math.ceil(
+                    value / 4 >
+                      (_get(
+                        formValues,
+                        'coverageLimits.personalProperty.value',
+                        0
+                      ) || 0)
+                  )
+                ) {
+                  onChange(false);
+                }
+              }}
+            </OnChangeListener>
           </React.Fragment>
         )}
       </Field>
