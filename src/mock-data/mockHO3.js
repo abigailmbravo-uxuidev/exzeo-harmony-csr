@@ -1004,7 +1004,8 @@ const mock = {
               data: {
                 component: 'number',
                 label: 'FBC Wind Speed',
-                size: '6'
+                size: '6',
+                validation: ['isNumbersOnly']
               },
               formData: {
                 path: 'property.windMitigation.floridaBuildingCodeWindSpeed',
@@ -1048,7 +1049,8 @@ const mock = {
               data: {
                 component: 'number',
                 label: 'FBC Wind Speed Design',
-                size: '6'
+                size: '6',
+                validation: ['isNumbersOnly']
               },
               formData: {
                 path:
