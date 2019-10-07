@@ -1,28 +1,15 @@
 import { setRouteAliases } from '../../helpers';
 import { quoteToBindRequest } from '../../helpers/requests';
-import quoteDefaults from '../../fixtures/quoteDefaults';
+
+let response;
 
 describe('CSR_policyEnd_happyPath_multiEnd1', () => {
-  let idToken;
-  let endpointURL;
-  let response;
-
   before('Login', () => cy.login());
+  beforeEach('Set aliases', () => setRouteAliases());
 
-  beforeEach('Set aliases', async () => {
-    setRouteAliases();
+  it('Bind a quote to a policy for Address 4131 Test Address, Sarasota, FL 00001 using default coverages on the quote', async () => {
+    response = await quoteToBindRequest();
 
-    idToken = localStorage.getItem('id_token');
-    endpointURL = Cypress.env('API_URL');
-
-    cy.task('log', 'endpointURL');
-    cy.task('log', endpointURL);
-    cy.task('log', 'cookie.value');
-    cy.task('log', idToken);
-    response = await quoteToBindRequest(quoteDefaults, idToken, endpointURL);
-  });
-
-  it('Bind a quote to a policy for Address 4131 Test Address, Sarasota, FL 00001 using default coverages on the quote', () => {
     cy.visit(`/`);
     cy.task('log', 'Search Policy and open')
       .findDataTag('searchType')
@@ -39,7 +26,7 @@ describe('CSR_policyEnd_happyPath_multiEnd1', () => {
         cy.goToNav('endorsements');
 
         cy.task('log', 'Filling out Endorsements')
-
+          .viewport(1280, 720)
           .findDataTag('coverageLimits.dwelling.value')
           .type(`{selectall}{backspace}${400000}`)
           .findDataTag('coverageLimits.personalProperty.value')

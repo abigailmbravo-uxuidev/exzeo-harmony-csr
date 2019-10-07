@@ -3,25 +3,14 @@ import { quoteToBindRequest } from '../../helpers/requests';
 import quoteDefaults from '../../fixtures/quoteDefaults';
 
 describe('Bulk Payments Test', () => {
-  let idToken;
-  let endpointURL;
   let response;
 
   before('Login', () => cy.login());
+  beforeEach('Set aliases', () => setRouteAliases());
 
-  beforeEach('Set aliases', async () => {
-    setRouteAliases();
+  it('Apply Payment', async () => {
+    response = await quoteToBindRequest();
 
-    idToken = localStorage.getItem('id_token');
-    endpointURL = Cypress.env('API_URL');
-
-    cy.task('log', 'endpointURL');
-    cy.task('log', endpointURL);
-    cy.task('log', 'cookie.value');
-    cy.task('log', idToken);
-    response = await quoteToBindRequest(quoteDefaults, idToken, endpointURL);
-  });
-  it('Apply Payment', () => {
     cy.task('log', 'bindPolicyRequest');
     cy.task('log', response.result.transaction.policyNumber);
     cy.visit(`/`);
