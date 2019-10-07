@@ -224,10 +224,14 @@ const mock = {
               path: 'property.protectionClass',
               dependencies: [],
               data: {
-                component: 'text',
+                component: 'number',
                 label: 'Protection Class',
-                size: '3',
-                disabled: true
+                validation: [
+                  'isNumbersOnly',
+                  'isProtectionClassRange',
+                  'isRequired'
+                ],
+                size: '3'
               },
               formData: {},
               children: []
@@ -269,7 +273,6 @@ const mock = {
                 component: 'select',
                 label: 'Construction',
                 size: '3',
-                disabled: true,
                 dataSource: [
                   {
                     label: 'Masonry',

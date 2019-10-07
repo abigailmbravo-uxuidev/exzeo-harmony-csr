@@ -953,6 +953,15 @@ const mock = {
                           items: [
                             {
                               format: 'currency',
+                              path: 'coverageLimits.increasedCompliance.value'
+                            }
+                          ],
+                          label: 'Increased Cost of Compliance Limit'
+                        },
+                        {
+                          items: [
+                            {
+                              format: 'currency',
                               path: 'coverageLimits.lossOfUse.amount'
                             }
                           ],

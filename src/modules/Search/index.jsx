@@ -46,20 +46,39 @@ const SEARCH_FORMS = {
 
 export class SearchPage extends Component {
   state = {
-    advancedSearch: false,
     hasSearched: false,
     searchType: SEARCH_TYPES.policy,
     searchConfig: SEARCH_TYPES.policy,
     searchReady: false,
-    searchResults: initialSearchResults
+    searchResults: initialSearchResults,
+    answers: {}
   };
 
   componentDidMount() {
     this.setSearchConfig();
+    this.productAnswers = this.getProducts();
   }
 
   componentWillUnmount() {
     this.props.resetSearch();
+  }
+
+  getProducts() {
+    const {
+      userProfile: { resources = [] }
+    } = this.props;
+
+    return resources
+      .filter(
+        res =>
+          res.uri.includes('QuoteData') &&
+          res.right === 'INSERT' &&
+          !res.conditions
+      )
+      .map(res => {
+        const { 2: state } = res.uri.split(':');
+        return { answer: state, label: state };
+      });
   }
 
   setHasSearched = hasSearched => {
@@ -95,15 +114,9 @@ export class SearchPage extends Component {
       searchType,
       searchConfig: searchType,
       hasSearched: false,
-      advancedSearch: false,
       searchResults: initialSearchResults
     });
     this.props.resetSearch();
-  };
-
-  toggleAdvancedSearch = () => {
-    const { advancedSearch } = this.state;
-    this.setState({ advancedSearch: !advancedSearch });
   };
 
   setInitialValues = (searchType, searchConfig) => {
@@ -137,18 +150,9 @@ export class SearchPage extends Component {
   };
 
   render() {
-    const {
-      agencies,
-      clearAppError,
-      getAgencies,
-      toggleLoading,
-      userProfile: {
-        profile: { beta }
-      }
-    } = this.props;
+    const { agencies, clearAppError, getAgencies, toggleLoading } = this.props;
 
     const {
-      advancedSearch,
       hasSearched,
       searchConfig,
       searchReady,
@@ -160,10 +164,9 @@ export class SearchPage extends Component {
 
     return (
       <React.Fragment>
-        <div className={advancedSearch ? 'policy-advanced search' : 'search'}>
+        <div className="search">
           {searchReady && (
             <SearchBar
-              advancedSearch={advancedSearch}
               changeSearchType={this.changeSearchType}
               initialValues={this.setInitialValues(searchType, searchConfig)}
               onSubmitSuccess={() => this.setHasSearched(true)}
@@ -176,23 +179,18 @@ export class SearchPage extends Component {
               currentPage={searchResults.currentPage}
               render={({ changeSearchType, handlePagination, formProps }) => (
                 <SearchForm
-                  advancedSearch={advancedSearch}
-                  beta={beta}
                   changeSearchType={changeSearchType}
                   searchTypeOptions={SEARCH_CONFIG[searchConfig].searchOptions}
                   handlePagination={handlePagination}
                   hasSearched={hasSearched}
-                  toggleAdvancedSearch={this.toggleAdvancedSearch}
+                  productAnswers={this.productAnswers}
                   {...formProps}
                 />
               )}
             />
           )}
         </div>
-        <main
-          role="document"
-          className={advancedSearch ? 'policy-advanced' : ''}
-        >
+        <main role="document">
           <div className="content-wrapper">
             <div className="dashboard" role="article">
               <div className="route">

@@ -59,10 +59,7 @@ export class SearchResults extends Component {
         {hasSearched &&
           searchType === SEARCH_TYPES.newQuote &&
           !!results.length && (
-            <ul
-              id="property-search-results"
-              className="results result-cards property-search-results"
-            >
+            <div className="quote-list">
               {!!results.length &&
                 results.map(address => (
                   <AddressCard
@@ -78,7 +75,7 @@ export class SearchResults extends Component {
                   />
                 ))}
               <AddressTip />
-            </ul>
+            </div>
           )}
 
         {hasSearched && searchType === SEARCH_TYPES.quote && !!results.length && (

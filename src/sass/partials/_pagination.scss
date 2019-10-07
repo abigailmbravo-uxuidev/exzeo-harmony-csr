@@ -1,133 +1,138 @@
 .search {
   #SearchBar {
-    form {
-      .pagination-wrapper {
-        position: fixed;
-        bottom: 0;
-        left: calc(50% - 8rem);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        width: 16rem;
-        margin: 0 0 ($padding);
-        padding: 0;
-        opacity: 0.8;
-        border-radius: $padding * 2;
-        box-shadow: 0 0 4px rgba($black, 0.25);
-        @include transition(all 0.2s ease-in-out);
-
-        &:hover {
-          opacity: 1;
-        }
-
-        > button.multi-input {
-          z-index: 5;
-          width: 2rem;
-          height: 2rem;
-          padding: 0;
-          @include button-variant($white, $warm-gray-04, $warm-gray-04);
-
-          &:hover {
-            @include button-variant($white, $warm-gray-06, $warm-gray-06);
-          }
-
-          &:disabled,
-          &[disabled='disabled'] {
-            &:hover {
-              @include button-variant($white, $warm-gray-04, $warm-gray-04);
-            }
-          }
-
-          &:first-child {
-            border-radius: 50% 0 0 50%;
-          }
-
-          &:last-child {
-            border-radius: 0 50% 50% 0;
-          }
-
-          &.action-btn {
-            padding: ($padding/2) $padding;
-          }
-        }
-
-        .pagination-count {
-          z-index: 1;
+    > form {
+      .search-input-wrapper {
+        .pagination-wrapper {
+          position: fixed;
+          bottom: 0;
+          left: calc(50% - 8rem);
           display: flex;
           align-items: center;
           justify-content: center;
-          width: 12rem;
-          height: 2rem;
-          background: $white;
+          margin: 0 0 ($padding);
+          padding: 0;
+          width: 16rem;
+          border-radius: $padding * 2;
+          box-shadow: 0 0 4px rgba($black, 0.25);
+          opacity: 0.8;
 
-          .pageNumber {
-            align-items: center;
-            flex-direction: row;
-            width: auto;
-            margin-bottom: 0;
+          @include transition(all 0.2s ease-in-out);
+
+          &:hover {
+            opacity: 1;
+          }
+
+          > button.multi-input {
+            z-index: 5;
+            margin: 0;
             padding: 0;
+            width: 2rem;
+            height: 2rem;
 
-            label {
-              margin-bottom: 0;
-              padding: 0;
-              color: $warm-gray-14;
-              font-size: $font-size-sm;
-              font-weight: $font-weight-normal;
+            @include button-variant($white, $warm-gray-04, $warm-gray-04);
+
+            &:hover {
+              @include button-variant($white, $warm-gray-06, $warm-gray-06);
             }
 
-            input {
-              flex-basis: 4rem;
-              flex-grow: 0;
-              flex-shrink: 0;
-              max-width: 4rem;
-              height: auto;
-              padding: $padding/2;
-              text-align: center;
-              color: $warm-gray-14;
-              border-width: 0;
-              font-size: $font-size-sm;
-
-              &[disabled] {
-                background: $white;
+            &:disabled,
+            &[disabled='disabled'] {
+              &:hover {
+                @include button-variant($white, $warm-gray-04, $warm-gray-04);
               }
             }
-          }
 
-          .pagination-operand {
-            color: $warm-gray-14;
-            font-size: $font-size-sm;
-            font-weight: $font-weight-normal;
-          }
-
-          .totalPages {
-            align-items: center;
-            flex-direction: row;
-            width: auto;
-            margin-bottom: 0;
-            padding: 0;
-
-            label {
-              margin-bottom: 0;
-              padding: 0;
-              font-size: $font-size-sm;
-              font-weight: $font-weight-normal;
+            &:first-child {
+              border-radius: 50% 0 0 50%;
             }
 
-            input,
-            input[readonly] {
-              flex-basis: 4rem;
-              flex-grow: 0;
-              flex-shrink: 0;
-              max-width: 4rem;
-              height: auto;
-              padding: ($padding/2) 0 ($padding/2) ($padding/2);
-              text-align: center;
-              color: $warm-gray-14;
-              border-width: 0;
-              font-size: $font-size-sm;
+            &:last-child {
+              border-radius: 0 50% 50% 0;
+            }
 
-              &[disabled] {
-                background: $white;
+            &.action-btn {
+              padding: ($padding/2) $padding;
+            }
+          }
+
+          .pagination-count {
+            z-index: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 12rem;
+            height: 2rem;
+            background: $white;
+
+            .pageNumber {
+              align-items: center;
+              flex-direction: row;
+              margin-bottom: 0;
+              padding: 0;
+              width: auto;
+
+              label {
+                margin-bottom: 0;
+                padding: 0;
+                color: $warm-gray-14;
+                font-weight: $font-weight-normal;
+                font-size: $font-size-sm;
+              }
+
+              input {
+                flex-basis: 4rem;
+                flex-grow: 0;
+                flex-shrink: 0;
+                padding: $padding/2;
+                max-width: 4rem;
+                height: auto;
+                border-width: 0;
+                color: $warm-gray-14;
+                text-align: center;
+                font-size: $font-size-sm;
+
+                &[disabled] {
+                  background: $white;
+                }
+              }
+            }
+
+            .pagination-operand {
+              color: $warm-gray-14;
+              font-weight: $font-weight-normal;
+              font-size: $font-size-sm;
+            }
+
+            .totalPages {
+              align-items: center;
+              flex-direction: row;
+              margin-bottom: 0;
+              padding: 0;
+              width: auto;
+
+              label {
+                margin-bottom: 0;
+                padding: 0;
+                font-weight: $font-weight-normal;
+                font-size: $font-size-sm;
+              }
+
+              input,
+              input[readonly] {
+                flex-basis: 4rem;
+                flex-grow: 0;
+                flex-shrink: 0;
+                padding: ($padding/2) 0 ($padding/2) ($padding/2);
+                max-width: 4rem;
+                height: auto;
+                border-width: 0;
+                color: $warm-gray-14;
+                text-align: center;
+                font-size: $font-size-sm;
+
+                &[disabled] {
+                  background: $white;
+                }
               }
             }
           }
