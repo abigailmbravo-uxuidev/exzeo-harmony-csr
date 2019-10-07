@@ -66,7 +66,7 @@ describe('CSR_policyEnd_happyPath_multiEnd1', () => {
           .findDataTag('property.protectionClass')
           .select('7')
 
-          .findDataTag('policyHolders[0].emailAddress_wrapper')
+          .findDataTag('policyHolders[0].primaryPhoneNumber')
           .scrollIntoView()
           .should('be.visible')
 
