@@ -1,7 +1,7 @@
 import React from 'react';
 import { PRODUCT_DESCRIPTION } from '../../utilities/entityDetails';
 
-const SendApplicationBaseScript = ({ initialValues }) => {
+const SendApplicationBaseScript = ({ initialValues, showInspection }) => {
   return (
     <React.Fragment>
       <p className="script margin bottom">
@@ -36,12 +36,14 @@ const SendApplicationBaseScript = ({ initialValues }) => {
         PLEASE NOTE: All signatures must be completed within 10 days, or the
         application will expire.
       </p>
-      <p className="script margin bottom">
-        All properties are inspected within 30 days of the effective date. One
-        of our representatives will be in contact with you to schedule it.
-        Please plan to have someone present at the inspection as the inspector
-        will need to enter the home.
-      </p>
+      {showInspection && (
+        <p className="script margin bottom">
+          All properties are inspected within 30 days of the effective date. One
+          of our representatives will be in contact with you to schedule it.
+          Please plan to have someone present at the inspection as the inspector
+          will need to enter the home.
+        </p>
+      )}
       <p className="scriptInfo margin bottom">
         Click &ldquo;SEND&rdquo; below to generate the{' '}
         {PRODUCT_DESCRIPTION[initialValues.product]} Application. Once you click

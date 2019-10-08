@@ -20,7 +20,10 @@ const SendApplicationForm = ({ children, handleSubmit, initialValues }) => {
             {initialValues.product === 'HO3' && (
               <SendApplicationHO3Script initialValues={initialValues} />
             )}
-            <SendApplicationBaseScript initialValues={initialValues} />
+            <SendApplicationBaseScript
+              initialValues={initialValues}
+              showInspection={initialValues.product === 'HO3'}
+            />
           </div>
           {children({ submitting, pristine })}
         </form>
