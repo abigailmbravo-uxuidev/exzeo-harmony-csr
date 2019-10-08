@@ -30,7 +30,7 @@ describe('CSR_policyEnd_happyPath_multiEnd1', () => {
           .findDataTag('coverageLimits.dwelling.value')
           .type(`{selectall}{backspace}${400000}`)
           .findDataTag('coverageLimits.personalProperty.value')
-          .select('50')
+          .select('50', { force: true })
 
           .findDataTag('property.burglarAlarm_true')
           .click({ force: true })
@@ -43,37 +43,37 @@ describe('CSR_policyEnd_happyPath_multiEnd1', () => {
           .should('be.visible')
 
           .findDataTag('coverageOptions.sinkholePerilCoverage.answer')
-          .select('false')
+          .select('false', { force: true })
 
           .findDataTag('property.windMitigation.roofCovering_wrapper')
           .scrollIntoView()
           .should('be.visible')
 
           .findDataTag('property.windMitigation.roofCovering')
-          .select('FBC')
+          .select('FBC', { force: true })
 
           .findDataTag('property.windMitigation.roofGeometry_wrapper')
           .scrollIntoView()
           .should('be.visible')
 
           .findDataTag('property.windMitigation.roofGeometry')
-          .select('Hip')
+          .select('Hip', { force: true })
 
           .findDataTag('property.protectionClass_wrapper')
           .scrollIntoView()
           .should('be.visible')
 
           .findDataTag('property.protectionClass')
-          .select('7')
+          .select('7', { force: true })
 
           .findDataTag('policyHolders[0].primaryPhoneNumber')
           .scrollIntoView()
           .should('be.visible')
 
           .findDataTag('policyHolders[0].primaryPhoneNumber')
-          .type(`{selectall}{backspace}${'2224445555'}`)
+          .type(`{selectall}{backspace}${'2224445555'}`, { force: true })
           .findDataTag('policyHolders[0].secondaryPhoneNumber')
-          .type(`{selectall}{backspace}${'3337778888'}`)
+          .type(`{selectall}{backspace}${'3337778888'}`, { force: true })
 
           .get('#root')
           .scrollTo('right')
@@ -83,19 +83,19 @@ describe('CSR_policyEnd_happyPath_multiEnd1', () => {
           .should('be.visible')
 
           .findDataTag('policyHolders[1].firstName')
-          .type(`{selectall}{backspace}${'Batman 2'}`)
+          .type(`{selectall}{backspace}${'Batman 2'}`, { force: true })
 
           .findDataTag('policyHolders[1].lastName')
-          .type(`{selectall}{backspace}${'Robin 2'}`)
+          .type(`{selectall}{backspace}${'Robin 2'}`, { force: true })
 
           .findDataTag('policyHolders[1].emailAddress')
-          .type(`{selectall}{backspace}${'exzeoqa@exzeo.com'}`)
+          .type(`{selectall}{backspace}${'exzeoqa@exzeo.com'}`, { force: true })
 
           .findDataTag('policyHolders[1].primaryPhoneNumber')
-          .type(`{selectall}{backspace}${'9994445555'}`)
+          .type(`{selectall}{backspace}${'9994445555'}`, { force: true })
 
           .findDataTag('policyHolders[1].secondaryPhoneNumber')
-          .type(`{selectall}{backspace}${'3337776543'}`)
+          .type(`{selectall}{backspace}${'3337776543'}`, { force: true })
 
           .get('#root')
           .scrollTo('left')
@@ -105,13 +105,13 @@ describe('CSR_policyEnd_happyPath_multiEnd1', () => {
           .should('be.visible')
 
           .findDataTag('policyHolderMailingAddress.address2')
-          .type(`{selectall}{backspace}${'APT 101'}`)
+          .type(`{selectall}{backspace}${'APT 101'}`, { force: true })
 
           .findDataTag('property.physicalAddress.city_wrapper')
           .scrollIntoView()
           .should('be.visible')
           .findDataTag('property.physicalAddress.address2')
-          .type(`{selectall}{backspace}${'APT 101'}`)
+          .type(`{selectall}{backspace}${'APT 101'}`, { force: true })
 
           .findDataTag('modal-submit')
           .click({ force: true })
