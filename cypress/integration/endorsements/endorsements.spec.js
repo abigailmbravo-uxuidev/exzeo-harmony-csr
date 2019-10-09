@@ -9,7 +9,7 @@ import {
 } from '../../helpers';
 import { bindPolicyRequest } from './bindPolicyRequest';
 
-describe('CSR_policyEnd_happyPath_multiEnd1', () => {
+describe('Endorsement Happy Path', () => {
   before('Login', () => cy.login());
   beforeEach('Set aliases', () => setRouteAliases());
 
