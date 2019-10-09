@@ -39,7 +39,7 @@ const sortByOptions = [
 ];
 
 const PolicySearch = ({
-  agencyList,
+  beta,
   submitting,
   questions,
   handlePagination,

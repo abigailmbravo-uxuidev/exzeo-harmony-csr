@@ -9,7 +9,7 @@ import {
 } from '../../helpers';
 import { bindPolicyRequest } from './bindPolicyRequest';
 
-describe('CSR_policyEnd_happyPath_multiEnd1', () => {
+describe('Endorsement Happy Path', () => {
   before('Login', () => cy.login());
   beforeEach('Set aliases', () => setRouteAliases());
 
@@ -25,17 +25,10 @@ describe('CSR_policyEnd_happyPath_multiEnd1', () => {
     cy.viewport(1024, 768);
     cy.get('@sendApplication').then(function(xhr) {
       const quoteNumber = xhr.request.body.data.quoteNumber;
-      cy.task('log', 'quoteNumber');
-      cy.task('log', quoteNumber);
-      const endpointURL = Cypress.env('SVC_URL');
-      cy.task('log', 'endpointURL');
-      cy.task('log', endpointURL);
-      cy.task('log', 'cookie.value');
-      cy.task('log', idToken);
-      bindPolicyRequest(quoteNumber, idToken, endpointURL).then(response => {
-        cy.task('log', 'bindPolicyRequest');
-        cy.task('log', response.result.policyNumber);
 
+      const endpointURL = `${Cypress.env('API_URL')}/svc`;
+
+      bindPolicyRequest(quoteNumber, idToken, endpointURL).then(response => {
         //cy.visit(`/policy/${response.result.policyNumber}/endorsements`)
         cy.visit(`/`);
         cy.task('log', 'Search Policy and open')
@@ -260,19 +253,4 @@ describe('CSR_policyEnd_happyPath_multiEnd1', () => {
       });
     });
   });
-
-  //it('Test Endorsement Page', () => {
-  // cy.visit(`/policy/12-1019697-01/endorsements`);
-
-  // .findDisabledDataTag('endorsementAmount')
-  // .should('have.value', '-$ 211')
-  // .findDisabledDataTag('newCurrentPremium')
-  // .should('have.value', '$ 2,456')
-  // .findDisabledDataTag('newAnnualPremium')
-  // .should('have.value', '$ 2,456');
-
-  // .findDisabledDataTag('endorsementAmount').should('have.value', '$ 548')
-  // .findDisabledDataTag('newCurrentPremium').should('have.value', '$ 2,233')
-  // .findDisabledDataTag('newAnnualPremium').should('have.value', '$ 1,685')
-  //});
 });
