@@ -9,7 +9,6 @@ describe('CSR_policyEnd_happyPath_multiEnd1', () => {
 
   it('Bind a quote to a policy for Address 4131 Test Address, Sarasota, FL 00001 using default coverages on the quote', async () => {
     response = await quoteToBindRequest();
-
     cy.visit(`/`);
     cy.task('log', 'Search Policy and open')
       .findDataTag('searchType')
