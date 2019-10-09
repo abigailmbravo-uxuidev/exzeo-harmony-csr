@@ -1,6 +1,5 @@
 import { setRouteAliases } from '../../helpers';
 import { quoteToBindRequest } from '../../helpers/requests';
-import quoteDefaults from '../../fixtures/quoteDefaults';
 
 describe('Bulk Payments Test', () => {
   let response;
@@ -20,7 +19,8 @@ describe('Bulk Payments Test', () => {
     cy.get('h3.title')
       .should('contain', 'Bulk Payments')
 
-      .findDisabledDataTag('startButton')
+      .findAnyDataTag('startButton')
+      .should('be.disabled')
 
       .findDataTag('cashDate')
       .type('2019-11-20')

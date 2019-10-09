@@ -88,23 +88,21 @@ export async function quoteToBindRequest() {
   const idToken = localStorage.getItem('id_token');
   const endpointURL = Cypress.env('API_URL');
 
-  cy.task('log', 'endpointURL');
-  cy.task('log', endpointURL);
-  cy.task('log', 'idToken');
-  cy.task('log', idToken);
-
   const URL = `${endpointURL}/svc`;
-  // create quote
+
+  cy.task('log', 'Create Quote');
   const { result: quote } = await createQuoteRequest(idToken, URL);
-  // update quote with defaults passed in to finish a quote
+  cy.task('log', 'Update Quote');
   await updateQuoteRequest({ ...quote, ...quoteDefaults }, idToken, URL);
-  // verify quote
+  cy.task('log', 'Verify Quote');
   await verifyQuoteRequest(quote.quoteNumber, idToken, URL);
-  // send to docusign
+  cy.task('log', 'Send Application');
   await sendApplicationRequest(quote.quoteNumber, idToken, URL);
   // wait for docusign to do some things on the backend before its ready to bind
   await new Promise(resolve => setTimeout(resolve, 20000));
   // force a policy to bind
+  cy.task('log', 'Quote Number');
+  cy.task('log', quote.quoteNumber);
   const result = await bindPolicyRequest(quote.quoteNumber, idToken, URL);
   return result;
 }

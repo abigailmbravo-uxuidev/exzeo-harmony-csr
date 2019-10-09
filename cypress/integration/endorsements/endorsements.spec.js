@@ -3,7 +3,7 @@ import { quoteToBindRequest } from '../../helpers/requests';
 
 let response;
 
-describe('CSR_policyEnd_happyPath_multiEnd1', () => {
+describe('Endorsements Happy Path', () => {
   before('Login', () => cy.login());
   beforeEach('Set aliases', () => setRouteAliases());
 
@@ -116,11 +116,11 @@ describe('CSR_policyEnd_happyPath_multiEnd1', () => {
           .click({ force: true })
           .wait('@rateEndorsement')
 
-          .findDisabledDataTag('endorsementAmount')
+          .findAnyDataTag('endorsementAmount')
           .should('have.value', '-$ 211')
-          .findDisabledDataTag('newCurrentPremium')
+          .findAnyDataTag('newCurrentPremium')
           .should('have.value', '$ 2,456')
-          .findDisabledDataTag('newAnnualPremium')
+          .findAnyDataTag('newAnnualPremium')
           .should('have.value', '$ 2,456')
 
           .get('#root')
