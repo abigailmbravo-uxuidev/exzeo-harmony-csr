@@ -7,6 +7,11 @@ export const CANCELLATION_DATE = 'Cancellation Effective Date';
 export const EXPIRATION_DATE = 'Expiration Date';
 export const FINAL_PAYMENT_DATE = 'Final Payment Date';
 
+export const PRODUCT_DESCRIPTION = {
+  HO3: 'Homeowners',
+  AF3: 'Flood'
+};
+
 export const nonPaymentNoticePolicyStatus = [
   'Pending Voluntary Cancellation',
   'Pending Underwriting Cancellation',

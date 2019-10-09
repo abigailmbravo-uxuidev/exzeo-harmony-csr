@@ -531,7 +531,7 @@ const mock = {
                       path: 'deductibles.personalPropertyDeductible.value',
                       dependencies: [],
                       data: {
-                        component: 'selectInteger',
+                        component: 'currency',
                         label: 'Personal Property Deductible',
                         size: '12',
                         disabled: true,

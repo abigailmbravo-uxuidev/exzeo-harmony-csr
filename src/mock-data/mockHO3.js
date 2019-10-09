@@ -709,21 +709,6 @@ const mock = {
                       field: 'coverageLimits.personalProperty.value',
                       becomes: 0,
                       to: false
-                    },
-                    {
-                      field: 'coverageLimits.personalProperty.value',
-                      becomes: 25,
-                      to: true
-                    },
-                    {
-                      field: 'coverageLimits.personalProperty.value',
-                      becomes: 35,
-                      to: true
-                    },
-                    {
-                      field: 'coverageLimits.personalProperty.value',
-                      becomes: 50,
-                      to: true
                     }
                   ]
                 }
@@ -1019,7 +1004,8 @@ const mock = {
               data: {
                 component: 'number',
                 label: 'FBC Wind Speed',
-                size: '6'
+                size: '6',
+                validation: ['isNumbersOnly']
               },
               formData: {
                 path: 'property.windMitigation.floridaBuildingCodeWindSpeed',
@@ -1063,7 +1049,8 @@ const mock = {
               data: {
                 component: 'number',
                 label: 'FBC Wind Speed Design',
-                size: '6'
+                size: '6',
+                validation: ['isNumbersOnly']
               },
               formData: {
                 path:

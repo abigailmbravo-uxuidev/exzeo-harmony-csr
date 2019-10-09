@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import * as serviceRunner from '@exzeo/core-ui/src/@Harmony/Domain/Api/serviceRunner';
 
-import { mergeNotes, removeTerm } from './utilities';
+import { mergeNotes } from './utilities';
+import { removeTerm } from '../../utilities/format';
 
 export const useFetchNotes = (numbers, numberType, notesSynced) => {
   const [notes, setNotes] = useState([]);
