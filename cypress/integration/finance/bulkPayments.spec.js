@@ -19,8 +19,8 @@ describe('Bulk Payments Test', () => {
     cy.get('h3.title')
       .should('contain', 'Bulk Payments')
 
-      .findAnyDataTag('startButton')
-      .should('be.disabled')
+      // .findAnyDataTag('startButton')
+      // .should('be.disabled')
 
       .findDataTag('cashDate')
       .type('2019-11-20')
