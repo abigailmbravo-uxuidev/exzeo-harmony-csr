@@ -1,16 +1,18 @@
+import axios from 'axios';
 import quoteDefaults from '../fixtures/quoteDefaults';
 
 export async function serviceRequest(data, idToken, endpointURL) {
-  const result = await fetch(endpointURL, {
+  const response = await axios({
+    url: endpointURL,
     method: 'POST',
-    body: data,
+    data,
     headers: {
       'Content-Type': 'application/json',
       authorization: 'bearer ' + idToken
     }
   });
 
-  return result.json();
+  return response.data;
 }
 
 export async function bindPolicyRequest(quoteNumber, idToken, endpointURL) {
