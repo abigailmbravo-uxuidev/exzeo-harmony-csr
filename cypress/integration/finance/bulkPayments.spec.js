@@ -1,6 +1,5 @@
 import { setRouteAliases } from '../../helpers';
 import { quoteToBindRequest } from '../../helpers/requests';
-import quoteDefaults from '../../fixtures/quoteDefaults';
 
 describe('Bulk Payments Test', () => {
   let response;
@@ -11,16 +10,15 @@ describe('Bulk Payments Test', () => {
   it('Apply Payment', async () => {
     response = await quoteToBindRequest();
 
-    cy.task('log', 'bindPolicyRequest');
-    cy.task('log', response.result.transaction.policyNumber);
     cy.visit(`/`);
-    cy.findDataTag('bulk-payments-link').click();
-
-    cy.task('log', 'Bulk Payments Batch Form');
-    cy.get('h3.title')
+    cy.findDataTag('bulk-payments-link')
+      .click()
+      .task('log', 'Bulk Payments Batch Form')
+      .get('h3.title')
       .should('contain', 'Bulk Payments')
 
-      .findDisabledDataTag('startButton')
+      // .findAnyDataTag('startButton')
+      // .should('be.disabled')
 
       .findDataTag('cashDate')
       .type('2019-11-20')
@@ -61,12 +59,12 @@ describe('Bulk Payments Test', () => {
       .type(`{selectall}{backspace}${500}`)
       .findDataTag('payment-form-submit')
       .click({ force: true })
-      .wait('@postPaymentTransaction')
+      .wait('@postPaymentTransaction');
 
-      .findDataTag('download-payments')
-      .click({ force: true })
+    // .findDataTag('download-payments')
+    // .click({ force: true })
 
-      .findDataTag('stopButton')
-      .click({ force: true });
+    // .findDataTag('stopButton')
+    // .click({ force: true });
   });
 });

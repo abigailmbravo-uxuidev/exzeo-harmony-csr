@@ -15,9 +15,9 @@ Cypress.Commands.add('findDataTag', (name, { timeout = 15000, ...rest } = {}) =>
  * @returns {Object} DOM element(s) found.
  */
 Cypress.Commands.add(
-  'findDisabledDataTag',
+  'findAnyDataTag',
   (name, { timeout = 15000, ...rest } = {}) =>
-    cy.get(`[data-test="${name}"]:disabled`, { timeout, ...rest })
+    cy.get(`[data-test="${name}"]`, { timeout, ...rest })
 );
 
 /**
