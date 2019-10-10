@@ -14,7 +14,8 @@ export async function serviceRequest(data, idToken, endpointURL) {
 }
 
 export async function bindPolicyRequest(quoteNumber, idToken, endpointURL) {
-  var data = JSON.stringify({
+  cy.task('log', 'Bind Policy Request');
+  const data = JSON.stringify({
     exchangeName: 'harmony',
     routingKey: 'harmony.policy.bindPolicy',
     data: {
@@ -27,7 +28,7 @@ export async function bindPolicyRequest(quoteNumber, idToken, endpointURL) {
 }
 
 export async function updateQuoteRequest(quote, idToken, endpointURL) {
-  var data = JSON.stringify({
+  const data = JSON.stringify({
     exchangeName: 'harmony',
     routingKey: 'harmony.quote.updateQuote',
     data: {
@@ -40,7 +41,7 @@ export async function updateQuoteRequest(quote, idToken, endpointURL) {
 }
 
 export async function createQuoteRequest(idToken, endpointURL) {
-  var data = JSON.stringify({
+  const data = JSON.stringify({
     exchangeName: 'harmony',
     routingKey: 'harmony.quote.createQuote',
     data: {
@@ -56,7 +57,7 @@ export async function createQuoteRequest(idToken, endpointURL) {
 }
 
 export async function verifyQuoteRequest(quoteNumber, idToken, endpointURL) {
-  var data = JSON.stringify({
+  const data = JSON.stringify({
     exchangeName: 'harmony',
     routingKey: 'harmony.quote.verifyQuote',
     data: {
@@ -72,7 +73,7 @@ export async function sendApplicationRequest(
   idToken,
   endpointURL
 ) {
-  var data = JSON.stringify({
+  const data = JSON.stringify({
     exchangeName: 'harmony',
     routingKey: 'harmony.quote.sendApplication',
     data: {
@@ -101,8 +102,6 @@ export async function quoteToBindRequest() {
   // wait for docusign to do some things on the backend before its ready to bind
   await new Promise(resolve => setTimeout(resolve, 20000));
   // force a policy to bind
-  cy.task('log', 'Quote Number');
-  cy.task('log', quote.quoteNumber);
   const result = await bindPolicyRequest(quote.quoteNumber, idToken, URL);
   return result;
 }

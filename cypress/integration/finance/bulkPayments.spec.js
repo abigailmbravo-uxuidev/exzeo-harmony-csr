@@ -10,13 +10,11 @@ describe('Bulk Payments Test', () => {
   it('Apply Payment', async () => {
     response = await quoteToBindRequest();
 
-    cy.task('log', 'bindPolicyRequest');
-    cy.task('log', response.result.transaction.policyNumber);
     cy.visit(`/`);
-    cy.findDataTag('bulk-payments-link').click();
-
-    cy.task('log', 'Bulk Payments Batch Form');
-    cy.get('h3.title')
+    cy.findDataTag('bulk-payments-link')
+      .click()
+      .task('log', 'Bulk Payments Batch Form')
+      .get('h3.title')
       .should('contain', 'Bulk Payments')
 
       // .findAnyDataTag('startButton')
