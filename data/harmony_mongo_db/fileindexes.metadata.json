@@ -1,1 +1,0 @@
-{"options":{},"indexes":[{"v":2,"key":{"_id":1},"name":"_id_","ns":"harmony.fileindexes"},{"v":2,"unique":true,"key":{"Version":1,"FileUrl":1,"ReferenceNumber":1,"FileName":1},"name":"Version_1_FileUrl_1_ReferenceNumber_1_FileName_1","ns":"harmony.fileindexes","background":true}]}
