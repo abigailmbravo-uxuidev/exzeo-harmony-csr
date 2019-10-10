@@ -59,12 +59,12 @@ describe('Bulk Payments Test', () => {
       .type(`{selectall}{backspace}${500}`)
       .findDataTag('payment-form-submit')
       .click({ force: true })
-      .wait('@postPaymentTransaction')
+      .wait('@postPaymentTransaction');
 
-      .findDataTag('download-payments')
-      .click({ force: true })
+    // .findDataTag('download-payments')
+    // .click({ force: true })
 
-      .findDataTag('stopButton')
-      .click({ force: true });
+    // .findDataTag('stopButton')
+    // .click({ force: true });
   });
 });
