@@ -447,14 +447,7 @@ const mock = {
                       { label: 'Yes', answer: true }
                     ],
                     extendedProperties: {
-                      subscribe: true,
-                      watchFields: [
-                        {
-                          field: 'coverageLimits.personalProperty.value',
-                          becomes: 0,
-                          to: false
-                        }
-                      ]
+                      subscribe: true
                     }
                   },
                   formData: {
@@ -565,6 +558,19 @@ const mock = {
               ]
             }
           ]
+        },
+        {
+          id: 'b963aac4-936d-4290-9756-0a41819dvv6h',
+          type: '$CUSTOM',
+          dependencies: [],
+          data: {
+            component: '$COVERAGE_WATCHER_AF3',
+            extendedProperties: {
+              subscribe: true
+            }
+          },
+          formData: {},
+          children: []
         }
       ]
     },
