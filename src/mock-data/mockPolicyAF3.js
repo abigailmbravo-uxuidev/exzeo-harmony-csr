@@ -12,7 +12,6 @@ const mock = {
       { value: 'mailingAddress', component: 'Section' },
       { value: 'propertyAddress', component: 'Section' },
       { value: 'county', label: 'Property County' },
-      { value: 'floodZone' },
       { value: 'effectiveDate' },
       { value: 'cancellation' },
       { value: 'finalPayment', label: 'Final Payment' },
@@ -409,26 +408,28 @@ const mock = {
                           items: [{ format: '', path: 'property.yearBuilt' }]
                         },
                         {
-                          label: 'Flood Zone',
-                          items: [{ format: '', path: 'property.floodZone' }]
-                        },
-                        {
                           label: 'Residence Type',
                           items: [
                             { format: '', path: 'property.residenceType' }
                           ]
+                        },
+                        {
+                          label: 'Flood Zone',
+                          items: [{ format: '', path: 'property.floodZone' }]
+                        },
+                        {
+                          label: 'FEMA Flood Zone',
+                          items: [
+                            { format: '', path: 'property.FEMAfloodZone' }
+                          ]
+                        },
+                        {
+                          label: 'IGD ID',
+                          items: [{ format: '', path: 'property.id' }]
                         }
                       ]
                     }
                   },
-                  formData: {},
-                  children: []
-                },
-                {
-                  id: 21,
-                  type: '$APPRAISER',
-                  dependencies: [],
-                  data: {},
                   formData: {},
                   children: []
                 },
@@ -447,18 +448,18 @@ const mock = {
                           ]
                         },
                         {
-                          label: 'Base Flood Elevation',
+                          label: 'Square Footage',
+                          items: [{ format: '', path: 'property.squareFeet' }]
+                        },
+                        {
+                          label: 'BFE Indicator',
                           items: [
                             { format: '', path: 'property.baseFloodElevation' }
                           ]
                         },
                         {
-                          label: 'Square Footage',
-                          items: [{ format: '', path: 'property.squareFeet' }]
-                        },
-                        {
-                          label: 'IGD ID',
-                          items: [{ format: '', path: 'property.id' }]
+                          label: 'Territory',
+                          items: [{ format: '', path: 'property.territory' }]
                         }
                       ]
                     }
@@ -881,7 +882,7 @@ const mock = {
                       data: {
                         component: 'currency',
                         label: 'Building Limit',
-                        validation: ['isDwellingRange'],
+                        validation: ['isBuildingRange'],
                         extendedProperties: {
                           format: 'currency',
                           displayRange: true,
@@ -909,7 +910,7 @@ const mock = {
                       data: {
                         component: 'currency',
                         label: 'Personal Property Limit',
-                        validation: ['isDwellingRange'],
+                        validation: ['isPersonalPropertyRange'],
                         extendedProperties: {
                           format: 'currency',
                           displayRange: true,
@@ -919,7 +920,6 @@ const mock = {
                         }
                       },
                       formData: {
-                        path: 'coverageLimits.personalProperty.value',
                         type: 'integer',
                         required: true,
                         metaData: {
@@ -1044,9 +1044,11 @@ const mock = {
                         component: 'radio',
                         label: 'Personal Property Repl Cost',
                         segmented: true,
+                        disabled:
+                          '${Math.ceil((it.coverageLimits.building.value || 0) / 4) > (it.coverageLimits.personalProperty.value || 0)}',
                         extendedProperties: {
                           subscribe: true,
-                          output: 'initial'
+                          output: 'values'
                         }
                       },
                       formData: {
@@ -1182,10 +1184,11 @@ const mock = {
                       path: 'property.yearBuilt',
                       dependencies: [],
                       data: {
-                        component: 'text',
+                        component: 'number',
                         label: 'Year Home Built',
                         size: '12',
-                        validation: ['isNumbersOnly']
+                        validation: ['isNumbersOnly'],
+                        thousandSeparator: false
                       },
                       formData: {
                         path: 'property.yearBuilt',
@@ -1337,7 +1340,130 @@ const mock = {
                       ]
                     },
                     {
-                      id: '75f752a8-8f5e-4d81-b3f2-228a4462d7dd',
+                      id: '75f752a8-8f5e-4d81-b3f2-435435435dd',
+                      type: '$INPUT',
+                      path: 'property.territory',
+                      dependencies: [],
+                      data: {
+                        component: 'select',
+                        label: 'Territory',
+                        size: '12',
+                        dataSource: [
+                          { answer: '15000' },
+                          { answer: '25000' },
+                          { answer: '35000' },
+                          { answer: '45000' }
+                        ]
+                      },
+                      formData: {
+                        path: 'property.territory',
+                        required: true,
+                        metaData: {
+                          target:
+                            '${it._TEMP_INITIAL_VALUES.property.territory || " "}'
+                        }
+                      },
+                      children: []
+                    },
+                    {
+                      id: '75f752a8-44465678-4d81-b3f2-554654687444',
+                      type: '$INPUT',
+                      path: 'property.FEMAfloodZone',
+                      dependencies: [],
+                      data: {
+                        component: 'select',
+                        label: 'FEMA Flood Zone',
+                        size: '12',
+                        dataSource: [
+                          { answer: 'A' },
+                          { answer: 'A1' },
+                          { answer: 'A10' },
+                          { answer: 'A11' },
+                          { answer: 'A12' },
+                          { answer: 'A13' },
+                          { answer: 'A14' },
+                          { answer: 'A15' },
+                          { answer: 'A16' },
+                          { answer: 'A17' },
+                          { answer: 'A18' },
+                          { answer: 'A19' },
+                          { answer: 'A2' },
+                          { answer: 'A20' },
+                          { answer: 'A21' },
+                          { answer: 'A22' },
+                          { answer: 'A23' },
+                          { answer: 'A24' },
+                          { answer: 'A25' },
+                          { answer: 'A26' },
+                          { answer: 'A27' },
+                          { answer: 'A28' },
+                          { answer: 'A29' },
+                          { answer: 'A3' },
+                          { answer: 'A30' },
+                          { answer: 'A4' },
+                          { answer: 'A5' },
+                          { answer: 'A6' },
+                          { answer: 'A7' },
+                          { answer: 'A8' },
+                          { answer: 'A9' },
+                          { answer: 'A99' },
+                          { answer: 'AE' },
+                          { answer: 'AH' },
+                          { answer: 'AO' },
+                          { answer: 'AR' },
+                          { answer: 'B' },
+                          { answer: 'C' },
+                          { answer: 'CBRA' },
+                          { answer: 'D' },
+                          { answer: 'U' },
+                          { answer: 'V' },
+                          { answer: 'V1' },
+                          { answer: 'V10' },
+                          { answer: 'V11' },
+                          { answer: 'V12' },
+                          { answer: 'V13' },
+                          { answer: 'V14' },
+                          { answer: 'V15' },
+                          { answer: 'V16' },
+                          { answer: 'V17' },
+                          { answer: 'V18' },
+                          { answer: 'V19' },
+                          { answer: 'V2' },
+                          { answer: 'V20' },
+                          { answer: 'V21' },
+                          { answer: 'V22' },
+                          { answer: 'V23' },
+                          { answer: 'V24' },
+                          { answer: 'V25' },
+                          { answer: 'V26' },
+                          { answer: 'V27' },
+                          { answer: 'V28' },
+                          { answer: 'V29' },
+                          { answer: 'V3' },
+                          { answer: 'V30' },
+                          { answer: 'V4' },
+                          { answer: 'V5' },
+                          { answer: 'V6' },
+                          { answer: 'V7' },
+                          { answer: 'V8' },
+                          { answer: 'V9' },
+                          { answer: 'VE' },
+                          { answer: 'X' },
+                          { answer: 'X500' },
+                          { answer: 'Z' }
+                        ]
+                      },
+                      formData: {
+                        path: 'property.FEMAfloodZone',
+                        metaData: {
+                          target:
+                            '${it._TEMP_INITIAL_VALUES.property.FEMAfloodZone || " "}'
+                        }
+                      },
+                      children: []
+                    },
+                    {
+                      id: '75f752a8-8f5e-4d81-b3f2-228a446444sd7dd',
                       type: '$INPUT',
                       path: 'property.floodZone',
                       dependencies: [],
@@ -1346,12 +1472,12 @@ const mock = {
                         label: 'Flood Zone',
                         size: '12',
                         dataSource: [
-                          { answer: 'V' },
                           { answer: 'A' },
                           { answer: 'B' },
                           { answer: 'C' },
+                          { answer: 'V' },
                           { answer: 'X' },
-                          { answer: 'U' }
+                          { answer: 'Z' }
                         ]
                       },
                       formData: {
@@ -1370,14 +1496,16 @@ const mock = {
                       path: 'property.baseFloodElevation',
                       dependencies: [],
                       data: {
-                        component: 'select',
-                        label: 'Base Flood Elevation',
+                        component: 'text',
+                        disabled: true,
+                        label: 'BFE Indicator',
                         size: '12',
-                        dataSource: [{ answer: '1' }]
+                        extendedProperties: {
+                          output: 'initial'
+                        }
                       },
                       formData: {
                         path: 'property.baseFloodElevation',
-                        required: true,
                         metaData: {
                           target:
                             '${it._TEMP_INITIAL_VALUES.property.baseFloodElevation || " "}'

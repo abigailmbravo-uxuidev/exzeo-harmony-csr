@@ -48,8 +48,8 @@ describe('Test removeTerm', () => {
     expect(result).toEqual('12-1005269');
   });
 
-  it('should return the value if the term is already removed', () => {
-    const result = format.removeTerm('12-1005269');
-    expect(result).toEqual('12-1005269');
+  it('should remove the term from the number TTIC-AF3-1234', () => {
+    const result = format.removeTerm('TTIC-AF3-1234-01');
+    expect(result).toEqual('TTIC-AF3-1234');
   });
 });

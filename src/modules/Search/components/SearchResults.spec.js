@@ -42,7 +42,7 @@ describe('Test SearchResults component', () => {
         hasSearched
       />
     );
-    expect(wrapper.find('ul.property-search-results')).toHaveLength(1);
+    expect(wrapper.find('div.quote-list')).toHaveLength(1);
   });
 
   it('should render Quote Cards when searchType is Quote', () => {

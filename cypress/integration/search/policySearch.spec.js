@@ -7,29 +7,21 @@ const fields = [
 ];
 
 describe('Policy Search testing', () => {
+  const selectPolicySearch = () => cy.findDataTag('policy-link').click();
   // TODO unwrap this test suite to run in CI when ready
   if (Cypress.env('CI')) {
     it('Skip test due to environment', () => {
       cy.task('log', 'CI === true: not running search/policy specs');
     });
   } else {
-    const toggleAdvancedSearch = (dir = 'on') => {
-      cy.findDataTag('policy-advanced-search')
-        .find('i')
-        .then(
-          $i =>
-            (($i.hasClass('fa-chevron-down') && dir === 'on') ||
-              ($i.hasClass('fa-chevron-up') && dir === 'down')) &&
-            $i.click()
-        );
-    };
-
     before('Login', () => cy.login());
 
-    beforeEach('Set route aliases', () => setRouteAliases());
+    beforeEach('Set route aliases', () => {
+      setRouteAliases();
+      selectPolicySearch();
+    });
 
     it('POS:Policy Search', () => {
-      toggleAdvancedSearch();
       cy.clickSubmit()
         .wait('@fetchPolicies')
         .findDataTag('policy-list')
@@ -107,7 +99,6 @@ describe('Policy Search testing', () => {
 
     // TODO this test relies on some Batman Robin policies, which is not ideal. Once we have sufficient Policy testing, this test should be run on one of the Policies resulting from tests.
     it('Policy Search Sorting', () => {
-      toggleAdvancedSearch();
       cy.clearAllText(fields)
         .fillFields([{ name: 'firstName', data: 'batman' }])
         .findDataTag('sortBy')

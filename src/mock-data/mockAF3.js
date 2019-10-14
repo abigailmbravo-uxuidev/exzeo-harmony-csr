@@ -389,6 +389,7 @@ const mock = {
                   data: {
                     component: 'currency',
                     label: 'Personal Property Limit',
+                    validation: ['isPersonalPropertyRange'],
                     size: '7',
                     extendedProperties: {
                       output: 'percent',
@@ -530,7 +531,7 @@ const mock = {
                       path: 'deductibles.personalPropertyDeductible.value',
                       dependencies: [],
                       data: {
-                        component: 'selectInteger',
+                        component: 'currency',
                         label: 'Personal Property Deductible',
                         size: '12',
                         disabled: true,
@@ -948,6 +949,15 @@ const mock = {
                             }
                           ],
                           label: 'Personal Property'
+                        },
+                        {
+                          items: [
+                            {
+                              format: 'currency',
+                              path: 'coverageLimits.increasedCompliance.value'
+                            }
+                          ],
+                          label: 'Increased Cost of Compliance Limit'
                         },
                         {
                           items: [

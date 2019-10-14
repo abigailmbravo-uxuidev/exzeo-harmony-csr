@@ -25,7 +25,6 @@ export default {
         __v: 0
       }
     ],
-    beta: true,
     given_name: 'AF3',
     family_name: 'Beta'
   },

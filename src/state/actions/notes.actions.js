@@ -3,9 +3,7 @@ import moment from 'moment';
 import { callService } from '@exzeo/core-ui/src/@Harmony';
 import * as types from './actionTypes';
 import { setAppError } from './error.actions';
-
-const removeTerm = id =>
-  id.replace ? id.replace(/(\d{2}-\d{7})-\d{2}/g, (_, group) => group) : id;
+import { removeTerm } from '../../utilities/format';
 
 const mergeNotes = (notes, files) => {
   const fileList = notes
