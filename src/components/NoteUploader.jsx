@@ -67,8 +67,6 @@ export class NoteUploader extends Component {
   componentDidMount() {
     const { initialize, resourceType, noteOptions } = this.props;
 
-    console.log(['Quote', 'Policy'].includes(resourceType));
-
     this.contactTypes = noteOptions.validContactTypes || [];
     this.docTypes = noteOptions.validFileTypes || [];
 
