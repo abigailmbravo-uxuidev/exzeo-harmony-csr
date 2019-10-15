@@ -15,7 +15,7 @@ export const useFetchAgency = agencyCode => {
         const result = await fetchAgency(agencyCode);
         setAgency(result);
       } catch (error) {
-        console.error('Error fetching agency:\n', error);
+        setAgency({});
       }
       setLoaded(true);
     };
@@ -36,7 +36,7 @@ export const useFetchAgents = agencyCode => {
         const result = await fetchAgentsByAgencyCode(agencyCode);
         setAgents(result);
       } catch (error) {
-        console.error('Error fetching agents:\n', error);
+        setAgents([]);
       }
       setLoaded(true);
     };
