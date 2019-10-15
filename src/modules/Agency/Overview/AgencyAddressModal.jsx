@@ -6,7 +6,7 @@ import { updateAgency } from '../../../state/actions/agency.actions';
 import AddressGroup from '../components/AddressGroup';
 
 export class AgencyAddressModal extends Component {
-  onHandleSaveAgency = async (data, dispatch, props) => {
+  handleSaveAgency = async data => {
     const { agency, branchCode } = this.props;
 
     if (Number(branchCode) > 0) {
@@ -32,25 +32,6 @@ export class AgencyAddressModal extends Component {
     this.props.closeModal();
   };
 
-  onHandleSameAsMailing = (value, previousValue, allValues) => {
-    const { change } = this.props;
-    const { mailingAddress } = allValues;
-    if (value) {
-      change('physicalAddress.address1', mailingAddress.address1);
-      change('physicalAddress.address2', mailingAddress.address2);
-      change('physicalAddress.city', mailingAddress.city);
-      change('physicalAddress.state', mailingAddress.state);
-      change('physicalAddress.zip', mailingAddress.zip);
-    } else {
-      change('physicalAddress.address1', '');
-      change('physicalAddress.address2', '');
-      change('physicalAddress.city', '');
-      change('physicalAddress.state', '');
-      change('physicalAddress.zip', '');
-    }
-    return value;
-  };
-
   render() {
     const {
       closeModal,
@@ -62,7 +43,7 @@ export class AgencyAddressModal extends Component {
 
     return (
       <div className="modal agency-crud">
-        <form onSubmit={handleSubmit(this.onHandleSaveAgency)}>
+        <form onSubmit={handleSubmit(this.handleSaveAgency)}>
           <div className="card">
             <div className="card-header">
               <h4>
