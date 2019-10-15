@@ -67,18 +67,22 @@ export class NoteUploader extends Component {
   componentDidMount() {
     const { initialize, resourceType, noteOptions } = this.props;
 
+    console.log(['Quote', 'Policy'].includes(resourceType));
+
     this.contactTypes = noteOptions.validContactTypes || [];
     this.docTypes = noteOptions.validFileTypes || [];
 
     const defaultValues = {
       Agency: 0,
-      Quote: 8,
-      Policy: 17
+      Quote: 10,
+      Policy: 20
     };
 
     initialize({
       contactType: this.contactTypes[0],
-      fileType: this.docTypes[defaultValues[resourceType]]
+      fileType: ['Quote', 'Policy'].includes(resourceType)
+        ? 'Other'
+        : this.docTypes[0]
     });
   }
 
