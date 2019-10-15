@@ -247,11 +247,11 @@ const mock = {
             {
               id: '7839181e-4413-442d-a273-e65c08a17a19',
               type: '$INPUT',
-              path: 'property.baseFloodElevation',
+              path: 'property.territory',
               dependencies: [],
               data: {
                 component: 'text',
-                label: 'Base Flood Elevation',
+                label: 'Territory',
                 size: '6',
                 disabled: true
               },
@@ -266,6 +266,20 @@ const mock = {
               data: {
                 component: 'text',
                 label: 'Residence Type',
+                size: '6',
+                disabled: true
+              },
+              formData: {},
+              children: []
+            },
+            {
+              id: '77874384-0638-43a8-9d76-671aa2f83438',
+              type: '$INPUT',
+              path: 'underwritingAnswers.elevationDifference.answer',
+              dependencies: [],
+              data: {
+                component: 'text',
+                label: 'BFE Indicator',
                 size: '6',
                 disabled: true
               },
