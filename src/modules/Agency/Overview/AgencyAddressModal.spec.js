@@ -18,12 +18,10 @@ describe('Testing AgencyAddressModal component', () => {
     const wrapper = shallow(<AgencyAddressModal {...props} />);
     expect(wrapper).toBeTruthy();
     const wi = wrapper.instance();
-    wi.onHandleSameAsMailing(true, false, { mailingAddress: {} });
-    wi.onHandleSameAsMailing(false, true, { mailingAddress: {} });
-    wi.onHandleSaveAgency(mockAgency);
+    wi.handleSaveAgency(mockAgency);
   });
 
-  it('should test onHandleSaveAgency with branchCode 0', () => {
+  it('should test handleSaveAgency with branchCode 0', () => {
     const props = {
       closeModal() {},
       updateAgency() {},
@@ -35,8 +33,6 @@ describe('Testing AgencyAddressModal component', () => {
     const wrapper = shallow(<AgencyAddressModal {...props} />);
     expect(wrapper).toBeTruthy();
     const wi = wrapper.instance();
-    wi.onHandleSameAsMailing(true, false, { mailingAddress: {} });
-    wi.onHandleSameAsMailing(false, true, { mailingAddress: {} });
-    wi.onHandleSaveAgency(mockAgency);
+    wi.handleSaveAgency(mockAgency);
   });
 });
