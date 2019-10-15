@@ -26,6 +26,8 @@ const initialSearchResults = {
   loading: false,
   noResults: false,
   pageSize: 0,
+  companyCode: '',
+  state: '',
   product: '',
   results: [],
   sortBy: '',

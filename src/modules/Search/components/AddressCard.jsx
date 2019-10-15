@@ -1,6 +1,12 @@
 import React from 'react';
 
-function AddressCard({ handleKeyPress, handleClick, address, product }) {
+function AddressCard({
+  handleKeyPress,
+  handleClick,
+  companyCode,
+  address,
+  product
+}) {
   return (
     <div
       tabIndex="0"
@@ -9,7 +15,7 @@ function AddressCard({ handleKeyPress, handleClick, address, product }) {
       id={address.id}
       className={`card ${address.physicalAddress.address1}`}
       onClick={handleClick}
-      data-url={`/quote/new/${address.physicalAddress.state}/${product}/${address.id}`}
+      data-url={`/quote/new/${companyCode}/${address.physicalAddress.state}/${product}/${address.id}`}
     >
       <div id={address.physicalAddress.address1} className="icon-name">
         <i className="card-icon fa fa-map-marker" />
