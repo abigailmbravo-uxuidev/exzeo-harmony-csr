@@ -12,7 +12,6 @@ const CoverageWatcherAF3 = ({ formValues }) => {
       {({ input: { onChange } }) => (
         <OnChangeListener name="coverageLimits.personalProperty.value">
           {value => {
-            console.log(_get(formValues, 'coverageLimits.building.value', 0));
             if (
               Math.ceil(
                 _get(formValues, 'coverageLimits.building.value', 0) / 4 >
