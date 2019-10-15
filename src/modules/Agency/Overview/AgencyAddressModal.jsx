@@ -8,9 +8,10 @@ import AddressGroup from '../components/AddressGroup';
 export class AgencyAddressModal extends Component {
   onHandleSaveAgency = async (data, dispatch, props) => {
     const { agency, branchCode } = this.props;
+
     if (Number(branchCode) > 0) {
-      const selectedBranch = agency.branches.filter(b =>
-        String(b.branchCode === String(branchCode))
+      const selectedBranch = agency.branches.find(
+        b => String(b.branchCode) === String(branchCode)
       );
       selectedBranch.physicalAddress = data.physicalAddress;
       selectedBranch.mailingAddress = data.mailingAddress;

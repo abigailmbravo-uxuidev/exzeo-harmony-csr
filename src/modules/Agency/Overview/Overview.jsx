@@ -208,6 +208,7 @@ export class Overview extends React.Component {
         )}
         {showEditAddressModal && (
           <AgencyAddressModal
+            branchCode={branchCode}
             agency={agency}
             initialValues={addressInitialValues}
             closeModal={this.onHandleToggleEditAddressModal}
