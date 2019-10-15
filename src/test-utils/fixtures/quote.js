@@ -5,6 +5,7 @@ export default {
   agencyCode: 20000,
   agentCode: 60000,
   companyCode: 'TTIC',
+  state: 'FL',
   coverageLimits: {
     dwelling: { amount: 100 },
     lossOfUse: { amount: 666 },

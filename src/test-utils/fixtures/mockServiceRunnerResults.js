@@ -158,13 +158,35 @@ export const searchAgenciesResult = [
     agencyCode: 20000,
     agentOfRecord: '60000',
     displayName: 'TEST DEFAULT AGENCY',
-    _id: '5b97e676968a4b75eea823d7'
+    _id: '5b97e676968a4b75eea823d7',
+    contracts: [
+      {
+        companyCode: 'TTIC',
+        stateProducts: [
+          {
+            state: 'FL',
+            product: 'HO3'
+          }
+        ]
+      }
+    ]
   },
   {
     agencyCode: 123,
     agentOfRecord: '999',
     displayName: 'TEST NEW AGENCY',
-    _id: '987a'
+    _id: '987a',
+    contracts: [
+      {
+        companyCode: 'TTIC',
+        stateProducts: [
+          {
+            state: 'FL',
+            product: 'HO3'
+          }
+        ]
+      }
+    ]
   }
 ];
 
@@ -174,13 +196,25 @@ export const searchAgentsResult = [
     agentCode: 60000,
     firstName: 'Peregrin',
     lastName: 'Took',
-    status: 'Active'
+    status: 'Active',
+    licenses: [
+      {
+        appointed: true,
+        state: 'FL'
+      }
+    ]
   },
   {
     agencies: [{ agencyCode: 123 }],
     agentCode: 999,
     firstName: 'Meriadoc',
     lastName: 'Brandybuck',
-    status: 'Active'
+    status: 'Active',
+    licenses: [
+      {
+        appointed: true,
+        state: 'FL'
+      }
+    ]
   }
 ];

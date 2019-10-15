@@ -7,7 +7,6 @@ const mock = {
       { value: 'mailingAddress', component: 'Section' },
       { value: 'propertyAddress', component: 'Section' },
       { value: 'county', label: 'Property County' },
-      { value: 'floodZone', label: 'Flood Zone' },
       { value: 'effectiveDate', className: 'quoteEffectiveDate' },
       { value: 'currentPremium', label: 'Premium', className: 'premium' }
     ]
@@ -220,11 +219,11 @@ const mock = {
             {
               id: '44a250d8-a05e-4793-b5ee-c50d80d9b547',
               type: '$INPUT',
-              path: 'property.floodZone',
+              path: 'property.FEMAfloodZone',
               dependencies: [],
               data: {
                 component: 'text',
-                label: 'Flood Zone',
+                label: 'FEMA Flood Zone',
                 size: '6',
                 disabled: true
               },
