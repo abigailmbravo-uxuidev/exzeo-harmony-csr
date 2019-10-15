@@ -159,6 +159,7 @@ export const searchAgenciesResult = [
     agentOfRecord: '60000',
     displayName: 'TEST DEFAULT AGENCY',
     _id: '5b97e676968a4b75eea823d7',
+    status: 'Active',
     contracts: [
       {
         companyCode: 'TTIC',
@@ -176,6 +177,7 @@ export const searchAgenciesResult = [
     agentOfRecord: '999',
     displayName: 'TEST NEW AGENCY',
     _id: '987a',
+    status: 'Active',
     contracts: [
       {
         companyCode: 'TTIC',
