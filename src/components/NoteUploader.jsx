@@ -72,12 +72,6 @@ export class NoteUploader extends Component {
     this.contactTypes = noteOptions.validContactTypes || [];
     this.docTypes = noteOptions.validFileTypes || [];
 
-    const defaultValues = {
-      Agency: 0,
-      Quote: 10,
-      Policy: 20
-    };
-
     initialize({
       contactType: this.contactTypes[0],
       fileType: ['Quote', 'Policy'].includes(resourceType)
