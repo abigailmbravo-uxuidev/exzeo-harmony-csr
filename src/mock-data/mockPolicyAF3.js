@@ -459,7 +459,9 @@ const mock = {
                         },
                         {
                           label: 'Territory',
-                          items: [{ format: '', path: 'property.territory' }]
+                          items: [
+                            { format: '', path: 'property.floodterritory' }
+                          ]
                         }
                       ]
                     }
@@ -1342,7 +1344,7 @@ const mock = {
                     {
                       id: '75f752a8-8f5e-4d81-b3f2-435435435dd',
                       type: '$INPUT',
-                      path: 'property.territory',
+                      path: 'property.floodterritory',
                       dependencies: [],
                       data: {
                         component: 'select',
@@ -1356,11 +1358,11 @@ const mock = {
                         ]
                       },
                       formData: {
-                        path: 'property.territory',
+                        path: 'property.floodterritory',
                         required: true,
                         metaData: {
                           target:
-                            '${it._TEMP_INITIAL_VALUES.property.territory || " "}'
+                            '${it._TEMP_INITIAL_VALUES.property.floodterritory || " "}'
                         }
                       },
                       children: []
