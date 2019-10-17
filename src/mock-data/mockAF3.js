@@ -247,7 +247,7 @@ const mock = {
             {
               id: '7839181e-4413-442d-a273-e65c08a17a19',
               type: '$INPUT',
-              path: 'property.territory',
+              path: 'property.floodterritory',
               dependencies: [],
               data: {
                 component: 'text',
