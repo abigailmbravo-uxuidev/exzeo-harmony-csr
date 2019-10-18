@@ -79,32 +79,28 @@ const EndorsementsWatcherAF3 = ({ formValues, initialValues }) => {
           <React.Fragment>
             <OnChangeListener name="property.floodZone">
               {value => {
-                if (
-                  date.isBeforeDate(
-                    _get(formValues, 'effectiveDate'),
-                    '2019-10-01',
-                    date.FORMATS.SECONDARY
-                  ) &&
-                  value === 'Z'
-                ) {
+                const isBeforeDate = date.isBeforeDate(
+                  _get(formValues, 'effectiveDate'),
+                  '2019-10-01',
+                  date.FORMATS.SECONDARY
+                );
+                if (isBeforeDate && value === 'Z') {
                   onChange('0');
-                } else {
+                } else if (isBeforeDate) {
                   onChange(30000);
                 }
               }}
             </OnChangeListener>
             <OnChangeListener name="property.floodterritory">
               {value => {
-                if (
-                  date.isAfterDate(
-                    _get(formValues, 'effectiveDate'),
-                    '2019-09-30',
-                    date.FORMATS.SECONDARY
-                  ) &&
-                  value === '45000'
-                ) {
+                const isAfterDate = date.isAfterDate(
+                  _get(formValues, 'effectiveDate'),
+                  '2019-09-30',
+                  date.FORMATS.SECONDARY
+                );
+                if (isAfterDate && value === '45000') {
                   onChange('0');
-                } else {
+                } else if (isAfterDate) {
                   onChange(30000);
                 }
               }}
