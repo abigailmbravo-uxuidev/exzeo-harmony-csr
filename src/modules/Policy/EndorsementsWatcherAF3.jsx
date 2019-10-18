@@ -89,16 +89,11 @@ const EndorsementsWatcherAF3 = ({ formValues, initialValues }) => {
                 ) {
                   onChange('0');
                 } else {
-                  onChange(
-                    _get(
-                      initialValues,
-                      'coverageLimits.increasedCompliance.value'
-                    )
-                  );
+                  onChange(30000);
                 }
               }}
             </OnChangeListener>
-            <OnChangeListener name="property.territory">
+            <OnChangeListener name="property.floodterritory">
               {value => {
                 if (
                   date.isAfterDate(
@@ -110,12 +105,7 @@ const EndorsementsWatcherAF3 = ({ formValues, initialValues }) => {
                 ) {
                   onChange('0');
                 } else {
-                  onChange(
-                    _get(
-                      initialValues,
-                      'coverageLimits.increasedCompliance.value'
-                    )
-                  );
+                  onChange(30000);
                 }
               }}
             </OnChangeListener>
