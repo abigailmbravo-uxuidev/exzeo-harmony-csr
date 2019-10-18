@@ -22,6 +22,7 @@ const TransferAORForm = ({ children, handleSubmit, initialValues }) => {
               initialValues={initialValues}
               formValues={formValues}
               size="12"
+              statuses={['Active', 'Service Only', 'Pending']}
             />
           </div>
           {children({ submitting, pristine })}

@@ -30,7 +30,13 @@ export class SearchResults extends Component {
     const {
       hasSearched,
       searchType,
-      search: { results, noResults, product = '' },
+      search: {
+        results,
+        noResults,
+        companyCode = '',
+        state = '',
+        product = ''
+      },
       error
     } = this.props;
     return (
@@ -65,12 +71,23 @@ export class SearchResults extends Component {
                   <AddressCard
                     key={address.id}
                     address={address}
+                    companyCode={companyCode}
+                    state={state}
                     product={product}
                     handleKeyPress={e =>
-                      onKeyPressSubmit(e, address, searchType)
+                      onKeyPressSubmit(
+                        e,
+                        { companyCode, ...address },
+                        searchType
+                      )
                     }
                     handleClick={() =>
-                      handleNewTab(address, searchType, product)
+                      handleNewTab(
+                        { companyCode, ...address },
+                        searchType,
+                        product,
+                        companyCode
+                      )
                     }
                   />
                 ))}

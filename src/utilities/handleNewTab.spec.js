@@ -4,6 +4,7 @@ describe('test handleNewTab', () => {
   window.open = x => x;
   it('should handle new tab for address', () => {
     const resource = {
+      companyCode: 'TTIC',
       id: '1111',
       physicalAddress: {
         state: 'FL'

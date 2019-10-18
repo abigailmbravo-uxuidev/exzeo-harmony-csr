@@ -1,5 +1,5 @@
 import React from 'react';
-import moment from 'moment';
+import { date } from '@exzeo/core-ui';
 import { STANDARD_DATE_FORMAT } from '../../../constants/dates';
 
 function QuoteCard({ handleKeyPress, handleClick, quote }) {
@@ -29,7 +29,7 @@ function QuoteCard({ handleKeyPress, handleClick, quote }) {
           </span>
           <span className="started-on">
             <strong>Started On:</strong>&nbsp;
-            {moment.utc(quote.createdAt).format(STANDARD_DATE_FORMAT)}
+            {date.formattedLocalDate(quote.createdAt)}
           </span>
           <span className="premium">
             <strong>Premium:</strong>&nbsp; ${' '}
@@ -37,7 +37,7 @@ function QuoteCard({ handleKeyPress, handleClick, quote }) {
           </span>
           <span className="effective-date">
             <strong>Effective Date:</strong>&nbsp;
-            {moment.utc(quote.effectiveDate).format(STANDARD_DATE_FORMAT)}
+            {date.formatDate(quote.effectiveDate)}
           </span>
           <span className="quote-status">
             <strong>Quote Status:</strong>&nbsp;
