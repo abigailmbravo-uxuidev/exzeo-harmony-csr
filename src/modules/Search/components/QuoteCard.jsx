@@ -29,7 +29,7 @@ function QuoteCard({ handleKeyPress, handleClick, quote }) {
           </span>
           <span className="started-on">
             <strong>Started On:</strong>&nbsp;
-            {date.formattedLocalDate(quote.createdAt)}
+            {date.formatDate(quote.createdAt)}
           </span>
           <span className="premium">
             <strong>Premium:</strong>&nbsp; ${' '}
