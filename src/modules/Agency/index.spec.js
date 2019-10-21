@@ -23,6 +23,7 @@ describe('Testing Agency Base component', () => {
       getPoliciesForAgency() {},
       getAgentListByAgencyCode() {},
       getLists() {},
+      getEnumsForAgencyWorkflow() {},
       match: { params: { agencyCode: '123', branchCode: '0' } },
       agency: mockAgency
     };
@@ -40,6 +41,7 @@ describe('Testing Agency Base component', () => {
       getPoliciesForAgency() {},
       getLists() {},
       getAgentListByAgencyCode() {},
+      getEnumsForAgencyWorkflow() {},
       match: { params: { agencyCode: '123', branchCode: '0' } },
       agency: null
     };

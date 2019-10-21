@@ -43,23 +43,31 @@ function formatTopAnswers(answers) {
   }));
 }
 
+function formatAnswers(questions, name) {
+  if (!Array.isArray(questions) || questions.length === 0) return undefined;
+  const selectedQuestion = questions.find(q => q.name === name);
+
+  if (!selectedQuestion) return undefined;
+
+  return formatTopAnswers(selectedQuestion.answers);
+}
+
 function setEnums(state, action) {
-  const mortgageeAnswers = action.additionalInterestQuestions.find(
-    q => q.name === 'mortgagee'
+  const mortgagee = formatAnswers(
+    action.additionalInterestQuestions,
+    'mortgagee'
   );
-  const mortgagee = formatTopAnswers(mortgageeAnswers.answers);
 
-  const premiumFinanceAnswers = action.additionalInterestQuestions.find(
-    q => q.name === 'premiumFinance'
+  const premiumFinance = formatAnswers(
+    action.additionalInterestQuestions,
+    'premiumFinance'
   );
-  const premiumFinance = formatTopAnswers(premiumFinanceAnswers.answers);
 
-  const orderAnswers = action.additionalInterestQuestions.find(
-    q => q.name === 'order'
-  );
-  const order = orderAnswers.answers;
+  const order = formatAnswers(action.additionalInterestQuestions, 'order');
 
   const appraisers = action.propertyAppraisalQuestions;
+
+  const noteOptions = action.noteOptions;
 
   return {
     ...state,
@@ -68,7 +76,8 @@ function setEnums(state, action) {
     order,
     agent: action.agent,
     agency: action.agency,
-    appraisers
+    appraisers,
+    noteOptions
   };
 }
 
