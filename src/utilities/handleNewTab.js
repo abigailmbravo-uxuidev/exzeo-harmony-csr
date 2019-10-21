@@ -2,7 +2,7 @@ export function handleNewTab(resource, type, product) {
   // new quote
   if (type === 'address') {
     window.open(
-      `/quote/new/${resource.physicalAddress.state}/${product}/${resource.id}`,
+      `/quote/new/${resource.companyCode}/${resource.physicalAddress.state}/${product}/${resource.id}`,
       '_blank'
     );
     // quote

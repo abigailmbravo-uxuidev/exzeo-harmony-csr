@@ -1,9 +1,9 @@
 // @ts-nocheck
 import React from 'react';
-import { OnChangeListener, Field } from '@exzeo/core-ui/src';
+import { OnChangeListener, Field, date } from '@exzeo/core-ui/src';
 import _get from 'lodash/get';
 
-const EndorsementsWatcherAF3 = ({ formValues }) => {
+const EndorsementsWatcherAF3 = ({ formValues, initialValues }) => {
   return (
     <React.Fragment>
       <Field
@@ -74,10 +74,42 @@ const EndorsementsWatcherAF3 = ({ formValues }) => {
           </React.Fragment>
         )}
       </Field>
+      <Field name="coverageLimits.increasedCompliance.value" subscription={{}}>
+        {({ input: { onChange } }) => (
+          <React.Fragment>
+            <OnChangeListener name="property.floodZone">
+              {value => {
+                const isBeforeDate = date.isBeforeDate(
+                  _get(formValues, 'effectiveDate'),
+                  '2019-10-01',
+                  date.FORMATS.SECONDARY
+                );
+                if (isBeforeDate && value === 'Z') {
+                  onChange('0');
+                } else if (isBeforeDate) {
+                  onChange(30000);
+                }
+              }}
+            </OnChangeListener>
+            <OnChangeListener name="property.floodterritory">
+              {value => {
+                const isAfterDate = date.isAfterDate(
+                  _get(formValues, 'effectiveDate'),
+                  '2019-09-30',
+                  date.FORMATS.SECONDARY
+                );
+                if (isAfterDate && value === '45000') {
+                  onChange('0');
+                } else if (isAfterDate) {
+                  onChange(30000);
+                }
+              }}
+            </OnChangeListener>
+          </React.Fragment>
+        )}
+      </Field>
     </React.Fragment>
   );
 };
-
-//Math.ceil((it.coverageLimits.building.value || 0) / 4) > (it.coverageLimits.personalProperty.value || 0)
 
 export default EndorsementsWatcherAF3;

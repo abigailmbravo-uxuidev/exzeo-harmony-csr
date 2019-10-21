@@ -647,6 +647,8 @@ export function handleSearchSubmit(data, props) {
       if (searchType === SEARCH_TYPES.diaries) {
         searchResults = await handleDiariesSearch(data);
       }
+      searchResults.companyCode = data.companyCode;
+      searchResults.state = data.state;
       searchResults.product = data.product;
       // Setting search results in redux for backwards compat with other search types/features - will be removed  when search is refactored into core-ui
       dispatch(setSearchResults(searchResults));
