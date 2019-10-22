@@ -2951,63 +2951,14 @@ const mock = {
                       children: []
                     },
                     {
-                      id: '88d97b8b-d82e-4261-8488-6dce86b6efdd',
-                      type: '$INPUT',
-                      path: 'policyHolderMailingAddress.address1',
+                      id: '65345c40-2b54-4818-9778-6dce86b6efdd',
+                      type: '$CUSTOM',
                       dependencies: [],
                       data: {
-                        component: 'text',
-                        label: 'Address 1'
-                      },
-                      formData: {},
-                      children: []
-                    },
-                    {
-                      id: '888d2e0d-5c10-4c8b-bca2-8ce6d45ac8d0',
-                      type: '$INPUT',
-                      path: 'policyHolderMailingAddress.address2',
-                      dependencies: [],
-                      data: {
-                        component: 'text',
-                        label: 'Address 2'
-                      },
-                      formData: {},
-                      children: []
-                    },
-                    {
-                      id: '888600a8-97b0-4f88-9d87-f9d31a6cffbd',
-                      type: '$INPUT',
-                      path: 'policyHolderMailingAddress.city',
-                      dependencies: [],
-                      data: {
-                        component: 'text',
-                        label: 'City'
-                      },
-                      formData: {},
-                      children: []
-                    },
-                    {
-                      id: '88f0ae71-dd13-4a5b-a861-4b8811896953',
-                      type: '$INPUT',
-                      path: 'policyHolderMailingAddress.state',
-                      dependencies: [],
-                      data: {
-                        component: 'text',
-                        label: 'State',
-                        size: '4'
-                      },
-                      formData: {},
-                      children: []
-                    },
-                    {
-                      id: '88820193-a6be-49d2-901f-e7bb0a850f0c',
-                      type: '$INPUT',
-                      path: 'policyHolderMailingAddress.zip',
-                      dependencies: [],
-                      data: {
-                        component: 'text',
-                        label: 'Zip',
-                        size: '8'
+                        component: '$ADDRESS',
+                        extendedProperties: {
+                          fieldPrefix: 'policyHolderMailingAddress'
+                        }
                       },
                       formData: {},
                       children: []
@@ -3035,63 +2986,14 @@ const mock = {
                       children: []
                     },
                     {
-                      id: '57d97b8b-d82e-4261-8488-6dce86b6efdd',
-                      type: '$INPUT',
-                      path: 'property.physicalAddress.address1',
+                      id: '65345c40-2b54-4818-9778-d3f01404b16d',
+                      type: '$CUSTOM',
                       dependencies: [],
                       data: {
-                        component: 'text',
-                        label: 'Address 1'
-                      },
-                      formData: {},
-                      children: []
-                    },
-                    {
-                      id: '807d2e0d-5c10-4c8b-bca2-8ce6d45ac8d0',
-                      type: '$INPUT',
-                      path: 'property.physicalAddress.address2',
-                      dependencies: [],
-                      data: {
-                        component: 'text',
-                        label: 'Address 2'
-                      },
-                      formData: {},
-                      children: []
-                    },
-                    {
-                      id: '7f5600a8-97b0-4f88-9d87-f9d31a6cffbd',
-                      type: '$INPUT',
-                      path: 'property.physicalAddress.city',
-                      dependencies: [],
-                      data: {
-                        component: 'text',
-                        label: 'City'
-                      },
-                      formData: {},
-                      children: []
-                    },
-                    {
-                      id: '2df0ae71-dd13-4a5b-a861-4b8811896953',
-                      type: '$INPUT',
-                      path: 'property.physicalAddress.state',
-                      dependencies: [],
-                      data: {
-                        component: 'text',
-                        label: 'State',
-                        size: '4'
-                      },
-                      formData: {},
-                      children: []
-                    },
-                    {
-                      id: 'fe820193-a6be-49d2-901f-e7bb0a850f0c',
-                      type: '$INPUT',
-                      path: 'property.physicalAddress.zip',
-                      dependencies: [],
-                      data: {
-                        component: 'text',
-                        label: 'Zip',
-                        size: '8'
+                        component: '$ADDRESS',
+                        extendedProperties: {
+                          fieldPrefix: 'property.physicalAddress'
+                        }
                       },
                       formData: {},
                       children: []
