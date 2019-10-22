@@ -226,7 +226,7 @@ describe('Additional Interest Testing', () => {
         {
           ...zipField,
           value: '1234567890',
-          error: 'Only 8 letters or numbers allowed'
+          error: 'Only 5 numbers allowed'
         }
       ],
       [],
@@ -274,7 +274,7 @@ describe('Additional Interest Testing', () => {
         {
           ...zipField,
           value: '1234567890',
-          error: 'Only 8 letters or numbers allowed'
+          error: 'Only 5 numbers allowed'
         }
       ],
       [],
@@ -322,7 +322,7 @@ describe('Additional Interest Testing', () => {
         {
           ...zipField,
           value: '1234567890',
-          error: 'Only 8 letters or numbers allowed'
+          error: 'Only 5 numbers allowed'
         }
       ],
       [],
@@ -370,7 +370,7 @@ describe('Additional Interest Testing', () => {
         {
           ...zipField,
           value: '1234567890',
-          error: 'Only 8 letters or numbers allowed'
+          error: 'Only 5 numbers allowed'
         }
       ],
       [],
@@ -418,7 +418,7 @@ describe('Additional Interest Testing', () => {
         {
           ...zipField,
           value: '1234567890',
-          error: 'Only 8 letters or numbers allowed'
+          error: 'Only 5 numbers allowed'
         }
       ],
       [],
