@@ -63,7 +63,7 @@ function setEnums(state, action) {
     'premiumFinance'
   );
 
-  const orderAnswers = action.additionalInterestQuestions.find(
+  const orderAnswers = (action.additionalInterestQuestions || []).find(
     q => q.name === 'order'
   );
 
@@ -75,7 +75,7 @@ function setEnums(state, action) {
     ...state,
     premiumFinance,
     mortgagee,
-    order: orderAnswers.answers,
+    order: orderAnswers ? orderAnswers.answers : [],
     agent: action.agent,
     agency: action.agency,
     appraisers,
