@@ -80,8 +80,7 @@ export const getPolicyDetails = createSelector(
       currentPremium: detailUtils.getCurrentPremium(currentPremium),
       effectiveDate: moment.utc(effectiveDate).format(STANDARD_DATE_FORMAT),
       appraisalURI: {
-        title: 'Property County',
-        label: appraisal.label,
+        label: 'PAS',
         value: appraisal.answer
       },
       mapURI: `${baseMapUri}${mapQuery}`,

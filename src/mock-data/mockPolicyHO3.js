@@ -11,7 +11,7 @@ const mock = {
       },
       { value: 'mailingAddress', component: 'Section' },
       { value: 'propertyAddress', component: 'Section' },
-      { value: 'appraisalURI', component: 'SectionLink' },
+      { value: 'county', label: 'Property County' },
       { value: 'effectiveDate' },
       { value: 'cancellation' },
       { value: 'finalPayment', label: 'Final Payment' },
