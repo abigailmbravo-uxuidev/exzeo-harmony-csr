@@ -6,6 +6,8 @@ import { STANDARD_DATE_FORMAT } from '../../constants/dates';
 
 import { getPolicy, getSummaryLedger, getQuote } from './entity.selectors';
 
+export const getAppraisalList = state => state.list.appraisers;
+
 const baseMapUri = 'https://www.google.com/maps/search/?api=1&query=';
 const defaultEntity = {
   details: {},
@@ -18,8 +20,8 @@ const defaultEntity = {
 };
 
 export const getPolicyDetails = createSelector(
-  [getPolicy, getSummaryLedger],
-  (policy, summaryLedger) => {
+  [getPolicy, getSummaryLedger, getAppraisalList],
+  (policy, summaryLedger, appraisalList) => {
     if (!policy || !policy.policyNumber || !summaryLedger) return defaultEntity;
 
     const {
@@ -62,6 +64,11 @@ export const getPolicyDetails = createSelector(
     );
     const finalPayment = detailUtils.getFinalPaymentDate(summaryLedger, status);
 
+    const appraisal =
+      (appraisalList || []).find(
+        x => x.label === property.physicalAddress.county
+      ) || {};
+
     return {
       constructionType,
       policyID,
@@ -72,6 +79,11 @@ export const getPolicyDetails = createSelector(
       county: physicalAddress.county,
       currentPremium: detailUtils.getCurrentPremium(currentPremium),
       effectiveDate: moment.utc(effectiveDate).format(STANDARD_DATE_FORMAT),
+      appraisalURI: {
+        title: 'Property County',
+        label: appraisal.label,
+        value: appraisal.answer
+      },
       mapURI: `${baseMapUri}${mapQuery}`,
       status: `${status} / ${displayText}`,
       details: {
