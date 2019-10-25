@@ -235,7 +235,7 @@ const NoteUploader = props => {
 
   return (
     <Draggable handle=".title-bar">
-      <div className={classNames('new-note-file', { minimize: minimize })}>
+      <div className={classNames('new-note-file', { minimize })}>
         <div className="title-bar">
           <div className="title">
             <i className="fa fa-th" />
