@@ -339,15 +339,17 @@ const NoteUploader = props => {
 NoteUploader.propTypes = {
   documentId: PropTypes.string.isRequired,
   noteType: PropTypes.string.isRequired,
-  sourceId: PropTypes.string,
-  resourceType: PropTypes.string,
-  minimizeNote: PropTypes.bool
+  sourceId: PropTypes.string.isRequired,
+  resourceType: PropTypes.string.isRequired,
+  companyCode: PropTypes.string.isRequired,
+  state: PropTypes.string.isRequired,
+  product: PropTypes.string.isRequired,
+  user: PropTypes.object
 };
 
 const mapStateToProps = state => ({
   notes: state.notes,
-  user: state.authState.userProfile,
-  noteOptions: state.list.noteOptions || {}
+  user: state.authState.userProfile
 });
 
 export default connect(
