@@ -12,7 +12,8 @@ import {
   validation,
   Loader,
   Form,
-  Field
+  Field,
+  SectionLoader
 } from '@exzeo/core-ui';
 import { callService } from '@exzeo/core-ui/src/@Harmony';
 
@@ -41,10 +42,13 @@ const NoteUploader = props => {
   const [noteOptions, setNoteOptions] = useState({});
   const [minimize, setMinimize] = useState(false);
   const [uppy, setUppy] = useState(null);
+  const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
     const fetchNoteOptions = async () => {
       try {
+        setLoaded(false);
+
         const notesConfig = {
           service: 'notes',
           method: 'GET',
@@ -77,6 +81,8 @@ const NoteUploader = props => {
         );
       } catch (error) {
         console.error('Error fetching note options: ', error);
+      } finally {
+        setLoaded(true);
       }
     };
 
@@ -223,6 +229,14 @@ const NoteUploader = props => {
   const docTypeAnswers = docTypes
     ? docTypes.map(d => ({ answer: d, label: d }))
     : [];
+
+  if (!loaded) {
+    return (
+      <div className="new-note-file">
+        <SectionLoader />
+      </div>
+    );
+  }
 
   return (
     <Draggable handle=".title-bar">
