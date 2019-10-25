@@ -6,7 +6,7 @@ import {
 
 import * as listTypes from '../actionTypes/list.actionTypes';
 import { setAppError } from './error.actions';
-import { fetchNotes, fetchNoteOptions } from './notes.actions';
+import { fetchNotes } from './notes.actions';
 import { fetchDiaries } from './diary.actions';
 
 function setEnums(enums) {
@@ -49,13 +49,10 @@ export function getEnumsForQuoteWorkflow({
         state,
         agencyCode
       });
-      const noteOption = fetchNoteOptions('quoteNumber');
-
       // 2. new variable awaits the previous.
       const additionalInterestResponse = await additionalInterestQuestions;
       const agencyResponse = await agencyOption;
       const agentResponse = await agentOption;
-      const noteOptionResponse = await noteOption;
 
       const selectedAgent = agentResponse.filter(a => a.answer === agentCode);
 
@@ -63,8 +60,7 @@ export function getEnumsForQuoteWorkflow({
         setEnums({
           additionalInterestQuestions: additionalInterestResponse.data.data,
           agency: agencyResponse,
-          agent: selectedAgent,
-          noteOptions: noteOptionResponse
+          agent: selectedAgent
         })
       );
     } catch (error) {
@@ -114,34 +110,11 @@ export function getEnumsForPolicyWorkflow({ policyNumber }) {
       const additionalInterestResponse = await additionalInterestQuestions;
       const propertyAppraisalsResponse = await propertyAppraisals;
 
-      const noteOptions = await fetchNoteOptions('policyNumber');
-
       dispatch(
         setEnums({
           additionalInterestQuestions: additionalInterestResponse.data.data,
           propertyAppraisalQuestions:
-            propertyAppraisalsResponse.data.data[0].answers,
-          noteOptions
-        })
-      );
-    } catch (error) {
-      dispatch(setAppError(error));
-    }
-  };
-}
-
-/**
- *
- * @returns {Function}
- */
-export function getEnumsForAgencyWorkflow() {
-  return async dispatch => {
-    try {
-      const noteOptions = await fetchNoteOptions('agencyCode');
-
-      dispatch(
-        setEnums({
-          noteOptions
+            propertyAppraisalsResponse.data.data[0].answers
         })
       );
     } catch (error) {
