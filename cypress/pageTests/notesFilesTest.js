@@ -5,7 +5,7 @@ const addNoteCheck = text =>
     .wait('@getNoteOptions')
     .get('.new-note-file textarea[name="noteContent"]')
     .type(text)
-    .get('button[aria-label="submit-btn form-newNote"]')
+    .findDataTag('submit-button')
     .click()
     .wait('@fetchNotes')
     .goToNav('notes')
