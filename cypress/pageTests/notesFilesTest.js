@@ -2,6 +2,7 @@ const addNoteCheck = text =>
   cy
     .findDataTag('new-note')
     .click({ force: true })
+    .wait('@getNoteOptions')
     .get('.new-note-file textarea[name="noteContent"]')
     .type(text)
     .get('button[aria-label="submit-btn form-newNote"]')

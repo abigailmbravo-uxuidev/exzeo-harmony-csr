@@ -44,4 +44,6 @@ export const setRouteAliases = () =>
     .route('POST', '/svc?fetchEndorsementHistory')
     .as('fetchEndorsementHistory')
     .route('POST', '/svc?fetchFiles')
-    .as('fetchFiles');
+    .as('fetchFiles')
+    .route('POST', '/svc?getNoteOptions')
+    .as('getNoteOptions');
