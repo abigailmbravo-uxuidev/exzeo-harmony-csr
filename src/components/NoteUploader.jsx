@@ -243,19 +243,22 @@ const NoteUploader = props => {
             Note / File
           </div>
           <div className="controls note-file-header-button-group">
-            <button
-              className="btn btn-icon minimize-button"
+            <Button
+              className={Button.constants.classNames.icon}
+              dataTest="minimize-button"
+              customClass="minimize-button"
               onClick={handleMinimize}
             >
               <i className="fa fa-window-minimize" aria-hidden="true" />
-            </button>
-            <button
-              className="btn btn-icon header-cancel-button"
+            </Button>
+            <Button
+              className={Button.constants.classNames.icon}
+              dataTest="header-cancel-button"
+              customClass="header-cancel-button"
               onClick={handleClose}
-              type="submit"
             >
               <i className="fa fa-times" aria-hidden="true" />
-            </button>
+            </Button>
           </div>
         </div>
         <div className="mainContainer">
@@ -322,6 +325,7 @@ const NoteUploader = props => {
                 <div className="buttons note-file-footer-button-group">
                   <Button
                     className={Button.constants.classNames.secondary}
+                    customClass="form-newNote"
                     dataTest="cancel-button"
                     onClick={handleClose}
                   >
@@ -329,6 +333,7 @@ const NoteUploader = props => {
                   </Button>
                   <Button
                     className={Button.constants.classNames.primary}
+                    customClass="form-newNote"
                     dataTest="submit-button"
                     type="submit"
                   >
