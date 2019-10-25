@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 // import { Field, Form, reduxForm } from 'redux-form';
@@ -24,6 +24,7 @@ import {
 } from '../state/actions/ui.actions';
 import { fetchNotes } from '../state/actions/notes.actions';
 import { setAppError } from '../state/actions/error.actions';
+import { NOTE_OPTION_TYPE } from '../constants/notes';
 
 import '@uppy/core/dist/style.min.css';
 
@@ -37,44 +38,66 @@ export const renderNotes = ({ input, label, meta: { touched, error } }) => (
 export const validateContentField = value =>
   value ? undefined : 'Note Content Required';
 
-export class NoteUploader extends Component {
-  constructor(props) {
-    super(props);
+const NoteUploader = props => {
+  const [noteOptions, setNoteOptions] = useState({});
+  const [loaded, setLoaded] = useState(false);
+  const [minimize, setMinimize] = useState(false);
 
-    const idToken = localStorage.getItem('id_token');
+  useEffect(() => {
+    const fetchNoteOptions = async () => {
+      setLoaded(false);
+      try {
+        const notesConfig = {
+          service: 'notes',
+          method: 'GET',
+          path: `v1/noteOptions?numberType=${
+            NOTE_OPTION_TYPE[props.resourceType]
+          }`
+        };
 
-    const { companyCode, state, product, noteOptions } = props;
-
-    this.contactTypes = noteOptions.validContactTypes || [];
-    this.docTypes = noteOptions.validFileTypes || [];
-
-    this.uppy = new Uppy({
-      autoProceed: false,
-      restrictions: {
-        maxFileSize: process.env.REACT_APP_REQUEST_SIZE.slice(0, -2) * 1000000
-      },
-      meta: { documentId: this.props.documentId, companyCode, state, product },
-      onBeforeFileAdded: this.validateFile,
-      onBeforeUpload: this.validateUpload
-    }).use(XHRUpload, {
-      endpoint: `${process.env.REACT_APP_API_URL}/upload`,
-      fieldName: 'files[]',
-      headers: {
-        accept: 'application/json',
-        authorization: `bearer ${idToken}`
+        const response = await callService(notesConfig, 'getNoteOptions');
+        setNoteOptions(response.data.result);
+      } catch (error) {
+        console.error('Error fetching note options: ', error);
+      } finally {
+        setLoaded(true);
       }
-    });
-  }
+    };
 
-  state = {
-    minimize: false,
-    fileExtensions: {}
-  };
+    fetchNoteOptions();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [props.resourceType]);
 
-  initializeForm = () => {
-    const { resourceType } = this.props;
-    const contactType = this.contactTypes[0];
-    const backUpDocType = this.docTypes[0];
+  // constructor(props) {
+  //   super(props);
+
+  const { companyCode, state, product } = props;
+
+  const contactTypes = noteOptions.validContactTypes || [];
+  const docTypes = noteOptions.validFileTypes || [];
+
+  const idToken = localStorage.getItem('id_token');
+  const uppy = new Uppy({
+    autoProceed: false,
+    restrictions: {
+      maxFileSize: process.env.REACT_APP_REQUEST_SIZE.slice(0, -2) * 1000000
+    },
+    meta: { documentId: props.documentId, companyCode, state, product },
+    onBeforeFileAdded: validateFile,
+    onBeforeUpload: validateUpload
+  }).use(XHRUpload, {
+    endpoint: `${process.env.REACT_APP_API_URL}/upload`,
+    fieldName: 'files[]',
+    headers: {
+      accept: 'application/json',
+      authorization: `bearer ${idToken}`
+    }
+  });
+
+  const initializeForm = () => {
+    const { resourceType } = props;
+    const contactType = contactTypes[0];
+    const backUpDocType = docTypes[0];
 
     return {
       contactType,
@@ -84,33 +107,33 @@ export class NoteUploader extends Component {
     };
   };
 
-  handleMinimize = () =>
-    this.setState(state => ({
-      minimize: !state.minimize
+  const handleMinimize = () =>
+    setMinimize(state => ({
+      minimize: !minimize
     }));
 
-  handleClose = () => this.props.toggleNote({});
+  const handleClose = () => props.toggleNote({});
 
-  validateFile = file => {
+  const validateFile = file => {
     if (file.data.size === 0) {
-      this.uppy.info('The file is empty.');
+      uppy.info('The file is empty.');
       return false;
     }
 
     if (!file.data.name.includes('.')) {
-      this.uppy.info('Uploads must have a file extension.');
+      uppy.info('Uploads must have a file extension.');
       return false;
     }
   };
 
-  validateUpload = files => {
+  const validateUpload = files => {
     if (Object.keys(files).some(id => !files[id].meta.name.includes('.'))) {
-      this.uppy.info('The file name must have a file extension.');
+      uppy.info('The file name must have a file extension.');
       return false;
     }
   };
 
-  submitNote = async data => {
+  const submitNote = async data => {
     const {
       companyCode,
       state,
@@ -123,7 +146,7 @@ export class NoteUploader extends Component {
       fetchNotes,
       toggleDiary,
       setNotesSynced
-    } = this.props;
+    } = props;
 
     const mapResourceToNumber = {
       Policy: 'policyNumber',
@@ -132,11 +155,11 @@ export class NoteUploader extends Component {
       Agent: 'agentCode'
     };
 
-    const filelist = Object.values(this.uppy.getState().files);
+    const filelist = Object.values(uppy.getState().files);
     const uploads = filelist.filter(file => file.progress.uploadComplete);
 
     if (filelist.length > uploads.length) {
-      this.uppy.info('You have files that are not uploaded.', 'error');
+      uppy.info('You have files that are not uploaded.', 'error');
       return false;
     }
 
@@ -196,135 +219,129 @@ export class NoteUploader extends Component {
     } catch (err) {
       setAppError({ message: err });
     } finally {
-      this.handleClose();
+      handleClose();
     }
   };
 
-  render() {
-    const { noteType } = this.props;
+  const { noteType } = props;
 
-    const contactTypeAnswers = this.contactTypes
-      ? this.contactTypes.map(c => ({ answer: c, label: c }))
-      : [];
+  const contactTypeAnswers = contactTypes
+    ? contactTypes.map(c => ({ answer: c, label: c }))
+    : [];
 
-    const docTypeAnswers = this.docTypes
-      ? this.docTypes.map(d => ({ answer: d, label: d }))
-      : [];
+  const docTypeAnswers = docTypes
+    ? docTypes.map(d => ({ answer: d, label: d }))
+    : [];
 
-    return (
-      <Draggable handle=".title-bar">
-        <div
-          className={
-            this.state.minimize ? 'new-note-file minimize' : 'new-note-file'
-          }
-        >
-          <div className="title-bar">
-            <div className="title">
-              <i className="fa fa-th" />
-              Note / File
-            </div>
-            <div className="controls note-file-header-button-group">
-              <button
-                className="btn btn-icon minimize-button"
-                onClick={this.handleMinimize}
-              >
-                <i className="fa fa-window-minimize" aria-hidden="true" />
-              </button>
-              <button
-                className="btn btn-icon header-cancel-button"
-                onClick={this.handleClose}
-                type="submit"
-              >
-                <i className="fa fa-times" aria-hidden="true" />
-              </button>
-            </div>
+  return (
+    <Draggable handle=".title-bar">
+      <div className={minimize ? 'new-note-file minimize' : 'new-note-file'}>
+        <div className="title-bar">
+          <div className="title">
+            <i className="fa fa-th" />
+            Note / File
           </div>
-          <div className="mainContainer">
-            <Form
-              id="NoteUploader"
-              onSubmit={this.submitNote}
-              initialValues={this.initializeForm()}
-              subscription={{ submitting: true }}
+          <div className="controls note-file-header-button-group">
+            <button
+              className="btn btn-icon minimize-button"
+              onClick={handleMinimize}
             >
-              {({ handleSubmit, submitting }) => (
-                <form id="NoteUploader" onSubmit={handleSubmit}>
-                  {submitting && <Loader />}
-                  <div className="content">
-                    <div className="note-details">
-                      <div className="form-group contact">
-                        <Field
-                          name="contactType"
-                          label="Contact"
-                          component={Select}
-                          answers={contactTypeAnswers}
-                          validate={validation.isRequired}
-                          dataTest="contactType"
-                        />
-                      </div>
-                      {noteType !== 'Agency Note' && (
-                        <div className="form-group diary-checkbox">
-                          <Field
-                            component="input"
-                            name="openDiary"
-                            type="checkbox"
-                          />
-                          <label>Create & Open Diary On Save</label>
-                        </div>
-                      )}
-                    </div>
-                    <Field
-                      name="noteContent"
-                      component={renderNotes}
-                      validate={validateContentField}
-                      label="Note Content"
-                    />
-                    <Field
-                      name="fileType"
-                      label="File Type"
-                      styleName="file-type"
-                      component={Select}
-                      answers={docTypeAnswers}
-                      validate={validation.isRequired}
-                      dataTest="fileType"
-                    />
-                    <Dashboard
-                      uppy={this.uppy}
-                      maxHeight={350}
-                      proudlyDisplayPoweredByUppy={false}
-                      metaFields={[
-                        { id: 'name', name: 'Name', placeholder: 'file name' }
-                      ]}
-                      showProgressDetails
-                      hideProgressAfterFinish
-                    />
-                  </div>
-                  <div className="buttons note-file-footer-button-group">
-                    <button
-                      tabIndex="0"
-                      aria-label="cancel-btn form-newNote"
-                      className="btn btn-secondary cancel-button"
-                      onClick={this.handleClose}
-                    >
-                      Cancel
-                    </button>
-                    <button
-                      type="submit"
-                      tabIndex="0"
-                      aria-label="submit-btn form-newNote"
-                      className="btn btn-primary submit-button"
-                    >
-                      Save
-                    </button>
-                  </div>
-                </form>
-              )}
-            </Form>
+              <i className="fa fa-window-minimize" aria-hidden="true" />
+            </button>
+            <button
+              className="btn btn-icon header-cancel-button"
+              onClick={handleClose}
+              type="submit"
+            >
+              <i className="fa fa-times" aria-hidden="true" />
+            </button>
           </div>
         </div>
-      </Draggable>
-    );
-  }
-}
+        <div className="mainContainer">
+          <Form
+            id="NoteUploader"
+            onSubmit={submitNote}
+            initialValues={initializeForm()}
+            subscription={{ submitting: true }}
+          >
+            {({ handleSubmit, submitting }) => (
+              <form id="NoteUploader" onSubmit={handleSubmit}>
+                {submitting && <Loader />}
+                <div className="content">
+                  <div className="note-details">
+                    <div className="form-group contact">
+                      <Field
+                        name="contactType"
+                        label="Contact"
+                        component={Select}
+                        answers={contactTypeAnswers}
+                        validate={validation.isRequired}
+                        dataTest="contactType"
+                      />
+                    </div>
+                    {noteType !== 'Agency Note' && (
+                      <div className="form-group diary-checkbox">
+                        <Field
+                          component="input"
+                          name="openDiary"
+                          type="checkbox"
+                        />
+                        <label>Create & Open Diary On Save</label>
+                      </div>
+                    )}
+                  </div>
+                  <Field
+                    name="noteContent"
+                    component={renderNotes}
+                    validate={validateContentField}
+                    label="Note Content"
+                  />
+                  <Field
+                    name="fileType"
+                    label="File Type"
+                    styleName="file-type"
+                    component={Select}
+                    answers={docTypeAnswers}
+                    validate={validation.isRequired}
+                    dataTest="fileType"
+                  />
+                  <Dashboard
+                    uppy={uppy}
+                    maxHeight={350}
+                    proudlyDisplayPoweredByUppy={false}
+                    metaFields={[
+                      { id: 'name', name: 'Name', placeholder: 'file name' }
+                    ]}
+                    showProgressDetails
+                    hideProgressAfterFinish
+                  />
+                </div>
+                <div className="buttons note-file-footer-button-group">
+                  <button
+                    tabIndex="0"
+                    aria-label="cancel-btn form-newNote"
+                    className="btn btn-secondary cancel-button"
+                    onClick={handleClose}
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="submit"
+                    tabIndex="0"
+                    aria-label="submit-btn form-newNote"
+                    className="btn btn-primary submit-button"
+                  >
+                    Save
+                  </button>
+                </div>
+              </form>
+            )}
+          </Form>
+        </div>
+      </div>
+    </Draggable>
+  );
+};
 
 NoteUploader.propTypes = {
   documentId: PropTypes.string.isRequired,
