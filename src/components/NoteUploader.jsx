@@ -13,7 +13,8 @@ import {
   Loader,
   Form,
   Field,
-  SectionLoader
+  SectionLoader,
+  Button
 } from '@exzeo/core-ui';
 import { callService } from '@exzeo/core-ui/src/@Harmony';
 
@@ -319,22 +320,20 @@ const NoteUploader = props => {
                   )}
                 </div>
                 <div className="buttons note-file-footer-button-group">
-                  <button
-                    tabIndex="0"
-                    aria-label="cancel-btn form-newNote"
-                    className="btn btn-secondary cancel-button"
+                  <Button
+                    className={Button.constants.classNames.secondary}
+                    dataTest="cancel-button"
                     onClick={handleClose}
                   >
                     Cancel
-                  </button>
-                  <button
+                  </Button>
+                  <Button
+                    className={Button.constants.classNames.primary}
+                    dataTest="submit-button"
                     type="submit"
-                    tabIndex="0"
-                    aria-label="submit-btn form-newNote"
-                    className="btn btn-primary submit-button"
                   >
                     Save
-                  </button>
+                  </Button>
                 </div>
               </form>
             )}
