@@ -339,11 +339,11 @@ const NoteUploader = props => {
 NoteUploader.propTypes = {
   documentId: PropTypes.string.isRequired,
   noteType: PropTypes.string.isRequired,
-  sourceId: PropTypes.string.isRequired,
   resourceType: PropTypes.string.isRequired,
-  companyCode: PropTypes.string.isRequired,
-  state: PropTypes.string.isRequired,
-  product: PropTypes.string.isRequired,
+  sourceId: PropTypes.string,
+  companyCode: PropTypes.string,
+  state: PropTypes.string,
+  product: PropTypes.string,
   user: PropTypes.object
 };
 
