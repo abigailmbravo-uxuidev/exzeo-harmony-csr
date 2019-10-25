@@ -90,10 +90,6 @@ const NoteUploader = props => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [props.resourceType]);
 
-  const { companyCode, state, product } = props;
-  const contactTypes = noteOptions.validContactTypes || [];
-  const docTypes = noteOptions.validFileTypes || [];
-
   const initializeForm = () => {
     const { resourceType } = props;
     const contactType = contactTypes[0];
@@ -222,13 +218,12 @@ const NoteUploader = props => {
 
   const { noteType } = props;
 
-  const contactTypeAnswers = contactTypes
-    ? contactTypes.map(c => ({ answer: c, label: c }))
-    : [];
+  const { companyCode, state, product } = props;
 
-  const docTypeAnswers = docTypes
-    ? docTypes.map(d => ({ answer: d, label: d }))
-    : [];
+  const contactTypes = noteOptions.validContactTypes || [];
+  const docTypes = noteOptions.validFileTypes || [];
+  const contactTypeAnswers = contactTypes.map(c => ({ answer: c, label: c }));
+  const docTypeAnswers = docTypes.map(d => ({ answer: d, label: d }));
 
   if (!loaded) {
     return (
