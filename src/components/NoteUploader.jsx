@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-// import { Field, Form, reduxForm } from 'redux-form';
 import classNames from 'classnames';
 import moment from 'moment';
 import Uppy from '@uppy/core';
@@ -40,13 +39,11 @@ export const validateContentField = value =>
 
 const NoteUploader = props => {
   const [noteOptions, setNoteOptions] = useState({});
-  const [loaded, setLoaded] = useState(false);
   const [minimize, setMinimize] = useState(false);
   const [uppy, setUppy] = useState(null);
 
   useEffect(() => {
     const fetchNoteOptions = async () => {
-      setLoaded(false);
       try {
         const notesConfig = {
           service: 'notes',
@@ -74,14 +71,12 @@ const NoteUploader = props => {
             fieldName: 'files[]',
             headers: {
               accept: 'application/json',
-              authorization: `bearer ${idToken}`
+              authorization: `bearer ${localStorage.getItem('id_token')}`
             }
           })
         );
       } catch (error) {
         console.error('Error fetching note options: ', error);
-      } finally {
-        setLoaded(true);
       }
     };
 
@@ -89,15 +84,9 @@ const NoteUploader = props => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [props.resourceType]);
 
-  // constructor(props) {
-  //   super(props);
-
   const { companyCode, state, product } = props;
-
   const contactTypes = noteOptions.validContactTypes || [];
   const docTypes = noteOptions.validFileTypes || [];
-
-  const idToken = localStorage.getItem('id_token');
 
   const initializeForm = () => {
     const { resourceType } = props;
@@ -112,10 +101,7 @@ const NoteUploader = props => {
     };
   };
 
-  const handleMinimize = () =>
-    setMinimize(state => ({
-      minimize: !minimize
-    }));
+  const handleMinimize = () => setMinimize(!minimize);
 
   const handleClose = () => props.toggleNote({});
 
@@ -240,7 +226,7 @@ const NoteUploader = props => {
 
   return (
     <Draggable handle=".title-bar">
-      <div className={minimize ? 'new-note-file minimize' : 'new-note-file'}>
+      <div className={classNames('new-note-file', { minimize: minimize })}>
         <div className="title-bar">
           <div className="title">
             <i className="fa fa-th" />
