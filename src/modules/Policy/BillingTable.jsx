@@ -12,7 +12,8 @@ const BillingTable = ({ initialValues }) => {
         additionalInterests.find(p => initialValues.billToId === p._id) || {};
       billToName = `${ai.type}: ${ai.name1} ${ai.name2}`;
     } else {
-      const ph = policyHolders.find(p => initialValues.billToId === p._id);
+      const ph =
+        policyHolders.find(p => initialValues.billToId === p._id) || {};
       billToName = `Policyholder: ${ph.firstName} ${ph.lastName}`;
     }
 
