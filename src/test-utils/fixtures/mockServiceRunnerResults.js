@@ -235,7 +235,7 @@ export const noteOptionsResult = {
       product: 'HO3',
       state: 'FL',
       numberType: 'quoteNumber',
-      validFileTypes: ['Contact1', 'Contact2', 'Contact3', 'Contact4', 'Other'],
+      validFileTypes: ['Contact1', 'Contact2', 'Contact3', 'Contact4'],
       validContactTypes: ['File1', 'File2', 'File3', 'File4', 'Other']
     }
   }

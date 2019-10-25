@@ -1,5 +1,5 @@
 import React from 'react';
-import { reduxForm } from 'redux-form';
+import { waitForElement } from 'react-testing-library';
 
 import {
   renderWithForm,
@@ -22,8 +22,7 @@ const noteFileModalFields = [
       { value: 'Contact1' },
       { value: 'Contact2' },
       { value: 'Contact3' },
-      { value: 'Contact4' },
-      { value: 'Other' }
+      { value: 'Contact4' }
     ],
     required: true
   },
@@ -52,10 +51,13 @@ describe('Note Uploader Testing', () => {
     handleSubmit: x => x,
     noteType: 'Quote Note',
     submitting: false,
-    documentId: '12-345-67'
+    documentId: '12-345-67',
+    companyCode: 'TTIC',
+    product: 'HO3',
+    state: 'FL'
   };
 
-  it('Note/File Modal', () => {
+  it('Note/File Modal', async () => {
     const props = {
       ...baseProps,
       resourceType: 'Quote'
@@ -65,10 +67,15 @@ describe('Note Uploader Testing', () => {
       <NoteUploader {...props} />
     );
 
+    await waitForElement(() => [
+      getByTestId('contactType'),
+      getByTestId('fileType')
+    ]);
+
     noteFileModalFields.forEach(field => {
       if (field.type === 'select') {
         checkLabel(getByTestId, field);
-        //  checkSelect(getByTestId, field);
+        checkSelect(getByTestId, field);
       }
       if (field.type === 'text') {
         checkLabel(getByPlaceholderText, field);
