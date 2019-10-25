@@ -42,6 +42,7 @@ const NoteUploader = props => {
   const [noteOptions, setNoteOptions] = useState({});
   const [loaded, setLoaded] = useState(false);
   const [minimize, setMinimize] = useState(false);
+  const [uppy, setUppy] = useState(null);
 
   useEffect(() => {
     const fetchNoteOptions = async () => {
@@ -57,6 +58,26 @@ const NoteUploader = props => {
 
         const response = await callService(notesConfig, 'getNoteOptions');
         setNoteOptions(response.data.result);
+
+        setUppy(
+          new Uppy({
+            autoProceed: false,
+            restrictions: {
+              maxFileSize:
+                process.env.REACT_APP_REQUEST_SIZE.slice(0, -2) * 1000000
+            },
+            meta: { documentId: props.documentId, companyCode, state, product },
+            onBeforeFileAdded: validateFile,
+            onBeforeUpload: validateUpload
+          }).use(XHRUpload, {
+            endpoint: `${process.env.REACT_APP_API_URL}/upload`,
+            fieldName: 'files[]',
+            headers: {
+              accept: 'application/json',
+              authorization: `bearer ${idToken}`
+            }
+          })
+        );
       } catch (error) {
         console.error('Error fetching note options: ', error);
       } finally {
@@ -77,22 +98,6 @@ const NoteUploader = props => {
   const docTypes = noteOptions.validFileTypes || [];
 
   const idToken = localStorage.getItem('id_token');
-  const uppy = new Uppy({
-    autoProceed: false,
-    restrictions: {
-      maxFileSize: process.env.REACT_APP_REQUEST_SIZE.slice(0, -2) * 1000000
-    },
-    meta: { documentId: props.documentId, companyCode, state, product },
-    onBeforeFileAdded: validateFile,
-    onBeforeUpload: validateUpload
-  }).use(XHRUpload, {
-    endpoint: `${process.env.REACT_APP_API_URL}/upload`,
-    fieldName: 'files[]',
-    headers: {
-      accept: 'application/json',
-      authorization: `bearer ${idToken}`
-    }
-  });
 
   const initializeForm = () => {
     const { resourceType } = props;
@@ -305,16 +310,18 @@ const NoteUploader = props => {
                     validate={validation.isRequired}
                     dataTest="fileType"
                   />
-                  <Dashboard
-                    uppy={uppy}
-                    maxHeight={350}
-                    proudlyDisplayPoweredByUppy={false}
-                    metaFields={[
-                      { id: 'name', name: 'Name', placeholder: 'file name' }
-                    ]}
-                    showProgressDetails
-                    hideProgressAfterFinish
-                  />
+                  {uppy && (
+                    <Dashboard
+                      uppy={uppy}
+                      maxHeight={350}
+                      proudlyDisplayPoweredByUppy={false}
+                      metaFields={[
+                        { id: 'name', name: 'Name', placeholder: 'file name' }
+                      ]}
+                      showProgressDetails
+                      hideProgressAfterFinish
+                    />
+                  )}
                 </div>
                 <div className="buttons note-file-footer-button-group">
                   <button
