@@ -206,10 +206,10 @@ export const homeAndLocationFields = [
     label: 'Fire Station Dist.'
   },
   {
-    dataTest: 'property.floodZone',
+    dataTest: 'property.FEMAfloodZone',
     type: 'select',
     disabled: true,
-    label: 'Flood Zone'
+    label: 'FEMA Flood Zone'
   },
   {
     dataTest: 'property.id',
