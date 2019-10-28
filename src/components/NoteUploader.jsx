@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useState, useCallback, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import classNames from 'classnames';
@@ -56,8 +56,28 @@ const NoteUploader = ({
 }) => {
   const [noteOptions, setNoteOptions] = useState({});
   const [minimize, setMinimize] = useState(false);
-  const [uppy, setUppy] = useState(null);
   const [loaded, setLoaded] = useState(false);
+
+  const uppy = useRef(null);
+
+  useEffect(() => {
+    uppy.current = new Uppy({
+      autoProceed: false,
+      restrictions: {
+        maxFileSize: process.env.REACT_APP_REQUEST_SIZE.slice(0, -2) * 1000000
+      },
+      meta: { documentId: documentId, companyCode, state, product },
+      onBeforeFileAdded: validateFile,
+      onBeforeUpload: validateUpload
+    }).use(XHRUpload, {
+      endpoint: `${process.env.REACT_APP_API_URL}/upload`,
+      fieldName: 'files[]',
+      headers: {
+        accept: 'application/json',
+        authorization: `bearer ${localStorage.getItem('id_token')}`
+      }
+    });
+  }, []);
 
   useEffect(() => {
     const fetchNoteOptions = async () => {
@@ -72,26 +92,6 @@ const NoteUploader = ({
 
         const response = await callService(notesConfig, 'getNoteOptions');
         setNoteOptions(response.data.result);
-
-        setUppy(
-          new Uppy({
-            autoProceed: false,
-            restrictions: {
-              maxFileSize:
-                process.env.REACT_APP_REQUEST_SIZE.slice(0, -2) * 1000000
-            },
-            meta: { documentId: documentId, companyCode, state, product },
-            onBeforeFileAdded: validateFile,
-            onBeforeUpload: validateUpload
-          }).use(XHRUpload, {
-            endpoint: `${process.env.REACT_APP_API_URL}/upload`,
-            fieldName: 'files[]',
-            headers: {
-              accept: 'application/json',
-              authorization: `bearer ${localStorage.getItem('id_token')}`
-            }
-          })
-        );
       } catch (error) {
         console.error('Error fetching note options: ', error);
       } finally {
@@ -122,12 +122,12 @@ const NoteUploader = ({
   const validateFile = useCallback(
     file => {
       if (file.data.size === 0) {
-        uppy.info('The file is empty.');
+        uppy.current.info('The file is empty.');
         return false;
       }
 
       if (!file.data.name.includes('.')) {
-        uppy.info('Uploads must have a file extension.');
+        uppy.current.info('Uploads must have a file extension.');
         return false;
       }
     },
@@ -137,7 +137,7 @@ const NoteUploader = ({
   const validateUpload = useCallback(
     files => {
       if (Object.keys(files).some(id => !files[id].meta.name.includes('.'))) {
-        uppy.info('The file name must have a file extension.');
+        uppy.current.info('The file name must have a file extension.');
         return false;
       }
     },
@@ -152,11 +152,11 @@ const NoteUploader = ({
       Agent: 'agentCode'
     };
 
-    const filelist = Object.values(uppy.getState().files);
+    const filelist = Object.values(uppy.current.getState().files);
     const uploads = filelist.filter(file => file.progress.uploadComplete);
 
     if (filelist.length > uploads.length) {
-      uppy.info('You have files that are not uploaded.', 'error');
+      uppy.current.info('You have files that are not uploaded.', 'error');
       return false;
     }
 
@@ -308,9 +308,9 @@ const NoteUploader = ({
                     validate={validation.isRequired}
                     dataTest="fileType"
                   />
-                  {uppy && (
+                  {uppy && uppy.current && (
                     <Dashboard
-                      uppy={uppy}
+                      uppy={uppy.current}
                       maxHeight={350}
                       proudlyDisplayPoweredByUppy={false}
                       metaFields={[
