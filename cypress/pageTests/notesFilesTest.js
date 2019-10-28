@@ -4,7 +4,7 @@ const addNoteCheck = text =>
     .click({ force: true })
     .wait('@getNoteOptions')
     .get('.new-note-file textarea[name="noteContent"]')
-    .type(text)
+    .type(`{selectall}{backspace}${text}`, { force: true })
     .findDataTag('submit-button')
     .click()
     .goToNav('notes')
