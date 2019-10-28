@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import classNames from 'classnames';
@@ -39,7 +39,21 @@ export const renderNotes = ({ input, label, meta: { touched, error } }) => (
 export const validateContentField = value =>
   value ? undefined : 'Note Content Required';
 
-const NoteUploader = props => {
+// TODO update Uppy to 1.0 as soon as we can
+const NoteUploader = ({
+  companyCode,
+  state,
+  product,
+  user,
+  noteType,
+  documentId,
+  sourceId,
+  resourceType,
+  fetchNotes,
+  toggleDiary,
+  toggleNote,
+  setNotesSynced
+}) => {
   const [noteOptions, setNoteOptions] = useState({});
   const [minimize, setMinimize] = useState(false);
   const [uppy, setUppy] = useState(null);
@@ -53,9 +67,7 @@ const NoteUploader = props => {
         const notesConfig = {
           service: 'notes',
           method: 'GET',
-          path: `v1/noteOptions?numberType=${
-            NOTE_OPTION_TYPE[props.resourceType]
-          }`
+          path: `v1/noteOptions?numberType=${NOTE_OPTION_TYPE[resourceType]}`
         };
 
         const response = await callService(notesConfig, 'getNoteOptions');
@@ -68,7 +80,7 @@ const NoteUploader = props => {
               maxFileSize:
                 process.env.REACT_APP_REQUEST_SIZE.slice(0, -2) * 1000000
             },
-            meta: { documentId: props.documentId, companyCode, state, product },
+            meta: { documentId: documentId, companyCode, state, product },
             onBeforeFileAdded: validateFile,
             onBeforeUpload: validateUpload
           }).use(XHRUpload, {
@@ -89,10 +101,9 @@ const NoteUploader = props => {
 
     fetchNoteOptions();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [props.resourceType]);
+  }, [resourceType]);
 
   const initializeForm = () => {
-    const { resourceType } = props;
     const contactType = contactTypes[0];
     const backUpDocType = docTypes[0];
 
@@ -106,42 +117,34 @@ const NoteUploader = props => {
 
   const handleMinimize = () => setMinimize(!minimize);
 
-  const handleClose = () => props.toggleNote({});
+  const handleClose = () => toggleNote({});
 
-  const validateFile = file => {
-    if (file.data.size === 0) {
-      uppy.info('The file is empty.');
-      return false;
-    }
+  const validateFile = useCallback(
+    file => {
+      if (file.data.size === 0) {
+        uppy.info('The file is empty.');
+        return false;
+      }
 
-    if (!file.data.name.includes('.')) {
-      uppy.info('Uploads must have a file extension.');
-      return false;
-    }
-  };
+      if (!file.data.name.includes('.')) {
+        uppy.info('Uploads must have a file extension.');
+        return false;
+      }
+    },
+    [uppy]
+  );
 
-  const validateUpload = files => {
-    if (Object.keys(files).some(id => !files[id].meta.name.includes('.'))) {
-      uppy.info('The file name must have a file extension.');
-      return false;
-    }
-  };
+  const validateUpload = useCallback(
+    files => {
+      if (Object.keys(files).some(id => !files[id].meta.name.includes('.'))) {
+        uppy.info('The file name must have a file extension.');
+        return false;
+      }
+    },
+    [uppy]
+  );
 
   const submitNote = async data => {
-    const {
-      companyCode,
-      state,
-      product,
-      user,
-      noteType,
-      documentId,
-      sourceId,
-      resourceType,
-      fetchNotes,
-      toggleDiary,
-      setNotesSynced
-    } = props;
-
     const mapResourceToNumber = {
       Policy: 'policyNumber',
       Quote: 'quoteNumber',
@@ -216,10 +219,6 @@ const NoteUploader = props => {
       handleClose();
     }
   };
-
-  const { noteType } = props;
-
-  const { companyCode, state, product } = props;
 
   const contactTypes = noteOptions.validContactTypes || [];
   const docTypes = noteOptions.validFileTypes || [];
