@@ -29,9 +29,20 @@ import { NOTE_OPTION_TYPE } from '../constants/notes';
 
 import '@uppy/core/dist/style.min.css';
 
-export const renderNotes = ({ input, label, meta: { touched, error } }) => (
+export const renderNotes = ({
+  input,
+  label,
+  dataTest,
+  meta: { touched, error }
+}) => (
   <div className={`${touched && error ? 'error' : ''} text-area-wrapper`}>
-    <textarea {...input} placeholder={label} rows="10" cols="40" />
+    <textarea
+      {...input}
+      placeholder={label}
+      data-test={dataTest}
+      rows="10"
+      cols="40"
+    />
     {touched && error && <span className="error-message">{error}</span>}
   </div>
 );
@@ -299,6 +310,7 @@ const NoteUploader = ({
                     component={renderNotes}
                     validate={validateContentField}
                     label="Note Content"
+                    dataTest="noteContent"
                   />
                   <Field
                     name="fileType"
