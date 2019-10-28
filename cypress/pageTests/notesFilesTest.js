@@ -7,9 +7,11 @@ const addNoteCheck = text =>
     .type(text)
     .findDataTag('submit-button')
     .click()
-    .wait('@fetchNotes')
     .goToNav('notes')
-    .get('div')
+    .wait('@fetchNotes')
+    .get('.table tbody')
+    .find('tr')
+    .find('td')
     .contains(text);
 
 export default () => {
