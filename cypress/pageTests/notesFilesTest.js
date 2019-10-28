@@ -3,7 +3,7 @@ const addNoteCheck = text =>
     .findDataTag('new-note')
     .click({ force: true })
     .wait('@getNoteOptions')
-    .get('.new-note-file textarea[name="noteContent"]')
+    .findDataTag('noteContent')
     .type(`{selectall}{backspace}${text}`, { force: true })
     .findDataTag('submit-button')
     .click()
