@@ -77,6 +77,7 @@ const NoteUploader = ({
         authorization: `bearer ${localStorage.getItem('id_token')}`
       }
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
