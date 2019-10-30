@@ -26,8 +26,7 @@ const CoverageWatcherAF3 = ({ formValues }) => {
             {value => {
               if (
                 value / 4 >
-                (_get(formValues, 'coverageLimits.personalProperty.value', 0) ||
-                  0)
+                _get(formValues, 'coverageLimits.personalProperty.value', 0)
               ) {
                 onChange(false);
               }
