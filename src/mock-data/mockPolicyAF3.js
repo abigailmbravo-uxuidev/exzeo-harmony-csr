@@ -454,7 +454,11 @@ const mock = {
                         {
                           label: 'BFE Indicator',
                           items: [
-                            { format: '', path: 'property.baseFloodElevation' }
+                            {
+                              format: '',
+                              path:
+                                'underwritingAnswers.elevationDifference.answer'
+                            }
                           ]
                         },
                         {
@@ -1495,7 +1499,7 @@ const mock = {
                     {
                       id: '75f752a8-44465678-4d81-b3f2-55465468788',
                       type: '$INPUT',
-                      path: 'property.baseFloodElevation',
+                      path: 'underwritingAnswers.elevationDifference.answer',
                       dependencies: [],
                       data: {
                         component: 'text',
@@ -1507,10 +1511,10 @@ const mock = {
                         }
                       },
                       formData: {
-                        path: 'property.baseFloodElevation',
+                        path: 'underwritingAnswers.elevationDifference.answer',
                         metaData: {
                           target:
-                            '${it._TEMP_INITIAL_VALUES.property.baseFloodElevation || " "}'
+                            '${it._TEMP_INITIAL_VALUES.underwritingAnswers.elevationDifference.answer || " "}'
                         }
                       },
                       children: []
