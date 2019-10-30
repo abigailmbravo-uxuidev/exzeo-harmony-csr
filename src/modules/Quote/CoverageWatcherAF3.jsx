@@ -10,18 +10,30 @@ const CoverageWatcherAF3 = ({ formValues }) => {
       subscription={{}}
     >
       {({ input: { onChange } }) => (
-        <OnChangeListener name="coverageLimits.personalProperty.value">
-          {value => {
-            if (
-              Math.ceil(
+        <React.Fragment>
+          <OnChangeListener name="coverageLimits.personalProperty.value">
+            {value => {
+              if (
                 _get(formValues, 'coverageLimits.building.value', 0) / 4 >
-                  (value || 0)
-              )
-            ) {
-              onChange(false);
-            }
-          }}
-        </OnChangeListener>
+                (value || 0)
+              ) {
+                onChange(false);
+              }
+            }}
+          </OnChangeListener>
+
+          <OnChangeListener name="coverageLimits.building.value">
+            {value => {
+              if (
+                value / 4 >
+                (_get(formValues, 'coverageLimits.personalProperty.value', 0) ||
+                  0)
+              ) {
+                onChange(false);
+              }
+            }}
+          </OnChangeListener>
+        </React.Fragment>
       )}
     </Field>
   );
