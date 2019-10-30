@@ -45,8 +45,9 @@ const EndorsementsWatcherAF3 = ({ formValues, initialValues }) => {
             <OnChangeListener name="coverageLimits.personalProperty.value">
               {value => {
                 if (
-                  _get(formValues, 'coverageLimits.building.value', 0) / 4 >
-                  (value || 0)
+                  Math.ceil(
+                    _get(formValues, 'coverageLimits.building.value', 0) / 4
+                  ) > (value || 0)
                 ) {
                   onChange(false);
                 }
@@ -56,7 +57,7 @@ const EndorsementsWatcherAF3 = ({ formValues, initialValues }) => {
             <OnChangeListener name="coverageLimits.building.value">
               {value => {
                 if (
-                  value / 4 >
+                  Math.ceil(value / 4) >
                   _get(formValues, 'coverageLimits.personalProperty.value', 0)
                 ) {
                   onChange(false);
