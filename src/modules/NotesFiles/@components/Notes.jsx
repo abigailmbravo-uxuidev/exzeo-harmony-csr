@@ -12,6 +12,8 @@ const Notes = props => {
     customHandlers: { setAppError }
   } = props;
   const options = {
+    defaultSortName: 'createdAt',
+    defaultSortOrder: 'desc',
     searchPanel: props => <SearchPanel searchField={props.searchField} />
   };
 
@@ -60,7 +62,6 @@ const Notes = props => {
         dataField="term"
         sortOrder="desc"
         dataAlign="center"
-        sortFunc={notesUtils.sortNumber}
         dataSort
       >
         Term

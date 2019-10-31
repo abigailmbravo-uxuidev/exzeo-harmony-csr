@@ -71,17 +71,13 @@ export const attachmentFilter = cell =>
 export const formatCreatedDate = createdDate =>
   date.formattedLocalDate(createdDate);
 
-export const sortNumber = (a, b, order) =>
-  order === 'desc' ? a.term - b.term : b.term - a.term;
-
 export const sortAuthor = (a, b, order) => {
-  if (!a.createdBy) return order === 'desc' ? -1 : 1;
-  if (!b.createdBy) return order === 'desc' ? 1 : -1;
+  if (!a.createdBy || !b.createdBy) return order === 'desc' ? -1 : 1;
   return order === 'desc'
-    ? a.createdBy.userName > b.createdBy.userName
+    ? a.createdBy.userName.toLowerCase() > b.createdBy.userName.toLowerCase()
       ? 1
       : -1
-    : a.createdBy.userName < b.createdBy.userName
+    : a.createdBy.userName.toLowerCase() < b.createdBy.userName.toLowerCase()
     ? 1
     : -1;
 };
