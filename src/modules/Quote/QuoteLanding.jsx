@@ -11,12 +11,11 @@ export const QuoteLanding = ({ match: { params }, createQuote }) => {
   useEffect(() => {
     async function initializeQuote() {
       try {
-        const { stateCode, propertyId, product } = params;
-        // TODO: fix user profile to match harmony-web userProfile.entity.companyCode
+        const { companyCode, stateCode, propertyId, product } = params;
         const newQuote = await createQuote(
           propertyId,
           stateCode,
-          'TTIC',
+          companyCode,
           product
         );
         setQuote(newQuote);

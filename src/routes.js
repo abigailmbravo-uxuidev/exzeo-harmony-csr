@@ -149,7 +149,7 @@ class Routes extends Component {
               />
               <Route
                 exact
-                path="/quote/new/:stateCode/:product/:propertyId"
+                path="/quote/new/:companyCode/:stateCode/:product/:propertyId"
                 render={props => <QuoteLanding auth={auth} {...props} />}
               />
               <Route
@@ -220,6 +220,7 @@ const mapStateToProps = state => ({
   appState: state.appState,
   authState: state.authState,
   ui: state.ui,
+  noteOptions: state.list.noteOptions,
   policyState: state.policyState
 });
 

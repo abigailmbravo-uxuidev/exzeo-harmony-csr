@@ -33,105 +33,6 @@ export const validate = values => {
   return errors;
 };
 
-// TODO: Pull this from the list service
-const contactTypeOptions = {
-  Agency: [
-    'Change name/FEIN',
-    'Change Agent',
-    'Change Other',
-    'Concern',
-    'Correspondence',
-    'Other'
-  ],
-  Agent: ['Change', 'Concern', 'Correspondence', 'Other'],
-  Quote: ['Agent', 'Policyholder', 'Inspector', 'Other'],
-  Policy: [
-    'Agent',
-    'Policyholder',
-    'Lienholder',
-    'Internal',
-    'Inspector',
-    'Other'
-  ]
-};
-
-const docTypeOptions = {
-  Agency: [
-    'Addendum',
-    'Agreement',
-    'Application',
-    'Book of Business',
-    'Correspondence',
-    'Department of Insurance',
-    'Errors and Omissions',
-    'Finance',
-    'License',
-    'Miscellaneous',
-    'Update Request',
-    'W9',
-    'W9 EIN'
-  ],
-  Agent: [],
-  Quote: [
-    '4-pt Inspection',
-    'Claims Documentation',
-    'Correspondence',
-    'Elevation Certificate',
-    'Flood Selection Form',
-    'Flood Waiver Form',
-    'HUD Statement',
-    'New Business Application',
-    'Other',
-    'Proof Of Prior Insurance',
-    'Proof Of Repair',
-    'Property Inspection',
-    'Protection Device Certificate',
-    'Quote Summary',
-    'Reinstatement Correspondence',
-    'Replacement Cost Estimator',
-    'Roof Inspection/permit',
-    'Sinkhole Loss Questionnaire',
-    'Sinkhole Selection/rejection Form',
-    'Wind Exclusion',
-    'Wind Mitigation'
-  ],
-  Policy: [
-    '4-pt Inspection',
-    'AI Change',
-    'AOR Change',
-    'Cancellation Request',
-    'Cancellation/non-renewal Notice',
-    'Claims Documentation',
-    'Correspondence',
-    'Electronic Payment Receipt',
-    'Elevation Certificate',
-    'Endorsement',
-    'Financial Document',
-    'Policy Packet',
-    'Flood Selection Form',
-    'Flood Waiver Form',
-    'HUD Statement',
-    'New Business Application',
-    'Occupancy Letter',
-    'Other',
-    'Proof Of Prior Insurance',
-    'Proof Of Repair',
-    'Property Inspection',
-    'Protection Device Certificate',
-    'Reinstatement Correspondence',
-    'Reinstatement Notice',
-    'Replacement Cost Estimator',
-    'Returned Mail',
-    'Roof Inspection/permit',
-    'Sinkhole Loss Questionnaire',
-    'Sinkhole Selection/rejection Form',
-    'Statement Of No Loss',
-    'UW Condition Letter',
-    'Wind Exclusion',
-    'Wind Mitigation'
-  ]
-};
-
 export class NoteUploader extends Component {
   constructor(props) {
     super(props);
@@ -164,20 +65,16 @@ export class NoteUploader extends Component {
   };
 
   componentDidMount() {
-    const { initialize, resourceType } = this.props;
+    const { initialize, resourceType, noteOptions } = this.props;
 
-    this.contactTypes = resourceType ? contactTypeOptions[resourceType] : [];
-    this.docTypes = resourceType ? docTypeOptions[resourceType] : [];
-
-    const defaultValues = {
-      Agency: 0,
-      Quote: 8,
-      Policy: 17
-    };
+    this.contactTypes = noteOptions.validContactTypes || [];
+    this.docTypes = noteOptions.validFileTypes || [];
 
     initialize({
       contactType: this.contactTypes[0],
-      fileType: this.docTypes[defaultValues[resourceType]]
+      fileType: ['Quote', 'Policy'].includes(resourceType)
+        ? 'Other'
+        : this.docTypes[0]
     });
   }
 
@@ -426,7 +323,8 @@ NoteUploader.propTypes = {
 
 const mapStateToProps = state => ({
   notes: state.notes,
-  user: state.authState.userProfile
+  user: state.authState.userProfile,
+  noteOptions: state.list.noteOptions || {}
 });
 
 export default connect(

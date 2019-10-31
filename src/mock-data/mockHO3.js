@@ -409,11 +409,11 @@ const mock = {
             {
               id: '75f752a8-8f5e-4d81-b3f2-228a4462d7dd',
               type: '$INPUT',
-              path: 'property.floodZone',
+              path: 'property.FEMAfloodZone',
               dependencies: [],
               data: {
                 component: 'select',
-                label: 'Flood Zone',
+                label: 'FEMA Flood Zone',
                 size: '3',
                 disabled: true,
                 dataSource: [

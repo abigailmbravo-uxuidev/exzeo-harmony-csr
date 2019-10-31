@@ -7,7 +7,6 @@ const mock = {
       { value: 'mailingAddress', component: 'Section' },
       { value: 'propertyAddress', component: 'Section' },
       { value: 'county', label: 'Property County' },
-      { value: 'floodZone', label: 'Flood Zone' },
       { value: 'effectiveDate', className: 'quoteEffectiveDate' },
       { value: 'currentPremium', label: 'Premium', className: 'premium' }
     ]
@@ -220,11 +219,11 @@ const mock = {
             {
               id: '44a250d8-a05e-4793-b5ee-c50d80d9b547',
               type: '$INPUT',
-              path: 'property.floodZone',
+              path: 'property.FEMAfloodZone',
               dependencies: [],
               data: {
                 component: 'text',
-                label: 'Flood Zone',
+                label: 'FEMA Flood Zone',
                 size: '6',
                 disabled: true
               },
@@ -248,11 +247,11 @@ const mock = {
             {
               id: '7839181e-4413-442d-a273-e65c08a17a19',
               type: '$INPUT',
-              path: 'property.baseFloodElevation',
+              path: 'property.floodterritory',
               dependencies: [],
               data: {
                 component: 'text',
-                label: 'Base Flood Elevation',
+                label: 'Territory',
                 size: '6',
                 disabled: true
               },
@@ -267,6 +266,20 @@ const mock = {
               data: {
                 component: 'text',
                 label: 'Residence Type',
+                size: '6',
+                disabled: true
+              },
+              formData: {},
+              children: []
+            },
+            {
+              id: '97874384-0638-43a8-9d76-671aa2f83438',
+              type: '$INPUT',
+              path: 'underwritingAnswers.elevationDifference.answer',
+              dependencies: [],
+              data: {
+                component: 'text',
+                label: 'BFE Indicator',
                 size: '6',
                 disabled: true
               },

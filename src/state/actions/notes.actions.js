@@ -87,3 +87,23 @@ export function fetchNotes(numbers, numberType) {
     }
   };
 }
+
+/**
+ *
+ * @param numberType
+ * @returns {Promise<Object>}
+ */
+export async function fetchNoteOptions(numberType) {
+  const notesConfig = {
+    service: 'notes',
+    method: 'GET',
+    path: `v1/noteOptions?numberType=${numberType}`
+  };
+
+  try {
+    const response = await callService(notesConfig, 'getNoteOptions');
+    return response.data.result;
+  } catch (err) {
+    return err;
+  }
+}
