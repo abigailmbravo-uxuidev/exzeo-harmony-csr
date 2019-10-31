@@ -4,6 +4,7 @@ const addNoteCheck = text =>
     .click({ force: true })
     .wait('@getNoteOptions')
     .findDataTag('noteContent')
+    .wait(1000)
     .type(`{selectall}{backspace}${text}`, { force: true })
     .findDataTag('submit-button')
     .click()
@@ -30,6 +31,7 @@ export default () => {
 
   cy.findDataTag('new-diary')
     .click({ force: true })
+    .wait(1000)
     .findDataTag('reason')
     .select('estate')
     .findDataTag('assignee')
