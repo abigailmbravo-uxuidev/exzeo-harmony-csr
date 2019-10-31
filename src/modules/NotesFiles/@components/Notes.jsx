@@ -59,6 +59,7 @@ const Notes = props => {
         columnClassName="term"
         dataField="term"
         sortOrder="desc"
+        dataAlign="center"
         sortFunc={notesUtils.sortNumber}
         dataSort
       >
