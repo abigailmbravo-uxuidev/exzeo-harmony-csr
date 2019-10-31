@@ -2,13 +2,16 @@ const addNoteCheck = text =>
   cy
     .findDataTag('new-note')
     .click({ force: true })
-    .get('.new-note-file textarea[name="noteContent"]')
-    .type(text)
-    .get('button[aria-label="submit-btn form-newNote"]')
+    .wait('@getNoteOptions')
+    .findDataTag('noteContent')
+    .type(`{selectall}{backspace}${text}`, { force: true })
+    .findDataTag('submit-button')
     .click()
-    .wait('@fetchNotes')
     .goToNav('notes')
-    .get('div')
+    .wait('@fetchNotes')
+    .get('.table tbody')
+    .find('tr')
+    .find('td')
     .contains(text);
 
 export default () => {

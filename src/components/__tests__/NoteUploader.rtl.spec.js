@@ -1,13 +1,17 @@
 import React from 'react';
-import { reduxForm } from 'redux-form';
+import { waitForElement } from 'react-testing-library';
 
 import {
   renderWithForm,
   checkLabel,
   checkSelect,
-  checkTextInput
+  checkTextInput,
+  mockServiceRunner,
+  noteOptionsResult
 } from '../../test-utils';
-import { NoteUploader } from '../NoteUploader';
+import NoteUploader from '../NoteUploader';
+
+mockServiceRunner(noteOptionsResult);
 
 const noteFileModalFields = [
   {
@@ -15,10 +19,10 @@ const noteFileModalFields = [
     label: 'Contact',
     type: 'select',
     values: [
-      { value: 'Agent' },
-      { value: 'Policyholder' },
-      { value: 'Inspector' },
-      { value: 'Other' }
+      { value: 'Contact1' },
+      { value: 'Contact2' },
+      { value: 'Contact3' },
+      { value: 'Contact4' }
     ],
     required: true
   },
@@ -32,14 +36,10 @@ const noteFileModalFields = [
     label: 'File Type',
     type: 'select',
     values: [
-      { value: '4-pt Inspection' },
-      { value: 'Claims Documentation' },
-      { value: 'Correspondence' },
-      { value: 'Elevation Certificate' },
-      { value: 'Flood Selection Form' },
-      { value: 'Flood Waiver Form' },
-      { value: 'HUD Statement' },
-      { value: 'New Business Application' },
+      { value: 'File1' },
+      { value: 'File2' },
+      { value: 'File3' },
+      { value: 'File4' },
       { value: 'Other' }
     ],
     required: true
@@ -52,42 +52,25 @@ describe('Note Uploader Testing', () => {
     noteType: 'Quote Note',
     submitting: false,
     documentId: '12-345-67',
-    noteOptions: {
-      validContactTypes: ['Agent', 'Policyholder', 'Inspector', 'Other'],
-      validFileTypes: [
-        '4-pt Inspection',
-        'Claims Documentation',
-        'Correspondence',
-        'Elevation Certificate',
-        'Flood Selection Form',
-        'Flood Waiver Form',
-        'HUD Statement',
-        'New Business Application',
-        'Other'
-      ]
-    }
+    companyCode: 'TTIC',
+    product: 'HO3',
+    state: 'FL'
   };
 
-  it('Note/File Modal', () => {
+  it('Note/File Modal', async () => {
     const props = {
       ...baseProps,
       resourceType: 'Quote'
     };
-    const state = {
-      notes: [],
-      authState: {
-        userProfile: {}
-      }
-    };
-
-    const NoteUploaderForm = reduxForm({
-      form: 'NoteUploader'
-    })(NoteUploader);
 
     const { getByTestId, getByPlaceholderText } = renderWithForm(
-      <NoteUploaderForm {...props} />,
-      { state }
+      <NoteUploader {...props} />
     );
+
+    await waitForElement(() => [
+      getByTestId('contactType'),
+      getByTestId('fileType')
+    ]);
 
     noteFileModalFields.forEach(field => {
       if (field.type === 'select') {

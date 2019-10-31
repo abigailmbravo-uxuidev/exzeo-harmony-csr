@@ -66,7 +66,6 @@ export default {
     premiumFinance: [],
     order: [],
     agency: [],
-    agent: [],
-    noteOptions: {}
+    agent: []
   }
 };
