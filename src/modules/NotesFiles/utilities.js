@@ -5,11 +5,16 @@ export const mergeNotes = (notes, files) => {
   const fileList = notes
     .reduce((list, note) => [...list, ...note.noteAttachments], [])
     .map(n => n.fileUrl);
+
+  const getTerm = number =>
+    number && number.includes('-') ? Number(number.split('-').pop()) : 1;
+
   const fileNotes = files.reduce((filtered, file) => {
     if (!fileList.includes(file.fileUrl)) {
       const newNote = {
         _id: file.envelopeId ? file.envelopeId : file.fileUrl,
         contactType: 'system',
+        term: getTerm(file.policyNumber),
         createdBy: { userName: 'System', userId: file.createdBy },
         createdAt: moment.unix(file.createdDate),
         noteAttachments: [
@@ -24,7 +29,12 @@ export const mergeNotes = (notes, files) => {
     }
     return filtered;
   }, []);
-  return [...notes, ...fileNotes];
+
+  const upDatedNotes = notes.map(note => ({
+    term: getTerm(note.number),
+    ...note
+  }));
+  return [...upDatedNotes, ...fileNotes];
 };
 
 export const filterNotesByType = (notes, type) => {
