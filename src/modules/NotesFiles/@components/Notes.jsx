@@ -56,8 +56,10 @@ const Notes = props => {
       </TableHeaderColumn>
       <TableHeaderColumn
         className="term"
-        columnClassName="created-by"
+        columnClassName="term"
         dataField="term"
+        sortOrder="desc"
+        sortFunc={notesUtils.sortNumber}
         dataSort
       >
         Term

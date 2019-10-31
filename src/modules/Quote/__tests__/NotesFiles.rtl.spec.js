@@ -13,6 +13,7 @@ import { QuoteWorkflow } from '../QuoteWorkflow';
 const pageHeaders = [{ text: 'History' }];
 const notesColumns = [
   'Created',
+  'Term',
   'Author',
   'Contact',
   'Note',
@@ -126,7 +127,7 @@ describe('Notes Files Testing', () => {
       notesColumns.forEach(col => checkArrows(col, 'order'));
 
       // Author, Filetype, and File sorts ascending, so if author is clicked we check sorting order ascending first.
-      if (['Author', 'File Type', 'File'].includes(columnToClick))
+      if (['Term', 'Author', 'File Type', 'File'].includes(columnToClick))
         checkOrder('asc');
       else checkOrder('desc');
 
