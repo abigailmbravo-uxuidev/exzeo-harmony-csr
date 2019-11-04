@@ -13,6 +13,7 @@ import { getZipcodeSettings } from './service.actions';
 import { toggleLoading } from './ui.actions';
 import cg from '../../utilities/cg';
 import { formatEndorsementData } from '../../modules/Policy/utilities';
+import { getDiaryOptions } from './diary.actions';
 /**
  * Reset policyState
  * @returns {{type: string}}
@@ -796,6 +797,9 @@ export function initializePolicyWorkflow(policyNumber) {
           policy.product,
           policy.property.physicalAddress.zip
         )
+      );
+      dispatch(
+        getDiaryOptions(policy.companyCode, policy.state, policy.product)
       );
 
       if (summaryLedger) {

@@ -10,9 +10,43 @@ export default function listReducer(state = initialState.list, action) {
       return setZipCodeSettings(state, action);
     case listTypes.SET_ENUMS:
       return setEnums(state, action);
+    case types.SET_DIARY_OPTIONS:
+      return setDiaryOptions(state, action);
     default:
       return state;
   }
+}
+
+function removeDuplicates(array, property) {
+  return array.filter((obj, position, filteredArray) => {
+    return (
+      filteredArray.map(mapObj => mapObj[property]).indexOf(obj[property]) ===
+      position
+    );
+  });
+}
+
+function setDiaryOptions(state, action) {
+  const options = action.diaryOptions;
+  const diaryReasons = options.reduce((acc, d) => {
+    const reasons = d.reasons;
+    acc.push(...reasons);
+    return acc;
+  }, []);
+
+  const diaryTags = options.reduce((acc, d) => {
+    const tags = d.tags;
+    acc.push(...tags);
+    return acc;
+  }, []);
+
+  return {
+    ...state,
+    diaryOptions: {
+      diaryReasons: removeDuplicates(diaryReasons, 'answer'),
+      diaryTags: removeDuplicates(diaryTags, 'answer')
+    }
+  };
 }
 
 function setAgents(state, action) {

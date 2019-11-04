@@ -220,7 +220,7 @@ const mapStateToProps = state => ({
   appState: state.appState,
   authState: state.authState,
   ui: state.ui,
-  noteOptions: state.list.noteOptions,
+  diaryOptions: state.list.diaryOptions,
   policyState: state.policyState
 });
 

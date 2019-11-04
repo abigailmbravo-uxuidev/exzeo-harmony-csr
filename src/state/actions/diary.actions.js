@@ -20,6 +20,18 @@ export function setDiaries(diaries) {
 }
 
 /**
+ * Set Diary Options
+ * @param {array} diaryOptions
+ * @returns {{type: string, loading: array}}
+ */
+export function setDiaryOptions(diaryOptions) {
+  return {
+    type: types.SET_DIARY_OPTIONS,
+    diaryOptions
+  };
+}
+
+/**
  *
  * @param filter
  * @returns {Function}
@@ -138,5 +150,44 @@ export function submitDiary(data, props) {
       return false;
     }
     return true;
+  };
+}
+
+/**
+ *
+ * @returns {Promise<{}>}
+ */
+export async function fetchDiaryOptions(companyCode, state, product) {
+  try {
+    const config = {
+      service: 'diaries',
+      method: 'GET',
+      path: `diaryOptions?companyCode=${companyCode}&state=${state}&product=${product}`
+    };
+    const response = await serviceRunner.callService(
+      config,
+      'fetchDiaryOptions'
+    );
+    return response.data && response.data.result ? response.data.result : [];
+  } catch (error) {
+    throw error;
+  }
+}
+
+/**
+ *
+ * @param companyCode
+ * @param state
+ * @param product
+ * @returns {function(*): Promise<any>}
+ */
+export function getDiaryOptions(companyCode, state, product) {
+  return async dispatch => {
+    try {
+      const diaryOptions = await fetchDiaryOptions(companyCode, state, product);
+      dispatch(setDiaryOptions(diaryOptions));
+    } catch (error) {
+      dispatch(errorActions.setAppError(error));
+    }
   };
 }
