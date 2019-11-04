@@ -132,3 +132,10 @@ export const getInitialValuesForForm = createSelector(
     return { ...resource };
   }
 );
+
+export const getDiaryReasons = createSelector(
+  [getDiaryOptions],
+  diaryOptions => {
+    return Array.isArray(diaryOptions.reasons) ? diaryOptions.reasons : [];
+  }
+);

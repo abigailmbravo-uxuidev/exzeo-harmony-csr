@@ -19,7 +19,10 @@ import { submitDiary } from '../state/actions/diary.actions';
 import { toggleDiary, toggleMinimizeDiary } from '../state/actions/ui.actions';
 import { setAppError } from '../state/actions/error.actions';
 import { getDiaryAssigneeAnswers } from '../state/selectors/questions.selectors';
-import { getInitialValuesForForm } from '../state/selectors/diary.selectors';
+import {
+  getInitialValuesForForm,
+  getDiaryReasons
+} from '../state/selectors/diary.selectors';
 
 export class DiaryModal extends Component {
   state = { minimize: false };
@@ -231,7 +234,7 @@ DiaryModal.defaultProps = {
 const mapStateToProps = (state, ownProps) => {
   return {
     assigneeAnswers: getDiaryAssigneeAnswers(state),
-    diaryReasons: state.list.diaryOptions.reasons || [],
+    diaryReasons: getDiaryReasons(state),
     initialValues: getInitialValuesForForm(state, ownProps)
   };
 };

@@ -14,7 +14,7 @@ export const getEndorsementHistory = state =>
 export const getQuote = state => state.quoteState.quote || emptyObject;
 // DIARY
 export const getDiaries = state => state.diaries;
-export const getDiaryOptions = state => state.list.diaryOptions || {};
+export const getDiaryOptions = state => state.list.diaryOptions;
 // AGENCY
 export const getAgencies = state => state.service.agencies;
 // AUTH

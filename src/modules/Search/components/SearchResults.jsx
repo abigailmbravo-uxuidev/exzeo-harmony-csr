@@ -9,6 +9,7 @@ import {
   handleDiaryKeyPress
 } from '../../../utilities/handleNewTab';
 import { SEARCH_TYPES } from '../../../constants/search';
+import { getDiaryReasons } from '../../../state/selectors/diary.selectors';
 
 import NoResults from './NoResults';
 import PolicyCard from './PolicyCard';
@@ -202,7 +203,7 @@ SearchResults.propTypes = {
 
 const mapStateToProps = state => ({
   error: state.error,
-  diaryReasons: state.list.diaryOptions.reasons || []
+  diaryReasons: getDiaryReasons(state)
 });
 
 export default connect(mapStateToProps)(SearchResults);
