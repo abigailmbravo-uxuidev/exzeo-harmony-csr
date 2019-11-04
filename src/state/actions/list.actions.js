@@ -7,7 +7,7 @@ import {
 import * as listTypes from '../actionTypes/list.actionTypes';
 import { setAppError } from './error.actions';
 import { fetchNotes } from './notes.actions';
-import { fetchDiaries } from './diary.actions';
+import { fetchDiaries, fetchDiaryOptions } from './diary.actions';
 
 function setEnums(enums) {
   return {
@@ -43,6 +43,8 @@ export function getEnumsForQuoteWorkflow({
       // fetch all enums/data needed for the quote workflow in here.
       // 1. assign async function(s) to variable(s) - calls the func
       const additionalInterestQuestions = fetchMortgagees();
+      const diaryOptions = fetchDiaryOptions(companyCode, state, product);
+
       const agencyOption = searchAgencies({ companyCode, state, agencyCode });
       const agentOption = fetchAgentsByAgencyCode({
         companyCode,
@@ -53,6 +55,7 @@ export function getEnumsForQuoteWorkflow({
       const additionalInterestResponse = await additionalInterestQuestions;
       const agencyResponse = await agencyOption;
       const agentResponse = await agentOption;
+      const diaryOptionsResponse = await diaryOptions;
 
       const selectedAgent = agentResponse.filter(a => a.answer === agentCode);
 
@@ -60,7 +63,8 @@ export function getEnumsForQuoteWorkflow({
         setEnums({
           additionalInterestQuestions: additionalInterestResponse.data.data,
           agency: agencyResponse,
-          agent: selectedAgent
+          agent: selectedAgent,
+          diaryOptions: diaryOptionsResponse
         })
       );
     } catch (error) {
@@ -100,13 +104,20 @@ export async function fetchPropertyAppriasals() {
  * @param policyNumber
  * @returns {Function}
  */
-export function getEnumsForPolicyWorkflow({ policyNumber }) {
+export function getEnumsForPolicyWorkflow({
+  policyNumber,
+  companyCode,
+  state,
+  product
+}) {
   return async dispatch => {
     try {
       dispatch(fetchDiaries({ resourceId: policyNumber }));
-      const additionalInterestQuestions = await fetchMortgagees();
-      const propertyAppraisals = await fetchPropertyAppriasals();
+      const diaryOptions = fetchDiaryOptions(companyCode, state, product);
+      const additionalInterestQuestions = fetchMortgagees();
+      const propertyAppraisals = fetchPropertyAppriasals();
 
+      const diaryOptionsResponse = await diaryOptions;
       const additionalInterestResponse = await additionalInterestQuestions;
       const propertyAppraisalsResponse = await propertyAppraisals;
 
@@ -114,7 +125,30 @@ export function getEnumsForPolicyWorkflow({ policyNumber }) {
         setEnums({
           additionalInterestQuestions: additionalInterestResponse.data.data,
           propertyAppraisalQuestions:
-            propertyAppraisalsResponse.data.data[0].answers
+            propertyAppraisalsResponse.data.data[0].answers,
+          diaryOptions: diaryOptionsResponse
+        })
+      );
+    } catch (error) {
+      dispatch(setAppError(error));
+    }
+  };
+}
+
+/**
+ *
+ * @param policyNumber
+ * @returns {Function}
+ */
+export function getEnumsForSearch() {
+  return async dispatch => {
+    try {
+      const diaryOptions = fetchDiaryOptions();
+      const diaryOptionsResponse = await diaryOptions;
+
+      dispatch(
+        setEnums({
+          diaryOptions: diaryOptionsResponse
         })
       );
     } catch (error) {

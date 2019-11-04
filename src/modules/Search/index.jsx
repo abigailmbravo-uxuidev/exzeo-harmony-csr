@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { emptyArray, emptyObject } from '@exzeo/core-ui';
+import { emptyArray } from '@exzeo/core-ui';
 
 import { SEARCH_CONFIG, SEARCH_TYPES } from '../../constants/search';
 import {
@@ -10,6 +10,7 @@ import {
 } from '../../state/actions/search.actions';
 import { getAgencies } from '../../state/actions/service.actions';
 import { clearAppError } from '../../state/actions/error.actions';
+import { getEnumsForSearch } from '../../state/actions/list.actions';
 
 import SearchBar from './components/SearchBar';
 import SearchResults from './components/SearchResults';
@@ -20,7 +21,6 @@ import AgencySearch from './Agency';
 import AgentSearch from './Agent';
 import UserSearch from './User';
 import DiariesSearch from './Diaries';
-import { getDiaryOptions } from '../../state/actions/diary.actions';
 
 const initialSearchResults = {
   currentPage: 1,
@@ -60,7 +60,7 @@ export class SearchPage extends Component {
   componentDidMount() {
     this.setSearchConfig();
     this.productAnswers = this.getProducts();
-    this.props.getDiaryOptions();
+    this.props.getEnumsForSearch();
   }
 
   componentWillUnmount() {
@@ -235,6 +235,6 @@ export default connect(
     handleSearchSubmit,
     resetSearch,
     toggleLoading,
-    getDiaryOptions
+    getEnumsForSearch
   }
 )(SearchPage);

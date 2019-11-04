@@ -177,21 +177,3 @@ export async function fetchDiaryOptions(companyCode, state, product) {
     throw error;
   }
 }
-
-/**
- *
- * @param companyCode
- * @param state
- * @param product
- * @returns {function(*): Promise<any>}
- */
-export function getDiaryOptions(companyCode, state, product) {
-  return async dispatch => {
-    try {
-      const diaryOptions = await fetchDiaryOptions(companyCode, state, product);
-      dispatch(setDiaryOptions(diaryOptions));
-    } catch (error) {
-      dispatch(errorActions.setAppError(error));
-    }
-  };
-}

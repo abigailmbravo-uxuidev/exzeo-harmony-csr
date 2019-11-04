@@ -10,8 +10,6 @@ export default function listReducer(state = initialState.list, action) {
       return setZipCodeSettings(state, action);
     case listTypes.SET_ENUMS:
       return setEnums(state, action);
-    case types.SET_DIARY_OPTIONS:
-      return setDiaryOptions(state, action);
     default:
       return state;
   }
@@ -26,7 +24,7 @@ function removeDuplicates(array, property) {
   });
 }
 
-function setDiaryOptions(state, action) {
+function setDiaryOptions(action) {
   const options = action.diaryOptions;
   const diaryReasons = options.reduce((acc, d) => {
     const reasons = d.reasons;
@@ -41,11 +39,8 @@ function setDiaryOptions(state, action) {
   }, []);
 
   return {
-    ...state,
-    diaryOptions: {
-      reasons: removeDuplicates(diaryReasons, 'answer'),
-      tags: removeDuplicates(diaryTags, 'answer')
-    }
+    reasons: removeDuplicates(diaryReasons, 'answer'),
+    tags: removeDuplicates(diaryTags, 'answer')
   };
 }
 
@@ -103,6 +98,8 @@ function setEnums(state, action) {
 
   const appraisers = action.propertyAppraisalQuestions;
 
+  const diaryOptions = setDiaryOptions(action);
+
   return {
     ...state,
     premiumFinance,
@@ -110,7 +107,8 @@ function setEnums(state, action) {
     order: orderAnswers ? orderAnswers.answers : [],
     agent: action.agent,
     agency: action.agency,
-    appraisers
+    appraisers,
+    diaryOptions
   };
 }
 

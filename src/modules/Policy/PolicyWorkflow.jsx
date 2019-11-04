@@ -123,8 +123,9 @@ export class PolicyWorkflow extends React.Component {
       }
     } = this.props;
 
-    initializePolicyWorkflow(policyNumber);
-    getEnumsForPolicyWorkflow({ policyNumber });
+    initializePolicyWorkflow(policyNumber).then(policy => {
+      getEnumsForPolicyWorkflow(policy);
+    });
   }
 
   componentDidUpdate(prevProps) {
