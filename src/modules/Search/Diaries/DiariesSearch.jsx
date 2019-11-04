@@ -11,11 +11,11 @@ import {
   emptyArray
 } from '@exzeo/core-ui';
 
-import { REASONS, STATUS_ANSWERS } from '../../../constants/diaries';
+import { STATUS_ANSWERS } from '../../../constants/diaries';
 
 class DiariesSearch extends Component {
   render() {
-    const { assigneeAnswers, submitting } = this.props;
+    const { assigneeAnswers, submitting, diaryReasons } = this.props;
 
     return (
       <React.Fragment>
@@ -41,7 +41,7 @@ class DiariesSearch extends Component {
                   name="reason"
                   dataTest="reason"
                   component={Select}
-                  answers={REASONS}
+                  answers={diaryReasons}
                   placeholder="Please choose"
                   label="Reason"
                   errorHint

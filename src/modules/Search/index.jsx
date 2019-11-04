@@ -20,6 +20,7 @@ import AgencySearch from './Agency';
 import AgentSearch from './Agent';
 import UserSearch from './User';
 import DiariesSearch from './Diaries';
+import { getDiaryOptions } from '../../state/actions/diary.actions';
 
 const initialSearchResults = {
   currentPage: 1,
@@ -59,6 +60,7 @@ export class SearchPage extends Component {
   componentDidMount() {
     this.setSearchConfig();
     this.productAnswers = this.getProducts();
+    this.props.getDiaryOptions();
   }
 
   componentWillUnmount() {
@@ -232,6 +234,7 @@ export default connect(
     getAgencies,
     handleSearchSubmit,
     resetSearch,
-    toggleLoading
+    toggleLoading,
+    getDiaryOptions
   }
 )(SearchPage);

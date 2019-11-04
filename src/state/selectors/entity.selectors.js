@@ -14,6 +14,7 @@ export const getEndorsementHistory = state =>
 export const getQuote = state => state.quoteState.quote || emptyObject;
 // DIARY
 export const getDiaries = state => state.diaries;
+export const getDiaryOptions = state => state.list.diaryOptions || {};
 // AGENCY
 export const getAgencies = state => state.service.agencies;
 // AUTH
@@ -24,6 +25,3 @@ export const getUserProfile = state =>
 export const getAppState = state => state.appState || emptyObject;
 // CG-STATE [DEPRECATED]
 export const getCGState = state => state.cg || emptyObject;
-
-export const getEntity = state =>
-  state.quoteState.quote || state.policyState.policy;

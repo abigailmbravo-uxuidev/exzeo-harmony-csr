@@ -162,8 +162,12 @@ export async function fetchDiaryOptions(companyCode, state, product) {
     const config = {
       service: 'diaries',
       method: 'GET',
-      path: `diaryOptions?companyCode=${companyCode}&state=${state}&product=${product}`
+      path: `diaryOptions`
     };
+
+    if (companyCode && state && product) {
+      config.path = `${config.path}?companyCode=${companyCode}&state=${state}&product=${product}`;
+    }
     const response = await serviceRunner.callService(
       config,
       'fetchDiaryOptions'

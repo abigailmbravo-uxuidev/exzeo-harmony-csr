@@ -7,7 +7,8 @@ import DiariesSearch from './DiariesSearch';
 
 const mapStateToProps = state => {
   return {
-    assigneeAnswers: getDiaryAssigneeAnswers(state)
+    assigneeAnswers: getDiaryAssigneeAnswers(state),
+    diaryReasons: state.list.diaryOptions.reasons || []
   };
 };
 

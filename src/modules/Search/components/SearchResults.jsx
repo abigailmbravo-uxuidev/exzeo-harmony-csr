@@ -37,8 +37,10 @@ export class SearchResults extends Component {
         state = '',
         product = ''
       },
-      error
+      error,
+      diaryReasons
     } = this.props;
+
     return (
       <div className="results-wrapper">
         {hasSearched && (noResults || error.message) && (
@@ -181,6 +183,7 @@ export class SearchResults extends Component {
               onItemClick={handleDiaryClick}
               clickable
               diaries={results}
+              diaryReasons={diaryReasons}
             />
           )}
       </div>
@@ -198,7 +201,8 @@ SearchResults.propTypes = {
 };
 
 const mapStateToProps = state => ({
-  error: state.error
+  error: state.error,
+  diaryReasons: state.list.diaryOptions.reasons || []
 });
 
 export default connect(mapStateToProps)(SearchResults);
