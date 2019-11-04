@@ -63,7 +63,8 @@ const NoteUploader = ({
   fetchNotes,
   toggleDiary,
   toggleNote,
-  setNotesSynced
+  setNotesSynced,
+  entity
 }) => {
   const [noteOptions, setNoteOptions] = useState({});
   const [minimize, setMinimize] = useState(false);
@@ -222,7 +223,8 @@ const NoteUploader = ({
           state,
           product,
           resourceType,
-          resourceId: documentId
+          resourceId: documentId,
+          entity
         });
       }
     } catch (err) {

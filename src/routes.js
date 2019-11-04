@@ -25,6 +25,7 @@ import Agency from './modules/Agency';
 import { QuoteLanding, QuoteWorkflow } from './modules/Quote';
 import { PolicyWorkflow } from './modules/Policy';
 import Finance from './modules/Finance';
+import { getEntity } from './state/selectors/entity.selectors';
 
 class Routes extends Component {
   setBackStep = (goToNext, callback) => {
@@ -55,7 +56,7 @@ class Routes extends Component {
       actions: { errorActions },
       auth,
       authState: { userProfile },
-      policyState: { policy }
+      diaryOptions
     } = this.props;
     return (
       <div>
@@ -89,6 +90,7 @@ class Routes extends Component {
 
         {diary && diary.resourceType && (
           <DiaryModal
+            diaryOptions={diaryOptions}
             minimizeDiary={minimizeDiary}
             companyCode={diary.companyCode}
             state={diary.state}
@@ -98,9 +100,9 @@ class Routes extends Component {
             resourceType={diary.resourceType}
             resourceId={diary.resourceId}
             sourceNumber={
-              policy && policy.sourceNumber ? policy.sourceNumber : null
+              entity && entity.sourceNumber ? entity.sourceNumber : null
             }
-            entityEndDate={diary.entityEndDate}
+            entity={diary.entity}
           />
         )}
 
@@ -114,6 +116,7 @@ class Routes extends Component {
             documentId={note.documentId}
             sourceId={note.sourceNumber}
             resourceType={note.resourceType}
+            entity={note.entity}
           />
         )}
         <Router
@@ -220,8 +223,7 @@ const mapStateToProps = state => ({
   appState: state.appState,
   authState: state.authState,
   ui: state.ui,
-  diaryOptions: state.list.diaryOptions,
-  policyState: state.policyState
+  diaryOptions: state.list.diaryOptions
 });
 
 const mapDispatchToProps = dispatch => ({

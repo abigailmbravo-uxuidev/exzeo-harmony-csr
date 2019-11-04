@@ -67,6 +67,9 @@ export default {
     order: [],
     agency: [],
     agent: [],
-    diaryOptions: {}
+    diaryOptions: {
+      reasons: [],
+      tags: []
+    }
   }
 };

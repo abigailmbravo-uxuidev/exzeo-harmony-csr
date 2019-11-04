@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Field, reduxForm } from 'redux-form';
+import _get from 'lodash/get';
+
 import {
   Date,
   Draggable,
@@ -12,11 +14,6 @@ import {
 } from '@exzeo/core-ui';
 import classNames from 'classnames';
 
-import {
-  REASONS,
-  REASONS_DATA,
-  USE_ENITY_END_DATE
-} from '../constants/diaries';
 import { addDate } from '../utilities/diaries';
 import { submitDiary } from '../state/actions/diary.actions';
 import { toggleDiary, toggleMinimizeDiary } from '../state/actions/ui.actions';
@@ -63,9 +60,10 @@ export class DiaryModal extends Component {
       change,
       user: { userId },
       assigneeAnswers,
-      entityEndDate
+      entity,
+      diaryReasons
     } = this.props;
-    const defaultData = REASONS_DATA[value];
+    const defaultData = diaryReasons[value];
 
     if (!defaultData) return value;
 
@@ -79,12 +77,9 @@ export class DiaryModal extends Component {
     }
     change('reason', defaultData.reason);
 
-    if (USE_ENITY_END_DATE.includes(value)) {
-      // need to get next renewal date
-      change('due', addDate(defaultData.daysFromDueDate, entityEndDate));
-    } else {
-      change('due', addDate(defaultData.daysFromDueDate));
-    }
+    const { offset, path } = defaultData.dueDate;
+    const dateString = path === 'default' ? '' : _get(entity, path);
+    change('due', addDate(offset, dateString));
     return value;
   };
 
@@ -93,7 +88,8 @@ export class DiaryModal extends Component {
       assigneeAnswers,
       handleSubmit,
       submitting,
-      minimizeDiary
+      minimizeDiary,
+      diaryReasons
     } = this.props;
 
     return (
@@ -139,7 +135,7 @@ export class DiaryModal extends Component {
                   name="reason"
                   label="Reason"
                   component={Select}
-                  answers={REASONS}
+                  answers={diaryReasons}
                   validate={validation.isRequired}
                   normalize={this.normalizeDiaryReason}
                   dataTest="reason"
@@ -235,6 +231,7 @@ DiaryModal.defaultProps = {
 const mapStateToProps = (state, ownProps) => {
   return {
     assigneeAnswers: getDiaryAssigneeAnswers(state),
+    diaryReasons: state.list.diaryOptions.reasons || [],
     initialValues: getInitialValuesForForm(state, ownProps)
   };
 };

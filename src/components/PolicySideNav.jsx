@@ -68,15 +68,16 @@ export class SideNav extends React.Component {
   newDiary = () => {
     const {
       toggleDiary,
-      policy: { companyCode, state, product, policyNumber, endDate }
+      policy: { companyCode, state, product, policyNumber }
     } = this.props;
+
     toggleDiary({
       companyCode,
       state,
       product,
       resourceType: POLICY_RESOURCE_TYPE,
       resourceId: policyNumber,
-      entityEndDate: endDate
+      entity: this.props.policy
     });
   };
 
@@ -92,7 +93,8 @@ export class SideNav extends React.Component {
       noteType: 'Policy Note',
       documentId: policyNumber,
       sourceNumber,
-      resourceType: POLICY_RESOURCE_TYPE
+      resourceType: POLICY_RESOURCE_TYPE,
+      entity: this.props.policy
     });
   };
 

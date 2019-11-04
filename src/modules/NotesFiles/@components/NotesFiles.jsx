@@ -77,7 +77,7 @@ function NotesFiles({ options, customHandlers, initialValues }) {
           <DiaryTable
             customHandlers={customHandlers}
             diaries={options.diaries}
-            entityEndDate={initialValues.endDate}
+            entity={initialValues}
           />
         )}
       </div>

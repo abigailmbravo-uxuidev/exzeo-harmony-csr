@@ -405,7 +405,7 @@ export class PolicyWorkflow extends React.Component {
 
               {initialized && (
                 <OpenDiariesBar
-                  entityEndDate={policy.endDate}
+                  entity={policy}
                   resourceId={policy.policyNumber}
                   resourceType={POLICY_RESOURCE_TYPE}
                 />
