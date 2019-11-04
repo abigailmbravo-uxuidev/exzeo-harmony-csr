@@ -12,6 +12,12 @@ const mockStore = configureStore(middlewares);
 describe('Testing DetailHeader component', () => {
   it('should test connected app', () => {
     const initialState = {
+      list: {
+        diaryOptions: {
+          reasons: [],
+          tags: []
+        }
+      },
       diaries: [
         {
           resource: {

@@ -5,6 +5,10 @@ import { DiaryModal } from './DiaryModal';
 
 describe('Test DiaryModal component', () => {
   const props = {
+    diaryOptions: {
+      reasons: [],
+      tags: []
+    },
     entityEndDate: '2018-01-01',
     change() {},
     assigneeAnswers: [

@@ -20,18 +20,6 @@ export function setDiaries(diaries) {
 }
 
 /**
- * Set Diary Options
- * @param {array} diaryOptions
- * @returns {{type: string, loading: array}}
- */
-export function setDiaryOptions(diaryOptions) {
-  return {
-    type: types.SET_DIARY_OPTIONS,
-    diaryOptions
-  };
-}
-
-/**
  *
  * @param filter
  * @returns {Function}

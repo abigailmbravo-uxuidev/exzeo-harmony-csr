@@ -24,8 +24,7 @@ export const getSortedDiariesByDueDate = createSelector(
 export const getFormattedDiaries = createSelector(
   [getSortedDiariesByDueDate, getDiaryOptions],
   (diaries, diaryOptions) => {
-    if (!Array.isArray(diaries) || !Array.isArray(diaryOptions.reasons))
-      return [];
+    if (!Array.isArray(diaries)) return [];
 
     return diaries.map(d => {
       const entry = formatEntry(d.entries[0], diaryOptions.reasons);
@@ -136,6 +135,8 @@ export const getInitialValuesForForm = createSelector(
 export const getDiaryReasons = createSelector(
   [getDiaryOptions],
   diaryOptions => {
-    return Array.isArray(diaryOptions.reasons) ? diaryOptions.reasons : [];
+    return diaryOptions && Array.isArray(diaryOptions.reasons)
+      ? diaryOptions.reasons
+      : [];
   }
 );
