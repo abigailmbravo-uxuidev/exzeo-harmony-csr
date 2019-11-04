@@ -61,9 +61,9 @@ export class DiaryModal extends Component {
       user: { userId },
       assigneeAnswers,
       entity,
-      diaryReasons
+      diaryOptions
     } = this.props;
-    const defaultData = diaryReasons[value];
+    const defaultData = diaryOptions.reasons.find(r => r.answer === value);
 
     if (!defaultData) return value;
 
@@ -75,10 +75,10 @@ export class DiaryModal extends Component {
       );
       change('assignee.id', selectedAssignee ? selectedAssignee.answer : '');
     }
-    change('reason', defaultData.reason);
+    change('reason', defaultData.answer);
 
     const { offset, path } = defaultData.dueDate;
-    const dateString = path === 'default' ? '' : _get(entity, path);
+    const dateString = path === 'default' ? undefined : _get(entity, path);
     change('due', addDate(offset, dateString));
     return value;
   };

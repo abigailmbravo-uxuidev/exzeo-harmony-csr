@@ -25,7 +25,6 @@ import Agency from './modules/Agency';
 import { QuoteLanding, QuoteWorkflow } from './modules/Quote';
 import { PolicyWorkflow } from './modules/Policy';
 import Finance from './modules/Finance';
-import { getEntity } from './state/selectors/entity.selectors';
 
 class Routes extends Component {
   setBackStep = (goToNext, callback) => {
@@ -100,7 +99,9 @@ class Routes extends Component {
             resourceType={diary.resourceType}
             resourceId={diary.resourceId}
             sourceNumber={
-              entity && entity.sourceNumber ? entity.sourceNumber : null
+              diary.entity && diary.entity.sourceNumber
+                ? diary.entity.sourceNumber
+                : null
             }
             entity={diary.entity}
           />
