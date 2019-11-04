@@ -43,8 +43,8 @@ function setDiaryOptions(state, action) {
   return {
     ...state,
     diaryOptions: {
-      diaryReasons: removeDuplicates(diaryReasons, 'answer'),
-      diaryTags: removeDuplicates(diaryTags, 'answer')
+      reasons: removeDuplicates(diaryReasons, 'answer'),
+      tags: removeDuplicates(diaryTags, 'answer')
     }
   };
 }
