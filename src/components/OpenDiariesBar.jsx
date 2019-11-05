@@ -25,38 +25,40 @@ export class OpenDiariesBar extends React.Component {
 
   render() {
     const { diaries } = this.props;
-    const { dueSoon, pastDue, upComing } = diaries;
+    const { dueSoon, pastDue, upComing, count } = diaries;
 
     return (
-      <aside className="open-diaries">
-        <header className="open-diaries-header">
-          <h4 data-test="open-diaries-header">Open Diaries</h4>
-        </header>
-        <div className="diaries-list">
-          {pastDue.length > 0 && (
-            <Diaries
-              diaryLevel="pastDue"
-              diaries={pastDue}
-              onToggleDiary={this.handleOpenDiaries}
-            />
-          )}
-          {dueSoon.length > 0 && (
-            <Diaries
-              diaryLevel="dueSoon"
-              diaries={dueSoon}
-              onToggleDiary={this.handleOpenDiaries}
-            />
-          )}
+      count > 0 && (
+        <aside className="open-diaries">
+          <header className="open-diaries-header">
+            <h4 data-test="open-diaries-header">Open Diaries</h4>
+          </header>
+          <div className="diaries-list">
+            {pastDue.length > 0 && (
+              <Diaries
+                diaryLevel="pastDue"
+                diaries={pastDue}
+                onToggleDiary={this.handleOpenDiaries}
+              />
+            )}
+            {dueSoon.length > 0 && (
+              <Diaries
+                diaryLevel="dueSoon"
+                diaries={dueSoon}
+                onToggleDiary={this.handleOpenDiaries}
+              />
+            )}
 
-          {upComing.length > 0 && (
-            <Diaries
-              diaryLevel="upComing"
-              diaries={upComing}
-              onToggleDiary={this.handleOpenDiaries}
-            />
-          )}
-        </div>
-      </aside>
+            {upComing.length > 0 && (
+              <Diaries
+                diaryLevel="upComing"
+                diaries={upComing}
+                onToggleDiary={this.handleOpenDiaries}
+              />
+            )}
+          </div>
+        </aside>
+      )
     );
   }
 }
