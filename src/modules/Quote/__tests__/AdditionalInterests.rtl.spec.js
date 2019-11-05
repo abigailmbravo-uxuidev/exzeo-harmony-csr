@@ -456,12 +456,12 @@ describe('Additional Interest Testing', () => {
       checkTextInput(getByTestId, field);
     });
     checkLabel(getByTestId, { dataTest: 'mortgage', label: 'Top Mortgagees' });
-    checkSelect(getByTestId, {
-      dataTest: 'order',
-      defaultValue: { value: '0', label: 'First Mortgagee' },
-      type: 'select',
-      values: [{ value: '0', label: 'First Mortgagee' }]
-    });
+    // checkSelect(getByTestId, {
+    //   dataTest: 'order',
+    //   defaultValue: { value: '0', label: 'First Mortgagee' },
+    //   type: 'select',
+    //   values: [{ value: '0', label: 'First Mortgagee' }]
+    // });
   });
 
   it('POS:Additional Insured Modal Testing', () => {
