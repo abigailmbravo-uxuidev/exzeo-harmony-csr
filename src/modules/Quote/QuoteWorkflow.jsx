@@ -291,20 +291,26 @@ export class QuoteWorkflow extends React.Component {
                       template={gandalfTemplate}
                       transformConfig={transformConfig}
                       stickyFooter
-                      renderFooter={({ pristine, submitting, form }) => (
-                        <QuoteFooter
-                          currentStep={currentRouteName}
-                          formInstance={form}
-                          isSubmitDisabled={this.isSubmitDisabled(
-                            pristine,
-                            submitting
+                      renderFooter={
+                        <FormSpy
+                          subscription={{ pristine: true, submitting: true }}
+                        >
+                          {({ form, pristine, submitting }) => (
+                            <QuoteFooter
+                              currentStep={currentRouteName}
+                              formInstance={form}
+                              isSubmitDisabled={this.isSubmitDisabled(
+                                pristine,
+                                submitting
+                              )}
+                              handlePrimaryClick={this.primaryClickHandler}
+                              handleApplicationClick={this.handleRetrieveQuote}
+                            />
                           )}
-                          handlePrimaryClick={this.primaryClickHandler}
-                          handleApplicationClick={this.handleRetrieveQuote}
-                        />
-                      )}
-                      formListeners={() => (
-                        <MemoizedFormListeners>
+                        </FormSpy>
+                      }
+                      formListeners={
+                        <React.Fragment>
                           <FormSpy subscription={{}}>
                             {({ form }) => {
                               this.setFormInstance(form);
@@ -323,8 +329,8 @@ export class QuoteWorkflow extends React.Component {
                               />
                             )}
                           </FormSpy>
-                        </MemoizedFormListeners>
-                      )}
+                        </React.Fragment>
+                      }
                     />
                   </React.Fragment>
                 )}
