@@ -50,6 +50,11 @@ export class DiaryModal extends Component {
         displayName: assigneeObj.label,
         type: assigneeObj.type
       };
+
+      // TODO: Currently blocked by https://issuecenter.atlassian.net/browse/HAR-7861
+      // const { entity: { zipCodeSettings: { timezone }}} = props
+      // submitData.due = date.formatToUTC(due, timezone)
+
       await props.submitDiary({ ...submitData, assignee }, props);
     } catch (error) {
       props.setAppError({ message: error });
@@ -157,7 +162,11 @@ export class DiaryModal extends Component {
                   styleName="due"
                   label="Due Date"
                   component={Date}
-                  validate={[validation.isRequired, validation.isDate]}
+                  validate={[
+                    validation.isRequired,
+                    validation.isDate,
+                    validation.isDateRange('01/01/1900', '12/31/9999')
+                  ]}
                   dataTest="due"
                 />
                 <Field

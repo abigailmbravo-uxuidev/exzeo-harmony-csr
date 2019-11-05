@@ -1,6 +1,5 @@
-const addNoteCheck = text =>
-  cy
-    .findDataTag('new-note')
+const addNoteCheck = text => {
+  cy.findDataTag('new-note')
     .click({ force: true })
     .wait('@getNoteOptions')
     .findDataTag('noteContent')
@@ -8,12 +7,22 @@ const addNoteCheck = text =>
     .type(`{selectall}{backspace}${text}`, { force: true })
     .findDataTag('submit-button')
     .click()
-    .goToNav('notes')
     .wait('@fetchNotes')
-    .get('.table tbody')
+    .then(({ response }) => {
+      expect(response.body.status).to.equal(200);
+    });
+
+  cy.goToNav('notes')
+    .wait('@fetchNotes')
+    .then(({ response }) => {
+      expect(response.body.status).to.equal(200);
+    });
+
+  cy.get('.table tbody')
     .find('tr')
     .find('td')
     .contains(text);
+};
 
 export default () => {
   //TODO: Check for quote started only
