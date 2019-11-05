@@ -12,8 +12,6 @@ const Notes = props => {
     customHandlers: { setAppError }
   } = props;
   const options = {
-    defaultSortName: 'createdAt',
-    defaultSortOrder: 'desc',
     searchPanel: props => <SearchPanel searchField={props.searchField} />
   };
 
