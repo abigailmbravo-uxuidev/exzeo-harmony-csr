@@ -180,10 +180,13 @@ export class SearchResults extends Component {
           searchType === SEARCH_TYPES.diaries &&
           !!results.length && (
             <DiaryList
+              product={product}
               handleKeyPress={handleDiaryKeyPress}
               onItemClick={handleDiaryClick}
               clickable
-              diaries={results}
+              diaries={results.filter(d =>
+                product ? d.resource.product === product : d
+              )}
               diaryReasons={diaryReasons}
             />
           )}

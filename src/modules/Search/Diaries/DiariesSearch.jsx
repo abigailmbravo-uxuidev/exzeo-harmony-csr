@@ -11,11 +11,13 @@ import {
   emptyArray
 } from '@exzeo/core-ui';
 
+import ResetButton from '../components/ResetButton';
 import { STATUS_ANSWERS } from '../../../constants/diaries';
+import { productAnswers } from '../constants';
 
 class DiariesSearch extends Component {
   render() {
-    const { assigneeAnswers, submitting, diaryReasons } = this.props;
+    const { assigneeAnswers, submitting, diaryReasons, reset } = this.props;
 
     return (
       <React.Fragment>
@@ -70,7 +72,20 @@ class DiariesSearch extends Component {
                   errorHint
                 />
               </div>
+              <div className="fomr-group product">
+                <Field
+                  name="product"
+                  dataTest="product"
+                  label="Product"
+                  component={Select}
+                  answers={productAnswers}
+                  placeholder="Select..."
+                  styleName="product-search"
+                />
+              </div>
             </div>
+            <ResetButton reset={reset} />
+
             <Button
               className={Button.constants.classNames.success}
               customClass="multi-input"
