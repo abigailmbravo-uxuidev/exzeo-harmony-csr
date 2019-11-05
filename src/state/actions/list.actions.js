@@ -42,7 +42,6 @@ export function getEnumsForQuoteWorkflow({
       // this pattern sets us up to "parallelize" the network requests in this function. We want to
       // fetch all enums/data needed for the quote workflow in here.
       // 1. assign async function(s) to variable(s) - calls the func
-      const additionalInterestQuestions = fetchMortgagees();
       const agencyOption = searchAgencies({ companyCode, state, agencyCode });
       const agentOption = fetchAgentsByAgencyCode({
         companyCode,
@@ -50,7 +49,6 @@ export function getEnumsForQuoteWorkflow({
         agencyCode
       });
       // 2. new variable awaits the previous.
-      const additionalInterestResponse = await additionalInterestQuestions;
       const agencyResponse = await agencyOption;
       const agentResponse = await agentOption;
 
@@ -58,7 +56,6 @@ export function getEnumsForQuoteWorkflow({
 
       dispatch(
         setEnums({
-          additionalInterestQuestions: additionalInterestResponse.data.data,
           agency: agencyResponse,
           agent: selectedAgent
         })
@@ -67,19 +64,6 @@ export function getEnumsForQuoteWorkflow({
       dispatch(setAppError(error));
     }
   };
-}
-
-/**
- *
- * @returns {Promise<void>}
- */
-export async function fetchMortgagees() {
-  const data = {
-    step: 'additionalInterestsCSR'
-  };
-
-  const response = await serviceRunner.callQuestions(data);
-  return response;
 }
 
 /**
@@ -104,15 +88,12 @@ export function getEnumsForPolicyWorkflow({ policyNumber }) {
   return async dispatch => {
     try {
       dispatch(fetchDiaries({ resourceId: policyNumber }));
-      const additionalInterestQuestions = await fetchMortgagees();
       const propertyAppraisals = await fetchPropertyAppriasals();
 
-      const additionalInterestResponse = await additionalInterestQuestions;
       const propertyAppraisalsResponse = await propertyAppraisals;
 
       dispatch(
         setEnums({
-          additionalInterestQuestions: additionalInterestResponse.data.data,
           propertyAppraisalQuestions:
             propertyAppraisalsResponse.data.data[0].answers
         })
