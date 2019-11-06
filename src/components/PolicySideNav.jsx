@@ -8,7 +8,6 @@ import {
   toggleDiary,
   setNotesSynced
 } from '../state/actions/ui.actions';
-import { startWorkflow } from '../state/actions/cg.actions';
 import { setAppError } from '../state/actions/error.actions';
 import { POLICY_RESOURCE_TYPE } from '../constants/diaries';
 
@@ -162,7 +161,6 @@ const mapStateToProps = state => ({
 export default connect(
   mapStateToProps,
   {
-    startWorkflow,
     toggleNote,
     toggleDiary,
     setAppError,
