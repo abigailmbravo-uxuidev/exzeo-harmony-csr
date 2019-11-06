@@ -108,11 +108,13 @@ export class Overview extends React.Component {
             <div className="form-group survey-wrapper" role="group">
               <section className="contract-details">
                 {agency.contracts.map(contract => (
-                  <div key={contract.contractNumber}>
+                  <div className="contract" key={contract.contractNumber}>
                     <h3>{contract.companyCode}</h3>
                     {contract.stateProducts.map(item => (
                       <span key={`${item.state}-${item.product}`}>
-                        {item.state} &bull; {item.product} &bull; {item.status}
+                        {item.state}&nbsp;&bull;&nbsp;{item.product}
+                        &nbsp;&bull;&nbsp;
+                        <strong>{item.status}Active</strong>
                       </span>
                     ))}
                   </div>

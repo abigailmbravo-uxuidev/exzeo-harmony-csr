@@ -509,6 +509,19 @@
               &:last-child {
                 border-bottom-width: 0;
               }
+
+              &.contract-details {
+                display: flex;
+                flex-wrap: wrap;
+                padding-bottom: 0;
+
+                .contract {
+                  margin-bottom: $margin;
+                  span {
+                    margin-right: $margin * 2;
+                  }
+                }
+              }
             }
 
             .card {
