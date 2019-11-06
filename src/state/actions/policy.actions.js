@@ -1,18 +1,16 @@
 // temporary full path import until we can find a better way to mock network requests
 import * as serviceRunner from '@exzeo/core-ui/src/@Harmony/Domain/Api/serviceRunner';
-import _cloneDeep from 'lodash/cloneDeep';
 import { date } from '@exzeo/core-ui/src';
 
+import { formatEndorsementData } from '../../modules/Policy/utilities';
 import { convertToRateData } from '../../utilities/endorsementModel';
+import cg from '../../utilities/cg';
 
 import * as types from './actionTypes';
 import * as errorActions from './error.actions';
-import * as cgActions from './cg.actions';
-import endorsementUtils from '../../utilities/endorsementModel';
 import { getZipcodeSettings } from './service.actions';
 import { toggleLoading } from './ui.actions';
-import cg from '../../utilities/cg';
-import { formatEndorsementData } from '../../modules/Policy/utilities';
+
 /**
  * Reset policyState
  * @returns {{type: string}}
@@ -364,50 +362,6 @@ export function getCancelOptions() {
     } catch (error) {
       dispatch(errorActions.setAppError(error));
     }
-  };
-}
-
-/**
- *
- * @param formData
- * @param formProps
- * @returns {Function}
- */
-export function submitEndorsementForm(formData, formProps) {
-  return async dispatch => {
-    const submitData = endorsementUtils.generateModel(formData, formProps);
-    const forms = await fetchListOfForms(
-      formProps.policy,
-      submitData.rating,
-      'New Business'
-    );
-    submitData.forms = forms;
-
-    // TODO: Make cg actions a utility rather than stored in state
-    const result = await dispatch(
-      cgActions.startWorkflow('endorsePolicyModelSave')
-    );
-
-    const steps = [
-      {
-        name: 'saveEndorsement',
-        data: submitData
-      }
-    ];
-    const startResult = result.payload
-      ? result.payload[0].workflowData.endorsePolicyModelSave.data
-      : {};
-    await dispatch(
-      cgActions.batchCompleteTask(
-        startResult.modelName,
-        startResult.modelInstanceId,
-        steps
-      )
-    );
-    // TODO: Implement some type of pub/sub for message queue
-    await new Promise(resolve => setTimeout(resolve, 2000));
-    dispatch(getEndorsementHistory(submitData.policyNumber));
-    await dispatch(getPolicy(submitData.policyNumber));
   };
 }
 
@@ -856,10 +810,7 @@ export function updatePolicy({ data = {}, options = {} }) {
           data: formattedData
         };
 
-        const response = await serviceRunner.callService(
-          transferConfig,
-          'saveEndorsement'
-        );
+        await serviceRunner.callService(transferConfig, 'saveEndorsement');
 
         dispatch(initializePolicyWorkflow(data.policyNumber));
       }

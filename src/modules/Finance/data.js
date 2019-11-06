@@ -73,10 +73,7 @@ export async function postPayment(data) {
       path: `post-payment-transaction`,
       data
     };
-    const response = await serviceRunner.callService(
-      config,
-      'postPaymentTransaction'
-    );
+    await serviceRunner.callService(config, 'postPaymentTransaction');
   } catch (error) {
     throw error;
   }

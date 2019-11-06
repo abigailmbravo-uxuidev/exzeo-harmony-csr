@@ -40,7 +40,11 @@ function AgencyCard({ handleKeyPress, handleClick, agency }) {
               {agency.websiteUrl && (
                 <span className="additional-data website">
                   <label>WEBSITE:&nbsp;</label>
-                  <a href={formatUrl(agency.websiteUrl)} target="_blank">
+                  <a
+                    href={formatUrl(agency.websiteUrl)}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
                     {agency.websiteUrl}
                   </a>
                 </span>

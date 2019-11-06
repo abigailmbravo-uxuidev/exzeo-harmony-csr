@@ -11,9 +11,6 @@ import {
 } from '@exzeo/core-ui';
 import { callService } from '@exzeo/core-ui/src/@Harmony';
 
-const validate = values =>
-  !values.documentType ? { documentType: 'Required' } : null;
-
 const documentTypeAnswers = [
   { label: 'Full Policy Packet', answer: 'fullPolicyPacket' },
   { label: 'Dec Page', answer: 'decPage' },
@@ -80,7 +77,6 @@ export class GenerateDocsForm extends Component {
   };
 
   render() {
-    const { handleSubmit, submitting } = this.props;
     return (
       <div className="fade-in">
         <Form

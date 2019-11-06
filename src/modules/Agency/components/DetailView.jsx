@@ -33,7 +33,11 @@ export const DetailView = ({ agency, agencyBranchData }) => {
       <div className="webAddress" data-test="web-address">
         <label>Web Address</label>
         <div>
-          <a href={formatUrl(agencyBranchData.websiteUrl)} target="_blank">
+          <a
+            href={formatUrl(agencyBranchData.websiteUrl)}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
             {agencyBranchData.websiteUrl}
           </a>
         </div>

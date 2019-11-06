@@ -26,7 +26,7 @@ const EXCEPTION_LEVELS = {
 
 class UnderwritingExceptions extends React.Component {
   render() {
-    const { exceptionLevel, exceptions, pristine } = this.props;
+    const { exceptionLevel, exceptions } = this.props;
     const severity = EXCEPTION_LEVELS[exceptionLevel];
 
     return (

@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { date } from '@exzeo/core-ui';
 
@@ -76,6 +76,7 @@ const PaymentList = ({ batch, batchResults }) => {
                 <a
                   href={`/policy/${result.policyNumber}/coverage`}
                   target="_blank"
+                  rel="noopener noreferrer"
                 >
                   {result.policyNumber}
                 </a>

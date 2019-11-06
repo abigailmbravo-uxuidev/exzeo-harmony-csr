@@ -13,12 +13,12 @@ export class Notes extends Component {
 
   async componentDidMount() {
     const { numbers, numberType, fetchNotes } = this.props;
-    const notes = await fetchNotes(numbers, numberType);
+    await fetchNotes(numbers, numberType);
     this.setState({ isLoading: false });
   }
 
   render() {
-    const { error, notes, setAppError, policy } = this.props;
+    const { notes, setAppError, policy } = this.props;
     const { isLoading } = this.state;
 
     return (

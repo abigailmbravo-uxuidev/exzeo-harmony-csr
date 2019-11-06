@@ -1,6 +1,5 @@
 import React from 'react';
 import classNames from 'classnames';
-import _get from 'lodash/get';
 import { Field } from '@exzeo/core-ui/src';
 import { PolicyHolder } from '@exzeo/core-ui/src/@Harmony';
 
