@@ -52,11 +52,6 @@ const getCurrentStepAndPage = defaultMemoize(pathname => {
   };
 });
 
-// Thin memoized wrapper around FormSpys to keep them from needlessly re-rendering.
-const MemoizedFormListeners = React.memo(({ children }) => (
-  <React.Fragment>{children}</React.Fragment>
-));
-
 const TEMPLATES = {
   AF3: MOCK_AF3,
   HO3: MOCK_HO3
