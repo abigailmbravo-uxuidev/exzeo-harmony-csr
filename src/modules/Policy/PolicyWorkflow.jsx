@@ -1,8 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Route } from 'react-router-dom';
 import { Loader, FormSpy, remoteSubmit, date } from '@exzeo/core-ui';
-import * as serviceRunner from '@exzeo/core-ui/src/@Harmony/Domain/Api/serviceRunner';
 import {
   getConfigForJsonTransform,
   Gandalf,
@@ -70,11 +68,6 @@ const getCurrentStepAndPage = defaultMemoize(pathname => {
     currentRouteName
   };
 });
-
-// Thin memoized wrapper around FormSpys to keep them from needlessly re-rendering.
-const MemoizedFormListeners = React.memo(({ children }) => (
-  <React.Fragment>{children}</React.Fragment>
-));
 
 const TEMPLATES = {
   AF3: MOCK_AF3,
@@ -161,7 +154,7 @@ export class PolicyWorkflow extends React.Component {
       location.pathname
     );
 
-    const response = await this.props.updatePolicy({
+    await this.props.updatePolicy({
       data: values,
       options: {
         step: currentStepNumber,

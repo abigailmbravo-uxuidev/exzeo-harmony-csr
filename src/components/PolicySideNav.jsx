@@ -108,7 +108,7 @@ export class SideNav extends React.Component {
   };
 
   render() {
-    const { policy, startWorkflow, setAppError } = this.props;
+    const { policy, setAppError } = this.props;
     return (
       <nav className="site-nav">
         <SideNavigation

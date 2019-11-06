@@ -1,5 +1,5 @@
 import React from 'react';
-import { Form, Loader, Field, Select, validation, Input } from '@exzeo/core-ui';
+import { Form, Loader, Field, validation } from '@exzeo/core-ui';
 
 const ReinstatePolicyForm = ({
   children,

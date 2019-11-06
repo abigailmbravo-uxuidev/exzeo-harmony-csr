@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { Field, reduxForm } from 'redux-form';
-import { connect } from 'react-redux';
 
 import { Input, SelectTypeAhead, Button } from '@exzeo/core-ui';
 
@@ -27,12 +26,7 @@ export class TransferFilter extends Component {
   };
 
   render() {
-    const {
-      policyNumberList,
-      listAnswersAsKey,
-      agentsList,
-      reset
-    } = this.props;
+    const { policyNumberList, listAnswersAsKey, agentsList } = this.props;
     return (
       <form id={FORM_NAME} className="search-inputs">
         <Field

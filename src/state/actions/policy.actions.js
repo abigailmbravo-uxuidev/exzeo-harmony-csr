@@ -1,6 +1,5 @@
 // temporary full path import until we can find a better way to mock network requests
 import * as serviceRunner from '@exzeo/core-ui/src/@Harmony/Domain/Api/serviceRunner';
-import _cloneDeep from 'lodash/cloneDeep';
 import { date } from '@exzeo/core-ui/src';
 
 import { convertToRateData } from '../../utilities/endorsementModel';
@@ -856,10 +855,7 @@ export function updatePolicy({ data = {}, options = {} }) {
           data: formattedData
         };
 
-        const response = await serviceRunner.callService(
-          transferConfig,
-          'saveEndorsement'
-        );
+        await serviceRunner.callService(transferConfig, 'saveEndorsement');
 
         dispatch(initializePolicyWorkflow(data.policyNumber));
       }

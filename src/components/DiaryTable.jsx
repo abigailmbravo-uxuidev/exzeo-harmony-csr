@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
-import moment from 'moment-timezone';
 import { connect } from 'react-redux';
 import { date } from '@exzeo/core-ui';
 

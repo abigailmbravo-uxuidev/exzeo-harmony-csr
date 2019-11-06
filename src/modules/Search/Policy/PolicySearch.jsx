@@ -1,11 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import classNames from 'classnames';
 import { Field } from 'redux-form';
 import {
   Input,
   Select,
-  SelectTypeAhead,
   Button,
   normalize,
   validation,

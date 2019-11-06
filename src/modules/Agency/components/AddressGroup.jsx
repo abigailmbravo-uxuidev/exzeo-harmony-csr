@@ -24,7 +24,7 @@ export class AddressGroup extends Component {
   };
 
   normalizeSameAsMailing = section => (value, pv, av) => {
-    const { changeField, parentFormGroup } = this.props;
+    const { changeField } = this.props;
 
     const formValues = this.getFormGroupPath(av);
 

@@ -52,8 +52,7 @@ export class Authentication extends Component {
   };
 
   render() {
-    const { userProfile } = this.props;
-    const authenticated = auth.isAuthenticated();
+    auth.isAuthenticated();
 
     return <React.Fragment>{this.props.render({ auth })}</React.Fragment>;
   }
