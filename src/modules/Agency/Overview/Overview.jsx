@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import DetailView from '../components/DetailView';
 import ContactView from '../components/ContactView';
@@ -105,6 +106,18 @@ export class Overview extends React.Component {
         <div className="route-content">
           <div className="scroll">
             <div className="form-group survey-wrapper" role="group">
+              <section className="contract-details">
+                {agency.contracts.map(contract => (
+                  <div key={contract.contractNumber}>
+                    <h3>{contract.companyCode}</h3>
+                    {contract.stateProducts.map(item => (
+                      <span key={`${item.state}-${item.product}`}>
+                        {item.state} &bull; {item.product} &bull; {item.status}
+                      </span>
+                    ))}
+                  </div>
+                ))}
+              </section>
               <h3 data-test="agency-details">
                 Details
                 <button
@@ -260,4 +273,10 @@ export class Overview extends React.Component {
     );
   }
 }
+
+Overview.propTypes = {
+  agencyCode: PropTypes.string.isRequired,
+  branchCode: PropTypes.string.isRequired
+};
+
 export default Overview;
