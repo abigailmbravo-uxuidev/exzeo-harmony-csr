@@ -140,8 +140,10 @@ export function updateQuote({ data = {}, options = {} }) {
       if (options.shouldSendApplication) {
         await quoteData.sendApplication(data.quoteNumber, 'docusign');
       } else {
-        const formattedQuote = formatQuoteForSubmit(data, options);
-        const result = await quoteData.updateQuote(formattedQuote, options);
+        const quote = formatQuoteForSubmit(data, options);
+        const result = await quoteData.updateQuote(quote, {
+          alwaysRunUnderwriting: true
+        });
 
         if (!result || !result.quoteNumber) {
           dispatch(errorActions.setAppError(result));
