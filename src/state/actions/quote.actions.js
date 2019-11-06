@@ -1,4 +1,4 @@
-import { date } from '@exzeo/core-ui';
+import { quoteData } from '@exzeo/core-ui/src/@Harmony';
 import * as serviceRunner from '@exzeo/core-ui/src/@Harmony/Domain/Api/serviceRunner';
 
 import * as types from './actionTypes';
@@ -161,12 +161,6 @@ function formatQuoteForSubmit(data, options) {
     editingDisabled,
     ...quote
   } = data;
-  // ensure the effectiveDate is converted back to UTC
-  quote.effectiveDate = date.formatToUTC(
-    date.formatDate(data.effectiveDate, date.FORMATS.SECONDARY),
-    data.property.timezone
-  );
-
   if (removeSecondary || data.policyHolders.length === 1) {
     // Backend doesn't like when partial policyholder is filled out, so for now we have to check whether or not
     // actual user input was entered. There are hidden fields that we add initial values to because the backend wants
@@ -174,14 +168,6 @@ function formatQuoteForSubmit(data, options) {
     quote.policyHolders = data.policyHolders[0].firstName
       ? [data.policyHolders[0]]
       : [];
-  } else if (data.policyHolders.length > 1) {
-    if (!data.policyHolders[1].firstName) {
-      quote.policyHolders = [quote.policyHolders[0]];
-    } else {
-      quote.policyHolders[1].order = data.policyHolders[1].order || 1;
-      quote.policyHolders[1].entityType =
-        data.policyHolders[1].entityType || 'Person';
-    }
   }
 
   if (!data.coverageLimits.personalProperty.value) {
@@ -196,7 +182,6 @@ function formatQuoteForSubmit(data, options) {
       quote.deductibles.sinkhole = { value: 10 };
     }
   }
-
   // AF3 specific rules
   if (data.product === PRODUCT_TYPES.flood) {
     // currently no defaults specific to flood that we know of.
@@ -228,27 +213,15 @@ export function updateQuote({ data = {}, options = {} }) {
 
         await serviceRunner.callService(config, 'quoteManager.sendApplication');
       } else {
-        const updatedQuote = formatQuoteForSubmit(data, options);
-        const config = {
-          exchangeName: 'harmony',
-          routingKey: 'harmony.quote.updateQuote',
-          data: {
-            quote: updatedQuote,
-            alwaysRunUnderwriting: true
-          }
-        };
+        const formattedQuote = formatQuoteForSubmit(data, options);
+        const result = await quoteData.updateQuote(formattedQuote, options);
 
-        const response = await serviceRunner.callService(
-          config,
-          'quoteManager.updateQuote'
-        );
-        const quote = response.data.result;
-        if (!quote) {
-          dispatch(errorActions.setAppError(response.data));
+        if (!result || !result.quoteNumber) {
+          dispatch(errorActions.setAppError(result));
           return null;
         }
-        dispatch(setQuote(quote));
-        return quote;
+        dispatch(setQuote(result));
+        return result;
       }
     } catch (error) {
       if (process.env.NODE_ENV !== 'production') {
