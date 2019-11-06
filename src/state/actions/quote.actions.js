@@ -1,5 +1,4 @@
 import { quoteData } from '@exzeo/core-ui/src/@Harmony';
-import * as serviceRunner from '@exzeo/core-ui/src/@Harmony/Domain/Api/serviceRunner';
 
 import * as types from './actionTypes';
 import * as errorActions from './error.actions';
@@ -31,24 +30,13 @@ export function setRetrievedQuote(response) {
 export function createQuote(igdID, stateCode, companyCode, product) {
   return async dispatch => {
     try {
-      const config = {
-        exchangeName: 'harmony',
-        routingKey: 'harmony.quote.createQuote',
-        data: {
-          companyCode,
-          state: stateCode,
-          product,
-          propertyId: igdID,
-          runUnderwriting: true
-        }
-      };
-
       dispatch(toggleLoading(true));
-      const response = await serviceRunner.callService(
-        config,
-        'quoteManager.createQuote'
-      );
-      const quote = response.data.result;
+      const quote = await quoteData.createQuote({
+        igdID,
+        stateCode,
+        companyCode,
+        product
+      });
       // Ensure that all 'source' fields are set for underwriting questions
       Object.keys(quote.underwritingAnswers || {}).map(
         q => (quote.underwritingAnswers[q].source = 'Customer')
@@ -77,65 +65,13 @@ export function createQuote(igdID, stateCode, companyCode, product) {
 export function retrieveQuote({ quoteNumber, quoteId }) {
   return async dispatch => {
     try {
-      const config = {
-        exchangeName: 'harmony',
-        routingKey: 'harmony.quote.retrieveQuote',
-        data: {
-          quoteId,
-          quoteNumber
-        }
-      };
-
       dispatch(toggleLoading(true));
-      const response = await serviceRunner.callService(
-        config,
-        'quoteManager.retrieveQuote'
-      );
-      const result = response.data.result;
+      const result = await quoteData.retrieveQuote({ quoteNumber, quoteId });
       dispatch(setQuote(result));
       return result;
     } catch (error) {
       if (process.env.NODE_ENV !== 'production') {
         console.log('Error retrieving quote: ', error);
-      }
-      dispatch(errorActions.setAppError(error));
-      return null;
-    } finally {
-      dispatch(toggleLoading(false));
-    }
-  };
-}
-
-/**
- *
- * @param quoteNumber
- * @param quoteId
- * @returns {Function}
- */
-export function reviewQuote({ quoteNumber, quoteId }) {
-  return async dispatch => {
-    try {
-      const config = {
-        exchangeName: 'harmony',
-        routingKey: 'harmony.quote.reviewQuote',
-        data: {
-          quoteId,
-          quoteNumber,
-          alwaysRunUnderwriting: true
-        }
-      };
-
-      dispatch(toggleLoading(true));
-      const response = await serviceRunner.callService(
-        config,
-        'quoteManager.reviewQuote'
-      );
-      const quote = response.data.result;
-      dispatch(setQuote(quote));
-      return quote;
-    } catch (error) {
-      if (process.env.NODE_ENV !== 'production') {
-        console.log('Error reviewing quote: ', error);
       }
       dispatch(errorActions.setAppError(error));
       return null;
@@ -202,16 +138,7 @@ export function updateQuote({ data = {}, options = {} }) {
       dispatch(toggleLoading(true));
 
       if (options.shouldSendApplication) {
-        const config = {
-          exchangeName: 'harmony',
-          routingKey: 'harmony.quote.sendApplication',
-          data: {
-            quoteNumber: data.quoteNumber,
-            sendType: 'docusign'
-          }
-        };
-
-        await serviceRunner.callService(config, 'quoteManager.sendApplication');
+        await quoteData.sendApplication(data.quoteNumber, 'docusign');
       } else {
         const formattedQuote = formatQuoteForSubmit(data, options);
         const result = await quoteData.updateQuote(formattedQuote, options);
@@ -241,55 +168,13 @@ export function updateQuote({ data = {}, options = {} }) {
  * @param quoteId
  * @returns {Function}
  */
-export function getQuote({ quoteNumber, quoteId }) {
-  return async dispatch => {
-    try {
-      const config = {
-        service: 'quote-data',
-        method: 'GET',
-        path: quoteId || quoteNumber
-      };
-
-      dispatch(toggleLoading(true));
-      const response = await serviceRunner.callService(config, 'getQuote');
-      const quote = response.data.result;
-      dispatch(setQuote(quote));
-      return quote;
-    } catch (error) {
-      dispatch(errorActions.setAppError(error));
-      return null;
-    } finally {
-      dispatch(toggleLoading(false));
-    }
-  };
-}
-
-/**
- *
- * @param quoteNumber
- * @param quoteId
- * @returns {Function}
- */
 export function verifyQuote({ quoteNumber, quoteId }) {
   return async dispatch => {
     try {
-      const config = {
-        exchangeName: 'harmony',
-        routingKey: 'harmony.quote.verifyQuote',
-        data: {
-          quoteId,
-          quoteNumber
-        }
-      };
-
       dispatch(toggleLoading(true));
-      const response = await serviceRunner.callService(
-        config,
-        'quoteManager.verifyQuote'
-      );
-      const result = response.data.result;
+      const result = await quoteData.verifyQuote({ quoteNumber, quoteId });
       dispatch(setQuote(result));
-      return result.quote;
+      return result;
     } catch (error) {
       if (process.env.NODE_ENV !== 'production') {
         console.log('Error with verify quote: ', error);
