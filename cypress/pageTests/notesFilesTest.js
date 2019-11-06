@@ -18,6 +18,7 @@ const addNoteCheck = text => {
       expect(response.body.status).to.equal(200);
     });
 
+  cy.wait(1000);
   cy.get('.table tbody')
     .find('tr')
     .find('td')
