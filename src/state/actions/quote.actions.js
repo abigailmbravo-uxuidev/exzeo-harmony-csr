@@ -37,16 +37,8 @@ export function createQuote(igdID, stateCode, companyCode, product) {
         companyCode,
         product
       });
-      // Ensure that all 'source' fields are set for underwriting questions
-      Object.keys(quote.underwritingAnswers || {}).map(
-        q => (quote.underwritingAnswers[q].source = 'Customer')
-      );
-
       return quote;
     } catch (error) {
-      if (process.env.NODE_ENV !== 'production') {
-        console.log('Error creating quote: ', error);
-      }
       dispatch(errorActions.setAppError(error));
       return null;
     } finally {
@@ -70,9 +62,6 @@ export function retrieveQuote({ quoteNumber, quoteId }) {
       dispatch(setQuote(result));
       return result;
     } catch (error) {
-      if (process.env.NODE_ENV !== 'production') {
-        console.log('Error retrieving quote: ', error);
-      }
       dispatch(errorActions.setAppError(error));
       return null;
     } finally {
@@ -153,9 +142,6 @@ export function updateQuote({ data = {}, options = {} }) {
         return result;
       }
     } catch (error) {
-      if (process.env.NODE_ENV !== 'production') {
-        console.log('Error updating quote: ', error);
-      }
       dispatch(errorActions.setAppError(error));
       return null;
     } finally {
@@ -178,9 +164,6 @@ export function verifyQuote({ quoteNumber, quoteId }) {
       dispatch(setQuote(result));
       return result;
     } catch (error) {
-      if (process.env.NODE_ENV !== 'production') {
-        console.log('Error with verify quote: ', error);
-      }
       dispatch(errorActions.setAppError(error));
       return null;
     } finally {
