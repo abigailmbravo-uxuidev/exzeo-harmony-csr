@@ -3,14 +3,14 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Field, reduxForm } from 'redux-form';
 import _get from 'lodash/get';
-
 import {
   Date,
   Draggable,
   Select,
   validation,
   Loader,
-  TextArea
+  TextArea,
+  date
 } from '@exzeo/core-ui';
 import classNames from 'classnames';
 
@@ -39,6 +39,12 @@ export class DiaryModal extends Component {
   submitDiary = async (data, dispatch, props) => {
     try {
       const {
+        entity: {
+          property: { timezone }
+        }
+      } = props;
+      const {
+        due,
         assignee: { id },
         ...submitData
       } = data;
@@ -51,9 +57,7 @@ export class DiaryModal extends Component {
         type: assigneeObj.type
       };
 
-      // TODO: Currently blocked by https://issuecenter.atlassian.net/browse/HAR-7861
-      // const { entity: { zipCodeSettings: { timezone }}} = props
-      // submitData.due = date.formatToUTC(due, timezone)
+      submitData.due = date.formatToUTC(due, timezone);
 
       await props.submitDiary({ ...submitData, assignee }, props);
     } catch (error) {
