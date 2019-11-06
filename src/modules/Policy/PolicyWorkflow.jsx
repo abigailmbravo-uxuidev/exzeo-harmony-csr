@@ -348,7 +348,7 @@ export class PolicyWorkflow extends React.Component {
                         template={gandalfTemplate}
                         transformConfig={transformConfig}
                         stickyFooter
-                        renderFooter={() => (
+                        renderFooter={
                           <FormSpy
                             subscription={{
                               pristine: true,
@@ -374,9 +374,9 @@ export class PolicyWorkflow extends React.Component {
                               />
                             )}
                           </FormSpy>
-                        )}
-                        formListeners={() => (
-                          <MemoizedFormListeners>
+                        }
+                        formListeners={
+                          <React.Fragment>
                             <FormSpy subscription={{}}>
                               {({ form }) => {
                                 this.setFormInstance(form);
@@ -395,8 +395,8 @@ export class PolicyWorkflow extends React.Component {
                                 />
                               )}
                             </FormSpy>
-                          </MemoizedFormListeners>
-                        )}
+                          </React.Fragment>
+                        }
                       />
                     </React.Fragment>
                   )}
