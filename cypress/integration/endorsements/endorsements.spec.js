@@ -174,33 +174,34 @@ describe('Endorsements Happy Path', () => {
           .goToNav('notes')
           .wait('@fetchFiles');
 
-        const effectiveDate = new Date(
-          response.result.transaction.effectiveDate
-        ).toLocaleDateString('en-US', {
-          year: 'numeric',
-          month: '2-digit',
-          day: '2-digit'
-        });
+        // TODO revisit these assertions with QA to determine where we should be doing this: Cypress or Selenium
+        // const effectiveDate = new Date(
+        //   response.result.transaction.effectiveDate
+        // ).toLocaleDateString('en-US', {
+        //   year: 'numeric',
+        //   month: '2-digit',
+        //   day: '2-digit'
+        // });
+        //
+        // cy.get('.table tbody')
+        //   .find('tr')
+        //   .find('td')
+        //   .contains(
+        //     `Multiple Endorsements Endorsement Effective ${effectiveDate}.`
+        //   );
 
-        cy.get('.table tbody')
-          .find('tr')
-          .find('td')
-          .contains(
-            `Multiple Endorsements Endorsement Effective ${effectiveDate}.`
-          );
+        // const created = new Date(
+        //   response.result.transaction.issueDate
+        // ).toLocaleDateString('en-US', {
+        //   year: 'numeric',
+        //   month: '2-digit',
+        //   day: '2-digit'
+        // });
 
-        const created = new Date(
-          response.result.transaction.issueDate
-        ).toLocaleDateString('en-US', {
-          year: 'numeric',
-          month: '2-digit',
-          day: '2-digit'
-        });
-
-        cy.get('.table tbody')
-          .find('tr')
-          .find('td')
-          .contains(created);
+        // cy.get('.table tbody')
+        //   .find('tr')
+        //   .find('td')
+        //   .contains(created);
 
         cy.get('.table tbody')
           .find('tr')
@@ -212,12 +213,12 @@ describe('Endorsements Happy Path', () => {
           .find('td')
           .contains('tticcsr');
 
-        cy.get('.table tbody')
-          .find('tr')
-          .find('td')
-          .contains(
-            `Multiple Endorsements Endorsement Effective ${effectiveDate}.`
-          );
+        // cy.get('.table tbody')
+        //   .find('tr')
+        //   .find('td')
+        //   .contains(
+        //     `Multiple Endorsements Endorsement Effective ${effectiveDate}.`
+        //   );
 
         cy.get('.table tbody')
           .find('tr')
