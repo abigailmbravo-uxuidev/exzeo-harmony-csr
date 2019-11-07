@@ -214,11 +214,10 @@ describe('Endorsements Happy Path', () => {
           .contains('tticcsr');
 
         cy.get('.table tbody')
-          .find('tr')
-          .find('td')
-          .contains(
-            `Multiple Endorsements Endorsement Effective ${effectiveDate}.`
-          );
+          .contains('div', `Multiple Endorsements Endorsement`)
+          .then($div => {
+            expect($div).to.have.length(1);
+          });
       });
   });
 });
