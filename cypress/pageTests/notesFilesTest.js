@@ -1,4 +1,4 @@
-const addNoteCheck = text => {
+const addNoteCheck = (text, rowCount) => {
   cy.findDataTag('new-note')
     .click({ force: true })
     .wait('@getNoteOptions')
@@ -18,10 +18,8 @@ const addNoteCheck = text => {
       expect(response.body.status).to.equal(200);
     });
 
-  cy.wait(1000);
-  cy.get('.table tbody')
-    .find('tr')
-    .find('td')
+  cy.get('.table tbody tr')
+    .should('have.length', rowCount)
     .contains(text);
 };
 
@@ -37,7 +35,7 @@ export default () => {
     .get('td.note div')
     .contains('Quote State Changed: Application Started');
 
-  addNoteCheck('test note one');
+  addNoteCheck('test note one', 4);
 
   cy.findDataTag('new-diary')
     .click({ force: true })
@@ -62,5 +60,5 @@ export default () => {
     .checkQuoteState('Application Started')
     .goToNav('coverage');
 
-  addNoteCheck('another note');
+  addNoteCheck('another note', 5);
 };
