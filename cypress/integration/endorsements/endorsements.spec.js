@@ -218,22 +218,6 @@ describe('Endorsements Happy Path', () => {
           .contains(
             `Multiple Endorsements Endorsement Effective ${effectiveDate}.`
           );
-
-        // TODO: Test if a new note exists rather than specific data
-
-        // cy.get('.table tbody')
-        //   .find('tr')
-        //   .find('td')
-        //   .contains(
-        //     'Prior - Dwelling (A): 314000, Other Structures (B): 6280, Personal Property (C): 78500, Loss of Use (D): 31400, Sinkhole Deductible: Yes, Sinkhole Deductible: 10, Burglar Alarm: No, Roof Covering: Other, Roof Geometry: Other, Protection Class: 3, PH 1 Primary Phone: 1234567890, PH 1 Secondary Phone: , PH 2 First Name: Null, PH 2 Last Name: Null, PH 2 Primary Phone: Null, PH 2 Secondary Phone: Null, PH 2 Email Address: Null, Mailing Address 2: , Property 2: Null.'
-        //   );
-
-        // cy.get('.table tbody')
-        //   .find('tr')
-        //   .find('td')
-        //   .contains(
-        //     'New - Dwelling (A): 400000, Other Structures (B): 8000, Personal Property (C): 200000, Loss of Use (D): 40000, Sinkhole Deductible: No, Sinkhole Deductible: Null, Burglar Alarm: Yes, Roof Covering: FBC, Roof Geometry: Hip, Protection Class: 7, PH 1 Primary Phone: 2224445555, PH 1 Secondary Phone: 3337778888, PH 2 First Name: Batman 2, PH 2 Last Name: Robin 2, PH 2 Primary Phone: 9994445555, PH 2 Secondary Phone: 3337776543, PH 2 Email Address: exzeoqa@exzeo.com, Mailing Address 2: APT 101, Property 2: APT 101'
-        //   );
       });
   });
 });
