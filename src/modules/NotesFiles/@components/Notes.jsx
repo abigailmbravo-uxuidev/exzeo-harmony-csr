@@ -55,6 +55,16 @@ const Notes = props => {
         Created
       </TableHeaderColumn>
       <TableHeaderColumn
+        className="term"
+        columnClassName="term"
+        dataField="term"
+        sortOrder="desc"
+        dataAlign="center"
+        dataSort
+      >
+        Term
+      </TableHeaderColumn>
+      <TableHeaderColumn
         className="created-by"
         columnClassName="created-by"
         dataField="createdBy"
