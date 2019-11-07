@@ -31,8 +31,6 @@ export function getEnumsForQuoteWorkflow({
   companyCode,
   state,
   product,
-  agencyCode,
-  agentCode,
   quoteNumber
 }) {
   return async dispatch => {
@@ -43,23 +41,11 @@ export function getEnumsForQuoteWorkflow({
       // fetch all enums/data needed for the quote workflow in here.
       // 1. assign async function(s) to variable(s) - calls the func
       const diaryOptions = fetchDiaryOptions(companyCode, state, product);
-      const agencyOption = searchAgencies({ companyCode, state, agencyCode });
-      const agentOption = fetchAgentsByAgencyCode({
-        companyCode,
-        state,
-        agencyCode
-      });
       // 2. new variable awaits the previous.
-      const agencyResponse = await agencyOption;
-      const agentResponse = await agentOption;
       const diaryOptionsResponse = await diaryOptions;
-
-      const selectedAgent = agentResponse.filter(a => a.answer === agentCode);
 
       dispatch(
         setEnums({
-          agency: agencyResponse,
-          agent: selectedAgent,
           diaryOptions: diaryOptionsResponse
         })
       );
