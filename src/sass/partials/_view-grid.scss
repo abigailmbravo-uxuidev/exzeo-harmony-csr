@@ -783,6 +783,40 @@ section {
             color: $warm-gray-08;
           }
         }
+
+        .billing-modal {
+          .form-group.radio.segmented {
+          }
+          .billing-plan-wrapper {
+            .title {
+              padding: 0;
+            }
+            dl {
+              flex-grow: 1;
+              flex-shrink: 1;
+              margin: 0 ($padding/2) 0 0;
+              padding: 0;
+
+              &:last-of-type {
+                margin-right: 0;
+              }
+
+              dt {
+                padding: 0 $padding;
+                background: $warm-gray-02;
+              }
+              dd {
+                margin-bottom: 0;
+                padding: ($padding/2) $padding;
+                border-bottom: 1px dotted $warm-gray-02;
+
+                &:nth-of-type(even) {
+                  background: $warm-gray-01;
+                }
+              }
+            }
+          }
+        }
       }
 
       &.table-view {

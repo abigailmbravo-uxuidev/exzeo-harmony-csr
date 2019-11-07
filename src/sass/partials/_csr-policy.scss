@@ -24,42 +24,6 @@
           flex-grow: 1;
           flex-shrink: 1;
         }
-        //mortgage billing
-        /*.mortgage-billing {
-          position: relative;
-          display: flex;
-          overflow: hidden;
-          flex-basis: auto;
-          flex-direction: column;
-          flex-grow: 1;
-          flex-shrink: 1;
-
-          .scroll {
-            flex-grow: 1;
-            flex-shrink: 1;
-
-            .flex-child {
-              &.date {
-                flex-grow: 0;
-                flex-shrink: 0;
-                width: 14rem;
-              }
-
-              &.cash-type {
-                flex-grow: 0;
-                flex-shrink: 0;
-                width: 40%;
-              }
-
-              &.payment-description {
-                flex-grow: 0;
-                flex-shrink: 0;
-                width: 40%;
-              }
-            }
-          }
-        }*/
-        //end mortgage billing
         //-----------------------------------------
         //endorsements
         .endorsements {
