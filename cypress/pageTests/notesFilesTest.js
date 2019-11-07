@@ -2,15 +2,18 @@ const addNoteCheck = (text, rowCount) => {
   cy.findDataTag('new-note')
     .click({ force: true })
     .wait('@getNoteOptions')
-    .findDataTag('noteContent')
-    .wait(1000)
-    .type(`{selectall}{backspace}${text}`, { force: true })
-    .findDataTag('submit-button')
-    .click()
-    .wait('@fetchNotes')
     .then(({ response }) => {
       expect(response.body.status).to.equal(200);
     });
+  cy.findDataTag('noteContent')
+    .should('be.visible')
+    .type(`{selectall}{backspace}${text}`, { force: true })
+    .findDataTag('submit-button')
+    .click();
+
+  cy.wait('@fetchNotes').then(({ response }) => {
+    expect(response.body.status).to.equal(200);
+  });
 
   cy.goToNav('notes')
     .wait('@fetchNotes')
@@ -20,7 +23,8 @@ const addNoteCheck = (text, rowCount) => {
 
   cy.get('.table tbody tr')
     .should('have.length', rowCount)
-    .contains(text);
+    .find('div')
+    .should('contain', text);
 };
 
 export default () => {
