@@ -24,11 +24,7 @@ const PaymentForm = ({
   const [errorMessage, setErrorMessage] = useState();
   const [loading, setLoading] = useState(false);
   const {
-    effectiveDate = '',
-    policyHolders: { firstName, lastName } = {},
-    property: {
-      physicalAddress: { address1, address2, city, state, zip } = {}
-    } = {},
+    property: { physicalAddress: { address1, city, state, zip } = {} } = {},
     summaryLedger: { balance = {}, status: billingStatus = '' } = {}
   } = policy;
 
@@ -206,6 +202,7 @@ const PaymentForm = ({
                               className="btn btn-link btn-xs"
                               href={`/policy/${policy.policyNumber}/coverage`}
                               target="_blank"
+                              rel="noopener noreferrer"
                               tabIndex="-1"
                             >
                               <i className="fa fa-external-link-square" />

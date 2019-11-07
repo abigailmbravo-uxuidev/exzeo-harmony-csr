@@ -24,7 +24,7 @@ export class AddressGroup extends Component {
   };
 
   normalizeSameAsMailing = section => (value, pv, av) => {
-    const { changeField, parentFormGroup } = this.props;
+    const { changeField } = this.props;
 
     const formValues = this.getFormGroupPath(av);
 
@@ -37,7 +37,7 @@ export class AddressGroup extends Component {
 
   filterTerritoryManager = (state, county) => {
     const { territoryManagers } = this.props;
-    const selectedTerritoryManager = territoryManagers.find(tm => {
+    return territoryManagers.find(tm => {
       const { states } = tm;
       if (
         states &&
@@ -56,8 +56,6 @@ export class AddressGroup extends Component {
       }
       return null;
     });
-
-    return selectedTerritoryManager;
   };
 
   setTerritoryManager = selectedZip => {

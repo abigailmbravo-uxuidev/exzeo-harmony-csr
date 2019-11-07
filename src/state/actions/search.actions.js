@@ -471,7 +471,7 @@ function formatDiaryResults(results) {
  * @returns {Function}
  */
 export async function handleAddressSearch(data) {
-  const { company, product, state, address } = data;
+  const { state, address } = data;
   try {
     const query = formatForURI(`${String(address).trim()}, ${state}`);
 

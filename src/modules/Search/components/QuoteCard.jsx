@@ -1,6 +1,5 @@
 import React from 'react';
 import { date } from '@exzeo/core-ui';
-import { STANDARD_DATE_FORMAT } from '../../../constants/dates';
 
 function QuoteCard({ handleKeyPress, handleClick, quote }) {
   return (

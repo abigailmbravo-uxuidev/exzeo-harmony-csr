@@ -52,11 +52,6 @@ const getCurrentStepAndPage = defaultMemoize(pathname => {
   };
 });
 
-// Thin memoized wrapper around FormSpys to keep them from needlessly re-rendering.
-const MemoizedFormListeners = React.memo(({ children }) => (
-  <React.Fragment>{children}</React.Fragment>
-));
-
 const TEMPLATES = {
   AF3: MOCK_AF3,
   HO3: MOCK_HO3
@@ -291,20 +286,26 @@ export class QuoteWorkflow extends React.Component {
                       template={gandalfTemplate}
                       transformConfig={transformConfig}
                       stickyFooter
-                      renderFooter={({ pristine, submitting, form }) => (
-                        <QuoteFooter
-                          currentStep={currentRouteName}
-                          formInstance={form}
-                          isSubmitDisabled={this.isSubmitDisabled(
-                            pristine,
-                            submitting
+                      renderFooter={
+                        <FormSpy
+                          subscription={{ pristine: true, submitting: true }}
+                        >
+                          {({ form, pristine, submitting }) => (
+                            <QuoteFooter
+                              currentStep={currentRouteName}
+                              formInstance={form}
+                              isSubmitDisabled={this.isSubmitDisabled(
+                                pristine,
+                                submitting
+                              )}
+                              handlePrimaryClick={this.primaryClickHandler}
+                              handleApplicationClick={this.handleRetrieveQuote}
+                            />
                           )}
-                          handlePrimaryClick={this.primaryClickHandler}
-                          handleApplicationClick={this.handleRetrieveQuote}
-                        />
-                      )}
-                      formListeners={() => (
-                        <MemoizedFormListeners>
+                        </FormSpy>
+                      }
+                      formListeners={
+                        <React.Fragment>
                           <FormSpy subscription={{}}>
                             {({ form }) => {
                               this.setFormInstance(form);
@@ -323,8 +324,8 @@ export class QuoteWorkflow extends React.Component {
                               />
                             )}
                           </FormSpy>
-                        </MemoizedFormListeners>
-                      )}
+                        </React.Fragment>
+                      }
                     />
                   </React.Fragment>
                 )}

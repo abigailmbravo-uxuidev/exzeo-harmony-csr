@@ -1,12 +1,10 @@
-import React, { useEffect, useState, Fragment } from 'react';
+import React, { useState, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import {
   Form,
-  Loader,
   Field,
   Date,
   Input,
-  Currency,
   Select,
   FormSpy,
   OnChangeListener,

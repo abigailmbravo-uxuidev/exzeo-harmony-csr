@@ -1,6 +1,5 @@
 import React from 'react';
-import { NavLink, Redirect } from 'react-router-dom';
-import { reduxForm, Field } from 'redux-form';
+import { NavLink } from 'react-router-dom';
 
 const SideNav = () => {
   return (

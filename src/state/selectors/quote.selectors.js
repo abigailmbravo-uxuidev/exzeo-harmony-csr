@@ -66,6 +66,12 @@ export const getQuoteSelector = createSelector(
       });
     }
 
+    quoteData.sameAsPropertyAddress =
+      quoteData.property.physicalAddress.address1 ===
+        (quoteData.policyHolderMailingAddress || {}).address1 &&
+      quoteData.property.physicalAddress.city ===
+        (quoteData.policyHolderMailingAddress || {}).city;
+
     quoteData.effectiveDate = formatDate(
       quoteData.effectiveDate,
       FORMATS.SECONDARY
