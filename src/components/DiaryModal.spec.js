@@ -10,7 +10,6 @@ describe('Test DiaryModal component', () => {
       tags: []
     },
     entityEndDate: '2018-01-01',
-    change() {},
     assigneeAnswers: [
       { answer: '1', label: '1', type: 'user' },
       { answer: '2', label: 'Underwriting', type: 'estate' }
@@ -36,16 +35,5 @@ describe('Test DiaryModal component', () => {
         x => x,
         props
       );
-  });
-
-  it('warns if no user profile is present', () => {
-    const wrapper = shallow(<DiaryModal {...props} user={{ test: '1' }} />);
-    expect(wrapper.exists()).toBeTruthy();
-
-    expect(wrapper.instance().normalizeDiaryReason('none')).toEqual('none');
-    expect(
-      wrapper.instance().normalizeDiaryReason('additional_interest')
-    ).toEqual('additional_interest');
-    expect(wrapper.instance().normalizeDiaryReason('estate')).toEqual('estate');
   });
 });
