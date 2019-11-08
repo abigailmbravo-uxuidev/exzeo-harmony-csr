@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Field, reduxForm } from 'redux-form';
 import _get from 'lodash/get';
 import {
   Date,
@@ -10,8 +9,14 @@ import {
   validation,
   Loader,
   TextArea,
-  date
+  date,
+  composeValidators,
+  Form,
+  Field,
+  Button
 } from '@exzeo/core-ui';
+import { OnChangeListener } from '@exzeo/core-ui/src';
+
 import classNames from 'classnames';
 
 import { addDate } from '../utilities/diaries';
@@ -36,19 +41,19 @@ export class DiaryModal extends Component {
     this.props.toggleDiary();
   };
 
-  submitDiary = async (data, dispatch, props) => {
+  submitDiary = async (data, dispatch) => {
     try {
       const {
         entity: {
           property: { timezone }
         }
-      } = props;
+      } = this.props;
       const {
         due,
         assignee: { id },
         ...submitData
       } = data;
-      const assigneeObj = props.assigneeAnswers.find(
+      const assigneeObj = this.props.assigneeAnswers.find(
         u => String(u.answer) === String(id)
       );
       const assignee = {
@@ -59,50 +64,24 @@ export class DiaryModal extends Component {
 
       submitData.due = date.formatToUTC(due, timezone);
 
-      await props.submitDiary({ ...submitData, assignee }, props);
+      await this.props.submitDiary({ ...submitData, assignee }, this.props);
     } catch (error) {
-      props.setAppError({ message: error });
+      this.props.setAppError({ message: error });
     } finally {
       this.handleClose();
     }
   };
 
-  normalizeDiaryReason = (value, prevVal) => {
-    const {
-      change,
-      user: { userId },
-      assigneeAnswers,
-      entity,
-      diaryOptions
-    } = this.props;
-    const defaultData = diaryOptions.reasons.find(r => r.answer === value);
-
-    if (!defaultData) return value;
-
-    if (defaultData.assignee === 'CURRENT_USER') {
-      change('assignee.id', userId);
-    } else {
-      const selectedAssignee = assigneeAnswers.find(
-        u => String(u.label) === String(defaultData.assignee)
-      );
-      change('assignee.id', selectedAssignee ? selectedAssignee.answer : '');
-    }
-    change('reason', defaultData.answer);
-
-    const { offset, path } = defaultData.dueDate;
-    const dateString = path === 'default' ? undefined : _get(entity, path);
-    change('due', addDate(offset, dateString));
-    return value;
-  };
-
   render() {
     const {
       assigneeAnswers,
-      handleSubmit,
       submitting,
       minimizeDiary,
-      diaryReasons
+      diaryReasons,
+      initialValues
     } = this.props;
+
+    console.log(this.props);
 
     return (
       <Draggable handle=".title-bar">
@@ -141,81 +120,151 @@ export class DiaryModal extends Component {
           </div>
           <div className="mainContainer">
             {submitting && <Loader />}
-            <form id="DiaryModal" onSubmit={handleSubmit(this.submitDiary)}>
-              <div className="content">
-                <Field
-                  name="reason"
-                  label="Reason"
-                  component={Select}
-                  answers={diaryReasons}
-                  validate={validation.isRequired}
-                  normalize={this.normalizeDiaryReason}
-                  dataTest="reason"
-                />
-                <Field
-                  name="assignee.id"
-                  styleName="assignee"
-                  label="Assignee"
-                  component={Select}
-                  answers={assigneeAnswers}
-                  validate={validation.isRequired}
-                  dataTest="assignee"
-                />
-                <Field
-                  name="due"
-                  styleName="due"
-                  label="Due Date"
-                  component={Date}
-                  validate={[
-                    validation.isRequired,
-                    validation.isDate,
-                    validation.isDateRange('01/01/1900', '12/31/9999')
-                  ]}
-                  dataTest="due"
-                />
-                <Field
-                  name="message"
-                  label="Message"
-                  dataTest="message"
-                  component={TextArea}
-                  validate={validation.isRequired}
-                />
-              </div>
-              <div className="buttons note-file-footer-button-group">
-                <button
-                  tabIndex="0"
-                  type="button"
-                  data-test="note-close-diary"
-                  className="btn btn-primary close-diary-button"
-                  onClick={handleSubmit((values, dispatch, props) => {
-                    this.submitDiary(
-                      { ...values, open: false },
-                      dispatch,
-                      props
-                    );
-                  })}
-                >
-                  Mark as Closed
-                </button>
-                <button
-                  tabIndex="0"
-                  type="button"
-                  data-test="note-cancel"
-                  className="btn btn-secondary cancel-button"
-                  onClick={this.handleClose}
-                >
-                  Cancel
-                </button>
-                <button
-                  tabIndex="0"
-                  type="submit"
-                  data-test="note-submit"
-                  className="btn btn-primary submit-button"
-                >
-                  Save
-                </button>
-              </div>
-            </form>
+            <Form
+              id="DiaryModal"
+              initialValues={initialValues}
+              onSubmit={this.submitDiary}
+              subscription={{ submitting: true, values: true }}
+            >
+              {({ handleSubmit, submitting, values: formValues }) => (
+                <form id="DiaryModal" onSubmit={handleSubmit}>
+                  <div className="content">
+                    <Field name="reason" validate={validation.isRequired}>
+                      {({ input, meta }) => (
+                        <Select
+                          input={input}
+                          meta={meta}
+                          label="Reason"
+                          answers={diaryReasons}
+                          dataTest="reason"
+                        />
+                      )}
+                    </Field>
+                    <Field name="assignee.id" validate={validation.isRequired}>
+                      {({ input, meta }) => (
+                        <Select
+                          input={input}
+                          meta={meta}
+                          label="Assignee"
+                          styleName="assignee"
+                          answers={assigneeAnswers}
+                          dataTest="assignee"
+                        />
+                      )}
+                    </Field>
+                    <Field
+                      name="due"
+                      validate={composeValidators([
+                        validation.isRequired,
+                        validation.isDate,
+                        validation.isDateRange('01/01/1900', '12/31/9999')
+                      ])}
+                    >
+                      {({ input, meta }) => (
+                        <Date
+                          input={input}
+                          meta={meta}
+                          label="Due Date"
+                          styleName="due"
+                          dataTest="due"
+                        />
+                      )}
+                    </Field>
+                    <Field
+                      name="message"
+                      label="Message"
+                      dataTest="message"
+                      component={TextArea}
+                      validate={validation.isRequired}
+                    />
+                    <Field name="assignee.id" subscription={{}}>
+                      {({ input: { onChange } }) => (
+                        <React.Fragment>
+                          <OnChangeListener name="reason">
+                            {value => {
+                              const {
+                                user: { userId },
+                                assigneeAnswers,
+                                diaryOptions
+                              } = this.props;
+                              const defaultData = diaryOptions.reasons.find(
+                                r => r.answer === value
+                              );
+                              if (
+                                defaultData &&
+                                defaultData.assignee === 'CURRENT_USER'
+                              ) {
+                                onChange(userId);
+                              } else {
+                                const selectedAssignee = assigneeAnswers.find(
+                                  u =>
+                                    String(u.label) ===
+                                    String(defaultData.assignee)
+                                );
+                                onChange(
+                                  selectedAssignee
+                                    ? selectedAssignee.answer
+                                    : ''
+                                );
+                              }
+                            }}
+                          </OnChangeListener>
+                        </React.Fragment>
+                      )}
+                    </Field>
+                    <Field name="due" subscription={{}}>
+                      {({ input: { onChange } }) => (
+                        <React.Fragment>
+                          <OnChangeListener name="reason">
+                            {value => {
+                              const { entity, diaryOptions } = this.props;
+                              const defaultData = diaryOptions.reasons.find(
+                                r => r.answer === value
+                              );
+
+                              const { offset, path } = defaultData.dueDate;
+                              const dateString =
+                                path === 'default'
+                                  ? undefined
+                                  : _get(entity, path);
+                              onChange(addDate(offset, dateString));
+                            }}
+                          </OnChangeListener>
+                        </React.Fragment>
+                      )}
+                    </Field>
+                  </div>
+                  <div className="buttons note-file-footer-button-group">
+                    <Button
+                      className={Button.constants.classNames.primary}
+                      customClass="close-diary-button"
+                      dataTest="close-diary"
+                      onClick={() =>
+                        this.submitDiary({ ...formValues, open: false })
+                      }
+                    >
+                      Mark as Closed
+                    </Button>
+                    <Button
+                      className={Button.constants.classNames.secondary}
+                      customClass="cancel-button"
+                      dataTest="diary-cancel"
+                      onClick={this.handleClose}
+                    >
+                      Cancel
+                    </Button>
+                    <Button
+                      className={Button.constants.classNames.primary}
+                      customClass="submit-button"
+                      dataTest="submit-button"
+                      type="submit"
+                    >
+                      Save
+                    </Button>
+                  </div>
+                </form>
+              )}
+            </Form>
           </div>
         </div>
       </Draggable>
@@ -260,9 +309,4 @@ export default connect(
     toggleDiary,
     toggleMinimizeDiary
   }
-)(
-  reduxForm({
-    form: 'DiaryModal',
-    enableReinitialize: true
-  })(DiaryModal)
-);
+)(DiaryModal);
