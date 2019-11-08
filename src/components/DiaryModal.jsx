@@ -41,7 +41,7 @@ export class DiaryModal extends Component {
     this.props.toggleDiary();
   };
 
-  submitDiary = async (data, dispatch) => {
+  submitDiary = async data => {
     try {
       const {
         entity: {
@@ -80,8 +80,6 @@ export class DiaryModal extends Component {
       diaryReasons,
       initialValues
     } = this.props;
-
-    console.log(this.props);
 
     return (
       <Draggable handle=".title-bar">
@@ -250,6 +248,7 @@ export class DiaryModal extends Component {
                       customClass="cancel-button"
                       dataTest="diary-cancel"
                       onClick={this.handleClose}
+                      disabled={submitting}
                     >
                       Cancel
                     </Button>
@@ -258,6 +257,7 @@ export class DiaryModal extends Component {
                       customClass="submit-button"
                       dataTest="submit-button"
                       type="submit"
+                      disabled={submitting}
                     >
                       Save
                     </Button>
