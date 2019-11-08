@@ -288,6 +288,15 @@
     .card {
       max-width: 60rem;
       width: 80%;
+
+      &.billing-modal {
+        section {
+          &.billing-plan-wrapper {
+            margin-bottom: 0;
+            padding-bottom: 0;
+          }
+        }
+      }
     }
   }
 

@@ -136,7 +136,7 @@ describe('Summary testing with finished Quote', () => {
     );
 
     fields.forEach(field => checkTextInput(getByLabelText, field));
-    checkButton(getByText, { text: 'Share', type: 'submit' });
+    checkButton(getByText, { text: 'Share', type: 'button' });
 
     fields.forEach(field => {
       const fieldInput = getByTestId(field.dataTest);

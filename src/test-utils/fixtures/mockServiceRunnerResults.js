@@ -134,6 +134,7 @@ export const notesResult = [
     numberType: 'quoteNumber',
     product: 'HO3',
     quoteNumber: '12-345-67',
+    term: 1,
     state: 'FL'
   },
   {
@@ -149,6 +150,7 @@ export const notesResult = [
     numberType: 'quoteNumber',
     product: 'HO3',
     quoteNumber: '12-345-67',
+    term: 2,
     state: 'FL'
   }
 ];
