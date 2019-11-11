@@ -12,7 +12,7 @@ export const DetailView = ({ agency, agencyBranchData }) => {
       </div>
       <div className="agencyName" data-test="agency-name">
         <label>Agency Name</label>
-        <div>{agencyBranchData.displayName}</div>
+        <div>{agency.displayName}</div>
       </div>
       <div className="entityName" data-test="entity-code">
         <label>Entity Name</label>

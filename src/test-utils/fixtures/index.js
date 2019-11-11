@@ -9,3 +9,5 @@ export { newQuoteResults } from './searchResults';
 export { default as underwritingException } from './underwritingException';
 export { default as userProfile } from './userProfile';
 export { default as mockPaymentOptions } from './paymentOptions';
+export { mockAgency } from './agency';
+export { mockAgents } from './agents';

@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 
 import DetailView from '../components/DetailView';
 import ContactView from '../components/ContactView';
@@ -159,16 +158,16 @@ export class Overview extends React.Component {
                 />
               </section>
               {agencyBranchData.principal && (
-                <h3 data-test="agency-officer">Officer</h3>
-              )}
-              {agencyBranchData.principal && (
-                <section className="agency-principal">
-                  <ContactCard
-                    isOfficer
-                    contact={agencyBranchData.principal}
-                    handleClick={this.onHandleToggleEditPrincipalModal}
-                  />
-                </section>
+                <React.Fragment>
+                  <h3 data-test="agency-officer">Officer</h3>
+                  <section className="agency-principal">
+                    <ContactCard
+                      isOfficer
+                      contact={agencyBranchData.principal}
+                      handleClick={this.onHandleToggleEditPrincipalModal}
+                    />
+                  </section>
+                </React.Fragment>
               )}
               <h3 data-test="agency-contact">Contact</h3>
               <section className="agency-contact">
@@ -275,10 +274,5 @@ export class Overview extends React.Component {
     );
   }
 }
-
-Overview.propTypes = {
-  agencyCode: PropTypes.string.isRequired,
-  branchCode: PropTypes.string.isRequired
-};
 
 export default Overview;
