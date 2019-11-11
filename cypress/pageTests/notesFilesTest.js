@@ -52,7 +52,7 @@ export default () => {
     .type('2021-01-01')
     .findDataTag('message')
     .type('new diary')
-    .findDataTag('note-submit')
+    .findDataTag('diary-submit')
     .click()
     .get('.new-diary-file')
     .should('not.exist')

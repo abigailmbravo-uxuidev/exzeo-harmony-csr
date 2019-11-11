@@ -255,7 +255,7 @@ export class DiaryModal extends Component {
                     <Button
                       className={Button.constants.classNames.primary}
                       customClass="submit-button"
-                      dataTest="submit-button"
+                      dataTest="diary-submit"
                       type="submit"
                       disabled={submitting}
                     >
