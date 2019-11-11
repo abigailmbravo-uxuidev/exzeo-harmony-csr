@@ -5,9 +5,13 @@ const addNoteCheck = (text, rowCount) => {
     .then(({ response }) => {
       expect(response.body.status).to.equal(200);
     });
+
   cy.findDataTag('noteContent')
-    .should('be.visible')
-    .type(`{selectall}{backspace}${text}`, { force: true })
+    .focus()
+    .type('{selectall}{backspace}')
+    .should('have.value', '')
+    .type(text, { delay: 100 })
+    .should('have.value', text)
     .findDataTag('submit-button')
     .click();
 
