@@ -10,6 +10,7 @@ const addNoteCheck = (text, rowCount) => {
     .focus()
     .type('{selectall}{backspace}')
     .should('have.value', '')
+    .wait(1000)
     .type(text, { delay: 100 })
     .should('have.value', text)
     .findDataTag('submit-button')
