@@ -155,7 +155,7 @@ export class DiaryModal extends Component {
                       validate={composeValidators([
                         validation.isRequired,
                         validation.isDate,
-                        validation.isDateRange('01/01/1900', '12/31/9999')
+                        validation.isDateRange('1900-01-01', '9999-12-31')
                       ])}
                     >
                       {({ input, meta }) => (
