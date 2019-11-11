@@ -99,7 +99,7 @@ const NoteUploader = ({
         const notesConfig = {
           service: 'notes',
           method: 'GET',
-          path: `v1/noteOptions?numberType=${NOTE_OPTION_TYPE[resourceType]}`
+          path: `v1/noteOptions?numberType=${NOTE_OPTION_TYPE[resourceType]}&companyCode=${companyCode}&state=${state}&product=${product}`
         };
 
         const response = await callService(notesConfig, 'getNoteOptions');
