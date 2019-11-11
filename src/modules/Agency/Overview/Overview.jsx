@@ -113,7 +113,7 @@ export class Overview extends React.Component {
                       <span key={`${item.state}-${item.product}`}>
                         {item.state}&nbsp;&bull;&nbsp;{item.product}
                         &nbsp;&bull;&nbsp;
-                        <strong>{item.status}Active</strong>
+                        <strong>{item.status}</strong>
                       </span>
                     ))}
                   </div>
