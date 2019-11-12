@@ -10,6 +10,7 @@ import {
 } from '../../state/actions/search.actions';
 import { getAgencies } from '../../state/actions/service.actions';
 import { clearAppError } from '../../state/actions/error.actions';
+import { getEnumsForSearch } from '../../state/actions/list.actions';
 
 import SearchBar from './components/SearchBar';
 import SearchResults from './components/SearchResults';
@@ -59,6 +60,7 @@ export class SearchPage extends Component {
   componentDidMount() {
     this.setSearchConfig();
     this.productAnswers = this.getProducts();
+    this.props.getEnumsForSearch();
   }
 
   componentWillUnmount() {
@@ -232,6 +234,7 @@ export default connect(
     getAgencies,
     handleSearchSubmit,
     resetSearch,
-    toggleLoading
+    toggleLoading,
+    getEnumsForSearch
   }
 )(SearchPage);

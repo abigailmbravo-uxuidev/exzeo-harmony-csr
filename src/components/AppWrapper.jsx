@@ -62,7 +62,9 @@ export class AppWrapper extends Component {
         />
         <main
           role="document"
-          className={showDiaries ? 'diary-open' : 'diary-closed'}
+          className={
+            showDiaries && openDiaryCount > 0 ? 'diary-open' : 'diary-closed'
+          }
         >
           <aside className="content-panel-left">
             <SideNav match={match} />

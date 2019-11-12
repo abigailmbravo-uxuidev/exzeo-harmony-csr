@@ -26,11 +26,7 @@ export class Notes extends Component {
         <div className="route-content">
           {isLoading && <Loader />}
           <div className="scroll">
-            <NoteList
-              notes={notes}
-              setAppError={setAppError}
-              entityEndDate={policy.endDate}
-            />
+            <NoteList notes={notes} setAppError={setAppError} entity={policy} />
           </div>
         </div>
         <div className="basic-footer">

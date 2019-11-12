@@ -1,19 +1,36 @@
-const addNoteCheck = text =>
-  cy
-    .findDataTag('new-note')
+const addNoteCheck = (text, rowCount) => {
+  cy.findDataTag('new-note')
     .click({ force: true })
     .wait('@getNoteOptions')
-    .findDataTag('noteContent')
+    .then(({ response }) => {
+      expect(response.body.status).to.equal(200);
+    });
+
+  cy.findDataTag('noteContent')
+    .focus()
+    .type('{selectall}{backspace}')
+    .should('have.value', '')
     .wait(1000)
-    .type(`{selectall}{backspace}${text}`, { force: true })
+    .type(text, { delay: 100 })
+    .should('have.value', text)
     .findDataTag('submit-button')
-    .click()
-    .goToNav('notes')
+    .click();
+
+  cy.wait('@fetchNotes').then(({ response }) => {
+    expect(response.body.status).to.equal(200);
+  });
+
+  cy.goToNav('notes')
     .wait('@fetchNotes')
-    .get('.table tbody')
-    .find('tr')
-    .find('td')
-    .contains(text);
+    .then(({ response }) => {
+      expect(response.body.status).to.equal(200);
+    });
+
+  cy.get('.table tbody tr')
+    .should('have.length', rowCount)
+    .find('div')
+    .should('contain', text);
+};
 
 export default () => {
   //TODO: Check for quote started only
@@ -27,7 +44,7 @@ export default () => {
     .get('td.note div')
     .contains('Quote State Changed: Application Started');
 
-  addNoteCheck('test note one');
+  addNoteCheck('test note one', 4);
 
   cy.findDataTag('new-diary')
     .click({ force: true })
@@ -40,7 +57,7 @@ export default () => {
     .type('2021-01-01')
     .findDataTag('message')
     .type('new diary')
-    .findDataTag('note-submit')
+    .findDataTag('diary-submit')
     .click()
     .get('.new-diary-file')
     .should('not.exist')
@@ -52,5 +69,5 @@ export default () => {
     .checkQuoteState('Application Started')
     .goToNav('coverage');
 
-  addNoteCheck('another note');
+  addNoteCheck('another note', 5);
 };

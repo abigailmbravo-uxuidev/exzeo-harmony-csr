@@ -65,25 +65,25 @@ export class SideNav extends React.Component {
   };
 
   newDiary = () => {
-    const {
-      toggleDiary,
-      policy: { companyCode, state, product, policyNumber, endDate }
-    } = this.props;
+    const { toggleDiary, policy } = this.props;
+
+    const { companyCode, state, product, policyNumber } = policy;
+
     toggleDiary({
       companyCode,
       state,
       product,
       resourceType: POLICY_RESOURCE_TYPE,
       resourceId: policyNumber,
-      entityEndDate: endDate
+      entity: policy
     });
   };
 
   newNote = () => {
-    const {
-      toggleNote,
-      policy: { companyCode, state, product, policyNumber, sourceNumber }
-    } = this.props;
+    const { toggleNote, policy } = this.props;
+
+    const { companyCode, state, product, policyNumber, sourceNumber } = policy;
+
     toggleNote({
       companyCode,
       state,
@@ -91,7 +91,8 @@ export class SideNav extends React.Component {
       noteType: 'Policy Note',
       documentId: policyNumber,
       sourceNumber,
-      resourceType: POLICY_RESOURCE_TYPE
+      resourceType: POLICY_RESOURCE_TYPE,
+      entity: policy
     });
   };
 

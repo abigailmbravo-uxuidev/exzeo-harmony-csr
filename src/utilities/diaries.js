@@ -1,8 +1,6 @@
 import moment from 'moment-timezone';
 import { date } from '@exzeo/core-ui';
 
-import { REASONS } from '../constants/diaries';
-
 /**
  * Is date provided more than one week from current date
  * @param dateString
@@ -48,8 +46,8 @@ export const isPastDue = dateString => {
  * @param entry object
  * @returns {object}
  */
-export const formatEntry = entry => {
-  const reasonKeyValue = REASONS.find(r => r.answer === entry.reason);
+export const formatEntry = (entry, reasons = []) => {
+  const reasonKeyValue = reasons.find(r => r.answer === entry.reason);
   const reason = reasonKeyValue ? reasonKeyValue.label : entry.reason;
   const due = date.formatDate(entry.due);
   return {

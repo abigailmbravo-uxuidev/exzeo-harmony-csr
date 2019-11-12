@@ -1,6 +1,5 @@
 // @ts-nocheck
 import React, { useState, useEffect } from 'react';
-import { FormSpy, Button, date } from '@exzeo/core-ui';
 import _get from 'lodash/get';
 import _isEqual from 'lodash/isEqual';
 
@@ -11,7 +10,10 @@ import {
   Date,
   Currency,
   validation,
-  Loader
+  Loader,
+  FormSpy,
+  Button,
+  date
 } from '@exzeo/core-ui';
 
 import CustomNavigationPrompt from '../../components/CustomNavigationPrompt';
@@ -163,8 +165,8 @@ const EndorsementForm = ({
   };
 
   const isEffectiveDateRange = validation.isDateRange(
-    initialValues.effectiveDate,
-    initialValues.endDate
+    date.formatDate(initialValues.effectiveDate, date.FORMATS.SECONDARY),
+    date.formatDate(initialValues.endDate, date.FORMATS.SECONDARY)
   );
 
   const inSaveState =

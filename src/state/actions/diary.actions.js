@@ -140,3 +140,28 @@ export function submitDiary(data, props) {
     return true;
   };
 }
+
+/**
+ *
+ * @returns {Promise<{}>}
+ */
+export async function fetchDiaryOptions(companyCode, state, product) {
+  try {
+    const config = {
+      service: 'diaries',
+      method: 'GET',
+      path: `diaryOptions`
+    };
+
+    if (companyCode && state && product) {
+      config.path = `${config.path}?companyCode=${companyCode}&state=${state}&product=${product}`;
+    }
+    const response = await serviceRunner.callService(
+      config,
+      'fetchDiaryOptions'
+    );
+    return response.data && response.data.result ? response.data.result : [];
+  } catch (error) {
+    throw error;
+  }
+}

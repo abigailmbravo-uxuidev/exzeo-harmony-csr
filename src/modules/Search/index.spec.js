@@ -6,10 +6,14 @@ import { SearchPage } from './index';
 // TODO temp fix until Auth is updated
 const stubProfile = { profile: {} };
 
+const defaultProps = {
+  getEnumsForSearch() {}
+};
+
 describe('Test Search component class', () => {
   it('should render with initialState set', () => {
     const wrapper = shallow(
-      <SearchPage pathName="/" userProfile={stubProfile} />
+      <SearchPage {...defaultProps} pathName="/" userProfile={stubProfile} />
     );
 
     expect(wrapper.exists()).toBeTruthy();
@@ -18,7 +22,11 @@ describe('Test Search component class', () => {
 
   it('should set searchType based on pathName once mounted', () => {
     const wrapper = shallow(
-      <SearchPage pathName="/agency" userProfile={stubProfile} />
+      <SearchPage
+        {...defaultProps}
+        pathName="/agency"
+        userProfile={stubProfile}
+      />
     );
     const instance = wrapper.instance();
 
@@ -28,6 +36,7 @@ describe('Test Search component class', () => {
   it('should handle searchType change', () => {
     const wrapper = shallow(
       <SearchPage
+        {...defaultProps}
         pathName="/"
         resetSearch={() => {}}
         userProfile={stubProfile}

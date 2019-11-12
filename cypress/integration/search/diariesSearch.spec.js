@@ -18,6 +18,7 @@ describe('Diaries Search Testing', () => {
 
     it('POS:Diaries Search', () =>
       cy
+        .wait('@fetchDiaryOptions')
         .clickSubmit()
         .wait('@fetchDiaries')
         .get('.diary-list')

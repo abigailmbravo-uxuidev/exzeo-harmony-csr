@@ -338,7 +338,7 @@ export class QuoteWorkflow extends React.Component {
               />
 
               <OpenDiariesBar
-                entityEndDate={quote.endDate}
+                entity={quote}
                 resourceId={quote.quoteNumber}
                 resourceType={QUOTE_RESOURCE_TYPE}
               />

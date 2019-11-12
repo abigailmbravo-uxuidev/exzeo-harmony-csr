@@ -764,6 +764,8 @@ export function initializePolicyWorkflow(policyNumber) {
         };
         dispatch(getBillingOptionsForPolicy(paymentOptions));
       }
+
+      return policy;
     } catch (error) {
       dispatch(errorActions.setAppError(error));
     }

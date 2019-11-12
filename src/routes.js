@@ -55,7 +55,7 @@ class Routes extends Component {
       actions: { errorActions },
       auth,
       authState: { userProfile },
-      policyState: { policy }
+      diaryOptions
     } = this.props;
     return (
       <div>
@@ -89,6 +89,7 @@ class Routes extends Component {
 
         {diary && diary.resourceType && (
           <DiaryModal
+            diaryOptions={diaryOptions}
             minimizeDiary={minimizeDiary}
             companyCode={diary.companyCode}
             state={diary.state}
@@ -98,9 +99,11 @@ class Routes extends Component {
             resourceType={diary.resourceType}
             resourceId={diary.resourceId}
             sourceNumber={
-              policy && policy.sourceNumber ? policy.sourceNumber : null
+              diary.entity && diary.entity.sourceNumber
+                ? diary.entity.sourceNumber
+                : null
             }
-            entityEndDate={diary.entityEndDate}
+            entity={diary.entity}
           />
         )}
 
@@ -114,6 +117,7 @@ class Routes extends Component {
             documentId={note.documentId}
             sourceId={note.sourceNumber}
             resourceType={note.resourceType}
+            entity={note.entity}
           />
         )}
         <Router
@@ -220,8 +224,7 @@ const mapStateToProps = state => ({
   appState: state.appState,
   authState: state.authState,
   ui: state.ui,
-  noteOptions: state.list.noteOptions,
-  policyState: state.policyState
+  diaryOptions: state.list.diaryOptions
 });
 
 const mapDispatchToProps = dispatch => ({
