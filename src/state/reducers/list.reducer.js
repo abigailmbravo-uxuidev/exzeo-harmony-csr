@@ -15,6 +15,35 @@ export default function listReducer(state = initialState.list, action) {
   }
 }
 
+function removeDuplicates(array, property) {
+  return array.filter((obj, position, filteredArray) => {
+    return (
+      filteredArray.map(mapObj => mapObj[property]).indexOf(obj[property]) ===
+      position
+    );
+  });
+}
+
+function setDiaryOptions(action) {
+  const options = action.diaryOptions;
+  const diaryReasons = options.reduce((acc, d) => {
+    const reasons = d.reasons;
+    acc.push(...reasons);
+    return acc;
+  }, []);
+
+  const diaryTags = options.reduce((acc, d) => {
+    const tags = d.tags;
+    acc.push(...tags);
+    return acc;
+  }, []);
+
+  return {
+    reasons: removeDuplicates(diaryReasons, 'answer'),
+    tags: removeDuplicates(diaryTags, 'answer')
+  };
+}
+
 function setAgents(state, action) {
   const agents = Array.isArray(action.agents)
     ? action.agents.map(o => ({
@@ -69,7 +98,7 @@ function setEnums(state, action) {
 
   const appraisers = action.propertyAppraisalQuestions;
 
-  const noteOptions = action.noteOptions;
+  const diaryOptions = setDiaryOptions(action);
 
   return {
     ...state,
@@ -79,7 +108,7 @@ function setEnums(state, action) {
     agent: action.agent,
     agency: action.agency,
     appraisers,
-    noteOptions
+    diaryOptions
   };
 }
 

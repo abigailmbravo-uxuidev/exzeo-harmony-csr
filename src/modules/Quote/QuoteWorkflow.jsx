@@ -42,6 +42,7 @@ import UnderwritingValidationBar from './UnderwritingValidationBar';
 // TODO these will be removed in subsequent PR's
 import MOCK_HO3 from '../../mock-data/mockHO3';
 import MOCK_AF3 from '../../mock-data/mockAF3';
+import CoverageWatcherAF3 from './CoverageWatcherAF3';
 
 const getCurrentStepAndPage = defaultMemoize(pathname => {
   const currentRouteName = pathname.split('/')[3];
@@ -50,11 +51,6 @@ const getCurrentStepAndPage = defaultMemoize(pathname => {
     currentRouteName
   };
 });
-
-// Thin memoized wrapper around FormSpys to keep them from needlessly re-rendering.
-const MemoizedFormListeners = React.memo(({ children }) => (
-  <React.Fragment>{children}</React.Fragment>
-));
 
 const TEMPLATES = {
   AF3: MOCK_AF3,
@@ -77,7 +73,8 @@ export class QuoteWorkflow extends React.Component {
     $POLICYHOLDERS: PolicyHolders,
     $APPLICATION: Application,
     $NOTES_FILES: NotesFiles,
-    $AGENCY_AGENT_SELECT: AgencyAgentSelect
+    $AGENCY_AGENT_SELECT: AgencyAgentSelect,
+    $COVERAGE_WATCHER_AF3: CoverageWatcherAF3
   };
 
   getConfigForJsonTransform = defaultMemoize(getConfigForJsonTransform);
@@ -289,20 +286,26 @@ export class QuoteWorkflow extends React.Component {
                       template={gandalfTemplate}
                       transformConfig={transformConfig}
                       stickyFooter
-                      renderFooter={({ pristine, submitting, form }) => (
-                        <QuoteFooter
-                          currentStep={currentRouteName}
-                          formInstance={form}
-                          isSubmitDisabled={this.isSubmitDisabled(
-                            pristine,
-                            submitting
+                      renderFooter={
+                        <FormSpy
+                          subscription={{ pristine: true, submitting: true }}
+                        >
+                          {({ form, pristine, submitting }) => (
+                            <QuoteFooter
+                              currentStep={currentRouteName}
+                              formInstance={form}
+                              isSubmitDisabled={this.isSubmitDisabled(
+                                pristine,
+                                submitting
+                              )}
+                              handlePrimaryClick={this.primaryClickHandler}
+                              handleApplicationClick={this.handleRetrieveQuote}
+                            />
                           )}
-                          handlePrimaryClick={this.primaryClickHandler}
-                          handleApplicationClick={this.handleRetrieveQuote}
-                        />
-                      )}
-                      formListeners={() => (
-                        <MemoizedFormListeners>
+                        </FormSpy>
+                      }
+                      formListeners={
+                        <React.Fragment>
                           <FormSpy subscription={{}}>
                             {({ form }) => {
                               this.setFormInstance(form);
@@ -321,8 +324,8 @@ export class QuoteWorkflow extends React.Component {
                               />
                             )}
                           </FormSpy>
-                        </MemoizedFormListeners>
-                      )}
+                        </React.Fragment>
+                      }
                     />
                   </React.Fragment>
                 )}
@@ -335,7 +338,7 @@ export class QuoteWorkflow extends React.Component {
               />
 
               <OpenDiariesBar
-                entityEndDate={quote.endDate}
+                entity={quote}
                 resourceId={quote.quoteNumber}
                 resourceType={QUOTE_RESOURCE_TYPE}
               />

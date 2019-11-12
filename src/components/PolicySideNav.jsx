@@ -8,7 +8,6 @@ import {
   toggleDiary,
   setNotesSynced
 } from '../state/actions/ui.actions';
-import { startWorkflow } from '../state/actions/cg.actions';
 import { setAppError } from '../state/actions/error.actions';
 import { POLICY_RESOURCE_TYPE } from '../constants/diaries';
 
@@ -66,25 +65,25 @@ export class SideNav extends React.Component {
   };
 
   newDiary = () => {
-    const {
-      toggleDiary,
-      policy: { companyCode, state, product, policyNumber, endDate }
-    } = this.props;
+    const { toggleDiary, policy } = this.props;
+
+    const { companyCode, state, product, policyNumber } = policy;
+
     toggleDiary({
       companyCode,
       state,
       product,
       resourceType: POLICY_RESOURCE_TYPE,
       resourceId: policyNumber,
-      entityEndDate: endDate
+      entity: policy
     });
   };
 
   newNote = () => {
-    const {
-      toggleNote,
-      policy: { companyCode, state, product, policyNumber, sourceNumber }
-    } = this.props;
+    const { toggleNote, policy } = this.props;
+
+    const { companyCode, state, product, policyNumber, sourceNumber } = policy;
+
     toggleNote({
       companyCode,
       state,
@@ -92,7 +91,8 @@ export class SideNav extends React.Component {
       noteType: 'Policy Note',
       documentId: policyNumber,
       sourceNumber,
-      resourceType: POLICY_RESOURCE_TYPE
+      resourceType: POLICY_RESOURCE_TYPE,
+      entity: policy
     });
   };
 
@@ -108,7 +108,7 @@ export class SideNav extends React.Component {
   };
 
   render() {
-    const { policy, startWorkflow, setAppError } = this.props;
+    const { policy, setAppError } = this.props;
     return (
       <nav className="site-nav">
         <SideNavigation
@@ -162,7 +162,6 @@ const mapStateToProps = state => ({
 export default connect(
   mapStateToProps,
   {
-    startWorkflow,
     toggleNote,
     toggleDiary,
     setAppError,

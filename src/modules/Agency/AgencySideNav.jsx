@@ -82,11 +82,12 @@ export class SideNav extends React.Component {
   };
 
   newNote = () => {
-    const { toggleNote, agencyCode } = this.props;
+    const { toggleNote, agencyCode, agency } = this.props;
     toggleNote({
       noteType: 'Agency Note',
       documentId: agencyCode,
-      resourceType: AGENCY_RESOURCE_TYPE
+      resourceType: AGENCY_RESOURCE_TYPE,
+      entity: agency
     });
   };
 

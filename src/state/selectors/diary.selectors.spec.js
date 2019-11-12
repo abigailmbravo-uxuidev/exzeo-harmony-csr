@@ -39,14 +39,44 @@ describe('Test diary selectors', () => {
 
   describe('Test getFormattedDiaries', () => {
     it('should return an empty array if there are no diaries', () => {
-      const state = { diaries: [] };
+      const state = {
+        diaries: [],
+        list: {
+          diaryOptions: {
+            reasons: [],
+            tags: []
+          }
+        }
+      };
       const result = getFormattedDiaries(state);
       expect(result).toEqual([]);
     });
 
     it('should return formatted diaries', () => {
       const state = {
-        diaries: [baseDiary]
+        diaries: [baseDiary],
+        list: {
+          diaryOptions: {
+            reasons: [
+              {
+                answer: 'estate',
+                label: 'Estate',
+                dueDate: {
+                  offset: -145,
+                  path: 'endDate'
+                },
+                assignee: 'Underwriting'
+              }
+            ],
+            tags: [
+              {
+                answer: 'new_policy',
+                label: 'New Policy',
+                type: 'tag'
+              }
+            ]
+          }
+        }
       };
       const result = getFormattedDiaries(state);
       expect(result).toEqual([
@@ -76,7 +106,15 @@ describe('Test diary selectors', () => {
 
   describe('Test getOpenDiaries', () => {
     it('should return an emptyArray if there are no diaries', () => {
-      const state = { diaries: [] };
+      const state = {
+        diaries: [],
+        list: {
+          diaryOptions: {
+            reasons: [],
+            tags: []
+          }
+        }
+      };
       const result = getOpenDiaries(state);
       expect(result).toEqual([]);
     });
@@ -124,7 +162,13 @@ describe('Test diary selectors', () => {
       };
 
       const state = {
-        diaries: [diary1, diary2, diary3]
+        diaries: [diary1, diary2, diary3],
+        list: {
+          diaryOptions: {
+            reasons: [],
+            tags: []
+          }
+        }
       };
 
       const result = getGroupedOpenDiaries(state);
@@ -135,10 +179,23 @@ describe('Test diary selectors', () => {
   });
 
   describe('Test isPollingPermitted', () => {
-    let state = {};
+    let state = {
+      list: {
+        diaryOptions: {
+          reasons: [],
+          tags: []
+        }
+      }
+    };
 
     beforeEach(() => {
       state = {
+        list: {
+          diaryOptions: {
+            reasons: [],
+            tags: []
+          }
+        },
         authState: {
           userProfile: {
             resources: []

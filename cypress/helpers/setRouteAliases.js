@@ -13,6 +13,8 @@ export const setRouteAliases = () =>
     .as('fetchAgents')
     .route('POST', '/svc?fetchDiaries')
     .as('fetchDiaries')
+    .route('POST', '/svc?fetchDiaryOptions')
+    .as('fetchDiaryOptions')
     .route('POST', '/svc?fetchNotes')
     .as('fetchNotes')
     .route('POST', '/svc?fetchAddresses')
@@ -44,4 +46,6 @@ export const setRouteAliases = () =>
     .route('POST', '/svc?fetchEndorsementHistory')
     .as('fetchEndorsementHistory')
     .route('POST', '/svc?fetchFiles')
-    .as('fetchFiles');
+    .as('fetchFiles')
+    .route('POST', '/svc?getNoteOptions')
+    .as('getNoteOptions');

@@ -134,6 +134,7 @@ export const notesResult = [
     numberType: 'quoteNumber',
     product: 'HO3',
     quoteNumber: '12-345-67',
+    term: 1,
     state: 'FL'
   },
   {
@@ -149,6 +150,7 @@ export const notesResult = [
     numberType: 'quoteNumber',
     product: 'HO3',
     quoteNumber: '12-345-67',
+    term: 2,
     state: 'FL'
   }
 ];
@@ -220,3 +222,17 @@ export const searchAgentsResult = [
     ]
   }
 ];
+
+export const noteOptionsResult = {
+  _id: '5ad386cb37d824001cac2acb',
+  updatedAt: '2019-03-12T06:37:01.951Z',
+  createdAt: '2018-04-17T02:14:56.134Z',
+  __v: 0,
+  noteType: 'Quote Note',
+  companyCode: 'TTIC',
+  product: 'HO3',
+  state: 'FL',
+  numberType: 'quoteNumber',
+  validFileTypes: ['File1', 'File2', 'File3', 'File4', 'Other'],
+  validContactTypes: ['Contact1', 'Contact2', 'Contact3', 'Contact4']
+};

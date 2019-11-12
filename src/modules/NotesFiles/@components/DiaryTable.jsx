@@ -84,14 +84,14 @@ class DiaryTable extends Component {
   };
 
   openDiaryModal = cell => {
-    const { customHandlers, entityEndDate } = this.props;
+    const { customHandlers, entity } = this.props;
     const { resourceType, resourceId, ...selectedDiary } = cell;
 
     customHandlers.toggleDiary({
       resourceType,
       resourceId,
       selectedDiary,
-      entityEndDate
+      entity
     });
   };
 

@@ -362,6 +362,12 @@
         white-space: normal;
       }
 
+      .term {
+        min-width: 3.875rem;
+        width: 4%;
+        white-space: normal;
+      }
+
       .created-by {
         min-width: 9.75rem;
         width: 16%;
@@ -762,6 +768,12 @@
         .created-date {
           min-width: 9.75rem;
           width: 16%;
+        }
+
+        .term {
+          min-width: 3.875rem;
+          width: 4%;
+          white-space: normal;
         }
 
         .created-by {

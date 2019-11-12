@@ -11,7 +11,13 @@ import {
 import { DUE_STATUS } from '../../../constants/diaries';
 import { formatEntry, getDueStatus } from '../../../utilities/diaries';
 
-const DiaryList = ({ diaries, onItemClick, clickable, handleKeyPress }) => {
+const DiaryList = ({
+  diaries,
+  onItemClick,
+  clickable,
+  handleKeyPress,
+  diaryReasons
+}) => {
   return (
     <ListContainer>
       {diaries.map(diary => {
@@ -20,7 +26,7 @@ const DiaryList = ({ diaries, onItemClick, clickable, handleKeyPress }) => {
           entries,
           _id
         } = diary;
-        const entry = formatEntry(entries[0]);
+        const entry = formatEntry(entries[0], diaryReasons);
         const {
           assignee: { displayName },
           due,

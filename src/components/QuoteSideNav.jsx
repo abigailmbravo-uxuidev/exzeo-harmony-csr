@@ -72,7 +72,7 @@ export const SideNav = ({
   activateRedirectLink
 }) => {
   const [showUWPopup, setUWPopup] = useState(false);
-  const { companyCode, state, product, quoteNumber, endDate } = quoteData;
+  const { companyCode, state, product, quoteNumber } = quoteData;
 
   function newNote() {
     toggleNote({
@@ -81,7 +81,8 @@ export const SideNav = ({
       product,
       noteType: 'Quote Note',
       documentId: quoteNumber,
-      resourceType: QUOTE_RESOURCE_TYPE
+      resourceType: QUOTE_RESOURCE_TYPE,
+      entity: quoteData
     });
   }
 
@@ -92,7 +93,7 @@ export const SideNav = ({
       product,
       resourceType: QUOTE_RESOURCE_TYPE,
       resourceId: quoteNumber,
-      entityEndDate: endDate
+      entity: quoteData
     });
   }
 

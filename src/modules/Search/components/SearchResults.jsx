@@ -9,6 +9,7 @@ import {
   handleDiaryKeyPress
 } from '../../../utilities/handleNewTab';
 import { SEARCH_TYPES } from '../../../constants/search';
+import { getDiaryReasons } from '../../../state/selectors/diary.selectors';
 
 import NoResults from './NoResults';
 import PolicyCard from './PolicyCard';
@@ -37,8 +38,10 @@ export class SearchResults extends Component {
         state = '',
         product = ''
       },
-      error
+      error,
+      diaryReasons
     } = this.props;
+
     return (
       <div className="results-wrapper">
         {hasSearched && (noResults || error.message) && (
@@ -177,10 +180,14 @@ export class SearchResults extends Component {
           searchType === SEARCH_TYPES.diaries &&
           !!results.length && (
             <DiaryList
+              product={product}
               handleKeyPress={handleDiaryKeyPress}
               onItemClick={handleDiaryClick}
               clickable
-              diaries={results}
+              diaries={results.filter(d =>
+                product ? d.resource.product === product : d
+              )}
+              diaryReasons={diaryReasons}
             />
           )}
       </div>
@@ -198,7 +205,8 @@ SearchResults.propTypes = {
 };
 
 const mapStateToProps = state => ({
-  error: state.error
+  error: state.error,
+  diaryReasons: getDiaryReasons(state)
 });
 
 export default connect(mapStateToProps)(SearchResults);

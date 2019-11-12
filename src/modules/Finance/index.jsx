@@ -4,7 +4,6 @@ import { Helmet } from 'react-helmet';
 import { Route } from 'react-router-dom';
 
 import Header from '../../components/Common/Header';
-import NotFoundPage from '../../containers/NotFound';
 import SideNav from './@components/SideNav';
 import BulkPayments from './@components/BulkPayments';
 
@@ -20,7 +19,7 @@ const Finance = ({ auth, errorHandler }) => {
         <Route
           exact
           path="/finance/payments"
-          render={props => <BulkPayments errorHandler={errorHandler} />}
+          render={() => <BulkPayments errorHandler={errorHandler} />}
         />
       </main>
     </div>

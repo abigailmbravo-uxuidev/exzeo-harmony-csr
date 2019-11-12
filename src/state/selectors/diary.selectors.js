@@ -8,7 +8,11 @@ import {
   sortDiariesByDate
 } from '../../utilities/diaries';
 
-import { getDiaries, getUserProfile } from './entity.selectors';
+import {
+  getDiaries,
+  getUserProfile,
+  getDiaryOptions
+} from './entity.selectors';
 
 export const getSortedDiariesByDueDate = createSelector(
   [getDiaries],
@@ -18,12 +22,12 @@ export const getSortedDiariesByDueDate = createSelector(
 );
 
 export const getFormattedDiaries = createSelector(
-  [getSortedDiariesByDueDate],
-  diaries => {
+  [getSortedDiariesByDueDate, getDiaryOptions],
+  (diaries, diaryOptions) => {
     if (!Array.isArray(diaries)) return [];
 
     return diaries.map(d => {
-      const entry = formatEntry(d.entries[0]);
+      const entry = formatEntry(d.entries[0], diaryOptions.reasons);
       return {
         ...entry,
         diaryId: d._id,
@@ -37,19 +41,22 @@ export const getFormattedDiaries = createSelector(
 );
 
 export const getDiariesForTable = createSelector(
-  [getSortedDiariesByDueDate],
-  diaries => {
-    if (!Array.isArray(diaries)) return [];
+  [getSortedDiariesByDueDate, getDiaryOptions],
+  (diaries, diaryOptions) => {
+    if (!Array.isArray(diaries) || !Array.isArray(diaryOptions.reasons))
+      return [];
 
     return diaries.map(d => {
-      const entry = formatEntry(d.entries[0]);
+      const entry = formatEntry(d.entries[0], diaryOptions.reasons);
       return {
         ...entry,
         diaryId: d._id,
         createdAt: d.createdAt,
         resourceType: d.resource.type,
         resourceId: d.resource.id,
-        diaryHistory: d.entries.slice(1).map(e => formatEntry(e)),
+        diaryHistory: d.entries
+          .slice(1)
+          .map(e => formatEntry(e, diaryOptions.reasons)),
         dueStatus: getDueStatus(entry.due, entry.open),
         action: {
           diaryId: d._id,
@@ -122,5 +129,14 @@ export const getInitialValuesForForm = createSelector(
         : { ...resource };
     }
     return { ...resource };
+  }
+);
+
+export const getDiaryReasons = createSelector(
+  [getDiaryOptions],
+  diaryOptions => {
+    return diaryOptions && Array.isArray(diaryOptions.reasons)
+      ? diaryOptions.reasons
+      : [];
   }
 );

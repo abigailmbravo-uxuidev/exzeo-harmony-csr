@@ -16,7 +16,9 @@ export const defaultInitialState = {
   appState: {
     data: {}
   },
-  list: {},
+  list: {
+    diaryOptions: {}
+  },
   search: {
     results: []
   },

@@ -1,6 +1,5 @@
 import { createSelector } from 'reselect';
-
-import { TAGS } from '../../constants/diaries';
+import { getDiaryOptions } from './entity.selectors';
 
 export const getQuestions = state => state.questions;
 
@@ -28,11 +27,12 @@ export const getTopAnswers = name =>
   );
 
 export const getDiaryAssigneeAnswers = createSelector(
-  [getQuestions],
-  questions => {
-    if (!questions || !Array.isArray(questions.diaryAssignees)) return TAGS;
+  [getQuestions, getDiaryOptions],
+  (questions, getDiaryOptions) => {
+    if (!questions || !Array.isArray(questions.diaryAssignees))
+      return getDiaryOptions.tags;
 
-    return [...TAGS, ...questions.diaryAssignees];
+    return [...getDiaryOptions.tags, ...questions.diaryAssignees];
   }
 );
 

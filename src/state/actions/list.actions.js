@@ -1,13 +1,9 @@
 import * as serviceRunner from '@exzeo/core-ui/src/@Harmony/Domain/Api/serviceRunner';
-import {
-  searchAgencies,
-  fetchAgentsByAgencyCode
-} from '@exzeo/core-ui/src/@Harmony';
 
 import * as listTypes from '../actionTypes/list.actionTypes';
 import { setAppError } from './error.actions';
-import { fetchNotes, fetchNoteOptions } from './notes.actions';
-import { fetchDiaries } from './diary.actions';
+import { fetchNotes } from './notes.actions';
+import { fetchDiaries, fetchDiaryOptions } from './diary.actions';
 
 function setEnums(enums) {
   return {
@@ -31,8 +27,6 @@ export function getEnumsForQuoteWorkflow({
   companyCode,
   state,
   product,
-  agencyCode,
-  agentCode,
   quoteNumber
 }) {
   return async dispatch => {
@@ -42,48 +36,19 @@ export function getEnumsForQuoteWorkflow({
       // this pattern sets us up to "parallelize" the network requests in this function. We want to
       // fetch all enums/data needed for the quote workflow in here.
       // 1. assign async function(s) to variable(s) - calls the func
-      const additionalInterestQuestions = fetchMortgagees();
-      const agencyOption = searchAgencies({ companyCode, state, agencyCode });
-      const agentOption = fetchAgentsByAgencyCode({
-        companyCode,
-        state,
-        agencyCode
-      });
-      const noteOption = fetchNoteOptions('quoteNumber');
-
+      const diaryOptions = fetchDiaryOptions(companyCode, state, product);
       // 2. new variable awaits the previous.
-      const additionalInterestResponse = await additionalInterestQuestions;
-      const agencyResponse = await agencyOption;
-      const agentResponse = await agentOption;
-      const noteOptionResponse = await noteOption;
-
-      const selectedAgent = agentResponse.filter(a => a.answer === agentCode);
+      const diaryOptionsResponse = await diaryOptions;
 
       dispatch(
         setEnums({
-          additionalInterestQuestions: additionalInterestResponse.data.data,
-          agency: agencyResponse,
-          agent: selectedAgent,
-          noteOptions: noteOptionResponse
+          diaryOptions: diaryOptionsResponse
         })
       );
     } catch (error) {
       dispatch(setAppError(error));
     }
   };
-}
-
-/**
- *
- * @returns {Promise<void>}
- */
-export async function fetchMortgagees() {
-  const data = {
-    step: 'additionalInterestsCSR'
-  };
-
-  const response = await serviceRunner.callQuestions(data);
-  return response;
 }
 
 /**
@@ -104,24 +69,26 @@ export async function fetchPropertyAppriasals() {
  * @param policyNumber
  * @returns {Function}
  */
-export function getEnumsForPolicyWorkflow({ policyNumber }) {
+export function getEnumsForPolicyWorkflow({
+  policyNumber,
+  companyCode,
+  state,
+  product
+}) {
   return async dispatch => {
     try {
       dispatch(fetchDiaries({ resourceId: policyNumber }));
-      const additionalInterestQuestions = await fetchMortgagees();
-      const propertyAppraisals = await fetchPropertyAppriasals();
+      const diaryOptions = fetchDiaryOptions(companyCode, state, product);
+      const propertyAppraisals = fetchPropertyAppriasals();
 
-      const additionalInterestResponse = await additionalInterestQuestions;
+      const diaryOptionsResponse = await diaryOptions;
       const propertyAppraisalsResponse = await propertyAppraisals;
-
-      const noteOptions = await fetchNoteOptions('policyNumber');
 
       dispatch(
         setEnums({
-          additionalInterestQuestions: additionalInterestResponse.data.data,
           propertyAppraisalQuestions:
             propertyAppraisalsResponse.data.data[0].answers,
-          noteOptions
+          diaryOptions: diaryOptionsResponse
         })
       );
     } catch (error) {
@@ -132,16 +99,18 @@ export function getEnumsForPolicyWorkflow({ policyNumber }) {
 
 /**
  *
+ * @param policyNumber
  * @returns {Function}
  */
-export function getEnumsForAgencyWorkflow() {
+export function getEnumsForSearch() {
   return async dispatch => {
     try {
-      const noteOptions = await fetchNoteOptions('agencyCode');
+      const diaryOptions = fetchDiaryOptions();
+      const diaryOptionsResponse = await diaryOptions;
 
       dispatch(
         setEnums({
-          noteOptions
+          diaryOptions: diaryOptionsResponse
         })
       );
     } catch (error) {

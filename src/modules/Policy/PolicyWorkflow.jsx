@@ -1,8 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Route } from 'react-router-dom';
 import { Loader, FormSpy, remoteSubmit, date } from '@exzeo/core-ui';
-import * as serviceRunner from '@exzeo/core-ui/src/@Harmony/Domain/Api/serviceRunner';
 import {
   getConfigForJsonTransform,
   Gandalf,
@@ -71,11 +69,6 @@ const getCurrentStepAndPage = defaultMemoize(pathname => {
   };
 });
 
-// Thin memoized wrapper around FormSpys to keep them from needlessly re-rendering.
-const MemoizedFormListeners = React.memo(({ children }) => (
-  <React.Fragment>{children}</React.Fragment>
-));
-
 const TEMPLATES = {
   AF3: MOCK_AF3,
   HO3: MOCK_HO3
@@ -123,8 +116,9 @@ export class PolicyWorkflow extends React.Component {
       }
     } = this.props;
 
-    initializePolicyWorkflow(policyNumber);
-    getEnumsForPolicyWorkflow({ policyNumber });
+    initializePolicyWorkflow(policyNumber).then(policy => {
+      getEnumsForPolicyWorkflow(policy);
+    });
   }
 
   componentDidUpdate(prevProps) {
@@ -161,7 +155,7 @@ export class PolicyWorkflow extends React.Component {
       location.pathname
     );
 
-    const response = await this.props.updatePolicy({
+    await this.props.updatePolicy({
       data: values,
       options: {
         step: currentStepNumber,
@@ -249,7 +243,7 @@ export class PolicyWorkflow extends React.Component {
       }
     }).catch(err => {
       this.props.setAppError(err);
-      this.toggleEffectiveDateChangeModal;
+      this.toggleEffectiveDateChangeModal();
     });
     //This gets scheduled so the status may not be changed yet when calling getPolicy. Reference HAR-5228
     await new Promise(resolve => setTimeout(resolve, 3000));
@@ -348,7 +342,7 @@ export class PolicyWorkflow extends React.Component {
                         template={gandalfTemplate}
                         transformConfig={transformConfig}
                         stickyFooter
-                        renderFooter={() => (
+                        renderFooter={
                           <FormSpy
                             subscription={{
                               pristine: true,
@@ -358,25 +352,27 @@ export class PolicyWorkflow extends React.Component {
                             }}
                           >
                             {({ form, pristine, submitting }) => (
-                              <PolicyFooter
-                                history={customHandlers.history}
-                                setAppError={customHandlers.setAppError}
-                                policyFormData={policyFormData}
-                                timezone={zipCodeSettings.timezone}
-                                currentStep={currentRouteName}
-                                formInstance={form}
-                                isSubmitDisabled={this.isSubmitDisabled(
-                                  pristine,
-                                  submitting
-                                )}
-                                handleGandalfSubmit={this.handleGandalfSubmit}
-                                handlePrimaryClick={this.primaryClickHandler}
-                              />
+                              <div className="form-footer">
+                                <PolicyFooter
+                                  history={customHandlers.history}
+                                  setAppError={customHandlers.setAppError}
+                                  policyFormData={policyFormData}
+                                  timezone={zipCodeSettings.timezone}
+                                  currentStep={currentRouteName}
+                                  formInstance={form}
+                                  isSubmitDisabled={this.isSubmitDisabled(
+                                    pristine,
+                                    submitting
+                                  )}
+                                  handleGandalfSubmit={this.handleGandalfSubmit}
+                                  handlePrimaryClick={this.primaryClickHandler}
+                                />
+                              </div>
                             )}
                           </FormSpy>
-                        )}
-                        formListeners={() => (
-                          <MemoizedFormListeners>
+                        }
+                        formListeners={
+                          <React.Fragment>
                             <FormSpy subscription={{}}>
                               {({ form }) => {
                                 this.setFormInstance(form);
@@ -395,8 +391,8 @@ export class PolicyWorkflow extends React.Component {
                                 />
                               )}
                             </FormSpy>
-                          </MemoizedFormListeners>
-                        )}
+                          </React.Fragment>
+                        }
                       />
                     </React.Fragment>
                   )}
@@ -405,7 +401,7 @@ export class PolicyWorkflow extends React.Component {
 
               {initialized && (
                 <OpenDiariesBar
-                  entityEndDate={policy.endDate}
+                  entity={policy}
                   resourceId={policy.policyNumber}
                   resourceType={POLICY_RESOURCE_TYPE}
                 />
