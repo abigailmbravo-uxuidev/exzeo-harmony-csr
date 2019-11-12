@@ -1,7 +1,6 @@
 // @ts-nocheck
 import React from 'react';
 import { OnBlurListener, Field } from '@exzeo/core-ui/src';
-import _get from 'lodash/get';
 
 const CoverageWatcherHO3 = ({ formValues }) => {
   return (
