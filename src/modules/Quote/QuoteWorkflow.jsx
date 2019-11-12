@@ -43,6 +43,7 @@ import UnderwritingValidationBar from './UnderwritingValidationBar';
 import MOCK_HO3 from '../../mock-data/mockHO3';
 import MOCK_AF3 from '../../mock-data/mockAF3';
 import CoverageWatcherAF3 from './CoverageWatcherAF3';
+import CoverageWatcherHO3 from './CoverageWatcherHO3';
 
 const getCurrentStepAndPage = defaultMemoize(pathname => {
   const currentRouteName = pathname.split('/')[3];
@@ -74,7 +75,8 @@ export class QuoteWorkflow extends React.Component {
     $APPLICATION: Application,
     $NOTES_FILES: NotesFiles,
     $AGENCY_AGENT_SELECT: AgencyAgentSelect,
-    $COVERAGE_WATCHER_AF3: CoverageWatcherAF3
+    $COVERAGE_WATCHER_AF3: CoverageWatcherAF3,
+    $COVERAGE_WATCHER_HO3: CoverageWatcherHO3
   };
 
   getConfigForJsonTransform = defaultMemoize(getConfigForJsonTransform);
