@@ -103,8 +103,8 @@ export const getPolicyDetails = createSelector(
 );
 
 export const getQuoteDetails = createSelector(
-  [getQuote],
-  quote => {
+  [getQuote, getAppraisalList],
+  (quote, appraisalList) => {
     if (!quote || !quote.quoteNumber) return defaultEntity;
 
     const {
@@ -128,6 +128,11 @@ export const getQuoteDetails = createSelector(
 
     const mapQuery = detailUtils.getMapQuery(physicalAddress);
 
+    const appraisal =
+      (appraisalList || []).find(
+        x => x.label === property.physicalAddress.county
+      ) || {};
+
     return {
       constructionType,
       floodZone,
@@ -135,6 +140,10 @@ export const getQuoteDetails = createSelector(
       territory,
       county: physicalAddress.county,
       effectiveDate: moment.utc(effectiveDate).format(STANDARD_DATE_FORMAT),
+      appraisalURI: {
+        label: 'PAS',
+        value: appraisal.answer
+      },
       mapURI: `${baseMapUri}${mapQuery}`,
       status: quoteState,
       details: {

@@ -8,7 +8,6 @@ const mock = {
       { value: 'propertyAddress', component: 'Section' },
       { value: 'county', label: 'Property County' },
       { value: 'territory' },
-      { value: 'constructionType' },
       { value: 'effectiveDate', className: 'quoteEffectiveDate' },
       { value: 'currentPremium', label: 'Premium', className: 'premium' }
     ]
