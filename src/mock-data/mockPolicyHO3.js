@@ -13,7 +13,7 @@ const mock = {
       { value: 'propertyAddress', component: 'Section' },
       { value: 'county', label: 'Property County' },
       { value: 'effectiveDate' },
-      { value: 'cancellation' },
+      { value: 'cancellation', isOptional: true },
       {
         value: 'nonPaymentNoticeDate',
         label: 'NP Cancellation Date',

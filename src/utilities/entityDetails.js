@@ -111,7 +111,7 @@ export function getCancellationDate(
   ) {
     return {
       value: moment.utc(cancelDate).format(STANDARD_DATE_FORMAT),
-      label: 'Cancelled',
+      label: 'Cancellation Date',
       showReinstatement: true
     };
   } else if (
@@ -135,7 +135,7 @@ export function getCancellationDate(
     };
   } else if (
     expirationPolicyStatuses.includes(policyStatus) &&
-    expirationBillingStatuses(billingStatus) &&
+    expirationBillingStatuses.includes(billingStatus) &&
     endDate
   ) {
     return {
