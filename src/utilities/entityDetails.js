@@ -134,8 +134,8 @@ export function getCancellationDate(
       label: 'UW Cancellation Date'
     };
   } else if (
-    policyStatus === 'Not In Force' &&
-    billingStatus === 'Policy Expired' &&
+    expirationPolicyStatuses.includes(policyStatus) &&
+    expirationBillingStatuses(billingStatus) &&
     endDate
   ) {
     return {
