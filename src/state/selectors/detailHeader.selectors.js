@@ -51,18 +51,6 @@ export const getPolicyDetails = createSelector(
     } = property;
 
     const mapQuery = detailUtils.getMapQuery(physicalAddress);
-    const cancellationDate = detailUtils.getCancellationDate(
-      summaryLedger,
-      status,
-      endDate,
-      cancelDate
-    );
-    const showReinstatement = detailUtils.shouldShowReinstatement(status, code);
-    const dateLabel = detailUtils.getEntityDetailsDateLabel(
-      displayText,
-      status
-    );
-    const finalPayment = detailUtils.getFinalPaymentDate(summaryLedger, status);
 
     const appraisal =
       (appraisalList || []).find(
@@ -95,12 +83,20 @@ export const getPolicyDetails = createSelector(
         address2: physicalAddress.address2,
         csz: detailUtils.getCityStateZip(physicalAddress)
       },
-      cancellation: {
-        label: dateLabel,
-        value: cancellationDate,
-        showReinstatement
-      },
-      finalPayment,
+      nonPaymentNoticeDate: detailUtils.getNonPaymentNoticeDate(
+        summaryLedger,
+        status
+      ),
+      nonPaymentNoticeDueDate: detailUtils.getNonPaymentNoticeDueDate(
+        summaryLedger,
+        status
+      ),
+      cancellation: detailUtils.getCancellationDate(
+        summaryLedger,
+        status,
+        cancelDate,
+        endDate
+      ),
       sourcePath: sourceNumber ? `/quote/${sourceNumber}/coverage` : null
     };
   }

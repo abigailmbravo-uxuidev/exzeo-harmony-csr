@@ -14,7 +14,16 @@ const mock = {
       { value: 'county', label: 'Property County' },
       { value: 'effectiveDate' },
       { value: 'cancellation' },
-      { value: 'finalPayment', label: 'Final Payment' },
+      {
+        value: 'nonPaymentNoticeDate',
+        label: 'NP Cancellation Date',
+        isOptional: true
+      },
+      {
+        value: 'nonPaymentNoticeDueDate',
+        label: 'Final Payment Date',
+        isOptional: true
+      },
       { value: 'currentPremium', className: 'premium' }
     ]
   },
