@@ -1,11 +1,26 @@
 // @ts-nocheck
 import React from 'react';
-import { OnChangeListener, Field, date } from '@exzeo/core-ui/src';
+import {
+  OnChangeListener,
+  OnBlurListener,
+  Field,
+  date
+} from '@exzeo/core-ui/src';
 import _get from 'lodash/get';
 
 const EndorsementsWatcherAF3 = ({ formValues, initialValues }) => {
   return (
     <React.Fragment>
+      <Field name="coverageLimits.building.value">
+        {({ input: { onChange, value } }) => (
+          <OnBlurListener name="coverageLimits.building.value">
+            {() => {
+              if (!value) return;
+              onChange(Math.round(Number(value) / 1000) * 1000);
+            }}
+          </OnBlurListener>
+        )}
+      </Field>
       <Field
         name="deductibles.personalPropertyDeductible.value"
         subscription={{}}
