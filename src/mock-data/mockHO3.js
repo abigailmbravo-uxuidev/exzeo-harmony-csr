@@ -7,7 +7,6 @@ const mock = {
       { value: 'mailingAddress', component: 'Section' },
       { value: 'propertyAddress', component: 'Section' },
       { value: 'county', label: 'Property County' },
-      { value: 'territory' },
       { value: 'effectiveDate', className: 'quoteEffectiveDate' },
       { value: 'currentPremium', label: 'Premium', className: 'premium' }
     ]
@@ -428,6 +427,34 @@ const mock = {
               children: []
             },
             {
+              id: '450aa423-f709-47b8-bbca-03e16747b302',
+              type: '$INPUT',
+              path: 'property.territory',
+              dependencies: [],
+              data: {
+                component: 'text',
+                label: 'Territory',
+                size: '2',
+                disabled: true
+              },
+              formData: {},
+              children: []
+            },
+            {
+              id: '93a98349-6361-43cd-b525-03e16747b301',
+              type: '$INPUT',
+              path: 'rating.worksheet.elements.territoryFactors.name',
+              dependencies: [],
+              data: {
+                component: 'text',
+                label: 'Territory Description',
+                size: '4',
+                disabled: true
+              },
+              formData: {},
+              children: []
+            },
+            {
               id: '93a98349-6361-43cd-b525-03e16747b300',
               type: '$INPUT',
               path: 'property.id',
@@ -435,7 +462,7 @@ const mock = {
               data: {
                 component: 'text',
                 label: 'IGD ID',
-
+                size: '6',
                 disabled: true
               },
               formData: {},
