@@ -440,9 +440,20 @@ header {
           }
 
           &.effectiveDate {
+            //margin-top: 2.625rem;
+            grid-column: 7;
+            grid-row: 1;
+          }
+          &.nonPaymentNoticeDate {
             margin-top: 2.625rem;
 
-            grid-column: 5;
+            grid-column: 7;
+            grid-row: 1;
+          }
+          &.nonPaymentNoticeDueDate {
+            margin-top: 2.625rem;
+
+            grid-column: 8;
             grid-row: 1;
           }
 
@@ -453,15 +464,14 @@ header {
           }
 
           &.cancellation {
-            margin-top: 2.625rem;
-
-            grid-column: 6 / span 2;
+            //margin-top: 2.625rem;
+            grid-column: 8 / span 2;
             grid-row: 1;
           }
 
           &.finalPayment {
             margin-top: 2.625rem;
-            margin-left: 9.5rem;
+            //margin-left: 9.5rem;
 
             grid-column: 7;
             grid-row: 1;
