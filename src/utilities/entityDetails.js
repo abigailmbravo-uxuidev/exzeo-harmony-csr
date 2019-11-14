@@ -121,7 +121,8 @@ export function getCancellationDate(
   ) {
     return {
       value: moment.utc(cancelDate).format(STANDARD_DATE_FORMAT),
-      label: 'Voluntary Cancellation Date'
+      label: 'Voluntary Cancellation Date',
+      showRescindCancel: true
     };
   } else if (
     (policyStatus === 'Pending Underwriting Cancellation' ||
@@ -131,7 +132,8 @@ export function getCancellationDate(
   ) {
     return {
       value: moment.utc(cancelDate).format(STANDARD_DATE_FORMAT),
-      label: 'UW Cancellation Date'
+      label: 'UW Cancellation Date',
+      showRescindCancel: true
     };
   } else if (
     expirationPolicyStatuses.includes(policyStatus) &&
