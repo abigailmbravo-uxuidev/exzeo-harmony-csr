@@ -87,6 +87,7 @@ export const getPolicyDetails = createSelector(
       cancellation: {
         label: dateLabel,
         value: cancellationDate,
+        showRescindCancel: status.includes('Pending'),
         showReinstatement
       },
       finalPayment,
@@ -95,55 +96,47 @@ export const getPolicyDetails = createSelector(
   }
 );
 
-export const getQuoteDetails = createSelector(
-  [getQuote],
-  quote => {
-    if (!quote || !quote.quoteNumber) return defaultEntity;
+export const getQuoteDetails = createSelector([getQuote], quote => {
+  if (!quote || !quote.quoteNumber) return defaultEntity;
 
-    const {
-      product,
-      quoteNumber,
-      quoteState,
-      policyHolders,
-      policyHolderMailingAddress: pHMA = {},
-      property,
-      effectiveDate,
-      rating = {},
-      policyNumber
-    } = quote;
+  const {
+    product,
+    quoteNumber,
+    quoteState,
+    policyHolders,
+    policyHolderMailingAddress: pHMA = {},
+    property,
+    effectiveDate,
+    rating = {},
+    policyNumber
+  } = quote;
 
-    const {
-      constructionType,
-      floodZone,
-      physicalAddress,
-      territory
-    } = property;
+  const { constructionType, floodZone, physicalAddress, territory } = property;
 
-    const mapQuery = detailUtils.getMapQuery(physicalAddress);
+  const mapQuery = detailUtils.getMapQuery(physicalAddress);
 
-    return {
-      constructionType,
-      floodZone,
-      currentPremium: detailUtils.getCurrentPremium(rating.totalPremium),
-      territory,
-      county: physicalAddress.county,
-      effectiveDate: moment.utc(effectiveDate).format(STANDARD_DATE_FORMAT),
-      mapURI: `${baseMapUri}${mapQuery}`,
-      status: quoteState,
-      details: {
-        product: detailUtils.getProductName(product),
-        quoteNumber
-      },
-      policyHolder: detailUtils.getPrimaryPolicyHolder(policyHolders),
-      mailingAddress: detailUtils.getMailingAddress(pHMA),
-      propertyAddress: {
-        address1: physicalAddress.address1,
-        address2: physicalAddress.address2,
-        csz: detailUtils.getCityStateZip(physicalAddress)
-      },
-      policyNumber,
-      sourcePath: policyNumber ? `/policy/${policyNumber}/coverage` : null,
-      showPolicyLink: quoteState === 'Policy Issued'
-    };
-  }
-);
+  return {
+    constructionType,
+    floodZone,
+    currentPremium: detailUtils.getCurrentPremium(rating.totalPremium),
+    territory,
+    county: physicalAddress.county,
+    effectiveDate: moment.utc(effectiveDate).format(STANDARD_DATE_FORMAT),
+    mapURI: `${baseMapUri}${mapQuery}`,
+    status: quoteState,
+    details: {
+      product: detailUtils.getProductName(product),
+      quoteNumber
+    },
+    policyHolder: detailUtils.getPrimaryPolicyHolder(policyHolders),
+    mailingAddress: detailUtils.getMailingAddress(pHMA),
+    propertyAddress: {
+      address1: physicalAddress.address1,
+      address2: physicalAddress.address2,
+      csz: detailUtils.getCityStateZip(physicalAddress)
+    },
+    policyNumber,
+    sourcePath: policyNumber ? `/policy/${policyNumber}/coverage` : null,
+    showPolicyLink: quoteState === 'Policy Issued'
+  };
+});

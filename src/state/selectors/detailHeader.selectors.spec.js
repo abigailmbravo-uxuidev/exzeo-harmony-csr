@@ -837,6 +837,7 @@ describe('Detail Header selectors', () => {
       cancellation: {
         label: 'Cancellation Effective Date',
         value: '12/04/2018',
+        showRescindCancel: true,
         showReinstatement: false
       },
       finalPayment: {
