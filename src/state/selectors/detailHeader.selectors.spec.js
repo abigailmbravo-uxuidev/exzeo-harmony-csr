@@ -3,6 +3,14 @@ import * as detailSelectors from './detailHeader.selectors';
 describe('Detail Header selectors', () => {
   it('should get Policy Details', () => {
     const state = {
+      list: {
+        appraisers: [
+          {
+            answer: 'http://www.acpafl.org/',
+            label: 'ALACHUA'
+          }
+        ]
+      },
       policyState: {
         policy: {
           coverageLimits: {
@@ -731,7 +739,7 @@ describe('Detail Header selectors', () => {
               state: 'FL',
               address2: '',
               longitude: -80.11851,
-              county: 'PALM BEACH',
+              county: 'ALACHUA',
               address1: '1378 TEST ADDRESS'
             },
             distanceToFireHydrant: 91.14,
@@ -834,45 +842,42 @@ describe('Detail Header selectors', () => {
     };
     const result = detailSelectors.getPolicyDetails(state);
     expect(result).toEqual({
-      cancellation: {
-        label: 'Cancellation Effective Date',
-        value: '12/04/2018',
-        showReinstatement: false
-      },
-      finalPayment: {
-        label: undefined,
-        value: undefined
-      },
-      floodZone: 'X',
       constructionType: 'SUPERIOR',
-      county: 'PALM BEACH',
+      policyID: '5bb78613c2793c0012ad5733',
+      policyNumber: '12-1011068-01',
+      sourceNumber: '12-5148842-01',
+      territory: '038-0',
+      floodZone: 'X',
+      county: 'ALACHUA',
       currentPremium: '$ 3,055',
-      details: {
-        product: 'HO3 Homeowners'
-      },
       effectiveDate: '12/04/2018',
+      appraisalURI: { label: 'PAS', value: 'http://www.acpafl.org/' },
+      mapURI:
+        'https://www.google.com/maps/search/?api=1&query=1378%20TEST%20ADDRESS%20%20JUPITER%2C%20FL%2000019',
+      status: 'Pending Voluntary Cancellation / No Payment Received',
+      details: { product: 'HO3 Homeowners' },
+      policyHolder: {
+        displayName: 'Batman Robin CSR006',
+        phone: '(727) 123-1234'
+      },
       mailingAddress: {
         address1: 'TEST MAILING ADDRESS1',
         address2: 'TEST MAILING ADDRESS2',
         csz: 'TAMPA, FL 33607'
       },
-      mapURI:
-        'https://www.google.com/maps/search/?api=1&query=1378%20TEST%20ADDRESS%20%20JUPITER%2C%20FL%2000019',
-      policyHolder: {
-        displayName: 'Batman Robin CSR006',
-        phone: '(727) 123-1234'
-      },
-      policyID: '5bb78613c2793c0012ad5733',
-      policyNumber: '12-1011068-01',
       propertyAddress: {
         address1: '1378 TEST ADDRESS',
         address2: '',
         csz: 'JUPITER, FL 00019'
       },
-      sourceNumber: '12-5148842-01',
-      sourcePath: '/quote/12-5148842-01/coverage',
-      status: 'Pending Voluntary Cancellation / No Payment Received',
-      territory: '038-0'
+      nonPaymentNoticeDate: '',
+      nonPaymentNoticeDueDate: '',
+      cancellation: {
+        value: '12/04/2018',
+        label: 'Voluntary Cancellation Date',
+        showRescindCancel: true
+      },
+      sourcePath: '/quote/12-5148842-01/coverage'
     });
   });
 });
