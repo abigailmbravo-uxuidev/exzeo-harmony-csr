@@ -54,6 +54,7 @@ export class AgencyAddressModal extends Component {
               <AddressGroup
                 sameAsMailingValue={sameAsMailingValue}
                 changeField={change}
+                dataTest="agencyAddressGroup"
                 isAgency
                 showCounty
               />
