@@ -40,7 +40,7 @@ export const getPolicyDetails = createSelector(
 
     const {
       currentPremium,
-      status: { displayText, code }
+      status: { displayText }
     } = summaryLedger;
 
     const {
