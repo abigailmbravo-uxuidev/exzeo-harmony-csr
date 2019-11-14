@@ -4,6 +4,9 @@ import { STANDARD_DATE_FORMAT } from '../constants/dates';
 
 import * as entityDetails from './entityDetails';
 
+const getExpectedValue = dateString =>
+  moment.utc(dateString).format(STANDARD_DATE_FORMAT);
+
 describe('getProductName', () => {
   it('should return product name HO3', () => {
     const result = entityDetails.getProductName('HO3');
@@ -59,9 +62,6 @@ describe('Test getCancellationDate', () => {
   };
   const endDate = '2019-10-23T04:00:00.000Z';
   const cancelDate = '2019-11-23T04:00:00.000Z';
-
-  const getExpectedValue = dateString =>
-    moment.utc(dateString).format(STANDARD_DATE_FORMAT);
 
   describe.each([
     // Not In Force
@@ -377,6 +377,110 @@ describe('Test getCancellationDate', () => {
         );
         expect(result.value).toBe(expectedValue);
         expect(result.label).toBe(expectedLabel);
+      });
+    }
+  );
+});
+
+describe('Test getNonPaymentNoticeDate', () => {
+  const summaryLedger = {
+    nonPaymentNoticeDate: '2018-10-23T04:00:00.000Z'
+  };
+
+  describe.each([
+    [
+      {
+        ...summaryLedger,
+        status: { displayText: 'Non-Payment Notice Issued' }
+      },
+      'In Force',
+      getExpectedValue(summaryLedger.nonPaymentNoticeDate)
+    ],
+    [
+      {
+        ...summaryLedger,
+        status: { displayText: 'Non-Payment Notice Issued' }
+      },
+      'Pending Voluntary Cancellation',
+      getExpectedValue(summaryLedger.nonPaymentNoticeDate)
+    ],
+    [
+      {
+        ...summaryLedger,
+        status: { displayText: 'Non-Payment Notice Issued' }
+      },
+      'Pending Underwriting Cancellation',
+      getExpectedValue(summaryLedger.nonPaymentNoticeDate)
+    ],
+    [
+      {
+        ...summaryLedger,
+        status: { displayText: 'Non-Payment Notice Issued' }
+      },
+      'Pending Underwriting Non-Renewal',
+      getExpectedValue(summaryLedger.nonPaymentNoticeDate)
+    ]
+  ])(
+    'getNonPaymentNoticeDate',
+    (summaryLedger, policyStatus, expectedValue) => {
+      test(`PolicyStatus: ${policyStatus} Billing Status: ${summaryLedger.status.displayText}`, () => {
+        const result = entityDetails.getNonPaymentNoticeDate(
+          summaryLedger,
+          policyStatus
+        );
+        expect(result).toBe(expectedValue);
+      });
+    }
+  );
+});
+
+describe('Test getNonPaymentNoticeDate', () => {
+  const summaryLedger = {
+    nonPaymentNoticeDueDate: '2018-10-23T04:00:00.000Z'
+  };
+
+  describe.each([
+    [
+      {
+        ...summaryLedger,
+        status: { displayText: 'Non-Payment Notice Issued' }
+      },
+      'In Force',
+      getExpectedValue(summaryLedger.nonPaymentNoticeDueDate)
+    ],
+    [
+      {
+        ...summaryLedger,
+        status: { displayText: 'Non-Payment Notice Issued' }
+      },
+      'Pending Voluntary Cancellation',
+      getExpectedValue(summaryLedger.nonPaymentNoticeDueDate)
+    ],
+    [
+      {
+        ...summaryLedger,
+        status: { displayText: 'Non-Payment Notice Issued' }
+      },
+      'Pending Underwriting Cancellation',
+      getExpectedValue(summaryLedger.nonPaymentNoticeDueDate)
+    ],
+    [
+      {
+        ...summaryLedger,
+        status: { displayText: 'Non-Payment Notice Issued' }
+      },
+      'Pending Underwriting Non-Renewal',
+      getExpectedValue(summaryLedger.nonPaymentNoticeDueDate)
+    ]
+  ])(
+    'Test getNonPaymentNoticeDueDate',
+    (summaryLedger, policyStatus, expectedValue) => {
+      test(`PolicyStatus: ${policyStatus} Billing Status: ${summaryLedger.status.displayText}`, () => {
+        const result = entityDetails.getNonPaymentNoticeDueDate(
+          summaryLedger,
+          policyStatus
+        );
+        expect(result).toBe(expectedValue);
       });
     }
   );
