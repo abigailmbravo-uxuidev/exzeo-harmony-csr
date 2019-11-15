@@ -384,7 +384,7 @@ describe('Test getCancellationDate', () => {
 
 describe('Test getNonPaymentNoticeDate', () => {
   const summaryLedger = {
-    nonPaymentNoticeDate: '2018-10-23T04:00:00.000Z'
+    equityDate: '2018-10-23T04:00:00.000Z'
   };
 
   describe.each([
@@ -394,7 +394,7 @@ describe('Test getNonPaymentNoticeDate', () => {
         status: { displayText: 'Non-Payment Notice Issued' }
       },
       'In Force',
-      getExpectedValue(summaryLedger.nonPaymentNoticeDate)
+      getExpectedValue(summaryLedger.equityDate)
     ],
     [
       {
@@ -402,7 +402,7 @@ describe('Test getNonPaymentNoticeDate', () => {
         status: { displayText: 'Non-Payment Notice Issued' }
       },
       'Pending Voluntary Cancellation',
-      getExpectedValue(summaryLedger.nonPaymentNoticeDate)
+      getExpectedValue(summaryLedger.equityDate)
     ],
     [
       {
@@ -410,7 +410,7 @@ describe('Test getNonPaymentNoticeDate', () => {
         status: { displayText: 'Non-Payment Notice Issued' }
       },
       'Pending Underwriting Cancellation',
-      getExpectedValue(summaryLedger.nonPaymentNoticeDate)
+      getExpectedValue(summaryLedger.equityDate)
     ],
     [
       {
@@ -418,7 +418,7 @@ describe('Test getNonPaymentNoticeDate', () => {
         status: { displayText: 'Non-Payment Notice Issued' }
       },
       'Pending Underwriting Non-Renewal',
-      getExpectedValue(summaryLedger.nonPaymentNoticeDate)
+      getExpectedValue(summaryLedger.equityDate)
     ]
   ])(
     'getNonPaymentNoticeDate',

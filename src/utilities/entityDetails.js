@@ -155,7 +155,7 @@ export function getCancellationDate(
  */
 export function getNonPaymentNoticeDate(summaryLedger, policyStatus) {
   const {
-    nonPaymentNoticeDate,
+    equityDate,
     status: { displayText: billingStatus }
   } = summaryLedger;
 
@@ -164,8 +164,8 @@ export function getNonPaymentNoticeDate(summaryLedger, policyStatus) {
     policyStatus
   );
 
-  if (isNonPaymentCancellation && nonPaymentNoticeDate) {
-    return moment.utc(nonPaymentNoticeDate).format(STANDARD_DATE_FORMAT);
+  if (isNonPaymentCancellation && equityDate) {
+    return moment.utc(equityDate).format(STANDARD_DATE_FORMAT);
   }
   return '';
 }
