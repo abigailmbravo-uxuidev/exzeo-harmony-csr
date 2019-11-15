@@ -256,6 +256,7 @@
 
       .uppy-DashboardContent-title {
         margin-left: 0;
+        color: $warm-gray-10;
       }
     }
 
@@ -267,8 +268,8 @@
         margin-right: $padding;
 
         img {
-          width: 3rem;
-          height: 3rem;
+          width: auto;
+          max-height: 3.5rem;
         }
       }
 
@@ -277,8 +278,7 @@
         flex-shrink: 1;
         .uppy-Dashboard-FileCard-fieldset {
           label {
-            margin-bottom: $padding/2;
-            font-size: $font-size-sm;
+            color: $warm-gray-10;
           }
           input {
             font-weight: $font-weight-normal;
