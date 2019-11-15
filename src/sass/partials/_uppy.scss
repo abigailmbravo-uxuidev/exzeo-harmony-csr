@@ -264,6 +264,7 @@
       flex-wrap: wrap;
       .uppy-Dashboard-FileCard-preview {
         background-color: $warm-gray-03 !important;
+        margin-right: $padding;
 
         img {
           width: 3rem;
@@ -272,6 +273,18 @@
       }
 
       .uppy-Dashboard-FileCard-info {
+        flex-grow: 1;
+        flex-shrink: 1;
+        .uppy-Dashboard-FileCard-fieldset {
+          label {
+            margin-bottom: $padding/2;
+            font-size: $font-size-sm;
+          }
+          input {
+            font-weight: $font-weight-normal;
+            font-size: $font-size-base;
+          }
+        }
       }
 
       .uppy-Dashboard-FileCard-actions {
@@ -279,17 +292,26 @@
         display: flex;
         flex-direction: row-reverse;
         align-items: center;
+        width: 100%;
+        justify-content: center;
 
         button {
           text-transform: uppercase;
           font-size: $font-size-xs;
+          border: 1px solid $bright-blue-darken-04;
+          @include button-variant(
+            $bright-blue-darken-04,
+            $white,
+            $bright-blue-darken-04
+          );
 
           &.uppy-c-btn-primary {
             @include button-variant(
-              $btn-secondary-color,
-              $btn-secondary-bg,
-              $btn-secondary-border
+              $white,
+              $bright-blue-darken-04,
+              $bright-blue-darken-04
             );
+            margin-left: $padding;
           }
         }
       }

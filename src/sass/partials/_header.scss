@@ -460,7 +460,13 @@ header {
           &.quoteEffectiveDate {
             min-width: 5rem;
 
-            grid-column: 8;
+            grid-column: 6;
+          }
+
+          &.quoteEndDate {
+            min-width: 5rem;
+
+            grid-column: 7;
           }
 
           &.cancellation {
