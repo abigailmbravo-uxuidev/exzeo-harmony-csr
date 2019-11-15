@@ -245,6 +245,56 @@
   outline: none;
   border: 1px solid $warm-gray-06 !important;
   background-color: $white !important;
+
+  .uppy-Dashboard-FileCard {
+    border-top: 1px dotted $warm-gray-10;
+    padding: 0 $padding $padding;
+    background: $warm-gray-03;
+    .uppy-DashboardContent-bar {
+      background-color: transparent !important;
+      border-bottom-width: 0 !important;
+
+      .uppy-DashboardContent-title {
+        margin-left: 0;
+      }
+    }
+
+    .uppy-Dashboard-FileCard-inner {
+      display: flex;
+      flex-wrap: wrap;
+      .uppy-Dashboard-FileCard-preview {
+        background-color: $warm-gray-03 !important;
+
+        img {
+          width: 3rem;
+          height: 3rem;
+        }
+      }
+
+      .uppy-Dashboard-FileCard-info {
+      }
+
+      .uppy-Dashboard-FileCard-actions {
+        margin-top: $padding;
+        display: flex;
+        flex-direction: row-reverse;
+        align-items: center;
+
+        button {
+          text-transform: uppercase;
+          font-size: $font-size-xs;
+
+          &.uppy-c-btn-primary {
+            @include button-variant(
+              $btn-secondary-color,
+              $btn-secondary-bg,
+              $btn-secondary-border
+            );
+          }
+        }
+      }
+    }
+  }
 }
 
 .uppy-Dashboard--modal .uppy-Dashboard-inner {
@@ -448,17 +498,7 @@
   background-color: $white !important;
 
   .uppy-DashboardContent-addMore {
-    margin-right: $padding;
-    font-size: $font-size-sm;
-    @include button-variant(
-      $bright-blue-darken-04,
-      $white,
-      $bright-blue-darken-04
-    );
-
-    svg {
-      display: none;
-    }
+    display: none;
   }
 }
 
