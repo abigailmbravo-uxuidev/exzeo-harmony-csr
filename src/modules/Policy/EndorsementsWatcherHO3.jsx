@@ -1,11 +1,21 @@
 // @ts-nocheck
 import React from 'react';
-import { OnChangeListener, Field } from '@exzeo/core-ui/src';
+import { OnChangeListener, OnBlurListener, Field } from '@exzeo/core-ui/src';
 import _get from 'lodash/get';
 
 const EndorsementsWatcherHO3 = ({ formValues, initialValues }) => {
   return (
     <React.Fragment>
+      <Field name="coverageLimits.dwelling.value">
+        {({ input: { onChange, value } }) => (
+          <OnBlurListener name="coverageLimits.dwelling.value">
+            {() => {
+              if (!value) return;
+              onChange(Math.round(Number(value) / 1000) * 1000);
+            }}
+          </OnBlurListener>
+        )}
+      </Field>
       <Field
         name="coverageOptions.liabilityIncidentalOccupancies.answer"
         subscription={{}}

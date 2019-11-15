@@ -1261,6 +1261,19 @@ const mock = {
                 children: []
               },
               children: []
+            },
+            {
+              id: 'b963aac4-936d-4290-9756-7a4e45ee',
+              type: '$CUSTOM',
+              dependencies: [],
+              data: {
+                component: '$COVERAGE_WATCHER_HO3',
+                extendedProperties: {
+                  subscribe: true
+                }
+              },
+              formData: {},
+              children: []
             }
           ]
         }
