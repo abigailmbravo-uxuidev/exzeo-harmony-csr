@@ -259,6 +259,22 @@
   max-height: unset !important;
   width: 100%;
   height: auto !important;
+
+  .uppy-DashboardAddFiles {
+    display: flex;
+    flex-grow: 1;
+    flex-shrink: 1;
+    flex-direction: column;
+
+    .uppy-DashboardTabs {
+      flex-grow: 1;
+      flex-shrink: 1;
+      display: flex;
+      align-items: center;
+      flex-direction: column;
+      justify-content: center;
+    }
+  }
 }
 
 .uppy-Dashboard--modal .uppy-Dashboard-inner {
@@ -301,8 +317,8 @@
 }
 
 .uppy-DashboardTabs {
-  padding: 0 !important;
-  border-bottom: 1px dotted $warm-gray-08 !important;
+  //padding: 0 !important;
+  //border-bottom: 1px dotted $warm-gray-08 !important;
 
   &[aria-hidden='true'] {
     display: none;
@@ -430,6 +446,20 @@
   height: 3rem !important;
   border-bottom: 1px dotted $warm-gray-10 !important;
   background-color: $white !important;
+
+  .uppy-DashboardContent-addMore {
+    margin-right: $padding;
+    font-size: $font-size-sm;
+    @include button-variant(
+      $bright-blue-darken-04,
+      $white,
+      $bright-blue-darken-04
+    );
+
+    svg {
+      display: none;
+    }
+  }
 }
 
 .uppy-Dashboard--wide .uppy-DashboardContent-bar {
@@ -598,8 +628,8 @@
     align-items: center;
     justify-content: center;
     border: 3px dashed $bright-blue;
-    background: rgba($white, 0.8) !important;
-    color: $bright-blue;
+    background: rgba($white, 0.9) !important;
+    color: $warm-gray-14;
     font-weight: $font-weight-bold;
     font-size: $font-size-h3;
   }
@@ -1826,6 +1856,7 @@
     border-top: 1px dotted $warm-gray-08 !important;
     background-color: $white !important;
     line-height: 3rem !important;
+    display: flex;
   }
 }
 

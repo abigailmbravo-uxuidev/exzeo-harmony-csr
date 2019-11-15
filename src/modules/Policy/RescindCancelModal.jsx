@@ -24,15 +24,14 @@ const RescindCancelModal = ({
             <div className="card-block">
               <h5>Rescind cancellation for this policy?</h5>
               <label htmlFor="approval">{`Yes, I want to rescind cancellation for policy: ${policyNumber} `}</label>
-              <div>
-                <Field
-                  name="approval"
-                  label="Giggity"
-                  component="input"
-                  type="checkbox"
-                  validate={validation.isRequired}
-                />
-              </div>
+
+              <Field
+                name="approval"
+                label="Giggity"
+                component="input"
+                type="checkbox"
+                validate={validation.isRequired}
+              />
             </div>
             <div className="card-footer">
               <Button
