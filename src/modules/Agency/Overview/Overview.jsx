@@ -105,6 +105,20 @@ export class Overview extends React.Component {
         <div className="route-content">
           <div className="scroll">
             <div className="form-group survey-wrapper" role="group">
+              <section className="contract-details">
+                {agency.contracts.map(contract => (
+                  <div className="contract" key={contract.contractNumber}>
+                    <h3>{contract.companyCode}</h3>
+                    {contract.stateProducts.map(item => (
+                      <span key={`${item.state}-${item.product}`}>
+                        {item.state}&nbsp;&bull;&nbsp;{item.product}
+                        &nbsp;&bull;&nbsp;
+                        <strong>{item.status}</strong>
+                      </span>
+                    ))}
+                  </div>
+                ))}
+              </section>
               <h3 data-test="agency-details">
                 Details
                 <button
@@ -144,16 +158,16 @@ export class Overview extends React.Component {
                 />
               </section>
               {agencyBranchData.principal && (
-                <h3 data-test="agency-officer">Officer</h3>
-              )}
-              {agencyBranchData.principal && (
-                <section className="agency-principal">
-                  <ContactCard
-                    isOfficer
-                    contact={agencyBranchData.principal}
-                    handleClick={this.onHandleToggleEditPrincipalModal}
-                  />
-                </section>
+                <React.Fragment>
+                  <h3 data-test="agency-officer">Officer</h3>
+                  <section className="agency-principal">
+                    <ContactCard
+                      isOfficer
+                      contact={agencyBranchData.principal}
+                      handleClick={this.onHandleToggleEditPrincipalModal}
+                    />
+                  </section>
+                </React.Fragment>
               )}
               <h3 data-test="agency-contact">Contact</h3>
               <section className="agency-contact">
@@ -260,4 +274,5 @@ export class Overview extends React.Component {
     );
   }
 }
+
 export default Overview;

@@ -6,7 +6,8 @@ import {
   Gandalf,
   ClaimsTable,
   PolicyBilling,
-  PaymentHistoryTable
+  PaymentHistoryTable,
+  callService
 } from '@exzeo/core-ui/src/@Harmony';
 import { defaultMemoize } from 'reselect';
 
@@ -49,6 +50,7 @@ import CancelType from './CancelType';
 import CancelReason from './CancelReason';
 import EffectiveDateModal from './EffectiveDateModal';
 import ReinstatePolicyModal from './ReinstatePolicyModal';
+import RescindCancelModal from './RescindCancelModal';
 
 // TODO these will be removed in subsequent PR's
 import { startWorkflow, completeTask } from '../../utilities/cg';
@@ -82,6 +84,7 @@ export class PolicyWorkflow extends React.Component {
     showDiaries: false,
     showReinstatePolicyModal: false,
     showEffectiveDateChangeModal: false,
+    showRescindCancelModal: false,
     isEndorsementCalculated: false
   };
 
@@ -190,6 +193,12 @@ export class PolicyWorkflow extends React.Component {
     }));
   };
 
+  handleToggleRescindCancelModal = () => {
+    this.setState(state => ({
+      showRescindCancelModal: !state.showRescindCancelModal
+    }));
+  };
+
   toggleEffectiveDateChangeModal = () => {
     this.setState(state => ({
       showEffectiveDateChangeModal: !state.showEffectiveDateChangeModal
@@ -208,6 +217,28 @@ export class PolicyWorkflow extends React.Component {
     await createTransaction(submitData);
     await getPolicy(policy.policyNumber);
     this.handleToggleReinstateModal();
+  };
+
+  rescindCancelSubmit = async data => {
+    const {
+      policy: { policyNumber },
+      getPolicy,
+      setAppError
+    } = this.props;
+
+    const config = {
+      exchangeName: 'harmony',
+      routingKey: 'harmony.policy.rescindCancellation',
+      data: { policyNumber }
+    };
+
+    await callService(config, 'rescindCancellation').catch(err => {
+      setAppError(err);
+      this.handleToggleRescindCancelModal();
+    });
+
+    await getPolicy(policyNumber);
+    this.handleToggleRescindCancelModal();
   };
 
   changeEffectiveDate = async data => {
@@ -273,12 +304,14 @@ export class PolicyWorkflow extends React.Component {
       gandalfTemplate,
       showDiaries,
       showReinstatePolicyModal,
+      showRescindCancelModal,
       showEffectiveDateChangeModal
     } = this.state;
 
     const modalHandlers = {
       showEffectiveDateChangeModal: this.toggleEffectiveDateChangeModal,
-      showReinstatePolicyModal: this.handleToggleReinstateModal
+      showReinstatePolicyModal: this.handleToggleReinstateModal,
+      showRescindCancelModal: this.handleToggleRescindCancelModal
     };
 
     const { currentRouteName, currentStepNumber } = getCurrentStepAndPage(
@@ -411,6 +444,14 @@ export class PolicyWorkflow extends React.Component {
                 <ReinstatePolicyModal
                   reinstatePolicySubmit={this.reinstatePolicySubmit}
                   closeModal={this.handleToggleReinstateModal}
+                  policyNumber={policy.policyNumber}
+                />
+              )}
+
+              {showRescindCancelModal && (
+                <RescindCancelModal
+                  rescindCancelSubmit={this.rescindCancelSubmit}
+                  closeModal={this.handleToggleRescindCancelModal}
                   policyNumber={policy.policyNumber}
                 />
               )}

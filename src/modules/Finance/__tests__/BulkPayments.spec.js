@@ -30,7 +30,6 @@ describe('BulkPayments testing', () => {
     };
 
     const {
-      debug,
       getByText,
       getByLabelText,
       getAllByText,
@@ -123,7 +122,7 @@ describe('BulkPayments testing', () => {
       }
     } = mockPolicy;
 
-    const { debug, getByText, getByLabelText, getAllByText } = render(
+    const { getByText, getByLabelText, getAllByText } = render(
       <BulkPayments {...props} />
     );
 

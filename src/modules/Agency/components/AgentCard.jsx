@@ -79,7 +79,7 @@ export const AgentCard = ({
                 {agent.faxNumber && (
                   <p className="fax" data-test="fax">
                     <i className="fa fa-fax" />
-                    <a href={`tel:${agent.faxNumber}`}>
+                    <a href={`fax:${agent.faxNumber}`}>
                       {normalize.phone(agent.faxNumber)}
                     </a>
                   </p>

@@ -1,4 +1,5 @@
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 
 import {
   getAgentOfRecord,
@@ -22,6 +23,11 @@ const mapStateToProps = (state, props) => {
     agentsList: getAgentsList(state),
     territoryManagers: state.questions.territoryManagers
   };
+};
+
+Overview.propTypes = {
+  agencyCode: PropTypes.string.isRequired,
+  branchCode: PropTypes.string.isRequired
 };
 
 export default connect(
