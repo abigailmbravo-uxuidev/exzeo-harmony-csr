@@ -37,7 +37,7 @@ export default class Auth {
   }
 
   login() {
-    this.auth0.authorize({});
+    this.auth0.authorize();
   }
 
   checkAuth() {
@@ -53,7 +53,7 @@ export default class Auth {
   }
 
   handleAuthentication() {
-    this.auth0.parseHash({ hash: window.location.hash }, (err, authResult) => {
+    this.auth0.parseHash(window.location.hash, (err, authResult) => {
       if (authResult && authResult.accessToken && authResult.idToken) {
         const payload = jwtDecode(authResult.idToken);
         // check to see if the user exists in a CSR group
