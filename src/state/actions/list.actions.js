@@ -3,7 +3,7 @@ import * as serviceRunner from '@exzeo/core-ui/src/@Harmony/Domain/Api/serviceRu
 import * as listTypes from '../actionTypes/list.actionTypes';
 import { setAppError } from './error.actions';
 import { fetchNotes } from './notes.actions';
-import { fetchDiaries, fetchDiaryOptions } from './diary.actions';
+import { fetchDiaryOptions } from './diary.actions';
 
 function setEnums(enums) {
   return {
