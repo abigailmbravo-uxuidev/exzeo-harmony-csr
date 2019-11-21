@@ -31,7 +31,6 @@ export function getEnumsForQuoteWorkflow({
 }) {
   return async dispatch => {
     try {
-      dispatch(fetchDiaries({ resourceId: quoteNumber }));
       dispatch(fetchNotes([quoteNumber], 'quoteNumber'));
       // this pattern sets us up to "parallelize" the network requests in this function. We want to
       // fetch all enums/data needed for the quote workflow in here.
@@ -69,15 +68,9 @@ export async function fetchPropertyAppriasals() {
  * @param policyNumber
  * @returns {Function}
  */
-export function getEnumsForPolicyWorkflow({
-  policyNumber,
-  companyCode,
-  state,
-  product
-}) {
+export function getEnumsForPolicyWorkflow({ companyCode, state, product }) {
   return async dispatch => {
     try {
-      dispatch(fetchDiaries({ resourceId: policyNumber }));
       const diaryOptions = fetchDiaryOptions(companyCode, state, product);
       const propertyAppraisals = fetchPropertyAppriasals();
 
