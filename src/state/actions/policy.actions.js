@@ -734,6 +734,7 @@ export function transferAOR({ policyNumber, agencyCode, agentCode }) {
  */
 export function initializePolicyWorkflow(policyNumber) {
   return async dispatch => {
+    // TODO: Refactor into one action to dispatch
     try {
       const { summaryLedger, policy } = await dispatch(getPolicy(policyNumber));
       dispatch(getEffectiveDateChangeReasons());
@@ -810,8 +811,6 @@ export function updatePolicy({ data = {}, options = {} }) {
         };
 
         await serviceRunner.callService(transferConfig, 'saveEndorsement');
-
-        dispatch(initializePolicyWorkflow(data.policyNumber));
       }
 
       if (options.changeEffectiveDate) {
@@ -831,7 +830,6 @@ export function updatePolicy({ data = {}, options = {} }) {
           data: options.noteData
         };
         await serviceRunner.callService(noteConfig, 'addNote');
-        await dispatch(getPolicy(data.policyNumber));
       }
 
       if (options.cancelPolicy) {
@@ -851,7 +849,6 @@ export function updatePolicy({ data = {}, options = {} }) {
           billingStatus: data.summaryLedger.status.code
         };
         await postCreatTransaction(submitData);
-        await dispatch(getPolicy(data.policyNumber));
       }
 
       if (data.selectedAI) {
@@ -862,8 +859,8 @@ export function updatePolicy({ data = {}, options = {} }) {
           transactionType: data.transactionType,
           dispatch
         });
-        await dispatch(getPolicy(data.policyNumber));
       }
+      dispatch(initializePolicyWorkflow(data.policyNumber));
       return null;
     } catch (error) {
       if (process.env.NODE_ENV !== 'production') {
