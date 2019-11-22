@@ -1,14 +1,11 @@
-import React from 'react';
 import { shallow } from 'enzyme';
+import React from 'react';
 import { SearchBase } from './SearchBase';
 
 describe('Policy Search', () => {
   it('renders Policy Search container', () => {
     const props = {
       getUIQuestions() {
-        x => x;
-      },
-      startWorkflow() {
         x => x;
       },
       location: { pathName: 'test' },

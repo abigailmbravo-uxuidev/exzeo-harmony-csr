@@ -814,6 +814,26 @@ export function updatePolicy({ data = {}, options = {} }) {
         dispatch(initializePolicyWorkflow(data.policyNumber));
       }
 
+      if (options.changeEffectiveDate) {
+        const submitData = {
+          policyID: data.policyID,
+          policyNumber: data.policyNumber,
+          effectiveDate: data.effectiveDate,
+          billingStatus: data.billingStatus,
+          rateCode: data.rateCode,
+          transactionType: data.transactionType
+        };
+        await postCreatTransaction(submitData);
+
+        const noteConfig = {
+          exchangeName: 'harmony',
+          routingKey: 'harmony.note.addNote',
+          data: options.noteData
+        };
+        await serviceRunner.callService(noteConfig, 'addNote');
+        await dispatch(getPolicy(data.policyNumber));
+      }
+
       if (options.cancelPolicy) {
         const submitData = {
           policyID: data.policyID,

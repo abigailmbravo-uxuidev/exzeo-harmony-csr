@@ -12,15 +12,6 @@ const mockStore = configureStore(middlewares);
 describe('Testing Login component', () => {
   it('should try to login', () => {
     const initialState = {
-      cg: {
-        bb: {
-          data: {
-            modelInstanceId: '123',
-            model: {},
-            uiQuestions: []
-          }
-        }
-      },
       appState: {
         modelName: 'bb'
       }

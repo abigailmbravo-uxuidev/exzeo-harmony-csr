@@ -13,11 +13,7 @@ export const TOGGLE_MINIMIZE_NOTE = 'TOGGLE_MINIMIZE_NOTE';
 /* ERROR */
 export const APP_ERROR = 'APP_ERROR';
 export const APP_ERROR_CLEAR = 'APP_ERROR_CLEAR';
-/* CG */
-export const CG_START = 'CG_START';
-export const CG_ACTIVE_TASK = 'CG_ACTIVE_TASK';
-export const CG_COMPLETE = 'CG_COMPLETE';
-export const CG_ERROR = 'CG_ERROR';
+
 export const CLEAR_SEARCH_RESULTS = 'CLEAR_SEARCH_RESULTS';
 /* QUESTIONS (Enums)  */
 export const SET_QUESTIONS = 'SET_QUESTIONS';
