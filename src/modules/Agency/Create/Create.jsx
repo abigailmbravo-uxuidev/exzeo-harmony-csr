@@ -119,6 +119,7 @@ export class Create extends Component {
                 <AddressGroup
                   sameAsMailingValue={sameAsMailingValue}
                   changeField={change}
+                  dataTest="agency"
                   isAgency
                   showCounty
                 />
@@ -152,6 +153,7 @@ export class Create extends Component {
                         parentFormGroup="agentOfRecord"
                         sameAsMailingValue={sameAsMailingAORValue}
                         changeField={change}
+                        dataTest="aor"
                         isOptional
                       />
                     </FormSection>
