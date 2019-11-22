@@ -19,7 +19,7 @@
     "@uppy/core": "1.6.0",
     "@uppy/react": "1.4.0",
     "@uppy/xhr-upload": "1.4.0",
-    "auth0-js": "~8.10.1",
+    "auth0-js": "9.11.3",
     "bluebird": "^3.5.3",
     "classnames": "~2.2.5",
     "font-awesome": "~4.7.0",
