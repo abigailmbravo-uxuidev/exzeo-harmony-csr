@@ -1,11 +1,8 @@
 // temporary full path import until we can find a better way to mock network requests
-import * as serviceRunner from '@exzeo/core-ui/src/@Harmony/Domain/Api/serviceRunner';
 import { date } from '@exzeo/core-ui/src';
-
+import * as serviceRunner from '@exzeo/core-ui/src/@Harmony/Domain/Api/serviceRunner';
 import { formatEndorsementData } from '../../modules/Policy/utilities';
 import { convertToRateData } from '../../utilities/endorsementModel';
-import cg from '../../utilities/cg';
-
 import * as types from './actionTypes';
 import * as errorActions from './error.actions';
 import { getZipcodeSettings } from './service.actions';
@@ -833,20 +830,7 @@ export function updatePolicy({ data = {}, options = {} }) {
           ),
           billingStatus: data.summaryLedger.status.code
         };
-        const startResult = await cg.startWorkflow({
-          modelName: 'cancelPolicyModelUI',
-          data: {
-            policyNumber: data.policyNumber,
-            policyID: data.policyID
-          }
-        });
-
-        await cg.completeTask({
-          workflowId: startResult.modelInstanceId,
-          stepName: 'cancelPolicySubmit',
-          data: submitData
-        });
-
+        await postCreatTransaction(submitData);
         await dispatch(getPolicy(data.policyNumber));
       }
 
