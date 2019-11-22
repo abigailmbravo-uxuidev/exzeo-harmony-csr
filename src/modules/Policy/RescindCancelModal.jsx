@@ -1,6 +1,6 @@
-import React from 'react';
+import { Button, Field, Form, Loader, Modal, validation } from '@exzeo/core-ui';
 import PropTypes from 'prop-types';
-import { Form, Loader, Field, Button, Modal, validation } from '@exzeo/core-ui';
+import React from 'react';
 
 const RescindCancelModal = ({
   rescindCancelSubmit,
@@ -27,7 +27,7 @@ const RescindCancelModal = ({
 
               <Field
                 name="approval"
-                label="Giggity"
+                label="Approval"
                 component="input"
                 type="checkbox"
                 validate={validation.isRequired}
