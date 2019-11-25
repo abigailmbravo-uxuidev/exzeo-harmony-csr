@@ -12,11 +12,18 @@ const mock = {
       { value: 'mailingAddress', component: 'Section' },
       { value: 'propertyAddress', component: 'Section' },
       { value: 'county', label: 'Property County' },
-      { value: 'territory' },
-      { value: 'constructionType' },
       { value: 'effectiveDate' },
-      { value: 'cancellation' },
-      { value: 'finalPayment', label: 'Final Payment' },
+      { value: 'cancellation', isOptional: true },
+      {
+        value: 'nonPaymentNoticeDate',
+        label: 'NP Cancellation Date',
+        isOptional: true
+      },
+      {
+        value: 'nonPaymentNoticeDueDate',
+        label: 'Final Payment Date',
+        isOptional: true
+      },
       { value: 'currentPremium', className: 'premium' }
     ]
   },
@@ -597,18 +604,14 @@ const mock = {
                           items: [
                             { format: '', path: 'property.residenceType' }
                           ]
+                        },
+                        {
+                          label: 'Territory',
+                          items: [{ format: '', path: 'property.territory' }]
                         }
                       ]
                     }
                   },
-                  formData: {},
-                  children: []
-                },
-                {
-                  id: 21,
-                  type: '$APPRAISER',
-                  dependencies: [],
-                  data: {},
                   formData: {},
                   children: []
                 },
@@ -649,7 +652,7 @@ const mock = {
                           items: [{ format: '', path: 'property.squareFeet' }]
                         },
                         {
-                          label: 'Territory',
+                          label: 'Territory Description',
                           items: [
                             {
                               format: '',
