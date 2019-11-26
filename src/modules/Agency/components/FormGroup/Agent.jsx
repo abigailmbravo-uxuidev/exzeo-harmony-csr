@@ -12,7 +12,6 @@ export const Agent = () => (
         dataTest="agentCode"
         placeholder="Generated if blank"
         component={Input}
-        validate={validation.isRequired}
       />
       <Field
         label="Agent First Name"
