@@ -28,7 +28,6 @@ const AgencyDetails = ({ agencyCodeDisabled }) => {
         component={Integer}
         thousandSeparator={false}
         disabled={agencyCodeDisabled}
-        validate={validation.isRequired}
       />
       <Field
         label="Agency Name"
