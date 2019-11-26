@@ -10,6 +10,7 @@ export const Agent = () => (
         styleName="agentCode"
         name="agentCode"
         dataTest="agentCode"
+        placeholder="Generated if blank"
         component={Input}
         validate={validation.isRequired}
       />
