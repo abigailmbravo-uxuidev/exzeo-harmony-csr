@@ -14,7 +14,7 @@ const Details = ({ isEditing }) => {
           component={Integer}
           dataTest="agentCode"
           styleName="agentCode"
-          validate={[validation.isRequired, validation.isNumbersOnly]}
+          validate={validation.isNumbersOnly}
           disabled={isEditing}
           thousandSeparator={false}
         />
