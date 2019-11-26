@@ -1,5 +1,5 @@
 import { createSelector } from 'reselect';
-import moment from 'moment-timezone';
+import { date } from '@exzeo/core-ui';
 
 import * as detailUtils from '../../utilities/entityDetails';
 import { STANDARD_DATE_FORMAT } from '../../constants/dates';
@@ -66,7 +66,7 @@ export const getPolicyDetails = createSelector(
       floodZone,
       county: physicalAddress.county,
       currentPremium: detailUtils.getCurrentPremium(currentPremium),
-      effectiveDate: moment.utc(effectiveDate).format(STANDARD_DATE_FORMAT),
+      effectiveDate: date.formattedDate(effectiveDate, STANDARD_DATE_FORMAT),
       appraisalURI: {
         label: 'PAS',
         value: appraisal.answer
@@ -116,7 +116,8 @@ export const getQuoteDetails = createSelector(
       property,
       effectiveDate,
       rating = {},
-      policyNumber
+      policyNumber,
+      endDate
     } = quote;
 
     const {
@@ -139,7 +140,8 @@ export const getQuoteDetails = createSelector(
       currentPremium: detailUtils.getCurrentPremium(rating.totalPremium),
       territory,
       county: physicalAddress.county,
-      effectiveDate: moment.utc(effectiveDate).format(STANDARD_DATE_FORMAT),
+      effectiveDate: date.formattedDate(effectiveDate, STANDARD_DATE_FORMAT),
+      endDate: date.formattedDate(endDate, STANDARD_DATE_FORMAT),
       appraisalURI: {
         label: 'PAS',
         value: appraisal.answer
