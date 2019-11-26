@@ -16,6 +16,7 @@ const Details = ({ isEditing }) => {
           styleName="agentCode"
           validate={validation.isNumbersOnly}
           disabled={isEditing}
+          placeholder="Generated if blank"
           thousandSeparator={false}
         />
         <Field
