@@ -1,14 +1,16 @@
 .modal {
   position: absolute;
+  z-index: 9999;
   top: 0;
   right: 0;
   bottom: 0;
   left: 0;
-  z-index: 9999;
+
   display: flex;
   align-items: center;
   flex-direction: column;
   justify-content: center;
+
   background: rgba($warm-gray-15, 0.75);
 
   &.gradient-bg {
@@ -30,7 +32,9 @@
   &.modal-md,
   &.modal-lg,
   &.modal-xl,
-  &.modal-alert {
+  &.modal-alert,
+  &.existing-agent-modal,
+  &.agent-crud {
     display: flex;
     align-items: center;
     flex-direction: column;
@@ -44,19 +48,22 @@
       flex-grow: 1;
       flex-shrink: 1;
       justify-content: center;
-      max-height: calc(100vh - 16rem);
+
+      //max-height: calc(100vh - 10rem);
 
       .card-block {
         overflow-x: hidden;
         overflow-y: auto;
         flex-grow: 1;
         flex-shrink: 1;
+
         width: 100%;
         height: auto;
 
         .form-group {
           flex-grow: 1;
           flex-shrink: 1;
+
           width: auto;
           height: auto;
 
@@ -78,6 +85,7 @@
           display: flex;
           flex-grow: 1;
           flex-shrink: 1;
+
           width: auto;
 
           .form-group {
@@ -87,22 +95,26 @@
             &.state {
               flex-grow: 0;
               flex-shrink: 0;
+
               width: 8rem;
             }
             &.zip {
               flex-grow: 0;
               flex-shrink: 0;
+
               width: 16rem;
             }
             &.phone {
               flex-grow: 0;
               flex-shrink: 0;
+
               width: 20rem;
             }
 
             &.order {
               flex-grow: 0;
               flex-shrink: 0;
+
               width: 20rem;
             }
           }
@@ -112,17 +124,20 @@
       .card-footer {
         flex-grow: 0;
         flex-shrink: 0;
+
         height: auto;
 
         .btn-group {
           flex-grow: 0;
           flex-shrink: 0;
-          margin-bottom: 0;
+
           height: auto;
+          margin-bottom: 0;
 
           .btn {
             flex-grow: 0;
             flex-shrink: 0;
+
             height: auto;
           }
         }
@@ -133,10 +148,11 @@
       display: flex;
       flex-grow: 0;
       flex-shrink: 0;
-      margin: 0;
-      max-height: calc(100vh - 16rem);
+
       width: 100%;
       height: auto;
+      max-height: calc(100vh - 16rem);
+      margin: 0;
 
       > form {
         display: flex;
@@ -144,6 +160,7 @@
         flex-direction: column;
         flex-grow: 1;
         flex-shrink: 1;
+
         max-height: calc(100vh - 16rem);
 
         .card-block {
@@ -151,12 +168,14 @@
           overflow-y: auto;
           flex-grow: 1;
           flex-shrink: 1;
+
           width: 100%;
           height: auto;
 
           .form-group {
             flex-grow: 1;
             flex-shrink: 1;
+
             width: auto;
             height: auto;
 
@@ -178,6 +197,7 @@
             display: flex;
             flex-grow: 1;
             flex-shrink: 1;
+
             width: auto;
 
             .form-group {
@@ -187,22 +207,26 @@
               &.state {
                 flex-grow: 0;
                 flex-shrink: 0;
+
                 width: 8rem;
               }
               &.zip {
                 flex-grow: 0;
                 flex-shrink: 0;
+
                 width: 16rem;
               }
               &.phone {
                 flex-grow: 0;
                 flex-shrink: 0;
+
                 width: 20rem;
               }
 
               &.order {
                 flex-grow: 0;
                 flex-shrink: 0;
+
                 width: 20rem;
               }
             }
@@ -212,17 +236,20 @@
         .card-footer {
           flex-grow: 0;
           flex-shrink: 0;
+
           height: auto;
 
           .btn-group {
             flex-grow: 0;
             flex-shrink: 0;
-            margin-bottom: 0;
+
             height: auto;
+            margin-bottom: 0;
 
             .btn {
               flex-grow: 0;
               flex-shrink: 0;
+
               height: auto;
             }
           }
@@ -272,22 +299,22 @@
 
   &.modal-sm {
     .card {
-      max-width: 26rem;
       width: 30%;
+      max-width: 26rem;
     }
   }
 
   &.modal-md {
     .card {
-      max-width: 40rem;
       width: 50%;
+      max-width: 40rem;
     }
   }
 
   &.modal-lg {
     .card {
-      max-width: 60rem;
       width: 80%;
+      max-width: 60rem;
 
       &.billing-modal {
         section {
@@ -302,15 +329,15 @@
 
   &.modal-xl {
     .card {
-      max-width: 80rem;
       width: 80%;
+      max-width: 80rem;
     }
   }
 
   &.modal-lg {
     .card {
-      max-width: 60rem;
       width: 60%;
+      max-width: 60rem;
     }
   }
 
@@ -319,6 +346,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
+
       height: 100%;
     }
   }
@@ -341,11 +369,12 @@
     form {
       align-items: center;
       justify-content: center;
+
       height: 90%;
       .card {
-        max-height: 45rem;
         width: 60rem;
         height: 90%;
+        max-height: 45rem;
       }
     }
   }
@@ -494,6 +523,7 @@
     flex-grow: 0;
     flex-shrink: 0;
     flex-wrap: nowrap;
+
     width: 60%;
   }
 }
@@ -502,12 +532,14 @@
   display: flex;
   align-items: center;
   justify-content: center;
+
   background: rgba($warm-gray-15, 0.75) !important;
   .ReactModal__Content--after-open {
     top: auto;
     right: auto;
     bottom: auto;
     left: auto;
+
     min-width: 20rem;
     max-width: 70%;
   }
@@ -517,18 +549,21 @@
   display: flex;
   align-items: center;
   justify-content: center;
+
   height: 100vh;
+
   background-image: url('../../img/harmony-bg.jpg');
   background-size: cover;
 }
 
 .modal.uw-conditions {
   .card {
-    max-height: 36rem;
     height: 80%;
+    max-height: 36rem;
     .card-block {
       ul {
         margin: 0 ($padding * 4);
+
         list-style: disc;
         li {
           display: list-item;
@@ -552,6 +587,7 @@
   .scroll {
   .AdditionalInterestModal {
     overflow: hidden;
+
     height: calc(90vh - 150px);
     > form {
       display: flex;
