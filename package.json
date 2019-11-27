@@ -12,7 +12,7 @@
     "cypress": "react-scripts cypress"
   },
   "dependencies": {
-    "@exzeo/core-ui": "0.9.10",
+    "@exzeo/core-ui": "0.9.11",
     "@exzeo/react-scripts": "2.3.0",
     "@fortawesome/fontawesome": "~1.0.0",
     "@fortawesome/react-fontawesome": "~0.0.14",
@@ -30,10 +30,10 @@
     "moment-timezone": "^0.5.26",
     "prop-types": "~15.6.0",
     "query-string": "^6.8.3",
-    "react": "^16.8.4",
+    "react": "16.8.x",
     "react-app-polyfill": "^0.2.0",
     "react-bootstrap-table": "~4.3.1",
-    "react-dom": "^16.8.4",
+    "react-dom": "16.8.x",
     "react-helmet": "~5.2.0",
     "react-modal": "~3.1.7",
     "react-number-format": "~3.0.3",

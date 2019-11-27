@@ -273,64 +273,67 @@ export class QuoteWorkflow extends React.Component {
           >
             <React.Fragment>
               <div className="content-wrapper">
-                {shouldUseGandalf && (
-                  <React.Fragment>
-                    <Gandalf
-                      formId={FORM_ID}
-                      className="route-content"
-                      currentPage={currentStepNumber}
-                      customComponents={this.customComponents}
-                      customHandlers={customHandlers}
-                      handleSubmit={this.handleGandalfSubmit}
-                      initialValues={quote}
-                      options={{ diaries, notes, ...options }} // enums for select/radio fields
-                      path={location.pathname}
-                      template={gandalfTemplate}
-                      transformConfig={transformConfig}
-                      stickyFooter
-                      renderFooter={
-                        <FormSpy
-                          subscription={{ pristine: true, submitting: true }}
-                        >
-                          {({ form, pristine, submitting }) => (
-                            <QuoteFooter
-                              currentStep={currentRouteName}
-                              formInstance={form}
-                              isSubmitDisabled={this.isSubmitDisabled(
-                                pristine,
-                                submitting
-                              )}
-                              handlePrimaryClick={this.primaryClickHandler}
-                              handleApplicationClick={this.handleRetrieveQuote}
-                            />
-                          )}
-                        </FormSpy>
-                      }
-                      formListeners={
-                        <React.Fragment>
-                          <FormSpy subscription={{}}>
-                            {({ form }) => {
-                              this.setFormInstance(form);
-                              return null;
-                            }}
-                          </FormSpy>
-
+                <div className="route-content">
+                  {shouldUseGandalf && (
+                    <React.Fragment>
+                      <Gandalf
+                        formId={FORM_ID}
+                        currentPage={currentStepNumber}
+                        customComponents={this.customComponents}
+                        customHandlers={customHandlers}
+                        handleSubmit={this.handleGandalfSubmit}
+                        initialValues={quote}
+                        options={{ diaries, notes, ...options }} // enums for select/radio fields
+                        path={location.pathname}
+                        template={gandalfTemplate}
+                        transformConfig={transformConfig}
+                        stickyFooter
+                        renderFooter={
                           <FormSpy
-                            subscription={{ dirty: true, pristine: true }}
+                            subscription={{ pristine: true, submitting: true }}
                           >
-                            {({ dirty }) => (
-                              <NavigationPrompt
-                                dirty={dirty}
-                                formInstance={this.formInstance}
-                                history={history}
+                            {({ form, pristine, submitting }) => (
+                              <QuoteFooter
+                                currentStep={currentRouteName}
+                                formInstance={form}
+                                isSubmitDisabled={this.isSubmitDisabled(
+                                  pristine,
+                                  submitting
+                                )}
+                                handlePrimaryClick={this.primaryClickHandler}
+                                handleApplicationClick={
+                                  this.handleRetrieveQuote
+                                }
                               />
                             )}
                           </FormSpy>
-                        </React.Fragment>
-                      }
-                    />
-                  </React.Fragment>
-                )}
+                        }
+                        formListeners={
+                          <React.Fragment>
+                            <FormSpy subscription={{}}>
+                              {({ form }) => {
+                                this.setFormInstance(form);
+                                return null;
+                              }}
+                            </FormSpy>
+
+                            <FormSpy
+                              subscription={{ dirty: true, pristine: true }}
+                            >
+                              {({ dirty }) => (
+                                <NavigationPrompt
+                                  dirty={dirty}
+                                  formInstance={this.formInstance}
+                                  history={history}
+                                />
+                              )}
+                            </FormSpy>
+                          </React.Fragment>
+                        }
+                      />
+                    </React.Fragment>
+                  )}
+                </div>
               </div>
 
               <UnderwritingValidationBar
@@ -373,15 +376,12 @@ const mapStateToProps = state => {
   };
 };
 
-export default connect(
-  mapStateToProps,
-  {
-    setAppError,
-    retrieveQuote,
-    verifyQuote,
-    getZipCodeSettings: getZipcodeSettings,
-    getEnumsForQuoteWorkflow,
-    updateQuote,
-    toggleDiary
-  }
-)(QuoteWorkflow);
+export default connect(mapStateToProps, {
+  setAppError,
+  retrieveQuote,
+  verifyQuote,
+  getZipCodeSettings: getZipcodeSettings,
+  getEnumsForQuoteWorkflow,
+  updateQuote,
+  toggleDiary
+})(QuoteWorkflow);
