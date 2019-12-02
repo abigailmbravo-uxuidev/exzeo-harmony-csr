@@ -1,53 +1,21 @@
-import axios from 'axios';
-import quoteDefaults from '../fixtures/quoteDefaults';
+import { defaultQuote, testDefaultQuote } from '../fixtures';
 
-export async function serviceRequest(data, idToken, endpointURL) {
-  const response = await axios({
-    url: endpointURL,
-    method: 'POST',
-    data,
-    headers: {
-      'Content-Type': 'application/json',
-      authorization: 'bearer ' + idToken
-    }
-  });
+// export async function serviceRequest(data, idToken, endpointURL) {
+//   const response = await axios({
+//     url: endpointURL,
+//     method: 'POST',
+//     data,
+//     headers: {
+//       'Content-Type': 'application/json',
+//       authorization: 'bearer ' + idToken
+//     }
+//   });
+//
+//   return response.data;
+// }
 
-  return response.data;
-}
-
-export async function bindPolicyRequest(quoteNumber, idToken, endpointURL) {
-  cy.task('log', 'Bind Policy Request');
-  const data = JSON.stringify({
-    exchangeName: 'harmony',
-    routingKey: 'harmony.policy.bindPolicy',
-    data: {
-      quoteId: quoteNumber,
-      force: true
-    }
-  });
-
-  return await serviceRequest(data, idToken, endpointURL);
-}
-
-export async function updateQuoteRequest(quote, idToken, endpointURL) {
-  cy.task('log', 'Update Quote');
-
-  var data = JSON.stringify({
-    exchangeName: 'harmony',
-    routingKey: 'harmony.quote.updateQuote',
-    data: {
-      alwaysRunUnderwriting: true,
-      quote
-    }
-  });
-
-  return await serviceRequest(data, idToken, endpointURL);
-}
-
-export async function createQuoteRequest(idToken, endpointURL) {
-  cy.task('log', 'Create Quote');
-
-  var data = JSON.stringify({
+export function createQuote(apiUrl, token) {
+  const requestBody = {
     exchangeName: 'harmony',
     routingKey: 'harmony.quote.createQuote',
     data: {
@@ -57,87 +25,147 @@ export async function createQuoteRequest(idToken, endpointURL) {
       propertyId: '12000000000000001',
       runUnderwriting: true
     }
-  });
+  };
 
-  return await serviceRequest(data, idToken, endpointURL);
+  return cy.request({
+    url: `${apiUrl}/svc`,
+    method: 'POST',
+    auth: { bearer: `${token}` },
+    body: requestBody
+  });
 }
 
-export async function verifyQuoteRequest(quoteNumber, idToken, endpointURL) {
-  cy.task('log', 'Verify Quote');
+export function updateQuote(quote, apiUrl, token) {
+  const requestBody = {
+    exchangeName: 'harmony',
+    routingKey: 'harmony.quote.updateQuote',
+    data: {
+      alwaysRunUnderwriting: true,
+      quote
+    }
+  };
+  return cy.log('Update Quote').request({
+    url: `${apiUrl}/svc`,
+    method: 'POST',
+    auth: { bearer: `bearer ${token}` },
+    body: requestBody
+  });
+}
 
-  var data = JSON.stringify({
+export function verifyQuote(quoteNumber, apiUrl, token) {
+  const requestBody = {
     exchangeName: 'harmony',
     routingKey: 'harmony.quote.verifyQuote',
     data: {
       quoteNumber
     }
-  });
+  };
 
-  return await serviceRequest(data, idToken, endpointURL);
+  return cy
+    .log('Verify Quote')
+    .request({
+      url: `${apiUrl}/svc`,
+      method: 'POST',
+      auth: { bearer: `${token}` },
+      body: requestBody
+    })
+    .then(res => {
+      return res;
+    });
 }
 
-export async function sendApplicationRequest(
-  quoteNumber,
-  idToken,
-  endpointURL
-) {
-  cy.task('log', 'Send Application');
-
-  var data = JSON.stringify({
+export function sendApplication(quoteNumber, apiUrl, token) {
+  const requestBody = {
     exchangeName: 'harmony',
     routingKey: 'harmony.quote.sendApplication',
     data: {
       quoteNumber,
       sendType: 'docusign'
     }
-  });
+  };
 
-  return await serviceRequest(data, idToken, endpointURL);
+  cy.log('Send Application')
+    .request({
+      url: `${apiUrl}/svc`,
+      method: 'POST',
+      auth: { bearer: `${token}` },
+      body: requestBody
+    })
+    .then(res => res);
 }
 
-export async function retrieveQuoteRequest(quoteNumber, idToken, endpointURL) {
-  var data = JSON.stringify({
+export function retrieveQuote(quoteNumber, apiUrl, token) {
+  const requestBody = {
     exchangeName: 'harmony',
     routingKey: 'harmony.quote.retrieveQuote',
     data: {
       quoteNumber
     }
+  };
+
+  cy.log('Retrieve Quote').request({
+    url: `${apiUrl}/svc`,
+    method: 'POST',
+    auth: { bearer: `${token}` },
+    body: requestBody
   });
-
-  return await serviceRequest(data, idToken, endpointURL);
 }
 
-export async function envelopeIdCheck(quoteNumber, idToken, endpointURL) {
-  await new Promise(resolve => setTimeout(resolve, 2000));
-  const { result: quote } = await retrieveQuoteRequest(
-    quoteNumber,
-    idToken,
-    endpointURL
-  );
-
-  if (!quote.envelopeId) {
-    cy.task('log', 'No Envelope ID, Checking again');
-    return await envelopeIdCheck(quoteNumber, idToken, endpointURL);
-  } else {
-    return quote.envelopeId;
-  }
+export function envelopeIdCheck(quoteNumber, apiUrl, token) {
+  return retrieveQuote(quoteNumber, apiUrl, token).then(res => {
+    if (res.status === 200 && res.result.envelopId) {
+      return;
+    }
+    cy.wait(2000).log("No 'envelopeId', checking again.");
+    envelopeIdCheck(quoteNumber, apiUrl, token);
+  });
 }
 
-export async function quoteToBindRequest() {
-  const idToken = localStorage.getItem('id_token');
-  const endpointURL = Cypress.env('API_URL');
+// export async function bindPolicyRequest(quoteNumber, idToken, endpointURL) {
+//   cy.task('log', 'Bind Policy Request');
+//   const data = JSON.stringify({
+//     exchangeName: 'harmony',
+//     routingKey: 'harmony.policy.bindPolicy',
+//     data: {
+//       quoteId: quoteNumber,
+//       force: true
+//     }
+//   });
+//
+//   // return await serviceRequest(data, idToken, endpointURL);
+// }
 
-  const URL = `${endpointURL}/svc`;
+// export async function quoteToBindRequest() {
+//   const idToken = localStorage.getItem('id_token');
+//   const endpointURL = Cypress.env('API_URL');
+//
+//   const URL = `${endpointURL}/svc`;
+//
+//   const { result: quote } = await createQuoteRequest(idToken, URL);
+//   await updateQuoteRequest({ ...quote, ...quoteDefaults }, idToken, URL);
+//   await verifyQuoteRequest(quote.quoteNumber, idToken, URL);
+//   await sendApplicationRequest(quote.quoteNumber, idToken, URL);
+//   // wait for docusign to do some things on the backend before its ready to bind
+//   cy.task('log', 'Retreive Quote for Envelope ID');
+//   await envelopeIdCheck(quote.quoteNumber, idToken, URL);
+//   cy.task('log', 'Envelope ID');
+//   // force a policy to bind
+//   const result = await bindPolicyRequest(quote.quoteNumber, idToken, URL);
+//   return result;
+// }
 
-  const { result: quote } = await createQuoteRequest(idToken, URL);
-  await updateQuoteRequest({ ...quote, ...quoteDefaults }, idToken, URL);
-  await verifyQuoteRequest(quote.quoteNumber, idToken, URL);
-  await sendApplicationRequest(quote.quoteNumber, idToken, URL);
-  // wait for docusign to do some things on the backend before its ready to bind
-  cy.task('log', 'Retreive Quote for Envelope ID');
-  await envelopeIdCheck(quote.quoteNumber, idToken, URL);
-  cy.task('log', 'Envelope ID');
-  // force a policy to bind
-  const result = await bindPolicyRequest(quote.quoteNumber, idToken, URL);
-  return result;
+let quote;
+export function quoteWorkflowMock() {
+  const token = localStorage.getItem('id_token');
+  const apiUrl = Cypress.env('API_URL');
+
+  createQuote(apiUrl, token).then(res => {
+    quote = res.data.result;
+  });
+  updateQuote({ ...quote, testDefaultQuote }, apiUrl, token);
+  verifyQuote(quote.quoteNumber, apiUrl, token);
+  sendApplication(quote.quoteNumber, apiUrl, token);
+  cy.log('Check for envelopeId to determine when quote is ready to bind');
+  envelopeIdCheck(quote.quoteNumber, apiUrl, token);
+  return retrieveQuote(quote.quoteNumber, apiUrl, token);
 }

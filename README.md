@@ -12,22 +12,36 @@ clone the repository (requires access rights) from bitbucket
 
 *From the root of the project*
 
-add `.npmrc` file **you will need this file before attempting* `npm install`
+For npm authentication, you can do either of the following:
+**you will need to do this before attempting* `npm install`
+login to npm from command line
 ```bash
-//registry.npmjs.org/:_authToken=GET_ACCESS_TOKEN_FROM_DEVOPS
+npm login
+```
+\- or \-
+
+add `.npmrc` file
+```bash
+//registry.npmjs.org/:_authToken=ACCESS_TOKEN
 @exzeo:registry=https://registry.npmjs.org/
 ```
 
 add `.env.local` file
 ```.bash
 # point to sandbox
-REACT_APP_API_URL=https://api.harmony-ins.com
+#REACT_APP_API_URL=https://api.harmony-ins.com
 
 # running locally using mock-auth0
 #REACT_APP_AUTH0_DOMAIN=mock-auth0:8888
 #REACT_APP_AUTH0_CLIENT_ID=https://mock-auth0:8888
 #REACT_APP_AUTH0_CONNECTION=ashton-sandbox
 #REACT_APP_AUTH0_AUDIENCE=https://mock-auth0:8888
+
+# cypress things
+#CYPRESS_BASE_URL=https://csr.harmony-ins.com
+#CYPRESS_USE_MOCK_AUTH0=false
+#CYPRESS_API_URL=https://api.harmony-ins.com
+#CYPRESS_CI=true
 ```
 
 install dependencies

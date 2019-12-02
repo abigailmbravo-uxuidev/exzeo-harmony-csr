@@ -524,3 +524,62 @@ export default {
     zip: '00001'
   }
 };
+
+export const testDefaultQuote = {
+  billToId: '5d9380331f61210012fbebe3',
+  billToType: 'Additional Interest',
+  billPlan: 'Annual',
+  policyHolderMailingAddress: {
+    _id: '5d938036971ee700115af87d',
+    country: {
+      _id: '5d938036971ee700115af87e',
+      code: 'USA',
+      displayText: 'United States of America'
+    },
+    address1: '4131 TEST ADDRESS',
+    city: 'SARASOTA',
+    state: 'FL',
+    zip: '00001'
+  },
+  policyHolders: [
+    {
+      electronicDelivery: false,
+      _id: '5d9380294b69ee0012b41d80',
+      firstName: 'Oberyn',
+      lastName: 'Martell',
+      emailAddress: 'TheViper@gmail.com',
+      primaryPhoneNumber: '1234567890',
+      order: 0,
+      entityType: 'Person'
+    }
+  ],
+  underwritingAnswers: {
+    previousClaims: {
+      question: 'When was the last claim filed?',
+      answer: 'No claims ever filed'
+    },
+    business: {
+      question: 'Is a business conducted on the property?',
+      answer: 'No'
+    },
+    fourPointUpdates: {
+      question:
+        'Have the wiring, plumbing, and HVAC been updated in the last 35 years?',
+      answer: 'Yes',
+      source: 'Default'
+    },
+    noPriorInsuranceSurcharge: {
+      question: 'If not new purchase, please provide proof of prior insurance.',
+      answer: 'No',
+      source: 'Default'
+    },
+    rented: {
+      question: 'Is the home or any structures on the property ever rented?',
+      answer: 'Never'
+    },
+    monthsOccupied: {
+      question: 'How many months a year does the owner live in the home?',
+      answer: '10+'
+    }
+  }
+};
