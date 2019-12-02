@@ -16,8 +16,9 @@ describe('Skip to UW Testing', () => {
   it('Can fill out UW before Coverage', () => {
     // Fills out UW with good data
     fillOutUnderwriting();
-    fillOutCoverage()
-      .then(({ response: { body: { result }}}) => expect(result.quoteState).to.equal('Quote Qualified'));
+    fillOutCoverage().then(({ response: { body: { result } } }) =>
+      expect(result.quoteState).to.equal('Quote Qualified')
+    );
   });
 });
 
@@ -33,9 +34,10 @@ describe('Giving Bad UW Data First', () => {
     fillOutUnderwriting({
       ...underwriting,
       'underwritingAnswers.previousClaims.answer': '3-5 Years'
-    })
+    });
     // Confirm that the quote goes to quote stopped after coverage is filled out
-    fillOutCoverage()
-      .then(({ response: { body: { result } } }) => expect(result.quoteState).to.equal('Quote Stopped'));
+    fillOutCoverage().then(({ response: { body: { result } } }) =>
+      expect(result.quoteState).to.equal('Quote Stopped')
+    );
   });
 });

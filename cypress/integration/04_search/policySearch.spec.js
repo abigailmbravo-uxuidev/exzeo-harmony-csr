@@ -69,19 +69,18 @@ describe('Policy Search testing', () => {
         .should('exist');
     });
 
-    it('POS:Paginates', () =>
-      cy
-        .reload()
+    it('POS:Paginates', () => {
+      cy.reload()
         .clickSubmit()
         .wait('@fetchPolicies')
         .findDataTag('page-forward')
         .click()
         .wait('@fetchPolicies')
-        .then(({ response }) => expect(response.body.currentPage).to.equal(2)));
+        .then(({ response }) => expect(response.body.currentPage).to.equal(2));
+    });
 
-    it('Policy 3-field search', () =>
-      cy
-        .reload()
+    it('Policy 3-field search', () => {
+      cy.reload()
         .fillFields(fields)
         .clickSubmit('#SearchBar')
         .wait('@fetchPolicies')
@@ -95,7 +94,8 @@ describe('Policy Search testing', () => {
           confirmPolicyOrQuote(response.body.policies, fields)
         )
         .get('input[name="pageNumber"]')
-        .should('have.value', '2'));
+        .should('have.value', '2');
+    });
 
     // TODO this test relies on some Batman Robin policies, which is not ideal. Once we have sufficient Policy testing, this test should be run on one of the Policies resulting from tests.
     it('Policy Search Sorting', () => {
