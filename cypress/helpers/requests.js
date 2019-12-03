@@ -88,7 +88,7 @@ const RETRY_MAX = 60;
 export function envelopeIdCheck(quoteNumber, apiUrl, token, attemptNumber = 0) {
   // Custom functions should return a 'cy chain' to be able to enforce order of ops
   return retrieveQuote(quoteNumber, apiUrl, token).then(res => {
-    if (res.status === 200 && res.body.result.envelopId) {
+    if (res.status === 200 && res.body.result.envelopeId) {
       // must wrap a var to make it chainable
       return cy.wrap(res);
     }
@@ -149,10 +149,11 @@ export function createToBindQuote() {
             cy.task('log', 'Submit request to bind quote');
             manualBindPolicy(quote.quoteNumber, apiUrl, token).then(res => {
               expect(res.status).to.equal(200);
+              const quote = res.body.result;
               // Wrap the response to make it 'chainable', then create an
               // aliased variable that will then be available through
               // 'cy.get('@boundQuote') within the same test context.
-              cy.wrap(res).as('boundQuote');
+              cy.wrap(quote).as('boundQuote');
             });
           });
         });

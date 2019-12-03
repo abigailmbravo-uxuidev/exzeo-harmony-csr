@@ -11,16 +11,16 @@ describe('Endorsements Happy Path', () => {
     cy.visit('/');
     cy.task('log', 'Search Policy and open')
       .get('@boundQuote')
-      .then(response => {
+      .then(quote => {
         cy.findDataTag('searchType')
           .select('policy')
           // This will be relevant once ALL users can see the product dropdown
           .findDataTag('policyNumber')
-          .type(response.result.transaction.policyNumber)
+          .type(quote.transaction.policyNumber)
           .clickSubmit()
           .wait('@fetchPolicies')
           // This makes it so we don't open up a new window
-          .findDataTag(response.result.transaction.policyNumber)
+          .findDataTag(quote.transaction.policyNumber)
           .then($a => {
             $a.prop('onclick', () => cy.visit($a.prop('dataset').url)).click();
             cy.goToNav('endorsements');
@@ -159,9 +159,7 @@ describe('Endorsements Happy Path', () => {
               .get('.table tbody')
               .find('tr')
               .find('td')
-              .contains(
-                response.result.transaction.effectiveDate.substring(0, 10)
-              )
+              .contains(quote.transaction.effectiveDate.substring(0, 10))
 
               .get('.table tbody')
               .find('tr')
@@ -176,7 +174,7 @@ describe('Endorsements Happy Path', () => {
               .get('.table tbody')
               .find('tr')
               .find('td')
-              .contains(response.result.transaction.issueDate.substring(0, 10))
+              .contains(quote.transaction.issueDate.substring(0, 10))
 
               .goToNav('notes')
               .wait('@fetchFiles');
