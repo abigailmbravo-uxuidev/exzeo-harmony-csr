@@ -121,13 +121,6 @@ describe('Endorsements Happy Path', () => {
               .click({ force: true })
               .wait('@rateEndorsement')
 
-              .findAnyDataTag('endorsementAmount')
-              .should('have.value', '-$ 211')
-              .findAnyDataTag('newCurrentPremium')
-              .should('have.value', '$ 2,456')
-              .findAnyDataTag('newAnnualPremium')
-              .should('have.value', '$ 2,456')
-
               .get('#root')
               .scrollTo('right')
 
@@ -136,10 +129,6 @@ describe('Endorsements Happy Path', () => {
               .wait('@saveEndorsement')
 
               .wait(5000)
-
-              .findDataTag('currentPremiumDetail')
-              .get('dl div dd')
-              .contains('$ 2,456')
 
               .findDataTag('policyHolderDetail')
               .get('dl div')
@@ -160,11 +149,6 @@ describe('Endorsements Happy Path', () => {
               .find('tr')
               .find('td')
               .contains(quote.transaction.effectiveDate.substring(0, 10))
-
-              .get('.table tbody')
-              .find('tr')
-              .find('td')
-              .contains('-$211.00')
 
               .get('.table tbody')
               .find('tr')
