@@ -1,7 +1,4 @@
-import { setRouteAliases } from '../../helpers';
-
-let quote;
-let response;
+import { setRouteAliases, createToBindQuote } from '../../helpers';
 
 describe('Endorsements Happy Path', () => {
   before('Login', () => {
@@ -10,57 +7,12 @@ describe('Endorsements Happy Path', () => {
   });
 
   it('Bind a quote to a policy for Address 4131 Test Address, Sarasota, FL 00001 using default coverages on the quote', () => {
-    const token = localStorage.getItem('id_token');
-    const apiUrl = Cypress.env('API_URL');
-
-    cy.log('CreateQuote for endorsement test');
-    cy.request({
-      url: `${apiUrl}/svc`,
-      method: 'POST',
-      auth: { bearer: `${token}` },
-      body: {
-        exchangeName: 'harmony',
-        routingKey: 'harmony.quote.createQuote',
-        data: {
-          companyCode: 'TTIC',
-          state: 'FL',
-          product: 'HO3',
-          propertyId: '12000000000000001',
-          runUnderwriting: true
-        }
-      }
-    }).then(res => {
-      expect(res.status).to.equal(200);
-      const quote = res.body.result;
-
-      cy.log('UpdateQuote for endorsement test');
-      cy.request({
-        url: `${apiUrl}/svc`,
-        method: 'POST',
-        auth: { bearer: `${token}` },
-        body: {
-          exchangeName: 'harmony',
-          routingKey: 'harmony.quote.updateQuote',
-          data: {
-            alwaysRunUnderwriting: true,
-            quote
-          }
-        }
-      }).then(response => {
-        expect(response.status).to.equal(200);
-
-        // updateQuote({ ...quote, testDefaultQuote }, apiUrl, token)
-        // verifyQuote(quote.quoteNumber, apiUrl, token)
-        // sendApplication(quote.quoteNumber, apiUrl, token)
-        // cy.log('Check for envelopeId to determine when quote is ready to bind');
-        // envelopeIdCheck(quote.quoteNumber, apiUrl, token)
-        // retrieveQuote(quote.quoteNumber, apiUrl, token).then(res => {
-        //   response = res;
-        // });
-
-        cy.visit(`/`);
-        cy.task('log', 'Search Policy and open')
-          .findDataTag('searchType')
+    createToBindQuote();
+    cy.visit('/');
+    cy.task('log', 'Search Policy and open')
+      .get('@boundQuote')
+      .then(response => {
+        cy.findDataTag('searchType')
           .select('policy')
           // This will be relevant once ALL users can see the product dropdown
           .findDataTag('policyNumber')
@@ -229,8 +181,6 @@ describe('Endorsements Happy Path', () => {
               .goToNav('notes')
               .wait('@fetchFiles');
 
-            // TODO revisit note assertions
-
             cy.get('.table tbody')
               .find('tr')
               .find('td')
@@ -248,35 +198,5 @@ describe('Endorsements Happy Path', () => {
               });
           });
       });
-    });
   });
 });
-
-// TODO revisit these assertions with QA to determine where we should be doing this: Cypress or Selenium
-// const effectiveDate = new Date(
-//   response.result.transaction.effectiveDate
-// ).toLocaleDateString('en-US', {
-//   year: 'numeric',
-//   month: '2-digit',
-//   day: '2-digit'
-// });
-//
-// cy.get('.table tbody')
-//   .find('tr')
-//   .find('td')
-//   .contains(
-//     `Multiple Endorsements Endorsement Effective ${effectiveDate}.`
-//   );
-
-// const created = new Date(
-//   response.result.transaction.issueDate
-// ).toLocaleDateString('en-US', {
-//   year: 'numeric',
-//   month: '2-digit',
-//   day: '2-digit'
-// });
-
-// cy.get('.table tbody')
-//   .find('tr')
-//   .find('td')
-//   .contains(created);

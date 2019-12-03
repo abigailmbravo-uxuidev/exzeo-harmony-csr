@@ -1,4 +1,4 @@
-export default {
+export const baseQuote = {
   coverageLimits: {
     dwelling: {
       value: 314000,
@@ -525,7 +525,7 @@ export default {
   }
 };
 
-export const testDefaultQuote = {
+export const baseQuoteResponse = {
   billToId: '5d9380331f61210012fbebe3',
   billToType: 'Additional Interest',
   billPlan: 'Annual',
