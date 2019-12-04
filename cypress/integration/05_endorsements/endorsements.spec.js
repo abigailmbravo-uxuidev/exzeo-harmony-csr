@@ -1,7 +1,7 @@
 import { setRouteAliases, createToBindQuote } from '../../helpers';
 
 describe('Endorsements Happy Path', () => {
-  before('Login', () => {
+  before('Login and set route aliases', () => {
     setRouteAliases();
     cy.login();
   });

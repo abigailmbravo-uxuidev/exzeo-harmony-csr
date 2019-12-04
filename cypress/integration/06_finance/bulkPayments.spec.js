@@ -1,70 +1,72 @@
 import { setRouteAliases } from '../../helpers';
-import { quoteToBindRequest } from '../../helpers/requests';
 
 describe('Bulk Payments Test', () => {
-  let response;
+  before('Login and set route aliases', () => {
+    setRouteAliases();
+    cy.login();
+  });
 
-  before('Login', () => cy.login());
-  beforeEach('Set aliases', () => setRouteAliases());
-
-  it('Apply Payment', async () => {
-    response = await quoteToBindRequest();
-
+  it('Apply Payment', () => {
+    createToBindQuote();
     cy.visit(`/`);
-    cy.findDataTag('bulk-payments-link')
-      .click()
-      .task('log', 'Bulk Payments Batch Form')
-      .get('h3.title')
-      .should('contain', 'Bulk Payments')
 
-      // .findAnyDataTag('startButton')
-      // .should('be.disabled')
+    cy.task('log', 'Test Bulk Payments Batch Form')
+      .get('@boundQuote')
+      .then(quote => {
+        cy.findDataTag('bulk-payments-link')
+          .click()
+          .get('h3.title')
+          .should('contain', 'Bulk Payments')
 
-      .findDataTag('cashDate')
-      .type('2019-11-20')
-      .findDataTag('batchNumber')
-      .type('-99')
-      .findDataTag('cashType')
-      .select('Paper Deposit')
+          // .findAnyDataTag('startButton')
+          // .should('be.disabled')
 
-      .findDataTag('startButton')
-      .click({ force: true })
-      .findDataTag('policyNumber')
-      .type(`{selectall}{backspace}${response.result.transaction.policyNumber}`)
-      .blur()
-      .wait('@fetchPolicy')
-      .wait('@fetchSummaryLedger')
+          .findDataTag('cashDate')
+          .type('2019-11-20')
+          .findDataTag('batchNumber')
+          .type('-99')
+          .findDataTag('cashType')
+          .select('Paper Deposit')
 
-      .get('#root')
-      .scrollTo('right')
-      .findDataTag('amount')
+          .findDataTag('startButton')
+          .click({ force: true })
+          .findDataTag('policyNumber')
+          .type(`{selectall}{backspace}${quote.transaction.policyNumber}`)
+          .blur()
+          .wait('@fetchPolicy')
+          .wait('@fetchSummaryLedger')
 
-      .type(`{selectall}{backspace}${100}`)
-      .findDataTag('payment-form-submit')
-      .click({ force: true })
-      .wait('@postPaymentTransaction')
-      .get('#root')
-      .scrollTo('left')
+          .get('#root')
+          .scrollTo('right')
+          .findDataTag('amount')
 
-      .findDataTag('policyNumber')
-      .type(`{selectall}{backspace}${response.result.transaction.policyNumber}`)
-      .blur()
-      .wait('@fetchPolicy')
-      .wait('@fetchSummaryLedger')
+          .type(`{selectall}{backspace}${100}`)
+          .findDataTag('payment-form-submit')
+          .click({ force: true })
+          .wait('@postPaymentTransaction')
+          .get('#root')
+          .scrollTo('left')
 
-      .get('#root')
-      .scrollTo('right')
-      .findDataTag('amount')
+          .findDataTag('policyNumber')
+          .type(`{selectall}{backspace}${quote.transaction.policyNumber}`)
+          .blur()
+          .wait('@fetchPolicy')
+          .wait('@fetchSummaryLedger')
 
-      .type(`{selectall}{backspace}${500}`)
-      .findDataTag('payment-form-submit')
-      .click({ force: true })
-      .wait('@postPaymentTransaction');
+          .get('#root')
+          .scrollTo('right')
+          .findDataTag('amount')
 
-    // .findDataTag('download-payments')
-    // .click({ force: true })
+          .type(`{selectall}{backspace}${500}`)
+          .findDataTag('payment-form-submit')
+          .click({ force: true })
+          .wait('@postPaymentTransaction');
 
-    // .findDataTag('stopButton')
-    // .click({ force: true });
+        // .findDataTag('download-payments')
+        // .click({ force: true })
+
+        // .findDataTag('stopButton')
+        // .click({ force: true });
+      });
   });
 });
