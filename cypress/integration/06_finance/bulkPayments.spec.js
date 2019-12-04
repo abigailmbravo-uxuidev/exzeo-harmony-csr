@@ -1,4 +1,4 @@
-import { setRouteAliases } from '../../helpers';
+import { setRouteAliases, createToBindQuote } from '../../helpers';
 
 describe('Bulk Payments Test', () => {
   before('Login and set route aliases', () => {
