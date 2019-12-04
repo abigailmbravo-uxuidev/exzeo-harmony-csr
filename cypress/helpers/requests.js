@@ -82,6 +82,7 @@ export function retrieveQuote(quoteNumber, apiUrl, token) {
   });
 }
 
+// Total retry time limit ~2 min
 const WAIT_TIME_MS = 2000;
 const RETRY_MAX = 60;
 
@@ -92,7 +93,7 @@ export function envelopeIdCheck(quoteNumber, apiUrl, token, attemptNumber = 0) {
       // must wrap a var to make it chainable
       return cy.wrap(res);
     }
-    // We are retrying for roughly 1 minute max
+
     assert.isBelow(
       attemptNumber,
       RETRY_MAX,
