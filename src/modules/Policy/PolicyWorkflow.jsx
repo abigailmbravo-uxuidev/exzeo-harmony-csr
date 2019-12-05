@@ -47,17 +47,6 @@ import {
   ROUTES_NOT_HANDLED_BY_GANDALF
 } from './constants/workflowNavigation';
 import EffectiveDateModal from './EffectiveDateModal';
-<<<<<<< HEAD
-=======
-import ReinstatePolicyModal from './ReinstatePolicyModal';
-import RescindCancelModal from './RescindCancelModal';
-
-// TODO these will be removed in subsequent PR's
-import { startWorkflow, completeTask } from '../../utilities/cg';
-import MOCK_HO3 from '../../mock-data/mockPolicyHO3';
-import MOCK_AF3 from '../../mock-data/mockPolicyAF3';
-
->>>>>>> master
 import EndorsementsMenu from './EndorsementsMenu';
 import EndorsementsWatcherAF3 from './EndorsementsWatcherAF3';
 import EndorsementsWatcherHO3 from './EndorsementsWatcherHO3';
@@ -65,6 +54,7 @@ import PolicyFooter from './PolicyFooter';
 import PolicyholderAgent from './PolicyholderAgent';
 import PreviousEndorsements from './PreviousEndorsements';
 import ReinstatePolicyModal from './ReinstatePolicyModal';
+import RescindCancelModal from './RescindCancelModal';
 
 const getCurrentStepAndPage = defaultMemoize(pathname => {
   const currentRouteName = pathname.split('/')[3];
