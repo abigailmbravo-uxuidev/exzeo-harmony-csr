@@ -8,6 +8,7 @@ const mock = {
       { value: 'propertyAddress', component: 'Section' },
       { value: 'county', label: 'Property County' },
       { value: 'effectiveDate', className: 'quoteEffectiveDate' },
+      { value: 'endDate', label: 'Expiration Date', className: 'quoteEndDate' },
       { value: 'currentPremium', label: 'Premium', className: 'premium' }
     ]
   },
@@ -178,6 +179,20 @@ const mock = {
               },
               formData: {},
               children: []
+            },
+            {
+              id: '6b15e702-d810-4fc3-aa33-83c73aca0214',
+              type: '$INPUT',
+              path: 'property.id',
+              dependencies: [],
+              data: {
+                size: '7',
+                component: 'text',
+                label: 'IGD ID',
+                disabled: true
+              },
+              formData: {},
+              children: []
             }
           ]
         },
@@ -295,19 +310,6 @@ const mock = {
                 component: 'text',
                 label: 'Square Footage',
                 size: '6',
-                disabled: true
-              },
-              formData: {},
-              children: []
-            },
-            {
-              id: '6b15e702-d810-4fc3-aa33-83c73aca0214',
-              type: '$INPUT',
-              path: 'property.id',
-              dependencies: [],
-              data: {
-                component: 'text',
-                label: 'IGD ID',
                 disabled: true
               },
               formData: {},

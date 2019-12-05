@@ -4,7 +4,9 @@ import {
   Gandalf,
   getConfigForJsonTransform,
   PaymentHistoryTable,
-  PolicyBilling
+  PolicyBilling,
+  PaymentHistoryTable,
+  callService
 } from '@exzeo/core-ui/src/@Harmony';
 import React from 'react';
 import { connect } from 'react-redux';
@@ -45,6 +47,17 @@ import {
   ROUTES_NOT_HANDLED_BY_GANDALF
 } from './constants/workflowNavigation';
 import EffectiveDateModal from './EffectiveDateModal';
+<<<<<<< HEAD
+=======
+import ReinstatePolicyModal from './ReinstatePolicyModal';
+import RescindCancelModal from './RescindCancelModal';
+
+// TODO these will be removed in subsequent PR's
+import { startWorkflow, completeTask } from '../../utilities/cg';
+import MOCK_HO3 from '../../mock-data/mockPolicyHO3';
+import MOCK_AF3 from '../../mock-data/mockPolicyAF3';
+
+>>>>>>> master
 import EndorsementsMenu from './EndorsementsMenu';
 import EndorsementsWatcherAF3 from './EndorsementsWatcherAF3';
 import EndorsementsWatcherHO3 from './EndorsementsWatcherHO3';
@@ -74,6 +87,7 @@ export class PolicyWorkflow extends React.Component {
     showDiaries: false,
     showReinstatePolicyModal: false,
     showEffectiveDateChangeModal: false,
+    showRescindCancelModal: false,
     isEndorsementCalculated: false
   };
 
@@ -182,6 +196,12 @@ export class PolicyWorkflow extends React.Component {
     }));
   };
 
+  handleToggleRescindCancelModal = () => {
+    this.setState(state => ({
+      showRescindCancelModal: !state.showRescindCancelModal
+    }));
+  };
+
   toggleEffectiveDateChangeModal = () => {
     this.setState(state => ({
       showEffectiveDateChangeModal: !state.showEffectiveDateChangeModal
@@ -200,6 +220,28 @@ export class PolicyWorkflow extends React.Component {
     await createTransaction(submitData);
     await getPolicy(policy.policyNumber);
     this.handleToggleReinstateModal();
+  };
+
+  rescindCancelSubmit = async data => {
+    const {
+      policy: { policyNumber },
+      getPolicy,
+      setAppError
+    } = this.props;
+
+    const config = {
+      exchangeName: 'harmony',
+      routingKey: 'harmony.policy.rescindCancellation',
+      data: { policyNumber }
+    };
+
+    await callService(config, 'rescindCancellation').catch(err => {
+      setAppError(err);
+      this.handleToggleRescindCancelModal();
+    });
+
+    await getPolicy(policyNumber);
+    this.handleToggleRescindCancelModal();
   };
 
   changeEffectiveDate = async data => {
@@ -285,12 +327,14 @@ export class PolicyWorkflow extends React.Component {
       gandalfTemplate,
       showDiaries,
       showReinstatePolicyModal,
+      showRescindCancelModal,
       showEffectiveDateChangeModal
     } = this.state;
 
     const modalHandlers = {
       showEffectiveDateChangeModal: this.toggleEffectiveDateChangeModal,
-      showReinstatePolicyModal: this.handleToggleReinstateModal
+      showReinstatePolicyModal: this.handleToggleReinstateModal,
+      showRescindCancelModal: this.handleToggleRescindCancelModal
     };
 
     const { currentRouteName, currentStepNumber } = getCurrentStepAndPage(
@@ -333,81 +377,86 @@ export class PolicyWorkflow extends React.Component {
             <React.Fragment>
               {initialized && (
                 <div className="content-wrapper">
-                  {shouldUseGandalf && (
-                    <React.Fragment>
-                      <Gandalf
-                        formId={FORM_ID}
-                        className="route-content"
-                        currentPage={currentStepNumber}
-                        customComponents={this.customComponents}
-                        customHandlers={customHandlers}
-                        handleSubmit={this.handleGandalfSubmit}
-                        initialValues={policyFormData}
-                        options={{
-                          diaries,
-                          ...options,
-                          cancelOptions,
-                          zipCodeSettings,
-                          endorsementHistory
-                        }} // enums for select/radio fields
-                        path={location.pathname}
-                        template={gandalfTemplate}
-                        transformConfig={transformConfig}
-                        stickyFooter
-                        renderFooter={
-                          <FormSpy
-                            subscription={{
-                              pristine: true,
-                              submitting: true,
-                              dirtyFields: true,
-                              invalid: true
-                            }}
-                          >
-                            {({ form, pristine, submitting }) => (
-                              <div className="form-footer">
-                                <PolicyFooter
-                                  history={customHandlers.history}
-                                  setAppError={customHandlers.setAppError}
-                                  policyFormData={policyFormData}
-                                  timezone={zipCodeSettings.timezone}
-                                  currentStep={currentRouteName}
-                                  formInstance={form}
-                                  isSubmitDisabled={this.isSubmitDisabled(
-                                    pristine,
-                                    submitting
-                                  )}
-                                  handleGandalfSubmit={this.handleGandalfSubmit}
-                                  handlePrimaryClick={this.primaryClickHandler}
-                                />
-                              </div>
-                            )}
-                          </FormSpy>
-                        }
-                        formListeners={
-                          <React.Fragment>
-                            <FormSpy subscription={{}}>
-                              {({ form }) => {
-                                this.setFormInstance(form);
-                                return null;
-                              }}
-                            </FormSpy>
-
+                  <div className="route-content">
+                    {shouldUseGandalf && (
+                      <React.Fragment>
+                        <Gandalf
+                          formId={FORM_ID}
+                          currentPage={currentStepNumber}
+                          customComponents={this.customComponents}
+                          customHandlers={customHandlers}
+                          handleSubmit={this.handleGandalfSubmit}
+                          initialValues={policyFormData}
+                          options={{
+                            diaries,
+                            ...options,
+                            cancelOptions,
+                            zipCodeSettings,
+                            endorsementHistory
+                          }} // enums for select/radio fields
+                          path={location.pathname}
+                          template={gandalfTemplate}
+                          transformConfig={transformConfig}
+                          stickyFooter
+                          renderFooter={
                             <FormSpy
-                              subscription={{ dirty: true, pristine: true }}
+                              subscription={{
+                                pristine: true,
+                                submitting: true,
+                                dirtyFields: true,
+                                invalid: true
+                              }}
                             >
-                              {({ dirty }) => (
-                                <NavigationPrompt
-                                  dirty={dirty}
-                                  formInstance={this.formInstance}
-                                  history={history}
-                                />
+                              {({ form, pristine, submitting }) => (
+                                <div className="form-footer">
+                                  <PolicyFooter
+                                    history={customHandlers.history}
+                                    setAppError={customHandlers.setAppError}
+                                    policyFormData={policyFormData}
+                                    timezone={zipCodeSettings.timezone}
+                                    currentStep={currentRouteName}
+                                    formInstance={form}
+                                    isSubmitDisabled={this.isSubmitDisabled(
+                                      pristine,
+                                      submitting
+                                    )}
+                                    handleGandalfSubmit={
+                                      this.handleGandalfSubmit
+                                    }
+                                    handlePrimaryClick={
+                                      this.primaryClickHandler
+                                    }
+                                  />
+                                </div>
                               )}
                             </FormSpy>
-                          </React.Fragment>
-                        }
-                      />
-                    </React.Fragment>
-                  )}
+                          }
+                          formListeners={
+                            <React.Fragment>
+                              <FormSpy subscription={{}}>
+                                {({ form }) => {
+                                  this.setFormInstance(form);
+                                  return null;
+                                }}
+                              </FormSpy>
+
+                              <FormSpy
+                                subscription={{ dirty: true, pristine: true }}
+                              >
+                                {({ dirty }) => (
+                                  <NavigationPrompt
+                                    dirty={dirty}
+                                    formInstance={this.formInstance}
+                                    history={history}
+                                  />
+                                )}
+                              </FormSpy>
+                            </React.Fragment>
+                          }
+                        />
+                      </React.Fragment>
+                    )}
+                  </div>
                 </div>
               )}
 
@@ -423,6 +472,14 @@ export class PolicyWorkflow extends React.Component {
                 <ReinstatePolicyModal
                   reinstatePolicySubmit={this.reinstatePolicySubmit}
                   closeModal={this.handleToggleReinstateModal}
+                  policyNumber={policy.policyNumber}
+                />
+              )}
+
+              {showRescindCancelModal && (
+                <RescindCancelModal
+                  rescindCancelSubmit={this.rescindCancelSubmit}
+                  closeModal={this.handleToggleRescindCancelModal}
                   policyNumber={policy.policyNumber}
                 />
               )}
@@ -478,17 +535,14 @@ const mapStateToProps = state => {
   };
 };
 
-export default connect(
-  mapStateToProps,
-  {
-    createTransaction,
-    getPolicy,
-    getEnumsForPolicyWorkflow,
-    initializePolicyWorkflow,
-    setAppError,
-    transferAOR,
-    toggleDiary,
-    updatePolicy,
-    updateBillPlan
-  }
-)(PolicyWorkflow);
+export default connect(mapStateToProps, {
+  createTransaction,
+  getPolicy,
+  getEnumsForPolicyWorkflow,
+  initializePolicyWorkflow,
+  setAppError,
+  transferAOR,
+  toggleDiary,
+  updatePolicy,
+  updateBillPlan
+})(PolicyWorkflow);
