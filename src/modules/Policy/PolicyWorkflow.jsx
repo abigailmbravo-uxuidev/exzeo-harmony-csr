@@ -5,7 +5,6 @@ import {
   getConfigForJsonTransform,
   PaymentHistoryTable,
   PolicyBilling,
-  PaymentHistoryTable,
   callService
 } from '@exzeo/core-ui/src/@Harmony';
 import React from 'react';
