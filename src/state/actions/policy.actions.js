@@ -315,7 +315,7 @@ export function createTransaction(submitData) {
     try {
       // performance issues can arise from returning an 'await'ed function - https://eslint.org/docs/rules/no-return-await
       // noinspection UnnecessaryLocalVariableJS
-      const response = await postCreatTransaction(submitData);
+      const response = await postCreateTransaction(submitData);
       return response;
     } catch (error) {
       dispatch(errorActions.setAppError(error));
@@ -567,7 +567,7 @@ export async function fetchEndorsementHistory(policyNumber) {
  * @param submitData
  * @returns {Promise<{}>}
  */
-export async function postCreatTransaction(submitData) {
+export async function postCreateTransaction(submitData) {
   const config = {
     service: 'policy-data',
     method: 'POST',
@@ -578,7 +578,7 @@ export async function postCreatTransaction(submitData) {
   try {
     const response = await serviceRunner.callService(
       config,
-      'postCreatTransaction'
+      'postCreateTransaction'
     );
     return response.data && response.data.result ? response.data.result : {};
   } catch (error) {
@@ -822,7 +822,7 @@ export function updatePolicy({ data = {}, options = {} }) {
           rateCode: data.rateCode,
           transactionType: data.transactionType
         };
-        await postCreatTransaction(submitData);
+        await postCreateTransaction(submitData);
 
         const noteConfig = {
           exchangeName: 'harmony',
@@ -848,7 +848,7 @@ export function updatePolicy({ data = {}, options = {} }) {
           ),
           billingStatus: data.summaryLedger.status.code
         };
-        await postCreatTransaction(submitData);
+        await postCreateTransaction(submitData);
       }
 
       if (data.selectedAI) {
