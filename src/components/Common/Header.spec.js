@@ -12,15 +12,6 @@ it('renders without crashing', () => {
     }
   };
   const initialState = {
-    cg: {
-      bb: {
-        data: {
-          modelInstanceId: '123',
-          model: {},
-          uiQuestions: []
-        }
-      }
-    },
     appState: {
       data: { showScheduleDateModal: true },
       modelName: 'bb'

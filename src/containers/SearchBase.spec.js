@@ -8,9 +8,6 @@ describe('Policy Search', () => {
       getUIQuestions() {
         x => x;
       },
-      startWorkflow() {
-        x => x;
-      },
       location: { pathName: 'test' },
       auth: {},
       userProfile: {},

@@ -23,5 +23,3 @@ export const getUserProfile = state =>
 
 // APP-STATE [DEPRECATED]
 export const getAppState = state => state.appState || emptyObject;
-// CG-STATE [DEPRECATED]
-export const getCGState = state => state.cg || emptyObject;
