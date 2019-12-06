@@ -1,4 +1,6 @@
-import { date, FormSpy, Loader, remoteSubmit } from '@exzeo/core-ui';
+import React from 'react';
+import { connect } from 'react-redux';
+import { Loader, FormSpy, remoteSubmit, date } from '@exzeo/core-ui';
 import {
   ClaimsTable,
   Gandalf,
@@ -7,9 +9,8 @@ import {
   PolicyBilling,
   callService
 } from '@exzeo/core-ui/src/@Harmony';
-import React from 'react';
-import { connect } from 'react-redux';
 import { defaultMemoize } from 'reselect';
+
 import App from '../../components/AppWrapper';
 import DiaryPolling from '../../components/DiaryPolling';
 import NavigationPrompt from '../../components/NavigationPrompt';

@@ -1,5 +1,5 @@
 import { callService } from '@exzeo/core-ui/src/@Harmony';
-import moment from 'moment';
+
 import { removeTerm } from '../../utilities/format';
 import * as types from './actionTypes';
 import { setAppError } from './error.actions';
