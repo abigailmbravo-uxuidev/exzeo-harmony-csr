@@ -26,21 +26,18 @@ export const primaryPolicyholderFields = [
   {
     dataTest: 'policyHolders[0].firstName',
     type: 'text',
-    required: true,
     label: 'First Name',
     value: 'Bruce'
   },
   {
     dataTest: 'policyHolders[0].lastName',
     type: 'text',
-    required: true,
     label: 'Last Name',
     value: 'Wayne'
   },
   {
     dataTest: 'policyHolders[0].primaryPhoneNumber',
     type: 'phone',
-    required: true,
     label: 'Primary Phone',
     value: '(999) 888-1231'
   },
@@ -53,7 +50,6 @@ export const primaryPolicyholderFields = [
   {
     dataTest: 'policyHolders[0].emailAddress',
     type: 'email',
-    required: true,
     label: 'Email Address',
     value: 'batman@gmail.gov'
   }
