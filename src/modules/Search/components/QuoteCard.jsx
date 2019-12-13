@@ -2,8 +2,15 @@ import React from 'react';
 import { date } from '@exzeo/core-ui';
 
 function QuoteCard({ handleKeyPress, handleClick, quote }) {
-  const firstName = quote.policyHolders[0].firstName || '';
-  const lastName = quote.policyHolders[0].lastName || '';
+  const firstName =
+    quote.policyHolders[0] && quote.policyHolders[0].firstName
+      ? quote.policyHolders[0].firstName
+      : '';
+  const lastName =
+    quote.policyHolders[0] && quote.policyHolders[0].lastName
+      ? quote.policyHolders[0].lastName
+      : '';
+
   return (
     <div
       tabIndex="0"
