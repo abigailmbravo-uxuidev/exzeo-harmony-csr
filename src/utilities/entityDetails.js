@@ -202,8 +202,10 @@ export function getPrimaryPolicyHolder(policyHolders) {
   const primaryPolicyHolder = policyHolders[0];
   if (!primaryPolicyHolder) return { displayName: '', phone: '' };
 
+  console.log(primaryPolicyHolder.firstName);
   return {
-    displayName: `${primaryPolicyHolder.firstName} ${primaryPolicyHolder.lastName}`,
+    displayName: `${primaryPolicyHolder.firstName ||
+      ''} ${primaryPolicyHolder.lastName || ''}`,
     phone: normalize.phone(primaryPolicyHolder.primaryPhoneNumber)
   };
 }
