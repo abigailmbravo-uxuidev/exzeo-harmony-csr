@@ -23,7 +23,7 @@ import { companyAnswers, stateAnswers, productAnswers } from '../constants';
 const {
   isValidNameFormat,
   isValidChar,
-  isNumberDashOnly,
+  isAlphaNumeric,
   isValidDateFormat,
   isRequired
 } = validation;
@@ -82,7 +82,7 @@ const PolicySearch = ({
             placeholder="Policy No Search"
             component={Input}
             styleName="policy-no-search"
-            validate={isNumberDashOnly}
+            validate={isAlphaNumeric}
             errorHint
           />
           <Field
