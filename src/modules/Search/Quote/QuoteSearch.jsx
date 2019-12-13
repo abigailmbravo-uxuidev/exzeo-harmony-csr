@@ -14,7 +14,7 @@ const {
   isValidChar,
   isRequired,
   isValidDateFormat,
-  isNumberDashOnly
+  isAlphaNumeric
 } = validation;
 
 const isValidDate = isValidDateFormat(STANDARD_DATE_FORMAT);
@@ -72,7 +72,7 @@ const QuoteSearch = ({
           placeholder="Quote No Search"
           component={Input}
           styleName="quote-no-search"
-          validate={isNumberDashOnly}
+          validate={isAlphaNumeric}
           errorHint
         />
         <Field
