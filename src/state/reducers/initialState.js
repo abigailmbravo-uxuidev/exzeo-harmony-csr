@@ -14,7 +14,6 @@ export default {
     minimizeNote: false,
     isLoading: false
   },
-  cg: {},
   error: {},
   notes: [],
   diaries: [],

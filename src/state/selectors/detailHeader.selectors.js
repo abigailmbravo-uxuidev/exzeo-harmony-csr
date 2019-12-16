@@ -1,10 +1,12 @@
 import { createSelector } from 'reselect';
-import moment from 'moment-timezone';
+import { date } from '@exzeo/core-ui';
 
 import * as detailUtils from '../../utilities/entityDetails';
 import { STANDARD_DATE_FORMAT } from '../../constants/dates';
 
 import { getPolicy, getSummaryLedger, getQuote } from './entity.selectors';
+
+export const getAppraisalList = state => state.list.appraisers;
 
 const baseMapUri = 'https://www.google.com/maps/search/?api=1&query=';
 const defaultEntity = {
@@ -18,8 +20,8 @@ const defaultEntity = {
 };
 
 export const getPolicyDetails = createSelector(
-  [getPolicy, getSummaryLedger],
-  (policy, summaryLedger) => {
+  [getPolicy, getSummaryLedger, getAppraisalList],
+  (policy, summaryLedger, appraisalList) => {
     if (!policy || !policy.policyNumber || !summaryLedger) return defaultEntity;
 
     const {
@@ -38,7 +40,7 @@ export const getPolicyDetails = createSelector(
 
     const {
       currentPremium,
-      status: { displayText, code }
+      status: { displayText }
     } = summaryLedger;
 
     const {
@@ -49,18 +51,11 @@ export const getPolicyDetails = createSelector(
     } = property;
 
     const mapQuery = detailUtils.getMapQuery(physicalAddress);
-    const cancellationDate = detailUtils.getCancellationDate(
-      summaryLedger,
-      status,
-      endDate,
-      cancelDate
-    );
-    const showReinstatement = detailUtils.shouldShowReinstatement(status, code);
-    const dateLabel = detailUtils.getEntityDetailsDateLabel(
-      displayText,
-      status
-    );
-    const finalPayment = detailUtils.getFinalPaymentDate(summaryLedger, status);
+
+    const appraisal =
+      (appraisalList || []).find(
+        x => x.label === property.physicalAddress.county
+      ) || {};
 
     return {
       constructionType,
@@ -71,7 +66,11 @@ export const getPolicyDetails = createSelector(
       floodZone,
       county: physicalAddress.county,
       currentPremium: detailUtils.getCurrentPremium(currentPremium),
-      effectiveDate: moment.utc(effectiveDate).format(STANDARD_DATE_FORMAT),
+      effectiveDate: date.formattedDate(effectiveDate, STANDARD_DATE_FORMAT),
+      appraisalURI: {
+        label: 'PAS',
+        value: appraisal.answer
+      },
       mapURI: `${baseMapUri}${mapQuery}`,
       status: `${status} / ${displayText}`,
       details: {
@@ -84,20 +83,28 @@ export const getPolicyDetails = createSelector(
         address2: physicalAddress.address2,
         csz: detailUtils.getCityStateZip(physicalAddress)
       },
-      cancellation: {
-        label: dateLabel,
-        value: cancellationDate,
-        showReinstatement
-      },
-      finalPayment,
+      nonPaymentNoticeDate: detailUtils.getNonPaymentNoticeDate(
+        summaryLedger,
+        status
+      ),
+      nonPaymentNoticeDueDate: detailUtils.getNonPaymentNoticeDueDate(
+        summaryLedger,
+        status
+      ),
+      cancellation: detailUtils.getCancellationDate(
+        summaryLedger,
+        status,
+        cancelDate,
+        endDate
+      ),
       sourcePath: sourceNumber ? `/quote/${sourceNumber}/coverage` : null
     };
   }
 );
 
 export const getQuoteDetails = createSelector(
-  [getQuote],
-  quote => {
+  [getQuote, getAppraisalList],
+  (quote, appraisalList) => {
     if (!quote || !quote.quoteNumber) return defaultEntity;
 
     const {
@@ -109,7 +116,8 @@ export const getQuoteDetails = createSelector(
       property,
       effectiveDate,
       rating = {},
-      policyNumber
+      policyNumber,
+      endDate
     } = quote;
 
     const {
@@ -121,13 +129,23 @@ export const getQuoteDetails = createSelector(
 
     const mapQuery = detailUtils.getMapQuery(physicalAddress);
 
+    const appraisal =
+      (appraisalList || []).find(
+        x => x.label === property.physicalAddress.county
+      ) || {};
+
     return {
       constructionType,
       floodZone,
       currentPremium: detailUtils.getCurrentPremium(rating.totalPremium),
       territory,
       county: physicalAddress.county,
-      effectiveDate: moment.utc(effectiveDate).format(STANDARD_DATE_FORMAT),
+      effectiveDate: date.formattedDate(effectiveDate, STANDARD_DATE_FORMAT),
+      endDate: date.formattedDate(endDate, STANDARD_DATE_FORMAT),
+      appraisalURI: {
+        label: 'PAS',
+        value: appraisal.answer
+      },
       mapURI: `${baseMapUri}${mapQuery}`,
       status: quoteState,
       details: {

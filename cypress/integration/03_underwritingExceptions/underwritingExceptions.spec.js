@@ -51,14 +51,20 @@ describe('Underwriting Error Testing', () => {
       .get('.uw-validation-header button[type="submit"]')
       .click()
       .wait('@updateQuote')
-      .then(({ response: { body: { result } } }) => {
-        // Confirm that there exists an overridden exception
-        expect(
-          result.underwritingExceptions.filter(({ overridden }) => overridden)
-            .length
-        ).to.equal(1);
-        // and that the quote is in a good state.
-        expect(result.quoteState).to.equal('Quote Qualified');
-      });
+      .then(
+        ({
+          response: {
+            body: { result }
+          }
+        }) => {
+          // Confirm that there exists an overridden exception
+          expect(
+            result.underwritingExceptions.filter(({ overridden }) => overridden)
+              .length
+          ).to.equal(1);
+          // and that the quote is in a good state.
+          expect(result.quoteState).to.equal('Quote Qualified');
+        }
+      );
   });
 });

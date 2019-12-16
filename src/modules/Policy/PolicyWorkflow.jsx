@@ -2,16 +2,22 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Loader, FormSpy, remoteSubmit, date } from '@exzeo/core-ui';
 import {
-  getConfigForJsonTransform,
-  Gandalf,
   ClaimsTable,
+  Gandalf,
+  getConfigForJsonTransform,
+  PaymentHistoryTable,
   PolicyBilling,
-  PaymentHistoryTable
+  callService
 } from '@exzeo/core-ui/src/@Harmony';
 import { defaultMemoize } from 'reselect';
 
+import App from '../../components/AppWrapper';
+import DiaryPolling from '../../components/DiaryPolling';
+import NavigationPrompt from '../../components/NavigationPrompt';
+import OpenDiariesBar from '../../components/OpenDiariesBar';
 import { POLICY_RESOURCE_TYPE } from '../../constants/diaries';
-import { toggleDiary } from '../../state/actions/ui.actions';
+import MOCK_AF3 from '../../mock-data/mockPolicyAF3';
+import MOCK_HO3 from '../../mock-data/mockPolicyHO3';
 import { setAppError } from '../../state/actions/error.actions';
 import { getEnumsForPolicyWorkflow } from '../../state/actions/list.actions';
 import {
@@ -19,47 +25,36 @@ import {
   getPolicy,
   initializePolicyWorkflow,
   transferAOR,
-  updatePolicy,
-  updateBillPlan
+  updateBillPlan,
+  updatePolicy
 } from '../../state/actions/policy.actions';
+import { toggleDiary } from '../../state/actions/ui.actions';
 import { getDiariesForTable } from '../../state/selectors/diary.selectors';
 import {
-  getPolicyFormData,
   getPolicyEffectiveDateReasons,
-  getPolicyEndorsementHistory
+  getPolicyEndorsementHistory,
+  getPolicyFormData
 } from '../../state/selectors/policy.selectors';
-
-import App from '../../components/AppWrapper';
-import OpenDiariesBar from '../../components/OpenDiariesBar';
-import DiaryPolling from '../../components/DiaryPolling';
-import NavigationPrompt from '../../components/NavigationPrompt';
-
-import {
-  ROUTES_NOT_HANDLED_BY_GANDALF,
-  PAGE_ROUTING
-} from './constants/workflowNavigation';
-
+import NotesFiles from '../NotesFiles';
+import PolicyHolders from '../Quote/PolicyHolders';
+import Appraiser from './Appraiser';
 import Billing from './Billing';
 import BillingTable from './BillingTable';
-import Appraiser from './Appraiser';
-import NotesFiles from '../NotesFiles';
-import PolicyholderAgent from './PolicyholderAgent';
-import PolicyFooter from './PolicyFooter';
-import CancelType from './CancelType';
 import CancelReason from './CancelReason';
+import CancelType from './CancelType';
+import {
+  PAGE_ROUTING,
+  ROUTES_NOT_HANDLED_BY_GANDALF
+} from './constants/workflowNavigation';
 import EffectiveDateModal from './EffectiveDateModal';
-import ReinstatePolicyModal from './ReinstatePolicyModal';
-
-// TODO these will be removed in subsequent PR's
-import { startWorkflow, completeTask } from '../../utilities/cg';
-import MOCK_HO3 from '../../mock-data/mockPolicyHO3';
-import MOCK_AF3 from '../../mock-data/mockPolicyAF3';
-
 import EndorsementsMenu from './EndorsementsMenu';
-import EndorsementsWatcherHO3 from './EndorsementsWatcherHO3';
 import EndorsementsWatcherAF3 from './EndorsementsWatcherAF3';
+import EndorsementsWatcherHO3 from './EndorsementsWatcherHO3';
+import PolicyFooter from './PolicyFooter';
+import PolicyholderAgent from './PolicyholderAgent';
 import PreviousEndorsements from './PreviousEndorsements';
-import PolicyHolders from '../Quote/PolicyHolders';
+import ReinstatePolicyModal from './ReinstatePolicyModal';
+import RescindCancelModal from './RescindCancelModal';
 
 const getCurrentStepAndPage = defaultMemoize(pathname => {
   const currentRouteName = pathname.split('/')[3];
@@ -82,6 +77,7 @@ export class PolicyWorkflow extends React.Component {
     showDiaries: false,
     showReinstatePolicyModal: false,
     showEffectiveDateChangeModal: false,
+    showRescindCancelModal: false,
     isEndorsementCalculated: false
   };
 
@@ -190,6 +186,12 @@ export class PolicyWorkflow extends React.Component {
     }));
   };
 
+  handleToggleRescindCancelModal = () => {
+    this.setState(state => ({
+      showRescindCancelModal: !state.showRescindCancelModal
+    }));
+  };
+
   toggleEffectiveDateChangeModal = () => {
     this.setState(state => ({
       showEffectiveDateChangeModal: !state.showEffectiveDateChangeModal
@@ -210,41 +212,83 @@ export class PolicyWorkflow extends React.Component {
     this.handleToggleReinstateModal();
   };
 
-  changeEffectiveDate = async data => {
-    const { zipCodeSettings, policy, getPolicy } = this.props;
+  rescindCancelSubmit = async data => {
+    const {
+      policy: { policyNumber },
+      getPolicy,
+      setAppError
+    } = this.props;
 
-    // const effectiveDateUTC = date.formattedDate(
-    //   data.effectiveDate,
-    //   date.FORMATS.SECONDARY,
-    //   zipCodeSettings.timezone
-    // );
+    const config = {
+      exchangeName: 'harmony',
+      routingKey: 'harmony.policy.rescindCancellation',
+      data: { policyNumber }
+    };
+
+    await callService(config, 'rescindCancellation').catch(err => {
+      setAppError(err);
+      this.handleToggleRescindCancelModal();
+    });
+
+    await getPolicy(policyNumber);
+    this.handleToggleRescindCancelModal();
+  };
+
+  changeEffectiveDate = async data => {
+    const {
+      zipCodeSettings,
+      policy,
+      getPolicy,
+      summaryLedger,
+      userProfile
+    } = this.props;
 
     const effectiveDateUTC = date.formatToUTC(
       date.formatDate(data.effectiveDate, date.FORMATS.SECONDARY),
       zipCodeSettings.timezone
     );
 
-    const startResult = await startWorkflow({
-      modelName: 'effectiveDateChangeModel',
-      data: {
-        policyNumber: policy.policyNumber,
-        policyID: policy.policyID
-      }
-    });
+    const transactionType = 'Effective Date Change';
 
-    await completeTask({
-      stepName: 'saveEffectiveDate',
-      workflowId: startResult.modelInstanceId,
-      data: {
-        policyNumber: policy.policyNumber,
-        policyID: policy.policyID,
-        effectiveDateChangeReason: data.effectiveDateChangeReason,
-        effectiveDate: effectiveDateUTC
-      }
-    }).catch(err => {
-      this.props.setAppError(err);
-      this.toggleEffectiveDateChangeModal();
-    });
+    await this.props
+      .updatePolicy({
+        data: {
+          policyID: policy.policyID,
+          policyNumber: policy.policyNumber,
+          effectiveDate: effectiveDateUTC,
+          billingStatus: summaryLedger.status.code,
+          rateCode: policy.rating.rateCode,
+          transactionType
+        },
+        options: {
+          changeEffectiveDate: true,
+          noteData: {
+            companyCode: policy.companyCode,
+            state: policy.state,
+            product: policy.product,
+            number: policy.policyNumber,
+            numberType: 'policyNumber',
+            source: policy.sourceNumber,
+            noteType: 'Policy Note',
+            noteContent: `Effective date has been updated from ${date.formatDate(
+              policy.effectiveDate,
+              'MM-DD-YYYY'
+            )} to ${date.formatDate(
+              data.effectiveDate,
+              'MM-DD-YYYY'
+            )} - Reason: ${data.effectiveDateChangeReason}`,
+            contactType: 'System',
+            createdAt: date.timestamp(),
+            createdBy: {
+              userId: userProfile.userId,
+              userName: `${userProfile.profile.given_name} ${userProfile.profile.family_name}`
+            }
+          }
+        }
+      })
+      .catch(err => {
+        this.props.setAppError(err);
+      });
     //This gets scheduled so the status may not be changed yet when calling getPolicy. Reference HAR-5228
     await new Promise(resolve => setTimeout(resolve, 3000));
     await getPolicy(policy.policyNumber);
@@ -273,12 +317,14 @@ export class PolicyWorkflow extends React.Component {
       gandalfTemplate,
       showDiaries,
       showReinstatePolicyModal,
+      showRescindCancelModal,
       showEffectiveDateChangeModal
     } = this.state;
 
     const modalHandlers = {
       showEffectiveDateChangeModal: this.toggleEffectiveDateChangeModal,
-      showReinstatePolicyModal: this.handleToggleReinstateModal
+      showReinstatePolicyModal: this.handleToggleReinstateModal,
+      showRescindCancelModal: this.handleToggleRescindCancelModal
     };
 
     const { currentRouteName, currentStepNumber } = getCurrentStepAndPage(
@@ -321,81 +367,86 @@ export class PolicyWorkflow extends React.Component {
             <React.Fragment>
               {initialized && (
                 <div className="content-wrapper">
-                  {shouldUseGandalf && (
-                    <React.Fragment>
-                      <Gandalf
-                        formId={FORM_ID}
-                        className="route-content"
-                        currentPage={currentStepNumber}
-                        customComponents={this.customComponents}
-                        customHandlers={customHandlers}
-                        handleSubmit={this.handleGandalfSubmit}
-                        initialValues={policyFormData}
-                        options={{
-                          diaries,
-                          ...options,
-                          cancelOptions,
-                          zipCodeSettings,
-                          endorsementHistory
-                        }} // enums for select/radio fields
-                        path={location.pathname}
-                        template={gandalfTemplate}
-                        transformConfig={transformConfig}
-                        stickyFooter
-                        renderFooter={
-                          <FormSpy
-                            subscription={{
-                              pristine: true,
-                              submitting: true,
-                              dirtyFields: true,
-                              invalid: true
-                            }}
-                          >
-                            {({ form, pristine, submitting }) => (
-                              <div className="form-footer">
-                                <PolicyFooter
-                                  history={customHandlers.history}
-                                  setAppError={customHandlers.setAppError}
-                                  policyFormData={policyFormData}
-                                  timezone={zipCodeSettings.timezone}
-                                  currentStep={currentRouteName}
-                                  formInstance={form}
-                                  isSubmitDisabled={this.isSubmitDisabled(
-                                    pristine,
-                                    submitting
-                                  )}
-                                  handleGandalfSubmit={this.handleGandalfSubmit}
-                                  handlePrimaryClick={this.primaryClickHandler}
-                                />
-                              </div>
-                            )}
-                          </FormSpy>
-                        }
-                        formListeners={
-                          <React.Fragment>
-                            <FormSpy subscription={{}}>
-                              {({ form }) => {
-                                this.setFormInstance(form);
-                                return null;
-                              }}
-                            </FormSpy>
-
+                  <div className="route-content">
+                    {shouldUseGandalf && (
+                      <React.Fragment>
+                        <Gandalf
+                          formId={FORM_ID}
+                          currentPage={currentStepNumber}
+                          customComponents={this.customComponents}
+                          customHandlers={customHandlers}
+                          handleSubmit={this.handleGandalfSubmit}
+                          initialValues={policyFormData}
+                          options={{
+                            diaries,
+                            ...options,
+                            cancelOptions,
+                            zipCodeSettings,
+                            endorsementHistory
+                          }} // enums for select/radio fields
+                          path={location.pathname}
+                          template={gandalfTemplate}
+                          transformConfig={transformConfig}
+                          stickyFooter
+                          renderFooter={
                             <FormSpy
-                              subscription={{ dirty: true, pristine: true }}
+                              subscription={{
+                                pristine: true,
+                                submitting: true,
+                                dirtyFields: true,
+                                invalid: true
+                              }}
                             >
-                              {({ dirty }) => (
-                                <NavigationPrompt
-                                  dirty={dirty}
-                                  formInstance={this.formInstance}
-                                  history={history}
-                                />
+                              {({ form, pristine, submitting }) => (
+                                <div className="form-footer">
+                                  <PolicyFooter
+                                    history={customHandlers.history}
+                                    setAppError={customHandlers.setAppError}
+                                    policyFormData={policyFormData}
+                                    timezone={zipCodeSettings.timezone}
+                                    currentStep={currentRouteName}
+                                    formInstance={form}
+                                    isSubmitDisabled={this.isSubmitDisabled(
+                                      pristine,
+                                      submitting
+                                    )}
+                                    handleGandalfSubmit={
+                                      this.handleGandalfSubmit
+                                    }
+                                    handlePrimaryClick={
+                                      this.primaryClickHandler
+                                    }
+                                  />
+                                </div>
                               )}
                             </FormSpy>
-                          </React.Fragment>
-                        }
-                      />
-                    </React.Fragment>
-                  )}
+                          }
+                          formListeners={
+                            <React.Fragment>
+                              <FormSpy subscription={{}}>
+                                {({ form }) => {
+                                  this.setFormInstance(form);
+                                  return null;
+                                }}
+                              </FormSpy>
+
+                              <FormSpy
+                                subscription={{ dirty: true, pristine: true }}
+                              >
+                                {({ dirty }) => (
+                                  <NavigationPrompt
+                                    dirty={dirty}
+                                    formInstance={this.formInstance}
+                                    history={history}
+                                  />
+                                )}
+                              </FormSpy>
+                            </React.Fragment>
+                          }
+                        />
+                      </React.Fragment>
+                    )}
+                  </div>
                 </div>
               )}
 
@@ -411,6 +462,14 @@ export class PolicyWorkflow extends React.Component {
                 <ReinstatePolicyModal
                   reinstatePolicySubmit={this.reinstatePolicySubmit}
                   closeModal={this.handleToggleReinstateModal}
+                  policyNumber={policy.policyNumber}
+                />
+              )}
+
+              {showRescindCancelModal && (
+                <RescindCancelModal
+                  rescindCancelSubmit={this.rescindCancelSubmit}
+                  closeModal={this.handleToggleRescindCancelModal}
                   policyNumber={policy.policyNumber}
                 />
               )}
@@ -466,17 +525,14 @@ const mapStateToProps = state => {
   };
 };
 
-export default connect(
-  mapStateToProps,
-  {
-    createTransaction,
-    getPolicy,
-    getEnumsForPolicyWorkflow,
-    initializePolicyWorkflow,
-    setAppError,
-    transferAOR,
-    toggleDiary,
-    updatePolicy,
-    updateBillPlan
-  }
-)(PolicyWorkflow);
+export default connect(mapStateToProps, {
+  createTransaction,
+  getPolicy,
+  getEnumsForPolicyWorkflow,
+  initializePolicyWorkflow,
+  setAppError,
+  transferAOR,
+  toggleDiary,
+  updatePolicy,
+  updateBillPlan
+})(PolicyWorkflow);

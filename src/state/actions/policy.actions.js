@@ -1,11 +1,8 @@
 // temporary full path import until we can find a better way to mock network requests
-import * as serviceRunner from '@exzeo/core-ui/src/@Harmony/Domain/Api/serviceRunner';
 import { date } from '@exzeo/core-ui/src';
-
+import * as serviceRunner from '@exzeo/core-ui/src/@Harmony/Domain/Api/serviceRunner';
 import { formatEndorsementData } from '../../modules/Policy/utilities';
 import { convertToRateData } from '../../utilities/endorsementModel';
-import cg from '../../utilities/cg';
-
 import * as types from './actionTypes';
 import * as errorActions from './error.actions';
 import { getZipcodeSettings } from './service.actions';
@@ -318,7 +315,7 @@ export function createTransaction(submitData) {
     try {
       // performance issues can arise from returning an 'await'ed function - https://eslint.org/docs/rules/no-return-await
       // noinspection UnnecessaryLocalVariableJS
-      const response = await postCreatTransaction(submitData);
+      const response = await postCreateTransaction(submitData);
       return response;
     } catch (error) {
       dispatch(errorActions.setAppError(error));
@@ -570,7 +567,7 @@ export async function fetchEndorsementHistory(policyNumber) {
  * @param submitData
  * @returns {Promise<{}>}
  */
-export async function postCreatTransaction(submitData) {
+export async function postCreateTransaction(submitData) {
   const config = {
     service: 'policy-data',
     method: 'POST',
@@ -581,7 +578,7 @@ export async function postCreatTransaction(submitData) {
   try {
     const response = await serviceRunner.callService(
       config,
-      'postCreatTransaction'
+      'postCreateTransaction'
     );
     return response.data && response.data.result ? response.data.result : {};
   } catch (error) {
@@ -737,6 +734,7 @@ export function transferAOR({ policyNumber, agencyCode, agentCode }) {
  */
 export function initializePolicyWorkflow(policyNumber) {
   return async dispatch => {
+    // TODO: Refactor into one action to dispatch
     try {
       const { summaryLedger, policy } = await dispatch(getPolicy(policyNumber));
       dispatch(getEffectiveDateChangeReasons());
@@ -813,8 +811,25 @@ export function updatePolicy({ data = {}, options = {} }) {
         };
 
         await serviceRunner.callService(transferConfig, 'saveEndorsement');
+      }
 
-        dispatch(initializePolicyWorkflow(data.policyNumber));
+      if (options.changeEffectiveDate) {
+        const submitData = {
+          policyID: data.policyID,
+          policyNumber: data.policyNumber,
+          effectiveDate: data.effectiveDate,
+          billingStatus: data.billingStatus,
+          rateCode: data.rateCode,
+          transactionType: data.transactionType
+        };
+        await postCreateTransaction(submitData);
+
+        const noteConfig = {
+          exchangeName: 'harmony',
+          routingKey: 'harmony.note.addNote',
+          data: options.noteData
+        };
+        await serviceRunner.callService(noteConfig, 'addNote');
       }
 
       if (options.cancelPolicy) {
@@ -833,21 +848,7 @@ export function updatePolicy({ data = {}, options = {} }) {
           ),
           billingStatus: data.summaryLedger.status.code
         };
-        const startResult = await cg.startWorkflow({
-          modelName: 'cancelPolicyModelUI',
-          data: {
-            policyNumber: data.policyNumber,
-            policyID: data.policyID
-          }
-        });
-
-        await cg.completeTask({
-          workflowId: startResult.modelInstanceId,
-          stepName: 'cancelPolicySubmit',
-          data: submitData
-        });
-
-        await dispatch(getPolicy(data.policyNumber));
+        await postCreateTransaction(submitData);
       }
 
       if (data.selectedAI) {
@@ -858,8 +859,8 @@ export function updatePolicy({ data = {}, options = {} }) {
           transactionType: data.transactionType,
           dispatch
         });
-        await dispatch(getPolicy(data.policyNumber));
       }
+      dispatch(initializePolicyWorkflow(data.policyNumber));
       return null;
     } catch (error) {
       if (process.env.NODE_ENV !== 'production') {

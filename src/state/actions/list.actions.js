@@ -35,11 +35,16 @@ export function getEnumsForQuoteWorkflow({
       // fetch all enums/data needed for the quote workflow in here.
       // 1. assign async function(s) to variable(s) - calls the func
       const diaryOptions = fetchDiaryOptions(companyCode, state, product);
+      const propertyAppraisals = fetchPropertyAppriasals();
+
       // 2. new variable awaits the previous.
       const diaryOptionsResponse = await diaryOptions;
+      const propertyAppraisalsResponse = await propertyAppraisals;
 
       dispatch(
         setEnums({
+          propertyAppraisalQuestions:
+            propertyAppraisalsResponse.data.data[0].answers,
           diaryOptions: diaryOptionsResponse
         })
       );

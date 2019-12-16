@@ -10,15 +10,6 @@ const mockStore = configureStore(middlewares);
 describe('Testing LoggedOut component', () => {
   it('should test connected app', () => {
     const initialState = {
-      cg: {
-        bb: {
-          data: {
-            modelInstanceId: '123',
-            model: {},
-            uiQuestions: []
-          }
-        }
-      },
       appState: {
         modelName: 'bb'
       }

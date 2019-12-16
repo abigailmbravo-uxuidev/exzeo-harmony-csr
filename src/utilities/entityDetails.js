@@ -5,7 +5,6 @@ import { STANDARD_DATE_FORMAT } from '../constants/dates';
 
 export const CANCELLATION_DATE = 'Cancellation Effective Date';
 export const EXPIRATION_DATE = 'Expiration Date';
-export const FINAL_PAYMENT_DATE = 'Final Payment Date';
 
 export const PRODUCT_DESCRIPTION = {
   HO3: 'Homeowners',
@@ -38,24 +37,20 @@ export const expirationBillingStatuses = [
   'Policy Expired'
 ];
 
-export const canceledPolicyStatuses = [
-  'Cancelled',
-  'Pending Voluntary Cancellation',
-  'Pending Underwriting Cancellation',
-  'Pending Underwriting Non-Renewal'
+export const canceledBillingStatuses = [
+  'Non-Payment Cancellation',
+  'Underwriting Cancellation',
+  'Underwriting Non-Renewal',
+  'Voluntary Cancellation'
 ];
 
-export const canceledBillingStatuses = [
+export const pendingBillingStatuses = [
   'Non-Payment Notice Issued',
   'No Payment Received',
   'Full Payment Received',
   'Over Payment Received',
   'Partial Payment Received',
-  'Payment Invoice Issued',
-  'Non-Payment Cancellation',
-  'Underwriting Cancellation',
-  'Underwriting Non-Renewal',
-  'Voluntary Cancellation'
+  'Payment Invoice Issued'
 ];
 /**
  * Determine product display name based on type
@@ -91,68 +86,76 @@ export function getCityStateZip({ city = '', state = '', zip = '' }) {
 }
 
 /**
- * Determine whether or not to show Reinstatement link
- * @param {string} status
- * @param {string} code
- * @returns {boolean}
- */
-export function shouldShowReinstatement(status, code) {
-  return status === 'Cancelled' && [12, 13, 14, 15].includes(code);
-}
-
-/**
  * Determine cancellation date to display
  * @param {object} summaryLedger
  * @param {string} policyStatus
- * @param {string} [endDate]
- * @param {string} [cancelDate]
+ * @param {string} cancelDate
+ *  * @param {string} endDate
  * @returns {string}
  */
 export function getCancellationDate(
   summaryLedger,
   policyStatus,
-  endDate,
-  cancelDate
+  cancelDate,
+  endDate
 ) {
   const {
-    equityDate,
     status: { displayText: billingStatus }
   } = summaryLedger;
 
-  if (isNonPaymentNotice(billingStatus, policyStatus)) {
-    return equityDate
-      ? moment.utc(equityDate).format(STANDARD_DATE_FORMAT)
-      : '';
-  }
-
   if (
+    policyStatus === 'Cancelled' &&
+    canceledBillingStatuses.includes(billingStatus) &&
+    cancelDate
+  ) {
+    return {
+      value: moment.utc(cancelDate).format(STANDARD_DATE_FORMAT),
+      label: 'Cancellation Date',
+      showReinstatement: true
+    };
+  } else if (
+    policyStatus === 'Pending Voluntary Cancellation' &&
+    pendingBillingStatuses.includes(billingStatus) &&
+    cancelDate
+  ) {
+    return {
+      value: moment.utc(cancelDate).format(STANDARD_DATE_FORMAT),
+      label: 'Voluntary Cancellation Date',
+      showRescindCancel: true
+    };
+  } else if (
+    (policyStatus === 'Pending Underwriting Cancellation' ||
+      policyStatus === 'Pending Underwriting Non-Renewal') &&
+    pendingBillingStatuses.includes(billingStatus) &&
+    cancelDate
+  ) {
+    return {
+      value: moment.utc(cancelDate).format(STANDARD_DATE_FORMAT),
+      label: 'UW Cancellation Date',
+      showRescindCancel: true
+    };
+  } else if (
     expirationPolicyStatuses.includes(policyStatus) &&
-    expirationBillingStatuses.includes(billingStatus)
+    expirationBillingStatuses.includes(billingStatus) &&
+    endDate
   ) {
-    return endDate ? moment.utc(endDate).format(STANDARD_DATE_FORMAT) : '';
+    return {
+      value: moment.utc(endDate).format(STANDARD_DATE_FORMAT),
+      label: 'Expiration Date'
+    };
   }
-
-  if (
-    canceledPolicyStatuses.includes(policyStatus) &&
-    canceledBillingStatuses.includes(billingStatus)
-  ) {
-    return cancelDate
-      ? moment.utc(cancelDate).format(STANDARD_DATE_FORMAT)
-      : '';
-  }
-
-  return '';
+  return {};
 }
 
 /**
- * Determine final Payment date to display
+ * Determine NonPaymentNoticeDate to display
  * @param {object} summaryLedger
  * @param {string} policyStatus
  * @returns {object}
  */
-export function getFinalPaymentDate(summaryLedger, policyStatus) {
+export function getNonPaymentNoticeDate(summaryLedger, policyStatus) {
   const {
-    invoiceDueDate,
+    equityDate,
     status: { displayText: billingStatus }
   } = summaryLedger;
 
@@ -161,31 +164,32 @@ export function getFinalPaymentDate(summaryLedger, policyStatus) {
     policyStatus
   );
 
-  if (isNonPaymentCancellation && invoiceDueDate) {
-    return {
-      value: moment.utc(invoiceDueDate).format(STANDARD_DATE_FORMAT),
-      label: FINAL_PAYMENT_DATE
-    };
+  if (isNonPaymentCancellation && equityDate) {
+    return moment.utc(equityDate).format(STANDARD_DATE_FORMAT);
   }
-  return {};
+  return '';
 }
 
-export function getEntityDetailsDateLabel(billingStatus, policyStatus) {
-  if (
-    expirationBillingStatuses.includes(billingStatus) &&
-    expirationPolicyStatuses.includes(policyStatus)
-  ) {
-    return EXPIRATION_DATE;
-  }
+/**
+ * Determine NonPaymentNoticeDueDate to display
+ * @param {object} summaryLedger
+ * @param {string} policyStatus
+ * @returns {object}
+ */
+export function getNonPaymentNoticeDueDate(summaryLedger, policyStatus) {
+  const {
+    nonPaymentNoticeDueDate,
+    status: { displayText: billingStatus }
+  } = summaryLedger;
 
-  if (
-    (canceledBillingStatuses.includes(billingStatus) &&
-      canceledPolicyStatuses.includes(policyStatus)) ||
-    isNonPaymentNotice(billingStatus, policyStatus)
-  ) {
-    return CANCELLATION_DATE;
-  }
+  const isNonPaymentCancellation = isNonPaymentNotice(
+    billingStatus,
+    policyStatus
+  );
 
+  if (isNonPaymentCancellation && nonPaymentNoticeDueDate) {
+    return moment.utc(nonPaymentNoticeDueDate).format(STANDARD_DATE_FORMAT);
+  }
   return '';
 }
 
