@@ -9,13 +9,15 @@
           display: flex;
           align-items: center;
           justify-content: center;
-          margin: (-$padding) ($padding * 2) (-$padding) (-$padding * 2);
-          padding: 0 ($padding * 2);
+
           width: 12rem;
           height: 3.25rem;
+          margin: (-$padding) ($padding * 2) (-$padding) (-$padding * 2);
+          padding: 0 ($padding * 2);
+
+          color: $white;
           border-right: 1px dotted $green-darken-03;
           background: $green-darken-04;
-          color: $white;
 
           span {
             font-size: 1.125rem;
@@ -27,13 +29,17 @@
           align-items: center;
           flex-grow: 1;
           flex-shrink: 0;
+
           color: $white;
+
           font-size: $font-size-h5;
 
           label {
             margin-bottom: 0;
             padding: 0 $padding 0 ($padding * 4);
+
             color: $warm-gray-07;
+
             font-weight: $font-weight-normal;
           }
         }
@@ -62,6 +68,7 @@
             flex-shrink: 1;
             flex-wrap: nowrap;
             //padding: $padding;
+
             width: 100%;
 
             .modal.quote-summary {
@@ -75,13 +82,48 @@
             form {
               flex-grow: 0;
               flex-shrink: 0;
+
               padding: $padding;
 
               > section {
                 border-bottom: 1px dashed $green-darken-04;
 
+                .agency-info-btn {
+                  position: absolute;
+                  z-index: 100;
+
+                  display: flex;
+                  align-items: center;
+
+                  width: 5rem;
+                  height: 1.4375rem;
+                  margin-left: 0.5rem;
+                  padding: 0;
+
+                  cursor: pointer;
+
+                  @include transition(all 0.2s ease-in-out);
+
+                  &:hover {
+                    text-decoration: none;
+
+                    ~ .agencyCode {
+                      label {
+                        color: $warm-gray-10;
+                      }
+                    }
+                  }
+                }
+
+                .agencyCode {
+                  label {
+                    margin-left: 1.125rem;
+                  }
+                }
+
                 &:last-of-type {
                   margin-bottom: 0;
+
                   border-bottom-width: 0;
                 }
 
@@ -115,6 +157,7 @@
 
                       output {
                         order: 3;
+
                         margin-right: $padding;
                       }
                     }
@@ -163,6 +206,7 @@
 
                         output {
                           order: 3;
+
                           margin-right: $padding;
                         }
                         span {
@@ -183,8 +227,9 @@
               .responsive-tables {
                 display: flex;
                 flex-direction: row;
-                margin: 0 0 ($padding * 2);
+
                 width: 100%;
+                margin: 0 0 ($padding * 2);
 
                 .card-view,
                 .table-view {
@@ -215,13 +260,13 @@
                   width: 33%;
 
                   .date {
-                    padding: $padding 15px $padding $padding;
                     width: 60%;
+                    padding: $padding 15px $padding $padding;
                   }
 
                   .amount {
-                    padding: $padding $padding $padding 15px;
                     width: 40%;
+                    padding: $padding $padding $padding 15px;
                   }
                 }
               }
@@ -236,6 +281,7 @@
 
               > section:last-of-type {
                 margin-bottom: 0;
+
                 border: 0;
               }
 
@@ -327,8 +373,10 @@
           flex-direction: column;
           flex-grow: 0;
           flex-shrink: 0;
-          padding: 0;
+
           width: 240px;
+          padding: 0;
+
           border-left: dotted 1px $warm-gray-04;
 
           .uw-validation-header {
@@ -336,7 +384,9 @@
             align-items: center;
             flex-grow: 0;
             flex-shrink: 0;
+
             height: 3rem;
+
             border-bottom: 1px dotted $warm-gray-04;
             background: $white;
 
@@ -349,19 +399,23 @@
             overflow-y: auto;
             flex-grow: 1;
             flex-shrink: 1;
-            padding: 0 0 0 ($padding * 2);
+
             width: 100%;
+            padding: 0 0 0 ($padding * 2);
 
             section {
               h5 {
                 margin: ($padding * 2) 0;
-                background: $warm-gray-02;
+
                 color: $warm-gray-08;
+                background: $warm-gray-02;
+
                 font-size: 14px;
 
                 i.fa {
                   margin: 0 ($padding * 2) 0 0;
                   padding: ($padding * 2);
+
                   color: $white;
                 }
               }
@@ -373,14 +427,19 @@
                   li {
                     display: flex;
                     flex-direction: column;
+
                     margin: $padding ($padding * 2.25);
                     padding: 0 0 $padding;
-                    border-bottom: 1px dotted $warm-gray-02;
+
                     list-style: none;
+
+                    border-bottom: 1px dotted $warm-gray-02;
+
                     font-size: $font-size-base;
 
                     &:last-of-type {
                       padding: 0;
+
                       border-bottom-width: 0;
                     }
 
@@ -396,12 +455,14 @@
 
                     .check-box-wrapper {
                       position: relative;
+
                       display: flex;
                       align-items: center;
                       flex-grow: 0;
                       flex-shrink: 0;
-                      margin: ($padding/2) 0 0;
+
                       height: auto;
+                      margin: ($padding/2) 0 0;
 
                       input {
                         margin: 0;
@@ -409,8 +470,10 @@
 
                       label {
                         position: relative;
+
                         margin-bottom: 0;
                         padding-left: $padding/2;
+
                         line-height: 1;
                       }
                     }
@@ -447,21 +510,25 @@
             i.fa {
               flex-grow: 0;
               flex-shrink: 0;
+
               width: auto;
+
               background-color: $orange;
             }
 
             span {
               flex-grow: 1;
               flex-shrink: 1;
+
               padding-right: ($padding * 2.25);
             }
 
             button {
               flex-grow: 0;
               flex-shrink: 0;
-              margin-right: $padding;
+
               width: auto;
+              margin-right: $padding;
             }
           }
 
@@ -502,14 +569,17 @@
       align-items: center;
       flex-grow: 0;
       flex-shrink: 0;
+
+      height: auto;
       margin-bottom: 0;
       padding: 0.5rem;
-      height: auto;
+
       border-top: 1px dotted $warm-gray-04;
 
       footer {
         flex-grow: 1;
         flex-shrink: 0;
+
         width: auto;
       }
     }
@@ -560,17 +630,22 @@
         flex-wrap: nowrap;
         justify-content: flex-start;
         order: 0;
+
         margin: 0 ($padding) 0 0;
 
         .btn {
           align-self: auto;
           flex: 0 1 auto;
           order: 0;
-          margin: 0 2px 0 0;
+
           height: 38px;
+          margin: 0 2px 0 0;
+
+          text-transform: capitalize;
+
           border: 0;
           border-radius: 0;
-          text-transform: capitalize;
+
           line-height: 1.5;
 
           @include button-variant($warm-gray-08, $warm-gray-02, $warm-gray-02);
@@ -589,6 +664,7 @@
         align-self: auto;
         flex: 1 1 auto;
         order: 0;
+
         height: 38px;
       }
     }
@@ -599,8 +675,9 @@
   .workflow-steps {
     .btn {
       align-self: flex-start;
-      margin-top: 25px;
+
       height: 36px;
+      margin-top: 25px;
     }
 
     input {
@@ -622,12 +699,14 @@
 #AddAdditionalInterestPage {
   .results-wrapper {
     padding-top: $padding * 2;
+
     border-top: 1px dashed $green-darken-03;
   }
 
   .button-group {
     display: flex;
     flex-wrap: wrap;
+
     margin-bottom: $padding;
 
     .btn {
@@ -659,11 +738,13 @@
       }
       dt {
         padding: 0 $padding;
+
         background: $warm-gray-02;
       }
       dd {
         margin-bottom: 0;
         padding: ($padding/2) $padding;
+
         border-bottom: 1px dotted $warm-gray-03;
 
         &:nth-of-type(even) {
@@ -681,6 +762,7 @@
 
     .city {
       flex-grow: 1;
+
       margin-right: $padding;
     }
 
@@ -688,6 +770,7 @@
       flex-basis: 10rem;
       flex-grow: 0;
       flex-shrink: 0;
+
       margin-right: $padding;
     }
 
@@ -704,8 +787,9 @@
     dl {
       flex-grow: 1;
       flex-shrink: 1;
-      margin-right: $padding;
+
       width: 33.33%;
+      margin-right: $padding;
 
       &:last-child {
         margin-right: 0;
@@ -713,8 +797,10 @@
 
       dt {
         padding: $padding;
-        background: $warm-gray-02;
+
         color: $warm-gray-08;
+        background: $warm-gray-02;
+
         font-weight: $font-weight-bold;
       }
 
@@ -753,13 +839,16 @@
   align-items: flex-start;
   flex-grow: 0;
   flex-shrink: 0;
-  padding: $padding;
+
   width: 100%;
+  padding: $padding;
+
   border-top: 1px dotted $warm-gray-04;
   background: $warm-gray-01;
 
   .btn {
     align-self: flex-start;
+
     margin-top: 1.5rem;
   }
 
@@ -786,6 +875,7 @@
 
         span {
           color: $red-darken-03;
+
           font-weight: $font-weight-bold;
         }
       }
