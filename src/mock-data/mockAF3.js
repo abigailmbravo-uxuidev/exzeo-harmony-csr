@@ -71,7 +71,7 @@ const mock = {
                 dataSource: 'agencies',
                 extendedProperties: {
                   subscribe: true,
-                  displayAgencyInfo: true
+                  enableAgencyInfo: true
                 }
               },
               formData: {},
