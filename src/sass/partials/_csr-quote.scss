@@ -79,6 +79,40 @@
               }
             }
 
+            .modal {
+              .AgencyInfoModal {
+                .card-block {
+                  h4,
+                  h5 {
+                    margin-bottom: 0;
+
+                    span {
+                      font-weight: $font-weight-normal;
+                    }
+                  }
+                  .contact {
+                    display: flex;
+
+                    margin-bottom: 1rem;
+                    padding-bottom: 1rem;
+
+                    border-bottom: 1px dotted $warm-gray-02;
+
+                    &:last-of-type {
+                      margin-bottom: 0;
+                      padding-bottom: 0;
+
+                      border-bottom-width: 0;
+                    }
+
+                    p {
+                      margin-right: 1rem;
+                    }
+                  }
+                }
+              }
+            }
+
             form {
               flex-grow: 0;
               flex-shrink: 0;
