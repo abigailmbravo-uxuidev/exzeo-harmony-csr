@@ -7,13 +7,15 @@
           display: flex;
           align-items: center;
           justify-content: center;
-          margin: (-$padding) ($padding * 2) (-$padding) (-$padding * 2);
-          padding: 0 ($padding * 2);
+
           width: 12rem;
           height: 3.25rem;
+          margin: (-$padding) ($padding * 2) (-$padding) (-$padding * 2);
+          padding: 0 ($padding * 2);
+
+          color: $white;
           border-right: 1px dotted mix($bright-blue-darken-02, $green, 40%);
           background: mix($bright-blue-darken-02, $green, 80%);
-          color: $white;
 
           span {
             font-size: 1.125rem;
@@ -25,13 +27,17 @@
           align-items: center;
           flex-grow: 1;
           flex-shrink: 0;
+
           color: $white;
+
           font-size: $font-size-h5;
 
           label {
             margin-bottom: 0;
             padding: 0 $padding 0 ($padding * 4);
+
             color: $warm-gray-07;
+
             font-weight: $font-weight-normal;
           }
         }
@@ -39,14 +45,15 @@
     }
     //content wrapper
     main[role='document'] {
-      min-height: calc(100vh - 8.5rem);
       height: calc(100vh - 8.5rem);
+      min-height: calc(100vh - 8.5rem);
 
       .content-wrapper {
         overflow: hidden;
         flex-grow: 1;
         flex-shrink: 1;
         flex-wrap: nowrap;
+
         width: auto;
 
         .agency-contracts,
@@ -59,6 +66,7 @@
 
           .tax-details {
             display: flex;
+
             margin-bottom: $padding * 2;
 
             > div {
@@ -77,6 +85,7 @@
             overflow-y: auto;
             flex-grow: 1;
             flex-shrink: 0;
+
             width: 100%;
 
             form {
@@ -96,6 +105,7 @@
 
               &.agency-license {
                 margin-bottom: 0;
+
                 border-bottom-width: 0;
               }
 
@@ -105,13 +115,17 @@
 
                   dt {
                     margin-bottom: $padding;
+
                     color: $warm-gray-08;
+
                     font-size: $font-size-h5;
                   }
 
                   dd {
                     display: inline-flex;
+
                     margin-bottom: $padding * 2;
+
                     color: $warm-gray-10;
                   }
                 }
@@ -142,10 +156,12 @@
             section {
               margin-bottom: $padding * 2;
               padding-bottom: $padding * 2;
+
               border-bottom: 1px dashed mix($bright-blue-darken-02, $green, 80%);
 
               &.agency-details {
                 display: grid;
+
                 margin-bottom: $padding * 2;
                 padding-bottom: $padding * 4;
 
@@ -158,6 +174,10 @@
 
                 .agencyCode {
                   grid-column: span 2;
+
+                  input {
+                    border-style: dashed;
+                  }
                 }
 
                 .agencyName {
@@ -207,6 +227,7 @@
 
                 hr {
                   width: 100%;
+
                   border-top: 1px dashed
                     mix($bright-blue-darken-02, $green, 80%);
                   border-bottom-width: 0;
@@ -235,8 +256,9 @@
               &.agency-address {
                 display: flex;
                 flex-wrap: wrap;
-                padding-bottom: $padding * 2;
+
                 width: 100%;
+                padding-bottom: $padding * 2;
 
                 > h4 {
                   width: 100%;
@@ -256,8 +278,9 @@
                 .physical-address {
                   flex-grow: 0;
                   flex-shrink: 0;
-                  margin-bottom: $padding * 2;
+
                   width: calc(50% - 0.5rem);
+                  margin-bottom: $padding * 2;
 
                   h4 {
                     font-weight: $font-weight-normal;
@@ -278,6 +301,7 @@
                     > div {
                       flex-grow: 0;
                       flex-shrink: 0;
+
                       margin-right: $padding;
 
                       &.city {
@@ -298,6 +322,7 @@
 
                         .react-select__menu {
                           overflow-y: auto;
+
                           max-height: 9rem;
 
                           .react-select__menu-list {
@@ -326,6 +351,7 @@
 
                     .react-select__menu {
                       overflow-y: auto;
+
                       max-height: 9rem;
                     }
                   }
@@ -351,11 +377,13 @@
                   > div {
                     flex-grow: 1;
                     flex-shrink: 1;
+
                     margin-right: $padding;
 
                     &.title {
                       flex-grow: 0;
                       flex-shrink: 0;
+
                       width: 8rem;
                     }
 
@@ -369,13 +397,16 @@
               &.agency-aor {
                 display: flex;
                 flex-wrap: wrap;
-                margin-bottom: 0;
+
                 width: 100%;
+                margin-bottom: 0;
+
                 border-bottom-width: 0;
 
                 > h3 {
                   flex-grow: 0;
                   flex-shrink: 0;
+
                   width: 100%;
                 }
 
@@ -384,9 +415,10 @@
                   flex-direction: column;
                   flex-grow: 1;
                   flex-shrink: 1;
+
+                  max-width: 60%;
                   margin-right: $padding;
                   margin-bottom: $padding * 2;
-                  max-width: 60%;
 
                   .agent-id,
                   .agent-phone {
@@ -395,12 +427,18 @@
                     > div {
                       flex-grow: 1;
                       flex-shrink: 1;
+
                       margin-right: $padding;
 
                       &.agentCode {
                         flex-grow: 0;
                         flex-shrink: 0;
-                        width: 8rem;
+
+                        width: 9rem;
+
+                        input {
+                          border-style: dashed;
+                        }
                       }
 
                       &:last-child {
@@ -413,14 +451,18 @@
                 .agency-license {
                   flex-grow: 1;
                   flex-shrink: 1;
-                  margin-bottom: $padding * 2;
+
                   max-width: 40%;
+                  margin-bottom: $padding * 2;
 
                   .license-wrapper {
                     position: relative;
+
                     display: grid;
+
                     margin-bottom: $padding * 2;
                     padding: $padding ($padding * 2) ($padding * 2);
+
                     border: 1px solid $warm-gray-03;
                     border-radius: $btn-border-radius;
 
@@ -475,6 +517,10 @@
 
                   .agentCode {
                     grid-column: span 2;
+
+                    input {
+                      border-style: dashed;
+                    }
                   }
 
                   .emailAddress {
@@ -491,6 +537,7 @@
                 .agency-license {
                   margin-left: $padding;
                   padding-left: $padding * 2;
+
                   border-left: 1px dotted $warm-gray-03;
                 }
 
@@ -513,6 +560,7 @@
               &.contract-details {
                 display: flex;
                 flex-wrap: wrap;
+
                 padding-bottom: 0;
 
                 .contract {
@@ -526,6 +574,7 @@
 
             .card {
               flex-direction: row;
+
               margin: 0 (-$padding/2) ($padding);
               padding: $padding ($padding * 1.5);
 
@@ -542,11 +591,14 @@
                   flex-grow: 0;
                   flex-shrink: 0;
                   justify-content: center;
+
                   width: 4rem;
 
                   i {
-                    color: $bright-blue-darken-04;
                     text-align: center;
+
+                    color: $bright-blue-darken-04;
+
                     font-size: $font-size-h2;
 
                     &.fa-address-card {
@@ -556,7 +608,9 @@
 
                   label {
                     margin-bottom: 0;
+
                     text-align: center;
+
                     font-size: $font-size-sm;
                   }
 
@@ -566,11 +620,13 @@
 
                     i {
                       margin: 0;
+
                       font-size: $font-size-sm;
                     }
 
                     label {
                       margin-bottom: $padding/4;
+
                       font-size: $font-size-xs;
                     }
                   }
@@ -579,11 +635,14 @@
                 .contact-details {
                   flex-grow: 1;
                   flex-shrink: 1;
+
                   margin-left: $padding * 2;
+
                   font-weight: $font-weight-normal;
 
                   h4 {
                     color: $warm-gray-10;
+
                     font-weight: $font-weight-normal;
 
                     .agency-display-name,
@@ -603,6 +662,7 @@
 
                   p {
                     margin-bottom: 0;
+
                     color: $warm-gray-10;
                   }
 
@@ -613,14 +673,17 @@
                     p {
                       display: flex;
                       align-items: center;
+
                       margin-right: $padding * 2;
 
                       small {
                         margin-right: $padding;
                         padding: 0 0.2rem;
+
+                        color: $white;
                         border-radius: 2px;
                         background: $warm-gray-08;
-                        color: $white;
+
                         font-size: 70%;
 
                         sup {
@@ -630,16 +693,19 @@
                         i {
                           margin-right: 0;
                           margin-left: 0.1rem;
+
                           color: $white;
                         }
                       }
 
                       i {
                         margin-right: $padding;
+
                         color: $warm-gray-08;
 
                         &.fa-phone-square {
                           margin-top: 3%;
+
                           font-size: 112%;
                         }
                       }
@@ -648,7 +714,9 @@
                         flex-basis: auto;
                         flex-grow: 0;
                         flex-shrink: 0;
+
                         margin: 0 $padding 0 0;
+
                         color: $warm-gray-08;
                       }
                     }
@@ -657,10 +725,12 @@
                   .contact-address {
                     .additional-data {
                       margin-left: $padding;
+
                       font-size: $font-size-sm;
 
                       label {
                         margin: 0;
+
                         font-size: $font-size-xs;
                       }
                     }
@@ -673,11 +743,13 @@
                     ul {
                       margin: 0;
                       padding: 0;
+
                       list-style: none;
 
                       li {
                         display: flex;
                         align-items: center;
+
                         padding: 0;
 
                         &:last-child {
@@ -687,6 +759,7 @@
                         p {
                           display: flex;
                           align-items: center;
+
                           margin-right: $padding * 2;
                           margin-bottom: 0;
 
@@ -697,24 +770,29 @@
                           small {
                             margin-right: $padding;
                             padding: 0 0.2rem;
+
+                            color: $white;
                             border-radius: 2px;
                             background: $warm-gray-08;
-                            color: $white;
+
                             font-size: 70%;
 
                             i {
                               margin-right: 0;
                               margin-left: 0.1rem;
+
                               color: $white;
                             }
                           }
 
                           i {
                             margin-right: $padding;
+
                             color: $warm-gray-08;
 
                             &.fa-phone-square {
                               margin-top: 3%;
+
                               font-size: 112%;
                             }
                           }
@@ -723,7 +801,9 @@
                             flex-basis: auto;
                             flex-grow: 0;
                             flex-shrink: 0;
+
                             margin: 0 $padding 0 0;
+
                             color: $warm-gray-08;
                           }
                         }
@@ -731,15 +811,18 @@
                         div {
                           display: flex;
                           align-items: center;
+
                           margin-right: $padding * 2;
 
                           h5 {
                             margin: 0 $padding 0 0;
+
                             color: $warm-gray-08;
                           }
 
                           span {
                             width: auto;
+
                             white-space: nowrap;
                           }
 
@@ -756,8 +839,8 @@
                     flex-wrap: wrap;
 
                     h4 {
-                      margin-bottom: 0;
                       width: 100%;
+                      margin-bottom: 0;
                     }
 
                     .card-name-content {
@@ -776,6 +859,7 @@
                       display: flex;
                       flex-grow: 0;
                       flex-shrink: 0;
+
                       width: auto;
                     }
                   }
@@ -789,12 +873,14 @@
                 flex-grow: 1;
                 flex-shrink: 1;
                 justify-content: center;
+
                 margin-left: $padding * 2;
 
                 .contract-header,
                 .license-header {
                   display: flex;
                   justify-content: space-between;
+
                   width: 100%;
 
                   .contract-csp,
@@ -805,15 +891,18 @@
 
                 .contract-info {
                   display: flex;
+
                   margin-bottom: 0;
 
                   .additional-contract-info {
                     display: flex;
                     flex-direction: column;
+
                     margin-right: $padding * 2;
 
                     label {
                       margin-bottom: 0;
+
                       font-size: $font-size-sm;
                     }
 
@@ -835,6 +924,7 @@
 
                           label {
                             margin-right: $padding/2;
+
                             font-weight: $font-weight-normal;
                           }
 
@@ -851,12 +941,15 @@
                   &.contract-agent-list {
                     margin: 0;
                     padding: 0;
+
                     list-style: none;
 
                     li {
                       display: flex;
                       align-items: flex-start;
+
                       padding: ($padding/2) ($padding * 0.75);
+
                       font-size: $font-size-sm;
 
                       &:nth-of-type(odd) {
@@ -864,13 +957,14 @@
                       }
 
                       &.header {
-                        background: $warm-gray-02;
                         color: $warm-gray-08;
+                        background: $warm-gray-02;
                       }
 
                       span {
                         flex-grow: 0;
                         flex-shrink: 0;
+
                         color: $warm-gray-08;
 
                         &.label {
@@ -878,14 +972,16 @@
                         }
 
                         &.is-primary {
-                          margin-right: $padding * 2;
                           width: 3.5rem;
+                          margin-right: $padding * 2;
+
                           text-align: center;
                         }
 
                         &.aor,
                         &.appointed {
                           width: 4.5rem;
+
                           text-align: center;
                         }
 
@@ -915,18 +1011,22 @@
                 flex-grow: 0;
                 flex-shrink: 0;
                 justify-content: center;
+
                 width: auto;
               }
 
               footer {
                 display: flex;
+
                 margin-top: $padding;
                 padding-top: $padding;
+
                 border-top: 1px dotted $warm-gray-02;
 
                 h5 {
                   flex-grow: 1;
                   flex-shrink: 1;
+
                   color: $warm-gray-10;
 
                   .agency-code {
@@ -938,8 +1038,9 @@
                   align-items: center;
                   flex-grow: 0;
                   flex-shrink: 0;
-                  margin-left: $padding;
+
                   width: auto;
+                  margin-left: $padding;
 
                   .btn-link {
                     padding: 0;
@@ -956,6 +1057,7 @@
               section {
                 margin-bottom: 0;
                 padding-bottom: 0;
+
                 border-width: 0;
               }
             }
@@ -965,29 +1067,35 @@
         .route-content-wrapper {
           &.new-branch {
             position: absolute;
+            z-index: 1;
             top: 0;
             right: 0;
             bottom: 0;
             left: 0;
-            z-index: 1;
+
             padding-left: 12rem;
+
             background: rgba($warm-gray-03, 0.75);
 
             &:before {
               position: absolute;
+              z-index: -1;
               top: 0.5rem;
               left: 1rem;
-              z-index: -1;
+
               display: flex;
               align-items: center;
-              padding-left: $padding * 2;
+
               width: 11rem;
               height: 47px;
+              padding-left: $padding * 2;
+
+              content: 'Create Branch';
+
+              color: $warm-gray-12;
               border-left: 0.25rem solid $bright-blue-darken-04;
               background-color: $white;
               box-shadow: $card-box-shadow;
-              color: $warm-gray-12;
-              content: 'Create Branch';
             }
 
             .route-content {
@@ -1007,8 +1115,8 @@
               width: 100%;
 
               .card {
-                margin: 0 auto;
                 width: 60%;
+                margin: 0 auto;
 
                 .card-block {
                   .agency-details {
@@ -1029,6 +1137,7 @@
                       .title {
                         flex-grow: 0;
                         flex-shrink: 0;
+
                         width: 8rem;
                       }
 
@@ -1042,6 +1151,7 @@
                     .emailAddress {
                       flex-grow: 0;
                       flex-shrink: 0;
+
                       width: 100%;
                     }
                   }
@@ -1061,7 +1171,11 @@
                         &.agentCode {
                           flex-grow: 0;
                           flex-shrink: 0;
-                          width: 8rem;
+
+                          width: 9rem;
+                          input {
+                            border-style: dashed;
+                          }
                         }
                       }
                     }
@@ -1082,13 +1196,16 @@
     display: flex;
     align-items: center;
     justify-content: center;
+
     padding: $padding 0 ($padding * 3);
 
     hr {
       flex-grow: 1;
       flex-shrink: 1;
+
       margin: 0 ($padding * 2);
       padding: 0;
+
       border-width: 0;
       border-top: 1px solid $warm-gray-04;
     }
@@ -1121,8 +1238,8 @@
       width: 100%;
 
       .card {
-        max-height: 80vh;
         width: 30rem;
+        max-height: 80vh;
 
         .card-block {
           .license-details {
@@ -1134,8 +1251,8 @@
               flex-shrink: 0;
 
               &.state {
-                margin-right: $padding;
                 width: 30%;
+                margin-right: $padding;
               }
 
               &.licenseNumber {
@@ -1143,8 +1260,8 @@
               }
 
               &.licenseType {
-                margin-right: $padding;
                 width: calc(60% - 0.5rem);
+                margin-right: $padding;
               }
 
               &.licenseEffectiveDate {
@@ -1164,6 +1281,7 @@
       overflow: visible;
       align-items: center;
       justify-content: center;
+
       max-height: 90%;
 
       form {
@@ -1171,18 +1289,22 @@
         flex-direction: column;
         flex-grow: 1;
         flex-shrink: 1;
+
         width: 100%;
 
         .card-block {
           display: flex;
           overflow: visible;
+
           width: 100%;
 
           .contract-details {
             flex-grow: 1;
             flex-shrink: 1;
+
             margin-right: $padding;
             padding-right: $padding * 2;
+
             border-right: 1px dotted $warm-gray-03;
 
             .companyCode {
@@ -1204,8 +1326,9 @@
           .contract-csp {
             flex-grow: 0;
             flex-shrink: 0;
-            margin-left: $padding;
+
             width: 20rem;
+            margin-left: $padding;
 
             .csp-wrapper {
               display: flex;
@@ -1214,24 +1337,28 @@
               .state {
                 flex-grow: 0;
                 flex-shrink: 0;
-                margin-right: $padding;
+
                 width: 6rem;
+                margin-right: $padding;
               }
 
               i {
                 display: flex;
                 align-items: center;
                 justify-content: center;
-                margin-top: 1.875rem;
+
                 width: 3rem;
                 height: 2rem;
+                margin-top: 1.875rem;
+
                 color: $bright-blue;
 
                 @include transition(all 0.2s ease-in-out);
 
                 &:hover {
-                  color: $bright-blue-darken-04;
                   cursor: pointer;
+
+                  color: $bright-blue-darken-04;
                 }
 
                 &.fa-times-circle {
@@ -1251,6 +1378,7 @@
               hr {
                 flex-grow: 1;
                 flex-shrink: 1;
+
                 border-width: 0;
                 border-top: 1px solid $warm-gray-04;
               }
@@ -1280,14 +1408,16 @@
   &.agency-crud {
     form {
       overflow: hidden;
-      max-height: 90%;
+
       width: 100%;
+      max-height: 90%;
 
       .card {
         overflow: hidden;
-        margin: 0 auto;
-        max-height: 100%;
+
         width: 80%;
+        max-height: 100%;
+        margin: 0 auto;
 
         &.branch {
           width: 70%;
@@ -1303,6 +1433,7 @@
 
             .react-select__menu {
               overflow-y: auto;
+
               max-height: 9rem;
 
               .react-select__menu-list {
@@ -1318,6 +1449,7 @@
 
             .react-select__menu {
               overflow-y: auto;
+
               max-height: 8rem;
             }
           }
@@ -1325,6 +1457,7 @@
 
         .agency-details {
           display: grid;
+
           margin-bottom: 0;
           padding-bottom: 0;
 
@@ -1333,6 +1466,10 @@
 
           .agencyCode {
             grid-column: span 2;
+
+            input {
+              border-style: dashed;
+            }
           }
 
           .agencyName {
@@ -1391,6 +1528,7 @@
 
           hr {
             width: 100%;
+
             border-top: 1px dashed mix($bright-blue-darken-02, $green, 80%);
             border-bottom-width: 0;
             background: $white;
@@ -1422,12 +1560,14 @@
             > div {
               flex-grow: 0;
               flex-shrink: 0;
-              margin-right: $padding * 2;
+
               width: 9rem;
+              margin-right: $padding * 2;
 
               &:last-child {
                 flex-grow: 1;
                 flex-shrink: 1;
+
                 margin-right: 0;
               }
             }
@@ -1436,6 +1576,7 @@
 
         .agency-address {
           display: flex;
+
           width: 100%;
 
           > h4 {
@@ -1446,6 +1587,7 @@
           .agency-physical-address {
             flex-grow: 0;
             flex-shrink: 0;
+
             width: calc(50% - 0.5rem);
 
             .address1,
@@ -1470,6 +1612,7 @@
               > div {
                 flex-grow: 0;
                 flex-shrink: 0;
+
                 margin-right: $padding * 2;
 
                 &.city {
@@ -1509,8 +1652,8 @@
       width: 100%;
 
       .card {
-        max-height: 80vh;
         width: 90%;
+        max-height: 80vh;
 
         .card-block {
           display: flex;
@@ -1528,17 +1671,23 @@
                 > div {
                   flex-grow: 1;
                   flex-shrink: 1;
+
                   margin-right: $padding;
 
                   &.agentCode {
                     flex-grow: 0;
                     flex-shrink: 0;
-                    width: 8rem;
+
+                    width: 9rem;
+                    input {
+                      border-style: dashed;
+                    }
                   }
 
                   &.status {
                     flex-grow: 0;
                     flex-shrink: 0;
+
                     width: 12rem;
                   }
 
@@ -1553,17 +1702,18 @@
               display: flex;
               flex-grow: 1;
               flex-shrink: 1;
-              margin-right: $padding;
+
               max-width: 70%;
+              margin-right: $padding;
 
               .agency-mailing-address {
-                margin-right: $padding/2;
                 width: 50%;
+                margin-right: $padding/2;
               }
 
               .agency-physical-address {
-                margin-left: $padding/2;
                 width: 50%;
+                margin-left: $padding/2;
 
                 h4 {
                   label {
@@ -1601,16 +1751,21 @@
             &.agent-license {
               flex-grow: 1;
               flex-shrink: 1;
+
+              max-width: 30%;
               margin-left: $padding;
               padding-left: $padding * 2;
-              max-width: 30%;
+
               border-left: 1px dotted $warm-gray-03;
 
               .license-wrapper {
                 position: relative;
+
                 display: grid;
+
                 margin-bottom: $padding * 2;
                 padding: $padding ($padding * 2) ($padding * 2);
+
                 border: 1px solid $warm-gray-03;
                 border-radius: $btn-border-radius;
 
@@ -1651,8 +1806,9 @@
 
                   .coverage,
                   .discountSurcharge {
-                    padding: ($padding * 1.5) ($padding * 2);
                     width: 60%;
+                    padding: ($padding * 1.5) ($padding * 2);
+
                     white-space: normal;
                     hyphens: auto;
                   }
@@ -1678,10 +1834,12 @@
               .contact-address {
                 .additional-data {
                   margin-left: $padding;
+
                   font-size: $font-size-sm;
 
                   label {
                     margin: 0;
+
                     font-size: $font-size-xs;
                   }
                 }
@@ -1701,10 +1859,12 @@
       .contact-address {
         .additional-data {
           margin-left: $padding;
+
           font-size: $font-size-sm;
 
           label {
             margin-bottom: 0;
+
             font-size: $font-size-xs;
           }
         }

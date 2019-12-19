@@ -25,10 +25,10 @@ const AgencyDetails = ({ agencyCodeDisabled }) => {
         styleName="agencyCode"
         name="agencyCode"
         dataTest="agencyCode"
+        placeholder="Generated if left blank"
         component={Integer}
         thousandSeparator={false}
         disabled={agencyCodeDisabled}
-        validate={validation.isRequired}
       />
       <Field
         label="Agency Name"
