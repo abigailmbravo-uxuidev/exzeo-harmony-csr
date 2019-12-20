@@ -46,8 +46,8 @@ describe('Underwriting Error Testing', () => {
       .should('contain', 'Override')
       // Override the exception manually.
       .get('section.msg-caution .fa-ul li input')
-      .should('have.attr', 'value', 'false')
-      .click()
+      .should('have.attr', 'value', '')
+      .check()
       .get('.uw-validation-header button[type="submit"]')
       .click()
       .wait('@updateQuote')
