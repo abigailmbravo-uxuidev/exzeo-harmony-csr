@@ -3,7 +3,7 @@ import { normalize } from '@exzeo/core-ui';
 import ContactAddress from '../../components/ContactAddress';
 
 function AgentCard({ agent, policyNumber, policyHolders }) {
-  if (!agent && !agent.agentCode)
+  if (!agent || !agent.agentCode)
     return <div className="agency contact card">Agent not found.</div>;
   return (
     <div className="agent contact card">
