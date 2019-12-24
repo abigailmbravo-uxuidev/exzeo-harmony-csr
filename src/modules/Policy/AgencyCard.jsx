@@ -4,7 +4,7 @@ import ContactAddress from '../../components/ContactAddress';
 import { formatUrl } from '../../utilities/format';
 
 function AgencyCard({ agency, policyNumber, policyHolders }) {
-  if (!agency && !agency.agencyCode)
+  if (!agency || !agency.agencyCode)
     return <div className="agency contact card">Agency not found.</div>;
 
   return (
