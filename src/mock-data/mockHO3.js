@@ -69,7 +69,8 @@ const mock = {
                 size: '9',
                 component: '$AGENCY_AGENT_SELECT',
                 extendedProperties: {
-                  subscribe: true
+                  subscribe: true,
+                  enableAgencyInfo: true
                 }
               },
               formData: {},

@@ -17,7 +17,8 @@ export const LicenseModal = props => {
     { answer: 'Non-Resident', label: 'Non-Resident' }
   ];
 
-  const actionType = initialValues ? 'Edit' : 'Add';
+  const actionType =
+    initialValues && initialValues.licenseNumber ? 'Edit' : 'Add';
   return (
     <div className="modal license-crud">
       <div className="card">

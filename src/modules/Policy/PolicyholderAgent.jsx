@@ -73,20 +73,16 @@ const PolicyholderAgent = ({ customHandlers, initialValues }) => {
             Change AOR
           </button>
         </h3>
-        {agency.agencyCode && (
-          <AgencyCard
-            agency={agency}
-            policyNumber={initialValues.policyNumber}
-            policyHolders={initialValues.policyHolders}
-          />
-        )}
-        {selectedAgent && (
-          <AgentCard
-            agent={selectedAgent}
-            policyNumber={initialValues.policyNumber}
-            policyHolders={initialValues.policyHolders}
-          />
-        )}
+        <AgencyCard
+          agency={agency}
+          policyNumber={initialValues.policyNumber}
+          policyHolders={initialValues.policyHolders}
+        />
+        <AgentCard
+          agent={selectedAgent}
+          policyNumber={initialValues.policyNumber}
+          policyHolders={initialValues.policyHolders}
+        />
       </section>
     </React.Fragment>
   );
