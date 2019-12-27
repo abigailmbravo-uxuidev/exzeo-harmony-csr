@@ -1,6 +1,6 @@
 // Functions used to navigate each tab of the app
 
-import { user, pH1, underwriting } from '../fixtures';
+import { user, pH1, underwriting, coveragevalues } from '../fixtures';
 
 export const navigateThroughNewQuote = (address = user.address1) => {
   cy.task('log', 'Navigating through Quote')
@@ -33,6 +33,26 @@ export const fillOutCoverage = (customerInfo = pH1) =>
     .clickSubmit()
     .wait('@updateQuote');
 
+export const changeCoverage = (limits = coveragevalues) =>
+  cy
+    .task('log', 'Changing coverege values')
+    .goToNav('coverage')
+    .wait('@updateQuote')
+    .then(({ response }) => {
+      const premium = response.body.result.rating.totalPremium;
+      cy.log(premium).wait(5000);
+      cy.wrap(Object.entries(limits)).each(([field, value]) => {
+        cy.findDataTag(field)
+          .find('input')
+          .type(`{selectall}{backspace}${value}`);
+      });
+      cy.clickSubmit()
+        .wait('@updateQuote')
+        .then(({ response }) => {
+          expect(response.body.result.rating.totalPremium).not.to.eq(premium);
+        });
+    });
+
 export const fillOutUnderwriting = (data = underwriting) =>
   cy
     .task('log', 'Filling out Underwriting')
@@ -41,8 +61,8 @@ export const fillOutUnderwriting = (data = underwriting) =>
     .each(([name, value]) =>
       cy.findDataTag(`${name}_${value}`).click({ force: true })
     )
-    .clickSubmit()
-    .wait('@updateQuote');
+    .clickSubmit();
+// .wait('@updateQuote');
 
 export const fillOutAdditionalInterests = () =>
   cy.task('log', 'Filling out AIs').goToNav('additionalInterests');

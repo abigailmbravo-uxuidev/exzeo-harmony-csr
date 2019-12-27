@@ -3,6 +3,7 @@ import {
   navigateThroughNewQuote,
   fillOutCoverage,
   fillOutUnderwriting,
+  changeCoverage,
   fillOutAdditionalInterests,
   fillOutMailingBilling,
   fillOutNotesFiles,
@@ -29,10 +30,11 @@ describe('Base Path', () => {
     navigateThroughNewQuote();
 
     fillOutCoverage();
-    coverageRatingTest();
+    // coverageRatingTest();
 
     fillOutUnderwriting();
-    underwritingTest();
+    // underwritingTest();
+    changeCoverage();
 
     fillOutAdditionalInterests();
     aiTest();
