@@ -203,7 +203,8 @@ export function getPrimaryPolicyHolder(policyHolders) {
   if (!primaryPolicyHolder) return { displayName: '', phone: '' };
 
   return {
-    displayName: `${primaryPolicyHolder.firstName} ${primaryPolicyHolder.lastName}`,
+    displayName: `${primaryPolicyHolder.firstName ||
+      ''} ${primaryPolicyHolder.lastName || ''}`,
     phone: normalize.phone(primaryPolicyHolder.primaryPhoneNumber)
   };
 }

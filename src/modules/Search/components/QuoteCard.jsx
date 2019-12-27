@@ -2,6 +2,15 @@ import React from 'react';
 import { date } from '@exzeo/core-ui';
 
 function QuoteCard({ handleKeyPress, handleClick, quote }) {
+  const firstName =
+    quote.policyHolders[0] && quote.policyHolders[0].firstName
+      ? quote.policyHolders[0].firstName
+      : '';
+  const lastName =
+    quote.policyHolders[0] && quote.policyHolders[0].lastName
+      ? quote.policyHolders[0].lastName
+      : '';
+
   return (
     <div
       tabIndex="0"
@@ -47,22 +56,10 @@ function QuoteCard({ handleKeyPress, handleClick, quote }) {
           {Array.isArray(quote.policyHolders) &&
             quote.policyHolders.length > 0 && (
               <h4>
-                {`${
-                  quote.policyHolders[0].firstName
-                    ? quote.policyHolders[0].firstName.replace(
-                        /(^.{20}).*$/,
-                        '$1...'
-                      )
-                    : ''
-                } 
-                  ${
-                    quote.policyHolders[0].lastName
-                      ? quote.policyHolders[0].lastName.replace(
-                          /(^.{20}).*$/,
-                          '$1...'
-                        )
-                      : ''
-                  }`}
+                {`${firstName.replace(
+                  /(^.{20}).*$/,
+                  '$1...'
+                )} ${lastName.replace(/(^.{20}).*$/, '$1...')}`}
                 &nbsp;|&nbsp;
                 <span className="propertyAddress">
                   {`${quote.property.physicalAddress.address1}`},&nbsp;
