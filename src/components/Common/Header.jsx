@@ -9,83 +9,76 @@ const handleLogout = auth => {
   auth.logout();
 };
 
-const Header = props => {
-  console.log(props.search);
-  return (
-    <header>
-      <div role="banner">
-        <button className="btn-icon btn-bars">
-          <i className="fa fa-bars" />
+const Header = ({ auth, authState, diaryCount }) => (
+  <header>
+    <div role="banner">
+      <button className="btn-icon btn-bars">
+        <i className="fa fa-bars" />
+      </button>
+      <Link to="/" id="logo" className="logo">
+        <img src={logo} alt="Harmony" />
+      </Link>
+      <button className="btn-icon btn-ellipsis-v">
+        <i className="fa fa-ellipsis-v" />
+      </button>
+      <nav>
+        <NavLink
+          activeClassName="active"
+          exact
+          to="/diaries"
+          data-test="diaries-link"
+        >
+          Diaries
+        </NavLink>{' '}
+        {diaryCount}
+        <NavLink
+          activeClassName="active"
+          exact
+          to="/reports"
+          data-test="reports-link"
+        >
+          Reports
+        </NavLink>
+        <NavLink
+          activeClassName="active"
+          exact
+          to="/agency"
+          data-test="agency-link"
+        >
+          Agency
+        </NavLink>
+        <NavLink
+          activeClassName="active"
+          exact
+          to="/finance/payments"
+          data-test="bulk-payments-link"
+        >
+          Finance
+        </NavLink>
+        <NavLink activeClassName="active" exact to="/" data-test="policy-link">
+          Policy
+        </NavLink>
+        {/* <a href="">User Management</a> */}
+        <div className="user-name">
+          {authState && authState.userProfile
+            ? authState.userProfile.userName
+            : ''}
+        </div>
+        <button tabIndex="0" className="btn btn-action">
+          <i className="fa fa-gear" />
         </button>
-        <Link to="/" id="logo" className="logo">
-          <img src={logo} alt="Harmony" />
-        </Link>
-        <button className="btn-icon btn-ellipsis-v">
-          <i className="fa fa-ellipsis-v" />
+        <button
+          tabIndex="0"
+          className="btn logout btn-action"
+          type="button"
+          onClick={() => handleLogout(auth)}
+        >
+          <i className="fa fa-sign-out" />
         </button>
-        <nav>
-          <NavLink
-            activeClassName="active"
-            exact
-            to="/diaries"
-            data-test="diaries-link"
-          >
-            Diaries
-          </NavLink>
-          <NavLink
-            activeClassName="active"
-            exact
-            to="/reports"
-            data-test="reports-link"
-          >
-            Reports
-          </NavLink>
-          <NavLink
-            activeClassName="active"
-            exact
-            to="/agency"
-            data-test="agency-link"
-          >
-            Agency
-          </NavLink>
-          <NavLink
-            activeClassName="active"
-            exact
-            to="/finance/payments"
-            data-test="bulk-payments-link"
-          >
-            Finance
-          </NavLink>
-          <NavLink
-            activeClassName="active"
-            exact
-            to="/"
-            data-test="policy-link"
-          >
-            Policy
-          </NavLink>
-          {/* <a href="">User Management</a> */}
-          <div className="user-name">
-            {props.authState && props.authState.userProfile
-              ? props.authState.userProfile.userName
-              : ''}
-          </div>
-          <button tabIndex="0" className="btn btn-action">
-            <i className="fa fa-gear" />
-          </button>
-          <button
-            tabIndex="0"
-            className="btn logout btn-action"
-            type="button"
-            onClick={() => handleLogout(props.auth)}
-          >
-            <i className="fa fa-sign-out" />
-          </button>
-        </nav>
-      </div>
-    </header>
-  );
-};
+      </nav>
+    </div>
+  </header>
+);
 
 Header.propTypes = {
   auth: PropTypes.shape({
@@ -93,12 +86,12 @@ Header.propTypes = {
   }).isRequired,
   authState: PropTypes.shape({
     userProfile: PropTypes.object
-  })
+  }),
+  diaryCount: PropTypes.number
 };
 
 const mapStateToProps = state => ({
-  authState: state.authState,
-  search: state.search.results
+  authState: state.authState
 });
 
 export default connect(mapStateToProps)(Header);
