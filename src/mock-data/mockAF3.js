@@ -457,7 +457,7 @@ const mock = {
                     size: '7',
                     segmented: true,
                     disabled:
-                      '${Math.ceil((it.coverageLimits.building.value || 0) / 4) > (it.coverageLimits.personalProperty.value || 0)}',
+                      '${Math.ceil((((it.coverageLimits.personalProperty.value || 0) / it.coverageLimits.building.value) * 100 )) < 25}',
                     dataSource: [
                       { label: 'No', answer: false },
                       { label: 'Yes', answer: true }
