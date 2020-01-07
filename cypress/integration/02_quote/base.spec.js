@@ -9,7 +9,8 @@ import {
   fillOutNotesFiles,
   fillOutSummary,
   fillOutApplication,
-  navigateThroughDocusign
+  navigateThroughDocusign,
+  sendQuote
 } from '../../helpers';
 import {
   coverageRatingTest,
@@ -47,6 +48,7 @@ describe('Base Path', () => {
 
     fillOutSummary();
     quoteSummaryTest();
+    sendQuote();
 
     fillOutApplication();
     applicationTest();

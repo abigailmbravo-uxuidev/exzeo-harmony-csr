@@ -1,6 +1,12 @@
 // Functions used to navigate each tab of the app
 
-import { user, pH1, underwriting, coveragevalues } from '../fixtures';
+import {
+  user,
+  pH1,
+  underwriting,
+  coverageValues,
+  shareQuote
+} from '../fixtures';
 
 export const navigateThroughNewQuote = (address = user.address1) => {
   cy.task('log', 'Navigating through Quote')
@@ -12,6 +18,7 @@ export const navigateThroughNewQuote = (address = user.address1) => {
     .type(address)
     .clickSubmit()
     .wait('@fetchAddresses')
+    .window()
     // This makes it so we don't open up a new window
     .findDataTag(address)
     .then($a => {
@@ -33,18 +40,17 @@ export const fillOutCoverage = (customerInfo = pH1) =>
     .clickSubmit()
     .wait('@updateQuote');
 
-export const changeCoverage = (limits = coveragevalues) =>
+export const changeCoverage = (limits = coverageValues) =>
   cy
     .task('log', 'Changing coverege values')
     .goToNav('coverage')
     .wait('@updateQuote')
     .then(({ response }) => {
       const premium = response.body.result.rating.totalPremium;
-      cy.log(premium).wait(5000);
       cy.wrap(Object.entries(limits)).each(([field, value]) => {
-        cy.findDataTag(field)
-          .find('input')
-          .type(`{selectall}{backspace}${value}`);
+        cy.findDataTag(field).type(`{selectall}{backspace}${value}`, {
+          force: true
+        });
       });
       cy.clickSubmit()
         .wait('@updateQuote')
@@ -62,7 +68,6 @@ export const fillOutUnderwriting = (data = underwriting) =>
       cy.findDataTag(`${name}_${value}`).click({ force: true })
     )
     .clickSubmit();
-// .wait('@updateQuote');
 
 export const fillOutAdditionalInterests = () =>
   cy.task('log', 'Filling out AIs').goToNav('additionalInterests');
@@ -83,6 +88,21 @@ export const fillOutNotesFiles = () =>
 
 export const fillOutSummary = () =>
   cy.task('log', 'Filling out Summary').goToNav('summary');
+
+export const sendQuote = (data = shareQuote) =>
+  cy
+    .wrap(Object.entries(data))
+    .each(([field, value]) =>
+      cy
+        .findDataTag(field)
+        .type(`{selectall}{backspace}${value}`, { force: true })
+    )
+    .findDataTag('share-footer-submit')
+    .click({ force: true })
+    .wait('@shareQuote')
+    .then(({ response }) => {
+      expect(response.body.message).to.equal('success');
+    });
 
 export const fillOutApplication = () =>
   cy.task('log', 'Filling out Application Page').goToNav('application');

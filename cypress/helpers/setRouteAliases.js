@@ -48,4 +48,6 @@ export const setRouteAliases = () =>
     .route('POST', '/svc?fetchFiles')
     .as('fetchFiles')
     .route('POST', '/svc?getNoteOptions')
-    .as('getNoteOptions');
+    .as('getNoteOptions')
+    .route('POST', 'svc?sendQuoteSummary')
+    .as('shareQuote');
