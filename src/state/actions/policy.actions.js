@@ -349,12 +349,13 @@ export function updateBillPlan(paymentPlan) {
 
 /**
  *
+ * @param { object } company, state, product, effectiveDate
  * @returns {Function}
  */
-export function getCancelOptions() {
+export function getCancelOptions(options) {
   return async dispatch => {
     try {
-      const cancelOptions = await fetchCancelOptions();
+      const cancelOptions = await fetchCancelOptions(options);
       dispatch(setCancelOptions(cancelOptions));
     } catch (error) {
       dispatch(errorActions.setAppError(error));
@@ -614,11 +615,22 @@ export async function postUpdatedBillPlan(paymentPlan) {
  *
  * @returns {Promise<Array>}
  */
-export async function fetchCancelOptions() {
+export async function fetchCancelOptions({
+  companyCode,
+  state,
+  product,
+  effectiveDate
+}) {
   const config = {
-    service: 'policy-data',
-    method: 'GET',
-    path: 'cancelOptions'
+    exchangeName: 'harmony',
+    routingKey: 'harmony.configuration.retrieveSettings',
+    data: {
+      companyCode,
+      state,
+      product,
+      effectiveDate,
+      keys: ['cancelReasons']
+    }
   };
 
   try {
@@ -626,8 +638,9 @@ export async function fetchCancelOptions() {
       config,
       'fetchCancelOptions'
     );
-    return response && response.data && response.data.cancelOptions
-      ? response.data.cancelOptions
+    console.log(response.data.result[0].value);
+    return response && response.data && response.data.result
+      ? response.data.result[0].value
       : [];
   } catch (error) {
     throw error;
@@ -739,7 +752,6 @@ export function initializePolicyWorkflow(policyNumber) {
       const { summaryLedger, policy } = await dispatch(getPolicy(policyNumber));
       dispatch(getEffectiveDateChangeReasons());
       dispatch(getPaymentOptionsApplyPayments());
-      dispatch(getCancelOptions());
       dispatch(getEndorsementHistory(policyNumber));
       dispatch(
         getZipcodeSettings(
@@ -748,6 +760,15 @@ export function initializePolicyWorkflow(policyNumber) {
           policy.product,
           policy.property.physicalAddress.zip
         )
+      );
+
+      dispatch(
+        getCancelOptions({
+          companyCode: policy.companyCode,
+          state: policy.state,
+          product: policy.product,
+          effectiveDate: policy.effectiveDate
+        })
       );
 
       if (summaryLedger) {
