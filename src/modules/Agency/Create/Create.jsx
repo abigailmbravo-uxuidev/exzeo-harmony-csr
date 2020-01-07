@@ -138,6 +138,7 @@ export class Create extends Component {
                   Agent Of Record
                   <button
                     onClick={this.handleToggleExistingAgentModal}
+                    type="button"
                     className="btn btn-link btn-sm"
                   >
                     <i className="fa fa-user" />
