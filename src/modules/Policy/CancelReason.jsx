@@ -22,11 +22,11 @@ const CancelReason = ({ options }) => {
 
     const selectedOptions =
       cancelOptions &&
-      cancelOptions.find(option => option.cancelType === cancelType);
+      cancelOptions.find(option => option.transactionType === cancelType);
 
     setCancelReasons(
-      selectedOptions && selectedOptions.cancelReason
-        ? selectedOptions.cancelReason.map(reason => ({
+      selectedOptions && selectedOptions.reasons
+        ? selectedOptions.reasons.map(reason => ({
             answer: reason,
             label: reason
           }))

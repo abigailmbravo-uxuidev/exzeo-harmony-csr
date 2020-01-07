@@ -613,6 +613,7 @@ export async function postUpdatedBillPlan(paymentPlan) {
 
 /**
  *
+ * @param {Object} options
  * @returns {Promise<Array>}
  */
 export async function fetchCancelOptions({
@@ -638,7 +639,7 @@ export async function fetchCancelOptions({
       config,
       'fetchCancelOptions'
     );
-    console.log(response.data.result[0].value);
+
     return response && response.data && response.data.result
       ? response.data.result[0].value
       : [];
