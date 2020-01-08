@@ -90,8 +90,10 @@ class DiariesSearch extends Component {
                 />
               </div>
             </div>
+            <span className="count-results">
+              <strong>{results.length}</strong>RESULTS
+            </span>
             <ResetButton reset={reset} />
-            {results.length}
             <Button
               className={Button.constants.classNames.success}
               customClass="multi-input"

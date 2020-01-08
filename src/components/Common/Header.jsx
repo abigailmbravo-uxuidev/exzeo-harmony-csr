@@ -35,8 +35,8 @@ const Header = ({ auth, authState: { userProfile = {} }, diaries }) => {
             data-test="diaries-link"
           >
             Diaries
+            <span className="count-bubble">{pastDiaries.length}</span>
           </NavLink>
-          {pastDiaries.length}
           <NavLink
             activeClassName="active"
             exact
