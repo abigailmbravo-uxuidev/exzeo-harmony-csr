@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { NavLink, Link } from 'react-router-dom';
 
 import DiaryPolling from '../DiaryPolling';
-import { isDueSoon } from '../../utilities/diaries';
+import { isPastDue, isToday } from '../../utilities/diaries';
 import logo from '../../img/Harmony.svg';
 
 const handleLogout = auth => {
@@ -12,7 +12,9 @@ const handleLogout = auth => {
 };
 
 const Header = ({ auth, authState: { userProfile = {} }, diaries }) => {
-  const dueSoon = diaries.filter(d => isDueSoon(d.entries[0].due));
+  const pastDiaries = diaries.filter(
+    d => isPastDue(d.entries[0].due) || isToday(d.entries[0].due)
+  );
   return (
     <header>
       <div role="banner">
@@ -34,7 +36,7 @@ const Header = ({ auth, authState: { userProfile = {} }, diaries }) => {
           >
             Diaries
           </NavLink>
-          {dueSoon.length}
+          {pastDiaries.length}
           <NavLink
             activeClassName="active"
             exact

@@ -42,6 +42,17 @@ export const isPastDue = dateString => {
 };
 
 /**
+ * Is date provided today
+ * @param dateString
+ * @returns {boolean}
+ */
+export const isToday = dateString => {
+  const today = date.currentDay(date.FORMATS.SECONDARY);
+
+  return moment(dateString).isSame(today, 'd');
+};
+
+/**
  * format Diary properties
  * @param entry object
  * @returns {object}
