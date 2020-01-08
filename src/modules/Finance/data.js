@@ -36,7 +36,7 @@ export async function fetchPolicy(policyNumber) {
 
 export async function fetchSummaryLedger(policyNumber) {
   const config = {
-    service: 'billing',
+    service: 'summary-ledger',
     method: 'GET',
     path: `summary-ledgers/${policyNumber}/latest`
   };

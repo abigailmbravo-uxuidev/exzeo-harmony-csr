@@ -395,7 +395,7 @@ export async function fetchPolicy(policyNumber) {
  */
 export async function fetchSummaryLedger(policyNumber) {
   const config = {
-    service: 'billing',
+    service: 'summary-ledger',
     method: 'GET',
     path: `summary-ledgers/${policyNumber}/latest`
   };
@@ -442,9 +442,9 @@ export async function fetchEffectiveDateChangeReasons() {
  */
 export async function fetchPaymentHistory(policyNumber) {
   const config = {
-    service: 'billing',
+    service: 'payment',
     method: 'GET',
-    path: `payment-history/${policyNumber}`
+    path: `payments/${policyNumber}`
   };
   try {
     const response = await serviceRunner.callService(
