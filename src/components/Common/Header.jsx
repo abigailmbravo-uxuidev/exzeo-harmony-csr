@@ -12,9 +12,10 @@ const handleLogout = auth => {
 };
 
 const Header = ({ auth, authState: { userProfile = {} }, diaries }) => {
-  const pastDiaries = diaries.filter(
-    d => isPastDue(d.entries[0].due) || isToday(d.entries[0].due)
-  );
+  const pastDiaries = diaries.filter(diary => {
+    const entry = diary.entries[0];
+    return (isPastDue(entry.due) || isToday(entry.due)) && entry.open;
+  });
   return (
     <header>
       <div role="banner">
