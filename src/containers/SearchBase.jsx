@@ -17,9 +17,6 @@ export class SearchBase extends Component {
 
   render() {
     const { loading, auth, location, results, userProfile } = this.props;
-    const diaryCount = location.pathname.includes('diaries')
-      ? results.length
-      : undefined;
 
     return (
       <div className="app-wrapper csr">
@@ -27,7 +24,7 @@ export class SearchBase extends Component {
         <Helmet>
           <title>Harmony - CSR Portal</title>
         </Helmet>
-        <Header auth={auth} diaryCount={diaryCount} />
+        <Header auth={auth} />
         <Search pathName={location.pathname} userProfile={userProfile}>
           <div className="basic-footer">
             <Footer />
@@ -48,8 +45,7 @@ SearchBase.propTypes = {
 
 const mapStateToProps = state => ({
   loading: state.search.loading,
-  userProfile: state.authState.userProfile,
-  results: state.search.results
+  userProfile: state.authState.userProfile
 });
 
 export default connect(mapStateToProps, {

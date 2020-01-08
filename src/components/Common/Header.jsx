@@ -3,82 +3,93 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { NavLink, Link } from 'react-router-dom';
 
+import DiaryPolling from '../DiaryPolling';
+import { isDueSoon } from '../../utilities/diaries';
 import logo from '../../img/Harmony.svg';
 
 const handleLogout = auth => {
   auth.logout();
 };
 
-const Header = ({ auth, authState, diaryCount }) => (
-  <header>
-    <div role="banner">
-      <button className="btn-icon btn-bars">
-        <i className="fa fa-bars" />
-      </button>
-      <Link to="/" id="logo" className="logo">
-        <img src={logo} alt="Harmony" />
-      </Link>
-      <button className="btn-icon btn-ellipsis-v">
-        <i className="fa fa-ellipsis-v" />
-      </button>
-      <nav>
-        <NavLink
-          activeClassName="active"
-          exact
-          to="/diaries"
-          data-test="diaries-link"
-        >
-          Diaries
-        </NavLink>{' '}
-        {diaryCount}
-        <NavLink
-          activeClassName="active"
-          exact
-          to="/reports"
-          data-test="reports-link"
-        >
-          Reports
-        </NavLink>
-        <NavLink
-          activeClassName="active"
-          exact
-          to="/agency"
-          data-test="agency-link"
-        >
-          Agency
-        </NavLink>
-        <NavLink
-          activeClassName="active"
-          exact
-          to="/finance/payments"
-          data-test="bulk-payments-link"
-        >
-          Finance
-        </NavLink>
-        <NavLink activeClassName="active" exact to="/" data-test="policy-link">
-          Policy
-        </NavLink>
-        {/* <a href="">User Management</a> */}
-        <div className="user-name">
-          {authState && authState.userProfile
-            ? authState.userProfile.userName
-            : ''}
-        </div>
-        <button tabIndex="0" className="btn btn-action">
-          <i className="fa fa-gear" />
+const Header = ({ auth, authState: { userProfile = {} }, diaries }) => {
+  const dueSoon = diaries.filter(d => isDueSoon(d.entries[0].due));
+  return (
+    <header>
+      <div role="banner">
+        <button className="btn-icon btn-bars">
+          <i className="fa fa-bars" />
         </button>
-        <button
-          tabIndex="0"
-          className="btn logout btn-action"
-          type="button"
-          onClick={() => handleLogout(auth)}
-        >
-          <i className="fa fa-sign-out" />
+        <Link to="/" id="logo" className="logo">
+          <img src={logo} alt="Harmony" />
+        </Link>
+        <button className="btn-icon btn-ellipsis-v">
+          <i className="fa fa-ellipsis-v" />
         </button>
-      </nav>
-    </div>
-  </header>
-);
+        <nav>
+          <NavLink
+            activeClassName="active"
+            exact
+            to="/diaries"
+            data-test="diaries-link"
+          >
+            Diaries
+          </NavLink>
+          {dueSoon.length}
+          <NavLink
+            activeClassName="active"
+            exact
+            to="/reports"
+            data-test="reports-link"
+          >
+            Reports
+          </NavLink>
+          <NavLink
+            activeClassName="active"
+            exact
+            to="/agency"
+            data-test="agency-link"
+          >
+            Agency
+          </NavLink>
+          <NavLink
+            activeClassName="active"
+            exact
+            to="/finance/payments"
+            data-test="bulk-payments-link"
+          >
+            Finance
+          </NavLink>
+          <NavLink
+            activeClassName="active"
+            exact
+            to="/"
+            data-test="policy-link"
+          >
+            Policy
+          </NavLink>
+          {/* <a href="">User Management</a> */}
+          <div className="user-name">
+            {userProfile ? userProfile.userName : ''}
+          </div>
+          <button tabIndex="0" className="btn btn-action">
+            <i className="fa fa-gear" />
+          </button>
+          <button
+            tabIndex="0"
+            className="btn logout btn-action"
+            type="button"
+            onClick={() => handleLogout(auth)}
+          >
+            <i className="fa fa-sign-out" />
+          </button>
+        </nav>
+      </div>
+      {userProfile && userProfile.userId && (
+        <DiaryPolling filter={{ assignees: [userProfile.userId] }} />
+      )}
+    </header>
+  );
+};
 
 Header.propTypes = {
   auth: PropTypes.shape({
@@ -86,12 +97,12 @@ Header.propTypes = {
   }).isRequired,
   authState: PropTypes.shape({
     userProfile: PropTypes.object
-  }),
-  diaryCount: PropTypes.number
+  })
 };
 
 const mapStateToProps = state => ({
-  authState: state.authState
+  authState: state.authState,
+  diaries: state.diaries
 });
 
 export default connect(mapStateToProps)(Header);

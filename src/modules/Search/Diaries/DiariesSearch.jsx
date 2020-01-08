@@ -17,7 +17,13 @@ import { productAnswers } from '../constants';
 
 class DiariesSearch extends Component {
   render() {
-    const { assigneeAnswers, submitting, diaryReasons, reset } = this.props;
+    const {
+      assigneeAnswers,
+      submitting,
+      diaryReasons,
+      reset,
+      results
+    } = this.props;
 
     return (
       <React.Fragment>
@@ -85,7 +91,7 @@ class DiariesSearch extends Component {
               </div>
             </div>
             <ResetButton reset={reset} />
-
+            {results.length}
             <Button
               className={Button.constants.classNames.success}
               customClass="multi-input"
