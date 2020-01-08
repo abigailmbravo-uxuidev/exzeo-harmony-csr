@@ -46,6 +46,7 @@ export const BranchDetails = agencyCodeDisabled => {
         component={Radio}
         segmented
         answers={mailAnswers}
+        validate={validation.isRequired}
       />
       <Field
         name="mailPolicyDocsToBranch"
@@ -55,6 +56,7 @@ export const BranchDetails = agencyCodeDisabled => {
         component={Radio}
         segmented
         answers={mailAnswers}
+        validate={validation.isRequired}
       />
       <hr />
       <Field
