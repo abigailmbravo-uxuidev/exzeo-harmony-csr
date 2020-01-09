@@ -263,7 +263,55 @@ describe('Policy State Actions', () => {
     it('should call dispatch on getBillingOptionsForPolicy', async () => {
       httpStub.onCall(0).returns(Promise.resolve({ data: { result: [] } }));
 
-      await store.dispatch(policyStateActions.getBillingOptionsForPolicy({}));
+      await store.dispatch(
+        policyStateActions.getBillingOptionsForPolicy({
+          additionalInterests: [],
+          policyHolders: [{}, {}],
+          property: { windMitigation: {}, physicalAddress: {} },
+          policyHolderMailingAddress: {},
+          coverageLimits: {
+            dwelling: {},
+            otherStructures: {},
+            personalProperty: {},
+            lossOfUse: {},
+            medicalPayments: {},
+            moldProperty: {},
+            personalLiability: {},
+            moldLiability: {},
+            ordinanceOrLaw: {}
+          },
+          deductibles: {
+            allOtherPerils: {},
+            hurricane: {},
+            sinkhole: {}
+          },
+          coverageOptions: {
+            sinkholePerilCoverage: {},
+            propertyIncidentalOccupanciesMainDwelling: {},
+            propertyIncidentalOccupanciesOtherStructures: {},
+            liabilityIncidentalOccupancies: {},
+            personalPropertyReplacementCost: {}
+          },
+          underwritingAnswers: {
+            rented: {},
+            monthsOccupied: {},
+            noPriorInsuranceSurcharge: {}
+          },
+          rating: {
+            totalPremium: '1',
+            worksheet: {
+              fees: {},
+              elements: {
+                windMitigationFactors: {}
+              }
+            }
+          },
+          companyCode: 'TTIC',
+          state: 'FL',
+          product: 'HO3',
+          summaryLedger: { currentPremium: '1' }
+        })
+      );
       sinon.assert.calledOnce(serviceRunner.callService);
       const res = [{ billingOptions: [], type: 'SET_BILLING_OPTIONS' }];
       expect(store.getActions()).toEqual(res);
