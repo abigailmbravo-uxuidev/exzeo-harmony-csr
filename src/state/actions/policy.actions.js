@@ -349,7 +349,11 @@ export function updateBillPlan(paymentPlan) {
 
 /**
  *
- * @param { object } company, state, product, effectiveDate
+ * @param { object } options
+ * @param {number} options.companyCode
+ * @param {string} options.state
+ * @param {string} options.product
+ * @param {string} options.effectiveDate
  * @returns {Function}
  */
 export function getCancelOptions(options) {
@@ -614,6 +618,10 @@ export async function postUpdatedBillPlan(paymentPlan) {
 /**
  *
  * @param {Object} options
+ * @param {number} options.companyCode
+ * @param {string} options.state
+ * @param {string} options.product
+ * @param {string} options.effectiveDate
  * @returns {Promise<Array>}
  */
 export async function fetchCancelOptions({
