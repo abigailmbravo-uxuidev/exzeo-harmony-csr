@@ -1,32 +1,46 @@
 // Functions used to navigate each tab of the app
-
+// import { envelopeIdCheck } from '../../helpers/requests';
+import { envelopeIdCheck } from '../helpers';
 import {
   user,
   pH1,
   underwriting,
   coverageValues,
-  shareQuote
+  shareQuote,
+  addInsured,
+  unQuestionsHO3,
+  unQuestionsAF3,
+  coverageHO3,
+  coverageAF3
 } from '../fixtures';
 
-export const navigateThroughNewQuote = (address = user.address1) => {
+export const navigateThroughNewQuote = (product, address = user.address1) => {
+  let prod = product === 'AF3' ? 'AF3' : 'HO3';
   cy.task('log', 'Navigating through Quote')
     .findDataTag('searchType')
     .select('address')
     .findDataTag('product')
-    .select('HO3')
+    .select(prod)
     .findDataTag('address')
     .type(address)
     .clickSubmit()
-    .wait('@fetchAddresses')
-    .window()
-    // This makes it so we don't open up a new window
-    .findDataTag(address)
-    .then($a => {
-      $a.prop('onclick', () => cy.visit($a.prop('dataset').url)).click();
-      cy.wait('@createQuote')
-        .wait('@retrieveQuote')
-        .wait('@getZipcodeSettings');
-    });
+    .wait('@fetchAddresses');
+
+  // This makes it so we don't open up a new window
+  cy.findDataTag(address).then($a => {
+    $a.prop('onСlick', () => cy.visit($a.prop('dataset').url)).click();
+    cy.wait('@createQuote')
+      .wait('@retrieveQuote')
+      .wait('@getZipcodeSettings');
+  });
+  // });
+
+  // This makes it so we don't open up a new window
+  // .findDataTag(address)
+  // .then($a => {
+  //   $a.prop('onclick', () => cy.visit($a.prop('dataset').url)).click();
+
+  // });
 };
 
 export const fillOutCoverage = (customerInfo = pH1) =>
@@ -40,37 +54,63 @@ export const fillOutCoverage = (customerInfo = pH1) =>
     .clickSubmit()
     .wait('@updateQuote');
 
-export const changeCoverage = (limits = coverageValues) =>
-  cy
-    .task('log', 'Changing coverege values')
+export const changeCoverageAndAgency = product => {
+  const coverageProd = product === 'AF3' ? coverageAF3 : coverageHO3;
+  cy.task('log', 'Changing coverege values')
     .goToNav('coverage')
     .wait('@updateQuote')
     .then(({ response }) => {
       const premium = response.body.result.rating.totalPremium;
-      cy.wrap(Object.entries(limits)).each(([field, value]) => {
-        cy.findDataTag(field).type(`{selectall}{backspace}${value}`, {
-          force: true
+      const agencyCode = response.body.result.agencyCode;
+
+      cy.get("div[data-test='agencyCode_wrapper'] input[id*='react-s']")
+        .click({ force: true })
+        .chooseReactSelectOption('agencyCode_wrapper', 20003)
+        .get("div[data-test='agentCode_wrapper'] input[id*='react-s']")
+        .click({ force: true })
+        .chooseReactSelectOption('agentCode_wrapper', 60586)
+        .wrap(Object.entries(coverageProd))
+        .each(([field, value]) => {
+          cy.findDataTag(field).type(`{selectall}{backspace}${value}`, {
+            force: true
+          });
         });
-      });
+
       cy.clickSubmit()
+
         .wait('@updateQuote')
         .then(({ response }) => {
           expect(response.body.result.rating.totalPremium).not.to.eq(premium);
+          expect(response.body.result.agencyCode).not.to.eq(agencyCode);
         });
     });
+};
 
-export const fillOutUnderwriting = (data = underwriting) =>
-  cy
-    .task('log', 'Filling out Underwriting')
+export const fillOutUnderwriting = product => {
+  const data = product === 'AF3' ? unQuestionsAF3 : unQuestionsHO3;
+  cy.task('log', 'Filling out Underwriting')
     .goToNav('underwriting')
     .wrap(Object.entries(data))
     .each(([name, value]) =>
       cy.findDataTag(`${name}_${value}`).click({ force: true })
     )
     .clickSubmit();
+};
 
-export const fillOutAdditionalInterests = () =>
-  cy.task('log', 'Filling out AIs').goToNav('additionalInterests');
+export const fillOutAdditionalInterests = (data = addInsured) =>
+  cy
+    .task('log', 'Filling out AIs')
+    .goToNav('additionalInterests')
+    .findDataTag('additionalInsured')
+    .click({ force: true })
+    .wrap(Object.entries(data))
+    .each(([field, value]) =>
+      cy
+        .findDataTag(`${field}`)
+        .type(`{selectall}{backspace}${value}`, { force: true })
+    )
+    .findDataTag('ai-modal-submit')
+    .click({ force: true });
 
 export const fillOutMailingBilling = () =>
   cy
@@ -78,6 +118,8 @@ export const fillOutMailingBilling = () =>
     .goToNav('billing')
     .findDataTag('sameAsPropertyAddress')
     .click('left')
+    .findDataTag('billToId')
+    .select('Additional Insured: BATMAN ROBIN', { force: true })
     .findDataTag('billPlan_Annual')
     .click({ force: true })
     .clickSubmit()
@@ -111,9 +153,17 @@ export const navigateThroughDocusign = () =>
   cy
     .task('log', "Navigating through 'Send to Docusign'")
     .clickSubmit('body', 'send-application')
-    .wait('@verifyQuote')
-    .checkQuoteState('Application Ready')
     .clickSubmit('#sendApplicationForm', 'modal-submit')
+    .checkQuoteState('Application Ready')
     .wait('@sendApplication')
     .get('button[data-test="send-application"]')
-    .should('be.disabled');
+    .should('be.disabled')
+    .wait('@verifyQuote')
+    .then(({ request }) => {
+      const token = localStorage.getItem('id_token');
+      const apiUrl = Cypress.env('API_URL') + '/svc';
+      const quoteNumber = request.body.data.quoteNumber;
+      envelopeIdCheck(quoteNumber, apiUrl, token).then(response => {
+        expect(response.body.result.envelopeId).to.not.be.empty;
+      });
+    });

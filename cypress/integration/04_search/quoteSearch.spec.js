@@ -75,7 +75,7 @@ describe('Quote Search testing', () => {
         .fillFields(fields)
         .clickSubmit('#SearchBar')
         .wait('@fetchQuotes')
-        .then(({ response }) =>
+        .then(({ request }) =>
           confirmPolicyOrQuote(response.body.result.quotes, fields)
         )
         // Click the pagination button.

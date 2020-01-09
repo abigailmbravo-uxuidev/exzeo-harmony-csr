@@ -3,14 +3,15 @@ import {
   navigateThroughNewQuote,
   fillOutCoverage,
   fillOutUnderwriting,
-  changeCoverage,
+  changeCoverageAndAgency,
   fillOutAdditionalInterests,
   fillOutMailingBilling,
   fillOutNotesFiles,
   fillOutSummary,
   fillOutApplication,
   navigateThroughDocusign,
-  sendQuote
+  sendQuote,
+  changeBillTo
 } from '../../helpers';
 import {
   coverageRatingTest,
@@ -28,14 +29,14 @@ describe('Base Path', () => {
   beforeEach('Set aliases', () => setRouteAliases());
 
   it('Navigate through base app', () => {
-    navigateThroughNewQuote();
+    navigateThroughNewQuote('AF3');
 
     fillOutCoverage();
-    // coverageRatingTest();
+    coverageRatingTest();
 
-    fillOutUnderwriting();
-    // underwritingTest();
-    changeCoverage();
+    fillOutUnderwriting('AF3');
+    underwritingTest();
+    changeCoverageAndAgency('AF3');
 
     fillOutAdditionalInterests();
     aiTest();
