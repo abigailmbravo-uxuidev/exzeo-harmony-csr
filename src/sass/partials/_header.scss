@@ -202,11 +202,13 @@ header {
 
         .count-bubble {
           margin-left: $padding/2;
-          padding: ($padding * 0.25) ($padding * 0.75);
+          padding: ($padding * 0.25) ($padding * 0.5);
+
+          text-align: center;
 
           color: $white;
           border-radius: 2rem;
-          background: $bright-blue-darken-02;
+          background: $red-darken-01;
 
           font-size: $font-size-xs;
         }
