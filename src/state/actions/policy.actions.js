@@ -451,7 +451,7 @@ export async function fetchPaymentHistory(policyNumber) {
       config,
       'fetchPaymentHistory'
     );
-    return response.data && response.data.result ? response.data.result : {};
+    return response.data ? response.data : {};
   } catch (error) {
     throw error;
   }
