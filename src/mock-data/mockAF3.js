@@ -418,7 +418,7 @@ const mock = {
                     required: true,
                     metaData: {
                       target:
-                        '${Math.ceil((((it.coverageLimits.personalProperty.value || 0) / it.coverageLimits.building.value) * 100 ))}'
+                        '${Math.floor((((it.coverageLimits.personalProperty.value || 0) / it.coverageLimits.building.value) * 100 ))}'
                     }
                   },
                   children: []
@@ -457,7 +457,7 @@ const mock = {
                     size: '7',
                     segmented: true,
                     disabled:
-                      '${Math.ceil((((it.coverageLimits.personalProperty.value || 0) / it.coverageLimits.building.value) * 100 )) < 25}',
+                      '${Math.floor((((it.coverageLimits.personalProperty.value || 0) / it.coverageLimits.building.value) * 100 )) < 25}',
                     dataSource: [
                       { label: 'No', answer: false },
                       { label: 'Yes', answer: true }
