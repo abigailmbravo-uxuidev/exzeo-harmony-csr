@@ -515,8 +515,7 @@ const mock = {
                                   items: [
                                     {
                                       format: 'currency',
-                                      path:
-                                        'summaryLedger.balance.$numberDecimal'
+                                      path: 'summaryLedger.balance'
                                     }
                                   ]
                                 }
