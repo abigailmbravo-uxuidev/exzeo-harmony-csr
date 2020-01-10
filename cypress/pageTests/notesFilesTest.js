@@ -1,6 +1,8 @@
 const addNoteCheck = (text, rowCount) => {
   cy.findDataTag('new-note')
     .click({ force: true })
+    .findDataTag('noteContent')
+    .should('be.visible')
     .wait('@getNoteOptions')
     .then(({ response }) => {
       expect(response.body.status).to.equal(200);
@@ -49,6 +51,8 @@ export default () => {
   cy.findDataTag('new-diary')
     .click({ force: true })
     .wait(1000)
+    .findDataTag('message')
+    .should('be.visible')
     .findDataTag('reason')
     .select('estate')
     .findDataTag('assignee')

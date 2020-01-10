@@ -33,14 +33,6 @@ export const navigateThroughNewQuote = (product, address = user.address1) => {
       .wait('@retrieveQuote')
       .wait('@getZipcodeSettings');
   });
-  // });
-
-  // This makes it so we don't open up a new window
-  // .findDataTag(address)
-  // .then($a => {
-  //   $a.prop('onclick', () => cy.visit($a.prop('dataset').url)).click();
-
-  // });
 };
 
 export const fillOutCoverage = (customerInfo = pH1) =>
@@ -103,6 +95,8 @@ export const fillOutAdditionalInterests = (data = addInsured) =>
     .goToNav('additionalInterests')
     .findDataTag('additionalInsured')
     .click({ force: true })
+    .findDataTag('name1')
+    .should('be.visible')
     .wrap(Object.entries(data))
     .each(([field, value]) =>
       cy
