@@ -1059,7 +1059,7 @@ const mock = {
                         label: 'Personal Property Repl Cost',
                         segmented: true,
                         disabled:
-                          '${Math.ceil((((it.coverageLimits.personalProperty.value || 0) / it.coverageLimits.building.value) * 100 )) < 25}',
+                          '${Math.ceil((it.coverageLimits.building.value || 0) / 4) > (it.coverageLimits.personalProperty.value || 0)}',
                         extendedProperties: {
                           subscribe: true,
                           output: 'values'
