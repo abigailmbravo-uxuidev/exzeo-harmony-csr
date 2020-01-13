@@ -24,10 +24,7 @@ import { submitDiary } from '../state/actions/diary.actions';
 import { toggleDiary, toggleMinimizeDiary } from '../state/actions/ui.actions';
 import { setAppError } from '../state/actions/error.actions';
 import { getDiaryAssigneeAnswers } from '../state/selectors/questions.selectors';
-import {
-  getInitialValuesForForm,
-  getDiaryReasons
-} from '../state/selectors/diary.selectors';
+import { getDiaryReasons } from '../state/selectors/diary.selectors';
 
 export class DiaryModal extends Component {
   state = { minimize: false };
@@ -80,7 +77,6 @@ export class DiaryModal extends Component {
       diaryReasons,
       initialValues
     } = this.props;
-
     return (
       <Draggable handle=".title-bar">
         <div
@@ -277,11 +273,8 @@ export class DiaryModal extends Component {
 DiaryModal.propTypes = {
   sourceNumber: PropTypes.string,
   entityEndDate: PropTypes.string,
-  change: PropTypes.func.isRequired,
   assigneeAnswers: PropTypes.arrayOf(PropTypes.shape()).isRequired,
-  handleSubmit: PropTypes.func.isRequired,
   setAppError: PropTypes.func.isRequired,
-  submitting: PropTypes.bool.isRequired,
   toggleDiary: PropTypes.func.isRequired,
   user: PropTypes.shape({
     profile: PropTypes.shape({
@@ -299,7 +292,7 @@ const mapStateToProps = (state, ownProps) => {
   return {
     assigneeAnswers: getDiaryAssigneeAnswers(state),
     diaryReasons: getDiaryReasons(state),
-    initialValues: getInitialValuesForForm(state, ownProps)
+    initialValues: state.ui.diary.selectedDiary
   };
 };
 

@@ -79,7 +79,7 @@ export const getFormattedPaymentHistory = createSelector(
     );
     return orderedPaymentHistory.map(payment => ({
       ...payment,
-      amountDisplay: payment.amount.$numberDecimal
+      amountDisplay: payment.amount
     }));
   }
 );
