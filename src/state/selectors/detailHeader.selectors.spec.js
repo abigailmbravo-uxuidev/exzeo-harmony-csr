@@ -795,15 +795,9 @@ describe('Detail Header selectors', () => {
           policyTerm: 1,
           policyAccountCode: 10000,
           effectiveDate: '2018-12-04T05:00:00.000Z',
-          cashNeeded: {
-            $numberDecimal: '3055.00'
-          },
-          cashReceived: {
-            $numberDecimal: '0.00'
-          },
-          balance: {
-            $numberDecimal: '3055.00'
-          },
+          cashNeeded: '3055.00',
+          cashReceived: '0.00',
+          balance: '3055.00',
           initialPremium: 2860,
           currentPremium: 3055,
           sumOfEndorsements: 195,
@@ -820,9 +814,7 @@ describe('Detail Header selectors', () => {
           refundWriteOffDate: null,
           nextActionNeeded: 'Send Payment Invoice',
           nextActionDate: '2018-10-20T04:00:00.000Z',
-          noticeAmountDue: {
-            $numberDecimal: '3055.00'
-          },
+          noticeAmountDue: '3055.00',
           __v: 0,
           invoice: {
             annual: {

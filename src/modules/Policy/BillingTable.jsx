@@ -23,7 +23,7 @@ const BillingTable = ({ initialValues }) => {
         ? date.formatDate(summaryLedger.invoiceDueDate, 'MM/DD/YYYY')
         : '-',
       nextPayment: parseFloat(
-        summaryLedger.noticeAmountDue.$numberDecimal
+        summaryLedger.noticeAmountDue
       ).toLocaleString('en', { minimumFractionDigits: 2 })
     };
   });

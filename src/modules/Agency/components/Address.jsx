@@ -1,10 +1,9 @@
+import { Input, Select, SelectTypeAhead, validation } from '@exzeo/core-ui';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Field } from 'redux-form';
-import { Input, validation, Select, SelectTypeAhead } from '@exzeo/core-ui';
-
-import { getListOfZipCodes } from '../../../state/selectors/zipCodeSettings.selectors';
 import { getListAnswersAsKey } from '../../../state/selectors/questions.selectors';
+import { getListOfZipCodes } from '../../../state/selectors/zipCodeSettings.selectors';
 
 export class Address extends Component {
   render() {

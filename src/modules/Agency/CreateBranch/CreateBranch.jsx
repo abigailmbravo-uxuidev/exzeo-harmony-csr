@@ -98,6 +98,7 @@ export class CreateBranch extends Component {
                 <AddressGroup
                   sameAsMailingValue={sameAsMailingValue}
                   changeField={change}
+                  dataTest="agency-branch"
                   isAgency
                   showCounty
                 />
@@ -125,6 +126,7 @@ export class CreateBranch extends Component {
                         parentFormGroup="agentOfRecord"
                         sameAsMailingValue={sameAsMailingAORValue}
                         changeField={change}
+                        dataTest="aor"
                         isOptional
                       />
                     </FormSection>
