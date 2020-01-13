@@ -16,6 +16,8 @@ const mapStateToProps = state => ({
   orphans: getOrphanedAgentsList(state),
   agency: state.agencyState.agency,
   initialValues: {
+    mailPolicyDocsToBranch: false,
+    mailCommissionChecksToBranch: false,
     agentOfRecord: {
       sameAsMailing: false,
       licenses: [
@@ -38,14 +40,11 @@ const mapStateToProps = state => ({
   listAnswersAsKey: getListAnswersAsKey(state)
 });
 
-export default connect(
-  mapStateToProps,
-  {
-    getAgency,
-    updateAgency,
-    createBranch
-  }
-)(
+export default connect(mapStateToProps, {
+  getAgency,
+  updateAgency,
+  createBranch
+})(
   reduxForm({
     form: 'CreateBranch',
     enableReinitialize: true
