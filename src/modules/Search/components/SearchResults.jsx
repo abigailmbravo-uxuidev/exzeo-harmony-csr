@@ -49,7 +49,10 @@ export class SearchResults extends Component {
             <div className="result-cards">
               <NoResults searchType={searchType} error={error} />
               {hasSearched && searchType === SEARCH_TYPES.agency && (
-                <div className="btn-divider-wrapper">
+                <div
+                  className="btn-divider-wrapper"
+                  data-test="add-agency-has-searched"
+                >
                   <NavLink
                     className="btn btn-primary"
                     to="/agency/new/0"
@@ -149,7 +152,10 @@ export class SearchResults extends Component {
                 />
               ))}
             </div>
-            <div className="btn-divider-wrapper">
+            <div
+              className="btn-divider-wrapper"
+              data-test="add-agency-no-results"
+            >
               <NavLink
                 className="btn btn-primary"
                 to="/agency/new/0"
@@ -163,7 +169,10 @@ export class SearchResults extends Component {
           </React.Fragment>
         )}
         {!hasSearched && searchType === SEARCH_TYPES.agency && (
-          <div className="btn-divider-wrapper">
+          <div
+            className="btn-divider-wrapper"
+            data-test="add-agency-not-searched"
+          >
             <NavLink
               className="btn btn-primary"
               to="/agency/new/0"

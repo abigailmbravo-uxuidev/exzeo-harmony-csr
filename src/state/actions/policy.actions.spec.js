@@ -245,7 +245,7 @@ describe('Policy State Actions', () => {
         }
       ];
 
-      httpStub.onCall(0).returns(Promise.resolve({ data: { result: [] } }));
+      httpStub.onCall(0).returns(Promise.resolve({ data: [] }));
 
       await store.dispatch(policyStateActions.getPaymentHistory('1234'));
       sinon.assert.calledOnce(serviceRunner.callService);
