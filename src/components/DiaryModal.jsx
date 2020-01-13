@@ -229,16 +229,18 @@ export class DiaryModal extends Component {
                     </Field>
                   </div>
                   <div className="buttons note-file-footer-button-group">
-                    <Button
-                      className={Button.constants.classNames.primary}
-                      customClass="close-diary-button"
-                      dataTest="close-diary"
-                      onClick={() =>
-                        this.submitDiary({ ...formValues, open: false })
-                      }
-                    >
-                      Mark as Closed
-                    </Button>
+                    {initialValues && initialValues._id && (
+                      <Button
+                        className={Button.constants.classNames.primary}
+                        customClass="close-diary-button"
+                        dataTest="close-diary"
+                        onClick={() =>
+                          this.submitDiary({ ...formValues, open: false })
+                        }
+                      >
+                        Mark as Closed
+                      </Button>
+                    )}
                     <Button
                       className={Button.constants.classNames.secondary}
                       customClass="cancel-button"
