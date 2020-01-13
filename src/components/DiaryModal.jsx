@@ -233,7 +233,7 @@ export class DiaryModal extends Component {
                     </Field>
                   </div>
                   <div className="buttons note-file-footer-button-group">
-                    {initialValues._id && (
+                    {initialValues && initialValues._id && (
                       <Button
                         className={Button.constants.classNames.primary}
                         customClass="close-diary-button"
