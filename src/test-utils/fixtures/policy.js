@@ -684,18 +684,12 @@ export const mockPolicy = {
       }
     },
     _id: '5d6ea8609eb6120011199c78',
-    balance: {
-      $numberDecimal: '2667.00'
-    },
+    balance: '2667.00',
     billPlan: 'Annual',
     billToId: '5d6ea460f397660012f9e1c6',
     billToType: 'Policyholder',
-    cashNeeded: {
-      $numberDecimal: '2667.00'
-    },
-    cashReceived: {
-      $numberDecimal: '0.00'
-    },
+    cashNeeded: '2667.00',
+    cashReceived: '0.00',
     companyCode: 'TTIC',
     currentPremium: 2667,
     effectiveDate: '2019-10-03T04:00:00.000Z',
@@ -706,9 +700,7 @@ export const mockPolicy = {
     invoiceDueDate: '2019-10-03T04:00:00.000Z',
     nonPaymentNoticeDate: '2019-10-13T04:00:00.000Z',
     nonPaymentNoticeDueDate: '2019-11-02T04:00:00.000Z',
-    noticeAmountDue: {
-      $numberDecimal: '2667.00'
-    },
+    noticeAmountDue: '2667.00',
     paymentPlanFees: 0,
     policyAccountCode: 10000,
     policyNumber: '12-1019690-01',
@@ -1424,18 +1416,12 @@ export const mockCancelledPolicy = {
       }
     },
     _id: '5d6ea8609eb6120011199c78',
-    balance: {
-      $numberDecimal: '2667.00'
-    },
+    balance: '2667.00',
     billPlan: 'Annual',
     billToId: '5d6ea460f397660012f9e1c6',
     billToType: 'Policyholder',
-    cashNeeded: {
-      $numberDecimal: '2667.00'
-    },
-    cashReceived: {
-      $numberDecimal: '0.00'
-    },
+    cashNeeded: '2667.00',
+    cashReceived: '0.00',
     companyCode: 'TTIC',
     currentPremium: 2667,
     effectiveDate: '2019-10-03T04:00:00.000Z',
@@ -1446,9 +1432,7 @@ export const mockCancelledPolicy = {
     invoiceDueDate: '2019-10-03T04:00:00.000Z',
     nonPaymentNoticeDate: '2019-10-13T04:00:00.000Z',
     nonPaymentNoticeDueDate: '2019-11-02T04:00:00.000Z',
-    noticeAmountDue: {
-      $numberDecimal: '2667.00'
-    },
+    noticeAmountDue: '2667.00',
     paymentPlanFees: 0,
     policyAccountCode: 10000,
     policyNumber: '12-1019690-01',

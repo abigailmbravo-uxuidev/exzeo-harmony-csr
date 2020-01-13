@@ -132,17 +132,17 @@ describe('Test policy selectors', () => {
             {
               date: '01072017',
               createdAt: '125',
-              amount: { $numberDecimal: 2003 }
+              amount: 2003
             },
             {
               date: '01072018',
               createdAt: '126',
-              amount: { $numberDecimal: 2003 }
+              amount: 2003
             },
             {
               date: '01072018',
               createdAt: '123',
-              amount: { $numberDecimal: 2000 }
+              amount: 2000
             }
           ]
         }
@@ -152,19 +152,19 @@ describe('Test policy selectors', () => {
         {
           date: '01072018',
           createdAt: '126',
-          amount: { $numberDecimal: 2003 },
+          amount: 2003,
           amountDisplay: 2003
         },
         {
           date: '01072018',
           createdAt: '123',
-          amount: { $numberDecimal: 2000 },
+          amount: 2000,
           amountDisplay: 2000
         },
         {
           date: '01072017',
           createdAt: '125',
-          amount: { $numberDecimal: 2003 },
+          amount: 2003,
           amountDisplay: 2003
         }
       ];

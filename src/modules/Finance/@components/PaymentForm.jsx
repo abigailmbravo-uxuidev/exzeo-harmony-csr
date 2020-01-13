@@ -212,7 +212,7 @@ const PaymentForm = ({
 
                           <div className="balance-due">
                             <label>Balance Due:</label>&nbsp;
-                            {balance.$numberDecimal}
+                            {balance}
                           </div>
                         </div>
                         <div className="policyholder">
