@@ -119,6 +119,7 @@ export class Create extends Component {
                 <AddressGroup
                   sameAsMailingValue={sameAsMailingValue}
                   changeField={change}
+                  dataTest="agency"
                   isAgency
                   showCounty
                 />
@@ -138,6 +139,7 @@ export class Create extends Component {
                   Agent Of Record
                   <button
                     onClick={this.handleToggleExistingAgentModal}
+                    type="button"
                     className="btn btn-link btn-sm"
                   >
                     <i className="fa fa-user" />
@@ -152,6 +154,7 @@ export class Create extends Component {
                         parentFormGroup="agentOfRecord"
                         sameAsMailingValue={sameAsMailingAORValue}
                         changeField={change}
+                        dataTest="aor"
                         isOptional
                       />
                     </FormSection>
