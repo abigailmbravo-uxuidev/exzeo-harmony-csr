@@ -210,26 +210,6 @@ export const getUnderwritingQuestions = (
   }
 };
 
-export const getBillingOptions = paymentOptions => async dispatch => {
-  const axiosConfig = {
-    service: 'billing',
-    method: 'POST',
-    path: 'payment-options-for-quoting',
-    data: paymentOptions
-  };
-
-  try {
-    const response = await serviceRunner.callService(
-      axiosConfig,
-      'getBillingOptions'
-    );
-    const data = { billingOptions: response.data.result };
-    return dispatch(serviceRequest(data));
-  } catch (error) {
-    return dispatch(errorActions.setAppError(error));
-  }
-};
-
 export const clearRate = () => dispatch =>
   dispatch(batchActions([serviceRequest({ getRate: {} })]));
 

@@ -1,5 +1,6 @@
 // temporary full path import until we can find a better way to mock network requests
 import { date } from '@exzeo/core-ui/src';
+import { getBillingOptions } from '@exzeo/core-ui/src/@Harmony/Billing/data';
 import * as serviceRunner from '@exzeo/core-ui/src/@Harmony/Domain/Api/serviceRunner';
 import { formatEndorsementData } from '../../modules/Policy/utilities';
 import { convertToRateData } from '../../utilities/endorsementModel';
@@ -263,10 +264,10 @@ export function addTransaction(submitData) {
  * @param paymentOptions
  * @returns {function(*): Promise<any>}
  */
-export function getBillingOptionsForPolicy(paymentOptions) {
+export function getBillingOptionsForPolicy(doc) {
   return async dispatch => {
     try {
-      const billingOptions = await fetchBillingOptions(paymentOptions);
+      const billingOptions = await getBillingOptions(doc);
       dispatch(setBillingOptions(billingOptions));
     } catch (error) {
       dispatch(errorActions.setAppError(error));
@@ -517,30 +518,6 @@ export async function fetchListOfForms(policy, rating, transactionType) {
 
 /**
  *
- * @param paymentOptions
- * @returns {Promise<{}>}
- */
-export async function fetchBillingOptions(paymentOptions) {
-  const config = {
-    service: 'billing',
-    method: 'POST',
-    path: 'payment-options-for-policy',
-    data: paymentOptions
-  };
-
-  try {
-    const response = await serviceRunner.callService(
-      config,
-      'fetchBillingOptions'
-    );
-    return response.data && response.data.result ? response.data.result : {};
-  } catch (error) {
-    throw error;
-  }
-}
-
-/**
- *
  * @param policyNumber
  * @returns {Promise<*>}
  */
@@ -751,16 +728,7 @@ export function initializePolicyWorkflow(policyNumber) {
       );
 
       if (summaryLedger) {
-        const paymentOptions = {
-          effectiveDate: policy.effectiveDate,
-          policyHolders: policy.policyHolders,
-          additionalInterests: policy.additionalInterests,
-          fullyEarnedFees:
-            policy.rating.worksheet.fees.empTrustFee +
-            policy.rating.worksheet.fees.mgaPolicyFee,
-          currentPremium: summaryLedger.currentPremium
-        };
-        dispatch(getBillingOptionsForPolicy(paymentOptions));
+        dispatch(getBillingOptionsForPolicy({ ...policy, summaryLedger }));
       }
 
       return policy;

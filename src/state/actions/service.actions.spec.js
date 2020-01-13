@@ -103,7 +103,16 @@ describe('Service Actions', () => {
     serviceActions.getAgents(store.dispatch);
 
     return serviceActions
-      .getAgents('TTIC', 'FL', '', '', '', '', '', '')(store.dispatch)
+      .getAgents(
+        'TTIC',
+        'FL',
+        '',
+        '',
+        '',
+        '',
+        '',
+        ''
+      )(store.dispatch)
       .then(() => {
         expect(store.getActions()[0].type).toEqual(types.SERVICE_REQUEST);
       });
@@ -134,7 +143,10 @@ describe('Service Actions', () => {
     serviceActions.getAgents(store.dispatch);
 
     return serviceActions
-      .getAgents('4534', 'FL')(store.dispatch)
+      .getAgents(
+        '4534',
+        'FL'
+      )(store.dispatch)
       .then(() => {
         expect(store.getActions()[0].type).toEqual(types.APP_ERROR);
       });
@@ -238,7 +250,12 @@ describe('Service Actions', () => {
     serviceActions.getUnderwritingQuestions(store.dispatch);
 
     return serviceActions
-      .getUnderwritingQuestions('TTIC', 'FL', 'HO3', property)(store.dispatch)
+      .getUnderwritingQuestions(
+        'TTIC',
+        'FL',
+        'HO3',
+        property
+      )(store.dispatch)
       .then(() => {
         expect(store.getActions()[0].type).toEqual(types.SERVICE_REQUEST);
       });
@@ -342,7 +359,12 @@ describe('Service Actions', () => {
     serviceActions.getUnderwritingQuestions(store.dispatch);
 
     return serviceActions
-      .getUnderwritingQuestions('55', '55', '543', property)(store.dispatch)
+      .getUnderwritingQuestions(
+        '55',
+        '55',
+        '543',
+        property
+      )(store.dispatch)
       .then(() => {
         expect(store.getActions()[0].type).toEqual(types.APP_ERROR);
       });
@@ -416,112 +438,6 @@ describe('Service Actions', () => {
       .addTransaction(submitData)(store.dispatch)
       .then(() => {
         expect(store.getActions()[0].type).toEqual(types.SERVICE_REQUEST);
-      });
-  });
-
-  it('should call start getBillingOptions', () => {
-    const mockAdapter = new MockAdapter(axios);
-
-    const paymentOptions = {
-      effectiveDate: '2017-08-08',
-      policyHolders: [
-        {
-          id: '523abc231c049a02e',
-          order: 1,
-          entityType: 'Person',
-          firstName: 'John',
-          lastName: 'Smith',
-          primaryPhoneNumber: '8135551234',
-          emailAddress: 'john.smith@google.com'
-        }
-      ],
-      additionalInterests: [],
-      netPremium: 123,
-      fees: {
-        empTrustFee: 123,
-        mgaPolicyFee: 123
-      },
-      totalPremium: 123
-    };
-
-    const axiosOptions = {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      url: `${process.env.REACT_APP_API_URL}/svc?getBillingOptions`,
-      data: {
-        service: 'billing',
-        method: 'POST',
-        path: 'payment-options-for-quoting',
-        data: paymentOptions
-      }
-    };
-
-    mockAdapter.onPost(axiosOptions.url, axiosOptions.data).reply(200, {
-      data: []
-    });
-
-    const initialState = {};
-    const store = mockStore(initialState);
-
-    return serviceActions
-      .getBillingOptions(paymentOptions)(store.dispatch)
-      .then(() => {
-        expect(store.getActions()[0].type).toEqual(types.SERVICE_REQUEST);
-      });
-  });
-
-  it('should fail start getBillingOptions', () => {
-    const mockAdapter = new MockAdapter(axios);
-
-    const paymentOptions = {
-      effectiveDate: '2017-08-08',
-      policyHolders: [
-        {
-          id: '523abc231c049a02e',
-          order: 1,
-          entityType: 'Person',
-          firstName: 'John',
-          lastName: 'Smith',
-          primaryPhoneNumber: '8135551234',
-          emailAddress: 'john.smith@google.com'
-        }
-      ],
-      additionalInterests: [],
-      netPremium: 123,
-      fees: {
-        empTrustFee: 123,
-        mgaPolicyFee: 123
-      },
-      totalPremium: 123
-    };
-
-    const axiosOptions = {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      url: `${process.env.REACT_APP_API_URL}/svc`,
-      data: {
-        service: 'billing',
-        method: 'POST',
-        path: 'payment-options-for-quoting',
-        data: paymentOptions
-      }
-    };
-
-    mockAdapter.onPost(axiosOptions.url, axiosOptions.data).reply(200, {
-      data: []
-    });
-
-    const initialState = {};
-    const store = mockStore(initialState);
-
-    return serviceActions
-      .getBillingOptions('43543534')(store.dispatch)
-      .then(() => {
-        expect(store.getActions()[0].type).toEqual(types.APP_ERROR);
       });
   });
 
@@ -612,7 +528,12 @@ describe('Service Actions', () => {
     serviceActions.getZipcodeSettings(store.dispatch);
 
     return serviceActions
-      .getZipcodeSettings('TTIC', 'FL', 'HO3', '33607')(store.dispatch)
+      .getZipcodeSettings(
+        'TTIC',
+        'FL',
+        'HO3',
+        '33607'
+      )(store.dispatch)
       .then(result => {
         expect(store.getActions()[0].type).toEqual(types.SERVICE_REQUEST);
       });
@@ -674,7 +595,10 @@ describe('Service Actions', () => {
     serviceActions.getAgencies(store.dispatch);
 
     return serviceActions
-      .getAgencies('TTIC', 'FL')(store.dispatch)
+      .getAgencies(
+        'TTIC',
+        'FL'
+      )(store.dispatch)
       .then(() => {
         expect(store.getActions()[0].type).toEqual(types.SERVICE_REQUEST);
       });
@@ -705,7 +629,10 @@ describe('Service Actions', () => {
     serviceActions.getAgencies(store.dispatch);
 
     return serviceActions
-      .getAgencies(null, 'FL')(store.dispatch)
+      .getAgencies(
+        null,
+        'FL'
+      )(store.dispatch)
       .then(() => {
         expect(store.getActions()[0].type).toEqual(types.APP_ERROR);
       });
@@ -771,7 +698,11 @@ describe('Service Actions', () => {
     const store = mockStore(initialState);
 
     return serviceActions
-      .getAgency('TTIC', 'FL', 'HO3')(store.dispatch)
+      .getAgency(
+        'TTIC',
+        'FL',
+        'HO3'
+      )(store.dispatch)
       .then(() => {
         expect(store.getActions()[0].type).toEqual(types.SERVICE_REQUEST);
       });
@@ -830,7 +761,11 @@ describe('Service Actions', () => {
     const store = mockStore(initialState);
 
     return serviceActions
-      .getAgentsByAgency('TTIC', 'FL', 2)(store.dispatch)
+      .getAgentsByAgency(
+        'TTIC',
+        'FL',
+        2
+      )(store.dispatch)
       .then(() => {
         expect(store.getActions()[0].type).toEqual(types.SERVICE_REQUEST);
       });
