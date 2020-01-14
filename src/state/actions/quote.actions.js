@@ -86,14 +86,6 @@ function formatQuoteForSubmit(data, options) {
     editingDisabled,
     ...quote
   } = data;
-  if (removeSecondary || data.policyHolders.length === 1) {
-    // Backend doesn't like when partial policyholder is filled out, so for now we have to check whether or not
-    // actual user input was entered. There are hidden fields that we add initial values to because the backend wants
-    // them but we are not supposed to show them.
-    quote.policyHolders = data.policyHolders[0].firstName
-      ? [data.policyHolders[0]]
-      : [];
-  }
 
   if (!data.coverageLimits.personalProperty.value) {
     quote.coverageOptions.personalPropertyReplacementCost.answer = false;
