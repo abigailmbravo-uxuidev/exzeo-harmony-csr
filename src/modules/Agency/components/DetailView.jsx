@@ -52,7 +52,7 @@ export const DetailView = ({ agency, agencyBranchData }) => {
       </div>
       <div className="eoExpirationDate" data-test="eo-expiration-date">
         <label>EO Expiration Date</label>
-        <div>{date.formattedDate(agency.eoExpirationDate, 'MM/DD/YYYY')}</div>
+        <div>{date.formatDate(agency.eoExpirationDate, 'MM/DD/YYYY')}</div>
       </div>
       {String(agencyBranchData.branchCode) !== '0' && (
         <div className="branchName" data-test="branch-name">
