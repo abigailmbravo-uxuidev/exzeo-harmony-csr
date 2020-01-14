@@ -68,7 +68,7 @@ describe('Overview testing', () => {
       { label: 'Tax Classification', value: mockAgency.taxClassification },
       {
         label: 'EO Expiration Date',
-        value: date.formattedDate(mockAgency.eoExpirationDate, 'MM/DD/YYYY')
+        value: date.formatDate(mockAgency.eoExpirationDate, 'MM/DD/YYYY')
       },
       {
         label: 'Branch Name',
