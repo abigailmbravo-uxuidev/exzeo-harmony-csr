@@ -128,3 +128,13 @@ Cypress.Commands.add(
       .should('exist')
       .then($arr => cy.wrap($arr[0]).click())
 );
+
+/**
+ * Helper to clear an input using React-Select
+ * @param {string} tag - Name of data test tag wrapping the select
+ */
+Cypress.Commands.add('clearReactSelectField', tag =>
+  cy.findDataTag(tag).within(() => {
+    cy.get('[class~="react-select__clear-indicator"]').click();
+  })
+);
