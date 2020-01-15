@@ -204,7 +204,7 @@ export class AddressGroup extends Component {
                 label="Territory Managers"
                 name="territoryManagerId"
                 styleName="territoryManagerId"
-                data-test="territoryManager"
+                dataTest="territoryManager"
                 component={SelectTypeAhead}
                 optionValue="_id"
                 optionLabel="name"

@@ -141,7 +141,7 @@ const AgencyDetails = ({ agencyCodeDisabled }) => {
         label="CSR Contact Email Address"
         styleName="customerServiceEmailAddress"
         name="customerServiceEmailAddress"
-        dataTest="customerServiceEmailAddress"
+        dataTest="csrEmail"
         component={Input}
         validate={[validation.isRequired, validation.isEmail]}
       />

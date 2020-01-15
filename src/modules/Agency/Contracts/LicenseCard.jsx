@@ -32,7 +32,7 @@ export const LicenseCard = ({
           className={Button.constants.classNames.link}
           size={Button.constants.sizes.small}
           onClick={deleteLicense}
-          data-test="delete-contract"
+          data-test="delete-license"
         >
           <i className="fa fa-trash" />
           Delete
@@ -42,7 +42,7 @@ export const LicenseCard = ({
         className={Button.constants.classNames.link}
         size={Button.constants.sizes.small}
         onClick={editLicense}
-        data-test="delete-contract"
+        data-test="edit-license"
       >
         <i className="fa fa-pencil-square" />
         Edit
