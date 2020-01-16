@@ -33,13 +33,12 @@ export function getEnumsForQuoteWorkflow({
       dispatch(fetchNotes([quoteNumber], 'quoteNumber'));
       // this pattern sets us up to "parallelize" the network requests in this function. We want to
       // fetch all enums/data needed for the quote workflow in here.
-      // 1. assign async function(s) to variable(s) - calls the func
       const diaryOptions = fetchDiaryOptions(companyCode, state, product);
       const propertyAppraisals = fetchPropertyAppriasals();
-
-      // 2. new variable awaits the previous.
-      const diaryOptionsResponse = await diaryOptions;
-      const propertyAppraisalsResponse = await propertyAppraisals;
+      const [
+        diaryOptionsResponse,
+        propertyAppraisalsResponse
+      ] = await Promise.all([diaryOptions, propertyAppraisals]);
 
       dispatch(
         setEnums({
@@ -78,8 +77,10 @@ export function getEnumsForPolicyWorkflow({ companyCode, state, product }) {
       const diaryOptions = fetchDiaryOptions(companyCode, state, product);
       const propertyAppraisals = fetchPropertyAppriasals();
 
-      const diaryOptionsResponse = await diaryOptions;
-      const propertyAppraisalsResponse = await propertyAppraisals;
+      const [
+        diaryOptionsResponse,
+        propertyAppraisalsResponse
+      ] = await Promise.all([diaryOptions, propertyAppraisals]);
 
       dispatch(
         setEnums({
