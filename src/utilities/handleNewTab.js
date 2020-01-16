@@ -20,7 +20,15 @@ export function handleNewTab(resource, type, product) {
     resource.agencies.length > 0
   ) {
     const agency = resource.agencies[0];
-    window.open(`/agency/${agency.agencyCode}/0/overview`, '_blank');
+    const branchCodes =
+      resource.agencies &&
+      resource.agencies.map(agency =>
+        agency.branchCode ? agency.branchCode : 0
+      );
+    window.open(
+      `/agency/${agency.agencyCode}/${branchCodes[0]}/overview`,
+      '_blank'
+    );
   }
 }
 

@@ -71,10 +71,6 @@ describe('Overview testing', () => {
         value: date.formattedDate(mockAgency.eoExpirationDate, 'MM/DD/YYYY')
       },
       {
-        label: 'Branch Name',
-        value: mockAgency.branches[props.branchCode].displayName
-      },
-      {
         label: 'Mail Commission Checks to this Branch',
         value: mockAgency.branches[props.branchCode]
           .mailCommissionChecksToBranch
