@@ -3,6 +3,7 @@ import {
   fetchAgency,
   fetchAgentsByAgencyCode
 } from '../../state/actions/agency.actions';
+import { fetchTerritoryManagers } from '../../state/actions/questions.actions';
 
 export const useFetchAgency = agencyCode => {
   const [agency, setAgency] = useState({});
@@ -45,4 +46,25 @@ export const useFetchAgents = agencyCode => {
   }, [agencyCode]);
 
   return { agents, loaded };
+};
+
+export const useTerritoryManagers = state => {
+  const [managers, setManagers] = useState([]);
+  const [loaded, setLoaded] = useState(false);
+  useEffect(() => {
+    const getAgents = async () => {
+      setLoaded(false);
+      try {
+        const result = await fetchTerritoryManagers(state);
+        setManagers(result);
+      } catch (error) {
+        setManagers([]);
+      }
+      setLoaded(true);
+    };
+    getAgents();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [state]);
+
+  return { territoryManagers: managers, loaded };
 };

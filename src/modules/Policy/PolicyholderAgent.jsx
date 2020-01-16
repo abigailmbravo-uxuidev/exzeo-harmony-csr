@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import { ModalPortal, SectionLoader } from '@exzeo/core-ui';
 
-import { useFetchAgents, useFetchAgency } from './hooks';
+import { useFetchAgents, useFetchAgency, useTerritoryManagers } from './hooks';
 import AgencyCard from './AgencyCard';
 import AgentCard from './AgentCard';
+import ContactCard from './ContactCard';
 import PolicyholderCard from './PolicyholderCard';
 import TransferAORModal from './TransferAORModal';
 
@@ -15,8 +16,17 @@ const PolicyholderAgent = ({ customHandlers, initialValues }) => {
   const { agency, loaded: agencyLoaded } = useFetchAgency(
     initialValues.agencyCode
   );
+  const {
+    territoryManagers,
+    loaded: territoryManagersLoaded
+  } = useTerritoryManagers(initialValues.state);
+
   const selectedAgent = agents.find(
     a => a.agentCode === initialValues.agentCode
+  );
+
+  const territoryManager = territoryManagers.find(
+    agent => agent._id === agency.territoryManagerId
   );
 
   const submitTransferAOR = async data => {
@@ -83,6 +93,16 @@ const PolicyholderAgent = ({ customHandlers, initialValues }) => {
           policyNumber={initialValues.policyNumber}
           policyHolders={initialValues.policyHolders}
         />
+      </section>
+      <section className="agency-cards">
+        <h3 className="title">Territory Manager</h3>
+        {territoryManager && territoryManager.name && (
+          <ContactCard
+            {...territoryManager}
+            policyNumber={initialValues.policyNumber}
+            policyHolders={initialValues.policyHolders[0]}
+          />
+        )}
       </section>
     </React.Fragment>
   );
