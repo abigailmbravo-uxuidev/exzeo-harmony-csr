@@ -3,16 +3,19 @@ header {
   flex-grow: 0;
   flex-shrink: 0;
   justify-content: center;
-  padding: $padding $padding * 2;
-  min-height: auto;
+
   width: 100%;
   height: auto;
+  min-height: auto;
+  padding: $padding $padding * 2;
+
   border-bottom: 2px solid $white;
   background: $bright-blue-darken-04;
 
   div[role='banner'] {
     display: flex;
     align-items: center;
+
     width: 100%;
     height: 2.25rem;
 
@@ -28,6 +31,7 @@ header {
       display: block;
       flex-grow: 0;
       flex-shrink: 0;
+
       width: auto;
 
       img {
@@ -38,6 +42,7 @@ header {
 
     .header-toggle-wrapper {
       position: relative;
+
       display: none;
       flex-direction: row-reverse;
       flex-grow: 1;
@@ -47,14 +52,17 @@ header {
         display: flex;
         button {
           position: relative;
+
           display: flex;
           align-items: center;
           flex-direction: column;
+
+          width: 3.5rem;
+          height: 3.75rem;
           margin-top: -($padding * 2);
           margin-left: $padding;
           padding: 0;
-          width: 3.5rem;
-          height: 3.75rem;
+
           border-width: 0;
 
           .diary-btn-wrapper {
@@ -63,11 +71,14 @@ header {
             right: 0;
             bottom: 0;
             left: 0;
+
             display: flex;
             align-items: center;
             flex-direction: column;
             justify-content: center;
+
             padding-top: $padding;
+
             border-right: 1px solid $bright-blue;
             border-bottom: 1px solid $bright-blue;
             border-left: 1px solid $bright-blue;
@@ -91,29 +102,37 @@ header {
 
             > i {
               position: relative;
+
               display: flex;
               align-items: center;
               justify-content: center;
-              margin-right: 0;
+
               width: 2rem;
               height: 2rem;
+              margin-right: 0;
+
               color: $bright-blue;
+
               font-size: $font-size-h2;
 
               > span {
                 position: absolute;
                 top: 0.5rem;
+
                 color: $white;
+
                 font-family: $font-family-base;
               }
             }
 
             span {
               color: $bright-blue;
+
               font-size: $font-size-xs;
 
               i {
                 margin-right: $padding/4;
+
                 color: $bright-blue;
               }
             }
@@ -145,13 +164,16 @@ header {
       position: relative;
       top: 0;
       right: 0;
+
       display: flex;
       align-items: center;
       flex: 1;
       flex-direction: row;
       justify-content: flex-end;
-      padding: 0;
+
       width: auto;
+      padding: 0;
+
       border-width: 0;
       border-top-width: 0;
       background-color: transparent;
@@ -161,27 +183,34 @@ header {
         display: flex;
         align-items: center;
         justify-content: center;
+
+        height: 3.375rem;
         margin-left: 1rem;
         padding: 0 $padding;
-        height: 3.375rem;
-        color: $bright-blue;
-        text-decoration: none;
+
         white-space: nowrap;
-        font-weight: $font-weight-bold;
+        text-decoration: none;
+
+        color: $bright-blue;
+
         font-size: $font-size-h6;
+        font-weight: $font-weight-bold;
 
         @include transition(all 0.2s ease-in-out);
 
         &:hover {
-          color: $bright-blue-lighten-01;
           text-decoration: none;
+
+          color: $bright-blue-lighten-01;
         }
 
         &.active {
           padding-top: 5px;
-          border-bottom: 5px solid $white;
-          color: $white;
+
           cursor: default;
+
+          color: $white;
+          border-bottom: 5px solid $white;
 
           &:hover {
             color: $white;
@@ -207,13 +236,16 @@ header {
 
       .user-name {
         margin: 0 ($padding/2) 0 ($padding * 4);
+
         color: rgba($white, 0.5);
+
         font-size: $font-size-sm;
       }
 
       > button {
         i {
           margin: 0;
+
           color: $white;
 
           @include transition(all 0.2s ease-in-out);
@@ -241,15 +273,18 @@ header {
     &.agency {
       .detailHeader {
         position: relative;
+
         display: flex;
         flex-grow: 0;
         flex-shrink: 0;
         justify-content: flex-start;
+
         width: 100%;
         height: 4.75rem;
+
+        color: $white;
         border-bottom: 2px solid $white;
         background: $warm-gray-10;
-        color: $white;
 
         a {
           color: $bright-blue-lighten-02;
@@ -263,19 +298,24 @@ header {
           flex-basis: auto;
           flex-grow: 0;
           flex-shrink: 0;
+
           margin-right: $padding * 2;
           padding: ($padding/2) 0;
 
           &.agencyDetails {
             display: flex;
             align-items: center;
-            padding-right: 1rem;
+
             width: 12rem;
+            padding-right: 1rem;
+
             text-align: center;
 
             h4 {
               margin: 0;
+
               color: $yellow-lighten-06;
+
               font-weight: $font-weight-normal;
             }
           }
@@ -286,6 +326,7 @@ header {
 
             h4 {
               margin: 0;
+
               color: $white;
 
               span {
@@ -301,16 +342,19 @@ header {
     &.quote {
       .detailHeader {
         position: relative;
+
         display: grid;
         flex-grow: 0;
         flex-shrink: 0;
+
         width: 100%;
         height: 5.25rem;
+
+        color: $white;
         border-bottom: 2px solid $white;
         background: $warm-gray-10;
-        color: $white;
-        column-gap: $padding * 2;
 
+        column-gap: $padding * 2;
         grid-template-columns: 12rem max-content max-content max-content max-content max-content max-content 1fr 7.5rem;
 
         section {
@@ -323,9 +367,11 @@ header {
               dt {
                 display: flex;
                 align-items: baseline;
+
                 color: $yellow-lighten-05;
-                font-weight: $font-weight-normal;
+
                 font-size: $font-size-sm;
+                font-weight: $font-weight-normal;
                 line-height: $headings-line-height;
 
                 -webkit-font-smoothing: antialiased;
@@ -333,11 +379,14 @@ header {
 
               dd {
                 overflow: hidden;
+
                 margin-bottom: 0;
+
                 text-transform: uppercase;
                 text-overflow: ellipsis;
                 -webkit-hyphens: auto;
                 hyphens: auto;
+
                 font-size: 14px;
                 line-height: 1.02;
 
@@ -350,10 +399,12 @@ header {
           &.policyDetails,
           &.quoteDetails {
             display: flex;
-            padding: ($padding/2) ($padding/2) ($padding/2) ($padding * 2);
+
             width: 12rem;
-            background-color: rgba($black, 0.2);
+            padding: ($padding/2) ($padding/2) ($padding/2) ($padding * 2);
+
             color: $yellow-lighten-05;
+            background-color: rgba($black, 0.2);
 
             dl {
               display: flex;
@@ -364,12 +415,18 @@ header {
                 justify-content: space-around;
 
                 dd {
+                  display: flex;
+                  align-items: center;
                   .btn-link {
                     display: flex;
+
                     margin: 0;
                     padding: 0;
-                    color: $bright-blue-lighten-02;
+
                     text-decoration: underline;
+
+                    color: $bright-blue-lighten-02;
+
                     font-size: $font-size-sm;
                     line-height: 1;
 
@@ -382,14 +439,18 @@ header {
 
                     &.btn-white {
                       display: inline-flex;
-                      margin-left: $padding/2;
-                      color: $white;
-                      text-decoration: none;
-                      font-size: $font-size-xs;
+
+                      margin-left: $padding;
+
                       cursor: help;
+                      text-decoration: none;
+
+                      color: $white;
+
+                      font-size: 14px;
 
                       i {
-                        color: $bright-blue;
+                        color: $bright-blue-lighten-02;
                       }
                     }
                   }
@@ -485,11 +546,13 @@ header {
 
           &.premium {
             align-self: flex-start;
+
+            min-width: 7.5rem;
             margin: ($padding/2) 0;
             padding: $padding;
-            min-width: 7.5rem;
-            background: $warm-gray-02;
+
             color: $warm-gray-12;
+            background: $warm-gray-02;
 
             grid-column: 9;
             grid-row: 1;
