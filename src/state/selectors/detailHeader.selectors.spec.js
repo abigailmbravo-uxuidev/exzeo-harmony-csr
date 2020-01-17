@@ -835,10 +835,9 @@ describe('Detail Header selectors', () => {
     const result = detailSelectors.getPolicyDetails(state);
     expect(result).toEqual({
       cancellation: {
-        label: 'Cancellation Effective Date',
         value: '12/04/2018',
-        showRescindCancel: true,
-        showReinstatement: false
+        label: 'Voluntary Cancellation Date',
+        showRescindCancel: true
       },
       floodZone: 'X',
       constructionType: 'SUPERIOR',
