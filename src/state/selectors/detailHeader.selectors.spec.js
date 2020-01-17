@@ -864,11 +864,6 @@ describe('Detail Header selectors', () => {
       },
       nonPaymentNoticeDate: '',
       nonPaymentNoticeDueDate: '',
-      cancellation: {
-        value: '12/04/2018',
-        label: 'Voluntary Cancellation Date',
-        showRescindCancel: true
-      },
       sourcePath: '/quote/12-5148842-01/coverage'
     });
   });
