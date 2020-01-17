@@ -846,7 +846,6 @@ describe('Detail Header selectors', () => {
       policyNumber: '12-1011068-01',
       sourceNumber: '12-5148842-01',
       territory: '038-0',
-      floodZone: 'X',
       county: 'ALACHUA',
       currentPremium: '$ 3,055',
       effectiveDate: '12/04/2018',
@@ -871,11 +870,6 @@ describe('Detail Header selectors', () => {
       },
       nonPaymentNoticeDate: '',
       nonPaymentNoticeDueDate: '',
-      cancellation: {
-        value: '12/04/2018',
-        label: 'Voluntary Cancellation Date',
-        showRescindCancel: true
-      },
       sourcePath: '/quote/12-5148842-01/coverage'
     });
   });
