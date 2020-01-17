@@ -16,10 +16,7 @@ const PolicyholderAgent = ({ customHandlers, initialValues }) => {
   const { agency, loaded: agencyLoaded } = useFetchAgency(
     initialValues.agencyCode
   );
-  const {
-    territoryManagers,
-    loaded: territoryManagersLoaded
-  } = useTerritoryManagers(initialValues.state);
+  const { territoryManagers } = useTerritoryManagers(initialValues.state);
 
   const selectedAgent = agents.find(
     a => a.agentCode === initialValues.agentCode
