@@ -15,12 +15,10 @@ export const ContactCard = ({
   <div className="agent contact card">
     <div className="contact-title">
       <i className={`fa ${icon}`} />
-      <label>Agent</label>
+      <label>Territory Manager</label>
     </div>
     <div className="contact-details">
-      <h4>
-        <span className="agent-code">{name} </span>
-      </h4>
+      <h4>{name}</h4>
       <div className="additional-contacts">
         <ul>
           <li>
