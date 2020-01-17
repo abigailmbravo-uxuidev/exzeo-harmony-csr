@@ -2,14 +2,16 @@
   //content wrapper
   main {
     position: relative;
-    min-height: calc(100vh - 8.5rem);
+
     height: calc(100vh - 8.5rem);
+    min-height: calc(100vh - 8.5rem);
 
     .content-wrapper {
       overflow: hidden;
       flex-grow: 1;
       flex-shrink: 1;
       flex-wrap: nowrap;
+
       width: auto;
 
       .route-content {
@@ -28,6 +30,7 @@
         //endorsements
         .endorsements {
           position: relative;
+
           display: flex;
           overflow: hidden;
           flex-basis: auto;
@@ -51,9 +54,11 @@
                 label {
                   flex-grow: 0;
                   flex-shrink: 0;
+
+                  width: calc(33.33% - 0.5rem);
                   margin: 0 $padding 0 0;
                   padding: 0;
-                  width: calc(33.33% - 0.5rem);
+
                   text-align: left;
                 }
               }
@@ -61,6 +66,7 @@
               .form-group-double-element {
                 display: flex;
                 align-items: flex-start;
+
                 margin: 0 0 ($padding * 2);
 
                 > .form-group {
@@ -70,6 +76,7 @@
                   flex-grow: 0;
                   flex-shrink: 0;
                   flex-wrap: wrap;
+
                   margin: 0;
                   padding: 0 $padding;
 
@@ -77,8 +84,9 @@
                     span {
                       flex-grow: 1;
                       flex-shrink: 1;
-                      padding-left: 66.66%;
+
                       width: 100%;
+                      padding-left: 66.66%;
                     }
                   }
 
@@ -87,14 +95,16 @@
                     display: block;
                     flex-grow: 0;
                     flex-shrink: 0;
-                    margin: 0 $padding 0 0;
+
                     width: calc(33.33% - 0.5rem);
+                    margin: 0 $padding 0 0;
+
                     text-align: right;
 
                     &.selected {
                       span {
-                        background: $bright-blue-darken-04;
                         color: $white;
+                        background: $bright-blue-darken-04;
                       }
                     }
                     @media (max-width: 1600px) {
@@ -103,8 +113,8 @@
                   }
 
                   .initial-value {
-                    margin-right: $padding;
                     width: calc(33.33% - 0.5rem);
+                    margin-right: $padding;
 
                     .label-segmented {
                       span {
@@ -119,9 +129,10 @@
 
                       &.selected {
                         span {
-                          background: rgba($bright-blue-darken-04, 0.5);
-                          color: $white;
                           cursor: not-allowed;
+
+                          color: $white;
+                          background: rgba($bright-blue-darken-04, 0.5);
                         }
                       }
                     }
@@ -149,12 +160,13 @@
                 }
 
                 .segmented {
-                  margin: 0;
                   width: 100%;
+                  margin: 0;
 
                   .segmented-answer-wrapper {
                     flex-grow: 1;
                     flex-shrink: 1;
+
                     margin: 0;
 
                     > div {
@@ -169,6 +181,7 @@
                           font-size: $font-size-h5;
                           @media (max-width: 1600px) {
                             padding: $padding/2;
+
                             font-size: $font-size-sm;
                           }
                         }
@@ -180,9 +193,10 @@
                     .label-segmented {
                       &.selected {
                         span {
-                          background: rgba($bright-blue-darken-04, 0.5);
-                          color: $white;
                           cursor: not-allowed;
+
+                          color: $white;
+                          background: rgba($bright-blue-darken-04, 0.5);
                         }
                       }
                     }
@@ -191,9 +205,9 @@
 
                 &.wind-mit {
                   > .windMitFactor {
+                    width: calc(66.66% - 0.75rem);
                     margin-right: $padding;
                     padding: 0 0 0 $padding;
-                    width: calc(66.66% - 0.75rem);
 
                     label {
                       width: 50%;
@@ -205,8 +219,8 @@
                   }
 
                   > .windMitFactorRated {
-                    padding: 0;
                     width: 33%;
+                    padding: 0;
 
                     input[type='text'] {
                       width: 100%;
@@ -222,8 +236,8 @@
 
                 .flex-parent.col2 {
                   .form-group {
-                    margin-left: ($padding);
                     width: 50%;
+                    margin-left: ($padding);
                   }
 
                   .form-group:nth-child(1) {
@@ -239,13 +253,13 @@
               }
 
               .city {
-                padding-right: $padding;
                 width: 65%;
+                padding-right: $padding;
               }
 
               .state {
-                padding-right: $padding;
                 width: 15%;
+                padding-right: $padding;
               }
 
               .zip {
@@ -261,14 +275,17 @@
           .endo-results-calc {
             flex-grow: 1;
             flex-shrink: 1;
-            padding: $padding;
+
             width: auto;
+            padding: $padding;
+
             border-top: 1px dotted $warm-gray-04;
             background: $warm-gray-01;
 
             .endorsement-date-wrapper {
               flex-grow: 0;
               flex-shrink: 0;
+
               width: 14rem;
             }
 
@@ -311,8 +328,10 @@
         .underwriting-validation {
           flex-grow: 0;
           flex-shrink: 0;
-          padding: 0 0 ($padding * 2) ($padding * 2);
+
           width: 240px;
+          padding: 0 0 ($padding * 2) ($padding * 2);
+
           border-left: dotted 1px $warm-gray-04;
 
           .uw-validation-header {
@@ -325,11 +344,13 @@
           overflow-y: auto;
           flex-grow: 1;
           flex-shrink: 0;
+
           width: 100%;
 
           .card {
             &.contact {
               flex-direction: row;
+
               margin: 0 (-$padding/2) ($padding);
               padding: $padding ($padding * 1.5);
 
@@ -343,31 +364,39 @@
                   flex-grow: 0;
                   flex-shrink: 0;
                   justify-content: center;
+
                   width: 6rem;
 
                   i {
-                    color: $bright-blue-darken-04;
                     text-align: center;
+
+                    color: $bright-blue-darken-04;
+
                     font-size: $font-size-h2;
                   }
 
                   label {
                     margin-bottom: 0;
+
                     text-align: center;
+
                     font-size: $font-size-sm;
                   }
                 }
 
                 .contact-details {
                   flex-grow: 1;
+
                   margin-left: $padding * 2;
 
                   h4 {
-                    margin-bottom: 0;
-                    color: $warm-gray-10;
+                    margin: 0;
+
                     -webkit-hyphens: auto;
                     -moz-hyphens: auto;
                     hyphens: auto;
+
+                    color: $warm-gray-10;
 
                     -ms-hyphens: auto;
 
@@ -394,6 +423,7 @@
 
                   p {
                     margin-bottom: 0;
+
                     color: $warm-gray-10;
                   }
 
@@ -404,6 +434,7 @@
                     p {
                       display: flex;
                       align-items: center;
+
                       margin-right: $padding * 2;
 
                       .contact-divider {
@@ -413,14 +444,17 @@
                       small {
                         margin-right: $padding;
                         padding: 0 0.2rem;
+
+                        color: $white;
                         border-radius: 2px;
                         background: $warm-gray-08;
-                        color: $white;
+
                         font-size: 70%;
 
                         i {
                           margin-right: 0;
                           margin-left: 0.1rem;
+
                           color: $white;
                         }
                       }
@@ -443,10 +477,12 @@
 
                       i {
                         margin-right: $padding;
+
                         color: $warm-gray-08;
 
                         &.fa-phone-square {
                           margin-top: 3%;
+
                           font-size: 112%;
                         }
                       }
@@ -455,7 +491,9 @@
                         flex-basis: auto;
                         flex-grow: 0;
                         flex-shrink: 0;
+
                         margin: 0 $padding 0 0;
+
                         color: $warm-gray-08;
                       }
                     }
@@ -463,16 +501,19 @@
 
                   .additional-contacts {
                     margin-top: $padding;
+
                     border-top: 1px dotted $warm-gray-01;
 
                     ul {
                       margin: $padding 0 0;
                       padding: 0;
+
                       list-style: none;
 
                       li {
                         display: flex;
                         align-items: center;
+
                         padding: 0;
 
                         &:last-child {
@@ -482,15 +523,18 @@
                         div {
                           display: flex;
                           align-items: center;
+
                           margin-right: $padding * 2;
 
                           h5 {
                             margin: 0 $padding 0 0;
+
                             color: $warm-gray-08;
                           }
 
                           span {
                             width: auto;
+
                             white-space: nowrap;
                           }
 
@@ -508,12 +552,15 @@
                   align-items: center;
                   flex-grow: 0;
                   flex-shrink: 0;
+
                   width: auto;
+
                   font-size: $font-size-sm;
 
                   label {
                     margin-right: $padding;
                     margin-bottom: 0;
+
                     font-size: $font-size-sm;
                   }
                 }
@@ -527,8 +574,10 @@
             .card-multi-split {
               display: flex;
               align-content: stretch;
+
               margin-bottom: ($padding * 2);
               padding-bottom: ($padding * 2);
+
               border-bottom: 1px dashed $warm-gray-01;
 
               .contact-details {
@@ -540,6 +589,7 @@
 
                 i.fa-pencil {
                   color: $bright-blue-darken-04;
+
                   font-size: 1.25rem;
                 }
               }
@@ -559,10 +609,12 @@
           section {
             margin-bottom: $padding * 2;
             padding-bottom: $padding * 2;
+
             border-bottom: 1px dashed $bright-blue-darken-03;
 
             &:last-child {
               margin-bottom: 0;
+
               border-bottom-width: 0;
             }
 
@@ -572,13 +624,17 @@
 
                 dt {
                   margin-bottom: $padding;
+
                   color: $warm-gray-08;
+
                   font-size: $font-size-h5;
                 }
 
                 dd {
                   display: inline-flex;
+
                   margin-bottom: $padding * 2;
+
                   color: $warm-gray-10;
                 }
               }
@@ -609,9 +665,12 @@
                   > div {
                     margin: 0;
                     padding: ($padding) ($padding * 2);
-                    border-top: $border-width dotted $border-color;
-                    color: $bright-blue-darken-04;
+
                     text-align: right;
+
+                    color: $bright-blue-darken-04;
+                    border-top: $border-width dotted $border-color;
+
                     font-weight: bold;
                   }
                 }
@@ -633,18 +692,21 @@
                 .date {
                   flex-grow: 0;
                   flex-shrink: 0;
+
                   width: 120px;
                 }
 
                 .type {
                   flex-grow: 0;
                   flex-shrink: 0;
+
                   width: 200px;
                 }
 
                 .description {
                   flex-grow: 0;
                   flex-shrink: 0;
+
                   width: 230px;
                 }
 
@@ -656,6 +718,7 @@
                 .amount {
                   flex-grow: 0;
                   flex-shrink: 0;
+
                   width: 200px;
 
                   > div {
@@ -689,6 +752,7 @@
             .responsive-tables {
               display: flex;
               flex-direction: row;
+
               width: 100%;
 
               .card-view,
@@ -748,6 +812,7 @@
 
                   .value {
                     width: 70%;
+
                     -webkit-hyphens: auto;
                     -moz-hyphens: auto;
                     hyphens: auto;
@@ -758,15 +823,17 @@
 
                 .coverage,
                 .discountSurcharge {
-                  padding: $padding ($padding * 1.5);
                   width: 60%;
+                  padding: $padding ($padding * 1.5);
+
                   white-space: normal;
                   hyphens: auto;
                 }
 
                 .value {
-                  padding: $padding ($padding * 1.5);
                   width: 40%;
+                  padding: $padding ($padding * 1.5);
+
                   white-space: normal;
                 }
               }
@@ -812,6 +879,7 @@
                   section {
                     margin: 0 0 0 ($padding * 2);
                     padding: 0;
+
                     border-bottom-width: 0;
                   }
                 }
@@ -831,6 +899,7 @@
         .date {
           flex-grow: 0;
           flex-shrink: 0;
+
           width: 11rem;
         }
       }
@@ -864,13 +933,15 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        margin: (-$padding) ($padding * 2) (-$padding) (-$padding * 2);
-        padding: 0 ($padding * 2);
+
         width: 12rem;
         height: 3.25rem;
+        margin: (-$padding) ($padding * 2) (-$padding) (-$padding * 2);
+        padding: 0 ($padding * 2);
+
+        color: $white;
         border-right: 1px dotted $bright-blue-darken-01;
         background: $bright-blue-darken-03;
-        color: $white;
 
         span {
           font-size: 1.125rem;
@@ -882,13 +953,17 @@
         align-items: center;
         flex-grow: 1;
         flex-shrink: 0;
+
         color: $white;
+
         font-size: $font-size-h5;
 
         label {
           margin-bottom: 0;
           padding: 0 $padding 0 ($padding * 4);
+
           color: $warm-gray-07;
+
           font-weight: $font-weight-normal;
         }
       }
@@ -897,8 +972,9 @@
   //content wrapper
   main {
     position: relative;
-    min-height: calc(100vh - 8.5rem);
+
     height: calc(100vh - 8.5rem);
+    min-height: calc(100vh - 8.5rem);
 
     .content-wrapper {
       display: flex;
@@ -908,6 +984,7 @@
       flex-grow: 1;
       flex-shrink: 1;
       flex-wrap: nowrap;
+
       width: 100%;
 
       .route-content {
@@ -925,8 +1002,9 @@
           flex-grow: 1;
           flex-shrink: 1;
           flex-wrap: nowrap;
-          padding: 0;
+
           width: 100%;
+          padding: 0;
           form {
             padding: $padding;
             &.view-grid {
