@@ -807,6 +807,11 @@ section {
         margin: 0 $padding $padding;
       }
     }
+    .tm {
+      margin-top: $padding/4;
+
+      line-height: 1.25;
+    }
   }
 }
 //end policyholder/agent page specific styles
