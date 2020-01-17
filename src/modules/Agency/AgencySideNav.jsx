@@ -40,7 +40,7 @@ const csrLinks = (agencyCode, branchCode) => [
     key: 'notes',
     link: `/agency/${agencyCode}/${branchCode}/notes`,
     label: 'Notes / Files',
-    styleName: 'notes disabled',
+    styleName: 'notes',
     exact: true
   },
   {
@@ -141,6 +141,7 @@ export class SideNav extends React.Component {
                 <span className={agentLink.styleName}>
                   <NavLink
                     to={agentLink.link}
+                    className={agentLink.styleName}
                     activeClassName={agentLink.link !== '#' ? 'active' : ''}
                     exact
                   >
