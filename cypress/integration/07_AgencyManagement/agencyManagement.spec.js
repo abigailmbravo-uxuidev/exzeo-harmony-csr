@@ -64,10 +64,6 @@ describe('Agency Management testing', () => {
       .findDataTag('eoExpirationDate')
       .type('2020-11-20')
 
-      .findDataTag('branchName')
-      .click({ force: true })
-      .type('Tampa Branch')
-
       .get('[class="agency-details"]')
       .within(() => {
         cy.findDataTag('primaryPhoneNumber')
@@ -607,9 +603,6 @@ describe('Agency Management testing', () => {
 
       .findDataTag('eoExpirationDate')
       .type('2020-11-22')
-
-      .findDataTag('branchName')
-      .type('{selectall}{backspace}Ocala Branch')
 
       .findDataTag('primaryPhoneNumber')
       .type('{selectall}{backspace}(444)555-7777')
