@@ -6,7 +6,7 @@ import { updateAgency } from '../../../state/actions/agency.actions';
 import Contact from '../components/FormGroup/Contact';
 
 export class AgencyContactModal extends Component {
-  onHandleSaveAgency = async (data, dispatch, props) => {
+  onHandleSaveAgency = async data => {
     const { agency, branchCode, section } = this.props;
 
     if (Number(branchCode) > 0) {
@@ -49,7 +49,7 @@ export class AgencyContactModal extends Component {
             <div className="card-block">
               <section className="agency-details">
                 <FormSection name={section}>
-                  <Contact section={section} showTitle />
+                  <Contact showTitle />
                 </FormSection>
               </section>
             </div>
@@ -57,6 +57,7 @@ export class AgencyContactModal extends Component {
               <div className="btn-footer">
                 <button
                   tabIndex="0"
+                  data-test="modal-cancel"
                   className="btn btn-secondary"
                   type="button"
                   onClick={closeModal}
@@ -65,6 +66,7 @@ export class AgencyContactModal extends Component {
                 </button>
                 <button
                   tabIndex="0"
+                  data-test="modal-submit"
                   className="btn btn-primary"
                   type="submit"
                   disabled={submitting}
@@ -80,14 +82,9 @@ export class AgencyContactModal extends Component {
   }
 }
 
-const mapStateToProps = state => state;
-
-export default connect(
-  mapStateToProps,
-  {
-    updateAgency
-  }
-)(
+export default connect(null, {
+  updateAgency
+})(
   reduxForm({
     form: 'AgencyContactModal',
     enableReinitialize: true,

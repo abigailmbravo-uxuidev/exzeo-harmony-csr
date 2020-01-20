@@ -2,13 +2,13 @@ import React from 'react';
 import { Field } from 'redux-form';
 import { Input, Phone, validation } from '@exzeo/core-ui';
 
-export const Contact = ({ showTitle, testPrefix }) => (
+export const Contact = ({ showTitle }) => (
   <React.Fragment>
     <div className="contact-name">
       {showTitle && (
         <Field
           name="title"
-          dataTest={`${testPrefix}.title`}
+          dataTest="title"
           styleName="title"
           label="Title"
           component={Input}
@@ -18,7 +18,7 @@ export const Contact = ({ showTitle, testPrefix }) => (
         label="First Name"
         styleName="firstName"
         name="firstName"
-        dataTest={`${testPrefix}.firstName`}
+        dataTest="firstName"
         component={Input}
         validate={validation.isRequired}
       />
@@ -26,7 +26,7 @@ export const Contact = ({ showTitle, testPrefix }) => (
         label="Last Name"
         styleName="lastName"
         name="lastName"
-        dataTest={`${testPrefix}.lastName`}
+        dataTest="lastName"
         component={Input}
         validate={validation.isRequired}
       />
@@ -36,7 +36,7 @@ export const Contact = ({ showTitle, testPrefix }) => (
         label="Email Address"
         styleName=""
         name="emailAddress"
-        dataTest={`${testPrefix}.emailAddress`}
+        dataTest="emailAddress"
         component={Input}
         validate={[validation.isRequired, validation.isEmail]}
       />
@@ -44,7 +44,7 @@ export const Contact = ({ showTitle, testPrefix }) => (
         label="Phone Number"
         styleName=""
         name="primaryPhoneNumber"
-        dataTest={`${testPrefix}.primaryPhoneNumber`}
+        dataTest="primaryPhoneNumber"
         component={Phone}
         validate={[validation.isPhone]}
       />
@@ -52,7 +52,7 @@ export const Contact = ({ showTitle, testPrefix }) => (
         label="Phone Number Extension"
         styleName=""
         name="primaryPhoneNumberExtension"
-        dataTest={`${testPrefix}.primaryPhoneNumberExtension`}
+        dataTest="primaryPhoneNumberExtension"
         component={Input}
       />
     </div>

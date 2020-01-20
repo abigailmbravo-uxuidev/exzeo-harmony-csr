@@ -38,7 +38,7 @@ export const Agent = () => (
       component={Input}
       validate={[validation.isRequired, validation.isEmail]}
     />
-    <div className="agent-phone">
+    <div className="agent-phone" data-test="agent-phone">
       <Field
         label="Phone 1"
         styleName="primaryPhoneNumber"

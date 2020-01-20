@@ -1,63 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {
-  Select,
-  validation,
-  SelectTypeAhead,
-  Button,
-  emptyArray
-} from '@exzeo/core-ui';
+import { validation, SelectTypeAhead, emptyArray } from '@exzeo/core-ui';
 import { reduxForm, FieldArray, Field } from 'redux-form';
 
-export const RenderProducts = ({ fields, stateAnswers, productAnswers }) => {
-  if (fields.length === 0) fields.insert(0, {});
-
-  return (
-    <React.Fragment>
-      {fields.map((product, index) => (
-        <div className="csp-wrapper" key={product}>
-          <Field
-            label="State"
-            styleName="state"
-            name={`${product}.state`}
-            component={Select}
-            answers={stateAnswers}
-            dataTest={`state-${index}`}
-            validate={validation.isRequired}
-          />
-          <Field
-            label="Product"
-            styleName="product"
-            name={`${product}.product`}
-            component={Select}
-            answers={productAnswers}
-            dataTest={`product-${index}`}
-            validate={validation.isRequired}
-          />
-          {fields.length > 1 && (
-            <i
-              className="fa fa-times-circle"
-              onClick={() => fields.remove(index)}
-            />
-          )}
-        </div>
-      ))}
-      <div className="add-product">
-        <hr />
-        <Button
-          className={Button.constants.classNames.secondary}
-          size={Button.constants.classNames.small}
-          data-test="add-product"
-          onClick={() => fields.push({})}
-        >
-          <i className="fa fa-plus" />
-          Product
-        </Button>
-        <hr />
-      </div>
-    </React.Fragment>
-  );
-};
+import ContractProducts from './ContractProducts';
 
 export const ContractModal = props => {
   const {
@@ -115,7 +61,7 @@ export const ContractModal = props => {
               <FieldArray
                 name="stateProducts"
                 component={fieldProps => (
-                  <RenderProducts
+                  <ContractProducts
                     {...fieldProps}
                     stateAnswers={stateAnswers}
                     productAnswers={productAnswers}
@@ -128,13 +74,19 @@ export const ContractModal = props => {
             <div className="btn-footer">
               <button
                 tabIndex="0"
+                data-test="modal-cancel"
                 className="btn btn-secondary"
                 type="button"
                 onClick={closeModal}
               >
                 Cancel
               </button>
-              <button tabIndex="0" className="btn btn-primary" type="submit">
+              <button
+                tabIndex="0"
+                data-test="modal-submit"
+                className="btn btn-primary"
+                type="submit"
+              >
                 Save
               </button>
             </div>

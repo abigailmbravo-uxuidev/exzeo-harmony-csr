@@ -25,29 +25,29 @@ export class Overview extends React.Component {
     selectedAgent: null
   };
 
-  onHandleToggleEditDetailsModal = () => {
+  toggleEditDetails = () => {
     this.setState({ showEditDetailsModal: !this.state.showEditDetailsModal });
   };
 
-  onHandleToggleEditAddressModal = () => {
+  toggleEditAddress = () => {
     this.setState({ showEditAddressModal: !this.state.showEditAddressModal });
   };
 
-  onHandleToggleEditContactModal = () => {
+  toggleEditContact = () => {
     this.setState({ showEditContactModal: !this.state.showEditContactModal });
   };
 
-  onHandleToggleEditPrincipalModal = () => {
+  toggleEditPrincipal = () => {
     this.setState({
       showEditPrincipalModal: !this.state.showEditPrincipalModal
     });
   };
 
-  onHandleToggleEditAgentModal = () => {
+  toggleEditAgent = () => {
     this.setState({ showEditAgentModal: !this.state.showEditAgentModal });
   };
 
-  onHandleToggleSwitchAgentOfRecordModal = agent => () => {
+  toggleSwitchAOR = agent => () => {
     this.setState({
       selectedAgent: agent,
       showSwitchAgentOfRecordModal: !this.state.showSwitchAgentOfRecordModal
@@ -69,13 +69,13 @@ export class Overview extends React.Component {
       await updateAgency({ agencyCode, branches: branchData });
     } else
       await updateAgency({ agencyCode, agentOfRecord: data.selectedAgentCode });
-    this.onHandleToggleSwitchAgentOfRecordModal(null)();
+    this.toggleSwitchAOR(null)();
   };
 
   onHandleEditAgent = async data => {
     const { agency, updateAgent } = this.props;
     await updateAgent(data, agency.agencyCode);
-    this.onHandleToggleEditAgentModal();
+    this.toggleEditAgent();
   };
 
   render() {
@@ -123,7 +123,8 @@ export class Overview extends React.Component {
                 Details
                 <button
                   className="btn btn-link btn-sm"
-                  onClick={this.onHandleToggleEditDetailsModal}
+                  data-test="edit-agency-details"
+                  onClick={this.toggleEditDetails}
                 >
                   <i className="fa fa-pencil-square" />
                   Edit
@@ -145,7 +146,8 @@ export class Overview extends React.Component {
                 Address
                 <button
                   className="btn btn-link btn-sm"
-                  onClick={this.onHandleToggleEditAddressModal}
+                  data-test="edit-agency-address"
+                  onClick={this.toggleEditAddress}
                 >
                   <i className="fa fa-pencil-square" />
                   Edit
@@ -164,7 +166,7 @@ export class Overview extends React.Component {
                     <ContactCard
                       isOfficer
                       contact={agencyBranchData.principal}
-                      handleClick={this.onHandleToggleEditPrincipalModal}
+                      handleClick={this.toggleEditPrincipal}
                     />
                   </section>
                 </React.Fragment>
@@ -173,16 +175,14 @@ export class Overview extends React.Component {
               <section className="agency-contact">
                 <ContactCard
                   contact={agencyBranchData.contact}
-                  handleClick={this.onHandleToggleEditContactModal}
+                  handleClick={this.toggleEditContact}
                 />
               </section>
               <h3 data-test="agency-aor">
                 Agent Of Record
                 <button
                   className="btn btn-link btn-sm"
-                  onClick={this.onHandleToggleSwitchAgentOfRecordModal(
-                    agentOfRecord.agentCode
-                  )}
+                  onClick={this.toggleSwitchAOR(agentOfRecord.agentCode)}
                 >
                   <i className="fa fa-pencil-square" />
                   Switch AOR
@@ -192,10 +192,8 @@ export class Overview extends React.Component {
                 {agentOfRecord && agentOfRecord.agentCode && (
                   <AgentCard
                     agent={agentOfRecord}
-                    handleSecondaryClick={
-                      this.onHandleToggleSwitchAgentOfRecordModal
-                    }
-                    handlePrimaryClick={this.onHandleToggleEditAgentModal}
+                    handleSecondaryClick={this.toggleSwitchAOR}
+                    handlePrimaryClick={this.toggleEditAgent}
                   />
                 )}
               </section>
@@ -209,7 +207,7 @@ export class Overview extends React.Component {
           <AgencyModal
             initialValues={agency}
             updateAgency={updateAgency}
-            closeModal={this.onHandleToggleEditDetailsModal}
+            closeModal={this.toggleEditDetails}
           />
         )}
         {showEditDetailsModal && Number(branchCode) > 0 && (
@@ -217,7 +215,7 @@ export class Overview extends React.Component {
             agency={agency}
             branchCode={branchCode}
             initialValues={agencyBranchData}
-            closeModal={this.onHandleToggleEditDetailsModal}
+            closeModal={this.toggleEditDetails}
           />
         )}
         {showEditAddressModal && (
@@ -225,7 +223,7 @@ export class Overview extends React.Component {
             branchCode={branchCode}
             agency={agency}
             initialValues={addressInitialValues}
-            closeModal={this.onHandleToggleEditAddressModal}
+            closeModal={this.toggleEditAddress}
           />
         )}
         {showEditContactModal && (
@@ -235,7 +233,7 @@ export class Overview extends React.Component {
             header="Edit Contact"
             section="contact"
             initialValues={agencyBranchData}
-            closeModal={this.onHandleToggleEditContactModal}
+            closeModal={this.toggleEditContact}
           />
         )}
         {showEditPrincipalModal && (
@@ -245,7 +243,7 @@ export class Overview extends React.Component {
             header="Edit Officer"
             section="principal"
             initialValues={agencyBranchData}
-            closeModal={this.onHandleToggleEditPrincipalModal}
+            closeModal={this.toggleEditPrincipal}
           />
         )}
         {showEditAgentModal && (
@@ -253,7 +251,7 @@ export class Overview extends React.Component {
             isEditing
             agencyCode={agency.agencyCode}
             initialValues={agentOfRecord}
-            closeModal={this.onHandleToggleEditAgentModal}
+            closeModal={this.toggleEditAgent}
             handleSaveAgent={this.onHandleEditAgent}
           />
         )}
@@ -266,7 +264,7 @@ export class Overview extends React.Component {
                 : ''
             }}
             listOfAgents={agentsList}
-            onToggleModal={this.onHandleToggleSwitchAgentOfRecordModal(null)}
+            onToggleModal={this.toggleSwitchAOR(null)}
             handleSelection={this.handleSwitchAOR}
           />
         )}

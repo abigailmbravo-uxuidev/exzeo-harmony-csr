@@ -834,19 +834,12 @@ describe('Detail Header selectors', () => {
     };
     const result = detailSelectors.getPolicyDetails(state);
     expect(result).toEqual({
-      cancellation: {
-        label: 'Cancellation Effective Date',
-        value: '12/04/2018',
-        showRescindCancel: true,
-        showReinstatement: false
-      },
       floodZone: 'X',
       constructionType: 'SUPERIOR',
       policyID: '5bb78613c2793c0012ad5733',
       policyNumber: '12-1011068-01',
       sourceNumber: '12-5148842-01',
       territory: '038-0',
-      floodZone: 'X',
       county: 'ALACHUA',
       currentPremium: '$ 3,055',
       effectiveDate: '12/04/2018',

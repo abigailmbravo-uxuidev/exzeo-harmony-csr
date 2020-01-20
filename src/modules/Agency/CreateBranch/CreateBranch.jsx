@@ -105,7 +105,7 @@ export class CreateBranch extends Component {
                 <h3>Contact</h3>
                 <section className="agency-contact">
                   <FormSection name="contact">
-                    <Contact testPrefix="contact" />
+                    <Contact />
                   </FormSection>
                 </section>
                 <h3>
