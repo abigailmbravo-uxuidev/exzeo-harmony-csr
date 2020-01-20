@@ -17,6 +17,7 @@ export class SearchBase extends Component {
 
   render() {
     const { loading, auth, location, userProfile } = this.props;
+
     return (
       <div className="app-wrapper csr">
         {loading && <Loader />}
@@ -47,9 +48,6 @@ const mapStateToProps = state => ({
   userProfile: state.authState.userProfile
 });
 
-export default connect(
-  mapStateToProps,
-  {
-    getUIQuestions
-  }
-)(SearchBase);
+export default connect(mapStateToProps, {
+  getUIQuestions
+})(SearchBase);

@@ -9,13 +9,11 @@ import DiariesSearch from './DiariesSearch';
 const mapStateToProps = state => {
   return {
     assigneeAnswers: getDiaryAssigneeAnswers(state),
-    diaryReasons: getDiaryReasons(state)
+    diaryReasons: getDiaryReasons(state),
+    results: state.search.results
   };
 };
 
-export default connect(
-  mapStateToProps,
-  {
-    submitSearch: submit
-  }
-)(DiariesSearch);
+export default connect(mapStateToProps, {
+  submitSearch: submit
+})(DiariesSearch);

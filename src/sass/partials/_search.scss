@@ -1,41 +1,48 @@
 .search {
   position: relative;
   z-index: 10;
+
   display: flex;
   overflow: visible;
   align-items: flex-start;
   flex-direction: column;
   flex-grow: 0;
   flex-shrink: 0;
-  margin-top: 0;
-  margin-bottom: 0;
+
   width: 100%;
   height: auto;
+  margin-top: 0;
+  margin-bottom: 0;
 
   @include transition(all 0.2s ease-in-out);
 
   #SearchBar {
     position: relative;
+
     display: flex;
     overflow: visible;
     align-items: flex-start;
     flex-direction: column;
     flex-grow: 0;
     flex-shrink: 0;
-    margin-top: 0;
-    margin-bottom: 0;
+
     width: 100%;
     height: auto;
+    margin-top: 0;
+    margin-bottom: 0;
 
     .advanced-search {
       overflow: hidden;
+
       height: auto;
     }
 
     > form {
       overflow: visible;
+
       width: 100%;
       height: auto;
+
       background-color: $warm-gray-10;
 
       .search-input-wrapper {
@@ -43,8 +50,10 @@
         flex-grow: 1;
         flex-shrink: 1;
         flex-wrap: nowrap;
-        padding: 0;
+
         height: auto;
+        padding: 0;
+
         border-bottom: 2px solid $white;
         background-color: $warm-gray-10;
 
@@ -53,15 +62,17 @@
           flex-direction: column;
           flex-grow: 0;
           flex-shrink: 0;
+
+          width: 12rem;
           padding: $padding $padding $padding ($padding * 2);
           padding-right: $padding;
-          width: 12rem;
+
           background: rgba($black, 0.2);
 
           > .form-group {
             &.search-context {
-              margin: 0 0 $padding 0;
               width: 100%;
+              margin: 0 0 $padding 0;
             }
           }
         }
@@ -72,11 +83,32 @@
           flex-grow: 1;
           flex-shrink: 1;
           flex-wrap: wrap;
+
           padding: $padding;
 
           &.diary {
             .search-input-row {
               margin-left: $padding;
+            }
+
+            .count-results {
+              display: flex;
+              align-items: center;
+              flex-direction: column;
+              justify-content: flex-end;
+
+              margin: 0.75rem 4rem -0.25rem 0;
+              padding: 0 $padding ($padding/2);
+
+              color: $white;
+              border-radius: 0.5rem;
+              background-color: $warm-gray-14;
+
+              font-size: $font-size-xs;
+
+              strong {
+                font-size: $font-size-h5;
+              }
             }
           }
 
@@ -84,6 +116,7 @@
             display: flex;
             flex-grow: 1;
             flex-shrink: 1;
+
             margin-right: $padding;
 
             &.margin {
@@ -112,6 +145,7 @@
                 position: absolute;
                 top: 1.6875rem;
                 right: $padding;
+
                 color: $red;
               }
 
@@ -126,26 +160,31 @@
           button {
             flex-grow: 0;
             flex-shrink: 0;
+
             margin-top: 1.25rem;
 
             &.btn-reset {
               display: flex;
               align-items: center;
               flex-direction: column;
+
               margin-top: 1.25rem;
               margin-right: $padding;
               padding: 0;
+
               font-size: $font-size-xs;
 
               i {
                 margin: 0 0 ($padding / 2) 0;
+
                 font-size: $font-size-lg;
               }
 
               &:hover,
               &:focus {
-                color: $bright-blue-lighten-03;
                 text-decoration: none;
+
+                color: $bright-blue-lighten-03;
               }
             }
           }
@@ -155,29 +194,31 @@
             flex-grow: 1;
             flex-shrink: 1;
             flex-wrap: wrap;
+
             margin-top: 0;
           }
         }
 
         .form-group {
           align-items: flex-start;
+
           margin-bottom: 0;
           /*Combobox styles*/
           .Select {
             height: 2.375rem;
 
             &.TypeAhead {
-              min-height: 2.375rem;
               height: auto;
+              min-height: 2.375rem;
 
               &:focus {
                 outline: none;
               }
 
               .react-select__control {
-                min-height: 2.375rem;
                 width: 100%;
                 height: auto;
+                min-height: 2.375rem;
 
                 &.react-select__control--is-focused {
                   border-color: $warm-gray-08;
@@ -188,12 +229,14 @@
                 .react-select__value-container {
                   align-items: flex-start;
                   justify-content: flex-start;
+
+                  height: auto;
                   margin: 0;
                   padding: 0 0 0 $padding;
-                  height: auto;
 
                   > div {
                     display: flex;
+
                     margin: 0;
                     padding: 0;
 
@@ -210,17 +253,19 @@
 
                       input {
                         height: auto;
+
                         line-height: 1;
                       }
                     }
                   }
 
                   .react-select__multi-value {
-                    margin: $padding/4;
                     width: auto;
+                    margin: $padding/4;
+
+                    color: $white;
                     border-radius: $border-radius;
                     background: $warm-gray-08;
-                    color: $white;
 
                     .react-select__multi-value__label {
                       color: $white;
@@ -232,8 +277,9 @@
                       @include transition(all 0.2s ease-in-out);
 
                       &:hover {
-                        background: $red-lighten-04;
                         cursor: pointer;
+
+                        background: $red-lighten-04;
                       }
                     }
                   }
@@ -243,7 +289,9 @@
               > div {
                 .react-select__menu {
                   overflow: hidden;
+
                   margin: 0;
+
                   border-radius: 0 0 $border-radius $border-radius;
                 }
               }
@@ -256,9 +304,10 @@
             }
             input,
             select {
+              cursor: not-allowed;
+
               border-color: rgba($warm-gray-06, 0.6) !important;
               background-color: rgba($input-bg-disabled, 0.4) !important;
-              cursor: not-allowed;
             }
           }
 
@@ -266,6 +315,7 @@
             align-self: flex-start;
             flex-grow: 0;
             flex-shrink: 0;
+
             margin-right: $padding;
 
             &.diary {
@@ -275,6 +325,7 @@
             select {
               width: 100%;
               height: 2.375rem;
+
               background: $white;
             }
           }
@@ -283,12 +334,14 @@
             align-self: flex-start;
             flex-grow: 0;
             flex-shrink: 0;
-            margin-right: $padding;
+
             width: 100%;
+            margin-right: $padding;
 
             select {
               width: 100%;
               height: 2.375rem;
+
               background: $white;
             }
           }
@@ -297,11 +350,13 @@
             flex-basis: 9rem;
             flex-grow: 0;
             flex-shrink: 0;
+
             margin-right: $padding;
 
             select {
               width: 100%;
               height: 2.375rem;
+
               background: $white;
             }
           }
@@ -309,26 +364,30 @@
           &.first-name-search {
             flex-grow: 0;
             flex-shrink: 0;
-            margin-right: $padding;
+
             width: 10rem;
+            margin-right: $padding;
           }
 
           &.last-name-search {
             flex-grow: 0;
             flex-shrink: 0;
-            margin-right: $padding;
+
             width: 10rem;
+            margin-right: $padding;
           }
 
           &.product-search {
             flex-grow: 0;
             flex-shrink: 0;
-            margin-right: $padding;
+
             width: 6rem;
+            margin-right: $padding;
 
             select {
               width: 100%;
               height: 2.375rem;
+
               background: $white;
             }
           }
@@ -336,52 +395,60 @@
           &.property-search {
             flex-grow: 1;
             flex-shrink: 1;
+
             margin-right: $padding;
           }
 
           &.policy-no-search {
             flex-grow: 0;
             flex-shrink: 0;
-            margin-right: $padding;
+
             width: 10rem;
+            margin-right: $padding;
           }
 
           &.quote-no-search {
             flex-basis: 10rem;
             flex-grow: 0;
             flex-shrink: 0;
+
             margin-right: $padding;
           }
 
           &.record-no-search {
             flex-grow: 0;
             flex-shrink: 0;
-            margin-right: $padding;
+
             width: 10rem;
+            margin-right: $padding;
           }
 
           &.claim-no-search {
             flex-grow: 0;
             flex-shrink: 0;
-            margin-right: $padding;
+
             width: 10rem;
+            margin-right: $padding;
           }
 
           &.source-no-search {
             flex-grow: 0;
             flex-shrink: 0;
-            margin-right: $padding;
+
             width: 10rem;
+            margin-right: $padding;
           }
 
           &.state-search {
             flex-grow: 0;
             flex-shrink: 0;
+
             width: 3.25rem;
 
             select {
               width: 100%;
               height: 2.375rem;
+
               background: $white;
             }
           }
@@ -389,12 +456,14 @@
           &.company-search {
             flex-grow: 0;
             flex-shrink: 0;
-            margin-right: $padding;
+
             width: 6rem;
+            margin-right: $padding;
 
             select {
               width: 100%;
               height: 2.375rem;
+
               background: $white;
             }
           }
@@ -402,25 +471,29 @@
           &.zip-search {
             flex-grow: 0;
             flex-shrink: 0;
-            margin-right: $padding;
+
             width: 7rem;
+            margin-right: $padding;
           }
 
           &.assignees {
             flex-grow: 1;
             flex-shrink: 1;
+
             margin-right: $padding;
           }
 
           &.reason {
             flex-grow: 1;
             flex-shrink: 1;
-            margin-right: $padding;
+
             width: 15rem;
+            margin-right: $padding;
 
             select {
               width: 100%;
               height: 2.375rem;
+
               background: $white;
             }
           }
@@ -428,11 +501,14 @@
           &.dateRange {
             flex-grow: 0;
             flex-shrink: 0;
+
             width: 22.25rem;
 
             .date-range-inputs {
               display: flex;
+
               width: 100%;
+
               line-height: 2.375rem;
 
               input {
@@ -441,6 +517,7 @@
 
               span {
                 margin: 0 $padding/2;
+
                 color: $white;
               }
             }
@@ -451,13 +528,14 @@
             flex-shrink: 1;
 
             .Select {
-              margin-bottom: 0;
               width: 100%;
               height: 2.375rem;
+              margin-bottom: 0;
 
               .Select-control {
                 width: 100%;
                 height: 2.375rem;
+
                 background-color: $white;
 
                 .Select-arrow-zone {
@@ -480,6 +558,7 @@
 
                     .Select-value-label {
                       height: 2.375rem;
+
                       line-height: 2.375rem;
                     }
                   }
@@ -503,15 +582,17 @@
           &.effectiveDate {
             flex-grow: 0;
             flex-shrink: 0;
-            margin-right: $padding;
+
             width: 12rem;
+            margin-right: $padding;
           }
 
           &.policy-status {
             flex-grow: 0;
             flex-shrink: 0;
-            margin-right: $padding;
+
             width: 20rem;
+            margin-right: $padding;
 
             select {
               width: 100%;
@@ -521,9 +602,11 @@
 
           label {
             margin-bottom: $padding/4;
+
             color: $yellow-lighten-05;
-            font-weight: $font-weight-normal;
+
             font-size: $font-size-sm;
+            font-weight: $font-weight-normal;
           }
 
           input {
@@ -538,19 +621,23 @@
         }
 
         input {
-          padding: ($padding/2) $padding;
           height: 2.375rem;
+          padding: ($padding/2) $padding;
+
           line-height: 1.75;
         }
 
         button {
           padding: 0.625rem 0.75rem;
+
           border-top-left-radius: 0;
           border-bottom-left-radius: 0;
+
           line-height: 1;
 
           &.multi-input {
             margin-right: $padding;
+
             border-top-left-radius: 0.25rem;
             border-bottom-left-radius: 0.25rem;
           }
@@ -560,11 +647,13 @@
 
     .survey-wrapper {
       z-index: 10;
+
       overflow-y: auto;
       flex-grow: 0;
       flex-shrink: 1;
-      padding: 0;
+
       width: 100%;
+      padding: 0;
 
       ul.results {
         padding: $padding * 2;
@@ -579,8 +668,10 @@
         align-items: center;
         flex-direction: row;
         justify-content: space-between;
+
         margin: 0;
         padding: ($padding/2) $padding;
+
         border-top: $card-border-width solid $card-border-color;
 
         &:first-child {
@@ -590,8 +681,11 @@
         span {
           display: inline-flex;
           justify-content: center;
+
           padding: ($padding/2) $padding;
+
           border-radius: 0.71875rem;
+
           font-size: 0.8rem;
         }
       }
@@ -601,6 +695,7 @@
   .results,
   .results-wrapper {
     flex-basis: 100%;
+
     width: 100%;
 
     .results,
@@ -619,8 +714,9 @@ main[role='document'] {
     &.scroll {
       flex-grow: 1;
       flex-shrink: 1;
-      padding: 0;
+
       width: 100%;
+      padding: 0;
     }
   }
 
@@ -629,6 +725,7 @@ main[role='document'] {
     overflow: hidden;
     flex-direction: column;
     flex-grow: 1;
+
     height: auto;
 
     .route {
@@ -641,6 +738,7 @@ main[role='document'] {
         overflow: hidden;
         flex-grow: 1;
         flex-shrink: 1;
+
         height: auto;
 
         .scroll {
@@ -662,6 +760,7 @@ main[role='document'] {
               flex-basis: 0;
               flex-grow: 1;
               flex-shrink: 0;
+
               margin-bottom: $padding;
 
               .card-footer {
@@ -671,6 +770,7 @@ main[role='document'] {
                   flex-basis: 45%;
                   flex-grow: 0;
                   flex-shrink: 0;
+
                   margin-left: 0;
                 }
               }
@@ -690,7 +790,9 @@ ul.list-cards {
     a,
     > div {
       align-items: center;
+
       padding: $padding $padding * 1.5;
+
       border: $card-border-width solid $card-border-color;
       border-radius: $card-border-radius;
       background: $white;
@@ -705,6 +807,7 @@ ul.list-cards {
         h5,
         p {
           margin: 0;
+
           color: $warm-gray-08;
         }
       }
@@ -740,13 +843,15 @@ ul.list-cards {
 .policy-list,
 .quote-list {
   flex-grow: 1;
+
+  width: 100%;
   margin-bottom: $padding/2;
   padding: $padding * 2;
-  width: 100%;
 
   .card {
     display: flex;
     flex-direction: row;
+
     margin: 0 0 ($padding * 2);
     padding: ($padding * 1.5) 0;
 
@@ -767,10 +872,13 @@ ul.list-cards {
           flex-grow: 0;
           flex-shrink: 0;
           justify-content: center;
-          margin: 0;
+
           width: 4rem;
           height: 2rem;
+          margin: 0;
+
           color: $bright-blue-darken-04;
+
           font-size: $font-size-h3;
         }
       }
@@ -788,6 +896,7 @@ ul.list-cards {
       .details {
         display: flex;
         justify-content: space-between;
+
         margin-bottom: $padding;
 
         span {
@@ -795,8 +904,9 @@ ul.list-cards {
 
           strong {
             color: $bright-blue-darken-04;
-            font-weight: $font-weight-bold;
+
             font-size: $font-size-sm;
+            font-weight: $font-weight-bold;
           }
 
           &.quote-no,
@@ -833,6 +943,7 @@ ul.list-cards {
       .title {
         display: flex;
         align-items: center;
+
         margin: 0;
         padding: 0;
 
@@ -842,7 +953,9 @@ ul.list-cards {
         h4,
         h5 {
           margin: 0;
+
           text-transform: uppercase;
+
           line-height: $line-height-base;
 
           .propertyAddress {
@@ -860,16 +973,21 @@ ul.list-cards {
       display: flex;
       align-items: center;
       justify-content: center;
+
       width: 3rem;
+
       color: $bright-blue-darken-04;
+
       font-size: $font-size-h3;
     }
 
     &:hover {
       z-index: 2;
-      box-shadow: $card-box-shadow-hover;
+
       cursor: pointer;
       transform: scale(1.004);
+
+      box-shadow: $card-box-shadow-hover;
     }
   }
 }

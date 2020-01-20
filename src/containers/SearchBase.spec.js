@@ -8,7 +8,8 @@ describe('Policy Search', () => {
       getUIQuestions() {
         x => x;
       },
-      location: { pathName: 'test' },
+      location: { pathname: 'diaries' },
+      results: [],
       auth: {},
       userProfile: {},
       loading: false
