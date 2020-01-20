@@ -10,12 +10,12 @@ export const ContactCard = ({
   handleClick,
   policyNumber,
   policyHolders,
-  icon = 'fa-globe'
+  icon = 'fa-user-circle'
 }) => (
   <div className="agent contact card">
     <div className="contact-title">
       <i className={`fa ${icon}`} />
-      <label>Territory Manager</label>
+      <label className="tm">Territory Manager</label>
     </div>
     <div className="contact-details">
       <h4>{name}</h4>
