@@ -22,6 +22,7 @@ import Contact from '../components/FormGroup/Contact';
 import AgencyDetails from '../components/FormGroup/AgencyDetails';
 import Footer from '../../../components/Common/Footer';
 import AddressGroup from '../components/AddressGroup';
+import NavigationPrompt from 'components/NavigationPrompt';
 
 export class Create extends Component {
   state = {
@@ -104,7 +105,8 @@ export class Create extends Component {
       change,
       agency,
       orphans,
-      listAnswersAsKey
+      listAnswersAsKey,
+      history
     } = this.props;
 
     return (
@@ -133,10 +135,21 @@ export class Create extends Component {
                   }
                 }}
                 onSubmit={this.createAgency}
-                subscription={{ submitting: true, values: true }}
+                subscription={{ submitting: true, values: true, dirty: true }}
               >
-                {({ handleSubmit, submitting, values: formValues }) => (
+                {({
+                  form,
+                  handleSubmit,
+                  submitting,
+                  values: formValues,
+                  dirty
+                }) => (
                   <form id="createAgency" onSubmit={handleSubmit}>
+                    <NavigationPrompt
+                      dirty={dirty}
+                      formInstance={form}
+                      history={history}
+                    />
                     {agency &&
                       agency.agencyCode &&
                       agency.agencyCode !== 'new' && (
