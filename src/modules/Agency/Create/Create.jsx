@@ -19,7 +19,7 @@ import ExistingAgentModal from '../components/ExistingAgentModal';
 import License from '../components/License';
 import Agent from '../components/FormGroup/Agent';
 import Contact from '../components/FormGroup/Contact';
-import AgencyDetails from '../components/FormGroup/AgencyDetails';
+import AgencyDetails from './AgencyDetails';
 import Footer from '../../../components/Common/Footer';
 import AddressGroup from '../components/AddressGroup';
 import NavigationPrompt from 'components/NavigationPrompt';
@@ -163,7 +163,7 @@ export class Create extends Component {
                       className="agency-details"
                       data-test="agency-details"
                     >
-                      {/* <AgencyDetails /> */}
+                      <AgencyDetails />
                     </section>
                     <h3>Address</h3>
                     {/* <AddressGroup
