@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { FieldArray, FormSection } from 'redux-form';
 import {
   Button,
   Form,
@@ -21,7 +20,7 @@ import Agent from '../components/FormGroup/Agent';
 import Contact from '../components/FormGroup/Contact';
 import AgencyDetails from './AgencyDetails';
 import Footer from '../../../components/Common/Footer';
-import AddressGroup from '../components/AddressGroup';
+import AddressGroup from './AddressGroup';
 import NavigationPrompt from 'components/NavigationPrompt';
 
 export class Create extends Component {
@@ -102,11 +101,12 @@ export class Create extends Component {
       sameAsMailingAORValue,
       submitting,
       pristine,
-      change,
+      territoryManagers,
       agency,
       orphans,
-      listAnswersAsKey,
-      history
+      initialValues,
+      history,
+      listOfZipCodes
     } = this.props;
 
     return (
@@ -116,24 +116,7 @@ export class Create extends Component {
             <div className="form-group survey-wrapper" role="group">
               <Form
                 id="DiaryModal"
-                initialValues={{
-                  status: 'Active',
-                  okToPay: true,
-                  mailingAddress: {},
-                  physicalAddress: {},
-                  agentOfRecord: {
-                    sameAsMailing: false,
-                    licenses: [
-                      {
-                        state: '',
-                        license: '',
-                        licenseType: '',
-                        licenseEffectiveDate: '',
-                        appointed: false
-                      }
-                    ]
-                  }
-                }}
+                initialValues={initialValues}
                 onSubmit={this.createAgency}
                 subscription={{ submitting: true, values: true, dirty: true }}
               >
@@ -166,13 +149,13 @@ export class Create extends Component {
                       <AgencyDetails />
                     </section>
                     <h3>Address</h3>
-                    {/* <AddressGroup
-                  sameAsMailingValue={sameAsMailingValue}
-                  changeField={change}
-                  dataTest="agency"
-                  isAgency
-                  showCounty
-                /> */}
+                    <AddressGroup
+                      dataTest="agency"
+                      mailingAddressPrefix="mailingAddress"
+                      physicalAddressPrefix="physicalAddress"
+                      territoryManagers={territoryManagers}
+                      listOfZipCodes={listOfZipCodes}
+                    />
                     <h3>Officer</h3>
                     <section
                       className="agency-principal"

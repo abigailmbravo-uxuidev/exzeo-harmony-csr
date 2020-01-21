@@ -10,6 +10,10 @@ import { getOrphanedAgentsList } from '../../../state/selectors/agency.selector'
 import { getListAnswersAsKey } from '../../../state/selectors/questions.selectors';
 
 import Create from './Create';
+import {
+  getListOfZipCodes,
+  getZipCodeSettings
+} from 'state/selectors/zipCodeSettings.selectors';
 
 const selector = formValueSelector('Create');
 const mapStateToProps = state => ({
@@ -39,7 +43,9 @@ const mapStateToProps = state => ({
   physicalStateValue: selector(state, 'physicalAddress.state'),
   physicalZipValue: selector(state, 'physicalAddress.zip'),
   territoryManagers: state.questions.territoryManagers,
-  listAnswersAsKey: getListAnswersAsKey(state)
+  listAnswersAsKey: getListAnswersAsKey(state),
+  listOfZipCodes: getListOfZipCodes(state),
+  zipCodeSettings: getZipCodeSettings(state)
 });
 
 export default connect(mapStateToProps, {
