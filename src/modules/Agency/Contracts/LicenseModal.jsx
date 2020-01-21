@@ -74,12 +74,18 @@ export const LicenseModal = props => {
               <button
                 tabIndex="0"
                 className="btn btn-secondary"
+                data-test="modal-cancel"
                 type="button"
                 onClick={closeModal}
               >
                 Cancel
               </button>
-              <button tabIndex="0" className="btn btn-primary" type="submit">
+              <button
+                tabIndex="0"
+                className="btn btn-primary"
+                data-test="modal-submit"
+                type="submit"
+              >
                 Save
               </button>
             </div>

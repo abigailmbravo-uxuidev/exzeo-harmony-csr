@@ -9,13 +9,11 @@ it('renders without crashing', () => {
   const props = {
     auth: {
       userProfile: {}
-    }
+    },
+    diaries: []
   };
   const initialState = {
-    appState: {
-      data: { showScheduleDateModal: true },
-      modelName: 'bb'
-    }
+    authState: { userProfile: { userName: 'Test' } }
   };
   const store = mockStore(initialState);
   const wrapper = shallow(<Header store={store} {...props} />);

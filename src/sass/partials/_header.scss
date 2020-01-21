@@ -180,6 +180,8 @@ header {
       box-shadow: none;
 
       > a {
+        position: relative;
+
         display: flex;
         align-items: center;
         justify-content: center;
@@ -197,6 +199,19 @@ header {
         font-weight: $font-weight-bold;
 
         @include transition(all 0.2s ease-in-out);
+
+        .count-bubble {
+          margin-left: $padding/2;
+          padding: ($padding * 0.25) ($padding * 0.5);
+
+          text-align: center;
+
+          color: $white;
+          border-radius: 2rem;
+          background: $red-darken-01;
+
+          font-size: $font-size-xs;
+        }
 
         &:hover {
           text-decoration: none;

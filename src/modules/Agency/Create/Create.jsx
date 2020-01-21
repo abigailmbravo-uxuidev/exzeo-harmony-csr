@@ -112,7 +112,7 @@ export class Create extends Component {
                   />
                 )}
                 <h3>Details</h3>
-                <section className="agency-details">
+                <section className="agency-details" data-test="agency-details">
                   <AgencyDetails />
                 </section>
                 <h3>Address</h3>
@@ -124,15 +124,18 @@ export class Create extends Component {
                   showCounty
                 />
                 <h3>Officer</h3>
-                <section className="agency-principal">
+                <section
+                  className="agency-principal"
+                  data-test="agency-principal"
+                >
                   <FormSection name="principal">
-                    <Contact testPrefix="principal" />
+                    <Contact />
                   </FormSection>
                 </section>
                 <h3>Contact</h3>
-                <section className="agency-contact">
+                <section className="agency-contact" data-test="agency-contact">
                   <FormSection name="contact">
-                    <Contact testPrefix="contact" showTitle />
+                    <Contact showTitle />
                   </FormSection>
                 </section>
                 <h3>
@@ -146,7 +149,7 @@ export class Create extends Component {
                     Use Existing Agent
                   </button>
                 </h3>
-                <section className="agency-aor">
+                <section className="agency-aor" data-test="agent-of-record">
                   <div className="agent-of-record">
                     <FormSection name="agentOfRecord">
                       <Agent />

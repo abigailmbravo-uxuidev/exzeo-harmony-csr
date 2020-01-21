@@ -51,6 +51,7 @@ const License = ({ fields, isAgency, stateAnswers }) => {
               <button
                 type="button"
                 className="btn btn-link btn-sm"
+                data-test={`rm-license-${index}`}
                 onClick={() => fields.remove(index)}
               >
                 <i className="fa fa-times-circle" />
@@ -64,6 +65,7 @@ const License = ({ fields, isAgency, stateAnswers }) => {
         <button
           className="btn btn-secondary btn-sm add-license"
           type="button"
+          data-test="add-license"
           onClick={() => fields.push({ appointed: false })}
         >
           <i className="fa fa-plus" />

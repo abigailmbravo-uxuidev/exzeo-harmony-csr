@@ -58,7 +58,8 @@ describe('Diaries Search Testing', () => {
     search: { results: [], totalPages: 0, currentPage: 1 },
     submitting: false,
     assigneeAnswers: [],
-    userProfile: { userId: '1234' }
+    userProfile: { userId: '1234' },
+    results: []
   };
 
   const SearchForm = reduxForm({
