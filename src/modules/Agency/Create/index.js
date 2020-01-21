@@ -42,16 +42,8 @@ const mapStateToProps = state => ({
   listAnswersAsKey: getListAnswersAsKey(state)
 });
 
-export default connect(
-  mapStateToProps,
-  {
-    getAgency,
-    updateAgency,
-    createAgency
-  }
-)(
-  reduxForm({
-    form: 'Create',
-    enableReinitialize: true
-  })(Create)
-);
+export default connect(mapStateToProps, {
+  getAgency,
+  updateAgency,
+  createAgency
+})(Create);

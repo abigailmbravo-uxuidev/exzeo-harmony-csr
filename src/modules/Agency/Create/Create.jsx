@@ -1,6 +1,18 @@
 import React, { Component } from 'react';
 import { FieldArray, FormSection } from 'redux-form';
-import { Button } from '@exzeo/core-ui';
+import {
+  Button,
+  Form,
+  Field,
+  Date,
+  Input,
+  Select,
+  FormSpy,
+  OnChangeListener,
+  date,
+  composeValidators,
+  validation
+} from '@exzeo/core-ui';
 import { Redirect } from 'react-router-dom';
 
 import ExistingAgentModal from '../components/ExistingAgentModal';
@@ -84,7 +96,6 @@ export class Create extends Component {
 
   render() {
     const {
-      handleSubmit,
       licenseValue,
       sameAsMailingValue,
       sameAsMailingAORValue,
@@ -101,57 +112,86 @@ export class Create extends Component {
         <div className="route-content">
           <div className="scroll">
             <div className="form-group survey-wrapper" role="group">
-              <form
-                id="createAgency"
-                onSubmit={handleSubmit(this.createAgency)}
+              <Form
+                id="DiaryModal"
+                initialValues={{
+                  status: 'Active',
+                  okToPay: true,
+                  mailingAddress: {},
+                  physicalAddress: {},
+                  agentOfRecord: {
+                    sameAsMailing: false,
+                    licenses: [
+                      {
+                        state: '',
+                        license: '',
+                        licenseType: '',
+                        licenseEffectiveDate: '',
+                        appointed: false
+                      }
+                    ]
+                  }
+                }}
+                onSubmit={this.createAgency}
+                subscription={{ submitting: true, values: true }}
               >
-                {agency && agency.agencyCode && agency.agencyCode !== 'new' && (
-                  <Redirect
-                    replace
-                    to={`/agency/${agency.agencyCode}/0/contracts`}
-                  />
-                )}
-                <h3>Details</h3>
-                <section className="agency-details" data-test="agency-details">
-                  <AgencyDetails />
-                </section>
-                <h3>Address</h3>
-                <AddressGroup
+                {({ handleSubmit, submitting, values: formValues }) => (
+                  <form id="createAgency" onSubmit={handleSubmit}>
+                    {agency &&
+                      agency.agencyCode &&
+                      agency.agencyCode !== 'new' && (
+                        <Redirect
+                          replace
+                          to={`/agency/${agency.agencyCode}/0/contracts`}
+                        />
+                      )}
+                    <h3>Details</h3>
+                    <section
+                      className="agency-details"
+                      data-test="agency-details"
+                    >
+                      {/* <AgencyDetails /> */}
+                    </section>
+                    <h3>Address</h3>
+                    {/* <AddressGroup
                   sameAsMailingValue={sameAsMailingValue}
                   changeField={change}
                   dataTest="agency"
                   isAgency
                   showCounty
-                />
-                <h3>Officer</h3>
-                <section
-                  className="agency-principal"
-                  data-test="agency-principal"
-                >
-                  <FormSection name="principal">
+                /> */}
+                    <h3>Officer</h3>
+                    <section
+                      className="agency-principal"
+                      data-test="agency-principal"
+                    >
+                      {/* <FormSection name="principal">
                     <Contact />
-                  </FormSection>
-                </section>
-                <h3>Contact</h3>
-                <section className="agency-contact" data-test="agency-contact">
-                  <FormSection name="contact">
+                  </FormSection> */}
+                    </section>
+                    <h3>Contact</h3>
+                    <section
+                      className="agency-contact"
+                      data-test="agency-contact"
+                    >
+                      {/* <FormSection name="contact">
                     <Contact showTitle />
-                  </FormSection>
-                </section>
-                <h3>
-                  Agent Of Record
-                  <button
-                    onClick={this.handleToggleExistingAgentModal}
-                    type="button"
-                    className="btn btn-link btn-sm"
-                  >
-                    <i className="fa fa-user" />
-                    Use Existing Agent
-                  </button>
-                </h3>
-                <section className="agency-aor" data-test="agent-of-record">
-                  <div className="agent-of-record">
-                    <FormSection name="agentOfRecord">
+                  </FormSection> */}
+                    </section>
+                    <h3>
+                      Agent Of Record
+                      <button
+                        onClick={this.handleToggleExistingAgentModal}
+                        type="button"
+                        className="btn btn-link btn-sm"
+                      >
+                        <i className="fa fa-user" />
+                        Use Existing Agent
+                      </button>
+                    </h3>
+                    <section className="agency-aor" data-test="agent-of-record">
+                      <div className="agent-of-record">
+                        {/* <FormSection name="agentOfRecord">
                       <Agent />
                       <AddressGroup
                         parentFormGroup="agentOfRecord"
@@ -160,19 +200,21 @@ export class Create extends Component {
                         dataTest="aor"
                         isOptional
                       />
-                    </FormSection>
-                  </div>
-                  <div className="agency-license">
-                    <FieldArray
+                    </FormSection> */}
+                      </div>
+                      <div className="agency-license">
+                        {/* <FieldArray
                       stateAnswers={listAnswersAsKey.US_states}
                       name="agentOfRecord.licenses"
                       component={License}
                       licenseValue={licenseValue}
                       isAgency
-                    />
-                  </div>
-                </section>
-              </form>
+                    /> */}
+                      </div>
+                    </section>
+                  </form>
+                )}
+              </Form>
             </div>
           </div>
         </div>
