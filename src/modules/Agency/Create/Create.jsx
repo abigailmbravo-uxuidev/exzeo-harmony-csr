@@ -108,7 +108,7 @@ export class Create extends Component {
                 {agency && agency.agencyCode && agency.agencyCode !== 'new' && (
                   <Redirect
                     replace
-                    to={`/agency/${agency.agencyCode}/0/overview`}
+                    to={`/agency/${agency.agencyCode}/0/contracts`}
                   />
                 )}
                 <h3>Details</h3>

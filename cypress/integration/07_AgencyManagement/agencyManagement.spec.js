@@ -312,9 +312,6 @@ describe('Agency Management testing', () => {
       ).to.eql(ADD_AGENT.licenses);
     });
 
-    // contracts
-    cy.get('nav [class~="contracts"]').click();
-
     cy.findDataTag('addLicense')
       .click()
       .get('[class~="modal"]')
@@ -405,7 +402,7 @@ describe('Agency Management testing', () => {
     cy.task('log', 'License and contract added/edited successfully');
 
     // overview/edit agency
-    cy.get('nav [class~="overview"]').click();
+    cy.get('a.overview').click();
 
     cy.findDataTag('edit-agency-details')
       .click()
@@ -719,7 +716,7 @@ describe('Agency Management testing', () => {
 
     cy.task('log', 'Edit agent of record successfully');
 
-    cy.get('nav [class~="agents"]').click();
+    cy.get('a.agents').click();
 
     cy.findDataTag('add-new-agent')
       .click()
@@ -829,7 +826,7 @@ describe('Agency Management testing', () => {
 
     cy.task('log', 'Add new agent successfully');
 
-    cy.get('nav [class~="notes"]').click();
+    cy.get('a.notes').click();
 
     cy.wait('@fetchNotes').then(({ response }) => {
       expect(response.body.status).to.equal(200, 'Fetch notes for policy');

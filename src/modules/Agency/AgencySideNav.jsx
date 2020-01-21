@@ -12,35 +12,36 @@ import {
 } from '../../state/selectors/agency.selector';
 import { AGENCY_RESOURCE_TYPE } from '../../constants/diaries';
 
-const setDisabled = agencyCode => (agencyCode === 'new' ? 'disabled' : '');
+const setDisabled = agencyCode => (agencyCode !== 'new' ? '' : ' disabled');
+const setLink = (agencyCode, link) => (agencyCode !== 'new' ? link : '#');
 
 const csrLinks = (agencyCode, branchCode) => [
   {
     key: 'overview',
-    link: `/agency/${agencyCode}/${branchCode}/overview`,
+    link: setLink(agencyCode, `/agency/${agencyCode}/${branchCode}/overview`),
     label: 'Overview',
-    styleName: `overview ${setDisabled(agencyCode)}`,
+    styleName: `overview${setDisabled(agencyCode)}`,
     exact: true
   },
   {
     key: 'agents',
-    link: `/agency/${agencyCode}/${branchCode}/agents`,
+    link: setLink(agencyCode, `/agency/${agencyCode}/${branchCode}/agents`),
     label: 'Agents',
-    styleName: `agents ${setDisabled(agencyCode)}`,
+    styleName: `agents${setDisabled(agencyCode)}`,
     exact: true
   },
   {
     key: 'contracts',
-    link: `/agency/${agencyCode}/${branchCode}/contracts`,
+    link: setLink(agencyCode, `/agency/${agencyCode}/${branchCode}/contracts`),
     label: 'Contracts',
-    styleName: `contracts ${setDisabled(agencyCode)}`,
+    styleName: `contracts${setDisabled(agencyCode)}`,
     exact: true
   },
   {
     key: 'notes',
-    link: `/agency/${agencyCode}/${branchCode}/notes`,
+    link: setLink(agencyCode, `/agency/${agencyCode}/${branchCode}/notes`),
     label: 'Notes / Files',
-    styleName: 'notes disabled',
+    styleName: `notes${setDisabled(agencyCode)}`,
     exact: true
   },
   {
@@ -52,7 +53,7 @@ const csrLinks = (agencyCode, branchCode) => [
   },
   {
     key: 'transfer',
-    link: `/agency/${agencyCode}/${branchCode}/transfer`,
+    link: setLink(agencyCode, `/agency/${agencyCode}/${branchCode}/transfer`),
     label: 'Transfer',
     styleName: `transfer ${setDisabled(agencyCode)}`,
     exact: true
@@ -141,6 +142,7 @@ export class SideNav extends React.Component {
                 <span className={agentLink.styleName}>
                   <NavLink
                     to={agentLink.link}
+                    className={agentLink.styleName}
                     activeClassName={agentLink.link !== '#' ? 'active' : ''}
                     exact
                   >
