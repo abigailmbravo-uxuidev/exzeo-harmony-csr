@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import {
   Button,
   Form,
+  arrayMutators,
+  FieldArray,
   Field,
   Date,
   Input,
@@ -16,8 +18,8 @@ import { Redirect } from 'react-router-dom';
 
 import ExistingAgentModal from '../components/ExistingAgentModal';
 import License from '../components/License';
-import Agent from '../components/FormGroup/Agent';
-import Contact from '../components/FormGroup/Contact';
+import Agent from './Agent';
+import Contact from './Contact';
 import AgencyDetails from './AgencyDetails';
 import Footer from '../../../components/Common/Footer';
 import AddressGroup from './AddressGroup';
@@ -118,6 +120,9 @@ export class Create extends Component {
                 id="DiaryModal"
                 initialValues={initialValues}
                 onSubmit={this.createAgency}
+                mutators={{
+                  ...arrayMutators
+                }}
                 subscription={{ submitting: true, values: true, dirty: true }}
               >
                 {({
@@ -161,18 +166,14 @@ export class Create extends Component {
                       className="agency-principal"
                       data-test="agency-principal"
                     >
-                      {/* <FormSection name="principal">
-                    <Contact />
-                  </FormSection> */}
+                      <Contact fieldPrefix="principal" />
                     </section>
                     <h3>Contact</h3>
                     <section
                       className="agency-contact"
                       data-test="agency-contact"
                     >
-                      {/* <FormSection name="contact">
-                    <Contact showTitle />
-                  </FormSection> */}
+                      <Contact fieldPrefix="contact" showTitle />
                     </section>
                     <h3>
                       Agent Of Record
@@ -187,16 +188,15 @@ export class Create extends Component {
                     </h3>
                     <section className="agency-aor" data-test="agent-of-record">
                       <div className="agent-of-record">
-                        {/* <FormSection name="agentOfRecord">
-                      <Agent />
-                      <AddressGroup
-                        parentFormGroup="agentOfRecord"
-                        sameAsMailingValue={sameAsMailingAORValue}
-                        changeField={change}
-                        dataTest="aor"
-                        isOptional
-                      />
-                    </FormSection> */}
+                        <Agent fieldPrefix="agentOfRecord" />
+
+                        <AddressGroup
+                          dataTest="aor"
+                          mailingAddressPrefix="agentOfRecord.mailingAddress"
+                          physicalAddressPrefix="agentOfRecord.physicalAddress"
+                          territoryManagers={territoryManagers}
+                          listOfZipCodes={listOfZipCodes}
+                        />
                       </div>
                       <div className="agency-license">
                         {/* <FieldArray
