@@ -150,7 +150,7 @@ export const getPolicyFormData = createSelector(
         ? currentDate.clone().add(120, 'd')
         : currentDatePlus20 > effectiveDatePlus20
         ? currentDatePlus20
-        : effectiveDatePlus20.format('YYYY-MM-DD');
+        : effectiveDatePlus20;
 
     const cancel = {
       equityDate: date.formatDate(summaryLedger.equityDate, 'MM/DD/YYYY'),
