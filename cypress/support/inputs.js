@@ -124,7 +124,7 @@ Cypress.Commands.add(
       .find(`${selector || 'input[type="text"]'}`)
       .should('exist')
       .type(searchTerm, { force: true })
-      .get('div.react-select__option')
+      .get('div.react-select__option', { timeout: 10000 })
       .should('exist')
       .then($arr => cy.wrap($arr[0]).click({ force: true }))
 );

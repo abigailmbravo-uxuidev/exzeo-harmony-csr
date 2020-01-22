@@ -10,8 +10,7 @@ import {
   fillOutSummary,
   fillOutApplication,
   navigateThroughDocusign,
-  sendQuote,
-  changeBillTo
+  sendQuote
 } from '../../helpers';
 import {
   coverageRatingTest,
@@ -23,20 +22,21 @@ import {
   applicationTest,
   afterDocuSignTest
 } from '../../pageTests';
+import { coverageHO3, unQuestionsHO3 } from '../../fixtures';
 
-describe('Base Path', () => {
+describe('Base Path - HO3', () => {
   before('Login', () => cy.login());
   beforeEach('Set aliases', () => setRouteAliases());
 
-  it('Navigate through base app', () => {
-    navigateThroughNewQuote('HO3');
+  it('Navigate through Quote Workflow', () => {
+    navigateThroughNewQuote();
 
     fillOutCoverage();
     coverageRatingTest();
 
-    fillOutUnderwriting('HO3');
+    fillOutUnderwriting(unQuestionsHO3);
     underwritingTest();
-    changeCoverageAndAgency('HO3');
+    changeCoverageAndAgency(coverageHO3);
 
     fillOutAdditionalInterests();
     aiTest();
@@ -54,14 +54,7 @@ describe('Base Path', () => {
     fillOutApplication();
     applicationTest();
 
-    if (Cypress.env('CI')) {
-      cy.task(
-        'log',
-        "CI is set to true - not testing for 'Application Sent DocuSign'"
-      );
-    } else {
-      navigateThroughDocusign();
-      afterDocuSignTest();
-    }
+    navigateThroughDocusign();
+    afterDocuSignTest();
   });
 });

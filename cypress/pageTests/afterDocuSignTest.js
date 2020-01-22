@@ -1,16 +1,9 @@
-const aiButtons = [
-  'mortgagee',
-  'additionalInsured',
-  'additionalInterest',
-  'premiumFinance',
-  'billPayer'
-];
+import { aiOptions } from '../fixtures';
 
-export default () =>
+export default (aiButtons = aiOptions) =>
   cy
     .goToNav('additionalInterests')
-    .wait(20000)
     .reload()
     .checkQuoteState('Application Sent DocuSign')
     .wrap(aiButtons)
-    .each(button => cy.get(`[data-test=${button}]`).should('be.disabled'));
+    .each(type => cy.get(`[data-test=${type}]`).should('be.disabled'));

@@ -6,5 +6,7 @@
   "defaultCommandTimeout": 20000,
   "requestTimeout": 60000,
   "responseTimeout": 60000,
-  "pageLoadTimeout": 60000
+  "pageLoadTimeout": 60000,
+  "viewportWidth": 1375,
+  "viewportHeight": 768
 }
