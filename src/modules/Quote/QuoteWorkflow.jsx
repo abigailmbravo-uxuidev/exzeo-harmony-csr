@@ -177,7 +177,9 @@ export class QuoteWorkflow extends React.Component {
     try {
       const { quoteState } = await verifyQuote({ quoteNumber });
       quoteState !== ApplicationReady
-        ? setAppError({ message: `The quote is not ${ApplicationReady}.` })
+        ? setAppError({
+            message: `The Quote Status is no longer ${ApplicationReady}, please review the Qualifier Status message(s).`
+          })
         : this.setState({ showApplicationModal: true });
     } catch (error) {
       setAppError({ message: `Error with verify quote: ${error}` });
