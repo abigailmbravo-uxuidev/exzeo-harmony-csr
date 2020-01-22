@@ -16,14 +16,13 @@ import {
 } from '@exzeo/core-ui';
 import { Redirect } from 'react-router-dom';
 
-import ExistingAgentModal from '../components/ExistingAgentModal';
+import ExistingAgentModal from './ExistingAgentModal';
 import License from '../components/License';
 import Agent from './Agent';
 import Contact from './Contact';
 import AgencyDetails from './AgencyDetails';
 import Footer from '../../../components/Common/Footer';
 import AddressGroup from './AddressGroup';
-import NavigationPrompt from 'components/NavigationPrompt';
 
 export class Create extends Component {
   state = {
@@ -77,7 +76,8 @@ export class Create extends Component {
   // TODO : Move to utilities
   applyOrphanedAgent = data => {
     const { orphans } = this.props;
-    const { change } = this.state.formInstance;
+    const { getState, change } = this.state.formInstance;
+
     const { selectedAgentCode } = data;
     const selectedAgent = orphans.filter(
       a => String(a.agentCode) === String(selectedAgentCode)
@@ -122,6 +122,7 @@ export class Create extends Component {
             <div className="form-group survey-wrapper" role="group">
               <Form
                 id="DiaryModal"
+                keepDirtyOnReinitialize
                 initialValues={initialValues}
                 onSubmit={this.createAgency}
                 mutators={{
@@ -137,11 +138,6 @@ export class Create extends Component {
                   dirty
                 }) => (
                   <form id="createAgency" onSubmit={handleSubmit}>
-                    <NavigationPrompt
-                      dirty={dirty}
-                      formInstance={form}
-                      history={history}
-                    />
                     {agency &&
                       agency.agencyCode &&
                       agency.agencyCode !== 'new' && (

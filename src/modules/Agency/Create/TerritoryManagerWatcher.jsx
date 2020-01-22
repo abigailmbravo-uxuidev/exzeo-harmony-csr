@@ -87,6 +87,12 @@ const TerritoryManager = ({
             <OnChangeListener name={`${fieldPrefix}.zip`}>
               {value => {
                 if (value) {
+                  setTerritoryManager(
+                    value,
+                    zipCodeSettings,
+                    onChange,
+                    territoryManagers
+                  );
                   //onChange(_get(values, `${matchPrefix}.zip`, ''));
                 } else {
                   // onChange('');
@@ -117,6 +123,7 @@ const TerritoryManager = ({
             <OnChangeListener name={`${fieldPrefix}.zip`}>
               {value => {
                 if (value) {
+                  setCounty(value, zipCodeSettings, onChange, 'county');
                   //onChange(_get(values, `${matchPrefix}.zip`, ''));
                 } else {
                   onChange('');
