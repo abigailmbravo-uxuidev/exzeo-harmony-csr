@@ -4,6 +4,9 @@ import ContactAddress from '../../components/ContactAddress';
 import { formatUrl } from '../../utilities/format';
 
 function AgencyCard({ agency, policyNumber, policyHolders }) {
+  if (!agency || !agency.agencyCode)
+    return <div className="agency contact card">Agency not found.</div>;
+
   return (
     <div className="agency contact card">
       <div className="contact-title">
@@ -15,12 +18,13 @@ function AgencyCard({ agency, policyNumber, policyHolders }) {
           <span className="agency-code">{agency.agencyCode} </span>|{' '}
           <span className="agency-display-name">{agency.displayName} </span>|{' '}
           <span className="agency-legal-name">{agency.legalName}</span>
-          {agency.licenses.map(l => (
-            <React.Fragment key={l.licenseNumber}>
-              {' '}
-              | <span className="agency-license">{l.licenseNumber}</span>
-            </React.Fragment>
-          ))}
+          {agency.licenses &&
+            agency.licenses.map(l => (
+              <React.Fragment key={l.licenseNumber}>
+                {' '}
+                | <span className="agency-license">{l.licenseNumber}</span>
+              </React.Fragment>
+            ))}
         </h4>
         <ContactAddress
           mailingAddress={agency.mailingAddress}
@@ -48,7 +52,8 @@ function AgencyCard({ agency, policyNumber, policyHolders }) {
             <li>
               <div>
                 <h5>
-                  {agency.contact.firstName} {agency.contact.lastName}
+                  {agency.contact && agency.contact.firstName}{' '}
+                  {agency.contact && agency.contact.lastName}
                 </h5>
               </div>
               <div className="contact-methods">
@@ -79,7 +84,9 @@ function AgencyCard({ agency, policyNumber, policyHolders }) {
                     </a>
                   </p>
                 )}
-                {agency.contact.emailAddress && policyHolders[0] ? (
+                {agency.contact &&
+                agency.contact.emailAddress &&
+                policyHolders[0] ? (
                   <p>
                     <i className="fa fa-envelope" />
                     <a

@@ -139,7 +139,11 @@ export class SideNav extends React.Component {
             {csrLinks(agencyCode, branchCode).map((agentLink, index) => (
               <li key={agentLink.key}>
                 <span className={agentLink.styleName}>
-                  <NavLink to={agentLink.link} activeClassName="active" exact>
+                  <NavLink
+                    to={agentLink.link}
+                    activeClassName={agentLink.link !== '#' ? 'active' : ''}
+                    exact
+                  >
                     <span>{agentLink.label}</span>
                   </NavLink>
                 </span>
@@ -174,10 +178,7 @@ const mapStateToProps = (state, props) => {
   };
 };
 
-export default connect(
-  mapStateToProps,
-  { createBranch, toggleNote }
-)(
+export default connect(mapStateToProps, { createBranch, toggleNote })(
   reduxForm({
     form: 'SideNav',
     enableReinitialize: true

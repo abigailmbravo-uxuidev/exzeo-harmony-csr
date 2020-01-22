@@ -30,8 +30,7 @@ export const AgentsCard = ({
             ))}
           </h4>
           <div className="contact-address" data-test="agent-address">
-            {mailingAddress.address1},&nbsp;
-            {mailingAddress.address2}
+            {mailingAddress.address1},{mailingAddress.address2}
             {mailingAddress.address2 ? ', ' : ' '}
             {mailingAddress.city},&nbsp;
             {mailingAddress.state}&nbsp;

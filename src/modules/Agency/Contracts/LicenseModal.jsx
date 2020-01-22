@@ -17,7 +17,8 @@ export const LicenseModal = props => {
     { answer: 'Non-Resident', label: 'Non-Resident' }
   ];
 
-  const actionType = initialValues ? 'Edit' : 'Add';
+  const actionType =
+    initialValues && initialValues.licenseNumber ? 'Edit' : 'Add';
   return (
     <div className="modal license-crud">
       <div className="card">
@@ -73,12 +74,18 @@ export const LicenseModal = props => {
               <button
                 tabIndex="0"
                 className="btn btn-secondary"
+                data-test="modal-cancel"
                 type="button"
                 onClick={closeModal}
               >
                 Cancel
               </button>
-              <button tabIndex="0" className="btn btn-primary" type="submit">
+              <button
+                tabIndex="0"
+                className="btn btn-primary"
+                data-test="modal-submit"
+                type="submit"
+              >
                 Save
               </button>
             </div>

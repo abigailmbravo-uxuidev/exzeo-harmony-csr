@@ -54,7 +54,7 @@ export class AgencyAddressModal extends Component {
               <AddressGroup
                 sameAsMailingValue={sameAsMailingValue}
                 changeField={change}
-                dataTest="agencyAddressGroup"
+                dataTest="edit-agency"
                 isAgency
                 showCounty
               />
@@ -64,6 +64,7 @@ export class AgencyAddressModal extends Component {
                 <button
                   tabIndex="0"
                   className="btn btn-secondary"
+                  data-test="modal-cancel"
                   type="button"
                   onClick={closeModal}
                 >
@@ -72,6 +73,7 @@ export class AgencyAddressModal extends Component {
                 <button
                   tabIndex="0"
                   className="btn btn-primary"
+                  data-test="modal-submit"
                   type="submit"
                   disabled={submitting}
                 >
@@ -92,12 +94,9 @@ const mapStateToProps = state => ({
   territoryManagers: state.questions.territoryManagers
 });
 
-export default connect(
-  mapStateToProps,
-  {
-    updateAgency
-  }
-)(
+export default connect(mapStateToProps, {
+  updateAgency
+})(
   reduxForm({
     form: 'AgencyAddressModal',
     enableReinitialize: true

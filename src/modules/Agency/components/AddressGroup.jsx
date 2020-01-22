@@ -130,9 +130,9 @@ export class AddressGroup extends Component {
 
   normalizeZipCode = (value, pv, av) => {
     const { zipCodeSettings } = this.props;
-    const mathingZipCodes = zipCodeSettings.filter(z => z.zip === value);
-    if (mathingZipCodes.length === 1) {
-      this.setTerritoryManager(mathingZipCodes[0]);
+    const matchingZipCodes = zipCodeSettings.filter(z => z.zip === value);
+    if (matchingZipCodes.length === 1) {
+      this.setTerritoryManager(matchingZipCodes[0]);
     }
     this.normalizeSameAsMailing('physicalAddress')(value, pv, av);
     return value;
@@ -145,73 +145,74 @@ export class AddressGroup extends Component {
       sameAsMailingValue,
       isOptional,
       isAgency,
-      showCounty
+      showCounty,
+      dataTest
     } = this.props;
 
     return (
-      <section className={`${isAgency ? 'agency-address' : 'agent-address'}`}>
-        <div
-          className="agency-mailing-address"
-          data-test="agency-mailing-address"
-        >
-          <h4>Mailing Address</h4>
-          <FormSection name="mailingAddress">
-            <Address
-              normalizeSameAsMailing={this.normalizeSameAsMailing(
-                'mailingAddress'
-              )}
-              territoryManagers={territoryManagers}
-              changeField={changeField}
-              section="mailingAddress"
-            />
-          </FormSection>
+      <section
+        data-test={`${dataTest}-address-section`}
+        className={`${isAgency ? 'agency-address' : 'agent-address'}`}
+      >
+        <div className="agency-mailing-address">
+          <div data-test={`${dataTest}-mailing-address`}>
+            <h4>Mailing Address</h4>
+            <FormSection name="mailingAddress">
+              <Address
+                normalizeSameAsMailing={this.normalizeSameAsMailing(
+                  'mailingAddress'
+                )}
+                territoryManagers={territoryManagers}
+                changeField={changeField}
+                section="mailingAddress"
+              />
+            </FormSection>
+          </div>
         </div>
-        <div
-          className="agency-physical-address"
-          data-test="agency-physical-address"
-        >
-          <h4>
-            Physical Address
-            <Field
-              name="sameAsMailing"
-              component="input"
-              id={this.getFieldPath('sameAsMailing')}
-              type="checkbox"
-              data-test={this.getFieldPath('sameAsMailing')}
-              normalize={this.handleSameAsMailing}
-            />
-            <label htmlFor={this.getFieldPath('sameAsMailing')}>
-              Same as Mailing Address
-            </label>
-          </h4>
-          <FormSection name="physicalAddress">
-            <Address
-              isOptional={isOptional}
-              sectionDisabled={sameAsMailingValue === true}
-              normalizeSameAsMailing={this.normalizeSameAsMailing(
-                'physicalAddress'
-              )}
-              normalizeZipCode={this.normalizeZipCode}
-              normalizeState={this.normalizeState}
-              section="physicalAddress"
-              showCounty={showCounty}
-              territoryManagers={territoryManagers}
-              changeField={changeField}
-            />
-          </FormSection>
-          {isAgency && (
-            <Field
-              label="Territory Managers"
-              name="territoryManagerId"
-              styleName="territoryManagerId"
-              data-test="territoryManager"
-              component={SelectTypeAhead}
-              optionValue="_id"
-              optionLabel="name"
-              answers={territoryManagers}
-              validate={isOptional ? null : validation.isRequired}
-            />
-          )}
+        <div className="agency-physical-address">
+          <div data-test={`${dataTest}-physical-address`}>
+            <h4>
+              Physical Address
+              <Field
+                name="sameAsMailing"
+                component="input"
+                id={this.getFieldPath('sameAsMailing')}
+                type="checkbox"
+                data-test={this.getFieldPath('sameAsMailing')}
+                normalize={this.handleSameAsMailing}
+              />
+              <label htmlFor={this.getFieldPath('sameAsMailing')}>
+                Same as Mailing Address
+              </label>
+            </h4>
+            <FormSection name="physicalAddress">
+              <Address
+                isOptional={isOptional}
+                sectionDisabled={sameAsMailingValue === true}
+                normalizeSameAsMailing={this.normalizeSameAsMailing(
+                  'physicalAddress'
+                )}
+                normalizeZipCode={this.normalizeZipCode}
+                normalizeState={this.normalizeState}
+                section="physicalAddress"
+                showCounty={showCounty}
+                territoryManagers={territoryManagers}
+              />
+            </FormSection>
+            {isAgency && (
+              <Field
+                label="Territory Managers"
+                name="territoryManagerId"
+                styleName="territoryManagerId"
+                dataTest="territoryManager"
+                component={SelectTypeAhead}
+                optionValue="_id"
+                optionLabel="name"
+                answers={territoryManagers}
+                validate={isOptional ? null : validation.isRequired}
+              />
+            )}
+          </div>
         </div>
       </section>
     );
@@ -231,7 +232,6 @@ const mapStateToProps = state => ({
   zipCodeSettings: getZipCodeSettings(state)
 });
 
-export default connect(
-  mapStateToProps,
-  { searchSettingsByCSPAndZipAction: searchSettingsByCSPAndZip }
-)(AddressGroup);
+export default connect(mapStateToProps, {
+  searchSettingsByCSPAndZipAction: searchSettingsByCSPAndZip
+})(AddressGroup);

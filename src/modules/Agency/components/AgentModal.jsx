@@ -46,6 +46,7 @@ export class AgentModal extends Component {
               <AddressGroup
                 sameAsMailingValue={sameAsMailingValue}
                 changeField={change}
+                dataTest="agent"
                 isOptional
               />
               <section className="agent-license">

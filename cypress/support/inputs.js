@@ -2,7 +2,10 @@
  * @param {array} fields - Fields to fill out.
  * @param {Object} data - Data to fill out with keys corresponding to each entry in fields.
  */
-Cypress.Commands.add('fillFields', (fields = [], data) =>
+Cypress.Commands.add('fillFields', (
+  fields = [],
+  data ////array of field and it will fill out the form, look at this file!!!!!
+) =>
   cy.wrap(fields).each(field =>
     cy.findDataTag(`${field.name}`).then($el =>
       // Sometimes the dom structure nests inputs
@@ -108,6 +111,11 @@ Cypress.Commands.add('nativeSetSliderValue', (slider, value) => {
   slider.dispatchEvent(new Event('change', { value, bubbles: true }));
 });
 
+/**
+ * This function is used for any non-standard inputs, ie not select > options.
+ * @param {string} tag - Name of the data test tag wrapping the select
+ * @param {number} searchTerm - The term to search for.
+ */
 Cypress.Commands.add(
   'chooseReactSelectOption',
   (tag, searchTerm, selector = '') =>
@@ -119,4 +127,14 @@ Cypress.Commands.add(
       .get('div.react-select__option')
       .should('exist')
       .then($arr => cy.wrap($arr[0]).click({ force: true }))
+);
+
+/**
+ * Helper to clear an input using React-Select
+ * @param {string} tag - Name of data test tag wrapping the select
+ */
+Cypress.Commands.add('clearReactSelectField', tag =>
+  cy.findDataTag(tag).within(() => {
+    cy.get('[class~="react-select__clear-indicator"]').click();
+  })
 );

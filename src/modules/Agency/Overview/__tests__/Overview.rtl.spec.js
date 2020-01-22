@@ -68,11 +68,7 @@ describe('Overview testing', () => {
       { label: 'Tax Classification', value: mockAgency.taxClassification },
       {
         label: 'EO Expiration Date',
-        value: date.formattedDate(mockAgency.eoExpirationDate, 'MM/DD/YYYY')
-      },
-      {
-        label: 'Branch Name',
-        value: mockAgency.branches[props.branchCode].displayName
+        value: date.formatDate(mockAgency.eoExpirationDate, 'MM/DD/YYYY')
       },
       {
         label: 'Mail Commission Checks to this Branch',

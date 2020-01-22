@@ -285,6 +285,7 @@ $table-border-color: $warm-gray-07 !default; //== Media queries breakpoints
 
 .react-bs-table-no-data {
   text-align: center;
+  display: block !important;
 }
 
 .ReactModal__Overlay {

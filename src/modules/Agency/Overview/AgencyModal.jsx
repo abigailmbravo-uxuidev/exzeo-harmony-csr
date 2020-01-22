@@ -31,6 +31,7 @@ export class AgencyModal extends Component {
               <div className="btn-footer">
                 <button
                   tabIndex="0"
+                  data-test="modal-cancel"
                   className="btn btn-secondary"
                   type="button"
                   onClick={closeModal}
@@ -39,6 +40,7 @@ export class AgencyModal extends Component {
                 </button>
                 <button
                   tabIndex="0"
+                  data-test="modal-submit"
                   className="btn btn-primary"
                   type="submit"
                   disabled={submitting}

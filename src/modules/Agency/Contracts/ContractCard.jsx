@@ -64,7 +64,7 @@ export const ContractCard = ({
         className={Button.constants.classNames.link}
         size={Button.constants.sizes.small}
         onClick={editContract}
-        dataTest="delete-contract"
+        dataTest="edit-contract"
       >
         <i className="fa fa-pencil-square" />
         Edit

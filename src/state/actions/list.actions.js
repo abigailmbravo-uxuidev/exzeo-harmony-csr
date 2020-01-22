@@ -1,9 +1,8 @@
 import * as serviceRunner from '@exzeo/core-ui/src/@Harmony/Domain/Api/serviceRunner';
-
 import * as listTypes from '../actionTypes/list.actionTypes';
+import { fetchDiaryOptions } from './diary.actions';
 import { setAppError } from './error.actions';
 import { fetchNotes } from './notes.actions';
-import { fetchDiaries, fetchDiaryOptions } from './diary.actions';
 
 function setEnums(enums) {
   return {
@@ -31,7 +30,6 @@ export function getEnumsForQuoteWorkflow({
 }) {
   return async dispatch => {
     try {
-      dispatch(fetchDiaries({ resourceId: quoteNumber }));
       dispatch(fetchNotes([quoteNumber], 'quoteNumber'));
       // this pattern sets us up to "parallelize" the network requests in this function. We want to
       // fetch all enums/data needed for the quote workflow in here.
@@ -74,15 +72,9 @@ export async function fetchPropertyAppriasals() {
  * @param policyNumber
  * @returns {Function}
  */
-export function getEnumsForPolicyWorkflow({
-  policyNumber,
-  companyCode,
-  state,
-  product
-}) {
+export function getEnumsForPolicyWorkflow({ companyCode, state, product }) {
   return async dispatch => {
     try {
-      dispatch(fetchDiaries({ resourceId: policyNumber }));
       const diaryOptions = fetchDiaryOptions(companyCode, state, product);
       const propertyAppraisals = fetchPropertyAppriasals();
 

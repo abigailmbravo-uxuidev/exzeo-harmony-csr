@@ -182,11 +182,15 @@ export class QuoteWorkflow extends React.Component {
     this.setState({ showDiaries: !this.state.showDiaries });
   };
 
-  isSubmitDisabled = (pristine, submitting) => {
+  isSubmitDisabled = (pristine, submitting, values) => {
     const { location, quote } = this.props;
     if (quote.editingDisabled || this.state.applicationSent) return true;
 
     const { currentStepNumber } = getCurrentStepAndPage(location.pathname);
+
+    if (currentStepNumber === PAGE_ROUTING.billing) {
+      return pristine || submitting || !values.billToId;
+    }
 
     if (currentStepNumber === PAGE_ROUTING.application) {
       return (
@@ -290,15 +294,20 @@ export class QuoteWorkflow extends React.Component {
                         stickyFooter
                         renderFooter={
                           <FormSpy
-                            subscription={{ pristine: true, submitting: true }}
+                            subscription={{
+                              pristine: true,
+                              submitting: true,
+                              values: true
+                            }}
                           >
-                            {({ form, pristine, submitting }) => (
+                            {({ form, pristine, submitting, values }) => (
                               <QuoteFooter
                                 currentStep={currentRouteName}
                                 formInstance={form}
                                 isSubmitDisabled={this.isSubmitDisabled(
                                   pristine,
-                                  submitting
+                                  submitting,
+                                  values
                                 )}
                                 handlePrimaryClick={this.primaryClickHandler}
                                 handleApplicationClick={

@@ -9,7 +9,8 @@ describe('Test DiariesSearch component', () => {
     submitting: false,
     assigneeAnswers: [],
     initialize: x => x,
-    userProfile: { userId: '1234' }
+    userProfile: { userId: '1234' },
+    results: []
   };
 
   it('renders Diaries Search', () => {

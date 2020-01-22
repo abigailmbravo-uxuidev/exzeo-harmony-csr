@@ -80,10 +80,7 @@ export class Agents extends Component {
     this.setState({
       showAgentDetailEditModal: true,
       activeIndex,
-      agentDetailInitialValues: {
-        ...agent,
-        status: 'Active'
-      }
+      agentDetailInitialValues: agent
     });
   };
 

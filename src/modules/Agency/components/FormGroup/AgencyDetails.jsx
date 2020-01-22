@@ -112,13 +112,6 @@ const AgencyDetails = ({ agencyCodeDisabled }) => {
           validation.isDateRange('1900', '10000')
         ]}
       />
-      <Field
-        label="Branch Name"
-        name="branchName"
-        dataTest="branchName"
-        styleName="branchName"
-        component={Input}
-      />
       <hr />
       <Field
         label="Phone 1"
@@ -148,7 +141,7 @@ const AgencyDetails = ({ agencyCodeDisabled }) => {
         label="CSR Contact Email Address"
         styleName="customerServiceEmailAddress"
         name="customerServiceEmailAddress"
-        dataTest="customerServiceEmailAddress"
+        dataTest="csrEmail"
         component={Input}
         validate={[validation.isRequired, validation.isEmail]}
       />

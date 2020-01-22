@@ -795,15 +795,9 @@ describe('Detail Header selectors', () => {
           policyTerm: 1,
           policyAccountCode: 10000,
           effectiveDate: '2018-12-04T05:00:00.000Z',
-          cashNeeded: {
-            $numberDecimal: '3055.00'
-          },
-          cashReceived: {
-            $numberDecimal: '0.00'
-          },
-          balance: {
-            $numberDecimal: '3055.00'
-          },
+          cashNeeded: '3055.00',
+          cashReceived: '0.00',
+          balance: '3055.00',
           initialPremium: 2860,
           currentPremium: 3055,
           sumOfEndorsements: 195,
@@ -820,9 +814,7 @@ describe('Detail Header selectors', () => {
           refundWriteOffDate: null,
           nextActionNeeded: 'Send Payment Invoice',
           nextActionDate: '2018-10-20T04:00:00.000Z',
-          noticeAmountDue: {
-            $numberDecimal: '3055.00'
-          },
+          noticeAmountDue: '3055.00',
           __v: 0,
           invoice: {
             annual: {
@@ -842,19 +834,12 @@ describe('Detail Header selectors', () => {
     };
     const result = detailSelectors.getPolicyDetails(state);
     expect(result).toEqual({
-      cancellation: {
-        label: 'Cancellation Effective Date',
-        value: '12/04/2018',
-        showRescindCancel: true,
-        showReinstatement: false
-      },
       floodZone: 'X',
       constructionType: 'SUPERIOR',
       policyID: '5bb78613c2793c0012ad5733',
       policyNumber: '12-1011068-01',
       sourceNumber: '12-5148842-01',
       territory: '038-0',
-      floodZone: 'X',
       county: 'ALACHUA',
       currentPremium: '$ 3,055',
       effectiveDate: '12/04/2018',

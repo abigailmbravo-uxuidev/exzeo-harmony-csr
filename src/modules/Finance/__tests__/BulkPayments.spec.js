@@ -155,7 +155,7 @@ describe('BulkPayments testing', () => {
         getByText(`| ${mockPolicy.policyNumber}`),
         getByText('Open Policy'),
         getByText('Balance Due:'),
-        getByText(mockPolicy.summaryLedger.balance.$numberDecimal),
+        getByText(mockPolicy.summaryLedger.balance),
         getByText(
           `${mockPolicy.policyHolders[0].firstName} ${mockPolicy.policyHolders[0].lastName}`
         ),
