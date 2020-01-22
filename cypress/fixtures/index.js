@@ -10,5 +10,6 @@ export { default as shareQuote } from './sharequote';
 export { addInsured } from './addInsured';
 export { unQuestionsAF3 } from './underwriting';
 export { unQuestionsHO3 } from './underwriting';
+export { unQuestionsBAD } from './underwriting';
 
 export * from './agencyManagement';

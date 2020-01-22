@@ -10,6 +10,7 @@ import {
   addInsured,
   unQuestionsHO3,
   unQuestionsAF3,
+  unQuestionsBAD,
   coverageHO3,
   coverageAF3
 } from '../fixtures';
@@ -79,7 +80,12 @@ export const changeCoverageAndAgency = product => {
 };
 
 export const fillOutUnderwriting = product => {
-  const data = product === 'AF3' ? unQuestionsAF3 : unQuestionsHO3;
+  const data =
+    product === 'AF3'
+      ? unQuestionsAF3
+      : product === 'HO3'
+      ? unQuestionsHO3
+      : unQuestionsBAD;
   cy.task('log', 'Filling out Underwriting')
     .goToNav('underwriting')
     .wrap(Object.entries(data))
