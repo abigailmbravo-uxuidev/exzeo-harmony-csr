@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import { reduxForm, formValueSelector } from 'redux-form';
+import { formValueSelector } from 'redux-form';
 
 import {
   getAgency,
@@ -10,10 +10,6 @@ import { getOrphanedAgentsList } from '../../../state/selectors/agency.selector'
 import { getListAnswersAsKey } from '../../../state/selectors/questions.selectors';
 
 import Create from './Create';
-import {
-  getListOfZipCodes,
-  getZipCodeSettings
-} from 'state/selectors/zipCodeSettings.selectors';
 
 const selector = formValueSelector('Create');
 const mapStateToProps = state => ({
@@ -37,15 +33,7 @@ const mapStateToProps = state => ({
       ]
     }
   },
-  sameAsMailingValue: selector(state, 'sameAsMailing'),
-  sameAsMailingAORValue: selector(state, 'agentOfRecord.sameAsMailing'),
-  licenseValue: selector(state, 'licenses'),
-  physicalStateValue: selector(state, 'physicalAddress.state'),
-  physicalZipValue: selector(state, 'physicalAddress.zip'),
-  territoryManagers: state.questions.territoryManagers,
-  listAnswersAsKey: getListAnswersAsKey(state),
-  listOfZipCodes: getListOfZipCodes(state),
-  zipCodeSettings: getZipCodeSettings(state)
+  listAnswersAsKey: getListAnswersAsKey(state)
 });
 
 export default connect(mapStateToProps, {

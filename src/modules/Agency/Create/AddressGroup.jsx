@@ -16,14 +16,13 @@ import {
 import Address from './Address';
 import AddressWatcher from './AddressWatcher';
 import TerritoryManagerWatcher from './TerritoryManagerWatcher';
-import { useFetchZipCodeSettings } from './hooks';
+import { useFetchZipCodeSettings, useFetchTerritoryManagers } from './hooks';
 import { listOfZipCodes } from './utilities';
 
 const AddressGroup = ({
   dataTest,
   mailingAddressPrefix,
   physicalAddressPrefix,
-  territoryManagers,
   isOptionalTerritoryManager,
   formValues,
   listAnswersAsKey
@@ -35,8 +34,8 @@ const AddressGroup = ({
   );
 
   const stateValue = _get(formValues, `${physicalAddressPrefix}.state`, 'FL');
-
   const { zipCodeSettings } = useFetchZipCodeSettings(stateValue);
+  const { territoryManagers } = useFetchTerritoryManagers(stateValue);
 
   return (
     <section

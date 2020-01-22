@@ -10,11 +10,7 @@ import {
   getListOfOrphanedAgents,
   getAgentListByAgencyCode
 } from '../../state/actions/agency.actions';
-import { searchSettingsByCSPAndZip } from '../../state/actions/zipCodeSettings.actions';
-import {
-  getTerritoryManagers,
-  getLists
-} from '../../state/actions/questions.actions';
+import { getLists } from '../../state/actions/questions.actions';
 import { getPoliciesForAgency } from '../../state/actions/policy.actions';
 import AgencyHeader from './AgencyHeader';
 import AgencySideNav from './AgencySideNav';
@@ -83,8 +79,6 @@ export class Agency extends Component {
       this.props.getPoliciesForAgency({ agencyCode });
     }
     this.props.getListOfOrphanedAgents();
-    this.props.searchSettingsByCSPAndZip('', 'FL');
-    this.props.getTerritoryManagers('FL');
     this.props.getLists();
   }
 
@@ -159,21 +153,15 @@ export class Agency extends Component {
 }
 
 const mapStateToProps = state => ({
-  agency: state.agencyState.agency,
-  territoryManagers: state.questions.territoryManagers
+  agency: state.agencyState.agency
 });
 
-export default connect(
-  mapStateToProps,
-  {
-    getAgency,
-    getAgentList,
-    getAgentListByAgencyCode,
-    getAgentsByAgencyCode,
-    getListOfOrphanedAgents,
-    getTerritoryManagers,
-    searchSettingsByCSPAndZip,
-    getLists,
-    getPoliciesForAgency
-  }
-)(Agency);
+export default connect(mapStateToProps, {
+  getAgency,
+  getAgentList,
+  getAgentListByAgencyCode,
+  getAgentsByAgencyCode,
+  getListOfOrphanedAgents,
+  getLists,
+  getPoliciesForAgency
+})(Agency);
