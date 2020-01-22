@@ -9,7 +9,6 @@ function PolicyholderCard({
   policyHolderMailingAddress,
   subject
 }) {
-  console.log(rest);
   return (
     <div className="primary-policyholder contact card">
       <div className="contact-title">
