@@ -51,3 +51,13 @@ export const setTerritoryManager = async (
   if (!tm) return;
   onChange(tm._id);
 };
+
+export const listOfZipCodes = zipCodeSettings => {
+  if (!Array.isArray(zipCodeSettings)) return [];
+
+  const zipCodeList = zipCodeSettings.map(z => ({
+    answer: z.zip,
+    label: `${z.zip}`
+  }));
+  return zipCodeList;
+};

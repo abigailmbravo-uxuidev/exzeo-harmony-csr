@@ -133,9 +133,7 @@ export class Create extends Component {
                         mailingAddressPrefix="mailingAddress"
                         physicalAddressPrefix="physicalAddress"
                         territoryManagers={territoryManagers}
-                        listOfZipCodes={listOfZipCodes}
                         formValues={formValues}
-                        zipCodeSettings={zipCodeSettings}
                         listAnswersAsKey={listAnswersAsKey}
                       />
                       <h3>Officer</h3>

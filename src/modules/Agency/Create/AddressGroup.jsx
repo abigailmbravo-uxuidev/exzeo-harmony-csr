@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import _get from 'lodash/get';
 import {
   Field,
@@ -16,6 +16,8 @@ import {
 import Address from './Address';
 import AddressWatcher from './AddressWatcher';
 import TerritoryManagerWatcher from './TerritoryManagerWatcher';
+import { useFetchZipCodeSettings } from './hooks';
+import { listOfZipCodes } from './utilities';
 
 const AddressGroup = ({
   dataTest,
@@ -23,8 +25,6 @@ const AddressGroup = ({
   physicalAddressPrefix,
   territoryManagers,
   isOptionalTerritoryManager,
-  listOfZipCodes,
-  zipCodeSettings,
   formValues,
   listAnswersAsKey
 }) => {
@@ -33,6 +33,11 @@ const AddressGroup = ({
     `${physicalAddressPrefix}.sameAsMailing`,
     false
   );
+
+  const stateValue = _get(formValues, `${physicalAddressPrefix}.state`, 'FL');
+
+  const { zipCodeSettings } = useFetchZipCodeSettings(stateValue);
+
   return (
     <section
       data-test={`${dataTest}-address-section`}
@@ -44,17 +49,8 @@ const AddressGroup = ({
           <Address
             fieldPrefix={mailingAddressPrefix}
             listAnswersAsKey={listAnswersAsKey}
+            listOfZipCodes={[]}
           />
-          {/* <FormSection name="mailingAddress">
-          <Address
-            normalizeSameAsMailing={this.normalizeSameAsMailing(
-              'mailingAddress'
-            )}
-            territoryManagers={territoryManagers}
-            changeField={changeField}
-            section="mailingAddress"
-          />
-        </FormSection> */}
         </div>
       </div>
       <div className="agency-physical-address">
@@ -75,7 +71,7 @@ const AddressGroup = ({
           <Address
             setDisabled={disabledValue}
             fieldPrefix={physicalAddressPrefix}
-            listOfZipCodes={listOfZipCodes}
+            listOfZipCodes={listOfZipCodes(zipCodeSettings)}
             listAnswersAsKey={listAnswersAsKey}
           />
 
@@ -135,32 +131,6 @@ const AddressGroup = ({
               />
             </React.Fragment>
           )}
-
-          {/* <FormSection name="physicalAddress">
-          <Address
-            isOptional={isOptional}
-            sectionDisabled={sameAsMailingValue === true}
-            normalizeSameAsMailing={this.normalizeSameAsMailing(
-              'physicalAddress'
-            )}
-            normalizeZipCode={this.normalizeZipCode}
-            normalizeState={this.normalizeState}
-            section="physicalAddress"
-            showCounty={showCounty}
-            territoryManagers={territoryManagers}
-          />
-        </FormSection> */}
-          {/* <Field
-            label="Territory Managers"
-            name="territoryManagerId"
-            styleName="territoryManagerId"
-            dataTest="territoryManager"
-            component={SelectTypeAhead}
-            optionValue="_id"
-            optionLabel="name"
-            answers={territoryManagers}
-            validate={isOptional ? null : validation.isRequired}
-          /> */}
         </div>
       </div>
     </section>

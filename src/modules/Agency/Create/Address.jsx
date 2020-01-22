@@ -114,9 +114,10 @@ const Address = ({
             <Input
               input={input}
               meta={meta}
-              label="Zip"
+              label="Zip Code"
               size="view-col-2"
               styleName="input"
+              disabled={setDisabled}
               dataTest={`${fieldPrefix}.zip`}
             />
           )}
