@@ -21,7 +21,7 @@ import { getZipcodeSettings } from '../../state/actions/service.actions';
 import { getEnumsForQuoteWorkflow } from '../../state/actions/list.actions';
 import { getQuoteSelector } from '../../state/selectors/quote.selectors';
 import { getDiariesForTable } from '../../state/selectors/diary.selectors';
-import { UNQUALIFIED_STATE } from '../../utilities/quoteState';
+import { UNQUALIFIED_STATE, QUOTE_STATE } from '../../utilities/quoteState';
 
 import App from '../../components/AppWrapper';
 import OpenDiariesBar from '../../components/OpenDiariesBar';
@@ -172,10 +172,12 @@ export class QuoteWorkflow extends React.Component {
       verifyQuote,
       setAppError
     } = this.props;
+    const { ApplicationReady } = QUOTE_STATE;
+
     try {
       const { quoteState } = await verifyQuote({ quoteNumber });
-      quoteState !== 'Application Ready'
-        ? setAppError({ message: 'The quote is not Application Ready.' })
+      quoteState !== ApplicationReady
+        ? setAppError({ message: `The quote is not ${ApplicationReady}.` })
         : this.setState({ showApplicationModal: true });
     } catch (error) {
       setAppError({ message: `Error with verify quote: ${error}` });
