@@ -7,8 +7,7 @@ function PolicyholderCard({
   label,
   policyHolder,
   policyHolderMailingAddress,
-  subject,
-  ...rest
+  subject
 }) {
   console.log(rest);
   return (
