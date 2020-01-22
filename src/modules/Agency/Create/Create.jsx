@@ -72,6 +72,10 @@ export class Create extends Component {
       selectedAgent.primaryPhoneNumber
     );
     change(
+      'agentOfRecord.primaryPhoneNumberExtension',
+      selectedAgent.primaryPhoneNumberExtension
+    );
+    change(
       'agentOfRecord.secondaryPhoneNumber',
       selectedAgent.secondaryPhoneNumber
     );

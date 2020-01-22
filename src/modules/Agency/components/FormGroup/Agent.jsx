@@ -49,10 +49,10 @@ export const Agent = () => (
       />
       <Field
         name="primaryPhoneNumberExtension"
-        label="Primary Phone Extension"
+        label="Extension"
         component={Input}
         dataTest="primaryPhoneNumberExtension"
-        styleName="primaryPhoneNumberExtension"
+        styleName="primaryPhoneNumber"
       />
       <Field
         label="Phone 2"
