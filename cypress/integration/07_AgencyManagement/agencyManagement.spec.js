@@ -847,7 +847,7 @@ describe('Agency Management testing', () => {
       .findDataTag('contactType')
       .select('Other')
       .findDataTag('noteContent')
-      .type('This is a note content for Other Contact')
+      .type('This is a note content for Other Contact', { force: true })
       .findDataTag('fileType')
       .select('Finance')
       .findDataTag('submit-button')
