@@ -6,7 +6,7 @@ export const filterZipCodeSettings = (zip, zipCodeSettings) => {
   return null;
 };
 
-export const setCounty = (zip, zipCodeSettings, onChange) => {
+export const setCounty = async (zip, zipCodeSettings, onChange) => {
   const result = filterZipCodeSettings(zip, zipCodeSettings);
   if (!result) return;
   onChange(result.county);
@@ -34,7 +34,7 @@ export const filterTerritoryManager = (state, county, territoryManagers) => {
   });
 };
 
-export const setTerritoryManager = (
+export const setTerritoryManager = async (
   zip,
   zipCodeSettings,
   onChange,
