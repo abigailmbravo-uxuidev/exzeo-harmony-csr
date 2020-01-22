@@ -1,60 +1,7 @@
 import React from 'react';
 import { OnChangeListener, Field } from '@exzeo/core-ui';
 import _get from 'lodash/get';
-
-const filterZipCodeSettings = (zip, zipCodeSettings) => {
-  const matchingZipCodes = zipCodeSettings.filter(z => z.zip === zip);
-  if (matchingZipCodes.length === 1) {
-    return matchingZipCodes[0];
-  }
-  return null;
-};
-
-const setCounty = (zip, zipCodeSettings, onChange) => {
-  const result = filterZipCodeSettings(zip, zipCodeSettings);
-  if (!result) return;
-  onChange(result.county);
-};
-
-const filterTerritoryManager = (state, county, territoryManagers) => {
-  return territoryManagers.find(tm => {
-    const { states } = tm;
-    if (
-      states &&
-      states.some(s => {
-        const { counties } = s;
-        return (
-          s.state.includes(state) &&
-          counties &&
-          counties.some(c => {
-            return c.county.includes(county);
-          })
-        );
-      })
-    ) {
-      return tm;
-    }
-    return null;
-  });
-};
-
-const setTerritoryManager = (
-  zip,
-  zipCodeSettings,
-  onChange,
-  territoryManagers
-) => {
-  const result = filterZipCodeSettings(zip, zipCodeSettings);
-  if (!result) return;
-
-  const tm = filterTerritoryManager(
-    result.state,
-    result.county,
-    territoryManagers
-  );
-  if (!tm) return;
-  onChange(tm._id);
-};
+import { setTerritoryManager, setCounty } from './utilities';
 
 const TerritoryManager = ({
   watchField,
@@ -78,7 +25,6 @@ const TerritoryManager = ({
                     onChange,
                     territoryManagers
                   );
-                  // onChange(_get(values, `${matchPrefix}.zip`, ''));
                 } else {
                   onChange('');
                 }
@@ -93,9 +39,8 @@ const TerritoryManager = ({
                     onChange,
                     territoryManagers
                   );
-                  //onChange(_get(values, `${matchPrefix}.zip`, ''));
                 } else {
-                  // onChange('');
+                  onChange('');
                 }
               }}
             </OnChangeListener>
@@ -114,9 +59,8 @@ const TerritoryManager = ({
                     onChange,
                     'county'
                   );
-                  // onChange(_get(values, `${matchPrefix}.zip`, ''));
                 } else {
-                  //  onChange('');
+                  onChange('');
                 }
               }}
             </OnChangeListener>
@@ -124,7 +68,6 @@ const TerritoryManager = ({
               {value => {
                 if (value) {
                   setCounty(value, zipCodeSettings, onChange, 'county');
-                  //onChange(_get(values, `${matchPrefix}.zip`, ''));
                 } else {
                   onChange('');
                 }
