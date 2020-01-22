@@ -167,14 +167,16 @@ export class QuoteWorkflow extends React.Component {
   };
 
   handleRetrieveQuote = async () => {
-    const { quote, verifyQuote } = this.props;
+    const { quote, verifyQuote, setAppError } = this.props;
     try {
-      await verifyQuote({ quoteNumber: quote.quoteNumber });
-      this.setState({ showApplicationModal: true });
+      const { quoteState } = await verifyQuote({
+        quoteNumber: quote.quoteNumber
+      });
+      quoteState !== 'Application Ready'
+        ? setAppError({ message: 'The quote is not Application Ready.' })
+        : this.setState({ showApplicationModal: true });
     } catch (error) {
-      if (process.env.NODE_ENV !== 'production') {
-        console.log('Error with verify quote: ', error);
-      }
+      setAppError({ message: `Error with verify quote: ${error}` });
     }
   };
 
