@@ -15,7 +15,13 @@ import {
 
 const { isRequired, validateState, validateZipCode } = validation;
 
-const Address = ({ fieldPrefix, isOptional, listOfZipCodes, setDisabled }) => {
+const Address = ({
+  fieldPrefix,
+  isOptional,
+  listOfZipCodes,
+  setDisabled,
+  listAnswersAsKey
+}) => {
   return (
     <React.Fragment>
       <Field name={`${fieldPrefix}.address1`} validate={isRequired}>
@@ -64,12 +70,12 @@ const Address = ({ fieldPrefix, isOptional, listOfZipCodes, setDisabled }) => {
         validate={composeValidators([isRequired, validateState])}
       >
         {({ input, meta }) => (
-          <Input
+          <Select
             input={input}
             meta={meta}
-            label="State"
-            size="view-col-1"
-            styleName="input"
+            label="state"
+            styleName={'state'}
+            answers={listAnswersAsKey.US_states}
             disabled={setDisabled}
             dataTest={`${fieldPrefix}.state`}
           />

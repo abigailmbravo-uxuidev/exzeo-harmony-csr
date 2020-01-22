@@ -136,6 +136,7 @@ export class Create extends Component {
                         listOfZipCodes={listOfZipCodes}
                         formValues={formValues}
                         zipCodeSettings={zipCodeSettings}
+                        listAnswersAsKey={listAnswersAsKey}
                       />
                       <h3>Officer</h3>
                       <section
@@ -177,6 +178,7 @@ export class Create extends Component {
                             physicalAddressPrefix="agentOfRecord.physicalAddress"
                             listOfZipCodes={listOfZipCodes}
                             formValues={formValues}
+                            listAnswersAsKey={listAnswersAsKey}
                           />
                         </div>
                         <div className="agency-license">

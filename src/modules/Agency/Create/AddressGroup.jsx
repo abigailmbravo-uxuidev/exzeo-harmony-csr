@@ -25,7 +25,8 @@ const AddressGroup = ({
   isOptionalTerritoryManager,
   listOfZipCodes,
   zipCodeSettings,
-  formValues
+  formValues,
+  listAnswersAsKey
 }) => {
   const disabledValue = _get(
     formValues,
@@ -40,7 +41,10 @@ const AddressGroup = ({
       <div className="agency-mailing-address">
         <div data-test={`${dataTest}-mailing-address`}>
           <h4>Mailing Address</h4>
-          <Address fieldPrefix={mailingAddressPrefix} />
+          <Address
+            fieldPrefix={mailingAddressPrefix}
+            listAnswersAsKey={listAnswersAsKey}
+          />
           {/* <FormSection name="mailingAddress">
           <Address
             normalizeSameAsMailing={this.normalizeSameAsMailing(
@@ -72,6 +76,7 @@ const AddressGroup = ({
             setDisabled={disabledValue}
             fieldPrefix={physicalAddressPrefix}
             listOfZipCodes={listOfZipCodes}
+            listAnswersAsKey={listAnswersAsKey}
           />
 
           <AddressWatcher
