@@ -15,7 +15,7 @@ import {
 
 const { isRequired, validateState, validateZipCode } = validation;
 
-const Address = ({ fieldPrefix, isOptional, listOfZipCodes }) => {
+const Address = ({ fieldPrefix, isOptional, listOfZipCodes, setDisabled }) => {
   return (
     <React.Fragment>
       <Field name={`${fieldPrefix}.address1`} validate={isRequired}>
@@ -25,6 +25,7 @@ const Address = ({ fieldPrefix, isOptional, listOfZipCodes }) => {
             meta={meta}
             label="Address 1"
             styleName="input"
+            disabled={setDisabled}
             dataTest={`${fieldPrefix}.address1`}
           />
         )}
@@ -37,6 +38,7 @@ const Address = ({ fieldPrefix, isOptional, listOfZipCodes }) => {
             meta={meta}
             label="Address 2"
             styleName="input"
+            disabled={setDisabled}
             dataTest={`${fieldPrefix}.address2`}
           />
         )}
@@ -50,6 +52,7 @@ const Address = ({ fieldPrefix, isOptional, listOfZipCodes }) => {
             label="City"
             size="view-col-9"
             styleName="input"
+            disabled={setDisabled}
             dataTest={`${fieldPrefix}.city`}
           />
         )}
@@ -67,6 +70,7 @@ const Address = ({ fieldPrefix, isOptional, listOfZipCodes }) => {
             label="State"
             size="view-col-1"
             styleName="input"
+            disabled={setDisabled}
             dataTest={`${fieldPrefix}.state`}
           />
         )}
@@ -86,6 +90,7 @@ const Address = ({ fieldPrefix, isOptional, listOfZipCodes }) => {
               dataTest="zip"
               optionValue="answer"
               optionLabel="label"
+              disabled={setDisabled}
               validate={isOptional ? null : validation.isRequired}
               // normalize={normalizeZipCode}
               answers={listOfZipCodes}

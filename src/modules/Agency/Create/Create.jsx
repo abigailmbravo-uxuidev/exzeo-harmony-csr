@@ -27,6 +27,7 @@ import NavigationPrompt from 'components/NavigationPrompt';
 
 export class Create extends Component {
   state = {
+    formInstance: null,
     showAddExistingAgentModal: false
   };
   createAgency = async (data, dispatch, props) => {
@@ -40,9 +41,10 @@ export class Create extends Component {
     await this.props.createAgency(data);
   };
 
-  handleToggleExistingAgentModal = () => {
+  handleToggleExistingAgentModal = form => {
     this.setState({
-      showAddExistingAgentModal: !this.state.showAddExistingAgentModal
+      showAddExistingAgentModal: !this.state.showAddExistingAgentModal,
+      formInstance: form
     });
   };
 
@@ -74,11 +76,13 @@ export class Create extends Component {
 
   // TODO : Move to utilities
   applyOrphanedAgent = data => {
-    const { change, orphans } = this.props;
+    const { orphans } = this.props;
+    const { change } = this.state.formInstance;
     const { selectedAgentCode } = data;
     const selectedAgent = orphans.filter(
       a => String(a.agentCode) === String(selectedAgentCode)
     )[0];
+
     change('agentOfRecord.firstName', selectedAgent.firstName);
     change('agentOfRecord.lastName', selectedAgent.lastName);
     change(
@@ -98,9 +102,8 @@ export class Create extends Component {
 
   render() {
     const {
+      listAnswersAsKey,
       licenseValue,
-      sameAsMailingValue,
-      sameAsMailingAORValue,
       submitting,
       pristine,
       territoryManagers,
@@ -108,7 +111,8 @@ export class Create extends Component {
       orphans,
       initialValues,
       history,
-      listOfZipCodes
+      listOfZipCodes,
+      zipCodeSettings
     } = this.props;
 
     return (
@@ -160,6 +164,8 @@ export class Create extends Component {
                       physicalAddressPrefix="physicalAddress"
                       territoryManagers={territoryManagers}
                       listOfZipCodes={listOfZipCodes}
+                      formValues={formValues}
+                      zipCodeSettings={zipCodeSettings}
                     />
                     <h3>Officer</h3>
                     <section
@@ -178,7 +184,9 @@ export class Create extends Component {
                     <h3>
                       Agent Of Record
                       <button
-                        onClick={this.handleToggleExistingAgentModal}
+                        onClick={() =>
+                          this.handleToggleExistingAgentModal(form)
+                        }
                         type="button"
                         className="btn btn-link btn-sm"
                       >
@@ -194,18 +202,18 @@ export class Create extends Component {
                           dataTest="aor"
                           mailingAddressPrefix="agentOfRecord.mailingAddress"
                           physicalAddressPrefix="agentOfRecord.physicalAddress"
-                          territoryManagers={territoryManagers}
                           listOfZipCodes={listOfZipCodes}
+                          formValues={formValues}
                         />
                       </div>
                       <div className="agency-license">
-                        {/* <FieldArray
-                      stateAnswers={listAnswersAsKey.US_states}
-                      name="agentOfRecord.licenses"
-                      component={License}
-                      licenseValue={licenseValue}
-                      isAgency
-                    /> */}
+                        <FieldArray
+                          stateAnswers={listAnswersAsKey.US_states}
+                          name="agentOfRecord.licenses"
+                          component={License}
+                          licenseValue={licenseValue}
+                          isAgency
+                        />
                       </div>
                     </section>
                   </form>

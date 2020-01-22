@@ -1,4 +1,5 @@
 import React from 'react';
+import _get from 'lodash/get';
 import {
   Field,
   Input,
@@ -13,8 +14,8 @@ import {
   SelectTypeAhead
 } from '@exzeo/core-ui';
 import Address from './Address';
-
-const { isRequired, validateState, validateZipCode } = validation;
+import AddressWatcher from './AddressWatcher';
+import TerritoryManagerWatcher from './TerritoryManagerWatcher';
 
 const AddressGroup = ({
   dataTest,
@@ -22,8 +23,15 @@ const AddressGroup = ({
   physicalAddressPrefix,
   territoryManagers,
   isOptionalTerritoryManager,
-  listOfZipCodes
+  listOfZipCodes,
+  zipCodeSettings,
+  formValues
 }) => {
+  const disabledValue = _get(
+    formValues,
+    `${physicalAddressPrefix}.sameAsMailing`,
+    false
+  );
   return (
     <section
       data-test={`${dataTest}-address-section`}
@@ -50,7 +58,7 @@ const AddressGroup = ({
           <h4>
             Physical Address
             <Field
-              name="sameAsMailing"
+              name={`${physicalAddressPrefix}.sameAsMailing`}
               component="input"
               id={`${physicalAddressPrefix}.sameAsMailing`}
               type="checkbox"
@@ -61,27 +69,67 @@ const AddressGroup = ({
             </label>
           </h4>
           <Address
+            setDisabled={disabledValue}
             fieldPrefix={physicalAddressPrefix}
             listOfZipCodes={listOfZipCodes}
           />
 
-          <Field name="territoryManagerId" validate={validation.isRequired}>
-            {({ input, meta }) => (
-              <SelectTypeAhead
-                input={input}
-                meta={meta}
-                label="Territory Managers"
-                styleName="territoryManagerId"
-                dataTest="territoryManager"
-                optionValue="_id"
-                optionLabel="name"
-                answers={territoryManagers}
-                validate={
-                  isOptionalTerritoryManager ? null : validation.isRequired
-                }
+          <AddressWatcher
+            fieldPrefix={physicalAddressPrefix}
+            matchPrefix={mailingAddressPrefix}
+            watchField={`${physicalAddressPrefix}.sameAsMailing`}
+            values={formValues}
+          />
+
+          {territoryManagers && (
+            <React.Fragment>
+              <Field
+                name={`${physicalAddressPrefix}.county`}
+                validate={validation.isRequired}
+              >
+                {({ input, meta }) => (
+                  <Input
+                    input={input}
+                    meta={meta}
+                    label="County"
+                    styleName="county"
+                    dataTest="county"
+                    disabled={disabledValue}
+                  />
+                )}
+              </Field>
+              <Field
+                name={`${physicalAddressPrefix}.territoryManagerId`}
+                validate={validation.isRequired}
+              >
+                {({ input, meta }) => (
+                  <SelectTypeAhead
+                    input={input}
+                    meta={meta}
+                    label="Territory Managers"
+                    styleName="territoryManagerId"
+                    dataTest="territoryManager"
+                    optionValue="_id"
+                    optionLabel="name"
+                    disabled={disabledValue}
+                    answers={territoryManagers}
+                    validate={
+                      isOptionalTerritoryManager ? null : validation.isRequired
+                    }
+                  />
+                )}
+              </Field>
+
+              <TerritoryManagerWatcher
+                fieldPrefix={physicalAddressPrefix}
+                matchPrefix={mailingAddressPrefix}
+                watchField={`${physicalAddressPrefix}.sameAsMailing`}
+                values={formValues}
+                zipCodeSettings={zipCodeSettings}
+                territoryManagers={territoryManagers}
               />
-            )}
-          </Field>
+            </React.Fragment>
+          )}
 
           {/* <FormSection name="physicalAddress">
           <Address
