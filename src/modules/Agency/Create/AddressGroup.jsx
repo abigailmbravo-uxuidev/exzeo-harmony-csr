@@ -1,18 +1,6 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import _get from 'lodash/get';
-import {
-  Field,
-  Input,
-  Integer,
-  Radio,
-  Select,
-  Phone,
-  validation,
-  Date,
-  format,
-  composeValidators,
-  SelectTypeAhead
-} from '@exzeo/core-ui';
+import { Field, Input, validation, SelectTypeAhead } from '@exzeo/core-ui';
 import Address from './Address';
 import AddressWatcher from './AddressWatcher';
 import TerritoryManagerWatcher from './TerritoryManagerWatcher';

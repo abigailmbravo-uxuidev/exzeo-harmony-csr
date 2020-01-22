@@ -8,7 +8,6 @@ import {
   Phone,
   validation,
   Date,
-  date,
   composeValidators
 } from '@exzeo/core-ui';
 

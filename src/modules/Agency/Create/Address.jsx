@@ -2,12 +2,8 @@ import React from 'react';
 import {
   Field,
   Input,
-  Integer,
-  Radio,
   Select,
-  Phone,
   validation,
-  Date,
   format,
   composeValidators,
   SelectTypeAhead
@@ -98,9 +94,7 @@ const Address = ({
               optionLabel="label"
               disabled={setDisabled}
               validate={isOptional ? null : validation.isRequired}
-              // normalize={normalizeZipCode}
               answers={listOfZipCodes}
-              // disabled={sectionDisabled}
             />
           )}
         </Field>
