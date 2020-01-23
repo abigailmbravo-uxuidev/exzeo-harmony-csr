@@ -9,7 +9,6 @@ const AddressWatcher = ({ watchField, fieldPrefix, matchPrefix, values }) => {
         {({ input: { onChange } }) => (
           <OnChangeListener name={watchField}>
             {value => {
-              console.log(value);
               if (value) {
                 onChange(_get(values, `${matchPrefix}.address1`, ''));
               } else {

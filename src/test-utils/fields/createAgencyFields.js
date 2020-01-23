@@ -136,34 +136,34 @@ export const addressFields = [
     required: true,
     label: 'Address 1',
     dataTest: 'physicalAddress.address1',
-    value: '123 Maple ST'
+    value: '123 Main ST'
   },
   {
     type: 'text',
     label: 'Address 2',
     dataTest: 'physicalAddress.address2',
-    value: 'APT # 1234'
+    value: 'APT # 456'
   },
   {
     type: 'text',
     label: 'City',
     required: true,
     dataTest: 'physicalAddress.city',
-    value: 'Tampa'
+    value: 'Miami'
   },
   {
     type: 'select',
     label: 'State',
     required: true,
     dataTest: 'physicalAddress.state',
-    value: 'FL'
+    value: 'OH'
   },
   {
     type: 'text',
     label: 'Zip Code',
     required: true,
     dataTest: 'physicalAddress.zip',
-    value: '33626'
+    value: '22222'
   },
   {
     type: 'text',
@@ -172,13 +172,6 @@ export const addressFields = [
 
     dataTest: 'physicalAddress.county',
     value: 'HILLSBOROUGH'
-  },
-  {
-    type: 'select',
-    required: true,
-    label: 'Territory Managers',
-    dataTest: 'territoryManager',
-    value: '5b7db9f6ff54fd6a5c619eed'
   }
 ];
 

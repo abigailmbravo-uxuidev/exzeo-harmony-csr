@@ -38,6 +38,13 @@ const pageHeaders = [
 const allFields = [
   ...detailsFields,
   ...addressFields,
+  {
+    type: 'select',
+    required: true,
+    label: 'Territory Managers',
+    dataTest: 'territoryManager',
+    value: '5b7db9f6ff54fd6a5c619eed'
+  },
   ...contactFields,
   ...agentOfRecordFields,
   ...licenseFields
@@ -74,5 +81,35 @@ describe('Testing the Create Agency Page', () => {
       });
   });
 
-  it('POS: Same as Mailing Address should populate Physical Address', () => {});
+  it('POS: Same as Mailing Address should populate Physical Address', () => {
+    const { getByTestId } = renderWithForm(<Create {...props} />);
+
+    addressFields.forEach(({ label, value, dataTest }) =>
+      fireEvent.change(getByTestId(dataTest), {
+        target: { value }
+      })
+    );
+
+    fireEvent.click(getByTestId('physicalAddress.sameAsMailing'));
+
+    expect(getByTestId('physicalAddress.address1').value).toEqual(
+      getByTestId('mailingAddress.address1').value
+    );
+
+    expect(getByTestId('physicalAddress.address2').value).toEqual(
+      getByTestId('mailingAddress.address2').value
+    );
+
+    expect(getByTestId('physicalAddress.city').value).toEqual(
+      getByTestId('mailingAddress.city').value
+    );
+
+    expect(getByTestId('physicalAddress.state').value).toEqual(
+      getByTestId('mailingAddress.state').value
+    );
+
+    expect(getByTestId('physicalAddress.zip').value).toEqual(
+      getByTestId('mailingAddress.zip').value
+    );
+  });
 });
