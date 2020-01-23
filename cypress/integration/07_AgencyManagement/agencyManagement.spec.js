@@ -139,6 +139,8 @@ describe('Agency Management testing', () => {
         .type('exzeoqa@exzeo.com')
         .findDataTag('primaryPhoneNumber')
         .type('4445556666', { force: true })
+        .findDataTag('primaryPhoneNumberExtension')
+        .type('1111', { force: true })
         .findDataTag('secondaryPhoneNumber')
         .type('4445556667', { force: true })
         .findDataTag('faxNumber')
@@ -289,6 +291,10 @@ describe('Agency Management testing', () => {
         response.body.result[0].primaryPhoneNumber,
         'Overview Page: Agent Of Record Area: primaryPhoneNumber'
       ).to.equal(ADD_AGENT.primaryPhoneNumber);
+      expect(
+        response.body.result[0].primaryPhoneNumberExtension,
+        'Overview Page: Agent Of Record Area: primaryPhoneNumberExtension'
+      ).to.equal(ADD_AGENT.primaryPhoneNumberExtension);
       expect(
         response.body.result[0].secondaryPhoneNumber,
         'Overview Page: Agent Of Record Area: secondaryPhoneNumber'
@@ -838,7 +844,7 @@ describe('Agency Management testing', () => {
       .findDataTag('contactType')
       .select('Other')
       .findDataTag('noteContent')
-      .type('This is a note content for Other Contact')
+      .type('This is a note content for Other Contact', { force: true })
       .findDataTag('fileType')
       .select('Finance')
       .findDataTag('submit-button')

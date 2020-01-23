@@ -12,7 +12,7 @@
     "cypress": "react-scripts cypress"
   },
   "dependencies": {
-    "@exzeo/core-ui": "0.9.17",
+    "@exzeo/core-ui": "0.9.19",
     "@exzeo/react-scripts": "2.3.0",
     "@fortawesome/fontawesome": "~1.0.0",
     "@fortawesome/react-fontawesome": "~0.0.14",
@@ -78,7 +78,7 @@
     ],
     "coverageThreshold": {
       "global": {
-        "statements": 65
+        "statements": 60
       }
     }
   },

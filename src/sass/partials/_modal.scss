@@ -323,6 +323,13 @@
             padding-bottom: 0;
           }
         }
+
+        > div {
+          display: flex;
+          flex-direction: column;
+
+          max-height: calc(100vh - 20rem);
+        }
       }
     }
   }
