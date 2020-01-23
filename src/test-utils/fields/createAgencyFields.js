@@ -181,3 +181,78 @@ export const addressFields = [
     value: '5b7db9f6ff54fd6a5c619eed'
   }
 ];
+
+export const contactFields = [
+  {
+    type: 'text',
+    label: 'Title',
+    dataTest: 'contact.title',
+    value: 'Mr.'
+  },
+  {
+    type: 'text',
+    required: true,
+    label: 'First Name',
+    dataTest: 'contact.firstName',
+    value: 'First'
+  },
+  {
+    type: 'text',
+    required: true,
+    label: 'Last Name',
+    dataTest: 'contact.lastName',
+    value: 'Last'
+  },
+  {
+    type: 'text',
+    required: true,
+    label: 'Email Address',
+    dataTest: 'contact.emailAddress',
+    value: 'exzeo@exzeo.com'
+  },
+  {
+    type: 'text',
+    label: 'Phone Number',
+    dataTest: 'contact.primaryPhoneNumber',
+    value: '(999) 888-1231'
+  },
+  {
+    type: 'text',
+    label: 'Phone Number Extension',
+    dataTest: 'contact.primaryPhoneNumberExtension',
+    value: '444'
+  },
+  {
+    type: 'text',
+    required: true,
+    label: 'First Name',
+    dataTest: 'principal.firstName',
+    value: 'First'
+  },
+  {
+    type: 'text',
+    required: true,
+    label: 'Last Name',
+    dataTest: 'principal.lastName',
+    value: 'Last'
+  },
+  {
+    type: 'text',
+    required: true,
+    label: 'Email Address',
+    dataTest: 'principal.emailAddress',
+    value: 'exzeo@exzeo.com'
+  },
+  {
+    type: 'text',
+    label: 'Phone Number',
+    dataTest: 'principal.primaryPhoneNumber',
+    value: '(999) 888-1231'
+  },
+  {
+    type: 'text',
+    label: 'Phone Number Extension',
+    dataTest: 'principal.primaryPhoneNumberExtension',
+    value: '444'
+  }
+];

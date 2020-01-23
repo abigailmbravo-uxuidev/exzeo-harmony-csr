@@ -20,7 +20,8 @@ import {
   checkButton,
   mockServiceRunner,
   detailsFields,
-  addressFields
+  addressFields,
+  contactFields
 } from '../../../../test-utils';
 import { Create } from '../Create';
 
@@ -32,7 +33,7 @@ const pageHeaders = [
   { text: 'Agent Of Record' }
 ];
 
-const allFields = [...detailsFields, ...addressFields];
+const allFields = [...detailsFields, ...addressFields, ...contactFields];
 
 describe('Testing the Create Agency Page', () => {
   const props = {
