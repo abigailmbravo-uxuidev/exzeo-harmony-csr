@@ -24,6 +24,8 @@ const CancelType = ({ initialValues, options }) => {
   const effectiveDatePlus20 = effectiveDate.clone().add(20, 'd');
   const currentDatePlus20 = now.clone().add(20, 'd');
   const currentDatePlus45 = now.clone().add(45, 'd');
+  const setAf3 = (effectiveDate, cancelDate) =>
+    effectiveDate > cancelDate ? effectiveDate : cancelDate;
 
   const notice = effectiveDate.isAfter(now) ? effectiveDate : now;
   const endDate = date.convertDateToTimeZone(
@@ -71,9 +73,7 @@ const CancelType = ({ initialValues, options }) => {
                   policyTerm > 1 || now > effectiveDatePlus90
                     ? now.clone().add(120, 'd')
                     : product === 'AF3'
-                    ? effectiveDate > currentDatePlus45
-                    : effectiveDate
-                    ? currentDatePlus45
+                    ? setAf3(effectiveDate, currentDatePlus45)
                     : currentDatePlus20 > effectiveDatePlus20
                     ? currentDatePlus20
                     : effectiveDatePlus20;
