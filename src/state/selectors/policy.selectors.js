@@ -141,23 +141,12 @@ export const getPolicyFormData = createSelector(
       zipCodeSettings
     );
 
-    const effectiveDatePlus90 = summaryLedgerEffectiveDate.clone().add(90, 'd');
-    const effectiveDatePlus20 = summaryLedgerEffectiveDate.clone().add(20, 'd');
-    const currentDatePlus20 = currentDate.clone().add(20, 'd');
-    const currentDatePlus45 = currentDate.clone().add(45, 'd');
-
-    const defaultEffectiveDate =
-      policy.policyTerm > 1 || currentDate > effectiveDatePlus90
-        ? currentDate.clone().add(120, 'd')
-        : policy.product === 'AF3'
-        ? currentDatePlus45
-        : currentDatePlus20 > effectiveDatePlus20
-        ? currentDatePlus20
-        : effectiveDatePlus20;
-
     const cancel = {
       equityDate: date.formatDate(summaryLedger.equityDate, 'MM/DD/YYYY'),
-      effectiveDate: defaultEffectiveDate.format('YYYY-MM-DD')
+      effectiveDate:
+        currentDate > summaryLedgerEffectiveDate
+          ? currentDate.format('YYYY-MM-DD')
+          : summaryLedgerEffectiveDate.format('YYYY-MM-DD')
     };
 
     policy.removeSecondary = false;
