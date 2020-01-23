@@ -70,6 +70,53 @@ export const defaultQuoteWorkflowProps = {
   }
 };
 
+export const defaultCreateAgencyProps = {
+  orphans: [],
+  initialValues: {
+    status: 'Active',
+    okToPay: true,
+    mailingAddress: {},
+    physicalAddress: {},
+    agentOfRecord: {
+      sameAsMailing: false,
+      licenses: [
+        {
+          state: '',
+          license: '',
+          licenseType: '',
+          licenseEffectiveDate: '',
+          appointed: false
+        }
+      ]
+    }
+  },
+  listAnswersAsKey: {
+    US_states: [
+      {
+        isActive: true,
+        type: 'string',
+        displayText: 'Florida',
+        key: 'FL'
+      },
+      {
+        isActive: true,
+        type: 'string',
+        displayText: 'Maryland',
+        key: 'MD'
+      },
+      {
+        isActive: true,
+        type: 'string',
+        displayText: 'New Jersey',
+        key: 'NJ'
+      }
+    ]
+  },
+  getAgency: jestResolve(),
+  updateAgency: jestResolve(),
+  createAgency: jestResolve()
+};
+
 /**
  * @param {Object} ui - React component to be Rendered
  * @param {Object} [{ state = defaultInitialState, store = mockStore(state) }={}] - The state and store, both optional, to be used.
