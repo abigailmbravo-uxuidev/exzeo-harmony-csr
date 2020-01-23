@@ -71,6 +71,8 @@ const CancelType = ({ initialValues, options }) => {
                   policyTerm > 1 || now > effectiveDatePlus90
                     ? now.clone().add(120, 'd')
                     : product === 'AF3'
+                    ? effectiveDate > currentDatePlus45
+                    : effectiveDate
                     ? currentDatePlus45
                     : currentDatePlus20 > effectiveDatePlus20
                     ? currentDatePlus20
