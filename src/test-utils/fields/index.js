@@ -10,3 +10,5 @@ export {
   secondaryPolicyholderFields,
   windFields
 } from './coverageFields';
+
+export { detailsFields } from './createAgencyFields';

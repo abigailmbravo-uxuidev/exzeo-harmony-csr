@@ -69,7 +69,7 @@ const Address = ({
           <Select
             input={input}
             meta={meta}
-            label="state"
+            label="State"
             styleName={'state'}
             answers={listAnswersAsKey.US_states}
             disabled={setDisabled}

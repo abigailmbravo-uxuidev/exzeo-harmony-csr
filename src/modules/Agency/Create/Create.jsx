@@ -80,7 +80,6 @@ export class Create extends Component {
     const {
       listAnswersAsKey,
       licenseValue,
-      pristine,
       agency,
       orphans,
       initialValues,
@@ -97,9 +96,9 @@ export class Create extends Component {
           mutators={{
             ...arrayMutators
           }}
-          subscription={{ submitting: true }}
+          subscription={{ submitting: true, pristine: true }}
         >
-          {({ form, handleSubmit, submitting }) => (
+          {({ form, handleSubmit, submitting, pristine }) => (
             <React.Fragment>
               {submitting && <Loader />}
               <div className="route-content">

@@ -93,22 +93,16 @@ export const defaultCreateAgencyProps = {
   listAnswersAsKey: {
     US_states: [
       {
-        isActive: true,
-        type: 'string',
-        displayText: 'Florida',
-        key: 'FL'
+        label: 'Florida',
+        answer: 'FL'
       },
       {
-        isActive: true,
-        type: 'string',
-        displayText: 'Maryland',
-        key: 'MD'
+        label: 'Maryland',
+        answer: 'MD'
       },
       {
-        isActive: true,
-        type: 'string',
-        displayText: 'New Jersey',
-        key: 'NJ'
+        label: 'New Jersey',
+        answer: 'NJ'
       }
     ]
   },
