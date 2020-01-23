@@ -94,3 +94,90 @@ export const detailsFields = [
     value: 'batman@exzeo.com'
   }
 ];
+
+export const addressFields = [
+  {
+    type: 'text',
+    required: true,
+    label: 'Address 1',
+    dataTest: 'mailingAddress.address1',
+    value: '123 Maple ST'
+  },
+  {
+    type: 'text',
+    label: 'Address 2',
+    dataTest: 'mailingAddress.address2',
+    value: 'APT # 1234'
+  },
+  {
+    type: 'text',
+    label: 'City',
+    required: true,
+    dataTest: 'mailingAddress.city',
+    value: 'Tampa'
+  },
+  {
+    type: 'select',
+    label: 'State',
+    required: true,
+
+    dataTest: 'mailingAddress.state',
+    value: 'FL'
+  },
+  {
+    type: 'text',
+    label: 'Zip Code',
+    required: true,
+    dataTest: 'mailingAddress.zip',
+    value: '33626'
+  },
+  {
+    type: 'text',
+    required: true,
+    label: 'Address 1',
+    dataTest: 'physicalAddress.address1',
+    value: '123 Maple ST'
+  },
+  {
+    type: 'text',
+    label: 'Address 2',
+    dataTest: 'physicalAddress.address2',
+    value: 'APT # 1234'
+  },
+  {
+    type: 'text',
+    label: 'City',
+    required: true,
+    dataTest: 'physicalAddress.city',
+    value: 'Tampa'
+  },
+  {
+    type: 'select',
+    label: 'State',
+    required: true,
+    dataTest: 'physicalAddress.state',
+    value: 'FL'
+  },
+  {
+    type: 'text',
+    label: 'Zip Code',
+    required: true,
+    dataTest: 'physicalAddress.zip',
+    value: '33626'
+  },
+  {
+    type: 'text',
+    label: 'County',
+    required: true,
+
+    dataTest: 'physicalAddress.county',
+    value: 'HILLSBOROUGH'
+  },
+  {
+    type: 'select',
+    required: true,
+    label: 'Territory Managers',
+    dataTest: 'territoryManager',
+    value: '5b7db9f6ff54fd6a5c619eed'
+  }
+];

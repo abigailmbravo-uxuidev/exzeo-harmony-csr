@@ -52,7 +52,6 @@ const Address = ({
             input={input}
             meta={meta}
             label="City"
-            size="view-col-9"
             styleName="input"
             disabled={setDisabled}
             dataTest={`${fieldPrefix}.city`}

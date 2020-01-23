@@ -81,7 +81,7 @@ const AddressGroup = ({
                     meta={meta}
                     label="County"
                     styleName="county"
-                    dataTest="county"
+                    dataTest={`${physicalAddressPrefix}.county`}
                     disabled={disabledValue}
                   />
                 )}

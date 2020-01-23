@@ -11,4 +11,4 @@ export {
   windFields
 } from './coverageFields';
 
-export { detailsFields } from './createAgencyFields';
+export { detailsFields, addressFields } from './createAgencyFields';
