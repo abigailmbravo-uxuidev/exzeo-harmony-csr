@@ -834,6 +834,11 @@ describe('Detail Header selectors', () => {
     };
     const result = detailSelectors.getPolicyDetails(state);
     expect(result).toEqual({
+      cancellation: {
+        value: '12/04/2018',
+        label: 'Voluntary Cancellation Date',
+        showRescindCancel: true
+      },
       floodZone: 'X',
       constructionType: 'SUPERIOR',
       policyID: '5bb78613c2793c0012ad5733',
@@ -864,11 +869,6 @@ describe('Detail Header selectors', () => {
       },
       nonPaymentNoticeDate: '',
       nonPaymentNoticeDueDate: '',
-      cancellation: {
-        value: '12/04/2018',
-        label: 'Voluntary Cancellation Date',
-        showRescindCancel: true
-      },
       sourcePath: '/quote/12-5148842-01/coverage'
     });
   });
