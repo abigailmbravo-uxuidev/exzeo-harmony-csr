@@ -73,4 +73,6 @@ describe('Testing the Create Agency Page', () => {
         checkError(getByTestId, field);
       });
   });
+
+  it('POS: Same as Mailing Address should populate Physical Address', () => {});
 });
