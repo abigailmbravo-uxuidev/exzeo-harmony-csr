@@ -48,6 +48,13 @@ export const Agent = () => (
         validate={[validation.isRequired, validation.isPhone]}
       />
       <Field
+        name="primaryPhoneNumberExtension"
+        label="Extension"
+        component={Input}
+        dataTest="primaryPhoneNumberExtension"
+        styleName="primaryPhoneNumber"
+      />
+      <Field
         label="Phone 2"
         styleName="secondaryPhoneNumber"
         name="secondaryPhoneNumber"
