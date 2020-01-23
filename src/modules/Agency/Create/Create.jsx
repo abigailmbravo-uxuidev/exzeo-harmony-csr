@@ -1,5 +1,11 @@
 import React, { Component } from 'react';
-import { Button, Form, arrayMutators, FieldArray } from '@exzeo/core-ui';
+import {
+  Button,
+  Form,
+  arrayMutators,
+  FieldArray,
+  FormSpy
+} from '@exzeo/core-ui';
 import { Redirect } from 'react-router-dom';
 
 import ExistingAgentModal from './ExistingAgentModal';
@@ -94,9 +100,9 @@ export class Create extends Component {
           mutators={{
             ...arrayMutators
           }}
-          subscription={{ submitting: true, values: true, dirty: true }}
+          subscription={{ submitting: true, dirty: true }}
         >
-          {({ form, handleSubmit, submitting, values: formValues, dirty }) => (
+          {({ form, handleSubmit, submitting, dirty }) => (
             <React.Fragment>
               <div className="route-content">
                 <div className="scroll">
@@ -118,14 +124,18 @@ export class Create extends Component {
                         <AgencyDetails />
                       </section>
                       <h3>Address</h3>
-                      <AddressGroup
-                        dataTest="agency"
-                        mailingAddressPrefix="mailingAddress"
-                        physicalAddressPrefix="physicalAddress"
-                        territoryManagers={territoryManagers}
-                        formValues={formValues}
-                        listAnswersAsKey={listAnswersAsKey}
-                      />
+                      <FormSpy subscription={{ values: true }}>
+                        {({ values: formValues }) => (
+                          <AddressGroup
+                            dataTest="agency"
+                            mailingAddressPrefix="mailingAddress"
+                            physicalAddressPrefix="physicalAddress"
+                            territoryManagers={territoryManagers}
+                            formValues={formValues}
+                            listAnswersAsKey={listAnswersAsKey}
+                          />
+                        )}
+                      </FormSpy>
                       <h3>Officer</h3>
                       <section
                         className="agency-principal"
@@ -159,15 +169,18 @@ export class Create extends Component {
                       >
                         <div className="agent-of-record">
                           <Agent fieldPrefix="agentOfRecord" />
-
-                          <AddressGroup
-                            dataTest="aor"
-                            mailingAddressPrefix="agentOfRecord.mailingAddress"
-                            physicalAddressPrefix="agentOfRecord.physicalAddress"
-                            listOfZipCodes={listOfZipCodes}
-                            formValues={formValues}
-                            listAnswersAsKey={listAnswersAsKey}
-                          />
+                          <FormSpy subscription={{ values: true }}>
+                            {({ values: formValues }) => (
+                              <AddressGroup
+                                dataTest="aor"
+                                mailingAddressPrefix="agentOfRecord.mailingAddress"
+                                physicalAddressPrefix="agentOfRecord.physicalAddress"
+                                listOfZipCodes={listOfZipCodes}
+                                formValues={formValues}
+                                listAnswersAsKey={listAnswersAsKey}
+                              />
+                            )}
+                          </FormSpy>
                         </div>
                         <div className="agency-license">
                           <FieldArray
