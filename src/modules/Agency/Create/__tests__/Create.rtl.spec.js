@@ -17,7 +17,8 @@ import {
   clearText,
   checkError,
   checkOutput,
-  checkButton
+  checkButton,
+  mockServiceRunner
 } from '../../../../test-utils';
 import { Create } from '../Create';
 
@@ -35,6 +36,8 @@ describe('Testing the Create Agency Page', () => {
   };
 
   it('POS:Checks Headers', () => {
+    mockServiceRunner([]);
+
     const { getByText } = renderWithForm(<Create {...props} />);
     pageHeaders.forEach(header => checkHeader(getByText, header));
   });
