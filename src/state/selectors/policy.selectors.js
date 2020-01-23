@@ -144,10 +144,13 @@ export const getPolicyFormData = createSelector(
     const effectiveDatePlus90 = summaryLedgerEffectiveDate.clone().add(90, 'd');
     const effectiveDatePlus20 = summaryLedgerEffectiveDate.clone().add(20, 'd');
     const currentDatePlus20 = currentDate.clone().add(20, 'd');
+    const currentDatePlus45 = currentDate.clone().add(45, 'd');
 
     const defaultEffectiveDate =
-      policy.policyTerm !== 1 && currentDate > effectiveDatePlus90
+      policy.policyTerm > 1 || currentDate > effectiveDatePlus90
         ? currentDate.clone().add(120, 'd')
+        : policy.product === 'AF3'
+        ? currentDatePlus45
         : currentDatePlus20 > effectiveDatePlus20
         ? currentDatePlus20
         : effectiveDatePlus20;
