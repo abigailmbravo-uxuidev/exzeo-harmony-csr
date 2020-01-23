@@ -14,5 +14,7 @@ export {
 export {
   detailsFields,
   addressFields,
-  contactFields
+  contactFields,
+  agentOfRecordFields,
+  licenseFields
 } from './createAgencyFields';

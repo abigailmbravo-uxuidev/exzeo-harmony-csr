@@ -21,7 +21,9 @@ import {
   mockServiceRunner,
   detailsFields,
   addressFields,
-  contactFields
+  contactFields,
+  agentOfRecordFields,
+  licenseFields
 } from '../../../../test-utils';
 import { Create } from '../Create';
 
@@ -33,7 +35,13 @@ const pageHeaders = [
   { text: 'Agent Of Record' }
 ];
 
-const allFields = [...detailsFields, ...addressFields, ...contactFields];
+const allFields = [
+  ...detailsFields,
+  ...addressFields,
+  ...contactFields,
+  ...agentOfRecordFields,
+  ...licenseFields
+];
 
 describe('Testing the Create Agency Page', () => {
   const props = {
