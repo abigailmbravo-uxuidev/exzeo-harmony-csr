@@ -67,5 +67,30 @@ export const detailsFields = [
     required: true,
     label: 'EO Expiration Date',
     value: '2019-07-01'
+  },
+  {
+    dataTest: 'primaryPhoneNumber',
+    type: 'text',
+    required: true,
+    label: 'Phone 1',
+    value: '(999) 888-1231'
+  },
+  {
+    dataTest: 'secondaryPhoneNumber',
+    type: 'text',
+    label: 'Phone 2',
+    value: '(999) 888-1222'
+  },
+  {
+    dataTest: 'faxNumber',
+    type: 'text',
+    label: 'Fax',
+    value: '(543) 543-5345'
+  },
+  {
+    dataTest: 'csrEmail',
+    type: 'email',
+    label: 'Email Address',
+    value: 'batman@exzeo.com'
   }
 ];
