@@ -18,7 +18,7 @@ import {
   checkError,
   checkOutput,
   checkButton
-} from '../../../test-utils';
+} from '../../../../test-utils';
 import { Create } from '../Create';
 
 const pageHeaders = [
