@@ -11,7 +11,7 @@ const AddressGroup = ({
   dataTest,
   mailingAddressPrefix,
   physicalAddressPrefix,
-  isOptionalTerritoryManager,
+  showTerritoryManager,
   formValues,
   listAnswersAsKey
 }) => {
@@ -69,7 +69,7 @@ const AddressGroup = ({
             values={formValues}
           />
 
-          {territoryManagers && (
+          {showTerritoryManager && (
             <React.Fragment>
               <Field
                 name={`${physicalAddressPrefix}.county`}
@@ -86,10 +86,7 @@ const AddressGroup = ({
                   />
                 )}
               </Field>
-              <Field
-                name={`${physicalAddressPrefix}.territoryManagerId`}
-                validate={validation.isRequired}
-              >
+              <Field name="territoryManagerId" validate={validation.isRequired}>
                 {({ input, meta }) => (
                   <SelectTypeAhead
                     input={input}
@@ -101,9 +98,7 @@ const AddressGroup = ({
                     optionLabel="name"
                     disabled={disabledValue}
                     answers={territoryManagers}
-                    validate={
-                      isOptionalTerritoryManager ? null : validation.isRequired
-                    }
+                    validate={validation.isRequired}
                   />
                 )}
               </Field>

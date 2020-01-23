@@ -4,7 +4,8 @@ import {
   Form,
   arrayMutators,
   FieldArray,
-  FormSpy
+  FormSpy,
+  Loader
 } from '@exzeo/core-ui';
 import { Redirect } from 'react-router-dom';
 
@@ -79,15 +80,11 @@ export class Create extends Component {
     const {
       listAnswersAsKey,
       licenseValue,
-      submitting,
       pristine,
-      territoryManagers,
       agency,
       orphans,
       initialValues,
-      history,
-      listOfZipCodes,
-      zipCodeSettings
+      listOfZipCodes
     } = this.props;
 
     return (
@@ -100,10 +97,11 @@ export class Create extends Component {
           mutators={{
             ...arrayMutators
           }}
-          subscription={{ submitting: true, dirty: true }}
+          subscription={{ submitting: true }}
         >
-          {({ form, handleSubmit, submitting, dirty }) => (
+          {({ form, handleSubmit, submitting }) => (
             <React.Fragment>
+              {submitting && <Loader />}
               <div className="route-content">
                 <div className="scroll">
                   <div className="form-group survey-wrapper" role="group">
@@ -130,7 +128,7 @@ export class Create extends Component {
                             dataTest="agency"
                             mailingAddressPrefix="mailingAddress"
                             physicalAddressPrefix="physicalAddress"
-                            territoryManagers={territoryManagers}
+                            showTerritoryManager
                             formValues={formValues}
                             listAnswersAsKey={listAnswersAsKey}
                           />

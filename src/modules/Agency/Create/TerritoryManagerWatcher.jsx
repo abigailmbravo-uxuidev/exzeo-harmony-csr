@@ -13,7 +13,7 @@ const TerritoryManager = ({
 }) => {
   return (
     <React.Fragment>
-      <Field name={`${fieldPrefix}.territoryManagerId`} subscription={{}}>
+      <Field name="territoryManagerId" subscription={{}}>
         {({ input: { onChange } }) => (
           <React.Fragment>
             <OnChangeListener name={watchField}>

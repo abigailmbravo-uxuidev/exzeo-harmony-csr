@@ -47,18 +47,6 @@ export const Contact = ({ showTitle, fieldPrefix }) => (
           />
         )}
       </Field>
-      <Field name={`${fieldPrefix}.lastName`} validate={validation.isRequired}>
-        {({ input, meta }) => (
-          <Input
-            input={input}
-            meta={meta}
-            label="Last Name"
-            styleName="lastName"
-            dataTest="lastName"
-            component={Input}
-          />
-        )}
-      </Field>
     </div>
     <div className="contact-name">
       <Field
@@ -87,7 +75,7 @@ export const Contact = ({ showTitle, fieldPrefix }) => (
           <Phone
             input={input}
             meta={meta}
-            label="Email Address"
+            label="Phone Number"
             styleName=""
             dataTest="primaryPhoneNumber"
           />

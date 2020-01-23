@@ -1,5 +1,4 @@
 import { connect } from 'react-redux';
-import { formValueSelector } from 'redux-form';
 
 import {
   getAgency,
@@ -11,7 +10,6 @@ import { getListAnswersAsKey } from '../../../state/selectors/questions.selector
 
 import Create from './Create';
 
-const selector = formValueSelector('Create');
 const mapStateToProps = state => ({
   orphans: getOrphanedAgentsList(state),
   agency: state.agencyState.agency,

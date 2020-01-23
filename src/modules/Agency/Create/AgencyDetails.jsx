@@ -205,7 +205,7 @@ const AgencyDetails = ({ agencyCodeDisabled }) => {
         name="customerServiceEmailAddress"
         validate={composeValidators([
           validation.isRequired,
-          validation.isPhone
+          validation.isEmail
         ])}
       >
         {({ input, meta }) => (
