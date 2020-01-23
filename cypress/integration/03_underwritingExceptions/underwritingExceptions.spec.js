@@ -18,27 +18,22 @@ describe('Underwriting Error Testing', () => {
 
   it('Underwriting Error', () => {
     // Fill out underwriting with bad data.
-    fillOutUnderwriting({
-      ...underwriting,
-      'underwritingAnswers.previousClaims.answer': '3-5 Years'
-    });
+    fillOutUnderwriting('BAD');
     // Check for an error.
     cy.get('section.msg-caution .fa-ul li').should(
       'contain',
       'Due to previous claims history, additional review is required.'
     );
     // Give good data.
-    fillOutUnderwriting();
+    fillOutUnderwriting('HO3');
     // Check that the error is gone.
     cy.get('section.msg-caution').should('not.exist');
   });
 
   it('Overwriting UW Exception', () => {
     // Fill out underwriting with bad data.
-    fillOutUnderwriting({
-      ...underwriting,
-      'underwritingAnswers.previousClaims.answer': '3-5 Years'
-    }).then(({ response: { body: { result } } }) =>
+    fillOutUnderwriting('BAD');
+    cy.wait('@updateQuote').then(({ response: { body: { result } } }) =>
       expect(result.quoteState).to.equal('Quote Stopped')
     );
 
