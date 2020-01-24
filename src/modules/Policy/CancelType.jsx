@@ -73,7 +73,7 @@ const CancelType = ({ initialValues, options }) => {
                     ? now.clone().add(120, 'd')
                     : product === 'AF3'
                     ? getMax(effectiveDate, currentDatePlus45)
-                    : getMax(currentDatePlus20 > effectiveDatePlus20);
+                    : getMax(effectiveDatePlus20, currentDatePlus20);
 
                 onChange(uwEffectiveDate.format('YYYY-MM-DD'));
               } else if (value === VOLUNTARY_CANCELLATION) {
