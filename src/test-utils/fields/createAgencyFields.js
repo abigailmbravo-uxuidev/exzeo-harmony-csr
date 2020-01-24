@@ -31,7 +31,7 @@ export const detailsFields = [
     required: true,
     type: 'text',
     label: 'TPAID',
-    value: 1
+    value: '1'
   },
   {
     dataTest: 'okToPay',

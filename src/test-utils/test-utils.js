@@ -45,6 +45,16 @@ export const defaultInitialProps = {
 export const jestResolve = (result = {}, error) =>
   jest.fn(() => (error ? Promise.reject(result) : Promise.resolve(result)));
 
+export const jestResolveArray = (results = []) => {
+  const jestFunc = jest.fn();
+  results.forEach(r => {
+    jestFunc.mockReturnValueOnce(
+      r.error ? Promise.reject(r) : Promise.resolve(r)
+    );
+  });
+  return jestFunc;
+};
+
 export const defaultQuoteWorkflowProps = {
   ...defaultInitialProps,
   history: { replace: x => x },

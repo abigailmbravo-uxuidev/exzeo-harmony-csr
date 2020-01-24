@@ -1,5 +1,12 @@
 import React from 'react';
-import { fireEvent, waitForElement, wait } from 'react-testing-library';
+import {
+  fireEvent,
+  waitForElement,
+  wait,
+  findAllByLabelText,
+  findAllByPlaceholderText,
+  findByLabelText
+} from 'react-testing-library';
 
 import {
   defaultCreateAgencyProps,
@@ -23,9 +30,12 @@ import {
   addressFields,
   contactFields,
   agentOfRecordFields,
-  licenseFields
+  licenseFields,
+  territoryManagers,
+  zipCodeSettings
 } from '../../../../test-utils';
 import { Create } from '../Create';
+import mockServiceRunnerMultiple from 'test-utils/mockServiceRunnerMultiple';
 
 const pageHeaders = [
   { text: 'Details' },
@@ -111,5 +121,22 @@ describe('Testing the Create Agency Page', () => {
     expect(getByTestId('physicalAddress.zip').value).toEqual(
       getByTestId('mailingAddress.zip').value
     );
+  });
+
+  it('POS:Create Fields', () => {
+    const { getByTestId } = renderWithForm(<Create {...props} />);
+
+    [
+      ...detailsFields,
+      ...addressFields,
+      ...contactFields,
+      ...agentOfRecordFields,
+      ...licenseFields
+    ].forEach(field => {
+      if (!field.value) return;
+      if (field.type === 'text') return checkTextInput(getByTestId, field);
+      if (field.type === 'select') return checkSelect(getByTestId, field);
+      if (field.type === 'radio') return checkRadio(getByTestId, field);
+    });
   });
 });

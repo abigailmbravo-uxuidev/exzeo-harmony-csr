@@ -1,3 +1,5 @@
+import territoryManagers from './territoryManagers';
+
 export { default as additionalInterest } from './additionalInterest';
 export * from './mockServiceRunnerResults';
 export { default as policyHolder } from './policyHolder';
@@ -11,3 +13,5 @@ export { default as userProfile } from './userProfile';
 export { default as mockPaymentOptions } from './paymentOptions';
 export { mockAgency } from './agency';
 export { mockAgents } from './agents';
+export { default as territoryManagers } from './territoryManagers';
+export { default as zipCodeSettings } from './zipCodeSettings';

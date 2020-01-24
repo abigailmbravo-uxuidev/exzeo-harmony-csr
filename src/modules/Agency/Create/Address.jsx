@@ -77,7 +77,7 @@ const Address = ({
         )}
       </Field>
 
-      {listOfZipCodes.length > 0 && (
+      {listOfZipCodes && (
         <Field
           name={`${fieldPrefix}.zip`}
           validate={isOptional ? null : validation.isRequired}
@@ -88,17 +88,17 @@ const Address = ({
               meta={meta}
               label="Zip Code"
               styleName="zip"
-              dataTest="zip"
+              dataTest={`${fieldPrefix}.zip`}
               optionValue="answer"
               optionLabel="label"
               disabled={setDisabled}
               validate={isOptional ? null : validation.isRequired}
-              answers={listOfZipCodes}
+              answers={listOfZipCodes || []}
             />
           )}
         </Field>
       )}
-      {listOfZipCodes.length === 0 && (
+      {!listOfZipCodes && (
         <Field
           name={`${fieldPrefix}.zip`}
           validate={composeValidators([isRequired, validateZipCode])}

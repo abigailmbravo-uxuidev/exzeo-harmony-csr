@@ -36,7 +36,7 @@ const AddressGroup = ({
           <Address
             fieldPrefix={mailingAddressPrefix}
             listAnswersAsKey={listAnswersAsKey}
-            listOfZipCodes={[]}
+            listOfZipCodes={null}
           />
         </div>
       </div>

@@ -70,6 +70,7 @@ export async function fetchZipCodeSettings(zipCodePartial, state) {
       config,
       'fetchZipCodeSettings'
     );
+
     const result =
       response.data &&
       response.data.data &&
