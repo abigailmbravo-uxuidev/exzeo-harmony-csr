@@ -16,7 +16,7 @@ export const Contact = ({ showTitle, fieldPrefix }) => (
             <Input
               input={input}
               meta={meta}
-              dataTest={`${fieldPrefix}.title`}
+              dataTest={`title`}
               styleName="title"
               label="Title"
             />
@@ -30,7 +30,7 @@ export const Contact = ({ showTitle, fieldPrefix }) => (
             meta={meta}
             label="First Name"
             styleName="firstName"
-            dataTest={`${fieldPrefix}.firstName`}
+            dataTest={`firstName`}
             component={Input}
           />
         )}
@@ -42,7 +42,7 @@ export const Contact = ({ showTitle, fieldPrefix }) => (
             meta={meta}
             label="Last Name"
             styleName="lastName"
-            dataTest={`${fieldPrefix}.lastName`}
+            dataTest={`lastName`}
             component={Input}
           />
         )}
@@ -63,7 +63,7 @@ export const Contact = ({ showTitle, fieldPrefix }) => (
             label="Email Address"
             styleName=""
             name="emailAddress"
-            dataTest={`${fieldPrefix}.emailAddress`}
+            dataTest={`emailAddress`}
           />
         )}
       </Field>
@@ -77,7 +77,7 @@ export const Contact = ({ showTitle, fieldPrefix }) => (
             meta={meta}
             label="Phone Number"
             styleName=""
-            dataTest={`${fieldPrefix}.primaryPhoneNumber`}
+            dataTest={`primaryPhoneNumber`}
           />
         )}
       </Field>
@@ -88,7 +88,7 @@ export const Contact = ({ showTitle, fieldPrefix }) => (
             meta={meta}
             label="Phone Number Extension"
             styleName=""
-            dataTest={`${fieldPrefix}.primaryPhoneNumberExtension`}
+            dataTest={`primaryPhoneNumberExtension`}
           />
         )}
       </Field>
