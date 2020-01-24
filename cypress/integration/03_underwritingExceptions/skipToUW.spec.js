@@ -10,12 +10,12 @@ describe('Skip to UW Testing', () => {
   before('Login and get a quote', () => {
     cy.login();
     setRouteAliases();
-    navigateThroughNewQuote('HO3');
+    navigateThroughNewQuote();
   });
 
   it('Can fill out UW before Coverage', () => {
     // Fills out UW with good data
-    fillOutUnderwriting('HO3');
+    fillOutUnderwriting();
     fillOutCoverage().then(({ response: { body: { result } } }) =>
       expect(result.quoteState).to.equal('Quote Qualified')
     );
@@ -26,7 +26,7 @@ describe('Giving Bad UW Data First', () => {
   before('Login and get a quote', () => {
     cy.login();
     setRouteAliases();
-    navigateThroughNewQuote('HO3');
+    navigateThroughNewQuote();
   });
 
   it('Quote does not update to Quote Stopped after Bad UW and blank coverage', () => {

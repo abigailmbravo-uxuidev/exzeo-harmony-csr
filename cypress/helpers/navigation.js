@@ -15,13 +15,15 @@ import {
   coverageAF3
 } from '../fixtures';
 
-export const navigateThroughNewQuote = (product, address = user.address1) => {
-  let prod = product === 'AF3' ? 'AF3' : 'HO3';
+export const navigateThroughNewQuote = (
+  product = 'HO3',
+  address = user.address1
+) => {
   cy.task('log', 'Navigating through Quote')
     .findDataTag('searchType')
     .select('address')
     .findDataTag('product')
-    .select(prod)
+    .select(product)
     .findDataTag('address')
     .type(address)
     .clickSubmit()
@@ -47,52 +49,49 @@ export const fillOutCoverage = (customerInfo = pH1) =>
     .clickSubmit()
     .wait('@updateQuote');
 
-export const changeCoverageAndAgency = product => {
-  const coverageProd = product === 'AF3' ? coverageAF3 : coverageHO3;
+export const changeCoverageAndAgency = coverage => {
   cy.task('log', 'Changing coverege values')
     .goToNav('coverage')
-    .wait('@updateQuote')
-    .then(({ response }) => {
-      const premium = response.body.result.rating.totalPremium;
-      const agencyCode = response.body.result.agencyCode;
-
+    .get("[data-test*='Premium'] dd")
+    .then($prem => {
+      const premium = $prem
+        .text()
+        .split(' ')
+        .join('')
+        .split(',')
+        .join('');
       cy.get("div[data-test='agencyCode_wrapper'] input[id*='react-s']")
         .click({ force: true })
         .chooseReactSelectOption('agencyCode_wrapper', 20003)
         .get("div[data-test='agentCode_wrapper'] input[id*='react-s']")
         .click({ force: true })
         .chooseReactSelectOption('agentCode_wrapper', 60586)
-        .wrap(Object.entries(coverageProd))
+        .wrap(Object.entries(coverage))
         .each(([field, value]) => {
           cy.findDataTag(field).type(`{selectall}{backspace}${value}`, {
             force: true
           });
         });
-
       cy.clickSubmit()
-
         .wait('@updateQuote')
         .then(({ response }) => {
-          expect(response.body.result.rating.totalPremium).not.to.eq(premium);
-          expect(response.body.result.agencyCode).not.to.eq(agencyCode);
+          expect('$' + response.body.result.rating.totalPremium).not.to.eq(
+            premium
+          );
+          expect(response.body.result.agencyCode).to.eq(20003);
         });
     });
 };
 
-export const fillOutUnderwriting = product => {
-  const data =
-    product === 'AF3'
-      ? unQuestionsAF3
-      : product === 'HO3'
-      ? unQuestionsHO3
-      : unQuestionsBAD;
+export const fillOutUnderwriting = questions => {
   cy.task('log', 'Filling out Underwriting')
     .goToNav('underwriting')
-    .wrap(Object.entries(data))
+    .wrap(Object.entries(questions))
     .each(([name, value]) =>
       cy.findDataTag(`${name}_${value}`).click({ force: true })
     )
-    .clickSubmit();
+    .clickSubmit()
+    .wait('@updateQuote');
 };
 
 export const fillOutAdditionalInterests = (data = addInsured) =>

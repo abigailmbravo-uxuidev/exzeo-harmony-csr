@@ -23,20 +23,21 @@ import {
   applicationTest,
   afterDocuSignTest
 } from '../../pageTests';
+import { coverageHO3, unQuestionsHO3 } from '../../fixtures';
 
 describe('Base Path', () => {
   before('Login', () => cy.login());
   beforeEach('Set aliases', () => setRouteAliases());
 
   it('Navigate through base app', () => {
-    navigateThroughNewQuote('HO3');
+    navigateThroughNewQuote();
 
     fillOutCoverage();
     coverageRatingTest();
 
-    fillOutUnderwriting('HO3');
+    fillOutUnderwriting(unQuestionsHO3);
     underwritingTest();
-    changeCoverageAndAgency('HO3');
+    changeCoverageAndAgency(coverageHO3);
 
     fillOutAdditionalInterests();
     aiTest();

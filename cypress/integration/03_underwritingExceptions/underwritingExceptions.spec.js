@@ -2,7 +2,8 @@ import {
   setRouteAliases,
   navigateThroughNewQuote,
   fillOutCoverage,
-  fillOutUnderwriting
+  fillOutUnderwriting,
+  logOut
 } from '../../helpers';
 import { underwriting } from '../../fixtures';
 
@@ -25,7 +26,7 @@ describe('Underwriting Error Testing', () => {
       'Due to previous claims history, additional review is required.'
     );
     // Give good data.
-    fillOutUnderwriting('HO3');
+    fillOutUnderwriting();
     // Check that the error is gone.
     cy.get('section.msg-caution').should('not.exist');
   });

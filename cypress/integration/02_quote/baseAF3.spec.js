@@ -23,6 +23,7 @@ import {
   applicationTest,
   afterDocuSignTest
 } from '../../pageTests';
+import { coverageAF3, unQuestionsAF3 } from '../../fixtures';
 
 describe('Base Path', () => {
   before('Login', () => cy.login());
@@ -34,9 +35,9 @@ describe('Base Path', () => {
     fillOutCoverage();
     coverageRatingTest();
 
-    fillOutUnderwriting('AF3');
+    fillOutUnderwriting(unQuestionsAF3);
     underwritingTest();
-    changeCoverageAndAgency('AF3');
+    changeCoverageAndAgency(coverageAF3);
 
     fillOutAdditionalInterests();
     aiTest();
