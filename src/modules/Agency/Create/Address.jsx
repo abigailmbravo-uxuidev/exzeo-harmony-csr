@@ -28,7 +28,7 @@ const Address = ({
             label="Address 1"
             styleName="input"
             disabled={setDisabled}
-            dataTest={`${fieldPrefix}.address1`}
+            dataTest={`address1`}
           />
         )}
       </Field>
@@ -41,7 +41,7 @@ const Address = ({
             label="Address 2"
             styleName="input"
             disabled={setDisabled}
-            dataTest={`${fieldPrefix}.address2`}
+            dataTest={`address2`}
           />
         )}
       </Field>
@@ -54,7 +54,7 @@ const Address = ({
             label="City"
             styleName="input"
             disabled={setDisabled}
-            dataTest={`${fieldPrefix}.city`}
+            dataTest={`city`}
           />
         )}
       </Field>
@@ -72,7 +72,7 @@ const Address = ({
             styleName={'state'}
             answers={listAnswersAsKey.US_states}
             disabled={setDisabled}
-            dataTest={`${fieldPrefix}.state`}
+            dataTest={`state`}
           />
         )}
       </Field>
@@ -88,7 +88,7 @@ const Address = ({
               meta={meta}
               label="Zip Code"
               styleName="zip"
-              dataTest={`${fieldPrefix}.zip`}
+              dataTest={`zip`}
               optionValue="answer"
               optionLabel="label"
               disabled={setDisabled}
@@ -111,7 +111,7 @@ const Address = ({
               size="view-col-2"
               styleName="input"
               disabled={setDisabled}
-              dataTest={`${fieldPrefix}.zip`}
+              dataTest={`zip`}
             />
           )}
         </Field>

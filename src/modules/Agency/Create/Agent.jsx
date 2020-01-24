@@ -80,6 +80,17 @@ const Agent = ({ fieldPrefix }) => (
           />
         )}
       </Field>
+      <Field name={`${fieldPrefix}.primaryPhoneNumberExtension`}>
+        {({ input, meta }) => (
+          <Phone
+            input={input}
+            meta={meta}
+            label="Extension"
+            styleName="primaryPhoneNumberExtension"
+            dataTest="primaryPhoneNumberExtension"
+          />
+        )}
+      </Field>
       <Field
         name={`${fieldPrefix}.secondaryPhoneNumber`}
         validate={composeValidators([validation.isPhone])}

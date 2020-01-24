@@ -35,7 +35,7 @@ describe('Agency Management testing', () => {
     // sticky footer causes problems with that. https://github.com/cypress-io/cypress/issues/2037
     // Here we are overriding some styling to force the footer to the bottom of its container, keeping it out of the
     // way for testing purposes
-    cy.viewport(1375, 768);
+    cy.viewport(1375, 1375);
     // prettier-ignore
     cy.get('.route-content-wrapper').invoke('attr', 'style', 'overflow-y: auto');
     // prettier-ignore
@@ -89,12 +89,10 @@ describe('Agency Management testing', () => {
           .type(ADD_AGENCY.mailingAddress.zip);
       });
 
-    cy.findDataTag('agency-physical-address').within(() => {
-      cy.findDataTag('sameAsMailing')
-        .scrollIntoView()
-        .should('be.visible')
-        .click();
-    });
+    cy.findDataTag('physicalAddress.sameAsMailing')
+      .scrollIntoView()
+      .should('be.visible')
+      .click();
 
     cy.findDataTag('agency-principal')
       .scrollIntoView()
@@ -158,7 +156,7 @@ describe('Agency Management testing', () => {
             .findDataTag('zip')
             .type('33607', { force: true });
         })
-        .findDataTag('agentOfRecord.sameAsMailing')
+        .findDataTag('agentOfRecord.physicalAddress.sameAsMailing')
         .scrollIntoView()
         .should('be.visible')
         .click({ force: true })

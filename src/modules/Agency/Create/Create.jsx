@@ -10,7 +10,7 @@ import {
 import { Redirect } from 'react-router-dom';
 
 import ExistingAgentModal from './ExistingAgentModal';
-import License from '../components/License';
+import License from './License';
 import Agent from './Agent';
 import Contact from './Contact';
 import AgencyDetails from './AgencyDetails';
