@@ -63,7 +63,7 @@ export const detailsFields = [
   },
   {
     dataTest: 'eoExpirationDate',
-    type: 'text',
+    type: 'date',
     required: true,
     label: 'EO Expiration Date',
     value: '2019-07-01'
@@ -159,7 +159,7 @@ export const addressFields = [
     value: 'OH'
   },
   {
-    type: 'text',
+    type: 'typeahead',
     label: 'Zip Code',
     required: true,
     dataTest: 'physicalAddress.zip',
@@ -359,7 +359,7 @@ export const agentOfRecordFields = [
     value: 'FL'
   },
   {
-    type: 'text',
+    type: 'typeahead',
     label: 'Zip Code',
     required: true,
     dataTest: 'agentOfRecord.physicalAddress.zip',
