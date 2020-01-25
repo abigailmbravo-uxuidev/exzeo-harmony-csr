@@ -25,11 +25,13 @@ import {
 } from '../../pageTests';
 import { coverageAF3, unQuestionsAF3 } from '../../fixtures';
 
-describe('Base Path', () => {
+describe('Base Path - AF3', () => {
   before('Login', () => cy.login());
   beforeEach('Set aliases', () => setRouteAliases());
 
   it('Navigate through base app', () => {
+    cy.viewport(1375, 768);
+
     navigateThroughNewQuote('AF3');
 
     fillOutCoverage();

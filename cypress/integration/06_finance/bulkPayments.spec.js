@@ -9,6 +9,7 @@ describe('Bulk Payments Test', () => {
   it('Apply Payment', () => {
     createToBindQuote();
     cy.visit(`/`);
+    cy.viewport(1375, 768);
 
     cy.task('log', 'Test Bulk Payments Batch Form')
       .get('@boundQuote')

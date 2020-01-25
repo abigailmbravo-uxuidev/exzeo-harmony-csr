@@ -2,10 +2,9 @@ import {
   setRouteAliases,
   navigateThroughNewQuote,
   fillOutCoverage,
-  fillOutUnderwriting,
-  logOut
+  fillOutUnderwriting
 } from '../../helpers';
-import { underwriting } from '../../fixtures';
+import { unQuestionsBAD } from '../../fixtures';
 
 describe('Underwriting Error Testing', () => {
   before('Login and go to search', () => {
@@ -19,7 +18,7 @@ describe('Underwriting Error Testing', () => {
 
   it('Underwriting Error', () => {
     // Fill out underwriting with bad data.
-    fillOutUnderwriting('BAD');
+    fillOutUnderwriting(unQuestionsBAD);
     // Check for an error.
     cy.get('section.msg-caution .fa-ul li').should(
       'contain',
@@ -33,10 +32,13 @@ describe('Underwriting Error Testing', () => {
 
   it('Overwriting UW Exception', () => {
     // Fill out underwriting with bad data.
-    fillOutUnderwriting('BAD');
-    cy.wait('@updateQuote').then(({ response: { body: { result } } }) =>
-      expect(result.quoteState).to.equal('Quote Stopped')
-    );
+    fillOutUnderwriting(unQuestionsBAD);
+    cy.wait('@updateQuote').then(({ response }) => {
+      expect(response.body.result.quoteState).to.equal(
+        'Quote Stopped',
+        'Quote State'
+      );
+    });
 
     cy.get('section.msg-caution .fa-ul li label')
       .should('contain', 'Override')
@@ -46,20 +48,20 @@ describe('Underwriting Error Testing', () => {
       .get('.uw-validation-header button[type="submit"]')
       .click()
       .wait('@updateQuote')
-      .then(
-        ({
-          response: {
-            body: { result }
-          }
-        }) => {
-          // Confirm that there exists an overridden exception
-          expect(
-            result.underwritingExceptions.filter(({ overridden }) => overridden)
-              .length
-          ).to.equal(1);
-          // and that the quote is in a good state.
-          expect(result.quoteState).to.equal('Quote Qualified');
-        }
-      );
+      .then(({ response }) => {
+        // Confirm that there exists an overridden exception
+        const overriddenExceptions = response.body.result.underwritingExceptions.filter(
+          ({ overridden }) => overridden
+        );
+        expect(overriddenExceptions.length).to.equal(
+          1,
+          'Underwriting Exceptions count'
+        );
+        // and that the quote is in a good state.
+        expect(response.body.result.quoteState).to.equal(
+          'Quote Qualified',
+          'Quote State'
+        );
+      });
   });
 });

@@ -25,8 +25,9 @@ describe('Endorsements Happy Path', () => {
             $a.prop('onclick', () => cy.visit($a.prop('dataset').url)).click();
             cy.goToNav('endorsements');
 
+            cy.viewport(1375, 768);
+
             cy.task('log', 'Filling out Endorsements')
-              .viewport(1280, 720)
               .findDataTag('coverageLimits.dwelling.value')
               .type(`{selectall}{backspace}${400000}`)
               .findDataTag('coverageLimits.personalProperty.value')

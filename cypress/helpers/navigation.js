@@ -31,7 +31,7 @@ export const navigateThroughNewQuote = (
 
   // This makes it so we don't open up a new window
   cy.findDataTag(address).then($a => {
-    $a.prop('onСlick', () => cy.visit($a.prop('dataset').url)).click();
+    $a.prop('onclick', () => cy.visit($a.prop('dataset').url));
     cy.wait('@createQuote')
       .wait('@retrieveQuote')
       .wait('@getZipcodeSettings');
@@ -47,19 +47,20 @@ export const fillOutCoverage = (customerInfo = pH1) =>
       cy.findDataTag(field).type(`{selectall}{backspace}${value}`)
     )
     .clickSubmit()
-    .wait('@updateQuote');
+    .wait('@updateQuote')
+    .then(({ response }) => {
+      // TODO we need to assert something about this response, preferably the quoteInputState like we do in the other tests.
+      expect(response.body.status).to.equal(200);
+    });
 
-export const changeCoverageAndAgency = coverage => {
-  cy.task('log', 'Changing coverege values')
+export const changeCoverageAndAgency = (coverage = coverageHO3) => {
+  cy.task('log', 'Changing coverage values')
     .goToNav('coverage')
     .get("[data-test*='Premium'] dd")
     .then($prem => {
-      const premium = $prem
-        .text()
-        .split(' ')
-        .join('')
-        .split(',')
-        .join('');
+      // remove any commas or spaces
+      const premium = $prem.text().replace(/\D/g, '');
+
       cy.get("div[data-test='agencyCode_wrapper'] input[id*='react-s']")
         .click({ force: true })
         .chooseReactSelectOption('agencyCode_wrapper', 20003)
@@ -71,19 +72,19 @@ export const changeCoverageAndAgency = coverage => {
           cy.findDataTag(field).type(`{selectall}{backspace}${value}`, {
             force: true
           });
-        });
-      cy.clickSubmit()
-        .wait('@updateQuote')
-        .then(({ response }) => {
-          expect('$' + response.body.result.rating.totalPremium).not.to.eq(
-            premium
-          );
-          expect(response.body.result.agencyCode).to.eq(20003);
-        });
+        })
+        .clickSubmit();
+      cy.wait('@updateQuote').then(({ response }) => {
+        expect(response.body.result.rating.totalPremium).not.to.eq(
+          premium,
+          'Difference in premium'
+        );
+        expect(response.body.result.agencyCode).to.eq(20003, 'Agency Code');
+      });
     });
 };
 
-export const fillOutUnderwriting = questions => {
+export const fillOutUnderwriting = (questions = unQuestionsHO3) => {
   cy.task('log', 'Filling out Underwriting')
     .goToNav('underwriting')
     .wrap(Object.entries(questions))
@@ -91,10 +92,14 @@ export const fillOutUnderwriting = questions => {
       cy.findDataTag(`${name}_${value}`).click({ force: true })
     )
     .clickSubmit()
-    .wait('@updateQuote');
+    .wait('@updateQuote')
+    .then(({ response }) => {
+      // TODO we need to assert something about this response, preferably the quoteInputState like we do in the other tests.
+      expect(response.body.status).to.equal(200);
+    });
 };
 
-export const fillOutAdditionalInterests = (data = addInsured) =>
+export const fillOutAdditionalInterests = (additionalInterests = addInsured) =>
   cy
     .task('log', 'Filling out AIs')
     .goToNav('additionalInterests')
@@ -102,7 +107,7 @@ export const fillOutAdditionalInterests = (data = addInsured) =>
     .click({ force: true })
     .findDataTag('name1')
     .should('be.visible')
-    .wrap(Object.entries(data))
+    .wrap(Object.entries(additionalInterests))
     .each(([field, value]) =>
       cy
         .findDataTag(`${field}`)
@@ -122,7 +127,11 @@ export const fillOutMailingBilling = () =>
     .findDataTag('billPlan_Annual')
     .click({ force: true })
     .clickSubmit()
-    .wait('@updateQuote');
+    .wait('@updateQuote')
+    .then(({ response }) => {
+      // TODO we need to assert something about this response, preferably the quoteInputState like we do in the other tests.
+      expect(response.body.status).to.equal(200);
+    });
 
 export const fillOutNotesFiles = () =>
   cy.task('log', 'Filling out Notes and Files').goToNav('notes');
