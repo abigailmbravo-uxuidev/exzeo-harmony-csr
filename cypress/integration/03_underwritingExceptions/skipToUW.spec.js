@@ -24,7 +24,7 @@ describe('Skip to UW Testing', () => {
 
   it('Quote does not update to Quote Stopped after Bad UW and blank coverage', () => {
     // Fill out UW first with bad data
-    fillOutUnderwriting(unQuestionsBAD);
+    fillOutUnderwriting(unQuestionsBAD, 'Quote Stopped');
     // Confirm that the quote goes to quote stopped after coverage is filled out
     fillOutCoverage().then(({ response: { body: { result } } }) =>
       expect(result.quoteState).to.equal('Quote Stopped', 'Quote State')
