@@ -18,35 +18,25 @@ describe('Bulk Payments Test', () => {
           .click()
           .get('h3.title')
           .should('contain', 'Bulk Payments')
-
-          // .findAnyDataTag('startButton')
-          // .should('be.disabled')
-
           .findDataTag('cashDate')
           .type('2019-11-20')
           .findDataTag('batchNumber')
           .type('-99')
           .findDataTag('cashType')
           .select('Paper Deposit')
-
           .findDataTag('startButton')
-          .click({ force: true })
+          .click()
           .findDataTag('policyNumber')
           .type(`{selectall}{backspace}${quote.transaction.policyNumber}`)
           .blur()
           .wait('@fetchPolicy')
           .wait('@fetchSummaryLedger')
 
-          .get('#root')
-          .scrollTo('right')
           .findDataTag('amount')
-
           .type(`{selectall}{backspace}${100}`)
           .findDataTag('payment-form-submit')
-          .click({ force: true })
+          .click()
           .wait('@postPaymentTransaction')
-          .get('#root')
-          .scrollTo('left')
 
           .findDataTag('policyNumber')
           .type(`{selectall}{backspace}${quote.transaction.policyNumber}`)
@@ -54,20 +44,11 @@ describe('Bulk Payments Test', () => {
           .wait('@fetchPolicy')
           .wait('@fetchSummaryLedger')
 
-          .get('#root')
-          .scrollTo('right')
           .findDataTag('amount')
-
           .type(`{selectall}{backspace}${500}`)
           .findDataTag('payment-form-submit')
-          .click({ force: true })
+          .click()
           .wait('@postPaymentTransaction');
-
-        // .findDataTag('download-payments')
-        // .click({ force: true })
-
-        // .findDataTag('stopButton')
-        // .click({ force: true });
       });
   });
 });
