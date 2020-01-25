@@ -18,7 +18,7 @@ describe('Underwriting Error Testing', () => {
 
   it('Underwriting Error', () => {
     // Fill out underwriting with bad data.
-    fillOutUnderwriting(unQuestionsBAD);
+    fillOutUnderwriting(unQuestionsBAD, 'Quote Stopped');
     // Check for an error.
     cy.get('section.msg-caution .fa-ul li').should(
       'contain',
@@ -32,13 +32,7 @@ describe('Underwriting Error Testing', () => {
 
   it('Overwriting UW Exception', () => {
     // Fill out underwriting with bad data.
-    fillOutUnderwriting(unQuestionsBAD);
-    cy.wait('@updateQuote').then(({ response }) => {
-      expect(response.body.result.quoteState).to.equal(
-        'Quote Stopped',
-        'Quote State'
-      );
-    });
+    fillOutUnderwriting(unQuestionsBAD, 'Quote Stopped');
 
     cy.get('section.msg-caution .fa-ul li label')
       .should('contain', 'Override')

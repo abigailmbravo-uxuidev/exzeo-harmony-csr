@@ -84,7 +84,10 @@ export const changeCoverageAndAgency = (coverage = coverageHO3) => {
     });
 };
 
-export const fillOutUnderwriting = (questions = unQuestionsHO3) => {
+export const fillOutUnderwriting = (
+  questions = unQuestionsHO3,
+  expectedQuoteState = 'Quote Qualified'
+) => {
   cy.task('log', 'Filling out Underwriting')
     .goToNav('underwriting')
     .wrap(Object.entries(questions))
@@ -94,8 +97,10 @@ export const fillOutUnderwriting = (questions = unQuestionsHO3) => {
     .clickSubmit()
     .wait('@updateQuote')
     .then(({ response }) => {
-      // TODO we need to assert something about this response, preferably the quoteInputState like we do in the other tests.
-      expect(response.body.status).to.equal(200);
+      expect(response.body.result.quoteState).to.equal(
+        expectedQuoteState,
+        'Quote State'
+      );
     });
 };
 
