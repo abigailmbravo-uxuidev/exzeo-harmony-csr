@@ -847,13 +847,11 @@ describe('Agency Management testing', () => {
       .findDataTag('submit-button')
       .click();
 
-    const todaysDate = Cypress.moment().format('YYYY-MM-DD');
-
     cy.wait('@addNote').then(({ response }) => {
       expect(
         response.body.result.createdDate,
         'Notes / Files Page: Verify Adding a New Note: createdDate'
-      ).to.contain(todaysDate);
+      ).to.exist;
       expect(
         response.body.result.createdBy,
         'Notes / Files Page: Verify Adding a New Note: createdBy'
