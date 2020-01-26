@@ -31,13 +31,3 @@ describe('Skip to UW Testing', () => {
     );
   });
 });
-
-// describe('Giving Bad UW Data First', () => {
-//   before('Login and get a quote', () => {
-//     cy.login();
-//     setRouteAliases();
-//     navigateThroughNewQuote();
-//   });
-//
-//
-// });
