@@ -10,7 +10,6 @@ describe('Skip to UW Testing', () => {
   beforeEach('Login and get a quote', () => {
     cy.login();
     setRouteAliases();
-    cy.viewport(1375, 768);
     navigateThroughNewQuote();
   });
 

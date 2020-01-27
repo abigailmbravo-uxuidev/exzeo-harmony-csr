@@ -30,8 +30,6 @@ describe('Base Path - AF3', () => {
   beforeEach('Set aliases', () => setRouteAliases());
 
   it('Navigate through base app', () => {
-    cy.viewport(1375, 768);
-
     navigateThroughNewQuote('AF3');
 
     fillOutCoverage();

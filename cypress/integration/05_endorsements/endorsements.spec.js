@@ -30,7 +30,6 @@ describe('Endorsements Happy Path', () => {
         // sticky footer causes problems with that. https://github.com/cypress-io/cypress/issues/2037
         // Here we are overriding some styling to force the footer to the bottom of its container, keeping it out of the
         // way for testing purposes
-        cy.viewport(1375, 768);
         // prettier-ignore
         cy.get('.content-wrapper').invoke('attr', 'style', 'overflow-y: auto');
         // prettier-ignore

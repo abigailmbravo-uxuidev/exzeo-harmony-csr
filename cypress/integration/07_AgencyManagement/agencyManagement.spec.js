@@ -27,7 +27,7 @@ describe('Agency Management testing', () => {
     // This makes it so we don't open up a new window
     cy.findDataTag('add-agency-not-searched').within(() => {
       cy.get('a.btn-primary').then($a => {
-        $a.prop('onclick', () => cy.visit('/agency/new/0')).click();
+        $a.prop('onclick', () => cy.visit('/agency/new/0'));
       });
     });
 
@@ -35,7 +35,6 @@ describe('Agency Management testing', () => {
     // sticky footer causes problems with that. https://github.com/cypress-io/cypress/issues/2037
     // Here we are overriding some styling to force the footer to the bottom of its container, keeping it out of the
     // way for testing purposes
-    cy.viewport(1375, 768);
     // prettier-ignore
     cy.get('.route-content-wrapper').invoke('attr', 'style', 'overflow-y: auto');
     // prettier-ignore
