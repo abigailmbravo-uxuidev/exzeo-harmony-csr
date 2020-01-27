@@ -54,34 +54,33 @@ export const fillOutCoverage = (customerInfo = pH1) =>
     });
 
 export const changeCoverageAndAgency = (coverage = coverageHO3) => {
-  cy.task('log', 'Changing coverage values')
-    .goToNav('coverage')
-    .get("[data-test*='Premium'] dd")
-    .then($prem => {
-      // remove any commas or spaces
-      const premium = $prem.text().replace(/\D/g, '');
-
-      cy.get("div[data-test='agencyCode_wrapper'] input[id*='react-s']")
-        .click({ force: true })
-        .chooseReactSelectOption('agencyCode_wrapper', 20003)
-        .get("div[data-test='agentCode_wrapper'] input[id*='react-s']")
-        .click({ force: true })
-        .chooseReactSelectOption('agentCode_wrapper', 60586)
-        .wrap(Object.entries(coverage))
-        .each(([field, value]) => {
-          cy.findDataTag(field).type(`{selectall}{backspace}${value}`, {
-            force: true
-          });
-        })
-        .clickSubmit();
-      cy.wait('@updateQuote').then(({ response }) => {
-        expect(response.body.result.rating.totalPremium).not.to.eq(
-          premium,
-          'Difference in premium'
-        );
-        expect(response.body.result.agencyCode).to.eq(20003, 'Agency Code');
+  cy.task('log', 'Changing coverage values').goToNav('coverage');
+  // .get("[data-test*='Premium'] dd")
+  // .then($prem => {
+  //   // remove any commas or spaces
+  //   const premium = $prem.text().replace(/\D/g, '');
+  cy.get("div[data-test='agencyCode_wrapper'] input[id*='react-s']")
+    .click({ force: true })
+    .chooseReactSelectOption('agencyCode_wrapper', 20003)
+    .get("div[data-test='agentCode_wrapper'] input[id*='react-s']")
+    .click({ force: true })
+    .chooseReactSelectOption('agentCode_wrapper', 60586)
+    .wrap(Object.entries(coverage))
+    .each(([field, value]) => {
+      cy.findDataTag(field).type(`{selectall}{backspace}${value}`, {
+        force: true
       });
+    })
+    .clickSubmit();
+  cy.wait('@updateQuote').then(({ response }) => {
+    cy.get('@quoteAfterUnderwriting').then(quote => {
+      expect(response.body.result.rating.totalPremium).not.to.eq(
+        quote.rating.totalPremium,
+        'Difference in premium'
+      );
+      expect(response.body.result.agencyCode).to.eq(20003, 'Agency Code');
     });
+  });
 };
 
 export const fillOutUnderwriting = (
@@ -97,10 +96,10 @@ export const fillOutUnderwriting = (
     .clickSubmit()
     .wait('@updateQuote')
     .then(({ response }) => {
-      expect(response.body.result.quoteState).to.equal(
-        expectedQuoteState,
-        'Quote State'
-      );
+      const quote = response.body.result;
+      expect(quote.quoteState).to.equal(expectedQuoteState, 'Quote State');
+
+      cy.wrap(quote).as('quoteAfterUnderwriting');
     });
 };
 
