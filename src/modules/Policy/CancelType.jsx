@@ -19,10 +19,6 @@ const CancelType = ({ initialValues, options }) => {
     initialValues.summaryLedger.effectiveDate,
     options.zipCodeSettings
   );
-  const issueDate = date.convertDateToTimeZone(
-    initialValues.issueDate,
-    options.zipCodeSettings
-  );
 
   const effectiveDatePlus90 = effectiveDate.clone().add(90, 'd');
   const effectiveDatePlus20 = effectiveDate.clone().add(20, 'd');
@@ -82,6 +78,9 @@ const CancelType = ({ initialValues, options }) => {
                     : getMax(effectiveDatePlus20, currentDatePlus20);
 
                 onChange(uwEffectiveDate.format('YYYY-MM-DD'));
+
+                console.log(initialValues.summaryLedger.effectiveDate);
+                console.log(initialValues.effectiveDate);
               } else if (value === VOLUNTARY_CANCELLATION) {
                 onChange(notice.format('YYYY-MM-DD'));
               } else if (value === UNDERWRITING_NON_RENEWAL) {
