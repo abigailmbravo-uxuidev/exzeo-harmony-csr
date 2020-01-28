@@ -76,14 +76,6 @@ const TerritoryManager = ({
           </React.Fragment>
         )}
       </Field>
-      <OnChangeListener name={`${fieldPrefix}.state`}>
-        {value => {
-          if (value) {
-            //console.log(value, _get(values, `${fieldPrefix}.zip`, ''));
-          } else {
-          }
-        }}
-      </OnChangeListener>
     </React.Fragment>
   );
 };
