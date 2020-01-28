@@ -20,8 +20,10 @@ const CancelType = ({ initialValues, options }) => {
     options.zipCodeSettings
   );
 
-  const effectiveDatePlus90 = effectiveDate.clone().add(90, 'd');
   const effectiveDatePlus20 = effectiveDate.clone().add(20, 'd');
+  const effectiveDatePlus45 = effectiveDate.clone().add(45, 'd');
+  const effectiveDatePlus90 = effectiveDate.clone().add(90, 'd');
+
   const currentDatePlus20 = now.clone().add(20, 'd');
   const currentDatePlus45 = now.clone().add(45, 'd');
 
@@ -74,13 +76,10 @@ const CancelType = ({ initialValues, options }) => {
                     ? now.clone().add(120, 'd')
                     : product === 'AF3' &&
                       now.isSameOrBefore(effectiveDatePlus90)
-                    ? getMax(effectiveDate, currentDatePlus45)
+                    ? getMax(effectiveDatePlus45, currentDatePlus45)
                     : getMax(effectiveDatePlus20, currentDatePlus20);
 
                 onChange(uwEffectiveDate.format('YYYY-MM-DD'));
-
-                console.log(initialValues.summaryLedger.effectiveDate);
-                console.log(initialValues.effectiveDate);
               } else if (value === VOLUNTARY_CANCELLATION) {
                 onChange(notice.format('YYYY-MM-DD'));
               } else if (value === UNDERWRITING_NON_RENEWAL) {
