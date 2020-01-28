@@ -49,7 +49,7 @@ const AddressGroup = ({
               component="input"
               id={`${physicalAddressPrefix}.sameAsMailing`}
               type="checkbox"
-              data-test={`${physicalAddressPrefix}.sameAsMailing`}
+              data-test="sameAsMailing"
             />
             <label htmlFor={`${physicalAddressPrefix}.sameAsMailing`}>
               Same as Mailing Address

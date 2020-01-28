@@ -89,10 +89,12 @@ describe('Agency Management testing', () => {
           .type(ADD_AGENCY.mailingAddress.zip);
       });
 
-    cy.findDataTag('physicalAddress.sameAsMailing')
+    cy.findDataTag('agency-physical-address')
       .scrollIntoView()
       .should('be.visible')
-      .click();
+      .within(() => {
+        cy.findDataTag('sameAsMailing').click({ force: true });
+      });
 
     cy.findDataTag('agency-principal')
       .scrollIntoView()
@@ -155,12 +157,16 @@ describe('Agency Management testing', () => {
             .select('FL')
             .findDataTag('zip')
             .type('33607', { force: true });
-        })
-        .findDataTag('agentOfRecord.physicalAddress.sameAsMailing')
+        });
+
+      cy.findDataTag('aor-physical-address')
         .scrollIntoView()
         .should('be.visible')
-        .click({ force: true })
-        .findDataTag('agentOfRecord.licenses[0].licenseNumber_label')
+        .within(() => {
+          cy.findDataTag('sameAsMailing').click({ force: true });
+        });
+
+      cy.findDataTag('agentOfRecord.licenses[0].licenseNumber_label')
         .scrollIntoView()
         .should('be.visible')
         .findDataTag('agentOfRecord.licenses[0].state')
