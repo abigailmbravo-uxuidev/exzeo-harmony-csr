@@ -19,18 +19,24 @@ const CancelType = ({ initialValues, options }) => {
     initialValues.summaryLedger.effectiveDate,
     options.zipCodeSettings
   );
+  const issueDate = date.convertDateToTimeZone(
+    initialValues.issueDate,
+    options.zipCodeSettings
+  );
 
   const effectiveDatePlus90 = effectiveDate.clone().add(90, 'd');
   const effectiveDatePlus20 = effectiveDate.clone().add(20, 'd');
   const currentDatePlus20 = now.clone().add(20, 'd');
   const currentDatePlus45 = now.clone().add(45, 'd');
+  const issueDatePlus90 = issueDate.clone().add(45, 'd');
 
   const notice = effectiveDate.isAfter(now) ? effectiveDate : now;
   const endDate = date.convertDateToTimeZone(
     initialValues.endDate,
     options.zipCodeSettings
   );
-  const getMax = (a, b) => (a >= b ? a : b);
+
+  const getMax = (a, b) => (a.isAfter(b) ? a : b);
 
   const { product, policyTerm } = initialValues;
 
@@ -69,12 +75,14 @@ const CancelType = ({ initialValues, options }) => {
             {function(value) {
               if (value === UNDERWRITING_CANCELLATION) {
                 const uwEffectiveDate =
-                  policyTerm > 1 || now > effectiveDatePlus90
+                  policyTerm > 1 || now.isAfter(effectiveDatePlus90)
                     ? now.clone().add(120, 'd')
-                    : product === 'AF3'
+                    : product === 'AF3' && now.isSameOrBefore(issueDatePlus90)
                     ? getMax(effectiveDate, currentDatePlus45)
                     : getMax(effectiveDatePlus20, currentDatePlus20);
 
+                console.log(currentDatePlus45.clone().format('YYYY-MM-DD'));
+                console.log(effectiveDate.clone().format('YYYY-MM-DD'));
                 onChange(uwEffectiveDate.format('YYYY-MM-DD'));
               } else if (value === VOLUNTARY_CANCELLATION) {
                 onChange(notice.format('YYYY-MM-DD'));
