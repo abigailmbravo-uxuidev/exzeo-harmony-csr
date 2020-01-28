@@ -40,8 +40,7 @@ export class Create extends Component {
     });
   };
 
-  handleResetForm = form => {
-    form.reset();
+  handleResetForm = () => {
     window.close();
   };
 
@@ -199,7 +198,7 @@ export class Create extends Component {
                   <Button
                     className={Button.constants.classNames.secondary}
                     data-test="resetButton"
-                    onClick={() => this.handleResetForm(form)}
+                    onClick={this.handleResetForm}
                   >
                     Cancel
                   </Button>
