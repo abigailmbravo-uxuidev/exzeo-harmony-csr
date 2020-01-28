@@ -81,8 +81,6 @@ const CancelType = ({ initialValues, options }) => {
                     ? getMax(effectiveDate, currentDatePlus45)
                     : getMax(effectiveDatePlus20, currentDatePlus20);
 
-                console.log(currentDatePlus45.clone().format('YYYY-MM-DD'));
-                console.log(effectiveDate.clone().format('YYYY-MM-DD'));
                 onChange(uwEffectiveDate.format('YYYY-MM-DD'));
               } else if (value === VOLUNTARY_CANCELLATION) {
                 onChange(notice.format('YYYY-MM-DD'));
