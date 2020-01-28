@@ -28,7 +28,6 @@ const CancelType = ({ initialValues, options }) => {
   const effectiveDatePlus20 = effectiveDate.clone().add(20, 'd');
   const currentDatePlus20 = now.clone().add(20, 'd');
   const currentDatePlus45 = now.clone().add(45, 'd');
-  const issueDatePlus90 = issueDate.clone().add(45, 'd');
 
   const notice = effectiveDate.isAfter(now) ? effectiveDate : now;
   const endDate = date.convertDateToTimeZone(
@@ -77,7 +76,8 @@ const CancelType = ({ initialValues, options }) => {
                 const uwEffectiveDate =
                   policyTerm > 1 || now.isAfter(effectiveDatePlus90)
                     ? now.clone().add(120, 'd')
-                    : product === 'AF3' && now.isSameOrBefore(issueDatePlus90)
+                    : product === 'AF3' &&
+                      now.isSameOrBefore(effectiveDatePlus90)
                     ? getMax(effectiveDate, currentDatePlus45)
                     : getMax(effectiveDatePlus20, currentDatePlus20);
 
