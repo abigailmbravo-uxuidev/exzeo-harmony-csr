@@ -22,7 +22,7 @@ export class Create extends Component {
     formInstance: null,
     showAddExistingAgentModal: false
   };
-  createAgency = async (data, dispatch, props) => {
+  createAgency = async data => {
     data.agentOfRecord.status = 'Active';
     data.mailingAddress.country = {
       code: 'USA',
@@ -48,7 +48,7 @@ export class Create extends Component {
   // TODO : Move to utilities
   applyOrphanedAgent = data => {
     const { orphans } = this.props;
-    const { getState, change } = this.state.formInstance;
+    const { change } = this.state.formInstance;
 
     const { selectedAgentCode } = data;
     const selectedAgent = orphans.filter(
