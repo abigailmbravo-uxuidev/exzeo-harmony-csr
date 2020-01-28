@@ -155,9 +155,6 @@ const AgencyDetails = ({ agencyCodeDisabled }) => {
             label="EO Expiration Date"
             dataTest="eoExpirationDate"
             styleName="eoExpirationDate"
-            // format={value =>
-            // !value ? '' : date.formattedDate(value, 'YYYY-MM-DD')
-            // }
           />
         )}
       </Field>

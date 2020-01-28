@@ -49,7 +49,6 @@ export const ExistingAgentModal = ({
                           component={SelectTypeAhead}
                           validate={validation.isRequired}
                           answers={listOfAgents}
-                          // disabled={sectionDisabled}
                         />
                       )}
                     </Field>

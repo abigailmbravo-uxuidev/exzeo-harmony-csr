@@ -3,7 +3,7 @@ import { Input, Select, validation, Field } from '@exzeo/core-ui';
 
 import { LICENSE_TYPE } from '../../../constants/agency';
 
-const License = ({ fields, isAgency, stateAnswers }) => {
+const License = ({ fields, stateAnswers }) => {
   return (
     <React.Fragment>
       {fields.map((license, index) => (
