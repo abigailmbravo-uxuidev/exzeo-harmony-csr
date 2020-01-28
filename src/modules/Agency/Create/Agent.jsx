@@ -82,7 +82,7 @@ const Agent = ({ fieldPrefix }) => (
       </Field>
       <Field name={`${fieldPrefix}.primaryPhoneNumberExtension`}>
         {({ input, meta }) => (
-          <Phone
+          <Input
             input={input}
             meta={meta}
             label="Extension"
