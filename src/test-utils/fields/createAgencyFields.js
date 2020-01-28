@@ -100,78 +100,35 @@ export const addressFields = [
     type: 'text',
     required: true,
     label: 'Address 1',
-    dataTest: 'mailingAddress.address1',
+    dataTest: 'address1',
     value: '123 Maple ST'
   },
   {
     type: 'text',
     label: 'Address 2',
-    dataTest: 'mailingAddress.address2',
+    dataTest: 'address2',
     value: 'APT # 1234'
   },
   {
     type: 'text',
     label: 'City',
     required: true,
-    dataTest: 'mailingAddress.city',
+    dataTest: 'city',
     value: 'Tampa'
   },
   {
     type: 'select',
     label: 'State',
     required: true,
-
-    dataTest: 'mailingAddress.state',
+    dataTest: 'state',
     value: 'FL'
   },
   {
     type: 'text',
     label: 'Zip Code',
     required: true,
-    dataTest: 'mailingAddress.zip',
+    dataTest: 'zip',
     value: '33626'
-  },
-  {
-    type: 'text',
-    required: true,
-    label: 'Address 1',
-    dataTest: 'physicalAddress.address1',
-    value: '123 Main ST'
-  },
-  {
-    type: 'text',
-    label: 'Address 2',
-    dataTest: 'physicalAddress.address2',
-    value: 'APT # 456'
-  },
-  {
-    type: 'text',
-    label: 'City',
-    required: true,
-    dataTest: 'physicalAddress.city',
-    value: 'Miami'
-  },
-  {
-    type: 'select',
-    label: 'State',
-    required: true,
-    dataTest: 'physicalAddress.state',
-    value: 'OH'
-  },
-  {
-    type: 'typeahead',
-    label: 'Zip Code',
-    required: true,
-    dataTest: 'physicalAddress.zip',
-    value: '22222'
-  },
-  {
-    type: 'text',
-    label: 'County',
-    required: true,
-
-    dataTest: 'physicalAddress.county',
-    value: 'HILLSBOROUGH'
   }
 ];
 
@@ -179,73 +136,40 @@ export const contactFields = [
   {
     type: 'text',
     label: 'Title',
-    dataTest: 'contact.title',
+    dataTest: 'title',
     value: 'Mr.'
   },
   {
     type: 'text',
     required: true,
     label: 'First Name',
-    dataTest: 'contact.firstName',
+    dataTest: 'firstName',
     value: 'First'
   },
   {
     type: 'text',
     required: true,
     label: 'Last Name',
-    dataTest: 'contact.lastName',
+    dataTest: 'lastName',
     value: 'Last'
   },
   {
     type: 'text',
     required: true,
     label: 'Email Address',
-    dataTest: 'contact.emailAddress',
+    dataTest: 'emailAddress',
     value: 'exzeo@exzeo.com'
   },
   {
     type: 'text',
-    label: 'Phone Number',
-    dataTest: 'contact.primaryPhoneNumber',
+    label: 'Phone 1',
+    dataTest: 'primaryPhoneNumber',
     value: '(999) 888-1231'
   },
   {
     type: 'text',
     label: 'Phone Number Extension',
-    dataTest: 'contact.primaryPhoneNumberExtension',
-    value: '444'
-  },
-  {
-    type: 'text',
-    required: true,
-    label: 'First Name',
-    dataTest: 'principal.firstName',
-    value: 'First'
-  },
-  {
-    type: 'text',
-    required: true,
-    label: 'Last Name',
-    dataTest: 'principal.lastName',
-    value: 'Last'
-  },
-  {
-    type: 'text',
-    required: true,
-    label: 'Email Address',
-    dataTest: 'principal.emailAddress',
-    value: 'exzeo@exzeo.com'
-  },
-  {
-    type: 'text',
-    label: 'Phone Number',
-    dataTest: 'principal.primaryPhoneNumber',
-    value: '(999) 888-1231'
-  },
-  {
-    type: 'text',
-    label: 'Phone Number Extension',
-    dataTest: 'principal.primaryPhoneNumberExtension',
+    dataTest: 'primaryPhoneNumberExtension',
     value: '444'
   }
 ];
@@ -295,75 +219,6 @@ export const agentOfRecordFields = [
     type: 'text',
     label: 'Fax',
     value: '(543) 543-5345'
-  },
-  {
-    type: 'text',
-    required: true,
-    label: 'Address 1',
-    dataTest: 'agentOfRecord.mailingAddress.address1',
-    value: '123 Maple ST'
-  },
-  {
-    type: 'text',
-    label: 'Address 2',
-    dataTest: 'agentOfRecord.mailingAddress.address2',
-    value: 'APT # 1234'
-  },
-  {
-    type: 'text',
-    label: 'City',
-    required: true,
-    dataTest: 'agentOfRecord.mailingAddress.city',
-    value: 'Tampa'
-  },
-  {
-    type: 'select',
-    label: 'State',
-    required: true,
-
-    dataTest: 'agentOfRecord.mailingAddress.state',
-    value: 'FL'
-  },
-  {
-    type: 'text',
-    label: 'Zip Code',
-    required: true,
-    dataTest: 'agentOfRecord.mailingAddress.zip',
-    value: '33626'
-  },
-  {
-    type: 'text',
-    required: true,
-    label: 'Address 1',
-    dataTest: 'agentOfRecord.physicalAddress.address1',
-    value: '123 Maple ST'
-  },
-  {
-    type: 'text',
-    label: 'Address 2',
-    dataTest: 'agentOfRecord.physicalAddress.address2',
-    value: 'APT # 1234'
-  },
-  {
-    type: 'text',
-    label: 'City',
-    required: true,
-    dataTest: 'agentOfRecord.physicalAddress.city',
-    value: 'Tampa'
-  },
-  {
-    type: 'select',
-    label: 'State',
-    required: true,
-    dataTest: 'agentOfRecord.physicalAddress.state',
-    value: 'FL'
-  },
-  {
-    type: 'typeahead',
-    label: 'Zip Code',
-    required: true,
-    dataTest: 'agentOfRecord.physicalAddress.zip',
-    value: '33626'
   }
 ];
 
