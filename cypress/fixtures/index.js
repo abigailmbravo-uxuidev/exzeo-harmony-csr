@@ -1,10 +1,9 @@
-export { aiOptions } from './additionalInterest';
-export { addInsured } from './addInsured';
+export { aiOptions, addInsured } from './additionalInterest';
 export * from './agencyManagement';
 export { coverageHO3, coverageAF3 } from './coveragevalues';
-export { default as login } from './login';
-export { default as pH1 } from './pH1';
+export { login } from './login';
+export { pH1 } from './pH1';
 export { baseQuote, baseQuoteResponse } from './quote';
-export { default as shareQuote } from './sharequote';
+export { shareQuote } from './sharequote';
 export { unQuestionsAF3, unQuestionsHO3, unQuestionsBAD } from './underwriting';
-export { default as user } from './user';
+export { user } from './user';

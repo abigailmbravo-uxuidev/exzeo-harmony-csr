@@ -1,4 +1,4 @@
-export default {
+export const ph1 = {
   'policyHolders[0].firstName': 'Oberyn',
   'policyHolders[0].lastName': 'Martell',
   'policyHolders[0].primaryPhoneNumber': '123 456 7890',

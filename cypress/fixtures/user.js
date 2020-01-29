@@ -1,4 +1,4 @@
-export default {
+export const user = {
   address1: '4131 TEST ADDRESS',
   address2: '',
   city: 'SARASOTA',

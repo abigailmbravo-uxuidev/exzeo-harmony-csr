@@ -53,6 +53,7 @@ export const ADD_AGENCY = {
   branches: [],
   agentOfRecord: '90057'
 };
+
 export const ADD_AGENT = {
   status: 'Active',
   licenses: [
@@ -100,6 +101,7 @@ export const ADD_AGENT = {
   ],
   primaryPhoneNumberExtension: '1111'
 };
+
 export const ADD_LICENSE = {
   licenses: [
     {
@@ -110,6 +112,7 @@ export const ADD_LICENSE = {
     }
   ]
 };
+
 export const ADD_CONTRACT = {
   contracts: [
     {
@@ -129,6 +132,7 @@ export const ADD_CONTRACT = {
     }
   ]
 };
+
 export const EDIT_LICENSE = {
   licenses: [
     {
@@ -139,6 +143,7 @@ export const EDIT_LICENSE = {
     }
   ]
 };
+
 export const EDIT_CONTRACT = {
   contracts: [
     {
@@ -158,6 +163,7 @@ export const EDIT_CONTRACT = {
     }
   ]
 };
+
 export const EDIT_AGENCY = {
   status: 'Active',
   okToPay: true,
@@ -175,6 +181,7 @@ export const EDIT_AGENCY = {
   branches: [], ////shouldn't we have the branch name here?
   agentOfRecord: null ////is this supposed to be null????
 };
+
 export const EDIT_AGENCY_ADDRESS = {
   mailingAddress: {
     address1: 'Test Mailing Address 1 Updated',
@@ -197,6 +204,7 @@ export const EDIT_AGENCY_ADDRESS = {
   },
   territoryManagerId: '5b7db9f6ff54fd6a5c619eec'
 };
+
 export const EDIT_OFFICER = {
   principal: {
     firstName: 'Cypress2',
@@ -206,6 +214,7 @@ export const EDIT_OFFICER = {
     primaryPhoneNumberExtension: '5555'
   }
 };
+
 export const EDIT_CONTACT = {
   contact: {
     title: 'Jr.',
@@ -216,6 +225,7 @@ export const EDIT_CONTACT = {
     primaryPhoneNumberExtension: '9999'
   }
 };
+
 export const EDIT_AGENT = {
   status: 'Active',
   licenses: [
@@ -260,6 +270,7 @@ export const EDIT_AGENT = {
   ],
   primaryPhoneNumberExtension: '1111'
 };
+
 export const ADD_ANOTHER_AGENT = {
   status: 'Service Only',
   agencies: [
@@ -308,6 +319,7 @@ export const ADD_ANOTHER_AGENT = {
     zip: '33624'
   }
 };
+
 export const ADD_NOTE = {
   noteType: 'Agency Note',
   noteContent: 'This is a note content for Other Contact',
