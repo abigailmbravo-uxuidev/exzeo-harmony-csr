@@ -26,12 +26,9 @@ const AddressGroup = ({
   const { territoryManagers } = useFetchTerritoryManagers(stateValue);
 
   return (
-    <section
-      data-test={`${dataTest}-address-section`}
-      className={'agency-address'}
-    >
+    <React.Fragment>
       <div className="agency-mailing-address">
-        <div data-test={`${dataTest}-mailing-address`}>
+        <div data-test="agency-mailing-address">
           <h4>Mailing Address</h4>
           <Address
             fieldPrefix={mailingAddressPrefix}
@@ -41,7 +38,7 @@ const AddressGroup = ({
         </div>
       </div>
       <div className="agency-physical-address">
-        <div data-test={`${dataTest}-physical-address`}>
+        <div data-test="agency-physical-address">
           <h4>
             Physical Address
             <Field
@@ -115,7 +112,7 @@ const AddressGroup = ({
           )}
         </div>
       </div>
-    </section>
+    </React.Fragment>
   );
 };
 

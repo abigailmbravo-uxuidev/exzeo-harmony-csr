@@ -120,18 +120,22 @@ export class Create extends Component {
                         <AgencyDetails />
                       </section>
                       <h3>Address</h3>
-                      <FormSpy subscription={{ values: true }}>
-                        {({ values: formValues }) => (
-                          <AddressGroup
-                            dataTest="agency"
-                            mailingAddressPrefix="mailingAddress"
-                            physicalAddressPrefix="physicalAddress"
-                            showTerritoryManager
-                            formValues={formValues}
-                            listAnswersAsKey={listAnswersAsKey}
-                          />
-                        )}
-                      </FormSpy>
+                      <section
+                        data-test="agency-address-section"
+                        className="agency-address"
+                      >
+                        <FormSpy subscription={{ values: true }}>
+                          {({ values: formValues }) => (
+                            <AddressGroup
+                              mailingAddressPrefix="mailingAddress"
+                              physicalAddressPrefix="physicalAddress"
+                              showTerritoryManager
+                              formValues={formValues}
+                              listAnswersAsKey={listAnswersAsKey}
+                            />
+                          )}
+                        </FormSpy>
+                      </section>
                       <h3>Officer</h3>
                       <section
                         className="agency-principal"
@@ -165,18 +169,22 @@ export class Create extends Component {
                       >
                         <div className="agent-of-record">
                           <Agent fieldPrefix="agentOfRecord" />
-                          <FormSpy subscription={{ values: true }}>
-                            {({ values: formValues }) => (
-                              <AddressGroup
-                                dataTest="aor"
-                                mailingAddressPrefix="agentOfRecord.mailingAddress"
-                                physicalAddressPrefix="agentOfRecord.physicalAddress"
-                                listOfZipCodes={listOfZipCodes}
-                                formValues={formValues}
-                                listAnswersAsKey={listAnswersAsKey}
-                              />
-                            )}
-                          </FormSpy>
+                          <section
+                            data-test="aor-address-section"
+                            className="agency-address"
+                          >
+                            <FormSpy subscription={{ values: true }}>
+                              {({ values: formValues }) => (
+                                <AddressGroup
+                                  mailingAddressPrefix="agentOfRecord.mailingAddress"
+                                  physicalAddressPrefix="agentOfRecord.physicalAddress"
+                                  listOfZipCodes={listOfZipCodes}
+                                  formValues={formValues}
+                                  listAnswersAsKey={listAnswersAsKey}
+                                />
+                              )}
+                            </FormSpy>
+                          </section>
                         </div>
                         <div className="agency-license">
                           <FieldArray

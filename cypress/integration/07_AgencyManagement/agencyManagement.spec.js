@@ -73,28 +73,30 @@ describe('Agency Management testing', () => {
         .type(ADD_AGENCY.customerServiceEmailAddress);
     });
 
-    cy.findDataTag('agency-mailing-address')
-      .scrollIntoView()
-      .should('be.visible')
-      .within(() => {
-        cy.findDataTag('address1')
-          .type(ADD_AGENCY.mailingAddress.address1)
-          .findDataTag('address2')
-          .type(ADD_AGENCY.mailingAddress.address2)
-          .findDataTag('city')
-          .type(ADD_AGENCY.mailingAddress.city)
-          .findDataTag('state')
-          .select(ADD_AGENCY.mailingAddress.state)
-          .findDataTag('zip')
-          .type(ADD_AGENCY.mailingAddress.zip);
-      });
+    cy.findDataTag('agency-address-section').within(() => {
+      cy.findDataTag('agency-mailing-address')
+        .scrollIntoView()
+        .should('be.visible')
+        .within(() => {
+          cy.findDataTag('address1')
+            .type(ADD_AGENCY.mailingAddress.address1)
+            .findDataTag('address2')
+            .type(ADD_AGENCY.mailingAddress.address2)
+            .findDataTag('city')
+            .type(ADD_AGENCY.mailingAddress.city)
+            .findDataTag('state')
+            .select(ADD_AGENCY.mailingAddress.state)
+            .findDataTag('zip')
+            .type(ADD_AGENCY.mailingAddress.zip);
+        });
 
-    cy.findDataTag('agency-physical-address')
-      .scrollIntoView()
-      .should('be.visible')
-      .within(() => {
-        cy.findDataTag('sameAsMailing').click({ force: true });
-      });
+      cy.findDataTag('agency-physical-address')
+        .scrollIntoView()
+        .should('be.visible')
+        .within(() => {
+          cy.findDataTag('sameAsMailing').click({ force: true });
+        });
+    });
 
     cy.findDataTag('agency-principal')
       .scrollIntoView()
@@ -145,7 +147,7 @@ describe('Agency Management testing', () => {
         .type('4445556667', { force: true })
         .findDataTag('faxNumber')
         .type('4445556668', { force: true })
-        .findDataTag('aor-mailing-address')
+        .findDataTag('agency-mailing-address')
         .within(() => {
           cy.findDataTag('address1')
             .type('Test AOR Mailing Address 1')
@@ -159,7 +161,7 @@ describe('Agency Management testing', () => {
             .type('33607', { force: true });
         });
 
-      cy.findDataTag('aor-physical-address')
+      cy.findDataTag('agency-physical-address')
         .scrollIntoView()
         .should('be.visible')
         .within(() => {
