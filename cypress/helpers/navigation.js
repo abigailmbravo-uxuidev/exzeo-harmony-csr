@@ -14,27 +14,30 @@ export const navigateThroughNewQuote = (
   product = 'HO3',
   address = user.address1
 ) => {
-  cy.task('log', 'Navigating through Quote')
-    .findDataTag('searchType')
-    .select('address')
-    .findDataTag('product')
-    .select(product)
-    .findDataTag('address')
-    .type(address)
-    .clickSubmit()
-    .wait('@fetchAddresses');
-
-  // This makes it so we don't open up a new window
-  cy.findDataTag(address).then($a => {
-    $a.prop('onclick', () => cy.visit($a.prop('dataset').url));
-    cy.wait('@createQuote')
-      .wait('@retrieveQuote')
-      .wait('@getZipcodeSettings');
-  });
+  return (
+    cy
+      .task('log', 'Navigating through Quote')
+      .findDataTag('searchType')
+      .select('address')
+      .findDataTag('product')
+      .select(product)
+      .findDataTag('address')
+      .type(address)
+      .clickSubmit()
+      .wait('@fetchAddresses')
+      // This makes it so we don't open up a new window
+      .findDataTag(address)
+      .then($a => {
+        $a.prop('onclick', () => cy.visit($a.prop('dataset').url));
+        cy.wait('@createQuote')
+          .wait('@retrieveQuote')
+          .wait('@getZipcodeSettings');
+      })
+  );
 };
 
-export const fillOutCoverage = (customerInfo = pH1) =>
-  cy
+export const fillOutCoverage = (customerInfo = pH1) => {
+  return cy
     .task('log', 'Filling out Coverage')
     .goToNav('coverage')
     .wrap(Object.entries(customerInfo))
@@ -47,9 +50,11 @@ export const fillOutCoverage = (customerInfo = pH1) =>
       // TODO we need to assert something about this response, preferably the quoteInputState like we do in the other tests.
       expect(response.body.status).to.equal(200);
     });
+};
 
 export const changeCoverageAndAgency = (coverage = coverageHO3) => {
-  cy.task('log', 'Changing coverage values')
+  return cy
+    .task('log', 'Changing coverage values')
     .goToNav('coverage')
     .get("[data-test*='Premium'] dd")
     .then($prem => {
@@ -83,7 +88,8 @@ export const fillOutUnderwriting = (
   questions = unQuestionsHO3,
   expectedQuoteState = 'Quote Qualified'
 ) => {
-  cy.task('log', 'Filling out Underwriting')
+  return cy
+    .task('log', 'Filling out Underwriting')
     .goToNav('underwriting')
     .wait('@getUnderwritingQuestions')
     .then(({ response }) => {
@@ -106,8 +112,10 @@ export const fillOutUnderwriting = (
     });
 };
 
-export const fillOutAdditionalInterests = (additionalInterests = addInsured) =>
-  cy
+export const fillOutAdditionalInterests = (
+  additionalInterests = addInsured
+) => {
+  return cy
     .task('log', 'Filling out AIs')
     .goToNav('additionalInterests')
     .findDataTag('additionalInsured')
@@ -128,6 +136,7 @@ export const fillOutAdditionalInterests = (additionalInterests = addInsured) =>
       expect(response.body.result.additionalInterests[0].name1).to.eq('BATMAN');
       expect(response.body.result.additionalInterests[0].name2).to.eq('ROBIN');
     });
+};
 
 export const fillOutMailingBilling = () =>
   cy
@@ -146,14 +155,16 @@ export const fillOutMailingBilling = () =>
       expect(response.body.status).to.equal(200);
     });
 
-export const fillOutNotesFiles = () =>
-  cy.task('log', 'Filling out Notes and Files').goToNav('notes');
+export const fillOutNotesFiles = () => {
+  return cy.task('log', 'Filling out Notes and Files').goToNav('notes');
+};
 
-export const fillOutSummary = () =>
-  cy.task('log', 'Filling out Summary').goToNav('summary');
+export const fillOutSummary = () => {
+  return cy.task('log', 'Filling out Summary').goToNav('summary');
+};
 
-export const sendQuote = (data = shareQuote) =>
-  cy
+export const sendQuote = (data = shareQuote) => {
+  return cy
     .wrap(Object.entries(data))
     .each(([field, value]) => {
       cy.findDataTag(field).type(`{selectall}{backspace}${value}`, {
@@ -166,13 +177,14 @@ export const sendQuote = (data = shareQuote) =>
     .then(({ response }) => {
       expect(response.body.message).to.equal('success');
     });
+};
 
-export const fillOutApplication = () =>
-  cy.task('log', 'Filling out Application Page').goToNav('application');
+export const fillOutApplication = () => {
+  return cy.task('log', 'Filling out Application Page').goToNav('application');
+};
 
-export const navigateThroughDocusign = () =>
-  cy
-    .task('log', "Navigating through 'Send to Docusign'")
+export const navigateThroughDocusign = () => {
+  cy.task('log', "Navigating through 'Send to Docusign'")
     .clickSubmit('body', 'send-application')
     .wait('@verifyQuote')
     .then(({ response }) => {
@@ -202,3 +214,4 @@ export const navigateThroughDocusign = () =>
         expect(response.body.result.envelopeId).to.not.be.empty;
       });
     });
+};
