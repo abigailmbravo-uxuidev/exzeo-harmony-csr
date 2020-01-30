@@ -613,24 +613,25 @@ export async function fetchCancelOptions() {
 
 /**
  *
- * @param agencyCode
- * @param state
- * @param product
- * @param agentCode
- * @param policyNumber
+ * @param fields
+ * @param fields.agencyCode
+ * @param fields.state
+ * @param fields.product
+ * @param fields.agentCode
+ * @param fields.policyNumber
  * @returns {Promise<{}>}
  */
-export async function fetchPoliciesForAgency({
-  agencyCode = '',
-  state = 'FL',
-  product = 'HO3',
-  agentCode = '',
-  policyNumber = ''
-}) {
+export async function fetchPoliciesForAgency(fields) {
+  const query = encodeURI(
+    Object.keys(fields)
+      .map(key => `${key}=${fields[key]}`)
+      .join('&')
+  );
+
   const config = {
     service: 'policy-data',
     method: 'GET',
-    path: `/transactions?&companyCode=TTIC&state=${state}&product=${product}&agencyCode=${agencyCode}&agentCode=${agentCode}&policyNumber=${policyNumber}`
+    path: `/transactions?&companyCode=TTIC&${query}`
   };
 
   try {
@@ -660,15 +661,16 @@ export function getPoliciesForAgency({
   product,
   agentCode
 }) {
+  const queryFields = {
+    ...(policyNumber && { policyNumber }),
+    ...(agencyCode && { agencyCode }),
+    ...(product && { product }),
+    ...(agentCode && { agentCode }),
+    ...(state && { state })
+  };
   return async dispatch => {
     try {
-      const results = await fetchPoliciesForAgency({
-        policyNumber,
-        state,
-        product,
-        agentCode,
-        agencyCode
-      });
+      const results = await fetchPoliciesForAgency(queryFields);
       dispatch(setPoliciesForAgency(results.policies));
     } catch (error) {
       dispatch(errorActions.setAppError(error));
