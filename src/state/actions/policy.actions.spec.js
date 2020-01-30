@@ -360,7 +360,7 @@ describe('Policy State Actions', () => {
     it('should call dispatch on getCancelOptions', async () => {
       httpStub
         .onCall(0)
-        .returns(Promise.resolve({ data: { result: { policyNumber: '23' } } }));
+        .returns(Promise.resolve({ data: { result: [{ value: [] }] } }));
 
       await store.dispatch(policyStateActions.getCancelOptions({}));
       sinon.assert.calledOnce(serviceRunner.callService);
