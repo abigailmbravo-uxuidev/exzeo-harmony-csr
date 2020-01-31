@@ -594,20 +594,11 @@ export async function postUpdatedBillPlan(paymentPlan) {
 
 /**
  *
-<<<<<<< HEAD
- * @param {Object} options
- * @param {number} options.companyCode
- * @param {string} options.state
- * @param {string} options.product
- * @param {string} options.effectiveDate
- * @returns {Promise<Array>}
-=======
  * @param data
  * @param data.transactionType
  * @param data.cancelDate
  * @param data.cancelReason
  * @returns {Promise<{}>}
->>>>>>> Update JSDocs.
  */
 export async function cancelPolicy(data) {
   const config = {
