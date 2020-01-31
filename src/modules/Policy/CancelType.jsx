@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import {
   Field,
   OnChangeListener,
@@ -91,6 +92,11 @@ const CancelType = ({ initialValues, options }) => {
       </Field>
     </React.Fragment>
   );
+};
+
+CancelType.propTypes = {
+  initialValues: PropTypes.object.isRequired,
+  options: PropTypes.object.isRequired
 };
 
 export default CancelType;
