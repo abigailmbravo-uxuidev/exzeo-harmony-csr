@@ -41,6 +41,7 @@ describe('BulkPayments testing', () => {
     expect(getByLabelText('Cash Date').value).toBe(today.format('YYYY-MM-DD'));
     expect(getByLabelText('Batch Number').value).toBe(initialBatchNumber);
     expect(getByLabelText('Cash Type'));
+    expect(getByLabelText('Payment Description'));
     expect(getByText(/start/i)).toBeDisabled();
     expect(getByText(/stop/i)).toBeDisabled();
 
@@ -83,6 +84,11 @@ describe('BulkPayments testing', () => {
     fireEvent.change(await getByLabelText('Cash Type'), {
       target: { value: 'Paper Deposit' }
     });
+
+    fireEvent.change(await getByLabelText('Payment Description'), {
+      target: { value: 'Payment Transfer' }
+    });
+
     fireEvent.change(getByLabelText('Batch Number'), {
       target: { value: `${initialBatchNumber}99` }
     });
@@ -129,6 +135,11 @@ describe('BulkPayments testing', () => {
     fireEvent.change(await getByLabelText('Cash Type'), {
       target: { value: 'Paper Deposit' }
     });
+
+    fireEvent.change(await getByLabelText('Payment Description'), {
+      target: { value: 'Payment Transfer' }
+    });
+
     fireEvent.change(getByLabelText('Batch Number'), {
       target: { value: `${initialBatchNumber}99` }
     });
@@ -215,6 +226,11 @@ describe('BulkPayments testing', () => {
     fireEvent.change(await getByLabelText('Cash Type'), {
       target: { value: 'Paper Deposit' }
     });
+
+    fireEvent.change(await getByLabelText('Payment Description'), {
+      target: { value: 'Payment Transfer' }
+    });
+
     fireEvent.change(getByLabelText('Batch Number'), {
       target: { value: `${initialBatchNumber}99` }
     });

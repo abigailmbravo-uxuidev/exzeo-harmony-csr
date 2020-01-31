@@ -3,12 +3,14 @@ import {
   navigateThroughNewQuote,
   fillOutCoverage,
   fillOutUnderwriting,
+  changeCoverageAndAgency,
   fillOutAdditionalInterests,
   fillOutMailingBilling,
   fillOutNotesFiles,
   fillOutSummary,
   fillOutApplication,
-  navigateThroughDocusign
+  navigateThroughDocusign,
+  sendQuote
 } from '../../helpers';
 import {
   coverageRatingTest,
@@ -20,19 +22,21 @@ import {
   applicationTest,
   afterDocuSignTest
 } from '../../pageTests';
+import { coverageAF3, unQuestionsAF3 } from '../../fixtures';
 
-describe('Base Path', () => {
+describe('Base Path - AF3', () => {
   before('Login', () => cy.login());
   beforeEach('Set aliases', () => setRouteAliases());
 
-  it('Navigate through base app', () => {
-    navigateThroughNewQuote();
+  it('Navigate through Quote Workflow', () => {
+    navigateThroughNewQuote('AF3');
 
     fillOutCoverage();
     coverageRatingTest();
 
-    fillOutUnderwriting();
+    fillOutUnderwriting(unQuestionsAF3);
     underwritingTest();
+    changeCoverageAndAgency(coverageAF3);
 
     fillOutAdditionalInterests();
     aiTest();
@@ -45,18 +49,12 @@ describe('Base Path', () => {
 
     fillOutSummary();
     quoteSummaryTest();
+    sendQuote();
 
     fillOutApplication();
     applicationTest();
 
-    if (Cypress.env('CI')) {
-      cy.task(
-        'log',
-        "CI is set to true - not testing for 'Application Sent DocuSign'"
-      );
-    } else {
-      navigateThroughDocusign();
-      afterDocuSignTest();
-    }
+    navigateThroughDocusign();
+    afterDocuSignTest();
   });
 });

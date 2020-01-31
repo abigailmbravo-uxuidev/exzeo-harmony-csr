@@ -59,7 +59,7 @@ const PaymentList = ({ batch, batchResults }) => {
       </div>
       <div className="form-group">
         <label>Payment Description</label>
-        <span>Payment Received</span>
+        <span>{batch.values.description}</span>
       </div>
       <div className="payment-table">
         <div className="table-header">
