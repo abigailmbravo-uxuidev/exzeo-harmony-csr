@@ -1,6 +1,5 @@
 import React from 'react';
 import { OnChangeListener, Field, useField } from '@exzeo/core-ui';
-import _get from 'lodash/get';
 import { setTerritoryManager, setCounty } from './utilities';
 
 const TerritoryManager = ({
