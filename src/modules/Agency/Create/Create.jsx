@@ -115,17 +115,12 @@ export const Create = ({
                       data-test="agency-address-section"
                       className="agency-address"
                     >
-                      <FormSpy subscription={{ values: true }}>
-                        {({ values: formValues }) => (
-                          <AddressGroup
-                            mailingAddressPrefix="mailingAddress"
-                            physicalAddressPrefix="physicalAddress"
-                            showTerritoryManager
-                            formValues={formValues}
-                            listAnswersAsKey={listAnswersAsKey}
-                          />
-                        )}
-                      </FormSpy>
+                      <AddressGroup
+                        mailingAddressPrefix="mailingAddress"
+                        physicalAddressPrefix="physicalAddress"
+                        showTerritoryManager
+                        listAnswersAsKey={listAnswersAsKey}
+                      />
                     </section>
                     <h3>Officer</h3>
                     <section
@@ -159,17 +154,12 @@ export const Create = ({
                           data-test="aor-address-section"
                           className="agency-address"
                         >
-                          <FormSpy subscription={{ values: true }}>
-                            {({ values: formValues }) => (
-                              <AddressGroup
-                                mailingAddressPrefix="agentOfRecord.mailingAddress"
-                                physicalAddressPrefix="agentOfRecord.physicalAddress"
-                                listOfZipCodes={listOfZipCodes}
-                                formValues={formValues}
-                                listAnswersAsKey={listAnswersAsKey}
-                              />
-                            )}
-                          </FormSpy>
+                          <AddressGroup
+                            mailingAddressPrefix="agentOfRecord.mailingAddress"
+                            physicalAddressPrefix="agentOfRecord.physicalAddress"
+                            listOfZipCodes={listOfZipCodes}
+                            listAnswersAsKey={listAnswersAsKey}
+                          />
                         </section>
                       </div>
                       <div className="agency-license">

@@ -1,5 +1,5 @@
 import React from 'react';
-import { OnChangeListener, Field } from '@exzeo/core-ui';
+import { OnChangeListener, Field, useField } from '@exzeo/core-ui';
 import _get from 'lodash/get';
 import { setTerritoryManager, setCounty } from './utilities';
 
@@ -7,10 +7,10 @@ const TerritoryManager = ({
   watchField,
   fieldPrefix,
   matchPrefix,
-  values,
   zipCodeSettings,
   territoryManagers
 }) => {
+  const zipCodeValue = useField(`${matchPrefix}.zip`).input.value;
   return (
     <React.Fragment>
       <Field name="territoryManagerId" subscription={{}}>
@@ -20,7 +20,7 @@ const TerritoryManager = ({
               {value => {
                 if (value) {
                   setTerritoryManager(
-                    _get(values, `${matchPrefix}.zip`, ''),
+                    zipCodeValue,
                     zipCodeSettings,
                     onChange,
                     territoryManagers
@@ -53,12 +53,7 @@ const TerritoryManager = ({
             <OnChangeListener name={watchField}>
               {value => {
                 if (value) {
-                  setCounty(
-                    _get(values, `${matchPrefix}.zip`, ''),
-                    zipCodeSettings,
-                    onChange,
-                    'county'
-                  );
+                  setCounty(zipCodeValue, zipCodeSettings, onChange, 'county');
                 } else {
                   onChange('');
                 }

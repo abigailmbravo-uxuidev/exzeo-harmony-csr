@@ -1,81 +1,32 @@
-import React from 'react';
-import { OnChangeListener, Field } from '@exzeo/core-ui';
+import React, { useEffect } from 'react';
+import { useField, useForm } from '@exzeo/core-ui';
 import _get from 'lodash/get';
 
-const AddressWatcher = ({ watchField, fieldPrefix, matchPrefix, values }) => {
-  return (
-    <React.Fragment>
-      <Field name={`${fieldPrefix}.address1`} subscription={{}}>
-        {({ input: { onChange } }) => (
-          <OnChangeListener name={watchField}>
-            {value => {
-              if (value) {
-                onChange(_get(values, `${matchPrefix}.address1`, ''));
-              } else {
-                onChange('');
-              }
-            }}
-          </OnChangeListener>
-        )}
-      </Field>
+const AddressWatcher = ({ watchField, fieldPrefix, matchPrefix }) => {
+  const fieldsToUpdate = ['address1', 'address2', 'city', 'state', 'zip'];
+  const watchedField = useField(watchField);
+  const formApi = useForm();
 
-      <Field name={`${fieldPrefix}.address2`} subscription={{}}>
-        {({ input: { onChange } }) => (
-          <OnChangeListener name={watchField}>
-            {value => {
-              if (value) {
-                onChange(_get(values, `${matchPrefix}.address2`, ''));
-              } else {
-                onChange('');
-              }
-            }}
-          </OnChangeListener>
-        )}
-      </Field>
+  useEffect(() => {
+    const batchChange = [];
 
-      <Field name={`${fieldPrefix}.city`} subscription={{}}>
-        {({ input: { onChange } }) => (
-          <OnChangeListener name={watchField}>
-            {value => {
-              if (value) {
-                onChange(_get(values, `${matchPrefix}.city`, ''));
-              } else {
-                onChange('');
-              }
-            }}
-          </OnChangeListener>
-        )}
-      </Field>
+    fieldsToUpdate.forEach(fieldName => {
+      const values = formApi.getState().values;
+      batchChange.push({
+        field: `${fieldPrefix}.${fieldName}`,
+        value: _get(values, `${matchPrefix}.${fieldName}`, '')
+      });
+    });
 
-      <Field name={`${fieldPrefix}.state`} subscription={{}}>
-        {({ input: { onChange } }) => (
-          <OnChangeListener name={watchField}>
-            {value => {
-              if (value) {
-                onChange(_get(values, `${matchPrefix}.state`, ''));
-              } else {
-                onChange('');
-              }
-            }}
-          </OnChangeListener>
-        )}
-      </Field>
+    formApi.batch(() => {
+      batchChange.forEach(item => {
+        formApi.change(item.field, item.value);
+      });
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [watchedField.input.value]);
 
-      <Field name={`${fieldPrefix}.zip`} subscription={{}}>
-        {({ input: { onChange } }) => (
-          <OnChangeListener name={watchField}>
-            {value => {
-              if (value) {
-                onChange(_get(values, `${matchPrefix}.zip`, ''));
-              } else {
-                onChange('');
-              }
-            }}
-          </OnChangeListener>
-        )}
-      </Field>
-    </React.Fragment>
-  );
+  return <React.Fragment />;
 };
 
 export default AddressWatcher;

@@ -1,6 +1,12 @@
 import React from 'react';
 import _get from 'lodash/get';
-import { Field, Input, validation, SelectTypeAhead } from '@exzeo/core-ui';
+import {
+  Field,
+  Input,
+  validation,
+  SelectTypeAhead,
+  useField
+} from '@exzeo/core-ui';
 import Address from './Address';
 import AddressWatcher from './AddressWatcher';
 import TerritoryManagerWatcher from './TerritoryManagerWatcher';
@@ -8,20 +14,16 @@ import { useFetchZipCodeSettings, useFetchTerritoryManagers } from './hooks';
 import { listOfZipCodes } from './utilities';
 
 const AddressGroup = ({
-  dataTest,
   mailingAddressPrefix,
   physicalAddressPrefix,
   showTerritoryManager,
-  formValues,
   listAnswersAsKey
 }) => {
-  const disabledValue = _get(
-    formValues,
-    `${physicalAddressPrefix}.sameAsMailing`,
-    false
-  );
+  const disabledValue =
+    useField(`${physicalAddressPrefix}.sameAsMailing`).input.value || false;
+  const stateValue =
+    useField(`${physicalAddressPrefix}.state`).input.value || 'FL';
 
-  const stateValue = _get(formValues, `${physicalAddressPrefix}.state`, 'FL');
   const { zipCodeSettings } = useFetchZipCodeSettings(stateValue);
   const { territoryManagers } = useFetchTerritoryManagers(stateValue);
 
@@ -63,7 +65,6 @@ const AddressGroup = ({
             fieldPrefix={physicalAddressPrefix}
             matchPrefix={mailingAddressPrefix}
             watchField={`${physicalAddressPrefix}.sameAsMailing`}
-            values={formValues}
           />
 
           {showTerritoryManager && (
@@ -104,7 +105,7 @@ const AddressGroup = ({
                 fieldPrefix={physicalAddressPrefix}
                 matchPrefix={mailingAddressPrefix}
                 watchField={`${physicalAddressPrefix}.sameAsMailing`}
-                values={formValues}
+                values={{}}
                 zipCodeSettings={zipCodeSettings}
                 territoryManagers={territoryManagers}
               />
