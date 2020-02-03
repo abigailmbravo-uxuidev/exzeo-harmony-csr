@@ -8,7 +8,7 @@ import { render, fireEvent } from 'react-testing-library';
 
 import rootReducer from '../state/reducers';
 
-import { quote } from '../test-utils';
+import { quote, mockPolicy as policy } from '../test-utils';
 
 const mockStore = configureStore([thunk]);
 
@@ -28,7 +28,12 @@ export const defaultInitialState = {
   error: {},
   form: {},
   policyState: {
-    policy: {}
+    policy: {
+      policyID: 'test'
+    },
+    summaryLedger: {
+      _id: 'test'
+    }
   },
   quoteState: {},
   ui: { isLoading: false },
@@ -50,13 +55,35 @@ export const defaultQuoteWorkflowProps = {
   history: { replace: x => x },
   location: { pathname: '' },
   isLoading: false,
-  quote: quote,
+  quote,
   retrieveQuote: jestResolve(),
   verifyQuote: jestResolve(),
   setAppError: () => {},
   getZipCodeSettings: jestResolve(),
   getEnumsForQuoteWorkflow: () => {},
   updateQuote: jestResolve(),
+  fetchNotes: jestResolve(),
+  toggleDiary: () => {},
+  fetchDiaries: jestResolve(),
+  diaries: [],
+  notes: [],
+  options: {
+    agents: [],
+    mortgagee: [],
+    order: [],
+    uiQuestions: {}
+  }
+};
+
+export const defaultPolicyWorkflowProps = {
+  history: { replace: x => x },
+  location: { pathname: '' },
+  isLoading: false,
+  policy,
+  initializePolicyWorkflow: jestResolve(policy),
+  getEnumsForPolicyWorkflow: jestResolve(),
+  getPaymentHistory: jestResolve(),
+  setAppError: () => {},
   fetchNotes: jestResolve(),
   toggleDiary: () => {},
   fetchDiaries: jestResolve(),

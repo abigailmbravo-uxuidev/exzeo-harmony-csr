@@ -1459,5 +1459,6 @@ export const mockCancelledPolicy = {
   cancel: {
     equityDate: '10/03/2019',
     effectiveDate: '2019-10-03'
-  }
+  },
+  editingDisabled: false
 };
