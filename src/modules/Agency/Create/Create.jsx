@@ -54,30 +54,32 @@ export const Create = ({
 
   // TODO : Move to utilities
   const applyOrphanedAgent = data => {
-    const { change } = formInstance;
+    const { change, batch } = formInstance;
 
     const { selectedAgentCode } = data;
     const selectedAgent = orphans.filter(
       a => String(a.agentCode) === String(selectedAgentCode)
     )[0];
 
-    change('agentOfRecord.firstName', selectedAgent.firstName);
-    change('agentOfRecord.lastName', selectedAgent.lastName);
-    change(
-      'agentOfRecord.primaryPhoneNumber',
-      selectedAgent.primaryPhoneNumber
-    );
-    change(
-      'agentOfRecord.primaryPhoneNumberExtension',
-      selectedAgent.primaryPhoneNumberExtension
-    );
-    change(
-      'agentOfRecord.secondaryPhoneNumber',
-      selectedAgent.secondaryPhoneNumber
-    );
-    change('agentOfRecord.faxNumber', selectedAgent.faxNumber);
-    change('agentOfRecord.emailAddress', selectedAgent.emailAddress);
-    change('agentOfRecord.agentCode', selectedAgent.agentCode);
+    batch(() => {
+      change('agentOfRecord.firstName', selectedAgent.firstName);
+      change('agentOfRecord.lastName', selectedAgent.lastName);
+      change(
+        'agentOfRecord.primaryPhoneNumber',
+        selectedAgent.primaryPhoneNumber
+      );
+      change(
+        'agentOfRecord.primaryPhoneNumberExtension',
+        selectedAgent.primaryPhoneNumberExtension
+      );
+      change(
+        'agentOfRecord.secondaryPhoneNumber',
+        selectedAgent.secondaryPhoneNumber
+      );
+      change('agentOfRecord.faxNumber', selectedAgent.faxNumber);
+      change('agentOfRecord.emailAddress', selectedAgent.emailAddress);
+      change('agentOfRecord.agentCode', selectedAgent.agentCode);
+    });
 
     handleToggleExistingAgentModal();
   };
