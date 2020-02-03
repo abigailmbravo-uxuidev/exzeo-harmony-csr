@@ -14,8 +14,8 @@ import License from './License';
 import Agent from './Agent';
 import Contact from './Contact';
 import AgencyDetails from './AgencyDetails';
-import Footer from '../../../components/Common/Footer';
 import AddressGroup from './AddressGroup';
+import { AppFooter } from '@exzeo/core-ui/src/@Harmony';
 
 export class Create extends Component {
   state = {
@@ -88,7 +88,6 @@ export class Create extends Component {
     return (
       <div className="route-content-wrapper">
         <Form
-          id="DiaryModal"
           keepDirtyOnReinitialize
           initialValues={initialValues}
           onSubmit={this.createAgency}
@@ -201,7 +200,7 @@ export class Create extends Component {
                 </div>
               </div>
               <div className="basic-footer btn-footer">
-                <Footer />
+                <AppFooter />
                 <div className="btn-wrapper">
                   <Button
                     className={Button.constants.classNames.secondary}
