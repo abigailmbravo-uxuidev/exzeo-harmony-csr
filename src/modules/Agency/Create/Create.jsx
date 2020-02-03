@@ -85,6 +85,11 @@ export class Create extends Component {
       listOfZipCodes
     } = this.props;
 
+    if (agency && agency.agencyCode && agency.agencyCode !== 'new')
+      return (
+        <Redirect replace to={`/agency/${agency.agencyCode}/0/contracts`} />
+      );
+
     return (
       <div className="route-content-wrapper">
         <Form
@@ -103,14 +108,6 @@ export class Create extends Component {
                 <div className="scroll">
                   <div className="form-group survey-wrapper" role="group">
                     <form id="createAgency" onSubmit={handleSubmit}>
-                      {agency &&
-                        agency.agencyCode &&
-                        agency.agencyCode !== 'new' && (
-                          <Redirect
-                            replace
-                            to={`/agency/${agency.agencyCode}/0/contracts`}
-                          />
-                        )}
                       <h3>Details</h3>
                       <section
                         className="agency-details"
