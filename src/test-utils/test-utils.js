@@ -23,7 +23,10 @@ export const defaultInitialState = {
     results: []
   },
   service: {
-    agencies: []
+    agencies: [],
+    zipCodeSettings: {
+      timezone: 'America/New_York'
+    }
   },
   error: {},
   form: {},
@@ -89,11 +92,9 @@ export const defaultPolicyWorkflowProps = {
   fetchDiaries: jestResolve(),
   diaries: [],
   notes: [],
-  options: {
-    agents: [],
-    mortgagee: [],
-    order: [],
-    uiQuestions: {}
+  initialized: true,
+  zipCodeSettings: {
+    timezone: 'America/New_York'
   }
 };
 

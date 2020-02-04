@@ -348,7 +348,7 @@ export class PolicyWorkflow extends React.Component {
       transferAOR: this.props.transferAOR,
       updateBillPlan: this.props.updateBillPlan
     };
-    console.log('initialized:', initialized);
+
     return (
       <div className="app-wrapper csr policy">
         {(isLoading || !policy.policyNumber) && <Loader />}
@@ -507,6 +507,7 @@ export class PolicyWorkflow extends React.Component {
 }
 
 const mapStateToProps = state => {
+  console.log(state);
   return {
     cancelOptions: state.policyState.cancelOptions,
     diaries: getDiariesForTable(state),
