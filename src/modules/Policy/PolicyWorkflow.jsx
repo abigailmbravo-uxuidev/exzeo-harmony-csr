@@ -507,7 +507,6 @@ export class PolicyWorkflow extends React.Component {
 }
 
 const mapStateToProps = state => {
-  console.log(state);
   return {
     cancelOptions: state.policyState.cancelOptions,
     diaries: getDiariesForTable(state),
