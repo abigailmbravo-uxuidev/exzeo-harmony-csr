@@ -139,8 +139,8 @@ describe('CancelType Testing', () => {
       expect(getByLabelText('Effective Date').value).toBe(inputValue);
     });
 
-    it('AF3, Term 1, Today’s Date > first 90 days of the Policy Effective Date', async () => {
-      const effectiveDate = now.clone().subtract(30, 'd');
+    it('AF3, Term 1, Today’s Date > than Policy Effective Date and less than 90', async () => {
+      const effectiveDate = now.clone().subtract(70, 'd');
       props.policy.product = 'AF3';
       props.policy.policyTerm = 1;
       props.policy.summaryLedger.effectiveDate = effectiveDate.format(
@@ -151,6 +151,28 @@ describe('CancelType Testing', () => {
       const inputValue = now
         .clone()
         .add(45, 'd')
+        .format('YYYY-MM-DD');
+
+      const { getByText, getByLabelText } = renderWithForm(
+        <PolicyWorkflow {...props} />
+      );
+
+      fireEvent.click(getByText('Underwriting Cancellation'));
+      expect(getByLabelText('Effective Date').value).toBe(inputValue);
+    });
+
+    it('AF3, Term 1, Today’s Date > first 90 days of the Policy Effective Date', async () => {
+      const effectiveDate = now.clone().subtract(100, 'd');
+      props.policy.product = 'AF3';
+      props.policy.policyTerm = 1;
+      props.policy.summaryLedger.effectiveDate = effectiveDate.format(
+        'YYYY-MM-DD'
+      );
+
+      //Expect Cancel Date to be today + 120
+      const inputValue = now
+        .clone()
+        .add(120, 'd')
         .format('YYYY-MM-DD');
 
       const { getByText, getByLabelText } = renderWithForm(
