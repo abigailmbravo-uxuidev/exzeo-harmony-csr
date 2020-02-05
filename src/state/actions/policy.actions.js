@@ -841,6 +841,7 @@ export function updatePolicy({ data = {}, options = {} }) {
             options.zipCodeSettings.timezone
           ),
           cancelReason: data.cancel.cancelReason,
+          additionalReason: data.cancel.additionalReason,
           transactionType: `Pending ${data.cancel.cancelType}`,
           equityDate: date.formatToUTC(
             date.formatDate(data.cancel.equityDate, date.FORMATS.SECONDARY),
