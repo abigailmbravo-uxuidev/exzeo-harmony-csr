@@ -1039,6 +1039,7 @@ const mock = {
               dependencies: [],
               data: {
                 component: 'date',
+                value: '1/22/2021',
                 label: 'Effective Date',
                 size: '2',
                 extendedProperties: {},
