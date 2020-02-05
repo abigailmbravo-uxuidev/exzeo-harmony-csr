@@ -71,14 +71,15 @@
       "src/**/*.{js,jsx}",
       "!src/index.js",
       "!src/routes.js",
-      "!src/modules/Policy/index.js",
-      "!src/components/Authentication.jsx",
+      "!src/state/reducers/initialState.js",
       "!src/setupTests.js",
+      "!src/test-utils/**/*",
+      "!src/components/Authentication.jsx",
       "!src/Auth.js"
     ],
     "coverageThreshold": {
       "global": {
-        "statements": 60
+        "statements": 49
       }
     }
   },
