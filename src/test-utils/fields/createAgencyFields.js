@@ -90,7 +90,7 @@ export const detailsFields = [
   {
     dataTest: 'csrEmail',
     type: 'email',
-    label: 'Email Address',
+    label: 'CSR Contact Email Address',
     value: 'batman@exzeo.com'
   }
 ];
@@ -162,7 +162,43 @@ export const contactFields = [
   },
   {
     type: 'text',
-    label: 'Phone 1',
+    label: 'Phone Number',
+    dataTest: 'primaryPhoneNumber',
+    value: '(999) 888-1231'
+  },
+  {
+    type: 'text',
+    label: 'Phone Number Extension',
+    dataTest: 'primaryPhoneNumberExtension',
+    value: '444'
+  }
+];
+
+export const principalFields = [
+  {
+    type: 'text',
+    required: true,
+    label: 'First Name',
+    dataTest: 'firstName',
+    value: 'First'
+  },
+  {
+    type: 'text',
+    required: true,
+    label: 'Last Name',
+    dataTest: 'lastName',
+    value: 'Last'
+  },
+  {
+    type: 'text',
+    required: true,
+    label: 'Email Address',
+    dataTest: 'emailAddress',
+    value: 'exzeo@exzeo.com'
+  },
+  {
+    type: 'text',
+    label: 'Phone Number',
     dataTest: 'primaryPhoneNumber',
     value: '(999) 888-1231'
   },
