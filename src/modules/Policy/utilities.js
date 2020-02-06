@@ -1,6 +1,6 @@
 import * as serviceRunner from '@exzeo/core-ui/src/@Harmony/Domain/Api/serviceRunner';
 import _cloneDeep from 'lodash/cloneDeep';
-import { date } from '@exzeo/core-ui/src';
+import { date, format } from '@exzeo/core-ui/src';
 /**
  *
  * @param values
@@ -37,6 +37,13 @@ export function formatEndorsementData(data, timezone) {
     timezone
   );
 
+  calculatedData.policyHolders[0].firstName = format.trimWhiteSpace(
+    calculatedData.policyHolders[0].firstName
+  );
+  calculatedData.policyHolders[0].lastName = format.trimWhiteSpace(
+    calculatedData.policyHolders[0].lastName
+  );
+
   // ensure that the second policyholder is removed if there is no data entered
   if (
     calculatedData.policyHolders.length > 1 &&
@@ -53,6 +60,12 @@ export function formatEndorsementData(data, timezone) {
     const entityType = calculatedData.policyHolders[1].entityType;
     calculatedData.policyHolders[1].order = order || 1;
     calculatedData.policyHolders[1].entityType = entityType || 'Person';
+    calculatedData.policyHolders[1].firstName = format.trimWhiteSpace(
+      calculatedData.policyHolders[1].firstName
+    );
+    calculatedData.policyHolders[1].lastName = format.trimWhiteSpace(
+      calculatedData.policyHolders[1].lastName
+    );
   }
 
   if (calculatedData.product === 'HO3') {
