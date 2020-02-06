@@ -16,8 +16,6 @@ import DiaryPolling from '../../components/DiaryPolling';
 import NavigationPrompt from '../../components/NavigationPrompt';
 import OpenDiariesBar from '../../components/OpenDiariesBar';
 import { POLICY_RESOURCE_TYPE } from '../../constants/diaries';
-import MOCK_AF3 from '../../mock-data/mockPolicyAF3';
-import MOCK_HO3 from '../../mock-data/mockPolicyHO3';
 import { setAppError } from '../../state/actions/error.actions';
 import { getEnumsForPolicyWorkflow } from '../../state/actions/list.actions';
 import {
@@ -35,6 +33,7 @@ import {
   getPolicyEndorsementHistory,
   getPolicyFormData
 } from '../../state/selectors/policy.selectors';
+
 import NotesFiles from '../NotesFiles';
 import PolicyHolders from '../Quote/PolicyHolders';
 import Appraiser from './Appraiser';
@@ -56,6 +55,11 @@ import PreviousEndorsements from './PreviousEndorsements';
 import ReinstatePolicyModal from './ReinstatePolicyModal';
 import RescindCancelModal from './RescindCancelModal';
 
+import TTICFLAF3 from '../../csp-templates/ttic-fl-af3-policy';
+import TTICFLHO3 from '../../csp-templates/ttic-fl-ho3-policy';
+import HCPCNJAF3 from '../../csp-templates/hcpc-nj-af3-policy';
+import HCPCSCAF3 from '../../csp-templates/hcpc-sc-af3-policy';
+
 const getCurrentStepAndPage = defaultMemoize(pathname => {
   const currentRouteName = pathname.split('/')[3];
   return {
@@ -65,8 +69,10 @@ const getCurrentStepAndPage = defaultMemoize(pathname => {
 });
 
 const TEMPLATES = {
-  AF3: MOCK_AF3,
-  HO3: MOCK_HO3
+  'TTIC:FL:AF3': TTICFLAF3,
+  'TTIC:FL:HO3': TTICFLHO3,
+  'HCPC:NJ:AF3': HCPCNJAF3,
+  'HCPC:SC:AF3': HCPCSCAF3
 };
 
 const FORM_ID = 'PolicyWorkflowCSR';
@@ -127,23 +133,9 @@ export class PolicyWorkflow extends React.Component {
   }
 
   getTemplate = async () => {
-    const { policy } = this.props;
-    // const transferConfig = {
-    //   exchangeName: 'harmony',
-    //   routingKey:  'harmony.policy.retrieveDocumentTemplate',
-    //   data: {
-    //     companyCode,
-    //     state,
-    //     product: 'AF3',
-    //     application: 'CSR',
-    //     formName: 'policyModel',
-    //     version: date.formattedDate(undefined, date.FORMATS.SECONDARY)
-    //   }
-    // };
-
-    // const response = await serviceRunner.callService(transferConfig, 'retrieveDocumentTemplate');
-    const { product } = policy;
-    this.setState(() => ({ gandalfTemplate: TEMPLATES[product] }));
+    const { companyCode, state, product } = this.props.policy;
+    const templateKey = `${companyCode}:${state}:${product}`;
+    this.setState(() => ({ gandalfTemplate: TEMPLATES[templateKey] }));
   };
 
   handleGandalfSubmit = async values => {
