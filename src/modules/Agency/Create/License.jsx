@@ -1,10 +1,9 @@
 import React from 'react';
-import { Input, Select, validation } from '@exzeo/core-ui';
+import { Input, Select, validation, Field } from '@exzeo/core-ui';
 
 import { LICENSE_TYPE } from '../../../constants/agency';
-import { Field } from 'redux-form';
 
-const License = ({ fields, isAgency, stateAnswers }) => {
+const License = ({ fields, stateAnswers }) => {
   return (
     <React.Fragment>
       {fields.map((license, index) => (

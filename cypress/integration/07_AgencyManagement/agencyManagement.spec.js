@@ -72,27 +72,29 @@ describe('Agency Management testing', () => {
         .type(ADD_AGENCY.customerServiceEmailAddress);
     });
 
-    cy.findDataTag('agency-mailing-address')
-      .scrollIntoView()
-      .should('be.visible')
-      .within(() => {
-        cy.findDataTag('address1')
-          .type(ADD_AGENCY.mailingAddress.address1)
-          .findDataTag('address2')
-          .type(ADD_AGENCY.mailingAddress.address2)
-          .findDataTag('city')
-          .type(ADD_AGENCY.mailingAddress.city)
-          .findDataTag('state')
-          .select(ADD_AGENCY.mailingAddress.state)
-          .findDataTag('zip')
-          .type(ADD_AGENCY.mailingAddress.zip);
-      });
-
-    cy.findDataTag('agency-physical-address').within(() => {
-      cy.findDataTag('sameAsMailing')
+    cy.findDataTag('agency-address-section').within(() => {
+      cy.findDataTag('agency-mailing-address')
         .scrollIntoView()
         .should('be.visible')
-        .click();
+        .within(() => {
+          cy.findDataTag('address1')
+            .type(ADD_AGENCY.mailingAddress.address1)
+            .findDataTag('address2')
+            .type(ADD_AGENCY.mailingAddress.address2)
+            .findDataTag('city')
+            .type(ADD_AGENCY.mailingAddress.city)
+            .findDataTag('state')
+            .select(ADD_AGENCY.mailingAddress.state)
+            .findDataTag('zip')
+            .type(ADD_AGENCY.mailingAddress.zip);
+        });
+
+      cy.findDataTag('agency-physical-address')
+        .scrollIntoView()
+        .should('be.visible')
+        .within(() => {
+          cy.findDataTag('sameAsMailing').click({ force: true });
+        });
     });
 
     cy.findDataTag('agency-principal')
@@ -144,7 +146,7 @@ describe('Agency Management testing', () => {
         .type('4445556667', { force: true })
         .findDataTag('faxNumber')
         .type('4445556668', { force: true })
-        .findDataTag('aor-mailing-address')
+        .findDataTag('agency-mailing-address')
         .within(() => {
           cy.findDataTag('address1')
             .type('Test AOR Mailing Address 1')
@@ -156,12 +158,16 @@ describe('Agency Management testing', () => {
             .select('FL')
             .findDataTag('zip')
             .type('33607', { force: true });
-        })
-        .findDataTag('agentOfRecord.sameAsMailing')
+        });
+
+      cy.findDataTag('agency-physical-address')
         .scrollIntoView()
         .should('be.visible')
-        .click({ force: true })
-        .findDataTag('agentOfRecord.licenses[0].licenseNumber_label')
+        .within(() => {
+          cy.findDataTag('sameAsMailing').click({ force: true });
+        });
+
+      cy.findDataTag('agentOfRecord.licenses[0].licenseNumber_label')
         .scrollIntoView()
         .should('be.visible')
         .findDataTag('agentOfRecord.licenses[0].state')
@@ -317,9 +323,6 @@ describe('Agency Management testing', () => {
       ).to.eql(ADD_AGENT.licenses);
     });
 
-    // contracts
-    cy.get('nav [class~="contracts"]').click();
-
     cy.findDataTag('addLicense')
       .click()
       .get('[class~="modal"]')
@@ -410,7 +413,7 @@ describe('Agency Management testing', () => {
     cy.task('log', 'License and contract added/edited successfully');
 
     // overview/edit agency
-    cy.get('nav [class~="overview"]').click();
+    cy.get('a.overview').click();
 
     cy.findDataTag('edit-agency-details')
       .click()
@@ -724,7 +727,7 @@ describe('Agency Management testing', () => {
 
     cy.task('log', 'Edit agent of record successfully');
 
-    cy.get('nav [class~="agents"]').click();
+    cy.get('a.agents').click();
 
     cy.findDataTag('add-new-agent')
       .click()
@@ -834,7 +837,7 @@ describe('Agency Management testing', () => {
 
     cy.task('log', 'Add new agent successfully');
 
-    cy.get('nav [class~="notes"]').click();
+    cy.get('a.notes').click();
 
     cy.wait('@fetchNotes').then(({ response }) => {
       expect(response.body.status).to.equal(200, 'Fetch notes for policy');

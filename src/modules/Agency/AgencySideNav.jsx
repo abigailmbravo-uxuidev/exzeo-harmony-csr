@@ -3,6 +3,7 @@ import { NavLink, Redirect } from 'react-router-dom';
 import { reduxForm, Field } from 'redux-form';
 import { Select } from '@exzeo/core-ui';
 import { connect } from 'react-redux';
+import classNames from 'classnames';
 
 import { toggleNote } from '../../state/actions/ui.actions';
 import { createBranch } from '../../state/actions/agency.actions';
@@ -12,35 +13,35 @@ import {
 } from '../../state/selectors/agency.selector';
 import { AGENCY_RESOURCE_TYPE } from '../../constants/diaries';
 
-const setDisabled = agencyCode => (agencyCode === 'new' ? 'disabled' : '');
+const setLink = (agencyCode, link) => (agencyCode !== 'new' ? link : '#');
 
 const csrLinks = (agencyCode, branchCode) => [
   {
     key: 'overview',
-    link: `/agency/${agencyCode}/${branchCode}/overview`,
+    link: setLink(agencyCode, `/agency/${agencyCode}/${branchCode}/overview`),
     label: 'Overview',
-    styleName: `overview ${setDisabled(agencyCode)}`,
+    styleName: classNames('overview', { disabled: agencyCode === 'new' }),
     exact: true
   },
   {
     key: 'agents',
-    link: `/agency/${agencyCode}/${branchCode}/agents`,
+    link: setLink(agencyCode, `/agency/${agencyCode}/${branchCode}/agents`),
     label: 'Agents',
-    styleName: `agents ${setDisabled(agencyCode)}`,
+    styleName: classNames('agents', { disabled: agencyCode === 'new' }),
     exact: true
   },
   {
     key: 'contracts',
-    link: `/agency/${agencyCode}/${branchCode}/contracts`,
+    link: setLink(agencyCode, `/agency/${agencyCode}/${branchCode}/contracts`),
     label: 'Contracts',
-    styleName: `contracts ${setDisabled(agencyCode)}`,
+    styleName: classNames('contracts', { disabled: agencyCode === 'new' }),
     exact: true
   },
   {
     key: 'notes',
-    link: `/agency/${agencyCode}/${branchCode}/notes`,
+    link: setLink(agencyCode, `/agency/${agencyCode}/${branchCode}/notes`),
     label: 'Notes / Files',
-    styleName: 'notes disabled',
+    styleName: classNames('notes', { disabled: agencyCode === 'new' }),
     exact: true
   },
   {
@@ -52,9 +53,9 @@ const csrLinks = (agencyCode, branchCode) => [
   },
   {
     key: 'transfer',
-    link: `/agency/${agencyCode}/${branchCode}/transfer`,
+    link: setLink(agencyCode, `/agency/${agencyCode}/${branchCode}/transfer`),
     label: 'Transfer',
-    styleName: `transfer ${setDisabled(agencyCode)}`,
+    styleName: classNames('transfer', { disabled: agencyCode === 'new' }),
     exact: true
   }
 ];
@@ -141,6 +142,7 @@ export class SideNav extends React.Component {
                 <span className={agentLink.styleName}>
                   <NavLink
                     to={agentLink.link}
+                    className={agentLink.styleName}
                     activeClassName={agentLink.link !== '#' ? 'active' : ''}
                     exact
                   >

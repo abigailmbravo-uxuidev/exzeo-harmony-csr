@@ -53,6 +53,16 @@ export const defaultInitialProps = {
 export const jestResolve = (result = {}, error) =>
   jest.fn(() => (error ? Promise.reject(result) : Promise.resolve(result)));
 
+export const jestResolveArray = (results = []) => {
+  const jestFunc = jest.fn();
+  results.forEach(r => {
+    jestFunc.mockReturnValueOnce(
+      r.error ? Promise.reject(r) : Promise.resolve(r)
+    );
+  });
+  return jestFunc;
+};
+
 export const defaultQuoteWorkflowProps = {
   ...defaultInitialProps,
   history: { replace: x => x },
@@ -76,6 +86,47 @@ export const defaultQuoteWorkflowProps = {
     order: [],
     uiQuestions: {}
   }
+};
+
+export const defaultCreateAgencyProps = {
+  orphans: [],
+  initialValues: {
+    status: 'Active',
+    okToPay: true,
+    mailingAddress: {},
+    physicalAddress: {},
+    agentOfRecord: {
+      sameAsMailing: false,
+      licenses: [
+        {
+          state: '',
+          license: '',
+          licenseType: '',
+          licenseEffectiveDate: '',
+          appointed: false
+        }
+      ]
+    }
+  },
+  listAnswersAsKey: {
+    US_states: [
+      {
+        label: 'Florida',
+        answer: 'FL'
+      },
+      {
+        label: 'Maryland',
+        answer: 'MD'
+      },
+      {
+        label: 'New Jersey',
+        answer: 'NJ'
+      }
+    ]
+  },
+  getAgency: jestResolve(),
+  updateAgency: jestResolve(),
+  createAgency: jestResolve()
 };
 
 export const defaultPolicyWorkflowProps = {
