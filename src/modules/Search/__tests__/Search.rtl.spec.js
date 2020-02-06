@@ -1,6 +1,6 @@
 import React from 'react';
 import { createStore, applyMiddleware } from 'redux';
-import { fireEvent } from 'react-testing-library';
+import { fireEvent } from '@testing-library/react';
 import thunk from 'redux-thunk';
 
 import {

@@ -6,7 +6,7 @@ import {
   findAllByLabelText,
   findAllByPlaceholderText,
   findByLabelText
-} from 'react-testing-library';
+} from '@testing-library/react';
 
 import {
   defaultCreateAgencyProps,

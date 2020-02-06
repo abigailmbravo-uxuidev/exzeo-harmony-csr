@@ -1,5 +1,10 @@
 import React from 'react';
-import { render, fireEvent, waitForElement, wait } from 'react-testing-library';
+import {
+  render,
+  fireEvent,
+  waitForElement,
+  wait
+} from '@testing-library/react';
 import { date } from '@exzeo/core-ui';
 
 import BulkPayments from '../@components/BulkPayments';

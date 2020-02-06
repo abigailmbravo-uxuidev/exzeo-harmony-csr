@@ -1,5 +1,5 @@
 import React from 'react';
-import { fireEvent, waitForElement, wait } from 'react-testing-library';
+import { fireEvent, waitForElement, wait } from '@testing-library/react';
 import * as agencyData from '@exzeo/core-ui/src/@Harmony/Agency/data';
 
 import {
@@ -126,9 +126,10 @@ describe('Testing the Coverage/Rating Page', () => {
 
   it('POS:PolicyHolder Fields', () => {
     const { getByTestId } = renderWithForm(<QuoteWorkflow {...props} />);
-    [...primaryPolicyholderFields, ...secondaryPolicyholderFields].forEach(
-      field => checkTextInput(getByTestId, field)
-    );
+    [
+      ...primaryPolicyholderFields,
+      ...secondaryPolicyholderFields
+    ].forEach(field => checkTextInput(getByTestId, field));
   });
 
   it('POS:Property Fields', () => {

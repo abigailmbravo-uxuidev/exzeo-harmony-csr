@@ -1,5 +1,5 @@
 import React from 'react';
-import { fireEvent } from 'react-testing-library';
+import { fireEvent } from '@testing-library/react';
 
 import {
   renderWithReduxAndRouter,
@@ -91,19 +91,21 @@ describe('Testing AppWrapper', () => {
       }
     } = props;
 
-    const { getByText } = renderWithReduxAndRouter(<AppWrapper {...props} />);
+    const { getByText, getAllByText } = renderWithReduxAndRouter(
+      <AppWrapper {...props} />
+    );
     expect(getByText(product));
-    expect(getByText(policyNumber));
+    expect(getAllByText(policyNumber));
     expect(getByText(status));
     expect(getByText('Policyholder'));
     expect(getByText(policyHolder.displayName));
     expect(getByText(policyHolder.phone));
     expect(getByText('Mailing Address'));
-    expect(getByText(mailingAddress.address1));
-    expect(getByText(mailingAddress.csz));
+    expect(getAllByText(mailingAddress.address1));
+    expect(getAllByText(mailingAddress.csz));
     expect(getByText('Property Address'));
-    expect(getByText(propertyAddress.address1));
-    expect(getByText(propertyAddress.csz));
+    expect(getAllByText(propertyAddress.address1));
+    expect(getAllByText(propertyAddress.csz));
     expect(getByText('Property County'));
     expect(getByText(county));
     expect(getByText('Effective Date'));
@@ -171,19 +173,21 @@ describe('Testing AppWrapper', () => {
       }
     } = props;
 
-    const { getByText } = renderWithReduxAndRouter(<AppWrapper {...props} />);
+    const { getByText, getAllByText } = renderWithReduxAndRouter(
+      <AppWrapper {...props} />
+    );
     expect(getByText(details.product));
-    expect(getByText(details.quoteNumber));
+    expect(getAllByText(details.quoteNumber));
     expect(getByText(status));
     expect(getByText('Policyholder'));
     expect(getByText(policyHolder.displayName));
     expect(getByText(policyHolder.phone));
     expect(getByText('Mailing Address'));
-    expect(getByText(mailingAddress.address1));
-    expect(getByText(mailingAddress.csz));
+    expect(getAllByText(mailingAddress.address1));
+    expect(getAllByText(mailingAddress.csz));
     expect(getByText('Property Address'));
-    expect(getByText(propertyAddress.address1));
-    expect(getByText(propertyAddress.csz));
+    expect(getAllByText(propertyAddress.address1));
+    expect(getAllByText(propertyAddress.csz));
     expect(getByText('Property County'));
     expect(getByText(county));
     expect(getByText('Territory'));

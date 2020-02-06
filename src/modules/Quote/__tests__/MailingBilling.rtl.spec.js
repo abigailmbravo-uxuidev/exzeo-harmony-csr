@@ -1,5 +1,5 @@
 import React from 'react';
-import { waitForElement, fireEvent } from 'react-testing-library';
+import { waitForElement, fireEvent } from '@testing-library/react';
 
 import {
   renderWithForm,
