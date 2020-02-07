@@ -61,13 +61,13 @@ describe('BulkPayments testing', () => {
     expect(getAllByText('Batch Number')[1]);
     expect(getByText(initialBatchNumber));
     expect(getAllByText('Cash Type')[1]);
-    expect(getByText('Payment Description'));
-    expect(getByText('Payment Received'));
-    expect(getByText('Policy Number'));
-    expect(getByText('Policyholder'));
-    expect(getByText('Amount'));
-    expect(getByText('0 entries totaling'));
-    expect(getByText('$ 0.00'));
+    expect(getAllByText('Payment Description'))[1];
+    expect(getAllByText('Payment Received')[1]);
+    expect(getAllByText('Policy Number')[1]);
+    expect(getAllByText('Policyholder')[1]);
+    expect(getAllByText('Amount')[1]);
+    expect(getAllByText('0 entries totaling')[1]);
+    expect(getAllByText('$ 0.00')[1]);
     expect(getByText('Download')).toBeDisabled();
 
     const cashTypeEl = await getByLabelText('Cash Type');
