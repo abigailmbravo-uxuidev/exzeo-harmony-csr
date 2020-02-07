@@ -1,5 +1,5 @@
 import React from 'react';
-import { waitForElement, fireEvent } from '@testing-library/react';
+import { waitForElement, fireEvent, within } from '@testing-library/react';
 
 import {
   renderWithForm,
@@ -72,19 +72,22 @@ describe('Mailing/Billing Page Testing', () => {
   });
 
   it('POS:Checks Page Headers', async () => {
-    const { getByTestId, getByText } = renderWithForm(
-      <QuoteWorkflow {...props} />
-    );
+    const { getByTestId } = renderWithForm(<QuoteWorkflow {...props} />);
+
     await waitForElement(() => [
       getByTestId('billToId'),
       getByTestId('annual-plan')
     ]);
 
-    pageHeaders.forEach(header => checkHeader(getByText, header));
+    const { getByText: getByTextInsideForm } = within(
+      document.getElementById('QuoteWorkflowCSR')
+    );
+
+    pageHeaders.forEach(header => expect(getByTextInsideForm(header.text)));
   });
 
   it('POS:Checks fields', async () => {
-    const { getByText, getByTestId, getByLabelText } = renderWithForm(
+    const { getByTestId, getByText } = renderWithForm(
       <QuoteWorkflow {...props} />
     );
     await waitForElement(() => [
@@ -92,25 +95,22 @@ describe('Mailing/Billing Page Testing', () => {
       getByTestId('billPlan_Annual')
     ]);
 
-    [...propertyFields, ...billingFields].forEach(field => {
-      checkLabel(getByText, field);
-      if (field.type === 'text') return checkTextInput(getByLabelText, field);
-      if (field.type === 'select') return checkSelect(getByLabelText, field);
-      if (field.type === 'radio') return checkRadio(getByTestId, field);
+    const { getByText: getByTextWithinAddress } = within(
+      getByTestId('section-mailing-address')
+    );
+
+    propertyFields.forEach(field => {
+      expect(getByTextWithinAddress(field.label));
+    });
+
+    billingFields.forEach(field => {
+      expect(getByText(field.label));
     });
   });
 
-  it('POS:Tests button', async () => {
-    const { getByText, getByTestId } = renderWithForm(
-      <QuoteWorkflow {...props} />
-    );
-    await waitForElement(() => [
-      getByTestId('billToId'),
-      getByTestId('billPlan_Annual')
-    ]);
-
-    checkButton(getByText, { dataTest: 'reset', text: 'Reset' });
-    checkButton(getByText);
+  it('POS:Tests button', () => {
+    const { getByText } = renderWithForm(<QuoteWorkflow {...props} />);
+    expect(getByText('Reset').textContent).toMatch(/Reset/);
   });
 
   it('POS:Checks that the Reset Button works', async () => {
