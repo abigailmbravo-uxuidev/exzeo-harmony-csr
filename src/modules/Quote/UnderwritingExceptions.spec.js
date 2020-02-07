@@ -5,6 +5,7 @@ import UnderwritingExceptions from './UnderwritingExceptions';
 
 const info = [
   {
+    code: '1',
     _id: 'name3',
     canOverride: false,
     fields: [{ name: 'rating.netPremium', value: 'null' }],
@@ -13,6 +14,8 @@ const info = [
 ];
 const underwritingReview = [
   {
+    code: '2',
+
     _id: 'name1',
     canOverride: true,
     fields: [{ name: 'rating.netPremium', value: 'null' }]
@@ -20,6 +23,7 @@ const underwritingReview = [
 ];
 const fatalError = [
   {
+    code: '3',
     _id: 'name2',
     canOverride: false,
     fields: [{ name: 'rating.netPremium', value: 'null' }]
