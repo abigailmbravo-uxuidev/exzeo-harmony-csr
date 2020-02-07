@@ -271,6 +271,9 @@
 .app-wrapper.csr.quote {
   #QuoteWorkflowCSR {
     &.view-grid {
+      > section {
+        position: relative;
+      }
       .deductibles {
         .deductible-wrapper {
           margin-top: -$padding;
