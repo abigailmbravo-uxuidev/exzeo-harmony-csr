@@ -1,5 +1,10 @@
 import React from 'react';
-import { fireEvent, waitForElement, wait } from '@testing-library/react';
+import {
+  fireEvent,
+  waitForElement,
+  wait,
+  within
+} from '@testing-library/react';
 import * as agencyData from '@exzeo/core-ui/src/@Harmony/Agency/data';
 
 import {
@@ -28,7 +33,8 @@ import {
   deductiblesFields,
   discountsFields,
   windFields,
-  checkButton
+  checkButton,
+  mockServiceRunner
 } from '../../../test-utils';
 import { QuoteWorkflow } from '../QuoteWorkflow';
 
@@ -44,6 +50,8 @@ const pageHeaders = [
   { text: 'Discounts' },
   { text: 'Wind Mitigation' }
 ];
+
+mockServiceRunner([]);
 
 describe('Testing the Coverage/Rating Page', () => {
   const props = {
@@ -70,11 +78,13 @@ describe('Testing the Coverage/Rating Page', () => {
   ];
 
   it('POS:Checks Header and Labels for all fields', () => {
-    const { getByText, getByTestId } = renderWithForm(
-      <QuoteWorkflow {...props} />
+    const { getByTestId } = renderWithForm(<QuoteWorkflow {...props} />);
+
+    const { getByText: getByTextInsideForm } = within(
+      document.getElementById('QuoteWorkflowCSR')
     );
 
-    pageHeaders.forEach(header => checkHeader(getByText, header));
+    pageHeaders.forEach(header => expect(getByTextInsideForm(header.text)));
     // TODO: COLIN -- Check if this is supposed to be disabled
     // expect(getByTestId('removeSecondary')).toBeDisabled();
     allFields
@@ -222,9 +232,7 @@ describe('Testing the Coverage/Rating Page', () => {
 
   it('POS:Tests button', () => {
     const { getByText } = renderWithForm(<QuoteWorkflow {...props} />);
-
-    checkButton(getByText, { dataTest: 'reset', text: 'Reset' });
-    checkButton(getByText);
+    expect(getByText('Reset').textContent).toMatch(/Reset/);
   });
 
   it('POS:Checks that the Reset Button works', () => {
@@ -235,21 +243,21 @@ describe('Testing the Coverage/Rating Page', () => {
         policyHolders: []
       }
     };
-    const { getByText, getByLabelText } = renderWithForm(
+    const { getByText, getByLabelText, getByTestId } = renderWithForm(
       <QuoteWorkflow {...newProps} />
     );
 
     expect(getByText('Update')).toBeDisabled();
-    primaryPolicyholderFields.forEach(({ label, value }) =>
-      fireEvent.change(getByLabelText(label), {
+    primaryPolicyholderFields.forEach(({ label, value, dataTest }) => {
+      fireEvent.change(getByTestId(dataTest), {
         target: { value }
-      })
-    );
+      });
+    });
     expect(getByText('Update')).not.toBeDisabled();
     fireEvent.click(getByText('Reset'));
     waitForElement(() => {
-      primaryPolicyholderFields.forEach(({ label }) =>
-        expect(getByLabelText(label).value).toEqual('')
+      primaryPolicyholderFields.forEach(({ dataTest }) =>
+        expect(getByTestId(dataTest).value).toEqual('')
       );
     });
 
