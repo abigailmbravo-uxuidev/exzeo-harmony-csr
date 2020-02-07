@@ -10,7 +10,7 @@ export default {
     dwelling: { amount: 100 },
     lossOfUse: { amount: 666 },
     medicalPayments: { amount: 88 },
-    moldLiability: { amount: 22 },
+    moldLiability: { amount: 23 },
     moldProperty: { amount: 44 },
     ordinanceOrLaw: { amount: 29 },
     otherStructures: { amount: 50 },
