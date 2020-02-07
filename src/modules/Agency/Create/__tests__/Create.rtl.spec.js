@@ -1,16 +1,9 @@
 import React from 'react';
-import { fireEvent, getByLabelText, within } from '@testing-library/react';
+import { fireEvent, within } from '@testing-library/react';
 
 import {
   defaultCreateAgencyProps,
   renderWithForm,
-  checkHeader,
-  checkLabel,
-  checkSelect,
-  checkTextInput,
-  checkRadio,
-  clearText,
-  checkError,
   mockServiceRunner,
   detailsFields,
   addressFields,
@@ -21,29 +14,6 @@ import {
 } from '../../../../test-utils';
 import { Create } from '../Create';
 
-const pageHeaders = [
-  { text: 'Details' },
-  { text: 'Address' },
-  { text: 'Officer' },
-  { text: 'Contact' },
-  { text: 'Agent Of Record' }
-];
-
-const allFields = [
-  // ...detailsFields,
-  // ...addressFields,
-  // {
-  //   type: 'select',
-  //   required: true,
-  //   label: 'Territory Managers',
-  //   dataTest: 'territoryManager',
-  //   value: '5b7db9f6ff54fd6a5c619eed'
-  // },
-  // ...contactFields,
-  // ...agentOfRecordFields,
-  // ...licenseFields
-];
-
 describe('Testing the Create Agency Page', () => {
   const props = {
     ...defaultCreateAgencyProps
@@ -52,9 +22,7 @@ describe('Testing the Create Agency Page', () => {
   mockServiceRunner([]);
 
   it('POS:Checks Headers and fields', () => {
-    const { getByText, getByLabelText, getByTestId } = renderWithForm(
-      <Create {...props} />
-    );
+    const { getByText, getByTestId } = renderWithForm(<Create {...props} />);
 
     expect(getByText('Details'));
     expect(getByText('Officer'));
@@ -89,7 +57,9 @@ describe('Testing the Create Agency Page', () => {
 
     detailsFields
       .filter(field => field.visible !== false)
-      .forEach(field => expect(getByTextWithinDetails(field.label)));
+      .forEach(field => {
+        expect(getByTextWithinDetails(field.label));
+      });
     addressFields
       .filter(field => field.visible !== false)
       .forEach(field => expect(getByTextWithinMailing(field.label)));
@@ -107,38 +77,62 @@ describe('Testing the Create Agency Page', () => {
       .forEach(field => expect(getByTextWithinAOR(field.label)));
     licenseFields
       .filter(field => field.visible !== false)
-      .forEach(field => expect(getByTextWithinLicense(field.label)));
+      .forEach(field => {
+        expect(getByTextWithinLicense(field.label));
+      });
   });
 
-  // it('NEG:All Required Fields Error', () => {
-  //   const { getByTestId } = renderWithForm(<Create {...props} />);
+  it('NEG:All Required Fields Error', () => {
+    const { getByTestId } = renderWithForm(<Create {...props} />);
 
-  //   allFields
-  //     .filter(
-  //       ({ required, disabled, type }) =>
-  //         required && !disabled && type === 'text'
-  //     )
-  //     .forEach(field => {
-  //       clearText(getByTestId, field);
-  //       fireEvent.blur(getByTestId(field.dataTest));
-  //       checkError(getByTestId, field);
-  //     });
-  // });
+    const { getByTestId: getByTestIdWithinDetails } = within(
+      getByTestId('agency-details')
+    );
+    const { getByTestId: getByTestIdWithinAddress } = within(
+      getByTestId('agency-address-section')
+    );
+    const { getByTestId: getByTestIdWithinMailing } = within(
+      getByTestIdWithinAddress('agency-mailing-address')
+    );
+    const { getByTestId: getByTestIdWithinPhysical } = within(
+      getByTestIdWithinAddress('agency-physical-address')
+    );
+    const { getByTestId: getByTestIdWithinPrincipal } = within(
+      getByTestId('agency-principal')
+    );
+    const { getByTestId: getByTestIdWithinContact } = within(
+      getByTestId('agency-contact')
+    );
+    const { getByTestId: getByTestIdWithinAOR } = within(
+      getByTestId('agent-of-record')
+    );
 
-  // it('POS:Create Fields', () => {
-  //   const { getByTestId } = renderWithForm(<Create {...props} />);
+    const checkError = (getByTestIdFunc, field) => {
+      const selectedField = getByTestIdFunc(field.dataTest);
+      fireEvent.change(selectedField, { target: { value: '' } });
+      fireEvent.blur(selectedField);
+      expect(getByTestIdFunc(`${field.dataTest}_error`)).toHaveTextContent(
+        'Field Required'
+      );
+    };
 
-  //   [
-  //     ...detailsFields,
-  //     ...addressFields,
-  //     ...contactFields,
-  //     ...agentOfRecordFields,
-  //     ...licenseFields
-  //   ].forEach(field => {
-  //     if (!field.value) return;
-  //     if (field.type === 'text') return checkTextInput(getByTestId, field);
-  //     if (field.type === 'select') return checkSelect(getByTestId, field);
-  //     if (field.type === 'radio') return checkRadio(getByTestId, field);
-  //   });
-  // });
+    detailsFields
+      .filter(field => field.required)
+      .forEach(field => checkError(getByTestIdWithinDetails, field));
+    addressFields
+      .filter(field => field.required)
+      .forEach(field => checkError(getByTestIdWithinMailing, field));
+    addressFields
+      .filter(field => field.required && field.dataTest !== 'zip')
+      .forEach(field => checkError(getByTestIdWithinPhysical, field));
+    contactFields
+      .filter(field => field.required)
+      .forEach(field => checkError(getByTestIdWithinContact, field));
+    principalFields
+      .filter(field => field.required)
+      .forEach(field => checkError(getByTestIdWithinPrincipal, field));
+    agentOfRecordFields
+      .filter(field => field.required)
+      .forEach(field => checkError(getByTestIdWithinAOR, field));
+  });
 });
