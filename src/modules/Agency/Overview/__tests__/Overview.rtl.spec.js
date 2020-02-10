@@ -1,10 +1,5 @@
 import React from 'react';
-import {
-  render,
-  fireEvent,
-  waitForElement,
-  wait
-} from '@testing-library/react';
+import { within } from '@testing-library/react';
 import { date, normalize } from '@exzeo/core-ui';
 import 'jest-dom/extend-expect';
 
@@ -43,18 +38,21 @@ describe('Overview testing', () => {
     expect(el.children[0].children[0].className).toEqual('fa fa-pencil-square');
   };
 
-  const checkCard = (query, contact) => {
+  const checkCard = (query, contact, getByTestId, dataTest) => {
     const phone = `${normalize.phone(contact.primaryPhoneNumber)} ext. ${
       contact.primaryPhoneNumberExtension
     }`;
     const tel = `${contact.primaryPhoneNumber}+${contact.primaryPhoneNumberExtension}`;
 
     expect(query(`${contact.firstName} ${contact.lastName}`));
-    expect(query(contact.emailAddress).closest('a')).toHaveAttribute(
+
+    const { getByText } = within(getByTestId(dataTest));
+
+    expect(getByText(contact.emailAddress).closest('a')).toHaveAttribute(
       'href',
       `mailto:${contact.emailAddress}`
     );
-    expect(query(phone).closest('a')).toHaveAttribute('href', `tel:${tel}`);
+    expect(getByText(phone).closest('a')).toHaveAttribute('href', `tel:${tel}`);
   };
 
   it('POS:Check Details and Contacts sections', () => {
@@ -152,21 +150,22 @@ describe('Overview testing', () => {
   });
 
   it('POS:Check Cards', () => {
-    const { getByText, getAllByText } = renderWithReduxAndRouter(
-      <Overview {...props} />,
-      { state }
-    );
+    const {
+      getByText,
+      getAllByText,
+      getByTestId
+    } = renderWithReduxAndRouter(<Overview {...props} />, { state });
     const { principal, contact } = mockAgency.branches[props.branchCode];
     const aor = state.agencyState.agents[0];
 
     // Check Officer
     expect(getAllByText('Officer')[0]);
     expect(getAllByText('Officer')[1]);
-    checkCard(getByText, principal);
+    checkCard(getByText, principal, getByTestId, 'agency-principal');
 
     // Check Contact
     expect(getByText('Contact'));
-    checkCard(getByText, contact);
+    checkCard(getByText, contact, getByTestId, 'agency-contact');
 
     // Check header
     const { mailingAddress: ma } = aor;
