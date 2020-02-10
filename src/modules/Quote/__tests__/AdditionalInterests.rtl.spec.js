@@ -208,462 +208,465 @@ describe('Additional Interest Testing', () => {
       await wait(() => expect(document.querySelector('modal')).toBeNull());
     };
 
-    openAndCloseModal(getByText, 'Mortgagee');
-    //fireEvent.click(getByText('Save'));
+    openAndCloseModal(getByTestId, 'mortgagee');
+    fireEvent.click(getByTestId('ai-modal-submit'));
 
-    //expect(getByTestId('name1_error'))
+    expect(getByTestId('name1_error'));
 
-    //  fireEvent.click(getByText('Save'));
+    fireEvent.click(getByTestId('ai-modal-submit'));
 
-    // baseRequiredFields.forEach(fieldToLeaveBlank =>
-    //   verifyForm(
-    //     getByTestId,
-    //     baseRequiredFields,
-    //     [fieldToLeaveBlank],
-    //     'ai-modal-submit'
-    //   )
-    // );
+    baseRequiredFields.forEach(fieldToLeaveBlank =>
+      verifyForm(
+        getByTestId,
+        baseRequiredFields,
+        [fieldToLeaveBlank],
+        'ai-modal-submit'
+      )
+    );
   });
 
-  // it('NEG:Mortgagee Invalid Input Testing', () => {
-  //   const { getByText, getByTestId } = renderWithForm(
-  //     <QuoteWorkflow {...props} />
-  //   );
-  //   fireEvent.click(getByText('Mortgagee'));
+  it('NEG:Mortgagee Invalid Input Testing', () => {
+    const { getByText, getByTestId } = renderWithForm(
+      <QuoteWorkflow {...props} />
+    );
+    fireEvent.click(getByText('Mortgagee'));
 
-  //   verifyForm(
-  //     getByTestId,
-  //     [
-  //       {
-  //         ...stateField,
-  //         value: 'abc',
-  //         error: 'Only 2 letters allowed'
-  //       }
-  //     ],
-  //     [],
-  //     'ai-modal-submit'
-  //   );
-  //   verifyForm(
-  //     getByTestId,
-  //     [
-  //       {
-  //         ...zipField,
-  //         value: '1234567890',
-  //         error: 'Only 5 numbers allowed'
-  //       }
-  //     ],
-  //     [],
-  //     'ai-modal-submit'
-  //   );
-  // });
+    verifyForm(
+      getByTestId,
+      [
+        {
+          ...stateField,
+          value: 'abc',
+          error: 'Only 2 letters allowed'
+        }
+      ],
+      [],
+      'ai-modal-submit'
+    );
+    verifyForm(
+      getByTestId,
+      [
+        {
+          ...zipField,
+          value: '1234567890',
+          error: 'Only 5 numbers allowed'
+        }
+      ],
+      [],
+      'ai-modal-submit'
+    );
+  });
 
-  // it('NEG:Additional Insured Empty Testing', () => {
-  //   const { getByText, getByTestId } = renderWithForm(
-  //     <QuoteWorkflow {...props} />
-  //   );
-  //   fireEvent.click(getByText('Additional Insured'));
+  it('NEG:Additional Insured Empty Testing', () => {
+    const { getByText, getByTestId } = renderWithForm(
+      <QuoteWorkflow {...props} />
+    );
+    fireEvent.click(getByText('Additional Insured'));
 
-  //   baseRequiredFields.forEach(fieldToLeaveBlank =>
-  //     verifyForm(
-  //       getByTestId,
-  //       baseRequiredFields,
-  //       [fieldToLeaveBlank],
-  //       'ai-modal-submit'
-  //     )
-  //   );
-  // });
+    baseRequiredFields.forEach(fieldToLeaveBlank =>
+      verifyForm(
+        getByTestId,
+        baseRequiredFields,
+        [fieldToLeaveBlank],
+        'ai-modal-submit'
+      )
+    );
+  });
 
-  // it('NEG:Additional Insured Invalid Input Testing', () => {
-  //   const { getByText, getByTestId } = renderWithForm(
-  //     <QuoteWorkflow {...props} />
-  //   );
-  //   fireEvent.click(getByText('Additional Insured'));
+  it('NEG:Additional Insured Invalid Input Testing', () => {
+    const { getByText, getByTestId } = renderWithForm(
+      <QuoteWorkflow {...props} />
+    );
+    fireEvent.click(getByText('Additional Insured'));
 
-  //   verifyForm(
-  //     getByTestId,
-  //     [
-  //       {
-  //         ...stateField,
-  //         value: 'abc',
-  //         error: 'Only 2 letters allowed'
-  //       }
-  //     ],
-  //     [],
-  //     'ai-modal-submit'
-  //   );
-  //   verifyForm(
-  //     getByTestId,
-  //     [
-  //       {
-  //         ...zipField,
-  //         value: '1234567890',
-  //         error: 'Only 5 numbers allowed'
-  //       }
-  //     ],
-  //     [],
-  //     'ai-modal-submit'
-  //   );
-  // });
+    verifyForm(
+      getByTestId,
+      [
+        {
+          ...stateField,
+          value: 'abc',
+          error: 'Only 2 letters allowed'
+        }
+      ],
+      [],
+      'ai-modal-submit'
+    );
+    verifyForm(
+      getByTestId,
+      [
+        {
+          ...zipField,
+          value: '1234567890',
+          error: 'Only 5 numbers allowed'
+        }
+      ],
+      [],
+      'ai-modal-submit'
+    );
+  });
 
-  // it('NEG:Additional Interest Empty Testing', () => {
-  //   const { getByText, getByTestId } = renderWithForm(
-  //     <QuoteWorkflow {...props} />
-  //   );
-  //   fireEvent.click(getByText('Additional Interest'));
+  it('NEG:Additional Interest Empty Testing', () => {
+    const { getByText, getByTestId } = renderWithForm(
+      <QuoteWorkflow {...props} />
+    );
+    fireEvent.click(getByText('Additional Interest'));
 
-  //   baseRequiredFields.forEach(fieldToLeaveBlank =>
-  //     verifyForm(
-  //       getByTestId,
-  //       baseRequiredFields,
-  //       [fieldToLeaveBlank],
-  //       'ai-modal-submit'
-  //     )
-  //   );
-  // });
+    baseRequiredFields.forEach(fieldToLeaveBlank =>
+      verifyForm(
+        getByTestId,
+        baseRequiredFields,
+        [fieldToLeaveBlank],
+        'ai-modal-submit'
+      )
+    );
+  });
 
-  // it('NEG:Additional Interest Invalid Input Testing', () => {
-  //   const { getByText, getByTestId } = renderWithForm(
-  //     <QuoteWorkflow {...props} />
-  //   );
-  //   fireEvent.click(getByText('Additional Interest'));
+  it('NEG:Additional Interest Invalid Input Testing', () => {
+    const { getByText, getByTestId } = renderWithForm(
+      <QuoteWorkflow {...props} />
+    );
+    fireEvent.click(getByText('Additional Interest'));
 
-  //   verifyForm(
-  //     getByTestId,
-  //     [
-  //       {
-  //         ...stateField,
-  //         value: 'abc',
-  //         error: 'Only 2 letters allowed'
-  //       }
-  //     ],
-  //     [],
-  //     'ai-modal-submit'
-  //   );
-  //   verifyForm(
-  //     getByTestId,
-  //     [
-  //       {
-  //         ...zipField,
-  //         value: '1234567890',
-  //         error: 'Only 5 numbers allowed'
-  //       }
-  //     ],
-  //     [],
-  //     'ai-modal-submit'
-  //   );
-  // });
+    verifyForm(
+      getByTestId,
+      [
+        {
+          ...stateField,
+          value: 'abc',
+          error: 'Only 2 letters allowed'
+        }
+      ],
+      [],
+      'ai-modal-submit'
+    );
+    verifyForm(
+      getByTestId,
+      [
+        {
+          ...zipField,
+          value: '1234567890',
+          error: 'Only 5 numbers allowed'
+        }
+      ],
+      [],
+      'ai-modal-submit'
+    );
+  });
 
-  // it('NEG:Premium Finance Empty Testing', () => {
-  //   const { getByText, getByTestId } = renderWithForm(
-  //     <QuoteWorkflow {...props} />
-  //   );
-  //   fireEvent.click(getByText('Premium Finance'));
+  it('NEG:Premium Finance Empty Testing', () => {
+    const { getByText, getByTestId } = renderWithForm(
+      <QuoteWorkflow {...props} />
+    );
+    fireEvent.click(getByText('Premium Finance'));
 
-  //   baseRequiredFields.forEach(fieldToLeaveBlank =>
-  //     verifyForm(
-  //       getByTestId,
-  //       baseRequiredFields,
-  //       [fieldToLeaveBlank],
-  //       'ai-modal-submit'
-  //     )
-  //   );
-  // });
+    baseRequiredFields.forEach(fieldToLeaveBlank =>
+      verifyForm(
+        getByTestId,
+        baseRequiredFields,
+        [fieldToLeaveBlank],
+        'ai-modal-submit'
+      )
+    );
+  });
 
-  // it('NEG:Premium Finance Invalid Input Testing', () => {
-  //   const { getByText, getByTestId } = renderWithForm(
-  //     <QuoteWorkflow {...props} />
-  //   );
-  //   fireEvent.click(getByText('Premium Finance'));
+  it('NEG:Premium Finance Invalid Input Testing', () => {
+    const { getByText, getByTestId } = renderWithForm(
+      <QuoteWorkflow {...props} />
+    );
+    fireEvent.click(getByText('Premium Finance'));
 
-  //   verifyForm(
-  //     getByTestId,
-  //     [
-  //       {
-  //         ...stateField,
-  //         value: 'abc',
-  //         error: 'Only 2 letters allowed'
-  //       }
-  //     ],
-  //     [],
-  //     'ai-modal-submit'
-  //   );
-  //   verifyForm(
-  //     getByTestId,
-  //     [
-  //       {
-  //         ...zipField,
-  //         value: '1234567890',
-  //         error: 'Only 5 numbers allowed'
-  //       }
-  //     ],
-  //     [],
-  //     'ai-modal-submit'
-  //   );
-  // });
+    verifyForm(
+      getByTestId,
+      [
+        {
+          ...stateField,
+          value: 'abc',
+          error: 'Only 2 letters allowed'
+        }
+      ],
+      [],
+      'ai-modal-submit'
+    );
+    verifyForm(
+      getByTestId,
+      [
+        {
+          ...zipField,
+          value: '1234567890',
+          error: 'Only 5 numbers allowed'
+        }
+      ],
+      [],
+      'ai-modal-submit'
+    );
+  });
 
-  // it('NEG:Bill Payer Empty Testing', () => {
-  //   const { getByText, getByTestId } = renderWithForm(
-  //     <QuoteWorkflow {...props} />
-  //   );
-  //   fireEvent.click(getByText('Bill Payer'));
+  it('NEG:Bill Payer Empty Testing', () => {
+    const { getByText, getByTestId } = renderWithForm(
+      <QuoteWorkflow {...props} />
+    );
+    fireEvent.click(getByText('Bill Payer'));
 
-  //   baseRequiredFields.forEach(fieldToLeaveBlank =>
-  //     verifyForm(
-  //       getByTestId,
-  //       baseRequiredFields,
-  //       [fieldToLeaveBlank],
-  //       'ai-modal-submit'
-  //     )
-  //   );
-  // });
+    baseRequiredFields.forEach(fieldToLeaveBlank =>
+      verifyForm(
+        getByTestId,
+        baseRequiredFields,
+        [fieldToLeaveBlank],
+        'ai-modal-submit'
+      )
+    );
+  });
 
-  // it('NEG:Bill Payer Invalid Input Testing', () => {
-  //   const { getByText, getByTestId } = renderWithForm(
-  //     <QuoteWorkflow {...props} />
-  //   );
-  //   fireEvent.click(getByText('Bill Payer'));
+  it('NEG:Bill Payer Invalid Input Testing', () => {
+    const { getByText, getByTestId } = renderWithForm(
+      <QuoteWorkflow {...props} />
+    );
+    fireEvent.click(getByText('Bill Payer'));
 
-  //   verifyForm(
-  //     getByTestId,
-  //     [
-  //       {
-  //         ...stateField,
-  //         value: 'abc',
-  //         error: 'Only 2 letters allowed'
-  //       }
-  //     ],
-  //     [],
-  //     'ai-modal-submit'
-  //   );
-  //   verifyForm(
-  //     getByTestId,
-  //     [
-  //       {
-  //         ...zipField,
-  //         value: '1234567890',
-  //         error: 'Only 5 numbers allowed'
-  //       }
-  //     ],
-  //     [],
-  //     'ai-modal-submit'
-  //   );
-  // });
+    verifyForm(
+      getByTestId,
+      [
+        {
+          ...stateField,
+          value: 'abc',
+          error: 'Only 2 letters allowed'
+        }
+      ],
+      [],
+      'ai-modal-submit'
+    );
+    verifyForm(
+      getByTestId,
+      [
+        {
+          ...zipField,
+          value: '1234567890',
+          error: 'Only 5 numbers allowed'
+        }
+      ],
+      [],
+      'ai-modal-submit'
+    );
+  });
 
-  // it('POS:Checks Header and Buttons', () => {
-  //   const { getByText } = renderWithForm(<QuoteWorkflow {...props} />);
+  it('POS:Checks Header and Buttons', () => {
+    const { getByText, getByTestId } = renderWithForm(
+      <QuoteWorkflow {...props} />
+    );
 
-  //   const checkButtonTextIcon = text =>
-  //     expect(getByText(text).previousSibling.className).toEqual('fa fa-plus');
+    const checkButtonTextIcon = text =>
+      expect(getByText(text).previousSibling.className).toEqual('fa fa-plus');
 
-  //   checkHeader(getByText, { text: 'Additional Interests' });
-  //   checkButtonTextIcon('Mortgagee');
-  //   checkButtonTextIcon('Additional Insured');
-  //   checkButtonTextIcon('Additional Interest');
-  //   checkButtonTextIcon('Premium Finance');
-  //   checkButtonTextIcon('Bill Payer');
-  // });
+    expect(getByTestId('Additional Interests')).toHaveTextContent(
+      'Additional Interests'
+    );
+    checkButtonTextIcon('Mortgagee');
+    checkButtonTextIcon('Additional Insured');
+    checkButtonTextIcon('Additional Interest');
+    checkButtonTextIcon('Premium Finance');
+    checkButtonTextIcon('Bill Payer');
+  });
 
-  // it('POS:Mortgagee Modal Testing', () => {
-  //   const { getByText, getAllByText, getByTestId } = renderWithForm(
-  //     <QuoteWorkflow {...props} />
-  //   );
+  it('POS:Mortgagee Modal Testing', () => {
+    const { getByText, getAllByText, getByTestId } = renderWithForm(
+      <QuoteWorkflow {...props} />
+    );
+    openAndCloseModal(getByTestId, 'mortgagee');
 
-  //   openAndCloseModal(getByText, 'Mortgagee');
+    fireEvent.click(getByTestId('mortgagee'));
+    expect(getAllByText('Mortgagee')[1].firstChild.className).toEqual(
+      'fa Mortgagee'
+    );
+    mortgageeFields.forEach(field => {
+      checkLabel(getByTestId, field);
+      checkTextInput(getByTestId, field);
+    });
+    checkLabel(getByTestId, { dataTest: 'mortgage', label: 'Top Mortgagees' });
+    // checkSelect(getByTestId, {
+    //   dataTest: 'order',
+    //   defaultValue: { value: '0', label: 'First Mortgagee' },
+    //   type: 'select',
+    //   values: [{ value: '0', label: 'First Mortgagee' }]
+    // });
+  });
 
-  //   fireEvent.click(getByText('Mortgagee'));
-  //   expect(getAllByText('Mortgagee')[1].firstChild.className).toEqual(
-  //     'fa Mortgagee'
-  //   );
-  //   mortgageeFields.forEach(field => {
-  //     checkLabel(getByTestId, field);
-  //     checkTextInput(getByTestId, field);
-  //   });
-  //   checkLabel(getByTestId, { dataTest: 'mortgage', label: 'Top Mortgagees' });
-  //   // checkSelect(getByTestId, {
-  //   //   dataTest: 'order',
-  //   //   defaultValue: { value: '0', label: 'First Mortgagee' },
-  //   //   type: 'select',
-  //   //   values: [{ value: '0', label: 'First Mortgagee' }]
-  //   // });
-  // });
+  it('POS:Additional Insured Modal Testing', () => {
+    const { getByText, getAllByText, getByTestId } = renderWithForm(
+      <QuoteWorkflow {...props} />
+    );
 
-  // it('POS:Additional Insured Modal Testing', () => {
-  //   const { getByText, getAllByText, getByTestId } = renderWithForm(
-  //     <QuoteWorkflow {...props} />
-  //   );
+    openAndCloseModal(getByTestId, 'additionalInsured');
 
-  //   openAndCloseModal(getByText, 'Additional Insured');
+    fireEvent.click(getByTestId('additionalInsured'));
+    expect(getAllByText('Additional Insured')[1].firstChild.className).toEqual(
+      'fa Additional Insured'
+    );
+    baseAiFields.forEach(field => {
+      checkLabel(getByTestId, field);
+      checkTextInput(getByTestId, field);
+    });
+  });
 
-  //   fireEvent.click(getByText('Additional Insured'));
-  //   expect(getAllByText('Additional Insured')[1].firstChild.className).toEqual(
-  //     'fa Additional Insured'
-  //   );
-  //   baseAiFields.forEach(field => {
-  //     checkLabel(getByTestId, field);
-  //     checkTextInput(getByTestId, field);
-  //   });
-  // });
+  it('POS:Additional Interest Modal Testing', () => {
+    const { getByText, getAllByText, getByTestId } = renderWithForm(
+      <QuoteWorkflow {...props} />
+    );
 
-  // it('POS:Additional Interest Modal Testing', () => {
-  //   const { getByText, getAllByText, getByTestId } = renderWithForm(
-  //     <QuoteWorkflow {...props} />
-  //   );
+    openAndCloseModal(getByTestId, 'additionalInterest');
 
-  //   openAndCloseModal(getByText, 'Additional Interest');
+    fireEvent.click(getByTestId('additionalInterest'));
+    expect(getAllByText('Additional Interest')[1].firstChild.className).toEqual(
+      'fa Additional Interest'
+    );
+    baseAiFields.forEach(field => {
+      checkLabel(getByTestId, field);
+      checkTextInput(getByTestId, field);
+    });
+  });
 
-  //   fireEvent.click(getByText('Additional Interest'));
-  //   expect(getAllByText('Additional Interest')[1].firstChild.className).toEqual(
-  //     'fa Additional Interest'
-  //   );
-  //   baseAiFields.forEach(field => {
-  //     checkLabel(getByTestId, field);
-  //     checkTextInput(getByTestId, field);
-  //   });
-  // });
+  it('POS:Premium Finance Modal Testing', () => {
+    const { getByText, getAllByText, getByTestId } = renderWithForm(
+      <QuoteWorkflow {...props} />
+    );
 
-  // it('POS:Premium Finance Modal Testing', () => {
-  //   const { getByText, getAllByText, getByTestId } = renderWithForm(
-  //     <QuoteWorkflow {...props} />
-  //   );
+    openAndCloseModal(getByTestId, 'premiumFinance');
 
-  //   openAndCloseModal(getByText, 'Premium Finance');
+    fireEvent.click(getByTestId('premiumFinance'));
+    expect(getAllByText('Premium Finance')[1].firstChild.className).toEqual(
+      'fa Premium Finance'
+    );
+    mortgageeFields.forEach(field => {
+      checkLabel(getByTestId, field);
+      checkTextInput(getByTestId, field);
+    });
+    checkLabel(getByTestId, {
+      dataTest: 'premiumFinance',
+      label: 'Top Premium Finance'
+    });
+  });
 
-  //   fireEvent.click(getByText('Premium Finance'));
-  //   expect(getAllByText('Premium Finance')[1].firstChild.className).toEqual(
-  //     'fa Premium Finance'
-  //   );
-  //   mortgageeFields.forEach(field => {
-  //     checkLabel(getByTestId, field);
-  //     checkTextInput(getByTestId, field);
-  //   });
-  //   checkLabel(getByTestId, {
-  //     dataTest: 'premiumFinance',
-  //     label: 'Top Premium Finance'
-  //   });
-  // });
+  it('POS:Bill Payer Modal Testing', () => {
+    const { getByText, getAllByText, getByTestId } = renderWithForm(
+      <QuoteWorkflow {...props} />
+    );
 
-  // it('POS:Bill Payer Modal Testing', () => {
-  //   const { getByText, getAllByText, getByTestId } = renderWithForm(
-  //     <QuoteWorkflow {...props} />
-  //   );
+    openAndCloseModal(getByTestId, 'billPayer');
 
-  //   openAndCloseModal(getByText, 'Bill Payer');
+    fireEvent.click(getByTestId('billPayer'));
+    expect(getAllByText('Bill Payer')[1].firstChild.className).toEqual(
+      'fa Bill Payer'
+    );
+    baseAiFields.forEach(field => {
+      checkLabel(getByTestId, field);
+      checkTextInput(getByTestId, field);
+    });
+  });
 
-  //   fireEvent.click(getByText('Bill Payer'));
-  //   expect(getAllByText('Bill Payer')[1].firstChild.className).toEqual(
-  //     'fa Bill Payer'
-  //   );
-  //   baseAiFields.forEach(field => {
-  //     checkLabel(getByTestId, field);
-  //     checkTextInput(getByTestId, field);
-  //   });
-  // });
+  it('POS:Confirm Additional Interests Show Up In Order and Disable Buttons [Premium Finance]', () => {
+    const newProps = {
+      ...props,
+      quote: {
+        ...props.quote,
+        additionalInterests: [
+          // Intentionally give a messed up order...
+          { ...additionalInterest, order: 0, type: 'Premium Finance' },
+          { ...additionalInterest, order: 1, type: 'Additional Interest' },
+          { ...additionalInterest, order: 2, type: 'Mortgagee' },
+          { ...additionalInterest, order: 1, type: 'Additional Insured' },
+          { ...additionalInterest, order: 0, type: 'Mortgagee' },
+          { ...additionalInterest, order: 1, type: 'Mortgagee' },
+          { ...additionalInterest, order: 0, type: 'Additional Interest' },
+          { ...additionalInterest, order: 0, type: 'Additional Insured' }
+        ]
+      }
+    };
 
-  // it('POS:Confirm Additional Interests Show Up In Order and Disable Buttons [Premium Finance]', () => {
-  //   const newProps = {
-  //     ...props,
-  //     quote: {
-  //       ...props.quote,
-  //       additionalInterests: [
-  //         // Intentionally give a messed up order...
-  //         { ...additionalInterest, order: 0, type: 'Premium Finance' },
-  //         { ...additionalInterest, order: 1, type: 'Additional Interest' },
-  //         { ...additionalInterest, order: 2, type: 'Mortgagee' },
-  //         { ...additionalInterest, order: 1, type: 'Additional Insured' },
-  //         { ...additionalInterest, order: 0, type: 'Mortgagee' },
-  //         { ...additionalInterest, order: 1, type: 'Mortgagee' },
-  //         { ...additionalInterest, order: 0, type: 'Additional Interest' },
-  //         { ...additionalInterest, order: 0, type: 'Additional Insured' }
-  //       ]
-  //     }
-  //   };
+    const expectedLabels = [
+      'Mortgagee 1',
+      'Mortgagee 2',
+      'Mortgagee 3',
+      'Additional Insured 1',
+      'Additional Insured 2',
+      'Additional Interest 1',
+      'Additional Interest 2',
+      'Premium Finance 1'
+    ];
 
-  //   const expectedLabels = [
-  //     'Mortgagee 1',
-  //     'Mortgagee 2',
-  //     'Mortgagee 3',
-  //     'Additional Insured 1',
-  //     'Additional Insured 2',
-  //     'Additional Interest 1',
-  //     'Additional Interest 2',
-  //     'Premium Finance 1'
-  //   ];
+    const { getByText } = renderWithForm(<QuoteWorkflow {...newProps} />);
 
-  //   const { getByText } = renderWithForm(<QuoteWorkflow {...newProps} />);
+    // ...so we know the UI will still organize and sort them correctly, in order
+    const labelTexts = document.querySelectorAll(
+      '.results.result-cards li.card .card-icon label'
+    );
+    labelTexts.forEach((label, i) =>
+      expect(label.textContent).toEqual(expectedLabels[i])
+    );
+    // Check our buttons are all disabled
+    expect(getByText('Mortgagee')).toBeDisabled();
+    expect(getByText('Additional Insured')).toBeDisabled();
+    expect(getByText('Additional Interest')).toBeDisabled();
+    expect(getByText('Premium Finance')).toBeDisabled();
+    expect(getByText('Bill Payer')).toBeDisabled();
+  });
 
-  //   // ...so we know the UI will still organize and sort them correctly, in order
-  //   const labelTexts = document.querySelectorAll(
-  //     '.results.result-cards li.card .card-icon label'
-  //   );
-  //   labelTexts.forEach((label, i) =>
-  //     expect(label.textContent).toEqual(expectedLabels[i])
-  //   );
-  //   // Check our buttons are all disabled
-  //   expect(getByText('Mortgagee')).toBeDisabled();
-  //   expect(getByText('Additional Insured')).toBeDisabled();
-  //   expect(getByText('Additional Interest')).toBeDisabled();
-  //   expect(getByText('Premium Finance')).toBeDisabled();
-  //   expect(getByText('Bill Payer')).toBeDisabled();
-  // });
+  // This test is identical to the one above it except it uses a bill payer
+  it('POS:Confirm Additional Interests Show Up In Order and Disable Buttons [Bill Payer]', () => {
+    const newProps = {
+      ...props,
+      quote: {
+        ...props.quote,
+        additionalInterests: [
+          { ...additionalInterest, order: 0, type: 'Bill Payer' },
+          { ...additionalInterest, order: 1, type: 'Additional Interest' },
+          { ...additionalInterest, order: 2, type: 'Mortgagee' },
+          { ...additionalInterest, order: 1, type: 'Additional Insured' },
+          { ...additionalInterest, order: 0, type: 'Mortgagee' },
+          { ...additionalInterest, order: 1, type: 'Mortgagee' },
+          { ...additionalInterest, order: 0, type: 'Additional Interest' },
+          { ...additionalInterest, order: 0, type: 'Additional Insured' }
+        ]
+      }
+    };
 
-  // // This test is identical to the one above it except it uses a bill payer
-  // it('POS:Confirm Additional Interests Show Up In Order and Disable Buttons [Bill Payer]', () => {
-  //   const newProps = {
-  //     ...props,
-  //     quote: {
-  //       ...props.quote,
-  //       additionalInterests: [
-  //         { ...additionalInterest, order: 0, type: 'Bill Payer' },
-  //         { ...additionalInterest, order: 1, type: 'Additional Interest' },
-  //         { ...additionalInterest, order: 2, type: 'Mortgagee' },
-  //         { ...additionalInterest, order: 1, type: 'Additional Insured' },
-  //         { ...additionalInterest, order: 0, type: 'Mortgagee' },
-  //         { ...additionalInterest, order: 1, type: 'Mortgagee' },
-  //         { ...additionalInterest, order: 0, type: 'Additional Interest' },
-  //         { ...additionalInterest, order: 0, type: 'Additional Insured' }
-  //       ]
-  //     }
-  //   };
+    const expectedLabels = [
+      'Mortgagee 1',
+      'Mortgagee 2',
+      'Mortgagee 3',
+      'Additional Insured 1',
+      'Additional Insured 2',
+      'Additional Interest 1',
+      'Additional Interest 2',
+      'Bill Payer 1'
+    ];
 
-  //   const expectedLabels = [
-  //     'Mortgagee 1',
-  //     'Mortgagee 2',
-  //     'Mortgagee 3',
-  //     'Additional Insured 1',
-  //     'Additional Insured 2',
-  //     'Additional Interest 1',
-  //     'Additional Interest 2',
-  //     'Bill Payer 1'
-  //   ];
+    const { getByText } = renderWithForm(<QuoteWorkflow {...newProps} />);
+    const labelTexts = document.querySelectorAll(
+      '.results.result-cards li.card .card-icon label'
+    );
+    labelTexts.forEach((label, i) =>
+      expect(label.textContent).toEqual(expectedLabels[i])
+    );
+    expect(getByText('Mortgagee')).toBeDisabled();
+    expect(getByText('Additional Insured')).toBeDisabled();
+    expect(getByText('Additional Interest')).toBeDisabled();
+    expect(getByText('Premium Finance')).toBeDisabled();
+    expect(getByText('Bill Payer')).toBeDisabled();
+  });
 
-  //   const { getByText } = renderWithForm(<QuoteWorkflow {...newProps} />);
-  //   const labelTexts = document.querySelectorAll(
-  //     '.results.result-cards li.card .card-icon label'
-  //   );
-  //   labelTexts.forEach((label, i) =>
-  //     expect(label.textContent).toEqual(expectedLabels[i])
-  //   );
-  //   expect(getByText('Mortgagee')).toBeDisabled();
-  //   expect(getByText('Additional Insured')).toBeDisabled();
-  //   expect(getByText('Additional Interest')).toBeDisabled();
-  //   expect(getByText('Premium Finance')).toBeDisabled();
-  //   expect(getByText('Bill Payer')).toBeDisabled();
-  // });
-
-  // it('POS:All buttons disabled when editingDisabled is true', () => {
-  //   const newProps = {
-  //     ...props,
-  //     quote: {
-  //       ...props.quote,
-  //       editingDisabled: true
-  //     }
-  //   };
-  //   const { getByText } = renderWithForm(<QuoteWorkflow {...newProps} />);
-  //   // Check our buttons are all disabled
-  //   expect(getByText('Mortgagee')).toBeDisabled();
-  //   expect(getByText('Additional Insured')).toBeDisabled();
-  //   expect(getByText('Additional Interest')).toBeDisabled();
-  //   expect(getByText('Premium Finance')).toBeDisabled();
-  //   expect(getByText('Bill Payer')).toBeDisabled();
-  // });
+  it('POS:All buttons disabled when editingDisabled is true', () => {
+    const newProps = {
+      ...props,
+      quote: {
+        ...props.quote,
+        editingDisabled: true
+      }
+    };
+    const { getByText } = renderWithForm(<QuoteWorkflow {...newProps} />);
+    // Check our buttons are all disabled
+    expect(getByText('Mortgagee')).toBeDisabled();
+    expect(getByText('Additional Insured')).toBeDisabled();
+    expect(getByText('Additional Interest')).toBeDisabled();
+    expect(getByText('Premium Finance')).toBeDisabled();
+    expect(getByText('Bill Payer')).toBeDisabled();
+  });
 });
