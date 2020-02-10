@@ -136,7 +136,9 @@ describe('Quote Search Testing', () => {
       <SearchForm {...props} />
     );
     selectFields.forEach(field => checkSelect(getByTestId, field));
-    textFields.forEach(field => checkTextInput(getByPlaceholderText, field));
+    textFields.forEach(field =>
+      expect(getByPlaceholderText(field.placeholderText))
+    );
   });
 
   it('POS:Quote Search Button', () => {
