@@ -34,8 +34,9 @@ describe('Application Testing', () => {
 
   it('POS:Tests button', () => {
     const { getByText } = renderWithForm(<QuoteWorkflow {...props} />);
-
-    checkButton(getByText, { text: 'Send To Docusign' });
+    expect(getByText('Send To Docusign').textContent).toMatch(
+      /Send To Docusign/
+    );
   });
 
   it('POS:Congratulations Modal Testing', async () => {
@@ -112,7 +113,7 @@ describe('Application Testing', () => {
       )
     );
 
-    checkButton(getByText, { text: 'Cancel' });
-    checkButton(getByText, { text: 'Send', type: 'submit' });
+    expect(getByTestId('modal-cancel'));
+    expect(getByTestId('modal-submit'));
   });
 });
