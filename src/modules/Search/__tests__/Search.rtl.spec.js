@@ -61,7 +61,6 @@ describe('Testing Policy Search Component', () => {
         checkTextInput(getByTestId, field);
         checkLabel(getByTestId, field);
       });
-    checkButton(getByText, { text: 'Search', type: 'submit' });
     expect(getByText('Search').getAttribute('type')).toEqual('submit');
   });
 });
