@@ -11,6 +11,6 @@ export default () =>
     .goToNav('additionalInterests')
     .wait(20000)
     .reload()
-    .checkQuoteState('Application Sent DocuSign')
+    .checkQuoteState('Policy Issued')
     .wrap(aiButtons)
     .each(button => cy.get(`[data-test=${button}]`).should('be.disabled'));

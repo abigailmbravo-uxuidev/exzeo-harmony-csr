@@ -11,7 +11,9 @@ import {
   fillOutApplication,
   navigateThroughDocusign,
   sendQuote,
-  changeBillTo
+  changeBillTo,
+  searchPolicy,
+  searchQoute
 } from '../../helpers';
 import {
   coverageRatingTest,
@@ -62,7 +64,9 @@ describe('Base Path - AF3', () => {
       );
     } else {
       navigateThroughDocusign();
-      afterDocuSignTest();
+      searchQoute();
+      searchPolicy();
+      // afterDocuSignTest();
     }
   });
 });

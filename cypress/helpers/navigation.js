@@ -1,6 +1,6 @@
 // Functions used to navigate each tab of the app
 // import { envelopeIdCheck } from '../../helpers/requests';
-import { envelopeIdCheck } from '../helpers';
+import { envelopeIdCheck, manualBindPolicy } from '../helpers';
 import {
   user,
   pH1,
@@ -121,9 +121,8 @@ export const fillOutAdditionalInterests = (additionalInterests = addInsured) =>
     .findDataTag('ai-modal-submit')
     .click({ force: true });
 
-export const fillOutMailingBilling = () =>
-  cy
-    .task('log', 'Filling out Mailing Billing')
+export const fillOutMailingBilling = () => {
+  cy.task('log', 'Filling out Mailing Billing')
     .goToNav('billing')
     .findDataTag('sameAsPropertyAddress')
     .click('left')
@@ -136,7 +135,9 @@ export const fillOutMailingBilling = () =>
     .then(({ response }) => {
       // TODO we need to assert something about this response, preferably the quoteInputState like we do in the other tests.
       expect(response.body.status).to.equal(200);
+      cy.wrap(response.body.result.quoteNumber).as('quoteNumber');
     });
+};
 
 export const fillOutNotesFiles = () =>
   cy.task('log', 'Filling out Notes and Files').goToNav('notes');
@@ -179,4 +180,66 @@ export const navigateThroughDocusign = () =>
       envelopeIdCheck(quoteNumber, apiUrl, token).then(response => {
         expect(response.body.result.envelopeId).to.not.be.empty;
       });
+      manualBindPolicy(quoteNumber, apiUrl, token).then(response => {
+        cy.wrap(response.body.result.transaction.policyNumber).as(
+          'policyNumber'
+        );
+      });
     });
+
+export const searchPolicy = () => {
+  cy.task('log', 'Searching for the Policy')
+    .get('#logo')
+    .click()
+    .findDataTag('searchType')
+    .select('policy');
+  cy.get('@policyNumber').then(polNum => {
+    cy.findDataTag('policyNumber')
+      .type(polNum)
+      .clickSubmit()
+      .wait('@fetchPolicies')
+      .then(({ response }) => {
+        expect(response.body.totalNumberOfRecords).to.equal(1);
+      });
+    cy.get('.policy-no')
+      .invoke('text')
+      .then(number => {
+        expect(number).to.include(polNum);
+      });
+  });
+};
+
+export const searchQoute = () => {
+  cy.task('log', 'Searching for the Quote')
+    .get('#logo')
+    .click()
+    .findDataTag('searchType')
+    .select('quote');
+  cy.get('@quoteNumber').then(quoteNum => {
+    cy.findDataTag('quoteNumber')
+      .type(quoteNum)
+      .clickSubmit()
+      .wait('@fetchQuotes')
+      .then(({ response }) => {
+        expect(response.body.result.totalNumberOfRecords).to.equal(1);
+      });
+    cy.get('.quote-no')
+      .invoke('text')
+      .then(number => {
+        expect(number).to.include(quoteNum);
+      });
+  });
+};
+
+export const veriFyDiary = () => {
+  cy.task('log', 'Navigate throough Diary verification')
+    .get('@diaryText')
+    .then(diaryText => {
+      cy.goToNav('notes')
+        .get('button')
+        .contains('Diaries')
+        .click()
+        .get('td[class="message"]')
+        .should('have.text', diaryText);
+    });
+};

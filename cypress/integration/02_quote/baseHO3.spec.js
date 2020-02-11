@@ -11,7 +11,10 @@ import {
   fillOutApplication,
   navigateThroughDocusign,
   sendQuote,
-  changeBillTo
+  changeBillTo,
+  searchPolicy,
+  searchQoute,
+  veriFyDiary
 } from '../../helpers';
 import {
   coverageRatingTest,
@@ -62,7 +65,9 @@ describe('Base Path', () => {
       );
     } else {
       navigateThroughDocusign();
-      afterDocuSignTest();
+      veriFyDiary();
+      searchQoute();
+      searchPolicy();
     }
   });
 });

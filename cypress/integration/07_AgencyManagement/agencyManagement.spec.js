@@ -72,7 +72,7 @@ describe('Agency Management testing', () => {
         .type(ADD_AGENCY.customerServiceEmailAddress);
     });
 
-    cy.findDataTag('agency-mailing-address')
+    cy.findDataTag('agency-address-section')
       .scrollIntoView()
       .should('be.visible')
       .within(() => {
@@ -129,7 +129,7 @@ describe('Agency Management testing', () => {
           .type(ADD_AGENCY.contact.primaryPhoneNumberExtension);
       });
 
-    cy.findDataTag('agent-of-record').within(() => {
+    cy.findDataTag('agency-mailing-address').within(() => {
       cy.findDataTag('agentFirstName')
         .type('Cypress')
         .findDataTag('agentLastName')
