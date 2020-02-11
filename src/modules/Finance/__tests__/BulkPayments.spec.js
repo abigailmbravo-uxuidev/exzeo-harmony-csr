@@ -90,27 +90,43 @@ describe('BulkPayments testing', () => {
       target: { value: 'Paper Deposit' }
     });
 
+    await wait(() => {
+      expect(getByLabelText('Cash Type')).toHaveTextContent('Paper Deposit');
+    });
+
     fireEvent.change(await getByLabelText('Payment Description'), {
       target: { value: 'Payment Transfer' }
+    });
+
+    await wait(() => {
+      expect(getByLabelText('Payment Description')).toHaveTextContent(
+        'Payment Transfer'
+      );
     });
 
     fireEvent.change(getByLabelText('Batch Number'), {
       target: { value: `${initialBatchNumber}99` }
     });
 
-    expect(getByText(/start/i)).toBeEnabled();
+    await wait(() => {
+      expect(getByText(/start/i)).toBeEnabled();
+    });
+
     fireEvent.click(getByText(/start/i));
 
-    expect(getByText(/start/i)).toBeDisabled();
-    expect(getByText(/stop/i)).toBeEnabled();
+    await wait(() => {
+      expect(getByText(/start/i)).toBeDisabled();
+      expect(getByText(/stop/i)).toBeEnabled();
+    });
 
     fireEvent.change(getByLabelText('Policy Number'), {
       target: { value: '12-0000000-01' }
     });
 
-    getByLabelText('Policy Number').focus();
-
-    getByLabelText('Policy Number').blur();
+    await wait(() => {
+      getByLabelText('Policy Number').focus();
+      getByLabelText('Policy Number').blur();
+    });
 
     expect(
       await waitForElement(() => [
