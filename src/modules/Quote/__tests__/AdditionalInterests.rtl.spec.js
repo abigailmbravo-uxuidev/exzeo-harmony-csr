@@ -1,5 +1,5 @@
 import React from 'react';
-import { fireEvent, wait } from '@testing-library/react';
+import { fireEvent, wait, within } from '@testing-library/react';
 
 import {
   renderWithForm,
@@ -191,29 +191,24 @@ describe('Additional Interest Testing', () => {
     );
   });
 
-  it('NEG:Mortgagee Empty Testing', () => {
-    const { getByText, getByTestId } = renderWithForm(
-      <QuoteWorkflow {...props} />
-    );
+  it('NEG:Mortgagee Empty Testing', async () => {
+    const { getByTestId } = renderWithForm(<QuoteWorkflow {...props} />);
 
-    const openAndCloseModal = async (getByText, modal) => {
-      fireEvent.click(getByText(modal));
-      await wait(() => {
-        expect(document.querySelector('modal').toBeInTheDocument());
-        expect(
-          document.querySelector(`card.AdditionalInterestModal.${modal}`)
-        ).toBeInTheDocument();
-      });
-      fireEvent.click(getByText('cancel'));
-      await wait(() => expect(document.querySelector('modal')).toBeNull());
-    };
+    fireEvent.click(getByTestId('mortgagee'));
+    await wait(() => {
+      getByTestId('modal');
+    });
 
-    openAndCloseModal(getByTestId, 'mortgagee');
-    fireEvent.click(getByTestId('ai-modal-submit'));
+    expect(getByTestId('modal-header')).toHaveTextContent('Mortgagee');
+    const { getByText: getByTextInsideModal } = within(getByTestId('modal'));
 
-    expect(getByTestId('name1_error'));
+    fireEvent.click(getByTextInsideModal('save'));
 
-    fireEvent.click(getByTestId('ai-modal-submit'));
+    await wait(() => {
+      getByTestId('name1_error');
+    });
+
+    expect(getByTestId('name1_error')).toHaveTextContent('Field Required');
 
     baseRequiredFields.forEach(fieldToLeaveBlank =>
       verifyForm(
@@ -225,44 +220,124 @@ describe('Additional Interest Testing', () => {
     );
   });
 
-  it('NEG:Mortgagee Invalid Input Testing', () => {
+  it('NEG:Mortgagee Invalid Input Testing', async () => {
     const { getByText, getByTestId } = renderWithForm(
       <QuoteWorkflow {...props} />
     );
     fireEvent.click(getByText('Mortgagee'));
 
-    verifyForm(
-      getByTestId,
-      [
-        {
-          ...stateField,
-          value: 'abc',
-          error: 'Only 2 letters allowed'
-        }
-      ],
-      [],
-      'ai-modal-submit'
-    );
-    verifyForm(
-      getByTestId,
-      [
-        {
-          ...zipField,
-          value: '1234567890',
-          error: 'Only 5 numbers allowed'
-        }
-      ],
-      [],
-      'ai-modal-submit'
+    await wait(() => {
+      verifyForm(
+        getByTestId,
+        [
+          {
+            ...stateField,
+            value: 'abc',
+            error: 'Only 2 letters allowed'
+          }
+        ],
+        [],
+        'ai-modal-submit'
+      );
+      verifyForm(
+        getByTestId,
+        [
+          {
+            ...zipField,
+            value: '1234567890',
+            error: 'Only 5 numbers allowed'
+          }
+        ],
+        [],
+        'ai-modal-submit'
+      );
+    });
+  });
+
+  it('NEG:Additional Insured Empty Testing', async () => {
+    const { getByTestId } = renderWithForm(<QuoteWorkflow {...props} />);
+
+    fireEvent.click(getByTestId('additionalInsured'));
+    await wait(() => {
+      getByTestId('modal');
+    });
+
+    expect(getByTestId('modal-header')).toHaveTextContent('Additional Insured');
+    const { getByText: getByTextInsideModal } = within(getByTestId('modal'));
+
+    fireEvent.click(getByTextInsideModal('save'));
+
+    await wait(() => {
+      getByTestId('name1_error');
+    });
+
+    expect(getByTestId('name1_error')).toHaveTextContent('Field Required');
+
+    baseRequiredFields.forEach(fieldToLeaveBlank =>
+      verifyForm(
+        getByTestId,
+        baseRequiredFields,
+        [fieldToLeaveBlank],
+        'ai-modal-submit'
+      )
     );
   });
 
-  it('NEG:Additional Insured Empty Testing', () => {
+  it('NEG:Additional Insured Invalid Input Testing', async () => {
     const { getByText, getByTestId } = renderWithForm(
       <QuoteWorkflow {...props} />
     );
     fireEvent.click(getByText('Additional Insured'));
 
+    await wait(() => {
+      verifyForm(
+        getByTestId,
+        [
+          {
+            ...stateField,
+            value: 'abc',
+            error: 'Only 2 letters allowed'
+          }
+        ],
+        [],
+        'ai-modal-submit'
+      );
+      verifyForm(
+        getByTestId,
+        [
+          {
+            ...zipField,
+            value: '1234567890',
+            error: 'Only 5 numbers allowed'
+          }
+        ],
+        [],
+        'ai-modal-submit'
+      );
+    });
+  });
+
+  it('NEG:Additional Interest Empty Testing', async () => {
+    const { getByTestId } = renderWithForm(<QuoteWorkflow {...props} />);
+
+    fireEvent.click(getByTestId('additionalInterest'));
+    await wait(() => {
+      getByTestId('modal');
+    });
+
+    expect(getByTestId('modal-header')).toHaveTextContent(
+      'Additional Interest'
+    );
+    const { getByText: getByTextInsideModal } = within(getByTestId('modal'));
+
+    fireEvent.click(getByTextInsideModal('save'));
+
+    await wait(() => {
+      getByTestId('name1_error');
+    });
+
+    expect(getByTestId('name1_error')).toHaveTextContent('Field Required');
+
     baseRequiredFields.forEach(fieldToLeaveBlank =>
       verifyForm(
         getByTestId,
@@ -273,44 +348,59 @@ describe('Additional Interest Testing', () => {
     );
   });
 
-  it('NEG:Additional Insured Invalid Input Testing', () => {
-    const { getByText, getByTestId } = renderWithForm(
-      <QuoteWorkflow {...props} />
-    );
-    fireEvent.click(getByText('Additional Insured'));
-
-    verifyForm(
-      getByTestId,
-      [
-        {
-          ...stateField,
-          value: 'abc',
-          error: 'Only 2 letters allowed'
-        }
-      ],
-      [],
-      'ai-modal-submit'
-    );
-    verifyForm(
-      getByTestId,
-      [
-        {
-          ...zipField,
-          value: '1234567890',
-          error: 'Only 5 numbers allowed'
-        }
-      ],
-      [],
-      'ai-modal-submit'
-    );
-  });
-
-  it('NEG:Additional Interest Empty Testing', () => {
+  it('NEG:Additional Interest Invalid Input Testing', async () => {
     const { getByText, getByTestId } = renderWithForm(
       <QuoteWorkflow {...props} />
     );
     fireEvent.click(getByText('Additional Interest'));
 
+    await wait(() => {
+      verifyForm(
+        getByTestId,
+        [
+          {
+            ...stateField,
+            value: 'abc',
+            error: 'Only 2 letters allowed'
+          }
+        ],
+        [],
+        'ai-modal-submit'
+      );
+      verifyForm(
+        getByTestId,
+        [
+          {
+            ...zipField,
+            value: '1234567890',
+            error: 'Only 5 numbers allowed'
+          }
+        ],
+        [],
+        'ai-modal-submit'
+      );
+    });
+  });
+
+  it('NEG:Premium Finance Empty Testing', async () => {
+    const { getByTestId } = renderWithForm(<QuoteWorkflow {...props} />);
+
+    fireEvent.click(getByTestId('premiumFinance'));
+    await wait(() => {
+      getByTestId('modal');
+    });
+
+    expect(getByTestId('modal-header')).toHaveTextContent('Premium Finance');
+    const { getByText: getByTextInsideModal } = within(getByTestId('modal'));
+
+    fireEvent.click(getByTextInsideModal('save'));
+
+    await wait(() => {
+      getByTestId('name1_error');
+    });
+
+    expect(getByTestId('name1_error')).toHaveTextContent('Field Required');
+
     baseRequiredFields.forEach(fieldToLeaveBlank =>
       verifyForm(
         getByTestId,
@@ -321,44 +411,59 @@ describe('Additional Interest Testing', () => {
     );
   });
 
-  it('NEG:Additional Interest Invalid Input Testing', () => {
-    const { getByText, getByTestId } = renderWithForm(
-      <QuoteWorkflow {...props} />
-    );
-    fireEvent.click(getByText('Additional Interest'));
-
-    verifyForm(
-      getByTestId,
-      [
-        {
-          ...stateField,
-          value: 'abc',
-          error: 'Only 2 letters allowed'
-        }
-      ],
-      [],
-      'ai-modal-submit'
-    );
-    verifyForm(
-      getByTestId,
-      [
-        {
-          ...zipField,
-          value: '1234567890',
-          error: 'Only 5 numbers allowed'
-        }
-      ],
-      [],
-      'ai-modal-submit'
-    );
-  });
-
-  it('NEG:Premium Finance Empty Testing', () => {
+  it('NEG:Premium Finance Invalid Input Testing', async () => {
     const { getByText, getByTestId } = renderWithForm(
       <QuoteWorkflow {...props} />
     );
     fireEvent.click(getByText('Premium Finance'));
 
+    await wait(() => {
+      verifyForm(
+        getByTestId,
+        [
+          {
+            ...stateField,
+            value: 'abc',
+            error: 'Only 2 letters allowed'
+          }
+        ],
+        [],
+        'ai-modal-submit'
+      );
+      verifyForm(
+        getByTestId,
+        [
+          {
+            ...zipField,
+            value: '1234567890',
+            error: 'Only 5 numbers allowed'
+          }
+        ],
+        [],
+        'ai-modal-submit'
+      );
+    });
+  });
+
+  it('NEG:Bill Payer Empty Testing', async () => {
+    const { getByTestId } = renderWithForm(<QuoteWorkflow {...props} />);
+
+    fireEvent.click(getByTestId('billPayer'));
+    await wait(() => {
+      getByTestId('modal');
+    });
+
+    expect(getByTestId('modal-header')).toHaveTextContent('Bill Payer');
+    const { getByText: getByTextInsideModal } = within(getByTestId('modal'));
+
+    fireEvent.click(getByTextInsideModal('save'));
+
+    await wait(() => {
+      getByTestId('name1_error');
+    });
+
+    expect(getByTestId('name1_error')).toHaveTextContent('Field Required');
+
     baseRequiredFields.forEach(fieldToLeaveBlank =>
       verifyForm(
         getByTestId,
@@ -369,84 +474,38 @@ describe('Additional Interest Testing', () => {
     );
   });
 
-  it('NEG:Premium Finance Invalid Input Testing', () => {
-    const { getByText, getByTestId } = renderWithForm(
-      <QuoteWorkflow {...props} />
-    );
-    fireEvent.click(getByText('Premium Finance'));
-
-    verifyForm(
-      getByTestId,
-      [
-        {
-          ...stateField,
-          value: 'abc',
-          error: 'Only 2 letters allowed'
-        }
-      ],
-      [],
-      'ai-modal-submit'
-    );
-    verifyForm(
-      getByTestId,
-      [
-        {
-          ...zipField,
-          value: '1234567890',
-          error: 'Only 5 numbers allowed'
-        }
-      ],
-      [],
-      'ai-modal-submit'
-    );
-  });
-
-  it('NEG:Bill Payer Empty Testing', () => {
+  it('NEG:Bill Payer Invalid Input Testing', async () => {
     const { getByText, getByTestId } = renderWithForm(
       <QuoteWorkflow {...props} />
     );
     fireEvent.click(getByText('Bill Payer'));
 
-    baseRequiredFields.forEach(fieldToLeaveBlank =>
+    await wait(() => {
       verifyForm(
         getByTestId,
-        baseRequiredFields,
-        [fieldToLeaveBlank],
+        [
+          {
+            ...stateField,
+            value: 'abc',
+            error: 'Only 2 letters allowed'
+          }
+        ],
+        [],
         'ai-modal-submit'
-      )
-    );
-  });
-
-  it('NEG:Bill Payer Invalid Input Testing', () => {
-    const { getByText, getByTestId } = renderWithForm(
-      <QuoteWorkflow {...props} />
-    );
-    fireEvent.click(getByText('Bill Payer'));
-
-    verifyForm(
-      getByTestId,
-      [
-        {
-          ...stateField,
-          value: 'abc',
-          error: 'Only 2 letters allowed'
-        }
-      ],
-      [],
-      'ai-modal-submit'
-    );
-    verifyForm(
-      getByTestId,
-      [
-        {
-          ...zipField,
-          value: '1234567890',
-          error: 'Only 5 numbers allowed'
-        }
-      ],
-      [],
-      'ai-modal-submit'
-    );
+      );
+      verifyForm(
+        getByTestId,
+        [
+          {
+            ...zipField,
+            value: '1234567890',
+            error: 'Only 5 numbers allowed'
+          }
+        ],
+        [],
+        'ai-modal-submit'
+      );
+    });
   });
 
   it('POS:Checks Header and Buttons', () => {
