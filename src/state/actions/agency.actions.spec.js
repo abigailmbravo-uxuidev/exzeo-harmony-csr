@@ -5,7 +5,7 @@ import { http as axios } from '@exzeo/core-ui';
 import MockAdapter from 'axios-mock-adapter';
 
 import * as serviceRunner from '@exzeo/core-ui/src/@Harmony/Domain/Api/serviceRunner';
-import mockAgency from '../../modules/Agency/mockAgency';
+import { mockAgency } from '../../test-utils/fixtures/agency';
 
 import * as agencyActions from './agency.actions';
 import * as types from './actionTypes';
@@ -300,9 +300,10 @@ describe('Test Agency Actions', () => {
     });
 
     return agencyActions
-      .updateAgent({ agentCode: 123, agencies: [] }, mockAgency.ag)(
-        store.dispatch
-      )
+      .updateAgent(
+        { agentCode: 123, agencies: [] },
+        mockAgency.ag
+      )(store.dispatch)
       .then(() => {
         expect(store.getActions()[0].type).toEqual(types.APP_ERROR);
       });
@@ -330,7 +331,10 @@ describe('Test Agency Actions', () => {
     agencyActions.getAgentList(store.dispatch);
 
     return agencyActions
-      .getAgentList('TTIC', 'FL')(store.dispatch)
+      .getAgentList(
+        'TTIC',
+        'FL'
+      )(store.dispatch)
       .then(() => {
         expect(store.getActions()[0].type).toEqual(types.SET_AGENTS_LIST);
       });

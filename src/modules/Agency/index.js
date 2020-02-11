@@ -163,17 +163,14 @@ const mapStateToProps = state => ({
   territoryManagers: state.questions.territoryManagers
 });
 
-export default connect(
-  mapStateToProps,
-  {
-    getAgency,
-    getAgentList,
-    getAgentListByAgencyCode,
-    getAgentsByAgencyCode,
-    getListOfOrphanedAgents,
-    getTerritoryManagers,
-    searchSettingsByCSPAndZip,
-    getLists,
-    getPoliciesForAgency
-  }
-)(Agency);
+export default connect(mapStateToProps, {
+  getAgency,
+  getAgentList,
+  getAgentListByAgencyCode,
+  getAgentsByAgencyCode,
+  getListOfOrphanedAgents,
+  getTerritoryManagers,
+  searchSettingsByCSPAndZip,
+  getLists,
+  getPoliciesForAgency
+})(Agency);

@@ -1,21 +1,37 @@
-import React, { Component } from 'react';
-import { FieldArray, FormSection } from 'redux-form';
-import { Button } from '@exzeo/core-ui';
+import React, { useState } from 'react';
+
+import {
+  Button,
+  Form,
+  arrayMutators,
+  FieldArray,
+  Loader
+} from '@exzeo/core-ui';
 import { Redirect } from 'react-router-dom';
 
-import ExistingAgentModal from '../components/ExistingAgentModal';
-import License from '../components/License';
-import Agent from '../components/FormGroup/Agent';
-import Contact from '../components/FormGroup/Contact';
-import AgencyDetails from '../components/FormGroup/AgencyDetails';
-import Footer from '../../../components/Common/Footer';
-import AddressGroup from '../components/AddressGroup';
+import ExistingAgentModal from './ExistingAgentModal';
+import License from './License';
+import Agent from './Agent';
+import Contact from './Contact';
+import AgencyDetails from './AgencyDetails';
+import AddressGroup from './AddressGroup';
+import { AppFooter } from '@exzeo/core-ui/src/@Harmony';
 
-export class Create extends Component {
-  state = {
-    showAddExistingAgentModal: false
-  };
-  createAgency = async (data, dispatch, props) => {
+export const Create = ({
+  listAnswersAsKey,
+  licenseValue,
+  agency,
+  orphans,
+  initialValues,
+  listOfZipCodes,
+  createAgency
+}) => {
+  const [formInstance, setFormInstance] = useState(null);
+  const [showAddExistingAgentModal, setShowAddExistingAgentModal] = useState(
+    false
+  );
+
+  const createNewAgency = async data => {
     data.agentOfRecord.status = 'Active';
     data.mailingAddress.country = {
       code: 'USA',
@@ -23,191 +39,178 @@ export class Create extends Component {
     };
     data.physicalAddress.country = data.mailingAddress.country;
     data.agentOfRecord.mailingAddress = data.mailingAddress;
-    await this.props.createAgency(data);
+    await createAgency(data);
   };
 
-  handleToggleExistingAgentModal = () => {
-    this.setState({
-      showAddExistingAgentModal: !this.state.showAddExistingAgentModal
-    });
+  const handleToggleExistingAgentModal = form => {
+    setFormInstance(form);
+    setShowAddExistingAgentModal(!showAddExistingAgentModal);
   };
 
-  // TODO : Move to utilities
-  handleSameAsMailing = (value, previousValue, allValues) => {
-    const { change } = this.props;
-    const { mailingAddress } = allValues;
-    if (!mailingAddress) return value;
-    if (value) {
-      change('physicalAddress.address1', mailingAddress.address1);
-      change('physicalAddress.address2', mailingAddress.address2);
-      change('physicalAddress.city', mailingAddress.city);
-      change('physicalAddress.state', mailingAddress.state);
-      change('physicalAddress.zip', mailingAddress.zip);
-    } else {
-      change('physicalAddress.address1', '');
-      change('physicalAddress.address2', '');
-      change('physicalAddress.city', '');
-      change('physicalAddress.state', '');
-      change('physicalAddress.zip', '');
-    }
-    return value;
-  };
-
-  handleResetForm = () => {
-    this.props.reset();
+  const handleResetForm = () => {
     window.close();
   };
 
   // TODO : Move to utilities
-  applyOrphanedAgent = data => {
-    const { change, orphans } = this.props;
+  const applyOrphanedAgent = data => {
+    const { change, batch } = formInstance;
+
     const { selectedAgentCode } = data;
     const selectedAgent = orphans.filter(
       a => String(a.agentCode) === String(selectedAgentCode)
     )[0];
-    change('agentOfRecord.firstName', selectedAgent.firstName);
-    change('agentOfRecord.lastName', selectedAgent.lastName);
-    change(
-      'agentOfRecord.primaryPhoneNumber',
-      selectedAgent.primaryPhoneNumber
-    );
-    change(
-      'agentOfRecord.secondaryPhoneNumber',
-      selectedAgent.secondaryPhoneNumber
-    );
-    change('agentOfRecord.faxNumber', selectedAgent.faxNumber);
-    change('agentOfRecord.emailAddress', selectedAgent.emailAddress);
-    change('agentOfRecord.agentCode', selectedAgent.agentCode);
 
-    this.handleToggleExistingAgentModal();
+    batch(() => {
+      change('agentOfRecord.firstName', selectedAgent.firstName);
+      change('agentOfRecord.lastName', selectedAgent.lastName);
+      change(
+        'agentOfRecord.primaryPhoneNumber',
+        selectedAgent.primaryPhoneNumber
+      );
+      change(
+        'agentOfRecord.primaryPhoneNumberExtension',
+        selectedAgent.primaryPhoneNumberExtension
+      );
+      change(
+        'agentOfRecord.secondaryPhoneNumber',
+        selectedAgent.secondaryPhoneNumber
+      );
+      change('agentOfRecord.faxNumber', selectedAgent.faxNumber);
+      change('agentOfRecord.emailAddress', selectedAgent.emailAddress);
+      change('agentOfRecord.agentCode', selectedAgent.agentCode);
+    });
+
+    handleToggleExistingAgentModal();
   };
 
-  render() {
-    const {
-      handleSubmit,
-      licenseValue,
-      sameAsMailingValue,
-      sameAsMailingAORValue,
-      submitting,
-      pristine,
-      change,
-      agency,
-      orphans,
-      listAnswersAsKey
-    } = this.props;
+  if (agency && agency.agencyCode && agency.agencyCode !== 'new')
+    return <Redirect replace to={`/agency/${agency.agencyCode}/0/contracts`} />;
 
-    return (
-      <div className="route-content-wrapper">
-        <div className="route-content">
-          <div className="scroll">
-            <div className="form-group survey-wrapper" role="group">
-              <form
-                id="createAgency"
-                onSubmit={handleSubmit(this.createAgency)}
-              >
-                {agency && agency.agencyCode && agency.agencyCode !== 'new' && (
-                  <Redirect
-                    replace
-                    to={`/agency/${agency.agencyCode}/0/overview`}
-                  />
-                )}
-                <h3>Details</h3>
-                <section className="agency-details" data-test="agency-details">
-                  <AgencyDetails />
-                </section>
-                <h3>Address</h3>
-                <AddressGroup
-                  sameAsMailingValue={sameAsMailingValue}
-                  changeField={change}
-                  dataTest="agency"
-                  isAgency
-                  showCounty
-                />
-                <h3>Officer</h3>
-                <section
-                  className="agency-principal"
-                  data-test="agency-principal"
-                >
-                  <FormSection name="principal">
-                    <Contact />
-                  </FormSection>
-                </section>
-                <h3>Contact</h3>
-                <section className="agency-contact" data-test="agency-contact">
-                  <FormSection name="contact">
-                    <Contact showTitle />
-                  </FormSection>
-                </section>
-                <h3>
-                  Agent Of Record
-                  <button
-                    onClick={this.handleToggleExistingAgentModal}
-                    type="button"
-                    className="btn btn-link btn-sm"
-                  >
-                    <i className="fa fa-user" />
-                    Use Existing Agent
-                  </button>
-                </h3>
-                <section className="agency-aor" data-test="agent-of-record">
-                  <div className="agent-of-record">
-                    <FormSection name="agentOfRecord">
-                      <Agent />
+  return (
+    <div className="route-content-wrapper">
+      <Form
+        keepDirtyOnReinitialize
+        initialValues={initialValues}
+        onSubmit={createNewAgency}
+        mutators={{
+          ...arrayMutators
+        }}
+        subscription={{ submitting: true, pristine: true }}
+      >
+        {({ form, handleSubmit, submitting, pristine }) => (
+          <React.Fragment>
+            {submitting && <Loader />}
+            <div className="route-content">
+              <div className="scroll">
+                <div className="form-group survey-wrapper" role="group">
+                  <form id="createAgency" onSubmit={handleSubmit}>
+                    <h3>Details</h3>
+                    <section
+                      className="agency-details"
+                      data-test="agency-details"
+                    >
+                      <AgencyDetails />
+                    </section>
+                    <h3>Address</h3>
+                    <section
+                      data-test="agency-address-section"
+                      className="agency-address"
+                    >
                       <AddressGroup
-                        parentFormGroup="agentOfRecord"
-                        sameAsMailingValue={sameAsMailingAORValue}
-                        changeField={change}
-                        dataTest="aor"
-                        isOptional
+                        mailingAddressPrefix="mailingAddress"
+                        physicalAddressPrefix="physicalAddress"
+                        showTerritoryManager
+                        listAnswersAsKey={listAnswersAsKey}
                       />
-                    </FormSection>
-                  </div>
-                  <div className="agency-license">
-                    <FieldArray
-                      stateAnswers={listAnswersAsKey.US_states}
-                      name="agentOfRecord.licenses"
-                      component={License}
-                      licenseValue={licenseValue}
-                      isAgency
-                    />
-                  </div>
-                </section>
-              </form>
+                    </section>
+                    <h3>Officer</h3>
+                    <section
+                      className="agency-principal"
+                      data-test="agency-principal"
+                    >
+                      <Contact fieldPrefix="principal" />
+                    </section>
+                    <h3>Contact</h3>
+                    <section
+                      className="agency-contact"
+                      data-test="agency-contact"
+                    >
+                      <Contact fieldPrefix="contact" showTitle />
+                    </section>
+                    <h3>
+                      Agent Of Record
+                      <button
+                        onClick={() => handleToggleExistingAgentModal(form)}
+                        type="button"
+                        className="btn btn-link btn-sm"
+                      >
+                        <i className="fa fa-user" />
+                        Use Existing Agent
+                      </button>
+                    </h3>
+                    <section className="agency-aor" data-test="agent-of-record">
+                      <div className="agent-of-record">
+                        <Agent fieldPrefix="agentOfRecord" />
+                        <section
+                          data-test="aor-address-section"
+                          className="agency-address"
+                        >
+                          <AddressGroup
+                            mailingAddressPrefix="agentOfRecord.mailingAddress"
+                            physicalAddressPrefix="agentOfRecord.physicalAddress"
+                            listOfZipCodes={listOfZipCodes}
+                            listAnswersAsKey={listAnswersAsKey}
+                          />
+                        </section>
+                      </div>
+                      <div className="agency-license">
+                        <FieldArray
+                          stateAnswers={listAnswersAsKey.US_states}
+                          name="agentOfRecord.licenses"
+                          component={License}
+                          licenseValue={licenseValue}
+                          isAgency
+                        />
+                      </div>
+                    </section>
+                  </form>
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
-        <div className="basic-footer btn-footer">
-          <Footer />
-          <div className="btn-wrapper">
-            <Button
-              className={Button.constants.classNames.secondary}
-              data-test="resetButton"
-              onClick={this.handleResetForm}
-            >
-              Cancel
-            </Button>
-            <Button
-              className={Button.constants.classNames.primary}
-              form="createAgency"
-              data-test="submitButton"
-              type="submit"
-              disabled={submitting || pristine}
-            >
-              Save
-            </Button>
-          </div>
-        </div>
-        {this.state.showAddExistingAgentModal && (
-          <ExistingAgentModal
-            listOfAgents={orphans}
-            onToggleModal={this.handleToggleExistingAgentModal}
-            handleSelection={this.applyOrphanedAgent}
-            header="Exisiting Agent"
-          />
+            <div className="basic-footer btn-footer">
+              <AppFooter />
+              <div className="btn-wrapper">
+                <Button
+                  className={Button.constants.classNames.secondary}
+                  data-test="resetButton"
+                  onClick={handleResetForm}
+                >
+                  Cancel
+                </Button>
+                <Button
+                  className={Button.constants.classNames.primary}
+                  form="createAgency"
+                  data-test="submitButton"
+                  type="submit"
+                  disabled={submitting || pristine}
+                >
+                  Save
+                </Button>
+              </div>
+            </div>
+          </React.Fragment>
         )}
-      </div>
-    );
-  }
-}
+      </Form>
+      {showAddExistingAgentModal && (
+        <ExistingAgentModal
+          listOfAgents={orphans}
+          onToggleModal={handleToggleExistingAgentModal}
+          handleSelection={applyOrphanedAgent}
+          header="Exisiting Agent"
+        />
+      )}
+    </div>
+  );
+};
 
 export default Create;

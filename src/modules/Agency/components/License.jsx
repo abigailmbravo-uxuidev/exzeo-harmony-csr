@@ -1,8 +1,8 @@
 import React from 'react';
-import { Field } from 'redux-form';
 import { Input, Select, validation } from '@exzeo/core-ui';
 
 import { LICENSE_TYPE } from '../../../constants/agency';
+import { Field } from 'redux-form';
 
 const License = ({ fields, isAgency, stateAnswers }) => {
   return (

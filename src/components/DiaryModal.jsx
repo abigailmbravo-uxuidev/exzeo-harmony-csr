@@ -189,7 +189,7 @@ export class DiaryModal extends Component {
                                 defaultData.assignee === 'CURRENT_USER'
                               ) {
                                 onChange(userId);
-                              } else {
+                              } else if (defaultData) {
                                 const selectedAssignee = assigneeAnswers.find(
                                   u =>
                                     String(u.label) ===
@@ -216,6 +216,7 @@ export class DiaryModal extends Component {
                                 r => r.answer === value
                               );
 
+                              if (!defaultData) return;
                               const { offset, path } = defaultData.dueDate;
                               const dateString =
                                 path === 'default'

@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import {
   Field,
   OnChangeListener,
@@ -19,11 +20,23 @@ const CancelType = ({ initialValues, options }) => {
     initialValues.summaryLedger.effectiveDate,
     options.zipCodeSettings
   );
+
+  const effectiveDatePlus20 = effectiveDate.clone().add(20, 'd');
+  const effectiveDatePlus45 = effectiveDate.clone().add(45, 'd');
+  const effectiveDatePlus90 = effectiveDate.clone().add(90, 'd');
+
+  const currentDatePlus20 = now.clone().add(20, 'd');
+  const currentDatePlus45 = now.clone().add(45, 'd');
+
   const notice = effectiveDate.isAfter(now) ? effectiveDate : now;
   const endDate = date.convertDateToTimeZone(
     initialValues.endDate,
     options.zipCodeSettings
   );
+
+  const getMax = (a, b) => (a.isAfter(b) ? a : b);
+
+  const { product, policyTerm } = initialValues;
 
   return (
     <React.Fragment>
@@ -58,26 +71,16 @@ const CancelType = ({ initialValues, options }) => {
         {({ input: { onChange } }) => (
           <OnChangeListener name="cancel.cancelType">
             {function(value) {
-              if (
-                value === UNDERWRITING_CANCELLATION &&
-                effectiveDate
-                  .clone()
-                  .add(90, 'days')
-                  .isAfter(now)
-              ) {
-                onChange(
-                  notice
-                    .clone()
-                    .add(20, 'days')
-                    .format('YYYY-MM-DD')
-                );
-              } else if (value === UNDERWRITING_CANCELLATION) {
-                onChange(
-                  now
-                    .clone()
-                    .add(120, 'days')
-                    .format('YYYY-MM-DD')
-                );
+              if (value === UNDERWRITING_CANCELLATION) {
+                const uwEffectiveDate =
+                  policyTerm > 1 || now.isAfter(effectiveDatePlus90)
+                    ? now.clone().add(120, 'd')
+                    : product === 'AF3' &&
+                      now.isSameOrBefore(effectiveDatePlus90)
+                    ? getMax(effectiveDatePlus45, currentDatePlus45)
+                    : getMax(effectiveDatePlus20, currentDatePlus20);
+
+                onChange(uwEffectiveDate.format('YYYY-MM-DD'));
               } else if (value === VOLUNTARY_CANCELLATION) {
                 onChange(notice.format('YYYY-MM-DD'));
               } else if (value === UNDERWRITING_NON_RENEWAL) {
@@ -89,6 +92,11 @@ const CancelType = ({ initialValues, options }) => {
       </Field>
     </React.Fragment>
   );
+};
+
+CancelType.propTypes = {
+  initialValues: PropTypes.object.isRequired,
+  options: PropTypes.object.isRequired
 };
 
 export default CancelType;

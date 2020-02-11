@@ -30,9 +30,15 @@ const BulkPayments = ({ errorHandler }) => {
   const [batch, setBatch] = useState({ valid: false, values: {} });
   const { cashTypes } = useFetchPaymentOptions(errorHandler);
 
+  const paymentDescriptions = [
+    { answer: 'Payment Received', label: 'Payment Received' },
+    { answer: 'Payment Transfer', label: 'Payment Transfer' }
+  ];
+
   const initialValues = {
     batchNumber: date.currentDay('YYYYMMDD'),
     cashDate: date.toUTC().format('YYYY-MM-DD'),
+    description: paymentDescriptions[0].answer,
     cashTypes
   };
 
@@ -106,6 +112,19 @@ const BulkPayments = ({ errorHandler }) => {
                         styleName="select view-col-2"
                         answers={cashTypes}
                         dataTest="cashType"
+                        disabled={active}
+                      />
+                    )}
+                  </Field>
+                  <Field name="description" validate={validation.isRequired}>
+                    {({ input, meta }) => (
+                      <Select
+                        input={input}
+                        meta={meta}
+                        label="Payment Description"
+                        styleName="select view-col-2"
+                        answers={paymentDescriptions}
+                        dataTest="paymentDescription"
                         disabled={active}
                       />
                     )}

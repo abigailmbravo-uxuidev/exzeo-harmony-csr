@@ -350,12 +350,17 @@ export function updateBillPlan(paymentPlan) {
 
 /**
  *
+ * @param { object } options
+ * @param {number} options.companyCode
+ * @param {string} options.state
+ * @param {string} options.product
+ * @param {string} options.effectiveDate
  * @returns {Function}
  */
-export function getCancelOptions() {
+export function getCancelOptions(options) {
   return async dispatch => {
     try {
-      const cancelOptions = await fetchCancelOptions();
+      const cancelOptions = await fetchCancelOptions(options);
       dispatch(setCancelOptions(cancelOptions));
     } catch (error) {
       dispatch(errorActions.setAppError(error));
@@ -589,13 +594,29 @@ export async function postUpdatedBillPlan(paymentPlan) {
 
 /**
  *
+ * @param {Object} options
+ * @param {number} options.companyCode
+ * @param {string} options.state
+ * @param {string} options.product
+ * @param {string} options.effectiveDate
  * @returns {Promise<Array>}
  */
-export async function fetchCancelOptions() {
+export async function fetchCancelOptions({
+  companyCode,
+  state,
+  product,
+  effectiveDate
+}) {
   const config = {
-    service: 'policy-data',
-    method: 'GET',
-    path: 'cancelOptions'
+    exchangeName: 'harmony',
+    routingKey: 'harmony.configuration.retrieveSettings',
+    data: {
+      companyCode,
+      state,
+      product,
+      effectiveDate,
+      keys: ['cancelReasons']
+    }
   };
 
   try {
@@ -603,8 +624,9 @@ export async function fetchCancelOptions() {
       config,
       'fetchCancelOptions'
     );
-    return response && response.data && response.data.cancelOptions
-      ? response.data.cancelOptions
+
+    return response && response.data && response.data.result
+      ? response.data.result[0].value
       : [];
   } catch (error) {
     throw error;
@@ -613,24 +635,25 @@ export async function fetchCancelOptions() {
 
 /**
  *
- * @param agencyCode
- * @param state
- * @param product
- * @param agentCode
- * @param policyNumber
+ * @param fields
+ * @param fields.agencyCode
+ * @param fields.state
+ * @param fields.product
+ * @param fields.agentCode
+ * @param fields.policyNumber
  * @returns {Promise<{}>}
  */
-export async function fetchPoliciesForAgency({
-  agencyCode = '',
-  state = 'FL',
-  product = 'HO3',
-  agentCode = '',
-  policyNumber = ''
-}) {
+export async function fetchPoliciesForAgency(fields) {
+  const query = encodeURI(
+    Object.keys(fields)
+      .map(key => `${key}=${fields[key]}`)
+      .join('&')
+  );
+
   const config = {
     service: 'policy-data',
     method: 'GET',
-    path: `/transactions?&companyCode=TTIC&state=${state}&product=${product}&agencyCode=${agencyCode}&agentCode=${agentCode}&policyNumber=${policyNumber}`
+    path: `/transactions?&companyCode=TTIC&${query}`
   };
 
   try {
@@ -660,15 +683,16 @@ export function getPoliciesForAgency({
   product,
   agentCode
 }) {
+  const queryFields = {
+    ...(policyNumber && { policyNumber }),
+    ...(agencyCode && { agencyCode }),
+    ...(product && { product }),
+    ...(agentCode && { agentCode }),
+    ...(state && { state })
+  };
   return async dispatch => {
     try {
-      const results = await fetchPoliciesForAgency({
-        policyNumber,
-        state,
-        product,
-        agentCode,
-        agencyCode
-      });
+      const results = await fetchPoliciesForAgency(queryFields);
       dispatch(setPoliciesForAgency(results.policies));
     } catch (error) {
       dispatch(errorActions.setAppError(error));
@@ -716,7 +740,6 @@ export function initializePolicyWorkflow(policyNumber) {
       const { summaryLedger, policy } = await dispatch(getPolicy(policyNumber));
       dispatch(getEffectiveDateChangeReasons());
       dispatch(getPaymentOptionsApplyPayments());
-      dispatch(getCancelOptions());
       dispatch(getEndorsementHistory(policyNumber));
       dispatch(
         getZipcodeSettings(
@@ -725,6 +748,15 @@ export function initializePolicyWorkflow(policyNumber) {
           policy.product,
           policy.property.physicalAddress.zip
         )
+      );
+
+      dispatch(
+        getCancelOptions({
+          companyCode: policy.companyCode,
+          state: policy.state,
+          product: policy.product,
+          effectiveDate: policy.effectiveDate
+        })
       );
 
       if (summaryLedger) {
@@ -809,6 +841,7 @@ export function updatePolicy({ data = {}, options = {} }) {
             options.zipCodeSettings.timezone
           ),
           cancelReason: data.cancel.cancelReason,
+          additionalReason: data.cancel.additionalReason,
           transactionType: `Pending ${data.cancel.cancelType}`,
           equityDate: date.formatToUTC(
             date.formatDate(data.cancel.equityDate, date.FORMATS.SECONDARY),

@@ -7,14 +7,12 @@ import {
 import { unQuestionsBAD } from '../../fixtures';
 
 describe('Underwriting Error Testing', () => {
-  before('Login and go to search', () => {
+  beforeEach('Set route aliases', () => {
     cy.login();
     setRouteAliases();
     navigateThroughNewQuote();
     fillOutCoverage();
   });
-
-  beforeEach('Set route aliases', () => setRouteAliases());
 
   it('Underwriting Error', () => {
     // Fill out underwriting with bad data.
@@ -24,6 +22,8 @@ describe('Underwriting Error Testing', () => {
       'contain',
       'Due to previous claims history, additional review is required.'
     );
+    // TODO find a better way to handle the fact that we need to 'wait' on network requests. We have put the 'wait' in 'fillOutUnderwriting' for now, since it is used in a lot of places. But in this one case, we never leave the page so the next time we use 'fillOutUnderwriting' it is waiting on a call to 'getZipCodeSettings' that doesn't happen and is not expected to happen.
+    cy.goToNav('coverage');
     // Give good data.
     fillOutUnderwriting();
     // Check that the error is gone.

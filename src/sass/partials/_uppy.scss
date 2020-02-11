@@ -29,26 +29,30 @@
 }
 @-webkit-keyframes zoomOutLeft {
   40% {
-    opacity: 1;
     transform: scale3d(0.475, 0.475, 0.475) translate3d(42px, 0, 0);
+
+    opacity: 1;
   }
 
   to {
-    opacity: 0;
     transform: scale(0.1) translate3d(-2000px, 0, 0);
     transform-origin: left center;
+
+    opacity: 0;
   }
 }
 @keyframes zoomOutLeft {
   40% {
-    opacity: 1;
     transform: scale3d(0.475, 0.475, 0.475) translate3d(42px, 0, 0);
+
+    opacity: 1;
   }
 
   to {
-    opacity: 0;
     transform: scale(0.1) translate3d(-2000px, 0, 0);
     transform-origin: left center;
+
+    opacity: 0;
   }
 }
 
@@ -81,6 +85,7 @@
 
 .uppy {
   box-sizing: border-box;
+
   font-family: $font-family-base;
   line-height: 1;
 
@@ -97,8 +102,10 @@
 .UppyIcon {
   display: inline-block;
   overflow: hidden;
+
   max-width: 100%;
   max-height: 100%;
+
   vertical-align: text-top;
 
   fill: currentColor;
@@ -112,16 +119,19 @@
 .UppyButton--circular {
   margin: 0;
   padding: 0;
+
+  cursor: pointer;
+  transition: all 0.3s;
+
+  color: inherit;
   border: 0;
   border-radius: 50%;
   background: none;
   box-shadow: 1px 2px 4px 0 rgba(0, 0, 0, 0.2);
-  color: inherit;
-  font-size: inherit;
+
   font-family: inherit;
+  font-size: inherit;
   line-height: 1;
-  cursor: pointer;
-  transition: all 0.3s;
 }
 
 .uppy-FileInput-container {
@@ -131,58 +141,68 @@
 .uppy-FileInput-btn {
   margin: 0;
   padding: 10px 15px;
+
+  cursor: pointer;
+
+  color: inherit;
+  color: #1b5dab;
   border: 0;
   border: 1px solid #1b5dab;
   border-radius: 8px;
   background: none;
-  color: inherit;
-  color: #1b5dab;
-  font-size: inherit;
-  font-size: 0.85em;
+
   font-family: inherit;
   font-family: sans-serif;
+  font-size: inherit;
+  font-size: 0.85em;
   line-height: 1;
-  cursor: pointer;
 
   &:hover {
-    background-color: #1b5dab;
     color: #fff;
+    background-color: #1b5dab;
   }
 }
 
 .uppy-Informer {
   position: absolute;
+  z-index: 1004;
   right: 0;
   bottom: 0;
   left: 0;
-  z-index: 1004;
+
   display: flex;
   align-items: center;
-  padding: 0 ($padding * 2);
+
   height: 4rem;
-  background-color: $warm-gray-01;
-  color: $white;
-  text-align: center;
-  font-weight: $font-weight-bold !important;
-  font-size: $font-size-base !important;
-  line-height: $line-height-base !important;
-  opacity: 1;
+  padding: 0 ($padding * 2);
+
   transform: none;
+  text-align: center;
+
+  opacity: 1;
+  color: $white;
+  background-color: $warm-gray-10;
+
+  font-size: $font-size-base !important;
+  font-weight: $font-weight-bold !important;
+  line-height: $line-height-base !important;
 
   @include transition(all 0.2s ease-in-out);
 }
 
 .uppy-Dashboard--wide .uppy-Informer {
   height: 4rem;
-  font-weight: $font-weight-bold !important;
+
   font-size: $font-size-base !important;
+  font-weight: $font-weight-bold !important;
   line-height: $line-height-base !important;
 }
 
 .uppy-Informer {
   &[aria-hidden='true'] {
-    opacity: 0;
     transform: translateY(200%);
+
+    opacity: 0;
 
     @include transition(all 0.2s ease-in-out);
   }
@@ -190,16 +210,18 @@
   p {
     display: flex;
     align-items: center;
-    font-weight: $font-weight-bold !important;
+
     font-size: $font-size-base !important;
+    font-weight: $font-weight-bold !important;
     line-height: $line-height-base !important;
   }
 }
 
 .uppy-Dashboard--wide .uppy-Informer p {
+  height: 3rem !important;
   margin: 0 !important;
   padding: 0 !important;
-  height: 3rem !important;
+
   font-weight: $font-weight-bold !important;
   line-height: $line-height-base !important;
 }
@@ -218,44 +240,51 @@
 
 .uppy-Dashboard-isOpen {
   overflow: hidden;
+
   height: 100vh;
 }
 
 .uppy-Dashboard--modal .uppy-Dashboard-overlay {
   position: fixed;
+  z-index: 1001;
   top: 0;
   right: 0;
   bottom: 0;
   left: 0;
-  z-index: 1001;
+
   background-color: rgba(255, 255, 255, 0.8);
 }
 
 .uppy-Dashboard-inner {
   position: relative;
+
   display: flex !important;
   overflow: hidden;
   flex-grow: 1 !important;
   flex-shrink: 1 !important;
-  min-height: 1rem !important;
-  max-width: 100%;
-  max-height: 100%;
+
   width: 100%;
+  max-width: 100%;
   height: auto !important;
-  outline: none;
+  min-height: 1rem !important;
+  max-height: 100%;
+
   border: 1px solid $warm-gray-06 !important;
+  outline: none;
   background-color: $white !important;
 
   .uppy-Dashboard-FileCard {
-    border-top: 1px dotted $warm-gray-10;
     padding: 0 $padding $padding;
+
+    border-top: 1px dotted $warm-gray-10;
     background: $warm-gray-03;
     .uppy-DashboardContent-bar {
-      background-color: transparent !important;
       border-bottom-width: 0 !important;
+      background-color: transparent !important;
 
       .uppy-DashboardContent-title {
         margin-left: 0;
+
         color: $warm-gray-10;
       }
     }
@@ -264,8 +293,9 @@
       display: flex;
       flex-wrap: wrap;
       .uppy-Dashboard-FileCard-preview {
-        background-color: $warm-gray-03 !important;
         margin-right: $padding;
+
+        background-color: $warm-gray-03 !important;
 
         img {
           width: auto;
@@ -281,24 +311,28 @@
             color: $warm-gray-10;
           }
           input {
-            font-weight: $font-weight-normal;
             font-size: $font-size-base;
+            font-weight: $font-weight-normal;
           }
         }
       }
 
       .uppy-Dashboard-FileCard-actions {
-        margin-top: $padding;
         display: flex;
-        flex-direction: row-reverse;
         align-items: center;
-        width: 100%;
+        flex-direction: row-reverse;
         justify-content: center;
+
+        width: 100%;
+        margin-top: $padding;
 
         button {
           text-transform: uppercase;
-          font-size: $font-size-xs;
+
           border: 1px solid $bright-blue-darken-04;
+
+          font-size: $font-size-xs;
+
           @include button-variant(
             $bright-blue-darken-04,
             $white,
@@ -306,12 +340,13 @@
           );
 
           &.uppy-c-btn-primary {
+            margin-left: $padding;
+
             @include button-variant(
               $white,
               $bright-blue-darken-04,
               $bright-blue-darken-04
             );
-            margin-left: $padding;
           }
         }
       }
@@ -327,23 +362,24 @@
   display: flex;
   overflow: hidden;
   flex-direction: column;
-  min-height: unset !important;
-  max-height: unset !important;
+
   width: 100%;
   height: auto !important;
+  min-height: unset !important;
+  max-height: unset !important;
 
   .uppy-DashboardAddFiles {
     display: flex;
+    flex-direction: column;
     flex-grow: 1;
     flex-shrink: 1;
-    flex-direction: column;
 
     .uppy-DashboardTabs {
-      flex-grow: 1;
-      flex-shrink: 1;
       display: flex;
       align-items: center;
       flex-direction: column;
+      flex-grow: 1;
+      flex-shrink: 1;
       justify-content: center;
     }
   }
@@ -353,6 +389,7 @@
   position: fixed;
   top: 0;
   left: 0;
+
   border: none;
 }
 
@@ -360,18 +397,23 @@
   position: absolute;
   top: 7px;
   right: 7px;
+
   display: none;
+
   margin: 0;
   padding: 0;
-  border: 0;
-  background: none;
-  color: inherit;
-  color: #858585;
-  font-size: inherit;
-  font-family: inherit;
-  line-height: 1;
+
   cursor: pointer;
   transition: all 0.2s;
+
+  color: inherit;
+  color: #858585;
+  border: 0;
+  background: none;
+
+  font-family: inherit;
+  font-size: inherit;
+  line-height: 1;
 
   &:hover {
     color: #4a90e2;
@@ -385,6 +427,7 @@
 
 .uppy-Dashboard--modal .uppy-Dashboard-close {
   z-index: 1005;
+
   display: block;
 }
 
@@ -401,13 +444,17 @@
   display: flex !important;
   align-items: center !important;
   justify-content: center;
+
+  height: 3rem !important;
   margin: 0;
   padding: 0;
-  height: 3rem !important;
-  color: $warm-gray-12 !important;
+
   text-align: center;
-  font-weight: $font-weight-normal !important;
+
+  color: $warm-gray-12 !important;
+
   font-size: $font-size-base !important;
+  font-weight: $font-weight-normal !important;
   line-height: $line-height-base !important;
 }
 
@@ -418,27 +465,32 @@
 
 .uppy-Dashboard-browse {
   display: inline-block;
+
   margin-left: $padding/2 !important;
   padding: 0 !important;
+
+  cursor: pointer;
+  user-select: none;
+  text-align: center;
+  vertical-align: middle;
+  white-space: nowrap;
+  text-transform: uppercase !important;
+
+  color: $bright-blue !important;
   border-width: 0 !important;
   border-radius: 0 !important;
   background-color: transparent !important;
-  color: $bright-blue !important;
-  vertical-align: middle;
-  text-align: center;
-  text-transform: uppercase !important;
-  white-space: nowrap;
-  font-weight: $btn-font-weight !important;
-  font-size: $font-size-base !important;
-  line-height: 1 !important;
-  cursor: pointer;
 
-  user-select: none;
+  font-size: $font-size-base !important;
+  font-weight: $btn-font-weight !important;
+  line-height: 1 !important;
+
   @include transition(all 0.2s ease-in-out);
   @include hover-focus {
+    text-decoration: none;
+
     border-bottom-width: 1px !important;
     border-bottom-color: $bright-blue-darken-04 !important;
-    text-decoration: none;
   }
 
   &:hover {
@@ -450,30 +502,36 @@
   display: flex;
   align-items: center;
   justify-content: center;
+
   margin: 0;
   padding: 0;
+
   list-style-type: none;
 }
 
 .uppy-DashboardTab {
   display: inline-block;
-  margin: 0;
+
   width: 70px;
+  margin: 0;
+
   text-align: center;
 }
 
 .uppy-Dashboard--wide .uppy-DashboardTab {
-  margin: 0 5px;
   width: 75px;
+  margin: 0 5px;
 }
 
 .uppy-DashboardTab-btn {
   width: 100%;
-  border: 0;
-  background-color: transparent;
-  color: #535353;
+
   cursor: pointer;
   transition: all 0.3s;
+
+  color: #535353;
+  border: 0;
+  background-color: transparent;
 
   &:active,
   &:focus,
@@ -484,12 +542,15 @@
 
 .uppy-DashboardTab-name {
   overflow-x: hidden;
+
   margin-top: 5px;
   margin-bottom: 0;
-  text-overflow: ellipsis;
+
   white-space: nowrap;
-  font-weight: normal;
+  text-overflow: ellipsis;
+
   font-size: 8px;
+  font-weight: normal;
 }
 
 .uppy-Dashboard--wide .uppy-DashboardTab-name {
@@ -499,23 +560,29 @@
 .uppy-Dashboard-input {
   position: absolute;
   z-index: -1;
+
   overflow: hidden;
+
   width: 0.1px;
   height: 0.1px;
+
   opacity: 0;
 }
 
 .uppy-DashboardContent-bar {
   position: relative !important;
+  z-index: 1004;
   top: auto !important;
   left: auto !important;
-  z-index: 1004;
+
   display: flex !important;
   align-items: center !important;
   flex-grow: 0 !important;
   flex-shrink: 0 !important;
+
   width: 100% !important;
   height: 3rem !important;
+
   border-bottom: 1px dotted $warm-gray-10 !important;
   background-color: $white !important;
 
@@ -525,8 +592,8 @@
 }
 
 .uppy-Dashboard--wide .uppy-DashboardContent-bar {
-  padding: 0 $padding !important;
   height: 3rem !important;
+  padding: 0 $padding !important;
 }
 
 .uppy-DashboardContent-title {
@@ -534,14 +601,18 @@
   top: auto;
   right: auto;
   left: auto;
+
   overflow-x: hidden;
-  margin: auto auto auto $padding;
+
   max-width: 100%;
+  margin: auto auto auto $padding;
+
   text-align: left;
-  text-overflow: ellipsis;
   white-space: nowrap;
-  font-weight: $font-weight-bold;
+  text-overflow: ellipsis;
+
   font-size: $font-size-base;
+  font-weight: $font-weight-bold;
   line-height: 1.5;
 
   span {
@@ -551,6 +622,7 @@
 
 .uppy-Dashboard--wide .uppy-DashboardContent-title {
   max-width: 100%;
+
   font-size: $font-size-base;
   line-height: 1.5;
 }
@@ -570,17 +642,21 @@
 
 .uppy-DashboardContent-panel {
   position: absolute;
+  z-index: 1004;
   top: 0;
   right: 0;
   bottom: 0;
   left: 0;
-  z-index: 1004;
+
   overflow: hidden;
+
   padding-top: 40px;
-  background-color: whitesmoke;
-  box-shadow: 0 0 10px 5px rgba(0, 0, 0, 0) !important;
+
   transition: transform 0.2s ease-in-out;
   transform: translateY(-105%);
+
+  background-color: whitesmoke;
+  box-shadow: 0 0 10px 5px rgba(0, 0, 0, 0) !important;
 
   will-change: transform;
 }
@@ -597,42 +673,49 @@
   position: absolute;
   bottom: 0;
   left: 0;
+
   width: 100%;
   height: 12%;
 }
 
 .uppy-Dashboard-progressBarContainer.is-active {
   position: absolute;
+  z-index: 1004;
   top: 0;
   left: 0;
-  z-index: 1004;
+
   width: 100%;
   height: 100%;
 }
 
 .uppy-Dashboard-next {
   position: absolute;
+  z-index: 1002;
   top: 0;
   left: 0;
-  z-index: 1002;
-  margin: 0;
-  padding: 0;
+
   width: 100%;
   height: 100%;
-  outline: none;
-  border: 0;
-  background: none;
-  background-color: rgba(147, 147, 147, 0.7);
-  color: #fff;
-  font-size: 14px;
-  font-family: inherit;
-  line-height: 1;
+  margin: 0;
+  padding: 0;
+
   cursor: not-allowed;
   transition: background-color 0.5s;
 
+  color: #fff;
+  border: 0;
+  outline: none;
+  background: none;
+  background-color: rgba(147, 147, 147, 0.7);
+
+  font-family: inherit;
+  font-size: 14px;
+  line-height: 1;
+
   &.is-active {
-    background-color: #4a90e2;
     cursor: pointer;
+
+    background-color: #4a90e2;
 
     &:hover {
       background-color: #1b5dab;
@@ -642,16 +725,19 @@
 
 .uppy-Dashboard-filesContainer {
   position: relative;
+
   display: flex !important;
   overflow-y: hidden;
   flex-direction: column;
   flex-grow: 1 !important;
   flex-shrink: 1 !important;
+
   margin: 0;
 
   &:after {
     display: table;
     clear: both;
+
     content: '';
   }
 }
@@ -663,13 +749,16 @@
   right: auto !important;
   bottom: auto !important;
   left: auto !important;
+
   display: flex !important;
   overflow-y: auto;
   flex-direction: column !important;
   flex-grow: 1 !important;
   flex-shrink: 1 !important;
+
   margin: 0 !important;
   padding: 0 !important;
+
   background: $white;
 }
 
@@ -681,19 +770,22 @@
   position: relative;
   .uppy-Dashboard-dropFilesHereHint {
     position: absolute;
+    z-index: 10000;
     top: 0;
     right: 0;
     bottom: 0;
     left: 0;
-    z-index: 10000;
+
     display: flex;
     align-items: center;
     justify-content: center;
+
+    color: $warm-gray-14;
     border: 3px dashed $bright-blue;
     background: rgba($white, 0.9) !important;
-    color: $warm-gray-14;
-    font-weight: $font-weight-bold;
+
     font-size: $font-size-h3;
+    font-weight: $font-weight-bold;
   }
   .uppy-Dashboard-innerWrap {
     background: rgba($bright-blue-lighten-04, 0.25) !important;
@@ -709,11 +801,14 @@
   position: absolute;
   top: 50%;
   left: 50%;
-  max-width: 100% !important;
+
   width: 100%;
-  opacity: 1 !important;
+  max-width: 100% !important;
+
   transition: all 0.3s;
   transform: translate(-50%, -50%);
+
+  opacity: 1 !important;
 }
 
 .uppy-Dashboard.drag .uppy-Dashboard-bgIcon {
@@ -722,10 +817,13 @@
 
 .uppy-Dashboard-dropFilesTitle {
   margin: 0;
-  color: $warm-gray-08 !important;
+
   text-align: center;
-  font-weight: normal;
+
+  color: $warm-gray-08 !important;
+
   font-size: $font-size-base !important;
+  font-weight: normal;
   line-height: $line-height-base;
 
   span {
@@ -741,8 +839,11 @@
 
 .uppy-Dashboard-note {
   margin-top: 20px;
-  color: #525252;
+
   text-align: center;
+
+  color: #525252;
+
   font-size: $font-size-base !important;
   line-height: 1.2;
 }
@@ -754,10 +855,12 @@
 .uppy-Dashboard--wide .uppy-DashboardItem {
   display: flex !important;
   flex-direction: row !important;
-  margin: 0 !important;
-  padding: 0 $padding !important;
+
   width: 100% !important;
   height: 4rem !important;
+  margin: 0 !important;
+  padding: 0 $padding !important;
+
   border: 0 !important;
   background-color: $white !important;
 
@@ -768,26 +871,33 @@
 
 .uppy-Dashboard-files .uppy-DashboardItem-preview {
   position: relative !important;
+
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
+
   width: 3rem !important;
   height: 3rem !important;
+
   border-bottom: 0 !important;
 }
 
 .uppy-Dashboard-files .uppy-Dashboard--wide .uppy-DashboardItem-preview {
   width: 3rem !important;
   height: 3rem !important;
+
   border: 0 !important;
 }
 
 .uppy-DashboardItem-sourceIcon {
   display: inline-block;
+
   width: 7px;
   height: 7px;
-  color: rgba(147, 147, 147, 0.6);
+
   vertical-align: middle;
+
+  color: rgba(147, 147, 147, 0.6);
 }
 
 .uppy-Dashboard--wide .uppy-DashboardItem-sourceIcon {
@@ -797,11 +907,13 @@
 
 .uppy-DashboardItem-previewInnerWrap {
   position: relative;
+
   display: flex;
   overflow: hidden;
   align-items: center;
   flex-direction: column;
   justify-content: center;
+
   width: 100%;
   height: 100%;
 }
@@ -813,14 +925,17 @@
 
 .uppy-DashboardItem-previewInnerWrap:after {
   position: absolute;
+  z-index: 1001;
   top: 0;
   right: 0;
   bottom: 0;
   left: 0;
-  z-index: 1001;
+
   display: none;
-  background-color: rgba(0, 0, 0, 0.65);
+
   content: '';
+
+  background-color: rgba(0, 0, 0, 0.65);
 }
 
 .uppy-DashboardItem-preview img {
@@ -832,45 +947,53 @@
 
 .uppy-DashboardItem-previewIconWrap {
   position: relative;
+
   height: 85%;
 }
 
 .uppy-DashboardItem-previewIconBg {
   height: 100%;
+
   filter: drop-shadow(rgba(0, 0, 0, 0.1) 0px 0px 1px);
 }
 
 .uppy-DashboardItem-previewIcon {
   position: absolute;
+  z-index: 100;
   top: 50%;
   left: 50%;
-  z-index: 100;
-  max-height: 55%;
+
   width: 25%;
+  max-height: 55%;
+
   transform: translate(-50%, -50%);
 }
 
 .uppy-Dashboard--wide .uppy-DashboardItem-previewIcon {
-  max-height: 80%;
   width: 40%;
+  max-height: 80%;
 }
 
 .uppy-DashboardItem-info {
   position: relative !important;
+
   display: flex !important;
   align-items: center !important;
-  padding: 0 1rem 0 $padding !important;
+
   max-width: 100% !important;
+  padding: 0 1rem 0 $padding !important;
 }
 
 .uppy-Dashboard--wide .uppy-DashboardItem-info {
   flex-basis: auto !important;
   flex-grow: 1 !important;
   flex-shrink: 1 !important;
-  padding: 0 1rem 0 $padding !important;
-  max-width: 100% !important;
+
   width: auto !important;
+  max-width: 100% !important;
   height: 3rem !important;
+  padding: 0 1rem 0 $padding !important;
+
   border-top: 0 !important;
 }
 
@@ -878,11 +1001,14 @@
   overflow: hidden;
   flex-grow: 1 !important;
   flex-shrink: 1 !important;
+
   margin: 0 !important;
   padding: 0;
+
   color: $warm-gray-14 !important;
-  font-weight: $font-weight-normal !important;
+
   font-size: $font-size-base !important;
+  font-weight: $font-weight-normal !important;
 }
 
 .uppy-Dashboard--wide .uppy-DashboardItem-name {
@@ -891,41 +1017,51 @@
 }
 
 .uppy-DashboardItem-name a {
-  color: #000;
   text-decoration: underline;
+
+  color: #000;
 }
 
 .uppy-DashboardItem-status {
   flex-grow: 0 !important;
   flex-shrink: 0 !important;
+
+  width: auto !important;
   margin: 0 !important;
   padding: 0 !important;
-  width: auto !important;
+
   color: $warm-gray-06 !important;
-  font-weight: normal !important;
+
   font-size: $font-size-xs !important;
+  font-weight: normal !important;
 }
 
 .uppy-DashboardItem-statusSize {
   display: inline-block;
+
   margin-right: 3px;
+
   vertical-align: bottom;
   text-transform: uppercase;
 }
 .uppy-u-reset.uppy-DashboardItem {
   position: relative !important;
+
   display: flex !important;
   align-items: center !important;
   flex-direction: row !important;
   flex-grow: 0 !important;
   flex-shrink: 0 !important;
-  margin: 0 !important;
-  padding: 0 $padding !important;
+
   width: 100% !important;
   height: 4rem !important;
+  margin: 0 !important;
+  padding: 0 $padding !important;
+
+  list-style: none !important;
+
   border: 0 !important;
   background-color: $white !important;
-  list-style: none !important;
 
   &:nth-of-type(even) {
     background-color: $warm-gray-01 !important;
@@ -940,6 +1076,7 @@
       align-items: center;
       flex-grow: 1;
       flex-shrink: 1;
+
       padding: $padding;
     }
 
@@ -950,20 +1087,25 @@
         position: relative !important;
         top: auto !important;
         right: auto !important;
+
         flex-grow: 0 !important;
         flex-shrink: 0 !important;
-        margin: 0 0 0 $padding !important;
-        padding: 0 !important;
+
         width: auto !important;
         height: 1rem;
+        margin: 0 0 0 $padding !important;
+        padding: 0 !important;
+
+        cursor: pointer;
+        text-align: left;
+
+        color: $warm-gray-10 !important;
         border: 0;
         background: none;
-        color: $warm-gray-10 !important;
-        text-align: left;
-        font-size: $font-size-base !important;
+
         font-family: inherit;
+        font-size: $font-size-base !important;
         line-height: 1;
-        cursor: pointer;
 
         svg {
           display: none !important;
@@ -973,14 +1115,16 @@
           &:before {
             width: 1rem;
             height: 1rem;
+
             content: '\f040';
-            font-family: $font-family-icon;
             transition: all 0.35 ease;
+
+            font-family: $font-family-icon;
           }
 
           &:hover {
-            background: rgba($white, 0.25) !important;
             color: $bright-blue !important;
+            background: rgba($white, 0.25) !important;
           }
         }
 
@@ -988,11 +1132,14 @@
           &:before {
             width: 1rem;
             height: 1rem;
+
+            content: '\f057';
+            transition: all 0.35 ease;
+
             border-radius: 50%;
             background: $white !important;
-            content: '\f057';
+
             font-family: $font-family-icon !important;
-            transition: all 0.35 ease;
           }
           &:hover {
             color: $red !important;
@@ -1008,30 +1155,37 @@
   position: relative !important;
   top: auto !important;
   right: auto !important;
+
   flex-grow: 0 !important;
   flex-shrink: 0 !important;
+
+  width: auto !important;
   margin: 0 !important;
   padding: 0 !important;
-  width: auto !important;
+
+  cursor: pointer;
+  text-align: left;
+
+  color: $warm-gray-10 !important;
   border: 0;
   background: none;
-  color: $warm-gray-10 !important;
-  text-align: left;
-  font-size: $font-size-base !important;
+
   font-family: inherit;
+  font-size: $font-size-base !important;
   line-height: 1;
-  cursor: pointer;
 
   &:before {
     width: 1rem;
     height: 1rem;
+
     content: '\f040';
+
     font-family: $font-family-icon;
   }
 
   &:hover {
-    background: rgba($white, 0.25) !important;
     color: $bright-blue !important;
+    background: rgba($white, 0.25) !important;
   }
 }
 
@@ -1052,26 +1206,32 @@
 .uppy-Dashboard--wide .uppy-DashboardItem-action,
 .uppy-DashboardItem-action {
   position: relative !important;
+  z-index: 1002 !important;
   top: auto !important;
   right: auto !important;
-  z-index: 1002 !important;
+
   transition: all 0.35 ease;
 
   .uppy-DashboardItem-remove {
     position: relative !important;
+
     display: flex !important;
     align-items: center !important;
     justify-content: center !important;
-    margin: 0 !important;
-    padding: 0 !important;
+
     width: 1rem !important;
     height: 1rem !important;
+    margin: 0 !important;
+    padding: 0 !important;
+
+    cursor: pointer !important;
+
+    color: $warm-gray-10 !important;
     border: 0 !important;
     border-radius: 50% !important;
     background: none !important;
-    color: $warm-gray-10 !important;
+
     line-height: 1 !important;
-    cursor: pointer !important;
 
     &:hover {
       color: $red !important;
@@ -1084,9 +1244,12 @@
     &:before {
       width: 1rem;
       height: 1rem;
+
+      content: '\f057';
+
       border-radius: 50%;
       background: $white !important;
-      content: '\f057';
+
       font-family: $font-family-icon !important;
     }
   }
@@ -1099,15 +1262,19 @@
 
 .uppy-DashboardItem-progress {
   position: absolute;
+  z-index: 1002;
   top: 50%;
   left: 50%;
-  z-index: 1002;
+
   display: none;
+
   width: 120px;
-  color: #fff;
-  text-align: center;
+
   transition: all 0.35 ease;
   transform: translate(-50%, -50%);
+  text-align: center;
+
+  color: #fff;
 }
 
 .uppy-DashboardItem {
@@ -1115,8 +1282,11 @@
     top: -9px;
     right: -8px;
     left: initial;
+
     display: block;
+
     width: auto;
+
     transform: initial;
   }
 
@@ -1127,19 +1297,22 @@
 }
 
 .uppy-DashboardItem-progressIndicator {
-  margin: 0;
-  padding: 0;
   width: 38px;
   height: 38px;
-  border: 0;
-  background: none;
-  color: inherit;
-  font-size: inherit;
-  font-family: inherit;
-  line-height: 1;
-  opacity: 0.9;
+  margin: 0;
+  padding: 0;
+
   cursor: pointer;
   transition: all 0.35s ease;
+
+  opacity: 0.9;
+  color: inherit;
+  border: 0;
+  background: none;
+
+  font-family: inherit;
+  font-size: inherit;
+  line-height: 1;
 
   &:focus,
   &:hover {
@@ -1160,15 +1333,16 @@
 .uppy-Dashboard--wide
   .uppy-DashboardItem.is-error
   .uppy-DashboardItem-progressIndicator {
-  margin: $padding;
-  padding: $padding/2;
   width: 2rem;
   height: 2rem;
+  margin: $padding;
+  padding: $padding/2;
 }
 
 .uppy-DashboardItem.is-complete .uppy-DashboardItem-progressIndicator {
   width: 18px;
   height: 18px;
+
   opacity: 1;
 }
 
@@ -1183,12 +1357,16 @@
   position: absolute;
   bottom: -10px;
   left: 0;
+
   display: none;
+
   width: 100%;
   height: 10px;
+
   text-shadow: 0 1px 0 rgba(0, 0, 0, 0.3);
-  font-weight: 500;
+
   font-size: 9px;
+  font-weight: 500;
   line-height: 1;
 }
 
@@ -1209,32 +1387,38 @@
   }
 
   .progress {
-    opacity: 0;
     transition: stroke-dashoffset 0.5s ease-out;
+
+    opacity: 0;
 
     stroke: #fff;
   }
 
   .play {
     display: none;
-    opacity: 0;
+
     transition: all 0.2s;
+
+    opacity: 0;
 
     stroke: #fff;
     fill: #fff;
   }
 
   .cancel {
-    opacity: 0;
     transition: all 0.2s;
+
+    opacity: 0;
 
     fill: #fff;
   }
 
   .pause {
     display: none;
-    opacity: 0;
+
     transition: all 0.2s;
+
+    opacity: 0;
 
     stroke: #fff;
     fill: #fff;
@@ -1257,8 +1441,9 @@
 }
 
 .UppyIcon-progressCircle .check {
-  opacity: 0;
   transition: all 0.2s;
+
+  opacity: 0;
 
   fill: $white;
 }
@@ -1318,23 +1503,29 @@
   position: absolute;
   top: 0;
   left: 0;
+
   height: 15px;
+
   background-color: #4a90e2;
 }
 
 .uppy-Dashboard--wide .uppy-Dashboard-actions,
 .uppy-Dashboard-actions {
   position: absolute;
+  z-index: 1002;
   right: 0;
   bottom: 0;
-  z-index: 1002;
+
   display: flex !important;
   flex-direction: row-reverse !important;
-  padding: 0 $padding !important;
+
   width: 70%;
   height: 3rem !important;
-  border-top: 1px dotted $warm-gray-10 !important;
+  padding: 0 $padding !important;
+
   text-align: center;
+
+  border-top: 1px dotted $warm-gray-10 !important;
 }
 
 .uppy-Dashboard-pauseResume .UppyIcon {
@@ -1344,6 +1535,7 @@
 
 .uppy-Dashboard-upload {
   position: relative;
+
   width: 4rem;
   height: 4rem;
 }
@@ -1356,6 +1548,7 @@
 .uppy-Dashboard-upload .UppyIcon {
   position: relative;
   top: 1px;
+
   width: 50%;
 }
 
@@ -1363,11 +1556,14 @@
   position: absolute;
   top: -12px;
   right: -12px;
+
   width: 16px;
   height: 16px;
+
+  color: #fff;
   border-radius: 50%;
   background-color: #7ac824;
-  color: #fff;
+
   font-size: 8px;
   line-height: 16px;
 }
@@ -1375,23 +1571,27 @@
 .uppy-Dashboard--wide .uppy-Dashboard-uploadCount {
   width: 18px;
   height: 18px;
+
   font-size: 9px;
   line-height: 18px;
 }
 
 .uppy-DashboardFileCard {
   position: absolute;
+  z-index: 1004;
   top: 0;
   right: 0;
   bottom: 0;
   left: 0;
-  z-index: 1004;
+
   width: 100%;
   height: 100%;
-  background-color: #fff;
-  box-shadow: 0 0 10px 4px rgba($black, 0.1);
+
   transition: all 0.25s ease-in-out;
   transform: translateY(0);
+
+  background-color: #fff;
+  box-shadow: 0 0 10px 4px rgba($black, 0.1);
 
   &[aria-hidden='true'] {
     transform: translateY(-105%);
@@ -1407,16 +1607,19 @@
 .uppy-DashboardFileCard-inner {
   display: flex !important;
   flex-direction: row !important;
-  padding-top: 0 !important;
+
   height: 100% !important;
+  padding-top: 0 !important;
 }
 
 .uppy-DashboardFileCard-preview {
   flex-grow: 0;
   flex-shrink: 0;
-  margin: 0;
+
   width: 30%;
   height: auto;
+  margin: 0;
+
   border-right: 1px dotted $warm-gray-10;
   border-bottom-width: 0 !important;
   background-color: $warm-gray-01;
@@ -1424,6 +1627,7 @@
   img {
     max-width: 90%;
     max-height: 90%;
+
     box-shadow: 0 3px 20px rgba($black, 0.15);
 
     object-fit: cover;
@@ -1434,27 +1638,33 @@
   overflow-y: auto;
   flex-grow: 1 !important;
   flex-shrink: 1 !important;
-  margin: 0;
-  padding: $padding !important;
-  max-height: 100% !important;
+
   width: 70%;
   height: auto;
+  max-height: 100% !important;
+  margin: 0;
+  padding: $padding !important;
 }
 
 .uppy-DashboardFileCard-fieldset {
   display: flex !important;
   flex-direction: column !important;
+
+  max-width: 100% !important;
   margin-bottom: 0 !important;
   padding: 0 !important;
-  max-width: 100% !important;
+
   border-width: 0 !important;
 }
 
 .uppy-DashboardFileCard-label {
   display: block !important;
-  margin-bottom: $padding !important;
+
   width: 100% !important;
+  margin-bottom: $padding !important;
+
   color: $warm-gray-08 !important;
+
   font-size: $font-size-base !important;
 }
 
@@ -1464,12 +1674,16 @@
 
 .uppy-DashboardFileCard-input {
   display: block !important;
+
+  width: 100% !important;
   margin: auto !important;
   padding-left: $padding !important;
-  width: 100% !important;
-  outline: inherit;
-  border: 1px solid $warm-gray-06 !important;
+
   vertical-align: middle !important;
+
+  border: 1px solid $warm-gray-06 !important;
+  outline: inherit;
+
   font-size: $font-size-base !important;
   line-height: $line-height-base !important;
 
@@ -1481,6 +1695,7 @@
 .uppy-DashboardFileCard-done {
   width: 3rem;
   height: 3rem;
+
   border-width: 1px;
   border-style: solid;
   box-shadow: 0 0 0 0 rgba($black, 0);
@@ -1493,8 +1708,9 @@
 
   &:before {
     content: '\f00c';
-    font-size: $font-size-h3;
+
     font-family: $font-family-icon;
+    font-size: $font-size-h3;
   }
 }
 
@@ -1511,7 +1727,9 @@
   .uppy-StatusBar {
     display: flex;
     align-items: center;
+
     height: 48px;
+
     font-size: 14px;
     line-height: 48px;
   }
@@ -1521,6 +1739,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
+
   border-radius: 7px;
   background-color: #fff;
 }
@@ -1528,14 +1747,16 @@
 .uppy-DragDrop-inner {
   margin: 0;
   padding: 80px 20px;
+
   text-align: center;
+
   line-height: 1.4;
 }
 
 .uppy-DragDrop-arrow {
-  margin-bottom: 17px;
   width: 60px;
   height: 60px;
+  margin-bottom: 17px;
 
   fill: #e0e0e0;
 }
@@ -1559,21 +1780,28 @@
 .uppy-DragDrop-input {
   position: absolute;
   z-index: -1;
+
   overflow: hidden;
+
   width: 0.1px;
   height: 0.1px;
+
   opacity: 0;
 }
 
 .uppy-DragDrop-label {
   display: block;
+
   margin-bottom: 5px;
-  font-size: 1.15em;
+
   cursor: pointer;
+
+  font-size: 1.15em;
 }
 
 .uppy-DragDrop-note {
   color: #adadad;
+
   font-size: 1em;
 }
 
@@ -1588,53 +1816,62 @@
   align-items: center;
   flex-flow: column wrap;
   justify-content: center;
+
   height: 100%;
 }
 
 .uppy-Provider-authTitle {
+  max-width: 500px;
   margin-bottom: 30px;
   padding: 0 15px;
-  max-width: 500px;
+
   text-align: center;
-  font-weight: 300;
+
   font-size: 22px;
+  font-weight: 300;
   line-height: 1.35;
 }
 
 .uppy-Provider-authBtn {
   margin: 0 0 20px;
   padding: 12px 46px;
+
+  cursor: pointer;
+  transition: background-color 0.3s;
+  text-decoration: none;
+
+  color: inherit;
+  color: #fff;
   border: 0;
   border-radius: 6px;
   background: none;
   background-color: #4a90e2;
-  color: inherit;
-  color: #fff;
-  text-decoration: none;
-  font-weight: 400;
+
+  font-family: inherit;
   font-size: inherit;
   font-size: 20px;
-  font-family: inherit;
+  font-weight: 400;
   line-height: 1;
-  cursor: pointer;
-  transition: background-color 0.3s;
 
   &:hover {
-    background-color: #2275d7;
     color: #fff;
+    background-color: #2275d7;
   }
 }
 
 .uppy-ProviderBrowser-userLogout {
   margin: 0 16px 0 0;
   padding: 0;
+
+  cursor: pointer;
+
+  color: inherit;
   border: 0;
   background: none;
-  color: inherit;
-  font-size: inherit;
+
   font-family: inherit;
+  font-size: inherit;
   line-height: 1;
-  cursor: pointer;
 
   &:hover {
     text-decoration: underline;
@@ -1643,26 +1880,34 @@
 
 .uppy-Provider-breadcrumbs {
   flex: 1;
+
   margin: 0 0 0 16px;
   padding: 0;
-  color: #000;
+
   list-style-type: none;
+
+  color: #000;
+
   font-size: 12px;
 }
 
 .uppy-ProviderBrowser-breadcrumbs span {
   margin-left: 32px;
+
   font-size: 16px;
 
   &.active {
     flex: 1;
+
     color: #525252;
+
     font-weight: 500;
   }
 }
 
 .uppy-ProviderBrowser-body {
   position: relative;
+
   flex: 1;
 }
 
@@ -1673,30 +1918,37 @@
   right: 0;
   bottom: 0;
   left: 0;
+
   display: block;
   overflow-x: hidden;
   overflow-y: auto;
   flex: 1;
-  margin: 0;
-  padding: 0;
+
   width: 100%;
   height: 100%;
+  margin: 0;
+  padding: 0;
+
   border-spacing: 0;
-  background-color: #fff;
   list-style: none;
+
+  background-color: #fff;
 }
 
 .uppy-ProviderBrowserItem-inner {
   margin: 0;
   padding: 0;
+
+  cursor: pointer;
+
+  color: inherit;
   border: 0;
   background: none;
-  color: inherit;
-  font-weight: 600;
-  font-size: inherit;
+
   font-family: inherit;
+  font-size: inherit;
+  font-weight: 600;
   line-height: 1;
-  cursor: pointer;
 }
 
 .uppy-ProviderBrowser-viewType--list {
@@ -1710,6 +1962,7 @@
 
   .uppy-ProviderBrowserItem-inner img {
     margin-right: 3px;
+
     vertical-align: text-top;
   }
 
@@ -1730,19 +1983,24 @@
     flex-direction: row;
     flex-wrap: wrap;
     justify-content: space-between;
+
     padding: 3px;
 
     &:after {
       flex: auto;
+
       content: '';
     }
   }
 
   .uppy-ProviderBrowserItem {
     position: relative;
+
     display: inline-block;
-    padding: 3px;
+
     width: 33.3333%;
+    padding: 3px;
+
     opacity: 0.9;
   }
 
@@ -1758,6 +2016,7 @@
   .uppy-ProviderBrowserItem img {
     width: 100%;
     height: 100%;
+
     vertical-align: middle;
   }
 
@@ -1765,6 +2024,7 @@
     position: absolute;
     top: 8px;
     right: 10px;
+
     margin-right: 0;
 
     label:before {
@@ -1785,9 +2045,10 @@
 
 .uppy-ProviderBrowser-doneBtn {
   position: absolute;
+  z-index: 1002;
   right: 16px;
   bottom: 16px;
-  z-index: 1002;
+
   width: 50px;
   height: 50px;
 }
@@ -1801,43 +2062,51 @@
   display: flex;
   align-items: center;
   justify-content: center;
+
   width: 100%;
   height: 100%;
 }
 
 .uppy-Url-input {
-  padding-left: 10px;
   width: 80%;
   height: 50px;
+  padding-left: 10px;
+
   border: 1px solid rgba($black, 0.5);
   border-right: 0;
+
   font-size: 15px;
 }
 
 .uppy-Url-importButton {
-  margin: 0;
-  padding: 12px;
   width: 100px;
   height: 50px;
+  margin: 0;
+  padding: 12px;
+
+  cursor: pointer;
+
+  color: inherit;
+  color: #fff;
   border: 0;
   background: none;
   background-color: #4a90e2;
-  color: inherit;
-  color: #fff;
+
+  font-family: inherit;
   font-size: inherit;
   font-size: 16px;
-  font-family: inherit;
   line-height: 1;
-  cursor: pointer;
 }
 
 .uppy-ProgressBar {
   position: absolute;
+  z-index: 10000;
   top: 0;
   left: 0;
-  z-index: 10000;
+
   width: 100%;
   height: 3px;
+
   transition: height 0.2s;
 
   &[aria-hidden='true'] {
@@ -1848,36 +2117,49 @@
 .uppy-ProgressBar-inner {
   width: 0;
   height: 100%;
+
+  transition: width 0.4s ease;
+
   background-color: #4a90e2;
   box-shadow: 0 0 10px rgba(74, 144, 226, 0.7);
-  transition: width 0.4s ease;
 }
 
 .uppy-ProgressBar-percentage {
   position: absolute;
   top: 50%;
   left: 50%;
+
   display: none;
-  color: #fff;
-  text-align: center;
+
   transform: translate(-50%, -50%);
+  text-align: center;
+
+  color: #fff;
 }
 
 .uppy-StatusBar {
   position: relative;
   z-index: 1001;
+
+  display: flex;
   overflow: hidden;
-  height: 30px;
+
+  height: 48px;
+
+  transition: height 0.2s;
+
+  color: #fff;
   background-color: $warm-gray-15;
   box-shadow: 1px 1px 4px 0 rgba(82, 82, 82, 0.3);
-  color: #fff;
-  font-weight: 500;
+
   font-size: 12px;
+  font-weight: 500;
   line-height: 30px;
-  transition: height 0.2s;
 
   &.is-uploading {
     .uppy-StatusBar-progress {
+      animation: statusBarProgressStripes 1s linear infinite;
+
       border-radius: 0 $border-radius $border-radius 0 !important;
       background-image: linear-gradient(
         45deg,
@@ -1891,12 +2173,12 @@
       );
       background-size: 4rem 4rem !important;
       box-shadow: 0 0 4rem rgba($black, 0.375) !important;
-      animation: statusBarProgressStripes 1s linear infinite;
     }
   }
 
   &[aria-hidden='true'] {
     overflow-y: hidden;
+
     height: 0;
   }
 
@@ -1910,24 +2192,31 @@
 
   &.is-complete .uppy-StatusBar-content {
     padding-left: 0;
+
     text-align: center;
   }
 
   &:not([aria-hidden='true']).is-waiting {
+    display: flex;
+
     height: 3rem !important;
+
     border-top: 1px dotted $warm-gray-08 !important;
     background-color: $white !important;
+
     line-height: 3rem !important;
-    display: flex;
   }
 }
 
 .uppy-StatusBar-progress {
   position: absolute;
   z-index: 1001;
+
   height: 100%;
-  background-color: $bright-blue-darken-02 !important;
+
   transition: background-color, width 0.3s ease-out;
+
+  background-color: $bright-blue-darken-02 !important;
 }
 
 .uppy-StatusBar.is-waiting .uppy-StatusBar-progress {
@@ -1954,18 +2243,27 @@
 
 .uppy-StatusBar-content {
   z-index: 1002;
-  align-items: flex-start !important;
-  flex-direction: column !important;
+
+  display: flex;
+  align-items: center !important;
+  flex-direction: row !important;
   flex-grow: 1 !important;
   flex-shrink: 1 !important;
   justify-content: center !important;
+
   padding-left: $padding !important;
-  color: $white;
+
   white-space: normal !important;
-  line-height: $line-height-base !important;
+
+  color: $white;
+
+  > svg {
+    display: none;
+  }
 
   .uppy-StatusBar-contentPadding {
     margin-right: 0 !important;
+
     font-size: $font-size-xs !important;
     line-height: $line-height-base !important;
   }
@@ -1977,6 +2275,12 @@
   }
 }
 
+.uppy-StatusBar-status {
+  display: flex;
+  flex-grow: 1;
+  flex-shrink: 1;
+}
+
 .uppy-StatusBar-statusIndicator {
   display: none !important;
 }
@@ -1984,13 +2288,16 @@
 button.uppy-StatusBar-statusIndicator {
   margin: 0 8px 0 0;
   padding: 0;
+
+  cursor: pointer;
+
+  color: inherit;
   border: 0;
   background: none;
-  color: inherit;
-  font-size: inherit;
+
   font-family: inherit;
+  font-size: inherit;
   line-height: 1;
-  cursor: pointer;
 }
 
 .uppy-StatusBar.is-waiting .uppy-StatusBar-actions,
@@ -1998,20 +2305,23 @@ button.uppy-StatusBar-statusIndicator {
   flex-direction: row-reverse !important;
   flex-grow: 0;
   flex-shrink: 0;
-  padding: 0 $padding !important;
+
   width: auto;
+  padding: 0 $padding !important;
 }
 
 .uppy.uppy-StatusBar.is-error.uppy-StatusBar--detailedProgress {
   position: relative !important;
+  z-index: 1004;
   right: 0;
   bottom: 0;
   left: 0;
-  z-index: 1004;
+
   display: flex;
   align-items: center;
   flex-direction: row;
   justify-content: flex-start;
+
   width: 100%;
 }
 
@@ -2019,14 +2329,16 @@ button.uppy-StatusBar-statusIndicator {
 .uppy-StatusBar-actions,
 .uppy-StatusBar.is-waiting .uppy-StatusBar-actions {
   position: relative !important;
+  z-index: 1004;
   top: 0;
   right: 0;
   bottom: 0;
   left: 0;
-  z-index: 1004;
+
   display: flex;
   align-items: center;
   justify-content: flex-start;
+
   width: 100%;
 
   .uppy-StatusBar-actionBtn,
@@ -2035,30 +2347,43 @@ button.uppy-StatusBar-statusIndicator {
   .uppy-c-btn-primary,
   .uppy-u-reset.uppy-c-btn.uppy-StatusBar-actionBtn.uppy-StatusBar-actionBtn--upload {
     display: inline-block;
+
     margin-right: 0 !important;
     margin-left: $padding !important;
     padding: $btn-padding-y $btn-padding-x !important;
+
+    cursor: pointer;
+    user-select: none;
+    text-align: center;
+    vertical-align: middle;
+    white-space: nowrap;
+    text-transform: uppercase !important;
+
+    color: $bright-blue-darken-04 !important;
     border: 1px solid $bright-blue-darken-04 !important;
     border-radius: $btn-border-radius !important;
     border-radius: $btn-border-radius !important;
     background-color: $white !important;
-    color: $bright-blue-darken-04 !important;
-    vertical-align: middle;
-    text-align: center;
-    text-transform: uppercase !important;
-    white-space: nowrap;
-    font-weight: $btn-font-weight !important;
-    font-weight: $btn-font-weight !important;
+
     font-size: $font-size-base !important;
     font-size: $font-size-sm !important;
+    font-weight: $btn-font-weight !important;
+    font-weight: $btn-font-weight !important;
     line-height: $btn-line-height !important;
     line-height: $btn-line-height !important;
-    cursor: pointer;
 
-    user-select: none;
     @include transition(all 0.2s ease-in-out);
     @include hover-focus {
       text-decoration: none;
+    }
+
+    &.uppy-StatusBar-actionBtn--retry {
+      display: flex;
+      align-items: center;
+
+      svg {
+        margin-right: $padding/2;
+      }
     }
 
     &:hover {
@@ -2074,21 +2399,25 @@ button.uppy-StatusBar-statusIndicator {
   .uppy-StatusBar.is-waiting .uppy-StatusBar-actionBtn,
   .uppy-StatusBar:not(.is-waiting) .uppy-StatusBar-actionBtn {
     display: inline-block;
+
     padding: $btn-padding-y $btn-padding-x !important;
+
+    cursor: pointer;
+    user-select: none;
+    text-align: center;
+    vertical-align: middle;
+    white-space: nowrap;
+    text-transform: uppercase !important;
+
+    color: $bright-blue-darken-04 !important;
     border: 1px solid $bright-blue-darken-04 !important;
     border-radius: $btn-border-radius !important;
     background-color: $white !important;
-    color: $bright-blue-darken-04 !important;
-    vertical-align: middle;
-    text-align: center;
-    text-transform: uppercase !important;
-    white-space: nowrap;
-    font-weight: $btn-font-weight !important;
-    font-size: $font-size-sm !important;
-    line-height: $btn-line-height !important;
-    cursor: pointer;
 
-    user-select: none;
+    font-size: $font-size-sm !important;
+    font-weight: $btn-font-weight !important;
+    line-height: $btn-line-height !important;
+
     @include transition(all 0.2s ease-in-out);
     @include hover-focus {
       text-decoration: none;
@@ -2098,21 +2427,25 @@ button.uppy-StatusBar-statusIndicator {
 
 .uppy-StatusBar-actionBtn--upload {
   display: inline-block;
+
   padding: $btn-padding-y $btn-padding-x !important;
+
+  cursor: pointer;
+  user-select: none;
+  text-align: center;
+  vertical-align: middle;
+  white-space: nowrap;
+  text-transform: uppercase !important;
+
+  color: $bright-blue-darken-04 !important;
   border: 1px solid $bright-blue-darken-04 !important;
   border-radius: $btn-border-radius !important;
   background-color: $white !important;
-  color: $bright-blue-darken-04 !important;
-  vertical-align: middle;
-  text-align: center;
-  text-transform: uppercase !important;
-  white-space: nowrap;
-  font-weight: $btn-font-weight !important;
-  font-size: $font-size-base !important;
-  line-height: $btn-line-height !important;
-  cursor: pointer;
 
-  user-select: none;
+  font-size: $font-size-base !important;
+  font-weight: $btn-font-weight !important;
+  line-height: $btn-line-height !important;
+
   @include transition(all 0.2s ease-in-out);
   @include hover-focus {
     text-decoration: none;
@@ -2124,21 +2457,25 @@ button.uppy-StatusBar-statusIndicator {
   .uppy-StatusBar-actionBtn--upload,
 .uppy-StatusBar.is-waiting .uppy-StatusBar-actionBtn--upload {
   display: inline-block;
+
   padding: $btn-padding-y $btn-padding-x !important;
+
+  cursor: pointer;
+  user-select: none;
+  text-align: center;
+  vertical-align: middle;
+  white-space: nowrap;
+  text-transform: uppercase !important;
+
+  color: $bright-blue-darken-04 !important;
   border: 1px solid $bright-blue-darken-04 !important;
   border-radius: $btn-border-radius !important;
   background-color: $white !important;
-  color: $bright-blue-darken-04 !important;
-  vertical-align: middle;
-  text-align: center;
-  text-transform: uppercase !important;
-  white-space: nowrap;
-  font-weight: $btn-font-weight !important;
-  font-size: $font-size-base !important;
-  line-height: $btn-line-height !important;
-  cursor: pointer;
 
-  user-select: none;
+  font-size: $font-size-base !important;
+  font-weight: $btn-font-weight !important;
+  line-height: $btn-line-height !important;
+
   @include transition(all 0.2s ease-in-out);
   @include hover-focus {
     text-decoration: none;
@@ -2147,21 +2484,25 @@ button.uppy-StatusBar-statusIndicator {
 
 .uppy-StatusBar-actionBtn--retry {
   display: inline-block;
+
   padding: $btn-padding-y $btn-padding-x !important;
+
+  cursor: pointer;
+  user-select: none;
+  text-align: center;
+  vertical-align: middle;
+  white-space: nowrap;
+  text-transform: uppercase !important;
+
+  color: $bright-blue-darken-04 !important;
   border: 1px solid $bright-blue-darken-04 !important;
   border-radius: $btn-border-radius !important;
   background-color: $white !important;
-  color: $bright-blue-darken-04 !important;
-  vertical-align: middle;
-  text-align: center;
-  text-transform: uppercase !important;
-  white-space: nowrap;
-  font-weight: $btn-font-weight !important;
-  font-size: $font-size-base !important;
-  line-height: $btn-line-height !important;
-  cursor: pointer;
 
-  user-select: none;
+  font-size: $font-size-base !important;
+  font-weight: $btn-font-weight !important;
+  line-height: $btn-line-height !important;
+
   @include transition(all 0.2s ease-in-out);
   @include hover-focus {
     text-decoration: none;
@@ -2174,9 +2515,11 @@ button.uppy-StatusBar-statusIndicator {
   flex-direction: column;
   flex-grow: 1 !important;
   flex-shrink: 1 !important;
+
+  height: unset !important;
   min-height: unset !important;
   max-height: unset !important;
-  height: unset !important;
+
   font-family: $font-family-base !important;
 }
 

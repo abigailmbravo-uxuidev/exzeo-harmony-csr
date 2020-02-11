@@ -84,7 +84,7 @@ const PaymentForm = ({
 
   const handlePayment = async ({ amount }) => {
     const {
-      values: { cashDate, batchNumber, cashType }
+      values: { cashDate, batchNumber, cashType, description }
     } = batch;
     const {
       policyNumber,
@@ -102,13 +102,13 @@ const PaymentForm = ({
       batch: String(batchNumber),
       amount: Number(String(amount).replace(/[^\d.-]/g, '')),
       type: String(cashType),
-      description: 'Payment Received',
-      policyNumber: policyNumber,
-      policyTerm: policyTerm,
-      policyAccountCode: policyAccountCode,
-      companyCode: companyCode,
-      state: state,
-      product: product
+      description,
+      policyNumber,
+      policyTerm,
+      policyAccountCode,
+      companyCode,
+      state,
+      product
     };
 
     try {

@@ -33,19 +33,16 @@ Cypress.Commands.add('clickSubmit', (form = 'body', button = 'submit') =>
  * @param {string} name - The route name and tab nav name.
  */
 Cypress.Commands.add('goToNav', name =>
-  cy
-    .location()
-    .then(
-      loc =>
-        !loc.pathname.includes(name) &&
-        cy
-          .get('.spinner')
-          .should('not.exist')
-          .findDataTag(`nav-${name}`)
-          .find('a')
-          .click({ force: true })
-          .get('.spinner')
-          .should('not.exist')
-    )
-    .wait(1000)
+  cy.location().then(
+    loc =>
+      !loc.pathname.includes(name) &&
+      cy
+        .get('.spinner')
+        .should('not.exist')
+        .findDataTag(`nav-${name}`)
+        .find('a')
+        .click({ force: true })
+        .get('.spinner')
+        .should('not.exist')
+  )
 );

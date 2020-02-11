@@ -7,8 +7,9 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: $border-radius;
+
   color: $warm-gray-04;
+  border-radius: $border-radius;
 
   &.loader-sm {
   }
@@ -21,20 +22,24 @@
   }
 
   .spinner {
-    margin: 0 auto;
     width: 150px;
+    margin: 0 auto;
+
     text-align: center;
   }
 
   .spinner > div {
     display: inline-block;
-    margin: 0 2px;
+
     width: 16px;
     height: 16px;
-    border-radius: 100%;
-    background-color: rgba($bright-blue-darken-04, 1);
+    margin: 0 2px;
+
     -webkit-animation: sk-bouncedelay 1.4s infinite ease-in-out both;
     animation: sk-bouncedelay 1.4s infinite ease-in-out both;
+
+    border-radius: 100%;
+    background-color: rgba($bright-blue-darken-04, 1);
   }
 
   .spinner .bounce1 {
@@ -75,12 +80,14 @@
 //title component
 /*------------------------------------------------------------------------------------*/
 .title {
+  width: 100%;
   margin: 0 0 $padding;
   padding: 0 $padding;
-  width: 100%;
+
   color: $bright-blue-darken-04;
-  font-weight: $font-weight-bold;
+
   font-size: $font-size-h3;
+  font-weight: $font-weight-bold;
 
   @include for-phone-only {
     font-size: $font-size-h3;
@@ -88,8 +95,9 @@
 
   &.messages {
     color: $warm-gray-07;
-    font-weight: $font-weight-normal;
+
     font-size: $font-size-h5;
+    font-weight: $font-weight-normal;
   }
 }
 
@@ -100,12 +108,14 @@
   .title {
     flex-grow: 0;
     flex-shrink: 0;
-    padding: 0;
+
     max-width: fit-content;
+    padding: 0;
   }
   .check-box-wrapper {
     flex-grow: 1;
     flex-shrink: 1;
+
     margin-bottom: $padding/4;
 
     input {
@@ -123,6 +133,7 @@
     display: flex;
     align-content: flex-start;
     flex-wrap: wrap;
+
     margin-bottom: $padding * 2;
     padding-bottom: $padding * 2;
 
@@ -136,12 +147,13 @@
     }
 
     output {
-      padding: ($padding/2);
       height: 2rem;
+      padding: ($padding/2);
+
+      opacity: 1;
       border: 1px solid $warm-gray-02;
       border-radius: $border-radius;
       background-color: $input-bg-disabled;
-      opacity: 1;
     }
   }
 
@@ -153,6 +165,7 @@
 
       span {
         color: $red-darken-01;
+
         font-size: $font-size-sm;
       }
     }
@@ -168,72 +181,84 @@
   > * {
     flex-grow: 0;
     flex-shrink: 0;
+
     width: 100%;
   }
 
   .view-col-1 {
     flex-grow: 0;
     flex-shrink: 0;
+
     width: 8.333%;
   }
 
   .view-col-2 {
     flex-grow: 0;
     flex-shrink: 0;
+
     width: 16.667%;
   }
 
   .view-col-3 {
     flex-grow: 0;
     flex-shrink: 0;
+
     width: 25%;
   }
 
   .view-col-4 {
     flex-grow: 0;
     flex-shrink: 0;
+
     width: 33.333%;
   }
 
   .view-col-5 {
     flex-grow: 0;
     flex-shrink: 0;
+
     width: 41.667%;
   }
 
   .view-col-6 {
     flex-grow: 0;
     flex-shrink: 0;
+
     width: 50%;
   }
 
   .view-col-7 {
     flex-grow: 0;
     flex-shrink: 0;
+
     width: 58.333%;
   }
 
   .view-col-8 {
     flex-grow: 0;
     flex-shrink: 0;
+
     width: 66.667%;
   }
 
   .view-col-9 {
     flex-grow: 0;
     flex-shrink: 0;
+
     width: 75%;
   }
 
   .view-col-10 {
     flex-grow: 0;
     flex-shrink: 0;
+
     width: 83.333%;
   }
 
   .view-col-11 {
     flex-grow: 0;
     flex-shrink: 0;
+
     width: 91.667%;
   }
 }
@@ -250,6 +275,7 @@
         .deductible-wrapper {
           margin-top: -$padding;
           padding-top: $padding;
+
           border: 1px solid $warm-gray-02;
           border-radius: $border-radius;
           background: $warm-gray-01;
@@ -278,23 +304,28 @@
         .card {
           display: flex;
           flex-direction: row;
-          margin: 0;
+
           width: 100%;
+          margin: 0;
+
           cursor: default;
 
           > div {
             align-self: center;
             flex-grow: 1;
             flex-shrink: 1;
+
             padding: $padding $padding $padding 0;
 
             &.card-icon {
               flex-grow: 0;
               flex-shrink: 0;
+
               padding: $padding;
 
               i {
                 color: $bright-blue-darken-04;
+
                 font-size: $font-size-h2;
               }
             }
@@ -302,12 +333,15 @@
             &.ref-number {
               flex-grow: 0;
               flex-shrink: 0;
+
               min-width: 10rem;
               max-width: 16rem;
+
               white-space: nowrap;
 
               > span {
                 overflow: hidden;
+
                 text-overflow: ellipsis;
               }
             }
@@ -323,34 +357,41 @@
             &.reactivate {
               flex-grow: 0;
               flex-shrink: 0;
+
               width: auto;
+
+              color: $bright-blue;
               border-width: 0;
               box-shadow: 0 0 0 rgba(0, 0, 0, 0);
-              color: $bright-blue;
+
               font-size: $font-size-sm;
 
               i {
-                margin-right: $padding/2;
                 width: auto;
+                margin-right: $padding/2;
+
                 color: $bright-blue;
+
                 font-size: $font-size-sm;
 
                 @include transition(all 0.2s ease-in-out);
               }
 
               &:after {
-                font-weight: $font-weight-bold;
                 font-family: $font-family-base;
+                font-weight: $font-weight-bold;
               }
 
               &:hover {
-                border-width: 0;
-                box-shadow: 0 0 0 rgba(0, 0, 0, 0);
                 transform: scale(1);
 
+                border-width: 0;
+                box-shadow: 0 0 0 rgba(0, 0, 0, 0);
+
                 &:after {
-                  color: $bright-blue-darken-04;
                   text-decoration: underline;
+
+                  color: $bright-blue-darken-04;
                 }
 
                 i {
@@ -395,9 +436,9 @@
           }
 
           &.inactive {
+            color: $btn-link-disabled-color;
             border-color: $warm-gray-03;
             background: $warm-gray-00;
-            color: $btn-link-disabled-color;
 
             .card-icon {
               i,
@@ -429,21 +470,25 @@
                 }
 
                 &:hover {
-                  color: $btn-link-disabled-color;
-                  text-decoration: none;
                   cursor: not-allowed;
+                  text-decoration: none;
+
+                  color: $btn-link-disabled-color;
 
                   &:after {
-                    color: $btn-link-disabled-color;
                     text-decoration: none;
+
+                    color: $btn-link-disabled-color;
                   }
 
                   i {
-                    color: $btn-link-disabled-color;
                     text-decoration: none;
+
+                    color: $btn-link-disabled-color;
                     &:after {
-                      color: $btn-link-disabled-color;
                       text-decoration: none;
+
+                      color: $btn-link-disabled-color;
                     }
                   }
                 }
@@ -478,9 +523,10 @@ section {
   .detail-group {
     display: flex;
     flex-direction: column;
-    padding: 0 $padding;
-    min-height: 4rem;
+
     width: 100%;
+    min-height: 4rem;
+    padding: 0 $padding;
 
     dl {
       //margin-bottom: 1rem;
@@ -510,12 +556,13 @@ section {
       align-content: space-between;
       flex-direction: column;
       flex-wrap: wrap;
+
       height: 21.5rem;
 
       dl {
+        width: calc(50% - 0.5rem);
         margin-bottom: 0;
         padding: $padding;
-        width: calc(50% - 0.5rem);
 
         &:nth-child(odd) {
           background: $warm-gray-01;
@@ -532,6 +579,7 @@ section {
           dd {
             flex-grow: 1;
             flex-shrink: 1;
+
             text-align: right;
           }
         }
@@ -558,10 +606,12 @@ section {
     > section {
       margin-bottom: 1rem;
       padding-bottom: 1rem;
+
       border-bottom: 1px dashed $bright-blue-darken-03;
 
       &:last-of-type {
         padding-bottom: 0;
+
         border-bottom-width: 0;
       }
     }
@@ -576,21 +626,27 @@ section {
 
             div {
               display: flex;
+
               border-bottom: 1px dotted $warm-gray-03;
 
               dt {
                 flex-grow: 1;
                 flex-shrink: 1;
+
                 padding: $padding $padding $padding ($padding * 1.5);
+
                 white-space: normal;
                 hyphens: auto;
+
                 font-weight: $font-weight-normal;
               }
               dd {
                 flex-grow: 0;
                 flex-shrink: 0;
+
                 margin: 0;
                 padding: $padding ($padding * 1.5) $padding 0;
+
                 text-align: right;
                 white-space: normal;
                 hyphens: auto;
@@ -669,6 +725,7 @@ section {
                 }
                 dd {
                   overflow: hidden;
+
                   max-width: 70%;
                 }
               }
@@ -699,6 +756,7 @@ section {
       dl {
         flex-grow: 0;
         flex-shrink: 0;
+
         width: 20%;
       }
     }
@@ -708,6 +766,7 @@ section {
       dl {
         flex-grow: 0;
         flex-shrink: 0;
+
         width: 20%;
       }
     }
@@ -717,6 +776,7 @@ section {
       dl {
         flex-grow: 0;
         flex-shrink: 0;
+
         width: 25%;
       }
     }
@@ -734,15 +794,23 @@ section {
     .policyholder-cards {
       margin-bottom: 1rem;
       padding-bottom: 1rem;
+
       border-bottom: 1px dashed $bright-blue-darken-03;
     }
     .policyholder-cards,
     .agency-cards {
+      margin-bottom: 1rem;
       .card {
         flex-grow: 1;
         flex-shrink: 1;
+
         margin: 0 $padding $padding;
       }
+    }
+    .tm {
+      margin-top: $padding/4;
+
+      line-height: 1.25;
     }
   }
 }
@@ -759,10 +827,12 @@ section {
     > section {
       margin-bottom: 1rem;
       padding-bottom: 1rem;
+
       border-bottom: 1px dashed $bright-blue-darken-03;
 
       &:last-of-type {
         padding-bottom: 0;
+
         border-bottom-width: 0;
       }
 
@@ -776,8 +846,9 @@ section {
         dl {
           flex-grow: 0;
           flex-shrink: 0;
-          margin-right: $padding * 2;
+
           width: auto;
+          margin-right: $padding * 2;
 
           dt {
             color: $warm-gray-08;
@@ -794,6 +865,7 @@ section {
             dl {
               flex-grow: 1;
               flex-shrink: 1;
+
               margin: 0 ($padding/2) 0 0;
               padding: 0;
 
@@ -803,11 +875,13 @@ section {
 
               dt {
                 padding: 0 $padding;
+
                 background: $warm-gray-02;
               }
               dd {
                 margin-bottom: 0;
                 padding: ($padding/2) $padding;
+
                 border-bottom: 1px dotted $warm-gray-02;
 
                 &:nth-of-type(even) {
@@ -825,8 +899,11 @@ section {
         .total {
           display: flex;
           justify-content: flex-end;
+
           margin: $padding 0;
+
           color: $bright-blue-darken-04;
+
           font-weight: $font-weight-bold;
         }
       }
@@ -847,10 +924,12 @@ section {
   > section {
     margin-bottom: 1rem;
     padding-bottom: 1rem;
+
     border-bottom: 1px dashed $bright-blue-darken-03;
 
     &:last-of-type {
       padding-bottom: 0;
+
       border-bottom-width: 0;
     }
 
@@ -864,10 +943,12 @@ section {
           > dl {
             flex-grow: 1;
             flex-shrink: 1;
+
             width: auto;
 
             dt {
               margin-bottom: $padding;
+
               color: $warm-gray-08;
             }
           }
@@ -880,8 +961,11 @@ section {
         .total {
           display: flex;
           justify-content: flex-end;
+
           margin: $padding 0;
+
           color: $bright-blue-darken-04;
+
           font-weight: $font-weight-bold;
         }
       }
@@ -900,10 +984,13 @@ section {
         position: fixed;
         top: 9rem;
         left: calc(((100vw - 42rem) / 2) + 12rem);
+
         display: flex;
         align-content: space-between;
-        padding: $padding;
+
         width: 30rem;
+        padding: $padding;
+
         border-radius: 1.5rem;
         background-color: rgba($white, 0.9);
         box-shadow: 0 0 4px rgba($black, 0.25);
@@ -912,7 +999,9 @@ section {
           flex-basis: auto;
           flex-grow: 1;
           flex-shrink: 1;
+
           margin: 0 ($padding/2);
+
           color: $bright-blue-darken-04;
         }
       }
@@ -925,6 +1014,7 @@ section {
         &.wind-mitigation-scroll {
           margin-bottom: 1rem;
           padding-bottom: 1rem;
+
           border-bottom: 1px dashed $bright-blue-darken-03;
 
           .form-group {
@@ -933,6 +1023,7 @@ section {
 
             &.labels {
               justify-content: flex-end;
+
               margin-bottom: $padding;
 
               label {
@@ -946,10 +1037,13 @@ section {
               flex-grow: 0;
               flex-shrink: 0;
               justify-content: flex-end;
+
+              width: calc(33.33% - 0.5rem);
               margin-right: $padding;
               margin-bottom: 0;
-              width: calc(33.33% - 0.5rem);
+
               text-align: right;
+
               font-size: $font-size-base;
             }
 
@@ -965,6 +1059,7 @@ section {
               flex-grow: 0;
               flex-shrink: 0;
               order: 3;
+
               width: 33%;
 
               .label-segmented {
@@ -974,14 +1069,16 @@ section {
             output {
               flex-grow: 0;
               flex-shrink: 0;
-              margin-right: $padding;
+
               width: calc(33.33% - 0.5rem);
+              margin-right: $padding;
             }
 
             > span {
               order: 3;
-              margin-left: 67%;
+
               width: 33%;
+              margin-left: 67%;
             }
           }
         }
@@ -989,6 +1086,7 @@ section {
         &.policyholder-scroll {
           margin-bottom: 1rem;
           padding-bottom: 1rem;
+
           border-bottom: 1px dashed $bright-blue-darken-03;
         }
       }
@@ -1000,14 +1098,17 @@ section {
 .endo-results-calc {
   flex-grow: 1;
   flex-shrink: 1;
-  padding: $padding;
+
   width: auto;
+  padding: $padding;
+
   border-top: 1px dotted $warm-gray-04;
   background: $warm-gray-01;
 
   .endorsement-date-wrapper {
     flex-grow: 0;
     flex-shrink: 0;
+
     width: 14rem;
   }
 

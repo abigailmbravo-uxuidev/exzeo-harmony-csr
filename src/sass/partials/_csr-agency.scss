@@ -151,6 +151,19 @@
                   }
                 }
               }
+
+              .form-group {
+                &.error {
+                  input {
+                    border-color: $red-darken-01;
+                  }
+                  span {
+                    color: $red-darken-02;
+
+                    font-size: $font-size-sm;
+                  }
+                }
+              }
             }
 
             section {

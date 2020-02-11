@@ -8,7 +8,7 @@ import { render, fireEvent } from 'react-testing-library';
 
 import rootReducer from '../state/reducers';
 
-import { quote } from '../test-utils';
+import { quote, mockPolicy as policy } from '../test-utils';
 
 const mockStore = configureStore([thunk]);
 
@@ -23,12 +23,20 @@ export const defaultInitialState = {
     results: []
   },
   service: {
-    agencies: []
+    agencies: [],
+    zipCodeSettings: {
+      timezone: 'America/New_York'
+    }
   },
   error: {},
   form: {},
   policyState: {
-    policy: {}
+    policy: {
+      policyID: 'test'
+    },
+    summaryLedger: {
+      _id: 'test'
+    }
   },
   quoteState: {},
   ui: { isLoading: false },
@@ -45,12 +53,22 @@ export const defaultInitialProps = {
 export const jestResolve = (result = {}, error) =>
   jest.fn(() => (error ? Promise.reject(result) : Promise.resolve(result)));
 
+export const jestResolveArray = (results = []) => {
+  const jestFunc = jest.fn();
+  results.forEach(r => {
+    jestFunc.mockReturnValueOnce(
+      r.error ? Promise.reject(r) : Promise.resolve(r)
+    );
+  });
+  return jestFunc;
+};
+
 export const defaultQuoteWorkflowProps = {
   ...defaultInitialProps,
   history: { replace: x => x },
   location: { pathname: '' },
   isLoading: false,
-  quote: quote,
+  quote,
   retrieveQuote: jestResolve(),
   verifyQuote: jestResolve(),
   setAppError: () => {},
@@ -67,6 +85,67 @@ export const defaultQuoteWorkflowProps = {
     mortgagee: [],
     order: [],
     uiQuestions: {}
+  }
+};
+
+export const defaultCreateAgencyProps = {
+  orphans: [],
+  initialValues: {
+    status: 'Active',
+    okToPay: true,
+    mailingAddress: {},
+    physicalAddress: {},
+    agentOfRecord: {
+      sameAsMailing: false,
+      licenses: [
+        {
+          state: '',
+          license: '',
+          licenseType: '',
+          licenseEffectiveDate: '',
+          appointed: false
+        }
+      ]
+    }
+  },
+  listAnswersAsKey: {
+    US_states: [
+      {
+        label: 'Florida',
+        answer: 'FL'
+      },
+      {
+        label: 'Maryland',
+        answer: 'MD'
+      },
+      {
+        label: 'New Jersey',
+        answer: 'NJ'
+      }
+    ]
+  },
+  getAgency: jestResolve(),
+  updateAgency: jestResolve(),
+  createAgency: jestResolve()
+};
+
+export const defaultPolicyWorkflowProps = {
+  history: { replace: x => x },
+  location: { pathname: '' },
+  isLoading: false,
+  policy,
+  initializePolicyWorkflow: jestResolve(policy),
+  getEnumsForPolicyWorkflow: jestResolve(),
+  getPaymentHistory: jestResolve(),
+  setAppError: () => {},
+  fetchNotes: jestResolve(),
+  toggleDiary: () => {},
+  fetchDiaries: jestResolve(),
+  diaries: [],
+  notes: [],
+  initialized: true,
+  zipCodeSettings: {
+    timezone: 'America/New_York'
   }
 };
 

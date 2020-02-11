@@ -28,11 +28,11 @@ import {
 } from '../../pageTests';
 import { coverageHO3, unQuestionsHO3 } from '../../fixtures';
 
-describe('Base Path', () => {
+describe('Base Path - HO3', () => {
   before('Login', () => cy.login());
   beforeEach('Set aliases', () => setRouteAliases());
 
-  it('Navigate through base app', () => {
+  it('Navigate through Quote Workflow', () => {
     navigateThroughNewQuote();
 
     fillOutCoverage();

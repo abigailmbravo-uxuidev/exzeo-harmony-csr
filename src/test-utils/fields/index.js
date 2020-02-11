@@ -10,3 +10,11 @@ export {
   secondaryPolicyholderFields,
   windFields
 } from './coverageFields';
+
+export {
+  detailsFields,
+  addressFields,
+  contactFields,
+  agentOfRecordFields,
+  licenseFields
+} from './createAgencyFields';

@@ -44,7 +44,7 @@ const DiaryExpandColumns = ({ diaries }) => {
       <TableHeaderColumn
         className="updated-at"
         columnClassName="updated-at"
-        dataField="createdAt"
+        dataField="updatedAt"
         dataFormat={val => date.formatDate(val)}
       >
         Updated
@@ -186,7 +186,7 @@ class DiaryTable extends Component {
         <TableHeaderColumn
           className="updated-at"
           columnClassName="updated-at"
-          dataField="createdAt"
+          dataField="updatedAt"
           dataFormat={val => date.formatDate(val)}
           dataSort
         >

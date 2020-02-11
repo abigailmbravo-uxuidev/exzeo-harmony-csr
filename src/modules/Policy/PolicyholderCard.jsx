@@ -7,7 +7,7 @@ function PolicyholderCard({
   label,
   policyHolder,
   policyHolderMailingAddress,
-  mailToSubject
+  subject
 }) {
   return (
     <div className="primary-policyholder contact card">
@@ -42,7 +42,7 @@ function PolicyholderCard({
                 <p className="email">
                   <i className="fa fa-envelope" />
                   <a
-                    href={`mailto: ${policyHolder.emailAddress}?subject=${mailToSubject}`}
+                    href={`mailto: ${policyHolder.emailAddress}?subject=${subject}`}
                   >
                     {policyHolder.emailAddress}
                   </a>

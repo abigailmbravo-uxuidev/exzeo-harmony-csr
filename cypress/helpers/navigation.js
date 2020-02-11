@@ -4,8 +4,6 @@ import { envelopeIdCheck, manualBindPolicy } from '../helpers';
 import {
   user,
   pH1,
-  underwriting,
-  coverageValues,
   shareQuote,
   addInsured,
   unQuestionsHO3,
@@ -19,27 +17,30 @@ export const navigateThroughNewQuote = (
   product = 'HO3',
   address = user.address1
 ) => {
-  cy.task('log', 'Navigating through Quote')
-    .findDataTag('searchType')
-    .select('address')
-    .findDataTag('product')
-    .select(product)
-    .findDataTag('address')
-    .type(address)
-    .clickSubmit()
-    .wait('@fetchAddresses');
-
-  // This makes it so we don't open up a new window
-  cy.findDataTag(address).then($a => {
-    $a.prop('onclick', () => cy.visit($a.prop('dataset').url));
-    cy.wait('@createQuote')
-      .wait('@retrieveQuote')
-      .wait('@getZipcodeSettings');
-  });
+  return (
+    cy
+      .task('log', 'Navigating through Quote')
+      .findDataTag('searchType')
+      .select('address')
+      .findDataTag('product')
+      .select(product)
+      .findDataTag('address')
+      .type(address)
+      .clickSubmit()
+      .wait('@fetchAddresses')
+      // This makes it so we don't open up a new window
+      .findDataTag(address)
+      .then($a => {
+        $a.prop('onclick', () => cy.visit($a.prop('dataset').url));
+        cy.wait('@createQuote')
+          .wait('@retrieveQuote')
+          .wait('@getZipcodeSettings');
+      })
+  );
 };
 
-export const fillOutCoverage = (customerInfo = pH1) =>
-  cy
+export const fillOutCoverage = (customerInfo = pH1) => {
+  return cy
     .task('log', 'Filling out Coverage')
     .goToNav('coverage')
     .wrap(Object.entries(customerInfo))
@@ -52,9 +53,11 @@ export const fillOutCoverage = (customerInfo = pH1) =>
       // TODO we need to assert something about this response, preferably the quoteInputState like we do in the other tests.
       expect(response.body.status).to.equal(200);
     });
+};
 
 export const changeCoverageAndAgency = (coverage = coverageHO3) => {
-  cy.task('log', 'Changing coverage values')
+  return cy
+    .task('log', 'Changing coverage values')
     .goToNav('coverage')
     .get("[data-test*='Premium'] dd")
     .then($prem => {
@@ -88,8 +91,16 @@ export const fillOutUnderwriting = (
   questions = unQuestionsHO3,
   expectedQuoteState = 'Quote Qualified'
 ) => {
-  cy.task('log', 'Filling out Underwriting')
+  return cy
+    .task('log', 'Filling out Underwriting')
     .goToNav('underwriting')
+    .wait('@getUnderwritingQuestions')
+    .then(({ response }) => {
+      expect(response.body.status).to.equal(
+        200,
+        'Underwriting Questions request'
+      );
+    })
     .wrap(Object.entries(questions))
     .each(([name, value]) =>
       cy.findDataTag(`${name}_${value}`).click({ force: true })
@@ -104,8 +115,10 @@ export const fillOutUnderwriting = (
     });
 };
 
-export const fillOutAdditionalInterests = (additionalInterests = addInsured) =>
-  cy
+export const fillOutAdditionalInterests = (
+  additionalInterests = addInsured
+) => {
+  return cy
     .task('log', 'Filling out AIs')
     .goToNav('additionalInterests')
     .findDataTag('additionalInsured')
@@ -119,7 +132,14 @@ export const fillOutAdditionalInterests = (additionalInterests = addInsured) =>
         .type(`{selectall}{backspace}${value}`, { force: true })
     )
     .findDataTag('ai-modal-submit')
-    .click({ force: true });
+    .click({ force: true })
+    .wait('@updateQuote')
+    .then(({ response }) => {
+      expect(response.body.result.additionalInterests.length).to.be.at.least(1);
+      expect(response.body.result.additionalInterests[0].name1).to.eq('BATMAN');
+      expect(response.body.result.additionalInterests[0].name2).to.eq('ROBIN');
+    });
+};
 
 export const fillOutMailingBilling = () => {
   cy.task('log', 'Filling out Mailing Billing')
@@ -139,44 +159,62 @@ export const fillOutMailingBilling = () => {
     });
 };
 
-export const fillOutNotesFiles = () =>
-  cy.task('log', 'Filling out Notes and Files').goToNav('notes');
+export const fillOutNotesFiles = () => {
+  return cy.task('log', 'Filling out Notes and Files').goToNav('notes');
+};
 
-export const fillOutSummary = () =>
-  cy.task('log', 'Filling out Summary').goToNav('summary');
+export const fillOutSummary = () => {
+  return cy.task('log', 'Filling out Summary').goToNav('summary');
+};
 
-export const sendQuote = (data = shareQuote) =>
-  cy
+export const sendQuote = (data = shareQuote) => {
+  return cy
     .wrap(Object.entries(data))
-    .each(([field, value]) =>
-      cy
-        .findDataTag(field)
-        .type(`{selectall}{backspace}${value}`, { force: true })
-    )
+    .each(([field, value]) => {
+      cy.findDataTag(field).type(`{selectall}{backspace}${value}`, {
+        force: true
+      });
+    })
     .findDataTag('share-footer-submit')
     .click({ force: true })
     .wait('@shareQuote')
     .then(({ response }) => {
       expect(response.body.message).to.equal('success');
     });
+};
 
-export const fillOutApplication = () =>
-  cy.task('log', 'Filling out Application Page').goToNav('application');
+export const fillOutApplication = () => {
+  return cy.task('log', 'Filling out Application Page').goToNav('application');
+};
 
-export const navigateThroughDocusign = () =>
-  cy
+export const navigateThroughDocusign = () => {
+  return cy
     .task('log', "Navigating through 'Send to Docusign'")
     .clickSubmit('body', 'send-application')
-    .clickSubmit('#sendApplicationForm', 'modal-submit')
+    .wait('@verifyQuote')
+    .then(({ response }) => {
+      expect(response.body.result.quoteState).to.equal(
+        'Application Ready',
+        'Quote State'
+      );
+    })
     .checkQuoteState('Application Ready')
+    .clickSubmit('#sendApplicationForm', 'modal-submit')
     .wait('@sendApplication')
+    .then(({ response }) => {
+      expect(response.body.result.quoteState).to.equal(
+        'Application Ready',
+        'Quote State'
+      );
+      cy.wrap(response.body.result).as('submittedQuote');
+    })
     .get('button[data-test="send-application"]')
     .should('be.disabled')
-    .wait('@verifyQuote')
-    .then(({ request }) => {
+    .get('@submittedQuote')
+    .then(quote => {
       const token = localStorage.getItem('id_token');
       const apiUrl = Cypress.env('API_URL') + '/svc';
-      const quoteNumber = request.body.data.quoteNumber;
+      const { quoteNumber } = quote;
       envelopeIdCheck(quoteNumber, apiUrl, token).then(response => {
         expect(response.body.result.envelopeId).to.not.be.empty;
       });
@@ -186,9 +224,11 @@ export const navigateThroughDocusign = () =>
         );
       });
     });
+};
 
 export const searchPolicy = () => {
-  cy.task('log', 'Searching for the Policy')
+  return cy
+    .task('log', 'Searching for the Policy')
     .get('#logo')
     .click()
     .findDataTag('searchType')
@@ -210,7 +250,8 @@ export const searchPolicy = () => {
 };
 
 export const searchQoute = () => {
-  cy.task('log', 'Searching for the Quote')
+  return cy
+    .task('log', 'Searching for the Quote')
     .get('#logo')
     .click()
     .findDataTag('searchType')
@@ -232,7 +273,8 @@ export const searchQoute = () => {
 };
 
 export const veriFyDiary = () => {
-  cy.task('log', 'Navigate throough Diary verification')
+  return cy
+    .task('log', 'Navigate throough Diary verification')
     .get('@diaryText')
     .then(diaryText => {
       cy.goToNav('notes')

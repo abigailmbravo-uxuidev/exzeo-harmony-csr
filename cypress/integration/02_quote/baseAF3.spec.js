@@ -31,7 +31,7 @@ describe('Base Path - AF3', () => {
   before('Login', () => cy.login());
   beforeEach('Set aliases', () => setRouteAliases());
 
-  it('Navigate through base app', () => {
+  it('Navigate through Quote Workflow', () => {
     navigateThroughNewQuote('AF3');
 
     fillOutCoverage();
@@ -66,7 +66,6 @@ describe('Base Path - AF3', () => {
       navigateThroughDocusign();
       searchQoute();
       searchPolicy();
-      // afterDocuSignTest();
     }
   });
 });
