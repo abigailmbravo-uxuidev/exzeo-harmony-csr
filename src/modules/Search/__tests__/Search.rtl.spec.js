@@ -9,7 +9,8 @@ import {
   renderWithReduxAndRouter,
   checkTextInput,
   checkLabel,
-  checkButton
+  mockServiceRunner,
+  mockQuestions
 } from '../../../test-utils';
 import rootReducer from '../../../state/reducers';
 import ConnectedSearch from '../index';
@@ -23,6 +24,9 @@ const newQuoteFields = [
     value: '4131 TEST ADDRESS'
   }
 ];
+
+mockServiceRunner([]);
+mockQuestions([]);
 
 describe('Testing Policy Search Component', () => {
   const props = {
