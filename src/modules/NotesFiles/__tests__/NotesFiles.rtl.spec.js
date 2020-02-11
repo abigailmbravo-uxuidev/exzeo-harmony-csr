@@ -1,5 +1,5 @@
 import React from 'react';
-import { waitForElement, fireEvent } from '@testing-library/react';
+import { waitForElement, fireEvent, wait } from '@testing-library/react';
 
 import {
   renderWithForm,
@@ -63,7 +63,7 @@ describe('Notes Files Testing', () => {
 
     fireEvent.change(searchbar, { target: { value: 'ZZZ' } });
 
-    expect(searchbar.value).toBe('ZZZ');
+    await wait(() => expect(searchbar.value).toBe('ZZZ'));
   });
 
   it('POS:Table Data Testing', async () => {
@@ -80,9 +80,12 @@ describe('Notes Files Testing', () => {
     await waitForElement(() => getByText('Search Table Data'));
 
     fireEvent.click(getByText('Files'));
-    expect(getByText('There is no data to display'));
-    expect(queryByText('Contact')).not.toBeVisible();
-    expect(queryByText('Note')).not.toBeVisible();
+
+    await wait(() => {
+      expect(getByText('There is no data to display'));
+      expect(queryByText('Contact')).not.toBeVisible();
+      expect(queryByText('Note')).not.toBeVisible();
+    });
   });
 
   it('POS:Diaries', async () => {
@@ -92,14 +95,17 @@ describe('Notes Files Testing', () => {
     await waitForElement(() => getByText('Search Table Data'));
 
     fireEvent.click(getByText('Diaries'));
-    // await waitForElement(() => getByText('Assignee'));
-    expect(getByText('There is no data to display'));
+    await wait(() => {
+      expect(getByText('There is no data to display'));
+    });
 
     fireEvent.click(getByText('Diaries'));
-    // await waitForElement(() => getByText('Assignee'));
-    expect(getByText('There is no data to display'));
-    notesColumns.forEach(col => expect(queryByText(col)).toBeNull());
-    diariesColumns.forEach(col => expect(getByText(col)));
+
+    await wait(() => {
+      expect(getByText('There is no data to display'));
+      notesColumns.forEach(col => expect(queryByText(col)).toBeNull());
+      diariesColumns.forEach(col => expect(getByText(col)));
+    });
   });
 
   it('POS:Table Sorting', async () => {
@@ -136,6 +142,7 @@ describe('Notes Files Testing', () => {
       else checkOrder('desc');
 
       fireEvent.click(dropArrows);
+
       // Check all columns for their classnames to check their arrow settings.
       notesColumns.forEach(col => {
         // File Type and File flip together, so check that those have both flipped up together.
