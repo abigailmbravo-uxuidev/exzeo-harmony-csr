@@ -1,6 +1,6 @@
 import React from 'react';
 import { createStore, applyMiddleware } from 'redux';
-import { fireEvent } from '@testing-library/react';
+import { fireEvent, wait } from '@testing-library/react';
 import thunk from 'redux-thunk';
 
 import {
@@ -40,7 +40,7 @@ describe('Testing Policy Search Component', () => {
     applyMiddleware(thunk)
   );
 
-  it('POS:Policy Search', () => {
+  it('POS:Policy Search', async () => {
     const { getByText, getByTestId } = renderWithReduxAndRouter(
       <ConnectedSearch {...props} />,
       { store }
@@ -55,16 +55,19 @@ describe('Testing Policy Search Component', () => {
     fireEvent.change(getByTestId('searchType'), {
       target: { value: 'address' }
     });
-    expect(getByTestId('searchType').getAttribute('data-selected')).toEqual(
-      'address'
-    );
-    expect(getByText('Property Address'));
-    newQuoteFields
-      .filter(({ type }) => type === 'text')
-      .forEach(field => {
-        checkTextInput(getByTestId, field);
-        checkLabel(getByTestId, field);
-      });
-    expect(getByText('Search').getAttribute('type')).toEqual('submit');
+
+    await wait(() => {
+      expect(getByTestId('searchType').getAttribute('data-selected')).toEqual(
+        'address'
+      );
+      expect(getByText('Property Address'));
+      newQuoteFields
+        .filter(({ type }) => type === 'text')
+        .forEach(field => {
+          checkTextInput(getByTestId, field);
+          checkLabel(getByTestId, field);
+        });
+      expect(getByText('Search').getAttribute('type')).toEqual('submit');
+    });
   });
 });

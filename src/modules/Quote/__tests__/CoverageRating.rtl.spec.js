@@ -178,19 +178,25 @@ describe('Testing the Coverage/Rating Page', () => {
   it('NEG:All Required Fields Error', () => {
     const { getByTestId } = renderWithForm(<QuoteWorkflow {...props} />);
 
+    const checkField = async field => {
+      clearText(getByTestId, field);
+      fireEvent.blur(getByTestId(field.dataTest));
+      await wait(() => {
+        checkError(getByTestId, field);
+      });
+    };
+
     allFields
       .filter(
         ({ required, disabled, type }) =>
           required && !disabled && type === 'text'
       )
       .forEach(field => {
-        clearText(getByTestId, field);
-        fireEvent.blur(getByTestId(field.dataTest));
-        checkError(getByTestId, field);
+        checkField(field);
       });
   });
 
-  it('POS:Remove Secondary Policyholder button works correctly when toggled twice', () => {
+  it('POS:Remove Secondary Policyholder button works correctly when toggled twice', async () => {
     const newProps = {
       ...props,
       quote: {
@@ -200,19 +206,28 @@ describe('Testing the Coverage/Rating Page', () => {
     };
     const { getByTestId } = renderWithForm(<QuoteWorkflow {...newProps} />);
 
-    expect(getByTestId('policyHolders[1].firstName').value).toEqual(
-      newProps.quote.policyHolders[1].firstName
-    );
     expect(getByTestId('submit')).toBeDisabled();
 
-    fireEvent.click(getByTestId('removeSecondary'));
-    expect(getByTestId('policyHolders[1].firstName').value).toEqual('');
-    expect(getByTestId('submit')).not.toBeDisabled();
+    await wait(() => {
+      expect(getByTestId('policyHolders[1].firstName').value).toEqual(
+        newProps.quote.policyHolders[1].firstName
+      );
+    });
 
     fireEvent.click(getByTestId('removeSecondary'));
-    expect(getByTestId('policyHolders[1].firstName').value).toEqual(
-      newProps.quote.policyHolders[1].firstName
-    );
+
+    await wait(() => {
+      expect(getByTestId('policyHolders[1].firstName').value).toEqual('');
+      expect(getByTestId('submit')).not.toBeDisabled();
+    });
+
+    fireEvent.click(getByTestId('removeSecondary'));
+
+    await wait(() => {
+      expect(getByTestId('policyHolders[1].firstName').value).toEqual(
+        newProps.quote.policyHolders[1].firstName
+      );
+    });
     expect(getByTestId('submit')).toBeDisabled();
   });
 
