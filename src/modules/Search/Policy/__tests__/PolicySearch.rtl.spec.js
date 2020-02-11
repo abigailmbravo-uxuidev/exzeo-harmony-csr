@@ -4,11 +4,15 @@ import { reduxForm } from 'redux-form';
 import {
   renderWithForm,
   checkLabel,
-  checkTextInput,
   checkSelect,
-  checkButton
+  checkButton,
+  mockServiceRunner,
+  mockQuestions
 } from '../../../../test-utils';
 import PolicySearch from '../PolicySearch';
+
+mockServiceRunner([]);
+mockQuestions([]);
 
 const fields = [
   {
