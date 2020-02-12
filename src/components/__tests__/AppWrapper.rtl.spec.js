@@ -17,14 +17,14 @@ describe('Testing AppWrapper', () => {
     openDiaryCount: 0,
     pageTitle: 'P: 12-1016507-01',
     render: () => <div />,
-    resourceId: '12-1016507-01',
+    resourceId: '12-1234567-01',
     resourceType: 'Policy',
     showDiaries: false,
     headerDetails: {
       constructionType: 'MASONRY',
       county: 'SARASOTA',
       currentPremium: '$ 1,234',
-      details: { product: 'HO3 Homeowners', quoteNumber: '12-345-67' },
+      details: { product: 'HO3 Homeowners', quoteNumber: '12-1016507-01' },
       effectiveDate: '06/08/2019',
       mailingAddress: {
         address1: '4131 TEST ADDRESS',
@@ -91,12 +91,10 @@ describe('Testing AppWrapper', () => {
       }
     } = props;
 
-    const { getByText, getAllByText } = renderWithReduxAndRouter(
-      <AppWrapper {...props} />
-    );
+    const { getByText } = renderWithReduxAndRouter(<AppWrapper {...props} />);
     expect(getByText(product));
     // policyNumber exists in the title and policyDetails
-    expect(getAllByText(policyNumber).length).toBe(2);
+    expect(getByText(policyNumber));
     expect(getByText(status));
     expect(getByText('Policyholder'));
     expect(getByText(policyHolder.displayName));
@@ -174,12 +172,9 @@ describe('Testing AppWrapper', () => {
       }
     } = props;
 
-    const { getByText, getAllByText } = renderWithReduxAndRouter(
-      <AppWrapper {...props} />
-    );
+    const { getByText } = renderWithReduxAndRouter(<AppWrapper {...props} />);
     expect(getByText(details.product));
-    // quoteNumber exists in the title and policyDetails
-    expect(getAllByText(details.quoteNumber).length).toBe(2);
+    expect(getByText(details.quoteNumber));
     expect(getByText(status));
     expect(getByText('Policyholder'));
     expect(getByText(policyHolder.displayName));
