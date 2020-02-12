@@ -1,7 +1,6 @@
 import React from 'react';
 import { NavLink, Redirect } from 'react-router-dom';
-import { reduxForm, Field } from 'redux-form';
-import { Select } from '@exzeo/core-ui';
+import { Select, OnChangeListener, Field, Form, noop } from '@exzeo/core-ui';
 import { connect } from 'react-redux';
 import classNames from 'classnames';
 
@@ -61,15 +60,12 @@ const csrLinks = (agencyCode, branchCode) => [
 ];
 
 export class SideNav extends React.Component {
+  //TODO: Use set state and convert to functional component
   state = {
     branchSelectionRoute: null
   };
 
-  handleBranchSelection = event => {
-    const {
-      target: { value }
-    } = event;
-    const { agencyCode } = this.props;
+  handleBranchSelection = (value, agencyCode) => {
     if (Number(value) > 0) {
       this.setState({
         branchSelectionRoute: `/agency/${agencyCode}/${value}/overview`
@@ -125,16 +121,33 @@ export class SideNav extends React.Component {
             )}
             {branchesList.length > 1 && agencyCode !== 'new' && (
               <li key="branch" data-test="branch">
-                <Field
-                  dataTest="selectedBranch"
-                  name="selectedBranch"
-                  label="Branch"
-                  component={Select}
-                  styleName="flex-child selectedBranch"
-                  answers={branchesList}
-                  showPlaceholder={false}
-                  onChange={event => this.handleBranchSelection(event)}
-                />
+                <Form onSubmit={noop}>
+                  {() => (
+                    <React.Fragment>
+                      <Field name="selectedBranch">
+                        {({ input, meta }) => (
+                          <Select
+                            input={input}
+                            meta={meta}
+                            id="selectedBranch"
+                            dataTest="selectedBranch"
+                            styleName="flex-child selectedBranch"
+                            label="Branch"
+                            answers={branchesList}
+                            showPlaceholder={false}
+                          />
+                        )}
+                      </Field>
+                      <OnChangeListener name="selectedBranch">
+                        {value => {
+                          if (value) {
+                            this.handleBranchSelection(value, agencyCode);
+                          }
+                        }}
+                      </OnChangeListener>
+                    </React.Fragment>
+                  )}
+                </Form>
               </li>
             )}
             {csrLinks(agencyCode, branchCode).map((agentLink, index) => (
@@ -181,9 +194,4 @@ const mapStateToProps = (state, props) => {
   };
 };
 
-export default connect(mapStateToProps, { createBranch, toggleNote })(
-  reduxForm({
-    form: 'SideNav',
-    enableReinitialize: true
-  })(SideNav)
-);
+export default connect(mapStateToProps, { createBranch, toggleNote })(SideNav);
