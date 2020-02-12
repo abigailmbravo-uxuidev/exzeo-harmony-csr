@@ -6,13 +6,14 @@ import AddressView from '../components/AddressView';
 import ContactCard from '../components/ContactCard';
 import AgentCard from '../components/AgentCard';
 
-import AgencyAddressModal from './AgencyAddressModal';
 import AgencyContactModal from './AgencyContactModal';
 import AgencyModal from './AgencyModal';
 import BranchModal from './BranchModal';
 import Footer from '../../../components/Common/Footer';
+
 import ExistingAgentModal from '../ExistingAgentModal';
 import AgentModal from '../AgentModal';
+import AgencyAddressModal from '../AgencyAddressModal';
 
 export const Overview = ({
   agency,
@@ -184,6 +185,8 @@ export const Overview = ({
           branchCode={branchCode}
           agency={agency}
           initialValues={addressInitialValues}
+          listAnswersAsKey={listAnswersAsKey}
+          updateAgency={updateAgency}
           closeModal={() => setShowEditAddressModal(false)}
         />
       )}

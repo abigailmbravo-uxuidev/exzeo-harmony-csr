@@ -6,14 +6,14 @@ import {
   SelectTypeAhead,
   useField
 } from '@exzeo/core-ui';
-import Address from './Create/Address';
-import AddressWatcher from './Create/AddressWatcher';
-import TerritoryManagerWatcher from './Create/TerritoryManagerWatcher';
+import Address from './Address';
+import AddressWatcher from './AddressWatcher';
+import TerritoryManagerWatcher from './TerritoryManagerWatcher';
 import {
   useFetchZipCodeSettings,
   useFetchTerritoryManagers
 } from './Create/hooks';
-import { listOfZipCodes } from './Create/utilities';
+import { listOfZipCodes } from './utilities';
 
 const AddressGroup = ({
   mailingAddressPrefix,
