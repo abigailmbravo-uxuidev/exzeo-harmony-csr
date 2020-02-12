@@ -284,6 +284,9 @@
           background: $warm-gray-01;
         }
       }
+      .modal {
+        position: fixed;
+      }
     }
   }
 }
