@@ -16,7 +16,7 @@ import { STATUS } from 'constants/agency';
 import AddressGroup from './AddressGroup';
 import License from './License';
 
-const AgentModal = ({
+export const AgentModal = ({
   closeModal,
   isEditing,
   listAnswersAsKey,
