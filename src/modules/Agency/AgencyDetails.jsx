@@ -11,11 +11,7 @@ import {
   composeValidators
 } from '@exzeo/core-ui';
 
-import {
-  STATUS,
-  OK_TO_PAY,
-  TAX_CLASSIFICATION
-} from '../../../constants/agency';
+import { STATUS, OK_TO_PAY, TAX_CLASSIFICATION } from '../../constants/agency';
 
 const AgencyDetails = ({ agencyCodeDisabled }) => {
   return (
