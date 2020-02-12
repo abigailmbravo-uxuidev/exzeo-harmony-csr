@@ -28,3 +28,8 @@ export const LICENSE_TYPE = [
   { answer: 'Resident', label: 'Resident' },
   { answer: 'Non-Resident', label: 'Non-Resident' }
 ];
+
+export const MAIL_ANSWERS = [
+  { answer: false, label: 'No' },
+  { answer: true, label: 'Yes' }
+];

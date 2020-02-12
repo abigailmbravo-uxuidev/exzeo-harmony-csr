@@ -8,7 +8,7 @@ import AgentCard from '../components/AgentCard';
 
 import AgencyContactModal from '../AgencyContactModal';
 import AgencyModal from '../AgencyModal';
-import BranchModal from './BranchModal';
+import BranchModal from '../BranchModal';
 import Footer from '../../../components/Common/Footer';
 
 import ExistingAgentModal from '../ExistingAgentModal';
@@ -177,6 +177,7 @@ export const Overview = ({
           agency={agency}
           branchCode={branchCode}
           initialValues={agencyBranchData}
+          updateAgency={updateAgency}
           closeModal={() => setShowEditDetailsModal(false)}
         />
       )}
