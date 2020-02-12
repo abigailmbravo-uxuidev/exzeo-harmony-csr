@@ -5,7 +5,6 @@ import ContactView from '../components/ContactView';
 import AddressView from '../components/AddressView';
 import ContactCard from '../components/ContactCard';
 import AgentCard from '../components/AgentCard';
-import AgentModal from '../components/AgentModal';
 
 import AgencyAddressModal from './AgencyAddressModal';
 import AgencyContactModal from './AgencyContactModal';
@@ -13,6 +12,7 @@ import AgencyModal from './AgencyModal';
 import BranchModal from './BranchModal';
 import Footer from '../../../components/Common/Footer';
 import ExistingAgentModal from '../ExistingAgentModal';
+import AgentModal from '../AgentModal';
 
 export class Overview extends React.Component {
   state = {
@@ -87,7 +87,8 @@ export class Overview extends React.Component {
       agencyBranchData,
       branchCode,
       agentsList,
-      updateAgency
+      updateAgency,
+      listAnswersAsKey
     } = this.props;
 
     const {
@@ -253,6 +254,7 @@ export class Overview extends React.Component {
             initialValues={agentOfRecord}
             closeModal={this.toggleEditAgent}
             handleSaveAgent={this.onHandleEditAgent}
+            listAnswersAsKey={listAnswersAsKey}
           />
         )}
         {this.state.showSwitchAgentOfRecordModal && (
