@@ -35,9 +35,9 @@ describe('Testing AppWrapper', () => {
       policyNumber: undefined,
       policyID: '5ceec090667f7b001172bce6',
       propertyAddress: {
-        address1: '4131 TEST ADDRESS',
+        address1: '5055 TEST ADDRESS',
         address2: '',
-        csz: 'SARASOTA, FL 00001'
+        csz: 'Miami, FL 20002'
       },
       territory: '715-15'
     },
@@ -95,17 +95,18 @@ describe('Testing AppWrapper', () => {
       <AppWrapper {...props} />
     );
     expect(getByText(product));
-    expect(getAllByText(policyNumber));
+    // policyNumber exists in the title and policyDetails
+    expect(getAllByText(policyNumber).length).toBe(2);
     expect(getByText(status));
     expect(getByText('Policyholder'));
     expect(getByText(policyHolder.displayName));
     expect(getByText(policyHolder.phone));
     expect(getByText('Mailing Address'));
-    expect(getAllByText(mailingAddress.address1));
-    expect(getAllByText(mailingAddress.csz));
+    expect(getByText(mailingAddress.address1));
+    expect(getByText(mailingAddress.csz));
     expect(getByText('Property Address'));
-    expect(getAllByText(propertyAddress.address1));
-    expect(getAllByText(propertyAddress.csz));
+    expect(getByText(propertyAddress.address1));
+    expect(getByText(propertyAddress.csz));
     expect(getByText('Property County'));
     expect(getByText(county));
     expect(getByText('Effective Date'));
