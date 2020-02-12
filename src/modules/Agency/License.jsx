@@ -1,7 +1,7 @@
 import React from 'react';
 import { Input, Select, validation, Field } from '@exzeo/core-ui';
 
-import { LICENSE_TYPE } from '../../../constants/agency';
+import { LICENSE_TYPE } from '../../constants/agency';
 
 const License = ({ fields, stateAnswers }) => {
   return (

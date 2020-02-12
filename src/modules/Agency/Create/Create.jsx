@@ -10,11 +10,11 @@ import {
 import { Redirect } from 'react-router-dom';
 
 import ExistingAgentModal from '../ExistingAgentModal';
-import License from './License';
+import License from '../License';
 import Agent from './Agent';
 import Contact from './Contact';
 import AgencyDetails from './AgencyDetails';
-import AddressGroup from './AddressGroup';
+import AddressGroup from '../AddressGroup';
 import { AppFooter } from '@exzeo/core-ui/src/@Harmony';
 
 export const Create = ({

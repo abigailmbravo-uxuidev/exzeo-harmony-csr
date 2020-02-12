@@ -1,188 +1,216 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
 import {
   Integer,
   Field,
   Form,
   Button,
-  SelectTypeAhead,
-  validation
+  Input,
+  Phone,
+  Select,
+  validation,
+  composeValidators,
+  FieldArray,
+  arrayMutators
 } from '@exzeo/core-ui';
+import { STATUS } from 'constants/agency';
+import AddressGroup from './AddressGroup';
+import License from './License';
 
-export class AgentModal extends Component {
-  handleSave = async data => {
-    await this.props.handleSaveAgent(data);
-  };
-
-  render() {
-    const {
-      closeModal,
-      handleSubmit,
-      isEditing,
-      submitting,
-      licenseValue,
-      change,
-      sameAsMailingValue,
-      listAnswersAsKey,
-      handleSaveAgent
-    } = this.props;
-
-    return (
-      <div className="modal agent-crud">
-        <Form
-          id="AgentDetails"
-          onSubmit={handleSaveAgent}
-          subscription={{ submitting: true, values: true, dirty: true }}
-        >
-          {({ handleSubmit, submitting }) => (
-            <form onSubmit={handleSubmit}>
-              <div className="card">
-                <div className="card-header">
-                  <h4>
-                    <i className="fa fa-address-book" />{' '}
-                    {isEditing ? 'Edit' : 'Save'} Agent
-                  </h4>
-                </div>
-                <div className="card-block">
-                  <section className="agent-details">
-                    <h3 data-test="agent-details">Details</h3>
-                    <div className="agent-name">
-                      <Field
-                        name="agentCode"
-                        validate={validation.isNumbersOnly}
-                      >
-                        {({ input, meta }) => (
-                          <Integer
-                            input={input}
-                            meta={meta}
-                            label="Agent ID"
-                            styleName="agentCode"
-                            dataTest="agentCode"
-                            placeholder="Generated if left blank"
-                            thousandSeparator={false}
-                            disabled={isEditing}
-                          />
-                        )}
-                      </Field>
-                      {/* <Field
-                        name="firstName"
-                        label="First Name"
-                        component={Input}
-                        dataTest="firstName"
-                        styleName="firstName"
-                        validate={validation.isRequired}
-                      />
-                      <Field
-                        name="lastName"
-                        label="Last Name"
-                        component={Input}
-                        dataTest="lastName"
-                        styleName="lastName"
-                        validate={validation.isRequired}
-                      />
-                    </div>
-                    <div className="agent-phone">
-                      <Field
-                        name="primaryPhoneNumber"
-                        label="Primary Phone"
-                        component={Phone}
-                        dataTest="primaryPhoneNumber"
-                        styleName="primaryPhoneNumber"
-                        validate={validation.isRequired}
-                      />
-                      <Field
-                        name="primaryPhoneNumberExtension"
-                        label="Primary Phone Extension"
-                        component={Input}
-                        dataTest="primaryPhoneNumberExtension"
-                        styleName="primaryPhoneNumberExtension"
-                      />
-                      <Field
-                        name="secondaryPhoneNumber"
-                        label="Secondary Phone"
-                        component={Phone}
-                        dataTest="secondaryPhoneNumber"
-                        styleName="secondaryPhoneNumber"
-                      />
-                      <Field
-                        name="faxNumber"
-                        label="Fax Number"
-                        component={Phone}
-                        dataTest="faxNumber"
-                        styleName="faxNumber"
-                      /> */}
-                    </div>
-                    <div className="agent-status-email">
-                      {/* <Field
-                        name="status"
-                        label="Status"
-                        component={Select}
-                        dataTest="status"
-                        styleName="status"
-                        validate={validation.isRequired}
-                        answers={STATUS}
-                      />
-                      <Field
-                        name="emailAddress"
-                        label="Email Address"
-                        component={Input}
-                        dataTest="emailAddress"
-                        styleName="emailAddress"
-                        validate={[validation.isRequired, validation.isEmail]}
-                      /> */}
-                    </div>
-                  </section>
-                  {/* <AddressGroup
-                sameAsMailingValue={sameAsMailingValue}
-                changeField={change}
-                dataTest="agent"
-                isOptional
-              /> */}
-                  {/* <section className="agent-license">
-                <h3 data-test="agent-license">Licenses</h3>
-                <FieldArray
-                  name="licenses"
-                  stateAnswers={listAnswersAsKey.US_states}
-                  component={License}
-                  licenseValue={licenseValue}
-                  isAgency={false}
-                />
-              </section> */}
-                </div>
-                <div className="card-footer">
-                  <div className="btn-footer">
-                    <Button
-                      className={Button.constants.classNames.secondary}
-                      data-test="cancel-modal"
-                      onClick={closeModal}
-                    >
-                      Cancel
-                    </Button>
-                    <Button
-                      className={Button.constants.classNames.primary}
-                      type="submit"
-                      data-test="submit-modal"
-                      disabled={submitting}
-                    >
-                      Save
-                    </Button>
+const AgentModal = ({
+  closeModal,
+  isEditing,
+  listAnswersAsKey,
+  handleSaveAgent,
+  initialValues
+}) => {
+  return (
+    <div className="modal agent-crud">
+      <Form
+        id="AgentDetails"
+        initialValues={initialValues}
+        onSubmit={handleSaveAgent}
+        mutators={{
+          ...arrayMutators
+        }}
+        subscription={{ submitting: true, values: true, dirty: true }}
+      >
+        {({ handleSubmit, submitting }) => (
+          <form onSubmit={handleSubmit}>
+            <div className="card">
+              <div className="card-header">
+                <h4>
+                  <i className="fa fa-address-book" />{' '}
+                  {isEditing ? 'Edit' : 'Save'} Agent
+                </h4>
+              </div>
+              <div className="card-block">
+                <section className="agent-details">
+                  <h3 data-test="agent-details">Details</h3>
+                  <div className="agent-name">
+                    <Field name="agentCode" validate={validation.isNumbersOnly}>
+                      {({ input, meta }) => (
+                        <Integer
+                          input={input}
+                          meta={meta}
+                          label="Agent ID"
+                          styleName="agentCode"
+                          dataTest="agentCode"
+                          placeholder="Generated if left blank"
+                          thousandSeparator={false}
+                          disabled={isEditing}
+                        />
+                      )}
+                    </Field>
+                    <Field name="firstName">
+                      {({ input, meta }) => (
+                        <Input
+                          input={input}
+                          meta={meta}
+                          label="First Name"
+                          styleName="firstName"
+                          dataTest="firstName"
+                        />
+                      )}
+                    </Field>
+                    <Field name="lastName" validate={validation.isRequired}>
+                      {({ input, meta }) => (
+                        <Input
+                          input={input}
+                          meta={meta}
+                          label="Last Name"
+                          styleName="lastName"
+                          dataTest="lastName"
+                        />
+                      )}
+                    </Field>
                   </div>
+                  <div className="agent-phone">
+                    <Field
+                      name="primaryPhoneNumber"
+                      validate={validation.isRequired}
+                    >
+                      {({ input, meta }) => (
+                        <Phone
+                          input={input}
+                          meta={meta}
+                          label="Primary Phone"
+                          styleName="primaryPhoneNumber"
+                          dataTest="primaryPhoneNumber"
+                        />
+                      )}
+                    </Field>
+                    <Field name="primaryPhoneNumberExtension">
+                      {({ input, meta }) => (
+                        <Phone
+                          input={input}
+                          meta={meta}
+                          label="Primary Phone Extension"
+                          styleName="primaryPhoneNumberExtension"
+                          dataTest="primaryPhoneNumberExtension"
+                        />
+                      )}
+                    </Field>
+                    <Field name="secondaryPhoneNumber">
+                      {({ input, meta }) => (
+                        <Phone
+                          input={input}
+                          meta={meta}
+                          label="Secondary Phone"
+                          styleName="secondaryPhoneNumber"
+                          dataTest="secondaryPhoneNumber"
+                        />
+                      )}
+                    </Field>
+                    <Field name="faxNumber">
+                      {({ input, meta }) => (
+                        <Phone
+                          input={input}
+                          meta={meta}
+                          label="Fax Number"
+                          styleName="faxNumber"
+                          dataTest="faxNumber"
+                        />
+                      )}
+                    </Field>
+                  </div>
+                  <div className="agent-status-email">
+                    <Field name="status" validate={validation.isRequired}>
+                      {({ input, meta }) => (
+                        <Select
+                          input={input}
+                          meta={meta}
+                          label="Status"
+                          dataTest="status"
+                          styleName="status"
+                          validate={validation.isRequired}
+                          answers={STATUS}
+                        />
+                      )}
+                    </Field>
+                    <Field
+                      name="emailAddress"
+                      validate={composeValidators([
+                        validation.isRequired,
+                        validation.isEmail
+                      ])}
+                    >
+                      {({ input, meta }) => (
+                        <Input
+                          input={input}
+                          meta={meta}
+                          label="Email Address"
+                          styleName="emailAddress"
+                          dataTest="emailAddress"
+                        />
+                      )}
+                    </Field>
+                  </div>
+                </section>
+                <section
+                  data-test="agent-address-section"
+                  className="agent-address"
+                >
+                  <AddressGroup
+                    mailingAddressPrefix="mailingAddress"
+                    physicalAddressPrefix="physicalAddress"
+                    listAnswersAsKey={listAnswersAsKey}
+                  />
+                </section>
+
+                <section className="agent-license">
+                  <h3 data-test="agent-license">Licenses</h3>
+                  <FieldArray
+                    name="licenses"
+                    stateAnswers={listAnswersAsKey.US_states}
+                    component={License}
+                  />
+                </section>
+              </div>
+              <div className="card-footer">
+                <div className="btn-footer">
+                  <Button
+                    className={Button.constants.classNames.secondary}
+                    data-test="cancel-modal"
+                    onClick={closeModal}
+                  >
+                    Cancel
+                  </Button>
+                  <Button
+                    className={Button.constants.classNames.primary}
+                    type="submit"
+                    data-test="submit-modal"
+                    disabled={submitting}
+                  >
+                    Save
+                  </Button>
                 </div>
               </div>
-            </form>
-          )}
-        </Form>
-      </div>
-    );
-  }
-}
-
-// const selector = getFormValues(FORM_NAME);
-// const defaultArr = [];
-// const mapStateToProps = state => ({
-//   licenseValue: selector(state, 'license') || defaultArr,
-//   sameAsMailingValue: selector(state, 'sameAsMailing'),
-//   listAnswersAsKey: getListAnswersAsKey(state)
-// });
+            </div>
+          </form>
+        )}
+      </Form>
+    </div>
+  );
+};
 
 export default AgentModal;
