@@ -178,17 +178,18 @@ describe('Testing AppWrapper', () => {
       <AppWrapper {...props} />
     );
     expect(getByText(details.product));
-    expect(getAllByText(details.quoteNumber));
+    // quoteNumber exists in the title and policyDetails
+    expect(getAllByText(details.quoteNumber).length).toBe(2);
     expect(getByText(status));
     expect(getByText('Policyholder'));
     expect(getByText(policyHolder.displayName));
     expect(getByText(policyHolder.phone));
     expect(getByText('Mailing Address'));
-    expect(getAllByText(mailingAddress.address1));
-    expect(getAllByText(mailingAddress.csz));
+    expect(getByText(mailingAddress.address1));
+    expect(getByText(mailingAddress.csz));
     expect(getByText('Property Address'));
-    expect(getAllByText(propertyAddress.address1));
-    expect(getAllByText(propertyAddress.csz));
+    expect(getByText(propertyAddress.address1));
+    expect(getByText(propertyAddress.csz));
     expect(getByText('Property County'));
     expect(getByText(county));
     expect(getByText('Territory'));
