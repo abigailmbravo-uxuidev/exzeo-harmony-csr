@@ -18,6 +18,7 @@ import PaymentList from './PaymentList';
 import { useFetchPaymentOptions } from '../hooks';
 
 const inputBatch = (batchNumber, cashDate) => {
+  if (!cashDate) return '';
   const suffix = batchNumber.length > 8 ? batchNumber.substring(8) : '';
   const newBatch = date.formatDate(String(cashDate), 'YYYYMMDD');
 
