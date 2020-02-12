@@ -9,7 +9,7 @@ import {
 } from '@exzeo/core-ui';
 import { Redirect } from 'react-router-dom';
 
-import ExistingAgentModal from './ExistingAgentModal';
+import ExistingAgentModal from '../ExistingAgentModal';
 import License from './License';
 import Agent from './Agent';
 import Contact from './Contact';

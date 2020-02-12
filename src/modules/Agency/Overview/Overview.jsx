@@ -2,7 +2,6 @@ import React from 'react';
 
 import DetailView from '../components/DetailView';
 import ContactView from '../components/ContactView';
-import AddExistingAgentModal from '../components/ExistingAgentModal';
 import AddressView from '../components/AddressView';
 import ContactCard from '../components/ContactCard';
 import AgentCard from '../components/AgentCard';
@@ -13,6 +12,7 @@ import AgencyContactModal from './AgencyContactModal';
 import AgencyModal from './AgencyModal';
 import BranchModal from './BranchModal';
 import Footer from '../../../components/Common/Footer';
+import ExistingAgentModal from '../ExistingAgentModal';
 
 export class Overview extends React.Component {
   state = {
@@ -256,7 +256,7 @@ export class Overview extends React.Component {
           />
         )}
         {this.state.showSwitchAgentOfRecordModal && (
-          <AddExistingAgentModal
+          <ExistingAgentModal
             header="Agent Of Record"
             initialValues={{
               selectedAgent: this.state.selectedAgent
