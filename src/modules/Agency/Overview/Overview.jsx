@@ -177,7 +177,7 @@ export const Overview = ({
           agency={agency}
           branchCode={branchCode}
           initialValues={agencyBranchData}
-          closeModal={setShowEditDetailsModal(false)}
+          closeModal={() => setShowEditDetailsModal(false)}
         />
       )}
       {showEditAddressModal && (

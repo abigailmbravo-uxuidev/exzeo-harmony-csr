@@ -34,7 +34,6 @@ export const AgencyAddressModal = ({
     closeModal();
   };
 
-  console.log(initialValues);
   return (
     <div className="modal agency-crud">
       <Form
