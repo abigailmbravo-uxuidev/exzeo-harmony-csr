@@ -6,7 +6,7 @@ import AddressView from '../components/AddressView';
 import ContactCard from '../components/ContactCard';
 import AgentCard from '../components/AgentCard';
 
-import AgencyContactModal from './AgencyContactModal';
+import AgencyContactModal from '../AgencyContactModal';
 import AgencyModal from './AgencyModal';
 import BranchModal from './BranchModal';
 import Footer from '../../../components/Common/Footer';
@@ -197,6 +197,7 @@ export const Overview = ({
           header="Edit Contact"
           section="contact"
           initialValues={agencyBranchData}
+          updateAgency={updateAgency}
           closeModal={() => setShowEditContactModal(false)}
         />
       )}
@@ -207,6 +208,7 @@ export const Overview = ({
           header="Edit Officer"
           section="principal"
           initialValues={agencyBranchData}
+          updateAgency={updateAgency}
           closeModal={() => setShowEditPrincipalModal(false)}
         />
       )}
