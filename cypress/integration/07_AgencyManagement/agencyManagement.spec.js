@@ -507,7 +507,7 @@ describe('Agency Management testing', () => {
       .click()
       .get('[class~="modal"]')
       .within(() => {
-        cy.findDataTag('edit-agency-mailing-address').within(() => {
+        cy.findDataTag('agency-mailing-address').within(() => {
           cy.findDataTag('address1')
             .type('{selectall}{backspace}Test Mailing Address 1 Updated')
             .findDataTag('address2')
@@ -520,7 +520,7 @@ describe('Agency Management testing', () => {
             .type('{selectall}{backspace}33624');
         });
 
-        cy.findDataTag('edit-agency-physical-address').within(() => {
+        cy.findDataTag('agency-physical-address').within(() => {
           cy.findDataTag('address1')
             .type('{selectall}{backspace}Test Physical Address 1 Updated')
             .findDataTag('address2')

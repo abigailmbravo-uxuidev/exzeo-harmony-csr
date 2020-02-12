@@ -59,7 +59,7 @@ export const AgencyContactModal = ({
                 <div className="btn-footer">
                   <Button
                     className={Button.constants.classNames.secondary}
-                    data-test="cancel-modal"
+                    data-test="modal-cancel"
                     onClick={closeModal}
                   >
                     Cancel
@@ -67,7 +67,7 @@ export const AgencyContactModal = ({
                   <Button
                     className={Button.constants.classNames.primary}
                     type="submit"
-                    data-test="submit-modal"
+                    data-test="modal-submit"
                     disabled={submitting}
                   >
                     Save

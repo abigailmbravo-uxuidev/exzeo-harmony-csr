@@ -40,7 +40,7 @@ export const AgencyAddressModal = ({
         id="AgencyAddressModal"
         initialValues={initialValues}
         onSubmit={handleSaveAddress}
-        subscription={{ submitting: true, values: true, dirty: true }}
+        subscription={{ submitting: true }}
       >
         {({ handleSubmit, submitting }) => (
           <form onSubmit={handleSubmit}>
