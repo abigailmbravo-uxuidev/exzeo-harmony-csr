@@ -1,5 +1,5 @@
 import React from 'react';
-import { fireEvent, waitForElement } from 'react-testing-library';
+import { fireEvent, within } from '@testing-library/react';
 
 import {
   renderWithForm,
@@ -50,23 +50,31 @@ describe('Summary testing with finished Quote', () => {
   };
 
   it('POS:Checks Headers', () => {
-    const { getByText } = renderWithForm(<QuoteWorkflow {...props} />);
+    renderWithForm(<QuoteWorkflow {...props} />);
 
-    pageHeaders.forEach(header => checkHeader(getByText, header));
+    const { getByText: getByTextInsideForm } = within(
+      document.getElementById('QuoteWorkflowCSR')
+    );
+
+    pageHeaders.forEach(header => expect(getByTextInsideForm(header.text)));
   });
 
   it('Displays quote details', () => {
-    const { getByText } = renderWithForm(<QuoteWorkflow {...props} />);
+    renderWithForm(<QuoteWorkflow {...props} />);
 
-    expect(getByText('Quote Number'));
-    expect(getByText('12-345-67'));
-    expect(getByText('Property Address'));
-    expect(getByText('4131 TEST ADDRESS'));
-    expect(getByText('Year Built'));
-    expect(getByText('1958'));
-    expect(getByText('Effective Date'));
-    expect(getByText('05/23/2019'));
-    expect(getByText('Agent'));
+    const { getByText: getByTextInsideForm } = within(
+      document.getElementById('QuoteWorkflowCSR')
+    );
+
+    expect(getByTextInsideForm('Quote Number'));
+    expect(getByTextInsideForm('12-345-67'));
+    expect(getByTextInsideForm('Property Address'));
+    expect(getByTextInsideForm('4131 TEST ADDRESS'));
+    expect(getByTextInsideForm('Year Built'));
+    expect(getByTextInsideForm('1958'));
+    expect(getByTextInsideForm('Effective Date'));
+    expect(getByTextInsideForm('05/23/2019'));
+    expect(getByTextInsideForm('Agent'));
   });
 
   it('POS:Coverage Rating', () => {
@@ -91,7 +99,7 @@ describe('Summary testing with finished Quote', () => {
     expect(getByText('Mold Property'));
     expect(getByText('$ 44'));
     expect(getByText('Mold Liability'));
-    expect(getByText('$ 22'));
+    expect(getByText('$ 23'));
     expect(getByText('Ordinance or Law'));
     expect(getByText('29%'));
     expect(getByText('All Other Perils Deductible'));
@@ -131,12 +139,7 @@ describe('Summary testing with finished Quote', () => {
   });
 
   it('POS:Share Fields', () => {
-    const { getByLabelText, getByTestId, getByText } = renderWithForm(
-      <QuoteWorkflow {...props} />
-    );
-
-    fields.forEach(field => checkTextInput(getByLabelText, field));
-    checkButton(getByText, { text: 'Share', type: 'button' });
+    const { getByTestId } = renderWithForm(<QuoteWorkflow {...props} />);
 
     fields.forEach(field => {
       const fieldInput = getByTestId(field.dataTest);

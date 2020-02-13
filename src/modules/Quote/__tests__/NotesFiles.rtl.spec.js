@@ -1,5 +1,5 @@
 import React from 'react';
-import { waitForElement, fireEvent } from 'react-testing-library';
+import { waitForElement, fireEvent, within } from '@testing-library/react';
 
 import {
   renderWithForm,
@@ -43,7 +43,11 @@ describe('Notes Files Testing', () => {
     const { getByText } = renderWithForm(<QuoteWorkflow {...props} />);
     await waitForElement(() => getByText('Search Table Data'));
 
-    pageHeaders.forEach(header => checkHeader(getByText, header));
+    const { getByText: getByTextInsideForm } = within(
+      document.getElementById('QuoteWorkflowCSR')
+    );
+
+    pageHeaders.forEach(header => expect(getByTextInsideForm(header.text)));
     expect(getByText('Notes').className).toEqual('btn btn-tab selected');
     expect(getByText('Files').className).toEqual('btn btn-tab');
     expect(getByText('Diaries').className).toEqual('btn btn-tab');

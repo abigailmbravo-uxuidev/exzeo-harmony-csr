@@ -160,6 +160,9 @@ describe('Questions Actions', () => {
     const initialState = {};
     const store = mockStore(initialState);
 
+    const diaryAssignees = [{ _id: '1' }, { _id: '2' }, { _id: '3' }];
+    store.dispatch(questionsActions.setAssigneeOptions(diaryAssignees));
+
     questionsActions
       .getDiaryAssigneeOptions(userProfile)(store.dispatch)
       .then(() => {

@@ -1,5 +1,5 @@
 import React from 'react';
-import { fireEvent } from 'react-testing-library';
+import { fireEvent, wait } from '@testing-library/react';
 
 import {
   renderWithReduxAndRouter,
@@ -17,14 +17,14 @@ describe('Testing AppWrapper', () => {
     openDiaryCount: 0,
     pageTitle: 'P: 12-1016507-01',
     render: () => <div />,
-    resourceId: '12-1016507-01',
+    resourceId: '12-1234567-01',
     resourceType: 'Policy',
     showDiaries: false,
     headerDetails: {
       constructionType: 'MASONRY',
       county: 'SARASOTA',
       currentPremium: '$ 1,234',
-      details: { product: 'HO3 Homeowners', quoteNumber: '12-345-67' },
+      details: { product: 'HO3 Homeowners', quoteNumber: '12-1016507-01' },
       effectiveDate: '06/08/2019',
       mailingAddress: {
         address1: '4131 TEST ADDRESS',
@@ -35,9 +35,9 @@ describe('Testing AppWrapper', () => {
       policyNumber: undefined,
       policyID: '5ceec090667f7b001172bce6',
       propertyAddress: {
-        address1: '4131 TEST ADDRESS',
+        address1: '5055 TEST ADDRESS',
         address2: '',
-        csz: 'SARASOTA, FL 00001'
+        csz: 'Miami, FL 20002'
       },
       territory: '715-15'
     },
@@ -93,6 +93,7 @@ describe('Testing AppWrapper', () => {
 
     const { getByText } = renderWithReduxAndRouter(<AppWrapper {...props} />);
     expect(getByText(product));
+    // policyNumber exists in the title and policyDetails
     expect(getByText(policyNumber));
     expect(getByText(status));
     expect(getByText('Policyholder'));
@@ -196,7 +197,7 @@ describe('Testing AppWrapper', () => {
     expect(getByText(currentPremium));
   });
 
-  it('POS:Has a complete Sidenav in Quote', () => {
+  it('POS:Has a complete Sidenav in Quote', async () => {
     const props = {
       ...baseProps,
       context: 'quote'
@@ -214,49 +215,61 @@ describe('Testing AppWrapper', () => {
     expect(getByText('Application'));
 
     fireEvent.click(getByText('Underwriting Conditions'));
-    expect(
+
+    await wait(() => {
       getByText(
         'Please be aware that assumptions to this property have been made in order to provide you this quote. If any of the below assumptions are not correct, please contact us before continuing.'
-      )
-    );
-    expect(
-      getByText(
-        'All properties will be inspected within 30 days of the effective date.'
-      )
-    );
-    expect(
-      getByText(
-        'Please be aware that assumptions to this property have been made in order to provide you this quote. If any of the below assumptions are not correct, please contact us before continuing.'
-      )
-    );
-    expect(
-      getByText(
-        'Properties with pools (or similar structures), are to be completely fenced, walled, or screened. There are no slides or diving boards.'
-      )
-    );
-    expect(
-      getByText(
-        'Properties located in Special Flood Hazard Areas, as defined by the National Flood Insurance Program maintain a separate flood policy.'
-      )
-    );
-    expect(
-      getByText(
-        'Property is not in state of disrepair or having existing unrepaired damage.'
-      )
-    );
-    expect(getByText('Roof covering does not exceed the age as defined below'));
-    expect(
-      getByText(
-        'Roof cannot be over 20 years old if Asphalt, Fiberglass, Composition/Wood Shake Shingles; Built-up Tar and Gravel; or other roof covering types not included below'
-      )
-    );
-    expect(
-      getByText(
-        'Roof cannot be over 40 years old if Tile, Slate, Concrete, or Metal'
-      )
-    );
+      );
+      expect(
+        getByText(
+          'Please be aware that assumptions to this property have been made in order to provide you this quote. If any of the below assumptions are not correct, please contact us before continuing.'
+        )
+      );
+      expect(
+        getByText(
+          'All properties will be inspected within 30 days of the effective date.'
+        )
+      );
+      expect(
+        getByText(
+          'Please be aware that assumptions to this property have been made in order to provide you this quote. If any of the below assumptions are not correct, please contact us before continuing.'
+        )
+      );
+      expect(
+        getByText(
+          'Properties with pools (or similar structures), are to be completely fenced, walled, or screened. There are no slides or diving boards.'
+        )
+      );
+      expect(
+        getByText(
+          'Properties located in Special Flood Hazard Areas, as defined by the National Flood Insurance Program maintain a separate flood policy.'
+        )
+      );
+      expect(
+        getByText(
+          'Property is not in state of disrepair or having existing unrepaired damage.'
+        )
+      );
+      expect(
+        getByText('Roof covering does not exceed the age as defined below')
+      );
+      expect(
+        getByText(
+          'Roof cannot be over 20 years old if Asphalt, Fiberglass, Composition/Wood Shake Shingles; Built-up Tar and Gravel; or other roof covering types not included below'
+        )
+      );
+      expect(
+        getByText(
+          'Roof cannot be over 40 years old if Tile, Slate, Concrete, or Metal'
+        )
+      );
+    });
+
     fireEvent.click(getByText('Close'));
-    expect(document.querySelector('div.modal.uw-conditions')).toBeNull();
+
+    await wait(() => {
+      expect(document.querySelector('div.modal.uw-conditions')).toBeNull();
+    });
   });
 
   it('POS:Has a complete Sidenav in Policy', () => {

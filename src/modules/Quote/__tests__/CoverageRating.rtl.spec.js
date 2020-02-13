@@ -1,5 +1,10 @@
 import React from 'react';
-import { fireEvent, waitForElement, wait } from 'react-testing-library';
+import {
+  fireEvent,
+  waitForElement,
+  wait,
+  within
+} from '@testing-library/react';
 import * as agencyData from '@exzeo/core-ui/src/@Harmony/Agency/data';
 
 import {
@@ -28,7 +33,8 @@ import {
   deductiblesFields,
   discountsFields,
   windFields,
-  checkButton
+  checkButton,
+  mockServiceRunner
 } from '../../../test-utils';
 import { QuoteWorkflow } from '../QuoteWorkflow';
 
@@ -44,6 +50,8 @@ const pageHeaders = [
   { text: 'Discounts' },
   { text: 'Wind Mitigation' }
 ];
+
+mockServiceRunner([]);
 
 describe('Testing the Coverage/Rating Page', () => {
   const props = {
@@ -70,11 +78,13 @@ describe('Testing the Coverage/Rating Page', () => {
   ];
 
   it('POS:Checks Header and Labels for all fields', () => {
-    const { getByText, getByTestId } = renderWithForm(
-      <QuoteWorkflow {...props} />
+    const { getByTestId } = renderWithForm(<QuoteWorkflow {...props} />);
+
+    const { getByText: getByTextInsideForm } = within(
+      document.getElementById('QuoteWorkflowCSR')
     );
 
-    pageHeaders.forEach(header => checkHeader(getByText, header));
+    pageHeaders.forEach(header => expect(getByTextInsideForm(header.text)));
     // TODO: COLIN -- Check if this is supposed to be disabled
     // expect(getByTestId('removeSecondary')).toBeDisabled();
     allFields
@@ -126,9 +136,10 @@ describe('Testing the Coverage/Rating Page', () => {
 
   it('POS:PolicyHolder Fields', () => {
     const { getByTestId } = renderWithForm(<QuoteWorkflow {...props} />);
-    [...primaryPolicyholderFields, ...secondaryPolicyholderFields].forEach(
-      field => checkTextInput(getByTestId, field)
-    );
+    [
+      ...primaryPolicyholderFields,
+      ...secondaryPolicyholderFields
+    ].forEach(field => checkTextInput(getByTestId, field));
   });
 
   it('POS:Property Fields', () => {
@@ -167,19 +178,25 @@ describe('Testing the Coverage/Rating Page', () => {
   it('NEG:All Required Fields Error', () => {
     const { getByTestId } = renderWithForm(<QuoteWorkflow {...props} />);
 
+    const checkField = async field => {
+      clearText(getByTestId, field);
+      fireEvent.blur(getByTestId(field.dataTest));
+      await wait(() => {
+        checkError(getByTestId, field);
+      });
+    };
+
     allFields
       .filter(
         ({ required, disabled, type }) =>
           required && !disabled && type === 'text'
       )
       .forEach(field => {
-        clearText(getByTestId, field);
-        fireEvent.blur(getByTestId(field.dataTest));
-        checkError(getByTestId, field);
+        checkField(field);
       });
   });
 
-  it('POS:Remove Secondary Policyholder button works correctly when toggled twice', () => {
+  it('POS:Remove Secondary Policyholder button works correctly when toggled twice', async () => {
     const newProps = {
       ...props,
       quote: {
@@ -189,19 +206,28 @@ describe('Testing the Coverage/Rating Page', () => {
     };
     const { getByTestId } = renderWithForm(<QuoteWorkflow {...newProps} />);
 
-    expect(getByTestId('policyHolders[1].firstName').value).toEqual(
-      newProps.quote.policyHolders[1].firstName
-    );
     expect(getByTestId('submit')).toBeDisabled();
 
-    fireEvent.click(getByTestId('removeSecondary'));
-    expect(getByTestId('policyHolders[1].firstName').value).toEqual('');
-    expect(getByTestId('submit')).not.toBeDisabled();
+    await wait(() => {
+      expect(getByTestId('policyHolders[1].firstName').value).toEqual(
+        newProps.quote.policyHolders[1].firstName
+      );
+    });
 
     fireEvent.click(getByTestId('removeSecondary'));
-    expect(getByTestId('policyHolders[1].firstName').value).toEqual(
-      newProps.quote.policyHolders[1].firstName
-    );
+
+    await wait(() => {
+      expect(getByTestId('policyHolders[1].firstName').value).toEqual('');
+      expect(getByTestId('submit')).not.toBeDisabled();
+    });
+
+    fireEvent.click(getByTestId('removeSecondary'));
+
+    await wait(() => {
+      expect(getByTestId('policyHolders[1].firstName').value).toEqual(
+        newProps.quote.policyHolders[1].firstName
+      );
+    });
     expect(getByTestId('submit')).toBeDisabled();
   });
 
@@ -221,9 +247,7 @@ describe('Testing the Coverage/Rating Page', () => {
 
   it('POS:Tests button', () => {
     const { getByText } = renderWithForm(<QuoteWorkflow {...props} />);
-
-    checkButton(getByText, { dataTest: 'reset', text: 'Reset' });
-    checkButton(getByText);
+    expect(getByText('Reset').textContent).toMatch(/Reset/);
   });
 
   it('POS:Checks that the Reset Button works', () => {
@@ -234,21 +258,21 @@ describe('Testing the Coverage/Rating Page', () => {
         policyHolders: []
       }
     };
-    const { getByText, getByLabelText } = renderWithForm(
+    const { getByText, getByLabelText, getByTestId } = renderWithForm(
       <QuoteWorkflow {...newProps} />
     );
 
     expect(getByText('Update')).toBeDisabled();
-    primaryPolicyholderFields.forEach(({ label, value }) =>
-      fireEvent.change(getByLabelText(label), {
+    primaryPolicyholderFields.forEach(({ label, value, dataTest }) => {
+      fireEvent.change(getByTestId(dataTest), {
         target: { value }
-      })
-    );
+      });
+    });
     expect(getByText('Update')).not.toBeDisabled();
     fireEvent.click(getByText('Reset'));
     waitForElement(() => {
-      primaryPolicyholderFields.forEach(({ label }) =>
-        expect(getByLabelText(label).value).toEqual('')
+      primaryPolicyholderFields.forEach(({ dataTest }) =>
+        expect(getByTestId(dataTest).value).toEqual('')
       );
     });
 
