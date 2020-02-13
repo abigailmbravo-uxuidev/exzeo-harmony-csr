@@ -158,6 +158,7 @@ export class SideNav extends React.Component {
               aria-label="open-btn form-new-note"
               data-test="new-note"
               className="btn btn-primary btn-round btn-lg new-note-btn"
+              disabled={agencyCode === 'new'}
               onClick={this.newNote}
             >
               <i className="fa fa-pencil" />
