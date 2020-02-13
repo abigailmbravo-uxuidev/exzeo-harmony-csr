@@ -82,7 +82,15 @@ export class TransferModal extends Component {
   submitTransfer = async data => {
     try {
       const { agentCodeTo, agencyCodeTo } = data;
-      const { selectedPolicies, activeAgencyCode } = this.props;
+      const {
+        selectedPolicies,
+        activeAgencyCode,
+        transferPoliciesToAgent,
+        getAgentListByAgencyCode,
+        getPoliciesForAgency,
+        clearSelectedPolicies,
+        toggleModal
+      } = this.props;
 
       const groupedPolices = this.groupPolicyByAgentCode(selectedPolicies);
       const transfers = [];
@@ -101,11 +109,11 @@ export class TransferModal extends Component {
         });
       });
 
-      await this.props.transferPoliciesToAgent(transfers);
-      await this.props.getAgentListByAgencyCode(activeAgencyCode);
-      await this.props.getPoliciesForAgency({ agencyCode: activeAgencyCode });
-      this.props.clearSelectedPolicies();
-      this.props.toggleModal();
+      await transferPoliciesToAgent(transfers);
+      await getAgentListByAgencyCode(activeAgencyCode);
+      await getPoliciesForAgency({ agencyCode: activeAgencyCode });
+      clearSelectedPolicies();
+      toggleModal();
     } catch (err) {
       if (process.env.NODE_ENV !== 'production') {
         console.error('Error in submitTransfer (TransferModal): ', err);
