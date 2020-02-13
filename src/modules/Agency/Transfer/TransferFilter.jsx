@@ -18,7 +18,8 @@ export class TransferFilter extends Component {
       policyNumberList,
       listAnswersAsKey,
       agentsList,
-      getPoliciesForAgency
+      getPoliciesForAgency,
+      agencyCode
     } = this.props;
     return (
       <Form onSubmit={noop} subscription={{ submitting: true }}>
@@ -69,7 +70,10 @@ export class TransferFilter extends Component {
                 Clear Filters
               </Button>
             </form>
-            <TransferWatcher getPoliciesForAgency={getPoliciesForAgency} />
+            <TransferWatcher
+              getPoliciesForAgency={getPoliciesForAgency}
+              agencyCode={agencyCode}
+            />
           </React.Fragment>
         )}
       </Form>

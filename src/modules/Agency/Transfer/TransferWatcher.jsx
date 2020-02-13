@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { useField } from '@exzeo/core-ui';
 import _get from 'lodash/get';
 
-const TransferWatcher = ({ getPoliciesForAgency }) => {
+const TransferWatcher = ({ getPoliciesForAgency, agencyCode }) => {
   const policyNumber = useField('policyNumber').input.value;
   const state = useField('state').input.value;
   const product = useField('product').input.value;
@@ -11,12 +11,18 @@ const TransferWatcher = ({ getPoliciesForAgency }) => {
   useEffect(() => {
     const getPolicies = async () => {
       try {
-        await getPoliciesForAgency({ policyNumber, state, product, agentCode });
+        await getPoliciesForAgency({
+          policyNumber,
+          state,
+          product,
+          agentCode,
+          agencyCode
+        });
       } catch (error) {}
     };
     getPolicies();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [policyNumber, state, product, agentCode]);
+  }, [policyNumber, state, product, agentCode, agencyCode]);
 
   return <React.Fragment />;
 };
