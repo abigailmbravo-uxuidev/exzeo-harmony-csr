@@ -32,7 +32,7 @@ export const AgentModal = ({
         mutators={{
           ...arrayMutators
         }}
-        subscription={{ submitting: true, values: true, dirty: true }}
+        subscription={{ submitting: true }}
       >
         {({ handleSubmit, submitting }) => (
           <form onSubmit={handleSubmit}>

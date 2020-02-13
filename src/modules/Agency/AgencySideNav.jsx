@@ -63,7 +63,9 @@ export const SideNav = ({
   agencyCode,
   branchCode,
   branchesList,
-  match: { url }
+  match: { url },
+  toggleNote,
+  agency
 }) => {
   const [branchSelectionRoute, setBranchSelectionRoute] = useState(false);
 
@@ -77,7 +79,6 @@ export const SideNav = ({
   };
 
   const newNote = () => {
-    const { toggleNote, agencyCode, agency } = this.props;
     toggleNote({
       noteType: 'Agency Note',
       documentId: agencyCode,

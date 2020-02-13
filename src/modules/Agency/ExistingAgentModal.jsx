@@ -19,7 +19,7 @@ export const ExistingAgentModal = ({
       <Form
         id="ExistingAgentModal"
         onSubmit={handleSelection}
-        subscription={{ submitting: true, values: true, dirty: true }}
+        subscription={{ submitting: true }}
       >
         {({ handleSubmit, submitting }) => (
           <form onSubmit={handleSubmit}>
