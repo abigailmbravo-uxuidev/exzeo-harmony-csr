@@ -153,9 +153,12 @@ function buildQuerystring({
  */
 export async function fetchAddresses(data) {
   const { address, state } = data;
-  const searchAddress = address.replace(/\t/g, ' ').trim();
 
-  const uri = `/v1/search/${searchAddress}/${state}/single family/HO3/1/10`;
+  const searchAddress = address.replace(/\t/g, ' ').trim();
+  const tor = 'single family';
+  const propType = '';
+
+  const uri = `/v1/search/${searchAddress}/${state}/${tor}/${propType}/1/10`;
   const config = {
     service: 'property-search',
     method: 'GET',
