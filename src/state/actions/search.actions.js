@@ -148,12 +148,11 @@ function buildQuerystring({
  * Build query string and call address search service
  * @param {object} data
  * @param {string} data.address
- * @param {string} data.product
  * @param {string} data.state
  * @returns {Promise<{}>}
  */
 export async function fetchAddresses(data) {
-  const { address, product, state } = data;
+  const { address, state } = data;
   const searchAddress = address.replace(/\t/g, ' ').trim();
 
   const uri = `/v1/search/${searchAddress}/${state}/single family/HO3/1/10`;
