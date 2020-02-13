@@ -1,5 +1,5 @@
 import React from 'react';
-import { OnChangeListener, Field, useField } from '@exzeo/core-ui';
+import { OnChangeListener, Field } from '@exzeo/core-ui';
 
 const AgencyChangeWatcher = ({ getAgentsForTransfer }) => {
   return (
