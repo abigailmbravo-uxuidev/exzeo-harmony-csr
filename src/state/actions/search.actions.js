@@ -156,7 +156,7 @@ export async function fetchAddresses(data) {
 
   const searchAddress = address.replace(/\t/g, ' ').trim();
   const tor = 'single family';
-  const propType = '';
+  const propType = 'HO3';
 
   const uri = `/v1/search/${searchAddress}/${state}/${tor}/${propType}/1/10`;
   const config = {
