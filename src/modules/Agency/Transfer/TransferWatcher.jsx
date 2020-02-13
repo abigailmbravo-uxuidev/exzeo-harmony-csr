@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
 import { useField } from '@exzeo/core-ui';
-import _get from 'lodash/get';
 
 const TransferWatcher = ({ getPoliciesForAgency, agencyCode }) => {
   const policyNumber = useField('policyNumber').input.value;
