@@ -13,7 +13,6 @@ import {
 } from '@exzeo/core-ui';
 import { setAppError } from '../../../state/actions/error.actions';
 import {
-  getAgencies,
   getAgentListByAgencyCode,
   clearAgentList,
   transferPoliciesToAgent,
@@ -212,7 +211,6 @@ const mapStateToProps = (state, { agencyCode, agentCode }) => ({
 });
 
 export default connect(mapStateToProps, {
-  getAgencies,
   getAgentListByAgencyCode,
   clearAgentList,
   transferPoliciesToAgent,
