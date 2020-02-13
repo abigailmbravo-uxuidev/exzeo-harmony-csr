@@ -146,14 +146,21 @@ function buildQuerystring({
 // TODO the 'fetch*' methods below are being moved to core-ui to be shared amongst the UI apps
 /**
  * Build query string and call address search service
- * @param {string} query
+ * @param {object} data
+ * @param {string} data.address
+ * @param {string} data.product
+ * @param {string} data.state
  * @returns {Promise<{}>}
  */
-export async function fetchAddresses(query) {
+export async function fetchAddresses(data) {
+  const { address, product, state } = data;
+  const searchAddress = address.replace(/\t/g, ' ').trim();
+
+  const uri = `/v1/search/${searchAddress}/${state}/single family/HO3/1/10`;
   const config = {
     service: 'property-search',
     method: 'GET',
-    path: `/v1/search/${query}/1/10`
+    path: encodeURI(uri)
   };
 
   try {
@@ -471,11 +478,8 @@ function formatDiaryResults(results) {
  * @returns {Function}
  */
 export async function handleAddressSearch(data) {
-  const { state, address } = data;
   try {
-    const query = formatForURI(`${String(address).trim()}, ${state}`);
-
-    const results = await fetchAddresses(query);
+    const results = await fetchAddresses(data);
     return formatAddressResults(results);
   } catch (error) {
     throw error;
