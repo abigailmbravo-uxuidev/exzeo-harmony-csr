@@ -14,7 +14,7 @@ import {
   changeBillTo,
   searchPolicy,
   searchQoute,
-  veriFyDiary
+  verifyDiary
 } from '../../helpers';
 import {
   coverageRatingTest,
@@ -58,16 +58,9 @@ describe('Base Path - HO3', () => {
     fillOutApplication();
     applicationTest();
 
-    if (Cypress.env('CI')) {
-      cy.task(
-        'log',
-        "CI is set to true - not testing for 'Application Sent DocuSign'"
-      );
-    } else {
-      navigateThroughDocusign();
-      veriFyDiary();
-      searchQoute();
-      searchPolicy();
-    }
+    navigateThroughDocusign();
+    verifyDiary();
+    searchQoute();
+    searchPolicy();
   });
 });

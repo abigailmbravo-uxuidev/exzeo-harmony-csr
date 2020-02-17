@@ -57,15 +57,8 @@ describe('Base Path - AF3', () => {
     fillOutApplication();
     applicationTest();
 
-    if (Cypress.env('CI')) {
-      cy.task(
-        'log',
-        "CI is set to true - not testing for 'Application Sent DocuSign'"
-      );
-    } else {
-      navigateThroughDocusign();
-      searchQoute();
-      searchPolicy();
-    }
+    navigateThroughDocusign();
+    searchQoute();
+    searchPolicy();
   });
 });

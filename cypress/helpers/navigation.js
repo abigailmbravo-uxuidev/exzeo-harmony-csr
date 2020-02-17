@@ -272,9 +272,9 @@ export const searchQoute = () => {
   });
 };
 
-export const veriFyDiary = () => {
+export const verifyDiary = () => {
   return cy
-    .task('log', 'Navigate throough Diary verification')
+    .task('log', 'Navigate through Diary verification')
     .get('@diaryText')
     .then(diaryText => {
       cy.goToNav('notes')

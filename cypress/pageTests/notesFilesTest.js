@@ -70,8 +70,6 @@ export default () => {
     .get('button')
     .contains('Diaries')
     .click()
-    // .get('td.message')
-    // .contains('new diary')
     .checkQuoteState('Application Started')
     .goToNav('coverage');
 
