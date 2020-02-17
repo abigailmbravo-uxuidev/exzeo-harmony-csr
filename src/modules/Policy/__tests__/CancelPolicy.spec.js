@@ -1,5 +1,5 @@
 import React from 'react';
-import { waitForElement, fireEvent, wait } from 'react-testing-library';
+import { waitForElement, fireEvent, wait } from '@testing-library/react';
 import { date } from '@exzeo/core-ui';
 
 import { getPaymentHistory } from '../../../state/actions/policy.actions';
@@ -48,7 +48,9 @@ describe('CancelType Testing', () => {
       );
 
       fireEvent.click(getByText('Underwriting Cancellation'));
-      expect(getByLabelText('Effective Date').value).toBe(inputValue);
+      await wait(() => {
+        expect(getByLabelText('Effective Date').value).toBe(inputValue);
+      });
     });
 
     it('HO3, Term 1, policy effective date is greater than today’s date', async () => {
@@ -70,7 +72,9 @@ describe('CancelType Testing', () => {
       );
 
       fireEvent.click(getByText('Underwriting Cancellation'));
-      expect(getByLabelText('Effective Date').value).toBe(inputValue);
+      await wait(() => {
+        expect(getByLabelText('Effective Date').value).toBe(inputValue);
+      });
     });
 
     it('HO3, Term 1, Today’s Date > first 90 days of the Policy Effective Date', async () => {
@@ -92,7 +96,9 @@ describe('CancelType Testing', () => {
       );
 
       fireEvent.click(getByText('Underwriting Cancellation'));
-      expect(getByLabelText('Effective Date').value).toBe(inputValue);
+      await wait(() => {
+        expect(getByLabelText('Effective Date').value).toBe(inputValue);
+      });
     });
 
     it('HO3, Term 2, Today’s Date <= first 90 days of the Policy Effective Date', async () => {
@@ -114,7 +120,9 @@ describe('CancelType Testing', () => {
       );
 
       fireEvent.click(getByText('Underwriting Cancellation'));
-      expect(getByLabelText('Effective Date').value).toBe(inputValue);
+      await wait(() => {
+        expect(getByLabelText('Effective Date').value).toBe(inputValue);
+      });
     });
 
     it('AF3, Term 1, Today’s Date <= first 90 days of the Policy Effective Date', async () => {
@@ -136,7 +144,9 @@ describe('CancelType Testing', () => {
       );
 
       fireEvent.click(getByText('Underwriting Cancellation'));
-      expect(getByLabelText('Effective Date').value).toBe(inputValue);
+      await wait(() => {
+        expect(getByLabelText('Effective Date').value).toBe(inputValue);
+      });
     });
 
     it('AF3, Term 1, Today’s Date > than Policy Effective Date and less than 90', async () => {
@@ -158,7 +168,9 @@ describe('CancelType Testing', () => {
       );
 
       fireEvent.click(getByText('Underwriting Cancellation'));
-      expect(getByLabelText('Effective Date').value).toBe(inputValue);
+      await wait(() => {
+        expect(getByLabelText('Effective Date').value).toBe(inputValue);
+      });
     });
 
     it('AF3, Term 1, Today’s Date > first 90 days of the Policy Effective Date', async () => {
@@ -180,7 +192,9 @@ describe('CancelType Testing', () => {
       );
 
       fireEvent.click(getByText('Underwriting Cancellation'));
-      expect(getByLabelText('Effective Date').value).toBe(inputValue);
+      await wait(() => {
+        expect(getByLabelText('Effective Date').value).toBe(inputValue);
+      });
     });
 
     it('AF3, Term 2, Today’s Date <= first 90 days of the Policy Effective Date', async () => {
@@ -202,7 +216,9 @@ describe('CancelType Testing', () => {
       );
 
       fireEvent.click(getByText('Underwriting Cancellation'));
-      expect(getByLabelText('Effective Date').value).toBe(inputValue);
+      await wait(() => {
+        expect(getByLabelText('Effective Date').value).toBe(inputValue);
+      });
     });
   });
 });

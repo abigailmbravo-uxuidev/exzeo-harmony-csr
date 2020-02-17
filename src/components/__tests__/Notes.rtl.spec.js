@@ -1,13 +1,16 @@
 import React from 'react';
-import { fireEvent } from 'react-testing-library';
+import { fireEvent } from '@testing-library/react';
 
 import {
   renderWithReduxAndRouter,
   defaultInitialState,
-  defaultInitialProps
+  defaultInitialProps,
+  mockServiceRunner
 } from '../../test-utils';
 
 import Notes from '../Notes';
+
+mockServiceRunner([]);
 
 describe('Notes Testing', () => {
   const props = {

@@ -4,11 +4,15 @@ import { reduxForm } from 'redux-form';
 import {
   renderWithForm,
   checkLabel,
-  checkTextInput,
   checkSelect,
-  checkButton
+  checkButton,
+  mockServiceRunner,
+  mockQuestions
 } from '../../../../test-utils';
 import PolicySearch from '../PolicySearch';
+
+mockServiceRunner([]);
+mockQuestions([]);
 
 const fields = [
   {
@@ -147,7 +151,9 @@ describe('Policy Search Testing', () => {
       <SearchForm {...props} />
     );
     selectFields.forEach(field => checkSelect(getByTestId, field));
-    textFields.forEach(field => checkTextInput(getByPlaceholderText, field));
+    textFields.forEach(field =>
+      expect(getByPlaceholderText(field.placeholderText))
+    );
   });
 
   it('POS:Policy Search Button', () => {

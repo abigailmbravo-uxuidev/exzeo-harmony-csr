@@ -7,7 +7,11 @@ const License = ({ fields, stateAnswers }) => {
   return (
     <React.Fragment>
       {fields.map((license, index) => (
-        <div className="license-wrapper" key={license}>
+        <div
+          data-test="agent-of-record-license"
+          className="license-wrapper"
+          key={license}
+        >
           <Field
             name={`${license}.state`}
             component={Select}

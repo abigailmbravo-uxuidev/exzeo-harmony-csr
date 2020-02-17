@@ -1,19 +1,5 @@
 import React from 'react';
-import {
-  fireEvent,
-  waitForElement,
-  wait,
-  findAllByLabelText,
-  findAllByPlaceholderText,
-  findByLabelText
-} from 'react-testing-library';
-
-import {
-  defaultCreateAgencyProps,
-  renderWithForm,
-  mockServiceRunner,
-  zipCodeSettings
-} from '../../../test-utils';
+import { renderWithForm, mockServiceRunner } from '../../../test-utils';
 
 import AgencySideNav from '../AgencySideNav';
 

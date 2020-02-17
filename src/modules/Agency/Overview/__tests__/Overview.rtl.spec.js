@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, fireEvent, waitForElement, wait } from 'react-testing-library';
+import { within } from '@testing-library/react';
 import { date, normalize } from '@exzeo/core-ui';
 import 'jest-dom/extend-expect';
 
@@ -38,18 +38,21 @@ describe('Overview testing', () => {
     expect(el.children[0].children[0].className).toEqual('fa fa-pencil-square');
   };
 
-  const checkCard = (query, contact) => {
+  const checkCard = (query, contact, getByTestId, dataTest) => {
     const phone = `${normalize.phone(contact.primaryPhoneNumber)} ext. ${
       contact.primaryPhoneNumberExtension
     }`;
     const tel = `${contact.primaryPhoneNumber}+${contact.primaryPhoneNumberExtension}`;
 
     expect(query(`${contact.firstName} ${contact.lastName}`));
-    expect(query(contact.emailAddress).closest('a')).toHaveAttribute(
-      'href',
-      `mailto:${contact.emailAddress}`
-    );
-    expect(query(phone).closest('a')).toHaveAttribute('href', `tel:${tel}`);
+
+    const { getByText } = within(getByTestId(dataTest).nextSibling);
+
+    // expect(getByText(contact.emailAddress)).toHaveAttribute(
+    //   'href',
+    //   `mailto:${contact.emailAddress}`
+    // );
+    expect(getByText(phone).closest('a')).toHaveAttribute('href', `tel:${tel}`);
   };
 
   it('POS:Check Details and Contacts sections', () => {
@@ -147,21 +150,22 @@ describe('Overview testing', () => {
   });
 
   it('POS:Check Cards', () => {
-    const { getByText, getAllByText } = renderWithReduxAndRouter(
-      <Overview {...props} />,
-      { state }
-    );
+    const {
+      getByText,
+      getAllByText,
+      getByTestId
+    } = renderWithReduxAndRouter(<Overview {...props} />, { state });
     const { principal, contact } = mockAgency.branches[props.branchCode];
     const aor = state.agencyState.agents[0];
 
     // Check Officer
     expect(getAllByText('Officer')[0]);
     expect(getAllByText('Officer')[1]);
-    checkCard(getByText, principal);
+    checkCard(getByText, principal, getByTestId, 'agency-officer');
 
     // Check Contact
     expect(getByText('Contact'));
-    checkCard(getByText, contact);
+    checkCard(getByText, contact, getByTestId, 'agency-contact');
 
     // Check header
     const { mailingAddress: ma } = aor;
@@ -170,24 +174,29 @@ describe('Overview testing', () => {
     )} ext. ${aor.primaryPhoneNumberExtension}`;
     const tel = `${aor.primaryPhoneNumber}+${aor.primaryPhoneNumberExtension}`;
 
+    const { getByText: getByTextAOR } = within(getByTestId('agent-of-record'));
+
     expect(getByText('Agent Of Record'));
-    expect(getByText(`${aor.firstName} ${aor.lastName}`));
-    expect(getByText(aor.licenseNumber));
+    expect(getByTextAOR(`${aor.firstName} ${aor.lastName}`));
+    expect(getByTextAOR(aor.licenseNumber));
     expect(
-      getByText(
+      getByTextAOR(
         `${ma.address1}, ${ma.address2}, ${ma.city}, ${ma.state} ${ma.zip}`
       )
     );
-    expect(getByText(aor.status));
+    expect(getByTextAOR(aor.status));
     //.closest('a')).toHaveAttribute('href', `tel:${tel}`)
-    expect(getByText(phone).closest('a')).toHaveAttribute('href', `tel:${tel}`);
+    expect(getByTextAOR(phone).closest('a')).toHaveAttribute(
+      'href',
+      `tel:${tel}`
+    );
     expect(
-      getByText(normalize.phone(aor.secondaryPhoneNumber)).closest('a')
+      getByTextAOR(normalize.phone(aor.secondaryPhoneNumber)).closest('a')
     ).toHaveAttribute('href', `tel:${aor.secondaryPhoneNumber}`);
     expect(
-      getByText(normalize.phone(aor.faxNumber)).closest('a')
+      getByTextAOR(normalize.phone(aor.faxNumber)).closest('a')
     ).toHaveAttribute('href', `fax:${aor.faxNumber}`);
-    expect(getByText(aor.emailAddress).closest('a')).toHaveAttribute(
+    expect(getByTextAOR(aor.emailAddress).closest('a')).toHaveAttribute(
       'href',
       `mailto:${aor.emailAddress}`
     );
