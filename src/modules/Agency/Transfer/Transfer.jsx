@@ -99,7 +99,7 @@ export class Transfer extends Component {
             <div className="form-group survey-wrapper" role="group">
               <section className="policy-filter">
                 <TransferFilter
-                  agencyCode={agency.agencyCode}
+                  agencyCode={agencyCode}
                   clearSelectedPolicies={this.clearSelectedPolicies}
                   policyNumberList={policyNumberList}
                   listAnswersAsKey={listAnswersAsKey}
