@@ -101,7 +101,7 @@ export const AgentModal = ({
                     </Field>
                     <Field name="primaryPhoneNumberExtension">
                       {({ input, meta }) => (
-                        <Phone
+                        <Input
                           input={input}
                           meta={meta}
                           label="Primary Phone Extension"
