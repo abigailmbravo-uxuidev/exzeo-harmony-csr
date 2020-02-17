@@ -117,7 +117,7 @@ export class Transfer extends Component {
                   policyNumberList={policyNumberList}
                   policies={policies}
                   toggleTransferModal={this.handleToggleModal}
-                  agencyCode={agency.agencyCode}
+                  agencyCode={agencyCode}
                 />
               </section>
             </div>
