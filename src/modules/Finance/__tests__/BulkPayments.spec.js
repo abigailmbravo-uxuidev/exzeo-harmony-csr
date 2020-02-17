@@ -1,5 +1,10 @@
 import React from 'react';
-import { render, fireEvent, waitForElement, wait } from 'react-testing-library';
+import {
+  render,
+  fireEvent,
+  waitForElement,
+  wait
+} from '@testing-library/react';
 import { date } from '@exzeo/core-ui';
 
 import BulkPayments from '../@components/BulkPayments';
@@ -56,13 +61,13 @@ describe('BulkPayments testing', () => {
     expect(getAllByText('Batch Number')[1]);
     expect(getByText(initialBatchNumber));
     expect(getAllByText('Cash Type')[1]);
-    expect(getByText('Payment Description'));
-    expect(getByText('Payment Received'));
-    expect(getByText('Policy Number'));
-    expect(getByText('Policyholder'));
-    expect(getByText('Amount'));
-    expect(getByText('0 entries totaling'));
-    expect(getByText('$ 0.00'));
+    expect(getAllByText('Payment Description'))[1];
+    expect(getAllByText('Payment Received')[1]);
+    expect(getAllByText('Policy Number')[1]);
+    expect(getAllByText('Policyholder')[1]);
+    expect(getAllByText('Amount')[1]);
+    expect(getAllByText('0 entries totaling')[1]);
+    expect(getAllByText('$ 0.00')[1]);
     expect(getByText('Download')).toBeDisabled();
 
     const cashTypeEl = await getByLabelText('Cash Type');
@@ -85,27 +90,43 @@ describe('BulkPayments testing', () => {
       target: { value: 'Paper Deposit' }
     });
 
+    await wait(() => {
+      expect(getByLabelText('Cash Type')).toHaveTextContent('Paper Deposit');
+    });
+
     fireEvent.change(await getByLabelText('Payment Description'), {
       target: { value: 'Payment Transfer' }
+    });
+
+    await wait(() => {
+      expect(getByLabelText('Payment Description')).toHaveTextContent(
+        'Payment Transfer'
+      );
     });
 
     fireEvent.change(getByLabelText('Batch Number'), {
       target: { value: `${initialBatchNumber}99` }
     });
 
-    expect(getByText(/start/i)).toBeEnabled();
+    await wait(() => {
+      expect(getByText(/start/i)).toBeEnabled();
+    });
+
     fireEvent.click(getByText(/start/i));
 
-    expect(getByText(/start/i)).toBeDisabled();
-    expect(getByText(/stop/i)).toBeEnabled();
+    await wait(() => {
+      expect(getByText(/start/i)).toBeDisabled();
+      expect(getByText(/stop/i)).toBeEnabled();
+    });
 
     fireEvent.change(getByLabelText('Policy Number'), {
       target: { value: '12-0000000-01' }
     });
 
-    getByLabelText('Policy Number').focus();
-
-    getByLabelText('Policy Number').blur();
+    await wait(() => {
+      getByLabelText('Policy Number').focus();
+      getByLabelText('Policy Number').blur();
+    });
 
     expect(
       await waitForElement(() => [
@@ -132,11 +153,17 @@ describe('BulkPayments testing', () => {
       <BulkPayments {...props} />
     );
 
-    fireEvent.change(await getByLabelText('Cash Type'), {
+    await wait(() => [
+      getByLabelText('Cash Type'),
+      getByLabelText('Payment Description'),
+      getByLabelText('Batch Number')
+    ]);
+
+    fireEvent.change(getByLabelText('Cash Type'), {
       target: { value: 'Paper Deposit' }
     });
 
-    fireEvent.change(await getByLabelText('Payment Description'), {
+    fireEvent.change(getByLabelText('Payment Description'), {
       target: { value: 'Payment Transfer' }
     });
 
@@ -144,11 +171,17 @@ describe('BulkPayments testing', () => {
       target: { value: `${initialBatchNumber}99` }
     });
 
+    await wait(() => {
+      expect(getByText(/start/i)).toBeEnabled();
+    });
+
     expect(getByText(/start/i)).toBeEnabled();
     fireEvent.click(getByText(/start/i));
 
-    expect(getByText(/start/i)).toBeDisabled();
-    expect(getByText(/stop/i)).toBeEnabled();
+    await wait(() => {
+      expect(getByText(/start/i)).toBeDisabled();
+      expect(getByText(/stop/i)).toBeEnabled();
+    });
 
     getByLabelText('Policy Number').focus();
 
@@ -158,58 +191,59 @@ describe('BulkPayments testing', () => {
 
     getByLabelText('Policy Number').blur();
 
-    expect(
-      await waitForElement(() => [
-        document.querySelector('.policy-details'),
-        getByText(mockPolicy.product),
-        getByText(mockPolicy.companyCode),
-        getByText(`| ${mockPolicy.policyNumber}`),
-        getByText('Open Policy'),
-        getByText('Balance Due:'),
-        getByText(mockPolicy.summaryLedger.balance),
-        getByText(
-          `${mockPolicy.policyHolders[0].firstName} ${mockPolicy.policyHolders[0].lastName}`
-        ),
-        getByText(`| ${mockPolicy.property.physicalAddress.address1},`),
-        getByText(`${city}, ${state} ${zip}`),
-        getByText('Effective Date:'),
-        getByText(date.formattedDate(mockPolicy.effectiveDate, 'MM/DD/YYYY')),
-        getByText('Policy Status:'),
-        getByText(mockPolicy.status),
-        getByText('Billing Status:'),
-        getByText(mockPolicy.summaryLedger.status.displayText)
-      ])
-    );
+    await wait(() => [
+      document.querySelector('.policy-details'),
+      getByText(mockPolicy.product),
+      getByText(mockPolicy.companyCode),
+      getByText(`| ${mockPolicy.policyNumber}`),
+      getByText('Open Policy'),
+      getByText('Balance Due:'),
+      getByText(mockPolicy.summaryLedger.balance),
+      getByText(
+        `${mockPolicy.policyHolders[0].firstName} ${mockPolicy.policyHolders[0].lastName}`
+      ),
+      getByText(`| ${mockPolicy.property.physicalAddress.address1},`),
+      getByText(`${city}, ${state} ${zip}`),
+      getByText('Effective Date:'),
+      getByText(date.formattedDate(mockPolicy.effectiveDate, 'MM/DD/YYYY')),
+      getByText('Policy Status:'),
+      getByText(mockPolicy.status),
+      getByText('Billing Status:'),
+      getByText(mockPolicy.summaryLedger.status.displayText)
+    ]);
 
     expect(getByText('Open Policy').href).toBeDefined();
 
-    fireEvent.change(await getByLabelText('Amount'), {
+    fireEvent.change(getByLabelText('Amount'), {
       target: { value: '200.00' }
     });
 
-    await fireEvent.click(getByText(/apply/i));
+    fireEvent.click(getByText(/apply/i));
 
-    expect(
-      await waitForElement(() => [
-        expect(getByLabelText('Policy Number').value).toBe(''),
-        expect(getByLabelText('Amount').value).toBe(''),
-        expect(getByText('1 entries totaling')),
-        expect(getByText('$ 200.00')),
-        expect(getByText('Download')).toBeEnabled()
-      ])
-    );
+    await waitForElement(() => [
+      expect(getByLabelText('Policy Number').value).toBe(''),
+      expect(getByLabelText('Amount').value).toBe(''),
+      expect(getByText('1 entries totaling')),
+      expect(getByText('$ 200.00')),
+      expect(getByText('Download')).toBeEnabled()
+    ]);
 
     // check Stop button
-    fireEvent.click(await getByText(/stop/i));
-    expect(getByLabelText('Cash Date').value).toBe(today.format('YYYY-MM-DD'));
-    expect(getByLabelText('Batch Number').value).toBe(initialBatchNumber);
-    expect(getByLabelText('Cash Type'));
-    expect(getByLabelText('Cash Type').children[0].text).toBe(
-      'Please Select...'
-    );
-    expect(getByText(/start/i)).toBeDisabled();
-    expect(getByText(/stop/i)).toBeDisabled();
-    expect(getByText('Download')).toBeDisabled();
+    fireEvent.click(getByText(/stop/i));
+
+    await wait(() => {
+      expect(getByLabelText('Cash Date').value).toBe(
+        today.format('YYYY-MM-DD')
+      );
+      expect(getByLabelText('Batch Number').value).toBe(initialBatchNumber);
+      expect(getByLabelText('Cash Type'));
+      expect(getByLabelText('Cash Type').children[0].text).toBe(
+        'Please Select...'
+      );
+      expect(getByText(/start/i)).toBeDisabled();
+      expect(getByText(/stop/i)).toBeDisabled();
+      expect(getByText('Download')).toBeDisabled();
+    });
   });
 
   it('Test BulkPayments with cancelled policy', async () => {
@@ -235,17 +269,24 @@ describe('BulkPayments testing', () => {
       target: { value: `${initialBatchNumber}99` }
     });
 
-    expect(getByText(/start/i)).toBeEnabled();
+    await wait(() => {
+      expect(getByText(/start/i)).toBeEnabled();
+    });
+
     fireEvent.click(getByText(/start/i));
 
     fireEvent.change(getByLabelText('Policy Number'), {
       target: { value: '12-0000000-01' }
     });
 
+    await wait(() => {
+      expect(getByText(/start/i)).toBeDisabled();
+    });
+
     getByLabelText('Policy Number').focus();
 
     getByLabelText('Policy Number').blur();
 
-    expect(await waitForElement(() => document.querySelector('.Cancellation')));
+    await waitForElement(() => expect(document.querySelector('.Cancellation')));
   });
 });

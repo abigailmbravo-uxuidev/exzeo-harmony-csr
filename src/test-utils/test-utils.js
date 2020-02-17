@@ -4,7 +4,7 @@ import thunk from 'redux-thunk';
 import { BrowserRouter as Router } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import { createStore, applyMiddleware } from 'redux';
-import { render, fireEvent } from 'react-testing-library';
+import { render, fireEvent } from '@testing-library/react';
 
 import rootReducer from '../state/reducers';
 
@@ -185,8 +185,8 @@ export const renderWithForm = (
 
 /**
  * A function to handle your query and your field and find the correct DOM element.
- * This way the check functions below can handle any query type from react-testing-library.
- * @param {Object} query - The function from react-testing-library to be used.
+ * This way the check functions below can handle any query type from @testing-library/react.
+ * @param {Object} query - The function from @testing-library/react to be used.
  * @param {Object} field - The field object to find and test.
  * @returns {Object} Node - The DOM node found via the query.
  */
@@ -203,21 +203,21 @@ const parseQueryType = (query, field) => {
 };
 
 /**
- * @param {Object} query - The function from react-testing-library to be used.
+ * @param {Object} query - The function from @testing-library/react to be used.
  * @param {regex} [button=/submit/] - The regex used to find the button.
  */
 export const submitForm = (query, button = /submit/) =>
   fireEvent.click(query(button));
 
 /**
- * @param {Object} query - The function from react-testing-library to be used.
+ * @param {Object} query - The function from @testing-library/react to be used.
  * @param {Object} field - The field object to find and test.
  */
 export const clearText = (query, field) =>
   fireEvent.change(parseQueryType(query, field), { target: { value: '' } });
 
 /**
- * @param {Object} query - The function from react-testing-library to be used.
+ * @param {Object} query - The function from @testing-library/react to be used.
  * @param {Object} field [{ dataTest, error = 'Field Required', ...rest }] - The field object to find and test.
  */
 export const checkError = (
@@ -229,7 +229,7 @@ export const checkError = (
   ).toHaveTextContent(error);
 
 /**
- * @param {Object} query - The function from react-testing-library to be used.
+ * @param {Object} query - The function from @testing-library/react to be used.
  * @param {Object} field { dataTest, label, ...rest } - The field object to find and test.
  */
 export const checkLabel = (query, { dataTest, label, ...rest }) =>
@@ -238,7 +238,7 @@ export const checkLabel = (query, { dataTest, label, ...rest }) =>
   ).toHaveTextContent(label);
 
 /**
- * @param {Object} query - The function from react-testing-library to be used.
+ * @param {Object} query - The function from @testing-library/react to be used.
  * @param {Object} field { defaultValue, value, ...rest } - The field object to find and test.
  */
 export const checkTextInput = (query, { defaultValue, value, ...rest }) => {
@@ -249,7 +249,7 @@ export const checkTextInput = (query, { defaultValue, value, ...rest }) => {
 };
 
 /**
- * @param {Object} query - The function from react-testing-library to be used.
+ * @param {Object} query - The function from @testing-library/react to be used.
  * @param {Object} field { defaultValue, values = [], ...rest } - The field object to find and test.
  */
 export const checkSelect = (query, { defaultValue, values = [], ...rest }) => {
@@ -270,7 +270,7 @@ export const checkSelect = (query, { defaultValue, values = [], ...rest }) => {
 };
 
 /**
- * @param {Object} query - The function from react-testing-library to be used.
+ * @param {Object} query - The function from @testing-library/react to be used.
  * @param {Object} field { dataTest = '', text = '', label = '', values } - The field object to find and test.
  */
 export const checkRadio = (
@@ -324,7 +324,7 @@ export const checkRadio = (
   });
 
 /**
- * @param {Object} query - The function from react-testing-library to be used.
+ * @param {Object} query - The function from @testing-library/react to be used.
  * @param {Object} field { dataTest, icon = false, text, ...rest } - The field object to find and test.
  */
 export const checkHeader = (
@@ -343,7 +343,7 @@ export const checkHeader = (
 };
 
 /**
- * @param {Object} query - The function from react-testing-library to be used.
+ * @param {Object} query - The function from @testing-library/react to be used.
  * @param {Object} button { dataTest, text, type, ...rest } = {} - The button object to find and test.
  */
 export const checkButton = (
@@ -367,14 +367,14 @@ export const checkButton = (
 };
 
 /**
- * @param {Object} query - The function from react-testing-library to be used.
+ * @param {Object} query - The function from @testing-library/react to be used.
  * @param {Object} field - The field object to find and test.
  */
 export const checkStaticField = (query, field) =>
   expect(parseQueryType(query, field)).toBeDisabled();
 
 /**
- * @param {Object} query - The function from react-testing-library to be used.
+ * @param {Object} query - The function from @testing-library/react to be used.
  * @param {Object} field { output, ...rest } - The field object to find and test.
  */
 export const checkOutput = (query, { output, ...rest }) => {
@@ -385,7 +385,7 @@ export const checkOutput = (query, { output, ...rest }) => {
 
 /**
  * This function is used to verify specific submit errors for one field as well
- * @param {Object} query - The function from react-testing-library to be used.
+ * @param {Object} query - The function from @testing-library/react to be used.
  * @param {Array} [baseFields=[]] - Array of field objects to fill out.
  * @param {Array} [fieldsLeftBlank=[]] - Array of field objects to leave blank.
  * @param {regex|string} button - The regex/string used to find the button.
