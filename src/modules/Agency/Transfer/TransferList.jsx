@@ -6,7 +6,7 @@ const TRANSFER_LIST_HEADER = {
   companyCode: 'Company',
   state: 'State',
   product: 'Product',
-  propertyAddress: 'Prpoerty Address',
+  propertyAddress: 'Property Address',
   policyHolder1: 'Primary Policyholder',
   effectiveDate: 'Effective Date',
   terms: 'Terms'
@@ -30,6 +30,7 @@ export class TransferList extends Component {
         <ul className="data-grid">
           <TransferListItem
             listClassName="header"
+            dataTest="list_item_header"
             policy={TRANSFER_LIST_HEADER}
             clickHandler={checkAllPolicies}
             isChecked={policies.length === selectedPolicies.length}
