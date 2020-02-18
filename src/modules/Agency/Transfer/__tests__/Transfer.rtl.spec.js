@@ -17,12 +17,7 @@ describe('Testing the Transfer Page', () => {
     agencyCode: mockAgency.agencyCode,
     match: {
       url: ''
-    },
-    agentsList: mockAgents,
-    policyNumberList: [],
-    listAnswersAsKey: {},
-    getPoliciesForAgency: [],
-    getAgentListByAgencyCode: []
+    }
   };
 
   const state = {
@@ -34,12 +29,36 @@ describe('Testing the Transfer Page', () => {
       agencyPolicies: [mockPolicy]
     },
     questions: {
-      territoryManagers: [
-        {
-          _id: '5b7db9f6ff54fd6a5c619eec',
-          name: 'Tex Dubar'
-        }
-      ]
+      lists: {
+        US_states: [
+          {
+            isActive: true,
+            type: 'string',
+            displayText: 'Florida',
+            key: 'FL'
+          },
+          {
+            isActive: true,
+            type: 'string',
+            displayText: 'Georgia',
+            key: 'GA'
+          }
+        ],
+        Products: [
+          {
+            displayText: 'AF3',
+            type: 'string',
+            isActive: true,
+            key: 'AF3'
+          },
+          {
+            displayText: 'HO3',
+            type: 'string',
+            isActive: true,
+            key: 'HO3'
+          }
+        ]
+      }
     }
   };
 
