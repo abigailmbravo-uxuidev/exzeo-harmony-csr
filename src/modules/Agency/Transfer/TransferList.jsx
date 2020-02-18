@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import TransferListItem from './TransferListItem';
+import { Button } from '@exzeo/core-ui/src';
 
 const TRANSFER_LIST_HEADER = {
   policyNumber: 'Policy Number',
@@ -69,23 +70,25 @@ export class TransferList extends Component {
           })}
         </ul>
         <div className="button-wrapper">
-          <button
+          <Button
+            dataTest="clear-selection"
             type="button"
             onClick={clearSelectedPolicies}
-            className="btn btn-link"
+            className={Button.constants.classNames.link}
           >
             <i className="fa fa-rotate-left" />
             Clear Selections
-          </button>
-          <button
+          </Button>
+          <Button
+            dataTest="stage-transfer"
             type="button"
             disabled={selectedPolicies.length === 0}
             onClick={toggleTransferModal}
-            className="btn btn-link"
+            className={Button.constants.classNames.link}
           >
             <i className="fa fa-random" />
             Stage Selected For Transfer
-          </button>
+          </Button>
         </div>
       </div>
     );

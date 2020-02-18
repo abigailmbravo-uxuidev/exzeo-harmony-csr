@@ -1,5 +1,105 @@
 export const mockAgents = [
   {
+    _id: '5b9a01d212f835455123e2c4',
+    agentCode: 60562,
+    firstName: 'AGNES',
+    lastName: 'BROCKUS',
+    mailingAddress: {
+      careOf: null,
+      address1: '2945 EAST BAY DR',
+      address2: 'UNIT D',
+      city: 'LARGO',
+      state: 'FL',
+      zip: '33771',
+      country: {
+        code: 'USA',
+        displayText: 'United States of America'
+      }
+    },
+    primaryPhoneNumber: '7275350189',
+    secondaryPhoneNumber: null,
+    faxNumber: '7278247976',
+    emailAddress: 'test@typtap.com',
+    agencies: [
+      {
+        branchCode: null,
+        agencyCode: 20532
+      }
+    ],
+    licenses: [
+      {
+        licenseType: 'Resident',
+        licenseNumber: 'P151908',
+        state: 'FL',
+        appointed: true
+      }
+    ],
+    createdAt: '2016-11-14T15:54:41.607Z',
+    createdBy: 'lperkins',
+    updatedAt: '2019-10-28T12:26:57.898Z',
+    updatedBy: 'mryan',
+    dbaAgencyName: null,
+    status: 'Active',
+    physicalAddress: {
+      address1: '2945 EAST BAY DR',
+      address2: 'UNIT D',
+      city: 'LARGO',
+      state: 'FL',
+      zip: '33771',
+      county: 'PINELLAS'
+    }
+  },
+  {
+    _id: '5b9a01d112f835455123e296',
+    agentCode: 60738,
+    firstName: 'MICHAEL B',
+    lastName: 'BROWN',
+    mailingAddress: {
+      careOf: null,
+      address1: '3731 S TUTTLE AVE',
+      address2: null,
+      city: 'SARASOTA',
+      state: 'FL',
+      zip: '34239',
+      country: {
+        code: 'USA',
+        displayText: 'United States of America'
+      }
+    },
+    primaryPhoneNumber: '9413669373',
+    secondaryPhoneNumber: null,
+    faxNumber: '9413653143',
+    emailAddress: 'test@typtap.com',
+    agencies: [
+      {
+        branchCode: 0,
+        agencyCode: 20532
+      }
+    ],
+    licenses: [
+      {
+        licenseType: 'Resident',
+        licenseNumber: 'A032528',
+        state: 'FL',
+        appointed: false
+      }
+    ],
+    createdAt: '2017-02-06T08:37:45.347Z',
+    createdBy: 'VMAYWEATHER',
+    updatedAt: '2019-10-30T19:13:45.306Z',
+    updatedBy: 'mryan',
+    dbaAgencyName: null,
+    status: 'Terminated',
+    physicalAddress: {
+      address1: '3731 S TUTTLE AVE',
+      address2: null,
+      city: 'SARASOTA',
+      state: 'FL',
+      zip: '34239',
+      county: 'SARASOTA'
+    }
+  },
+  {
     agentCode: 60562,
     branchCode: 2,
     firstName: 'Test',

@@ -1,17 +1,28 @@
 import React from 'react';
-import { within, fireEvent, waitForElement } from '@testing-library/react';
+import {
+  within,
+  fireEvent,
+  waitForElement,
+  wait,
+  getByText as getByTextDocument,
+  queryByText as queryByTextDocument
+} from '@testing-library/react';
 import {
   renderWithReduxAndRouter,
   mockServiceRunner,
+  jestResolve,
   mockAgency,
   mockAgents,
-  mockPolicy
+  mockPolicy,
+  searchAgenciesResult,
+  searchAgentsResult
 } from '../../../../test-utils';
 
 import Transfer from '../index';
 
-mockServiceRunner([]);
+import * as agencyData from '../../../../state/actions/agency.actions';
 
+mockServiceRunner([]);
 describe('Testing the Transfer Page', () => {
   const defaultProps = {
     agencyCode: mockAgency.agencyCode,
@@ -205,19 +216,167 @@ describe('Testing the Transfer Page', () => {
   });
 
   // WIP
-  it('POS:Should Filter By Policy Number', async () => {});
+  it('POS:Should Filter By Policy Number', async () => {
+    const props = {
+      ...defaultProps
+    };
+    const { getByTestId, getByText } = renderWithReduxAndRouter(
+      <Transfer {...props} />,
+      {
+        state
+      }
+    );
 
-  it('POS:Should Filter By Product', async () => {});
+    await waitForElement(() => getByTestId('policyNumber'));
 
-  it('POS:Should Filter By Agent', async () => {});
+    fireEvent.change(getByTestId('policyNumber'), {
+      target: { value: mockPolicy.policyNumber }
+    });
 
-  it('NEG:Should Not Show Filtered Policy For Wrong Policy Number', async () => {});
+    await waitForElement(() =>
+      expect(getByTestId(`${mockPolicy.policyNumber}_filtered`))
+    );
+  });
 
-  it('NEG:Should Not Show Filtered Policy For Wrong Product', async () => {});
+  it('POS:Should Filter By Product', async () => {
+    const props = {
+      ...defaultProps
+    };
+    const { getByTestId } = renderWithReduxAndRouter(<Transfer {...props} />, {
+      state
+    });
 
-  it('NEG:Should Not Show Filtered Policy For Wrong Agent', async () => {});
+    const product = getByTestId('product_wrapper');
 
-  it('POS:Should Open And Close Transfer Policy Modal', async () => {});
+    fireEvent.change(product.querySelector('input:not([type="hidden"])'), {
+      target: { value: mockPolicy.product }
+    });
 
-  it('POS:Should Transfer Policy ', async () => {});
+    await wait(() => {
+      expect(product.querySelector('input:not([type="hidden"])').value).toEqual(
+        mockPolicy.product
+      );
+      expect(getByTestId(`${mockPolicy.policyNumber}_filtered`));
+    });
+  });
+
+  it('POS:Should Filter By Agent', async () => {
+    const props = {
+      ...defaultProps
+    };
+    const { getByTestId } = renderWithReduxAndRouter(<Transfer {...props} />, {
+      state
+    });
+
+    const product = getByTestId('agentCode_wrapper');
+
+    fireEvent.change(product.querySelector('input:not([type="hidden"])'), {
+      target: { value: mockPolicy.agentCode }
+    });
+
+    await wait(() => {
+      expect(product.querySelector('input:not([type="hidden"])').value).toEqual(
+        String(mockPolicy.agentCode)
+      );
+      expect(getByTestId(`${mockPolicy.policyNumber}_filtered`));
+    });
+  });
+
+  it('POS:Should Open And Close Transfer Policy Modal', async () => {
+    const props = {
+      ...defaultProps
+    };
+    const { getByTestId } = renderWithReduxAndRouter(<Transfer {...props} />, {
+      state
+    });
+
+    await wait(() => {
+      expect(getByTestId('stage-transfer')).toBeDisabled();
+    });
+
+    fireEvent.click(getByTestId(`${mockPolicy.policyNumber}_filtered`));
+
+    await waitForElement(() =>
+      getByTestId(`${mockPolicy.policyNumber}_filtered`)
+    );
+
+    await wait(() => {
+      expect(getByTestId('stage-transfer')).not.toBeDisabled();
+    });
+
+    fireEvent.click(getByTestId('stage-transfer'));
+
+    await wait(() => {
+      expect(getByTextDocument(document, 'Agent Receiving Selected Policy'));
+    });
+
+    fireEvent.click(getByTestId('cancel'));
+
+    await wait(() => {
+      expect(
+        queryByTextDocument(document, 'Agent Receiving Selected Policy')
+      ).toEqual(null);
+    });
+  });
+
+  it('POS:Should Submit Transfer Policy ', async () => {
+    agencyData.fetchAgenciesByAgencyCodeOrName = jestResolve(
+      searchAgenciesResult
+    );
+    agencyData.fetchAgentsByAgencyCode = jestResolve(searchAgentsResult);
+    const props = {
+      ...defaultProps
+    };
+    const { getByTestId, getByText } = renderWithReduxAndRouter(
+      <Transfer {...props} />,
+      {
+        state
+      }
+    );
+
+    await wait(() => {
+      expect(getByTestId('stage-transfer')).toBeDisabled();
+    });
+
+    fireEvent.click(getByTestId(`${mockPolicy.policyNumber}_filtered`));
+
+    await waitForElement(() =>
+      getByTestId(`${mockPolicy.policyNumber}_filtered`)
+    );
+
+    await wait(() => {
+      expect(getByTestId('stage-transfer')).not.toBeDisabled();
+    });
+
+    fireEvent.click(getByTestId('stage-transfer'));
+
+    await wait(() => {
+      expect(getByTextDocument(document, 'Agent Receiving Selected Policy'));
+    });
+
+    const agencyCodeTo = getByTestId('agencyCodeTo_wrapper');
+    const agentCodeTo = getByTestId('agentCodeTo_wrapper');
+
+    fireEvent.change(agencyCodeTo.querySelector('input:not([type="hidden"])'), {
+      target: { value: '20000' }
+    });
+
+    await wait(() =>
+      expect(
+        agencyCodeTo.querySelector('input:not([type="hidden"])').value
+      ).toEqual('20000')
+    );
+
+    fireEvent.change(agentCodeTo.querySelector('input:not([type="hidden"])'), {
+      target: { value: '60000' }
+    });
+
+    await wait(() =>
+      expect(
+        agentCodeTo.querySelector('input:not([type="hidden"])').value
+      ).toEqual('60000')
+    );
+
+    expect(fireEvent.click(getByTestId('submit')));
+  });
 });

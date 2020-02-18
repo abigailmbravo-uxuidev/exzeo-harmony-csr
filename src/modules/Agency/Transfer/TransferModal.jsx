@@ -127,11 +127,9 @@ export class TransferModal extends Component {
 
   render() {
     const { isLoading, agencies, agents } = this.state;
-
     if (isLoading) return <Loader />;
-
     return (
-      <div className="modal bob-transfer">
+      <div className="modal bob-transfer" data-test="transfer-modal">
         <div className="card ">
           <Form
             onSubmit={this.submitTransfer}
