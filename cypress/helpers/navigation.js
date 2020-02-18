@@ -277,11 +277,12 @@ export const verifyDiary = () => {
     .task('log', 'Navigate through Diary verification')
     .get('@diaryText')
     .then(diaryText => {
-      cy.goToNav('notes')
-        .get('button')
-        .contains('Diaries')
+      cy.get('#logo')
         .click()
-        .get('td[class="message"]')
+        .findDataTag('diaries-link')
+        .click()
+        .get('div')
+        .contains(diaryText)
         .should('have.text', diaryText);
     });
 };
