@@ -68,7 +68,6 @@ export class Transfer extends Component {
 
   render() {
     const {
-      agency,
       agencyCode,
       agentsList,
       policies,
