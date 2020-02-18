@@ -271,6 +271,9 @@
 .app-wrapper.csr.quote {
   #QuoteWorkflowCSR {
     &.view-grid {
+      > section {
+        position: relative;
+      }
       .deductibles {
         .deductible-wrapper {
           margin-top: -$padding;
@@ -280,6 +283,10 @@
           border-radius: $border-radius;
           background: $warm-gray-01;
         }
+      }
+      .modal {
+        position: fixed;
+        top: 8.625rem;
       }
     }
   }
