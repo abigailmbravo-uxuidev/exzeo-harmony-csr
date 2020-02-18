@@ -192,11 +192,11 @@ describe('Testing the Transfer Page', () => {
 
   it('POS:Should Filter By Agent', async () => {});
 
-  it('NEG:Should Not Show For Wrong Policy Number', async () => {});
+  it('NEG:Should Not Show Filtered Policy For Wrong Policy Number', async () => {});
 
-  it('NEG:Should Not Show For Wrong Product', async () => {});
+  it('NEG:Should Not Show Filtered Policy For Wrong Product', async () => {});
 
-  it('NEG:Should Not Show For Wrong Agent', async () => {});
+  it('NEG:Should Not Show Filtered Policy For Wrong Agent', async () => {});
 
   it('POS:Should Open And Close Transfer Policy Modal', async () => {});
 
