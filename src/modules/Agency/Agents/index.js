@@ -11,6 +11,7 @@ import {
   getAgentsList,
   getSortedAgents
 } from '../../../state/selectors/agency.selector';
+import { getListAnswersAsKey } from 'state/selectors/questions.selectors';
 
 import Agents from './Agents';
 
@@ -20,15 +21,13 @@ const mapStateToProps = (state, ownProps) => {
     agency: state.agencyState.agency,
     agents: getSortedAgents(state, branchCode),
     orphans: getOrphanedAgentsList(state),
-    agentsList: getAgentsList(state)
+    agentsList: getAgentsList(state),
+    listAnswersAsKey: getListAnswersAsKey(state)
   };
 };
 
-export default connect(
-  mapStateToProps,
-  {
-    updateAgent,
-    addAgent,
-    updateAgency
-  }
-)(Agents);
+export default connect(mapStateToProps, {
+  updateAgent,
+  addAgent,
+  updateAgency
+})(Agents);
