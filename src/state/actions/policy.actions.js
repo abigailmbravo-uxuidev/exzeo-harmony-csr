@@ -594,7 +594,7 @@ export async function postUpdatedBillPlan(paymentPlan) {
 
 /**
  *
- * @param {object} data
+ * @param {Object} data
  * @param {string} data.transactionType
  * @param {string} data.cancelDate
  * @param {string} data.cancelReason
@@ -617,13 +617,12 @@ export async function cancelPolicy(data) {
 
 /**
  *
- * @param fields
- * @param fields.agencyCode
- * @param fields.state
- * @param fields.product
- * @param fields.agentCode
- * @param fields.policyNumber
- * @returns {Promise<{}>}
+ * @param {Object} options
+ * @param {number} options.companyCode
+ * @param {string} options.state
+ * @param {string} options.product
+ * @param {string} options.effectiveDate
+ * @returns {Promise<Array>}
  */
 export async function fetchCancelOptions({
   companyCode,
