@@ -1,12 +1,12 @@
 import React, { Component, useState } from 'react';
 import { validation, Button } from '@exzeo/core-ui';
 
-import AgentModal from '../components/AgentModal';
 import AddExistingAgentModal from '../components/ExistingAgentModal';
 
 import AgentsCard from './AgentsCard';
 import RemoveAgentModal from './RemoveAgentModal';
 import Footer from '../../../components/Common/Footer';
+import AgentModal from '../AgentModal';
 
 export const Agents = ({
   agency,
@@ -16,7 +16,8 @@ export const Agents = ({
   updateAgency,
   branchCode,
   addAgent,
-  agentsList
+  agentsList,
+  listAnswersAsKey
 }) => {
   const [activeIndex, setActiveIndex] = useState(null);
   const [agentDetailInitialValues, setAgentDetailInitialValues] = useState(
@@ -165,6 +166,7 @@ export const Agents = ({
 
         {showAgentDetailEditModal && agentDetailInitialValues && (
           <AgentModal
+            listAnswersAsKey={listAnswersAsKey}
             initialValues={agentDetailInitialValues}
             isEditing
             handleSaveAgent={onHandleEditAgent}
@@ -173,6 +175,7 @@ export const Agents = ({
         )}
         {showAgentDetailNewModal && agentDetailInitialValues && (
           <AgentModal
+            listAnswersAsKey={listAnswersAsKey}
             initialValues={agentDetailInitialValues}
             handleSaveAgent={onHandleSaveAgent}
             closeModal={closeAgentDetailModal}
