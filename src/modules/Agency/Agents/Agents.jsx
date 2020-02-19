@@ -1,12 +1,11 @@
-import React, { Component, useState } from 'react';
-import { validation, Button } from '@exzeo/core-ui';
-
-import AddExistingAgentModal from '../components/ExistingAgentModal';
+import React, { useState } from 'react';
+import { Button } from '@exzeo/core-ui';
 
 import AgentsCard from './AgentsCard';
 import RemoveAgentModal from './RemoveAgentModal';
 import Footer from '../../../components/Common/Footer';
 import AgentModal from '../AgentModal';
+import AddExistingAgentModal from '../ExistingAgentModal';
 
 export const Agents = ({
   agency,
