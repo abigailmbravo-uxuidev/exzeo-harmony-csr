@@ -507,7 +507,7 @@ describe('Agency Management testing', () => {
       .click()
       .get('[class~="modal"]')
       .within(() => {
-        cy.findDataTag('edit-agency-mailing-address').within(() => {
+        cy.findDataTag('agency-mailing-address').within(() => {
           cy.findDataTag('address1')
             .type('{selectall}{backspace}Test Mailing Address 1 Updated')
             .findDataTag('address2')
@@ -520,7 +520,7 @@ describe('Agency Management testing', () => {
             .type('{selectall}{backspace}33624');
         });
 
-        cy.findDataTag('edit-agency-physical-address').within(() => {
+        cy.findDataTag('agency-physical-address').within(() => {
           cy.findDataTag('address1')
             .type('{selectall}{backspace}Test Physical Address 1 Updated')
             .findDataTag('address2')
@@ -559,9 +559,7 @@ describe('Agency Management testing', () => {
     });
     cy.get('[class~="modal"]')
       .within(() => {
-        cy.findDataTag('title')
-          .type('{selectall}{backspace}Jr.')
-          .findDataTag('firstName')
+        cy.findDataTag('firstName')
           .type('{selectall}{backspace}Cypress2')
           .findDataTag('lastName')
           .type('{selectall}{backspace}Officer2')
@@ -638,7 +636,7 @@ describe('Agency Management testing', () => {
           .findDataTag('emailAddress')
           .type('{selectall}{backspace}exzeoqa2@exzeo.com');
 
-        cy.findDataTag('agent-mailing-address').within(() => {
+        cy.findDataTag('agency-mailing-address').within(() => {
           cy.findDataTag('address1')
             .type('{selectall}{backspace}Test Mailing Address 1 Updated')
             .findDataTag('address2')
@@ -651,7 +649,7 @@ describe('Agency Management testing', () => {
             .type('{selectall}{backspace}33624');
         });
 
-        cy.findDataTag('agent-physical-address').within(() => {
+        cy.findDataTag('agency-physical-address').within(() => {
           cy.findDataTag('address1')
             .type('{selectall}{backspace}Test Physical Address 1 Updated')
             .findDataTag('address2')
@@ -671,7 +669,7 @@ describe('Agency Management testing', () => {
           .type('{selectall}{backspace}23456')
           .findDataTag('licenses[0].appointed')
           .click()
-          .should('have.value', 'false')
+          .should('not.be.checked')
           .findDataTag('rm-license-1')
           .click();
       })

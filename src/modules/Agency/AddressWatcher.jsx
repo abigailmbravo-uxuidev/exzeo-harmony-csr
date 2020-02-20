@@ -10,6 +10,8 @@ const AddressWatcher = ({ watchField, fieldPrefix, matchPrefix }) => {
   useEffect(() => {
     const batchChange = [];
 
+    if (!watchedField.input.value) return;
+
     fieldsToUpdate.forEach(fieldName => {
       const values = formApi.getState().values;
       batchChange.push({

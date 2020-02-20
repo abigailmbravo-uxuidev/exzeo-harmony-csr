@@ -1,7 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { reduxForm, propTypes } from 'redux-form';
-import { connect } from 'react-redux';
 
 const UWconditions = ({ closeButtonHandler }) => (
   <div className="modal uw-conditions">
@@ -49,7 +47,7 @@ const UWconditions = ({ closeButtonHandler }) => (
       </div>
       <div className="card-footer">
         <button
-          tabIndex={'0'}
+          tabIndex="0"
           className="btn btn-success"
           onClick={closeButtonHandler}
           type="submit"
@@ -62,19 +60,7 @@ const UWconditions = ({ closeButtonHandler }) => (
 );
 
 UWconditions.propTypes = {
-  ...propTypes,
   closeButtonHandler: PropTypes.func
 };
 
-// ------------------------------------------------
-// redux mapping
-// ------------------------------------------------
-const mapStateToProps = state => ({
-  appState: state.appState
-});
-
-export default connect(mapStateToProps)(
-  reduxForm({
-    form: 'UWconditions'
-  })(UWconditions)
-);
+export default UWconditions;
