@@ -1,13 +1,16 @@
 // Functions used to navigate each tab of the app
 // import { envelopeIdCheck } from '../../helpers/requests';
-import { envelopeIdCheck } from '../helpers';
+import { envelopeIdCheck, manualBindPolicy } from '../helpers';
 import {
   user,
   pH1,
   shareQuote,
   addInsured,
   unQuestionsHO3,
-  coverageHO3
+  unQuestionsAF3,
+  unQuestionsBAD,
+  coverageHO3,
+  coverageAF3
 } from '../fixtures';
 
 export const navigateThroughNewQuote = (
@@ -138,8 +141,8 @@ export const fillOutAdditionalInterests = (
     });
 };
 
-export const fillOutMailingBilling = () =>
-  cy
+export const fillOutMailingBilling = () => {
+  return cy
     .task('log', 'Filling out Mailing Billing')
     .goToNav('billing')
     .findDataTag('sameAsPropertyAddress')
@@ -153,7 +156,9 @@ export const fillOutMailingBilling = () =>
     .then(({ response }) => {
       // TODO we need to assert something about this response, preferably the quoteInputState like we do in the other tests.
       expect(response.body.status).to.equal(200);
+      cy.wrap(response.body.result.quoteNumber).as('quoteNumber');
     });
+};
 
 export const fillOutNotesFiles = () => {
   return cy.task('log', 'Filling out Notes and Files').goToNav('notes');
@@ -184,7 +189,8 @@ export const fillOutApplication = () => {
 };
 
 export const navigateThroughDocusign = () => {
-  cy.task('log', "Navigating through 'Send to Docusign'")
+  return cy
+    .task('log', "Navigating through 'Send to Docusign'")
     .clickSubmit('body', 'send-application')
     .wait('@verifyQuote')
     .then(({ response }) => {
@@ -213,5 +219,71 @@ export const navigateThroughDocusign = () => {
       envelopeIdCheck(quoteNumber, apiUrl, token).then(response => {
         expect(response.body.result.envelopeId).to.not.be.empty;
       });
+      manualBindPolicy(quoteNumber, apiUrl, token).then(response => {
+        cy.wrap(response.body.result.transaction.policyNumber).as(
+          'policyNumber'
+        );
+      });
+    });
+};
+
+export const searchPolicy = () => {
+  return cy
+    .task('log', 'Searching for the Policy')
+    .get('#logo')
+    .click()
+    .findDataTag('searchType')
+    .select('policy');
+  cy.get('@policyNumber').then(polNum => {
+    cy.findDataTag('policyNumber')
+      .type(polNum)
+      .clickSubmit()
+      .wait('@fetchPolicies')
+      .then(({ response }) => {
+        expect(response.body.totalNumberOfRecords).to.equal(1);
+      });
+    cy.get('.policy-no')
+      .invoke('text')
+      .then(number => {
+        expect(number).to.include(polNum);
+      });
+  });
+};
+
+export const searchQoute = () => {
+  return cy
+    .task('log', 'Searching for the Quote')
+    .get('#logo')
+    .click()
+    .findDataTag('searchType')
+    .select('quote');
+  cy.get('@quoteNumber').then(quoteNum => {
+    cy.findDataTag('quoteNumber')
+      .type(quoteNum)
+      .clickSubmit()
+      .wait('@fetchQuotes')
+      .then(({ response }) => {
+        expect(response.body.result.totalNumberOfRecords).to.equal(1);
+      });
+    cy.get('.quote-no')
+      .invoke('text')
+      .then(number => {
+        expect(number).to.include(quoteNum);
+      });
+  });
+};
+
+export const searchDiary = () => {
+  return cy
+    .task('log', 'Searching for the Diary')
+    .get('@diaryText')
+    .then(diaryText => {
+      cy.get('#logo')
+        .click()
+        .findDataTag('diaries-link')
+        .click()
+        .get('div')
+        .contains(diaryText)
+        .should('have.text', diaryText);
     });
 };
