@@ -234,12 +234,19 @@ export const getZipcodeSettings = (
   companyCode,
   state,
   product,
-  zip
+  zip,
+  propertyId
 ) => async dispatch => {
   const axiosConfig = {
-    service: 'underwriting',
-    method: 'GET',
-    path: `zip-code?companyCode=${companyCode}&state=${state}&product=${product}&zip=${zip}`
+    exchangeName: 'harmony.crud',
+    routingKey: 'harmony.crud.zipcode-data.getZipCode',
+    data: {
+      companyCode,
+      state,
+      product,
+      zip,
+      propertyId
+    }
   };
 
   try {

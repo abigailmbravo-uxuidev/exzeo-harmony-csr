@@ -1,5 +1,6 @@
 import { date } from '@exzeo/core-ui';
 import * as serviceRunner from '@exzeo/core-ui/src/@Harmony/Domain/Api/serviceRunner';
+import { searchAddress } from '@exzeo/core-ui/src/@Harmony/Search';
 
 import { sortDiariesByDate } from '../../utilities/diaries';
 import { SECONDARY_DATE_FORMAT } from '../../constants/dates';
@@ -141,38 +142,6 @@ function buildQuerystring({
       .map(key => `${key}=${fields[key]}`)
       .join('&')
   );
-}
-
-// TODO the 'fetch*' methods below are being moved to core-ui to be shared amongst the UI apps
-/**
- * Build query string and call address search service
- * @param {object} data
- * @param {string} data.address
- * @param {string} data.state
- * @returns {Promise<{}>}
- */
-export async function fetchAddresses(data) {
-  const { address, state } = data;
-
-  const searchAddress = address.replace(/\t/g, ' ').trim();
-  const tor = 'single family';
-  const propType = 'HO3';
-
-  const uri = `/v1/search/${searchAddress}/${state}/${tor}/${propType}/1/10`;
-  const config = {
-    service: 'property-search',
-    method: 'GET',
-    path: encodeURI(uri)
-  };
-
-  try {
-    const response = await serviceRunner.callService(config, 'fetchAddresses');
-    return response && response.data && response.data.result
-      ? response.data.result
-      : {};
-  } catch (error) {
-    throw error;
-  }
 }
 
 /**
@@ -476,12 +445,14 @@ function formatDiaryResults(results) {
 
 /**
  * Entry point for AddressSearch form
- * @param {object} data - form data
+ * @param {Object} data - form data
+ * @param {string} data.address
+ * @param {string} data.state
  * @returns {Function}
  */
-export async function handleAddressSearch(data) {
+export async function handleAddressSearch({ address, state }) {
   try {
-    const results = await fetchAddresses(data);
+    const results = await searchAddress({ address, state });
     return formatAddressResults(results);
   } catch (error) {
     throw error;
