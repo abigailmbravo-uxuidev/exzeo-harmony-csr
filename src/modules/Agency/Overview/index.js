@@ -13,15 +13,18 @@ import {
 } from '../../../state/actions/agency.actions';
 
 import Overview from './Overview';
+import { getListAnswersAsKey } from 'state/selectors/questions.selectors';
 
 const mapStateToProps = (state, props) => {
   return {
+    branchCode: props.branchCode,
     agencyBranchData: getAgencyBranchData(state, props.branchCode),
     agency: state.agencyState.agency,
     agentOfRecord: getAgentOfRecord(state, props.branchCode),
     addressInitialValues: getEditModalInitialValues(state, props.branchCode),
     agentsList: getAgentsList(state),
-    territoryManagers: state.questions.territoryManagers
+    territoryManagers: state.questions.territoryManagers,
+    listAnswersAsKey: getListAnswersAsKey(state)
   };
 };
 
@@ -30,7 +33,6 @@ Overview.propTypes = {
   branchCode: PropTypes.string.isRequired
 };
 
-export default connect(
-  mapStateToProps,
-  { updateAgency, updateAgent }
-)(Overview);
+export default connect(mapStateToProps, { updateAgency, updateAgent })(
+  Overview
+);

@@ -119,13 +119,13 @@ export function setCancelOptions(cancelOptions) {
 
 /**
  *
- * @param agencyPolices
- * @returns {{type: string, agencyPolices: *}}
+ * @param agencyPolicies
+ * @returns {{type: string, agencyPolicies: *}}
  */
-export function setPoliciesForAgency(agencyPolices) {
+export function setPoliciesForAgency(agencyPolicies) {
   return {
     type: types.SET_POLICIES_FOR_AGENCY,
-    agencyPolices
+    agencyPolicies
   };
 }
 

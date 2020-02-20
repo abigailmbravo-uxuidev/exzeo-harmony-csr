@@ -15,3 +15,4 @@ export { mockAgency } from './agency';
 export { mockAgents } from './agents';
 export { default as territoryManagers } from './territoryManagers';
 export { default as zipCodeSettings } from './zipCodeSettings';
+export { mockAgencies } from './agencies';

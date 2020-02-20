@@ -36,7 +36,8 @@ export default {
     endorsementHistory: [],
     paymentHistory: [],
     paymentOptions: [],
-    summaryLedger: {}
+    summaryLedger: {},
+    agencyPolicies: []
   },
   agencyState: {
     agencies: [],

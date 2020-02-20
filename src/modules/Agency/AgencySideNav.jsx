@@ -1,7 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { NavLink, Redirect } from 'react-router-dom';
-import { reduxForm, Field } from 'redux-form';
-import { Select } from '@exzeo/core-ui';
+import { Select, OnChangeListener, Field, Form, noop } from '@exzeo/core-ui';
 import { connect } from 'react-redux';
 import classNames from 'classnames';
 
@@ -60,30 +59,26 @@ const csrLinks = (agencyCode, branchCode) => [
   }
 ];
 
-export class SideNav extends React.Component {
-  state = {
-    branchSelectionRoute: null
-  };
+export const SideNav = ({
+  agencyCode,
+  branchCode,
+  branchesList,
+  match: { url },
+  toggleNote,
+  agency
+}) => {
+  const [branchSelectionRoute, setBranchSelectionRoute] = useState(false);
 
-  handleBranchSelection = event => {
-    const {
-      target: { value }
-    } = event;
-    const { agencyCode } = this.props;
+  const handleBranchSelection = (value, agencyCode) => {
     if (Number(value) > 0) {
-      this.setState({
-        branchSelectionRoute: `/agency/${agencyCode}/${value}/overview`
-      });
+      setBranchSelectionRoute(`/agency/${agencyCode}/${value}/overview`);
     } else {
-      this.setState({
-        branchSelectionRoute: `/agency/${agencyCode}/0/overview`
-      });
+      setBranchSelectionRoute(`/agency/${agencyCode}/0/overview`);
     }
     return value;
   };
 
-  newNote = () => {
-    const { toggleNote, agencyCode, agency } = this.props;
+  const newNote = () => {
     toggleNote({
       noteType: 'Agency Note',
       documentId: agencyCode,
@@ -92,84 +87,91 @@ export class SideNav extends React.Component {
     });
   };
 
-  render() {
-    const {
-      agencyCode,
-      branchCode,
-      branchesList,
-      match: { url }
-    } = this.props;
-
-    const { branchSelectionRoute } = this.state;
-    return (
-      <React.Fragment>
-        {branchSelectionRoute && !branchSelectionRoute.includes(url) && (
-          <Redirect replace to={branchSelectionRoute} />
-        )}
-        <nav className="site-nav">
-          <ul className="side-navigation">
-            {String(branchCode) === '0' && agencyCode !== 'new' && (
-              <React.Fragment>
-                <li key="newBranch" data-test="new-branch">
-                  <NavLink
-                    to={`/agency/${agencyCode}/${branchCode}/new`}
-                    tabIndex="0"
-                    className="btn btn-secondary btn-block btn-xs btn-branch"
-                  >
-                    <i className="fa fa-plus" />
-                    Branch
-                  </NavLink>
-                </li>
-                <hr className="nav-division" />
-              </React.Fragment>
-            )}
-            {branchesList.length > 1 && agencyCode !== 'new' && (
-              <li key="branch" data-test="branch">
-                <Field
-                  dataTest="selectedBranch"
-                  name="selectedBranch"
-                  label="Branch"
-                  component={Select}
-                  styleName="flex-child selectedBranch"
-                  answers={branchesList}
-                  showPlaceholder={false}
-                  onChange={event => this.handleBranchSelection(event)}
-                />
+  return (
+    <React.Fragment>
+      {branchSelectionRoute && !branchSelectionRoute.includes(url) && (
+        <Redirect replace to={branchSelectionRoute} />
+      )}
+      <nav className="site-nav">
+        <ul className="side-navigation">
+          {String(branchCode) === '0' && agencyCode !== 'new' && (
+            <React.Fragment>
+              <li key="newBranch" data-test="new-branch">
+                <NavLink
+                  to={`/agency/${agencyCode}/${branchCode}/new`}
+                  tabIndex="0"
+                  className="btn btn-secondary btn-block btn-xs btn-branch"
+                >
+                  <i className="fa fa-plus" />
+                  Branch
+                </NavLink>
               </li>
-            )}
-            {csrLinks(agencyCode, branchCode).map((agentLink, index) => (
-              <li key={agentLink.key}>
-                <span className={agentLink.styleName}>
-                  <NavLink
-                    to={agentLink.link}
-                    className={agentLink.styleName}
-                    activeClassName={agentLink.link !== '#' ? 'active' : ''}
-                    exact
-                  >
-                    <span>{agentLink.label}</span>
-                  </NavLink>
-                </span>
-              </li>
-            ))}
-          </ul>
-          <div className="plus-button-group">
-            <button
-              type="button"
-              aria-label="open-btn form-new-note"
-              data-test="new-note"
-              className="btn btn-primary btn-round btn-lg new-note-btn"
-              disabled={agencyCode === 'new'}
-              onClick={this.newNote}
-            >
-              <i className="fa fa-pencil" />
-              <span>NEW NOTE</span>
-            </button>
-          </div>
-        </nav>
-      </React.Fragment>
-    );
-  }
-}
+              <hr className="nav-division" />
+            </React.Fragment>
+          )}
+          {branchesList.length > 1 && agencyCode !== 'new' && (
+            <li key="branch" data-test="branch">
+              <Form onSubmit={noop}>
+                {() => (
+                  <React.Fragment>
+                    <Field name="selectedBranch">
+                      {({ input, meta }) => (
+                        <Select
+                          input={input}
+                          meta={meta}
+                          id="selectedBranch"
+                          dataTest="selectedBranch"
+                          styleName="flex-child selectedBranch"
+                          label="Branch"
+                          answers={branchesList}
+                          showPlaceholder={false}
+                        />
+                      )}
+                    </Field>
+                    <OnChangeListener name="selectedBranch">
+                      {value => {
+                        if (value) {
+                          handleBranchSelection(value, agencyCode);
+                        }
+                      }}
+                    </OnChangeListener>
+                  </React.Fragment>
+                )}
+              </Form>
+            </li>
+          )}
+          {csrLinks(agencyCode, branchCode).map((agentLink, index) => (
+            <li key={agentLink.key}>
+              <span className={agentLink.styleName}>
+                <NavLink
+                  to={agentLink.link}
+                  className={agentLink.styleName}
+                  activeClassName={agentLink.link !== '#' ? 'active' : ''}
+                  exact
+                >
+                  <span>{agentLink.label}</span>
+                </NavLink>
+              </span>
+            </li>
+          ))}
+        </ul>
+        <div className="plus-button-group">
+          <button
+            type="button"
+            aria-label="open-btn form-new-note"
+            data-test="new-note"
+            className="btn btn-primary btn-round btn-lg new-note-btn"
+            disabled={agencyCode === 'new'}
+            onClick={newNote}
+          >
+            <i className="fa fa-pencil" />
+            <span>NEW NOTE</span>
+          </button>
+        </div>
+      </nav>
+    </React.Fragment>
+  );
+};
 
 const mapStateToProps = (state, props) => {
   const { branchCode } = props;
@@ -181,9 +183,4 @@ const mapStateToProps = (state, props) => {
   };
 };
 
-export default connect(mapStateToProps, { createBranch, toggleNote })(
-  reduxForm({
-    form: 'SideNav',
-    enableReinitialize: true
-  })(SideNav)
-);
+export default connect(mapStateToProps, { createBranch, toggleNote })(SideNav);

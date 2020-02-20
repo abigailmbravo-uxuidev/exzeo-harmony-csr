@@ -9,7 +9,10 @@ import {
 import Address from './Address';
 import AddressWatcher from './AddressWatcher';
 import TerritoryManagerWatcher from './TerritoryManagerWatcher';
-import { useFetchZipCodeSettings, useFetchTerritoryManagers } from './hooks';
+import {
+  useFetchZipCodeSettings,
+  useFetchTerritoryManagers
+} from './Create/hooks';
 import { listOfZipCodes } from './utilities';
 
 const AddressGroup = ({
