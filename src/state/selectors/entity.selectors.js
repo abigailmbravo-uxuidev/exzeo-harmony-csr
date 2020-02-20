@@ -5,7 +5,7 @@ export const getPolicy = state => state.policyState.policy;
 export const getSummaryLedger = state => state.policyState.summaryLedger;
 export const getPaymentOptions = state => state.policyState.paymentOptions;
 export const getPaymentHistory = state => state.policyState.paymentHistory;
-export const getAgencyPolicies = state => state.policyState.agencyPolices;
+export const getAgencyPolicies = state => state.policyState.agencyPolicies;
 export const getEffectiveDateChangeReasons = state =>
   state.policyState.effectiveDateReasons;
 export const getEndorsementHistory = state =>

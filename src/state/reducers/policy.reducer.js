@@ -101,7 +101,7 @@ function setPaymentOptions(state, action) {
 function setPoliciesForAgency(state, action) {
   return {
     ...state,
-    agencyPolices: action.agencyPolices
+    agencyPolicies: action.agencyPolicies
   };
 }
 
