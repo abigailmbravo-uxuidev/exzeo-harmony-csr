@@ -142,7 +142,8 @@ export const fillOutAdditionalInterests = (
 };
 
 export const fillOutMailingBilling = () => {
-  cy.task('log', 'Filling out Mailing Billing')
+  return cy
+    .task('log', 'Filling out Mailing Billing')
     .goToNav('billing')
     .findDataTag('sameAsPropertyAddress')
     .click('left')
@@ -272,9 +273,9 @@ export const searchQoute = () => {
   });
 };
 
-export const verifyDiary = () => {
+export const searchDiary = () => {
   return cy
-    .task('log', 'Navigate through Diary verification')
+    .task('log', 'Searching for the Diary')
     .get('@diaryText')
     .then(diaryText => {
       cy.get('#logo')

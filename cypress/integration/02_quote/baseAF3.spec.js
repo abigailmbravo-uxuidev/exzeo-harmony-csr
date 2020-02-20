@@ -10,11 +10,7 @@ import {
   fillOutSummary,
   fillOutApplication,
   navigateThroughDocusign,
-  sendQuote,
-  changeBillTo,
-  searchPolicy,
-  searchQoute,
-  searchDiary
+  sendQuote
 } from '../../helpers';
 import {
   coverageRatingTest,
@@ -26,21 +22,21 @@ import {
   applicationTest,
   afterDocuSignTest
 } from '../../pageTests';
-import { coverageHO3, unQuestionsHO3 } from '../../fixtures';
+import { coverageAF3, unQuestionsAF3 } from '../../fixtures';
 
-describe('Base Path - HO3', () => {
+describe('Base Path - AF3', () => {
   before('Login', () => cy.login());
   beforeEach('Set aliases', () => setRouteAliases());
 
   it('Navigate through Quote Workflow', () => {
-    navigateThroughNewQuote();
+    navigateThroughNewQuote('AF3');
 
     fillOutCoverage();
     coverageRatingTest();
 
-    fillOutUnderwriting(unQuestionsHO3);
+    fillOutUnderwriting(unQuestionsAF3);
     underwritingTest();
-    changeCoverageAndAgency(coverageHO3);
+    changeCoverageAndAgency(coverageAF3);
 
     fillOutAdditionalInterests();
     aiTest();
@@ -59,8 +55,6 @@ describe('Base Path - HO3', () => {
     applicationTest();
 
     navigateThroughDocusign();
-    searchDiary();
-    searchQoute();
-    searchPolicy();
+    afterDocuSignTest();
   });
 });
