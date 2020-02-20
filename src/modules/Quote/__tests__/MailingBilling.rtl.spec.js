@@ -174,7 +174,7 @@ describe('Mailing/Billing Page Testing', () => {
     newProps.quote.policyHolderMailingAddress = {};
     newProps.quote.sameAsPropertyAddress = false;
 
-    const { getByTestId, getByText, getByLabelText } = renderWithForm(
+    const { getByTestId, getByText } = renderWithForm(
       <QuoteWorkflow {...newProps} />
     );
     await waitForElement(() => [
@@ -183,6 +183,11 @@ describe('Mailing/Billing Page Testing', () => {
     ]);
 
     await wait(() => {
+      expect(getByTestId('sameAsPropertyAddress')).toHaveAttribute(
+        'data-value',
+        'false'
+      );
+
       expect(getByText('Update')).toBeDisabled();
       expect(getByTestId('policyHolderMailingAddress.address1').value).toEqual(
         ''
@@ -196,6 +201,11 @@ describe('Mailing/Billing Page Testing', () => {
     fireEvent.click(getByTestId('sameAsPropertyAddress'));
 
     await wait(() => {
+      expect(getByTestId('sameAsPropertyAddress')).toHaveAttribute(
+        'data-value',
+        'true'
+      );
+
       expect(getByText('Update')).not.toBeDisabled();
       expect(getByTestId('policyHolderMailingAddress.address1').value).toEqual(
         newProps.quote.property.physicalAddress.address1
@@ -217,6 +227,11 @@ describe('Mailing/Billing Page Testing', () => {
     fireEvent.click(getByTestId('sameAsPropertyAddress'));
 
     await wait(() => {
+      expect(getByTestId('sameAsPropertyAddress')).toHaveAttribute(
+        'data-value',
+        'false'
+      );
+
       expect(getByText('Update')).toBeDisabled();
       expect(getByTestId('policyHolderMailingAddress.address1').value).toEqual(
         ''
@@ -230,6 +245,11 @@ describe('Mailing/Billing Page Testing', () => {
     fireEvent.click(getByTestId('sameAsPropertyAddress'));
 
     await wait(() => {
+      expect(getByTestId('sameAsPropertyAddress')).toHaveAttribute(
+        'data-value',
+        'true'
+      );
+
       expect(getByText('Update')).not.toBeDisabled();
       expect(getByTestId('policyHolderMailingAddress.address1').value).toEqual(
         newProps.quote.property.physicalAddress.address1
@@ -241,6 +261,11 @@ describe('Mailing/Billing Page Testing', () => {
     });
 
     await wait(() => {
+      expect(getByTestId('sameAsPropertyAddress')).toHaveAttribute(
+        'data-value',
+        'false'
+      );
+
       expect(getByTestId('policyHolderMailingAddress.address1').value).toEqual(
         'This is A New Address'
       );
