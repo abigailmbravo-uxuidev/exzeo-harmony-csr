@@ -227,12 +227,12 @@ describe('Mailing/Billing Page Testing', () => {
     fireEvent.click(getByTestId('sameAsPropertyAddress'));
 
     await wait(() => {
+      expect(getByText('Update')).toBeDisabled();
       expect(getByTestId('sameAsPropertyAddress')).toHaveAttribute(
         'data-value',
         'false'
       );
 
-      expect(getByText('Update')).toBeDisabled();
       expect(getByTestId('policyHolderMailingAddress.address1').value).toEqual(
         ''
       );
