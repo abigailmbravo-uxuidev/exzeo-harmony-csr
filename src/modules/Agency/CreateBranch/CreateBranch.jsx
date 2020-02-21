@@ -48,7 +48,7 @@ export const CreateBranch = ({
   };
 
   const handleResetForm = () => {
-    history.push(`/agency/${agency.agencyCode}/${branchCode}/overview`);
+    history.push(`/agency/${agency.agencyCode}/0/overview`);
   };
 
   // TODO : Move to utilities
