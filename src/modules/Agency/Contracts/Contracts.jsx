@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, useState } from 'react';
 import PropTypes from 'prop-types';
 import { Button, date } from '@exzeo/core-ui';
 
@@ -11,45 +11,41 @@ import ContractCard from './ContractCard';
 import ContractModal from './ContractModal';
 import SmallModal from '../../../components/SmallModal';
 
-export class Contracts extends Component {
-  state = {
-    showLicenseModal: false,
-    showDeleteLicenseModal: false,
-    showDeleteContractModal: false,
-    licenseIndex: '',
-    showContractModal: false,
-    contractIndex: ''
+export const Contracts = ({
+  agency,
+  agency: { agencyCode, licenses, contracts },
+  updateAgency,
+  listAnswers,
+  listAnswersAsKey
+}) => {
+  const [showLicenseModal, setShowLicenseModal] = useState(false);
+  const [showDeleteLicenseModal, setShowDeleteLicenseModal] = useState(false);
+  const [showDeleteContractModal, setShowDeleteContractModal] = useState(false);
+  const [licenseIndex, setLicenseIndex] = useState('');
+  const [showContractModal, setShowContractModal] = useState(false);
+  const [contractIndex, setContractIndex] = useState('');
+
+  const toggleLicense = licenseIndex => {
+    setShowLicenseModal(!showLicenseModal);
+    setLicenseIndex(licenseIndex);
   };
 
-  toggleLicense = licenseIndex => {
-    this.setState(prevState => ({
-      showLicenseModal: !prevState.showLicenseModal,
-      licenseIndex
-    }));
+  const toggleDeleteLicense = licenseIndex => {
+    setShowDeleteLicenseModal(!showDeleteLicenseModal);
+    setLicenseIndex(licenseIndex);
   };
 
-  toggleDeleteLicense = licenseIndex => {
-    this.setState(prevState => ({
-      showDeleteLicenseModal: !prevState.showDeleteLicenseModal,
-      licenseIndex
-    }));
+  const toggleContract = contractIndex => {
+    setShowContractModal(!showContractModal);
+    setContractIndex(contractIndex);
   };
 
-  toggleContract = contractIndex => {
-    this.setState(prevState => ({
-      showContractModal: !prevState.showContractModal,
-      contractIndex
-    }));
+  const toggleDeleteContract = contractIndex => {
+    setShowDeleteContractModal(!showDeleteContractModal);
+    setContractIndex(contractIndex);
   };
 
-  toggleDeleteContract = contractIndex => {
-    this.setState(prevState => ({
-      showDeleteContractModal: !prevState.showDeleteContractModal,
-      contractIndex
-    }));
-  };
-
-  mergeData = (data, existingArray, index) => {
+  const mergeData = (data, existingArray, index) => {
     let newArray;
     if (index !== null && index !== '') {
       newArray = existingArray.map((item, i) =>
@@ -61,189 +57,157 @@ export class Contracts extends Component {
     return newArray;
   };
 
-  deleteLicense = async (data, dispatch, props) => {
-    const {
-      agency: { agencyCode, licenses },
-      updateAgency
-    } = this.props;
-    const { licenseIndex } = this.state;
+  const deleteLicense = async () => {
     const newLicenses = [...licenses];
     newLicenses.splice(licenseIndex, 1);
     await updateAgency({ agencyCode, licenses: newLicenses });
-    this.toggleDeleteLicense(null);
+    toggleDeleteLicense(null);
   };
 
-  deleteContract = async (data, dispatch, props) => {
-    const {
-      agency: { agencyCode, contracts },
-      updateAgency
-    } = this.props;
-    const { contractIndex } = this.state;
+  const deleteContract = async () => {
     const newContracts = [...contracts];
     newContracts.splice(contractIndex, 1);
     await updateAgency({ agencyCode, contracts: newContracts });
-    this.toggleDeleteContract(null);
+    toggleDeleteContract(null);
   };
 
-  saveLicense = async (data, dispatch, props) => {
-    const {
-      agency: { agencyCode, licenses },
-      updateAgency
-    } = this.props;
-    const { licenseIndex } = this.state;
-    const newLicenses = this.mergeData(data, licenses, licenseIndex);
-
+  const saveLicense = async data => {
+    const newLicenses = mergeData(data, licenses, licenseIndex);
     await updateAgency({ agencyCode, licenses: newLicenses });
-    this.toggleLicense(null);
+    toggleLicense(null);
   };
 
-  saveContract = async (data, dispatch, props) => {
-    const {
-      agency: { agencyCode, contracts },
-      updateAgency
-    } = this.props;
-    const { contractIndex } = this.state;
-    const newContracts = this.mergeData(data, contracts, contractIndex);
-
+  const saveContract = async data => {
+    const newContracts = mergeData(data, contracts, contractIndex);
     await updateAgency({ agencyCode, contracts: newContracts });
-    this.toggleContract(null);
+    toggleContract(null);
   };
 
-  getLicenseInitialValues = agency => {};
+  const activeContract = (agency.contracts || [])[contractIndex || 0];
+  const activeLicense = (agency.licenses || [])[licenseIndex || 0];
 
-  render() {
-    const { agency, listAnswers, listAnswersAsKey } = this.props;
-    const {
-      licenseIndex,
-      showLicenseModal,
-      contractIndex,
-      showContractModal,
-      showDeleteLicenseModal,
-      showDeleteContractModal
-    } = this.state;
-
-    const activeContract = (agency.contracts || [])[contractIndex || 0];
-    const activeLicense = (agency.licenses || [])[licenseIndex || 0];
-
-    if (!agency) return <div />;
-    return (
-      <div id="agency-contracts" className="agency-contracts">
-        {showDeleteLicenseModal && (
-          <SmallModal
-            header="Delete License"
-            headerIcon="fa-trash"
-            text={`Are you sure you want to delete license: ${activeLicense.state} - ${activeLicense.licenseNumber}`}
-            handleSubmit={this.deleteLicense}
-            handleCancel={this.toggleDeleteLicense}
-          />
-        )}
-        {showDeleteContractModal && (
-          <SmallModal
-            header="Delete Contract"
-            headerIcon="fa-trash"
-            text={`Are you sure you want to delete contract: ${activeContract.companyCode} | ${activeContract.contractNumber} | ${activeContract.addendum}`}
-            handleSubmit={this.deleteContract}
-            handleCancel={this.toggleDeleteContract}
-            contract={agency.contracts[contractIndex]}
-          />
-        )}
-        {showLicenseModal && (
-          <LicenseModal
-            saveLicense={this.saveLicense}
-            stateAnswers={listAnswersAsKey.US_states}
-            closeModal={this.toggleLicense}
-            initialValues={{
-              ...agency.licenses[licenseIndex],
-              licenseEffectiveDate: date.formatDate(
-                agency.licenses[licenseIndex]
-                  ? agency.licenses[licenseIndex].licenseEffectiveDate
-                  : '',
-                date.FORMATS.SECONDARY
-              )
-            }}
-            licenseNumbers={agency.licenses.map(l => l.licenseNumber)}
-          />
-        )}
-        {showContractModal && (
-          <ContractModal
-            productAnswers={listAnswers.Products}
-            stateAnswers={listAnswersAsKey.US_states}
-            addendumAnswers={listAnswers.Agency_Addendum}
-            companyCodeAnswers={listAnswers.Company_Code}
-            agencyContractAnswers={listAnswers.Agency_Contract}
-            listAnswers={listAnswers}
-            saveContract={this.saveContract}
-            closeModal={this.toggleContract}
-            initialValues={agency.contracts[contractIndex]}
-            contractNumbers={agency.contracts.map(c => c.contractNumber)}
-          />
-        )}
-        <div className="route-content">
-          <div className="scroll">
-            <div className="form-group survey-wrapper" role="group">
-              <TaxDetail agency={agency} />
-              <section data-test="licenses">
-                <h3>Licenses</h3>
-                {Array.isArray(agency.licenses) &&
-                  agency.licenses.map((license, index) => (
-                    <LicenseCard
-                      canDelete={agency.licenses.length > 1}
-                      key={license.licenseNumber}
-                      license={license}
-                      deleteLicense={() => this.toggleDeleteLicense(index)}
-                      editLicense={() => this.toggleLicense(index)}
-                    />
-                  ))}
-                <div className="create-contract">
-                  <hr />
-                  <Button
-                    className={Button.constants.classNames.primary}
-                    size={Button.constants.sizes.small}
-                    onClick={() => this.toggleLicense(null)}
-                    dataTest="addLicense"
-                  >
-                    <i className="fa fa-plus" />
-                    License
-                  </Button>
-                  <hr />
-                </div>
-              </section>
-              <section data-test="contracts">
-                <h3>Contracts</h3>
-                {Array.isArray(agency.contracts) &&
-                  agency.contracts.map((contract, index) => (
-                    <ContractCard
-                      canDelete={agency.contracts.length > 1}
-                      key={contract.contractNumber}
-                      contract={contract}
-                      deleteContract={() => this.toggleDeleteContract(index)}
-                      editContract={() => this.toggleContract(index)}
-                    />
-                  ))}
-                <div className="create-contract">
-                  <hr />
-                  <Button
-                    className={Button.constants.classNames.primary}
-                    size={Button.constants.sizes.small}
-                    onClick={() => this.toggleContract(null)}
-                    dataTest="addContract"
-                  >
-                    <i className="fa fa-plus" />
-                    Contract
-                  </Button>
-                  <hr />
-                </div>
-              </section>
-            </div>
+  if (!agency) return <div />;
+  return (
+    <div id="agency-contracts" className="agency-contracts">
+      {showDeleteLicenseModal && (
+        <SmallModal
+          header="Delete License"
+          headerIcon="fa-trash"
+          text={`Are you sure you want to delete license: ${activeLicense.state} - ${activeLicense.licenseNumber}`}
+          handleSubmit={deleteLicense}
+          handleCancel={toggleDeleteLicense}
+        />
+      )}
+      {showDeleteContractModal && (
+        <SmallModal
+          header="Delete Contract"
+          headerIcon="fa-trash"
+          text={`Are you sure you want to delete contract: ${activeContract.companyCode} | ${activeContract.contractNumber} | ${activeContract.addendum}`}
+          handleSubmit={deleteContract}
+          handleCancel={toggleDeleteContract}
+          contract={agency.contracts[contractIndex]}
+        />
+      )}
+      {showLicenseModal && (
+        <LicenseModal
+          saveLicense={saveLicense}
+          stateAnswers={listAnswersAsKey.US_states}
+          closeModal={toggleLicense}
+          initialValues={{
+            ...agency.licenses[licenseIndex],
+            licenseEffectiveDate: date.formatDate(
+              agency.licenses[licenseIndex]
+                ? agency.licenses[licenseIndex].licenseEffectiveDate
+                : '',
+              date.FORMATS.SECONDARY
+            )
+          }}
+          licenseNumbers={agency.licenses.map(l => l.licenseNumber)}
+        />
+      )}
+      {showContractModal && (
+        <ContractModal
+          productAnswers={listAnswers.Products}
+          stateAnswers={listAnswersAsKey.US_states}
+          addendumAnswers={listAnswers.Agency_Addendum}
+          companyCodeAnswers={listAnswers.Company_Code}
+          agencyContractAnswers={listAnswers.Agency_Contract}
+          listAnswers={listAnswers}
+          saveContract={saveContract}
+          closeModal={toggleContract}
+          initialValues={
+            contractIndex
+              ? agency.contracts[contractIndex]
+              : { stateProducts: [{ state: '', product: '' }] }
+          }
+          contractNumbers={agency.contracts.map(c => c.contractNumber)}
+        />
+      )}
+      <div className="route-content">
+        <div className="scroll">
+          <div className="form-group survey-wrapper" role="group">
+            <TaxDetail agency={agency} />
+            <section data-test="licenses">
+              <h3>Licenses</h3>
+              {Array.isArray(agency.licenses) &&
+                agency.licenses.map((license, index) => (
+                  <LicenseCard
+                    canDelete={agency.licenses.length > 1}
+                    key={license.licenseNumber}
+                    license={license}
+                    deleteLicense={() => toggleDeleteLicense(index)}
+                    editLicense={() => toggleLicense(index)}
+                  />
+                ))}
+              <div className="create-contract">
+                <hr />
+                <Button
+                  className={Button.constants.classNames.primary}
+                  size={Button.constants.sizes.small}
+                  onClick={() => toggleLicense(null)}
+                  dataTest="addLicense"
+                >
+                  <i className="fa fa-plus" />
+                  License
+                </Button>
+                <hr />
+              </div>
+            </section>
+            <section data-test="contracts">
+              <h3>Contracts</h3>
+              {Array.isArray(agency.contracts) &&
+                agency.contracts.map((contract, index) => (
+                  <ContractCard
+                    canDelete={agency.contracts.length > 1}
+                    key={contract.contractNumber}
+                    contract={contract}
+                    deleteContract={() => toggleDeleteContract(index)}
+                    editContract={() => toggleContract(index)}
+                  />
+                ))}
+              <div className="create-contract">
+                <hr />
+                <Button
+                  className={Button.constants.classNames.primary}
+                  size={Button.constants.sizes.small}
+                  onClick={() => toggleContract(null)}
+                  dataTest="addContract"
+                >
+                  <i className="fa fa-plus" />
+                  Contract
+                </Button>
+                <hr />
+              </div>
+            </section>
           </div>
         </div>
-        <div className="basic-footer">
-          <Footer />
-        </div>
       </div>
-    );
-  }
-}
+      <div className="basic-footer">
+        <Footer />
+      </div>
+    </div>
+  );
+};
 
 Contracts.defaultProps = {
   listAnswers: {},
