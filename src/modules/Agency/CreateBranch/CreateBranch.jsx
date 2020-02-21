@@ -108,7 +108,6 @@ export const CreateBranch = ({
                         showTerritoryManager
                         mailingAddressPrefix="mailingAddress"
                         physicalAddressPrefix="physicalAddress"
-                        showTerritoryManager
                         listAnswersAsKey={listAnswersAsKey}
                       />
                     </section>
