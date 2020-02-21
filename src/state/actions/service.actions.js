@@ -237,7 +237,7 @@ export const getZipcodeSettings = (
   zip,
   propertyId
 ) => async dispatch => {
-  const axiosConfig = {
+  const config = {
     exchangeName: 'harmony.crud',
     routingKey: 'harmony.crud.zipcode-data.getZipCode',
     data: {
@@ -251,9 +251,10 @@ export const getZipcodeSettings = (
 
   try {
     const response = await serviceRunner.callService(
-      axiosConfig,
+      config,
       'getZipcodeSettings'
     );
+
     const data = {
       getZipcodeSettings:
         response.data && response.data.result
