@@ -258,7 +258,7 @@ export const getZipcodeSettings = (
     const data = {
       getZipcodeSettings:
         response.data && response.data.result
-          ? response.data.result[0]
+          ? response.data.result
           : { timezone: '' }
     };
     return dispatch(serviceRequest(data));
