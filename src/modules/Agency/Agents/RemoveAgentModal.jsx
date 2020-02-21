@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Form, Button } from '@exzeo/core-ui';
+import { Form, Button, Loader } from '@exzeo/core-ui';
 
 export class RemoveAgentModal extends Component {
   render() {
@@ -20,43 +20,46 @@ export class RemoveAgentModal extends Component {
           subscription={{ submitting: true }}
         >
           {({ handleSubmit, submitting }) => (
-            <form onSubmit={handleSubmit}>
-              <div className="card">
-                <div className="card-header">
-                  <h4>
-                    <i className="fa fa-remove" /> Remove Agent
-                  </h4>
-                </div>
-                <div className="card-block">
-                  <section className="agent-details">
+            <React.Fragment>
+              {submitting && <Loader />}
+              <form onSubmit={handleSubmit}>
+                <div className="card">
+                  <div className="card-header">
                     <h4>
-                      Are you sure you want to remove{' '}
-                      {`${initialValues.firstName} ${initialValues.lastName}`}{' '}
-                      from {agencyName}?
+                      <i className="fa fa-remove" /> Remove Agent
                     </h4>
-                  </section>
-                </div>
-                <div className="card-footer">
-                  <div className="btn-footer">
-                    <Button
-                      className={Button.constants.classNames.secondary}
-                      data-test="modal-cancel"
-                      onClick={handleCancel}
-                    >
-                      No
-                    </Button>
-                    <Button
-                      className={Button.constants.classNames.primary}
-                      data-test="modal-submit"
-                      type="submit"
-                      disabled={disabled || submitting}
-                    >
-                      Yes
-                    </Button>
+                  </div>
+                  <div className="card-block">
+                    <section className="agent-details">
+                      <h4>
+                        Are you sure you want to remove{' '}
+                        {`${initialValues.firstName} ${initialValues.lastName}`}{' '}
+                        from {agencyName}?
+                      </h4>
+                    </section>
+                  </div>
+                  <div className="card-footer">
+                    <div className="btn-footer">
+                      <Button
+                        className={Button.constants.classNames.secondary}
+                        data-test="modal-cancel"
+                        onClick={handleCancel}
+                      >
+                        No
+                      </Button>
+                      <Button
+                        className={Button.constants.classNames.primary}
+                        data-test="modal-submit"
+                        type="submit"
+                        disabled={disabled || submitting}
+                      >
+                        Yes
+                      </Button>
+                    </div>
                   </div>
                 </div>
-              </div>
-            </form>
+              </form>
+            </React.Fragment>
           )}
         </Form>
       </div>
