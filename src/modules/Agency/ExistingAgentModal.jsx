@@ -4,7 +4,8 @@ import {
   Form,
   Button,
   SelectTypeAhead,
-  validation
+  validation,
+  Loader
 } from '@exzeo/core-ui';
 
 export const ExistingAgentModal = ({
@@ -22,60 +23,63 @@ export const ExistingAgentModal = ({
         subscription={{ submitting: true }}
       >
         {({ handleSubmit, submitting }) => (
-          <form onSubmit={handleSubmit}>
-            <div className="card">
-              <div className="card-header">
-                <h4>
-                  {' '}
-                  <i className="fa fa-address-book" /> {header}
-                </h4>
-              </div>
-              <div className="card-block">
-                <section className="existing-agent-details">
-                  <div className="flex-form">
-                    <Field
-                      name="selectedAgentCode"
-                      validate={isOptional ? null : validation.isRequired}
+          <React.Fragment>
+            {submitting && <Loader />}
+            <form onSubmit={handleSubmit}>
+              <div className="card">
+                <div className="card-header">
+                  <h4>
+                    {' '}
+                    <i className="fa fa-address-book" /> {header}
+                  </h4>
+                </div>
+                <div className="card-block">
+                  <section className="existing-agent-details">
+                    <div className="flex-form">
+                      <Field
+                        name="selectedAgentCode"
+                        validate={isOptional ? null : validation.isRequired}
+                      >
+                        {({ input, meta }) => (
+                          <SelectTypeAhead
+                            input={input}
+                            meta={meta}
+                            label="Agents"
+                            styleName="selectedAgentCode"
+                            dataTest="selectedAgentCode"
+                            optionValue="agentCode"
+                            optionLabel="displayText"
+                            component={SelectTypeAhead}
+                            validate={validation.isRequired}
+                            answers={listOfAgents}
+                          />
+                        )}
+                      </Field>
+                    </div>
+                  </section>
+                </div>
+                <div className="card-footer">
+                  <div className="btn-footer">
+                    <Button
+                      className={Button.constants.classNames.secondary}
+                      dataTest="modal-cancel"
+                      onClick={onToggleModal}
                     >
-                      {({ input, meta }) => (
-                        <SelectTypeAhead
-                          input={input}
-                          meta={meta}
-                          label="Agents"
-                          styleName="selectedAgentCode"
-                          dataTest="selectedAgentCode"
-                          optionValue="agentCode"
-                          optionLabel="displayText"
-                          component={SelectTypeAhead}
-                          validate={validation.isRequired}
-                          answers={listOfAgents}
-                        />
-                      )}
-                    </Field>
+                      Cancel
+                    </Button>
+                    <Button
+                      className={Button.constants.classNames.primary}
+                      type="submit"
+                      dataTest="modal-submit"
+                      disabled={submitting}
+                    >
+                      Select
+                    </Button>
                   </div>
-                </section>
-              </div>
-              <div className="card-footer">
-                <div className="btn-footer">
-                  <Button
-                    className={Button.constants.classNames.secondary}
-                    dataTest="modal-cancel"
-                    onClick={onToggleModal}
-                  >
-                    Cancel
-                  </Button>
-                  <Button
-                    className={Button.constants.classNames.primary}
-                    type="submit"
-                    dataTest="modal-submit"
-                    disabled={submitting}
-                  >
-                    Select
-                  </Button>
                 </div>
               </div>
-            </div>
-          </form>
+            </form>
+          </React.Fragment>
         )}
       </Form>
     </div>
