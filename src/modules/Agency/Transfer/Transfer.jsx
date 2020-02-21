@@ -68,7 +68,6 @@ export class Transfer extends Component {
 
   render() {
     const {
-      agency,
       agencyCode,
       agentsList,
       policies,
@@ -99,7 +98,7 @@ export class Transfer extends Component {
             <div className="form-group survey-wrapper" role="group">
               <section className="policy-filter">
                 <TransferFilter
-                  agencyCode={agency.agencyCode}
+                  agencyCode={agencyCode}
                   clearSelectedPolicies={this.clearSelectedPolicies}
                   policyNumberList={policyNumberList}
                   listAnswersAsKey={listAnswersAsKey}
@@ -117,7 +116,7 @@ export class Transfer extends Component {
                   policyNumberList={policyNumberList}
                   policies={policies}
                   toggleTransferModal={this.handleToggleModal}
-                  agencyCode={agency.agencyCode}
+                  agencyCode={agencyCode}
                 />
               </section>
             </div>

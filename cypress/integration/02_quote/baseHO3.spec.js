@@ -10,7 +10,11 @@ import {
   fillOutSummary,
   fillOutApplication,
   navigateThroughDocusign,
-  sendQuote
+  sendQuote,
+  changeBillTo,
+  searchPolicy,
+  searchQoute,
+  searchDiary
 } from '../../helpers';
 import {
   coverageRatingTest,
@@ -55,6 +59,8 @@ describe('Base Path - HO3', () => {
     applicationTest();
 
     navigateThroughDocusign();
-    afterDocuSignTest();
+    searchDiary();
+    searchQoute();
+    searchPolicy();
   });
 });
