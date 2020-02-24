@@ -23,7 +23,7 @@ export const Contracts = ({
   const [showDeleteContractModal, setShowDeleteContractModal] = useState(false);
   const [licenseIndex, setLicenseIndex] = useState('');
   const [showContractModal, setShowContractModal] = useState(false);
-  const [contractIndex, setContractIndex] = useState('');
+  const [contractIndex, setContractIndex] = useState(null);
 
   const toggleLicense = licenseIndex => {
     setShowLicenseModal(!showLicenseModal);
@@ -136,7 +136,7 @@ export const Contracts = ({
           saveContract={saveContract}
           closeModal={toggleContract}
           initialValues={
-            contractIndex
+            contractIndex !== null
               ? agency.contracts[contractIndex]
               : { stateProducts: [{ state: '', product: '' }] }
           }
