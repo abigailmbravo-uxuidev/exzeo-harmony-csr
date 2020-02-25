@@ -161,7 +161,7 @@ describe('Mailing/Billing Page Testing', () => {
     });
   });
 
-  it.only('POS:Checks that Same As Property Address Button works', async () => {
+  it('POS:Checks that Same As Property Address Button works', async () => {
     const newProps = {
       ...props,
       quoteData: {
