@@ -626,6 +626,12 @@ export async function getTransactionStatus(transactionId) {
   }
 }
 
+/**
+ *
+ * @param transactionId
+ * @param attemptNumber
+ * @returns {Promise<*>}
+ */
 export async function verifyTransaction(transactionId, attemptNumber = 0) {
   const response = await getTransactionStatus(transactionId);
   if (response.result.status === TRANSACTION_STATUS) {
