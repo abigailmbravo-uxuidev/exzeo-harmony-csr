@@ -586,7 +586,7 @@ export async function transferPoliciesRequest(transfers) {
 
 /**
  *
- * @param transactionId
+ * @param transfers
  * @returns {Function}
  */
 export function transferPoliciesToAgent(transfers) {
