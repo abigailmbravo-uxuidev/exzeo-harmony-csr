@@ -2,6 +2,11 @@ import * as serviceRunner from '@exzeo/core-ui/src/@Harmony/Domain/Api/serviceRu
 
 import * as types from './actionTypes';
 import * as errorActions from './error.actions';
+
+const WAIT_TIME_MS = 2000;
+const RETRY_MAX = 60;
+const TRANSACTION_STATUS = 'Complete';
+
 /**
  *
  * @param agencies
@@ -581,7 +586,7 @@ export async function transferPoliciesRequest(transfers) {
 
 /**
  *
- * @param transfers
+ * @param transactionId
  * @returns {Function}
  */
 export function transferPoliciesToAgent(transfers) {
@@ -594,4 +599,41 @@ export function transferPoliciesToAgent(transfers) {
       return error;
     }
   };
+}
+
+/**
+ *
+ * @param transactionId
+ * @returns {Promise<*>}
+ */
+export async function getTransactionStatus(transactionId) {
+  try {
+    const transferConfig = {
+      exchangeName: 'harmony',
+      routingKey: 'harmony.agency.getTransactionStatus',
+      data: {
+        transactionId
+      }
+    };
+
+    const response = await serviceRunner.callService(
+      transferConfig,
+      'getTransactionStatus'
+    );
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+}
+
+export async function verifyTransaction(transactionId, attemptNumber = 0) {
+  const response = await getTransactionStatus(transactionId);
+  if (response.result.status === TRANSACTION_STATUS) {
+    return Promise.resolve(response);
+  }
+
+  if (attemptNumber < RETRY_MAX) {
+    await new Promise(resolve => setTimeout(resolve, WAIT_TIME_MS));
+    await verifyTransaction(transactionId, attemptNumber + 1);
+  } else return Promise.reject(null);
 }

@@ -15,6 +15,7 @@ import {
   getAgentListByAgencyCode,
   clearAgentList,
   transferPoliciesToAgent,
+  verifyTransaction,
   fetchAgenciesByAgencyCodeOrName,
   fetchAgentsByAgencyCode
 } from '../../../state/actions/agency.actions';
@@ -77,6 +78,24 @@ export class TransferModal extends Component {
     return sorted;
   }
 
+  //   function envelopeIdCheck(quoteNumber, apiUrl, token, attemptNumber = 0) {
+  //   // Custom functions should return a 'cy chain' to be able to enforce order of ops
+  //   return retrieveQuote(quoteNumber, apiUrl, token).then(res => {
+  //     if (res.status === 200 && res.body.result.envelopeId) {
+  //       // must wrap a var to make it chainable
+  //       return cy.wrap(res);
+  //     }
+
+  //     assert.isBelow(
+  //       attemptNumber,
+  //       RETRY_MAX,
+  //       "Number of retries to 'retrieveQuote' waiting for envelopeId to exist on quote"
+  //     );
+  //     cy.wait(WAIT_TIME_MS);
+  //     envelopeIdCheck(quoteNumber, apiUrl, token, attemptNumber + 1);
+  //   });
+  // }
+
   submitTransfer = async data => {
     try {
       const { agentCodeTo, agencyCodeTo } = data;
@@ -107,7 +126,8 @@ export class TransferModal extends Component {
         });
       });
 
-      await transferPoliciesToAgent(transfers);
+      const response = await transferPoliciesToAgent(transfers);
+      await verifyTransaction(response.result.transactionId);
       await getAgentListByAgencyCode(activeAgencyCode);
       await getPoliciesForAgency({ agencyCode: activeAgencyCode });
       clearSelectedPolicies();

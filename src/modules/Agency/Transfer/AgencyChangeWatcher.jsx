@@ -6,6 +6,7 @@ const AgencyChangeWatcher = ({ getAgentsForTransfer }) => {
   const formApi = useForm();
 
   useEffect(() => {
+    if (!agencyCodeTo) return;
     const getAgents = async () => {
       try {
         formApi.change('agentCodeTo', null);
