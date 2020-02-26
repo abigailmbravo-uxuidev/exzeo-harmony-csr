@@ -140,6 +140,7 @@ export const DiaryModal = ({
           {submitting && <Loader />}
           <Form
             id="DiaryModal"
+            enableReinitialize={true}
             initialValues={initialValues}
             onSubmit={handleSubmitDiary}
             subscription={{ submitting: true, values: true }}
@@ -200,6 +201,7 @@ export const DiaryModal = ({
                       <React.Fragment>
                         <OnChangeListener name="reason">
                           {value => {
+                            if (!value) return;
                             const defaultData = diaryOptions.reasons.find(
                               r => r.answer === value
                             );
@@ -228,6 +230,8 @@ export const DiaryModal = ({
                       <React.Fragment>
                         <OnChangeListener name="reason">
                           {value => {
+                            if (!value) return;
+
                             const defaultData = diaryOptions.reasons.find(
                               r => r.answer === value
                             );
@@ -308,7 +312,7 @@ const mapStateToProps = state => {
   return {
     assigneeAnswers: getDiaryAssigneeAnswers(state),
     diaryReasons: getDiaryReasons(state),
-    initialValues: state.ui.diary.selectedDiary
+    initialValues: state.ui.diary.selectedDiary || {}
   };
 };
 
