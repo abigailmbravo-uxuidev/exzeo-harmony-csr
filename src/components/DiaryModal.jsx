@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import _get from 'lodash/get';
@@ -51,14 +51,7 @@ export const DiaryModal = ({
   assigneeAnswers,
   diaryOptions
 }) => {
-  const [position, setPosition] = useState(null);
-
   const handleMinimize = () => {
-    if (!minimizeDiary) {
-      setPosition({ x: 0, y: 0 });
-    } else {
-      setPosition(null);
-    }
     toggleMinimizeDiary(!minimizeDiary);
   };
 
@@ -105,7 +98,11 @@ export const DiaryModal = ({
   };
 
   return (
-    <Draggable handle=".title-bar" bounds=".app-wrapper" position={position}>
+    <Draggable
+      handle=".title-bar"
+      bounds=".app-wrapper"
+      position={minimizeDiary ? { x: 0, y: 0 } : null}
+    >
       <div
         className={classNames('new-diary-file', { minimize: minimizeDiary })}
       >
