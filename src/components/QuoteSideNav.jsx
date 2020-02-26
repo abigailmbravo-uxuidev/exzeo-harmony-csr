@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 import { SideNavigation } from '@exzeo/core-ui/src/@Harmony';
@@ -16,49 +15,49 @@ const getNavLinks = ({ quoteNumber }) => {
     {
       key: 'coverage',
       to: `/quote/${quoteNumber}/coverage`,
-      label: 'Coverage / Rating',
-      styleName: 'coverage',
+      label: <span>Coverage / Rating</span>,
+      className: 'coverage',
       exact: true
     },
     {
       key: 'underwriting',
       to: `/quote/${quoteNumber}/underwriting`,
-      label: 'Underwriting',
-      styleName: 'underwriting',
+      label: <span>Underwriting</span>,
+      className: 'underwriting',
       exact: true
     },
     {
       key: 'additionalInterests',
       to: `/quote/${quoteNumber}/additionalInterests`,
-      label: 'Additional Interests',
-      styleName: 'additionalInterests',
+      label: <span>Additional Interests</span>,
+      className: 'additionalInterests',
       exact: true
     },
     {
       key: 'billing',
       to: `/quote/${quoteNumber}/billing`,
-      label: 'Mailing / Billing',
-      styleName: 'billing',
+      label: <span>Mailing / Billing</span>,
+      className: 'billing',
       exact: true
     },
     {
       key: 'notes',
       to: `/quote/${quoteNumber}/notes`,
-      label: 'Notes / Files / Diaries',
-      styleName: 'notes',
+      label: <span>Notes / Files / Diaries</span>,
+      className: 'notes',
       exact: true
     },
     {
       key: 'summary',
       to: `/quote/${quoteNumber}/summary`,
-      label: 'Quote Summary',
-      styleName: 'quote-summary'
+      label: <span>Quote Summary</span>,
+      className: 'quote-summary'
     },
     {
       key: 'application',
       to: `/quote/${quoteNumber}/application`,
-      label: 'Application',
-      styleName: 'application',
+      label: <span>Application</span>,
+      className: 'application',
       exact: true
     }
   ];
@@ -141,7 +140,4 @@ const mapStateToProps = state => {
   };
 };
 
-export default connect(
-  mapStateToProps,
-  { toggleNote, toggleDiary }
-)(SideNav);
+export default connect(mapStateToProps, { toggleNote, toggleDiary })(SideNav);
