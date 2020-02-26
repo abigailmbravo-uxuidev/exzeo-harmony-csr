@@ -18,43 +18,43 @@ const getNavLinks = ({ policyNumber }) => [
   {
     key: 'coverage',
     to: `/policy/${policyNumber}/coverage`,
-    label: 'Coverage / Rating',
-    styleName: 'coverage',
+    label: <span>Coverage / Rating</span>,
+    className: 'coverage',
     exact: true
   },
   {
     key: 'policyholder',
     to: `/policy/${policyNumber}/policyHolder`,
-    label: 'Policyholder / Agent',
-    styleName: 'policyholder',
+    label: <span>Policyholder / Agent</span>,
+    className: 'policyholder',
     exact: true
   },
   {
     key: 'billing',
     to: `/policy/${policyNumber}/billing`,
     label: 'Mortgage / Billing',
-    styleName: 'billing',
+    className: 'billing',
     exact: true
   },
   {
     key: 'notes',
     to: `/policy/${policyNumber}/notes`,
-    label: 'Notes / Files / Diaries',
-    styleName: 'notes',
+    label: <span>Notes / Files / Diaries</span>,
+    className: 'notes',
     exact: true
   },
   {
     key: 'cancel',
     to: `/policy/${policyNumber}/cancel`,
-    label: 'Cancel Policy',
-    styleName: 'cancel',
+    label: <span>Cancel Policy</span>,
+    className: 'cancel',
     exact: true
   },
   {
     key: 'endorsements',
     to: `/policy/${policyNumber}/endorsements`,
-    label: 'Endorsements',
-    styleName: 'endorsements',
+    label: <span>Endorsements</span>,
+    className: 'endorsements',
     exact: true
   }
 ];
@@ -159,12 +159,9 @@ const mapStateToProps = state => ({
   policy: state.policyState.policy || {}
 });
 
-export default connect(
-  mapStateToProps,
-  {
-    toggleNote,
-    toggleDiary,
-    setAppError,
-    setNotesSynced
-  }
-)(SideNav);
+export default connect(mapStateToProps, {
+  toggleNote,
+  toggleDiary,
+  setAppError,
+  setNotesSynced
+})(SideNav);
