@@ -95,13 +95,7 @@ const AgencyDetails = ({ agencyCodeDisabled }) => {
           />
         )}
       </Field>
-      <Field
-        name="websiteUrl"
-        validate={composeValidators([
-          validation.isRequired,
-          validation.isWebAddress
-        ])}
-      >
+      <Field name="websiteUrl" validate={validation.isWebAddress}>
         {({ input, meta }) => (
           <Input
             input={input}
