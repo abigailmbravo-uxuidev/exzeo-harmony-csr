@@ -256,7 +256,7 @@ export const DiaryModal = ({
                       customClass="close-diary-button"
                       dataTest="close-diary"
                       onClick={() =>
-                        submitDiary({ ...formValues, open: false })
+                        handleSubmitDiary({ ...formValues, open: false })
                       }
                     >
                       Mark as Closed
