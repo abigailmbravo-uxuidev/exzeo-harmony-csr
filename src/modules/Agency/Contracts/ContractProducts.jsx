@@ -1,10 +1,7 @@
 import React from 'react';
-import { Select, validation, Button } from '@exzeo/core-ui';
-import { Field } from 'redux-form';
+import { Select, validation, Button, Field } from '@exzeo/core-ui';
 
 const ContractProducts = ({ fields, stateAnswers, productAnswers }) => {
-  if (fields.length === 0) fields.insert(0, {});
-
   return (
     <React.Fragment>
       {fields.map((product, index) => (
