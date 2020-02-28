@@ -32,7 +32,7 @@ const getNavLinks = ({ policyNumber }) => [
   {
     key: 'billing',
     to: `/policy/${policyNumber}/billing`,
-    label: 'Mortgage / Billing',
+    label: <span>Mortgage / Billing</span>,
     className: 'billing',
     exact: true
   },
