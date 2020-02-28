@@ -111,7 +111,10 @@ export const SideNav = ({
           )}
           {branchesList.length > 1 && agencyCode !== 'new' && (
             <li key="branch" data-test="branch">
-              <Form onSubmit={noop}>
+              <Form
+                onSubmit={noop}
+                initialValues={{ selectedBranch: branchCode }}
+              >
                 {() => (
                   <React.Fragment>
                     <Field name="selectedBranch">

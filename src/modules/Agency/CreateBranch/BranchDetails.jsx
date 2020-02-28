@@ -1,6 +1,13 @@
 import React from 'react';
-import { Field } from 'redux-form';
-import { Input, Radio, Phone, Select, validation } from '@exzeo/core-ui';
+import {
+  Input,
+  Radio,
+  Phone,
+  Select,
+  validation,
+  composeValidators,
+  Field
+} from '@exzeo/core-ui';
 
 import { STATUS } from '../../../constants/agency';
 
@@ -9,7 +16,7 @@ const mailAnswers = [
   { answer: true, label: 'Yes' }
 ];
 
-export const BranchDetails = agencyCodeDisabled => {
+export const BranchDetails = () => {
   return (
     <React.Fragment>
       <Field
@@ -26,7 +33,10 @@ export const BranchDetails = agencyCodeDisabled => {
         name="websiteUrl"
         dataTest="websiteUrl"
         component={Input}
-        validate={[validation.isRequired, validation.isWebAddress]}
+        validate={composeValidators([
+          validation.isRequired,
+          validation.isWebAddress
+        ])}
       />
       <Field
         id="status"
@@ -65,7 +75,10 @@ export const BranchDetails = agencyCodeDisabled => {
         name="primaryPhoneNumber"
         dataTest="primaryPhoneNumber"
         component={Phone}
-        validate={[validation.isRequired, validation.isPhone]}
+        validate={composeValidators([
+          validation.isRequired,
+          validation.isPhone
+        ])}
       />
       <Field
         label="Phone 2"
@@ -73,7 +86,7 @@ export const BranchDetails = agencyCodeDisabled => {
         name="secondaryPhoneNumber"
         dataTest="secondaryPhoneNumber"
         component={Phone}
-        validate={[validation.isPhone]}
+        validate={validation.isPhone}
       />
       <Field
         label="Fax"
@@ -81,7 +94,7 @@ export const BranchDetails = agencyCodeDisabled => {
         name="faxNumber"
         dataTest="faxNumber"
         component={Phone}
-        validate={[validation.isPhone]}
+        validate={validation.isPhone}
       />
       <Field
         label="CSR Contact Email Address"
@@ -89,7 +102,10 @@ export const BranchDetails = agencyCodeDisabled => {
         name="customerServiceEmailAddress"
         dataTest="customerServiceEmailAddress"
         component={Input}
-        validate={[validation.isRequired, validation.isEmail]}
+        validate={composeValidators([
+          validation.isRequired,
+          validation.isEmail
+        ])}
       />
     </React.Fragment>
   );

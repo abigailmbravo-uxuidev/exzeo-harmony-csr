@@ -1,3 +1,5 @@
+import { defaultMemoize } from 'reselect';
+
 export const filterZipCodeSettings = (zip, zipCodeSettings) => {
   const matchingZipCodes = zipCodeSettings.filter(z => z.zip === zip);
   if (matchingZipCodes.length === 1) {
@@ -61,3 +63,10 @@ export const listOfZipCodes = zipCodeSettings => {
   }));
   return zipCodeList;
 };
+
+export const isUnique = defaultMemoize((name, values, uniqueList) => value => {
+  const exception = values ? values[name] : null;
+  return value && uniqueList.includes(value) && value !== exception
+    ? 'This must be unique.'
+    : undefined;
+});
