@@ -7,10 +7,8 @@ import {
   shareQuote,
   addInsured,
   unQuestionsHO3,
-  unQuestionsAF3,
   unQuestionsBAD,
-  coverageHO3,
-  coverageAF3
+  coverageHO3
 } from '../fixtures';
 
 export const navigateThroughNewQuote = (
