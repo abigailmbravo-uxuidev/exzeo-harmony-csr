@@ -1,6 +1,6 @@
 export { aiOptions, addInsured } from './additionalInterest';
 export * from './agencyManagement';
-export { coverageHO3, coverageAF3 } from './coveragevalues';
+export { coverageHO3 } from './coveragevalues';
 export { login } from './login';
 export { pH1 } from './pH1';
 export { baseQuote, baseQuoteResponse } from './quote';
