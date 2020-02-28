@@ -1,3 +1,3 @@
-export const coverageHO3 = {
+export const coverage = {
   'coverageLimits.dwelling.value': '313000'
 };
