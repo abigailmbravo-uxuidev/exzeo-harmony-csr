@@ -507,20 +507,25 @@ describe('Service Actions', () => {
     const mockAdapter = new MockAdapter(axios);
 
     const axiosOptions = {
-      method: 'POST',
+      url: `${process.env.REACT_APP_API_URL}/svc?getZipcodeSettings`,
       headers: {
         'Content-Type': 'application/json'
       },
-      url: `${process.env.REACT_APP_API_URL}/svc?getZipcodeSettings`,
       data: {
-        service: 'underwriting',
-        method: 'GET',
-        path: 'zip-code?companyCode=TTIC&state=FL&product=HO3&zip=33607'
+        exchangeName: 'harmony.crud',
+        routingKey: 'harmony.crud.zipcode-data.getZipCode',
+        data: {
+          companyCode: 'TTIC',
+          state: 'FL',
+          product: 'AF3',
+          zip: '00001',
+          propertyId: '12000000000000001'
+        }
       }
     };
 
     mockAdapter.onPost(axiosOptions.url, axiosOptions.data).reply(200, {
-      data: []
+      data: { message: 'Ok' }
     });
 
     const initialState = {};
@@ -531,8 +536,9 @@ describe('Service Actions', () => {
       .getZipcodeSettings(
         'TTIC',
         'FL',
-        'HO3',
-        '33607'
+        'AF3',
+        '00001',
+        '12000000000000001'
       )(store.dispatch)
       .then(result => {
         expect(store.getActions()[0].type).toEqual(types.SERVICE_REQUEST);
@@ -542,15 +548,21 @@ describe('Service Actions', () => {
   it('should fail start getZipcodeSettings', () => {
     const mockAdapter = new MockAdapter(axios);
     const axiosOptions = {
+      url: `${process.env.REACT_APP_API_URL}/svc?getZipcodeSettings`,
       method: 'POST',
+      data: {
+        exchangeName: 'harmony.crud',
+        routingKey: 'harmony.crud.zipcode-data.getZipCode',
+        data: {
+          companyCode: 'TTIC',
+          state: 'FL',
+          product: 'HO3',
+          zip: '33607',
+          propertyId: '10000000000000003'
+        }
+      },
       headers: {
         'Content-Type': 'application/json'
-      },
-      url: `${process.env.REACT_APP_API_URL}/svc`,
-      data: {
-        service: 'underwriting',
-        method: 'GET',
-        path: 'zip-code?companyCode=TTIC&state=FL&product=HO3&zip=33607'
       }
     };
 
