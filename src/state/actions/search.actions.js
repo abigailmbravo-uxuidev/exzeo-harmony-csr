@@ -1,6 +1,6 @@
 import { date } from '@exzeo/core-ui';
 import * as serviceRunner from '@exzeo/core-ui/src/@Harmony/Domain/Api/serviceRunner';
-import { searchAddress } from '@exzeo/core-ui/src/@Harmony/Search';
+import { searchData } from '@exzeo/core-ui/src/@Harmony';
 
 import { sortDiariesByDate } from '../../utilities/diaries';
 import { SECONDARY_DATE_FORMAT } from '../../constants/dates';
@@ -73,6 +73,8 @@ export function setSearchResults({
  * @param lastName
  * @param propertyAddress
  * @param companyCode
+ * @param state
+ * @param product
  * @param effectiveDate
  * @param policyNumber
  * @param quoteNumber
@@ -452,7 +454,7 @@ function formatDiaryResults(results) {
  */
 export async function handleAddressSearch({ address, state }) {
   try {
-    const results = await searchAddress({ address, state });
+    const results = await searchData.searchAddress({ address, state });
     return formatAddressResults(results);
   } catch (error) {
     throw error;

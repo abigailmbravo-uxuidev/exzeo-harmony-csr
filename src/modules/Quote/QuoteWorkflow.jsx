@@ -274,97 +274,86 @@ export class QuoteWorkflow extends React.Component {
             onToggleDiaries={this.handleToggleDiaries}
             showDiaries={showDiaries}
           >
-            <React.Fragment>
-              <div className="content-wrapper">
-                <div className="route-content">
-                  {shouldUseGandalf && (
-                    <React.Fragment>
-                      <Gandalf
-                        formId={FORM_ID}
-                        currentPage={currentStepNumber}
-                        customComponents={this.customComponents}
-                        customHandlers={customHandlers}
-                        handleSubmit={this.handleGandalfSubmit}
-                        initialValues={quote}
-                        options={{ diaries, notes, ...options }} // enums for select/radio fields
-                        path={location.pathname}
-                        template={gandalfTemplate}
-                        transformConfig={transformConfig}
-                        stickyFooter
-                        renderFooter={
-                          <FormSpy
-                            subscription={{
-                              pristine: true,
-                              submitting: true,
-                              values: true
-                            }}
-                          >
-                            {({ form, pristine, submitting, values }) => (
-                              <QuoteFooter
-                                currentStep={currentRouteName}
-                                formInstance={form}
-                                isSubmitDisabled={this.isSubmitDisabled(
-                                  pristine,
-                                  submitting,
-                                  values
-                                )}
-                                handlePrimaryClick={this.primaryClickHandler}
-                                handleApplicationClick={
-                                  this.handleRetrieveQuote
-                                }
-                              />
-                            )}
-                          </FormSpy>
-                        }
-                        formListeners={
-                          <React.Fragment>
-                            <FormSpy subscription={{}}>
-                              {({ form }) => {
-                                this.setFormInstance(form);
-                                return null;
-                              }}
-                            </FormSpy>
+            <div className="content-wrapper">
+              <div className="route-content">
+                {shouldUseGandalf && (
+                  <Gandalf
+                    formId={FORM_ID}
+                    currentPage={currentStepNumber}
+                    customComponents={this.customComponents}
+                    customHandlers={customHandlers}
+                    handleSubmit={this.handleGandalfSubmit}
+                    initialValues={quote}
+                    options={{ diaries, notes, ...options }} // enums for select/radio fields
+                    path={location.pathname}
+                    template={gandalfTemplate}
+                    transformConfig={transformConfig}
+                  >
+                    <FormSpy
+                      subscription={{
+                        pristine: true,
+                        submitting: true,
+                        values: true
+                      }}
+                    >
+                      {({ form, pristine, submitting, values }) => (
+                        <QuoteFooter
+                          currentStep={currentRouteName}
+                          formInstance={form}
+                          isSubmitDisabled={this.isSubmitDisabled(
+                            pristine,
+                            submitting,
+                            values
+                          )}
+                          handlePrimaryClick={this.primaryClickHandler}
+                          handleApplicationClick={this.handleRetrieveQuote}
+                        />
+                      )}
+                    </FormSpy>
 
-                            <FormSpy
-                              subscription={{ dirty: true, pristine: true }}
-                            >
-                              {({ dirty }) => (
-                                <NavigationPrompt
-                                  dirty={dirty}
-                                  formInstance={this.formInstance}
-                                  history={history}
-                                />
-                              )}
-                            </FormSpy>
-                          </React.Fragment>
-                        }
-                      />
-                    </React.Fragment>
-                  )}
-                </div>
+                    <FormSpy subscription={{}}>
+                      {({ form }) => {
+                        this.setFormInstance(form);
+                        return null;
+                      }}
+                    </FormSpy>
+
+                    <FormSpy subscription={{ dirty: true, pristine: true }}>
+                      {({ dirty }) => (
+                        <NavigationPrompt
+                          dirty={dirty}
+                          formInstance={this.formInstance}
+                          history={history}
+                        />
+                      )}
+                    </FormSpy>
+
+                    <div id="modal-anchor" />
+                  </Gandalf>
+                )}
               </div>
+            </div>
 
-              <UnderwritingValidationBar
-                quoteData={quote}
-                userProfile={userProfile}
-                updateQuote={updateQuote}
+            <UnderwritingValidationBar
+              quoteData={quote}
+              userProfile={userProfile}
+              updateQuote={updateQuote}
+            />
+
+            <OpenDiariesBar
+              entity={quote}
+              resourceId={quote.quoteNumber}
+              resourceType={QUOTE_RESOURCE_TYPE}
+            />
+
+            {quote && quote.quoteNumber && (
+              <DiaryPolling
+                filter={{
+                  resourceId: quote.quoteNumber,
+                  resourceType: QUOTE_RESOURCE_TYPE
+                }}
               />
-
-              <OpenDiariesBar
-                entity={quote}
-                resourceId={quote.quoteNumber}
-                resourceType={QUOTE_RESOURCE_TYPE}
-              />
-
-              {quote && quote.quoteNumber && (
-                <DiaryPolling
-                  filter={{
-                    resourceId: quote.quoteNumber,
-                    resourceType: QUOTE_RESOURCE_TYPE
-                  }}
-                />
-              )}
-            </React.Fragment>
+            )}
           </App>
         )}
       </div>
