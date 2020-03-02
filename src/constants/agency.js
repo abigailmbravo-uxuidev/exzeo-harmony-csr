@@ -1,6 +1,6 @@
-const WAIT_TIME_MS = 2000;
-const RETRY_MAX = 60;
-const TRANSACTION_STATUS = 'Complete';
+export const WAIT_TIME_MS = 2000;
+export const RETRY_MAX = 60;
+export const TRANSACTION_STATUS = 'Complete';
 
 export const TAX_CLASSIFICATION = [
   { answer: 'Corporation', label: 'Corporation' },
