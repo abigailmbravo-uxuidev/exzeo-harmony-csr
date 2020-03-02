@@ -11,7 +11,7 @@ import { Redirect } from 'react-router-dom';
 
 import ExistingAgentModal from '../ExistingAgentModal';
 import License from '../License';
-import Agent from './Agent';
+import Agent from '../Agent';
 import Contact from '../Contact';
 import AgencyDetails from '../AgencyDetails';
 import AddressGroup from '../AddressGroup';
@@ -19,11 +19,9 @@ import { AppFooter } from '@exzeo/core-ui/src/@Harmony';
 
 export const Create = ({
   listAnswersAsKey,
-  licenseValue,
   agency,
   orphans,
   initialValues,
-  listOfZipCodes,
   createAgency
 }) => {
   const [formInstance, setFormInstance] = useState(null);
@@ -89,7 +87,6 @@ export const Create = ({
   return (
     <div className="route-content-wrapper">
       <Form
-        keepDirtyOnReinitialize
         initialValues={initialValues}
         onSubmit={createNewAgency}
         mutators={{
@@ -158,7 +155,6 @@ export const Create = ({
                           <AddressGroup
                             mailingAddressPrefix="agentOfRecord.mailingAddress"
                             physicalAddressPrefix="agentOfRecord.physicalAddress"
-                            listOfZipCodes={listOfZipCodes}
                             listAnswersAsKey={listAnswersAsKey}
                           />
                         </section>
@@ -168,7 +164,6 @@ export const Create = ({
                           stateAnswers={listAnswersAsKey.US_states}
                           name="agentOfRecord.licenses"
                           component={License}
-                          licenseValue={licenseValue}
                           isAgency
                         />
                       </div>

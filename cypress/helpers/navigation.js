@@ -6,11 +6,9 @@ import {
   pH1,
   shareQuote,
   addInsured,
-  unQuestionsHO3,
-  unQuestionsAF3,
+  unQuestions,
   unQuestionsBAD,
-  coverageHO3,
-  coverageAF3
+  coverage
 } from '../fixtures';
 
 export const navigateThroughNewQuote = (
@@ -55,7 +53,7 @@ export const fillOutCoverage = (customerInfo = pH1) => {
     });
 };
 
-export const changeCoverageAndAgency = (coverage = coverageHO3) => {
+export const changeCoverageAndAgency = (coverage = coverage) => {
   return cy
     .task('log', 'Changing coverage values')
     .goToNav('coverage')
@@ -88,7 +86,7 @@ export const changeCoverageAndAgency = (coverage = coverageHO3) => {
 };
 
 export const fillOutUnderwriting = (
-  questions = unQuestionsHO3,
+  questions = unQuestions,
   expectedQuoteState = 'Quote Qualified'
 ) => {
   return cy

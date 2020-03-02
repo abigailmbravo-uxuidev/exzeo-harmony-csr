@@ -3,6 +3,8 @@ import { connect } from 'react-redux';
 import { emptyArray } from '@exzeo/core-ui';
 
 import { SEARCH_CONFIG, SEARCH_TYPES } from '../../constants/search';
+import { productAnswers } from './constants';
+
 import {
   resetSearch,
   handleSearchSubmit,
@@ -59,30 +61,11 @@ export class SearchPage extends Component {
 
   componentDidMount() {
     this.setSearchConfig();
-    this.productAnswers = this.getProducts();
     this.props.getEnumsForSearch();
   }
 
   componentWillUnmount() {
     this.props.resetSearch();
-  }
-
-  getProducts() {
-    const {
-      userProfile: { resources = [] }
-    } = this.props;
-
-    return resources
-      .filter(
-        res =>
-          res.uri.includes('QuoteData') &&
-          res.right === 'INSERT' &&
-          !res.conditions
-      )
-      .map(res => {
-        const { 2: state } = res.uri.split(':');
-        return { answer: state, label: state };
-      });
   }
 
   setHasSearched = hasSearched => {
@@ -187,7 +170,7 @@ export class SearchPage extends Component {
                   searchTypeOptions={SEARCH_CONFIG[searchConfig].searchOptions}
                   handlePagination={handlePagination}
                   hasSearched={hasSearched}
-                  productAnswers={this.productAnswers}
+                  productAnswers={productAnswers}
                   {...formProps}
                 />
               )}
@@ -227,14 +210,11 @@ const mapStateToProps = state => {
   };
 };
 
-export default connect(
-  mapStateToProps,
-  {
-    clearAppError,
-    getAgencies,
-    handleSearchSubmit,
-    resetSearch,
-    toggleLoading,
-    getEnumsForSearch
-  }
-)(SearchPage);
+export default connect(mapStateToProps, {
+  clearAppError,
+  getAgencies,
+  handleSearchSubmit,
+  resetSearch,
+  toggleLoading,
+  getEnumsForSearch
+})(SearchPage);

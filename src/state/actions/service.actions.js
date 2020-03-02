@@ -234,23 +234,31 @@ export const getZipcodeSettings = (
   companyCode,
   state,
   product,
-  zip
+  zip,
+  propertyId
 ) => async dispatch => {
-  const axiosConfig = {
-    service: 'underwriting',
-    method: 'GET',
-    path: `zip-code?companyCode=${companyCode}&state=${state}&product=${product}&zip=${zip}`
+  const config = {
+    exchangeName: 'harmony.crud',
+    routingKey: 'harmony.crud.zipcode-data.getZipCode',
+    data: {
+      companyCode,
+      state,
+      product,
+      zip,
+      propertyId
+    }
   };
 
   try {
     const response = await serviceRunner.callService(
-      axiosConfig,
+      config,
       'getZipcodeSettings'
     );
+
     const data = {
       getZipcodeSettings:
         response.data && response.data.result
-          ? response.data.result[0]
+          ? response.data.result
           : { timezone: '' }
     };
     return dispatch(serviceRequest(data));
