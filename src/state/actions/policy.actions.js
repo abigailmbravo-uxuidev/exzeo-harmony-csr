@@ -746,7 +746,8 @@ export function initializePolicyWorkflow(policyNumber) {
           policy.companyCode,
           policy.state,
           policy.product,
-          policy.property.physicalAddress.zip
+          policy.property.physicalAddress.zip,
+          policy.property.id
         )
       );
 

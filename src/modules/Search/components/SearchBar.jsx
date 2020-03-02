@@ -34,7 +34,6 @@ export class SearchBar extends Component {
 
     return handleSubmit((data, dispatch, props) => {
       // submit function is looking for these two added properties to determine if this is an initial submit or pagination submit.
-      console.log(data);
       const submitData = {
         ...data,
         isNext,

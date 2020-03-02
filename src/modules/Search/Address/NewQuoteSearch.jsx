@@ -39,8 +39,8 @@ const NewQuoteSearch = ({
           dataTest="company"
           label="Company"
           component={Select}
+          validate={isRequired}
           answers={companyAnswers}
-          showPlaceholder={false}
           styleName="company-search"
         />
 

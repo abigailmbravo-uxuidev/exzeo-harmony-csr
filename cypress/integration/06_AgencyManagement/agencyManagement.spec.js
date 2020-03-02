@@ -748,7 +748,7 @@ describe('Agency Management testing', () => {
           .findDataTag('emailAddress')
           .type('exzeoqa@exzeo.com');
 
-        cy.findDataTag('agent-mailing-address').within(() => {
+        cy.findDataTag('agency-mailing-address').within(() => {
           cy.findDataTag('address1')
             .type('Test Mailing Address 3')
             .findDataTag('address2')

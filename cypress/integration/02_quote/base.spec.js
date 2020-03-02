@@ -26,7 +26,7 @@ import {
   applicationTest,
   afterDocuSignTest
 } from '../../pageTests';
-import { coverageHO3, unQuestionsHO3 } from '../../fixtures';
+import { coverage, unQuestions } from '../../fixtures';
 
 describe('Base Path - HO3', () => {
   before('Login', () => cy.login());
@@ -38,9 +38,9 @@ describe('Base Path - HO3', () => {
     fillOutCoverage();
     coverageRatingTest();
 
-    fillOutUnderwriting(unQuestionsHO3);
+    fillOutUnderwriting(unQuestions);
     underwritingTest();
-    changeCoverageAndAgency(coverageHO3);
+    changeCoverageAndAgency(coverage);
 
     fillOutAdditionalInterests();
     aiTest();
