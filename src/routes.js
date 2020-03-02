@@ -58,7 +58,6 @@ class Routes extends Component {
       diaryOptions
     } = this.props;
 
-    console.log(diary);
     return (
       <div>
         <Modal

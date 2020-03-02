@@ -20,12 +20,12 @@ import { OnChangeListener } from '@exzeo/core-ui/src';
 import classNames from 'classnames';
 
 import { addDate } from '../utilities/diaries';
-import { submitDiary as submitDiaryAction } from '../state/actions/diary.actions';
+import { submitDiary as _submitDiary } from '../state/actions/diary.actions';
 import {
-  toggleDiary as toggleDiaryAction,
-  toggleMinimizeDiary as toggleMinimizeDiaryAction
+  toggleDiary as _toggleDiary,
+  toggleMinimizeDiary as _toggleMinimizeDiary
 } from '../state/actions/ui.actions';
-import { setAppError as setAppErrorAction } from '../state/actions/error.actions';
+import { setAppError as _setAppError } from '../state/actions/error.actions';
 import { getDiaryAssigneeAnswers } from '../state/selectors/questions.selectors';
 import { getDiaryReasons } from '../state/selectors/diary.selectors';
 
@@ -317,8 +317,8 @@ const mapStateToProps = state => {
 };
 
 export default connect(mapStateToProps, {
-  setAppError: setAppErrorAction,
-  submitDiary: submitDiaryAction,
-  toggleDiary: toggleDiaryAction,
-  toggleMinimizeDiary: toggleMinimizeDiaryAction
+  setAppError: _setAppError,
+  submitDiary: _submitDiary,
+  toggleDiary: _toggleDiary,
+  toggleMinimizeDiary: _toggleMinimizeDiary
 })(DiaryModal);
