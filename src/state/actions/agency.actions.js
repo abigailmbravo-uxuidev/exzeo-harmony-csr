@@ -1,11 +1,13 @@
 import * as serviceRunner from '@exzeo/core-ui/src/@Harmony/Domain/Api/serviceRunner';
 
+import {
+  WAIT_TIME_MS,
+  RETRY_MAX,
+  TRANSACTION_STATUS
+} from '../../constants/agency';
+
 import * as types from './actionTypes';
 import * as errorActions from './error.actions';
-
-const WAIT_TIME_MS = 2000;
-const RETRY_MAX = 60;
-const TRANSACTION_STATUS = 'Complete';
 
 /**
  *

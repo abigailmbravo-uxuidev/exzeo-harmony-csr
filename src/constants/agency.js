@@ -1,3 +1,7 @@
+const WAIT_TIME_MS = 2000;
+const RETRY_MAX = 60;
+const TRANSACTION_STATUS = 'Complete';
+
 export const TAX_CLASSIFICATION = [
   { answer: 'Corporation', label: 'Corporation' },
   { answer: 'Disregarded Entity', label: 'Disregarded Entity' },
