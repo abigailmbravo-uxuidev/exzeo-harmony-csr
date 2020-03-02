@@ -103,6 +103,7 @@ export class QuoteWorkflow extends React.Component {
           agentCode,
           quoteNumber
         } = quote;
+
         getEnumsForQuoteWorkflow({
           companyCode,
           state,
@@ -115,7 +116,8 @@ export class QuoteWorkflow extends React.Component {
           companyCode,
           state,
           product,
-          property.physicalAddress.zip
+          property.physicalAddress.zip,
+          property.id
         );
       }
     });

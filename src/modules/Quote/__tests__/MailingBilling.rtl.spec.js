@@ -1,5 +1,10 @@
 import React from 'react';
-import { waitForElement, fireEvent, within } from '@testing-library/react';
+import {
+  waitForElement,
+  fireEvent,
+  within,
+  wait
+} from '@testing-library/react';
 
 import {
   renderWithForm,
@@ -118,9 +123,14 @@ describe('Mailing/Billing Page Testing', () => {
       ...props,
       quoteData: {
         ...props.quoteData,
-        policyHolderMailingAddress: {}
+        policyHolderMailingAddress: {},
+        sameAsPropertyAddress: false
       }
     };
+
+    newProps.quote.policyHolderMailingAddress = {};
+    newProps.quote.sameAsPropertyAddress = false;
+
     const { getByTestId, getByText, getByLabelText } = renderWithForm(
       <QuoteWorkflow {...newProps} />
     );
@@ -129,21 +139,148 @@ describe('Mailing/Billing Page Testing', () => {
       getByTestId('billPlan_Annual')
     ]);
 
-    expect(getByText('Update')).toBeDisabled();
-    propertyFields.forEach(({ label, value }) =>
-      fireEvent.change(getByLabelText(label), {
-        target: { value }
-      })
-    );
-    expect(getByText('Update')).not.toBeDisabled();
+    await wait(() => {
+      expect(getByText('Update')).toBeDisabled();
+    });
+
+    fireEvent.change(getByTestId('policyHolderMailingAddress.address1'), {
+      target: { value: 'New Address' }
+    });
+
+    await wait(() => {
+      expect(getByText('Update')).not.toBeDisabled();
+    });
 
     fireEvent.click(getByText('Reset'));
-    waitForElement(() => {
-      propertyFields.forEach(({ label }) =>
-        expect(getByLabelText(label).value).toEqual('')
+
+    await wait(() => {
+      expect(getByTestId('policyHolderMailingAddress.address1').value).toEqual(
+        ''
+      );
+      expect(getByText('Update')).toBeDisabled();
+    });
+  });
+
+  it('POS:Checks that Same As Property Address Button works', async () => {
+    const newProps = {
+      ...props,
+      quoteData: {
+        ...props.quoteData,
+        policyHolderMailingAddress: {},
+        sameAsPropertyAddress: false
+      }
+    };
+
+    newProps.quote.policyHolderMailingAddress = {};
+    newProps.quote.sameAsPropertyAddress = false;
+
+    const { getByTestId, getByText } = renderWithForm(
+      <QuoteWorkflow {...newProps} />
+    );
+    await waitForElement(() => [
+      getByTestId('billToId'),
+      getByTestId('billPlan_Annual')
+    ]);
+
+    await wait(() => {
+      expect(getByTestId('sameAsPropertyAddress')).toHaveAttribute(
+        'data-value',
+        'false'
+      );
+
+      expect(getByText('Update')).toBeDisabled();
+      expect(getByTestId('policyHolderMailingAddress.address1').value).toEqual(
+        ''
+      );
+
+      expect(getByTestId('policyHolderMailingAddress.city').value).toEqual('');
+      expect(getByTestId('policyHolderMailingAddress.state').value).toEqual('');
+      expect(getByTestId('policyHolderMailingAddress.zip').value).toEqual('');
+    });
+
+    fireEvent.click(getByTestId('sameAsPropertyAddress'));
+
+    await wait(() => {
+      expect(getByTestId('sameAsPropertyAddress')).toHaveAttribute(
+        'data-value',
+        'true'
+      );
+
+      expect(getByText('Update')).not.toBeDisabled();
+      expect(getByTestId('policyHolderMailingAddress.address1').value).toEqual(
+        newProps.quote.property.physicalAddress.address1
+      );
+
+      expect(getByTestId('policyHolderMailingAddress.city').value).toEqual(
+        newProps.quote.property.physicalAddress.city
+      );
+
+      expect(getByTestId('policyHolderMailingAddress.state').value).toEqual(
+        newProps.quote.property.physicalAddress.state
+      );
+
+      expect(getByTestId('policyHolderMailingAddress.zip').value).toEqual(
+        newProps.quote.property.physicalAddress.zip
       );
     });
 
-    expect(getByText('Update')).toBeDisabled();
+    fireEvent.click(getByTestId('sameAsPropertyAddress'));
+
+    await wait(() => {
+      expect(getByText('Update')).toBeDisabled();
+      expect(getByTestId('sameAsPropertyAddress')).toHaveAttribute(
+        'data-value',
+        'false'
+      );
+
+      expect(getByTestId('policyHolderMailingAddress.address1').value).toEqual(
+        ''
+      );
+
+      expect(getByTestId('policyHolderMailingAddress.city').value).toEqual('');
+      expect(getByTestId('policyHolderMailingAddress.state').value).toEqual('');
+      expect(getByTestId('policyHolderMailingAddress.zip').value).toEqual('');
+    });
+
+    fireEvent.click(getByTestId('sameAsPropertyAddress'));
+
+    await wait(() => {
+      expect(getByTestId('sameAsPropertyAddress')).toHaveAttribute(
+        'data-value',
+        'true'
+      );
+
+      expect(getByText('Update')).not.toBeDisabled();
+      expect(getByTestId('policyHolderMailingAddress.address1').value).toEqual(
+        newProps.quote.property.physicalAddress.address1
+      );
+    });
+
+    fireEvent.change(getByTestId('policyHolderMailingAddress.address1'), {
+      target: { value: 'This is A New Address' }
+    });
+
+    await wait(() => {
+      expect(getByTestId('sameAsPropertyAddress')).toHaveAttribute(
+        'data-value',
+        'false'
+      );
+
+      expect(getByTestId('policyHolderMailingAddress.address1').value).toEqual(
+        'This is A New Address'
+      );
+
+      expect(getByTestId('policyHolderMailingAddress.city').value).toEqual(
+        newProps.quote.property.physicalAddress.city
+      );
+
+      expect(getByTestId('policyHolderMailingAddress.state').value).toEqual(
+        newProps.quote.property.physicalAddress.state
+      );
+
+      expect(getByTestId('policyHolderMailingAddress.zip').value).toEqual(
+        newProps.quote.property.physicalAddress.zip
+      );
+    });
   });
 });
