@@ -72,7 +72,9 @@ export const getQuoteSelector = createSelector([getQuote], quoteData => {
     quoteData.property.physicalAddress.city ===
       (quoteData.policyHolderMailingAddress || {}).city &&
     quoteData.property.physicalAddress.state ===
-      (quoteData.policyHolderMailingAddress || {}).state;
+      (quoteData.policyHolderMailingAddress || {}).state &&
+    quoteData.property.physicalAddress.zip ===
+      (quoteData.policyHolderMailingAddress || {}).zip;
 
   quoteData.effectiveDate = formatDate(
     quoteData.effectiveDate,
