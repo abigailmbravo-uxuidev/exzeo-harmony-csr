@@ -99,8 +99,13 @@ export const DiaryModal = ({
 
   return (
     <Draggable
-      handle=".title-bar"
-      bounds=".app-wrapper"
+      handle=".new-diary-file"
+      bounds={{
+        left: -800,
+        top: -800,
+        right: window.innerWidth - 300,
+        bottom: window.innerHeight - 200
+      }}
       position={minimizeDiary ? { x: 0, y: 0 } : null}
     >
       <div

@@ -252,8 +252,13 @@ const NoteUploader = ({
 
   return (
     <Draggable
-      handle=".title-bar"
-      bounds=".app-wrapper"
+      handle=".new-note-file"
+      bounds={{
+        left: -1400,
+        top: -800,
+        right: window.innerWidth - 1000,
+        bottom: window.innerHeight - 200
+      }}
       position={minimize ? { x: 0, y: 0 } : null}
     >
       <div className={classNames('new-note-file', { minimize })}>
