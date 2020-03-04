@@ -58,7 +58,7 @@ export const Overview = ({
     toggleSwitchAOR(null)();
   };
 
-  const onHandleEditAgent = async (data, form) => {
+  const onHandleEditAgent = async data => {
     await updateAgent(data, agency.agencyCode);
     setShowEditAgentModal(false);
   };
