@@ -46,7 +46,7 @@ export const getDiariesForTable = createSelector(
     if (!Array.isArray(diaries) || !Array.isArray(diaryOptions.reasons))
       return [];
 
-    return diaries.map(d => {
+    const diaryList = diaries.map(d => {
       const entry = formatEntry(d.entries[0], diaryOptions.reasons);
       return {
         ...entry,
@@ -67,6 +67,10 @@ export const getDiariesForTable = createSelector(
         }
       };
     });
+
+    return diaryList.sort((a, b) => {
+      return b.open - a.open;
+    });
   }
 );
 
@@ -77,9 +81,8 @@ export const getOpenDiaries = createSelector(
   }
 );
 
-export const getGroupedOpenDiaries = createSelector(
-  [getOpenDiaries],
-  diaries => groupDiaries(diaries)
+export const getGroupedOpenDiaries = createSelector([getOpenDiaries], diaries =>
+  groupDiaries(diaries)
 );
 
 const REQUIRED_DIARY_RIGHTS = ['READ', 'UPDATE', 'INSERT'];
