@@ -15,6 +15,7 @@ import {
   getAgentListByAgencyCode,
   clearAgentList,
   transferPoliciesToAgent,
+  verifyTransaction,
   fetchAgenciesByAgencyCodeOrName,
   fetchAgentsByAgencyCode
 } from '../../../state/actions/agency.actions';
@@ -107,7 +108,8 @@ export class TransferModal extends Component {
         });
       });
 
-      await transferPoliciesToAgent(transfers);
+      const response = await transferPoliciesToAgent(transfers);
+      await verifyTransaction(response.result.transactionId);
       await getAgentListByAgencyCode(activeAgencyCode);
       await getPoliciesForAgency({ agencyCode: activeAgencyCode });
       clearSelectedPolicies();
