@@ -1,10 +1,5 @@
 import { defaultMemoize } from 'reselect';
 
-export const setDefaults = (fields, data) =>
-  Object.keys(fields).forEach(f => {
-    if (!data[f]) data[f] = '';
-  });
-
 export const filterZipCodeSettings = (zip, zipCodeSettings) => {
   const matchingZipCodes = zipCodeSettings.filter(z => z.zip === zip);
   if (matchingZipCodes.length === 1) {
