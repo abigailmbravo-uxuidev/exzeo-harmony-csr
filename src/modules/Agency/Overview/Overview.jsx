@@ -14,6 +14,7 @@ import Footer from '../../../components/Common/Footer';
 import ExistingAgentModal from '../ExistingAgentModal';
 import AgentModal from '../AgentModal';
 import AgencyAddressModal from '../AgencyAddressModal';
+import { setDefaults } from '../utilities';
 
 export const Overview = ({
   agency,
@@ -58,7 +59,9 @@ export const Overview = ({
     toggleSwitchAOR(null)();
   };
 
-  const onHandleEditAgent = async data => {
+  const onHandleEditAgent = async (data, form) => {
+    const { dirtyFields } = form.getState();
+    setDefaults(dirtyFields, data);
     await updateAgent(data, agency.agencyCode);
     setShowEditAgentModal(false);
   };

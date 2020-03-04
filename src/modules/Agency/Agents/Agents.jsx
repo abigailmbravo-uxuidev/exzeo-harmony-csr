@@ -6,6 +6,7 @@ import RemoveAgentModal from './RemoveAgentModal';
 import Footer from '../../../components/Common/Footer';
 import AgentModal from '../AgentModal';
 import AddExistingAgentModal from '../ExistingAgentModal';
+import { setDefaults } from '../utilities';
 
 export const Agents = ({
   agency,
@@ -33,7 +34,9 @@ export const Agents = ({
     false
   );
 
-  const onHandleEditAgent = async data => {
+  const onHandleEditAgent = async (data, form) => {
+    const { dirtyFields } = form.getState();
+    setDefaults(dirtyFields, data);
     await updateAgent(data, agency.agencyCode);
     closeAgentDetailModal();
   };
