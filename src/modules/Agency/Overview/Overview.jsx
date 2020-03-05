@@ -59,7 +59,7 @@ export const Overview = ({
     toggleSwitchAOR(null)();
   };
 
-  const onHandleEditAgent = async data => {
+  const handleEditAgent = async data => {
     const agentData = formatAgent(data);
     await updateAgent(agentData, agency.agencyCode);
     setShowEditAgentModal(false);
@@ -221,7 +221,7 @@ export const Overview = ({
           agencyCode={agency.agencyCode}
           initialValues={agentOfRecord}
           closeModal={() => setShowEditAgentModal(false)}
-          handleSaveAgent={onHandleEditAgent}
+          handleSaveAgent={handleEditAgent}
           listAnswersAsKey={listAnswersAsKey}
         />
       )}
