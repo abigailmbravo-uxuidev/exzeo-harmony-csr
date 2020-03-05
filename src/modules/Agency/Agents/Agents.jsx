@@ -34,7 +34,7 @@ export const Agents = ({
     false
   );
 
-  const onHandleEditAgent = async data => {
+  const handleEditAgent = async data => {
     const agentData = formatAgent(data);
     await updateAgent(agentData, agency.agencyCode);
     closeAgentDetailModal();
@@ -170,7 +170,7 @@ export const Agents = ({
             listAnswersAsKey={listAnswersAsKey}
             initialValues={agentDetailInitialValues}
             isEditing
-            handleSaveAgent={onHandleEditAgent}
+            handleSaveAgent={handleEditAgent}
             closeModal={closeAgentDetailModal}
           />
         )}
