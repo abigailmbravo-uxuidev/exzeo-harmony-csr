@@ -14,6 +14,7 @@ import Footer from '../../../components/Common/Footer';
 import ExistingAgentModal from '../ExistingAgentModal';
 import AgentModal from '../AgentModal';
 import AgencyAddressModal from '../AgencyAddressModal';
+import { formatAgentFields } from '../utilities';
 
 export const Overview = ({
   agency,
@@ -59,7 +60,8 @@ export const Overview = ({
   };
 
   const onHandleEditAgent = async data => {
-    await updateAgent(data, agency.agencyCode);
+    const agentData = formatAgentFields(data);
+    await updateAgent(agentData, agency.agencyCode);
     setShowEditAgentModal(false);
   };
 

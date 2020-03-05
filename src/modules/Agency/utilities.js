@@ -70,3 +70,22 @@ export const isUnique = defaultMemoize((name, values, uniqueList) => value => {
     ? 'This must be unique.'
     : undefined;
 });
+
+export const formatAgentFields = data => {
+  return {
+    ...data,
+    primaryPhoneNumberExtension: data.primaryPhoneNumberExtension || '',
+    secondaryPhoneNumber: data.secondaryPhoneNumber || '',
+    faxNumber: data.faxNumber || ''
+  };
+};
+
+export const formateAgencyFields = data => {
+  return {
+    ...data,
+    websiteUrl: data.websiteUrl || '',
+    secondaryPhoneNumber: data.secondaryPhoneNumber || '',
+    faxNumber: data.faxNumber || '',
+    branches: data.branches.filter(b => String(b.branchCode) !== '0')
+  };
+};
