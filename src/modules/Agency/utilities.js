@@ -71,7 +71,7 @@ export const isUnique = defaultMemoize((name, values, uniqueList) => value => {
     : undefined;
 });
 
-export const formatAgentFields = data => {
+export const formatAgent = data => {
   return {
     ...data,
     primaryPhoneNumberExtension: data.primaryPhoneNumberExtension || '',
@@ -80,7 +80,7 @@ export const formatAgentFields = data => {
   };
 };
 
-export const formateAgencyFields = data => {
+export const formatAgency = data => {
   return {
     ...data,
     websiteUrl: data.websiteUrl || '',

@@ -2,11 +2,11 @@ import React from 'react';
 import { Form, Button } from '@exzeo/core-ui';
 
 import AgencyDetails from './AgencyDetails';
-import { formateAgencyFields } from './utilities';
+import { formatAgency } from './utilities';
 
 export const AgencyModal = ({ closeModal, updateAgency, initialValues }) => {
   const saveAgency = async data => {
-    const agencyData = formateAgencyFields(data);
+    const agencyData = formatAgency(data);
     await updateAgency(agencyData);
     closeModal();
   };
