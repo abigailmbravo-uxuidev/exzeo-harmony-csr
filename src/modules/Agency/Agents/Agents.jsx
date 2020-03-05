@@ -40,7 +40,7 @@ export const Agents = ({
     closeAgentDetailModal();
   };
 
-  const onHandleSaveAgent = async data => {
+  const handleSaveAgent = async data => {
     data.agencies.push({ agencyCode: agency.agencyCode, branchCode });
     await addAgent(data, agency.agencyCode);
     closeAgentDetailModal();
@@ -178,7 +178,7 @@ export const Agents = ({
           <AgentModal
             listAnswersAsKey={listAnswersAsKey}
             initialValues={agentDetailInitialValues}
-            handleSaveAgent={onHandleSaveAgent}
+            handleSaveAgent={handleSaveAgent}
             closeModal={closeAgentDetailModal}
           />
         )}
