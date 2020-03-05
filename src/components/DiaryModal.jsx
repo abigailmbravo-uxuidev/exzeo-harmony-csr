@@ -16,18 +16,14 @@ import {
   Button
 } from '@exzeo/core-ui';
 import { OnChangeListener } from '@exzeo/core-ui/src';
-
 import classNames from 'classnames';
 
-import { addDate } from '../utilities/diaries';
-import { submitDiary as _submitDiary } from '../state/actions/diary.actions';
-import {
-  toggleDiary as _toggleDiary,
-  toggleMinimizeDiary as _toggleMinimizeDiary
-} from '../state/actions/ui.actions';
-import { setAppError as _setAppError } from '../state/actions/error.actions';
+import * as diaryActions from '../state/actions/diary.actions';
+import * as uiActions from '../state/actions/ui.actions';
+import * as errorActions from '../state/actions/error.actions';
 import { getDiaryAssigneeAnswers } from '../state/selectors/questions.selectors';
 import { getDiaryReasons } from '../state/selectors/diary.selectors';
+import { addDate } from '../utilities/diaries';
 
 export const DiaryModal = ({
   entity,
@@ -39,15 +35,11 @@ export const DiaryModal = ({
   toggleMinimizeDiary,
   submitDiary,
   setAppError,
-  companyCode,
-  state,
-  product,
   user,
   resourceType,
   resourceId,
   diaryId,
   sourceNumber,
-  user: { userId },
   assigneeAnswers,
   diaryOptions
 }) => {
@@ -77,6 +69,8 @@ export const DiaryModal = ({
 
       submitData.due = date.formatToUTC(due, entity.property.timezone);
 
+      const { companyCode, state, product } = entity;
+
       await submitDiary(
         { ...submitData, assignee },
         {
@@ -96,6 +90,8 @@ export const DiaryModal = ({
       handleClose();
     }
   };
+
+  console.log(entity);
 
   return (
     <Draggable
@@ -214,7 +210,7 @@ export const DiaryModal = ({
                               defaultData &&
                               defaultData.assignee === 'CURRENT_USER'
                             ) {
-                              onChange(userId);
+                              onChange(user.userId);
                             } else if (defaultData) {
                               const selectedAssignee = assigneeAnswers.find(
                                 u =>
@@ -322,8 +318,8 @@ const mapStateToProps = state => {
 };
 
 export default connect(mapStateToProps, {
-  setAppError: _setAppError,
-  submitDiary: _submitDiary,
-  toggleDiary: _toggleDiary,
-  toggleMinimizeDiary: _toggleMinimizeDiary
+  setAppError: errorActions.setAppError,
+  submitDiary: diaryActions.submitDiary,
+  toggleDiary: uiActions.toggleDiary,
+  toggleMinimizeDiary: uiActions.toggleMinimizeDiary
 })(DiaryModal);

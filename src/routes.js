@@ -92,9 +92,6 @@ class Routes extends Component {
           <DiaryModal
             diaryOptions={diaryOptions}
             minimizeDiary={minimizeDiary}
-            companyCode={diary.companyCode}
-            state={diary.state}
-            product={diary.product}
             user={userProfile}
             diaryId={diary.selectedDiary ? diary.selectedDiary.diaryId : null}
             resourceType={diary.resourceType}
