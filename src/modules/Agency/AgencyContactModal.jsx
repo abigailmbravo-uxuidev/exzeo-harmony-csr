@@ -12,7 +12,7 @@ export const AgencyContactModal = ({
   updateAgency,
   initialValues
 }) => {
-  const onHandleSaveAgency = async data => {
+  const handleSaveAgency = async data => {
     if (Number(branchCode) > 0) {
       const selectedBranch = agency.branches.filter(
         b => String(b.branchCode) === String(branchCode)
@@ -36,7 +36,7 @@ export const AgencyContactModal = ({
       <Form
         id="AgentContact"
         initialValues={initialValues}
-        onSubmit={onHandleSaveAgency}
+        onSubmit={handleSaveAgency}
         subscription={{ submitting: true }}
       >
         {({ handleSubmit, submitting }) => (

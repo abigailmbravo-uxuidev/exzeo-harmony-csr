@@ -2,11 +2,12 @@ import React from 'react';
 import { Form, Button } from '@exzeo/core-ui';
 
 import AgencyDetails from './AgencyDetails';
+import { formatAgency } from './utilities';
 
 export const AgencyModal = ({ closeModal, updateAgency, initialValues }) => {
   const saveAgency = async data => {
-    data.branches = data.branches.filter(b => String(b.branchCode) !== '0');
-    await updateAgency(data);
+    const agencyData = formatAgency(data);
+    await updateAgency(agencyData);
     closeModal();
   };
   return (
