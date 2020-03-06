@@ -123,24 +123,12 @@ describe('Mailing/Billing Page Testing', () => {
       ...props,
       quoteData: {
         ...props.quoteData,
-        policyHolderMailingAddress: {
-          address1: '',
-          address2: '',
-          city: '',
-          state: '',
-          zip: ''
-        },
+        policyHolderMailingAddress: {},
         sameAsPropertyAddress: false
       }
     };
 
-    newProps.quote.policyHolderMailingAddress = {
-      address1: '',
-      address2: '',
-      city: '',
-      state: '',
-      zip: ''
-    };
+    newProps.quote.policyHolderMailingAddress = {};
     newProps.quote.sameAsPropertyAddress = false;
 
     const { getByTestId, getByText, getByLabelText } = renderWithForm(
@@ -178,11 +166,24 @@ describe('Mailing/Billing Page Testing', () => {
       ...props,
       quoteData: {
         ...props.quoteData,
-        policyHolderMailingAddress: {},
+        policyHolderMailingAddress: {
+          address1: '',
+          address2: '',
+          city: '',
+          state: '',
+          zip: ''
+        },
         sameAsPropertyAddress: false
       }
     };
 
+    newProps.quote.policyHolderMailingAddress = {
+      address1: '',
+      address2: '',
+      city: '',
+      state: '',
+      zip: ''
+    };
     newProps.quote.sameAsPropertyAddress = false;
 
     const { getByTestId, getByText } = renderWithForm(
@@ -244,54 +245,54 @@ describe('Mailing/Billing Page Testing', () => {
         'false'
       );
 
-      // expect(getByTestId('policyHolderMailingAddress.address1').value).toEqual(
-      //   ''
-      // );
+      expect(getByTestId('policyHolderMailingAddress.address1').value).toEqual(
+        ''
+      );
 
-      // expect(getByTestId('policyHolderMailingAddress.city').value).toEqual('');
-      // expect(getByTestId('policyHolderMailingAddress.state').value).toEqual('');
-      // expect(getByTestId('policyHolderMailingAddress.zip').value).toEqual('');
+      expect(getByTestId('policyHolderMailingAddress.city').value).toEqual('');
+      expect(getByTestId('policyHolderMailingAddress.state').value).toEqual('');
+      expect(getByTestId('policyHolderMailingAddress.zip').value).toEqual('');
     });
 
-    // fireEvent.click(getByTestId('sameAsPropertyAddress'));
+    fireEvent.click(getByTestId('sameAsPropertyAddress'));
 
-    // await wait(() => {
-    //   expect(getByTestId('sameAsPropertyAddress')).toHaveAttribute(
-    //     'data-value',
-    //     'true'
-    //   );
+    await wait(() => {
+      expect(getByTestId('sameAsPropertyAddress')).toHaveAttribute(
+        'data-value',
+        'true'
+      );
 
-    //   expect(getByText('Update')).not.toBeDisabled();
-    //   expect(getByTestId('policyHolderMailingAddress.address1').value).toEqual(
-    //     newProps.quote.property.physicalAddress.address1
-    //   );
-    // });
+      expect(getByText('Update')).not.toBeDisabled();
+      expect(getByTestId('policyHolderMailingAddress.address1').value).toEqual(
+        newProps.quote.property.physicalAddress.address1
+      );
+    });
 
-    // fireEvent.change(getByTestId('policyHolderMailingAddress.address1'), {
-    //   target: { value: 'This is A New Address' }
-    // });
+    fireEvent.change(getByTestId('policyHolderMailingAddress.address1'), {
+      target: { value: 'This is A New Address' }
+    });
 
-    // await wait(() => {
-    //   expect(getByTestId('sameAsPropertyAddress')).toHaveAttribute(
-    //     'data-value',
-    //     'false'
-    //   );
+    await wait(() => {
+      expect(getByTestId('sameAsPropertyAddress')).toHaveAttribute(
+        'data-value',
+        'false'
+      );
 
-    //   expect(getByTestId('policyHolderMailingAddress.address1').value).toEqual(
-    //     'This is A New Address'
-    //   );
+      expect(getByTestId('policyHolderMailingAddress.address1').value).toEqual(
+        'This is A New Address'
+      );
 
-    //   expect(getByTestId('policyHolderMailingAddress.city').value).toEqual(
-    //     newProps.quote.property.physicalAddress.city
-    //   );
+      expect(getByTestId('policyHolderMailingAddress.city').value).toEqual(
+        newProps.quote.property.physicalAddress.city
+      );
 
-    //   expect(getByTestId('policyHolderMailingAddress.state').value).toEqual(
-    //     newProps.quote.property.physicalAddress.state
-    //   );
+      expect(getByTestId('policyHolderMailingAddress.state').value).toEqual(
+        newProps.quote.property.physicalAddress.state
+      );
 
-    //   expect(getByTestId('policyHolderMailingAddress.zip').value).toEqual(
-    //     newProps.quote.property.physicalAddress.zip
-    //   );
-    // });
+      expect(getByTestId('policyHolderMailingAddress.zip').value).toEqual(
+        newProps.quote.property.physicalAddress.zip
+      );
+    });
   });
 });
