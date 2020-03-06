@@ -63,7 +63,11 @@ export const getQuoteSelector = createSelector([getQuote], quoteData => {
       electronicDelivery: false
     });
   }
-  if (!quoteData.policyHolderMailingAddress.address2) {
+
+  if (
+    quoteData.policyHolderMailingAddress &&
+    !quoteData.policyHolderMailingAddress.address2
+  ) {
     quoteData.policyHolderMailingAddress.address2 = '';
   }
 
