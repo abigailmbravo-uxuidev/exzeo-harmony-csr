@@ -105,13 +105,7 @@ export const BranchModal = ({
                       />
                     )}
                   </Field>
-                  <Field
-                    validate={composeValidators([
-                      validation.isRequired,
-                      validation.isWebAddress
-                    ])}
-                    name="websiteUrl"
-                  >
+                  <Field validate={validation.isWebAddress} name="websiteUrl">
                     {({ input, meta }) => (
                       <Input
                         input={input}

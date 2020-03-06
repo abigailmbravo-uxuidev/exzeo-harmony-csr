@@ -42,7 +42,6 @@ export const detailsFields = [
   },
   {
     type: 'text',
-    required: true,
     label: 'Web Address',
     dataTest: 'websiteUrl',
     value: 'https://www.google.com'

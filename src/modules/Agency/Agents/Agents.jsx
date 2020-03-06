@@ -6,6 +6,7 @@ import RemoveAgentModal from './RemoveAgentModal';
 import Footer from '../../../components/Common/Footer';
 import AgentModal from '../AgentModal';
 import AddExistingAgentModal from '../ExistingAgentModal';
+import { formatAgent } from '../utilities';
 
 export const Agents = ({
   agency,
@@ -33,12 +34,13 @@ export const Agents = ({
     false
   );
 
-  const onHandleEditAgent = async data => {
-    await updateAgent(data, agency.agencyCode);
+  const handleEditAgent = async data => {
+    const agentData = formatAgent(data);
+    await updateAgent(agentData, agency.agencyCode);
     closeAgentDetailModal();
   };
 
-  const onHandleSaveAgent = async data => {
+  const handleSaveAgent = async data => {
     data.agencies.push({ agencyCode: agency.agencyCode, branchCode });
     await addAgent(data, agency.agencyCode);
     closeAgentDetailModal();
@@ -168,7 +170,7 @@ export const Agents = ({
             listAnswersAsKey={listAnswersAsKey}
             initialValues={agentDetailInitialValues}
             isEditing
-            handleSaveAgent={onHandleEditAgent}
+            handleSaveAgent={handleEditAgent}
             closeModal={closeAgentDetailModal}
           />
         )}
@@ -176,7 +178,7 @@ export const Agents = ({
           <AgentModal
             listAnswersAsKey={listAnswersAsKey}
             initialValues={agentDetailInitialValues}
-            handleSaveAgent={onHandleSaveAgent}
+            handleSaveAgent={handleSaveAgent}
             closeModal={closeAgentDetailModal}
           />
         )}
