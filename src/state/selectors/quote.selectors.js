@@ -64,13 +64,6 @@ export const getQuoteSelector = createSelector([getQuote], quoteData => {
     });
   }
 
-  if (
-    quoteData.policyHolderMailingAddress &&
-    !quoteData.policyHolderMailingAddress.address2
-  ) {
-    quoteData.policyHolderMailingAddress.address2 = '';
-  }
-
   quoteData.sameAsPropertyAddress =
     quoteData.property.physicalAddress.address1 ===
       quoteData.policyHolderMailingAddress?.address1 &&
