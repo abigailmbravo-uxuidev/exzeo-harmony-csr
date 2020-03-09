@@ -166,12 +166,24 @@ describe('Mailing/Billing Page Testing', () => {
       ...props,
       quoteData: {
         ...props.quoteData,
-        policyHolderMailingAddress: {},
+        policyHolderMailingAddress: {
+          address1: '',
+          address2: '',
+          city: '',
+          state: '',
+          zip: ''
+        },
         sameAsPropertyAddress: false
       }
     };
 
-    newProps.quote.policyHolderMailingAddress = {};
+    newProps.quote.policyHolderMailingAddress = {
+      address1: '',
+      address2: '',
+      city: '',
+      state: '',
+      zip: ''
+    };
     newProps.quote.sameAsPropertyAddress = false;
 
     const { getByTestId, getByText } = renderWithForm(
