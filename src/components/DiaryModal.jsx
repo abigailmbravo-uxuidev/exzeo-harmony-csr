@@ -199,54 +199,47 @@ export const DiaryModal = ({
                   />
                   <Field name="assignee.id" subscription={{}}>
                     {({ input: { onChange } }) => (
-                      <React.Fragment>
-                        <OnChangeListener name="reason">
-                          {value => {
-                            if (!value) return;
-                            const defaultData = diaryOptions.reasons.find(
-                              r => r.answer === value
+                      <OnChangeListener name="reason">
+                        {value => {
+                          if (!value) return;
+                          const defaultData = diaryOptions.reasons.find(
+                            r => r.answer === value
+                          );
+                          if (
+                            defaultData &&
+                            defaultData.assignee === 'CURRENT_USER'
+                          ) {
+                            onChange(user.userId);
+                          } else if (defaultData) {
+                            const selectedAssignee = assigneeAnswers.find(
+                              u =>
+                                String(u.label) === String(defaultData.assignee)
                             );
-                            if (
-                              defaultData &&
-                              defaultData.assignee === 'CURRENT_USER'
-                            ) {
-                              onChange(user.userId);
-                            } else if (defaultData) {
-                              const selectedAssignee = assigneeAnswers.find(
-                                u =>
-                                  String(u.label) ===
-                                  String(defaultData.assignee)
-                              );
-                              onChange(
-                                selectedAssignee ? selectedAssignee.answer : ''
-                              );
-                            }
-                          }}
-                        </OnChangeListener>
-                      </React.Fragment>
+                            onChange(
+                              selectedAssignee ? selectedAssignee.answer : ''
+                            );
+                          }
+                        }}
+                      </OnChangeListener>
                     )}
                   </Field>
                   <Field name="due" subscription={{}}>
                     {({ input: { onChange } }) => (
-                      <React.Fragment>
-                        <OnChangeListener name="reason">
-                          {value => {
-                            if (!value) return;
+                      <OnChangeListener name="reason">
+                        {value => {
+                          if (!value) return;
 
-                            const defaultData = diaryOptions.reasons.find(
-                              r => r.answer === value
-                            );
+                          const defaultData = diaryOptions.reasons.find(
+                            r => r.answer === value
+                          );
 
-                            if (!defaultData) return;
-                            const { offset, path } = defaultData.dueDate;
-                            const dateString =
-                              path === 'default'
-                                ? undefined
-                                : _get(entity, path);
-                            onChange(addDate(offset, dateString));
-                          }}
-                        </OnChangeListener>
-                      </React.Fragment>
+                          if (!defaultData) return;
+                          const { offset, path } = defaultData.dueDate;
+                          const dateString =
+                            path === 'default' ? undefined : _get(entity, path);
+                          onChange(addDate(offset, dateString));
+                        }}
+                      </OnChangeListener>
                     )}
                   </Field>
                 </div>
