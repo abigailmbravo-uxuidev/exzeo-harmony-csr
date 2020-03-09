@@ -33,10 +33,7 @@ export const BranchDetails = () => {
         name="websiteUrl"
         dataTest="websiteUrl"
         component={Input}
-        validate={composeValidators([
-          validation.isRequired,
-          validation.isWebAddress
-        ])}
+        validate={validation.isWebAddress}
       />
       <Field
         id="status"
