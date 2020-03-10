@@ -366,10 +366,19 @@ describe('Agency Management testing', () => {
       .clickSubmit('.modal', 'modal-submit');
 
     cy.wait('@saveAgency').then(({ response }) => {
-      expect(
-        response.body.result.contracts,
-        'Contracts Page: Licenses Area: contracts'
-      ).to.eql(ADD_CONTRACT.contracts);
+      const compareContract = ADD_CONTRACT.contracts[0];
+      const contractResult = response.body.result.contracts[0];
+      expect(contractResult.companyCode).to.equal(compareContract.companyCode);
+      expect(contractResult.contractNumber).to.equal(
+        compareContract.contractNumber
+      );
+      expect(contractResult.addendum).to.equal(compareContract.addendum);
+      expect(contractResult.stateProducts[0]).to.include(
+        compareContract.stateProducts[0]
+      );
+      expect(contractResult.stateProducts[1]).to.include(
+        compareContract.stateProducts[1]
+      );
     });
 
     cy.findDataTag('edit-license')
@@ -404,10 +413,19 @@ describe('Agency Management testing', () => {
       .clickSubmit('.modal', 'modal-submit');
 
     cy.wait('@saveAgency').then(({ response }) => {
-      expect(
-        response.body.result.contracts,
-        'Contracts Page: Licenses Area: contracts'
-      ).to.eql(EDIT_CONTRACT.contracts);
+      const compareContract = EDIT_CONTRACT.contracts[0];
+      const contractResult = response.body.result.contracts[0];
+      expect(contractResult.companyCode).to.equal(compareContract.companyCode);
+      expect(contractResult.contractNumber).to.equal(
+        compareContract.contractNumber
+      );
+      expect(contractResult.addendum).to.equal(compareContract.addendum);
+      expect(contractResult.stateProducts[0]).to.include(
+        compareContract.stateProducts[0]
+      );
+      expect(contractResult.stateProducts[1]).to.include(
+        compareContract.stateProducts[1]
+      );
     });
 
     cy.task('log', 'License and contract added/edited successfully');
