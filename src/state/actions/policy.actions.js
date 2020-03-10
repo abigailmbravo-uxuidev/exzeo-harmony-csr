@@ -746,7 +746,7 @@ export function transferAOR({ policyNumber, agencyCode, agentCode }) {
           policyNumber
         }
       };
-      await serviceRunner.callService(transferData);
+      await serviceRunner.callService(transferData, 'aorTransfer');
       dispatch(getPolicy(policyNumber));
     } catch (error) {
       dispatch(errorActions.setAppError(error));

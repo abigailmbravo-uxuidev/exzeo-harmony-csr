@@ -72,6 +72,7 @@ const PolicyholderAgent = ({ customHandlers, initialValues }) => {
           Agency / Agent{' '}
           <button
             className="btn btn-link btn-sm"
+            data-test="edit-aor"
             onClick={() => setShowTransferAOR(true)}
             disabled={false}
           >

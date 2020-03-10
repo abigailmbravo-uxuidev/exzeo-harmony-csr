@@ -59,6 +59,8 @@ export const setRouteAliases = () =>
     .as('saveNewAgency')
     .route('POST', '/svc?fetchAgentsByAgencyCode')
     .as('fetchAgentsByAgencyCode')
+    .route('POST', '/svc?fetchAgency')
+    .as('fetchAgency')
     .route('POST', '/svc?saveAgency')
     .as('saveAgency')
     .route('POST', '/svc?saveAgent')
@@ -66,4 +68,12 @@ export const setRouteAliases = () =>
     .route('POST', '/svc?addNewAgent')
     .as('addNewAgent')
     .route('POST', '/svc?addNote')
-    .as('addNote');
+    .as('addNote')
+    .route('POST', '/svc?getDocumentPacketFiles')
+    .as('getDocumentPacketFiles')
+    .route('POST', '/svc?postCreateTransaction')
+    .as('postCreateTransaction')
+    .route('POST', '/svc?cancelPolicy')
+    .as('cancelPolicy')
+    .route('POST', '/svc?aorTransfer')
+    .as('aorTransfer');

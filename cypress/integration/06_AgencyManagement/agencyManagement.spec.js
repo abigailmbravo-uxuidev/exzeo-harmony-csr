@@ -43,6 +43,7 @@ describe('Agency Management testing', () => {
     // create
     cy.findDataTag('agency-details').within(() => {
       cy.findDataTag('displayName')
+        .should('be.visible')
         .type(ADD_AGENCY.displayName)
         .findDataTag('legalName')
         .click({ force: true })
