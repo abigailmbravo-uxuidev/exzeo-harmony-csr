@@ -57,7 +57,7 @@ export async function fetchSummaryLedger(policyNumber) {
 export async function getPolicy(policyNumber) {
   try {
     const policy = await fetchPolicy(policyNumber);
-    const summaryLedger = await fetchSummaryLedger(policyNumber);
+    const summaryLedger = await fetchSummaryLedger(policy.policyNumber);
     policy.summaryLedger = summaryLedger;
     return policy;
   } catch (error) {
