@@ -251,7 +251,16 @@ const NoteUploader = ({
   }
 
   return (
-    <Draggable handle=".title-bar">
+    <Draggable
+      handle=".new-note-file"
+      bounds={{
+        left: -1400,
+        top: -800,
+        right: window.innerWidth - 1000,
+        bottom: window.innerHeight - 200
+      }}
+      position={minimize ? { x: 0, y: 0 } : null}
+    >
       <div className={classNames('new-note-file', { minimize })}>
         <div className="title-bar">
           <div className="title">
@@ -382,13 +391,10 @@ const mapStateToProps = state => ({
   user: state.authState.userProfile
 });
 
-export default connect(
-  mapStateToProps,
-  {
-    fetchNotes,
-    toggleNote,
-    toggleDiary,
-    setAppError,
-    setNotesSynced
-  }
-)(NoteUploader);
+export default connect(mapStateToProps, {
+  fetchNotes,
+  toggleNote,
+  toggleDiary,
+  setAppError,
+  setNotesSynced
+})(NoteUploader);

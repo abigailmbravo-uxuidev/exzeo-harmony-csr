@@ -1,12 +1,6 @@
 .new-diary-file,
 .new-note-file {
-  &.react-draggable-dragging {
-    .title-bar {
-      .title {
-        cursor: grabbing;
-      }
-    }
-  }
+  cursor: grab;
 
   &.minimize {
     top: calc(100vh - 2.4375rem);
@@ -272,9 +266,8 @@
   top: 9rem;
   bottom: 0;
   left: 12.5rem;
-
+  cursor: grab;
   overflow: hidden;
-
   width: 40%;
   min-width: 34rem;
 

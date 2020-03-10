@@ -57,6 +57,7 @@ class Routes extends Component {
       authState: { userProfile },
       diaryOptions
     } = this.props;
+
     return (
       <div>
         <Modal
@@ -91,9 +92,6 @@ class Routes extends Component {
           <DiaryModal
             diaryOptions={diaryOptions}
             minimizeDiary={minimizeDiary}
-            companyCode={diary.companyCode}
-            state={diary.state}
-            product={diary.product}
             user={userProfile}
             diaryId={diary.selectedDiary ? diary.selectedDiary.diaryId : null}
             resourceType={diary.resourceType}
@@ -235,7 +233,4 @@ const mapDispatchToProps = dispatch => ({
   }
 });
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Routes);
+export default connect(mapStateToProps, mapDispatchToProps)(Routes);
