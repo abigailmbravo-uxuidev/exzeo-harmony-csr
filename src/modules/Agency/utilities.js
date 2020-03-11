@@ -1,15 +1,15 @@
 import { defaultMemoize } from 'reselect';
 
-export const filterZipCodeSettings = (zip, zipCodeSettings) => {
-  const matchingZipCodes = zipCodeSettings.filter(z => z.zip === zip);
-  if (matchingZipCodes.length === 1) {
-    return matchingZipCodes[0];
+export const filterPostalCodes = (zip, postalCodes) => {
+  const matchingPostalCodes = postalCodes.filter(z => z.zip === zip);
+  if (matchingPostalCodes.length === 1) {
+    return matchingPostalCodes[0];
   }
   return null;
 };
 
-export const setCounty = async (zip, zipCodeSettings, onChange) => {
-  const result = filterZipCodeSettings(zip, zipCodeSettings);
+export const setCounty = async (zip, postalCodes, onChange) => {
+  const result = filterPostalCodes(zip, postalCodes);
   if (!result) return;
   onChange(result.county);
 };
@@ -38,11 +38,11 @@ export const filterTerritoryManager = (state, county, territoryManagers) => {
 
 export const setTerritoryManager = async (
   zip,
-  zipCodeSettings,
+  postalCodes,
   onChange,
   territoryManagers
 ) => {
-  const result = filterZipCodeSettings(zip, zipCodeSettings);
+  const result = filterPostalCodes(zip, postalCodes);
   if (!result) return;
 
   const tm = filterTerritoryManager(
@@ -54,14 +54,13 @@ export const setTerritoryManager = async (
   onChange(tm._id);
 };
 
-export const listOfZipCodes = zipCodeSettings => {
-  if (!Array.isArray(zipCodeSettings)) return [];
+export const listOfZipCodes = postalCodes => {
+  if (!Array.isArray(postalCodes)) return [];
 
-  const zipCodeList = zipCodeSettings.map(z => ({
+  return postalCodes.map(z => ({
     answer: z.zip,
     label: `${z.zip}`
   }));
-  return zipCodeList;
 };
 
 export const isUnique = defaultMemoize((name, values, uniqueList) => value => {

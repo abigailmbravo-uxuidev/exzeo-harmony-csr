@@ -6,7 +6,7 @@ const TerritoryManager = ({
   watchField,
   fieldPrefix,
   matchPrefix,
-  zipCodeSettings,
+  postalCodes,
   territoryManagers
 }) => {
   const zipCodeValue = useField(`${matchPrefix}.zip`).input.value;
@@ -20,7 +20,7 @@ const TerritoryManager = ({
                 if (value) {
                   setTerritoryManager(
                     zipCodeValue,
-                    zipCodeSettings,
+                    postalCodes,
                     onChange,
                     territoryManagers
                   );
@@ -34,7 +34,7 @@ const TerritoryManager = ({
                 if (value) {
                   setTerritoryManager(
                     value,
-                    zipCodeSettings,
+                    postalCodes,
                     onChange,
                     territoryManagers
                   );
@@ -52,7 +52,7 @@ const TerritoryManager = ({
             <OnChangeListener name={watchField}>
               {value => {
                 if (value) {
-                  setCounty(zipCodeValue, zipCodeSettings, onChange, 'county');
+                  setCounty(zipCodeValue, postalCodes, onChange, 'county');
                 } else {
                   onChange('');
                 }
@@ -61,7 +61,7 @@ const TerritoryManager = ({
             <OnChangeListener name={`${fieldPrefix}.zip`}>
               {value => {
                 if (value) {
-                  setCounty(value, zipCodeSettings, onChange, 'county');
+                  setCounty(value, postalCodes, onChange, 'county');
                 } else {
                   onChange('');
                 }

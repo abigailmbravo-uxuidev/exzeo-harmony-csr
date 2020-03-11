@@ -9,10 +9,7 @@ import {
 import Address from './Address';
 import AddressWatcher from './AddressWatcher';
 import TerritoryManagerWatcher from './TerritoryManagerWatcher';
-import {
-  useFetchZipCodeSettings,
-  useFetchTerritoryManagers
-} from './Create/hooks';
+import { useFetchPostalCodes, useFetchTerritoryManagers } from './hooks';
 import { listOfZipCodes } from './utilities';
 
 const AddressGroup = ({
@@ -26,7 +23,9 @@ const AddressGroup = ({
   const stateValue =
     useField(`${physicalAddressPrefix}.state`).input.value || 'FL';
 
-  const { zipCodeSettings } = useFetchZipCodeSettings(stateValue);
+  const zipValue = useField(`${physicalAddressPrefix}.zip`).input.value || '';
+
+  const { postalCodes } = useFetchPostalCodes(zipValue);
   const { territoryManagers } = useFetchTerritoryManagers(stateValue);
 
   return (
@@ -59,7 +58,7 @@ const AddressGroup = ({
           <Address
             setDisabled={disabledValue}
             fieldPrefix={physicalAddressPrefix}
-            listOfZipCodes={listOfZipCodes(zipCodeSettings)}
+            listOfZipCodes={listOfZipCodes(postalCodes)}
             listAnswersAsKey={listAnswersAsKey}
           />
 
@@ -108,7 +107,7 @@ const AddressGroup = ({
                 matchPrefix={mailingAddressPrefix}
                 watchField={`${physicalAddressPrefix}.sameAsMailing`}
                 values={{}}
-                zipCodeSettings={zipCodeSettings}
+                postalCodes={postalCodes}
                 territoryManagers={territoryManagers}
               />
             </React.Fragment>

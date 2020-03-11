@@ -36,6 +36,18 @@ export function setLists(lists) {
   };
 }
 
+/**
+ *
+ * @param postalCodes
+ * @returns {{postalCodes: *, type: string}}
+ */
+export function setPostalCodes(postalCodes) {
+  return {
+    type: types.SET_POSTAL_CODES,
+    postalCodes
+  };
+}
+
 export function getUIQuestions(step) {
   return async dispatch => {
     try {
@@ -168,4 +180,54 @@ export function getLists() {
       dispatch(errorActions.setAppError(error));
     }
   };
+}
+
+/**
+ *
+ * @param searchTerm
+ * @returns {Function}
+ */
+export function searchPostalCodes(searchTerm) {
+  return async dispatch => {
+    try {
+      const zipCodes = await fetchPostalCodes(searchTerm);
+      dispatch(setPostalCodes(zipCodes));
+      return zipCodes;
+    } catch (error) {
+      dispatch(errorActions.setAppError(error));
+      return [];
+    }
+  };
+}
+
+/**
+ *
+ * @param searchTerm
+ * @returns {Array<[]>}
+ */
+export async function fetchPostalCodes(searchTerm) {
+  try {
+    const config = {
+      service: 'list-service',
+      method: 'GET',
+      path: `v1/postalCodes/postalCode=${searchTerm}&pageSize=10&sortDirection=asc&page=0`
+    };
+    const response = await serviceRunner.callService(
+      config,
+      'fetchPostalCodes'
+    );
+
+    console.log(response);
+
+    // const result =
+    //   response.data &&
+    //   response.data.data &&
+    //   response.data.data.searchSettingsByCSPAndZip
+    //     ? response.data.data.searchSettingsByCSPAndZip
+    //     : [];
+    return response;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
 }

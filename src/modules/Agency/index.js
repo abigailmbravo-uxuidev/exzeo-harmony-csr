@@ -83,7 +83,7 @@ export class Agency extends Component {
       this.props.getPoliciesForAgency({ agencyCode });
     }
     this.props.getListOfOrphanedAgents();
-    this.props.searchSettingsByCSPAndZip('', 'FL');
+    // this.props.searchSettingsByCSPAndZip('', 'FL');
     this.props.getTerritoryManagers('FL');
     this.props.getLists();
   }
