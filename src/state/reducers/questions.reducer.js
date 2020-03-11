@@ -15,8 +15,6 @@ export default function questionsReducer(
       return setTerritoryManagers(state, action);
     case types.SET_LISTS:
       return setLists(state, action);
-    case types.SET_POSTAL_CODES:
-      return setPostalCodes(state, action);
     default:
       return state;
   }
@@ -81,12 +79,5 @@ function setLists(state, action) {
 
       return listMap;
     }, {})
-  };
-}
-
-function setPostalCodes(state, action) {
-  return {
-    ...state,
-    postalCodes: action.postalCodes
   };
 }

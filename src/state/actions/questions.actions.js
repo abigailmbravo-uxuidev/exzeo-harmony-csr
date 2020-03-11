@@ -36,18 +36,6 @@ export function setLists(lists) {
   };
 }
 
-/**
- *
- * @param postalCodes
- * @returns {{postalCodes: *, type: string}}
- */
-export function setPostalCodes(postalCodes) {
-  return {
-    type: types.SET_POSTAL_CODES,
-    postalCodes
-  };
-}
-
 export function getUIQuestions(step) {
   return async dispatch => {
     try {
@@ -178,24 +166,6 @@ export function getLists() {
       dispatch(setLists(lists));
     } catch (error) {
       dispatch(errorActions.setAppError(error));
-    }
-  };
-}
-
-/**
- *
- * @param searchTerm
- * @returns {Function}
- */
-export function searchPostalCodes(searchTerm) {
-  return async dispatch => {
-    try {
-      const zipCodes = await fetchPostalCodes(searchTerm);
-      dispatch(setPostalCodes(zipCodes));
-      return zipCodes;
-    } catch (error) {
-      dispatch(errorActions.setAppError(error));
-      return [];
     }
   };
 }

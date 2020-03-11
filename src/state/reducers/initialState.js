@@ -20,8 +20,7 @@ export default {
   questions: {
     diaryAssignees: [],
     territoryManagers: [],
-    lists: {},
-    postalCodes: []
+    lists: {}
   },
   quoteState: {
     quoteId: null,
