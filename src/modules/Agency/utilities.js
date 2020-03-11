@@ -1,15 +1,17 @@
 import { defaultMemoize } from 'reselect';
 
-export const filterPostalCodes = (zip, postalCodes) => {
-  const matchingPostalCodes = postalCodes.filter(z => z.zip === zip);
+export const filterPostalCodes = (postalCode, postalCodes) => {
+  const matchingPostalCodes = postalCodes.filter(
+    p => p.postalCode === postalCode
+  );
   if (matchingPostalCodes.length === 1) {
     return matchingPostalCodes[0];
   }
   return null;
 };
 
-export const setCounty = async (zip, postalCodes, onChange) => {
-  const result = filterPostalCodes(zip, postalCodes);
+export const setCounty = async (postalCode, postalCodes, onChange) => {
+  const result = filterPostalCodes(postalCode, postalCodes);
   if (!result) return;
   onChange(result.county);
 };
@@ -54,12 +56,12 @@ export const setTerritoryManager = async (
   onChange(tm._id);
 };
 
-export const listOfZipCodes = postalCodes => {
+export const listOfPostalCodes = postalCodes => {
   if (!Array.isArray(postalCodes)) return [];
 
-  return postalCodes.map(z => ({
-    answer: z.zip,
-    label: `${z.zip}`
+  return postalCodes.map(p => ({
+    answer: p.postalCode,
+    label: `${p.postalCode}`
   }));
 };
 

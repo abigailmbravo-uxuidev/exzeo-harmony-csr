@@ -9,7 +9,7 @@ const TerritoryManager = ({
   postalCodes,
   territoryManagers
 }) => {
-  const zipCodeValue = useField(`${matchPrefix}.zip`).input.value;
+  const postalCodeValue = useField(`${matchPrefix}.zip`).input.value;
   return (
     <React.Fragment>
       <Field name="territoryManagerId" subscription={{}}>
@@ -19,7 +19,7 @@ const TerritoryManager = ({
               {value => {
                 if (value) {
                   setTerritoryManager(
-                    zipCodeValue,
+                    postalCodeValue,
                     postalCodes,
                     onChange,
                     territoryManagers
@@ -52,7 +52,7 @@ const TerritoryManager = ({
             <OnChangeListener name={watchField}>
               {value => {
                 if (value) {
-                  setCounty(zipCodeValue, postalCodes, onChange, 'county');
+                  setCounty(postalCodeValue, postalCodes, onChange, 'county');
                 } else {
                   onChange('');
                 }

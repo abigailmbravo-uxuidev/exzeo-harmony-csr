@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   Field,
   Input,
@@ -10,7 +10,7 @@ import Address from './Address';
 import AddressWatcher from './AddressWatcher';
 import TerritoryManagerWatcher from './TerritoryManagerWatcher';
 import { useFetchPostalCodes, useFetchTerritoryManagers } from './hooks';
-import { listOfZipCodes } from './utilities';
+import { listOfPostalCodes } from './utilities';
 
 const AddressGroup = ({
   mailingAddressPrefix,
@@ -18,6 +18,7 @@ const AddressGroup = ({
   showTerritoryManager,
   listAnswersAsKey
 }) => {
+  const [postalCodeInput, setPostalCodeInput] = useState('');
   const disabledValue =
     useField(`${physicalAddressPrefix}.sameAsMailing`).input.value || false;
   const stateValue =
@@ -25,7 +26,10 @@ const AddressGroup = ({
 
   const zipValue = useField(`${physicalAddressPrefix}.zip`).input.value || '';
 
-  const { postalCodes } = useFetchPostalCodes(zipValue, stateValue);
+  const { postalCodes } = useFetchPostalCodes(
+    postalCodeInput || zipValue,
+    stateValue
+  );
   const { territoryManagers } = useFetchTerritoryManagers(stateValue);
 
   return (
@@ -58,14 +62,17 @@ const AddressGroup = ({
           <Address
             setDisabled={disabledValue}
             fieldPrefix={physicalAddressPrefix}
-            listOfZipCodes={listOfZipCodes(postalCodes)}
+            listOfPostalCodes={listOfPostalCodes(postalCodes)}
             listAnswersAsKey={listAnswersAsKey}
+            postalCodeInput={postalCodeInput}
+            setPostalCodeInput={setPostalCodeInput}
           />
 
           <AddressWatcher
             fieldPrefix={physicalAddressPrefix}
             matchPrefix={mailingAddressPrefix}
             watchField={`${physicalAddressPrefix}.sameAsMailing`}
+            setPostalCodeInput={setPostalCodeInput}
           />
 
           {showTerritoryManager && (

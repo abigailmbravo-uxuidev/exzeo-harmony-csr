@@ -210,22 +210,16 @@ export async function fetchPostalCodes(searchTerm, state) {
     const config = {
       service: 'list-service',
       method: 'GET',
-      path: `v1/postalCodes/postalCode=${searchTerm}&state=${state}&pageSize=10&sortDirection=asc&page=0`
+      path: `v1/postal-codes?postalCode=${searchTerm}&state=${state}&pageSize=10&sortDirection=asc&page=0&country=USA`
     };
     const response = await serviceRunner.callService(
       config,
       'fetchPostalCodes'
     );
 
-    console.log(response);
+    console.log(response?.data?.result?.postalCodes);
 
-    // const result =
-    //   response.data &&
-    //   response.data.data &&
-    //   response.data.data.searchSettingsByCSPAndZip
-    //     ? response.data.data.searchSettingsByCSPAndZip
-    //     : [];
-    return response;
+    return response?.data?.result?.postalCodes;
   } catch (error) {
     console.log(error);
     throw error;
