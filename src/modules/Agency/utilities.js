@@ -1,21 +1,5 @@
 import { defaultMemoize } from 'reselect';
 
-export const filterPostalCodes = (postalCode, postalCodes) => {
-  const matchingPostalCodes = postalCodes.filter(
-    p => p.postalCode === postalCode
-  );
-  if (matchingPostalCodes.length === 1) {
-    return matchingPostalCodes[0];
-  }
-  return null;
-};
-
-export const setCounty = async (postalCode, postalCodes, onChange) => {
-  const result = filterPostalCodes(postalCode, postalCodes);
-  if (!result) return;
-  onChange(result.county);
-};
-
 export const filterTerritoryManager = (state, county, territoryManagers) => {
   return territoryManagers.find(tm => {
     const { states } = tm;
@@ -39,21 +23,15 @@ export const filterTerritoryManager = (state, county, territoryManagers) => {
 };
 
 export const setTerritoryManager = async (
-  zip,
-  postalCodes,
+  state,
+  county,
+  territoryManagerField,
   onChange,
   territoryManagers
 ) => {
-  const result = filterPostalCodes(zip, postalCodes);
-  if (!result) return;
-
-  const tm = filterTerritoryManager(
-    result.state,
-    result.county,
-    territoryManagers
-  );
+  const tm = filterTerritoryManager(state, county, territoryManagers);
   if (!tm) return;
-  onChange(tm._id);
+  onChange(territoryManagerField, tm._id);
 };
 
 export const listOfPostalCodes = postalCodes => {

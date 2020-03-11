@@ -110,9 +110,8 @@ const AddressGroup = ({
               </Field>
 
               <TerritoryManagerWatcher
-                fieldPrefix={physicalAddressPrefix}
-                matchPrefix={mailingAddressPrefix}
-                watchField={`${physicalAddressPrefix}.sameAsMailing`}
+                physicalAddressPrefix={physicalAddressPrefix}
+                mailingAddressPrefix={mailingAddressPrefix}
                 values={{}}
                 postalCodes={postalCodes}
                 territoryManagers={territoryManagers}

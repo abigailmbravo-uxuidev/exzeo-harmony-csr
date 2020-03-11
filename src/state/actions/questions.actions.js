@@ -216,12 +216,8 @@ export async function fetchPostalCodes(searchTerm, state) {
       config,
       'fetchPostalCodes'
     );
-
-    console.log(response?.data?.result?.postalCodes);
-
     return response?.data?.result?.postalCodes;
   } catch (error) {
-    console.log(error);
     throw error;
   }
 }
