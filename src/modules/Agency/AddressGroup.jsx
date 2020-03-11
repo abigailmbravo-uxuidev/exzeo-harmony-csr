@@ -25,7 +25,7 @@ const AddressGroup = ({
 
   const zipValue = useField(`${physicalAddressPrefix}.zip`).input.value || '';
 
-  const { postalCodes } = useFetchPostalCodes(zipValue);
+  const { postalCodes } = useFetchPostalCodes(zipValue, stateValue);
   const { territoryManagers } = useFetchTerritoryManagers(stateValue);
 
   return (

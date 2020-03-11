@@ -205,12 +205,12 @@ export function searchPostalCodes(searchTerm) {
  * @param searchTerm
  * @returns {Array<[]>}
  */
-export async function fetchPostalCodes(searchTerm) {
+export async function fetchPostalCodes(searchTerm, state) {
   try {
     const config = {
       service: 'list-service',
       method: 'GET',
-      path: `v1/postalCodes/postalCode=${searchTerm}&pageSize=10&sortDirection=asc&page=0`
+      path: `v1/postalCodes/postalCode=${searchTerm}&state=${state}&pageSize=10&sortDirection=asc&page=0`
     };
     const response = await serviceRunner.callService(
       config,

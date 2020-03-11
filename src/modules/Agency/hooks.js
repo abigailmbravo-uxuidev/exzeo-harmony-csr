@@ -4,22 +4,22 @@ import {
   fetchPostalCodes
 } from 'state/actions/questions.actions';
 
-export const useFetchPostalCodes = searchTerm => {
+export const useFetchPostalCodes = (searchTerm, state) => {
   const [postalCodes, setPostalCodes] = useState([]);
   const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
-    const getZipCodeSettings = async () => {
+    const getPostalCodes = async () => {
       setLoaded(false);
       try {
-        const result = await fetchPostalCodes(searchTerm);
+        const result = await fetchPostalCodes(searchTerm, state);
         setPostalCodes(result);
       } catch (error) {
         setPostalCodes([]);
       }
       setLoaded(true);
     };
-    getZipCodeSettings();
+    getPostalCodes();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchTerm]);
 
