@@ -10,7 +10,6 @@ import {
   getListOfOrphanedAgents,
   getAgentListByAgencyCode
 } from '../../state/actions/agency.actions';
-import { searchSettingsByCSPAndZip } from '../../state/actions/zipCodeSettings.actions';
 import {
   getTerritoryManagers,
   getLists
@@ -164,7 +163,6 @@ export default connect(mapStateToProps, {
   getAgentsByAgencyCode,
   getListOfOrphanedAgents,
   getTerritoryManagers,
-  searchSettingsByCSPAndZip,
   getLists,
   getPoliciesForAgency
 })(Agency);

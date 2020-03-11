@@ -58,9 +58,6 @@ export default {
   service: {
     cancelOptions: []
   },
-  zipCodeSettingsState: {
-    zipCodeSettings: []
-  },
   list: {
     mortgagee: [],
     premiumFinance: [],
