@@ -91,8 +91,6 @@ export const DiaryModal = ({
     }
   };
 
-  console.log(entity);
-
   return (
     <Draggable
       handle=".new-diary-file"

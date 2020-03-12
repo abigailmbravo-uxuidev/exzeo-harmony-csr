@@ -320,9 +320,7 @@ describe('Testing the Transfer Page', () => {
   });
 
   it('POS:Should Submit Transfer Policy ', async () => {
-    agencyData.fetchAgenciesByAgencyCodeOrName = jestResolve(
-      searchAgenciesResult
-    );
+    agencyData.fetchAvailableAgencies = jestResolve(searchAgenciesResult);
     agencyData.fetchAgentsByAgencyCode = jestResolve(searchAgentsResult);
     const props = {
       ...defaultProps
