@@ -296,7 +296,7 @@ const NoteUploader = ({
             {({ handleSubmit, submitting }) => (
               <form id="NoteUploader" onSubmit={handleSubmit}>
                 {submitting &&
-                  uppy.current?.getState().info.type !== 'error' && <Loader />}
+                  uppy.current.getState().info.type !== 'error' && <Loader />}
                 <div className="content">
                   <div className="note-details">
                     <div className="form-group contact">
