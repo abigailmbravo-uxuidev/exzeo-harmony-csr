@@ -252,10 +252,10 @@ const NoteUploader = ({
 
   return (
     <Draggable
-      handle=".new-note-file"
+      handle=".title-bar"
       bounds={{
         left: -1400,
-        top: -800,
+        top: -150,
         right: window.innerWidth - 1000,
         bottom: window.innerHeight - 200
       }}

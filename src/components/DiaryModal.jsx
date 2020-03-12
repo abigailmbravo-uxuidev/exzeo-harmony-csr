@@ -95,10 +95,10 @@ export const DiaryModal = ({
 
   return (
     <Draggable
-      handle=".new-diary-file"
+      handle=".title-bar"
       bounds={{
         left: -800,
-        top: -800,
+        top: -150,
         right: window.innerWidth - 300,
         bottom: window.innerHeight - 200
       }}
