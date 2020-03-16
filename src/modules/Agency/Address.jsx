@@ -97,7 +97,7 @@ const Address = ({
               onInputChange={value => setPostalCodeInput(value)}
               disabled={setDisabled}
               validate={isOptional ? null : validation.isRequired}
-              answers={listOfPostalCodes || []}
+              answers={listOfPostalCodes}
             />
           )}
         </Field>
@@ -125,7 +125,7 @@ const Address = ({
 };
 
 Address.defaultProps = {
-  listOfZipCodes: []
+  listOfPostalCodes: []
 };
 
 export default Address;

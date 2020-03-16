@@ -113,8 +113,6 @@ const AddressGroup = ({
               <TerritoryManagerWatcher
                 physicalAddressPrefix={physicalAddressPrefix}
                 mailingAddressPrefix={mailingAddressPrefix}
-                values={{}}
-                postalCodes={postalCodes}
                 territoryManagers={territoryManagers}
               />
             </React.Fragment>
