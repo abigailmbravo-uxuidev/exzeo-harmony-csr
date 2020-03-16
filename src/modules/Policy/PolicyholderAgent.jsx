@@ -7,7 +7,7 @@ import AgentCard from './AgentCard';
 import ContactCard from './ContactCard';
 import PolicyholderCard from './PolicyholderCard';
 import TransferAORModal from './TransferAORModal';
-import { useFetchTerritoryManagers } from '../../hooks/territoryManagers';
+import { useFetchTerritoryManager } from '../../hooks/territoryManagers';
 
 const PolicyholderAgent = ({ customHandlers, initialValues }) => {
   const [showTransferAOR, setShowTransferAOR] = useState(false);
@@ -17,14 +17,12 @@ const PolicyholderAgent = ({ customHandlers, initialValues }) => {
   const { agency, loaded: agencyLoaded } = useFetchAgency(
     initialValues.agencyCode
   );
-  const { territoryManagers } = useFetchTerritoryManagers(initialValues.state);
+  const { territoryManager } = useFetchTerritoryManager(
+    agency.territoryManagerId
+  );
 
   const selectedAgent = agents.find(
     a => a.agentCode === initialValues.agentCode
-  );
-
-  const territoryManager = territoryManagers.find(
-    agent => agent._id === agency.territoryManagerId
   );
 
   const submitTransferAOR = async data => {
