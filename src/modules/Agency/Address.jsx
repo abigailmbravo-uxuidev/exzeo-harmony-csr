@@ -97,7 +97,7 @@ const Address = ({
               onInputChange={value => setPostalCodeInput(value)}
               disabled={setDisabled}
               validate={isOptional ? null : validation.isRequired}
-              answers={listOfPostalCodes}
+              answers={listOfPostalCodes || []}
             />
           )}
         </Field>
@@ -122,10 +122,6 @@ const Address = ({
       )}
     </React.Fragment>
   );
-};
-
-Address.defaultProps = {
-  listOfPostalCodes: []
 };
 
 export default Address;
