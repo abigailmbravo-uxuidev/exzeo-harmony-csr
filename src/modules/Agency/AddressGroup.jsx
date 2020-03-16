@@ -9,8 +9,9 @@ import {
 import Address from './Address';
 import AddressWatcher from './AddressWatcher';
 import TerritoryManagerWatcher from './TerritoryManagerWatcher';
-import { useFetchPostalCodes, useFetchTerritoryManagers } from './hooks';
+import { useFetchPostalCodes } from './hooks';
 import { listOfPostalCodes } from './utilities';
+import { useFetchTerritoryManagers } from '../../hooks/territoryManagers';
 
 const AddressGroup = ({
   mailingAddressPrefix,

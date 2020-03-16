@@ -15,7 +15,7 @@ import ExistingAgentModal from '../ExistingAgentModal';
 import AgentModal from '../AgentModal';
 import AgencyAddressModal from '../AgencyAddressModal';
 import { formatAgent } from '../utilities';
-import { useFetchTerritoryManager } from '../hooks';
+import { useFetchTerritoryManager } from '../../../hooks/territoryManagers';
 
 export const Overview = ({
   agency,
