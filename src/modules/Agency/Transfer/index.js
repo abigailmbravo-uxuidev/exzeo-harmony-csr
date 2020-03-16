@@ -19,7 +19,7 @@ const mapStateToProps = state => ({
   listAnswersAsKey: getListAnswersAsKey(state)
 });
 
-export default connect(
-  mapStateToProps,
-  { getPoliciesForAgency, getAgentListByAgencyCode }
-)(Transfer);
+export default connect(mapStateToProps, {
+  getPoliciesForAgency,
+  getAgentListByAgencyCode
+})(Transfer);

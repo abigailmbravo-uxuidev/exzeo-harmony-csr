@@ -1,5 +1,5 @@
 import React from 'react';
-import { within } from '@testing-library/react';
+import { within, wait, waitForElement } from '@testing-library/react';
 import { date, normalize } from '@exzeo/core-ui';
 import 'jest-dom/extend-expect';
 
@@ -7,9 +7,11 @@ import {
   renderWithReduxAndRouter,
   mockAgency,
   mockAgents,
-  questions
+  jestResolve,
+  mockPolicy
 } from '../../../../test-utils';
 import Overview from '../index';
+import * as questionActions from '../../../../state/actions/questions.actions.js';
 
 describe('Overview testing', () => {
   const state = {
@@ -17,20 +19,20 @@ describe('Overview testing', () => {
       agency: mockAgency,
       agents: mockAgents
     },
-    questions: {
-      territoryManagers: [
-        {
-          _id: '5b7db9f6ff54fd6a5c619eec',
-          name: 'Tex Dubar'
-        }
-      ]
-    }
+    questions: {}
+  };
+
+  const territoryManager = {
+    _id: '5b7db9f6ff54fd6a5c619eec',
+    name: 'Tex Dubar'
   };
 
   const props = {
     agencyCode: '20532',
     branchCode: '1'
   };
+
+  questionActions.fetchTerritoryManager = jestResolve(territoryManager);
 
   const checkHeader = (el, buttonText) => {
     expect(el.children[0]).toHaveTextContent(buttonText);
@@ -117,7 +119,7 @@ describe('Overview testing', () => {
     });
   });
 
-  it('POS:Check Address section', () => {
+  it('POS:Check Address section', async () => {
     const { getByText, getAllByText } = renderWithReduxAndRouter(
       <Overview {...props} />,
       { state }
@@ -130,7 +132,6 @@ describe('Overview testing', () => {
     ];
     const mockPhysicalAddress = `${mail.address1}, ${mail.address2}${mail.city}, ${mail.state} ${mail.zip}`;
     const mockMailingAddress = `${phys.address1}, ${phys.address2}${phys.city}, ${phys.state} ${phys.zip}`;
-    const tm = state.questions.territoryManagers[0];
 
     // Check the header, button and icon
     checkHeader(addresses[0], 'Edit');
@@ -144,8 +145,11 @@ describe('Overview testing', () => {
     expect(addresses[1].nextSibling).toHaveTextContent(mockMailingAddress);
     expect(addresses[1].nextSibling).toHaveTextContent(mockMailingAddress);
     expect(getByText('County').nextSibling).toHaveTextContent(phys.county);
+
+    await waitForElement(() => getByText('Territory Manager'));
+
     expect(getByText('Territory Manager').nextSibling).toHaveTextContent(
-      tm.name
+      territoryManager.name
     );
   });
 

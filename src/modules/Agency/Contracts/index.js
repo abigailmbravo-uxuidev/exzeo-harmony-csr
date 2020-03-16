@@ -17,7 +17,4 @@ const mapStateToProps = state => ({
   listOfAgents: [] // available agents to add to a license,
 });
 
-export default connect(
-  mapStateToProps,
-  { updateAgency }
-)(Contracts);
+export default connect(mapStateToProps, { updateAgency })(Contracts);

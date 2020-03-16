@@ -4,7 +4,7 @@ import {
   fetchTerritoryManagers
 } from '../state/actions/questions.actions';
 
-export const useFetchTerritoryManagers = state => {
+export function useFetchTerritoryManagers(state) {
   const [managers, setManagers] = useState([]);
   const [loaded, setLoaded] = useState(false);
   useEffect(() => {
@@ -23,9 +23,9 @@ export const useFetchTerritoryManagers = state => {
   }, [state]);
 
   return { territoryManagers: managers, loaded };
-};
+}
 
-export const useFetchTerritoryManager = territoryManagerId => {
+export function useFetchTerritoryManager(territoryManagerId) {
   const [manager, setManager] = useState([]);
   const [loaded, setLoaded] = useState(false);
 
@@ -46,4 +46,4 @@ export const useFetchTerritoryManager = territoryManagerId => {
   }, [territoryManagerId]);
 
   return { territoryManager: manager, loaded };
-};
+}
