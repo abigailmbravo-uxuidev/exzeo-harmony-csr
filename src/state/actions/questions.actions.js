@@ -137,6 +137,31 @@ export async function fetchTerritoryManagers(state) {
 
 /**
  *
+ * @param territoryManagerId
+ * @returns {Promise<{}>}
+ */
+export async function fetchTerritoryManager(territoryManagerId) {
+  try {
+    const config = {
+      exchangeName: 'harmony',
+      routingKey: 'harmony.territoryManager',
+      data: {
+        territoryManagerId
+      }
+    };
+
+    const response = await serviceRunner.callService(
+      config,
+      'harmony.territoryManager'
+    );
+    return response.data && response.data.result ? response.data.result : [];
+  } catch (error) {
+    throw error;
+  }
+}
+
+/**
+ *
  * @returns {Promise<{}>}
  */
 export async function fetchLists() {

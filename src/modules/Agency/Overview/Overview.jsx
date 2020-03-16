@@ -15,10 +15,10 @@ import ExistingAgentModal from '../ExistingAgentModal';
 import AgentModal from '../AgentModal';
 import AgencyAddressModal from '../AgencyAddressModal';
 import { formatAgent } from '../utilities';
+import { useFetchTerritoryManager } from '../hooks';
 
 export const Overview = ({
   agency,
-  territoryManagers,
   agentOfRecord,
   addressInitialValues,
   agencyBranchData,
@@ -38,6 +38,10 @@ export const Overview = ({
     setShowSwitchAgentOfRecordModal
   ] = useState(false);
   const [selectedAgent, setSelectedAgent] = useState(undefined);
+
+  const { territoryManager } = useFetchTerritoryManager(
+    agency?.territoryManagerId
+  );
 
   const toggleSwitchAOR = agent => () => {
     setSelectedAgent(agent);
@@ -120,7 +124,7 @@ export const Overview = ({
             <section className="agency-address">
               <AddressView
                 agencyBranchData={agencyBranchData}
-                territoryManagers={territoryManagers}
+                territoryManager={territoryManager}
               />
             </section>
             {agencyBranchData.principal && (
