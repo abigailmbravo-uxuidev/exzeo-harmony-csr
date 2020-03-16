@@ -1,7 +1,5 @@
 .new-diary-file,
 .new-note-file {
-  cursor: grab;
-
   &.minimize {
     top: calc(100vh - 2.4375rem);
 
