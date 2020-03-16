@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import PropTypes from 'prop-types';
 import {
   SelectTypeAhead,
@@ -13,6 +13,7 @@ import { verifyTransaction } from '../../../state/actions/agency.actions';
 
 import AgencyChangeWatcher from './AgencyChangeWatcher';
 import { groupPolicyByAgentCode } from './utilities';
+import throttle from 'lodash/throttle';
 
 export const TransferModal = ({
   selectedPolicies,
@@ -24,6 +25,10 @@ export const TransferModal = ({
   const [agencySearchTerm, setAgencySearchTerm] = useState('');
   const [agencies, setAgencies] = useState([]);
   const [agents, setAgents] = useState([]);
+  const throttleSetAgencyTerm = useCallback(
+    throttle(setAgencySearchTerm, 500),
+    []
+  );
 
   const submitTransfer = async data => {
     try {
@@ -78,8 +83,7 @@ export const TransferModal = ({
                   dataTest="agencyCodeTo"
                   component={SelectTypeAhead}
                   answers={agencies}
-                  inputValue={agencySearchTerm}
-                  onInputChange={value => setAgencySearchTerm(value)}
+                  onInputChange={throttleSetAgencyTerm}
                   validate={validation.isRequired}
                 />
                 <Field

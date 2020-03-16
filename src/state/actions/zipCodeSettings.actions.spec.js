@@ -56,7 +56,10 @@ describe('Zipcode Settings Actions', () => {
     actions.searchSettingsByCSPAndZip(store.dispatch);
 
     return actions
-      .searchSettingsByCSPAndZip('33607', 'FL')(store.dispatch)
+      .searchSettingsByCSPAndZip(
+        '33607',
+        'FL'
+      )(store.dispatch)
       .then(() => {
         expect(store.getActions()[0].type).toEqual(types.SET_ZIPCODE_SETTINGS);
       })
