@@ -1,11 +1,10 @@
-import { date } from '@exzeo/core-ui';
+import moment from 'moment';
 
 export const isValidRange = value => {
   const { min, max } = value;
   if (!min && !max) return undefined;
 
-  const minDate = date.toUTC(min);
-  const maxDate = date.toUTC(max);
-
-  return minDate <= maxDate ? undefined : 'Not a valid date range';
+  return moment(min).isSame(max) || moment(min).isBefore(max)
+    ? undefined
+    : 'Not a valid date range';
 };
