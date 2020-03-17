@@ -198,6 +198,7 @@ export function getLists() {
 /**
  *
  * @param searchTerm
+ * @param state
  * @returns {Array<[]>}
  */
 export async function fetchPostalCodes(searchTerm, state) {
