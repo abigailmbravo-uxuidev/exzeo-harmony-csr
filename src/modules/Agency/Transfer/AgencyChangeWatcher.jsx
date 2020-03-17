@@ -1,23 +1,54 @@
-import React, { useEffect } from 'react';
-import { useField, useForm } from '@exzeo/core-ui';
+import { useEffect } from 'react';
+import { useField } from '@exzeo/core-ui';
 
-const AgencyChangeWatcher = ({ getAgentsForTransfer }) => {
-  const agencyCodeTo = useField('agencyCodeTo').input.value;
-  const formApi = useForm();
+import {
+  fetchAvailableAgencies,
+  fetchAgentsByAgencyCode
+} from '../../../state/actions/agency.actions';
+import {
+  filterAgencies,
+  filterAgents
+} from '../../../state/selectors/agency.selector';
+
+import { filterCSPList } from './utilities';
+
+const AgencyChangeWatcher = ({
+  setAgents,
+  setAgencies,
+  searchTerm,
+  selectedPolicies
+}) => {
+  const agencyCodeToValue = useField('agencyCodeTo').input.value;
+  const cspList = filterCSPList(selectedPolicies);
 
   useEffect(() => {
-    if (!agencyCodeTo) return;
     const getAgents = async () => {
       try {
-        formApi.change('agentCodeTo', null);
-        await getAgentsForTransfer(agencyCodeTo);
-      } catch (error) {}
+        const result = await fetchAgentsByAgencyCode(agencyCodeToValue);
+        setAgents(filterAgents(result, cspList));
+      } catch (error) {
+        setAgents([]);
+      }
     };
+    if (!agencyCodeToValue) return;
     getAgents();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [agencyCodeTo]);
+  }, [agencyCodeToValue]);
 
-  return <React.Fragment />;
+  useEffect(() => {
+    const getAgencies = async () => {
+      try {
+        const result = await fetchAvailableAgencies(searchTerm);
+        setAgencies(filterAgencies(result, cspList));
+      } catch (error) {
+        setAgencies([]);
+      }
+    };
+    getAgencies();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchTerm]);
+
+  return null;
 };
 
 export default AgencyChangeWatcher;

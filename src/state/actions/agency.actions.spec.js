@@ -309,37 +309,6 @@ describe('Test Agency Actions', () => {
       });
   });
 
-  it('should call getAgentList', () => {
-    const mockAdapter = new MockAdapter(axios);
-
-    const axiosOptions = {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      url: `${process.env.REACT_APP_API_URL}/svc?fetchAgentList`,
-      data: {
-        service: 'agency',
-        method: 'GET',
-        path: 'v1/agents/TTIC/FL'
-      }
-    };
-
-    mockAdapter.onPost(axiosOptions.url, axiosOptions.data).reply(200, {
-      data: []
-    });
-    agencyActions.getAgentList(store.dispatch);
-
-    return agencyActions
-      .getAgentList(
-        'TTIC',
-        'FL'
-      )(store.dispatch)
-      .then(() => {
-        expect(store.getActions()[0].type).toEqual(types.SET_AGENTS_LIST);
-      });
-  });
-
   it('should call transferPoliciesRequest', () => {
     const mockAdapter = new MockAdapter(axios);
     const transfers = [
@@ -389,7 +358,7 @@ describe('Test Agency Actions', () => {
       });
   });
 
-  it('should call fetchAgenciesByAgencyCodeOrName with an agencyCode 60000', async () => {
+  it('should call fetchAvailableAgencies with an agencyCode 60000', async () => {
     const mockAdapter = new MockAdapter(axios);
 
     const axiosOptions = {
@@ -397,26 +366,22 @@ describe('Test Agency Actions', () => {
       headers: {
         'Content-Type': 'application/json'
       },
-      url: `${process.env.REACT_APP_API_URL}/svc?fetchAgenciesByAgencyCodeOrName`,
+      url: `${process.env.REACT_APP_API_URL}/svc?fetchAvailableAgencies`,
       data: {
         service: 'agency',
         method: 'GET',
-        path: `agencies?companyCode=TTIC&state=FL&agencyCode=60000&displayName=`
+        path: `agencies?agencyCode=60000&displayName=&availableOnly=true`
       }
     };
 
     mockAdapter.onPost(axiosOptions.url, axiosOptions.data).reply(200, {
       result: [mockAgency]
     });
-    const response = await agencyActions.fetchAgenciesByAgencyCodeOrName(
-      'TTIC',
-      'FL',
-      '60000'
-    );
+    const response = await agencyActions.fetchAvailableAgencies('60000');
     expect(response).toEqual([mockAgency]);
   });
 
-  it('should call fetchAgenciesByAgencyCodeOrName with displayName TypTap', async () => {
+  it('should call fetchAvailableAgencies with displayName TypTap', async () => {
     const mockAdapter = new MockAdapter(axios);
 
     const axiosOptions = {
@@ -424,26 +389,22 @@ describe('Test Agency Actions', () => {
       headers: {
         'Content-Type': 'application/json'
       },
-      url: `${process.env.REACT_APP_API_URL}/svc?fetchAgenciesByAgencyCodeOrName`,
+      url: `${process.env.REACT_APP_API_URL}/svc?fetchAvailableAgencies`,
       data: {
         service: 'agency',
         method: 'GET',
-        path: `agencies?companyCode=TTIC&state=FL&agencyCode=&displayName=TypTap`
+        path: `agencies?agencyCode=&displayName=TypTap&availableOnly=true`
       }
     };
 
     mockAdapter.onPost(axiosOptions.url, axiosOptions.data).reply(200, {
       result: [mockAgency]
     });
-    const response = await agencyActions.fetchAgenciesByAgencyCodeOrName(
-      'TTIC',
-      'FL',
-      'TypTap'
-    );
+    const response = await agencyActions.fetchAvailableAgencies('TypTap');
     expect(response).toEqual([mockAgency]);
   });
 
-  it('should call fetchAgenciesByAgencyCodeOrName with displayName 123 Agency', async () => {
+  it('should call fetchAvailableAgencies with displayName 123 Agency', async () => {
     const mockAdapter = new MockAdapter(axios);
 
     const axiosOptions = {
@@ -451,22 +412,18 @@ describe('Test Agency Actions', () => {
       headers: {
         'Content-Type': 'application/json'
       },
-      url: `${process.env.REACT_APP_API_URL}/svc?fetchAgenciesByAgencyCodeOrName`,
+      url: `${process.env.REACT_APP_API_URL}/svc?fetchAvailableAgencies`,
       data: {
         service: 'agency',
         method: 'GET',
-        path: `agencies?companyCode=TTIC&state=FL&agencyCode=&displayName=123%20Agency`
+        path: `agencies?agencyCode=&displayName=123%20Agency&availableOnly=true`
       }
     };
 
     mockAdapter.onPost(axiosOptions.url, axiosOptions.data).reply(200, {
       result: [mockAgency]
     });
-    const response = await agencyActions.fetchAgenciesByAgencyCodeOrName(
-      'TTIC',
-      'FL',
-      '123 Agency'
-    );
+    const response = await agencyActions.fetchAvailableAgencies('123 Agency');
     expect(response).toEqual([mockAgency]);
   });
 });
