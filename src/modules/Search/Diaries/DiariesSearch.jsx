@@ -67,6 +67,7 @@ class DiariesSearch extends Component {
                   validate={isValidRange}
                   label="Date Range"
                   errorHint
+                  errorPosition="left"
                 />
               </div>
             </div>
