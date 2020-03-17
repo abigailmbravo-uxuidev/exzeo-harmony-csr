@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 
 import Footer from '../../../components/Common/Footer';
 
@@ -6,128 +6,104 @@ import TransferModal from './TransferModal';
 import TransferList from './TransferList';
 import TransferFilter from './TransferFilter';
 
-export class Transfer extends Component {
-  state = {
-    showTransferModal: false,
-    selectedPolicies: [],
-    fadePolicy: undefined
-  };
+export const Transfer = ({
+  agencyCode,
+  agentsList,
+  policies,
+  policyNumberList,
+  listAnswersAsKey,
+  getPoliciesForAgency,
+  transferPoliciesToAgent
+}) => {
+  const [showTransferModal, setShowTransferModal] = useState(false);
+  const [selectedPolicies, setSelectedPolicies] = useState([]);
+  const [fadePolicy, setFadePolicy] = useState(undefined);
+  const [refresh, setRefresh] = useState(undefined);
 
-  handleToggleModal = () => {
-    this.setState(state => ({ showTransferModal: !state.showTransferModal }));
-  };
-
-  checkPolicy = policyNumber => {
-    const { policies } = this.props;
-    const { selectedPolicies } = this.state;
+  const checkPolicy = policyNumber => {
     const policy = policies.find(v => v.policyNumber === policyNumber);
-    this.setState({
-      selectedPolicies: [...selectedPolicies, policy],
-      fadePolicy: undefined
-    });
+    setSelectedPolicies([...selectedPolicies, policy]);
+    setFadePolicy(null);
   };
 
-  unCheckPolicy = policyNumber => {
-    const { selectedPolicies } = this.state;
-    this.setState({
-      selectedPolicies: selectedPolicies.filter(
-        p => p.policyNumber !== policyNumber
-      ),
-      fadePolicy: undefined
-    });
-  };
-
-  handleCheckPolicy = (policyNumber, e) => {
-    if (e && e.stopPropagation) e.stopPropagation();
-    this.setState({ fadePolicy: policyNumber }, () =>
-      setTimeout(() => this.checkPolicy(policyNumber), 500)
+  const unCheckPolicy = policyNumber => {
+    setSelectedPolicies(
+      selectedPolicies.filter(p => p.policyNumber !== policyNumber)
     );
+    setFadePolicy(null);
   };
 
-  handleUncheckPolicy = (policyNumber, e) => {
+  const handleCheckPolicy = async (policyNumber, e) => {
     if (e && e.stopPropagation) e.stopPropagation();
-    this.setState({ fadePolicy: policyNumber }, () =>
-      setTimeout(() => this.unCheckPolicy(policyNumber), 500)
-    );
+    setFadePolicy(policyNumber);
+    await new Promise(resolve => setTimeout(resolve, 500));
+    checkPolicy(policyNumber);
   };
 
-  handleCheckAllPolicies = () => {
-    const { policies } = this.props;
-    const { selectedPolicies } = this.state;
+  const handleUncheckPolicy = async (policyNumber, e) => {
+    if (e && e.stopPropagation) e.stopPropagation();
+    setFadePolicy(policyNumber);
+    await new Promise(resolve => setTimeout(resolve, 500));
+    unCheckPolicy(policyNumber);
+  };
 
+  const handleCheckAllPolicies = () => {
     if (policies.length === selectedPolicies.length) {
-      this.clearSelectedPolicies();
+      clearSelectedPolicies();
     } else {
-      this.setState({ selectedPolicies: policies });
+      setSelectedPolicies(policies);
     }
   };
 
-  clearSelectedPolicies = () => {
-    this.setState({ selectedPolicies: [] });
+  const clearSelectedPolicies = () => {
+    setSelectedPolicies([]);
   };
 
-  render() {
-    const {
-      agencyCode,
-      agentsList,
-      policies,
-      policyNumberList,
-      listAnswersAsKey,
-      getPoliciesForAgency,
-      getAgentListByAgencyCode
-    } = this.props;
-
-    const { showTransferModal, selectedPolicies, fadePolicy } = this.state;
-    const filteredPolicies = policies.filter(
-      p => !selectedPolicies.some(s => s.policyNumber === p.policyNumber)
-    );
-    return (
-      <React.Fragment>
-        {showTransferModal && (
-          <TransferModal
-            getPoliciesForAgency={getPoliciesForAgency}
-            activeAgencyCode={agencyCode}
-            getAgentListByAgencyCode={getAgentListByAgencyCode}
-            clearSelectedPolicies={this.clearSelectedPolicies}
-            selectedPolicies={selectedPolicies}
-            toggleModal={this.handleToggleModal}
-          />
-        )}
-        <div className="route-content">
-          <div className="scroll">
-            <div className="form-group survey-wrapper" role="group">
-              <section className="policy-filter">
-                <TransferFilter
-                  agencyCode={agencyCode}
-                  clearSelectedPolicies={this.clearSelectedPolicies}
-                  policyNumberList={policyNumberList}
-                  listAnswersAsKey={listAnswersAsKey}
-                  agentsList={agentsList}
-                  getPoliciesForAgency={getPoliciesForAgency}
-                />
-                <TransferList
-                  fadePolicy={fadePolicy}
-                  filteredPolicies={filteredPolicies}
-                  clearSelectedPolicies={this.clearSelectedPolicies}
-                  selectedPolicies={selectedPolicies}
-                  checkAllPolicies={this.handleCheckAllPolicies}
-                  checkPolicy={this.handleCheckPolicy}
-                  uncheckPolicy={this.handleUncheckPolicy}
-                  policyNumberList={policyNumberList}
-                  policies={policies}
-                  toggleTransferModal={this.handleToggleModal}
-                  agencyCode={agencyCode}
-                />
-              </section>
-            </div>
+  return (
+    <React.Fragment>
+      {showTransferModal && (
+        <TransferModal
+          transferPoliciesToAgent={transferPoliciesToAgent}
+          clearSelectedPolicies={clearSelectedPolicies}
+          selectedPolicies={selectedPolicies}
+          closeModal={() => setShowTransferModal(false)}
+          setRefresh={setRefresh}
+        />
+      )}
+      <div className="route-content">
+        <div className="scroll">
+          <div className="form-group survey-wrapper" role="group">
+            <section className="policy-filter">
+              <TransferFilter
+                agencyCode={agencyCode}
+                clearSelectedPolicies={clearSelectedPolicies}
+                policyNumberList={policyNumberList}
+                listAnswersAsKey={listAnswersAsKey}
+                agentsList={agentsList}
+                getPoliciesForAgency={getPoliciesForAgency}
+                refresh={refresh}
+              />
+              <TransferList
+                fadePolicy={fadePolicy}
+                clearSelectedPolicies={clearSelectedPolicies}
+                selectedPolicies={selectedPolicies}
+                checkAllPolicies={handleCheckAllPolicies}
+                checkPolicy={handleCheckPolicy}
+                uncheckPolicy={handleUncheckPolicy}
+                policyNumberList={policyNumberList}
+                policies={policies}
+                openModal={() => setShowTransferModal(true)}
+                agencyCode={agencyCode}
+              />
+            </section>
           </div>
         </div>
-        <div className="basic-footer">
-          <Footer />
-        </div>
-      </React.Fragment>
-    );
-  }
-}
+      </div>
+      <div className="basic-footer">
+        <Footer />
+      </div>
+    </React.Fragment>
+  );
+};
 
 export default Transfer;

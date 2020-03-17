@@ -594,6 +594,29 @@ export async function postUpdatedBillPlan(paymentPlan) {
 
 /**
  *
+ * @param {Object} data
+ * @param {string} data.transactionType
+ * @param {string} data.cancelDate
+ * @param {string} data.cancelReason
+ * @returns {Promise<{}>}
+ */
+export async function cancelPolicy(data) {
+  const config = {
+    exchangeName: 'harmony',
+    routingKey: 'harmony.policy.initiateCancellation',
+    data
+  };
+
+  try {
+    const response = await serviceRunner.callService(config, 'cancelPolicy');
+    return response.data && response.data.result ? response.data.result : {};
+  } catch (error) {
+    throw error;
+  }
+}
+
+/**
+ *
  * @param {Object} options
  * @param {number} options.companyCode
  * @param {string} options.state
@@ -835,22 +858,15 @@ export function updatePolicy({ data = {}, options = {} }) {
 
       if (options.cancelPolicy) {
         const submitData = {
-          policyID: data.policyID,
           policyNumber: data.policyNumber,
+          transactionType: `Pending ${data.cancel.cancelType}`,
           cancelDate: date.formatToUTC(
             date.formatDate(data.cancel.effectiveDate, date.FORMATS.SECONDARY),
             options.zipCodeSettings.timezone
           ),
-          cancelReason: data.cancel.cancelReason,
-          additionalReason: data.cancel.additionalReason,
-          transactionType: `Pending ${data.cancel.cancelType}`,
-          equityDate: date.formatToUTC(
-            date.formatDate(data.cancel.equityDate, date.FORMATS.SECONDARY),
-            options.zipCodeSettings.timezone
-          ),
-          billingStatus: data.summaryLedger.status.code
+          cancelReason: data.cancel.cancelReason
         };
-        await postCreateTransaction(submitData);
+        await cancelPolicy(submitData);
       }
 
       if (data.selectedAI) {

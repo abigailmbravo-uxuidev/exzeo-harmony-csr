@@ -5,7 +5,6 @@ import { connect } from 'react-redux';
 
 import {
   getAgency,
-  getAgentList,
   getAgentsByAgencyCode,
   getListOfOrphanedAgents,
   getAgentListByAgencyCode
@@ -157,7 +156,6 @@ const mapStateToProps = state => ({
 
 export default connect(mapStateToProps, {
   getAgency,
-  getAgentList,
   getAgentListByAgencyCode,
   getAgentsByAgencyCode,
   getListOfOrphanedAgents,

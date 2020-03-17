@@ -7,7 +7,10 @@ import {
 } from '../../../state/selectors/policy.selectors';
 import { getListAnswersAsKey } from '../../../state/selectors/questions.selectors';
 import { getPoliciesForAgency } from '../../../state/actions/policy.actions';
-import { getAgentListByAgencyCode } from '../../../state/actions/agency.actions';
+import {
+  getAgentListByAgencyCode,
+  transferPoliciesToAgent
+} from '../../../state/actions/agency.actions';
 
 import Transfer from './Transfer';
 
