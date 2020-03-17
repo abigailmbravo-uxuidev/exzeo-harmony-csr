@@ -5,7 +5,8 @@ import {
   renderWithForm,
   defaultQuoteWorkflowProps,
   underwritingException,
-  checkButton
+  checkButton,
+  jestResolve
 } from '../../../test-utils';
 import { QuoteWorkflow } from '../QuoteWorkflow';
 
@@ -42,6 +43,7 @@ describe('Application Testing', () => {
   it('POS:Congratulations Modal Testing', async () => {
     const newProps = {
       ...props,
+      verifyQuote: jestResolve({ quoteState: 'Application Ready' }),
       quote: {
         ...props.quote,
         quoteInputState: 'Qualified',
