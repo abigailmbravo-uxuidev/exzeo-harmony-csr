@@ -1,7 +1,5 @@
 .new-diary-file,
 .new-note-file {
-  cursor: grab;
-
   &.minimize {
     top: calc(100vh - 2.4375rem);
 
@@ -30,6 +28,7 @@
 
   .title-bar {
     display: flex;
+    cursor: grab;
     align-items: center;
     flex-direction: row;
     flex-grow: 0;
@@ -266,7 +265,6 @@
   top: 9rem;
   bottom: 0;
   left: 12.5rem;
-  cursor: grab;
   overflow: hidden;
   width: 40%;
   min-width: 34rem;

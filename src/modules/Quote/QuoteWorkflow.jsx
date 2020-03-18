@@ -21,7 +21,7 @@ import { getZipcodeSettings } from '../../state/actions/service.actions';
 import { getEnumsForQuoteWorkflow } from '../../state/actions/list.actions';
 import { getQuoteSelector } from '../../state/selectors/quote.selectors';
 import { getDiariesForTable } from '../../state/selectors/diary.selectors';
-import { UNQUALIFIED_STATE } from '../../utilities/quoteState';
+import { UNQUALIFIED_STATE, QUOTE_STATE } from '../../utilities/quoteState';
 
 import App from '../../components/AppWrapper';
 import OpenDiariesBar from '../../components/OpenDiariesBar';
@@ -158,14 +158,22 @@ export class QuoteWorkflow extends React.Component {
   };
 
   handleRetrieveQuote = async () => {
-    const { quote, verifyQuote } = this.props;
+    const {
+      quote: { quoteNumber },
+      verifyQuote,
+      setAppError
+    } = this.props;
+    const { ApplicationReady } = QUOTE_STATE;
+
     try {
-      await verifyQuote({ quoteNumber: quote.quoteNumber });
-      this.setState({ showApplicationModal: true });
+      const { quoteState } = await verifyQuote({ quoteNumber });
+      quoteState !== ApplicationReady
+        ? setAppError({
+            message: `The Quote Status is no longer ${ApplicationReady}, please review the Qualifier Status message(s).`
+          })
+        : this.setState({ showApplicationModal: true });
     } catch (error) {
-      if (process.env.NODE_ENV !== 'production') {
-        console.log('Error with verify quote: ', error);
-      }
+      setAppError({ message: `Error with verify quote: ${error}` });
     }
   };
 

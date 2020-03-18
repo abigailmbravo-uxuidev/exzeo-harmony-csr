@@ -149,23 +149,6 @@ export function clearAgentList() {
 
 /**
  *
- * @param companyCode
- * @param state
- * @returns {Function}
- */
-export function getAgentList(companyCode, state) {
-  return async dispatch => {
-    try {
-      const agents = await fetchAgentList(companyCode, state);
-      dispatch(setAgentList(agents));
-    } catch (error) {
-      dispatch(errorActions.setAppError(error));
-    }
-  };
-}
-
-/**
- *
  * @param agencyData
  * @returns {Function}
  */
@@ -261,15 +244,10 @@ export async function fetchAgencies(companyCode, state, agencyCode = '') {
 
 /**
  *
- * @param companyCode
- * @param state
+ * @param searchParam
  * @returns {Promise<Array>}
  */
-export async function fetchAgenciesByAgencyCodeOrName(
-  companyCode,
-  state,
-  searchParam = ''
-) {
+export async function fetchAvailableAgencies(searchParam = '') {
   let agencyCode = '';
   let displayName = '';
 
@@ -280,13 +258,13 @@ export async function fetchAgenciesByAgencyCodeOrName(
   const config = {
     service: 'agency',
     method: 'GET',
-    path: `agencies?companyCode=${companyCode}&state=${state}&agencyCode=${agencyCode}&displayName=${displayName}`
+    path: `agencies?agencyCode=${agencyCode}&displayName=${displayName}&availableOnly=true`
   };
 
   try {
     const response = await serviceRunner.callService(
       config,
-      'fetchAgenciesByAgencyCodeOrName'
+      'fetchAvailableAgencies'
     );
     return response.data && response.data.result ? response.data.result : [];
   } catch (error) {

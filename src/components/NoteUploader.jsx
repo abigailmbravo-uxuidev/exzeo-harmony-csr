@@ -252,10 +252,10 @@ const NoteUploader = ({
 
   return (
     <Draggable
-      handle=".new-note-file"
+      handle=".title-bar"
       bounds={{
         left: -1400,
-        top: -800,
+        top: -150,
         right: window.innerWidth - 1000,
         bottom: window.innerHeight - 200
       }}
@@ -295,7 +295,8 @@ const NoteUploader = ({
           >
             {({ handleSubmit, submitting }) => (
               <form id="NoteUploader" onSubmit={handleSubmit}>
-                {submitting && <Loader />}
+                {submitting &&
+                  uppy.current.getState().info.type !== 'error' && <Loader />}
                 <div className="content">
                   <div className="note-details">
                     <div className="form-group contact">

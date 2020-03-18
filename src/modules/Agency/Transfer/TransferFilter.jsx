@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 
 import {
   Input,
@@ -11,74 +11,72 @@ import {
 
 import TransferWatcher from './TransferWatcher';
 
-const FORM_NAME = 'TransferFilter';
-export class TransferFilter extends Component {
-  render() {
-    const {
-      policyNumberList,
-      listAnswersAsKey,
-      agentsList,
-      getPoliciesForAgency,
-      agencyCode
-    } = this.props;
-    return (
-      <Form onSubmit={noop} subscription={{ submitting: true }}>
-        {({ form }) => (
-          <React.Fragment>
-            <form id={FORM_NAME} className="search-inputs">
-              <Field
-                name="policyNumber"
-                dataTest="policyNumber"
-                label="Filter By Policy Number"
-                component={Input}
-                styleName=""
-                answers={policyNumberList}
-              />
-              <Field
-                name="state"
-                dataTest="state"
-                label="Filter By State"
-                component={SelectTypeAhead}
-                styleName=""
-                showPlaceholder
-                answers={listAnswersAsKey.US_states}
-              />
-              <Field
-                name="product"
-                dataTest="product"
-                label="Filter By Product"
-                component={SelectTypeAhead}
-                styleName=""
-                showPlaceholder
-                answers={listAnswersAsKey.Products}
-              />
-              <Field
-                name="agentCode"
-                dataTest="agentCode"
-                label="Filter By Agent"
-                component={SelectTypeAhead}
-                styleName=""
-                answers={agentsList}
-              />
-              <Button
-                className={Button.constants.classNames.secondary}
-                size={Button.constants.sizes.small}
-                customClass="multi-input"
-                onClick={form.reset}
-                dataTest="clear-fields"
-              >
-                Clear Filters
-              </Button>
-            </form>
-            <TransferWatcher
-              getPoliciesForAgency={getPoliciesForAgency}
-              agencyCode={agencyCode}
+export const TransferFilter = ({
+  policyNumberList,
+  listAnswersAsKey,
+  agentsList,
+  getPoliciesForAgency,
+  agencyCode,
+  refresh
+}) => {
+  return (
+    <Form onSubmit={noop} subscription={{ submitting: true }}>
+      {({ form }) => (
+        <React.Fragment>
+          <form id="TransferFilter" className="search-inputs">
+            <Field
+              name="policyNumber"
+              dataTest="policyNumber"
+              label="Filter By Policy Number"
+              component={Input}
+              styleName=""
+              answers={policyNumberList}
             />
-          </React.Fragment>
-        )}
-      </Form>
-    );
-  }
-}
+            <Field
+              name="state"
+              dataTest="state"
+              label="Filter By State"
+              component={SelectTypeAhead}
+              styleName=""
+              showPlaceholder
+              answers={listAnswersAsKey.US_states}
+            />
+            <Field
+              name="product"
+              dataTest="product"
+              label="Filter By Product"
+              component={SelectTypeAhead}
+              styleName=""
+              showPlaceholder
+              answers={listAnswersAsKey.Products}
+            />
+            <Field
+              name="agentCode"
+              dataTest="agentCode"
+              label="Filter By Agent"
+              component={SelectTypeAhead}
+              styleName=""
+              answers={agentsList}
+            />
+            <Button
+              className={Button.constants.classNames.secondary}
+              size={Button.constants.sizes.small}
+              customClass="multi-input"
+              onClick={form.reset}
+              dataTest="clear-fields"
+            >
+              Clear Filters
+            </Button>
+          </form>
+          <TransferWatcher
+            getPoliciesForAgency={getPoliciesForAgency}
+            agencyCode={agencyCode}
+            refresh={refresh}
+          />
+        </React.Fragment>
+      )}
+    </Form>
+  );
+};
 
 export default TransferFilter;

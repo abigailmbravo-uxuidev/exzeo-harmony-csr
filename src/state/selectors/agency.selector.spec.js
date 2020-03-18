@@ -1,4 +1,6 @@
 import { mockAgency } from '../../test-utils/fixtures/agency';
+import { mockAgencies } from '../../test-utils/fixtures/agencies';
+import { mockAgents } from 'test-utils';
 
 import {
   getEditModalInitialValues,
@@ -6,8 +8,8 @@ import {
   getAgentOfRecord,
   getBranchesList,
   getBranchInitialValues,
-  filterActiveAgentsList,
-  filterAgenciesList
+  filterAgencies,
+  filterAgents
 } from './agency.selector';
 
 describe('Testing Agency Selectors', () => {
@@ -51,36 +53,6 @@ describe('Testing Agency Selectors', () => {
         displayText: 'TestFirst TestLast',
         firstName: 'TestFirst',
         lastName: 'TestLast'
-      }
-    ];
-    expect(result).toEqual(res);
-  });
-
-  it('should test filterActiveAgentsList', () => {
-    const agents = [
-      {
-        agentCode: 234,
-        displayText: 'TestFirst AOR',
-        firstName: 'TestFirst',
-        lastName: 'AOR',
-        status: 'Active'
-      },
-      {
-        agentCode: 567,
-        displayText: 'TestSecond AOR',
-        firstName: 'TestSecond',
-        lastName: 'AOR',
-        status: 'Terminated'
-      }
-    ];
-
-    const result = filterActiveAgentsList(agents);
-    const res = [
-      {
-        answer: 234,
-        label: '234: TestFirst AOR',
-        firstName: 'TestFirst',
-        lastName: 'AOR'
       }
     ];
     expect(result).toEqual(res);
@@ -176,22 +148,70 @@ describe('Testing Agency Selectors', () => {
     });
   });
 
-  it('should test filterAgenciesList', () => {
-    const agents = [
+  it('should test filterAgencies for TTIC, FL, AF3', () => {
+    const result = filterAgencies(mockAgencies, [
+      { state: 'FL', companyCode: 'TTIC', product: 'AF3' }
+    ]);
+    expect(result).toEqual([
       {
-        agencyCode: 234,
-        displayName: 'TestFirst AOR Agency',
-        status: 'Active'
+        answer: 20532,
+        label: '20532: 1ST ADVANTAGE INSURANCE INC'
       },
       {
-        agencyCode: 567,
-        displayName: 'TestSecond AOR',
-        status: 'Cancel'
+        answer: 20414,
+        label: '20414: 1ST BROWARD SERVICE AGENCY LLC'
       }
-    ];
+    ]);
+  });
 
-    const result = filterAgenciesList(agents);
-    const res = [{ answer: 234, label: '234: TestFirst AOR Agency' }];
-    expect(result).toEqual(res);
+  it('should test filterAgencies for TTIC, FL, HO3', () => {
+    const result = filterAgencies(mockAgencies, [
+      { state: 'FL', companyCode: 'TTIC', product: 'HO3' }
+    ]);
+    expect(result).toEqual([
+      {
+        answer: 20532,
+        label: '20532: 1ST ADVANTAGE INSURANCE INC'
+      }
+    ]);
+  });
+
+  it('should test filterAgencies for multiple CSP', () => {
+    const result = filterAgencies(mockAgencies, [
+      { state: 'FL', companyCode: 'TTIC', product: 'HO3' },
+      { companyCode: 'TTIC', state: 'AK', product: 'AF3' },
+      { companyCode: 'TTIC', state: 'AL', product: 'HO3' },
+      { companyCode: 'TTIC', state: 'AR', product: 'HO3' },
+      { companyCode: 'TTIC', state: 'AZ', product: 'HO3' }
+    ]);
+    expect(result).toEqual([
+      {
+        answer: 20532,
+        label: '20532: 1ST ADVANTAGE INSURANCE INC'
+      }
+    ]);
+  });
+
+  it('should not return results if an agency does not match all specified csp objects', () => {
+    const result = filterAgencies(mockAgencies, [
+      { state: 'FL', companyCode: 'TTIC', product: 'HO3' },
+      { state: 'NM', companyCode: 'TTIC', product: 'AF3' }
+    ]);
+    expect(result).toEqual([]);
+  });
+
+  it('should filter agents by apointed', () => {
+    const result = filterAgents(mockAgents, [{ state: 'FL' }]);
+    expect(result).toEqual([
+      {
+        answer: 60562,
+        label: '60562: Test Agent'
+      }
+    ]);
+  });
+
+  it('should not return agents who are not appointed ', () => {
+    const result = filterAgents(mockAgents, [{ state: 'GA' }]);
+    expect(result).toEqual([]);
   });
 });
