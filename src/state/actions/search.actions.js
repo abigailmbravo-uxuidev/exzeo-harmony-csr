@@ -1,6 +1,6 @@
 import { date } from '@exzeo/core-ui';
 import * as serviceRunner from '@exzeo/core-ui/src/@Harmony/Domain/Api/serviceRunner';
-import { searchAddress } from '@exzeo/core-ui/src/@Harmony/Search';
+import { searchAddress } from '@exzeo/core-ui/src/@Harmony/Search/data';
 
 import { sortDiariesByDate } from '../../utilities/diaries';
 import { SECONDARY_DATE_FORMAT } from '../../constants/dates';
