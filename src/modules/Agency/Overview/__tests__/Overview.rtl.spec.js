@@ -2,6 +2,7 @@ import React from 'react';
 import { within, wait, waitForElement } from '@testing-library/react';
 import { date, normalize } from '@exzeo/core-ui';
 import 'jest-dom/extend-expect';
+import * as utilities from '../../utilities';
 
 import {
   renderWithReduxAndRouter,
@@ -11,7 +12,6 @@ import {
   mockPolicy
 } from '../../../../test-utils';
 import Overview from '../index';
-import * as questionActions from '../../../../state/actions/questions.actions.js';
 
 describe('Overview testing', () => {
   const state = {
@@ -32,7 +32,7 @@ describe('Overview testing', () => {
     branchCode: '1'
   };
 
-  questionActions.fetchTerritoryManager = jestResolve(territoryManager);
+  utilities.fetchTerritoryManager = jestResolve(territoryManager);
 
   const checkHeader = (el, buttonText) => {
     expect(el.children[0]).toHaveTextContent(buttonText);

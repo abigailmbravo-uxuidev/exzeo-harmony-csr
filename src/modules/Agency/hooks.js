@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { fetchPostalCodes } from '../../state/actions/questions.actions';
+import { fetchPostalCodes } from './utilities';
 
 export const useFetchPostalCodes = (searchTerm, state) => {
   const [postalCodes, setPostalCodes] = useState([]);

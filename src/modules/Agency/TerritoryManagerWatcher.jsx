@@ -1,9 +1,6 @@
 import { useEffect } from 'react';
 import { useField, useForm } from '@exzeo/core-ui';
-
-import { fetchPostalCodes } from '../../state/actions/questions.actions';
-
-import { setTerritoryManager } from './utilities';
+import { fetchPostalCodes, setTerritoryManager } from './utilities';
 
 const TerritoryManagerWatcher = ({
   physicalAddressPrefix,

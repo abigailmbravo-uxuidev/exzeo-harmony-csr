@@ -1,8 +1,6 @@
 import { useEffect, useState } from 'react';
-import {
-  fetchTerritoryManager,
-  fetchTerritoryManagers
-} from '../state/actions/questions.actions';
+import { fetchTerritoryManagers } from '../state/actions/questions.actions';
+import { fetchTerritoryManager } from '../modules/Agency/utilities';
 
 export function useFetchTerritoryManagers(state) {
   const [managers, setManagers] = useState([]);

@@ -1,4 +1,5 @@
 import { defaultMemoize } from 'reselect';
+import * as serviceRunner from '@exzeo/core-ui/src/@Harmony/Domain/Api/serviceRunner';
 
 export const filterTerritoryManager = (state, county, territoryManagers) => {
   return territoryManagers.find(tm => {
@@ -68,3 +69,51 @@ export const formatAgency = data => {
     branches: data.branches.filter(b => String(b.branchCode) !== '0')
   };
 };
+
+/**
+ *
+ * @param territoryManagerId
+ * @returns {Promise<{}>}
+ */
+export async function fetchTerritoryManager(territoryManagerId) {
+  try {
+    const config = {
+      exchangeName: 'harmony',
+      routingKey: 'harmony.territoryManager',
+      data: {
+        territoryManagerId
+      }
+    };
+
+    const response = await serviceRunner.callService(
+      config,
+      'harmony.territoryManager'
+    );
+    return response.data && response.data.result ? response.data.result : [];
+  } catch (error) {
+    throw error;
+  }
+}
+
+/**
+ *
+ * @param searchTerm
+ * @param state
+ * @returns {Array<[]>}
+ */
+export async function fetchPostalCodes(searchTerm, state) {
+  try {
+    const config = {
+      service: 'list-service',
+      method: 'GET',
+      path: `v1/postal-codes?postalCode=${searchTerm}&state=${state}&pageSize=10&sortDirection=asc&page=0&country=USA`
+    };
+    const response = await serviceRunner.callService(
+      config,
+      'fetchPostalCodes'
+    );
+    return response?.data?.result?.postalCodes;
+  } catch (error) {
+    throw error;
+  }
+}

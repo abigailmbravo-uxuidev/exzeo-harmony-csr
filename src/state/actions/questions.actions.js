@@ -137,31 +137,6 @@ export async function fetchTerritoryManagers(state) {
 
 /**
  *
- * @param territoryManagerId
- * @returns {Promise<{}>}
- */
-export async function fetchTerritoryManager(territoryManagerId) {
-  try {
-    const config = {
-      exchangeName: 'harmony',
-      routingKey: 'harmony.territoryManager',
-      data: {
-        territoryManagerId
-      }
-    };
-
-    const response = await serviceRunner.callService(
-      config,
-      'harmony.territoryManager'
-    );
-    return response.data && response.data.result ? response.data.result : [];
-  } catch (error) {
-    throw error;
-  }
-}
-
-/**
- *
  * @returns {Promise<{}>}
  */
 export async function fetchLists() {
@@ -193,27 +168,4 @@ export function getLists() {
       dispatch(errorActions.setAppError(error));
     }
   };
-}
-
-/**
- *
- * @param searchTerm
- * @param state
- * @returns {Array<[]>}
- */
-export async function fetchPostalCodes(searchTerm, state) {
-  try {
-    const config = {
-      service: 'list-service',
-      method: 'GET',
-      path: `v1/postal-codes?postalCode=${searchTerm}&state=${state}&pageSize=10&sortDirection=asc&page=0&country=USA`
-    };
-    const response = await serviceRunner.callService(
-      config,
-      'fetchPostalCodes'
-    );
-    return response?.data?.result?.postalCodes;
-  } catch (error) {
-    throw error;
-  }
 }
