@@ -5,12 +5,12 @@ import {
   filterAgencies,
   filterAgents
 } from '../../../state/selectors/agency.selector';
-
-import { filterCSPList } from './utilities';
 import {
   fetchAvailableAgents,
   fetchAvailableAgencies
 } from '../../../utilities/agency';
+
+import { filterCSPList } from './utilities';
 
 const AgencyChangeWatcher = ({
   setAgents,
