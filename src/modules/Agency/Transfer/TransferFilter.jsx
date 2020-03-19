@@ -10,6 +10,7 @@ import {
 } from '@exzeo/core-ui';
 
 import TransferWatcher from './TransferWatcher';
+import { companyAnswers } from '../../Search/constants';
 
 export const TransferFilter = ({
   policyNumberList,
@@ -31,6 +32,15 @@ export const TransferFilter = ({
               component={Input}
               styleName=""
               answers={policyNumberList}
+            />
+            <Field
+              name="companyCode"
+              dataTest="companyCode"
+              label="Filter By Company"
+              component={SelectTypeAhead}
+              styleName=""
+              showPlaceholder
+              answers={companyAnswers}
             />
             <Field
               name="state"

@@ -6,6 +6,7 @@ const TransferWatcher = ({ getPoliciesForAgency, agencyCode, refresh }) => {
   const state = useField('state').input.value;
   const product = useField('product').input.value;
   const agentCode = useField('agentCode').input.value;
+  const companyCode = useField('companyCode').input.value;
 
   useEffect(() => {
     const getPolicies = async () => {
@@ -15,13 +16,22 @@ const TransferWatcher = ({ getPoliciesForAgency, agencyCode, refresh }) => {
           state,
           product,
           agentCode,
-          agencyCode
+          agencyCode,
+          companyCode
         });
       } catch (error) {}
     };
     getPolicies();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [policyNumber, state, product, agentCode, agencyCode, refresh]);
+  }, [
+    policyNumber,
+    state,
+    product,
+    agentCode,
+    agencyCode,
+    companyCode,
+    refresh
+  ]);
 
   return null;
 };
