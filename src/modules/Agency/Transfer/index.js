@@ -16,7 +16,6 @@ import Transfer from './Transfer';
 
 const mapStateToProps = state => ({
   agency: state.agencyState.agency,
-  agentsList: getAgentsListForTransfer(state),
   policies: getPoliciesByAgencyCode(state),
   policyNumberList: getPolicyNumberList(state),
   listAnswersAsKey: getListAnswersAsKey(state)

@@ -10,15 +10,16 @@ import {
 } from '@exzeo/core-ui';
 
 import TransferWatcher from './TransferWatcher';
+import { useFetchAvailableAgents } from '../hooks';
 
 export const TransferFilter = ({
   policyNumberList,
   listAnswersAsKey,
-  agentsList,
   getPoliciesForAgency,
   agencyCode,
   refresh
 }) => {
+  const { agents } = useFetchAvailableAgents(agencyCode);
   return (
     <Form onSubmit={noop} subscription={{ submitting: true }}>
       {({ form }) => (
@@ -56,7 +57,7 @@ export const TransferFilter = ({
               label="Filter By Agent"
               component={SelectTypeAhead}
               styleName=""
-              answers={agentsList}
+              answers={agents}
             />
             <Button
               className={Button.constants.classNames.secondary}

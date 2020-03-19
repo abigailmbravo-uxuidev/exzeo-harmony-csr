@@ -8,7 +8,6 @@ import TransferFilter from './TransferFilter';
 
 export const Transfer = ({
   agencyCode,
-  agentsList,
   policies,
   policyNumberList,
   listAnswersAsKey,
@@ -79,7 +78,6 @@ export const Transfer = ({
                 clearSelectedPolicies={clearSelectedPolicies}
                 policyNumberList={policyNumberList}
                 listAnswersAsKey={listAnswersAsKey}
-                agentsList={agentsList}
                 getPoliciesForAgency={getPoliciesForAgency}
                 refresh={refresh}
               />
