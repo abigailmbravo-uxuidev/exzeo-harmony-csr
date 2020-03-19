@@ -2,15 +2,15 @@ import { useEffect } from 'react';
 import { useField } from '@exzeo/core-ui';
 
 import {
-  fetchAvailableAgencies,
-  fetchAgentsByAgencyCode
-} from '../../../state/actions/agency.actions';
-import {
   filterAgencies,
   filterAgents
 } from '../../../state/selectors/agency.selector';
 
 import { filterCSPList } from './utilities';
+import {
+  fetchAvailableAgents,
+  fetchAvailableAgencies
+} from '../../../utilities/agency';
 
 const AgencyChangeWatcher = ({
   setAgents,
@@ -24,7 +24,7 @@ const AgencyChangeWatcher = ({
   useEffect(() => {
     const getAgents = async () => {
       try {
-        const result = await fetchAgentsByAgencyCode(agencyCodeToValue);
+        const result = await fetchAvailableAgents(agencyCodeToValue);
         setAgents(filterAgents(result, cspList));
       } catch (error) {
         setAgents([]);

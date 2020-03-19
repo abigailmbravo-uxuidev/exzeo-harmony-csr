@@ -87,6 +87,17 @@ export const getOrphanedAgentsList = createSelector(
   }
 );
 
+export const getAgentsListForTransfer = createSelector(
+  [getAgentListData],
+  agents => {
+    if (!agents || !Array.isArray(agents)) return [];
+    return agents.map(o => ({
+      label: `${o.firstName} ${o.lastName}`,
+      answer: o.agentCode
+    }));
+  }
+);
+
 export const getAgentsList = createSelector([getAgents], agents => {
   if (!agents || !Array.isArray(agents)) return [];
   return agents.map(o => ({
