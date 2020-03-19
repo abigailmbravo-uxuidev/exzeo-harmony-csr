@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { useFormState } from '@exzeo/core-ui/src';
+import { useFormState } from '@exzeo/core-ui';
 
 const TransferWatcher = ({ getPoliciesForAgency, agencyCode, refresh }) => {
   const {
