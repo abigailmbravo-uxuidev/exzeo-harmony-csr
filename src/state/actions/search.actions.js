@@ -4,11 +4,7 @@ import { searchAddress } from '@exzeo/core-ui/src/@Harmony/Search';
 
 import { sortDiariesByDate } from '../../utilities/diaries';
 import { SECONDARY_DATE_FORMAT } from '../../constants/dates';
-import {
-  DEFAULT_SEARCH_PARAMS,
-  RESULTS_PAGE_SIZE,
-  SEARCH_TYPES
-} from '../../constants/search';
+import { RESULTS_PAGE_SIZE, SEARCH_TYPES } from '../../constants/search';
 
 import * as types from './actionTypes';
 import * as errorActions from './error.actions';
@@ -222,30 +218,23 @@ export async function fetchAgents(query) {
 
 /**
  * Build query string and call agency service to search agencies
- * @param {string} companyCode
- * @param {string} state
- * @param {string} displayName
- * @param {string} agencyCode
- * @param {string} address
- * @param {string} licenseNumber
- * @param {string} fein
- * @param {string} phone
+ * @param {object} query
+ * @param {string} query.companyCode
+ * @param {string} query.state
+ * @param {string} query.displayName
+ * @param {string} query.agencyCode
+ * @param {string} query.address
+ * @param {string} query.licenseNumber
+ * @param {string} query.fein
+ * @param {string} query.phone
  * @returns {Promise<{}>}
  */
-export async function fetchAgencies({
-  companyCode,
-  state,
-  displayName,
-  agencyCode,
-  address,
-  licenseNumber,
-  fein,
-  phone
-}) {
+export async function fetchAgencies(query) {
+  const queryString = buildQuerystring(query);
   const config = {
     service: 'agency',
     method: 'GET',
-    path: `agencies?companyCode=${companyCode}&state=${state}&displayName=${displayName}&agencyCode=${agencyCode}&mailingAddress=${address}&licenseNumber=${licenseNumber}&taxIdNumber=${fein}&primaryPhoneNumber=${phone}`
+    path: `agencies?${queryString}`
   };
 
   try {
@@ -306,17 +295,6 @@ function setPageNumber(currentPage, isNext) {
     return currentPage || 1;
   }
   return isNext ? String(currentPage + 1) : String(currentPage - 1);
-}
-
-/**
- * Format value to put in URI for request.
- * @param value
- * @param sub
- * @returns {string}
- */
-function formatForURI(value, sub = '') {
-  const encodedVal = encodeURIComponent(value);
-  return encodedVal !== 'undefined' ? encodedVal : sub;
 }
 
 /**
@@ -550,14 +528,14 @@ export async function handleAgentSearch(data) {
 export async function handleAgencySearch(data) {
   try {
     const searchQuery = {
-      companyCode: DEFAULT_SEARCH_PARAMS.companyCode,
-      state: DEFAULT_SEARCH_PARAMS.state,
-      displayName: formatForURI(data.displayName),
-      agencyCode: formatForURI(data.agencyCode),
-      address: formatForURI(String(data.address).trim()),
-      licenseNumber: formatForURI(data.licenseNumber),
-      fein: formatForURI(data.fein),
-      phone: formatForURI(data.phone)
+      companyCode: data.companyCode,
+      state: data.state,
+      displayName: data.displayName,
+      agencyCode: data.agencyCode,
+      mailingAddress: String(data.address || '').trim(),
+      licenseNumber: data.licenseNumber,
+      taxIdNumber: data.fein,
+      primaryPhoneNumber: data.phone
     };
 
     const results = await fetchAgencies(searchQuery);
