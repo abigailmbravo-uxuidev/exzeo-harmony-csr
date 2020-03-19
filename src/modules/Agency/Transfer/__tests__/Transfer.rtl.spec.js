@@ -20,7 +20,7 @@ import {
 
 import Transfer from '../index';
 
-import * as utilities from '../utilities';
+import * as utilities from '../../../../utilities/agency';
 
 mockServiceRunner([]);
 describe('Testing the Transfer Page', () => {
