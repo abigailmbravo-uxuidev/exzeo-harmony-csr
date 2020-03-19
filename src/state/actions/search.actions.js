@@ -93,6 +93,7 @@ export function setSearchResults({
 function buildQuerystring({
   firstName,
   lastName,
+  mailingAddress,
   propertyAddress,
   effectiveDate,
   policyNumber,
@@ -116,6 +117,7 @@ function buildQuerystring({
   const fields = {
     ...(firstName && { firstName }),
     ...(lastName && { lastName }),
+    ...(mailingAddress && { mailingAddress }),
     ...(propertyAddress && { propertyAddress }),
     ...(effectiveDate && { effectiveDate }),
     ...(policyNumber && { policyNumber }),
@@ -190,28 +192,22 @@ export async function fetchPolicies(query) {
 
 /**
  * Build query string and call agency service to search agents
- * @param {string} companyCode
- * @param {string} state
- * @param {string} firstName
- * @param {string} lastName
- * @param {string} agentCode
- * @param {string} address
- * @param {string} licenseNumber
+ * @param {object} query
+ * @param {string} query.companyCode
+ * @param {string} query.state
+ * @param {string} query.firstName
+ * @param {string} query.lastName
+ * @param {string} query.agentCode
+ * @param {string} v.address
+ * @param {string} query.licenseNumber
  * @returns {Promise<{}>}
  */
-export async function fetchAgents({
-  companyCode,
-  state,
-  firstName,
-  lastName,
-  agentCode,
-  address,
-  licenseNumber
-}) {
+export async function fetchAgents(query) {
+  const queryString = buildQuerystring(query);
   const config = {
     service: 'agency',
     method: 'GET',
-    path: `agents?companyCode=${companyCode}&state=${state}&firstName=${firstName}&lastName=${lastName}&agentCode=${agentCode}&mailingAddress=${address}&licenseNumber=${licenseNumber}`
+    path: `agents?${queryString}`
   };
 
   try {
@@ -530,13 +526,13 @@ export async function handlePolicySearch(data) {
 export async function handleAgentSearch(data) {
   try {
     const searchQuery = {
-      companyCode: DEFAULT_SEARCH_PARAMS.companyCode,
-      state: DEFAULT_SEARCH_PARAMS.state,
-      firstName: formatForURI(data.firstName),
-      lastName: formatForURI(data.lastName),
-      agentCode: formatForURI(data.agentCode),
-      address: formatForURI(String(data.address).trim()),
-      licenseNumber: formatForURI(data.licenseNumber)
+      companyCode: data.companyCode,
+      state: data.state,
+      firstName: data.firstName,
+      lastName: data.lastName,
+      agentCode: data.agentCode,
+      mailingAddress: String(data.address || '').trim(),
+      licenseNumber: data.licenseNumber
     };
 
     const results = await fetchAgents(searchQuery);
