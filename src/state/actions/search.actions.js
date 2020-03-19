@@ -509,7 +509,7 @@ export async function handleAgentSearch(data) {
       firstName: data.firstName,
       lastName: data.lastName,
       agentCode: data.agentCode,
-      mailingAddress: String(data.address || '').trim(),
+      mailingAddress: String(data.address ?? '').trim(),
       licenseNumber: data.licenseNumber
     };
 
@@ -532,7 +532,7 @@ export async function handleAgencySearch(data) {
       state: data.state,
       displayName: data.displayName,
       agencyCode: data.agencyCode,
-      mailingAddress: String(data.address || '').trim(),
+      mailingAddress: String(data.address ?? '').trim(),
       licenseNumber: data.licenseNumber,
       taxIdNumber: data.fein,
       primaryPhoneNumber: data.phone
