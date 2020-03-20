@@ -103,9 +103,8 @@ const Notes = props => {
       <TableHeaderColumn
         className="file-type"
         columnClassName="file-type"
-        dataField="noteAttachments"
+        dataField="fileType"
         dataSort
-        dataFormat={notesUtils.attachmentType}
       >
         File Type
       </TableHeaderColumn>

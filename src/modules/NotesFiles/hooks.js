@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import * as serviceRunner from '@exzeo/core-ui/src/@Harmony/Domain/Api/serviceRunner';
 
-import { mergeNotes } from './utilities';
+import { mergeNotes, formatNotes } from './utilities';
 import { removeTerm } from '../../utilities/format';
 
 export const useFetchNotes = (numbers, numberType, notesSynced) => {
@@ -44,7 +44,7 @@ export const useFetchNotes = (numbers, numberType, notesSynced) => {
           ? mergeNotes(notes.data.result, files.data.result)
           : notes.data.result;
 
-        setNotes(allNotes);
+        setNotes(formatNotes(allNotes));
       } catch (error) {
         console.error('Error fetching notes: ', error);
       } finally {

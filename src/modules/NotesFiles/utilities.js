@@ -60,9 +60,6 @@ export const showCreatedBy = createdBy => (createdBy ? createdBy.userName : '');
 export const attachmentCount = attachments =>
   attachments ? attachments.length : 0;
 
-export const attachmentType = attachments =>
-  attachments.length > 0 ? toTitleCase(attachments[0].fileType) : '';
-
 export const formatNote = note => (note ? note.replace(/\r|\n/g, '<br>') : '');
 
 export const attachmentFilter = cell =>
@@ -89,4 +86,16 @@ export const sortFiles = (a, b, order) => {
     b.noteAttachments.length > 0 ? getFileName(b.noteAttachments[0]) : '';
 
   return order === 'desc' ? (fileA > fileB ? 1 : -1) : fileA < fileB ? 1 : -1;
+};
+
+export const formatNotes = notes => {
+  return notes.map(n => {
+    return {
+      ...n,
+      fileType:
+        n.noteAttachments.length > 0
+          ? toTitleCase(n.noteAttachments[0].fileType)
+          : ''
+    };
+  });
 };
