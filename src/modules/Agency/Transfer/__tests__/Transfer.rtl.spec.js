@@ -20,7 +20,7 @@ import {
 
 import Transfer from '../index';
 
-import * as agencyData from '../../../../state/actions/agency.actions';
+import * as utilities from '../../../../utilities/agency';
 
 mockServiceRunner([]);
 describe('Testing the Transfer Page', () => {
@@ -320,8 +320,8 @@ describe('Testing the Transfer Page', () => {
   });
 
   it('POS:Should Submit Transfer Policy ', async () => {
-    agencyData.fetchAvailableAgencies = jestResolve(searchAgenciesResult);
-    agencyData.fetchAgentsByAgencyCode = jestResolve(searchAgentsResult);
+    utilities.fetchAvailableAgencies = jestResolve(searchAgenciesResult);
+    utilities.fetchAvailableAgents = jestResolve(searchAgentsResult);
     const props = {
       ...defaultProps
     };

@@ -84,18 +84,6 @@ function AgencyCard({ agency, policyNumber, policyHolders }) {
                     </a>
                   </p>
                 )}
-                {agency.contact &&
-                agency.contact.emailAddress &&
-                policyHolders[0] ? (
-                  <p>
-                    <i className="fa fa-envelope" />
-                    <a
-                      href={`mailto:${agency.contact.emailAddress}?subject=${policyNumber}%20${policyHolders[0].firstName}%20${policyHolders[0].lastName}`}
-                    >
-                      {agency.contact.emailAddress}
-                    </a>
-                  </p>
-                ) : null}
                 {agency.customerServiceEmailAddress && (
                   <p className="phone csr-phone">
                     <span className="contact-divider">|</span>

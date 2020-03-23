@@ -14,9 +14,11 @@ const { isRequired, validateState, validateZipCode } = validation;
 const Address = ({
   fieldPrefix,
   isOptional,
-  listOfZipCodes,
+  listOfPostalCodes,
   setDisabled,
-  listAnswersAsKey
+  listAnswersAsKey,
+  postalCodeInput,
+  setPostalCodeInput
 }) => {
   return (
     <React.Fragment>
@@ -77,7 +79,7 @@ const Address = ({
         )}
       </Field>
 
-      {listOfZipCodes && (
+      {listOfPostalCodes && (
         <Field
           name={`${fieldPrefix}.zip`}
           validate={isOptional ? null : validation.isRequired}
@@ -91,14 +93,16 @@ const Address = ({
               dataTest="zip"
               optionValue="answer"
               optionLabel="label"
+              inputValue={postalCodeInput}
+              onInputChange={value => setPostalCodeInput(value)}
               disabled={setDisabled}
               validate={isOptional ? null : validation.isRequired}
-              answers={listOfZipCodes || []}
+              answers={listOfPostalCodes}
             />
           )}
         </Field>
       )}
-      {!listOfZipCodes && (
+      {!listOfPostalCodes && (
         <Field
           name={`${fieldPrefix}.zip`}
           validate={composeValidators([isRequired, validateZipCode])}
@@ -118,10 +122,6 @@ const Address = ({
       )}
     </React.Fragment>
   );
-};
-
-Address.defaultProps = {
-  listOfZipCodes: []
 };
 
 export default Address;

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   Field,
   Input,
@@ -9,11 +9,9 @@ import {
 import Address from './Address';
 import AddressWatcher from './AddressWatcher';
 import TerritoryManagerWatcher from './TerritoryManagerWatcher';
-import {
-  useFetchZipCodeSettings,
-  useFetchTerritoryManagers
-} from './Create/hooks';
-import { listOfZipCodes } from './utilities';
+import { useFetchPostalCodes } from './hooks';
+import { listOfPostalCodes } from './utilities';
+import { useFetchTerritoryManagers } from '../../hooks/territoryManagers';
 
 const AddressGroup = ({
   mailingAddressPrefix,
@@ -21,12 +19,18 @@ const AddressGroup = ({
   showTerritoryManager,
   listAnswersAsKey
 }) => {
+  const [postalCodeInput, setPostalCodeInput] = useState('');
   const disabledValue =
     useField(`${physicalAddressPrefix}.sameAsMailing`).input.value || false;
   const stateValue =
     useField(`${physicalAddressPrefix}.state`).input.value || 'FL';
 
-  const { zipCodeSettings } = useFetchZipCodeSettings(stateValue);
+  const zipValue = useField(`${physicalAddressPrefix}.zip`).input.value || '';
+
+  const { postalCodes } = useFetchPostalCodes(
+    postalCodeInput || zipValue,
+    stateValue
+  );
   const { territoryManagers } = useFetchTerritoryManagers(stateValue);
 
   return (
@@ -59,14 +63,17 @@ const AddressGroup = ({
           <Address
             setDisabled={disabledValue}
             fieldPrefix={physicalAddressPrefix}
-            listOfZipCodes={listOfZipCodes(zipCodeSettings)}
+            listOfPostalCodes={listOfPostalCodes(postalCodes)}
             listAnswersAsKey={listAnswersAsKey}
+            postalCodeInput={postalCodeInput}
+            setPostalCodeInput={setPostalCodeInput}
           />
 
           <AddressWatcher
             fieldPrefix={physicalAddressPrefix}
             matchPrefix={mailingAddressPrefix}
             watchField={`${physicalAddressPrefix}.sameAsMailing`}
+            setPostalCodeInput={setPostalCodeInput}
           />
 
           {showTerritoryManager && (
@@ -104,11 +111,8 @@ const AddressGroup = ({
               </Field>
 
               <TerritoryManagerWatcher
-                fieldPrefix={physicalAddressPrefix}
-                matchPrefix={mailingAddressPrefix}
-                watchField={`${physicalAddressPrefix}.sameAsMailing`}
-                values={{}}
-                zipCodeSettings={zipCodeSettings}
+                physicalAddressPrefix={physicalAddressPrefix}
+                mailingAddressPrefix={mailingAddressPrefix}
                 territoryManagers={territoryManagers}
               />
             </React.Fragment>
