@@ -1,6 +1,6 @@
 import React from 'react';
 
-export const AddressView = ({ agencyBranchData, territoryManagers }) => {
+export const AddressView = ({ agencyBranchData, territoryManager }) => {
   return (
     <React.Fragment>
       <div className="mailing-address" data-test="mailing-address">
@@ -43,15 +43,7 @@ export const AddressView = ({ agencyBranchData, territoryManagers }) => {
           data-test="territory-manager"
         >
           <label>Territory Manager</label>
-          <div>
-            {territoryManagers.filter(
-              t => t._id === agencyBranchData.territoryManagerId
-            ).length > 0
-              ? territoryManagers.filter(
-                  t => t._id === agencyBranchData.territoryManagerId
-                )[0].name
-              : ''}
-          </div>
+          <div>{territoryManager.name || ''}</div>
         </div>
       </div>
     </React.Fragment>
