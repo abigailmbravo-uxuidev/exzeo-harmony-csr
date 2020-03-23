@@ -172,7 +172,13 @@ class DiaryTable extends Component {
           dataField="assignee"
           dataFormat={val => val.displayName}
           dataSort
-          // sortFunc={(a,b,order) => notesUtils.sortByOrder(a.displayName, b.displayName, order)}
+          sortFunc={(a, b, order) =>
+            notesUtils.sortByOrder(
+              a.assignee.displayName,
+              b.assignee.displayName,
+              order
+            )
+          }
         >
           Assignee
         </TableHeaderColumn>
