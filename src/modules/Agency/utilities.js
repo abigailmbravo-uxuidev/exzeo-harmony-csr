@@ -1,6 +1,36 @@
 import { defaultMemoize } from 'reselect';
 import * as serviceRunner from '@exzeo/core-ui/src/@Harmony/Domain/Api/serviceRunner';
-
+/**
+ *
+ * @returns {(Object|null)}
+ * @param zip
+ * @param zipCodeSettings
+ */
+export const filterZipCodeSettings = (zip, zipCodeSettings) => {
+  const matchingZipCodes = zipCodeSettings.filter(z => z.zip === zip);
+  if (matchingZipCodes.length === 1) {
+    return matchingZipCodes[0];
+  }
+  return null;
+};
+/**
+ *
+ * @param zip
+ * @param zipCodeSettings
+ * @param onChange
+ */
+export const setCounty = async (zip, zipCodeSettings, onChange) => {
+  const result = filterZipCodeSettings(zip, zipCodeSettings);
+  if (!result) return;
+  onChange(result.county);
+};
+/**
+ *
+ * @returns {(Object|null)}
+ * @param state
+ * @param county
+ * @param territoryManagers
+ */
 export const filterTerritoryManager = (state, county, territoryManagers) => {
   return territoryManagers.find(tm => {
     const { states } = tm;
@@ -22,7 +52,14 @@ export const filterTerritoryManager = (state, county, territoryManagers) => {
     return null;
   });
 };
-
+/**
+ *
+ * @param state
+ * @param county
+ * @param territoryManagerField
+ * @param onChange
+ * @param territoryManagers
+ */
 export const setTerritoryManager = async (
   state,
   county,
@@ -34,23 +71,32 @@ export const setTerritoryManager = async (
   if (!tm) return;
   onChange(territoryManagerField, tm._id);
 };
-
+/**
+ * @returns {Array}
+ * @param postalCodes
+ */
 export const listOfPostalCodes = postalCodes => {
   if (!Array.isArray(postalCodes)) return [];
-
   return postalCodes.map(p => ({
     answer: p.postalCode,
     label: `${p.postalCode}`
   }));
 };
-
+/**
+ * @returns {(String|undefined)}
+ * @param agents
+ */
 export const isUnique = defaultMemoize((name, values, uniqueList) => value => {
   const exception = values ? values[name] : null;
   return value && uniqueList.includes(value) && value !== exception
     ? 'This must be unique.'
     : undefined;
 });
-
+/**
+ *
+ * @returns {Object}
+ * @param data
+ */
 export const formatAgent = data => {
   return {
     ...data,
@@ -59,7 +105,10 @@ export const formatAgent = data => {
     faxNumber: data.faxNumber || ''
   };
 };
-
+/**
+ * @returns {Object}
+ * @param data
+ */
 export const formatAgency = data => {
   return {
     ...data,
@@ -69,7 +118,6 @@ export const formatAgency = data => {
     branches: data.branches.filter(b => String(b.branchCode) !== '0')
   };
 };
-
 /**
  *
  * @param territoryManagerId
@@ -84,7 +132,6 @@ export async function fetchTerritoryManager(territoryManagerId) {
         territoryManagerId
       }
     };
-
     const response = await serviceRunner.callService(
       config,
       'harmony.territoryManager'
@@ -94,7 +141,6 @@ export async function fetchTerritoryManager(territoryManagerId) {
     throw error;
   }
 }
-
 /**
  *
  * @param searchTerm
@@ -117,3 +163,15 @@ export async function fetchPostalCodes(searchTerm, state) {
     throw error;
   }
 }
+/**
+ *
+ * @returns {Array}
+ * @param agents
+ */
+export const formatAgents = agents => {
+  if (!Array.isArray(agents)) return [];
+  return agents.map(o => ({
+    label: `${o.firstName} ${o.lastName}`,
+    answer: o.agentCode
+  }));
+};

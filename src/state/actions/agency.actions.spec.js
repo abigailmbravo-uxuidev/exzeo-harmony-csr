@@ -6,6 +6,7 @@ import MockAdapter from 'axios-mock-adapter';
 
 import * as serviceRunner from '@exzeo/core-ui/src/@Harmony/Domain/Api/serviceRunner';
 import { mockAgency } from '../../test-utils/fixtures/agency';
+import { fetchAvailableAgencies } from '../../utilities/agency';
 
 import * as agencyActions from './agency.actions';
 import * as types from './actionTypes';
@@ -377,7 +378,7 @@ describe('Test Agency Actions', () => {
     mockAdapter.onPost(axiosOptions.url, axiosOptions.data).reply(200, {
       result: [mockAgency]
     });
-    const response = await agencyActions.fetchAvailableAgencies('60000');
+    const response = await fetchAvailableAgencies('60000');
     expect(response).toEqual([mockAgency]);
   });
 
@@ -400,7 +401,7 @@ describe('Test Agency Actions', () => {
     mockAdapter.onPost(axiosOptions.url, axiosOptions.data).reply(200, {
       result: [mockAgency]
     });
-    const response = await agencyActions.fetchAvailableAgencies('TypTap');
+    const response = await fetchAvailableAgencies('TypTap');
     expect(response).toEqual([mockAgency]);
   });
 
@@ -423,7 +424,7 @@ describe('Test Agency Actions', () => {
     mockAdapter.onPost(axiosOptions.url, axiosOptions.data).reply(200, {
       result: [mockAgency]
     });
-    const response = await agencyActions.fetchAvailableAgencies('123 Agency');
+    const response = await fetchAvailableAgencies('123 Agency');
     expect(response).toEqual([mockAgency]);
   });
 });
