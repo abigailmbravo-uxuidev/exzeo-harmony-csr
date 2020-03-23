@@ -68,15 +68,17 @@ export const attachmentFilter = cell =>
 export const formatCreatedDate = createdDate =>
   date.formattedLocalDate(createdDate);
 
+export const sortByOrder = (a, b, order) => {
+  return order === 'desc' ? (a > b ? 1 : -1) : a < b ? 1 : -1;
+};
+
 export const sortAuthor = (a, b, order) => {
   if (!a.createdBy || !b.createdBy) return order === 'desc' ? -1 : 1;
-  return order === 'desc'
-    ? a.createdBy.userName.toLowerCase() > b.createdBy.userName.toLowerCase()
-      ? 1
-      : -1
-    : a.createdBy.userName.toLowerCase() < b.createdBy.userName.toLowerCase()
-    ? 1
-    : -1;
+  return sortByOrder(
+    a.createdBy.userName.toLowerCase(),
+    b.createdBy.userName.toLowerCase(),
+    order
+  );
 };
 
 export const sortFiles = (a, b, order) => {
@@ -84,8 +86,11 @@ export const sortFiles = (a, b, order) => {
     a.noteAttachments.length > 0 ? getFileName(a.noteAttachments[0]) : '';
   const fileB =
     b.noteAttachments.length > 0 ? getFileName(b.noteAttachments[0]) : '';
+  return sortByOrder(fileA, fileB, order);
+};
 
-  return order === 'desc' ? (fileA > fileB ? 1 : -1) : fileA < fileB ? 1 : -1;
+export const sortFileType = (a, b, order) => {
+  return sortByOrder(a.fileType, b.fileType, order);
 };
 
 export const formatNotes = notes => {

@@ -143,17 +143,6 @@ describe('Notes Files Testing', () => {
 
       fireEvent.click(dropArrows);
 
-      // Check all columns for their classnames to check their arrow settings.
-      notesColumns.forEach(col => {
-        // File Type and File flip together, so check that those have both flipped up together.
-        if (['File Type', 'File'].includes(columnToClick)) {
-          if (!['File Type', 'File'].includes(col)) checkArrows(col, 'order');
-          else checkArrows(col);
-        } else {
-          if (col !== columnToClick) checkArrows(col, 'order');
-          else checkArrows(col);
-        }
-      });
       // Check our sorting order again.
       if (['Author', 'File Type', 'File'].includes(columnToClick))
         checkOrder('desc');

@@ -105,6 +105,8 @@ const Notes = props => {
         columnClassName="file-type"
         dataField="fileType"
         dataSort
+        sortOrder="asc"
+        sortFunc={notesUtils.sortFileType}
       >
         File Type
       </TableHeaderColumn>
