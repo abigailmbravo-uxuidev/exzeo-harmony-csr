@@ -22,7 +22,5 @@ describe('Skip to UW Testing', () => {
   it('Quote does update to Quote Stopped after Bad UW and blank coverage', () => {
     // Fill out UW first with bad data
     fillOutUnderwriting(unQuestionsBAD, 'Quote Stopped');
-    // Confirm that the quote goes to quote stopped after coverage is filled out
-    fillOutCoverage();
   });
 });
