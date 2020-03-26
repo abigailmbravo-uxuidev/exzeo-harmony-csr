@@ -560,10 +560,8 @@ const mock = {
                 extendedProperties: {
                   output: 'currency',
                   outputLabel: 'Personal Property Limit',
-                  conditionalOptions: {
-                    target:
-                      '${Math.ceil(((it.targetValue / 100) * it.coverageLimits.dwelling.value)) > 500000}'
-                  }
+                  conditionalOptions:
+                    '${Math.ceil(((it.targetValue / 100) * it.coverageLimits.dwelling.value)) > 500000}'
                 },
                 dataSource: [
                   { label: '0%', answer: 0 },
