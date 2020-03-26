@@ -8,7 +8,7 @@ function AgencyCard({ agency, policyNumber, policyHolders }) {
     return <div className="agency contact card">Agency not found.</div>;
 
   return (
-    <div className="agency contact card">
+    <div className="agency contact card" data-test="agency-card">
       <div className="contact-title">
         <i className="fa fa-address-book" />
         <label>Agency</label>

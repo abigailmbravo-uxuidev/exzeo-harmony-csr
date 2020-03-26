@@ -1,12 +1,23 @@
 import { setRouteAliases, createToBindQuote } from '../../helpers';
 
+import {
+  MODIFY_EFFECTIVE_DATE,
+  ADD_ENDORSEMENTS,
+  ADD_MORTGAGEE,
+  ADD_PAYMENT,
+  SWITCH_AOR
+} from '../../fixtures';
+
 describe('Endorsements Happy Path', () => {
   before('Login and set route aliases', () => {
-    setRouteAliases();
     cy.login();
   });
 
-  it('Bind a quote to a policy for Address 4131 Test Address, Sarasota, FL 00001 using default coverages on the quote', () => {
+  beforeEach('Set route aliases for network requests', () => {
+    setRouteAliases();
+  });
+
+  it('Create + Bind Quote and perform Endorsement on Policy', () => {
     createToBindQuote();
     cy.visit('/');
     cy.task('log', 'Search Policy and open')
@@ -19,11 +30,33 @@ describe('Endorsements Happy Path', () => {
           .type(quote.transaction.policyNumber)
           .clickSubmit()
           .wait('@fetchPolicies')
+          .then(({ response }) => {
+            expect(response.body.totalNumberOfRecords).to.equal(1);
+          })
           // This makes it so we don't open up a new window
           .findDataTag(quote.transaction.policyNumber)
           .then($a => {
             $a.prop('onclick', () => cy.visit($a.prop('dataset').url));
           });
+
+        cy.task('log', 'Effective Date Change');
+        cy.findDataTag('edit-effective-date')
+          .click()
+          .findDataTag('effective-date')
+          .type(MODIFY_EFFECTIVE_DATE.effectiveDate)
+          .findDataTag('effective-date-change-reason')
+          .select('Other')
+          .findDataTag('modal-submit')
+          .click();
+        cy.wait('@postCreateTransaction').then(({ response }) => {
+          expect(response.body.status, 'Effective Date: status').to.equal(200);
+        });
+
+        cy.get('.spinner').should('not.be.visible');
+
+        cy.findDataTag('effectiveDateDetail').contains(
+          MODIFY_EFFECTIVE_DATE.effectiveDateAlternate
+        );
 
         cy.goToNav('endorsements');
         // Cypress checks an element's visibility with a special algo, and our
@@ -35,86 +68,254 @@ describe('Endorsements Happy Path', () => {
         // prettier-ignore
         cy.get('.route-content').invoke('attr', 'style', 'overflow: unset');
 
-        cy.task('log', 'Filling out Endorsements')
-          .findDataTag('coverageLimits.dwelling.value')
-          .type(`{selectall}{backspace}${400000}`)
+        cy.task('log', 'Filling out Endorsements');
+        cy.findDataTag('coverageLimits.dwelling.value')
+          .type(`{selectall}{backspace}${ADD_ENDORSEMENTS.dwelling.value}`)
           .findDataTag('coverageLimits.personalProperty.value')
-          .select('50')
+          .select(`${ADD_ENDORSEMENTS.personalProperty.value}`)
           .findDataTag('property.burglarAlarm_true')
           .click()
           .findDataTag('coverageOptions.sinkholePerilCoverage.answer')
-          .select('false')
+          .select(ADD_ENDORSEMENTS.sinkholePerilCoverageAnswerText)
           .findDataTag('property.windMitigation.roofCovering')
-          .select('FBC')
+          .select(ADD_ENDORSEMENTS.windMitigation.roofCovering)
           .findDataTag('property.windMitigation.roofGeometry')
-          .select('Hip')
+          .select(ADD_ENDORSEMENTS.windMitigation.roofGeometry)
           .findDataTag('property.protectionClass')
-          .select('7')
+          .select(ADD_ENDORSEMENTS.protectionClassText)
           .findDataTag('policyHolders[0].primaryPhoneNumber')
-          .type(`{selectall}{backspace}${'2224445555'}`)
+          .type(
+            `{selectall}{backspace}${ADD_ENDORSEMENTS.policyHolders[0].primaryPhoneNumber}`
+          )
           .findDataTag('policyHolders[0].secondaryPhoneNumber')
-          .type(`{selectall}{backspace}${'3337778888'}`)
+          .type(
+            `{selectall}{backspace}${ADD_ENDORSEMENTS.policyHolders[0].secondaryPhoneNumber}`
+          )
           .findDataTag('policyHolders[1].firstName')
-          .type(`{selectall}{backspace}${'Batman 2'}`)
+          .type(
+            `{selectall}{backspace}${ADD_ENDORSEMENTS.policyHolders[1].firstName}`
+          )
           .findDataTag('policyHolders[1].lastName')
-          .type(`{selectall}{backspace}${'Robin 2'}`)
+          .type(
+            `{selectall}{backspace}${ADD_ENDORSEMENTS.policyHolders[1].lastName}`
+          )
           .findDataTag('policyHolders[1].emailAddress')
-          .type(`{selectall}{backspace}${'exzeoqa@exzeo.com'}`)
+          .type(
+            `{selectall}{backspace}${ADD_ENDORSEMENTS.policyHolders[1].emailAddress}`
+          )
           .findDataTag('policyHolders[1].primaryPhoneNumber')
-          .type(`{selectall}{backspace}${'9994445555'}`)
+          .type(
+            `{selectall}{backspace}${ADD_ENDORSEMENTS.policyHolders[1].primaryPhoneNumber}`
+          )
           .findDataTag('policyHolders[1].secondaryPhoneNumber')
-          .type(`{selectall}{backspace}${'3337776543'}`)
+          .type(
+            `{selectall}{backspace}${ADD_ENDORSEMENTS.policyHolders[1].secondaryPhoneNumber}`
+          )
           .findDataTag('policyHolderMailingAddress.address2')
-          .type(`{selectall}{backspace}${'APT 101'}`)
+          .type(
+            `{selectall}{backspace}${ADD_ENDORSEMENTS.policyHolderMailingAddress.address2}`
+          )
           .findDataTag('property.physicalAddress.address2')
-          .type(`{selectall}{backspace}${'APT 101'}`)
+          .type(
+            `{selectall}{backspace}${ADD_ENDORSEMENTS.property.physicalAddress.address2}`
+          )
           .findDataTag('modal-submit')
-          .click()
-          .wait('@rateEndorsement')
-          .findDataTag('modal-submit')
-          .click()
-          .wait('@saveEndorsement')
+          .click();
+
+        cy.wait('@rateEndorsement').then(({ response }) => {
+          expect(response.body.status, 'Rate Endorsement request').to.equal(
+            200
+          );
+        });
+
+        cy.findDataTag('modal-submit').click();
+
+        cy.wait('@saveEndorsement').then(({ response }) => {
+          expect(
+            response.body.status,
+            'PolicyHolder Endorsement request'
+          ).to.equal(200);
+        });
+        cy.wait('@fetchPolicy')
+          .then(xhr => {
+            expect(xhr.status, 'Latest Policy request').to.equal(200);
+          })
           // Have to wait here, 'saveEndorsement' resolves before some async work is finished on the backend.
           .wait(5000);
-        cy.findDataTag('policyHolderDetail')
-          .get('dl div')
-          .find('dd')
-          .contains('(222) 444-5555')
-          .findDataTag('propertyAddressDetail')
-          .get('dl div')
-          .find('dd')
-          .contains('APT 101')
-          .findDataTag('mailingAddressDetail')
-          .get('dl div')
-          .find('dd')
-          .contains('APT 101')
-          .get('.table tbody')
-          .find('tr')
-          .find('td')
-          .contains(quote.transaction.effectiveDate.substring(0, 10))
-          .get('.table tbody')
-          .find('tr')
-          .find('td')
-          .contains('Multiple Endorsements Endorsement')
-          .get('.table tbody')
-          .find('tr')
-          .find('td')
-          .contains(quote.transaction.issueDate.substring(0, 10));
 
-        cy.goToNav('notes').wait('@fetchFiles');
+        cy.findDataTag('effectiveDateDetail').contains(
+          MODIFY_EFFECTIVE_DATE.effectiveDateAlternate
+        );
+
+        cy.goToNav('notes')
+          .wait('@fetchFiles')
+          .then(({ response }) => {
+            expect(response.body.status).to.equal(200);
+          });
+
         cy.get('.table tbody')
-          .find('tr')
-          .find('td')
-          .contains('System');
-        cy.get('.table tbody')
-          .find('tr')
-          .find('td')
-          .contains('tticcsr');
-        cy.get('.table tbody')
+          .contains('.table tbody', 'System')
+          .contains('.table tbody', 'tticcsr')
           .contains('div', `Multiple Endorsements Endorsement`)
           .then($div => {
             expect($div).to.have.length(1);
           });
       });
+  });
+
+  it('AOR Transfer', () => {
+    cy.goToNav('policyholder');
+
+    cy.wait('@fetchAgency').then(({ response }) => {
+      expect(response.body.status, 'AOR Transfer modal: status').to.equal(200);
+    });
+    cy.wait('@fetchAgentsByAgencyCode').then(({ response }) => {
+      expect(response.body.status, 'AOR Transfer: status').to.equal(200);
+    });
+
+    cy.findDataTag('edit-aor')
+      .click()
+      .clearReactSelectField('agencyCode_wrapper')
+      // not using 'chooseReactSelectOption' helper here because it does not support 'server-backed' typeahead yet.
+      .get('[data-test="agencyCode_wrapper"] .react-select__value-container')
+      .type(SWITCH_AOR.agencies[0].agencyCode + '{enter}', { delay: 1000 })
+      .get('[data-test="agentCode_wrapper"] .react-select__value-container')
+      .type(SWITCH_AOR.firstName + '{enter}', { delay: 1000 })
+      .findDataTag('modal-submit')
+      .click();
+
+    cy.wait('@aorTransfer').then(({ response }) =>
+      expect(response.body.status, 'AOR Transfer: status').to.equal(200)
+    );
+    cy.wait('@fetchPolicy').then(xhr => {
+      expect(xhr.status).to.equal(200);
+    });
+    cy.wait('@fetchAgency').then(({ response }) => {
+      expect(response.body.status, 'AOR Transfer modal: status').to.equal(200);
+    });
+
+    // cy.wait('@fetchAgentsByAgencyCode');
+    // cy.wait('@fetchAgentsByAgencyCode');
+    // cy.wait('@fetchAgentsByAgencyCode').then(({ response }) => {
+    //   expect(response.body.status, 'AOR Transfer: status').to.equal(200);
+    // });
+
+    cy.findDataTag('loader').should('not.be.visible');
+
+    cy.findDataTag('agency-card')
+      .contains('[data-test="agency-card"]', SWITCH_AOR.agencies[0].agencyCode)
+      .contains(SWITCH_AOR.agencyName);
+  });
+
+  it('Add an Additional Interest', () => {
+    cy.goToNav('billing');
+    cy.findDataTag('mortgagee')
+      .click()
+      .findDataTag('name1')
+      .type(ADD_MORTGAGEE.additionalInterests[0].name1)
+      .findDataTag('name2')
+      .type(ADD_MORTGAGEE.additionalInterests[0].name2)
+      .findDataTag('address1')
+      .type(ADD_MORTGAGEE.additionalInterests[0].mailingAddress.address1)
+      .findDataTag('address2')
+      .type(ADD_MORTGAGEE.additionalInterests[0].mailingAddress.address2)
+      .findDataTag('city')
+      .type(ADD_MORTGAGEE.additionalInterests[0].mailingAddress.city)
+      .findDataTag('state')
+      .type(ADD_MORTGAGEE.additionalInterests[0].mailingAddress.state)
+      .findDataTag('zip')
+      .type(ADD_MORTGAGEE.additionalInterests[0].mailingAddress.zip)
+      .findDataTag('phoneNumber')
+      .type(ADD_MORTGAGEE.additionalInterests[0].phoneNumber)
+      .findDataTag('referenceNumber')
+      .type(ADD_MORTGAGEE.additionalInterests[0].referenceNumber)
+      .findDataTag('ai-modal-submit')
+      .click();
+
+    cy.wait('@postCreateTransaction').then(({ response }) => {
+      expect(response.body.status, 'Add AI: status').to.equal(200);
+    });
+
+    cy.findDataTag('Mortgagee-0')
+      .contains(
+        '[data-test="Mortgagee-0"]',
+        ADD_MORTGAGEE.additionalInterests[0].name1
+      )
+      .contains(
+        '[data-test="Mortgagee-0"]',
+        ADD_MORTGAGEE.additionalInterests[0].name2
+      )
+      .contains(
+        '[data-test="Mortgagee-0"]',
+        ADD_MORTGAGEE.additionalInterests[0].mailingAddress.address1
+      )
+      .contains(
+        '[data-test="Mortgagee-0"]',
+        ADD_MORTGAGEE.additionalInterests[0].mailingAddress.address2
+      )
+      .contains(ADD_MORTGAGEE.additionalInterests[0].referenceNumber);
+  });
+
+  it('Add Payment', () => {
+    cy.goToNav('billing');
+    cy.findDataTag('batchNumber')
+      .click()
+      .type('11')
+      .findDataTag('cashType')
+      .select('Electronic Deposit')
+      .findDataTag('cashDescription')
+      .select('Payment Received')
+      .findDataTag('amount')
+      .type('100')
+      .get('.btn-footer .btn-primary')
+      .click();
+
+    cy.wait('@postPaymentTransaction').then(({ response }) => {
+      expect(response.body.status, 'Add AI: status').to.equal(200);
+    });
+
+    cy.get('.spinner').should('not.be.visible');
+
+    cy.findDataTag('total-payments').contains(
+      ADD_PAYMENT.cashReceived.$numberDecimal
+    );
+  });
+
+  it('Generate Doc: Invoice', () => {
+    cy.findDataTag('generate-document-btn')
+      .click()
+      .findDataTag('documentType')
+      .select('Policy Invoice')
+      .findDataTag('doc-submit')
+      .click();
+    cy.wait('@getDocumentPacketFiles').then(({ response }) => {
+      expect(response.body.status, 'Generate Doc: status').to.equal(200);
+    });
+  });
+
+  it('Cancel Policy', () => {
+    cy.goToNav('cancel')
+      .findDataTag('cancelType_Voluntary Cancellation')
+      .click()
+      .findDataTag('cancelReason')
+      .select('Other')
+      .findDataTag('submit')
+      .click();
+
+    cy.wait('@cancelPolicy').then(({ response }) => {
+      expect(response.body.status, 'Cancel Policy: status').to.equal(200);
+    });
+
+    cy.findDataTag('cancellationDetail')
+      .contains(
+        '[data-test="cancellationDetail"]',
+        'Voluntary Cancellation Date'
+      )
+      .contains(
+        '[data-test="cancellationDetail"]',
+        MODIFY_EFFECTIVE_DATE.effectiveDateAlternate
+      )
+      .findDataTag('policyDetails')
+      .contains('Pending Voluntary Cancellation / Partial Payment Received');
   });
 });
