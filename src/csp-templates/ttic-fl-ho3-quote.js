@@ -556,10 +556,14 @@ const mock = {
               data: {
                 component: 'selectInteger',
                 label: 'Percentage',
-
+                validation: ['personalPropertyMax'],
                 extendedProperties: {
                   output: 'currency',
-                  outputLabel: 'Personal Property Limit'
+                  outputLabel: 'Personal Property Limit',
+                  conditionalOptions: {
+                    target:
+                      '${Math.ceil(((it.targetValue / 100) * it.coverageLimits.dwelling.value)) > 500000}'
+                  }
                 },
                 dataSource: [
                   { label: '0%', answer: 0 },
