@@ -99,7 +99,6 @@ export const SideNav = ({
   return (
     <React.Fragment>
       <nav className="site-nav">
-        {activateRedirect && <Redirect to={activateRedirectLink} />}
         <SideNavigation
           navLinks={getNavLinks({ quoteNumber: quoteData.quoteNumber })}
         >
