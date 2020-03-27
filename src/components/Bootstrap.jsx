@@ -1,5 +1,4 @@
 import React from 'react';
-import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 
 import { getDiaryAssigneeOptions } from '../state/actions/questions.actions';
@@ -15,11 +14,6 @@ export class Bootstrap extends React.Component {
   }
 }
 
-export default withRouter(
-  connect(
-    null,
-    {
-      getAssignees: getDiaryAssigneeOptions
-    }
-  )(Bootstrap)
+export default connect(null, { getAssignees: getDiaryAssigneeOptions })(
+  Bootstrap
 );

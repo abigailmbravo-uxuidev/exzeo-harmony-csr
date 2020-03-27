@@ -32,31 +32,4 @@ describe('App State Actions', () => {
 
     expect(store.getActions()).toEqual(stateObj);
   });
-
-  it('should call setAppStateError', () => {
-    const initialState = {};
-    const store = mockStore(initialState);
-
-    const inputProps = {
-      modelName: 'bb',
-      instanceId: '123',
-      error: 'my error'
-    };
-
-    const stateObj = [
-      {
-        type: types.APPSTATE_ERROR,
-        appState: { ...inputProps }
-      }
-    ];
-
-    store.dispatch(
-      appStateActions.setAppStateError(
-        inputProps.modelName,
-        inputProps.instanceId,
-        inputProps.error
-      )
-    );
-    expect(store.getActions()).toEqual(stateObj);
-  });
 });
