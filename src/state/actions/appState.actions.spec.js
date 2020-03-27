@@ -10,8 +10,6 @@ describe('App State Actions', () => {
     const store = mockStore(initialState);
 
     const inputProps = {
-      modelName: 'bb',
-      instanceId: '123',
       data: { bb: '123' }
     };
 
@@ -22,13 +20,7 @@ describe('App State Actions', () => {
       }
     ];
 
-    store.dispatch(
-      appStateActions.setAppState(
-        inputProps.modelName,
-        inputProps.instanceId,
-        inputProps.data
-      )
-    );
+    store.dispatch(appStateActions.setAppState(inputProps.data));
 
     expect(store.getActions()).toEqual(stateObj);
   });
