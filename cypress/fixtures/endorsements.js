@@ -3,7 +3,9 @@ let today = new Date(); // eslint-disable-line prefer-const
 const addEffectiveDays = 35;
 today.setDate(today.getDate() + addEffectiveDays);
 const yyyy = today.getFullYear();
-const dd = today.getDate();
+const dd = today.getDate().toLocaleString('en-US', {
+  minimumIntegerDigits: 2
+});
 const mm = (today.getMonth() + 1).toLocaleString('en-US', {
   minimumIntegerDigits: 2
 });
