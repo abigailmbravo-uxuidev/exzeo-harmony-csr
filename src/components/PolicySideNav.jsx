@@ -119,6 +119,7 @@ export class SideNav extends React.Component {
             <button
               aria-label="open-btn"
               className="btn btn-primary btn-sm btn-block"
+              data-test="generate-document-btn"
               onClick={this.generateDoc}
             >
               <i className="fa fa-plus" />
