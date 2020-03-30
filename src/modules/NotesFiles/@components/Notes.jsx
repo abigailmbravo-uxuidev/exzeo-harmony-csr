@@ -80,6 +80,7 @@ const Notes = props => {
         columnClassName="note-type"
         dataField="noteContactType"
         dataSort
+        sortFunc={notesUtils.sortContactType}
         hidden={attachmentStatus}
       >
         Contact
@@ -89,6 +90,7 @@ const Notes = props => {
         columnClassName="note"
         dataField="noteContent"
         dataSort
+        sortFunc={notesUtils.sortNoteContent}
         dataFormat={notesUtils.formatNote}
         hidden={attachmentStatus}
       >

@@ -89,6 +89,14 @@ export const sortAuthor = (a, b, order) => {
   );
 };
 
+export const sortContactType = (a, b, order) => {
+  return sortByOrder(a.noteContactType, b.noteContactType, order);
+};
+
+export const sortNoteContent = (a, b, order) => {
+  return sortByOrder(a.noteContent, b.noteContent, order);
+};
+
 export const sortFiles = (a, b, order) => {
   const fileA =
     a.noteAttachments.length > 0 ? getFileName(a.noteAttachments[0]) : '';
