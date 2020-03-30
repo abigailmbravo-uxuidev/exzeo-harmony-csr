@@ -50,8 +50,10 @@ const Notes = props => {
         dataField="createdAt"
         dataSort
         dataFormat={notesUtils.formatCreatedDate}
-        sortFunc={notesUtils.sortCreatedDate}
         filterFormatted
+        sortFunc={(a, b, order) =>
+          notesUtils.sortByDate(a.createdAt, b.createdAt, order)
+        }
       >
         Created
       </TableHeaderColumn>

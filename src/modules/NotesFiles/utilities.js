@@ -72,10 +72,10 @@ export const sortByOrder = (a, b, order) => {
   return order === 'desc' ? (a > b ? 1 : -1) : a < b ? 1 : -1;
 };
 
-export const sortCreatedDate = (a, b, order) => {
+export const sortByDate = (a, b, order) => {
   return sortByOrder(
-    date.formattedLocalDate(a.createdAt),
-    date.formattedLocalDate(b.createdAt),
+    date.formattedLocalDate(a),
+    date.formattedLocalDate(b),
     order
   );
 };

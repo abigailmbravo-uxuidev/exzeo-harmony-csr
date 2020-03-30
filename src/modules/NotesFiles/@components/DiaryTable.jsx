@@ -154,6 +154,7 @@ class DiaryTable extends Component {
           dataField="dueStatus"
           dataFormat={this.statusFormatter}
           dataSort
+          sortFunc={(a, b, order) => notesUtils.sortByDate(a.due, b.due, order)}
         >
           Status
         </TableHeaderColumn>
@@ -163,6 +164,7 @@ class DiaryTable extends Component {
           dataField="due"
           dataFormat={val => date.formatDate(val)}
           dataSort
+          sortFunc={(a, b, order) => notesUtils.sortByDate(a.due, b.due, order)}
         >
           Due
         </TableHeaderColumn>
