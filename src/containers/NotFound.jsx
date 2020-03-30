@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import Header from '../components/Common/Header';
 
-const NotFound = function NotFound() {
+const NotFound = () => {
   return (
     <div className="app-wrapper">
       <Header />

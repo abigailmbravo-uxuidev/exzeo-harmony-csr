@@ -1,5 +1,8 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import Modal from 'react-modal';
+
+import * as errorActions from '../state/actions/error.actions';
 
 const modalStyles = {
   content: {
@@ -42,4 +45,12 @@ const ErrorModal = ({ error, handleClose }) => {
   );
 };
 
-export default ErrorModal;
+const mapStateToProps = state => {
+  return {
+    error: state.error
+  };
+};
+
+export default connect(mapStateToProps, {
+  handleClose: errorActions.clearAppError
+})(ErrorModal);
