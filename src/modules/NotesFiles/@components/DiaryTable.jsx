@@ -212,6 +212,9 @@ class DiaryTable extends Component {
           dataField="updatedAt"
           dataFormat={val => date.formatDate(val)}
           dataSort
+          sortFunc={(a, b, order) =>
+            notesUtils.sortByDate(a.updatedAt, b.updatedAt, order)
+          }
         >
           Updated
         </TableHeaderColumn>
