@@ -73,7 +73,11 @@ export const sortByOrder = (a, b, order) => {
 };
 
 export const sortCreatedDate = (a, b, order) => {
-  return sortByOrder(new Date(a.createdAt), new Date(b.createdAt), order);
+  return sortByOrder(
+    date.formattedLocalDate(a.createdAt),
+    date.formattedLocalDate(b.createdAt),
+    order
+  );
 };
 
 export const sortAuthor = (a, b, order) => {
