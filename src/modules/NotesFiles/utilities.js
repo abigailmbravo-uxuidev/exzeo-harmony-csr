@@ -72,6 +72,10 @@ export const sortByOrder = (a, b, order) => {
   return order === 'desc' ? (a > b ? 1 : -1) : a < b ? 1 : -1;
 };
 
+export const sortCreatedDate = (a, b, order) => {
+  return sortByOrder(new Date(a.createdAt), new Date(b.createdAt), order);
+};
+
 export const sortAuthor = (a, b, order) => {
   if (!a.createdBy || !b.createdBy) return order === 'desc' ? -1 : 1;
   return sortByOrder(

@@ -50,6 +50,7 @@ const Notes = props => {
         dataField="createdAt"
         dataSort
         dataFormat={notesUtils.formatCreatedDate}
+        sortFunc={notesUtils.sortCreatedDate}
         filterFormatted
       >
         Created
