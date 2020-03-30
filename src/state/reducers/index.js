@@ -14,7 +14,6 @@ import quoteState from './quote.reducer';
 import search from './search.reducer';
 import service from './service.reducer';
 import ui from './ui.reducer';
-import zipCodeSettingsState from './zipCodeSettings.reducer';
 
 const rootReducer = combineReducers({
   form: formReducer,
@@ -28,7 +27,6 @@ const rootReducer = combineReducers({
   quoteState,
   search,
   agencyState,
-  zipCodeSettingsState,
   notes,
   diaries,
   list

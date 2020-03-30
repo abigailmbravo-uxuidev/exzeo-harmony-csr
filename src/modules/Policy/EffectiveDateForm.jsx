@@ -27,7 +27,7 @@ const EffectiveDateForm = ({
                   input={input}
                   meta={meta}
                   styleName="effectiveDate"
-                  dataTest="effectiveDate"
+                  dataTest="effective-date"
                   label="Effective Date"
                 />
               )}
@@ -41,7 +41,7 @@ const EffectiveDateForm = ({
                   input={input}
                   meta={meta}
                   styleName="effectiveDateChangeReason"
-                  dataTest="agentCode"
+                  dataTest="effective-date-change-reason"
                   label="Reason For Change"
                   answers={effectiveDateReasons}
                 />

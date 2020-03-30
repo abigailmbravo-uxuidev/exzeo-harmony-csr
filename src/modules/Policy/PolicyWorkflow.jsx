@@ -362,82 +362,69 @@ export class PolicyWorkflow extends React.Component {
                 <div className="content-wrapper">
                   <div className="route-content">
                     {shouldUseGandalf && (
-                      <React.Fragment>
-                        <Gandalf
-                          formId={FORM_ID}
-                          currentPage={currentStepNumber}
-                          customComponents={this.customComponents}
-                          customHandlers={customHandlers}
-                          handleSubmit={this.handleGandalfSubmit}
-                          initialValues={policyFormData}
-                          options={{
-                            diaries,
-                            ...options,
-                            cancelOptions,
-                            zipCodeSettings,
-                            endorsementHistory
-                          }} // enums for select/radio fields
-                          path={location.pathname}
-                          template={gandalfTemplate}
-                          transformConfig={transformConfig}
-                          stickyFooter
-                          renderFooter={
-                            <FormSpy
-                              subscription={{
-                                pristine: true,
-                                submitting: true,
-                                dirtyFields: true,
-                                invalid: true
-                              }}
-                            >
-                              {({ form, pristine, submitting }) => (
-                                <div className="form-footer">
-                                  <PolicyFooter
-                                    history={customHandlers.history}
-                                    setAppError={customHandlers.setAppError}
-                                    policyFormData={policyFormData}
-                                    timezone={zipCodeSettings.timezone}
-                                    currentStep={currentRouteName}
-                                    formInstance={form}
-                                    isSubmitDisabled={this.isSubmitDisabled(
-                                      pristine,
-                                      submitting
-                                    )}
-                                    handleGandalfSubmit={
-                                      this.handleGandalfSubmit
-                                    }
-                                    handlePrimaryClick={
-                                      this.primaryClickHandler
-                                    }
-                                  />
-                                </div>
-                              )}
-                            </FormSpy>
-                          }
-                          formListeners={
-                            <React.Fragment>
-                              <FormSpy subscription={{}}>
-                                {({ form }) => {
-                                  this.setFormInstance(form);
-                                  return null;
-                                }}
-                              </FormSpy>
-
-                              <FormSpy
-                                subscription={{ dirty: true, pristine: true }}
-                              >
-                                {({ dirty }) => (
-                                  <NavigationPrompt
-                                    dirty={dirty}
-                                    formInstance={this.formInstance}
-                                    history={history}
-                                  />
+                      <Gandalf
+                        formId={FORM_ID}
+                        currentPage={currentStepNumber}
+                        customComponents={this.customComponents}
+                        customHandlers={customHandlers}
+                        handleSubmit={this.handleGandalfSubmit}
+                        initialValues={policyFormData}
+                        options={{
+                          diaries,
+                          ...options,
+                          cancelOptions,
+                          zipCodeSettings,
+                          endorsementHistory
+                        }} // enums for select/radio fields
+                        path={location.pathname}
+                        template={gandalfTemplate}
+                        transformConfig={transformConfig}
+                      >
+                        <FormSpy
+                          subscription={{
+                            pristine: true,
+                            submitting: true,
+                            dirtyFields: true,
+                            invalid: true
+                          }}
+                        >
+                          {({ form, pristine, submitting }) => (
+                            <div className="form-footer">
+                              <PolicyFooter
+                                history={customHandlers.history}
+                                setAppError={customHandlers.setAppError}
+                                policyFormData={policyFormData}
+                                timezone={zipCodeSettings.timezone}
+                                currentStep={currentRouteName}
+                                formInstance={form}
+                                isSubmitDisabled={this.isSubmitDisabled(
+                                  pristine,
+                                  submitting
                                 )}
-                              </FormSpy>
-                            </React.Fragment>
-                          }
-                        />
-                      </React.Fragment>
+                                handleGandalfSubmit={this.handleGandalfSubmit}
+                                handlePrimaryClick={this.primaryClickHandler}
+                              />
+                            </div>
+                          )}
+                        </FormSpy>
+                        <FormSpy subscription={{}}>
+                          {({ form }) => {
+                            this.setFormInstance(form);
+                            return null;
+                          }}
+                        </FormSpy>
+
+                        <FormSpy subscription={{ dirty: true, pristine: true }}>
+                          {({ dirty }) => (
+                            <NavigationPrompt
+                              dirty={dirty}
+                              formInstance={this.formInstance}
+                              history={history}
+                            />
+                          )}
+                        </FormSpy>
+                        <div id="modal-anchor" />
+                      </Gandalf>
                     )}
                   </div>
                 </div>

@@ -14,6 +14,7 @@ import {
 import ResetButton from '../components/ResetButton';
 import { STATUS_ANSWERS } from '../../../constants/diaries';
 import { productAnswers } from '../constants';
+import { isValidRange } from './utilities';
 
 class DiariesSearch extends Component {
   render() {
@@ -60,9 +61,13 @@ class DiariesSearch extends Component {
                   name="dateRange"
                   dataTest="date-range"
                   styleName="dateRange"
+                  minDateProp="min"
+                  maxDateProp="max"
                   component={DateRange}
+                  validate={isValidRange}
                   label="Date Range"
                   errorHint
+                  errorPosition="left"
                 />
               </div>
             </div>

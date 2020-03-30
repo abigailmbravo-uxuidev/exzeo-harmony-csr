@@ -676,7 +676,7 @@ export async function fetchPoliciesForAgency(fields) {
   const config = {
     service: 'policy-data',
     method: 'GET',
-    path: `/transactions?&companyCode=TTIC&${query}`
+    path: `/transactions?${query}`
   };
 
   try {
@@ -697,6 +697,7 @@ export async function fetchPoliciesForAgency(fields) {
  * @param state
  * @param product
  * @param agentCode
+ * @param companyCode
  * @returns {Function}
  */
 export function getPoliciesForAgency({
@@ -704,14 +705,16 @@ export function getPoliciesForAgency({
   agencyCode,
   state,
   product,
-  agentCode
+  agentCode,
+  companyCode
 }) {
   const queryFields = {
     ...(policyNumber && { policyNumber }),
     ...(agencyCode && { agencyCode }),
     ...(product && { product }),
     ...(agentCode && { agentCode }),
-    ...(state && { state })
+    ...(state && { state }),
+    ...(companyCode && { companyCode })
   };
   return async dispatch => {
     try {
@@ -743,7 +746,7 @@ export function transferAOR({ policyNumber, agencyCode, agentCode }) {
           policyNumber
         }
       };
-      await serviceRunner.callService(transferData);
+      await serviceRunner.callService(transferData, 'aorTransfer');
       dispatch(getPolicy(policyNumber));
     } catch (error) {
       dispatch(errorActions.setAppError(error));

@@ -40,9 +40,21 @@ describe('Agency Management testing', () => {
     // prettier-ignore
     cy.get('.route-content').invoke('attr', 'style', 'overflow: unset');
 
+    cy.wait('@fetchLists').then(({ response }) => {
+      expect(response.body.status, 'fetchLists: status').to.equal(200);
+    });
+    cy.wait('@fetchPostalCodes').then(({ response }) => {
+      expect(response.body.status, 'fetchPostalCodes: status').to.equal(200);
+    });
+    cy.wait('@fetchTerritoryManagers').then(({ response }) => {
+      expect(response.body.status, 'fetchTerritoryManagers: status').to.equal(
+        200
+      );
+    });
     // create
     cy.findDataTag('agency-details').within(() => {
       cy.findDataTag('displayName')
+        .should('be.visible')
         .type(ADD_AGENCY.displayName)
         .findDataTag('legalName')
         .click({ force: true })

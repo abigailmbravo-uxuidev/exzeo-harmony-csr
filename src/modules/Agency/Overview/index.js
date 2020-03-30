@@ -23,7 +23,6 @@ const mapStateToProps = (state, props) => {
     agentOfRecord: getAgentOfRecord(state, props.branchCode),
     addressInitialValues: getEditModalInitialValues(state, props.branchCode),
     agentsList: getAgentsList(state),
-    territoryManagers: state.questions.territoryManagers,
     listAnswersAsKey: getListAnswersAsKey(state)
   };
 };

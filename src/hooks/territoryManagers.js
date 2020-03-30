@@ -1,0 +1,47 @@
+import { useEffect, useState } from 'react';
+import { fetchTerritoryManagers } from '../state/actions/questions.actions';
+import { fetchTerritoryManager } from '../modules/Agency/utilities';
+
+export function useFetchTerritoryManagers(state) {
+  const [managers, setManagers] = useState([]);
+  const [loaded, setLoaded] = useState(false);
+  useEffect(() => {
+    const getAgents = async () => {
+      setLoaded(false);
+      try {
+        const result = await fetchTerritoryManagers(state);
+        setManagers(result);
+      } catch (error) {
+        setManagers([]);
+      }
+      setLoaded(true);
+    };
+    getAgents();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [state]);
+
+  return { territoryManagers: managers, loaded };
+}
+
+export function useFetchTerritoryManager(territoryManagerId) {
+  const [manager, setManager] = useState([]);
+  const [loaded, setLoaded] = useState(false);
+
+  useEffect(() => {
+    const getTerritoryManager = async () => {
+      setLoaded(false);
+      try {
+        const result = await fetchTerritoryManager(territoryManagerId);
+        setManager(result);
+      } catch (error) {
+        setManager(null);
+      }
+      setLoaded(true);
+    };
+    if (!territoryManagerId) return;
+    getTerritoryManager();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [territoryManagerId]);
+
+  return { territoryManager: manager, loaded };
+}
