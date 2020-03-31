@@ -121,7 +121,7 @@ export const formatAgency = data => {
 /**
  *
  * @param territoryManagerId
- * @returns {Promise<{}>}
+ * @returns {Array}
  */
 export async function fetchTerritoryManager(territoryManagerId) {
   try {
@@ -159,6 +159,27 @@ export async function fetchPostalCodes(searchTerm, state) {
       'fetchPostalCodes'
     );
     return response?.data?.result?.postalCodes;
+  } catch (error) {
+    throw error;
+  }
+}
+
+/**
+ *
+ * @returns {Array}
+ */
+export async function fetchTerritoryManagers() {
+  try {
+    const config = {
+      service: 'territory-manager-service',
+      method: 'GET',
+      path: `getAllTerritoryManagers`
+    };
+    const response = await serviceRunner.callService(
+      config,
+      'fetchTerritoryManagers'
+    );
+    return response.data && response.data.result ? response.data.result : [];
   } catch (error) {
     throw error;
   }

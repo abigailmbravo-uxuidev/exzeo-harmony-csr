@@ -9,10 +9,7 @@ import {
   getListOfOrphanedAgents,
   getAgentListByAgencyCode
 } from '../../state/actions/agency.actions';
-import {
-  getTerritoryManagers,
-  getLists
-} from '../../state/actions/questions.actions';
+import { getLists } from '../../state/actions/questions.actions';
 import { getPoliciesForAgency } from '../../state/actions/policy.actions';
 import AgencyHeader from './AgencyHeader';
 import AgencySideNav from './AgencySideNav';
@@ -159,7 +156,6 @@ export default connect(mapStateToProps, {
   getAgentListByAgencyCode,
   getAgentsByAgencyCode,
   getListOfOrphanedAgents,
-  getTerritoryManagers,
   getLists,
   getPoliciesForAgency
 })(Agency);

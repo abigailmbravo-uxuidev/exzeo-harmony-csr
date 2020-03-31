@@ -31,7 +31,7 @@ const AddressGroup = ({
     postalCodeInput || zipValue,
     stateValue
   );
-  const { territoryManagers } = useFetchTerritoryManagers(stateValue);
+  const { territoryManagers } = useFetchTerritoryManagers();
 
   return (
     <React.Fragment>
