@@ -3,8 +3,9 @@ import _cloneDeep from 'lodash/cloneDeep';
 import { date, format } from '@exzeo/core-ui/src';
 /**
  *
- * @param values
  * @returns {Promise<void>}
+ * @param data
+ * @param setAppError
  */
 export async function rateEndorsement(data, setAppError) {
   try {
@@ -89,4 +90,45 @@ export function formatEndorsementData(data, timezone) {
   delete calculatedData.cancel;
   delete calculatedData.summaryLedger;
   return calculatedData;
+}
+
+/**
+ *
+ * @param agencyCode
+ * @returns {Array}
+ */
+export async function fetchAgency(agencyCode) {
+  try {
+    const config = {
+      service: 'agency',
+      method: 'GET',
+      path: `agencyTerritoryManager/${agencyCode}`
+    };
+    const response = await serviceRunner.callService(config, 'fetchAgency');
+    return response.data && response.data.result ? response.data.result : {};
+  } catch (error) {
+    throw error;
+  }
+}
+
+/**
+ *
+ * @param agencyCode
+ * @returns {Array}
+ */
+export async function fetchAgentsByAgencyCode(agencyCode) {
+  try {
+    const config = {
+      service: 'agency',
+      method: 'GET',
+      path: `agencies/${agencyCode}/agents`
+    };
+    const response = await serviceRunner.callService(
+      config,
+      'fetchAgentsByAgencyCode'
+    );
+    return response.data && response.data.result ? response.data.result : [];
+  } catch (error) {
+    throw error;
+  }
 }
