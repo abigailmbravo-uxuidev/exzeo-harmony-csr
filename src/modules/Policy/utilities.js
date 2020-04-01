@@ -1,13 +1,14 @@
 import * as serviceRunner from '@exzeo/core-ui/src/@Harmony/Domain/Api/serviceRunner';
 import _cloneDeep from 'lodash/cloneDeep';
 import { date, format } from '@exzeo/core-ui/src';
+import { object } from 'prop-types';
 /**
  *
- * @returns {Promise<void>}
+ * @returns {object}
  * @param data
- * @param setAppError
+ * @param errorHandler
  */
-export async function rateEndorsement(data, setAppError) {
+export async function rateEndorsement(data, errorHandler) {
   try {
     const transferConfig = {
       exchangeName: 'harmony',
@@ -26,11 +27,17 @@ export async function rateEndorsement(data, setAppError) {
     } = response;
     return { rating, instanceId };
   } catch (err) {
-    setAppError(err);
+    errorHandler(err);
     return {};
   }
 }
 
+/**
+ *
+ * @returns {object}
+ * @param data
+ * @param timezone
+ */
 export function formatEndorsementData(data, timezone) {
   const calculatedData = _cloneDeep(data);
   calculatedData.endorsementDate = date.formatToUTC(
