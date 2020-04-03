@@ -60,9 +60,6 @@ export const showCreatedBy = createdBy => (createdBy ? createdBy.userName : '');
 export const attachmentCount = attachments =>
   attachments ? attachments.length : 0;
 
-export const attachmentType = attachments =>
-  attachments.length > 0 ? toTitleCase(attachments[0].fileType) : '';
-
 export const formatNote = note => (note ? note.replace(/\r|\n/g, '<br>') : '');
 
 export const attachmentFilter = cell =>
@@ -71,15 +68,33 @@ export const attachmentFilter = cell =>
 export const formatCreatedDate = createdDate =>
   date.formattedLocalDate(createdDate);
 
+export const sortByOrder = (a, b, order) => {
+  return order === 'desc' ? (a > b ? 1 : -1) : a < b ? 1 : -1;
+};
+
+export const sortByDate = (a, b, order) => {
+  return sortByOrder(
+    date.formattedLocalDate(a),
+    date.formattedLocalDate(b),
+    order
+  );
+};
+
 export const sortAuthor = (a, b, order) => {
   if (!a.createdBy || !b.createdBy) return order === 'desc' ? -1 : 1;
-  return order === 'desc'
-    ? a.createdBy.userName.toLowerCase() > b.createdBy.userName.toLowerCase()
-      ? 1
-      : -1
-    : a.createdBy.userName.toLowerCase() < b.createdBy.userName.toLowerCase()
-    ? 1
-    : -1;
+  return sortByOrder(
+    a.createdBy.userName.toLowerCase(),
+    b.createdBy.userName.toLowerCase(),
+    order
+  );
+};
+
+export const sortContactType = (a, b, order) => {
+  return sortByOrder(a.noteContactType, b.noteContactType, order);
+};
+
+export const sortNoteContent = (a, b, order) => {
+  return sortByOrder(a.noteContent, b.noteContent, order);
 };
 
 export const sortFiles = (a, b, order) => {
@@ -87,6 +102,21 @@ export const sortFiles = (a, b, order) => {
     a.noteAttachments.length > 0 ? getFileName(a.noteAttachments[0]) : '';
   const fileB =
     b.noteAttachments.length > 0 ? getFileName(b.noteAttachments[0]) : '';
+  return sortByOrder(fileA, fileB, order);
+};
 
-  return order === 'desc' ? (fileA > fileB ? 1 : -1) : fileA < fileB ? 1 : -1;
+export const sortFileType = (a, b, order) => {
+  return sortByOrder(a.fileType, b.fileType, order);
+};
+
+export const formatNotes = notes => {
+  return notes.map(n => {
+    return {
+      ...n,
+      fileType:
+        n.noteAttachments.length > 0
+          ? toTitleCase(n.noteAttachments[0].fileType)
+          : ''
+    };
+  });
 };

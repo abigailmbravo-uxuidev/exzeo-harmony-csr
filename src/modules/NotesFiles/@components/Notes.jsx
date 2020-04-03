@@ -51,6 +51,9 @@ const Notes = props => {
         dataSort
         dataFormat={notesUtils.formatCreatedDate}
         filterFormatted
+        sortFunc={(a, b, order) =>
+          notesUtils.sortByDate(a.createdAt, b.createdAt, order)
+        }
       >
         Created
       </TableHeaderColumn>
@@ -79,6 +82,7 @@ const Notes = props => {
         columnClassName="note-type"
         dataField="noteContactType"
         dataSort
+        sortFunc={notesUtils.sortContactType}
         hidden={attachmentStatus}
       >
         Contact
@@ -88,6 +92,7 @@ const Notes = props => {
         columnClassName="note"
         dataField="noteContent"
         dataSort
+        sortFunc={notesUtils.sortNoteContent}
         dataFormat={notesUtils.formatNote}
         hidden={attachmentStatus}
       >
@@ -103,9 +108,10 @@ const Notes = props => {
       <TableHeaderColumn
         className="file-type"
         columnClassName="file-type"
-        dataField="noteAttachments"
+        dataField="fileType"
         dataSort
-        dataFormat={notesUtils.attachmentType}
+        sortOrder="asc"
+        sortFunc={notesUtils.sortFileType}
       >
         File Type
       </TableHeaderColumn>

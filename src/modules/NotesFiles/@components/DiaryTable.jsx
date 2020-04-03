@@ -4,6 +4,7 @@ import { date } from '@exzeo/core-ui';
 
 import { SearchPanel } from './SearchPanel';
 import { DIARY_STATUS_COLOR, DIARY_STATUS } from '../constants';
+import * as notesUtils from '../utilities';
 
 const DiaryExpandColumns = ({ diaries }) => {
   return (
@@ -16,6 +17,7 @@ const DiaryExpandColumns = ({ diaries }) => {
         columnClassName="due"
         dataField="due"
         dataFormat={val => date.formatDate(val)}
+        dataSort
       >
         Due
       </TableHeaderColumn>
@@ -24,6 +26,7 @@ const DiaryExpandColumns = ({ diaries }) => {
         columnClassName="assignee"
         dataField="assignee"
         dataFormat={val => val.displayName}
+        dataSort
       >
         Assignee
       </TableHeaderColumn>
@@ -31,6 +34,7 @@ const DiaryExpandColumns = ({ diaries }) => {
         className="reason"
         columnClassName="reason"
         dataField="reason"
+        dataSort
       >
         Reason
       </TableHeaderColumn>
@@ -38,6 +42,7 @@ const DiaryExpandColumns = ({ diaries }) => {
         className="message"
         columnClassName="message"
         dataField="message"
+        dataSort
       >
         Message
       </TableHeaderColumn>
@@ -46,6 +51,7 @@ const DiaryExpandColumns = ({ diaries }) => {
         columnClassName="updated-at"
         dataField="updatedAt"
         dataFormat={val => date.formatDate(val)}
+        dataSort
       >
         Updated
       </TableHeaderColumn>
@@ -54,6 +60,7 @@ const DiaryExpandColumns = ({ diaries }) => {
         columnClassName="created-by"
         dataField="createdBy"
         dataFormat={val => val.userName}
+        dataSort
       >
         Updated By
       </TableHeaderColumn>
@@ -147,6 +154,7 @@ class DiaryTable extends Component {
           dataField="dueStatus"
           dataFormat={this.statusFormatter}
           dataSort
+          sortFunc={(a, b, order) => notesUtils.sortByDate(a.due, b.due, order)}
         >
           Status
         </TableHeaderColumn>
@@ -156,6 +164,7 @@ class DiaryTable extends Component {
           dataField="due"
           dataFormat={val => date.formatDate(val)}
           dataSort
+          sortFunc={(a, b, order) => notesUtils.sortByDate(a.due, b.due, order)}
         >
           Due
         </TableHeaderColumn>
@@ -165,6 +174,13 @@ class DiaryTable extends Component {
           dataField="assignee"
           dataFormat={val => val.displayName}
           dataSort
+          sortFunc={(a, b, order) =>
+            notesUtils.sortByOrder(
+              a.assignee.displayName,
+              b.assignee.displayName,
+              order
+            )
+          }
         >
           Assignee
         </TableHeaderColumn>
@@ -173,6 +189,9 @@ class DiaryTable extends Component {
           columnClassName="reason"
           dataField="reason"
           dataSort
+          sortFunc={(a, b, order) =>
+            notesUtils.sortByOrder(a.reason, b.reason, order)
+          }
         >
           Reason
         </TableHeaderColumn>
@@ -180,6 +199,10 @@ class DiaryTable extends Component {
           className="message"
           columnClassName="message"
           dataField="message"
+          dataSort
+          sortFunc={(a, b, order) =>
+            notesUtils.sortByOrder(a.message, b.message, order)
+          }
         >
           Message
         </TableHeaderColumn>
@@ -189,6 +212,9 @@ class DiaryTable extends Component {
           dataField="updatedAt"
           dataFormat={val => date.formatDate(val)}
           dataSort
+          sortFunc={(a, b, order) =>
+            notesUtils.sortByDate(a.updatedAt, b.updatedAt, order)
+          }
         >
           Updated
         </TableHeaderColumn>

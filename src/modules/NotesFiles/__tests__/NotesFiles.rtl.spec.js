@@ -137,25 +137,22 @@ describe('Notes Files Testing', () => {
       notesColumns.forEach(col => checkArrows(col, 'order'));
 
       // Author, Filetype, and File sorts ascending, so if author is clicked we check sorting order ascending first.
-      if (['Author', 'File Type', 'File'].includes(columnToClick))
+      if (
+        ['Author', 'File Type', 'File', 'Created', 'Contact', 'Note'].includes(
+          columnToClick
+        )
+      )
         checkOrder('asc');
       else checkOrder('desc');
 
       fireEvent.click(dropArrows);
 
-      // Check all columns for their classnames to check their arrow settings.
-      notesColumns.forEach(col => {
-        // File Type and File flip together, so check that those have both flipped up together.
-        if (['File Type', 'File'].includes(columnToClick)) {
-          if (!['File Type', 'File'].includes(col)) checkArrows(col, 'order');
-          else checkArrows(col);
-        } else {
-          if (col !== columnToClick) checkArrows(col, 'order');
-          else checkArrows(col);
-        }
-      });
       // Check our sorting order again.
-      if (['Author', 'File Type', 'File'].includes(columnToClick))
+      if (
+        ['Author', 'File Type', 'File', 'Created', 'Contact', 'Note'].includes(
+          columnToClick
+        )
+      )
         checkOrder('desc');
       else checkOrder('asc');
     });
