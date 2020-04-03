@@ -556,16 +556,37 @@ const mock = {
               data: {
                 component: 'selectInteger',
                 label: 'Percentage',
-
+                validation: ['personalPropertyMax'],
                 extendedProperties: {
                   output: 'currency',
-                  outputLabel: 'Personal Property Limit'
+                  outputLabel: 'Personal Property Limit',
+                  conditionalOptions: true
                 },
                 dataSource: [
-                  { label: '0%', answer: 0 },
-                  { label: '25%', answer: 25 },
-                  { label: '35%', answer: 35 },
-                  { label: '50%', answer: 50 }
+                  {
+                    label: '0%',
+                    answer: 0,
+                    disabled:
+                      '${Math.ceil(((0) * it.coverageLimits.dwelling.value)) > 500000}'
+                  },
+                  {
+                    label: '25%',
+                    answer: 25,
+                    disabled:
+                      '${Math.ceil(((0.25) * it.coverageLimits.dwelling.value)) > 500000}'
+                  },
+                  {
+                    label: '35%',
+                    answer: 35,
+                    disabled:
+                      '${Math.ceil(((0.35) * it.coverageLimits.dwelling.value)) > 500000}'
+                  },
+                  {
+                    label: '50%',
+                    answer: 50,
+                    disabled:
+                      '${Math.ceil(((0.5) * it.coverageLimits.dwelling.value)) > 500000}'
+                  }
                 ]
               },
               formData: {

@@ -278,4 +278,51 @@ describe('Testing the Coverage/Rating Page', () => {
 
     expect(getByText('Update')).toBeDisabled();
   });
+
+  it('POS:Check Conditional Options coverageLimits.personalProperty 500,000 or greater', async () => {
+    const newProps = {
+      ...props,
+      quote: {
+        ...props.quote,
+        policyHolders: [...props.quote.policyHolders, policyHolder]
+      }
+    };
+    const { getByTestId } = renderWithForm(<QuoteWorkflow {...newProps} />);
+
+    await waitForElement(() => [getByTestId('coverageLimits.dwelling.value')]);
+
+    await wait(() => {
+      expect(
+        getByTestId('coverageLimits.personalProperty.value_0')
+      ).not.toBeDisabled();
+      expect(
+        getByTestId('coverageLimits.personalProperty.value_25')
+      ).not.toBeDisabled();
+      expect(
+        getByTestId('coverageLimits.personalProperty.value_35')
+      ).not.toBeDisabled();
+      expect(
+        getByTestId('coverageLimits.personalProperty.value_50')
+      ).not.toBeDisabled();
+    });
+
+    fireEvent.change(getByTestId('coverageLimits.dwelling.value'), {
+      target: { value: '2000000' }
+    });
+
+    await wait(() => {
+      expect(
+        getByTestId('coverageLimits.personalProperty.value_0')
+      ).not.toBeDisabled();
+      expect(
+        getByTestId('coverageLimits.personalProperty.value_25')
+      ).not.toBeDisabled();
+      expect(
+        getByTestId('coverageLimits.personalProperty.value_35')
+      ).toBeDisabled();
+      expect(
+        getByTestId('coverageLimits.personalProperty.value_50')
+      ).toBeDisabled();
+    });
+  });
 });
