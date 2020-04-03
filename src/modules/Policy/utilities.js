@@ -1,12 +1,14 @@
 import * as serviceRunner from '@exzeo/core-ui/src/@Harmony/Domain/Api/serviceRunner';
 import _cloneDeep from 'lodash/cloneDeep';
 import { date, format } from '@exzeo/core-ui/src';
+
 /**
  *
- * @param values
- * @returns {Promise<void>}
+ * @returns {object}
+ * @param data
+ * @param errorHandler
  */
-export async function rateEndorsement(data, setAppError) {
+export async function rateEndorsement(data, errorHandler) {
   try {
     const transferConfig = {
       exchangeName: 'harmony',
@@ -25,11 +27,17 @@ export async function rateEndorsement(data, setAppError) {
     } = response;
     return { rating, instanceId };
   } catch (err) {
-    setAppError(err);
+    errorHandler(err);
     return {};
   }
 }
 
+/**
+ *
+ * @returns {object}
+ * @param data
+ * @param timezone
+ */
 export function formatEndorsementData(data, timezone) {
   const calculatedData = _cloneDeep(data);
   calculatedData.endorsementDate = date.formatToUTC(
@@ -89,4 +97,45 @@ export function formatEndorsementData(data, timezone) {
   delete calculatedData.cancel;
   delete calculatedData.summaryLedger;
   return calculatedData;
+}
+
+/**
+ *
+ * @param agencyCode
+ * @returns {Array}
+ */
+export async function fetchAgency(agencyCode) {
+  try {
+    const config = {
+      service: 'agency',
+      method: 'GET',
+      path: `agencyTerritoryManager/${agencyCode}`
+    };
+    const response = await serviceRunner.callService(config, 'fetchAgency');
+    return response.data && response.data.result ? response.data.result : {};
+  } catch (error) {
+    throw error;
+  }
+}
+
+/**
+ *
+ * @param agencyCode
+ * @returns {Array}
+ */
+export async function fetchAgentsByAgencyCode(agencyCode) {
+  try {
+    const config = {
+      service: 'agency',
+      method: 'GET',
+      path: `agencies/${agencyCode}/agents`
+    };
+    const response = await serviceRunner.callService(
+      config,
+      'fetchAgentsByAgencyCode'
+    );
+    return response.data && response.data.result ? response.data.result : [];
+  } catch (error) {
+    throw error;
+  }
 }

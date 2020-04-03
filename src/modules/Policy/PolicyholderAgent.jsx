@@ -7,7 +7,6 @@ import AgentCard from './AgentCard';
 import ContactCard from './ContactCard';
 import PolicyholderCard from './PolicyholderCard';
 import TransferAORModal from './TransferAORModal';
-import { useFetchTerritoryManager } from '../../hooks/territoryManagers';
 
 const PolicyholderAgent = ({ customHandlers, initialValues }) => {
   const [showTransferAOR, setShowTransferAOR] = useState(false);
@@ -17,9 +16,7 @@ const PolicyholderAgent = ({ customHandlers, initialValues }) => {
   const { agency, loaded: agencyLoaded } = useFetchAgency(
     initialValues.agencyCode
   );
-  const { territoryManager } = useFetchTerritoryManager(
-    agency.territoryManagerId
-  );
+  const { territoryManager } = agency;
 
   const selectedAgent = agents.find(
     a => a.agentCode === initialValues.agentCode

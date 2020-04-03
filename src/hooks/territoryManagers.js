@@ -1,24 +1,26 @@
 import { useEffect, useState } from 'react';
-import { fetchTerritoryManagers } from '../state/actions/questions.actions';
-import { fetchTerritoryManager } from '../modules/Agency/utilities';
+import {
+  fetchTerritoryManager,
+  fetchTerritoryManagers
+} from '../modules/Agency/utilities';
 
-export function useFetchTerritoryManagers(state) {
+export function useFetchTerritoryManagers() {
   const [managers, setManagers] = useState([]);
   const [loaded, setLoaded] = useState(false);
   useEffect(() => {
     const getAgents = async () => {
       setLoaded(false);
       try {
-        const result = await fetchTerritoryManagers(state);
+        const result = await fetchTerritoryManagers();
         setManagers(result);
-      } catch (error) {
+      } catch {
         setManagers([]);
       }
       setLoaded(true);
     };
     getAgents();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [state]);
+  }, []);
 
   return { territoryManagers: managers, loaded };
 }
@@ -33,7 +35,7 @@ export function useFetchTerritoryManager(territoryManagerId) {
       try {
         const result = await fetchTerritoryManager(territoryManagerId);
         setManager(result);
-      } catch (error) {
+      } catch {
         setManager(null);
       }
       setLoaded(true);

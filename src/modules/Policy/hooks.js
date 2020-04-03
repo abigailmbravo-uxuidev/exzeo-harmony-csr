@@ -1,8 +1,5 @@
 import { useState, useEffect } from 'react';
-import {
-  fetchAgency,
-  fetchAgentsByAgencyCode
-} from '../../state/actions/agency.actions';
+import { fetchAgency, fetchAgentsByAgencyCode } from './utilities';
 
 export const useFetchAgency = agencyCode => {
   const [agency, setAgency] = useState({});
@@ -14,7 +11,7 @@ export const useFetchAgency = agencyCode => {
       try {
         const result = await fetchAgency(agencyCode);
         setAgency(result);
-      } catch (error) {
+      } catch {
         setAgency({});
       }
       setLoaded(true);
@@ -35,7 +32,7 @@ export const useFetchAgents = agencyCode => {
       try {
         const result = await fetchAgentsByAgencyCode(agencyCode);
         setAgents(result);
-      } catch (error) {
+      } catch {
         setAgents([]);
       }
       setLoaded(true);
