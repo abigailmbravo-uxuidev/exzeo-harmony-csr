@@ -1148,3 +1148,102 @@ table {
     }
   }
 }
+//sortable column controls new bs-2
+/*------------------------------------------------------------------------------------*/
+.react-bootstrap-table {
+  .react-bs-table {
+    thead {
+      tr {
+        th {
+          .order {
+            display: inline-flex;
+            flex-direction: column;
+
+            margin-left: 0.5rem;
+
+            vertical-align: middle;
+
+            .dropdown {
+              line-height: 1;
+              .caret {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+
+                height: 0.5rem;
+
+                &:before {
+                  content: '\f0d8';
+
+                  color: rgba($warm-gray-07, 0.25);
+
+                  font: normal normal normal 1rem $font-family-icon;
+                }
+              }
+            }
+            .dropup {
+              line-height: 1;
+              .caret {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+
+                height: 0.5rem;
+
+                &:before {
+                  content: '\f0d7';
+
+                  color: rgba($warm-gray-07, 0.25);
+
+                  font: normal normal normal 1rem $font-family-icon;
+                }
+              }
+            }
+          }
+          .react-bootstrap-table-sort-order {
+            display: inline-flex;
+            flex-direction: column;
+
+            margin-left: 0.5rem;
+
+            vertical-align: middle;
+            .caret {
+              display: flex;
+              align-items: center;
+              flex-direction: column;
+              justify-content: center;
+
+              height: 0.5rem;
+
+              &:before {
+                content: '\f0d8';
+
+                color: rgba($warm-gray-07, 0.75);
+
+                font: normal normal normal 1rem $font-family-icon;
+              }
+            }
+
+            &.dropup {
+              .caret {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+
+                height: 0.5rem;
+
+                &:before {
+                  content: '\f0d7';
+
+                  color: rgba($warm-gray-07, 0.75);
+
+                  font: normal normal normal 1rem $font-family-icon;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
