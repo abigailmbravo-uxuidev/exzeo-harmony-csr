@@ -1204,6 +1204,7 @@ table {
             display: inline-flex;
             flex-direction: column;
 
+            margin-bottom: 0.5rem;
             margin-left: 0.5rem;
 
             vertical-align: middle;
@@ -1225,6 +1226,8 @@ table {
             }
 
             &.dropup {
+              margin-bottom: -0.25rem;
+
               .caret {
                 display: flex;
                 align-items: center;
