@@ -12,7 +12,7 @@
     "cypress": "react-scripts cypress"
   },
   "dependencies": {
-    "@exzeo/core-ui": "0.0.0-cd8674",
+    "@exzeo/core-ui": "0.0.0-9fc21b",
     "@exzeo/react-scripts": "2.5.0",
     "@fortawesome/fontawesome": "~1.0.0",
     "@fortawesome/react-fontawesome": "~0.0.14",
