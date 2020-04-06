@@ -7,11 +7,7 @@ import DiaryPolling from '../DiaryPolling';
 import { isPastDue, isToday } from '../../utilities/diaries';
 import logo from '../../img/Harmony.svg';
 
-const handleLogout = auth => {
-  auth.logout();
-};
-
-const Header = ({ auth, authState: { userProfile = {} }, diaries }) => {
+const Header = ({ handleLogout, authState: { userProfile = {} }, diaries }) => {
   const pastDiaries = diaries.filter(diary => {
     const entry = diary.entries[0];
     return (isPastDue(entry.due) || isToday(entry.due)) && entry.open;
@@ -83,7 +79,7 @@ const Header = ({ auth, authState: { userProfile = {} }, diaries }) => {
             tabIndex="0"
             className="btn logout btn-action"
             type="button"
-            onClick={() => handleLogout(auth)}
+            onClick={() => handleLogout()}
           >
             <i className="fa fa-sign-out" />
           </button>

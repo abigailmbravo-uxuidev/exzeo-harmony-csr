@@ -22,6 +22,7 @@ import { PolicyWorkflow } from './modules/Policy';
 import SearchAgency from './containers/SearchAgency';
 import SearchPolicy from './containers/SearchPolicy';
 import SearchDiaries from './containers/SearchDiaries';
+import { QuotePolicySearch } from './modules/QuotePolicySearch';
 
 const Routes = ({
   auth,
@@ -39,7 +40,7 @@ const Routes = ({
             <Route
               exact
               path="/"
-              render={props => <SearchPolicy auth={auth} {...props} />}
+              render={props => <QuotePolicySearch auth={auth} {...props} />}
             />
             <Route
               exact
