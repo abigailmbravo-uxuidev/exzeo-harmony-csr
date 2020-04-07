@@ -1,25 +1,23 @@
 import React, { useState, Fragment } from 'react';
 import {
-  date,
+  Button,
   Form,
   Field,
-  Currency,
   Input,
   validation,
-  OnBlurListener,
-  SectionLoader,
   composeValidators,
-  Phone,
   SelectTypeAhead,
   Radio
 } from '@exzeo/core-ui';
-import TopOptionsWatcher from '@exzeo/core-ui/src/@Harmony/AdditionalInterests/@components/TopOptionsWatcher';
 import { toUppercase } from '@exzeo/core-ui/src/Utilities/format';
-import RadioInput from '@exzeo/core-ui/src/Input/Radio';
-import { INSTRUCTION_ANSWERS } from '../constants';
+import { BUTTON_CLASS } from '@exzeo/core-ui/src/Button/Button';
+import TopOptionsWatcher from '@exzeo/core-ui/src/@Harmony/AdditionalInterests/@components/TopOptionsWatcher';
 
-const MortgageeForm = ({ handleFormSubmit }) => {
-  const topMortgagees = [];
+import { INSTRUCTION_ANSWERS } from '../constants';
+import { useFetchTopMortgagees } from '../hooks';
+
+const MortgageeForm = ({ handleFormSubmit, errorHandler }) => {
+  const { topMortgagees } = useFetchTopMortgagees(errorHandler);
 
   return (
     <Form
@@ -27,8 +25,17 @@ const MortgageeForm = ({ handleFormSubmit }) => {
       onSubmit={handleFormSubmit}
       initialValues={{ instruction: 'Suppress Notice' }}
       subscription={{ submitting: true }}
-      render={({ handleSubmit, submitting }) => (
+      render={({ handleSubmit, submitting, form }) => (
         <form onSubmit={handleSubmit}>
+          <Button
+            className={BUTTON_CLASS.link}
+            type="button"
+            onClick={form.reset}
+          >
+            <i className="fa fa-refresh" />
+            Clear
+          </Button>
+          <TopOptionsWatcher options={topMortgagees} watchField="mortgagee" />
           <div className="card-block">
             <Field
               label="Top Mortgagees"
@@ -42,8 +49,6 @@ const MortgageeForm = ({ handleFormSubmit }) => {
               styleName="type-ahead"
               inputId="mortgagee-search"
             />
-
-            <TopOptionsWatcher options={topMortgagees} watchField="mortgagee" />
             <Field
               name="name1"
               dataTest="name1"
@@ -60,7 +65,7 @@ const MortgageeForm = ({ handleFormSubmit }) => {
               styleName="name-2"
             />
             <Field
-              name="address1"
+              name="mailingAddress.address1"
               dataTest="address1"
               label="Address 1"
               component={Input}
@@ -68,7 +73,7 @@ const MortgageeForm = ({ handleFormSubmit }) => {
               validate={validation.isRequired}
             />
             <Field
-              name="address2"
+              name="mailingAddress.address2"
               dataTest="address2"
               label="Address 2"
               component={Input}
@@ -76,7 +81,7 @@ const MortgageeForm = ({ handleFormSubmit }) => {
             />
             <div className="flex-form">
               <Field
-                name="city"
+                name="mailingAddress.city"
                 dataTest="city"
                 label="City"
                 component={Input}
@@ -84,7 +89,7 @@ const MortgageeForm = ({ handleFormSubmit }) => {
                 validate={validation.isRequired}
               />
               <Field
-                name="state"
+                name="mailingAddress.state"
                 dataTest="state"
                 label="State"
                 component={Input}
@@ -96,7 +101,7 @@ const MortgageeForm = ({ handleFormSubmit }) => {
                 ])}
               />
               <Field
-                name="zip"
+                name="mailingAddress.zip"
                 dataTest="zip"
                 label="Zip Code"
                 component={Input}
