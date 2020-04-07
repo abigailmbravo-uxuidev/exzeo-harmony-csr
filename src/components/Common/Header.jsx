@@ -11,6 +11,34 @@ const handleLogout = auth => {
   auth.logout();
 };
 
+const navLinks = [
+  {
+    id: 'bulk-mortgage',
+    path: '/bulkMortgage',
+    name: 'Bulk Mortgage'
+  },
+  {
+    id: 'reports',
+    path: '/reports',
+    name: 'Reports'
+  },
+  {
+    id: 'agency',
+    path: '/agency',
+    name: 'Agency'
+  },
+  {
+    id: 'bulk-payments',
+    path: '/finance/payments',
+    name: 'Finance'
+  },
+  {
+    id: 'policy',
+    path: '/',
+    name: 'Policy'
+  }
+];
+
 const Header = ({ auth, authState: { userProfile = {} }, diaries }) => {
   const pastDiaries = diaries.filter(diary => {
     const entry = diary.entries[0];
@@ -40,39 +68,17 @@ const Header = ({ auth, authState: { userProfile = {} }, diaries }) => {
               <span className="count-bubble">{pastDiaries.length}</span>
             )}
           </NavLink>
-          <NavLink
-            activeClassName="active"
-            exact
-            to="/reports"
-            data-test="reports-link"
-          >
-            Reports
-          </NavLink>
-          <NavLink
-            activeClassName="active"
-            exact
-            to="/agency"
-            data-test="agency-link"
-          >
-            Agency
-          </NavLink>
-          <NavLink
-            activeClassName="active"
-            exact
-            to="/finance/payments"
-            data-test="bulk-payments-link"
-          >
-            Finance
-          </NavLink>
-          <NavLink
-            activeClassName="active"
-            exact
-            to="/"
-            data-test="policy-link"
-          >
-            Policy
-          </NavLink>
-          {/* <a href="">User Management</a> */}
+          {navLinks.map(({ path, name, id }) => (
+            <NavLink
+              id={id}
+              activeClassName="active"
+              exact
+              to={path}
+              data-test={`${id}-link`}
+            >
+              {name}
+            </NavLink>
+          ))}
           <div className="user-name">
             {userProfile ? userProfile.userName : ''}
           </div>

@@ -25,6 +25,7 @@ import Agency from './modules/Agency';
 import { QuoteLanding, QuoteWorkflow } from './modules/Quote';
 import { PolicyWorkflow } from './modules/Policy';
 import Finance from './modules/Finance';
+import BulkMortgage from './modules/BulkMortgage';
 
 class Routes extends Component {
   setBackStep = (goToNext, callback) => {
@@ -180,6 +181,17 @@ class Routes extends Component {
                 exact
                 path="/reports"
                 render={props => <Reports auth={auth} {...props} />}
+              />
+              <Route
+                exact
+                path="/bulkMortgage"
+                render={props => (
+                  <BulkMortgage
+                    errorHandler={errorActions.setAppError}
+                    auth={auth}
+                    {...props}
+                  />
+                )}
               />
               <Route
                 exact
