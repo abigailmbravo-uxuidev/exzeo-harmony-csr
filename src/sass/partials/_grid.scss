@@ -27,6 +27,8 @@ $table-border-color: $warm-gray-07 !default; //== Media queries breakpoints
 }
 
 .react-bs-table {
+  position: relative;
+
   border: 1px solid #ddd;
   border-radius: 0;
 }
@@ -1248,5 +1250,42 @@ table {
         }
       }
     }
+  }
+}
+.table-bordered > tbody > tr > td.react-bs-table-no-data {
+  position: absolute;
+  right: 0;
+  bottom: -1.75rem;
+  left: 0;
+
+  color: $warm-gray-08;
+
+  font-size: $font-size-sm;
+  font-style: italic;
+
+  &:before {
+    position: absolute;
+    top: 0.75rem;
+    left: 0;
+
+    width: calc(50% - 5rem);
+    height: 1px;
+
+    content: '';
+
+    border-bottom: 1px dotted $warm-gray-05;
+  }
+
+  &:after {
+    position: absolute;
+    top: 0.75rem;
+    right: 0;
+
+    width: calc(50% - 5rem);
+    height: 1px;
+
+    content: '';
+
+    border-bottom: 1px dotted $warm-gray-05;
   }
 }
