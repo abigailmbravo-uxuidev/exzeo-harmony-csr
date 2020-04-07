@@ -4,6 +4,7 @@ import { BULK_TYPE, BULK_TYPE_LABEL } from '../constants';
 import MortgageeForm from './MortgageeForm';
 import { noop } from '@exzeo/core-ui';
 import SearchByPolicy from './SearchByPolicy';
+import SearchByPolicyResults from './SearchByPolicyResults';
 
 const style = {
   display: 'flex',
@@ -13,6 +14,79 @@ const style = {
 
 const BulkMortgagee = ({ errorHandler }) => {
   const [selectedTab, setSelectedTab] = useState(BULK_TYPE.policy);
+  const [queuedMortgagees, setQueuedMortgagees] = useState([]);
+  const [mortgageeResults, setMortgageeResults] = useState([
+    {
+      currentBillTo: 'No',
+      policyNumber: '12-100050-12',
+      _id: '34340345043504350350',
+      active: true,
+      name1: 'BANK OF AMERICA, NA',
+      name2: 'ISAOA/ATIMA',
+      mailingAddress: {
+        address1: '1234 Main Street',
+        address2: '',
+        city: 'FORT WORTH',
+        state: 'TX',
+        zip: '76161',
+        country: {
+          code: 'USA',
+          displayText: 'United States of America'
+        }
+      },
+      policyHolderName: 'John Smith',
+      policyHolderMailingAddress: {
+        address1: '1234 Main Street',
+        address2: '',
+        city: 'FORT WORTH',
+        state: 'TX',
+        zip: '76161',
+        country: {
+          code: 'USA',
+          displayText: 'United States of America'
+        }
+      },
+      order: 0,
+      type: ''
+    },
+    {
+      currentBillTo: 'YES',
+      policyNumber: '12-100055-12',
+      _id: '34340345043504350350',
+      active: true,
+      name1: 'BANK OF AMERICA, NA',
+      name2: 'ISAOA/ATIMA',
+      mailingAddress: {
+        address1: '1234 Main Street',
+        address2: '',
+        city: 'FORT WORTH',
+        state: 'TX',
+        zip: '76161',
+        country: {
+          code: 'USA',
+          displayText: 'United States of America'
+        }
+      },
+      policyHolderName: 'John Smith',
+      policyHolderMailingAddress: {
+        address1: '1234 Main Street',
+        address2: '',
+        city: 'FORT WORTH',
+        state: 'TX',
+        zip: '76161',
+        country: {
+          code: 'USA',
+          displayText: 'United States of America'
+        }
+      },
+      order: 2,
+      type: ''
+    }
+  ]);
+
+  const handleSearchMortgagee = () => {};
+  const handleQueue = () => {};
+
   return (
     <div className="content-wrapper">
       <div className="scroll view-grid" style={style}>
@@ -48,7 +122,13 @@ const BulkMortgagee = ({ errorHandler }) => {
                   />
                 </section>
                 <section className="view-col-8">
-                  <SearchByPolicy handleSubmit={noop} />
+                  <SearchByPolicy
+                    handleSearchMortgagee={handleSearchMortgagee}
+                  />
+                  <SearchByPolicyResults
+                    mortgageeResults={mortgageeResults}
+                    handleQueue={handleQueue}
+                  />
                 </section>
               </div>
             )}
