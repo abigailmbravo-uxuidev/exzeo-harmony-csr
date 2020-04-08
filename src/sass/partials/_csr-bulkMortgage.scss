@@ -12,19 +12,71 @@ html body div#root .app-wrapper {
       }
     }
 
+    .flex-form {
+      display: flex;
+
+      > div {
+        margin-right: $padding;
+
+        &.zip {
+          flex-grow: 0;
+          flex-shrink: 0;
+
+          width: 6rem;
+          margin-right: 0;
+        }
+        &.state {
+          flex-grow: 0;
+          flex-shrink: 0;
+
+          width: 3rem;
+        }
+      }
+    }
+
     .bm-wrapper {
       padding: 0;
+
+      .bulk-mortgagee-form {
+        margin-right: 1rem;
+        padding-right: 1rem;
+        padding-left: 0;
+
+        border-right: 1px dotted $warm-gray-02;
+      }
 
       section {
         flex-grow: 0;
         flex-shrink: 0;
 
         &.bm-byPolicy {
-          &.search {
+          &.mortgagee-search {
             width: 40%;
           }
           &.results {
             width: 60%;
+
+            .search-inputs {
+              display: flex;
+              .form-group {
+                margin-right: $padding;
+                &.product {
+                  flex-grow: 0;
+                  flex-shrink: 0;
+
+                  width: 8rem;
+                }
+                &.search-type {
+                  flex-grow: 0;
+                  flex-shrink: 0;
+
+                  width: 10rem;
+                }
+              }
+              button {
+                align-self: flex-start;
+              }
+            }
           }
         }
       }
