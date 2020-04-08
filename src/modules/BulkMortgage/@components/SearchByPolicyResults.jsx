@@ -20,7 +20,7 @@ export const SearchByPolicyResults = ({ handleQueue, mortgageeResults }) => {
               <MortgageeCard
                 key={m._id}
                 mortgagee={m}
-                handleQueue={() => handleQueue(m)}
+                handleQueue={() => handleQueue({ ...m, ...values })}
               />
             );
           })}

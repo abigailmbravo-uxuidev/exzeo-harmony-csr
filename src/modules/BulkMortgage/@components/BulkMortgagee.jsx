@@ -12,76 +12,78 @@ import QueuedMortgageeCard from './QueuedMortgageeCard';
 const BulkMortgagee = ({ errorHandler }) => {
   const [selectedTab, setSelectedTab] = useState(BULK_TYPE.policy);
   const [queuedMortgagees, setQueuedMortgagees] = useState([]);
-  const [mortgageeResults, setMortgageeResults] = useState([
-    {
-      currentBillTo: 'No',
-      policyNumber: '12-100050-12',
-      _id: '34340345043504350350',
-      active: true,
-      name1: 'BANK OF AMERICA, NA',
-      name2: 'ISAOA/ATIMA',
-      mailingAddress: {
-        address1: '1234 Main Street',
-        address2: '',
-        city: 'FORT WORTH',
-        state: 'TX',
-        zip: '76161',
-        country: {
-          code: 'USA',
-          displayText: 'United States of America'
-        }
-      },
-      policyHolderName: 'John Smith',
-      policyHolderMailingAddress: {
-        address1: '1234 Main Street',
-        address2: '',
-        city: 'FORT WORTH',
-        state: 'TX',
-        zip: '76161',
-        country: {
-          code: 'USA',
-          displayText: 'United States of America'
-        }
-      },
-      order: 0,
-      type: ''
-    },
-    {
-      currentBillTo: 'YES',
-      policyNumber: '12-100055-12',
-      _id: '5555540345043504350350',
-      active: true,
-      name1: 'BANK OF AMERICA, NA',
-      name2: 'ISAOA/ATIMA',
-      mailingAddress: {
-        address1: '1234 Main Street',
-        address2: '',
-        city: 'FORT WORTH',
-        state: 'TX',
-        zip: '76161',
-        country: {
-          code: 'USA',
-          displayText: 'United States of America'
-        }
-      },
-      policyHolderName: 'John Smith',
-      policyHolderMailingAddress: {
-        address1: '1234 Main Street',
-        address2: '',
-        city: 'FORT WORTH',
-        state: 'TX',
-        zip: '76161',
-        country: {
-          code: 'USA',
-          displayText: 'United States of America'
-        }
-      },
-      order: 2,
-      type: ''
-    }
-  ]);
+  const [mortgageeResults, setMortgageeResults] = useState([]);
 
-  const handleSearchMortgagee = () => {};
+  const handleSearchMortgagee = () => {
+    setMortgageeResults([
+      {
+        currentBillTo: 'No',
+        policyNumber: '12-100050-12',
+        _id: '34340345043504350350',
+        active: true,
+        name1: 'BANK OF AMERICA, NA',
+        name2: 'ISAOA/ATIMA',
+        mailingAddress: {
+          address1: '1234 Main Street',
+          address2: '',
+          city: 'FORT WORTH',
+          state: 'TX',
+          zip: '76161',
+          country: {
+            code: 'USA',
+            displayText: 'United States of America'
+          }
+        },
+        policyHolderName: 'John Smith',
+        policyHolderMailingAddress: {
+          address1: '1234 Main Street',
+          address2: '',
+          city: 'FORT WORTH',
+          state: 'TX',
+          zip: '76161',
+          country: {
+            code: 'USA',
+            displayText: 'United States of America'
+          }
+        },
+        order: 0,
+        type: ''
+      },
+      {
+        currentBillTo: 'YES',
+        policyNumber: '12-100055-12',
+        _id: '5555540345043504350350',
+        active: true,
+        name1: 'BANK OF AMERICA, NA',
+        name2: 'ISAOA/ATIMA',
+        mailingAddress: {
+          address1: '1234 Main Street',
+          address2: '',
+          city: 'FORT WORTH',
+          state: 'TX',
+          zip: '76161',
+          country: {
+            code: 'USA',
+            displayText: 'United States of America'
+          }
+        },
+        policyHolderName: 'John Smith',
+        policyHolderMailingAddress: {
+          address1: '1234 Main Street',
+          address2: '',
+          city: 'FORT WORTH',
+          state: 'TX',
+          zip: '76161',
+          country: {
+            code: 'USA',
+            displayText: 'United States of America'
+          }
+        },
+        order: 2,
+        type: ''
+      }
+    ]);
+  };
   const addToQueue = mortgagee => {
     const existingMortgagee = queuedMortgagees.find(
       m => m._id === mortgagee._id
@@ -97,6 +99,8 @@ const BulkMortgagee = ({ errorHandler }) => {
     );
     setQueuedMortgagees(filterMortgagees);
   };
+
+  const handleBulkUpdateSubmit = () => {};
 
   return (
     <div className="content-wrapper scroll">
@@ -173,12 +177,25 @@ const BulkMortgagee = ({ errorHandler }) => {
               {queuedMortgagees.map(m => {
                 return (
                   <QueuedMortgageeCard
+                    key={m._id}
                     mortgagee={m}
                     handleRemove={() => removeFromQueue(m)}
                   />
                 );
               })}
             </section>
+            {queuedMortgagees.length > 0 && (
+              <section>
+                <Button
+                  dataTest="bulk-mortgage-submit"
+                  className={BUTTON_CLASS.primary}
+                  type="button"
+                  onClick={handleBulkUpdateSubmit}
+                >
+                  Update
+                </Button>
+              </section>
+            )}
           </div>
         </section>
       </div>
