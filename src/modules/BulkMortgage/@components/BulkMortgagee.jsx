@@ -6,12 +6,6 @@ import { noop } from '@exzeo/core-ui';
 import SearchByPolicy from './SearchByPolicy';
 import SearchByPolicyResults from './SearchByPolicyResults';
 
-const style = {
-  display: 'flex',
-  overflowX: 'hidden',
-  overflowY: 'auto'
-};
-
 const BulkMortgagee = ({ errorHandler }) => {
   const [selectedTab, setSelectedTab] = useState(BULK_TYPE.policy);
   const [queuedMortgagees, setQueuedMortgagees] = useState([]);
@@ -88,57 +82,58 @@ const BulkMortgagee = ({ errorHandler }) => {
   const handleQueue = () => {};
 
   return (
-    <div className="content-wrapper">
-      <div className="scroll" style={style}>
-        <div className="view-grid">
-          <div className="title">Bulk Mortgagee</div>
-          <section>
-            <div className="bulk-mortgagee-wrapper btn-tabs">
-              <div className="filter-tabs">
-                <button
-                  type="button"
-                  className={classNames('btn btn-tab', {
-                    selected: selectedTab === BULK_TYPE.policy
-                  })}
-                  onClick={() => setSelectedTab(BULK_TYPE.policy)}
-                >
-                  {BULK_TYPE_LABEL.policy}
-                </button>
-                <button
-                  type="button"
-                  className={classNames('btn btn-tab', {
-                    selected: selectedTab === BULK_TYPE.mortgagee
-                  })}
-                  onClick={() => setSelectedTab(BULK_TYPE.mortgagee)}
-                >
-                  {BULK_TYPE_LABEL.mortgagee}
-                </button>
-              </div>
-              {selectedTab === BULK_TYPE.policy && (
-                <div className="form-group survey-wrapper" role="group">
-                  <section className="view-col-4">
-                    <MortgageeForm
-                      handleFormSubmit={noop}
-                      errorHandler={errorHandler}
-                    />
-                  </section>
-                  <section className="view-col-8">
-                    <SearchByPolicy
-                      handleSearchMortgagee={handleSearchMortgagee}
-                    />
-                    <SearchByPolicyResults
-                      mortgageeResults={mortgageeResults}
-                      handleQueue={handleQueue}
-                    />
-                  </section>
-                </div>
-              )}
-              {selectedTab === BULK_TYPE.mortgagee && (
-                <div>{BULK_TYPE_LABEL.mortgagee}</div>
-              )}
+    <div className="content-wrapper scroll">
+      <div className="view-grid">
+        <div className="title">Bulk Mortgagee</div>
+        <section>
+          <div className="bulk-mortgagee-wrapper btn-tabs">
+            <div className="filter-tabs">
+              <button
+                type="button"
+                className={classNames('btn btn-tab', {
+                  selected: selectedTab === BULK_TYPE.policy
+                })}
+                onClick={() => setSelectedTab(BULK_TYPE.policy)}
+              >
+                {BULK_TYPE_LABEL.policy}
+              </button>
+              <button
+                type="button"
+                className={classNames('btn btn-tab', {
+                  selected: selectedTab === BULK_TYPE.mortgagee
+                })}
+                onClick={() => setSelectedTab(BULK_TYPE.mortgagee)}
+              >
+                {BULK_TYPE_LABEL.mortgagee}
+              </button>
             </div>
-          </section>
-        </div>
+            {selectedTab === BULK_TYPE.policy && (
+              <div
+                className="bm-wrapper form-group survey-wrapper"
+                role="group"
+              >
+                <section className="bm-byPolicy search">
+                  <MortgageeForm
+                    handleFormSubmit={noop}
+                    errorHandler={errorHandler}
+                  />
+                </section>
+                <section className="bm-byPolicy results">
+                  <SearchByPolicy
+                    handleSearchMortgagee={handleSearchMortgagee}
+                  />
+                  <SearchByPolicyResults
+                    mortgageeResults={mortgageeResults}
+                    handleQueue={handleQueue}
+                  />
+                </section>
+              </div>
+            )}
+            {selectedTab === BULK_TYPE.mortgagee && (
+              <div>{BULK_TYPE_LABEL.mortgagee}</div>
+            )}
+          </div>
+        </section>
       </div>
     </div>
   );
