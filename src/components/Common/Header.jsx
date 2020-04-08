@@ -70,7 +70,7 @@ const Header = ({ auth, authState: { userProfile = {} }, diaries }) => {
           </NavLink>
           {navLinks.map(({ path, name, id }) => (
             <NavLink
-              id={id}
+              key={id}
               activeClassName="active"
               exact
               to={path}

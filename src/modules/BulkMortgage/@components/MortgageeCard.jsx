@@ -48,6 +48,7 @@ const MortgageeCard = ({ mortgagee, handleQueue }) => (
       />
 
       <Button
+        dataTest="queue"
         type="button"
         size={BUTTON_SIZE.small}
         className={BUTTON_CLASS.primary}

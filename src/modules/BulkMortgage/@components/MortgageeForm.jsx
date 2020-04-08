@@ -29,6 +29,7 @@ const MortgageeForm = ({ handleFormSubmit, errorHandler }) => {
       render={({ handleSubmit, submitting, form }) => (
         <form className="bulk-mortgagee-form" onSubmit={handleSubmit}>
           <Button
+            dataTest="refresh"
             className={BUTTON_CLASS.link}
             type="button"
             onClick={form.reset}
