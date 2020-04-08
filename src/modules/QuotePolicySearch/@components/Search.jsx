@@ -10,7 +10,13 @@ const Search = ({ handleLogout }) => {
         <title>Harmony - CSR Portal</title>
       </Helmet>
       <Header handleLogout={handleLogout} />
-      <div className="search">{/*  Search Bar/Search Form*/}</div>
+      <div className="search">
+        <div id="SearchBar">
+          <form onSubmit={x => x}>
+            <div className="search-input-wrapper"></div>
+          </form>
+        </div>
+      </div>
       <main role="document">
         <div className="content-wrapper">
           <div className="dashboard" role="article">
