@@ -9,10 +9,36 @@ const MortgageeCard = ({ mortgagee, handleQueue }) => (
     className={classNames('card')}
     data-test={`mortgagee-${mortgagee.order}`}
   >
-    <section className="view-col-8">
+    <section className="mortgagee-detail">
       <h4>Mortgagee {mortgagee.order + 1}</h4>
       <h5>{mortgagee.name1}</h5>
       <Address address={mortgagee.mailingAddress} className="address" />
+      {mortgagee.currentBillTo === 'YES' && (
+        <div className="bill-to">
+          <label>Current Bill To:</label> {mortgagee.currentBillTo}
+        </div>
+      )}
+      {mortgagee.currentBillTo !== 'YES' && (
+        <div className="bill-to">
+          <label htmlFor={`${mortgagee._id}.makeBillTo`}>Make Bill To</label>
+          <Field
+            name={`${mortgagee._id}.makeBillTo`}
+            component="input"
+            type="checkbox"
+            data-test="makeBillTo"
+          />
+        </div>
+      )}
+    </section>
+    <section className="policy-details">
+      <h4>{mortgagee.policyNumber}</h4>
+      <h5>{mortgagee.policyHolderName}</h5>
+      <Address
+        address={mortgagee.policyHolderMailingAddress}
+        className="address"
+      />
+    </section>
+    <footer className="footer">
       <Field
         name={`${mortgagee._id}.loanNo`}
         dataTest="loanNo"
@@ -20,22 +46,7 @@ const MortgageeCard = ({ mortgagee, handleQueue }) => (
         component={Input}
         styleName="loanNo"
       />
-      <p>Current BillTo: {mortgagee.currentBillTo}</p>
-      <Field
-        name={`${mortgagee._id}.makeBillTo`}
-        component="input"
-        type="checkbox"
-        data-test="makeBillTo"
-      />
-      <label htmlFor={`${mortgagee._id}.makeBillTo`}>Make Bill To</label>
-    </section>
-    <section className="view-col-4">
-      <h4>{mortgagee.policyNumber}</h4>
-      <h5>{mortgagee.policyHolderName}</h5>
-      <Address
-        address={mortgagee.policyHolderMailingAddress}
-        className="address"
-      />
+
       <Button
         type="button"
         size={BUTTON_SIZE.small}
@@ -44,7 +55,7 @@ const MortgageeCard = ({ mortgagee, handleQueue }) => (
       >
         QUEUE
       </Button>
-    </section>
+    </footer>
   </div>
 );
 

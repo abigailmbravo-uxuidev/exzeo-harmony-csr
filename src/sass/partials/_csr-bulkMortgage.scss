@@ -104,9 +104,56 @@ html body div#root .app-wrapper {
                 .card {
                   display: flex;
                   flex-direction: row;
+                  flex-wrap: wrap;
 
                   margin: 0 0 1rem;
-                  padding: 0.75rem 0;
+                  padding: 0.75rem 0.5rem;
+
+                  p {
+                    &.address {
+                      margin-bottom: $padding;
+                    }
+                  }
+
+                  section {
+                    margin-bottom: 0;
+                    padding-bottom: 0;
+
+                    &.mortgagee-detail {
+                      width: 50%;
+                      padding-right: 1rem;
+
+                      border-right: 1px dotted $warm-gray-03;
+
+                      h4 {
+                        color: $warm-gray-08;
+                      }
+                    }
+                    &.policy-details {
+                      width: calc(50% - 1rem);
+                      margin-left: 1rem;
+
+                      h4 {
+                        color: $warm-gray-08;
+                      }
+                    }
+                  }
+                  footer {
+                    display: flex;
+                    align-items: flex-end;
+                    justify-content: space-between;
+
+                    width: 100%;
+                    padding: 0 $padding;
+
+                    .loanNo {
+                      flex-grow: 0;
+                      flex-shrink: 0;
+
+                      width: 15rem;
+                      margin: 0;
+                    }
+                  }
                 }
               }
             }
