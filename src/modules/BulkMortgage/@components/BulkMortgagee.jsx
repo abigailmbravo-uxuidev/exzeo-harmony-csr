@@ -6,12 +6,6 @@ import { noop } from '@exzeo/core-ui';
 import SearchByPolicy from './SearchByPolicy';
 import SearchByPolicyResults from './SearchByPolicyResults';
 
-const style = {
-  display: 'flex',
-  overflowX: 'hidden',
-  overflowY: 'auto'
-};
-
 const BulkMortgagee = ({ errorHandler }) => {
   const [selectedTab, setSelectedTab] = useState(BULK_TYPE.policy);
   const [queuedMortgagees, setQueuedMortgagees] = useState([]);
@@ -88,9 +82,9 @@ const BulkMortgagee = ({ errorHandler }) => {
   const handleQueue = () => {};
 
   return (
-    <div className="content-wrapper">
-      <div className="scroll view-grid" style={style}>
-        <h3>Bulk Mortgagee</h3>
+    <div className="content-wrapper scroll">
+      <div className="view-grid">
+        <div className="title">Bulk Mortgagee</div>
         <section>
           <div className="bulk-mortgagee-wrapper btn-tabs">
             <div className="filter-tabs">
@@ -114,14 +108,17 @@ const BulkMortgagee = ({ errorHandler }) => {
               </button>
             </div>
             {selectedTab === BULK_TYPE.policy && (
-              <div className="form-group survey-wrapper" role="group">
-                <section className="view-col-4">
+              <div
+                className="bm-wrapper form-group survey-wrapper"
+                role="group"
+              >
+                <section className="bm-byPolicy mortgagee-wrapper">
                   <MortgageeForm
                     handleFormSubmit={noop}
                     errorHandler={errorHandler}
                   />
                 </section>
-                <section className="view-col-8">
+                <section className="bm-byPolicy search-results-wrapper">
                   <SearchByPolicy
                     handleSearchMortgagee={handleSearchMortgagee}
                   />

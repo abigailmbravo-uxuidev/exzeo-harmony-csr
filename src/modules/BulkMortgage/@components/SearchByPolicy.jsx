@@ -12,6 +12,7 @@ export const SearchByPolicy = ({ handleSearchMortgagee }) => {
       {({ handleSubmit, form, values }) => (
         <form
           id="SearchByPolicy"
+          className="search-by-policy-form"
           onSubmit={handleSubmit}
           className="search-inputs"
         >
@@ -20,7 +21,7 @@ export const SearchByPolicy = ({ handleSearchMortgagee }) => {
             dataTest="product"
             label="Product"
             component={Select}
-            styleName=""
+            styleName="product"
             answers={[]}
           />
           <Field
@@ -28,7 +29,7 @@ export const SearchByPolicy = ({ handleSearchMortgagee }) => {
             dataTest="searchType"
             label="Search Type"
             component={Select}
-            styleName=""
+            styleName="search-type"
             answers={[]}
           />
           <Field
@@ -37,7 +38,7 @@ export const SearchByPolicy = ({ handleSearchMortgagee }) => {
             label="Search"
             placeholder="Search By Policy Number (partial)"
             component={Input}
-            styleName=""
+            styleName="search-input"
           />
           <Button
             className={Button.constants.classNames.primary}
