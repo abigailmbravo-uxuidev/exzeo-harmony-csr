@@ -16,7 +16,9 @@ export const SearchByPolicyResults = ({ handleQueue, mortgageeResults }) => {
           className="search-results"
         >
           {mortgageeResults.map(m => {
-            return <MortgageeCard mortgagee={m} handleQueue={handleQueue} />;
+            return (
+              <MortgageeCard mortgagee={m} handleQueue={() => handleQueue(m)} />
+            );
           })}
         </form>
       )}

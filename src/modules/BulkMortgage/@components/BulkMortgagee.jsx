@@ -2,9 +2,12 @@ import React, { useState } from 'react';
 import classNames from 'classnames';
 import { BULK_TYPE, BULK_TYPE_LABEL } from '../constants';
 import MortgageeForm from './MortgageeForm';
-import { noop } from '@exzeo/core-ui';
+import { Button, noop } from '@exzeo/core-ui';
 import SearchByPolicy from './SearchByPolicy';
 import SearchByPolicyResults from './SearchByPolicyResults';
+import { BUTTON_CLASS } from '@exzeo/core-ui/src/Button/Button';
+import MortgageeCard from './MortgageeCard';
+import QueuedMortgageeCard from './QueuedMortgageeCard';
 
 const BulkMortgagee = ({ errorHandler }) => {
   const [selectedTab, setSelectedTab] = useState(BULK_TYPE.policy);
@@ -79,7 +82,21 @@ const BulkMortgagee = ({ errorHandler }) => {
   ]);
 
   const handleSearchMortgagee = () => {};
-  const handleQueue = () => {};
+  const addToQueue = mortgagee => {
+    const existingMortgagee = queuedMortgagees.find(
+      m => m._id === mortgagee._id
+    );
+    if (!existingMortgagee) {
+      setQueuedMortgagees([...queuedMortgagees, mortgagee]);
+    }
+  };
+
+  const removeFromQueue = mortgagee => {
+    const filterMortgagees = queuedMortgagees.filter(
+      m => m._id !== mortgagee._id
+    );
+    setQueuedMortgagees(filterMortgagees);
+  };
 
   return (
     <div className="content-wrapper scroll">
@@ -124,7 +141,7 @@ const BulkMortgagee = ({ errorHandler }) => {
                   />
                   <SearchByPolicyResults
                     mortgageeResults={mortgageeResults}
-                    handleQueue={handleQueue}
+                    handleQueue={addToQueue}
                   />
                 </section>
               </div>
@@ -132,6 +149,35 @@ const BulkMortgagee = ({ errorHandler }) => {
             {selectedTab === BULK_TYPE.mortgagee && (
               <div>{BULK_TYPE_LABEL.mortgagee}</div>
             )}
+          </div>
+        </section>
+        <section>
+          <div className="view-grid">
+            <section>
+              <div className="title">
+                Queued For Update{' '}
+                <span className="queue-count">
+                  ({queuedMortgagees.length} queued)
+                </span>
+                <Button
+                  className={BUTTON_CLASS.link}
+                  type="button"
+                  onClick={() => setQueuedMortgagees([])}
+                >
+                  Remove All
+                </Button>
+              </div>
+            </section>
+            <section>
+              {queuedMortgagees.map(m => {
+                return (
+                  <QueuedMortgageeCard
+                    mortgagee={m}
+                    handleRemove={() => removeFromQueue(m)}
+                  />
+                );
+              })}
+            </section>
           </div>
         </section>
       </div>
