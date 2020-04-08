@@ -37,12 +37,10 @@ html body div#root .app-wrapper {
     .bm-wrapper {
       padding: 0;
 
-      .bulk-mortgagee-form {
-        margin-right: 1rem;
-        padding-right: 1rem;
-        padding-left: 0;
-
-        border-right: 1px dotted $warm-gray-02;
+      .bulk-mortgagee-form,
+      .search-inputs,
+      .search-results {
+        padding: 0;
       }
 
       section {
@@ -51,10 +49,18 @@ html body div#root .app-wrapper {
 
         &.bm-byPolicy {
           &.mortgagee-search {
+            flex-grow: 0;
+            flex-shrink: 0;
+
             width: 40%;
+            margin-right: 1rem;
+            padding-right: 1rem;
+
+            border-right: 1px dotted $warm-gray-02;
           }
           &.results {
-            width: 60%;
+            flex-grow: 1;
+            flex-shrink: 1;
 
             .search-inputs {
               display: flex;
@@ -75,6 +81,8 @@ html body div#root .app-wrapper {
               }
               button {
                 align-self: flex-start;
+
+                margin-top: 1.75rem;
               }
             }
           }
