@@ -28,8 +28,15 @@ const MortgageeForm = ({ handleFormSubmit, errorHandler }) => {
       subscription={{ submitting: true }}
       render={({ handleSubmit, submitting, form }) => (
         <form className="bulk-mortgagee-form" onSubmit={handleSubmit}>
+          <Button
+            className={BUTTON_CLASS.link}
+            type="button"
+            onClick={form.reset}
+          >
+            <i className="fa fa-refresh" />
+            Clear &amp; Reset Form
+          </Button>
           <TopOptionsWatcher options={topMortgagees} watchField="mortgagee" />
-
           <Field
             label="Top Mortgagees"
             name="mortgagee"
@@ -114,14 +121,6 @@ const MortgageeForm = ({ handleFormSubmit, errorHandler }) => {
             segmented
             answers={INSTRUCTION_ANSWERS}
           />
-          <Button
-            className={BUTTON_CLASS.link}
-            type="button"
-            onClick={form.reset}
-          >
-            <i className="fa fa-refresh" />
-            Clear &amp; Reset Form
-          </Button>
         </form>
       )}
     />
