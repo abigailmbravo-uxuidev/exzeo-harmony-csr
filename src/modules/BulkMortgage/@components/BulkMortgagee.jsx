@@ -112,13 +112,13 @@ const BulkMortgagee = ({ errorHandler }) => {
                 className="bm-wrapper form-group survey-wrapper"
                 role="group"
               >
-                <section className="bm-byPolicy mortgagee-search">
+                <section className="bm-byPolicy mortgagee-wrapper">
                   <MortgageeForm
                     handleFormSubmit={noop}
                     errorHandler={errorHandler}
                   />
                 </section>
-                <section className="bm-byPolicy results">
+                <section className="bm-byPolicy search-results-wrapper">
                   <SearchByPolicy
                     handleSearchMortgagee={handleSearchMortgagee}
                   />

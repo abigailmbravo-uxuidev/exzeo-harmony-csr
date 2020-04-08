@@ -48,7 +48,7 @@ html body div#root .app-wrapper {
         flex-shrink: 0;
 
         &.bm-byPolicy {
-          &.mortgagee-search {
+          &.mortgagee-wrapper {
             flex-grow: 0;
             flex-shrink: 0;
 
@@ -58,7 +58,7 @@ html body div#root .app-wrapper {
 
             border-right: 1px dotted $warm-gray-02;
           }
-          &.results {
+          &.search-results-wrapper {
             flex-grow: 1;
             flex-shrink: 1;
 
