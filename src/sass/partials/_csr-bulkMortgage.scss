@@ -23,6 +23,15 @@ html body div#root .app-wrapper {
       }
     }
 
+    .title {
+      .queue-count {
+        color: $warm-gray-08;
+
+        font-size: $font-size-sm;
+        font-weight: $font-weight-normal;
+      }
+    }
+
     .content-wrapper.scroll {
       overflow-x: hidden;
       overflow-y: auto;
