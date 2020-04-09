@@ -1,17 +1,5 @@
 html body div#root .app-wrapper {
   .bulk-mortgage-main {
-    .content-wrapper.scroll {
-      overflow-x: hidden;
-      overflow-y: auto;
-
-      padding: $padding;
-
-      .view-grid {
-        flex-grow: 0;
-        flex-shrink: 0;
-      }
-    }
-
     .flex-form {
       display: flex;
 
@@ -34,124 +22,131 @@ html body div#root .app-wrapper {
       }
     }
 
-    .bulk-mortgagee-wrapper {
-      .bm-wrapper {
-        padding: 0;
+    .content-wrapper.scroll {
+      overflow-x: hidden;
+      overflow-y: auto;
 
-        .bulk-mortgagee-form,
-        .search-inputs,
-        .search-results {
+      .bulk-mortgagee-wrapper {
+        padding: 2 * $padding;
+
+        .bm-wrapper {
           padding: 0;
-        }
 
-        section {
-          flex-grow: 0;
-          flex-shrink: 0;
+          .bulk-mortgagee-form,
+          .search-inputs,
+          .search-results {
+            padding: 0;
+          }
 
-          &.bm-byPolicy {
-            &.mortgagee-wrapper {
-              position: relative;
+          section {
+            flex-grow: 0;
+            flex-shrink: 0;
 
-              flex-grow: 0;
-              flex-shrink: 0;
+            &.bm-byPolicy {
+              &.mortgagee-wrapper {
+                position: relative;
 
-              width: 40%;
-              margin-top: -1rem;
-              margin-right: 1rem;
-              padding: 1rem;
+                flex-grow: 0;
+                flex-shrink: 0;
 
-              background-color: $warm-gray-03;
+                width: 40%;
+                margin-top: -1rem;
+                margin-right: 1rem;
+                padding: 1rem;
 
-              button {
-                &.btn-link {
-                  position: absolute;
-                  top: 0.5rem;
-                  right: 0.5rem;
+                background-color: $warm-gray-03;
 
-                  font-size: $font-size-sm;
-                }
-              }
-            }
-            &.search-results-wrapper {
-              flex-grow: 1;
-              flex-shrink: 1;
-
-              .search-inputs {
-                display: flex;
-                .form-group {
-                  margin-right: $padding;
-                  &.product {
-                    flex-grow: 0;
-                    flex-shrink: 0;
-
-                    width: 8rem;
-                  }
-                  &.search-type {
-                    flex-grow: 0;
-                    flex-shrink: 0;
-
-                    width: 10rem;
-                  }
-                }
                 button {
-                  align-self: flex-start;
+                  &.btn-link {
+                    position: absolute;
+                    top: 0.5rem;
+                    right: 0.5rem;
 
-                  margin-top: 1.75rem;
+                    font-size: $font-size-sm;
+                  }
                 }
               }
+              &.search-results-wrapper {
+                flex-grow: 1;
+                flex-shrink: 1;
 
-              .search-results {
-                .card {
+                .search-inputs {
                   display: flex;
-                  flex-direction: row;
-                  flex-wrap: wrap;
-
-                  margin: 0 0 1rem;
-                  padding: 0.75rem 0.5rem;
-
-                  p {
-                    &.address {
-                      margin-bottom: $padding;
-                    }
-                  }
-
-                  section {
-                    margin-bottom: 0;
-                    padding-bottom: 0;
-
-                    &.mortgagee-detail {
-                      width: 50%;
-                      padding-right: 1rem;
-
-                      border-right: 1px dotted $warm-gray-03;
-
-                      h4 {
-                        color: $warm-gray-08;
-                      }
-                    }
-                    &.policy-details {
-                      width: calc(50% - 1rem);
-                      margin-left: 1rem;
-
-                      h4 {
-                        color: $warm-gray-08;
-                      }
-                    }
-                  }
-                  footer {
-                    display: flex;
-                    align-items: flex-end;
-                    justify-content: space-between;
-
-                    width: 100%;
-                    padding: 0 $padding;
-
-                    .loanNo {
+                  .form-group {
+                    margin-right: $padding;
+                    &.product {
                       flex-grow: 0;
                       flex-shrink: 0;
 
-                      width: 15rem;
-                      margin: 0;
+                      width: 8rem;
+                    }
+                    &.search-type {
+                      flex-grow: 0;
+                      flex-shrink: 0;
+
+                      width: 10rem;
+                    }
+                  }
+                  button {
+                    align-self: flex-start;
+
+                    margin-top: 1.75rem;
+                  }
+                }
+
+                .search-results {
+                  .card {
+                    display: flex;
+                    flex-direction: row;
+                    flex-wrap: wrap;
+
+                    margin: 0 0 1rem;
+                    padding: 0.75rem 0.5rem;
+
+                    p {
+                      &.address {
+                        margin-bottom: $padding;
+                      }
+                    }
+
+                    section {
+                      margin-bottom: 0;
+                      padding-bottom: 0;
+
+                      &.mortgagee-detail {
+                        width: 50%;
+                        padding-right: 1rem;
+
+                        border-right: 1px dotted $warm-gray-03;
+
+                        h4 {
+                          color: $warm-gray-08;
+                        }
+                      }
+                      &.policy-details {
+                        width: calc(50% - 1rem);
+                        margin-left: 1rem;
+
+                        h4 {
+                          color: $warm-gray-08;
+                        }
+                      }
+                    }
+                    footer {
+                      display: flex;
+                      align-items: flex-end;
+                      justify-content: space-between;
+
+                      width: 100%;
+                      padding: 0 $padding;
+
+                      .loanNo {
+                        flex-grow: 0;
+                        flex-shrink: 0;
+
+                        width: 15rem;
+                        margin: 0;
+                      }
                     }
                   }
                 }

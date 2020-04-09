@@ -104,10 +104,10 @@ const BulkMortgagee = ({ errorHandler }) => {
 
   return (
     <div className="content-wrapper scroll">
-      <div className="view-grid">
+      <div className="bulk-mortgagee-wrapper">
         <div className="title">Bulk Mortgagee</div>
         <section>
-          <div className="bulk-mortgagee-wrapper btn-tabs">
+          <div className="btn-tabs">
             <div className="filter-tabs">
               <button
                 type="button"
@@ -155,49 +155,43 @@ const BulkMortgagee = ({ errorHandler }) => {
             )}
           </div>
         </section>
-        <section>
-          <div className="view-grid">
-            <section>
-              <div className="title">
-                Queued For Update{' '}
-                <span className="queue-count">
-                  ({queuedMortgagees.length} queued)
-                </span>
-                <Button
-                  dataTest="queue-mortgagee"
-                  className={BUTTON_CLASS.link}
-                  type="button"
-                  onClick={() => setQueuedMortgagees([])}
-                >
-                  Remove All
-                </Button>
-              </div>
-            </section>
-            <section>
-              {queuedMortgagees.map(m => {
-                return (
-                  <QueuedMortgageeCard
-                    key={m._id}
-                    mortgagee={m}
-                    handleRemove={() => removeFromQueue(m)}
-                  />
-                );
-              })}
-            </section>
-            {queuedMortgagees.length > 0 && (
-              <section>
-                <Button
-                  dataTest="bulk-mortgage-submit"
-                  className={BUTTON_CLASS.primary}
-                  type="button"
-                  onClick={handleBulkUpdateSubmit}
-                >
-                  Update
-                </Button>
-              </section>
-            )}
-          </div>
-        </section>
+        <div className="title">
+          Queued For Update&nbsp;
+          <span className="queue-count">
+            ({queuedMortgagees.length} queued)
+          </span>
+          <Button
+            dataTest="queue-mortgagee"
+            className={BUTTON_CLASS.link}
+            type="button"
+            onClick={() => setQueuedMortgagees([])}
+          >
+            Remove All
+          </Button>
+        </div>
+        <div className="policy-list">
+          {queuedMortgagees.map(m => {
+            return (
+              <QueuedMortgageeCard
+                key={m._id}
+                mortgagee={m}
+                handleRemove={() => removeFromQueue(m)}
+              />
+            );
+          })}
+        </div>
+        {queuedMortgagees.length > 0 && (
+          <section>
+            <Button
+              dataTest="bulk-mortgage-submit"
+              className={BUTTON_CLASS.primary}
+              type="button"
+              onClick={handleBulkUpdateSubmit}
+            >
+              Update
+            </Button>
+          </section>
+        )}
       </div>
     </div>
   );
