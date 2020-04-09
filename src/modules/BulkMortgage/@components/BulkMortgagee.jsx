@@ -189,7 +189,7 @@ const BulkMortgagee = ({ errorHandler }) => {
         </div>
       </div>
       {queuedMortgagees.length > 0 && (
-        <section>
+        <section className="footer basic-footer btn-footer">
           <Button
             dataTest="bulk-mortgage-submit"
             className={BUTTON_CLASS.primary}
