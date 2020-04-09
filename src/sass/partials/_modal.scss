@@ -359,7 +359,26 @@
   }
   &.contract-crud {
     .card {
+      display: flex;
+      overflow: hidden;
+
       width: 50rem;
+
+      > form {
+        overflow: hidden;
+
+        .card-block {
+          overflow: hidden;
+
+          padding: 0;
+
+          > section {
+            overflow-y: auto;
+
+            padding: $padding * 3;
+          }
+        }
+      }
     }
   }
   &.existing-agent-modal {
