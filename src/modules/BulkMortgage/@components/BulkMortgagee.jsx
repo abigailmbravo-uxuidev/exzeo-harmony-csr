@@ -186,20 +186,20 @@ const BulkMortgagee = ({ errorHandler }) => {
               );
             })}
           </section>
+          <section className="btn-footer">
+            {queuedMortgagees.length > 0 && (
+              <Button
+                dataTest="bulk-mortgage-submit"
+                className={BUTTON_CLASS.primary}
+                type="button"
+                onClick={handleBulkUpdateSubmit}
+              >
+                Update
+              </Button>
+            )}
+          </section>
         </div>
       </div>
-      {queuedMortgagees.length > 0 && (
-        <section className="footer basic-footer btn-footer">
-          <Button
-            dataTest="bulk-mortgage-submit"
-            className={BUTTON_CLASS.primary}
-            type="button"
-            onClick={handleBulkUpdateSubmit}
-          >
-            Update
-          </Button>
-        </section>
-      )}
     </React.Fragment>
   );
 };
