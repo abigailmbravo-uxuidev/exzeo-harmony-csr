@@ -103,97 +103,104 @@ const BulkMortgagee = ({ errorHandler }) => {
   const handleBulkUpdateSubmit = () => {};
 
   return (
-    <div className="content-wrapper scroll">
-      <div className="bulk-mortgagee-wrapper">
-        <div className="title">Bulk Mortgagee</div>
-        <section>
-          <div className="btn-tabs">
-            <div className="filter-tabs">
-              <button
-                type="button"
-                className={classNames('btn btn-tab', {
-                  selected: selectedTab === BULK_TYPE.policy
-                })}
-                onClick={() => setSelectedTab(BULK_TYPE.policy)}
-              >
-                {BULK_TYPE_LABEL.policy}
-              </button>
-              <button
-                type="button"
-                className={classNames('btn btn-tab', {
-                  selected: selectedTab === BULK_TYPE.mortgagee
-                })}
-                onClick={() => setSelectedTab(BULK_TYPE.mortgagee)}
-              >
-                {BULK_TYPE_LABEL.mortgagee}
-              </button>
-            </div>
-            {selectedTab === BULK_TYPE.policy && (
-              <div
-                className="bm-wrapper form-group survey-wrapper"
-                role="group"
-              >
-                <section className="bm-byPolicy mortgagee-wrapper">
-                  <MortgageeForm
-                    handleFormSubmit={noop}
-                    errorHandler={errorHandler}
-                  />
-                </section>
-                <section className="bm-byPolicy search-results-wrapper">
-                  <SearchByPolicy
-                    handleSearchMortgagee={handleSearchMortgagee}
-                  />
-                  <SearchByPolicyResults
-                    mortgageeResults={mortgageeResults}
-                    handleQueue={addToQueue}
-                  />
-                </section>
+    <React.Fragment>
+      <div className="content-wrapper scroll">
+        <div className="bulk-mortgagee-wrapper">
+          <div className="title">Bulk Mortgagee</div>
+          <section>
+            <div className="btn-tabs">
+              <div className="filter-tabs">
+                <button
+                  type="button"
+                  className={classNames('btn btn-tab', {
+                    selected: selectedTab === BULK_TYPE.policy
+                  })}
+                  onClick={() => setSelectedTab(BULK_TYPE.policy)}
+                >
+                  {BULK_TYPE_LABEL.policy}
+                </button>
+                <button
+                  type="button"
+                  className={classNames('btn btn-tab', {
+                    selected: selectedTab === BULK_TYPE.mortgagee
+                  })}
+                  onClick={() => setSelectedTab(BULK_TYPE.mortgagee)}
+                >
+                  {BULK_TYPE_LABEL.mortgagee}
+                </button>
               </div>
-            )}
-            {selectedTab === BULK_TYPE.mortgagee && (
-              <div>{BULK_TYPE_LABEL.mortgagee}</div>
+              {selectedTab === BULK_TYPE.policy && (
+                <div
+                  className="bm-wrapper by-policy form-group survey-wrapper"
+                  role="group"
+                >
+                  <section className="bm-byPolicy mortgagee-wrapper">
+                    <MortgageeForm
+                      handleFormSubmit={noop}
+                      errorHandler={errorHandler}
+                    />
+                  </section>
+                  <section className="bm-byPolicy search-results-wrapper">
+                    <SearchByPolicy
+                      handleSearchMortgagee={handleSearchMortgagee}
+                    />
+                    <SearchByPolicyResults
+                      mortgageeResults={mortgageeResults}
+                      handleQueue={addToQueue}
+                    />
+                  </section>
+                </div>
+              )}
+              {selectedTab === BULK_TYPE.mortgagee && (
+                <div>{BULK_TYPE_LABEL.mortgagee}</div>
+              )}
+            </div>
+          </section>
+          <div className="queue-header">
+            <div className="title">
+              Queued For Update&nbsp;
+              <span className="queue-count">
+                ({queuedMortgagees.length} queued)
+              </span>
+            </div>
+            {queuedMortgagees.length > 0 && (
+              <Button
+                dataTest="queue-mortgagee"
+                className={BUTTON_CLASS.link}
+                type="button"
+                onClick={() => setQueuedMortgagees([])}
+              >
+                <i className="fa fa-remove" />
+                Remove All
+              </Button>
             )}
           </div>
-        </section>
-        <div className="title">
-          Queued For Update&nbsp;
-          <span className="queue-count">
-            ({queuedMortgagees.length} queued)
-          </span>
-          <Button
-            dataTest="queue-mortgagee"
-            className={BUTTON_CLASS.link}
-            type="button"
-            onClick={() => setQueuedMortgagees([])}
-          >
-            Remove All
-          </Button>
-        </div>
-        <div className="policy-list">
-          {queuedMortgagees.map(m => {
-            return (
-              <QueuedMortgageeCard
-                key={m._id}
-                mortgagee={m}
-                handleRemove={() => removeFromQueue(m)}
-              />
-            );
-          })}
-        </div>
-        {queuedMortgagees.length > 0 && (
-          <section>
-            <Button
-              dataTest="bulk-mortgage-submit"
-              className={BUTTON_CLASS.primary}
-              type="button"
-              onClick={handleBulkUpdateSubmit}
-            >
-              Update
-            </Button>
+          <section className="policy-list">
+            {queuedMortgagees.map(m => {
+              return (
+                <QueuedMortgageeCard
+                  key={m._id}
+                  mortgagee={m}
+                  handleRemove={() => removeFromQueue(m)}
+                />
+              );
+            })}
           </section>
-        )}
+        </div>
       </div>
-    </div>
+      {queuedMortgagees.length > 0 && (
+        <section>
+          <Button
+            dataTest="bulk-mortgage-submit"
+            className={BUTTON_CLASS.primary}
+            type="button"
+            onClick={handleBulkUpdateSubmit}
+          >
+            Update
+          </Button>
+        </section>
+      )}
+    </React.Fragment>
   );
 };
 

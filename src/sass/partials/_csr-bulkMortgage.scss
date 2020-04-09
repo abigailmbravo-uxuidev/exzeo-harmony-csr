@@ -1,5 +1,6 @@
 html body div#root .app-wrapper {
-  .bulk-mortgage-main {
+  main[role='document'].bulk-mortgage-main {
+    flex-direction: column;
     .flex-form {
       display: flex;
 
@@ -31,6 +32,12 @@ html body div#root .app-wrapper {
 
         .bm-wrapper {
           padding: 0;
+
+          &.by-policy {
+            margin-bottom: $padding * 2;
+
+            border-bottom: 1px dashed $blue;
+          }
 
           .bulk-mortgagee-form,
           .search-inputs,
@@ -149,6 +156,41 @@ html body div#root .app-wrapper {
                       }
                     }
                   }
+                }
+              }
+            }
+          }
+        }
+
+        .queue-header {
+          display: flex;
+          justify-content: space-between;
+        }
+
+        .policy-list {
+          padding: $padding 0;
+
+          .card {
+            &:hover {
+              cursor: default;
+              transform: scale(1);
+
+              box-shadow: 0 0 0 rgba(0, 0, 0, 0);
+            }
+            .icon-name {
+              flex-wrap: nowrap;
+
+              .product {
+                flex-basis: auto;
+
+                margin-top: 0;
+              }
+            }
+            section {
+              .propertyAddress {
+                display: inline-block;
+                p {
+                  margin: 0;
                 }
               }
             }

@@ -14,6 +14,11 @@ const QueuedMortgageeCard = ({ mortgagee, handleRemove }) => (
     className="card"
     data-test={`queued-mortgagee-${mortgagee._id}`}
   >
+    <div className="icon-name">
+      <i className="card-icon fa fa-file-text" />
+      {/* if we have access to product */}
+      <h5 className="product">[product]</h5>
+    </div>
     <section>
       <div className="details">
         <span className="policy-no">
@@ -46,7 +51,7 @@ const QueuedMortgageeCard = ({ mortgagee, handleRemove }) => (
       </div>
       <div className="title">
         <h4>
-          {mortgagee.name1} (Mortgagee {mortgagee.order + 1}) &nbsp;|&nbsp;
+          {mortgagee.name1} (Mortgagee {mortgagee.order + 1})&nbsp;|&nbsp;
           <span className="propertyAddress">
             <Address className="" address={mortgagee.mailingAddress} />
           </span>
