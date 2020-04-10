@@ -17,11 +17,15 @@ import {
 
 describe('Agency Management testing', () => {
   before('Login and set route aliases', () => {
-    setRouteAliases();
+    ////setRouteAliases();
     cy.login();
   });
 
-  it('POS:Agency Management Test', () => {
+  beforeEach('Set route aliases for network requests', () => {
+    setRouteAliases();
+  });
+
+  it('POS: Add a New Agency', () => {
     cy.findDataTag('agency-link').click();
     cy.url().should('contain', `/agency`);
     // This makes it so we don't open up a new window
@@ -212,140 +216,141 @@ describe('Agency Management testing', () => {
         'Fetch Agents By AgencyCode: status'
       ).to.equal(200);
     });
+  });
+  //   cy.wait('@saveNewAgency').then(({ response }) => {
+  //     expect(
+  //       response.body.result.agencyCode,
+  //       'Overview Page: Details Area: agencyCode'
+  //     ).to.match(/^\d+/);
+  //     expect(
+  //       response.body.result.agentOfRecord,
+  //       'Overview Page: Details Area: agentOfRecord'
+  //     ).to.match(/^\d+/);
+  //     expect(
+  //       response.body.result.displayName,
+  //       'Overview Page: Details Area: displayName'
+  //     ).to.equal(ADD_AGENCY.displayName);
+  //     expect(
+  //       response.body.result.legalName,
+  //       'Overview Page: Details Area: legalName'
+  //     ).to.equal(ADD_AGENCY.legalName);
+  //     expect(
+  //       response.body.result.status,
+  //       'Overview Page: Details Area: agency status'
+  //     ).to.equal(ADD_AGENCY.status);
+  //     expect(
+  //       response.body.result.tpaid,
+  //       'Overview Page: Details Area: tpaid'
+  //     ).to.equal(ADD_AGENCY.tpaid);
+  //     expect(
+  //       response.body.result.okToPay,
+  //       'Overview Page: Details Area: okToPay'
+  //     ).to.equal(ADD_AGENCY.okToPay);
+  //     expect(
+  //       response.body.result.websiteUrl,
+  //       'Overview Page: Details Area: websiteUrl'
+  //     ).to.equal(ADD_AGENCY.websiteUrl);
+  //     expect(
+  //       response.body.result.taxIdNumber,
+  //       'Overview Page: Details Area: taxIdNumber'
+  //     ).to.equal(ADD_AGENCY.taxIdNumber);
+  //     expect(
+  //       response.body.result.taxClassification,
+  //       'Overview Page: Details Area: taxClassification'
+  //     ).to.equal(ADD_AGENCY.taxClassification);
+  //     expect(
+  //       response.body.result.eoExpirationDate,
+  //       'Overview Page: Details Area: eoExpirationDate'
+  //     ).to.equal(ADD_AGENCY.eoExpirationDate);
+  //     expect(
+  //       response.body.result.primaryPhoneNumber,
+  //       'Overview Page: Details Area: primaryPhoneNumber'
+  //     ).to.equal(ADD_AGENCY.primaryPhoneNumber);
+  //     expect(
+  //       response.body.result.secondaryPhoneNumber,
+  //       'Overview Page: Details Area: secondaryPhoneNumber'
+  //     ).to.equal(ADD_AGENCY.secondaryPhoneNumber);
+  //     expect(
+  //       response.body.result.faxNumber,
+  //       'Overview Page: Details Area: faxNumber'
+  //     ).to.equal(ADD_AGENCY.faxNumber);
+  //     expect(
+  //       response.body.result.customerServiceEmailAddress,
+  //       'Overview Page: Details Area: customerServiceEmailAddress'
+  //     ).to.equal(ADD_AGENCY.customerServiceEmailAddress);
+  //     expect(
+  //       response.body.result.mailingAddress,
+  //       'Overview Page: Address Area: mailingAddress'
+  //     ).to.eql(ADD_AGENCY.mailingAddress);
+  //     expect(
+  //       response.body.result.physicalAddress,
+  //       'Overview Page: Address Area: physicalAddress'
+  //     ).to.eql(ADD_AGENCY.physicalAddress);
+  //     expect(
+  //       response.body.result.territoryManagerId,
+  //       'Overview Page: Address Area: territoryManagerId'
+  //     ).to.equal(ADD_AGENCY.territoryManagerId);
+  //     expect(
+  //       response.body.result.principal,
+  //       'Overview Page: Officer Area: principal'
+  //     ).to.eql(ADD_AGENCY.principal);
+  //     expect(
+  //       response.body.result.contact,
+  //       'Overview Page: Contact Area: contact'
+  //     ).to.eql(ADD_AGENCY.contact);
+  //   });
 
-    //   cy.wait('@saveNewAgency').then(({ response }) => {
-    //     expect(
-    //       response.body.result.agencyCode,
-    //       'Overview Page: Details Area: agencyCode'
-    //     ).to.match(/^\d+/);
-    //     expect(
-    //       response.body.result.agentOfRecord,
-    //       'Overview Page: Details Area: agentOfRecord'
-    //     ).to.match(/^\d+/);
-    //     expect(
-    //       response.body.result.displayName,
-    //       'Overview Page: Details Area: displayName'
-    //     ).to.equal(ADD_AGENCY.displayName);
-    //     expect(
-    //       response.body.result.legalName,
-    //       'Overview Page: Details Area: legalName'
-    //     ).to.equal(ADD_AGENCY.legalName);
-    //     expect(
-    //       response.body.result.status,
-    //       'Overview Page: Details Area: agency status'
-    //     ).to.equal(ADD_AGENCY.status);
-    //     expect(
-    //       response.body.result.tpaid,
-    //       'Overview Page: Details Area: tpaid'
-    //     ).to.equal(ADD_AGENCY.tpaid);
-    //     expect(
-    //       response.body.result.okToPay,
-    //       'Overview Page: Details Area: okToPay'
-    //     ).to.equal(ADD_AGENCY.okToPay);
-    //     expect(
-    //       response.body.result.websiteUrl,
-    //       'Overview Page: Details Area: websiteUrl'
-    //     ).to.equal(ADD_AGENCY.websiteUrl);
-    //     expect(
-    //       response.body.result.taxIdNumber,
-    //       'Overview Page: Details Area: taxIdNumber'
-    //     ).to.equal(ADD_AGENCY.taxIdNumber);
-    //     expect(
-    //       response.body.result.taxClassification,
-    //       'Overview Page: Details Area: taxClassification'
-    //     ).to.equal(ADD_AGENCY.taxClassification);
-    //     expect(
-    //       response.body.result.eoExpirationDate,
-    //       'Overview Page: Details Area: eoExpirationDate'
-    //     ).to.equal(ADD_AGENCY.eoExpirationDate);
-    //     expect(
-    //       response.body.result.primaryPhoneNumber,
-    //       'Overview Page: Details Area: primaryPhoneNumber'
-    //     ).to.equal(ADD_AGENCY.primaryPhoneNumber);
-    //     expect(
-    //       response.body.result.secondaryPhoneNumber,
-    //       'Overview Page: Details Area: secondaryPhoneNumber'
-    //     ).to.equal(ADD_AGENCY.secondaryPhoneNumber);
-    //     expect(
-    //       response.body.result.faxNumber,
-    //       'Overview Page: Details Area: faxNumber'
-    //     ).to.equal(ADD_AGENCY.faxNumber);
-    //     expect(
-    //       response.body.result.customerServiceEmailAddress,
-    //       'Overview Page: Details Area: customerServiceEmailAddress'
-    //     ).to.equal(ADD_AGENCY.customerServiceEmailAddress);
-    //     expect(
-    //       response.body.result.mailingAddress,
-    //       'Overview Page: Address Area: mailingAddress'
-    //     ).to.eql(ADD_AGENCY.mailingAddress);
-    //     expect(
-    //       response.body.result.physicalAddress,
-    //       'Overview Page: Address Area: physicalAddress'
-    //     ).to.eql(ADD_AGENCY.physicalAddress);
-    //     expect(
-    //       response.body.result.territoryManagerId,
-    //       'Overview Page: Address Area: territoryManagerId'
-    //     ).to.equal(ADD_AGENCY.territoryManagerId);
-    //     expect(
-    //       response.body.result.principal,
-    //       'Overview Page: Officer Area: principal'
-    //     ).to.eql(ADD_AGENCY.principal);
-    //     expect(
-    //       response.body.result.contact,
-    //       'Overview Page: Contact Area: contact'
-    //     ).to.eql(ADD_AGENCY.contact);
-    //   });
+  //   cy.task('log', 'Agency create successfully');
 
-    //   cy.task('log', 'Agency create successfully');
+  //   cy.wait('@fetchAgentsByAgencyCode').then(({ response }) => {
+  //     expect(
+  //       response.body.result[0].firstName,
+  //       'Overview Page: Agent Of Record Area: firstName'
+  //     ).to.equal(ADD_AGENT.firstName);
+  //     expect(
+  //       response.body.result[0].lastName,
+  //       'Overview Page: Agent Of Record Area: lastName'
+  //     ).to.equal(ADD_AGENT.lastName);
+  //     expect(
+  //       response.body.result[0].mailingAddress,
+  //       'Overview Page: Agent Of Record Area: mailingAddress'
+  //     ).to.eql(ADD_AGENT.mailingAddress);
+  //     expect(
+  //       response.body.result[0].status,
+  //       'Overview Page: Agent Of Record Area: Agent status'
+  //     ).to.equal(ADD_AGENT.status);
+  //     expect(
+  //       response.body.result[0].primaryPhoneNumber,
+  //       'Overview Page: Agent Of Record Area: primaryPhoneNumber'
+  //     ).to.equal(ADD_AGENT.primaryPhoneNumber);
+  //     expect(
+  //       response.body.result[0].primaryPhoneNumberExtension,
+  //       'Overview Page: Agent Of Record Area: primaryPhoneNumberExtension'
+  //     ).to.equal(ADD_AGENT.primaryPhoneNumberExtension);
+  //     expect(
+  //       response.body.result[0].secondaryPhoneNumber,
+  //       'Overview Page: Agent Of Record Area: secondaryPhoneNumber'
+  //     ).to.equal(ADD_AGENT.secondaryPhoneNumber);
+  //     expect(
+  //       response.body.result[0].faxNumber,
+  //       'Overview Page: Agent Of Record Area: faxNumber'
+  //     ).to.equal(ADD_AGENT.faxNumber);
+  //     expect(
+  //       response.body.result[0].emailAddress,
+  //       'Overview Page: Agent Of Record Area: emailAddress'
+  //     ).to.equal(ADD_AGENT.emailAddress);
+  //     //not displayed but sent in the same request
+  //     expect(
+  //       response.body.result[0].mailingAddress,
+  //       'Overview Page: Agent Of Record Area: mailingAddress'
+  //     ).to.eql(ADD_AGENT.mailingAddress);
+  //     expect(
+  //       response.body.result[0].licenses,
+  //       'Overview Page: Agent Of Record Area: licenses'
+  //     ).to.eql(ADD_AGENT.licenses);
+  //   });
 
-    //   cy.wait('@fetchAgentsByAgencyCode').then(({ response }) => {
-    //     expect(
-    //       response.body.result[0].firstName,
-    //       'Overview Page: Agent Of Record Area: firstName'
-    //     ).to.equal(ADD_AGENT.firstName);
-    //     expect(
-    //       response.body.result[0].lastName,
-    //       'Overview Page: Agent Of Record Area: lastName'
-    //     ).to.equal(ADD_AGENT.lastName);
-    //     expect(
-    //       response.body.result[0].mailingAddress,
-    //       'Overview Page: Agent Of Record Area: mailingAddress'
-    //     ).to.eql(ADD_AGENT.mailingAddress);
-    //     expect(
-    //       response.body.result[0].status,
-    //       'Overview Page: Agent Of Record Area: Agent status'
-    //     ).to.equal(ADD_AGENT.status);
-    //     expect(
-    //       response.body.result[0].primaryPhoneNumber,
-    //       'Overview Page: Agent Of Record Area: primaryPhoneNumber'
-    //     ).to.equal(ADD_AGENT.primaryPhoneNumber);
-    //     expect(
-    //       response.body.result[0].primaryPhoneNumberExtension,
-    //       'Overview Page: Agent Of Record Area: primaryPhoneNumberExtension'
-    //     ).to.equal(ADD_AGENT.primaryPhoneNumberExtension);
-    //     expect(
-    //       response.body.result[0].secondaryPhoneNumber,
-    //       'Overview Page: Agent Of Record Area: secondaryPhoneNumber'
-    //     ).to.equal(ADD_AGENT.secondaryPhoneNumber);
-    //     expect(
-    //       response.body.result[0].faxNumber,
-    //       'Overview Page: Agent Of Record Area: faxNumber'
-    //     ).to.equal(ADD_AGENT.faxNumber);
-    //     expect(
-    //       response.body.result[0].emailAddress,
-    //       'Overview Page: Agent Of Record Area: emailAddress'
-    //     ).to.equal(ADD_AGENT.emailAddress);
-    //     //not displayed but sent in the same request
-    //     expect(
-    //       response.body.result[0].mailingAddress,
-    //       'Overview Page: Agent Of Record Area: mailingAddress'
-    //     ).to.eql(ADD_AGENT.mailingAddress);
-    //     expect(
-    //       response.body.result[0].licenses,
-    //       'Overview Page: Agent Of Record Area: licenses'
-    //     ).to.eql(ADD_AGENT.licenses);
-    //   });
-
+  it('POS: Add a New License', () => {
     cy.findDataTag('addLicense')
       .click()
       .get('[class~="modal"]')
@@ -377,7 +382,9 @@ describe('Agency Management testing', () => {
     //       'Contracts Page: Verify License Card: licenses'
     //     ).to.eql(ADD_LICENSE.licenses);
     //   });
+  });
 
+  it('POS: Add a New Contract', () => {
     cy.findDataTag('addContract')
       .click()
       .get('[class~="modal"]')
@@ -421,7 +428,9 @@ describe('Agency Management testing', () => {
     //       compareContract.stateProducts[1]
     //     );
     //   });
+  });
 
+  it('POS: Edit License', () => {
     cy.findDataTag('edit-license')
       .click()
       .get('[class~="modal"]')
@@ -460,7 +469,9 @@ describe('Agency Management testing', () => {
     //       'Contracts Page: Licenses Area after Edit: licenses'
     //     ).to.eql(EDIT_LICENSE.licenses);
     //   });
+  });
 
+  it('POS: Edit Contract', () => {
     cy.findDataTag('edit-contract')
       .click()
       .get('[class~="modal"]')
@@ -506,7 +517,9 @@ describe('Agency Management testing', () => {
     //   });
 
     //   cy.task('log', 'License and contract added/edited successfully');
+  });
 
+  it('POS: Edit Agency', () => {
     //   // overview/edit agency
     cy.get('a.overview').click();
 
@@ -806,57 +819,58 @@ describe('Agency Management testing', () => {
         200
       );
     });
+  });
+  //   cy.wait('@saveAgent').then(({ response }) => {
+  //     expect(
+  //       response.body.result.firstName,
+  //       'Overview Page: Agent Of Record Area: firstName'
+  //     ).to.equal(EDIT_AGENT.firstName);
+  //     expect(
+  //       response.body.result.lastName,
+  //       'Overview Page: Agent Of Record Area: lastName'
+  //     ).to.equal(EDIT_AGENT.lastName);
+  //     expect(
+  //       response.body.result.mailingAddress,
+  //       'Overview Page: Agent Of Record Area: mailingAddress'
+  //     ).to.eql(EDIT_AGENT.mailingAddress);
+  //     expect(
+  //       response.body.result.status,
+  //       'Overview Page: Agent Of Record Area: Agent status'
+  //     ).to.equal(EDIT_AGENT.status);
+  //     expect(
+  //       response.body.result.primaryPhoneNumber,
+  //       'Overview Page: Agent Of Record Area: primaryPhoneNumber'
+  //     ).to.equal(EDIT_AGENT.primaryPhoneNumber);
+  //     expect(
+  //       response.body.result.primaryPhoneNumberExtension,
+  //       'Overview Page: Agent Of Record Area: primaryPhoneNumberExtension'
+  //     ).to.equal(EDIT_AGENT.primaryPhoneNumberExtension);
+  //     expect(
+  //       response.body.result.secondaryPhoneNumber,
+  //       'Overview Page: Agent Of Record Area: secondaryPhoneNumber'
+  //     ).to.equal(EDIT_AGENT.secondaryPhoneNumber);
+  //     expect(
+  //       response.body.result.faxNumber,
+  //       'Overview Page: Agent Of Record Area: faxNumber'
+  //     ).to.equal(EDIT_AGENT.faxNumber);
+  //     expect(
+  //       response.body.result.emailAddress,
+  //       'Overview Page: Agent Of Record Area: emailAddress'
+  //     ).to.equal(EDIT_AGENT.emailAddress);
+  //     //not displayed but sent in the same request
+  //     expect(
+  //       response.body.result.mailingAddress,
+  //       'Overview Page: Agent Of Record Area: mailingAddress'
+  //     ).to.eql(EDIT_AGENT.mailingAddress);
+  //     expect(
+  //       response.body.result.licenses,
+  //       'Overview Page: Agent Of Record Area: licenses'
+  //     ).to.eql(EDIT_AGENT.licenses);
+  //   });
 
-    //   cy.wait('@saveAgent').then(({ response }) => {
-    //     expect(
-    //       response.body.result.firstName,
-    //       'Overview Page: Agent Of Record Area: firstName'
-    //     ).to.equal(EDIT_AGENT.firstName);
-    //     expect(
-    //       response.body.result.lastName,
-    //       'Overview Page: Agent Of Record Area: lastName'
-    //     ).to.equal(EDIT_AGENT.lastName);
-    //     expect(
-    //       response.body.result.mailingAddress,
-    //       'Overview Page: Agent Of Record Area: mailingAddress'
-    //     ).to.eql(EDIT_AGENT.mailingAddress);
-    //     expect(
-    //       response.body.result.status,
-    //       'Overview Page: Agent Of Record Area: Agent status'
-    //     ).to.equal(EDIT_AGENT.status);
-    //     expect(
-    //       response.body.result.primaryPhoneNumber,
-    //       'Overview Page: Agent Of Record Area: primaryPhoneNumber'
-    //     ).to.equal(EDIT_AGENT.primaryPhoneNumber);
-    //     expect(
-    //       response.body.result.primaryPhoneNumberExtension,
-    //       'Overview Page: Agent Of Record Area: primaryPhoneNumberExtension'
-    //     ).to.equal(EDIT_AGENT.primaryPhoneNumberExtension);
-    //     expect(
-    //       response.body.result.secondaryPhoneNumber,
-    //       'Overview Page: Agent Of Record Area: secondaryPhoneNumber'
-    //     ).to.equal(EDIT_AGENT.secondaryPhoneNumber);
-    //     expect(
-    //       response.body.result.faxNumber,
-    //       'Overview Page: Agent Of Record Area: faxNumber'
-    //     ).to.equal(EDIT_AGENT.faxNumber);
-    //     expect(
-    //       response.body.result.emailAddress,
-    //       'Overview Page: Agent Of Record Area: emailAddress'
-    //     ).to.equal(EDIT_AGENT.emailAddress);
-    //     //not displayed but sent in the same request
-    //     expect(
-    //       response.body.result.mailingAddress,
-    //       'Overview Page: Agent Of Record Area: mailingAddress'
-    //     ).to.eql(EDIT_AGENT.mailingAddress);
-    //     expect(
-    //       response.body.result.licenses,
-    //       'Overview Page: Agent Of Record Area: licenses'
-    //     ).to.eql(EDIT_AGENT.licenses);
-    //   });
+  //   cy.task('log', 'Edit agent of record successfully');
 
-    //   cy.task('log', 'Edit agent of record successfully');
-
+  it('POS: Edit Contract', () => {
     cy.get('a.agents').click();
 
     cy.get('.card:nth-child(1) .agent-name').contains(EDIT_AGENT.firstName);
@@ -928,57 +942,58 @@ describe('Agency Management testing', () => {
       ADD_ANOTHER_AGENT.firstName
     );
     ////})
+  });
+  //   cy.wait('@addNewAgent').then(({ response }) => {
+  //     expect(
+  //       response.body.result.firstName,
+  //       'Agents Page: Verify New Agent after Adding New Agent: firstName'
+  //     ).to.equal(ADD_ANOTHER_AGENT.firstName);
+  //     expect(
+  //       response.body.result.lastName,
+  //       'Agents Page: Verify New Agent after Adding New Agent: lastName'
+  //     ).to.equal(ADD_ANOTHER_AGENT.lastName);
+  //     expect(
+  //       response.body.result.mailingAddress,
+  //       'Agents Page: Verify New Agent after Adding New Agent: mailingAddress'
+  //     ).to.eql(ADD_ANOTHER_AGENT.mailingAddress);
+  //     expect(
+  //       response.body.result.status,
+  //       'Agents Page: Verify New Agent after Adding New Agent: Agent status'
+  //     ).to.equal(ADD_ANOTHER_AGENT.status);
+  //     expect(
+  //       response.body.result.primaryPhoneNumber,
+  //       'Agents Page: Verify New Agent after Adding New Agent: primaryPhoneNumber'
+  //     ).to.equal(ADD_ANOTHER_AGENT.primaryPhoneNumber);
+  //     expect(
+  //       response.body.result.primaryPhoneNumberExtension,
+  //       'Agents Page: Verify New Agent after Adding New Agent: primaryPhoneNumberExtension'
+  //     ).to.equal(ADD_ANOTHER_AGENT.primaryPhoneNumberExtension);
+  //     expect(
+  //       response.body.result.secondaryPhoneNumber,
+  //       'Agents Page: Verify New Agent after Adding New Agent: secondaryPhoneNumber'
+  //     ).to.equal(ADD_ANOTHER_AGENT.secondaryPhoneNumber);
+  //     expect(
+  //       response.body.result.faxNumber,
+  //       'Agents Page: Verify New Agent after Adding New Agent: faxNumber'
+  //     ).to.equal(ADD_ANOTHER_AGENT.faxNumber);
+  //     expect(
+  //       response.body.result.emailAddress,
+  //       'Agents Page: Verify New Agent after Adding New Agent: emailAddress'
+  //     ).to.equal(ADD_ANOTHER_AGENT.emailAddress);
+  //     //not displayed but sent in the same request
+  //     expect(
+  //       response.body.result.mailingAddress,
+  //       'Agents Page: Verify New Agent after Adding New Agent: mailingAddress'
+  //     ).to.eql(ADD_ANOTHER_AGENT.mailingAddress);
+  //     expect(
+  //       response.body.result.licenses,
+  //       'Agents Page: Verify New Agent after Adding New Agent: licenses'
+  //     ).to.eql(ADD_ANOTHER_AGENT.licenses);
+  //   });
 
-    //   cy.wait('@addNewAgent').then(({ response }) => {
-    //     expect(
-    //       response.body.result.firstName,
-    //       'Agents Page: Verify New Agent after Adding New Agent: firstName'
-    //     ).to.equal(ADD_ANOTHER_AGENT.firstName);
-    //     expect(
-    //       response.body.result.lastName,
-    //       'Agents Page: Verify New Agent after Adding New Agent: lastName'
-    //     ).to.equal(ADD_ANOTHER_AGENT.lastName);
-    //     expect(
-    //       response.body.result.mailingAddress,
-    //       'Agents Page: Verify New Agent after Adding New Agent: mailingAddress'
-    //     ).to.eql(ADD_ANOTHER_AGENT.mailingAddress);
-    //     expect(
-    //       response.body.result.status,
-    //       'Agents Page: Verify New Agent after Adding New Agent: Agent status'
-    //     ).to.equal(ADD_ANOTHER_AGENT.status);
-    //     expect(
-    //       response.body.result.primaryPhoneNumber,
-    //       'Agents Page: Verify New Agent after Adding New Agent: primaryPhoneNumber'
-    //     ).to.equal(ADD_ANOTHER_AGENT.primaryPhoneNumber);
-    //     expect(
-    //       response.body.result.primaryPhoneNumberExtension,
-    //       'Agents Page: Verify New Agent after Adding New Agent: primaryPhoneNumberExtension'
-    //     ).to.equal(ADD_ANOTHER_AGENT.primaryPhoneNumberExtension);
-    //     expect(
-    //       response.body.result.secondaryPhoneNumber,
-    //       'Agents Page: Verify New Agent after Adding New Agent: secondaryPhoneNumber'
-    //     ).to.equal(ADD_ANOTHER_AGENT.secondaryPhoneNumber);
-    //     expect(
-    //       response.body.result.faxNumber,
-    //       'Agents Page: Verify New Agent after Adding New Agent: faxNumber'
-    //     ).to.equal(ADD_ANOTHER_AGENT.faxNumber);
-    //     expect(
-    //       response.body.result.emailAddress,
-    //       'Agents Page: Verify New Agent after Adding New Agent: emailAddress'
-    //     ).to.equal(ADD_ANOTHER_AGENT.emailAddress);
-    //     //not displayed but sent in the same request
-    //     expect(
-    //       response.body.result.mailingAddress,
-    //       'Agents Page: Verify New Agent after Adding New Agent: mailingAddress'
-    //     ).to.eql(ADD_ANOTHER_AGENT.mailingAddress);
-    //     expect(
-    //       response.body.result.licenses,
-    //       'Agents Page: Verify New Agent after Adding New Agent: licenses'
-    //     ).to.eql(ADD_ANOTHER_AGENT.licenses);
-    //   });
+  //   cy.task('log', 'Add new agent successfully');
 
-    //   cy.task('log', 'Add new agent successfully');
-
+  it('POS: Add a New Note', () => {
     cy.get('a.notes').click();
 
     cy.wait('@fetchNotes').then(({ response }) => {
