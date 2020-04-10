@@ -136,7 +136,7 @@ export const ADD_CONTRACT = {
 export const EDIT_LICENSE = {
   licenses: [
     {
-      licenseEffectiveDate: '2019-11-24T00:00:00.000Z',
+      licenseEffectiveDate: '11/24/2019',
       state: 'FL',
       licenseNumber: '99991',
       licenseType: 'Non-Resident'
