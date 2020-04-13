@@ -1,8 +1,16 @@
 import MortgageeCard from './MortgageeCard';
 import React from 'react';
-import { Form, noop } from '@exzeo/core-ui';
+import { Form, noop, SectionLoader } from '@exzeo/core-ui';
 
-export const SearchByPolicyResults = ({ handleQueue, mortgageeResults }) => {
+export const SearchByPolicyResults = ({
+  handleQueue,
+  mortgageeResults,
+  showLoader
+}) => {
+  if (showLoader) {
+    return <SectionLoader />;
+  }
+
   return (
     <Form
       id="SearchByPolicyResults"
