@@ -32,7 +32,7 @@ export async function fetchMortgagees({
 
   try {
     const response = await serviceRunner.callService(config, 'fetchPolicy');
-    return response ? formatMortgagees(response.data) : {};
+    return response ? response.data : {};
   } catch (error) {
     throw error;
   }
