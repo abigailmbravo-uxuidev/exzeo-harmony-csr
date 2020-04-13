@@ -2,7 +2,7 @@ import MortgageeCard from './MortgageeCard';
 import React from 'react';
 import { Form, noop, SectionLoader } from '@exzeo/core-ui';
 
-export const SearchByPolicyResults = ({
+export const PolicyResults = ({
   handleQueue,
   mortgageeResults,
   showLoader
@@ -13,13 +13,13 @@ export const SearchByPolicyResults = ({
 
   return (
     <Form
-      id="SearchByPolicyResults"
+      id="PolicyResults"
       onSubmit={noop}
       subscription={{ submitting: true, values: true }}
     >
       {({ handleSubmit, form, values }) => (
         <form
-          id="SearchByPolicyResults"
+          id="PolicyResults"
           onSubmit={handleSubmit}
           className="search-results"
         >
@@ -38,4 +38,4 @@ export const SearchByPolicyResults = ({
   );
 };
 
-export default SearchByPolicyResults;
+export default PolicyResults;

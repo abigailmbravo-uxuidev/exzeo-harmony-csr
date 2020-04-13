@@ -4,7 +4,7 @@ import { BULK_TYPE, BULK_TYPE_LABEL } from '../constants';
 import MortgageeForm from './MortgageeForm';
 import { Button, noop } from '@exzeo/core-ui';
 import SearchByPolicy from './SearchByPolicy';
-import SearchByPolicyResults from './SearchByPolicyResults';
+import PolicyResults from './PolicyResults';
 import { BUTTON_CLASS } from '@exzeo/core-ui/src/Button/Button';
 import QueuedMortgageeCard from './QueuedMortgageeCard';
 import { fetchMortgagees } from '../data';
@@ -158,7 +158,7 @@ const BulkMortgagee = ({ errorHandler }) => {
                   <section className="bm-byPolicy search-results-wrapper">
                     <SearchByPolicy handleSearch={handleSearchByPolicy} />
 
-                    <SearchByPolicyResults
+                    <PolicyResults
                       showLoader={showPolicySearchLoader}
                       mortgageeResults={mortgageeResults}
                       handleQueue={addToQueue}
