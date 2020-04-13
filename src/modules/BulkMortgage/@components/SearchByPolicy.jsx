@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
-
-import { Input, Select, Button, Field, Form, noop } from '@exzeo/core-ui';
+import React from 'react';
+import classNames from 'classnames';
+import { Input, Select, Button, Field, Form } from '@exzeo/core-ui';
 
 export const SearchByPolicy = ({ handleSearchMortgagee }) => {
   return (
@@ -9,12 +9,11 @@ export const SearchByPolicy = ({ handleSearchMortgagee }) => {
       onSubmit={handleSearchMortgagee}
       subscription={{ submitting: true, values: true }}
     >
-      {({ handleSubmit, form, values }) => (
+      {({ handleSubmit }) => (
         <form
           id="SearchByPolicy"
-          className="search-by-policy-form"
+          className={classNames('search-by-policy-form', 'search-inputs')}
           onSubmit={handleSubmit}
-          className="search-inputs"
         >
           <Field
             name="product"

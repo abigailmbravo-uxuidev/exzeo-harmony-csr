@@ -1,12 +1,7 @@
 import React from 'react';
-import classNames from 'classnames';
-import { Button, normalize } from '@exzeo/core-ui';
-import { BUTTON_CLASS, BUTTON_SIZE } from '@exzeo/core-ui/src/Button/Button';
+import { Button } from '@exzeo/core-ui';
+import { BUTTON_CLASS } from '@exzeo/core-ui/src/Button/Button';
 import Address from './Address';
-import ContactAddress from '../../../components/ContactAddress';
-import { formatUrl } from '../../../utilities/format';
-import moment from 'moment';
-import { STANDARD_DATE_FORMAT } from '../../../constants/dates';
 
 const QueuedMortgageeCard = ({ mortgagee, handleRemove }) => (
   <div

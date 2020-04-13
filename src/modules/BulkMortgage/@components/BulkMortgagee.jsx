@@ -6,7 +6,6 @@ import { Button, noop } from '@exzeo/core-ui';
 import SearchByPolicy from './SearchByPolicy';
 import SearchByPolicyResults from './SearchByPolicyResults';
 import { BUTTON_CLASS } from '@exzeo/core-ui/src/Button/Button';
-import MortgageeCard from './MortgageeCard';
 import QueuedMortgageeCard from './QueuedMortgageeCard';
 
 const BulkMortgagee = ({ errorHandler }) => {
