@@ -256,6 +256,7 @@ export async function fetchAgencies(query) {
  * @param dueDateMax
  * @param assignees
  * @param open
+ * @param product
  * @returns {Promise<void>}
  */
 export async function fetchDiaries({
@@ -263,7 +264,8 @@ export async function fetchDiaries({
   dueDateMin,
   dueDateMax,
   assignees,
-  open
+  open,
+  product
 }) {
   const config = {
     service: 'diaries',
@@ -274,7 +276,8 @@ export async function fetchDiaries({
       dueDateMax,
       dueDateMin,
       open,
-      reason
+      reason,
+      product
     }
   };
 
@@ -556,10 +559,11 @@ export async function handleDiariesSearch(data) {
   try {
     const searchQuery = {
       open: data.open === 'true',
-      assignees: data.assignees.map(a => a.answer),
+      assignees: (data.assignees || []).map(a => a.answer),
       reason: data.reason,
       dueDateMin: data.dateRange.min,
-      dueDateMax: data.dateRange.max
+      dueDateMax: data.dateRange.max,
+      product: data.product
     };
 
     const results = await fetchDiaries(searchQuery);
@@ -612,6 +616,7 @@ export function handleSearchSubmit(data, props) {
       dispatch(
         errorActions.setAppError(error || { message: 'An error has occurred' })
       );
+      return null;
     } finally {
       dispatch(toggleLoading(false));
     }

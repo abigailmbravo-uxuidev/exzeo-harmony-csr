@@ -128,7 +128,9 @@ export class SearchPage extends Component {
     try {
       const { handleSearchSubmit } = this.props;
       const searchResults = await handleSearchSubmit(data, props);
-      this.setState({ searchResults });
+      this.setState({
+        searchResults: searchResults ? searchResults : initialSearchResults
+      });
     } catch (error) {
       if (process.env.NODE_ENV !== 'production') {
         console.error('Search error: ', error);
