@@ -19,7 +19,7 @@ export async function getTopMortgagees() {
  * @param propertyAddress
  * @returns {Promise<{}>}
  */
-export async function fetchPolicies({
+export async function fetchMortgagees({
   policyNumber = '',
   lastName = '',
   propertyAddress = ''
@@ -32,7 +32,7 @@ export async function fetchPolicies({
 
   try {
     const response = await serviceRunner.callService(config, 'fetchPolicy');
-    return response ? response.data : {};
+    return response ? formatMortgagees(response.data) : {};
   } catch (error) {
     throw error;
   }
