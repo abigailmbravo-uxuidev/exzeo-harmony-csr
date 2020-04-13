@@ -21,18 +21,18 @@ export const PRODUCTS = [
 
 export const SEARCH_TYPES = {
   policyNumber: 'policyNumber',
-  policyHolder: 'policyHolder',
+  lastName: 'lastName',
   propertyAddress: 'propertyAddress'
 };
 
-export const SEARCH_TYPE_PLACHOLDER = {
+export const SEARCH_TYPE_PLACEHOLDER = {
   policyNumber: 'Search By Policy Number (partial)',
-  policyHolder: 'Search By Policyholder name (partial)',
+  lastName: 'Search By Policyholder last name (partial)',
   propertyAddress: 'Search By Property Address (partial)'
 };
 
 export const SEARCH_TYPE_ANSWERS = [
   { answer: SEARCH_TYPES.policyNumber, label: 'Policy Number' },
-  { answer: SEARCH_TYPES.policyHolder, label: 'Policyholder' },
+  { answer: SEARCH_TYPES.lastName, label: 'Policyholder' },
   { answer: SEARCH_TYPES.propertyAddress, label: 'Property Address' }
 ];

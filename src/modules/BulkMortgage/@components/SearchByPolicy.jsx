@@ -4,15 +4,16 @@ import { Input, Select, Button, Field, Form } from '@exzeo/core-ui';
 import {
   SEARCH_TYPE_ANSWERS,
   PRODUCTS,
-  SEARCH_TYPE_PLACHOLDER
+  SEARCH_TYPE_PLACEHOLDER,
+  SEARCH_TYPES
 } from '../constants';
 
-export const SearchByPolicy = ({ handleSearchMortgagee }) => {
+export const SearchByPolicy = ({ handleSearch }) => {
   return (
     <Form
       id="SearchByPolicy"
       initialValues={{ searchType: 'policyNumber', product: 'All' }}
-      onSubmit={handleSearchMortgagee}
+      onSubmit={handleSearch}
       subscription={{ submitting: true, values: true }}
     >
       {({ handleSubmit, values }) => (
@@ -37,14 +38,36 @@ export const SearchByPolicy = ({ handleSearchMortgagee }) => {
             styleName="search-type"
             answers={SEARCH_TYPE_ANSWERS}
           />
-          <Field
-            name="policyNumber"
-            dataTest="policyNumber"
-            label="Search"
-            placeholder={SEARCH_TYPE_PLACHOLDER[values.searchType]}
-            component={Input}
-            styleName="search-input"
-          />
+          {values.searchType === SEARCH_TYPES.policyNumber && (
+            <Field
+              name={SEARCH_TYPES.policyNumber}
+              dataTest={SEARCH_TYPES.policyNumber}
+              label="Search"
+              placeholder={SEARCH_TYPE_PLACEHOLDER.policyNumber}
+              component={Input}
+              styleName="search-input"
+            />
+          )}
+          {values.searchType === SEARCH_TYPES.lastName && (
+            <Field
+              name={SEARCH_TYPES.lastName}
+              dataTest={SEARCH_TYPES.lastName}
+              label="Search"
+              placeholder={SEARCH_TYPE_PLACEHOLDER.lastName}
+              component={Input}
+              styleName="search-input"
+            />
+          )}
+          {values.searchType === SEARCH_TYPES.propertyAddress && (
+            <Field
+              name={SEARCH_TYPES.propertyAddress}
+              dataTest={SEARCH_TYPES.propertyAddress}
+              label="Search"
+              placeholder={SEARCH_TYPE_PLACEHOLDER.propertyAddress}
+              component={Input}
+              styleName="search-input"
+            />
+          )}
           <Button
             className={Button.constants.classNames.primary}
             type="submit"

@@ -7,13 +7,17 @@ import SearchByPolicy from './SearchByPolicy';
 import SearchByPolicyResults from './SearchByPolicyResults';
 import { BUTTON_CLASS } from '@exzeo/core-ui/src/Button/Button';
 import QueuedMortgageeCard from './QueuedMortgageeCard';
+import { fetchPolicies } from '../data';
 
 const BulkMortgagee = ({ errorHandler }) => {
   const [selectedTab, setSelectedTab] = useState(BULK_TYPE.policy);
   const [queuedMortgagees, setQueuedMortgagees] = useState([]);
   const [mortgageeResults, setMortgageeResults] = useState([]);
 
-  const handleSearchMortgagee = () => {
+  const handleSearchByPolicy = async data => {
+    const { policyNumber, propertyAddress, lastName } = data;
+    await fetchPolicies({ policyNumber, propertyAddress, lastName });
+
     setMortgageeResults([
       {
         currentBillTo: 'No',
@@ -140,9 +144,7 @@ const BulkMortgagee = ({ errorHandler }) => {
                     />
                   </section>
                   <section className="bm-byPolicy search-results-wrapper">
-                    <SearchByPolicy
-                      handleSearchMortgagee={handleSearchMortgagee}
-                    />
+                    <SearchByPolicy handleSearch={handleSearchByPolicy} />
                     <SearchByPolicyResults
                       mortgageeResults={mortgageeResults}
                       handleQueue={addToQueue}
