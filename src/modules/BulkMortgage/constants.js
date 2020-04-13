@@ -12,3 +12,27 @@ export const INSTRUCTION_ANSWERS = [
   { answer: 'Mail Notice', label: 'Mail Notice' },
   { answer: 'Suppress Notice', label: 'Suppress Notice' }
 ];
+
+export const PRODUCTS = [
+  { answer: 'All', label: 'All' },
+  { answer: 'AF3', label: 'Flood' },
+  { answer: 'HO3', label: 'HO3' }
+];
+
+export const SEARCH_TYPES = {
+  policyNumber: 'policyNumber',
+  policyHolder: 'policyHolder',
+  propertyAddress: 'propertyAddress'
+};
+
+export const SEARCH_TYPE_PLACHOLDER = {
+  policyNumber: 'Search By Policy Number (partial)',
+  policyHolder: 'Search By Policyholder name (partial)',
+  propertyAddress: 'Search By Property Address (partial)'
+};
+
+export const SEARCH_TYPE_ANSWERS = [
+  { answer: SEARCH_TYPES.policyNumber, label: 'Policy Number' },
+  { answer: SEARCH_TYPES.policyHolder, label: 'Policyholder' },
+  { answer: SEARCH_TYPES.propertyAddress, label: 'Property Address' }
+];

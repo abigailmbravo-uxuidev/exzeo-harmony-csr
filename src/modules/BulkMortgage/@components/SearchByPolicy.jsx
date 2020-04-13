@@ -1,15 +1,21 @@
 import React from 'react';
 import classNames from 'classnames';
 import { Input, Select, Button, Field, Form } from '@exzeo/core-ui';
+import {
+  SEARCH_TYPE_ANSWERS,
+  PRODUCTS,
+  SEARCH_TYPE_PLACHOLDER
+} from '../constants';
 
 export const SearchByPolicy = ({ handleSearchMortgagee }) => {
   return (
     <Form
       id="SearchByPolicy"
+      initialValues={{ searchType: 'policyNumber', product: 'All' }}
       onSubmit={handleSearchMortgagee}
       subscription={{ submitting: true, values: true }}
     >
-      {({ handleSubmit }) => (
+      {({ handleSubmit, values }) => (
         <form
           id="SearchByPolicy"
           className={classNames('search-by-policy-form', 'search-inputs')}
@@ -21,7 +27,7 @@ export const SearchByPolicy = ({ handleSearchMortgagee }) => {
             label="Product"
             component={Select}
             styleName="product"
-            answers={[]}
+            answers={PRODUCTS}
           />
           <Field
             name="searchType"
@@ -29,13 +35,13 @@ export const SearchByPolicy = ({ handleSearchMortgagee }) => {
             label="Search Type"
             component={Select}
             styleName="search-type"
-            answers={[]}
+            answers={SEARCH_TYPE_ANSWERS}
           />
           <Field
             name="policyNumber"
             dataTest="policyNumber"
             label="Search"
-            placeholder="Search By Policy Number (partial)"
+            placeholder={SEARCH_TYPE_PLACHOLDER[values.searchType]}
             component={Input}
             styleName="search-input"
           />
