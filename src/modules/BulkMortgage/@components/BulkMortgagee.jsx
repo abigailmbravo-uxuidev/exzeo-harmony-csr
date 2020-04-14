@@ -20,7 +20,7 @@ const BulkMortgagee = ({ errorHandler }) => {
       setShowPolicySearchLoader(true);
       const { policyNumber, propertyAddress, lastName } = data;
 
-      const results = await fetchMortgagees({
+      await fetchMortgagees({
         policyNumber,
         propertyAddress,
         lastName
