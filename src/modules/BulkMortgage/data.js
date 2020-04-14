@@ -1,4 +1,5 @@
 import * as serviceRunner from '@exzeo/core-ui/src/@Harmony/Domain/Api/serviceRunner';
+import { formatMortgagees } from './utilities';
 /**
  *
  * @returns {Promise<[]>}
@@ -17,7 +18,7 @@ export async function getTopMortgagees() {
  * @param policyNumber
  * @param lastName
  * @param propertyAddress
- * @returns {Promise<{}>}
+ * @returns {Promise<[]>}
  */
 export async function fetchMortgagees({
   policyNumber = '',
@@ -32,7 +33,7 @@ export async function fetchMortgagees({
 
   try {
     const response = await serviceRunner.callService(config, 'fetchPolicy');
-    return response ? response.data : {};
+    return response ? formatMortgagees(response.data) : [];
   } catch (error) {
     throw error;
   }

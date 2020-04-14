@@ -19,83 +19,82 @@ const BulkMortgagee = ({ errorHandler }) => {
     try {
       setShowPolicySearchLoader(true);
       const { policyNumber, propertyAddress, lastName } = data;
-      /* TODO: need to map over each policy and then map over each mortgagee and place mortgagee into array with
-           policyNumber, policyHolderName, currentBillTo (does bilToId on policy match the AI _id)
-       */
+
       const results = await fetchMortgagees({
         policyNumber,
         propertyAddress,
         lastName
       });
+      setMortgageeResults(results);
 
-      setMortgageeResults([
-        {
-          currentBillTo: 'No',
-          policyNumber: '12-100050-12',
-          _id: '34340345043504350350',
-          active: true,
-          name1: 'BANK OF AMERICA, NA',
-          name2: 'ISAOA/ATIMA',
-          mailingAddress: {
-            address1: '1234 Main Street',
-            address2: '',
-            city: 'FORT WORTH',
-            state: 'TX',
-            zip: '76161',
-            country: {
-              code: 'USA',
-              displayText: 'United States of America'
-            }
-          },
-          policyHolderName: 'John Smith',
-          propertyAddress: {
-            address1: '1234 Main Street',
-            address2: '',
-            city: 'FORT WORTH',
-            state: 'TX',
-            zip: '76161',
-            country: {
-              code: 'USA',
-              displayText: 'United States of America'
-            }
-          },
-          order: 0,
-          type: ''
-        },
-        {
-          currentBillTo: 'YES',
-          policyNumber: '12-100055-12',
-          _id: '5555540345043504350350',
-          active: true,
-          name1: 'BANK OF AMERICA, NA',
-          name2: 'ISAOA/ATIMA',
-          mailingAddress: {
-            address1: '1234 Main Street',
-            address2: '',
-            city: 'FORT WORTH',
-            state: 'TX',
-            zip: '76161',
-            country: {
-              code: 'USA',
-              displayText: 'United States of America'
-            }
-          },
-          policyHolderName: 'John Smith',
-          propertyAddress: {
-            address1: '1234 Main Street',
-            address2: '',
-            city: 'FORT WORTH',
-            state: 'TX',
-            zip: '76161',
-            country: {
-              code: 'USA',
-              displayText: 'United States of America'
-            }
-          },
-          order: 2,
-          type: ''
-        }
-      ]);
+      // setMortgageeResults([
+      //   {
+      //     currentBillTo: 'No',
+      //     policyNumber: '12-100050-12',
+      //     _id: '34340345043504350350',
+      //     active: true,
+      //     name1: 'BANK OF AMERICA, NA',
+      //     name2: 'ISAOA/ATIMA',
+      //     mailingAddress: {
+      //       address1: '1234 Main Street',
+      //       address2: '',
+      //       city: 'FORT WORTH',
+      //       state: 'TX',
+      //       zip: '76161',
+      //       country: {
+      //         code: 'USA',
+      //         displayText: 'United States of America'
+      //       }
+      //     },
+      //     policyHolderName: 'John Smith',
+      //     propertyAddress: {
+      //       address1: '1234 Main Street',
+      //       address2: '',
+      //       city: 'FORT WORTH',
+      //       state: 'TX',
+      //       zip: '76161',
+      //       country: {
+      //         code: 'USA',
+      //         displayText: 'United States of America'
+      //       }
+      //     },
+      //     order: 0,
+      //     type: ''
+      //   },
+      //   {
+      //     currentBillTo: 'YES',
+      //     policyNumber: '12-100055-12',
+      //     _id: '5555540345043504350350',
+      //     active: true,
+      //     name1: 'BANK OF AMERICA, NA',
+      //     name2: 'ISAOA/ATIMA',
+      //     mailingAddress: {
+      //       address1: '1234 Main Street',
+      //       address2: '',
+      //       city: 'FORT WORTH',
+      //       state: 'TX',
+      //       zip: '76161',
+      //       country: {
+      //         code: 'USA',
+      //         displayText: 'United States of America'
+      //       }
+      //     },
+      //     policyHolderName: 'John Smith',
+      //     propertyAddress: {
+      //       address1: '1234 Main Street',
+      //       address2: '',
+      //       city: 'FORT WORTH',
+      //       state: 'TX',
+      //       zip: '76161',
+      //       country: {
+      //         code: 'USA',
+      //         displayText: 'United States of America'
+      //       }
+      //     },
+      //     order: 2,
+      //     type: ''
+      //   }
+      // ]);
     } catch (ex) {
       errorHandler(ex);
     } finally {
