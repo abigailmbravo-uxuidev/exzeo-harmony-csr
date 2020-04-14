@@ -19,6 +19,9 @@ const BulkMortgagee = ({ errorHandler }) => {
     try {
       setShowPolicySearchLoader(true);
       const { policyNumber, propertyAddress, lastName } = data;
+      /* TODO: need to map over each policy and then map over each mortgagee and place mortgagee into array with
+           policyNumber, policyHolderName, currentBillTo (does bilToId on policy match the AI _id)
+       */
       const results = await fetchMortgagees({
         policyNumber,
         propertyAddress,
@@ -45,7 +48,7 @@ const BulkMortgagee = ({ errorHandler }) => {
             }
           },
           policyHolderName: 'John Smith',
-          policyHolderMailingAddress: {
+          propertyAddress: {
             address1: '1234 Main Street',
             address2: '',
             city: 'FORT WORTH',
@@ -78,7 +81,7 @@ const BulkMortgagee = ({ errorHandler }) => {
             }
           },
           policyHolderName: 'John Smith',
-          policyHolderMailingAddress: {
+          propertyAddress: {
             address1: '1234 Main Street',
             address2: '',
             city: 'FORT WORTH',
@@ -115,7 +118,11 @@ const BulkMortgagee = ({ errorHandler }) => {
     setQueuedMortgagees(filterMortgagees);
   };
 
-  const handleBulkUpdateSubmit = () => {};
+  const handleBulkUpdateSubmit = () => {
+    /*
+    // TODO: need to grab AI data from the form then grab all policyNumbers and place in array
+     */
+  };
 
   return (
     <React.Fragment>

@@ -33,10 +33,7 @@ const MortgageeCard = ({ mortgagee, handleQueue }) => (
     <section className="policy-details">
       <h4>{mortgagee.policyNumber}</h4>
       <h5>{mortgagee.policyHolderName}</h5>
-      <Address
-        address={mortgagee.policyHolderMailingAddress}
-        className="address"
-      />
+      <Address address={mortgagee.propertyAddress} className="address" />
     </section>
     <footer className="footer">
       <Field
