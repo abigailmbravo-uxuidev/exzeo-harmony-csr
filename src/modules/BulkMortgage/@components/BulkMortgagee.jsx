@@ -7,7 +7,7 @@ import SearchByPolicy from './SearchByPolicy';
 import PolicyResults from './PolicyResults';
 import { BUTTON_CLASS } from '@exzeo/core-ui/src/Button/Button';
 import QueuedMortgageeCard from './QueuedMortgageeCard';
-import { fetchMortgagees } from '../data';
+// import { fetchMortgagees } from '../data';
 
 const BulkMortgagee = ({ errorHandler }) => {
   const [selectedTab, setSelectedTab] = useState(BULK_TYPE.policy);
@@ -18,7 +18,7 @@ const BulkMortgagee = ({ errorHandler }) => {
   const handleSearchByPolicy = async data => {
     try {
       setShowPolicySearchLoader(true);
-      const { policyNumber, propertyAddress, lastName } = data;
+      //  const { policyNumber, propertyAddress, lastName } = data;
 
       // await fetchMortgagees({
       //   policyNumber,
