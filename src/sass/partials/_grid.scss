@@ -27,22 +27,27 @@ $table-border-color: $warm-gray-07 !default; //== Media queries breakpoints
 }
 
 .react-bs-table {
+  position: relative;
+
   border: 1px solid #ddd;
   border-radius: 0;
 }
 
 .react-bs-table table {
   margin-bottom: 0;
-  background-color: transparent;
-  color: $warm-gray-10;
+
   table-layout: fixed;
+
+  color: $warm-gray-10;
+  background-color: transparent;
 }
 
 .react-bs-table table td,
 .react-bs-table table th {
   overflow: hidden;
-  text-overflow: ellipsis;
+
   white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
 .react-bs-table-pagination {
@@ -55,23 +60,26 @@ $table-border-color: $warm-gray-07 !default; //== Media queries breakpoints
 
 .react-bs-container-header {
   overflow: hidden;
+
   width: 100%;
 }
 
 .react-bs-container-body {
   overflow: auto;
+
   width: 100%;
 }
 
 .react-bootstrap-table-page-btns-ul {
   float: right;
   /* override the margin-top defined in .pagination class in bootstrap. */
+
   margin-top: 0;
 }
 
 .react-bs-table .table-bordered {
-  outline: none !important;
   border: 0;
+  outline: none !important;
 }
 
 .react-bs-table {
@@ -79,6 +87,7 @@ $table-border-color: $warm-gray-07 !default; //== Media queries breakpoints
     > thead {
       > tr {
         display: table-row;
+
         background: $warm-gray-02;
 
         > th {
@@ -91,14 +100,14 @@ $table-border-color: $warm-gray-07 !default; //== Media queries breakpoints
 
 .react-bs-table .table-bordered > thead > tr > td,
 .react-bs-table .table-bordered > thead > tr > th {
+  color: $warm-gray-08;
   border-bottom-width: 1px;
   background: $warm-gray-02;
-  color: $warm-gray-08;
 }
 
 .react-bs-table .table-bordered > tbody > tr > td {
-  outline: none !important;
   color: $warm-gray-10;
+  outline: none !important;
 }
 
 .react-bs-table .table-bordered > tbody > tr {
@@ -202,6 +211,7 @@ $table-border-color: $warm-gray-07 !default; //== Media queries breakpoints
   > th
   .select-filter.placeholder-selected {
   color: lightgrey;
+
   font-style: italic;
 }
 
@@ -214,6 +224,7 @@ $table-border-color: $warm-gray-07 !default; //== Media queries breakpoints
   .select-filter.placeholder-selected
   option:not([value='']) {
   color: initial;
+
   font-style: initial;
 }
 
@@ -249,8 +260,9 @@ $table-border-color: $warm-gray-07 !default; //== Media queries breakpoints
   > th
   .number-filter-input {
   float: left;
-  margin-left: $padding;
+
   width: calc(100% - 4.5rem - #{$padding});
+  margin-left: $padding;
 }
 
 .react-bs-table
@@ -268,40 +280,46 @@ $table-border-color: $warm-gray-07 !default; //== Media queries breakpoints
   > th
   .number-filter-comparator {
   float: left;
+
   width: 4.5rem;
 }
 
 .react-bs-table .react-bs-container-header .sort-column {
   position: relative;
+
   cursor: pointer;
 }
 
 .react-bs-container .textarea-save-btn {
   position: absolute;
+  z-index: 100;
   top: -21px;
   right: 0;
-  z-index: 100;
 }
 
 .react-bs-table-no-data {
-  text-align: center;
   display: block !important;
+
+  text-align: center;
 }
 
 .ReactModal__Overlay {
   z-index: 101;
+
   overflow-x: hidden;
   overflow-y: auto;
-  background-color: rgba(0, 0, 0, 0.5);
+
   opacity: 0;
+  background-color: rgba(0, 0, 0, 0.5);
 
   -webkit-perspective: 600;
   perspective: 600;
 }
 
 .ReactModal__Overlay--after-open {
-  opacity: 1;
   transition: opacity 150ms ease-out;
+
+  opacity: 1;
 }
 
 .ReactModal__Content {
@@ -378,8 +396,9 @@ td.react-bs-table-expand-cell {
   }
 
   0% {
-    opacity: 0;
     transform: scale3d(0.3, 0.3, 0.3);
+
+    opacity: 0;
   }
 
   20% {
@@ -391,8 +410,9 @@ td.react-bs-table-expand-cell {
   }
 
   60% {
-    opacity: 1;
     transform: scale3d(1.03, 1.03, 1.03);
+
+    opacity: 1;
   }
 
   80% {
@@ -400,8 +420,9 @@ td.react-bs-table-expand-cell {
   }
 
   to {
-    opacity: 1;
     transform: scale3d(1, 1, 1);
+
+    opacity: 1;
   }
 }
 
@@ -415,13 +436,15 @@ td.react-bs-table-expand-cell {
 
   50%,
   55% {
-    opacity: 1;
     transform: scale3d(1.1, 1.1, 1.1);
+
+    opacity: 1;
   }
 
   to {
-    opacity: 0;
     transform: scale3d(0.3, 0.3, 0.3);
+
+    opacity: 0;
   }
 }
 
@@ -440,8 +463,10 @@ table {
 caption {
   padding-top: $table-cell-padding;
   padding-bottom: $table-cell-padding;
-  color: $text-muted;
+
   text-align: left;
+
+  color: $text-muted;
 }
 
 th {
@@ -450,9 +475,9 @@ th {
 // Baseline styles
 
 .table {
-  margin-bottom: $line-height-computed;
-  max-width: 100%;
   width: 100%;
+  max-width: 100%;
+  margin-bottom: $line-height-computed;
   // Cells
   > tbody,
   > thead,
@@ -461,16 +486,20 @@ th {
       > td,
       > th {
         padding: $table-cell-padding/4;
-        border-top: 1px solid $table-border-color;
+
         vertical-align: top;
+
+        border-top: 1px solid $table-border-color;
+
         line-height: $line-height-base;
       }
     }
   }
   // Bottom align for column headings
   > thead > tr > th {
-    border-bottom: 2px solid $table-border-color;
     vertical-align: bottom;
+
+    border-bottom: 2px solid $table-border-color;
   }
   // Remove top border from thead by default
   > colgroup + thead,
@@ -559,6 +588,7 @@ th {
 
 table col[class*='col-'] {
   position: static; // Prevent border hiding in Firefox and IE9-11 (see https://github.com/twbs/bootstrap/issues/11623)
+
   display: table-column;
   float: none;
 }
@@ -568,6 +598,7 @@ table {
   th {
     &[class*='col-'] {
       position: static; // Prevent border hiding in Firefox and IE9-11 (see https://github.com/twbs/bootstrap/issues/11623)
+
       display: table-cell;
       float: none;
     }
@@ -585,12 +616,15 @@ table {
 
 .table-responsive {
   overflow-x: auto;
+
   min-height: 0.01%; // Workaround for IE9 bug (see https://github.com/twbs/bootstrap/issues/14837)
 
   @include for-phone-only {
     overflow-y: hidden;
-    margin-bottom: ($line-height-computed * 0.75);
+
     width: 100%;
+    margin-bottom: ($line-height-computed * 0.75);
+
     border: 1px solid $table-border-color;
 
     -ms-overflow-style: -ms-autohiding-scrollbar;
@@ -665,7 +699,8 @@ table {
   border: 0;
 }
 
-.react-bs-table {
+.react-bs-table,
+.react-bootstrap-table {
   .table .table {
     background: transparent;
   }
@@ -673,16 +708,20 @@ table {
   .table-bordered {
     tr {
       background: transparent;
+
       font-size: $font-size-base;
 
       th {
         padding: $table-cell-padding ($table-cell-padding * 1.5);
+
         border: none;
       }
 
       td {
         padding: $table-cell-padding ($table-cell-padding * 1.5);
+
         border: none;
+
         font-size: $font-size-base;
       }
     }
@@ -693,8 +732,9 @@ table {
   .workflow-steps {
     .btn {
       align-self: flex-start;
-      margin-top: 25px;
+
       height: 36px;
+      margin-top: 25px;
     }
 
     input {
@@ -723,6 +763,7 @@ table {
       th {
         align-self: auto;
         order: 0;
+
         width: auto;
       }
     }
@@ -760,6 +801,7 @@ table {
           th {
             align-self: auto;
             order: 0;
+
             width: auto;
           }
 
@@ -767,6 +809,7 @@ table {
             align-self: flex-start;
             flex: 1 1 auto;
             order: 0;
+
             white-space: pre-line;
           }
         }
@@ -787,7 +830,9 @@ table {
           flex-shrink: 0;
           flex-wrap: wrap;
           justify-content: flex-start;
+
           margin-top: $padding;
+
           border: $card-border-width solid $card-border-color;
           border-radius: $card-border-radius;
           background: $card-bg;
@@ -797,7 +842,9 @@ table {
             align-self: center;
             flex: 1 1 auto;
             order: 0;
+
             padding: ($padding/2) $padding;
+
             white-space: pre-line;
           }
         }
@@ -843,8 +890,10 @@ table {
 
                 &:hover {
                   z-index: 2;
-                  box-shadow: $card-box-shadow-hover;
+
                   transform: scale(1.004);
+
+                  box-shadow: $card-box-shadow-hover;
                 }
 
                 td {
@@ -854,11 +903,14 @@ table {
                     flex-grow: 0;
                     justify-content: center;
                     order: 1;
+
                     width: 2rem;
+
                     font-size: $font-size-h4;
 
                     &:before {
                       content: '\f111';
+
                       font-family: $font-family-icon;
                     }
                   }
@@ -867,6 +919,7 @@ table {
                     flex-basis: 7rem;
                     flex-grow: 0;
                     order: 2;
+
                     padding-left: 0;
                   }
 
@@ -877,8 +930,10 @@ table {
                   &.address {
                     flex-basis: 100%;
                     order: 0;
-                    padding-bottom: 0;
+
                     width: 100%;
+                    padding-bottom: 0;
+
                     font-size: $font-size-h4;
                   }
 
@@ -920,8 +975,11 @@ table {
       a {
         &.btn {
           margin-right: 2px;
-          border-radius: 0;
+
           text-transform: none;
+
+          border-radius: 0;
+
           font-weight: $font-weight-normal;
 
           @include button-variant($warm-gray-12, $warm-gray-01, $warm-gray-01);
@@ -941,6 +999,7 @@ table {
 
           &:last-child {
             margin-right: 0;
+
             border-top-right-radius: $border-radius;
             border-bottom-right-radius: $border-radius;
           }
@@ -966,6 +1025,7 @@ table {
           &.btn-sm {
             i {
               margin: 0;
+
               font-size: 0.875rem;
             }
           }
@@ -990,14 +1050,18 @@ table {
 
     .order {
       position: relative;
+
       display: inline-flex;
       flex-direction: column;
       flex-grow: 0;
       flex-shrink: 0;
-      margin: 0 0 0 0.5rem;
+
       width: 10px;
       height: 1rem;
+      margin: 0 0 0 0.5rem;
+
       color: $warm-gray-10;
+
       line-height: 1rem;
 
       &:hover {
@@ -1006,12 +1070,15 @@ table {
 
       > .caret {
         top: -0.125rem;
+
         margin: 0 !important;
         padding: 0 !important;
 
         &:before {
-          color: rgba($warm-gray-07, 1);
           content: '\f0d8';
+
+          color: rgba($warm-gray-07, 1);
+
           font: normal normal normal 1rem $font-family-icon;
         }
       }
@@ -1021,8 +1088,10 @@ table {
           top: 0.375rem;
 
           &:before {
-            color: rgba($warm-gray-07, 1);
             content: '\f0d7';
+
+            color: rgba($warm-gray-07, 1);
+
             font: normal normal normal 1rem $font-family-icon;
           }
         }
@@ -1030,18 +1099,23 @@ table {
 
       > span {
         position: absolute;
+
+        width: auto;
         margin: 0;
         padding: 0;
-        width: auto;
+
         text-align: center;
+
         line-height: 1;
 
         &.dropdown {
           top: -0.125rem;
 
           &:before {
-            color: rgba($warm-gray-07, 0.25);
             content: '\f0d8';
+
+            color: rgba($warm-gray-07, 0.25);
+
             font: normal normal normal 1rem $font-family-icon;
           }
 
@@ -1055,8 +1129,10 @@ table {
           top: 0.375rem;
 
           &:before {
-            color: rgba($warm-gray-07, 0.25);
             content: '\f0d7';
+
+            color: rgba($warm-gray-07, 0.25);
+
             font: normal normal normal 1rem $font-family-icon;
           }
         }
@@ -1072,5 +1148,144 @@ table {
     &:last-child {
       margin-right: 0;
     }
+  }
+}
+//sortable column controls new bs-2
+/*------------------------------------------------------------------------------------*/
+.react-bootstrap-table {
+  .react-bs-table {
+    thead {
+      tr {
+        th {
+          .order {
+            display: inline-flex;
+            flex-direction: column;
+
+            margin-left: 0.5rem;
+
+            vertical-align: middle;
+
+            .dropdown {
+              line-height: 1;
+              .caret {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+
+                height: 0.5rem;
+
+                &:before {
+                  content: '\f0d8';
+
+                  color: rgba($warm-gray-07, 0.25);
+
+                  font: normal normal normal 1rem $font-family-icon;
+                }
+              }
+            }
+            .dropup {
+              line-height: 1;
+              .caret {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+
+                height: 0.5rem;
+
+                &:before {
+                  content: '\f0d7';
+
+                  color: rgba($warm-gray-07, 0.25);
+
+                  font: normal normal normal 1rem $font-family-icon;
+                }
+              }
+            }
+          }
+          .react-bootstrap-table-sort-order {
+            display: inline-flex;
+            flex-direction: column;
+
+            margin-bottom: 0.5rem;
+            margin-left: 0.5rem;
+
+            vertical-align: middle;
+            .caret {
+              display: flex;
+              align-items: center;
+              flex-direction: column;
+              justify-content: center;
+
+              height: 0.5rem;
+
+              &:before {
+                content: '\f0d8';
+
+                color: rgba($warm-gray-07, 0.75);
+
+                font: normal normal normal 1rem $font-family-icon;
+              }
+            }
+
+            &.dropup {
+              margin-bottom: -0.25rem;
+
+              .caret {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+
+                height: 0.5rem;
+
+                &:before {
+                  content: '\f0d7';
+
+                  color: rgba($warm-gray-07, 0.75);
+
+                  font: normal normal normal 1rem $font-family-icon;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+.table-bordered > tbody > tr > td.react-bs-table-no-data {
+  position: absolute;
+  right: 0;
+  bottom: -1.75rem;
+  left: 0;
+
+  color: $warm-gray-08;
+
+  font-size: $font-size-sm;
+  font-style: italic;
+
+  &:before {
+    position: absolute;
+    top: 0.75rem;
+    left: 0;
+
+    width: calc(50% - 5rem);
+    height: 1px;
+
+    content: '';
+
+    border-bottom: 1px dotted $warm-gray-05;
+  }
+
+  &:after {
+    position: absolute;
+    top: 0.75rem;
+    right: 0;
+
+    width: calc(50% - 5rem);
+    height: 1px;
+
+    content: '';
+
+    border-bottom: 1px dotted $warm-gray-05;
   }
 }
