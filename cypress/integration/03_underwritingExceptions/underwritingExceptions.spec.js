@@ -31,7 +31,7 @@ describe('Underwriting Error Testing', () => {
     // Give good data.
     fillOutUnderwriting();
     // Check that the error is gone.
-    return cy.get('section.msg-caution').should('not.exist');
+    cy.get('section.msg-caution').should('not.exist');
   });
 
   it('Overwriting UW Exception', () => {

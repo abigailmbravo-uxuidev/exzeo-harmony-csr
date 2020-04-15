@@ -36,9 +36,8 @@ export const navigateThroughNewQuote = (
           .wait('@getZipcodeSettings');
       })
       .findDataTag('propertyAddressDetail')
-      .within(() => {
-        cy.contains(address).should('contain.text', address);
-      })
+      .contains(address)
+      .should('contain.text', address)
   );
 };
 
@@ -57,16 +56,11 @@ export const fillOutCoverage = (customerInfo = pH1) => {
     .then(({ response }) => {
       // TODO we need to assert something about this response, preferably the quoteInputState like we do in the other tests.
       expect(response.body.status).to.equal(200);
-    })
-    .findDataTag('policyHolderDetail')
-    .within(() => {
-      cy.contains(customerInfo['policyHolders[0].firstName']).should(
-        'contain.text',
-        customerInfo['policyHolders[0].firstName'] +
-          ' ' +
-          customerInfo['policyHolders[0].lastName']
-      );
     });
+  cy.contains(customerInfo['policyHolders[0].firstName']).should(
+    'contain.text',
+    `${customerInfo['policyHolders[0].firstName']} ${customerInfo['policyHolders[0].lastName']}`
+  );
 };
 
 export const changeCoverageAndAgency = (
@@ -74,7 +68,6 @@ export const changeCoverageAndAgency = (
   agency = agencyDetails
 ) => {
   return cy
-    .task('log', agency)
     .task('log', 'Changing coverage values')
     .goToNav('coverage')
     .findDataTag('Produced By')
@@ -103,21 +96,18 @@ export const changeCoverageAndAgency = (
         cy.get('dd').should('not.have.text', premium);
       });
     })
-
     .findDataTag('agencyCode_wrapper')
-    .within(() => {
-      cy.contains(agency.agencyDetails.code).should(
-        'have.text',
-        agency.agencyDetails.code + ': ' + agency.agencyDetails.name
-      );
-    })
+    .contains(agency.agencyDetails.code)
+    .should(
+      'have.text',
+      `${agency.agencyDetails.code}: ${agency.agencyDetails.name}`
+    )
     .findDataTag('agentCode_wrapper')
-    .within(() => {
-      cy.contains(agency.agentDetails.code).should(
-        'have.text',
-        agency.agentDetails.code + ': ' + agency.agentDetails.name
-      );
-    });
+    .contains(agency.agentDetails.code)
+    .should(
+      'have.text',
+      `${agency.agentDetails.code}: ${agency.agentDetails.name}`
+    );
 };
 
 export const fillOutUnderwriting = (
@@ -140,9 +130,8 @@ export const fillOutUnderwriting = (
       expect(response.body.status).to.equal(200);
     })
     .findDataTag('quoteDetails')
-    .within(() => {
-      cy.contains(expectedQuoteState).should('have.text', expectedQuoteState);
-    });
+    .contains(expectedQuoteState)
+    .should('have.text', expectedQuoteState);
 };
 
 export const fillOutAdditionalInterests = (
@@ -170,12 +159,11 @@ export const fillOutAdditionalInterests = (
       expect(response.body.status).to.equal(200);
     })
     .findDataTag('Additional Insured-0')
-    .within(() => {
-      cy.contains(additionalInterests.name1).should(
-        'contain.text',
-        additionalInterests.name1 + ' ' + additionalInterests.name2
-      );
-    });
+    .contains(additionalInterests.name1)
+    .should(
+      'contain.text',
+      `${additionalInterests.name1} ${additionalInterests.name2}`
+    );
 };
 
 export const fillOutMailingBilling = (address = user.address1) => {
@@ -234,20 +222,22 @@ export const navigateThroughDocusign = () => {
     .task('log', "Navigating through 'Send to Docusign'")
     .clickSubmit('body', 'send-application')
     .wait('@verifyQuote')
-    .findDataTag('quoteDetails')
-    .within(() => {
-      cy.contains('Application Ready').should('have.text', 'Application Ready');
+    .then(({ response }) => {
+      expect(response.body.status).to.equal(200);
     })
+    .findDataTag('quoteDetails')
+    .contains('Application Ready')
+    .should('have.text', 'Application Ready')
     .checkQuoteState('Application Ready')
     .clickSubmit('#sendApplicationForm', 'modal-submit')
     .wait('@sendApplication')
     .then(({ response }) => {
+      expect(response.body.status).to.equal(200);
       cy.wrap(response.body.result).as('submittedQuote');
     })
     .findDataTag('quoteDetails')
-    .within(() => {
-      cy.contains('Application Ready').should('have.text', 'Application Ready');
-    })
+    .contains('Application Ready')
+    .should('have.text', 'Application Ready')
     .get('button[data-test="send-application"]')
     .should('be.disabled')
     .get('@submittedQuote')
@@ -278,10 +268,13 @@ export const searchPolicy = () => {
       cy.findDataTag('policyNumber')
         .type(polNum)
         .clickSubmit()
+        .wait('@fetchPolicies')
+        .then(({ response }) => {
+          expect(response.body.totalNumberOfRecords).to.equal(1);
+        })
         .findDataTag(polNum)
-        .within(() => {
-          cy.contains(polNum).should('contain.text', polNum);
-        });
+        .contains(polNum)
+        .should('contain.text', polNum);
     });
 };
 
@@ -297,10 +290,13 @@ export const searchQoute = () => {
       cy.findDataTag('quoteNumber')
         .type(quoteNum)
         .clickSubmit()
+        .wait('@fetchQuotes')
+        .then(({ response }) => {
+          expect(response.body.status).to.equal(200);
+        })
         .findDataTag(quoteNum)
-        .within(() => {
-          cy.contains(quoteNum).should('contain.text', quoteNum);
-        });
+        .contains(quoteNum)
+        .should('contain.text', quoteNum);
     });
 };
 
