@@ -120,6 +120,9 @@ export const fillOutUnderwriting = (
     .findDataTag('Underwriting Questions')
     .should('have.text', 'Underwriting Questions')
     .wait('@getUnderwritingQuestions')
+    .then(({ response }) => {
+      expect(response.body.status).to.equal(200);
+    })
     .wrap(Object.entries(questions))
     .each(([name, value]) =>
       cy.findDataTag(`${name}_${value}`).click({ force: true })
@@ -181,7 +184,6 @@ export const fillOutMailingBilling = (address = user.address1) => {
     .clickSubmit()
     .wait('@updateQuote')
     .then(({ response }) => {
-      // TODO we need to assert something about this response, preferably the quoteInputState like we do in the other tests.
       expect(response.body.status).to.equal(200);
       cy.wrap(response.body.result.quoteNumber).as('quoteNumber');
     })
