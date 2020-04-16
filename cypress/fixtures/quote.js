@@ -15,6 +15,7 @@ export const baseQuote = {
       inflationFactor: 1.04,
       endorsementType: 'Coverage Endorsement'
     },
+
     moldLiability: {
       value: 50000,
       name: 'moldLiability',

@@ -18,12 +18,14 @@ describe('Underwriting Error Testing', () => {
     // Fill out underwriting with bad data.
     fillOutUnderwriting(unQuestionsBAD, 'Quote Stopped');
     // Check for an error.
-    cy.get('section.msg-caution .fa-ul li').should(
-      'contain',
-      'Due to previous claims history, additional review is required.'
-    );
-    // TODO find a better way to handle the fact that we need to 'wait' on network requests. We have put the 'wait' in 'fillOutUnderwriting' for now, since it is used in a lot of places. But in this one case, we never leave the page so the next time we use 'fillOutUnderwriting' it is waiting on a call to 'getZipCodeSettings' that doesn't happen and is not expected to happen.
-    cy.goToNav('coverage');
+    cy.get('section.msg-caution .fa-ul li')
+      .should(
+        'contain',
+        'Due to previous claims history, additional review is required.'
+      )
+      // TODO find a better way to handle the fact that we need to 'wait' on network requests. We have put the 'wait' in 'fillOutUnderwriting' for now, since it is used in a lot of places. But in this one case, we never leave the page so the next time we use 'fillOutUnderwriting' it is waiting on a call to 'getZipCodeSettings' that doesn't happen and is not expected to happen.
+      .goToNav('coverage');
+
     // Give good data.
     fillOutUnderwriting();
     // Check that the error is gone.
@@ -33,7 +35,6 @@ describe('Underwriting Error Testing', () => {
   it('Overwriting UW Exception', () => {
     // Fill out underwriting with bad data.
     fillOutUnderwriting(unQuestionsBAD, 'Quote Stopped');
-
     cy.get('section.msg-caution .fa-ul li label')
       .should('contain', 'Override')
       // Override the exception manually.
@@ -51,11 +52,9 @@ describe('Underwriting Error Testing', () => {
           1,
           'Underwriting Exceptions count'
         );
-        // and that the quote is in a good state.
-        expect(response.body.result.quoteState).to.equal(
-          'Quote Qualified',
-          'Quote State'
-        );
-      });
+      })
+      .findDataTag('quoteDetails')
+      .contains('Quote Qualified')
+      .should('have.text', 'Quote Qualified');
   });
 });
