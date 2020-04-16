@@ -27,6 +27,9 @@ export const navigateThroughNewQuote = (
       .type(address)
       .clickSubmit()
       .wait('@fetchAddresses')
+      .then(({ response }) => {
+        expect(response.body.status).to.equal(200);
+      })
       // This makes it so we don't open up a new window
       .findDataTag(address)
       .then($a => {
@@ -54,7 +57,6 @@ export const fillOutCoverage = (customerInfo = pH1) => {
     .clickSubmit()
     .wait('@updateQuote')
     .then(({ response }) => {
-      // TODO we need to assert something about this response, preferably the quoteInputState like we do in the other tests.
       expect(response.body.status).to.equal(200);
     });
   cy.contains(customerInfo['policyHolders[0].firstName']).should(
@@ -89,7 +91,10 @@ export const changeCoverageAndAgency = (
       });
     })
     .clickSubmit()
-
+    .wait('@updateQuote')
+    .then(({ response }) => {
+      -expect(response.body.status).to.equal(200);
+    })
     .get('@initPremium')
     .then(premium => {
       cy.findDataTag('currentPremiumDetail').within(() => {
