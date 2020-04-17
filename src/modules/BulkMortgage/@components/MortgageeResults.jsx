@@ -2,11 +2,7 @@ import MortgageeCard from './MortgageeCard';
 import React from 'react';
 import { Form, noop, SectionLoader } from '@exzeo/core-ui';
 
-export const PolicyResults = ({
-  handleQueue,
-  mortgageeResults,
-  showLoader
-}) => {
+export const MortgageeResults = ({ handleQueue, results, showLoader }) => {
   if (showLoader) {
     return <SectionLoader />;
   }
@@ -23,7 +19,7 @@ export const PolicyResults = ({
           onSubmit={handleSubmit}
           className="search-results"
         >
-          {mortgageeResults.map(m => {
+          {results.map(m => {
             return (
               <MortgageeCard
                 key={m._id}
@@ -38,4 +34,4 @@ export const PolicyResults = ({
   );
 };
 
-export default PolicyResults;
+export default MortgageeResults;

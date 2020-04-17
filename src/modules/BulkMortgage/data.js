@@ -20,7 +20,7 @@ export async function getTopMortgagees() {
  * @param propertyAddress
  * @returns {Promise<[]>}
  */
-export async function fetchMortgagees({
+export async function fetchMortgageesFromPolicies({
   policyNumber = '',
   lastName = '',
   propertyAddress = ''
@@ -28,7 +28,7 @@ export async function fetchMortgagees({
   const config = {
     service: 'policy-data',
     method: 'GET',
-    path: `transactions?policyNumber=${policyNumber}&lastName=${lastName}&propertyAddress=${propertyAddress}&latest=true`
+    path: `transactions?policyNumber=${policyNumber}&lastName=${lastName}&propertyAddress=${propertyAddress}&latestTerm=true`
   };
 
   try {

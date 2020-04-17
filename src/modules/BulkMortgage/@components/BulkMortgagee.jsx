@@ -4,10 +4,10 @@ import { BULK_TYPE, BULK_TYPE_LABEL } from '../constants';
 import MortgageeForm from './MortgageeForm';
 import { Button, noop } from '@exzeo/core-ui';
 import SearchByPolicy from './SearchByPolicy';
-import PolicyResults from './PolicyResults';
+import MortgageeResults from './MortgageeResults';
 import { BUTTON_CLASS } from '@exzeo/core-ui/src/Button/Button';
 import QueuedMortgageeCard from './QueuedMortgageeCard';
-// import { fetchMortgagees } from '../data';
+import { fetchMortgageesFromPolicies } from '../data';
 
 const BulkMortgagee = ({ errorHandler }) => {
   const [selectedTab, setSelectedTab] = useState(BULK_TYPE.policy);
@@ -18,83 +18,83 @@ const BulkMortgagee = ({ errorHandler }) => {
   const handleSearchByPolicy = async data => {
     try {
       setShowPolicySearchLoader(true);
-      //  const { policyNumber, propertyAddress, lastName } = data;
+      const { policyNumber, propertyAddress, lastName } = data;
 
-      // await fetchMortgagees({
-      //   policyNumber,
-      //   propertyAddress,
-      //   lastName
-      // });
-      //setMortgageeResults(results);
+      const results = await fetchMortgageesFromPolicies({
+        policyNumber,
+        propertyAddress,
+        lastName
+      });
+      setMortgageeResults(results);
 
-      setMortgageeResults([
-        {
-          currentBillTo: 'No',
-          policyNumber: '12-100050-12',
-          _id: '34340345043504350350',
-          active: true,
-          name1: 'BANK OF AMERICA, NA',
-          name2: 'ISAOA/ATIMA',
-          mailingAddress: {
-            address1: '1234 Main Street',
-            address2: '',
-            city: 'FORT WORTH',
-            state: 'TX',
-            zip: '76161',
-            country: {
-              code: 'USA',
-              displayText: 'United States of America'
-            }
-          },
-          policyHolderName: 'John Smith',
-          propertyAddress: {
-            address1: '1234 Main Street',
-            address2: '',
-            city: 'FORT WORTH',
-            state: 'TX',
-            zip: '76161',
-            country: {
-              code: 'USA',
-              displayText: 'United States of America'
-            }
-          },
-          order: 0,
-          type: ''
-        },
-        {
-          currentBillTo: 'YES',
-          policyNumber: '12-100055-12',
-          _id: '5555540345043504350350',
-          active: true,
-          name1: 'BANK OF AMERICA, NA',
-          name2: 'ISAOA/ATIMA',
-          mailingAddress: {
-            address1: '1234 Main Street',
-            address2: '',
-            city: 'FORT WORTH',
-            state: 'TX',
-            zip: '76161',
-            country: {
-              code: 'USA',
-              displayText: 'United States of America'
-            }
-          },
-          policyHolderName: 'John Smith',
-          propertyAddress: {
-            address1: '1234 Main Street',
-            address2: '',
-            city: 'FORT WORTH',
-            state: 'TX',
-            zip: '76161',
-            country: {
-              code: 'USA',
-              displayText: 'United States of America'
-            }
-          },
-          order: 2,
-          type: ''
-        }
-      ]);
+      // setMortgageeResults([
+      //   {
+      //     currentBillTo: 'No',
+      //     policyNumber: '12-100050-12',
+      //     _id: '34340345043504350350',
+      //     active: true,
+      //     name1: 'BANK OF AMERICA, NA',
+      //     name2: 'ISAOA/ATIMA',
+      //     mailingAddress: {
+      //       address1: '1234 Main Street',
+      //       address2: '',
+      //       city: 'FORT WORTH',
+      //       state: 'TX',
+      //       zip: '76161',
+      //       country: {
+      //         code: 'USA',
+      //         displayText: 'United States of America'
+      //       }
+      //     },
+      //     policyHolderName: 'John Smith',
+      //     propertyAddress: {
+      //       address1: '1234 Main Street',
+      //       address2: '',
+      //       city: 'FORT WORTH',
+      //       state: 'TX',
+      //       zip: '76161',
+      //       country: {
+      //         code: 'USA',
+      //         displayText: 'United States of America'
+      //       }
+      //     },
+      //     order: 0,
+      //     type: ''
+      //   },
+      //   {
+      //     currentBillTo: 'YES',
+      //     policyNumber: '12-100055-12',
+      //     _id: '5555540345043504350350',
+      //     active: true,
+      //     name1: 'BANK OF AMERICA, NA',
+      //     name2: 'ISAOA/ATIMA',
+      //     mailingAddress: {
+      //       address1: '1234 Main Street',
+      //       address2: '',
+      //       city: 'FORT WORTH',
+      //       state: 'TX',
+      //       zip: '76161',
+      //       country: {
+      //         code: 'USA',
+      //         displayText: 'United States of America'
+      //       }
+      //     },
+      //     policyHolderName: 'John Smith',
+      //     propertyAddress: {
+      //       address1: '1234 Main Street',
+      //       address2: '',
+      //       city: 'FORT WORTH',
+      //       state: 'TX',
+      //       zip: '76161',
+      //       country: {
+      //         code: 'USA',
+      //         displayText: 'United States of America'
+      //       }
+      //     },
+      //     order: 2,
+      //     type: ''
+      //   }
+      // ]);
     } catch (ex) {
       errorHandler(ex);
     } finally {
@@ -164,9 +164,9 @@ const BulkMortgagee = ({ errorHandler }) => {
                   <section className="bm-byPolicy search-results-wrapper">
                     <SearchByPolicy handleSearch={handleSearchByPolicy} />
 
-                    <PolicyResults
+                    <MortgageeResults
                       showLoader={showPolicySearchLoader}
-                      mortgageeResults={mortgageeResults}
+                      results={mortgageeResults}
                       handleQueue={addToQueue}
                     />
                   </section>

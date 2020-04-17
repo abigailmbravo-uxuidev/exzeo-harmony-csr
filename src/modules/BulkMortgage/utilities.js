@@ -17,11 +17,8 @@ export function formatTopAnswers(answers) {
 export function formatMortgagees(result) {
   if (!result || !Array.isArray(result.policies)) return [];
 
-  const filteredPolicies = result.policies.filter(p =>
-    p.additionalInterests.any(ai => ai.type === 'Mortgagee')
-  );
-
-  return filteredPolicies.reduce((acc, p) => {
+  return result.policies.reduce((acc, p) => {
+    if (!p.additionalInterests.length) return acc;
     const primaryPolicyHolder = p.policyHolders[0];
 
     const mortgagees = p.additionalInterests.filter(
@@ -30,6 +27,7 @@ export function formatMortgagees(result) {
     mortgagees.forEach(m => {
       acc.push({
         ...m,
+        propertyAddress: p.property.physicalAddress,
         policyNumber: p.policyNumber,
         policyHolderName: `${primaryPolicyHolder.firstName} ${primaryPolicyHolder.lastName}`,
         currentBillTo: m._id === p.billToId
