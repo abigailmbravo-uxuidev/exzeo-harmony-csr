@@ -43,7 +43,7 @@
     "react-tooltip": "~3.4.0",
     "redux": "~3.7.2",
     "redux-batched-actions": "~0.1.6",
-    "redux-form": "7.3.x",
+    "redux-form": "^8.3.5",
     "redux-thunk": "~2.2.0",
     "reselect": "~3.0.1",
     "validator": "~7.2.0"
