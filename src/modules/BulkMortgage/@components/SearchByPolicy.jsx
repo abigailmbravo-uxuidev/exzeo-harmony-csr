@@ -32,6 +32,7 @@ export const SearchByPolicy = ({ handleSearch }) => {
             dataTest="product"
             label="Product"
             component={Select}
+            placeholderDisabled={false}
             placeholder="All"
             styleName="product"
             answers={PRODUCTS}
