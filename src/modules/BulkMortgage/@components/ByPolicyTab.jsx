@@ -5,6 +5,7 @@ import SearchByPolicy from './SearchByPolicy';
 import MortgageeResults from './MortgageeResults';
 
 export const ByPolicyTab = ({
+  handleBulkUpdateSubmit,
   errorHandler,
   handleSearchByPolicy,
   showPolicySearchLoader,
@@ -17,7 +18,10 @@ export const ByPolicyTab = ({
       role="group"
     >
       <section className="bm-byPolicy mortgagee-wrapper">
-        <MortgageeForm handleFormSubmit={noop} errorHandler={errorHandler} />
+        <MortgageeForm
+          handleFormSubmit={handleBulkUpdateSubmit}
+          errorHandler={errorHandler}
+        />
       </section>
       <section className="bm-byPolicy search-results-wrapper">
         <SearchByPolicy handleSearch={handleSearchByPolicy} />

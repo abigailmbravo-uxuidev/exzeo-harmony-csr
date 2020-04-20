@@ -22,7 +22,7 @@ export function formatMortgagees(result) {
     const primaryPolicyHolder = p.policyHolders[0];
 
     const mortgagees = p.additionalInterests.filter(
-      ai => ai.type === 'Mortgagee'
+      ai => ai.type === 'Mortgagee' && ai.active
     );
     mortgagees.forEach(m => {
       acc.push({

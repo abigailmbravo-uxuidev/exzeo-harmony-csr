@@ -21,12 +21,15 @@ const MortgageeForm = ({ handleFormSubmit, errorHandler }) => {
 
   return (
     <Form
-      id="BulkMortgagee"
       onSubmit={handleFormSubmit}
       initialValues={{ instruction: 'Suppress Notice' }}
       subscription={{ submitting: true }}
       render={({ handleSubmit, submitting, form }) => (
-        <form className="bulk-mortgagee-form" onSubmit={handleSubmit}>
+        <form
+          id="BulkMortgagee"
+          className="bulk-mortgagee-form"
+          onSubmit={handleSubmit}
+        >
           <Button
             dataTest="refresh"
             className={BUTTON_CLASS.link}
@@ -103,7 +106,7 @@ const MortgageeForm = ({ handleFormSubmit, errorHandler }) => {
             <Field
               name="mailingAddress.zip"
               dataTest="zip"
-              label="Zip Code"
+              label="Zip"
               component={Input}
               styleName="zip"
               validate={composeValidators([

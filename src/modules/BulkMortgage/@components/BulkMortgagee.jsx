@@ -52,7 +52,7 @@ const BulkMortgagee = ({ errorHandler }) => {
     setQueuedMortgagees(filterMortgagees);
   };
 
-  const handleBulkUpdateSubmit = () => {
+  const handleBulkUpdateSubmit = async () => {
     /*
     // TODO: need to grab AI data from the form then grab all policyNumbers and place in array
      */
@@ -92,6 +92,7 @@ const BulkMortgagee = ({ errorHandler }) => {
                   showPolicySearchLoader={showPolicySearchLoader}
                   mortgageeResults={mortgageeResults}
                   addToQueue={addToQueue}
+                  handleBulkUpdateSubmit={handleBulkUpdateSubmit}
                 />
               )}
               {selectedTab === BULK_TYPE.mortgagee && (
@@ -108,8 +109,8 @@ const BulkMortgagee = ({ errorHandler }) => {
             <Button
               dataTest="bulk-mortgage-submit"
               className={BUTTON_CLASS.primary}
-              type="button"
-              onClick={handleBulkUpdateSubmit}
+              type="submit"
+              form="BulkMortgagee"
               disabled={!queuedMortgagees.length}
             >
               Update
