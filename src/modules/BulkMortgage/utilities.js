@@ -27,6 +27,7 @@ export function formatMortgagees(result) {
     mortgagees.forEach(m => {
       acc.push({
         ...m,
+        product: p.product,
         propertyAddress: p.property.physicalAddress,
         policyNumber: p.policyNumber,
         policyHolderName: `${primaryPolicyHolder.firstName} ${primaryPolicyHolder.lastName}`,

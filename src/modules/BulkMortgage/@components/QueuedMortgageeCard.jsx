@@ -11,8 +11,7 @@ const QueuedMortgageeCard = ({ mortgagee, handleRemove }) => (
   >
     <div className="icon-name">
       <i className="card-icon fa fa-file-text" />
-      {/* if we have access to product */}
-      <h5 className="product">[product]</h5>
+      <h5 className="product">{mortgagee.product}</h5>
     </div>
     <section>
       <div className="details">

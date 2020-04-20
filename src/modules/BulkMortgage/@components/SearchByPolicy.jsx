@@ -1,22 +1,27 @@
 import React from 'react';
 import classNames from 'classnames';
-import { Input, Select, Button, Field, Form } from '@exzeo/core-ui';
+import { Input, Select, Button, Field, Form, validation } from '@exzeo/core-ui';
 import {
   SEARCH_TYPE_ANSWERS,
   PRODUCTS,
   SEARCH_TYPE_PLACEHOLDER,
   SEARCH_TYPES
 } from '../constants';
+import SearchByPolicyWatcher from './SearchByPolicyWatcher';
 
 export const SearchByPolicy = ({ handleSearch }) => {
   return (
     <Form
       id="SearchByPolicy"
-      initialValues={{ searchType: 'policyNumber', product: 'All' }}
+      initialValues={{
+        searchType: 'policyNumber',
+        product: 'All',
+        policyNumber: ''
+      }}
       onSubmit={handleSearch}
       subscription={{ submitting: true, values: true }}
     >
-      {({ handleSubmit, values }) => (
+      {({ handleSubmit, values, pristine }) => (
         <form
           id="SearchByPolicy"
           className={classNames('search-by-policy-form', 'search-inputs')}
@@ -46,6 +51,7 @@ export const SearchByPolicy = ({ handleSearch }) => {
               placeholder={SEARCH_TYPE_PLACEHOLDER.policyNumber}
               component={Input}
               styleName="search-input"
+              validate={validation.isRequired}
             />
           )}
           {values.searchType === SEARCH_TYPES.lastName && (
@@ -56,6 +62,7 @@ export const SearchByPolicy = ({ handleSearch }) => {
               placeholder={SEARCH_TYPE_PLACEHOLDER.lastName}
               component={Input}
               styleName="search-input"
+              validate={validation.isRequired}
             />
           )}
           {values.searchType === SEARCH_TYPES.propertyAddress && (
@@ -66,12 +73,15 @@ export const SearchByPolicy = ({ handleSearch }) => {
               placeholder={SEARCH_TYPE_PLACEHOLDER.propertyAddress}
               component={Input}
               styleName="search-input"
+              validate={validation.isRequired}
             />
           )}
+          <SearchByPolicyWatcher />
           <Button
             className={Button.constants.classNames.primary}
             type="submit"
             dataTest="submit"
+            disabled={pristine}
           >
             Search
           </Button>
