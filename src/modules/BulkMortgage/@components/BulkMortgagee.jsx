@@ -20,17 +20,14 @@ const BulkMortgagee = ({ errorHandler }) => {
   const handleSearchByPolicy = async data => {
     try {
       setShowPolicySearchLoader(true);
-      const { policyNumber, propertyAddress, lastName } = data;
+      const { policyNumber, propertyAddress, lastName, product } = data;
 
       const results = await fetchMortgageesFromPolicies({
+        product,
         policyNumber,
         propertyAddress,
         lastName,
-        latestTerm: true,
-        companyCode: 'TTIC',
-        state: 'FL',
-        page: 1,
-        pageSize: 25
+        latestTerm: true
       });
       setMortgageeResults(results);
     } catch (ex) {

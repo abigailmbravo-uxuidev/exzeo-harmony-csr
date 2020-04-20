@@ -14,7 +14,6 @@ export const INSTRUCTION_ANSWERS = [
 ];
 
 export const PRODUCTS = [
-  { answer: 'All', label: 'All' },
   { answer: 'AF3', label: 'Flood' },
   { answer: 'HO3', label: 'HO3' }
 ];

@@ -15,7 +15,7 @@ export const SearchByPolicy = ({ handleSearch }) => {
       id="SearchByPolicy"
       initialValues={{
         searchType: 'policyNumber',
-        product: 'All',
+        product: '',
         policyNumber: ''
       }}
       onSubmit={handleSearch}
@@ -32,6 +32,7 @@ export const SearchByPolicy = ({ handleSearch }) => {
             dataTest="product"
             label="Product"
             component={Select}
+            placeholder="All"
             styleName="product"
             answers={PRODUCTS}
           />
