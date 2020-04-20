@@ -1,6 +1,5 @@
 import React from 'react';
 import MortgageeForm from './MortgageeForm';
-import { noop } from '@exzeo/core-ui';
 import SearchByPolicy from './SearchByPolicy';
 import MortgageeResults from './MortgageeResults';
 
