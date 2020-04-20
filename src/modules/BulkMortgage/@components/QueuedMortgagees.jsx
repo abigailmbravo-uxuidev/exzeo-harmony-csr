@@ -6,7 +6,7 @@ import QueuedMortgageeCard from './QueuedMortgageeCard';
 const QueuedMortgagees = ({
   queuedMortgagees,
   removeFromQueue,
-  setQueuedMortgagees
+  removeAllFromQueue
 }) => {
   return (
     <React.Fragment>
@@ -22,7 +22,7 @@ const QueuedMortgagees = ({
             dataTest="queue-mortgagee"
             className={BUTTON_CLASS.link}
             type="button"
-            onClick={() => setQueuedMortgagees([])}
+            onClick={removeAllFromQueue}
           >
             <i className="fa fa-remove" />
             Remove All

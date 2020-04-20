@@ -10,6 +10,7 @@ import QueuedMortgageeCard from './QueuedMortgageeCard';
 import { fetchMortgageesFromPolicies } from '../data';
 import ByPolicyTab from './ByPolicyTab';
 import QueuedMortgagees from './QueuedMortgagees';
+import { formatMortgagees } from '../utilities';
 
 const BulkMortgagee = ({ errorHandler }) => {
   const [selectedTab, setSelectedTab] = useState(BULK_TYPE.policy);
@@ -29,7 +30,7 @@ const BulkMortgagee = ({ errorHandler }) => {
         lastName,
         latestTerm: true
       });
-      setMortgageeResults(results);
+      setMortgageeResults(formatMortgagees(results, queuedMortgagees));
     } catch (ex) {
       errorHandler(ex);
     } finally {
@@ -37,11 +38,15 @@ const BulkMortgagee = ({ errorHandler }) => {
     }
   };
   const addToQueue = mortgagee => {
-    const existingMortgagee = queuedMortgagees.find(
+    const existingMortgagee = queuedMortgagees.some(
       m => m._id === mortgagee._id
     );
     if (!existingMortgagee) {
       setQueuedMortgagees([mortgagee, ...queuedMortgagees]);
+      const filterMortgagees = mortgageeResults.filter(
+        m => m._id !== mortgagee._id
+      );
+      setMortgageeResults(filterMortgagees);
     }
   };
 
@@ -50,6 +55,12 @@ const BulkMortgagee = ({ errorHandler }) => {
       m => m._id !== mortgagee._id
     );
     setQueuedMortgagees(filterMortgagees);
+    setMortgageeResults([mortgagee, ...mortgageeResults]);
+  };
+
+  const removeAllFromQueue = () => {
+    setMortgageeResults([...queuedMortgagees, ...mortgageeResults]);
+    setQueuedMortgagees([]);
   };
 
   const handleBulkUpdateSubmit = async () => {
@@ -103,6 +114,7 @@ const BulkMortgagee = ({ errorHandler }) => {
           <QueuedMortgagees
             queuedMortgagees={queuedMortgagees}
             removeFromQueue={removeFromQueue}
+            removeAllFromQueue={removeAllFromQueue}
             setQueuedMortgagees={setQueuedMortgagees}
           />
           <section className="btn-footer">

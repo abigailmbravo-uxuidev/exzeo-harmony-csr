@@ -22,23 +22,27 @@ const MortgageeCard = ({ mortgagee, handleQueue }) => (
         <div className="bill-to">
           <label htmlFor={`${mortgagee._id}.makeBillTo`}>Make Bill To</label>
           <Field
-            name="makeBillTo"
+            name={`${mortgagee._id}.makeBillTo`}
             component="input"
             type="checkbox"
-            data-test="makeBillTo"
+            data-test={`${mortgagee._id}.makeBillTo`}
           />
         </div>
       )}
     </section>
     <section className="policy-details">
-      <h4>{mortgagee.policyNumber}</h4>
+      <h4>
+        <a target="_blank" href={`/policy/${mortgagee.policyNumber}`}>
+          {mortgagee.policyNumber}
+        </a>
+      </h4>
       <h5>{mortgagee.policyHolderName}</h5>
       <Address address={mortgagee.propertyAddress} className="address" />
     </section>
     <footer className="footer">
       <Field
-        name="loanNo"
-        dataTest="loanNo"
+        name={`${mortgagee._id}.loanNo`}
+        dataTest={`${mortgagee._id}.loanNo`}
         label="Loan No"
         component={Input}
         styleName="loanNo"

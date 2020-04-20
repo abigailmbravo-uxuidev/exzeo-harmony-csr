@@ -14,7 +14,7 @@ export function formatTopAnswers(answers) {
   }));
 }
 
-export function formatMortgagees(result) {
+export function formatMortgagees(result, queuedMortgagees) {
   if (!result || !Array.isArray(result.policies)) return [];
 
   return result.policies.reduce((acc, p) => {
@@ -24,16 +24,30 @@ export function formatMortgagees(result) {
     const mortgagees = p.additionalInterests.filter(
       ai => ai.type === 'Mortgagee' && ai.active
     );
+
     mortgagees.forEach(m => {
-      acc.push({
-        ...m,
-        product: p.product,
-        propertyAddress: p.property.physicalAddress,
-        policyNumber: p.policyNumber,
-        policyHolderName: `${primaryPolicyHolder.firstName} ${primaryPolicyHolder.lastName}`,
-        currentBillTo: m._id === p.billToId
-      });
+      const existingMortgagee = queuedMortgagees.some(q => m._id === q._id);
+      if (!existingMortgagee) {
+        acc.push({
+          ...m,
+          product: p.product,
+          propertyAddress: p.property.physicalAddress,
+          policyNumber: p.policyNumber,
+          policyHolderName: `${primaryPolicyHolder.firstName} ${primaryPolicyHolder.lastName}`,
+          currentBillTo: m._id === p.billToId
+        });
+      }
     });
     return acc;
   }, []);
+}
+
+export function setMortgageeInitialValues(results) {
+  const initialValues = {};
+  if (!results || !Array.isArray(results)) return initialValues;
+
+  results.forEach(m => {
+    initialValues[m._id] = m;
+  });
+  return initialValues;
 }
