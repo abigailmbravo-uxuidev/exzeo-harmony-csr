@@ -1,5 +1,6 @@
 import * as serviceRunner from '@exzeo/core-ui/src/@Harmony/Domain/Api/serviceRunner';
 import { formatMortgagees } from './utilities';
+import buildQueryString from '@exzeo/core-ui/src/@utils/buildQueryString';
 /**
  *
  * @returns {Promise<[]>}
@@ -15,20 +16,15 @@ export async function getTopMortgagees() {
 
 /**
  *
- * @param policyNumber
- * @param lastName
- * @param propertyAddress
  * @returns {Promise<[]>}
+ * @param params
  */
-export async function fetchMortgageesFromPolicies({
-  policyNumber = '',
-  lastName = '',
-  propertyAddress = ''
-}) {
+export async function fetchMortgageesFromPolicies(params) {
+  const path = `/transactions${buildQueryString(params)}`;
   const config = {
     service: 'policy-data',
     method: 'GET',
-    path: `transactions?policyNumber=${policyNumber}&lastName=${lastName}&propertyAddress=${propertyAddress}&latestTerm=true`
+    path
   };
 
   try {

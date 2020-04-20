@@ -8,6 +8,8 @@ import MortgageeResults from './MortgageeResults';
 import { BUTTON_CLASS } from '@exzeo/core-ui/src/Button/Button';
 import QueuedMortgageeCard from './QueuedMortgageeCard';
 import { fetchMortgageesFromPolicies } from '../data';
+import ByPolicyTab from './ByPolicyTab';
+import QueuedMortgagees from './QueuedMortgagees';
 
 const BulkMortgagee = ({ errorHandler }) => {
   const [selectedTab, setSelectedTab] = useState(BULK_TYPE.policy);
@@ -23,78 +25,14 @@ const BulkMortgagee = ({ errorHandler }) => {
       const results = await fetchMortgageesFromPolicies({
         policyNumber,
         propertyAddress,
-        lastName
+        lastName,
+        latestTerm: true,
+        companyCode: 'TTIC',
+        state: 'FL',
+        page: 1,
+        pageSize: 25
       });
       setMortgageeResults(results);
-
-      // setMortgageeResults([
-      //   {
-      //     currentBillTo: 'No',
-      //     policyNumber: '12-100050-12',
-      //     _id: '34340345043504350350',
-      //     active: true,
-      //     name1: 'BANK OF AMERICA, NA',
-      //     name2: 'ISAOA/ATIMA',
-      //     mailingAddress: {
-      //       address1: '1234 Main Street',
-      //       address2: '',
-      //       city: 'FORT WORTH',
-      //       state: 'TX',
-      //       zip: '76161',
-      //       country: {
-      //         code: 'USA',
-      //         displayText: 'United States of America'
-      //       }
-      //     },
-      //     policyHolderName: 'John Smith',
-      //     propertyAddress: {
-      //       address1: '1234 Main Street',
-      //       address2: '',
-      //       city: 'FORT WORTH',
-      //       state: 'TX',
-      //       zip: '76161',
-      //       country: {
-      //         code: 'USA',
-      //         displayText: 'United States of America'
-      //       }
-      //     },
-      //     order: 0,
-      //     type: ''
-      //   },
-      //   {
-      //     currentBillTo: 'YES',
-      //     policyNumber: '12-100055-12',
-      //     _id: '5555540345043504350350',
-      //     active: true,
-      //     name1: 'BANK OF AMERICA, NA',
-      //     name2: 'ISAOA/ATIMA',
-      //     mailingAddress: {
-      //       address1: '1234 Main Street',
-      //       address2: '',
-      //       city: 'FORT WORTH',
-      //       state: 'TX',
-      //       zip: '76161',
-      //       country: {
-      //         code: 'USA',
-      //         displayText: 'United States of America'
-      //       }
-      //     },
-      //     policyHolderName: 'John Smith',
-      //     propertyAddress: {
-      //       address1: '1234 Main Street',
-      //       address2: '',
-      //       city: 'FORT WORTH',
-      //       state: 'TX',
-      //       zip: '76161',
-      //       country: {
-      //         code: 'USA',
-      //         displayText: 'United States of America'
-      //       }
-      //     },
-      //     order: 2,
-      //     type: ''
-      //   }
-      // ]);
     } catch (ex) {
       errorHandler(ex);
     } finally {
@@ -106,7 +44,7 @@ const BulkMortgagee = ({ errorHandler }) => {
       m => m._id === mortgagee._id
     );
     if (!existingMortgagee) {
-      setQueuedMortgagees([...queuedMortgagees, mortgagee]);
+      setQueuedMortgagees([mortgagee, ...queuedMortgagees]);
     }
   };
 
@@ -151,73 +89,34 @@ const BulkMortgagee = ({ errorHandler }) => {
                 </button>
               </div>
               {selectedTab === BULK_TYPE.policy && (
-                <div
-                  className="bm-wrapper by-policy form-group survey-wrapper"
-                  role="group"
-                >
-                  <section className="bm-byPolicy mortgagee-wrapper">
-                    <MortgageeForm
-                      handleFormSubmit={noop}
-                      errorHandler={errorHandler}
-                    />
-                  </section>
-                  <section className="bm-byPolicy search-results-wrapper">
-                    <SearchByPolicy handleSearch={handleSearchByPolicy} />
-
-                    <MortgageeResults
-                      showLoader={showPolicySearchLoader}
-                      results={mortgageeResults}
-                      handleQueue={addToQueue}
-                    />
-                  </section>
-                </div>
+                <ByPolicyTab
+                  errorHandler={errorHandler}
+                  handleSearchByPolicy={handleSearchByPolicy}
+                  showPolicySearchLoader={showPolicySearchLoader}
+                  mortgageeResults={mortgageeResults}
+                  addToQueue={addToQueue}
+                />
               )}
               {selectedTab === BULK_TYPE.mortgagee && (
                 <div>{BULK_TYPE_LABEL.mortgagee}</div>
               )}
             </div>
           </section>
-          <div className="queue-header">
-            <div className="title">
-              Queued For Update&nbsp;
-              <span className="queue-count">
-                ({queuedMortgagees.length} queued)
-              </span>
-            </div>
-            {queuedMortgagees.length > 0 && (
-              <Button
-                dataTest="queue-mortgagee"
-                className={BUTTON_CLASS.link}
-                type="button"
-                onClick={() => setQueuedMortgagees([])}
-              >
-                <i className="fa fa-remove" />
-                Remove All
-              </Button>
-            )}
-          </div>
-          <section className="policy-list">
-            {queuedMortgagees.map(m => {
-              return (
-                <QueuedMortgageeCard
-                  key={m._id}
-                  mortgagee={m}
-                  handleRemove={() => removeFromQueue(m)}
-                />
-              );
-            })}
-          </section>
+          <QueuedMortgagees
+            queuedMortgagees={queuedMortgagees}
+            removeFromQueue={removeFromQueue}
+            setQueuedMortgagees={setQueuedMortgagees}
+          />
           <section className="btn-footer">
-            {queuedMortgagees.length > 0 && (
-              <Button
-                dataTest="bulk-mortgage-submit"
-                className={BUTTON_CLASS.primary}
-                type="button"
-                onClick={handleBulkUpdateSubmit}
-              >
-                Update
-              </Button>
-            )}
+            <Button
+              dataTest="bulk-mortgage-submit"
+              className={BUTTON_CLASS.primary}
+              type="button"
+              onClick={handleBulkUpdateSubmit}
+              disabled={!queuedMortgagees.length}
+            >
+              Update
+            </Button>
           </section>
         </div>
       </div>
