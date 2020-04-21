@@ -29,7 +29,6 @@ describe('BulkMortgagee Testing', () => {
       expect(getByText('Queued For Update'));
       expect(getByText('Bulk Mortgagee'));
       expect(getByText('By Policy'));
-      expect(getByText('By Mortgagee'));
       //Mortgagee Form Labels
       expect(getByText('Top Mortgagees'));
       expect(getByText('Clear & Reset Form'));
