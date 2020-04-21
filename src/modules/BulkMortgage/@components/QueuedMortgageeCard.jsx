@@ -1,7 +1,6 @@
 import React from 'react';
 import { Button } from '@exzeo/core-ui';
 import { BUTTON_CLASS } from '@exzeo/core-ui/src/Button/Button';
-import classNames from 'classnames';
 import Address from './Address';
 
 const QueuedMortgageeCard = ({ mortgagee, handleRemove }) => (
@@ -11,7 +10,7 @@ const QueuedMortgageeCard = ({ mortgagee, handleRemove }) => (
     data-test={`queued-mortgagee-${mortgagee._id}`}
   >
     <div className="icon-name">
-      <i className={classNames('card-icon', 'fa', 'fa-file-text')} />
+      <i className="card-icon fa fa-file-text" />
       <h5 className="product">{mortgagee.product}</h5>
     </div>
     <section>

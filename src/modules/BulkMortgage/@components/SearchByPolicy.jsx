@@ -1,5 +1,4 @@
 import React from 'react';
-import classNames from 'classnames';
 import { Input, Select, Button, Field, Form, validation } from '@exzeo/core-ui';
 import {
   SEARCH_TYPE_ANSWERS,
@@ -24,7 +23,7 @@ export const SearchByPolicy = ({ handleSearch }) => {
       {({ handleSubmit, values, pristine }) => (
         <form
           id="SearchByPolicy"
-          className={classNames('search-by-policy-form', 'search-inputs')}
+          className="search-by-policy-form search-inputs"
           onSubmit={handleSubmit}
         >
           <Field

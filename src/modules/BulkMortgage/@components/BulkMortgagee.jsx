@@ -67,7 +67,7 @@ const BulkMortgagee = ({ errorHandler }) => {
 
   return (
     <React.Fragment>
-      <div className={classNames('content-wrapper', 'scroll')}>
+      <div className="content-wrapper scroll">
         <div className="bulk-mortgagee-wrapper">
           <div className="title">Bulk Mortgagee</div>
           <section>
@@ -75,7 +75,7 @@ const BulkMortgagee = ({ errorHandler }) => {
               <div className="filter-tabs">
                 <button
                   type="button"
-                  className={classNames('btn btn-tab', {
+                  className={classNames('btn', 'btn-tab', {
                     selected: selectedTab === BULK_MORTGAGE_TYPE.policy
                   })}
                   onClick={() => setSelectedTab(BULK_MORTGAGE_TYPE.policy)}
@@ -84,7 +84,7 @@ const BulkMortgagee = ({ errorHandler }) => {
                 </button>
                 <button
                   type="button"
-                  className={classNames('btn btn-tab', {
+                  className={classNames('btn', 'btn-tab', {
                     selected: selectedTab === BULK_MORTGAGE_TYPE.mortgagee
                   })}
                   onClick={() => setSelectedTab(BULK_MORTGAGE_TYPE.mortgagee)}
