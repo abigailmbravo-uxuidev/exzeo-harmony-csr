@@ -28,7 +28,11 @@ const MortgageeCard = ({ mortgagee, handleQueue }) => (
     </section>
     <section className="policy-details">
       <h4>
-        <a target="_blank" href={`/policy/${mortgagee.policyNumber}`}>
+        <a
+          target="_blank"
+          rel="noopener noreferrer"
+          href={`/policy/${mortgagee.policyNumber}`}
+        >
           {mortgagee.policyNumber}
         </a>
       </h4>
