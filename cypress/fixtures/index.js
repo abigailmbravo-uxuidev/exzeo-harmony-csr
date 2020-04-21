@@ -5,6 +5,7 @@ export * from './endorsements';
 export { login } from './login';
 export { pH1 } from './pH1';
 export { baseQuote, baseQuoteResponse } from './quote';
+export { agencyDetails } from './agencyDetails';
 export { shareQuote } from './sharequote';
 export { unQuestionsAF3, unQuestions, unQuestionsBAD } from './underwriting';
 export { user } from './user';
