@@ -2,6 +2,7 @@ import React from 'react';
 import MortgageeForm from './MortgageeForm';
 import SearchByPolicy from './SearchByPolicy';
 import MortgageeResults from './MortgageeResults';
+import classNames from 'classnames';
 
 export const ByPolicyTab = ({
   handleBulkUpdateSubmit,
@@ -13,16 +14,21 @@ export const ByPolicyTab = ({
 }) => {
   return (
     <div
-      className="bm-wrapper by-policy form-group survey-wrapper"
+      className={classNames(
+        'bm-wrapper',
+        'by-policy',
+        'form-group',
+        'survey-wrapper'
+      )}
       role="group"
     >
-      <section className="bm-byPolicy mortgagee-wrapper">
+      <section className={classNames('bm-byPolicy', 'mortgagee-wrapper')}>
         <MortgageeForm
           handleFormSubmit={handleBulkUpdateSubmit}
           errorHandler={errorHandler}
         />
       </section>
-      <section className="bm-byPolicy search-results-wrapper">
+      <section className={classNames('bm-byPolicy', 'search-results-wrapper')}>
         <SearchByPolicy handleSearch={handleSearchByPolicy} />
 
         <MortgageeResults

@@ -1,14 +1,10 @@
 import React from 'react';
-import classNames from 'classnames';
 import { Button, Field, Input } from '@exzeo/core-ui';
 import { BUTTON_CLASS, BUTTON_SIZE } from '@exzeo/core-ui/src/Button/Button';
 import Address from './Address';
 
 const MortgageeCard = ({ mortgagee, handleQueue }) => (
-  <div
-    className={classNames('card')}
-    data-test={`mortgagee-${mortgagee.order}`}
-  >
+  <div className="card" data-test={`mortgagee-${mortgagee.order}`}>
     <section className="mortgagee-detail">
       <h4>Mortgagee {mortgagee.order + 1}</h4>
       <h5>{mortgagee.name1}</h5>

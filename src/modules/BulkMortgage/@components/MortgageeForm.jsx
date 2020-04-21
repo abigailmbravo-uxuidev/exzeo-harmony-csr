@@ -24,7 +24,7 @@ const MortgageeForm = ({ handleFormSubmit, errorHandler }) => {
       onSubmit={handleFormSubmit}
       initialValues={{ instruction: 'Suppress Notice' }}
       subscription={{ submitting: true }}
-      render={({ handleSubmit, submitting, form }) => (
+      render={({ handleSubmit, form }) => (
         <form
           id="BulkMortgagee"
           className="bulk-mortgagee-form"

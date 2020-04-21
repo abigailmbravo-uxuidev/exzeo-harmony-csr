@@ -16,7 +16,7 @@ export const MortgageeResults = ({ handleQueue, results, showLoader }) => {
       onSubmit={noop}
       subscription={{ submitting: true, values: true }}
     >
-      {({ handleSubmit, form, values }) => (
+      {({ handleSubmit, values }) => (
         <form
           id="PolicyResults"
           onSubmit={handleSubmit}

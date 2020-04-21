@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import classNames from 'classnames';
-import { BULK_TYPE, BULK_TYPE_LABEL } from '../constants';
+import { BULK_MORTGAGE_TYPE, BULK_TYPE_LABEL } from '../constants';
 import { Button } from '@exzeo/core-ui';
 import { BUTTON_CLASS } from '@exzeo/core-ui/src/Button/Button';
 import { fetchMortgageesFromPolicies } from '../data';
@@ -9,7 +9,7 @@ import QueuedMortgagees from './QueuedMortgagees';
 import { formatMortgagees } from '../utilities';
 
 const BulkMortgagee = ({ errorHandler }) => {
-  const [selectedTab, setSelectedTab] = useState(BULK_TYPE.policy);
+  const [selectedTab, setSelectedTab] = useState(BULK_MORTGAGE_TYPE.policy);
   const [queuedMortgagees, setQueuedMortgagees] = useState([]);
   const [mortgageeResults, setMortgageeResults] = useState([]);
   const [showPolicySearchLoader, setShowPolicySearchLoader] = useState(false);
@@ -67,7 +67,7 @@ const BulkMortgagee = ({ errorHandler }) => {
 
   return (
     <React.Fragment>
-      <div className="content-wrapper scroll">
+      <div className={classNames('content-wrapper', 'scroll')}>
         <div className="bulk-mortgagee-wrapper">
           <div className="title">Bulk Mortgagee</div>
           <section>
@@ -76,23 +76,23 @@ const BulkMortgagee = ({ errorHandler }) => {
                 <button
                   type="button"
                   className={classNames('btn btn-tab', {
-                    selected: selectedTab === BULK_TYPE.policy
+                    selected: selectedTab === BULK_MORTGAGE_TYPE.policy
                   })}
-                  onClick={() => setSelectedTab(BULK_TYPE.policy)}
+                  onClick={() => setSelectedTab(BULK_MORTGAGE_TYPE.policy)}
                 >
                   {BULK_TYPE_LABEL.policy}
                 </button>
                 <button
                   type="button"
                   className={classNames('btn btn-tab', {
-                    selected: selectedTab === BULK_TYPE.mortgagee
+                    selected: selectedTab === BULK_MORTGAGE_TYPE.mortgagee
                   })}
-                  onClick={() => setSelectedTab(BULK_TYPE.mortgagee)}
+                  onClick={() => setSelectedTab(BULK_MORTGAGE_TYPE.mortgagee)}
                 >
                   {BULK_TYPE_LABEL.mortgagee}
                 </button>
               </div>
-              {selectedTab === BULK_TYPE.policy && (
+              {selectedTab === BULK_MORTGAGE_TYPE.policy && (
                 <ByPolicyTab
                   errorHandler={errorHandler}
                   handleSearchByPolicy={handleSearchByPolicy}
@@ -102,7 +102,7 @@ const BulkMortgagee = ({ errorHandler }) => {
                   handleBulkUpdateSubmit={handleBulkUpdateSubmit}
                 />
               )}
-              {selectedTab === BULK_TYPE.mortgagee && (
+              {selectedTab === BULK_MORTGAGE_TYPE.mortgagee && (
                 <div>{BULK_TYPE_LABEL.mortgagee}</div>
               )}
             </div>
