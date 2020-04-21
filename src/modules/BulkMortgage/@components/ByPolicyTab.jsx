@@ -2,6 +2,7 @@ import React from 'react';
 import MortgageeForm from './MortgageeForm';
 import SearchByPolicy from './SearchByPolicy';
 import MortgageeResults from './MortgageeResults';
+import NoResults from './NoResults';
 
 export const ByPolicyTab = ({
   handleBulkUpdateSubmit,
@@ -9,7 +10,8 @@ export const ByPolicyTab = ({
   handleSearchByPolicy,
   showPolicySearchLoader,
   mortgageeResults,
-  addToQueue
+  addToQueue,
+  hasSearched
 }) => {
   return (
     <div
@@ -24,7 +26,7 @@ export const ByPolicyTab = ({
       </section>
       <section className="bm-byPolicy search-results-wrapper">
         <SearchByPolicy handleSearch={handleSearchByPolicy} />
-
+        {hasSearched && mortgageeResults.length === 0 && <NoResults />}
         <MortgageeResults
           showLoader={showPolicySearchLoader}
           results={mortgageeResults}

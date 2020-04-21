@@ -13,6 +13,7 @@ const BulkMortgagee = ({ errorHandler }) => {
   const [queuedMortgagees, setQueuedMortgagees] = useState([]);
   const [mortgageeResults, setMortgageeResults] = useState([]);
   const [showPolicySearchLoader, setShowPolicySearchLoader] = useState(false);
+  const [hasSearched, setHasSearched] = useState(false);
 
   const handleSearchByPolicy = async data => {
     try {
@@ -27,6 +28,7 @@ const BulkMortgagee = ({ errorHandler }) => {
         latestTerm: true
       });
       setMortgageeResults(formatMortgagees(results, queuedMortgagees));
+      setHasSearched(true);
     } catch (ex) {
       errorHandler(ex);
     } finally {
@@ -82,15 +84,6 @@ const BulkMortgagee = ({ errorHandler }) => {
                 >
                   {BULK_TYPE_LABEL.policy}
                 </button>
-                <button
-                  type="button"
-                  className={classNames('btn', 'btn-tab', {
-                    selected: selectedTab === BULK_MORTGAGE_TYPE.mortgagee
-                  })}
-                  onClick={() => setSelectedTab(BULK_MORTGAGE_TYPE.mortgagee)}
-                >
-                  {BULK_TYPE_LABEL.mortgagee}
-                </button>
               </div>
               {selectedTab === BULK_MORTGAGE_TYPE.policy && (
                 <ByPolicyTab
@@ -100,10 +93,8 @@ const BulkMortgagee = ({ errorHandler }) => {
                   mortgageeResults={mortgageeResults}
                   addToQueue={addToQueue}
                   handleBulkUpdateSubmit={handleBulkUpdateSubmit}
+                  hasSearched={hasSearched}
                 />
-              )}
-              {selectedTab === BULK_MORTGAGE_TYPE.mortgagee && (
-                <div>{BULK_TYPE_LABEL.mortgagee}</div>
               )}
             </div>
           </section>
