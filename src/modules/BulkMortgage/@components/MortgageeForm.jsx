@@ -69,7 +69,7 @@ const MortgageeForm = ({ handleFormSubmit, errorHandler }) => {
           />
           <Field
             name="mailingAddress.address1"
-            dataTest="address1"
+            dataTest="mailingAddress.address1"
             label="Address 1"
             component={Input}
             styleName="address-1"
@@ -77,7 +77,7 @@ const MortgageeForm = ({ handleFormSubmit, errorHandler }) => {
           />
           <Field
             name="mailingAddress.address2"
-            dataTest="address2"
+            dataTest="mailingAddress.address2"
             label="Address 2"
             component={Input}
             styleName="address-2"
@@ -85,7 +85,7 @@ const MortgageeForm = ({ handleFormSubmit, errorHandler }) => {
           <div className="flex-form">
             <Field
               name="mailingAddress.city"
-              dataTest="city"
+              dataTest="mailingAddress.city"
               label="City"
               component={Input}
               styleName="city"
@@ -93,7 +93,7 @@ const MortgageeForm = ({ handleFormSubmit, errorHandler }) => {
             />
             <Field
               name="mailingAddress.state"
-              dataTest="state"
+              dataTest="mailingAddress.state"
               label="State"
               component={Input}
               styleName="state"
@@ -105,7 +105,7 @@ const MortgageeForm = ({ handleFormSubmit, errorHandler }) => {
             />
             <Field
               name="mailingAddress.zip"
-              dataTest="zip"
+              dataTest="mailingAddress.zip"
               label="Zip"
               component={Input}
               styleName="zip"
