@@ -1,7 +1,7 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { useField, useForm } from '@exzeo/core-ui';
-import _get from 'lodash/get';
 import { SEARCH_TYPES } from '../constants';
+
 const SearchByPolicyWatcher = () => {
   const fieldsToUpdate = [
     SEARCH_TYPES.propertyAddress,
