@@ -7,10 +7,6 @@ import {
   EDIT_LICENSE,
   EDIT_CONTRACT,
   EDIT_AGENCY,
-  EDIT_AGENCY_ADDRESS,
-  EDIT_OFFICER,
-  EDIT_CONTACT,
-  EDIT_AGENT,
   ADD_ANOTHER_AGENT,
   ADD_NOTE
 } from '../../fixtures';
@@ -76,7 +72,7 @@ describe('Agency Management testing', () => {
         .findDataTag('taxClassification')
         .select(ADD_AGENCY.taxClassification)
         .findDataTag('eoExpirationDate')
-        .type('2020-11-20')
+        .type(ADD_AGENCY.eoExpirationDate)
         .findDataTag('primaryPhoneNumber')
         .type(ADD_AGENCY.primaryPhoneNumber)
         .findDataTag('secondaryPhoneNumber')
@@ -148,31 +144,31 @@ describe('Agency Management testing', () => {
 
     cy.findDataTag('agent-of-record').within(() => {
       cy.findDataTag('agentFirstName')
-        .type('Cypress')
+        .type(ADD_AGENT.firstName)
         .findDataTag('agentLastName')
-        .type('Agent')
+        .type(ADD_AGENT.lastName)
         .findDataTag('emailAddress')
-        .type('exzeoqa@exzeo.com')
+        .type(ADD_AGENT.emailAddress)
         .findDataTag('primaryPhoneNumber')
-        .type('4445556666', { force: true })
+        .type(ADD_AGENT.primaryPhoneNumber, { force: true })
         .findDataTag('primaryPhoneNumberExtension')
-        .type('1111', { force: true })
+        .type(ADD_AGENT.primaryPhoneNumberExtension, { force: true })
         .findDataTag('secondaryPhoneNumber')
-        .type('4445556667', { force: true })
+        .type(ADD_AGENT.secondaryPhoneNumber, { force: true })
         .findDataTag('faxNumber')
-        .type('4445556668', { force: true })
+        .type(ADD_AGENT.faxNumber, { force: true })
         .findDataTag('agency-mailing-address')
         .within(() => {
           cy.findDataTag('address1')
-            .type('Test AOR Mailing Address 1')
+            .type(ADD_AGENT.mailingAddress.address1)
             .findDataTag('address2')
-            .type('Test AOR Mailing Address 2')
+            .type(ADD_AGENT.mailingAddress.address2)
             .findDataTag('city')
-            .type('Tampa')
+            .type(ADD_AGENT.mailingAddress.city)
             .findDataTag('state')
-            .select('FL')
+            .select(ADD_AGENT.mailingAddress.state)
             .findDataTag('zip')
-            .type('33607', { force: true });
+            .type(ADD_AGENT.mailingAddress.zip, { force: true });
         });
 
       cy.findDataTag('agency-physical-address')
@@ -186,21 +182,21 @@ describe('Agency Management testing', () => {
         .scrollIntoView()
         .should('be.visible')
         .findDataTag('agentOfRecord.licenses[0].state')
-        .select('FL')
+        .select(ADD_AGENT.licenses[0].state)
         .findDataTag('agentOfRecord.licenses[0].licenseType')
-        .select('Resident')
+        .select(ADD_AGENT.licenses[0].licenseType)
         .findDataTag('agentOfRecord.licenses[0].licenseNumber')
-        .type('12345')
+        .type(ADD_AGENT.licenses[0].licenseNumber)
         .findDataTag('agentOfRecord.licenses[0].appointed')
         .click()
         .findDataTag('add-license')
         .click()
         .findDataTag('agentOfRecord.licenses[1].state')
-        .select('FL')
+        .select(ADD_AGENT.licenses[1].state)
         .findDataTag('agentOfRecord.licenses[1].licenseType')
-        .select('Non-Resident')
+        .select(ADD_AGENT.licenses[1].licenseType)
         .findDataTag('agentOfRecord.licenses[1].licenseNumber')
-        .type('23456');
+        .type(ADD_AGENT.licenses[1].licenseNumber);
     });
 
     cy.clickSubmit('body', 'submitButton');
@@ -223,13 +219,13 @@ describe('Agency Management testing', () => {
       .get('[class~="modal"]')
       .within(() => {
         cy.findDataTag('state')
-          .select('FL')
+          .select(ADD_LICENSE.licenses[0].state)
           .findDataTag('licenseNumber')
-          .type('99990')
+          .type(ADD_LICENSE.licenses[0].licenseNumber)
           .findDataTag('licenseType')
-          .select('Resident')
+          .select(ADD_LICENSE.licenses[0].licenseType)
           .findDataTag('licenseEffectiveDate')
-          .type('2019-11-22');
+          .type(ADD_LICENSE.licenses[0].licenseEffectiveDate);
       })
       .clickSubmit('.modal', 'modal-submit');
 
@@ -251,19 +247,29 @@ describe('Agency Management testing', () => {
       .within(() => {
         cy.findDataTag('state-0')
           .select('FL')
-          .chooseReactSelectOption('companyCode_wrapper', 'TTIC')
-          .chooseReactSelectOption('contractNumber_wrapper', 'TT FL 01 19')
-          .chooseReactSelectOption('addendum_wrapper', 'TT 01 19')
+          .chooseReactSelectOption(
+            'companyCode_wrapper',
+            ADD_CONTRACT.contracts[0].companyCode
+          )
+          .chooseReactSelectOption(
+            'contractNumber_wrapper',
+            ADD_CONTRACT.contracts[0].contractNumber
+          )
+          .chooseReactSelectOption(
+            'addendum_wrapper',
+            ADD_CONTRACT.contracts[0].addendum
+          )
           .findDataTag('product-0')
-          .select('AF3')
+          .select(ADD_CONTRACT.contracts[0].stateProducts[0].product)
           .findDataTag('add-product')
           .click()
           .findDataTag('state-1')
-          .select('FL')
+          .select(ADD_CONTRACT.contracts[0].stateProducts[1].state)
           .findDataTag('product-1')
-          .select('HO3');
-      })
-      .clickSubmit('.modal', 'modal-submit');
+          .select(ADD_CONTRACT.contracts[0].stateProducts[1].product);
+      });
+
+    cy.clickSubmit('.modal', 'modal-submit');
 
     cy.wait('@saveAgency').then(({ response }) => {
       expect(response.body.status, 'Add Contract: status').to.equal(201);
@@ -279,7 +285,9 @@ describe('Agency Management testing', () => {
       .click()
       .get('[class~="modal"]')
       .within(() => {
-        cy.findDataTag('licenseEffectiveDate').type('2019-11-24');
+        cy.findDataTag('licenseEffectiveDate').type(
+          EDIT_LICENSE.licenses[0].licenseEffectiveDate1
+        );
       })
       .clickSubmit('.modal', 'modal-submit');
 
@@ -294,7 +302,7 @@ describe('Agency Management testing', () => {
     cy.get('.spinner').should('not.be.visible');
 
     cy.findDataTag('license-details').within(() => {
-      cy.get('span').contains(EDIT_LICENSE.licenses[0].licenseEffectiveDate);
+      cy.get('span').contains(EDIT_LICENSE.licenses[0].licenseEffectiveDate2);
     });
   });
 
@@ -304,9 +312,15 @@ describe('Agency Management testing', () => {
       .get('[class~="modal"]')
       .within(() => {
         cy.clearReactSelectField('contractNumber_wrapper')
-          .chooseReactSelectOption('contractNumber_wrapper', 'TT FL 03 16')
+          .chooseReactSelectOption(
+            'contractNumber_wrapper',
+            EDIT_CONTRACT.contracts[0].contractNumber
+          )
           .clearReactSelectField('addendum_wrapper')
-          .chooseReactSelectOption('addendum_wrapper', 'TT 03 16');
+          .chooseReactSelectOption(
+            'addendum_wrapper',
+            EDIT_CONTRACT.contracts[0].addendum
+          );
       })
       .clickSubmit('.modal', 'modal-submit');
 
@@ -334,145 +348,58 @@ describe('Agency Management testing', () => {
       .click()
       .get('[class~="modal"]')
       .within(() => {
-        cy.findDataTag('displayName')
-          .type('{selectall}{backspace}Cypress Agency updated')
-          .findDataTag('legalName');
+        cy.findDataTag('displayName').type(
+          '{selectall}{backspace}Cypress Agency updated'
+        );
       })
       .clickSubmit('.modal', 'modal-submit');
 
     cy.wait('@saveAgency').then(({ response }) => {
-      expect(response.body.status, 'Edit Contract: status').to.equal(201);
+      expect(response.body.status, 'Edit Agency: status').to.equal(201);
     });
 
     cy.findDataTag('agency-name').within(() => {
       cy.get('div').contains(EDIT_AGENCY.displayName);
-    });
-
-    cy.findDataTag('edit-agency-address')
-      .click()
-      .get('[class~="modal"]')
-      .within(() => {
-        cy.findDataTag('agency-mailing-address').within(() => {
-          cy.findDataTag('address1').type(
-            '{selectall}{backspace}Test Mailing Address 1 Updated'
-          );
-        });
-
-        cy.findDataTag('agency-physical-address').within(() => {
-          cy.findDataTag('address1')
-            .findDataTag('sameAsMailing')
-            .click();
-        });
-      })
-      .clickSubmit('.modal', 'modal-submit');
-
-    cy.wait('@saveAgency').then(({ response }) => {
-      expect(
-        response.body.status,
-        'Edit Mailing/Physical Address: status'
-      ).to.equal(201);
-    });
-
-    cy.findDataTag('mailing-address').within(() => {
-      cy.get('div>div').contains(EDIT_AGENCY_ADDRESS.mailingAddress.address1);
-    });
-
-    cy.findDataTag('physical-address').within(() => {
-      cy.get('div:nth-child(2)>div').contains(
-        EDIT_AGENCY_ADDRESS.physicalAddress.address1
-      );
-    });
-
-    cy.get('.agency-principal').within(() => {
-      cy.findDataTag('edit-contact')
-        .scrollIntoView()
-        .should('be.visible')
-        .click({ force: true });
-    });
-    cy.get('[class~="modal"]')
-      .within(() => {
-        cy.findDataTag('firstName').type('{selectall}{backspace}Cypress2');
-      })
-      .clickSubmit('.modal', 'modal-submit');
-
-    cy.wait('@saveAgency').then(({ response }) => {
-      expect(response.body.status, 'Edit Officer: status').to.equal(201);
-    });
-
-    cy.get('.agency-contact').within(() => {
-      cy.findDataTag('edit-contact')
-        .scrollIntoView()
-        .should('be.visible')
-        .click({ force: true });
-    });
-
-    cy.get('[class~="modal"]')
-      .within(() => {
-        cy.findDataTag('title').type('{selectall}{backspace}Jr.');
-      })
-      .clickSubmit('.modal', 'modal-submit');
-
-    cy.wait('@saveAgency').then(({ response }) => {
-      expect(response.body.status, 'Edit Contact: status').to.equal(201);
-    });
-
-    cy.get('.agency-aor').within($el => {
-      cy.findDataTag('edit-agent')
-        .scrollIntoView()
-        .should('be.visible')
-        .click({ force: true });
-    });
-
-    cy.get('[class~="modal"]')
-      .within(() => {
-        cy.findDataTag('firstName').type('{selectall}{backspace}Cypress2');
-      })
-      .clickSubmit('.modal', 'submit-modal');
-
-    cy.wait('@saveAgent').then(({ response }) => {
-      expect(response.body.status, 'Edit Agent Of Record: status').to.equal(
-        200
-      );
     });
   });
 
   it('POS: Add a New Agency', () => {
     cy.get('a.agents').click();
 
-    cy.get('.card:nth-child(1) .agent-name').contains(EDIT_AGENT.firstName);
+    cy.get('.card:nth-child(1) .agent-name').contains(ADD_AGENT.firstName);
 
     cy.findDataTag('add-new-agent')
       .click()
       .get('[class~="modal"]')
       .within(() => {
         cy.findDataTag('firstName')
-          .type('Cypress3')
+          .type(ADD_ANOTHER_AGENT.firstName)
           .findDataTag('lastName')
-          .type('Agent3')
+          .type(ADD_ANOTHER_AGENT.lastName)
           .findDataTag('primaryPhoneNumber')
-          .type('4445556600')
+          .type(ADD_ANOTHER_AGENT.primaryPhoneNumber)
           .findDataTag('primaryPhoneNumberExtension')
-          .type('1110')
+          .type(ADD_ANOTHER_AGENT.primaryPhoneNumberExtension)
           .findDataTag('secondaryPhoneNumber')
-          .type('4445556660')
+          .type(ADD_ANOTHER_AGENT.secondaryPhoneNumber)
           .findDataTag('faxNumber')
-          .type('4445556000')
+          .type(ADD_ANOTHER_AGENT.faxNumber)
           .findDataTag('status')
-          .select('Service Only')
+          .select(ADD_ANOTHER_AGENT.status)
           .findDataTag('emailAddress')
-          .type('exzeoqa@exzeo.com');
+          .type(ADD_ANOTHER_AGENT.emailAddress);
 
         cy.findDataTag('agency-mailing-address').within(() => {
           cy.findDataTag('address1')
-            .type('Test Mailing Address 3')
+            .type(ADD_ANOTHER_AGENT.mailingAddress.address1)
             .findDataTag('address2')
-            .type('Test Mailing Address 4')
+            .type(ADD_ANOTHER_AGENT.mailingAddress.address2)
             .findDataTag('city')
-            .type('Tampa')
+            .type(ADD_ANOTHER_AGENT.mailingAddress.city)
             .findDataTag('state')
-            .select('FL')
+            .select(ADD_ANOTHER_AGENT.mailingAddress.state)
             .findDataTag('zip')
-            .type('33624');
+            .type(ADD_ANOTHER_AGENT.mailingAddress.zip);
         });
 
         cy.findDataTag('sameAsMailing').click();
@@ -481,21 +408,21 @@ describe('Agency Management testing', () => {
           .scrollIntoView()
           .should('be.visible')
           .findDataTag('licenses[0].state')
-          .select('FL')
+          .select(ADD_ANOTHER_AGENT.licenses[0].state)
           .findDataTag('licenses[0].licenseType')
-          .select('Resident')
+          .select(ADD_ANOTHER_AGENT.licenses[0].licenseType)
           .findDataTag('licenses[0].licenseNumber')
-          .type('34567')
+          .type(ADD_ANOTHER_AGENT.licenses[0].licenseNumber)
           .findDataTag('licenses[0].appointed')
           .click()
           .get('[class~="add-license"]')
           .click()
           .findDataTag('licenses[1].state')
-          .select('FL')
+          .select(ADD_ANOTHER_AGENT.licenses[1].state)
           .findDataTag('licenses[1].licenseType')
-          .select('Non-Resident')
+          .select(ADD_ANOTHER_AGENT.licenses[1].licenseType)
           .findDataTag('licenses[1].licenseNumber')
-          .type('45678');
+          .type(ADD_ANOTHER_AGENT.licenses[1].licenseNumber);
       })
       .clickSubmit('.modal', 'submit-modal');
 
@@ -519,11 +446,11 @@ describe('Agency Management testing', () => {
       .click()
       .get('[class~="new-note-file"]')
       .findDataTag('contactType')
-      .select('Other')
+      .select(ADD_NOTE.contactType)
       .findDataTag('noteContent')
-      .type('This is a note content for Other Contact', { force: true })
+      .type(ADD_NOTE.noteContent, { force: true })
       .findDataTag('fileType')
-      .select('Finance')
+      .select(ADD_NOTE.fileType)
       .findDataTag('submit-button')
       .click();
 
