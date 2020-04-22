@@ -33,7 +33,7 @@ export function formatMortgagees(result, queuedMortgagees) {
           product: p.product,
           propertyAddress: p.property.physicalAddress,
           policyNumber: p.policyNumber,
-          policyHolderName: `${primaryPolicyHolder.firstName} ${primaryPolicyHolder.lastName}`,
+          policyHolderName: `${primaryPolicyHolder.lastName}, ${primaryPolicyHolder.firstName} `,
           currentBillTo: m._id === p.billToId
         });
       }
