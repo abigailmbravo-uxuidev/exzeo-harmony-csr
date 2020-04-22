@@ -53,11 +53,9 @@ const BulkMortgagee = ({ errorHandler }) => {
       m => m._id !== mortgagee._id
     );
     setQueuedMortgagees(filterMortgagees);
-    setMortgageeResults([mortgagee, ...mortgageeResults]);
   };
 
   const removeAllFromQueue = () => {
-    setMortgageeResults([...queuedMortgagees, ...mortgageeResults]);
     setQueuedMortgagees([]);
   };
 
