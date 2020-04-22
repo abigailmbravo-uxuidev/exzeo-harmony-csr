@@ -23,10 +23,12 @@ const QueuedMortgageeCard = ({ mortgagee, handleRemove }) => (
           <strong>Loan Number:</strong>&nbsp;
           {mortgagee.loanNo}
         </span>
-        <span className="current-billTo">
-          <strong>Current Bill To:</strong>&nbsp;
-          {mortgagee.currentBillTo ? 'Yes' : 'No'}
-        </span>
+        {!mortgagee.makeBillTo && (
+          <span className="current-billTo">
+            <strong>Current Bill To:</strong>&nbsp;
+            {mortgagee.currentBillTo ? 'Yes' : 'No'}
+          </span>
+        )}
         {mortgagee.makeBillTo && (
           <span className="make-billTo">
             <strong>Make Bill To:</strong>&nbsp;
