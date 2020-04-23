@@ -809,13 +809,13 @@ async function addAdditionalInterest({ additionalInterest, policyNumber }) {
     policyNumber,
     name1: additionalInterest.name1,
     name2: additionalInterest.name2,
-    order: additionalInterest.order,
+    order: Number(additionalInterest.order),
     phoneNumber: additionalInterest.phoneNumber,
     mailingAddress: additionalInterest.mailingAddress,
     referenceNumber: additionalInterest.referenceNumber,
     type: additionalInterest.type
   };
-
+  console.log(typeof data.order);
   data.mailingAddress.zipExtension = '';
 
   const config = {
@@ -847,7 +847,7 @@ async function updateAdditionalInterest({ additionalInterest, policyNumber }) {
   const data = {
     name1: additionalInterest.name1,
     name2: additionalInterest.name2,
-    order: additionalInterest.order,
+    order: Number(additionalInterest.order),
     phoneNumber: additionalInterest.phoneNumber,
     active: additionalInterest.active,
     mailingAddress: additionalInterest.mailingAddress,
@@ -933,8 +933,6 @@ export function updatePolicy({ data = {}, options = {} }) {
 
       if (data.selectedAI) {
         const { selectedAI, policyID, policyNumber, transactionType } = data;
-        console.log(transactionType);
-
         const aiData = {
           additionalInterest: selectedAI,
           policyNumber: policyNumber
@@ -944,7 +942,10 @@ export function updatePolicy({ data = {}, options = {} }) {
           await updateAdditionalInterest(aiData);
         } else if (transactionType === 'AI Addition') {
           await addAdditionalInterest(aiData);
-        } else if (transactionType === 'AI Removal') {
+        } else if (
+          transactionType === 'AI Removal' ||
+          transactionType === 'AI Reinstatement'
+        ) {
           await postCreateTransaction({
             ...aiData,
             policyID,
