@@ -57,7 +57,7 @@ export const SearchByPolicy = ({ handleSearch }) => {
           <Button
             className={Button.constants.classNames.primary}
             type="submit"
-            dataTest="submit"
+            dataTest="search-policy-submit"
             disabled={pristine}
           >
             Search
