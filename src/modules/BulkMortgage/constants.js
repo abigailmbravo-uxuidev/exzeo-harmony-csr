@@ -32,6 +32,6 @@ export const SEARCH_TYPE_PLACEHOLDER = {
 
 export const SEARCH_TYPE_ANSWERS = [
   { answer: SEARCH_TYPES.policyNumber, label: 'Policy Number' },
-  { answer: SEARCH_TYPES.lastName, label: 'Policyholder' },
+  { answer: SEARCH_TYPES.lastName, label: 'Last Name' },
   { answer: SEARCH_TYPES.propertyAddress, label: 'Property Address' }
 ];
