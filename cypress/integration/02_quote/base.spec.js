@@ -225,156 +225,159 @@ describe('Base Path - HO3', () => {
     cy.wait('@fetchAgentsByAgencyCode').then(({ response }) => {
       expect(response.body.status, 'AOR Transfer: status').to.equal(200);
     });
+
+    cy.findDataTag('edit-aor')
+      .click()
+      .clearReactSelectField('agencyCode_wrapper')
+      // not using 'chooseReactSelectOption' helper here because it does not support 'server-backed' typeahead yet.
+      .get('[data-test="agencyCode_wrapper"] .react-select__value-container')
+      .type(SWITCH_AOR.agencies[0].agencyCode + '{enter}', { delay: 1000 })
+      .get('[data-test="agentCode_wrapper"] .react-select__value-container')
+      .type(SWITCH_AOR.firstName + '{enter}', { delay: 1000 })
+      .findDataTag('modal-submit')
+      .click();
+
+    cy.wait('@aorTransfer').then(({ response }) =>
+      expect(response.body.status, 'AOR Transfer: status').to.equal(200)
+    );
+    cy.wait('@fetchPolicy').then(xhr => {
+      expect(xhr.status).to.equal(200);
+    });
+    cy.wait('@fetchAgency').then(({ response }) => {
+      expect(response.body.status, 'AOR Transfer modal: status').to.equal(200);
+    });
+
+    // cy.wait('@fetchAgentsByAgencyCode');
+    // cy.wait('@fetchAgentsByAgencyCode');
+    // cy.wait('@fetchAgentsByAgencyCode').then(({ response }) => {
+    //   expect(response.body.status, 'AOR Transfer: status').to.equal(200);
+    // });
+
+    cy.findDataTag('loader').should('not.be.visible');
+
+    cy.findDataTag('agency-card')
+      .contains('[data-test="agency-card"]', SWITCH_AOR.agencies[0].agencyCode)
+      .contains(SWITCH_AOR.agencyName);
   });
 
-  cy.findDataTag('edit-aor')
-    .click()
-    .clearReactSelectField('agencyCode_wrapper')
-    // not using 'chooseReactSelectOption' helper here because it does not support 'server-backed' typeahead yet.
-    .get('[data-test="agencyCode_wrapper"] .react-select__value-container')
-    .type(SWITCH_AOR.agencies[0].agencyCode + '{enter}', { delay: 1000 })
-    .get('[data-test="agentCode_wrapper"] .react-select__value-container')
-    .type(SWITCH_AOR.firstName + '{enter}', { delay: 1000 })
-    .findDataTag('modal-submit')
-    .click();
+  it('Add an Additional Interest', () => {
+    cy.goToNav('billing');
+    cy.findDataTag('mortgagee')
+      .click()
+      .findDataTag('name1')
+      .click()
+      .type(ADD_MORTGAGEE.additionalInterests[0].name1)
+      .findDataTag('name2')
+      .click()
+      .type(ADD_MORTGAGEE.additionalInterests[0].name2)
+      .findDataTag('address1')
+      .click()
+      .type(ADD_MORTGAGEE.additionalInterests[0].mailingAddress.address1)
+      .findDataTag('address2')
+      .click()
+      .type(ADD_MORTGAGEE.additionalInterests[0].mailingAddress.address2)
+      .findDataTag('city')
+      .click()
+      .type(ADD_MORTGAGEE.additionalInterests[0].mailingAddress.city)
+      .findDataTag('state')
+      .click()
+      .type(ADD_MORTGAGEE.additionalInterests[0].mailingAddress.state)
+      .findDataTag('zip')
+      .click()
+      .type(ADD_MORTGAGEE.additionalInterests[0].mailingAddress.zip)
+      .findDataTag('phoneNumber')
+      .click()
+      .type(ADD_MORTGAGEE.additionalInterests[0].phoneNumber)
+      .findDataTag('referenceNumber')
+      .click()
+      .type(ADD_MORTGAGEE.additionalInterests[0].referenceNumber)
+      .findDataTag('ai-modal-submit')
+      .click();
 
-  cy.wait('@aorTransfer').then(({ response }) =>
-    expect(response.body.status, 'AOR Transfer: status').to.equal(200)
-  );
-  cy.wait('@fetchPolicy').then(xhr => {
-    expect(xhr.status).to.equal(200);
-  });
-  cy.wait('@fetchAgency').then(({ response }) => {
-    expect(response.body.status, 'AOR Transfer modal: status').to.equal(200);
-  });
+    cy.wait('@postCreateTransaction').then(({ response }) => {
+      expect(response.body.status, 'Add AI: status').to.equal(200);
+    });
 
-  // cy.wait('@fetchAgentsByAgencyCode');
-  // cy.wait('@fetchAgentsByAgencyCode');
-  // cy.wait('@fetchAgentsByAgencyCode').then(({ response }) => {
-  //   expect(response.body.status, 'AOR Transfer: status').to.equal(200);
-  // });
-
-  cy.findDataTag('loader').should('not.be.visible');
-
-  cy.findDataTag('agency-card')
-    .contains('[data-test="agency-card"]', SWITCH_AOR.agencies[0].agencyCode)
-    .contains(SWITCH_AOR.agencyName);
-});
-
-it('Add an Additional Interest', () => {
-  cy.goToNav('billing');
-  cy.findDataTag('mortgagee')
-    .click()
-    .findDataTag('name1')
-    .click()
-    .type(ADD_MORTGAGEE.additionalInterests[0].name1)
-    .findDataTag('name2')
-    .click()
-    .type(ADD_MORTGAGEE.additionalInterests[0].name2)
-    .findDataTag('address1')
-    .click()
-    .type(ADD_MORTGAGEE.additionalInterests[0].mailingAddress.address1)
-    .findDataTag('address2')
-    .click()
-    .type(ADD_MORTGAGEE.additionalInterests[0].mailingAddress.address2)
-    .findDataTag('city')
-    .click()
-    .type(ADD_MORTGAGEE.additionalInterests[0].mailingAddress.city)
-    .findDataTag('state')
-    .click()
-    .type(ADD_MORTGAGEE.additionalInterests[0].mailingAddress.state)
-    .findDataTag('zip')
-    .click()
-    .type(ADD_MORTGAGEE.additionalInterests[0].mailingAddress.zip)
-    .findDataTag('phoneNumber')
-    .click()
-    .type(ADD_MORTGAGEE.additionalInterests[0].phoneNumber)
-    .findDataTag('referenceNumber')
-    .click()
-    .type(ADD_MORTGAGEE.additionalInterests[0].referenceNumber)
-    .findDataTag('ai-modal-submit')
-    .click();
-
-  cy.wait('@postCreateTransaction').then(({ response }) => {
-    expect(response.body.status, 'Add AI: status').to.equal(200);
+    cy.findDataTag('Mortgagee-0')
+      .contains(
+        '[data-test="Mortgagee-0"]',
+        ADD_MORTGAGEE.additionalInterests[0].name1
+      )
+      .contains(
+        '[data-test="Mortgagee-0"]',
+        ADD_MORTGAGEE.additionalInterests[0].name2
+      )
+      .contains(
+        '[data-test="Mortgagee-0"]',
+        ADD_MORTGAGEE.additionalInterests[0].mailingAddress.address1
+      )
+      .contains(
+        '[data-test="Mortgagee-0"]',
+        ADD_MORTGAGEE.additionalInterests[0].mailingAddress.address2
+      )
+      .contains(ADD_MORTGAGEE.additionalInterests[0].referenceNumber);
   });
 
-  cy.findDataTag('Mortgagee-0')
-    .contains(
-      '[data-test="Mortgagee-0"]',
-      ADD_MORTGAGEE.additionalInterests[0].name1
-    )
-    .contains(
-      '[data-test="Mortgagee-0"]',
-      ADD_MORTGAGEE.additionalInterests[0].name2
-    )
-    .contains(
-      '[data-test="Mortgagee-0"]',
-      ADD_MORTGAGEE.additionalInterests[0].mailingAddress.address1
-    )
-    .contains(
-      '[data-test="Mortgagee-0"]',
-      ADD_MORTGAGEE.additionalInterests[0].mailingAddress.address2
-    )
-    .contains(ADD_MORTGAGEE.additionalInterests[0].referenceNumber);
-});
+  it('Add Payment', () => {
+    cy.goToNav('billing');
+    cy.findDataTag('cashType')
+      .select('Electronic Deposit', { force: true })
+      .findDataTag('batchNumber')
+      .click({ force: true })
+      .type('11', { force: true })
+      .findDataTag('cashDescription')
+      .select('Payment Received', { force: true })
+      .findDataTag('amount', { force: true })
+      .type('100', { force: true })
+      .get('.btn-footer .btn-primary')
+      .click({ force: true });
 
-it('Add Payment', () => {
-  cy.goToNav('billing');
-  cy.findDataTag('cashType')
-    .select('Electronic Deposit', { force: true })
-    .findDataTag('batchNumber')
-    .click({ force: true })
-    .type('11', { force: true })
-    .findDataTag('cashDescription')
-    .select('Payment Received', { force: true })
-    .findDataTag('amount', { force: true })
-    .type('100', { force: true })
-    .get('.btn-footer .btn-primary')
-    .click({ force: true });
+    cy.wait('@postPaymentTransaction').then(({ response }) => {
+      expect(response.body.status, 'Add AI: status').to.equal(200);
+    });
 
-  cy.wait('@postPaymentTransaction').then(({ response }) => {
-    expect(response.body.status, 'Add AI: status').to.equal(200);
+    cy.get('.spinner').should('not.be.visible');
+
+    cy.findDataTag('total-payments').contains(
+      ADD_PAYMENT.cashReceived.$numberDecimal
+    );
   });
 
-  cy.get('.spinner').should('not.be.visible');
-
-  cy.findDataTag('total-payments').contains(
-    ADD_PAYMENT.cashReceived.$numberDecimal
-  );
-});
-
-it('Generate Doc: Invoice', () => {
-  cy.findDataTag('generate-document-btn')
-    .click()
-    .findDataTag('documentType')
-    .select('Policy Invoice')
-    .findDataTag('doc-submit')
-    .click();
-  cy.wait('@getDocumentPacketFiles').then(({ response }) => {
-    expect(response.body.status, 'Generate Doc: status').to.equal(200);
-  });
-});
-
-it('Cancel Policy', () => {
-  cy.goToNav('cancel')
-    .findDataTag('cancelType_Voluntary Cancellation')
-    .click()
-    .findDataTag('cancelReason')
-    .select('Other')
-    .findDataTag('submit')
-    .click();
-
-  cy.wait('@cancelPolicy').then(({ response }) => {
-    expect(response.body.status, 'Cancel Policy: status').to.equal(200);
+  it('Generate Doc: Invoice', () => {
+    cy.findDataTag('generate-document-btn')
+      .click()
+      .findDataTag('documentType')
+      .select('Policy Invoice')
+      .findDataTag('doc-submit')
+      .click();
+    cy.wait('@getDocumentPacketFiles').then(({ response }) => {
+      expect(response.body.status, 'Generate Doc: status').to.equal(200);
+    });
   });
 
-  cy.findDataTag('cancellationDetail')
-    .contains('[data-test="cancellationDetail"]', 'Voluntary Cancellation Date')
-    .contains(
-      '[data-test="cancellationDetail"]',
-      MODIFY_EFFECTIVE_DATE.effectiveDateAlternate
-    )
-    .findDataTag('policyDetails')
-    .contains('Pending Voluntary Cancellation / Partial Payment Received');
+  it('Cancel Policy', () => {
+    cy.goToNav('cancel')
+      .findDataTag('cancelType_Voluntary Cancellation')
+      .click()
+      .findDataTag('cancelReason')
+      .select('Other')
+      .findDataTag('submit')
+      .click();
+
+    cy.wait('@cancelPolicy').then(({ response }) => {
+      expect(response.body.status, 'Cancel Policy: status').to.equal(200);
+    });
+
+    cy.findDataTag('cancellationDetail')
+      .contains(
+        '[data-test="cancellationDetail"]',
+        'Voluntary Cancellation Date'
+      )
+      .contains(
+        '[data-test="cancellationDetail"]',
+        MODIFY_EFFECTIVE_DATE.effectiveDateAlternate
+      )
+      .findDataTag('policyDetails')
+      .contains('Pending Voluntary Cancellation / Partial Payment Received');
+  });
 });
