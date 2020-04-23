@@ -36,7 +36,7 @@ import {
   SWITCH_AOR
 } from '../../fixtures';
 
-describe('Base Path - HO3', () => {
+describe('Base Path - HO3, create a quote, bind the Policy and make Endorsements', () => {
   before('Login', () => cy.login());
   beforeEach('Set aliases', () => setRouteAliases());
 
@@ -321,16 +321,16 @@ describe('Base Path - HO3', () => {
   it('Add Payment', () => {
     cy.goToNav('billing');
     cy.findDataTag('cashType')
-      .select('Electronic Deposit', { force: true })
+      .select('Electronic Deposit')
       .findDataTag('batchNumber')
-      .click({ force: true })
-      .type('11', { force: true })
+      .click()
+      .type('11')
       .findDataTag('cashDescription')
-      .select('Payment Received', { force: true })
-      .findDataTag('amount', { force: true })
-      .type('100', { force: true })
+      .select('Payment Received')
+      .findDataTag('amount')
+      .type('100')
       .get('.btn-footer .btn-primary')
-      .click({ force: true });
+      .click();
 
     cy.wait('@postPaymentTransaction').then(({ response }) => {
       expect(response.body.status, 'Add AI: status').to.equal(200);
