@@ -56,7 +56,7 @@ describe('Agency Management testing', () => {
         .should('be.visible')
         .type(ADD_AGENCY.displayName)
         .findDataTag('legalName')
-        .click({ force: true })
+        .click()
         .type(ADD_AGENCY.legalName)
         .findDataTag('status')
         .select(ADD_AGENCY.status)
@@ -65,7 +65,7 @@ describe('Agency Management testing', () => {
         .findDataTag('okToPay_false')
         .click()
         .findDataTag('websiteUrl')
-        .click({ force: true })
+        .click()
         .type(ADD_AGENCY.websiteUrl)
         .findDataTag('taxIdNumber')
         .type(ADD_AGENCY.taxIdNumber)
@@ -104,7 +104,7 @@ describe('Agency Management testing', () => {
         .scrollIntoView()
         .should('be.visible')
         .within(() => {
-          cy.findDataTag('sameAsMailing').click({ force: true });
+          cy.findDataTag('sameAsMailing').click();
         });
     });
 
@@ -119,7 +119,7 @@ describe('Agency Management testing', () => {
           .findDataTag('emailAddress')
           .type(ADD_AGENCY.principal.emailAddress)
           .findDataTag('primaryPhoneNumber')
-          .type(ADD_AGENCY.principal.primaryPhoneNumber, { force: true })
+          .type(ADD_AGENCY.principal.primaryPhoneNumber)
           .findDataTag('primaryPhoneNumberExtension')
           .type(ADD_AGENCY.principal.primaryPhoneNumberExtension);
       });
@@ -150,13 +150,13 @@ describe('Agency Management testing', () => {
         .findDataTag('emailAddress')
         .type(ADD_AGENT.emailAddress)
         .findDataTag('primaryPhoneNumber')
-        .type(ADD_AGENT.primaryPhoneNumber, { force: true })
+        .type(ADD_AGENT.primaryPhoneNumber)
         .findDataTag('primaryPhoneNumberExtension')
-        .type(ADD_AGENT.primaryPhoneNumberExtension, { force: true })
+        .type(ADD_AGENT.primaryPhoneNumberExtension)
         .findDataTag('secondaryPhoneNumber')
-        .type(ADD_AGENT.secondaryPhoneNumber, { force: true })
+        .type(ADD_AGENT.secondaryPhoneNumber)
         .findDataTag('faxNumber')
-        .type(ADD_AGENT.faxNumber, { force: true })
+        .type(ADD_AGENT.faxNumber)
         .findDataTag('agency-mailing-address')
         .within(() => {
           cy.findDataTag('address1')
@@ -168,14 +168,14 @@ describe('Agency Management testing', () => {
             .findDataTag('state')
             .select(ADD_AGENT.mailingAddress.state)
             .findDataTag('zip')
-            .type(ADD_AGENT.mailingAddress.zip, { force: true });
+            .type(ADD_AGENT.mailingAddress.zip);
         });
 
       cy.findDataTag('agency-physical-address')
         .scrollIntoView()
         .should('be.visible')
         .within(() => {
-          cy.findDataTag('sameAsMailing').click({ force: true });
+          cy.findDataTag('sameAsMailing').click();
         });
 
       cy.findDataTag('agentOfRecord.licenses[0].licenseNumber_label')
@@ -234,9 +234,7 @@ describe('Agency Management testing', () => {
     });
 
     cy.findDataTag('license-details').within(() => {
-      cy.get('.license-header .license-csp strong').contains(
-        ADD_LICENSE.licenses[0].licenseNumber
-      );
+      cy.contains(ADD_LICENSE.licenses[0].licenseNumber);
     });
   });
 
@@ -276,7 +274,7 @@ describe('Agency Management testing', () => {
     });
 
     cy.findDataTag('contract-info').within(() => {
-      cy.get('span>div>div').contains(ADD_CONTRACT.contracts[0].contractNumber);
+      cy.contains(ADD_CONTRACT.contracts[0].contractNumber);
     });
   });
 
@@ -302,7 +300,7 @@ describe('Agency Management testing', () => {
     cy.get('.spinner').should('not.be.visible');
 
     cy.findDataTag('license-details').within(() => {
-      cy.get('span').contains(EDIT_LICENSE.licenses[0].licenseEffectiveDate2);
+      cy.contains(EDIT_LICENSE.licenses[0].licenseEffectiveDate2);
     });
   });
 
@@ -335,7 +333,7 @@ describe('Agency Management testing', () => {
     cy.get('.spinner').should('not.be.visible');
 
     cy.findDataTag('contract-info').within(() => {
-      cy.get('.contract-number-wrapper>div').contains(
+      cy.get('.contract-number-wrapper').contains(
         EDIT_CONTRACT.contracts[0].contractNumber
       );
     });
@@ -363,10 +361,10 @@ describe('Agency Management testing', () => {
     });
   });
 
-  it('POS: Add a New Agency', () => {
+  it('POS: Add a New Agent', () => {
     cy.get('a.agents').click();
 
-    cy.get('.card:nth-child(1) .agent-name').contains(ADD_AGENT.firstName);
+    cy.get('.card').contains(ADD_AGENT.firstName);
 
     cy.findDataTag('add-new-agent')
       .click()
@@ -430,9 +428,7 @@ describe('Agency Management testing', () => {
       expect(response.body.status, 'Add New Agent: status').to.equal(201);
     });
 
-    cy.get('.card:nth-child(2) .agent-name').contains(
-      ADD_ANOTHER_AGENT.firstName
-    );
+    cy.get('.card:nth-child(2)').contains(ADD_ANOTHER_AGENT.firstName);
   });
 
   it('POS: Add a New Note', () => {
@@ -448,7 +444,7 @@ describe('Agency Management testing', () => {
       .findDataTag('contactType')
       .select(ADD_NOTE.contactType)
       .findDataTag('noteContent')
-      .type(ADD_NOTE.noteContent, { force: true })
+      .type(ADD_NOTE.noteContent)
       .findDataTag('fileType')
       .select(ADD_NOTE.fileType)
       .findDataTag('submit-button')
@@ -458,6 +454,6 @@ describe('Agency Management testing', () => {
       expect(response.body.status, 'Add New Agent: status').to.equal(200);
     });
 
-    cy.get('.table [tabindex="5"]>div').contains(ADD_NOTE.noteContent);
+    cy.get('.table').contains(ADD_NOTE.noteContent);
   });
 });
