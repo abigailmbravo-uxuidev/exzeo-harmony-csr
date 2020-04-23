@@ -196,6 +196,23 @@ html body div#root .app-wrapper {
               }
             }
             section {
+              .details {
+                justify-content: flex-start;
+
+                span {
+                  flex-grow: 0;
+                  flex-shrink: 0;
+
+                  margin-right: $padding * 2;
+
+                  &.make-billTo {
+                    flex-grow: 1;
+                  }
+                }
+                button {
+                  margin-right: $padding;
+                }
+              }
               .propertyAddress {
                 display: inline-block;
                 p {

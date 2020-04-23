@@ -20,7 +20,7 @@ const QueuedMortgagees = ({
         {queuedMortgagees.length > 0 && (
           <Button
             dataTest="queue-mortgagee"
-            className={BUTTON_CLASS.link}
+            className={`btn-sm ${BUTTON_CLASS.link}`}
             type="button"
             onClick={removeAllFromQueue}
           >
