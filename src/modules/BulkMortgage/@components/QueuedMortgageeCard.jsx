@@ -33,7 +33,7 @@ const QueuedMortgageeCard = ({ mortgagee, handleRemove }) => (
         </span>
         <Button
           dataTest="remove-queue"
-          className={BUTTON_CLASS.link}
+          className={`btn-sm ${BUTTON_CLASS.link}`}
           type="button"
           onClick={handleRemove}
         >
