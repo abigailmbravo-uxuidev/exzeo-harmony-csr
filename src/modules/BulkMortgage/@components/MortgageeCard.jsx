@@ -9,9 +9,11 @@ const MortgageeCard = ({ mortgagee, handleQueue }) => (
       <h4>Mortgagee {mortgagee.order + 1}</h4>
       <h5>{mortgagee.name1}</h5>
       <Address address={mortgagee.mailingAddress} className="address" />
-      <div className="bill-to">
-        <label>Current Bill To:</label> {mortgagee.currentBillTo ? 'Yes' : 'No'}
-      </div>
+      {mortgagee.currentBillTo && (
+        <div className="bill-to">
+          <label>Current Bill To:</label> Yes
+        </div>
+      )}
       {!mortgagee.currentBillTo && (
         <div className="bill-to">
           <label htmlFor={`${mortgagee._id}.makeBillTo`}>Make Bill To</label>
