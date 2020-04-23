@@ -232,7 +232,7 @@ describe('Endorsements Happy Path', () => {
       .findDataTag('ai-modal-submit')
       .click();
 
-    cy.wait('@postCreateTransaction').then(({ response }) => {
+    cy.wait('@addAdditionalInterest').then(({ response }) => {
       expect(response.body.status, 'Add AI: status').to.equal(200);
     });
 
