@@ -6,44 +6,50 @@ import { NavLink, Link } from 'react-router-dom';
 import DiaryPolling from '../DiaryPolling';
 import { isPastDue, isToday } from '../../utilities/diaries';
 import logo from '../../img/Harmony.svg';
+import { userResources } from '../../utilities/userResources';
 
 const handleLogout = auth => {
   auth.logout();
 };
 
-const navLinks = [
-  {
-    id: 'bulk-mortgage',
-    path: '/bulkMortgage',
-    name: 'Bulk Mortgage'
-  },
-  {
-    id: 'reports',
-    path: '/reports',
-    name: 'Reports'
-  },
-  {
-    id: 'agency',
-    path: '/agency',
-    name: 'Agency'
-  },
-  {
-    id: 'bulk-payments',
-    path: '/finance/payments',
-    name: 'Finance'
-  },
-  {
-    id: 'policy',
-    path: '/',
-    name: 'Policy'
-  }
-];
+export const getNavLinks = ({ enableBulkMortgage }) => {
+  return [
+    {
+      id: 'bulk-mortgage',
+      path: '/bulkMortgage',
+      name: 'Bulk Mortgage',
+      hidden: !enableBulkMortgage
+    },
+    {
+      id: 'reports',
+      path: '/reports',
+      name: 'Reports'
+    },
+    {
+      id: 'agency',
+      path: '/agency',
+      name: 'Agency'
+    },
+    {
+      id: 'bulk-payments',
+      path: '/finance/payments',
+      name: 'Finance'
+    },
+    {
+      id: 'policy',
+      path: '/',
+      name: 'Policy'
+    }
+  ];
+};
 
 const Header = ({ auth, authState: { userProfile = {} }, diaries }) => {
   const pastDiaries = diaries.filter(diary => {
     const entry = diary.entries[0];
     return (isPastDue(entry.due) || isToday(entry.due)) && entry.open;
   });
+  const { enableBulkMortgage } = userResources(userProfile);
+
   return (
     <header>
       <div role="banner">
@@ -68,17 +74,20 @@ const Header = ({ auth, authState: { userProfile = {} }, diaries }) => {
               <span className="count-bubble">{pastDiaries.length}</span>
             )}
           </NavLink>
-          {navLinks.map(({ path, name, id }) => (
-            <NavLink
-              key={id}
-              activeClassName="active"
-              exact
-              to={path}
-              data-test={`${id}-link`}
-            >
-              {name}
-            </NavLink>
-          ))}
+          {getNavLinks({ enableBulkMortgage }).map(
+            ({ path, name, id, hidden }) => (
+              <NavLink
+                key={id}
+                activeClassName="active"
+                exact
+                to={path}
+                data-test={`${id}-link`}
+                hidden={hidden}
+              >
+                {name}
+              </NavLink>
+            )
+          )}
           <div className="user-name">
             {userProfile ? userProfile.userName : ''}
           </div>
