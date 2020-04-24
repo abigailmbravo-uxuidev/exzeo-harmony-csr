@@ -8,7 +8,9 @@ const NoResults = () => {
           <i className="fa fa-frown-o " /> No Results Found
         </h4>
       </div>
-      <div className="card-block">Please refine your search</div>
+      <div className="card-block">
+        Please refine your search or view policies queued below
+      </div>
     </div>
   );
 };
