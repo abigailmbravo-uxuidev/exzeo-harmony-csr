@@ -138,6 +138,34 @@ html body div#root .app-wrapper {
                         h4 {
                           color: $warm-gray-08;
                         }
+
+                        .billto-loan-wrapper {
+                          display: flex;
+
+                          .bill-to {
+                            flex-grow: 0;
+                            flex-shrink: 0;
+
+                            width: 40%;
+
+                            lable {
+                              margin-bottom: 0;
+                            }
+                          }
+
+                          .loanNo {
+                            flex-direction: row;
+
+                            margin-bottom: 0;
+
+                            label {
+                              flex-grow: 0;
+                              flex-shrink: 0;
+
+                              margin-right: $padding;
+                            }
+                          }
+                        }
                       }
                       &.policy-details {
                         width: calc(50% - 1rem);
@@ -149,20 +177,8 @@ html body div#root .app-wrapper {
                       }
                     }
                     footer {
-                      display: flex;
-                      align-items: flex-end;
-                      justify-content: space-between;
-
-                      width: 100%;
+                      margin-bottom: 0;
                       padding: 0;
-
-                      .loanNo {
-                        flex-grow: 0;
-                        flex-shrink: 0;
-
-                        width: 15rem;
-                        margin: 0;
-                      }
                     }
                   }
                 }
