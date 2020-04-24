@@ -221,8 +221,16 @@ html body div#root .app-wrapper {
 
                   margin-right: $padding * 2;
 
+                  &.policy-no {
+                    width: 50%;
+                  }
+
                   &.make-billTo {
                     flex-grow: 1;
+                  }
+
+                  &.loan-number {
+                    width: 25%;
                   }
                 }
                 button {
