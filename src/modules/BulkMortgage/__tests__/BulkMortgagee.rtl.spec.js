@@ -137,7 +137,6 @@ describe('BulkMortgagee Testing', () => {
     expect(firstMortgageeCard.getByText('PO BOX 47047, ATLANTA, GA 30362'));
     expect(firstMortgageeCard.getByText('Current Bill To:'));
     expect(firstMortgageeCard.getByText('Yes'));
-    expect(firstMortgageeCard.getByText('Loan No'));
     expect(firstMortgageeCard.getByText('12-1008954-01'));
     expect(firstMortgageeCard.getByText('Overton, Matthew'));
     expect(firstMortgageeCard.getByText('4019 BRAESGATE LN, TAMPA, FL 33624'));
@@ -148,10 +147,7 @@ describe('BulkMortgagee Testing', () => {
     expect(secondMortgageeCard.getByText('Mortgagee 2'));
     expect(secondMortgageeCard.getByText('BANK OF AMERICA'));
     expect(secondMortgageeCard.getByText('PO BOX 22005, TAMPA, FL 33607'));
-    expect(secondMortgageeCard.getByText('Current Bill To:'));
-    expect(secondMortgageeCard.getByText('No'));
     expect(secondMortgageeCard.getByText('Make Bill To'));
-    expect(secondMortgageeCard.getByText('Loan No'));
     expect(secondMortgageeCard.getByText('12-1008954-01'));
     expect(secondMortgageeCard.getByText('Overton, Matthew'));
     expect(secondMortgageeCard.getByText('4019 BRAESGATE LN, TAMPA, FL 33624'));
@@ -179,7 +175,6 @@ describe('BulkMortgagee Testing', () => {
     });
 
     fireEvent.click(getByTestId('search-policy-submit'));
-
     await waitForElement(() => [
       getByTestId('mortgagee-0'),
       getByTestId('mortgagee-1')
