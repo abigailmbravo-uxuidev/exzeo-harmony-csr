@@ -121,6 +121,7 @@ const MortgageeForm = ({ handleFormSubmit, errorHandler }) => {
             label="Instruction"
             component={Radio}
             styleName="instruction"
+            disabled
             segmented
             answers={INSTRUCTION_ANSWERS}
           />
