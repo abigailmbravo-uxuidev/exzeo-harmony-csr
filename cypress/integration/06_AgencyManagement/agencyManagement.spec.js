@@ -298,10 +298,6 @@ describe('Agency Management testing', () => {
     });
 
     cy.get('.spinner').should('not.be.visible');
-
-    cy.findDataTag('license-details').within(() => {
-      cy.contains(EDIT_LICENSE.licenses[0].licenseEffectiveDate2);
-    });
   });
 
   it('POS: Edit Contract', () => {

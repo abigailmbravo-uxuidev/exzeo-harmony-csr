@@ -1,38 +1,24 @@
 // Calculate and format new policy Effective Date
-let today = new Date();
+
 const addExpirationDays = 100;
-today.setDate(today.getDate() + addExpirationDays);
-const yyyy = today.getFullYear();
-const dd = today.getDate().toLocaleString('en-US', {
-  minimumIntegerDigits: 2
-});
-const mm = (today.getMonth() + 1).toLocaleString('en-US', {
-  minimumIntegerDigits: 2
-});
-const eoExpirationDate = `${yyyy}-${mm}-${dd}`;
+const subtractLicenseStartDays = -5;
+const subtractLicenseStartDays2 = -10;
 
-let today2 = new Date();
-const subtractLicenseStartDays = 5;
-today2.setDate(today2.getDate() - subtractLicenseStartDays);
-const yyyy2 = today2.getFullYear();
-const dd2 = today2.getDate().toLocaleString('en-US', {
-  minimumIntegerDigits: 2
-});
-const mm2 = (today2.getMonth() + 1).toLocaleString('en-US', {
-  minimumIntegerDigits: 2
-});
-const licenseEffectiveDate = `${yyyy2}-${mm2}-${dd2}`;
+export const createNewDate = addDays => {
+  let today = new Date();
+  const addExpirationDays = addDays;
+  today.setDate(today.getDate() + addExpirationDays);
+  const yyyy = today.getFullYear();
+  const dd = today.getDate().toLocaleString('en-US', {
+    minimumIntegerDigits: 2
+  });
+  const mm = (today.getMonth() + 1).toLocaleString('en-US', {
+    minimumIntegerDigits: 2
+  });
+  const updatedDate = `${yyyy}-${mm}-${dd}`;
 
-today2.setDate(today2.getDate() - subtractLicenseStartDays);
-const yyyy3 = today2.getFullYear();
-const dd3 = today2.getDate().toLocaleString('en-US', {
-  minimumIntegerDigits: 2
-});
-const mm3 = (today2.getMonth() + 1).toLocaleString('en-US', {
-  minimumIntegerDigits: 2
-});
-const licenseEffectiveDate1 = `${yyyy3}-${mm3}-${dd3}`;
-const licenseEffectiveDate2 = `${mm3}/${dd3}/${yyyy3}`;
+  return updatedDate;
+};
 
 export const ADD_AGENCY = {
   ////only keep things here that we are verifying, anything that will not change from test to test
@@ -63,7 +49,7 @@ export const ADD_AGENCY = {
   websiteUrl: 'https://agency.harmony-ins.com/',
   taxIdNumber: '9999',
   taxClassification: 'Corporation',
-  eoExpirationDate: eoExpirationDate,
+  eoExpirationDate: createNewDate(addExpirationDays),
   primaryPhoneNumber: '4445556666',
   secondaryPhoneNumber: '4445556667',
   faxNumber: '4445556668',
@@ -136,7 +122,7 @@ export const ADD_AGENT = {
 export const ADD_LICENSE = {
   licenses: [
     {
-      licenseEffectiveDate: licenseEffectiveDate,
+      licenseEffectiveDate: createNewDate(subtractLicenseStartDays),
       state: 'FL',
       licenseNumber: '99990',
       licenseType: 'Resident'
@@ -167,8 +153,7 @@ export const ADD_CONTRACT = {
 export const EDIT_LICENSE = {
   licenses: [
     {
-      licenseEffectiveDate1: licenseEffectiveDate1,
-      licenseEffectiveDate2: licenseEffectiveDate2,
+      licenseEffectiveDate1: createNewDate(subtractLicenseStartDays2),
       state: 'FL',
       licenseNumber: '99991',
       licenseType: 'Non-Resident'
