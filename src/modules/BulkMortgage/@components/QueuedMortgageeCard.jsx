@@ -1,6 +1,6 @@
 import React from 'react';
 import { Button } from '@exzeo/core-ui';
-import { BUTTON_CLASS } from '@exzeo/core-ui/src/Button/Button';
+import { BUTTON_CLASS, BUTTON_SIZE } from '@exzeo/core-ui/src/Button/Button';
 import Address from './Address';
 
 const QueuedMortgageeCard = ({ mortgagee, handleRemove }) => (
@@ -33,7 +33,8 @@ const QueuedMortgageeCard = ({ mortgagee, handleRemove }) => (
         </span>
         <Button
           dataTest="remove-queue"
-          className={`btn-sm ${BUTTON_CLASS.link}`}
+          size={BUTTON_SIZE.small}
+          className={BUTTON_CLASS.link}
           type="button"
           onClick={handleRemove}
         >
