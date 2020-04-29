@@ -74,10 +74,15 @@
 //transfer
 /*------------------------------------------------------------------------------------*/
 @import 'partials/_transfer';
-@import 'partials/_view-grid';
+//bulk mortgage
+/*------------------------------------------------------------------------------------*/
+@import 'partials/_csr-bulkMortgage';
 //finance
 /*------------------------------------------------------------------------------------*/
 @import 'partials/_finance';
+//view-grid
+/*------------------------------------------------------------------------------------*/
+@import 'partials/_view-grid';
 //remove once the typeahead is updated
 /*------------------------------------------------------------------------------------*/
 .agencyTypeahead {
@@ -85,11 +90,14 @@
     position: relative;
     &:after {
       margin-left: $padding/2;
-      color: $warm-gray-05;
+
       content: 'Start typing to search';
+
+      color: $warm-gray-05;
+
+      font-size: $font-size-sm;
       font-weight: $font-weight-normal;
       font-style: italic;
-      font-size: $font-size-sm;
     }
   }
 }
