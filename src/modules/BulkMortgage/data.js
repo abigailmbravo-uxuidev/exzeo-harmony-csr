@@ -33,3 +33,26 @@ export async function fetchMortgageesFromPolicies(params) {
     throw error;
   }
 }
+
+/**
+ *
+ * @returns {Promise<[]>}
+ */
+export async function getMortgageeJobs() {
+  const path = `mortgageeJobs`;
+  const config = {
+    service: 'bulk-mortgage',
+    method: 'GET',
+    path
+  };
+
+  try {
+    const response = await serviceRunner.callService(
+      config,
+      'getMortgageeJobs'
+    );
+    return response ? response.data : [];
+  } catch (error) {
+    throw error;
+  }
+}
