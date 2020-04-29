@@ -1,9 +1,4 @@
 import React from 'react';
-import MortgageeForm from './MortgageeForm';
-import SearchbyJob from './SearchbyJob';
-import MortgageeResults from './MortgageeResults';
-import NoResults from './NoResults';
-import { useFetchMortgageeJobs } from '../hooks';
 
 export const ByJobTab = () => {
   // const { mortgageeJobs, lodaed } = useFetchMortgageeJobs();

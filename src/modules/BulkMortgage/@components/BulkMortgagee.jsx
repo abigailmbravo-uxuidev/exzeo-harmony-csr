@@ -7,6 +7,7 @@ import { fetchMortgageesFromPolicies } from '../data';
 import ByPolicyTab from './ByPolicyTab';
 import QueuedMortgagees from './QueuedMortgagees';
 import { formatMortgagees } from '../utilities';
+import ByJobTab from './ByJobTab';
 
 const BulkMortgagee = ({ errorHandler }) => {
   const [selectedTab, setSelectedTab] = useState(BULK_MORTGAGE_TYPE.policy);
@@ -18,7 +19,7 @@ const BulkMortgagee = ({ errorHandler }) => {
           <section>
             <div className="btn-tabs">
               <div className="filter-tabs">
-                <button
+                <Button
                   type="button"
                   className={classNames('btn', 'btn-tab', {
                     selected: selectedTab === BULK_MORTGAGE_TYPE.policy
@@ -26,10 +27,22 @@ const BulkMortgagee = ({ errorHandler }) => {
                   onClick={() => setSelectedTab(BULK_MORTGAGE_TYPE.policy)}
                 >
                   {BULK_TYPE_LABEL.policy}
-                </button>
+                </Button>
+                <Button
+                  type="button"
+                  className={classNames('btn', 'btn-tab', {
+                    selected: selectedTab === BULK_MORTGAGE_TYPE.job
+                  })}
+                  onClick={() => setSelectedTab(BULK_MORTGAGE_TYPE.job)}
+                >
+                  {BULK_TYPE_LABEL.job}
+                </Button>
               </div>
               {selectedTab === BULK_MORTGAGE_TYPE.policy && (
                 <ByPolicyTab errorHandler={errorHandler} />
+              )}
+              {selectedTab === BULK_MORTGAGE_TYPE.job && (
+                <ByJobTab errorHandler={errorHandler} />
               )}
             </div>
           </section>
