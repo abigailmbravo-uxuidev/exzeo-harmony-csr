@@ -1,13 +1,7 @@
 import React, { useState } from 'react';
 import classNames from 'classnames';
 import { BULK_MORTGAGE_TYPE, BULK_TYPE_LABEL } from '../constants';
-import { Button } from '@exzeo/core-ui';
-import { BUTTON_CLASS } from '@exzeo/core-ui/src/Button/Button';
-import { fetchMortgageesFromPolicies } from '../data';
 import ByPolicyTab from './ByPolicyTab';
-import QueuedMortgagees from './QueuedMortgagees';
-import { formatMortgagees } from '../utilities';
-import ByJobTab from './ByJobTab';
 
 const BulkMortgagee = ({ errorHandler }) => {
   const [selectedTab, setSelectedTab] = useState(BULK_MORTGAGE_TYPE.policy);

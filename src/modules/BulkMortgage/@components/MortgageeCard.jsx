@@ -3,32 +3,37 @@ import { Button, Field, Input } from '@exzeo/core-ui';
 import { BUTTON_CLASS, BUTTON_SIZE } from '@exzeo/core-ui/src/Button/Button';
 import Address from './Address';
 
-const MortgageeCard = ({ mortgagee, handleQueue }) => (
-  <div className="card" data-test={`mortgagee-${mortgagee.order}`}>
+const MortgageeCard = ({ result, handleQueue }) => (
+  <div className="card" data-test={`mortgagee-${result.order}`}>
     <section className="mortgagee-detail">
-      <h4>Mortgagee {mortgagee.order + 1}</h4>
-      <h5>{mortgagee.name1}</h5>
-      <Address address={mortgagee.mailingAddress} className="address" />
+      {!result.noMortgagee && (
+        <React.Fragment>
+          <h4>Mortgagee {result.order + 1}</h4>
+          <h5>{result.name1}</h5>
+          <Address address={result.mailingAddress} className="address" />
+        </React.Fragment>
+      )}
+      {result.noMortgagee && <React.Fragment>No Mortgagee</React.Fragment>}
       <div className="billto-loan-wrapper">
-        {mortgagee.currentBillTo && (
+        {result.currentBillTo && (
           <div className="bill-to">
             <label>Current Bill To:</label> Yes
           </div>
         )}
-        {!mortgagee.currentBillTo && (
+        {!result.currentBillTo && (
           <div className="bill-to">
-            <label htmlFor={`${mortgagee._id}.makeBillTo`}>Make Bill To</label>
+            <label htmlFor={`${result._id}.makeBillTo`}>Make Bill To</label>
             <Field
-              name={`${mortgagee._id}.makeBillTo`}
+              name={`${result._id}.makeBillTo`}
               component="input"
               type="checkbox"
-              data-test={`${mortgagee._id}.makeBillTo`}
+              data-test={`${result._id}.makeBillTo`}
             />
           </div>
         )}
         <Field
-          name={`${mortgagee._id}.loanNo`}
-          dataTest={`${mortgagee._id}.loanNo`}
+          name={`${result._id}.loanNo`}
+          dataTest={`${result._id}.loanNo`}
           label="Loan No:"
           component={Input}
           styleName="loanNo"
@@ -40,13 +45,13 @@ const MortgageeCard = ({ mortgagee, handleQueue }) => (
         <a
           target="_blank"
           rel="noopener noreferrer"
-          href={`/policy/${mortgagee.policyNumber}`}
+          href={`/policy/${result.policyNumber}`}
         >
-          {mortgagee.policyNumber}
+          {result.policyNumber}
         </a>
       </h4>
-      <h5>{mortgagee.policyHolderName}</h5>
-      <Address address={mortgagee.propertyAddress} className="address" />
+      <h5>{result.policyHolderName}</h5>
+      <Address address={result.propertyAddress} className="address" />
     </section>
     <footer className="footer btn-footer">
       <Button
