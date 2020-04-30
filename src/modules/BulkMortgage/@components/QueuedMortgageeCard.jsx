@@ -3,29 +3,29 @@ import { Button } from '@exzeo/core-ui';
 import { BUTTON_CLASS, BUTTON_SIZE } from '@exzeo/core-ui/src/Button/Button';
 import Address from './Address';
 
-const QueuedMortgageeCard = ({ mortgagee, handleRemove }) => (
+const QueuedMortgageeCard = ({ result, handleRemove }) => (
   <div
     tabIndex="0"
     className="card"
-    data-test={`queued-mortgagee-${mortgagee._id}`}
+    data-test={`queued-mortgagee-${result._id}`}
   >
     <div className="icon-name">
       <i className="card-icon fa fa-file-text" />
-      <h5 className="product">{mortgagee.product}</h5>
+      <h5 className="product">{result.product}</h5>
     </div>
     <section>
       <div className="details">
         <span className="policy-no">
-          <strong>{mortgagee.policyNumber}</strong>&nbsp;|&nbsp;
-          {mortgagee.policyHolderName}
+          <strong>{result.policyNumber}</strong>&nbsp;|&nbsp;
+          {result.policyHolderName}
         </span>
         <span className="loan-number">
           <strong>Loan Number:</strong>&nbsp;
-          {mortgagee.loanNo}
+          {result.loanNo}
         </span>
         <span className="make-billTo">
           <strong>Bill To:</strong>&nbsp;
-          {mortgagee.makeBillTo || mortgagee.currentBillTo ? (
+          {result.makeBillTo || result.currentBillTo ? (
             <i className="fa fa-check-square" />
           ) : (
             <i className="fa fa-square-o" />
@@ -43,12 +43,15 @@ const QueuedMortgageeCard = ({ mortgagee, handleRemove }) => (
         </Button>
       </div>
       <div className="title">
-        <h4>
-          {mortgagee.name1} (Mortgagee {mortgagee.order + 1})&nbsp;|&nbsp;
-          <span className="propertyAddress">
-            <Address className="" address={mortgagee.mailingAddress} />
-          </span>
-        </h4>
+        {!result.noMortgagee && (
+          <h4>
+            {result.name1} (Mortgagee {result.order + 1})&nbsp;|&nbsp;
+            <span className="propertyAddress">
+              <Address className="" address={result.mailingAddress} />
+            </span>
+          </h4>
+        )}
+        {result.noMortgagee && <h4>No Mortgagee</h4>}
       </div>
     </section>
   </div>
