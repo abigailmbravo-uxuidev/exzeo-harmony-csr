@@ -67,20 +67,20 @@ import { baseQuoteResponse } from '../fixtures';
 //   });
 // }
 
-// export function retrieveQuote(quoteNumber, apiUrl, token) {
-//   return cy.request({
-//     url: apiUrl,
-//     method: 'POST',
-//     auth: { bearer: `${token}` },
-//     body: {
-//       exchangeName: 'harmony',
-//       routingKey: 'harmony.quote.retrieveQuote',
-//       data: {
-//         quoteNumber
-//       }
-//     }
-//   });
-// }
+export function retrieveQuote(quoteNumber, apiUrl, token) {
+  return cy.request({
+    url: apiUrl,
+    method: 'POST',
+    auth: { bearer: `${token}` },
+    body: {
+      exchangeName: 'harmony',
+      routingKey: 'harmony.quote.retrieveQuote',
+      data: {
+        quoteNumber
+      }
+    }
+  });
+}
 
 // Total retry time limit ~2 min
 const WAIT_TIME_MS = 2000;
