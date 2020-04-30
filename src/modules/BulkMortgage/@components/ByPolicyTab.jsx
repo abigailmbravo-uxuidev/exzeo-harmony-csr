@@ -4,7 +4,6 @@ import SearchByPolicy from './SearchByPolicy';
 import MortgageeResults from './MortgageeResults';
 import NoResults from './NoResults';
 import QueuedMortgagees from './QueuedMortgagees';
-import { BULK_MORTGAGE_TYPE } from '../constants';
 import { fetchMortgageesFromPolicies } from '../data';
 import { formatMortgagees } from '../utilities';
 import { Button } from '@exzeo/core-ui';
