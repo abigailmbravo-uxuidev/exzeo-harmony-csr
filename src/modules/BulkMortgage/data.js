@@ -1,5 +1,7 @@
 import * as serviceRunner from '@exzeo/core-ui/src/@Harmony/Domain/Api/serviceRunner';
 import buildQueryString from '@exzeo/core-ui/src/@utils/buildQueryString';
+import { buildAssigneesList } from './utilities';
+
 /**
  *
  * @returns {Promise<[]>}
@@ -52,6 +54,31 @@ export async function getMortgageeJobs() {
       'getMortgageeJobs'
     );
     return response ? response.data : [];
+  } catch (error) {
+    throw error;
+  }
+}
+
+export async function getUsersForJobs(userProfile) {
+  try {
+    const { resources } = userProfile;
+
+    //TODO: change for Bulk Mortgage resource
+    const query = resources
+      .filter(r => r.uri.includes('Diaries'))
+      .reduce((acc, val) => `${acc},${val.uri}|${val.right}`, '');
+
+    const config = {
+      method: 'GET',
+      service: 'security-manager-service',
+      path: `/user?r=${query}`
+    };
+    const response = await serviceRunner.callService(config, 'getByJobUsers');
+    const users =
+      response.data && Array.isArray(response.data.result)
+        ? response.data.result
+        : [];
+    return buildAssigneesList(users);
   } catch (error) {
     throw error;
   }
