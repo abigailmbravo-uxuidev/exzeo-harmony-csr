@@ -27,6 +27,7 @@ import { PolicyWorkflow } from './modules/Policy';
 import Finance from './modules/Finance';
 import BulkMortgage from './modules/BulkMortgage';
 import { userResources } from './utilities/userResources';
+import { BULK_MORTGAGE_TYPE } from './modules/BulkMortgage/constants';
 
 class Routes extends Component {
   setBackStep = (goToNext, callback) => {
@@ -186,17 +187,31 @@ class Routes extends Component {
                 render={props => <Reports auth={auth} {...props} />}
               />
               {enableBulkMortgage && (
-                <Route
-                  exact
-                  path="/bulkMortgage"
-                  render={props => (
-                    <BulkMortgage
-                      errorHandler={errorActions.setAppError}
-                      auth={auth}
-                      {...props}
-                    />
-                  )}
-                />
+                <React.Fragment>
+                  <Route
+                    exact
+                    path="/bulkMortgage"
+                    render={props => (
+                      <BulkMortgage
+                        errorHandler={errorActions.setAppError}
+                        auth={auth}
+                        {...props}
+                      />
+                    )}
+                  />
+                  <Route
+                    exact
+                    path="/bulkMortgage/byJob"
+                    render={props => (
+                      <BulkMortgage
+                        tab={BULK_MORTGAGE_TYPE.job}
+                        errorHandler={errorActions.setAppError}
+                        auth={auth}
+                        {...props}
+                      />
+                    )}
+                  />
+                </React.Fragment>
               )}
               <Route
                 exact

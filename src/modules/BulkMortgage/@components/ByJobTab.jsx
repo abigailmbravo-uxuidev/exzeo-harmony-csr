@@ -1,20 +1,25 @@
-import React from 'react';
+import React, { useState } from 'react';
 import JobFilter from './JobFilter';
 import { useFetchUsersForJobs } from '../hooks';
 import { connect } from 'react-redux';
+import { jobs } from './testJobs';
+import JobResults from './JobResults';
 
 export const ByJobTab = ({ userProfile, errorHandler }) => {
-  // const { mortgageeJobs, lodaed } = useFetchMortgageeJobs();
+  const [jobResults, setJobResults] = useState([]);
   const { userList } = useFetchUsersForJobs({ userProfile, errorHandler });
-  console.log(userProfile);
+
+  const handleJobSubmit = () => {
+    setJobResults(jobs);
+  };
+
   return (
     <div className="bm-wrapper by-job form-group survey-wrapper" role="group">
       <section className="bm-byJob mortgagee-wrapper">
-        <JobFilter userList={userList} />
+        <JobFilter userList={userList} handleJobSubmit={handleJobSubmit} />
       </section>
       <section className="bm-byJob search-results-wrapper">
-        {/*<SearchbyJob handleSearch={handleSearchbyJob} />*/}
-        {/*{hasSearched && mortgageeResults.length === 0 && <NoResults />}*/}
+        <JobResults results={jobResults} />
       </section>
     </div>
   );

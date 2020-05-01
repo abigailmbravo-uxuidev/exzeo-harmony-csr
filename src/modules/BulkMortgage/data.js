@@ -1,7 +1,6 @@
 import * as serviceRunner from '@exzeo/core-ui/src/@Harmony/Domain/Api/serviceRunner';
 import buildQueryString from '@exzeo/core-ui/src/@utils/buildQueryString';
-import { buildAssigneesList } from './utilities';
-
+import { buildAssigneesList } from '../../utilities/userResources';
 /**
  *
  * @returns {Promise<[]>}

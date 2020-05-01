@@ -1,3 +1,5 @@
+import moment from 'moment';
+
 /**
  *
  * @param {AdditionalInterestAnswers[]} answers
@@ -63,20 +65,11 @@ export function setMortgageeInitialValues(results) {
   return initialValues;
 }
 
-export function buildAssigneesList(users) {
-  const activeUsers = users.filter(user => !!user.enabled);
+export const isValidRange = value => {
+  const { start, end } = value;
+  if (!start && !end) return undefined;
 
-  const userList = activeUsers.map(user => ({
-    answer: user.userId,
-    label: `${user.firstName} ${user.lastName}`,
-    type: 'user'
-  }));
-
-  return userList.sort((a, b) => {
-    const userA = a.label.toUpperCase();
-    const userB = b.label.toUpperCase();
-    if (userA > userB) return 1;
-    if (userA < userB) return -1;
-    return 0;
-  });
-}
+  return moment(start).isSameOrBefore(end)
+    ? undefined
+    : 'Not a valid date range';
+};
