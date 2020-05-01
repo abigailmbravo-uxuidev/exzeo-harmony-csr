@@ -16,6 +16,9 @@ export const ByJobTab = ({ userProfile, errorHandler }) => {
   return (
     <div className="bm-wrapper by-job form-group survey-wrapper" role="group">
       <section className="bm-byJob mortgagee-wrapper">
+        <div className="queue-header">
+          <div className="title">Filter Parameters</div>
+        </div>
         <JobFilter userList={userList} handleJobSubmit={handleJobSubmit} />
       </section>
       <section className="bm-byJob search-results-wrapper">

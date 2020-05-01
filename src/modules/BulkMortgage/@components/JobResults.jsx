@@ -7,7 +7,7 @@ import JobCard from './JobCard';
 const JobResults = ({ results }) => {
   return (
     <React.Fragment>
-      <div className="queue-header">
+      <div className="job-header">
         <div className="title">Jobs</div>
       </div>
       <section className="policy-list">
