@@ -59,6 +59,7 @@ html body div#root .app-wrapper {
                   display: flex;
 
                   width: 100%;
+                  padding: 0 $padding;
 
                   .form-group {
                     margin-right: $padding;
@@ -79,6 +80,27 @@ html body div#root .app-wrapper {
                     align-self: flex-start;
 
                     margin-top: 28px;
+                  }
+                }
+              }
+              &.search-results-wrapper {
+                .policy-list {
+                  padding: 0 $padding;
+
+                  .card {
+                    > section {
+                      flex-grow: 1;
+                      flex-shrink: 1;
+
+                      margin: 0 $padding;
+
+                      .details {
+                        .job-id {
+                          flex-grow: 1;
+                          flex-shrink: 1;
+                        }
+                      }
+                    }
                   }
                 }
               }
