@@ -664,6 +664,12 @@ const Search = ({ handleLogout, changeSearchType }) => {
       {searchType === SEARCH_TYPES.policy && (
         <PolicySearch handleChangeContext={handleChangeContext} />
       )}
+      {searchType === SEARCH_TYPES.quote && (
+        <QuoteSearch handleChangeContext={handleChangeContext} />
+      )}
+      {searchType === SEARCH_TYPES.newQuote && (
+        <AddressSearch handleChangeContext={handleChangeContext} />
+      )}
     </div>
   );
 };
