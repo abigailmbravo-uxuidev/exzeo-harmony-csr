@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import JobFilter from './JobFilter';
 import { useFetchUsersForJobs } from '../hooks';
 import { connect } from 'react-redux';
-import { jobs } from './testJobs';
+import { jobs } from '../__tests__/testJobs';
 import JobResults from './JobResults';
 
 export const ByJobTab = ({ userProfile, errorHandler }) => {

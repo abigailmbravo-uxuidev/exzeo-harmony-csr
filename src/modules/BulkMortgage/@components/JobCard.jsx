@@ -5,10 +5,6 @@ import Address from './Address';
 
 const JobCard = ({ result }) => (
   <div tabIndex="0" className="card" data-test={`job-${result._id}`}>
-    <div className="icon-name">
-      <i className="card-icon fa fa-file-text" />
-      <h5 className="product">{result.product}</h5>
-    </div>
     <section>
       <div className="details">
         <span className="job-id">
@@ -27,6 +23,10 @@ const JobCard = ({ result }) => (
             </span>
           </React.Fragment>
         )}
+        <span className="policies">
+          <strong>Policies:</strong>&nbsp;
+          <span>{result.policyNumbers.length}</span>
+        </span>
         <Button
           dataTest="download-policy-csv"
           size={BUTTON_SIZE.small}
