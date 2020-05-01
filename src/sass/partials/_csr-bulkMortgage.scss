@@ -47,6 +47,43 @@ html body div#root .app-wrapper {
 
             border-bottom: 1px dashed $blue;
           }
+          &.by-job {
+            flex-direction: column;
+
+            .bm-byJob {
+              &.mortgagee-wrapper {
+                margin-bottom: $padding;
+
+                border-bottom: 1px dashed $bright-blue-darken-04;
+                form {
+                  display: flex;
+
+                  width: 100%;
+
+                  .form-group {
+                    margin-right: $padding;
+
+                    &.dateRange {
+                      .date-range-inputs {
+                        display: flex;
+                        align-items: center;
+
+                        span {
+                          margin: 0 ($padding/2);
+                        }
+                      }
+                    }
+                  }
+
+                  button {
+                    align-self: flex-start;
+
+                    margin-top: 28px;
+                  }
+                }
+              }
+            }
+          }
 
           .bulk-mortgagee-form,
           .search-inputs,
