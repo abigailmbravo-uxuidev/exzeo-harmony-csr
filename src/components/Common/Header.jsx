@@ -93,9 +93,7 @@ const Header = ({ handleLogout, authState: { userProfile = {} }, diaries }) => {
 };
 
 Header.propTypes = {
-  auth: PropTypes.shape({
-    logout: PropTypes.func
-  }).isRequired,
+  handleLogout: PropTypes.func.isRequired,
   authState: PropTypes.shape({
     userProfile: PropTypes.object
   })

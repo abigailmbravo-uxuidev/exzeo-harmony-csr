@@ -67,7 +67,11 @@ const AddressSearch = ({ handleChangeContext }) => {
                 <div className="search-input-wrapper">
                   <div className="search-context-sort">
                     <div className="form-group search-context">
-                      <Field name="searchType" validate={isRequired}>
+                      <Field
+                        name="searchType"
+                        validate={isRequired}
+                        initialValue={SEARCH_TYPES.newQuote}
+                      >
                         {({ input, meta }) => (
                           <Select
                             input={{ ...input, onChange: handleChangeContext }}
@@ -194,7 +198,11 @@ const PolicySearch = ({ handleChangeContext }) => {
                 <div className="search-input-wrapper">
                   <div className="search-context-sort">
                     <div className="form-group search-context">
-                      <Field name="searchType" validate={isRequired}>
+                      <Field
+                        name="searchType"
+                        validate={isRequired}
+                        initialValue={SEARCH_TYPES.policy}
+                      >
                         {({ input, meta }) => (
                           <Select
                             input={{ ...input, onChange: handleChangeContext }}
@@ -426,7 +434,11 @@ const QuoteSearch = ({ handleChangeContext }) => {
                 <div className="search-input-wrapper">
                   <div className="search-context-sort">
                     <div className="form-group search-context">
-                      <Field name="searchType" validate={isRequired}>
+                      <Field
+                        name="searchType"
+                        validate={isRequired}
+                        initialValue={SEARCH_TYPES.quote}
+                      >
                         {({ input, meta }) => (
                           <Select
                             input={{ ...input, onChange: handleChangeContext }}
@@ -573,20 +585,6 @@ const QuoteSearch = ({ handleChangeContext }) => {
                         </Field>
                       </div>
                       <div className="form-group effectiveDate">
-                        <Field name="effectiveDate" validate={isValidDate}>
-                          {({ input, meta }) => (
-                            <Input
-                              input={input}
-                              meta={meta}
-                              dataTest="address"
-                              label="Property Street Address"
-                              placeholder="Property Street Address Search"
-                              styleName="property-search"
-                              errorHint
-                            />
-                          )}
-                        </Field>
-
                         <Field name="effectiveDate">
                           {({ input, meta }) => (
                             <Date
@@ -649,7 +647,7 @@ const QuoteSearch = ({ handleChangeContext }) => {
   );
 };
 
-const Search = ({ handleLogout, changeSearchType }) => {
+const Search = ({ handleLogout }) => {
   const [searchType, setSearchType] = useState(SEARCH_TYPES.policy);
   const handleChangeContext = e => {
     setSearchType(e.target.value);
