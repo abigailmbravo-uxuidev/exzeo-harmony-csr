@@ -101,7 +101,7 @@ export const DEFAULT_SEARCH_PARAMS = {
 
 export const RESULTS_PAGE_SIZE = 25;
 
-const DEFAULT_NO_RESULTS_MESSAGE =
+export const DEFAULT_NO_RESULTS_MESSAGE =
   "We're sorry we couldn't find any results matching your search parameters. Please check your spelling and try a new search. You can also try a less specific search (such as street number and name).";
 export const NO_RESULTS_MESSAGES = {
   [SEARCH_TYPES.newQuote]: DEFAULT_NO_RESULTS_MESSAGE,
@@ -113,3 +113,19 @@ export const NO_RESULTS_MESSAGES = {
   [SEARCH_TYPES.agency]: DEFAULT_NO_RESULTS_MESSAGE,
   [SEARCH_TYPES.diaries]: DEFAULT_NO_RESULTS_MESSAGE
 };
+
+export const COMPANY_ANSWERS = [
+  { answer: 'TTIC', label: 'TTIC' },
+  { answer: 'HCPC', label: 'HCPC' }
+];
+
+export const STATE_ANSWERS = [
+  { answer: 'FL', label: 'FL' },
+  { answer: 'NJ', label: 'NJ' },
+  { answer: 'SC', label: 'SC' }
+];
+
+export const PRODUCT_ANSWERS = [
+  { answer: 'HO3', label: 'HO3' },
+  { answer: 'AF3', label: 'AF3' }
+];
