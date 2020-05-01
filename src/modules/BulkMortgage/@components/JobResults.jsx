@@ -1,7 +1,4 @@
 import React from 'react';
-import { Button } from '@exzeo/core-ui';
-import { BUTTON_CLASS, BUTTON_SIZE } from '@exzeo/core-ui/src/Button/Button';
-import QueuedMortgageeCard from './QueuedMortgageeCard';
 import JobCard from './JobCard';
 
 const JobResults = ({ results }) => {

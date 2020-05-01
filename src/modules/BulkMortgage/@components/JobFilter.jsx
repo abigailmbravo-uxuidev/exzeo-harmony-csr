@@ -5,8 +5,7 @@ import {
   Field,
   Form,
   Input,
-  MultiSelectTypeAhead,
-  noop
+  MultiSelectTypeAhead
 } from '@exzeo/core-ui';
 import { isValidRange } from '../utilities';
 
