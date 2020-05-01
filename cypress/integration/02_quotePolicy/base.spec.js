@@ -1,6 +1,34 @@
-import { setRouteAliases, createToBindQuote } from '../../helpers';
-
 import {
+  setRouteAliases,
+  navigateThroughNewQuote,
+  fillOutCoverage,
+  fillOutUnderwriting,
+  changeCoverageAndAgency,
+  fillOutAdditionalInterests,
+  fillOutMailingBilling,
+  fillOutNotesFiles,
+  fillOutSummary,
+  fillOutApplication,
+  navigateThroughDocusign,
+  sendQuote,
+  changeBillTo,
+  searchPolicy,
+  searchQoute,
+  searchDiary
+} from '../../helpers';
+import {
+  coverageRatingTest,
+  underwritingTest,
+  aiTest,
+  mailingBillingTest,
+  notesFilesTest,
+  quoteSummaryTest,
+  applicationTest,
+  afterDocuSignTest
+} from '../../pageTests';
+import {
+  coverage,
+  unQuestions,
   MODIFY_EFFECTIVE_DATE,
   ADD_ENDORSEMENTS,
   ADD_MORTGAGEE,
@@ -8,33 +36,58 @@ import {
   SWITCH_AOR
 } from '../../fixtures';
 
-describe('Endorsements Happy Path', () => {
-  before('Login and set route aliases', () => {
-    cy.login();
-  });
+describe('Base Path - HO3, create a quote, bind the Policy and make Endorsements', () => {
+  before('Login', () => cy.login());
+  beforeEach('Set aliases', () => setRouteAliases());
 
-  beforeEach('Set route aliases for network requests', () => {
-    setRouteAliases();
-  });
+  it('Navigate through Quote Workflow', () => {
+    navigateThroughNewQuote();
 
-  it('Create + Bind Quote and perform Endorsement on Policy', () => {
-    createToBindQuote();
+    fillOutCoverage();
+    coverageRatingTest();
+
+    fillOutUnderwriting(unQuestions);
+    underwritingTest();
+    changeCoverageAndAgency(coverage);
+
+    fillOutAdditionalInterests();
+    aiTest();
+
+    fillOutMailingBilling();
+    mailingBillingTest();
+
+    fillOutNotesFiles();
+    notesFilesTest();
+
+    fillOutSummary();
+    quoteSummaryTest();
+    sendQuote();
+
+    fillOutApplication();
+    applicationTest();
+
+    navigateThroughDocusign();
+    searchDiary();
+    searchQoute();
+
+    // Combine 2 tests with different way of writing the code. As we decided - we will format 2nd or 1st part in the future in order the  whole test be written in one way.
+
     cy.visit('/');
     cy.task('log', 'Search Policy and open')
-      .get('@boundQuote')
-      .then(quote => {
+      .get('@policyNumber')
+      .then(polNum => {
         cy.findDataTag('searchType')
           .select('policy')
           // This will be relevant once ALL users can see the product dropdown
           .findDataTag('policyNumber')
-          .type(quote.transaction.policyNumber)
+          .type(polNum)
           .clickSubmit()
           .wait('@fetchPolicies')
           .then(({ response }) => {
             expect(response.body.totalNumberOfRecords).to.equal(1);
           })
           // This makes it so we don't open up a new window
-          .findDataTag(quote.transaction.policyNumber)
+          .findDataTag(polNum)
           .then($a => {
             $a.prop('onclick', () => cy.visit($a.prop('dataset').url));
           });
@@ -258,11 +311,11 @@ describe('Endorsements Happy Path', () => {
 
   it('Add Payment', () => {
     cy.goToNav('billing');
-    cy.findDataTag('batchNumber')
+    cy.findDataTag('cashType')
+      .select('Electronic Deposit')
+      .findDataTag('batchNumber')
       .click()
       .type('11')
-      .findDataTag('cashType')
-      .select('Electronic Deposit')
       .findDataTag('cashDescription')
       .select('Payment Received')
       .findDataTag('amount')
