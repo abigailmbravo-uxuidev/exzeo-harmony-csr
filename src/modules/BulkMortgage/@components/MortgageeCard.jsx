@@ -13,7 +13,12 @@ const MortgageeCard = ({ result, handleQueue }) => (
           <Address address={result.mailingAddress} className="address" />
         </React.Fragment>
       )}
-      {result.noMortgagee && <React.Fragment>No Mortgagee</React.Fragment>}
+      {result.noMortgagee && (
+        <React.Fragment>
+          <h4>No Mortgagee</h4>
+          <h5>&nbsp;</h5>
+        </React.Fragment>
+      )}
       <div className="billto-loan-wrapper">
         {result.currentBillTo && (
           <div className="bill-to">
