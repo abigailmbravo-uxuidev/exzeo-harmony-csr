@@ -1,3 +1,25 @@
+// Calculate and format new policy Effective Date
+
+const addExpirationDays = 100;
+const subtractLicenseStartDays = -5;
+const subtractLicenseStartDays2 = -10;
+
+export const createNewDate = addDays => {
+  let today = new Date();
+  const addExpirationDays = addDays;
+  today.setDate(today.getDate() + addExpirationDays);
+  const yyyy = today.getFullYear();
+  const dd = today.getDate().toLocaleString('en-US', {
+    minimumIntegerDigits: 2
+  });
+  const mm = (today.getMonth() + 1).toLocaleString('en-US', {
+    minimumIntegerDigits: 2
+  });
+  const updatedDate = `${yyyy}-${mm}-${dd}`;
+
+  return updatedDate;
+};
+
 export const ADD_AGENCY = {
   ////only keep things here that we are verifying, anything that will not change from test to test
   status: 'Service Only',
@@ -27,7 +49,7 @@ export const ADD_AGENCY = {
   websiteUrl: 'https://agency.harmony-ins.com/',
   taxIdNumber: '9999',
   taxClassification: 'Corporation',
-  eoExpirationDate: '2020-11-20T00:00:00.000Z',
+  eoExpirationDate: createNewDate(addExpirationDays),
   primaryPhoneNumber: '4445556666',
   secondaryPhoneNumber: '4445556667',
   faxNumber: '4445556668',
@@ -94,18 +116,13 @@ export const ADD_AGENT = {
     state: 'FL',
     zip: '33607'
   },
-  agencies: [
-    {
-      branchCode: null ////should this be a value?
-    }
-  ],
   primaryPhoneNumberExtension: '1111'
 };
 
 export const ADD_LICENSE = {
   licenses: [
     {
-      licenseEffectiveDate: '2019-11-22T00:00:00.000Z',
+      licenseEffectiveDate: createNewDate(subtractLicenseStartDays),
       state: 'FL',
       licenseNumber: '99990',
       licenseType: 'Resident'
@@ -136,7 +153,7 @@ export const ADD_CONTRACT = {
 export const EDIT_LICENSE = {
   licenses: [
     {
-      licenseEffectiveDate: '2019-11-24T00:00:00.000Z',
+      licenseEffectiveDate1: createNewDate(subtractLicenseStartDays2),
       state: 'FL',
       licenseNumber: '99991',
       licenseType: 'Non-Resident'
@@ -165,110 +182,7 @@ export const EDIT_CONTRACT = {
 };
 
 export const EDIT_AGENCY = {
-  status: 'Active',
-  okToPay: true,
-  displayName: 'Cypress Agency updated',
-  legalName: 'Company updated',
-  tpaid: 2,
-  websiteUrl: 'https://csr.harmony-ins.com/',
-  taxIdNumber: '99999',
-  taxClassification: 'Partnership',
-  eoExpirationDate: '2020-11-22T00:00:00.000Z',
-  primaryPhoneNumber: '4445557777',
-  secondaryPhoneNumber: '4445557778',
-  faxNumber: '4445557779',
-  customerServiceEmailAddress: 'exzeoqa2@exzeo.com',
-  branches: [], ////shouldn't we have the branch name here?
-  agentOfRecord: null ////is this supposed to be null????
-};
-
-export const EDIT_AGENCY_ADDRESS = {
-  mailingAddress: {
-    address1: 'Test Mailing Address 1 Updated',
-    address2: 'Test Mailing Address 2 Updated',
-    city: 'Clearwater',
-    state: 'FL',
-    zip: '33624',
-    country: {
-      code: 'USA',
-      displayText: 'United States of America'
-    }
-  },
-  physicalAddress: {
-    address1: 'Test Mailing Address 1 Updated',
-    address2: 'Test Mailing Address 2 Updated',
-    city: 'Clearwater',
-    state: 'FL',
-    county: 'HILLSBOROUGH',
-    zip: '33624'
-  },
-  territoryManagerId: '5b7db9f6ff54fd6a5c619eec'
-};
-
-export const EDIT_OFFICER = {
-  principal: {
-    firstName: 'Cypress2',
-    lastName: 'Officer2',
-    emailAddress: 'exzeoqa2@exzeo.com',
-    primaryPhoneNumber: '4445556677',
-    primaryPhoneNumberExtension: '5555'
-  }
-};
-
-export const EDIT_CONTACT = {
-  contact: {
-    title: 'Jr.',
-    firstName: 'Cypress2',
-    lastName: 'Contact2',
-    emailAddress: 'exzeoqa2@exzeo.com',
-    primaryPhoneNumber: '4445556688',
-    primaryPhoneNumberExtension: '9999'
-  }
-};
-
-export const EDIT_AGENT = {
-  status: 'Active',
-  licenses: [
-    {
-      state: 'FL',
-      licenseType: 'Non-Resident',
-      appointed: false,
-      licenseNumber: '23456'
-    }
-  ],
-  firstName: 'Cypress2',
-  lastName: 'Agent2',
-  emailAddress: 'exzeoqa2@exzeo.com',
-  primaryPhoneNumber: '4445556699',
-  secondaryPhoneNumber: '4445556667',
-  faxNumber: '4445556668',
-  mailingAddress: {
-    address1: 'Test Mailing Address 1 Updated',
-    address2: 'Test Mailing Address 2 Updated',
-    city: 'Clearwater',
-    state: 'FL',
-    zip: '33624',
-    country: {
-      code: 'USA',
-      displayText: 'United States of America'
-    }
-  },
-  physicalAddress: {
-    address1: 'Test Mailing Address 1 Updated',
-    address2: 'Test Mailing Address 2 Updated',
-    city: 'Clearwater',
-    state: 'FL',
-    zip: '33624',
-    county: 'HILLSBOROUGH'
-  },
-  createdBy: 'tticcsr',
-  updatedBy: 'tticcsr',
-  agencies: [
-    {
-      branchCode: null
-    }
-  ],
-  primaryPhoneNumberExtension: '1111'
+  displayName: 'Cypress Agency updated'
 };
 
 export const ADD_ANOTHER_AGENT = {
@@ -324,9 +238,5 @@ export const ADD_NOTE = {
   noteType: 'Agency Note',
   noteContent: 'This is a note content for Other Contact',
   contactType: 'Other',
-  createdBy: {
-    userId: 'auth0|59419e3a43e76f16f68c3349'
-  },
-  createdDate: '2019-12-23T17:20:57.776Z',
-  noteAttachments: []
+  fileType: 'Finance'
 };
