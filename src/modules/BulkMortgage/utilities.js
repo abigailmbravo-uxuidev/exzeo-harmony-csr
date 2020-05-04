@@ -1,4 +1,5 @@
 import moment from 'moment';
+import React from 'react';
 
 /**
  *
@@ -66,10 +67,36 @@ export function setMortgageeInitialValues(results) {
 }
 
 export const isValidRange = value => {
-  const { start, end } = value;
-  if (!start && !end) return undefined;
+  if (!value?.start && !value?.end) return undefined;
 
-  return moment(start).isSameOrBefore(end)
+  return moment(value.start).isSameOrBefore(value.end)
     ? undefined
     : 'Not a valid date range';
+};
+
+export const filterJobs = ({
+  jobResults,
+  jobNumber,
+  completedBy,
+  mortgageeName,
+  dateRange
+}) => {
+  const filter = [];
+  if (jobNumber) {
+    filter.push(j => j._id.includes(jobNumber));
+  }
+  if (mortgageeName) {
+    filter.push(j => j.additionalInterest.name1.includes(mortgageeName));
+  }
+
+  if (completedBy) {
+    const completedByAnsers = completedBy.map(c => c.answer);
+    filter.push(j => completedByAnsers.includes(j.updatedBy.userName));
+  }
+
+  return jobResults.filter(d => {
+    return filter.every(c => {
+      return c(d);
+    });
+  });
 };

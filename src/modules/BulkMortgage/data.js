@@ -38,9 +38,10 @@ export async function fetchMortgageesFromPolicies(params) {
 /**
  *
  * @returns {Promise<[]>}
+ * @param params
  */
-export async function getMortgageeJobs() {
-  const path = `mortgageeJobs`;
+export async function getMortgageeJobs({ windowStart, windowEnd }) {
+  const path = `/mortgageeJobs?windowStart=${windowStart}&windowEnd=${windowEnd}`;
   const config = {
     service: 'bulk-mortgage',
     method: 'GET',
@@ -62,9 +63,8 @@ export async function getUsersForJobs(userProfile) {
   try {
     const { resources } = userProfile;
 
-    //TODO: change for Bulk Mortgage resource
     const query = resources
-      .filter(r => r.uri.includes('Diaries'))
+      .filter(r => r.uri.includes('Diaries')) //TODO: change for Bulk Mortgage resource
       .reduce((acc, val) => `${acc},${val.uri}|${val.right}`, '');
 
     const config = {

@@ -4,13 +4,30 @@ import { useFetchUsersForJobs } from '../hooks';
 import { connect } from 'react-redux';
 import { jobs } from '../__tests__/testJobs';
 import JobResults from './JobResults';
+import { getMortgageeJobs } from '../data';
+import { filterJobs } from '../utilities';
+import { date } from '@exzeo/core-ui';
 
 export const ByJobTab = ({ userProfile, errorHandler }) => {
   const [jobResults, setJobResults] = useState([]);
   const { userList } = useFetchUsersForJobs({ userProfile, errorHandler });
 
-  const handleJobSubmit = () => {
-    setJobResults(jobs);
+  const handleJobSubmit = async data => {
+    try {
+      // the endpoint format has to be exactly 24 characters for some reason
+      const format = 'YYYY-MM-DDThh:mm:ss.SSSS';
+      await getMortgageeJobs({
+        windowStart: data?.dateRange?.start
+          ? date.formattedLocalDate(data.dateRange.start, format)
+          : '',
+        windowEnd: data?.dateRange?.end
+          ? date.formattedLocalDate(data.dateRange.end, format)
+          : ''
+      });
+      setJobResults(filterJobs({ jobResults: jobs, ...data }));
+    } catch (error) {
+      errorHandler(error);
+    }
   };
 
   return (

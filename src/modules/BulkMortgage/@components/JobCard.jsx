@@ -8,7 +8,7 @@ const JobCard = ({ result }) => (
     <section>
       <div className="details">
         <span className="job-id">
-          <strong>{result.additionalInterest._id}</strong>&nbsp;|&nbsp;
+          <strong>{result._id}</strong>&nbsp;|&nbsp;
           {result.status}
         </span>
         {result.status === 'Completed' && (

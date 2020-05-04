@@ -13,15 +13,6 @@ const JobFilter = ({ userList, handleJobSubmit }) => {
   return (
     <Form
       id="FilterJobs"
-      initialValues={{
-        jobNumber: '',
-        completedBy: '',
-        dateRange: {
-          start: '',
-          end: ''
-        },
-        mortgageeName: ''
-      }}
       onSubmit={handleJobSubmit}
       subscription={{ submitting: true, values: true }}
     >
