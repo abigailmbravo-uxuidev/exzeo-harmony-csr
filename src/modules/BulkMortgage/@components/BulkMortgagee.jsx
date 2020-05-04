@@ -16,6 +16,7 @@ const BulkMortgagee = ({ errorHandler }) => {
             <div className="btn-tabs">
               <div className="filter-tabs">
                 <Button
+                  dataTest="by-policy"
                   type="button"
                   className={classNames('btn', 'btn-tab', {
                     selected: selectedTab === BULK_MORTGAGE_TYPE.policy
@@ -25,6 +26,7 @@ const BulkMortgagee = ({ errorHandler }) => {
                   {BULK_TYPE_LABEL.policy}
                 </Button>
                 <Button
+                  dataTest="by-job"
                   type="button"
                   className={classNames('btn', 'btn-tab', {
                     selected: selectedTab === BULK_MORTGAGE_TYPE.job

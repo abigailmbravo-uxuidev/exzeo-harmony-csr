@@ -14,7 +14,7 @@ import * as bulkMortgageData from '../data';
 import topMortgagees from '../../../test-utils/fixtures/topMortgagees';
 import mockPolicies from '../../../test-utils/fixtures/policiesWithMortgagees';
 
-describe('BulkMortgagee Testing', () => {
+describe('BulkMortgagee By Policy Testing', () => {
   bulkMortgageData.getTopMortgagees = jestResolve(topMortgagees);
   bulkMortgageData.fetchMortgageesFromPolicies = jestResolve(mockPolicies);
 
@@ -205,6 +205,29 @@ describe('BulkMortgagee Testing', () => {
 
     await wait(() => {
       getByText(/0 queued/);
+    });
+  });
+});
+
+describe('BulkMortgagee By Job Testing', () => {
+  it('Renders BulkMortgagee By Job and check headers / labels', async () => {
+    const props = {
+      errorHandler: noop
+    };
+    const { getByText, getByTestId } = renderWithForm(
+      <BulkMortgagee {...props} />
+    );
+
+    fireEvent.click(getByText('By Job'));
+
+    await wait(() => {
+      expect(getByText('Filter Parameters'));
+      expect(getByText('Job Number'));
+      expect(getByText('Completed By'));
+      expect(getByText('Date Range'));
+      expect(getByText('Mortgagee Name'));
+      expect(getByText('Filter'));
+      expect(getByText('Jobs'));
     });
   });
 });
