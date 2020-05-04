@@ -86,7 +86,11 @@ export const filterJobs = ({
     filter.push(j => j._id.includes(jobNumber));
   }
   if (mortgageeName) {
-    filter.push(j => j.additionalInterest.name1.includes(mortgageeName));
+    filter.push(j =>
+      j.additionalInterest.name1
+        .toLocaleLowerCase()
+        .includes(mortgageeName.toLocaleLowerCase())
+    );
   }
 
   if (completedBy) {
