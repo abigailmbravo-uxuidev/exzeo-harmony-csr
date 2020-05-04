@@ -1,6 +1,4 @@
 import moment from 'moment';
-import React from 'react';
-
 /**
  *
  * @param {AdditionalInterestAnswers[]} answers
