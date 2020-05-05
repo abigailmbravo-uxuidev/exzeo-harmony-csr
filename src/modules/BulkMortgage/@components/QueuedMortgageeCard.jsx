@@ -16,7 +16,16 @@ const QueuedMortgageeCard = ({ result, handleRemove }) => (
     <section>
       <div className="details">
         <span className="policy-no">
-          <strong>{result.policyNumber}</strong>&nbsp;|&nbsp;
+          <strong>
+            <a
+              target="_blank"
+              rel="noopener noreferrer"
+              href={`/policy/${result.policyNumber}`}
+            >
+              {result.policyNumber}
+            </a>
+          </strong>
+          &nbsp;|&nbsp;
           {result.policyHolderName}
         </span>
         <span className="loan-number">

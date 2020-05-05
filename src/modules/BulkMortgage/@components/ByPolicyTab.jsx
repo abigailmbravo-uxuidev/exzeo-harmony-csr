@@ -39,7 +39,7 @@ export const ByPolicyTab = ({ errorHandler }) => {
   const addToQueue = mortgagee => {
     setHasSearched(false);
     const existingMortgagee = queuedMortgagees.some(
-      m => m._id === mortgagee._id
+      m => m._id === mortgagee._id && m.policyNumber === mortgagee.policyNumber
     );
     if (!existingMortgagee) {
       setQueuedMortgagees([mortgagee, ...queuedMortgagees]);

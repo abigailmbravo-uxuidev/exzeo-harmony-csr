@@ -2,6 +2,7 @@ import MortgageeCard from './MortgageeCard';
 import React from 'react';
 import { Form, noop, SectionLoader } from '@exzeo/core-ui';
 import { setMortgageeInitialValues } from '../utilities';
+import QueuedMortgageeCard from './QueuedMortgageeCard';
 
 export const MortgageeResults = ({ handleQueue, results, showLoader }) => {
   if (showLoader) {
@@ -25,7 +26,7 @@ export const MortgageeResults = ({ handleQueue, results, showLoader }) => {
           {results.map(m => {
             return (
               <MortgageeCard
-                key={m._id}
+                key={`${m._id}-${m.policyNumber}`}
                 result={m}
                 handleQueue={() => handleQueue({ ...values[m._id] })}
               />
