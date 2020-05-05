@@ -102,3 +102,26 @@ export const filterJobs = ({
     });
   });
 };
+
+export const downloadJob = job => {
+  const headers = ['Policy Number', 'Mortgagee', 'New Bill To', 'Status'];
+
+  const arr = job.policyNumbers.map(p => [
+    p.policyNumber,
+    job.additionalInterest.name1,
+    p.newBillTo ? ' Yes' : 'No',
+    p.status
+  ]);
+
+  arr.unshift(headers);
+  const csv = arr.join('\r\n');
+
+  const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+  const blobUrl = window.URL.createObjectURL(blob);
+  const link = window.document.createElement('a');
+  link.href = blobUrl;
+  link.download = `job-${job._id}.csv`;
+  window.document.body.appendChild(link);
+  link.click();
+  window.document.body.removeChild(link);
+};

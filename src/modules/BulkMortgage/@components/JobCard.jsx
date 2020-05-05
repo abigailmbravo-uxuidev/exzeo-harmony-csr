@@ -2,6 +2,7 @@ import React from 'react';
 import { Button, date, noop } from '@exzeo/core-ui';
 import { BUTTON_CLASS, BUTTON_SIZE } from '@exzeo/core-ui/src/Button/Button';
 import Address from './Address';
+import { downloadJob } from '../utilities';
 
 const JobCard = ({ result }) => (
   <div tabIndex="0" className="card" data-test={`job-${result._id}`}>
@@ -32,7 +33,7 @@ const JobCard = ({ result }) => (
           size={BUTTON_SIZE.small}
           className={BUTTON_CLASS.link}
           type="button"
-          onClick={noop}
+          onClick={() => downloadJob(result)}
         >
           <i className="fa fa-download" />
           Download Policy CSV
