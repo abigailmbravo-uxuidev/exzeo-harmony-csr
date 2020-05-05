@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, date, noop } from '@exzeo/core-ui';
+import { Button, date } from '@exzeo/core-ui';
 import { BUTTON_CLASS, BUTTON_SIZE } from '@exzeo/core-ui/src/Button/Button';
 import Address from './Address';
 import { downloadJob } from '../utilities';
