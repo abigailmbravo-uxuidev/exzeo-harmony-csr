@@ -22,7 +22,7 @@ const QueuedMortgageeCard = ({ result, handleRemove }) => (
               rel="noopener noreferrer"
               href={`/policy/${result.policyNumber}`}
             >
-              {result.policyNumber}
+              {result.companyCode} | {result.policyNumber}
             </a>
           </strong>
           &nbsp;|&nbsp;

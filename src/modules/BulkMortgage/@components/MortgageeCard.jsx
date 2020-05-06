@@ -47,6 +47,7 @@ const MortgageeCard = ({ result, handleQueue }) => (
     </section>
     <section className="policy-details">
       <h4>
+        {result.companyCode} |
         <a
           target="_blank"
           rel="noopener noreferrer"
@@ -55,6 +56,12 @@ const MortgageeCard = ({ result, handleQueue }) => (
           {result.policyNumber}
         </a>
       </h4>
+      <h5>
+        <div className="icon-name">
+          <i className="card-icon fa fa-file-text" />
+          <h5 className="product">{result.product}</h5>
+        </div>
+      </h5>
       <h5>{result.policyHolderName}</h5>
       <Address address={result.propertyAddress} className="address" />
     </section>

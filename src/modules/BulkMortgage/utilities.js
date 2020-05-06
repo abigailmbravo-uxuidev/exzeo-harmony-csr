@@ -35,10 +35,11 @@ export function formatMortgagees(result, queuedMortgagees) {
         if (!existingMortgagee) {
           acc.push({
             ...m,
+            companyCode: p.companyCode,
             product: p.product,
             propertyAddress: p.property.physicalAddress,
             policyNumber: p.policyNumber,
-            policyHolderName: `${primaryPolicyHolder.lastName}, ${primaryPolicyHolder.firstName} `,
+            policyHolderName: `${primaryPolicyHolder.firstName} ${primaryPolicyHolder.lastName}`,
             currentBillTo: m._id === p.billToId
           });
         }
@@ -47,10 +48,11 @@ export function formatMortgagees(result, queuedMortgagees) {
       if (!existingPolicy) {
         acc.push({
           noMortgagee: true,
+          companyCode: p.companyCode,
           product: p.product,
           propertyAddress: p.property.physicalAddress,
           policyNumber: p.policyNumber,
-          policyHolderName: `${primaryPolicyHolder.lastName}, ${primaryPolicyHolder.firstName} `,
+          policyHolderName: `${primaryPolicyHolder.firstName} ${primaryPolicyHolder.lastName}`,
           currentBillTo: false
         });
       }
