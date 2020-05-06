@@ -141,19 +141,21 @@ html body div#root .app-wrapper {
 
                         .billto-loan-wrapper {
                           display: flex;
+                          align-items: center;
 
                           .bill-to {
                             flex-grow: 0;
                             flex-shrink: 0;
 
                             width: 40%;
+                          }
 
-                            lable {
-                              margin-bottom: 0;
-                            }
+                          lable {
+                            margin-bottom: 0;
                           }
 
                           .loanNo {
+                            align-items: center;
                             flex-direction: row;
 
                             margin-bottom: 0;
@@ -163,16 +165,42 @@ html body div#root .app-wrapper {
                               flex-shrink: 0;
 
                               margin-right: $padding;
+                              margin-bottom: 0;
                             }
                           }
                         }
                       }
                       &.policy-details {
+                        display: flex;
+
                         width: calc(50% - 1rem);
                         margin-left: 1rem;
 
-                        h4 {
-                          color: $warm-gray-08;
+                        .icon-name {
+                          display: inline-flex;
+                          flex-direction: column;
+
+                          .card-icon {
+                            width: 2rem;
+
+                            color: $bright-blue-darken-04;
+
+                            font-size: $font-size-lg;
+                          }
+                          .product {
+                            margin-right: $padding;
+
+                            text-align: center;
+
+                            font-size: $font-size-sm;
+                          }
+                        }
+                        .details {
+                          display: inline-flex;
+                          flex-direction: column;
+                          h4 {
+                            color: $warm-gray-08;
+                          }
                         }
                       }
                     }
