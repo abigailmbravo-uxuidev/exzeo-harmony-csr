@@ -144,14 +144,16 @@ html body div#root .app-wrapper {
                           align-items: center;
 
                           .bill-to {
+                            display: flex;
+                            align-items: center;
                             flex-grow: 0;
                             flex-shrink: 0;
 
                             width: 40%;
-                          }
 
-                          lable {
-                            margin-bottom: 0;
+                            label {
+                              margin-bottom: 0;
+                            }
                           }
 
                           .loanNo {
