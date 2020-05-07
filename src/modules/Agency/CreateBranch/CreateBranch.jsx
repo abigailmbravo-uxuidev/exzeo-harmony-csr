@@ -95,60 +95,60 @@ export const CreateBranch = ({
                   {' '}
                   <form id="createBranch" onSubmit={handleSubmit}>
                     <h3>Details</h3>
-                    {/*<section className="agency-details">*/}
-                    {/*  <BranchDetails />*/}
-                    {/*  /!* web address validaiton *!/*/}
-                    {/*</section>*/}
-                    {/*<h3>Address</h3>*/}
-                    {/*<section*/}
-                    {/*  data-test="agency-address-section"*/}
-                    {/*  className="agency-address"*/}
-                    {/*>*/}
-                    {/*  <AddressGroup*/}
-                    {/*    showTerritoryManager*/}
-                    {/*    mailingAddressPrefix="mailingAddress"*/}
-                    {/*    physicalAddressPrefix="physicalAddress"*/}
-                    {/*    listAnswersAsKey={listAnswersAsKey}*/}
-                    {/*  />*/}
-                    {/*</section>*/}
+                    <section className="agency-details">
+                      <BranchDetails />
+                      {/* web address validaiton */}
+                    </section>
+                    <h3>Address</h3>
+                    <section
+                      data-test="agency-address-section"
+                      className="agency-address"
+                    >
+                      <AddressGroup
+                        showTerritoryManager
+                        mailingAddressPrefix="mailingAddress"
+                        physicalAddressPrefix="physicalAddress"
+                        listAnswersAsKey={listAnswersAsKey}
+                      />
+                    </section>
 
-                    {/*<h3>Contact</h3>*/}
-                    {/*<section className="agency-contact">*/}
-                    {/*  <Contact fieldPrefix="contact" showTitle />*/}
-                    {/*</section>*/}
-                    {/*<h3>*/}
-                    {/*  Agent Of Record{' '}*/}
-                    {/*  <button*/}
-                    {/*    onClick={() => handleToggleExistingAgentModal(form)}*/}
-                    {/*    className="btn btn-link btn-sm"*/}
-                    {/*  >*/}
-                    {/*    <i className="fa fa-user" />*/}
-                    {/*    Use Existing Agent*/}
-                    {/*  </button>*/}
-                    {/*</h3>*/}
-                    {/*<section className="agency-aor">*/}
-                    {/*  <div className="agent-of-record">*/}
-                    {/*    <Agent fieldPrefix="agentOfRecord" />*/}
-                    {/*    <section*/}
-                    {/*      data-test="aor-address-section"*/}
-                    {/*      className="agency-address"*/}
-                    {/*    >*/}
-                    {/*      <AddressGroup*/}
-                    {/*        mailingAddressPrefix="agentOfRecord.mailingAddress"*/}
-                    {/*        physicalAddressPrefix="agentOfRecord.physicalAddress"*/}
-                    {/*        listAnswersAsKey={listAnswersAsKey}*/}
-                    {/*      />*/}
-                    {/*    </section>*/}
-                    {/*  </div>*/}
-                    {/*  <div className="agency-license">*/}
-                    {/*    <FieldArray*/}
-                    {/*      name="agentOfRecord.licenses"*/}
-                    {/*      stateAnswers={listAnswersAsKey.US_states}*/}
-                    {/*      component={License}*/}
-                    {/*      isAgency*/}
-                    {/*    />*/}
-                    {/*  </div>*/}
-                    {/*</section>*/}
+                    <h3>Contact</h3>
+                    <section className="agency-contact">
+                      <Contact fieldPrefix="contact" showTitle />
+                    </section>
+                    <h3>
+                      Agent Of Record{' '}
+                      <button
+                        onClick={() => handleToggleExistingAgentModal(form)}
+                        className="btn btn-link btn-sm"
+                      >
+                        <i className="fa fa-user" />
+                        Use Existing Agent
+                      </button>
+                    </h3>
+                    <section className="agency-aor">
+                      <div className="agent-of-record">
+                        <Agent fieldPrefix="agentOfRecord" />
+                        <section
+                          data-test="aor-address-section"
+                          className="agency-address"
+                        >
+                          <AddressGroup
+                            mailingAddressPrefix="agentOfRecord.mailingAddress"
+                            physicalAddressPrefix="agentOfRecord.physicalAddress"
+                            listAnswersAsKey={listAnswersAsKey}
+                          />
+                        </section>
+                      </div>
+                      <div className="agency-license">
+                        <FieldArray
+                          name="agentOfRecord.licenses"
+                          stateAnswers={listAnswersAsKey.US_states}
+                          component={License}
+                          isAgency
+                        />
+                      </div>
+                    </section>
                   </form>
                 </div>
               </div>
