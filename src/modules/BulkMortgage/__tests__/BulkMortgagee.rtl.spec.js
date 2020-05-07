@@ -130,6 +130,7 @@ describe('BulkMortgagee By Policy Testing', () => {
       getByTestId('mortgagee-0'),
       getByTestId('mortgagee-1')
     ]);
+
     const firstMortgageeCard = within(getByTestId('mortgagee-0'));
 
     expect(firstMortgageeCard.getByText('Mortgagee 1'));
