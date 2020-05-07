@@ -34,83 +34,10 @@ export const CreateBranch = ({
     false
   );
 
-  const handleCreateBranch = async formData => {
-    console.log(formData);
-    // data.mailingAddress.country = DEFAULT_COUNTRY;
-    // data.agentOfRecord.status = 'Active';
-    // data.agentOfRecord.mailingAddress.country = DEFAULT_COUNTRY;
-    const data = {
-      status: 'Active',
-      mailingAddress: {
-        address1: 'PO BOX 5700',
-        city: 'JACKSONVILLE',
-        state: 'FL',
-        zip: '32247',
-        country: {
-          code: 'USA',
-          displayText: 'United States of America'
-        }
-      },
-      physicalAddress: {
-        address1: '2104 PARK ST',
-        city: 'JACKSONVILLE',
-        state: 'FL',
-        zip: '32204',
-        county: 'DUVAL'
-      },
-      mailPolicyDocsToBranch: false,
-      mailCommissionChecksToBranch: false,
-      agentOfRecord: {
-        sameAsMailing: false,
-        licenses: [
-          {
-            state: 'FL',
-            license: '',
-            licenseType: 'Resident',
-            licenseEffectiveDate: '',
-            appointed: true,
-            licenseNumber: 'P075801'
-          }
-        ],
-        firstName: 'JOHN B ',
-        lastName: 'MILLER',
-        emailAddress: 'DANIEL.MILLER@BRIGHTWAY.COM',
-        primaryPhoneNumber: '9048544555',
-        faxNumber: '9043225689',
-        secondaryPhoneNumber: '8882545014',
-        mailingAddress: {
-          address1: 'PO BOX 5700',
-          city: 'JACKSONVILLE',
-          state: 'FL',
-          zip: '32247',
-          country: {
-            code: 'USA',
-            displayText: 'United States of America'
-          }
-        },
-        physicalAddress: {
-          address1: '2104 PARK ST',
-          city: 'JACKSONVILLE',
-          state: 'FL',
-          zip: '32204'
-        },
-        status: 'Active'
-      },
-      displayName: 'JACKSONVILLE - JOHN MILLER',
-      contact: {
-        firstName: 'JOHN B ',
-        lastName: 'MILLER',
-        title: 'AGENT',
-        emailAddress: 'JOHN.MILLER@BRIGHTWAY.COM',
-        primaryPhoneNumber: '9048544555'
-      },
-      websiteUrl: 'HTTPS://WWW.BRIGHTWAY.COM/',
-      primaryPhoneNumber: '9048544555',
-      secondaryPhoneNumber: '8882545014',
-      customerServiceEmailAddress: 'UW@BRIGHTWAY.COM',
-      territoryManagerId: '5b7db9f6ff54fd6a5c619ee8',
-      faxNumber: '9043225689'
-    };
+  const handleCreateBranch = async data => {
+    data.mailingAddress.country = DEFAULT_COUNTRY;
+    data.agentOfRecord.status = 'Active';
+    data.agentOfRecord.mailingAddress.country = DEFAULT_COUNTRY;
     const branch = await createBranch(data, agency.agencyCode);
     history.push(`/agency/${agency.agencyCode}/${branch.branchCode}/overview`);
   };
