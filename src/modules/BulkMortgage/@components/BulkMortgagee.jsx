@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import classNames from 'classnames';
 import { BULK_MORTGAGE_TYPE, BULK_TYPE_LABEL } from '../constants';
-import ByPolicyTab from './ByPolicyTab';
+import ByPolicy from './ByPolicy';
 
 const BulkMortgagee = ({ errorHandler }) => {
   const [selectedTab, setSelectedTab] = useState(BULK_MORTGAGE_TYPE.policy);
@@ -24,7 +24,7 @@ const BulkMortgagee = ({ errorHandler }) => {
                 </button>
               </div>
               {selectedTab === BULK_MORTGAGE_TYPE.policy && (
-                <ByPolicyTab errorHandler={errorHandler} />
+                <ByPolicy errorHandler={errorHandler} />
               )}
             </div>
           </section>

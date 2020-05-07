@@ -1,4 +1,4 @@
-import MortgageeCard from './MortgageeCard';
+import ByPolicy from './ByPolicy';
 import React from 'react';
 import { Form, noop, SectionLoader } from '@exzeo/core-ui';
 import { setMortgageeInitialValues } from '../utilities';
@@ -24,8 +24,8 @@ export const MortgageeResults = ({ handleQueue, results, showLoader }) => {
         >
           {results.map(m => {
             return (
-              <MortgageeCard
-                key={`${m._id}-${m.policyNumber}`}
+              <ByPolicy
+                key={m._id}
                 result={m}
                 handleQueue={() => handleQueue({ ...values[m._id] })}
               />

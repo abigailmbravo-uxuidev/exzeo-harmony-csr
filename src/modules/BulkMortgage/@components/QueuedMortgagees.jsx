@@ -34,7 +34,7 @@ const QueuedMortgagees = ({
         {queuedMortgagees.map(m => {
           return (
             <QueuedMortgageeCard
-              key={`${m._id}-${m.policyNumber}`}
+              key={m._id}
               result={m}
               handleRemove={() => removeFromQueue(m)}
             />
