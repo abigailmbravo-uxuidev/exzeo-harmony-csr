@@ -86,15 +86,15 @@ export const ADD_PAYMENT = {
 };
 
 export const SWITCH_AOR = {
-  firstName: 'KENNETH',
-  lastName: 'STARLING',
-  agencyName: 'OMEGA INSURANCE AGENCY IN',
+  firstName: 'ANDRES',
+  lastName: 'G VILLALON JR',
+  agencyName: 'TYPTAP MANAGEMENT COMPANY',
   mailingAddress: {
     address1: '5300 W CYPRESS ST'
   },
   agencies: [
     {
-      agencyCode: 20003
+      agencyCode: 20000
     }
   ]
 };
