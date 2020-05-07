@@ -34,10 +34,83 @@ export const CreateBranch = ({
     false
   );
 
-  const handleCreateBranch = async data => {
-    data.mailingAddress.country = DEFAULT_COUNTRY;
-    data.agentOfRecord.status = 'Active';
-    data.agentOfRecord.mailingAddress.country = DEFAULT_COUNTRY;
+  const handleCreateBranch = async formData => {
+    console.log(formData);
+    // data.mailingAddress.country = DEFAULT_COUNTRY;
+    // data.agentOfRecord.status = 'Active';
+    // data.agentOfRecord.mailingAddress.country = DEFAULT_COUNTRY;
+    const data = {
+      status: 'Active',
+      mailingAddress: {
+        address1: 'PO BOX 5700',
+        city: 'JACKSONVILLE',
+        state: 'FL',
+        zip: '32247',
+        country: {
+          code: 'USA',
+          displayText: 'United States of America'
+        }
+      },
+      physicalAddress: {
+        address1: '2104 PARK ST',
+        city: 'JACKSONVILLE',
+        state: 'FL',
+        zip: '32204',
+        county: 'DUVAL'
+      },
+      mailPolicyDocsToBranch: false,
+      mailCommissionChecksToBranch: false,
+      agentOfRecord: {
+        sameAsMailing: false,
+        licenses: [
+          {
+            state: 'FL',
+            license: '',
+            licenseType: 'Resident',
+            licenseEffectiveDate: '',
+            appointed: true,
+            licenseNumber: 'P075801'
+          }
+        ],
+        firstName: 'JOHN B ',
+        lastName: 'MILLER',
+        emailAddress: 'DANIEL.MILLER@BRIGHTWAY.COM',
+        primaryPhoneNumber: '9048544555',
+        faxNumber: '9043225689',
+        secondaryPhoneNumber: '8882545014',
+        mailingAddress: {
+          address1: 'PO BOX 5700',
+          city: 'JACKSONVILLE',
+          state: 'FL',
+          zip: '32247',
+          country: {
+            code: 'USA',
+            displayText: 'United States of America'
+          }
+        },
+        physicalAddress: {
+          address1: '2104 PARK ST',
+          city: 'JACKSONVILLE',
+          state: 'FL',
+          zip: '32204'
+        },
+        status: 'Active'
+      },
+      displayName: 'JACKSONVILLE - JOHN MILLER',
+      contact: {
+        firstName: 'JOHN B ',
+        lastName: 'MILLER',
+        title: 'AGENT',
+        emailAddress: 'JOHN.MILLER@BRIGHTWAY.COM',
+        primaryPhoneNumber: '9048544555'
+      },
+      websiteUrl: 'HTTPS://WWW.BRIGHTWAY.COM/',
+      primaryPhoneNumber: '9048544555',
+      secondaryPhoneNumber: '8882545014',
+      customerServiceEmailAddress: 'UW@BRIGHTWAY.COM',
+      territoryManagerId: '5b7db9f6ff54fd6a5c619ee8',
+      faxNumber: '9043225689'
+    };
     const branch = await createBranch(data, agency.agencyCode);
     history.push(`/agency/${agency.agencyCode}/${branch.branchCode}/overview`);
   };
@@ -95,60 +168,60 @@ export const CreateBranch = ({
                   {' '}
                   <form id="createBranch" onSubmit={handleSubmit}>
                     <h3>Details</h3>
-                    <section className="agency-details">
-                      <BranchDetails />
-                      {/* web address validaiton */}
-                    </section>
-                    <h3>Address</h3>
-                    <section
-                      data-test="agency-address-section"
-                      className="agency-address"
-                    >
-                      <AddressGroup
-                        showTerritoryManager
-                        mailingAddressPrefix="mailingAddress"
-                        physicalAddressPrefix="physicalAddress"
-                        listAnswersAsKey={listAnswersAsKey}
-                      />
-                    </section>
+                    {/*<section className="agency-details">*/}
+                    {/*  <BranchDetails />*/}
+                    {/*  /!* web address validaiton *!/*/}
+                    {/*</section>*/}
+                    {/*<h3>Address</h3>*/}
+                    {/*<section*/}
+                    {/*  data-test="agency-address-section"*/}
+                    {/*  className="agency-address"*/}
+                    {/*>*/}
+                    {/*  <AddressGroup*/}
+                    {/*    showTerritoryManager*/}
+                    {/*    mailingAddressPrefix="mailingAddress"*/}
+                    {/*    physicalAddressPrefix="physicalAddress"*/}
+                    {/*    listAnswersAsKey={listAnswersAsKey}*/}
+                    {/*  />*/}
+                    {/*</section>*/}
 
-                    <h3>Contact</h3>
-                    <section className="agency-contact">
-                      <Contact fieldPrefix="contact" showTitle />
-                    </section>
-                    <h3>
-                      Agent Of Record{' '}
-                      <button
-                        onClick={() => handleToggleExistingAgentModal(form)}
-                        className="btn btn-link btn-sm"
-                      >
-                        <i className="fa fa-user" />
-                        Use Existing Agent
-                      </button>
-                    </h3>
-                    <section className="agency-aor">
-                      <div className="agent-of-record">
-                        <Agent fieldPrefix="agentOfRecord" />
-                        <section
-                          data-test="aor-address-section"
-                          className="agency-address"
-                        >
-                          <AddressGroup
-                            mailingAddressPrefix="agentOfRecord.mailingAddress"
-                            physicalAddressPrefix="agentOfRecord.physicalAddress"
-                            listAnswersAsKey={listAnswersAsKey}
-                          />
-                        </section>
-                      </div>
-                      <div className="agency-license">
-                        <FieldArray
-                          name="agentOfRecord.licenses"
-                          stateAnswers={listAnswersAsKey.US_states}
-                          component={License}
-                          isAgency
-                        />
-                      </div>
-                    </section>
+                    {/*<h3>Contact</h3>*/}
+                    {/*<section className="agency-contact">*/}
+                    {/*  <Contact fieldPrefix="contact" showTitle />*/}
+                    {/*</section>*/}
+                    {/*<h3>*/}
+                    {/*  Agent Of Record{' '}*/}
+                    {/*  <button*/}
+                    {/*    onClick={() => handleToggleExistingAgentModal(form)}*/}
+                    {/*    className="btn btn-link btn-sm"*/}
+                    {/*  >*/}
+                    {/*    <i className="fa fa-user" />*/}
+                    {/*    Use Existing Agent*/}
+                    {/*  </button>*/}
+                    {/*</h3>*/}
+                    {/*<section className="agency-aor">*/}
+                    {/*  <div className="agent-of-record">*/}
+                    {/*    <Agent fieldPrefix="agentOfRecord" />*/}
+                    {/*    <section*/}
+                    {/*      data-test="aor-address-section"*/}
+                    {/*      className="agency-address"*/}
+                    {/*    >*/}
+                    {/*      <AddressGroup*/}
+                    {/*        mailingAddressPrefix="agentOfRecord.mailingAddress"*/}
+                    {/*        physicalAddressPrefix="agentOfRecord.physicalAddress"*/}
+                    {/*        listAnswersAsKey={listAnswersAsKey}*/}
+                    {/*      />*/}
+                    {/*    </section>*/}
+                    {/*  </div>*/}
+                    {/*  <div className="agency-license">*/}
+                    {/*    <FieldArray*/}
+                    {/*      name="agentOfRecord.licenses"*/}
+                    {/*      stateAnswers={listAnswersAsKey.US_states}*/}
+                    {/*      component={License}*/}
+                    {/*      isAgency*/}
+                    {/*    />*/}
+                    {/*  </div>*/}
+                    {/*</section>*/}
                   </form>
                 </div>
               </div>
@@ -168,7 +241,7 @@ export const CreateBranch = ({
                   form="createBranch"
                   type="submit"
                   data-test="submitButton"
-                  disabled={submitting || pristine}
+                  // disabled={submitting || pristine}
                 >
                   Save
                 </Button>

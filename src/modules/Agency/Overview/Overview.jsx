@@ -52,7 +52,7 @@ export const Overview = ({
     const { agencyCode, branches } = agency;
 
     if (branchCode > 0) {
-      const branchData = [...branches];
+      const branchData = branches.filter(b => String(b.branchCode) !== '0');
       const branchIndex = branchData.findIndex(
         b => Number(b.branchCode) === Number(branchCode)
       );
