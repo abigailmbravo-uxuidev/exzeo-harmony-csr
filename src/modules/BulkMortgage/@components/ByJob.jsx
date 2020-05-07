@@ -8,7 +8,7 @@ import { getMortgageeJobs } from '../data';
 import { filterJobs } from '../utilities';
 import { date } from '@exzeo/core-ui';
 
-export const ByJobTab = ({ userProfile, errorHandler }) => {
+export const ByJob = ({ userProfile, errorHandler }) => {
   const [jobResults, setJobResults] = useState([]);
   const { userList } = useFetchUsersForJobs({ userProfile, errorHandler });
 
@@ -49,4 +49,4 @@ const mapStateToProps = state => ({
   userProfile: state.authState.userProfile
 });
 
-export default connect(mapStateToProps)(ByJobTab);
+export default connect(mapStateToProps)(ByJob);

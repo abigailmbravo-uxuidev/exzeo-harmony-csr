@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import classNames from 'classnames';
 import { BULK_MORTGAGE_TYPE, BULK_TYPE_LABEL } from '../constants';
 import { Button } from '@exzeo/core-ui';
-import ByJobTab from './ByJobTab';
+import ByJobTab from './ByJob';
 import ByPolicy from './ByPolicy';
 
 const BulkMortgagee = ({ errorHandler }) => {
