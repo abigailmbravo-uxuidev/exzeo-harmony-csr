@@ -6,19 +6,11 @@ import Address from './Address';
 const MortgageeCard = ({ result, handleQueue }) => (
   <div className="card" data-test={`mortgagee-${result.order}`}>
     <section className="mortgagee-detail">
-      {!result.noMortgagee && (
-        <React.Fragment>
-          <h4>Mortgagee {result.order + 1}</h4>
-          <h5>{result.name1}</h5>
-          <Address address={result.mailingAddress} className="address" />
-        </React.Fragment>
-      )}
-      {result.noMortgagee && (
-        <React.Fragment>
-          <h4>No Mortgagee</h4>
-          <h5>&nbsp;</h5>
-        </React.Fragment>
-      )}
+      <React.Fragment>
+        <h4>Mortgagee {result.order + 1}</h4>
+        <h5>{result.name1}</h5>
+        <Address address={result.mailingAddress} className="address" />
+      </React.Fragment>
       <div className="billto-loan-wrapper">
         {result.currentBillTo && (
           <div className="bill-to">

@@ -25,14 +25,12 @@ export function formatMortgagees(result, queuedMortgagees) {
       ai => ai.type === 'Mortgagee' && ai.active
     );
 
-    const existingPolicy = queuedMortgagees.some(
-      q => !q._id && p.policyNumber === q.policyNumber
-    );
-
     if (mortgagees.length) {
       mortgagees.forEach(m => {
-        const existingMortgagee = queuedMortgagees.some(q => m._id === q._id);
-        if (!existingMortgagee) {
+        const existingMortgageeInQueue = queuedMortgagees.some(
+          q => m._id === q._id
+        );
+        if (!existingMortgageeInQueue) {
           acc.push({
             ...m,
             companyCode: p.companyCode,
@@ -44,18 +42,6 @@ export function formatMortgagees(result, queuedMortgagees) {
           });
         }
       });
-    } else {
-      if (!existingPolicy) {
-        acc.push({
-          noMortgagee: true,
-          companyCode: p.companyCode,
-          product: p.product,
-          propertyAddress: p.property.physicalAddress,
-          policyNumber: p.policyNumber,
-          policyHolderName: `${primaryPolicyHolder.firstName} ${primaryPolicyHolder.lastName}`,
-          currentBillTo: false
-        });
-      }
     }
     return acc;
   }, []);

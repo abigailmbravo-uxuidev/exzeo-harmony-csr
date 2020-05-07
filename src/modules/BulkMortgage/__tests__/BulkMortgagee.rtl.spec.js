@@ -197,7 +197,7 @@ describe('BulkMortgagee Testing', () => {
     expect(queuedMortgageeCard.getByText('PO BOX 47047, ATLANTA, GA 30362'));
     expect(queuedMortgageeCard.getByText('Bill To:'));
     expect(queuedMortgageeCard.getByText(/Loan Number/));
-    expect(queuedMortgageeCard.getByText('12-1008954-01'));
+    expect(queuedMortgageeCard.getByText(/12-1008954-01/));
     expect(firstMortgageeCard.getByText('Matthew Overton'));
     expect(queuedMortgageeCard.getByText('Remove'));
 
