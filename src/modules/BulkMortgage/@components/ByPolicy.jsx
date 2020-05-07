@@ -9,7 +9,7 @@ import { formatMortgagees } from '../utilities';
 import { Button } from '@exzeo/core-ui';
 import { BUTTON_CLASS } from '@exzeo/core-ui/src/Button/Button';
 
-export const ByPolicyTab = ({ errorHandler }) => {
+export const ByPolicy = ({ errorHandler }) => {
   const [queuedMortgagees, setQueuedMortgagees] = useState([]);
   const [mortgageeResults, setMortgageeResults] = useState([]);
   const [showLoader, setShowLoader] = useState(false);
@@ -39,7 +39,7 @@ export const ByPolicyTab = ({ errorHandler }) => {
   const addToQueue = mortgagee => {
     setHasSearched(false);
     const existingMortgagee = queuedMortgagees.some(
-      m => m._id === mortgagee._id
+      m => m._id === mortgagee._id && m.policyNumber === mortgagee.policyNumber
     );
     if (!existingMortgagee) {
       setQueuedMortgagees([mortgagee, ...queuedMortgagees]);
@@ -110,4 +110,4 @@ export const ByPolicyTab = ({ errorHandler }) => {
   );
 };
 
-export default ByPolicyTab;
+export default ByPolicy;

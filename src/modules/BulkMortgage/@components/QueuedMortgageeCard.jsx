@@ -16,7 +16,16 @@ const QueuedMortgageeCard = ({ result, handleRemove }) => (
     <section>
       <div className="details">
         <span className="policy-no">
-          <strong>{result.policyNumber}</strong>&nbsp;|&nbsp;
+          <strong>
+            <a
+              target="_blank"
+              rel="noopener noreferrer"
+              href={`/policy/${result.policyNumber}`}
+            >
+              {result.companyCode} | {result.policyNumber}
+            </a>
+          </strong>
+          &nbsp;|&nbsp;
           {result.policyHolderName}
         </span>
         <span className="loan-number">
@@ -43,15 +52,12 @@ const QueuedMortgageeCard = ({ result, handleRemove }) => (
         </Button>
       </div>
       <div className="title">
-        {!result.noMortgagee && (
-          <h4>
-            {result.name1} (Mortgagee {result.order + 1})&nbsp;|&nbsp;
-            <span className="propertyAddress">
-              <Address className="" address={result.mailingAddress} />
-            </span>
-          </h4>
-        )}
-        {result.noMortgagee && <h4>No Mortgagee</h4>}
+        <h4>
+          {result.name1} (Mortgagee {result.order + 1})&nbsp;|&nbsp;
+          <span className="propertyAddress">
+            <Address className="" address={result.mailingAddress} />
+          </span>
+        </h4>
       </div>
     </section>
   </div>

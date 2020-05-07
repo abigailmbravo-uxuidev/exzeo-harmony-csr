@@ -28,26 +28,20 @@ export function formatMortgagees(result, queuedMortgagees) {
 
     if (mortgagees.length) {
       mortgagees.forEach(m => {
-        const existingMortgagee = queuedMortgagees.some(q => m._id === q._id);
-        if (!existingMortgagee) {
+        const existingMortgageeInQueue = queuedMortgagees.some(
+          q => m._id === q._id
+        );
+        if (!existingMortgageeInQueue) {
           acc.push({
             ...m,
+            companyCode: p.companyCode,
             product: p.product,
             propertyAddress: p.property.physicalAddress,
             policyNumber: p.policyNumber,
-            policyHolderName: `${primaryPolicyHolder.lastName}, ${primaryPolicyHolder.firstName} `,
+            policyHolderName: `${primaryPolicyHolder.firstName} ${primaryPolicyHolder.lastName}`,
             currentBillTo: m._id === p.billToId
           });
         }
-      });
-    } else {
-      acc.push({
-        noMortgagee: true,
-        product: p.product,
-        propertyAddress: p.property.physicalAddress,
-        policyNumber: p.policyNumber,
-        policyHolderName: `${primaryPolicyHolder.lastName}, ${primaryPolicyHolder.firstName} `,
-        currentBillTo: false
       });
     }
     return acc;

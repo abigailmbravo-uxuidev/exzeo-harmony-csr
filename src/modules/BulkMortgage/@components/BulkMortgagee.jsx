@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import classNames from 'classnames';
 import { BULK_MORTGAGE_TYPE, BULK_TYPE_LABEL } from '../constants';
-import ByPolicyTab from './ByPolicyTab';
 import { Button } from '@exzeo/core-ui';
 import ByJobTab from './ByJobTab';
+import ByPolicy from './ByPolicy';
 
 const BulkMortgagee = ({ errorHandler }) => {
   const [selectedTab, setSelectedTab] = useState(BULK_MORTGAGE_TYPE.policy);
@@ -37,7 +37,7 @@ const BulkMortgagee = ({ errorHandler }) => {
                 </Button>
               </div>
               {selectedTab === BULK_MORTGAGE_TYPE.policy && (
-                <ByPolicyTab errorHandler={errorHandler} />
+                <ByPolicy errorHandler={errorHandler} />
               )}
               {selectedTab === BULK_MORTGAGE_TYPE.job && (
                 <ByJobTab errorHandler={errorHandler} />

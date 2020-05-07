@@ -9,7 +9,8 @@ const NoResults = () => {
         </h4>
       </div>
       <div className="card-block">
-        Please refine your search or view policies queued below
+        Please refine your search or view policies queued below. Please note,
+        cancelled policies are not available in this search.
       </div>
     </div>
   );
