@@ -168,7 +168,7 @@ export const CreateBranch = ({
                   form="createBranch"
                   type="submit"
                   data-test="submitButton"
-                  // disabled={submitting || pristine}
+                  disabled={submitting || pristine}
                 >
                   Save
                 </Button>
