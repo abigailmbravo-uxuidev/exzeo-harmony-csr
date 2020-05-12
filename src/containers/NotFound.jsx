@@ -3,10 +3,10 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import Header from '../components/Common/Header';
 
-const NotFound = function NotFound() {
+const NotFound = function NotFound({ auth }) {
   return (
     <div className="app-wrapper">
-      <Header />
+      <Header auth={auth} />
       <main role="document">
         <div className="route-content">
           <div className="error-content" role="article">

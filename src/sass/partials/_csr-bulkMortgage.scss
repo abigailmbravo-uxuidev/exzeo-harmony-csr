@@ -1,0 +1,291 @@
+html body div#root .app-wrapper {
+  main[role='document'].bulk-mortgage-main {
+    flex-direction: column;
+    .flex-form {
+      display: flex;
+
+      > div {
+        margin-right: $padding;
+
+        &.zip {
+          flex-grow: 0;
+          flex-shrink: 0;
+
+          width: 6rem;
+          margin-right: 0;
+        }
+        &.state {
+          flex-grow: 0;
+          flex-shrink: 0;
+
+          width: 3rem;
+        }
+      }
+    }
+
+    .title {
+      .queue-count {
+        color: $warm-gray-08;
+
+        font-size: $font-size-sm;
+        font-weight: $font-weight-normal;
+      }
+    }
+
+    .content-wrapper.scroll {
+      overflow-x: hidden;
+      overflow-y: auto;
+
+      .bulk-mortgagee-wrapper {
+        padding: 2 * $padding;
+
+        .bm-wrapper {
+          padding: 0;
+
+          &.by-policy {
+            margin-bottom: $padding * 2;
+
+            border-bottom: 1px dashed $blue;
+          }
+
+          .bulk-mortgagee-form,
+          .search-inputs,
+          .search-results {
+            padding: 0;
+          }
+
+          section {
+            flex-grow: 0;
+            flex-shrink: 0;
+
+            &.bm-byPolicy {
+              &.mortgagee-wrapper {
+                position: relative;
+
+                flex-grow: 0;
+                flex-shrink: 0;
+
+                width: 40%;
+                margin-top: -1rem;
+                margin-right: 1rem;
+                padding: 1rem;
+
+                background-color: $warm-gray-03;
+
+                button {
+                  &.btn-link {
+                    position: absolute;
+                    top: 0.5rem;
+                    right: 0.5rem;
+
+                    font-size: $font-size-sm;
+                  }
+                }
+              }
+              &.search-results-wrapper {
+                flex-grow: 1;
+                flex-shrink: 1;
+
+                .search-inputs {
+                  display: flex;
+                  .form-group {
+                    margin-right: $padding;
+                    &.product {
+                      flex-grow: 0;
+                      flex-shrink: 0;
+
+                      width: 8rem;
+                    }
+                    &.search-type {
+                      flex-grow: 0;
+                      flex-shrink: 0;
+
+                      width: 10rem;
+                    }
+                  }
+                  button {
+                    align-self: flex-start;
+
+                    margin-top: 1.75rem;
+                  }
+                }
+
+                .search-results {
+                  .card {
+                    display: flex;
+                    flex-direction: row;
+                    flex-wrap: wrap;
+
+                    margin: 0 0 1rem;
+                    padding: 0.75rem 0.5rem;
+
+                    p {
+                      &.address {
+                        margin-bottom: $padding;
+                      }
+                    }
+
+                    section {
+                      margin-bottom: 0;
+                      padding-bottom: 0;
+
+                      &.mortgagee-detail {
+                        width: 50%;
+                        padding-right: 1rem;
+
+                        border-right: 1px dotted $warm-gray-03;
+
+                        h4 {
+                          color: $warm-gray-08;
+                        }
+
+                        .billto-loan-wrapper {
+                          display: flex;
+                          align-items: center;
+
+                          .bill-to {
+                            display: flex;
+                            align-items: center;
+                            flex-grow: 0;
+                            flex-shrink: 0;
+
+                            width: 40%;
+
+                            label {
+                              margin-bottom: 0;
+                            }
+                          }
+
+                          .loanNo {
+                            align-items: center;
+                            flex-direction: row;
+
+                            margin-bottom: 0;
+
+                            label {
+                              flex-grow: 0;
+                              flex-shrink: 0;
+
+                              margin-right: $padding;
+                              margin-bottom: 0;
+                            }
+                          }
+                        }
+                      }
+                      &.policy-details {
+                        display: flex;
+
+                        width: calc(50% - 1rem);
+                        margin-left: 1rem;
+
+                        .icon-name {
+                          display: inline-flex;
+                          flex-direction: column;
+                          justify-content: center;
+
+                          .card-icon {
+                            width: 2rem;
+
+                            color: $bright-blue-darken-04;
+
+                            font-size: $font-size-lg;
+                          }
+                          .product {
+                            margin-right: $padding;
+
+                            text-align: center;
+
+                            font-size: $font-size-sm;
+                          }
+                        }
+                        .details {
+                          display: inline-flex;
+                          flex-direction: column;
+                          h4 {
+                            color: $warm-gray-08;
+                          }
+                        }
+                      }
+                    }
+                    footer {
+                      margin-bottom: 0;
+                      padding: 0;
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+
+        .queue-header {
+          display: flex;
+          justify-content: space-between;
+        }
+
+        .policy-list {
+          padding: $padding 0;
+
+          .card {
+            &:hover {
+              cursor: default;
+              transform: scale(1);
+
+              box-shadow: 0 0 0 rgba(0, 0, 0, 0);
+            }
+            .icon-name {
+              flex-wrap: nowrap;
+
+              .product {
+                flex-basis: auto;
+
+                margin-top: 0;
+              }
+            }
+            section {
+              .details {
+                justify-content: flex-start;
+
+                span {
+                  flex-grow: 0;
+                  flex-shrink: 0;
+
+                  margin-right: $padding * 2;
+
+                  &.policy-no {
+                    width: 50%;
+                  }
+
+                  &.make-billTo {
+                    flex-grow: 1;
+                  }
+
+                  &.loan-number {
+                    width: 25%;
+                  }
+                }
+                button {
+                  margin-right: $padding;
+                }
+              }
+              .propertyAddress {
+                display: inline-block;
+                p {
+                  margin: 0;
+                }
+              }
+              .make-billTo {
+                opacity: 0.5;
+              }
+            }
+          }
+        }
+      }
+    }
+
+    .footer {
+      width: 100%;
+      padding: $padding;
+    }
+  }
+}
