@@ -1,11 +1,8 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 
-import {
-  Payment,
-  PolicyBilling,
-  PaymentHistoryTable
-} from '@exzeo/core-ui/src/@Harmony';
+import { Payment, PolicyBilling } from '@exzeo/core-ui/src/@Harmony';
+import PaymentHistorySection from './@components/PaymentHistorySection';
 
 const Billing = ({
   initialValues,
@@ -28,10 +25,11 @@ const Billing = ({
         className={config.extendedProperties.billingClassName}
         header={config.extendedProperties.billingHeader}
       />
-      <PaymentHistoryTable
+      <PaymentHistorySection
         initialValues={initialValues}
+        getPolicy={getPolicy}
+        setPaymentAdded={setPaymentAdded}
         paymentAdded={paymentAdded}
-        header={config.extendedProperties.paymentHistoryHeader}
       />
     </React.Fragment>
   );

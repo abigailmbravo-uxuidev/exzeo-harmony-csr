@@ -39,7 +39,7 @@ export const primaryPolicyholderFields = [
     dataTest: 'policyHolders[0].primaryPhoneNumber',
     type: 'phone',
     label: 'Primary Phone',
-    value: '(999) 888-1231'
+    value: '(123) 123-1231'
   },
   {
     dataTest: 'policyHolders[0].secondaryPhoneNumber',
