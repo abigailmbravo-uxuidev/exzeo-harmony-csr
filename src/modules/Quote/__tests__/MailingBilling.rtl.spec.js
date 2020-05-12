@@ -116,14 +116,14 @@ describe('Mailing/Billing Page Testing', () => {
     const newProps = {
       ...props,
       quoteData: {
-        ...props.quoteData,
-        policyHolderMailingAddress: {},
-        sameAsPropertyAddress: false
+        ...props.quoteData
       }
     };
 
-    newProps.quote.policyHolderMailingAddress = {};
     newProps.quote.sameAsPropertyAddress = false;
+    newProps.quote.billToId = 'ab1234';
+    newProps.quote.billToType = 'Policyholder';
+    newProps.quote.billPlan = 'Annual';
 
     const { getByTestId, getByText, getByLabelText } = renderWithForm(
       <QuoteWorkflow {...newProps} />
@@ -132,6 +132,10 @@ describe('Mailing/Billing Page Testing', () => {
       getByTestId('billToId'),
       getByTestId('billPlan_Annual')
     ]);
+
+    await wait(() => {
+      expect(getByText('Update')).toBeDisabled();
+    });
 
     fireEvent.change(getByTestId('policyHolderMailingAddress.address1'), {
       target: { value: 'New Address' }
@@ -145,7 +149,7 @@ describe('Mailing/Billing Page Testing', () => {
 
     await wait(() => {
       expect(getByTestId('policyHolderMailingAddress.address1').value).toEqual(
-        ''
+        '6666 mailing address'
       );
       expect(getByText('Update')).toBeDisabled();
     });
@@ -190,6 +194,7 @@ describe('Mailing/Billing Page Testing', () => {
         'false'
       );
 
+      expect(getByText('Update')).toBeDisabled();
       expect(getByTestId('policyHolderMailingAddress.address1').value).toEqual(
         ''
       );
@@ -228,6 +233,7 @@ describe('Mailing/Billing Page Testing', () => {
     fireEvent.click(getByTestId('sameAsPropertyAddress'));
 
     await wait(() => {
+      expect(getByText('Update')).toBeDisabled();
       expect(getByTestId('sameAsPropertyAddress')).toHaveAttribute(
         'data-value',
         'false'
