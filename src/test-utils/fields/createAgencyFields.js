@@ -37,7 +37,6 @@ export const detailsFields = [
     dataTest: 'okToPay',
     type: 'radio',
     label: 'Ok to Pay',
-    type: 'radio',
     values: ['No', 'Yes']
   },
   {
