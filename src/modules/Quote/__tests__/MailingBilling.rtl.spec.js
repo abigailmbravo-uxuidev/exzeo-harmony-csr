@@ -12,13 +12,7 @@ import {
   rating,
   mockServiceRunner,
   mailingBillingResult as result,
-  propertyFields,
-  checkHeader,
-  checkLabel,
-  checkTextInput,
-  checkSelect,
-  checkRadio,
-  checkButton
+  propertyFields
 } from '../../../test-utils';
 import { QuoteWorkflow } from '../QuoteWorkflow';
 
@@ -139,10 +133,6 @@ describe('Mailing/Billing Page Testing', () => {
       getByTestId('billPlan_Annual')
     ]);
 
-    await wait(() => {
-      expect(getByText('Update')).toBeDisabled();
-    });
-
     fireEvent.change(getByTestId('policyHolderMailingAddress.address1'), {
       target: { value: 'New Address' }
     });
@@ -200,7 +190,6 @@ describe('Mailing/Billing Page Testing', () => {
         'false'
       );
 
-      expect(getByText('Update')).toBeDisabled();
       expect(getByTestId('policyHolderMailingAddress.address1').value).toEqual(
         ''
       );
@@ -239,7 +228,6 @@ describe('Mailing/Billing Page Testing', () => {
     fireEvent.click(getByTestId('sameAsPropertyAddress'));
 
     await wait(() => {
-      expect(getByText('Update')).toBeDisabled();
       expect(getByTestId('sameAsPropertyAddress')).toHaveAttribute(
         'data-value',
         'false'
