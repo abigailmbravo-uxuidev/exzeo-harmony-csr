@@ -181,8 +181,7 @@ export class QuoteWorkflow extends React.Component {
     this.setState({ showDiaries: !this.state.showDiaries });
   };
 
-  isSubmitDisabled = (pristine, submitting, values, form) => {
-    const formState = form.getState();
+  isSubmitDisabled = (pristine, submitting, values) => {
     const { location, quote } = this.props;
     if (quote.editingDisabled || this.state.applicationSent) return true;
 
@@ -304,8 +303,7 @@ export class QuoteWorkflow extends React.Component {
                           isSubmitDisabled={this.isSubmitDisabled(
                             pristine,
                             submitting,
-                            values,
-                            form
+                            values
                           )}
                           handlePrimaryClick={this.primaryClickHandler}
                           handleApplicationClick={this.handleRetrieveQuote}
