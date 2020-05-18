@@ -16,7 +16,7 @@ export const ByJob = ({ userProfile, errorHandler }) => {
     try {
       // the endpoint format has to be exactly 24 characters for some reason
       const format = 'YYYY-MM-DDThh:mm:ss.SSSS';
-      await getMortgageeJobs({
+      const jobData = await getMortgageeJobs({
         windowStart: data?.dateRange?.start
           ? date.formattedLocalDate(data.dateRange.start, format)
           : '',
@@ -24,7 +24,7 @@ export const ByJob = ({ userProfile, errorHandler }) => {
           ? date.formattedLocalDate(data.dateRange.end, format)
           : ''
       });
-      setJobResults(filterJobs({ jobResults: jobs, ...data }));
+      setJobResults(filterJobs({ jobResults: jobs, ...jobData.result.jobs }));
     } catch (error) {
       errorHandler(error);
     }
