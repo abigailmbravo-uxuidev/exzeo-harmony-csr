@@ -1,4 +1,5 @@
 import moment from 'moment';
+import { DEFAULT_COUNTRY } from '../../constants/address';
 /**
  *
  * @param {AdditionalInterestAnswers[]} answers
@@ -13,6 +14,30 @@ export function formatTopAnswers(answers) {
     id: String(answer.ID),
     label: `${answer.AIName1}, ${answer.AIAddress1}, ${answer.AICity} ${answer.AIState}, ${answer.AIZip}`
   }));
+}
+
+export function formatCreateJob(data, queuedMortgagees) {
+  const policies = queuedMortgagees.map(m => ({
+    policyNumber: m.policyNumber,
+    additionalInterestId: m._id,
+    newBillTo: m.newBillTo
+  }));
+
+  const { name1, name2, mailingAddress } = data;
+
+  mailingAddress.zipExtension = '';
+  mailingAddress.country = DEFAULT_COUNTRY;
+
+  return {
+    additionalInterest: {
+      name1,
+      name2,
+      mailingAddress,
+      type: 'Mortgagee',
+      active: true
+    },
+    policies
+  };
 }
 
 export function formatMortgagees(result, queuedMortgagees) {
@@ -70,8 +95,7 @@ export const filterJobs = ({
   jobResults,
   jobNumber,
   completedBy,
-  mortgageeName,
-  dateRange
+  mortgageeName
 }) => {
   const filter = [];
   if (jobNumber) {

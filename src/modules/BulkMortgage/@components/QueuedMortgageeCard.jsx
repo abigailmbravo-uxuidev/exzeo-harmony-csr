@@ -34,7 +34,7 @@ const QueuedMortgageeCard = ({ result, handleRemove }) => (
         </span>
         <span className="make-billTo">
           <strong>Bill To:</strong>&nbsp;
-          {result.makeBillTo || result.currentBillTo ? (
+          {result.newBillTo || result.currentBillTo ? (
             <i className="fa fa-check-square" />
           ) : (
             <i className="fa fa-square-o" />

@@ -4,8 +4,8 @@ import SearchByPolicy from './SearchByPolicy';
 import MortgageeResults from './MortgageeResults';
 import NoResults from './NoResults';
 import QueuedMortgagees from './QueuedMortgagees';
-import { fetchMortgageesFromPolicies } from '../data';
-import { formatMortgagees } from '../utilities';
+import { createBulkMortgageJob, fetchMortgageesFromPolicies } from '../data';
+import { formatCreateJob, formatMortgagees } from '../utilities';
 import { Button } from '@exzeo/core-ui';
 import { BUTTON_CLASS } from '@exzeo/core-ui/src/Button/Button';
 
@@ -61,10 +61,12 @@ export const ByPolicy = ({ errorHandler }) => {
     setQueuedMortgagees([]);
   };
 
-  const handleBulkUpdateSubmit = async () => {
-    /*
-    // TODO: need to grab AI data from the form then grab all policyNumbers and place in array
-     */
+  const handleCreateJobSubmit = async data => {
+    const { policies, additionalInterest } = formatCreateJob(
+      data,
+      queuedMortgagees
+    );
+    await createBulkMortgageJob({ policies, additionalInterest });
   };
 
   return (
@@ -75,7 +77,7 @@ export const ByPolicy = ({ errorHandler }) => {
       >
         <section className="bm-byPolicy mortgagee-wrapper">
           <MortgageeForm
-            handleFormSubmit={handleBulkUpdateSubmit}
+            handleFormSubmit={handleCreateJobSubmit}
             errorHandler={errorHandler}
           />
         </section>

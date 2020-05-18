@@ -82,3 +82,30 @@ export async function getUsersForJobs(userProfile) {
     throw error;
   }
 }
+/**
+ *
+ * @returns {Promise<[]>}
+ * @param {object} additionalInterest
+ * @param {array} policies
+
+ **/
+export async function createBulkMortgageJob({ additionalInterest, policies }) {
+  try {
+    const config = {
+      method: 'POST',
+      service: 'policy-manager',
+      path: `/bulkMortgageJobs/create`,
+      data: {
+        additionalInterest,
+        policies
+      }
+    };
+    const response = await serviceRunner.callService(
+      config,
+      'createBulkMortgageJob'
+    );
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+}
