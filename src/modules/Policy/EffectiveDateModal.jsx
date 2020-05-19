@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { Modal, Button, FormSpy, date } from '@exzeo/core-ui';
+import { Modal, Button, FormSpy, date, Field, Currency } from '@exzeo/core-ui';
 
 import EffectiveDateForm from './EffectiveDateForm';
 import { rateEffectiveDateChange } from './utilities';
@@ -10,7 +10,8 @@ const EffectiveDateModal = ({
   closeModal,
   effectiveDateReasons,
   errorHandler,
-  zipCodeSettings
+  zipCodeSettings,
+  currentPremium
 }) => {
   const [premiumChange, setPremiumChange] = useState(null);
   const [instanceId, setInstanceId] = useState(null);
@@ -57,6 +58,28 @@ const EffectiveDateModal = ({
                 return null;
               }}
             </FormSpy>
+            <Field name="rating.newEndorsementAmount">
+              {({ input, meta }) => (
+                <Field
+                  name="rating.newEndorsementAmount"
+                  label="New Endorsement Amount"
+                  component={Currency}
+                  disabled
+                  dataTest="newEndorsementAmount"
+                />
+              )}
+            </Field>
+            <Field name="rating.newAnnualPremium">
+              {({ input, meta }) => (
+                <Field
+                  name="rating.newAnnualPremium"
+                  label="New Annual Premium"
+                  component={Currency}
+                  disabled
+                  dataTest="newAnnualPremium"
+                />
+              )}
+            </Field>
             <Button
               className={Button.constants.classNames.secondary}
               onClick={closeModal}

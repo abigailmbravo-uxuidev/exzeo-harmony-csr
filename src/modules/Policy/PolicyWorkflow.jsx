@@ -403,6 +403,7 @@ export class PolicyWorkflow extends React.Component {
                     ),
                     effectiveDateChangeReason: ''
                   }}
+                  currentPremium={policy.summaryLedger.currentPremium}
                   zipCodeSettings={zipCodeSettings}
                   effectiveDateReasons={effectiveDateReasons}
                   getPolicy={this.props.getPolicy}
