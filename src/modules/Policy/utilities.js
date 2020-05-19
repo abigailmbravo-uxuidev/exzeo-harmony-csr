@@ -139,3 +139,33 @@ export async function fetchAgentsByAgencyCode(agencyCode) {
     throw error;
   }
 }
+
+/**
+ *
+ * @returns {object}
+ * @param data
+ * @param errorHandler
+ */
+export async function rateEffectiveDateChange(data, errorHandler) {
+  try {
+    const transferConfig = {
+      exchangeName: 'harmony',
+      routingKey: 'harmony.policy.rateEffectiveDateChange',
+      data
+    };
+
+    const response = await serviceRunner.callService(
+      transferConfig,
+      'rateEffectiveDateChange'
+    );
+    const {
+      data: {
+        result: { rating, instanceId }
+      }
+    } = response;
+    return { rating, instanceId };
+  } catch (err) {
+    errorHandler(err);
+    return {};
+  }
+}

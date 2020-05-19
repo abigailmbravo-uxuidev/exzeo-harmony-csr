@@ -1,15 +1,40 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { Modal, Button } from '@exzeo/core-ui';
+import { Modal, Button, FormSpy, date } from '@exzeo/core-ui';
 
 import EffectiveDateForm from './EffectiveDateForm';
+import { rateEffectiveDateChange } from './utilities';
 
 const EffectiveDateModal = ({
   initialValues,
   closeModal,
-  changeEffectiveDateSubmit,
-  effectiveDateReasons
+  effectiveDateReasons,
+  errorHandler,
+  zipCodeSettings
 }) => {
+  const [premiumChange, setPremiumChange] = useState(null);
+  const [instanceId, setInstanceId] = useState(null);
+  const [formInstance, setFormInstance] = useState(null);
+
+  const changeEffectiveDateSubmit = async data => {};
+  const getRateSubmit = async data => {
+    const effectiveDate = date.convertDateToTimeZone(
+      data.effectiveDate,
+      zipCodeSettings
+    );
+    const { premiumChange, instanceId } = await rateEffectiveDateChange(
+      {
+        ...data,
+        effectiveDate
+      },
+      errorHandler
+    );
+
+    setInstanceId(instanceId);
+    setPremiumChange(premiumChange);
+
+    console.log(formInstance.getState());
+  };
   return (
     <Modal
       size={Modal.sizes.small}
@@ -18,12 +43,20 @@ const EffectiveDateModal = ({
     >
       <EffectiveDateForm
         initialValues={initialValues}
-        handleSubmit={changeEffectiveDateSubmit}
+        handleSubmit={instanceId ? changeEffectiveDateSubmit : getRateSubmit}
         effectiveDateReasons={effectiveDateReasons}
         className="card-block"
       >
         {({ submitting, pristine }) => (
           <div className="card-footer">
+            <FormSpy subscription={{}}>
+              {({ form }) => {
+                if (!formInstance) {
+                  setFormInstance(form);
+                }
+                return null;
+              }}
+            </FormSpy>
             <Button
               className={Button.constants.classNames.secondary}
               onClick={closeModal}
@@ -38,7 +71,7 @@ const EffectiveDateModal = ({
               disabled={submitting || pristine}
               data-test="modal-submit"
             >
-              Update
+              {instanceId ? 'Update' : 'Review'}
             </Button>
           </div>
         )}
