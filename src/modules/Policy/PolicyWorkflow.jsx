@@ -242,7 +242,8 @@ export class PolicyWorkflow extends React.Component {
       zipCodeSettings,
       cancelOptions,
       effectiveDateReasons,
-      endorsementHistory
+      endorsementHistory,
+      summaryLedger
     } = this.props;
 
     const {
@@ -403,7 +404,7 @@ export class PolicyWorkflow extends React.Component {
                     ),
                     effectiveDateChangeReason: ''
                   }}
-                  currentPremium={policy.summaryLedger.currentPremium}
+                  currentPremium={summaryLedger.currentPremium}
                   zipCodeSettings={zipCodeSettings}
                   effectiveDateReasons={effectiveDateReasons}
                   getPolicy={this.props.getPolicy}

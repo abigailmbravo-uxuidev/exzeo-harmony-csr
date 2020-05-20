@@ -9,6 +9,7 @@ const EffectiveDateForm = ({
 }) => {
   return (
     <Form
+      enableReinitialize={true}
       initialValues={initialValues}
       onSubmit={handleSubmit}
       subscription={{ submitting: true, pristine: true, values: true }}

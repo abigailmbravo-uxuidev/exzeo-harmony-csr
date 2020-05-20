@@ -1,6 +1,14 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { Modal, Button, FormSpy, date, Field, Currency } from '@exzeo/core-ui';
+import {
+  Modal,
+  Button,
+  FormSpy,
+  date,
+  Field,
+  Currency,
+  Input
+} from '@exzeo/core-ui';
 
 import EffectiveDateForm from './EffectiveDateForm';
 import { rateEffectiveDateChange } from './utilities';
@@ -13,7 +21,6 @@ const EffectiveDateModal = ({
   zipCodeSettings,
   currentPremium
 }) => {
-  const [premiumChange, setPremiumChange] = useState(null);
   const [instanceId, setInstanceId] = useState(null);
   const [formInstance, setFormInstance] = useState(null);
 
@@ -32,9 +39,14 @@ const EffectiveDateModal = ({
     );
 
     setInstanceId(instanceId);
-    setPremiumChange(premiumChange);
 
-    console.log(formInstance.getState());
+    const newAnnualPremium = currentPremium + premiumChange;
+
+    formInstance.initialize({
+      ...data,
+      premiumChange,
+      newAnnualPremium
+    });
   };
   return (
     <Modal
@@ -58,10 +70,10 @@ const EffectiveDateModal = ({
                 return null;
               }}
             </FormSpy>
-            <Field name="rating.newEndorsementAmount">
+            <Field name="premiumChange">
               {({ input, meta }) => (
                 <Field
-                  name="rating.newEndorsementAmount"
+                  name="premiumChange"
                   label="New Endorsement Amount"
                   component={Currency}
                   disabled
@@ -69,10 +81,10 @@ const EffectiveDateModal = ({
                 />
               )}
             </Field>
-            <Field name="rating.newAnnualPremium">
+            <Field name="newAnnualPremium">
               {({ input, meta }) => (
                 <Field
-                  name="rating.newAnnualPremium"
+                  name="newAnnualPremium"
                   label="New Annual Premium"
                   component={Currency}
                   disabled
@@ -91,7 +103,7 @@ const EffectiveDateModal = ({
             <Button
               className={Button.constants.classNames.primary}
               type="submit"
-              disabled={submitting || pristine}
+              disabled={submitting}
               data-test="modal-submit"
             >
               {instanceId ? 'Update' : 'Review'}

@@ -160,10 +160,10 @@ export async function rateEffectiveDateChange(data, errorHandler) {
     );
     const {
       data: {
-        result: { rating, instanceId }
+        result: { premiumChange, instanceId }
       }
     } = response;
-    return { rating, instanceId };
+    return { premiumChange, instanceId };
   } catch (err) {
     errorHandler(err);
     return {};
