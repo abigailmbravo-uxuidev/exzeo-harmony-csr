@@ -7,11 +7,12 @@ import {
   date,
   Field,
   Currency,
-  Input
+  Input,
+  OnChangeListener
 } from '@exzeo/core-ui';
 
 import EffectiveDateForm from './EffectiveDateForm';
-import { rateEffectiveDateChange } from './utilities';
+import { rateEffectiveDateChange, saveEffectiveDateChange } from './utilities';
 
 const EffectiveDateModal = ({
   initialValues,
@@ -19,12 +20,22 @@ const EffectiveDateModal = ({
   effectiveDateReasons,
   errorHandler,
   zipCodeSettings,
-  currentPremium
+  currentPremium,
+  getPolicy
 }) => {
   const [instanceId, setInstanceId] = useState(null);
   const [formInstance, setFormInstance] = useState(null);
 
-  const changeEffectiveDateSubmit = async data => {};
+  const changeEffectiveDateSubmit = async data => {
+    await saveEffectiveDateChange(
+      {
+        instanceId
+      },
+      errorHandler
+    );
+    await getPolicy(data.policyNumber);
+    closeModal();
+  };
   const getRateSubmit = async data => {
     const effectiveDate = date.convertDateToTimeZone(
       data.effectiveDate,
@@ -48,6 +59,17 @@ const EffectiveDateModal = ({
       newAnnualPremium
     });
   };
+
+  const resetPremium = () => {
+    setInstanceId(null);
+    const { values: formValues } = formInstance.getState();
+
+    formInstance.initialize({
+      ...formValues,
+      premiumChange: '',
+      newAnnualPremium: ''
+    });
+  };
   return (
     <Modal
       size={Modal.sizes.small}
@@ -60,7 +82,7 @@ const EffectiveDateModal = ({
         effectiveDateReasons={effectiveDateReasons}
         className="card-block"
       >
-        {({ submitting, pristine }) => (
+        {({ submitting }) => (
           <div className="card-footer">
             <FormSpy subscription={{}}>
               {({ form }) => {
@@ -92,6 +114,20 @@ const EffectiveDateModal = ({
                 />
               )}
             </Field>
+            <OnChangeListener name="effectiveDateChangeReason">
+              {() => {
+                if (instanceId) {
+                  resetPremium();
+                }
+              }}
+            </OnChangeListener>
+            <OnChangeListener name="effectiveDate">
+              {() => {
+                if (instanceId) {
+                  resetPremium();
+                }
+              }}
+            </OnChangeListener>
             <Button
               className={Button.constants.classNames.secondary}
               onClick={closeModal}

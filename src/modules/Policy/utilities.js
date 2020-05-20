@@ -169,3 +169,27 @@ export async function rateEffectiveDateChange(data, errorHandler) {
     return {};
   }
 }
+
+/**
+ *
+ * @returns {object}
+ * @param data
+ * @param errorHandler
+ */
+export async function saveEffectiveDateChange(data, errorHandler) {
+  try {
+    const transferConfig = {
+      exchangeName: 'harmony',
+      routingKey: 'harmony.policy.saveEffectiveDateChange',
+      data
+    };
+
+    return await serviceRunner.callService(
+      transferConfig,
+      'saveEffectiveDateChange'
+    );
+  } catch (err) {
+    errorHandler(err);
+    return {};
+  }
+}
