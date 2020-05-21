@@ -100,7 +100,7 @@ const EffectiveDateModal = ({
                       label="New Endorsement Amount"
                       component={Currency}
                       disabled
-                      dataTest="newEndorsementAmount"
+                      dataTest="premiumChange"
                     />
                   )}
                 </Field>
