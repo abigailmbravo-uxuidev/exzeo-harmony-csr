@@ -6,7 +6,7 @@ import NoResults from './NoResults';
 import QueuedMortgagees from './QueuedMortgagees';
 import { createBulkMortgageJob, fetchMortgageesFromPolicies } from '../data';
 import { formatCreateJob, formatMortgagees } from '../utilities';
-import { Button } from '@exzeo/core-ui';
+import { Button, Loader } from '@exzeo/core-ui';
 import { BUTTON_CLASS } from '@exzeo/core-ui/src/Button/Button';
 
 export const ByPolicy = ({ errorHandler }) => {
@@ -14,6 +14,7 @@ export const ByPolicy = ({ errorHandler }) => {
   const [mortgageeResults, setMortgageeResults] = useState([]);
   const [showLoader, setShowLoader] = useState(false);
   const [hasSearched, setHasSearched] = useState(false);
+  const [showPageLoader, setShowPageLoader] = useState(false);
 
   const handleSearchByPolicy = async data => {
     try {
@@ -62,15 +63,23 @@ export const ByPolicy = ({ errorHandler }) => {
   };
 
   const handleCreateJobSubmit = async data => {
-    const { policies, additionalInterest } = formatCreateJob(
-      data,
-      queuedMortgagees
-    );
-    await createBulkMortgageJob({ policies, additionalInterest });
+    try {
+      setShowPageLoader(true);
+      const { policies, additionalInterest } = formatCreateJob(
+        data,
+        queuedMortgagees
+      );
+      await createBulkMortgageJob({ policies, additionalInterest });
+    } catch (ex) {
+      errorHandler(ex);
+    } finally {
+      setShowPageLoader(false);
+    }
   };
 
   return (
     <React.Fragment>
+      {showPageLoader && <Loader />}
       <div
         className="bm-wrapper by-policy form-group survey-wrapper"
         role="group"
@@ -103,7 +112,7 @@ export const ByPolicy = ({ errorHandler }) => {
           className={BUTTON_CLASS.primary}
           type="submit"
           form="BulkMortgagee"
-          disabled={!queuedMortgagees.length}
+          disabled={queuedMortgagees.length === 0}
         >
           Update
         </Button>
