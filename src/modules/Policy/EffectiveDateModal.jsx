@@ -7,7 +7,6 @@ import {
   date,
   Field,
   Currency,
-  Input,
   OnChangeListener
 } from '@exzeo/core-ui';
 
@@ -72,7 +71,7 @@ const EffectiveDateModal = ({
   };
   return (
     <Modal
-      size={Modal.sizes.small}
+      size={Modal.sizes.medium}
       className="effective-date"
       header={<h4>Edit Effective Date</h4>}
     >
@@ -84,66 +83,70 @@ const EffectiveDateModal = ({
       >
         {({ submitting }) => (
           <div className="card-footer">
-            <FormSpy subscription={{}}>
-              {({ form }) => {
-                if (!formInstance) {
-                  setFormInstance(form);
-                }
-                return null;
-              }}
-            </FormSpy>
-            <Field name="premiumChange">
-              {({ input, meta }) => (
-                <Field
-                  name="premiumChange"
-                  label="New Endorsement Amount"
-                  component={Currency}
-                  disabled
-                  dataTest="newEndorsementAmount"
-                />
-              )}
-            </Field>
-            <Field name="newAnnualPremium">
-              {({ input, meta }) => (
-                <Field
-                  name="newAnnualPremium"
-                  label="New Annual Premium"
-                  component={Currency}
-                  disabled
-                  dataTest="newAnnualPremium"
-                />
-              )}
-            </Field>
-            <OnChangeListener name="effectiveDateChangeReason">
-              {() => {
-                if (instanceId) {
-                  resetPremium();
-                }
-              }}
-            </OnChangeListener>
-            <OnChangeListener name="effectiveDate">
-              {() => {
-                if (instanceId) {
-                  resetPremium();
-                }
-              }}
-            </OnChangeListener>
-            <Button
-              className={Button.constants.classNames.secondary}
-              onClick={closeModal}
-              disabled={submitting}
-              data-test="modal-cancel"
-            >
-              Cancel
-            </Button>
-            <Button
-              className={Button.constants.classNames.primary}
-              type="submit"
-              disabled={submitting}
-              data-test="modal-submit"
-            >
-              {instanceId ? 'Update' : 'Review'}
-            </Button>
+            <div className="endo-results-calc">
+              <div className="flex-parent">
+                <FormSpy subscription={{}}>
+                  {({ form }) => {
+                    if (!formInstance) {
+                      setFormInstance(form);
+                    }
+                    return null;
+                  }}
+                </FormSpy>
+                <Field name="premiumChange">
+                  {({ input, meta }) => (
+                    <Field
+                      name="premiumChange"
+                      label="New Endorsement Amount"
+                      component={Currency}
+                      disabled
+                      dataTest="newEndorsementAmount"
+                    />
+                  )}
+                </Field>
+                <Field name="newAnnualPremium">
+                  {({ input, meta }) => (
+                    <Field
+                      name="newAnnualPremium"
+                      label="New Annual Premium"
+                      component={Currency}
+                      disabled
+                      dataTest="newAnnualPremium"
+                    />
+                  )}
+                </Field>
+                <OnChangeListener name="effectiveDateChangeReason">
+                  {() => {
+                    if (instanceId) {
+                      resetPremium();
+                    }
+                  }}
+                </OnChangeListener>
+                <OnChangeListener name="effectiveDate">
+                  {() => {
+                    if (instanceId) {
+                      resetPremium();
+                    }
+                  }}
+                </OnChangeListener>
+                <Button
+                  className={Button.constants.classNames.secondary}
+                  onClick={closeModal}
+                  disabled={submitting}
+                  data-test="modal-cancel"
+                >
+                  Cancel
+                </Button>
+                <Button
+                  className={Button.constants.classNames.primary}
+                  type="submit"
+                  disabled={submitting}
+                  data-test="modal-submit"
+                >
+                  {instanceId ? 'Update' : 'Review'}
+                </Button>
+              </div>
+            </div>
           </div>
         )}
       </EffectiveDateForm>

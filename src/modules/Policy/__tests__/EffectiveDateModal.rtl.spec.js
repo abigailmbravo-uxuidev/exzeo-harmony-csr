@@ -9,7 +9,12 @@ describe('EffectiveDateModal testing', () => {
     const props = {
       initialValues: { effectiveDate: '2020-02-02' },
       closeModal: noop,
-      effectiveDateReasons: {},
+      effectiveDateReasons: [
+        'HUD Statement/Property Deed',
+        "Agent's Request",
+        'Internal User Error',
+        'Other'
+      ],
       errorHandler: noop,
       zipCodeSettings: [],
       currentPremium: 2507,
