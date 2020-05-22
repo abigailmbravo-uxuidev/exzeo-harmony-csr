@@ -43,7 +43,7 @@ export const AddressView = ({ agencyBranchData, territoryManager }) => {
           data-test="territory-manager"
         >
           <label>Territory Manager</label>
-          <div>{territoryManager.name || ''}</div>
+          <div>{territoryManager?.name || ''}</div>
         </div>
       </div>
     </React.Fragment>

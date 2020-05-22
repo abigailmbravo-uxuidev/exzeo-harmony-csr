@@ -12,13 +12,7 @@ import {
   rating,
   mockServiceRunner,
   mailingBillingResult as result,
-  propertyFields,
-  checkHeader,
-  checkLabel,
-  checkTextInput,
-  checkSelect,
-  checkRadio,
-  checkButton
+  propertyFields
 } from '../../../test-utils';
 import { QuoteWorkflow } from '../QuoteWorkflow';
 
@@ -122,14 +116,14 @@ describe('Mailing/Billing Page Testing', () => {
     const newProps = {
       ...props,
       quoteData: {
-        ...props.quoteData,
-        policyHolderMailingAddress: {},
-        sameAsPropertyAddress: false
+        ...props.quoteData
       }
     };
 
-    newProps.quote.policyHolderMailingAddress = {};
     newProps.quote.sameAsPropertyAddress = false;
+    newProps.quote.billToId = 'ab1234';
+    newProps.quote.billToType = 'Policyholder';
+    newProps.quote.billPlan = 'Annual';
 
     const { getByTestId, getByText, getByLabelText } = renderWithForm(
       <QuoteWorkflow {...newProps} />
@@ -155,7 +149,7 @@ describe('Mailing/Billing Page Testing', () => {
 
     await wait(() => {
       expect(getByTestId('policyHolderMailingAddress.address1').value).toEqual(
-        ''
+        '6666 mailing address'
       );
       expect(getByText('Update')).toBeDisabled();
     });
