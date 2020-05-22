@@ -24,7 +24,8 @@ export const ByJob = ({ userProfile, errorHandler }) => {
           ? date.formattedLocalDate(data.dateRange.end, format)
           : ''
       });
-      setJobResults(filterJobs({ jobResults: jobs, ...jobData.result.jobs }));
+
+      setJobResults(filterJobs({ ...data, jobResults: jobData }));
     } catch (error) {
       errorHandler(error);
     }
