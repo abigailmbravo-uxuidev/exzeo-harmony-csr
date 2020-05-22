@@ -11,8 +11,6 @@ import {
   fillOutApplication,
   navigateThroughDocusign,
   sendQuote,
-  changeBillTo,
-  searchPolicy,
   searchQoute,
   searchDiary
 } from '../../helpers';
@@ -23,8 +21,7 @@ import {
   mailingBillingTest,
   notesFilesTest,
   quoteSummaryTest,
-  applicationTest,
-  afterDocuSignTest
+  applicationTest
 } from '../../pageTests';
 import {
   coverage,
@@ -101,7 +98,13 @@ describe('Base Path - HO3, create a quote, bind the Policy and make Endorsements
           .select('Other')
           .findDataTag('modal-submit')
           .click();
-        cy.wait('@postCreateTransaction').then(({ response }) => {
+        cy.wait('@rateEffectiveDateChange').then(({ response }) => {
+          expect(response.body.status, 'Effective Date: status').to.equal(200);
+        });
+
+        cy.findDataTag('modal-submit').click();
+
+        cy.wait('@saveEffectiveDateChange').then(({ response }) => {
           expect(response.body.status, 'Effective Date: status').to.equal(200);
         });
 
