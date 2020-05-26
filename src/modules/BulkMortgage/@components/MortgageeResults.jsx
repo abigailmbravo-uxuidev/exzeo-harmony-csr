@@ -25,7 +25,7 @@ export const MortgageeResults = ({ handleQueue, results, showLoader }) => {
           {results.map(m => {
             return (
               <MortgageeCard
-                key={m._id}
+                key={`${m._id}_${m.policyNumber}`}
                 result={m}
                 handleQueue={() => handleQueue({ ...values[m._id] })}
               />
