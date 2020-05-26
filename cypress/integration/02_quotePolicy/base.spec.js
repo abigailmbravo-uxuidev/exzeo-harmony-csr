@@ -88,7 +88,6 @@ describe('Base Path - HO3, create a quote, bind the Policy and make Endorsements
           .then($a => {
             $a.prop('onclick', () => cy.visit($a.prop('dataset').url));
           });
-
         cy.task('log', 'Effective Date Change with updated workflow');
         cy.findDataTag('edit-effective-date')
           .click()
