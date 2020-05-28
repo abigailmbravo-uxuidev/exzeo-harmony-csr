@@ -482,6 +482,34 @@ const mock = {
                   children: []
                 }
               ]
+            },
+            {
+              id: 4497775432943353,
+              type: '$SECTION',
+              dependencies: [],
+              data: {
+                className: 'claims'
+              },
+              formData: {},
+              children: [
+                {
+                  id: 4497775432943354,
+                  type: '$TITLE',
+                  dependencies: [],
+                  data: {
+                    text: 'Claims'
+                  },
+                  formData: {},
+                  children: []
+                },
+                {
+                  id: 4497775432943355,
+                  type: '$CLAIMS_TABLE',
+                  dependencies: [],
+                  data: {},
+                  formData: {}
+                }
+              ]
             }
           ]
         }
