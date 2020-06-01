@@ -123,9 +123,9 @@ export const filterJobs = ({
     );
   }
 
-  if (completedBy) {
-    const completedByAnsers = completedBy.map(c => c.answer);
-    filter.push(j => completedByAnsers.includes(j.updatedBy.userName));
+  if (completedBy && completedBy.length > 0) {
+    const completedByAnswers = completedBy.map(c => c.answer);
+    filter.push(j => completedByAnswers.includes(j.updatedBy.userId));
   }
 
   return jobResults.filter(d => {
@@ -140,7 +140,7 @@ export const downloadJob = job => {
 
   const arr = job.policies.map(p => [
     p.policyNumber,
-    job.additionalInterest.name1,
+    `"${job.additionalInterest.name1}"`,
     p.newBillTo ? ' Yes' : 'No',
     p.status
   ]);
