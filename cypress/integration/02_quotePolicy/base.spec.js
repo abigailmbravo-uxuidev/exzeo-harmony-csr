@@ -68,7 +68,6 @@ describe('Base Path - HO3, create a quote, bind the Policy and make Endorsements
     searchQoute();
 
     // Combine 2 tests with different way of writing the code. As we decided - we will format 2nd or 1st part in the future in order the  whole test be written in one way.
-
     cy.visit('/');
     cy.task('log', 'Search Policy and open')
       .get('@policyNumber')
