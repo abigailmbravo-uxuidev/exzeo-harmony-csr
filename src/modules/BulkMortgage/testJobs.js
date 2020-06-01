@@ -30,7 +30,7 @@ export const jobs = [
     },
     updatedAt: '2019-12-20T12:47:34.492Z',
     createdAt: '2019-12-20T12:47:34.492Z',
-    policyNumbers: [
+    policies: [
       {
         policyNumber: '4561236545',
         additionalInterestId: '049a50b23c21c2ae3',
@@ -81,7 +81,7 @@ export const jobs = [
     },
     updatedAt: '2020-01-20T12:48:34.492Z',
     createdAt: '2020-01-20T12:48:34.492Z',
-    policyNumbers: [
+    policies: [
       {
         policyNumber: '4561236545',
         additionalInterestId: '049a50b23c21c2ae3',
@@ -132,7 +132,7 @@ export const jobs = [
     },
     updatedAt: '2020-02-21T12:47:34.492Z',
     createdAt: '2020-02-21T12:47:34.492Z',
-    policyNumbers: [
+    policies: [
       {
         policyNumber: '4561236545',
         additionalInterestId: '049a50b23c21c2ae3',
@@ -183,7 +183,7 @@ export const jobs = [
     },
     updatedAt: '2020-03-22T12:47:34.492Z',
     createdAt: '2020-03-22T12:47:34.492Z',
-    policyNumbers: [
+    policies: [
       {
         policyNumber: '4561236545',
         additionalInterestId: '049a50b23c21c2ae3',
@@ -234,7 +234,7 @@ export const jobs = [
     },
     updatedAt: '2020-04-23T12:47:34.492Z',
     createdAt: '2020-04-23T12:47:34.492Z',
-    policyNumbers: [
+    policies: [
       {
         policyNumber: '4561236545',
         additionalInterestId: '049a50b23c21c2ae3',

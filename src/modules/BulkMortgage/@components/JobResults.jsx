@@ -1,7 +1,11 @@
 import React from 'react';
 import JobCard from './JobCard';
+import { SectionLoader } from '@exzeo/core-ui';
 
-const JobResults = ({ results }) => {
+const JobResults = ({ results, showLoader }) => {
+  if (showLoader) {
+    return <SectionLoader />;
+  }
   return (
     <React.Fragment>
       <div className="job-header">

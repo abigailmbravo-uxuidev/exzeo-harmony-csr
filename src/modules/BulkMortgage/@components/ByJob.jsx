@@ -9,11 +9,12 @@ import { date } from '@exzeo/core-ui';
 
 export const ByJob = ({ userProfile, errorHandler }) => {
   const [jobResults, setJobResults] = useState([]);
+  const [showLoader, setShowLoader] = useState(false);
   const { userList } = useFetchUsersForJobs({ userProfile, errorHandler });
 
   const handleJobSubmit = async data => {
     try {
-      // the endpoint format has to be exactly 24 characters for some reason
+      setShowLoader(true);
       const format = 'YYYY-MM-DDThh:mm:ss.SSSS';
       const jobData = await getMortgageeJobs({
         windowStart: data?.dateRange?.start
@@ -27,6 +28,8 @@ export const ByJob = ({ userProfile, errorHandler }) => {
       setJobResults(filterJobs({ ...data, jobResults: jobData }));
     } catch (error) {
       errorHandler(error);
+    } finally {
+      setShowLoader(false);
     }
   };
 
@@ -39,7 +42,7 @@ export const ByJob = ({ userProfile, errorHandler }) => {
         <JobFilter userList={userList} handleJobSubmit={handleJobSubmit} />
       </section>
       <section className="bm-byJob search-results-wrapper">
-        <JobResults results={jobResults} />
+        <JobResults results={jobResults} showLoader={showLoader} />
       </section>
     </div>
   );
