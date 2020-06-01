@@ -43,6 +43,7 @@ export const ByPolicy = ({ errorHandler }) => {
       m => m._id === mortgagee._id && m.policyNumber === mortgagee.policyNumber
     );
     if (!existingMortgagee) {
+      mortgagee.newBillTo = !!mortgagee.newBillTo;
       setQueuedMortgagees([mortgagee, ...queuedMortgagees]);
       const filterMortgagees = mortgageeResults.filter(
         m => m._id !== mortgagee._id
@@ -70,6 +71,8 @@ export const ByPolicy = ({ errorHandler }) => {
         queuedMortgagees
       );
       await createBulkMortgageJob({ policies, additionalInterest });
+
+      setQueuedMortgagees([]);
     } catch (ex) {
       errorHandler(ex);
     } finally {

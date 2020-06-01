@@ -138,7 +138,7 @@ export const filterJobs = ({
 export const downloadJob = job => {
   const headers = ['Policy Number', 'Mortgagee', 'New Bill To', 'Status'];
 
-  const arr = job.policyNumbers.map(p => [
+  const arr = job.policies.map(p => [
     p.policyNumber,
     job.additionalInterest.name1,
     p.newBillTo ? ' Yes' : 'No',

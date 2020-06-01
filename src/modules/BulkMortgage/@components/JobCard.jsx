@@ -26,7 +26,7 @@ const JobCard = ({ result }) => (
         )}
         <span className="policies">
           <strong>Policies:</strong>&nbsp;
-          <span>{result.policyNumbers.length}</span>
+          <span>{result.policies.length}</span>
         </span>
         <Button
           dataTest="download-policy-csv"

@@ -53,7 +53,7 @@ export async function getMortgageeJobs({ windowStart, windowEnd }) {
       config,
       'getMortgageeJobs'
     );
-    return response ? response.data : [];
+    return response?.data?.result?.jobs || [];
   } catch (error) {
     throw error;
   }
