@@ -4,7 +4,7 @@ import { useFetchUsersForJobs } from '../hooks';
 import { connect } from 'react-redux';
 import JobResults from './JobResults';
 import { getMortgageeJobs } from '../data';
-import { filterJobs } from '../utilities';
+import { filterJobs, addDate } from '../utilities';
 import { date } from '@exzeo/core-ui';
 
 export const ByJob = ({ userProfile, errorHandler }) => {
@@ -15,14 +15,24 @@ export const ByJob = ({ userProfile, errorHandler }) => {
   const handleJobSubmit = async data => {
     try {
       setShowLoader(true);
-      const format = 'YYYY-MM-DDThh:mm:ss.SSSS';
+      const dateFormat = 'YYYY-MM-DDTHH:mm:ss.SSSS';
+
+      const windowStart = data?.dateRange?.start
+        ? date.formatDate(data.dateRange.start, dateFormat)
+        : '';
+
+      const windowEnd = data?.dateRange?.end
+        ? addDate({
+            dateString: data.dateRange.end,
+            addValue: 1,
+            unit: 'd',
+            format: dateFormat
+          })
+        : '';
+
       const jobData = await getMortgageeJobs({
-        windowStart: data?.dateRange?.start
-          ? date.formattedLocalDate(data.dateRange.start, format)
-          : '',
-        windowEnd: data?.dateRange?.end
-          ? date.formattedLocalDate(data.dateRange.end, format)
-          : ''
+        windowStart,
+        windowEnd
       });
 
       setJobResults(filterJobs({ ...data, jobResults: jobData }));

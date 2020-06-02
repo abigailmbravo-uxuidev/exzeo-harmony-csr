@@ -25,7 +25,7 @@ const JobCard = ({ result }) => (
           </React.Fragment>
         )}
         <span className="policies">
-          <strong>Policies:</strong>&nbsp;
+          <strong>Policy Mortgagees Updated:</strong>&nbsp;
           <span>{result.policies.length}</span>
         </span>
         <Button

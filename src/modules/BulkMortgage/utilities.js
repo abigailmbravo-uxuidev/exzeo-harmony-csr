@@ -1,5 +1,6 @@
 import moment from 'moment';
 import { DEFAULT_COUNTRY } from '../../constants/address';
+import { date } from '@exzeo/core-ui';
 /**
  *
  * @param {AdditionalInterestAnswers[]} answers
@@ -43,48 +44,49 @@ export function formatCreateJob(data, queuedMortgagees) {
 export function formatMortgagees(result, queuedMortgagees) {
   if (!result || !Array.isArray(result.policies)) return [];
 
-  return result.policies.reduce((acc, p) => {
-    if (!p.additionalInterests.length) return acc;
-    const primaryPolicyHolder = p.policyHolders[0];
+  return result.policies
+    .filter(p => p.status !== 8)
+    .reduce((acc, p) => {
+      const primaryPolicyHolder = p.policyHolders[0];
 
-    const mortgagees = p.additionalInterests.filter(
-      ai => ai.type === 'Mortgagee' && ai.active
-    );
+      const mortgagees = p.additionalInterests.filter(
+        ai => ai.type === 'Mortgagee' && ai.active
+      );
 
-    const existingPolicy = queuedMortgagees.some(
-      q => !q._id && p.policyNumber === q.policyNumber
-    );
+      const existingPolicy = queuedMortgagees.some(
+        q => !q._id && p.policyNumber === q.policyNumber
+      );
 
-    if (mortgagees.length) {
-      mortgagees.forEach(m => {
-        const existingMortgagee = queuedMortgagees.some(q => m._id === q._id);
-        if (!existingMortgagee) {
+      if (mortgagees.length) {
+        mortgagees.forEach(m => {
+          const existingMortgagee = queuedMortgagees.some(q => m._id === q._id);
+          if (!existingMortgagee) {
+            acc.push({
+              ...m,
+              companyCode: p.companyCode,
+              product: p.product,
+              propertyAddress: p.property.physicalAddress,
+              policyNumber: p.policyNumber,
+              policyHolderName: `${primaryPolicyHolder.firstName} ${primaryPolicyHolder.lastName}`,
+              currentBillTo: m._id === p.billToId
+            });
+          }
+        });
+      } else {
+        if (!existingPolicy) {
           acc.push({
-            ...m,
+            noMortgagee: true,
             companyCode: p.companyCode,
             product: p.product,
             propertyAddress: p.property.physicalAddress,
             policyNumber: p.policyNumber,
             policyHolderName: `${primaryPolicyHolder.firstName} ${primaryPolicyHolder.lastName}`,
-            currentBillTo: m._id === p.billToId
+            currentBillTo: false
           });
         }
-      });
-    } else {
-      if (!existingPolicy) {
-        acc.push({
-          noMortgagee: true,
-          companyCode: p.companyCode,
-          product: p.product,
-          propertyAddress: p.property.physicalAddress,
-          policyNumber: p.policyNumber,
-          policyHolderName: `${primaryPolicyHolder.firstName} ${primaryPolicyHolder.lastName}`,
-          currentBillTo: false
-        });
       }
-    }
-    return acc;
-  }, []);
+      return acc;
+    }, []);
 }
 
 export function setMortgageeInitialValues(results) {
@@ -103,6 +105,18 @@ export const isValidRange = value => {
   return moment(value.start).isSameOrBefore(value.end)
     ? undefined
     : 'Not a valid date range';
+};
+
+export const addDate = ({
+  dateString,
+  addValue,
+  unit = 'd',
+  format = date.FORMATS.PRIMARY
+}) => {
+  return moment
+    .utc(dateString)
+    .add(addValue, unit)
+    .format(format);
 };
 
 export const filterJobs = ({
