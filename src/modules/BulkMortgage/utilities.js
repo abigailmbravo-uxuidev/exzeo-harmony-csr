@@ -1,4 +1,3 @@
-import moment from 'moment';
 import { DEFAULT_COUNTRY } from '../../constants/address';
 import { date } from '@exzeo/core-ui';
 /**
@@ -102,21 +101,9 @@ export function setMortgageeInitialValues(results) {
 export const isValidRange = value => {
   if (!value?.start && !value?.end) return undefined;
 
-  return moment(value.start).isSameOrBefore(value.end)
+  return date.moment(value.start).isSameOrBefore(value.end)
     ? undefined
     : 'Not a valid date range';
-};
-
-export const addDate = ({
-  dateString,
-  addValue,
-  unit = 'd',
-  format = date.FORMATS.PRIMARY
-}) => {
-  return moment
-    .utc(dateString)
-    .add(addValue, unit)
-    .format(format);
 };
 
 export const filterJobs = ({

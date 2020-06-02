@@ -4,8 +4,8 @@ import { useFetchUsersForJobs } from '../hooks';
 import { connect } from 'react-redux';
 import JobResults from './JobResults';
 import { getMortgageeJobs } from '../data';
-import { filterJobs, addDate } from '../utilities';
-import { date } from '@exzeo/core-ui';
+import { filterJobs } from '../utilities';
+import { date } from '@exzeo/core-ui/src';
 
 export const ByJob = ({ userProfile, errorHandler }) => {
   const [jobResults, setJobResults] = useState([]);
@@ -22,7 +22,7 @@ export const ByJob = ({ userProfile, errorHandler }) => {
         : '';
 
       const windowEnd = data?.dateRange?.end
-        ? addDate({
+        ? date.addDate({
             dateString: data.dateRange.end,
             addValue: 1,
             unit: 'd',
