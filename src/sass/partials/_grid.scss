@@ -1255,7 +1255,7 @@ table {
 .table-bordered > tbody > tr > td.react-bs-table-no-data {
   position: absolute;
   right: 0;
-  //bottom: -1.75rem;
+  bottom: -1.75rem;
   left: 0;
 
   color: $warm-gray-08;
@@ -1291,6 +1291,9 @@ table {
 }
 .previous-endorsements-scroll {
   .react-bs-table-bordered {
-    min-height: 3rem;
+    min-height: 4rem;
+    td.react-bs-table-no-data {
+      bottom: 0;
+    }
   }
 }
