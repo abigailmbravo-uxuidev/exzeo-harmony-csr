@@ -1,8 +1,8 @@
 import { callService } from '@exzeo/core-ui/src/@Harmony';
-import moment from 'moment';
 import { removeTerm } from '../../utilities/format';
 import * as types from './actionTypes';
 import { setAppError } from './error.actions';
+import { date } from '@exzeo/core-ui';
 
 const mergeNotes = (notes, files) => {
   const fileList = notes
@@ -14,7 +14,7 @@ const mergeNotes = (notes, files) => {
         _id: file.envelopeId ? file.envelopeId : file.fileUrl,
         contactType: 'system',
         createdBy: { userName: 'System', userId: file.createdBy },
-        createdAt: moment.unix(file.createdDate),
+        createdAt: date.moment.unix(file.createdDate),
         noteAttachments: [
           {
             fileType: 'System',

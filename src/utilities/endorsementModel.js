@@ -1,4 +1,4 @@
-import moment from 'moment-timezone';
+import { date } from '@exzeo/core-ui';
 import _cloneDeep from 'lodash/cloneDeep';
 
 const BUSINESS = {
@@ -15,17 +15,15 @@ const SINKHOLE = {
   calculatedAmount: 0
 };
 
-export function calculateEndorsementDate(date, timezone) {
-  return moment
-    .tz(moment.utc(date).format('YYYY-MM-DD'), timezone)
-    .utc()
-    .format();
+export function calculateEndorsementDate(dateValue, timezone) {
+  const endorsementDate = date.formatDate(dateValue, date.FORMATS.SECONDARY);
+  return date.formatToUTC(endorsementDate, timezone);
 }
 
 export function setEndorsementDate(effectiveDate, endPolicyDate) {
-  const effDate = moment.utc(effectiveDate).format('YYYY-MM-DD');
-  const endDate = moment.utc(endPolicyDate).format('YYYY-MM-DD');
-  const today = moment.utc().format('YYYY-MM-DD');
+  const effDate = date.formatDate(effectiveDate, date.FORMATS.SECONDARY);
+  const endDate = date.formatDate(endPolicyDate, date.FORMATS.SECONDARY);
+  const today = date.currentDay(date.FORMATS.SECONDARY);
 
   if (today <= effDate) {
     return effDate;

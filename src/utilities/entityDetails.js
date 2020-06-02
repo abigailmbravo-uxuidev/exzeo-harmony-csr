@@ -1,7 +1,4 @@
-import moment from 'moment-timezone';
-import { normalize } from '@exzeo/core-ui';
-
-import { STANDARD_DATE_FORMAT } from '../constants/dates';
+import { date, normalize } from '@exzeo/core-ui';
 
 export const CANCELLATION_DATE = 'Cancellation Effective Date';
 export const EXPIRATION_DATE = 'Expiration Date';
@@ -91,7 +88,7 @@ export function getCityStateZip({ city = '', state = '', zip = '' }) {
  * @param {string} policyStatus
  * @param {string} cancelDate
  *  * @param {string} endDate
- * @returns {string}
+ * @returns {object}
  */
 export function getCancellationDate(
   summaryLedger,
@@ -109,7 +106,7 @@ export function getCancellationDate(
     cancelDate
   ) {
     return {
-      value: moment.utc(cancelDate).format(STANDARD_DATE_FORMAT),
+      value: date.formatDate(cancelDate, date.FORMATS.PRIMARY),
       label: 'Cancellation Date',
       showReinstatement: true
     };
@@ -119,7 +116,7 @@ export function getCancellationDate(
     cancelDate
   ) {
     return {
-      value: moment.utc(cancelDate).format(STANDARD_DATE_FORMAT),
+      value: date.formatDate(cancelDate, date.FORMATS.PRIMARY),
       label: 'Voluntary Cancellation Date',
       showRescindCancel: true
     };
@@ -130,7 +127,7 @@ export function getCancellationDate(
     cancelDate
   ) {
     return {
-      value: moment.utc(cancelDate).format(STANDARD_DATE_FORMAT),
+      value: date.formatDate(cancelDate, date.FORMATS.PRIMARY),
       label: 'UW Cancellation Date',
       showRescindCancel: true
     };
@@ -140,7 +137,7 @@ export function getCancellationDate(
     endDate
   ) {
     return {
-      value: moment.utc(endDate).format(STANDARD_DATE_FORMAT),
+      value: date.formatDate(endDate, date.FORMATS.PRIMARY),
       label: 'Expiration Date'
     };
   }
@@ -165,7 +162,7 @@ export function getNonPaymentNoticeDate(summaryLedger, policyStatus) {
   );
 
   if (isNonPaymentCancellation && equityDate) {
-    return moment.utc(equityDate).format(STANDARD_DATE_FORMAT);
+    return date.formatDate(equityDate, date.FORMATS.PRIMARY);
   }
   return '';
 }
@@ -188,7 +185,7 @@ export function getNonPaymentNoticeDueDate(summaryLedger, policyStatus) {
   );
 
   if (isNonPaymentCancellation && nonPaymentNoticeDueDate) {
-    return moment.utc(nonPaymentNoticeDueDate).format(STANDARD_DATE_FORMAT);
+    return date.formatDate(nonPaymentNoticeDueDate, date.FORMATS.PRIMARY);
   }
   return '';
 }

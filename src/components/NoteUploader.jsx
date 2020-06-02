@@ -2,7 +2,6 @@ import React, { useEffect, useState, useCallback, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import classNames from 'classnames';
-import moment from 'moment';
 import Uppy from '@uppy/core';
 import Dashboard from '@uppy/react/lib/Dashboard';
 import XHRUpload from '@uppy/xhr-upload';
@@ -14,7 +13,8 @@ import {
   Form,
   Field,
   SectionLoader,
-  Button
+  Button,
+  date
 } from '@exzeo/core-ui';
 import { callService } from '@exzeo/core-ui/src/@Harmony';
 
@@ -190,7 +190,7 @@ const NoteUploader = ({
       noteType,
       noteContent: data.noteContent,
       contactType: data.contactType,
-      createdAt: moment().unix(),
+      createdAt: date.timestamp(),
       noteAttachments,
       createdBy: {
         userId: user.userId,

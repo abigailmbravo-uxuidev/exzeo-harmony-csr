@@ -1,8 +1,8 @@
-import moment from 'moment';
 import { batchActions } from 'redux-batched-actions';
 import * as serviceRunner from '@exzeo/core-ui/src/@Harmony/Domain/Api/serviceRunner';
 import * as types from './actionTypes';
 import * as errorActions from './error.actions';
+import { date } from '@exzeo/core-ui';
 
 export const serviceRequest = data => ({
   type: types.SERVICE_REQUEST,
@@ -31,7 +31,7 @@ export function getNotes(noteId, sourceId) {
             _id: doc.envelopeId ? doc.envelopeId : doc.fileUrl,
             contactType: 'system',
             createdBy: { userName: 'System', userId: doc.createdBy },
-            createdDate: moment.unix(doc.createdDate),
+            createdDate: date.moment.unix(doc.createdDate),
             attachments: [
               {
                 fileType: 'System',
