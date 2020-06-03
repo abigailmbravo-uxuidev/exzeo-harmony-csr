@@ -40,8 +40,8 @@ export async function fetchMortgageesFromPolicies(params) {
  * @returns {Promise<[]>}
  * @param params
  */
-export async function getMortgageeJobs({ windowStart, windowEnd }) {
-  const path = `/mortgageeJobs?windowStart=${windowStart}&windowEnd=${windowEnd}`;
+export async function getMortgageeJobs({ windowStart, windowEnd, pageNumber }) {
+  const path = `/mortgageeJobs?windowStart=${windowStart}&windowEnd=${windowEnd}&page=${pageNumber}`;
   const config = {
     service: 'bulk-mortgage',
     method: 'GET',
@@ -53,7 +53,7 @@ export async function getMortgageeJobs({ windowStart, windowEnd }) {
       config,
       'getMortgageeJobs'
     );
-    return response?.data?.result?.jobs || [];
+    return response?.data?.result || {};
   } catch (error) {
     throw error;
   }

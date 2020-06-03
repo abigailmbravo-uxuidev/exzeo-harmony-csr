@@ -6,13 +6,22 @@ import JobResults from './JobResults';
 import { getMortgageeJobs } from '../data';
 import { filterJobs } from '../utilities';
 import { date } from '@exzeo/core-ui/src';
+import Pagination from '../../Search/components/Pagination';
 
 export const ByJob = ({ userProfile, errorHandler }) => {
   const [jobResults, setJobResults] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(0);
+  const [filterValues, setFilterValues] = useState({});
   const [showLoader, setShowLoader] = useState(false);
   const { userList } = useFetchUsersForJobs({ userProfile, errorHandler });
 
-  const handleJobSubmit = async data => {
+  const handlePagination = advance => async () => {
+    const pageNumber = advance ? currentPage + 1 : currentPage - 1;
+    await searchMortgageeJobs(filterValues, pageNumber);
+  };
+
+  const searchMortgageeJobs = async (data, pageNumber) => {
     try {
       setShowLoader(true);
       const dateFormat = 'YYYY-MM-DDTHH:mm:ss.SSSS';
@@ -30,17 +39,26 @@ export const ByJob = ({ userProfile, errorHandler }) => {
           })
         : '';
 
-      const jobData = await getMortgageeJobs({
+      const { jobs, page, totalJobs, pageSize } = await getMortgageeJobs({
         windowStart,
-        windowEnd
+        windowEnd,
+        pageNumber
       });
 
-      setJobResults(filterJobs({ ...data, jobResults: jobData }));
+      setCurrentPage(page);
+      setTotalPages(Math.ceil(totalJobs / pageSize) || 0);
+
+      setJobResults(filterJobs({ ...data, jobResults: jobs }));
+      setFilterValues(data);
     } catch (error) {
       errorHandler(error);
     } finally {
       setShowLoader(false);
     }
+  };
+
+  const handleJobSubmit = async data => {
+    await searchMortgageeJobs(data, 1);
   };
 
   return (
@@ -65,6 +83,14 @@ export const ByJob = ({ userProfile, errorHandler }) => {
         />
       </section>
       <section className="bm-byJob search-results-wrapper">
+        {totalPages > 0 && (
+          <Pagination
+            changePageForward={handlePagination(true)}
+            changePageBack={handlePagination(false)}
+            pageNumber={currentPage}
+            totalPages={totalPages}
+          />
+        )}
         <JobResults results={jobResults} showLoader={showLoader} />
       </section>
     </div>
