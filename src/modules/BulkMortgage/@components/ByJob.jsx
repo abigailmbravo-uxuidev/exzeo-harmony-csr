@@ -49,7 +49,20 @@ export const ByJob = ({ userProfile, errorHandler }) => {
         <div className="queue-header">
           <div className="title">Filter Parameters</div>
         </div>
-        <JobFilter userList={userList} handleJobSubmit={handleJobSubmit} />
+        <JobFilter
+          initialValues={{
+            dateRange: {
+              start: date.addDate({
+                addValue: -1,
+                unit: 'd',
+                format: date.FORMATS.SECONDARY
+              }),
+              end: date.formatDate(undefined, date.FORMATS.SECONDARY)
+            }
+          }}
+          userList={userList}
+          handleJobSubmit={handleJobSubmit}
+        />
       </section>
       <section className="bm-byJob search-results-wrapper">
         <JobResults results={jobResults} showLoader={showLoader} />

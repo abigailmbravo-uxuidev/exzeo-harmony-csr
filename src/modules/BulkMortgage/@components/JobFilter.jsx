@@ -9,10 +9,11 @@ import {
 } from '@exzeo/core-ui';
 import { isValidRange } from '../utilities';
 
-const JobFilter = ({ userList, handleJobSubmit }) => {
+const JobFilter = ({ userList, handleJobSubmit, initialValues }) => {
   return (
     <Form
       id="FilterJobs"
+      initialValues={initialValues}
       onSubmit={handleJobSubmit}
       subscription={{ submitting: true, values: true }}
     >
