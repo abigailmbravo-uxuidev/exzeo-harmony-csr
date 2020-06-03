@@ -211,7 +211,7 @@ describe('BulkMortgagee By Policy Testing', () => {
 });
 
 describe('BulkMortgagee By Job Testing', () => {
-  bulkMortgageData.getMortgageeJobs = jestResolve(jobs);
+  bulkMortgageData.getMortgageeJobs = jestResolve({ jobs });
 
   it('Renders BulkMortgagee By Job and check headers / labels', async () => {
     const props = {
