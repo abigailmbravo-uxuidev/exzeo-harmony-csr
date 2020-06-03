@@ -46,7 +46,8 @@ export const ByPolicy = ({ errorHandler }) => {
       mortgagee.newBillTo = !!mortgagee.newBillTo;
       setQueuedMortgagees([mortgagee, ...queuedMortgagees]);
       const filterMortgagees = mortgageeResults.filter(
-        m => m._id !== mortgagee._id
+        m =>
+          m._id !== mortgagee._id || m.policyNumber !== mortgagee.policyNumber
       );
       setMortgageeResults(filterMortgagees);
     }
