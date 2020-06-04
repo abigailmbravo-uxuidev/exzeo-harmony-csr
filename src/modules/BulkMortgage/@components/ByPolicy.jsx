@@ -132,10 +132,10 @@ export const ByPolicy = ({ errorHandler }) => {
       </section>
       {showModal && (
         <AlertModal
-          header="Job ID"
+          header="Bulk Mortgage Job Submitted"
           headerIcon="fa-circle Mortgagee"
           confirmLabel="OK"
-          text={completedJobId}
+          text={`Job ID: ${completedJobId}`}
           handleConfirm={() => setShowModal(false)}
         />
       )}
