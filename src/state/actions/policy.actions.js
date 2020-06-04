@@ -574,11 +574,12 @@ export async function postCreateTransaction(submitData) {
  * @returns {Promise<{}>}
  */
 export async function postUpdatedBillPlan(paymentPlan) {
+  const { policyNumber, billToType, billToId, billPlan } = paymentPlan;
   const config = {
-    service: 'policy-data',
+    service: 'policy-manager',
     method: 'POST',
-    path: 'transaction',
-    data: paymentPlan
+    path: 'updateBillPlan',
+    data: { policyNumber, billToType, billToId, billPlan }
   };
 
   try {
