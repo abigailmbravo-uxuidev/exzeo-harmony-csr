@@ -332,11 +332,10 @@ export function createTransaction(submitData) {
 export function updateBillPlan(paymentPlan) {
   return async dispatch => {
     try {
-      const policy = await postUpdatedBillPlan(paymentPlan);
-      // TODO: Implement some type of pub/sub for message queue
-      await new Promise(resolve => setTimeout(resolve, 2000));
-      if (policy && policy.policyNumber) {
-        dispatch(getPolicy(policy.policyNumber));
+      const { newTransaction } = await postUpdatedBillPlan(paymentPlan);
+
+      if (newTransaction) {
+        dispatch(getPolicy(newTransaction.policyNumber));
       } else {
         dispatch(
           errorActions.setAppError({ message: 'Could not GET updated Policy' })
@@ -578,7 +577,7 @@ export async function postUpdatedBillPlan(paymentPlan) {
   const config = {
     service: 'policy-manager',
     method: 'POST',
-    path: 'updateBillPlan',
+    path: 'policies/updateBillPlan',
     data: { policyNumber, billToType, billToId, billPlan }
   };
 
@@ -587,7 +586,7 @@ export async function postUpdatedBillPlan(paymentPlan) {
       config,
       'postUpdatedBillPlan'
     );
-    return response.data && response.data.result ? response.data.result : {};
+    return response?.data?.result || {};
   } catch (error) {
     throw error;
   }
