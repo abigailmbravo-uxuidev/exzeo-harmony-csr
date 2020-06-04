@@ -8,6 +8,7 @@ import { createBulkMortgageJob, fetchMortgageesFromPolicies } from '../data';
 import { formatCreateJob, formatMortgagees } from '../utilities';
 import { Button, Loader } from '@exzeo/core-ui';
 import { BUTTON_CLASS } from '@exzeo/core-ui/src/Button/Button';
+import AlertModal from '@exzeo/core-ui/src/Modal/AlertModal';
 
 export const ByPolicy = ({ errorHandler }) => {
   const [queuedMortgagees, setQueuedMortgagees] = useState([]);
@@ -15,6 +16,8 @@ export const ByPolicy = ({ errorHandler }) => {
   const [showLoader, setShowLoader] = useState(false);
   const [hasSearched, setHasSearched] = useState(false);
   const [showPageLoader, setShowPageLoader] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+  const [completedJobId, setCompletedJobId] = useState('');
 
   const handleSearchByPolicy = async data => {
     try {
@@ -71,7 +74,13 @@ export const ByPolicy = ({ errorHandler }) => {
         data,
         queuedMortgagees
       );
-      await createBulkMortgageJob({ policies, additionalInterest });
+      const { job } = await createBulkMortgageJob({
+        policies,
+        additionalInterest
+      });
+
+      setCompletedJobId(job._id);
+      setShowModal(true);
 
       setQueuedMortgagees([]);
     } catch (ex) {
@@ -121,6 +130,15 @@ export const ByPolicy = ({ errorHandler }) => {
           Update
         </Button>
       </section>
+      {showModal && (
+        <AlertModal
+          header="Job ID"
+          headerIcon="fa-circle Mortgagee"
+          confirmLabel="OK"
+          text={completedJobId}
+          handleConfirm={() => setShowModal(false)}
+        />
+      )}
     </React.Fragment>
   );
 };

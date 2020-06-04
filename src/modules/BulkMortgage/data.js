@@ -104,7 +104,7 @@ export async function createBulkMortgageJob({ additionalInterest, policies }) {
       config,
       'createBulkMortgageJob'
     );
-    return response.data;
+    return response.data.result;
   } catch (error) {
     throw error;
   }
