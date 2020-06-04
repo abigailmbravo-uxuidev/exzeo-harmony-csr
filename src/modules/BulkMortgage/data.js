@@ -41,7 +41,7 @@ export async function fetchMortgageesFromPolicies(params) {
  * @param params
  */
 export async function getMortgageeJobs({ windowStart, windowEnd, pageNumber }) {
-  const path = `/mortgageeJobs?windowStart=${windowStart}&windowEnd=${windowEnd}&page=${pageNumber}`;
+  const path = `/mortgageeJobs?windowStart=${windowStart}&windowEnd=${windowEnd}&page=${pageNumber}sort=updatedAt`;
   const config = {
     service: 'bulk-mortgage',
     method: 'GET',

@@ -12,7 +12,16 @@ export const ByJob = ({ userProfile, errorHandler }) => {
   const [jobResults, setJobResults] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
-  const [filterValues, setFilterValues] = useState({});
+  const [filterValues, setFilterValues] = useState({
+    dateRange: {
+      start: date.addDate({
+        addValue: -1,
+        unit: 'd',
+        format: date.FORMATS.SECONDARY
+      }),
+      end: date.formatDate(undefined, date.FORMATS.SECONDARY)
+    }
+  });
   const [showLoader, setShowLoader] = useState(false);
   const { userList } = useFetchUsersForJobs({ userProfile, errorHandler });
 
@@ -68,16 +77,7 @@ export const ByJob = ({ userProfile, errorHandler }) => {
           <div className="title">Filter Parameters</div>
         </div>
         <JobFilter
-          initialValues={{
-            dateRange: {
-              start: date.addDate({
-                addValue: -1,
-                unit: 'd',
-                format: date.FORMATS.SECONDARY
-              }),
-              end: date.formatDate(undefined, date.FORMATS.SECONDARY)
-            }
-          }}
+          initialValues={filterValues}
           userList={userList}
           handleJobSubmit={handleJobSubmit}
         />
