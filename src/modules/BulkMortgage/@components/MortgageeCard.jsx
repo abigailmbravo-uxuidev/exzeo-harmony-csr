@@ -37,8 +37,8 @@ const MortgageeCard = ({ result, handleQueue }) => (
           </div>
         )}
         <Field
-          name={`${result._id}.loanNo`}
-          dataTest={`${result._id}.loanNo`}
+          name={`${result._id}.referenceNumber`}
+          dataTest={`${result._id}.referenceNumber`}
           label="Loan No:"
           component={Input}
           styleName="loanNo"

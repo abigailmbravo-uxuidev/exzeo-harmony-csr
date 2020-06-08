@@ -30,7 +30,7 @@ const QueuedMortgageeCard = ({ result, handleRemove }) => (
         </span>
         <span className="loan-number">
           <strong>Loan Number:</strong>&nbsp;
-          {result.loanNo}
+          {result.referenceNumber}
         </span>
         <span className="make-billTo">
           <strong>Bill To:</strong>&nbsp;

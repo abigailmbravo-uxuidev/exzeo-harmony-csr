@@ -58,7 +58,7 @@ export const ByPolicy = ({ errorHandler }) => {
 
   const removeFromQueue = mortgagee => {
     const filterMortgagees = queuedMortgagees.filter(
-      m => m._id !== mortgagee._id
+      m => m._id !== mortgagee._id || m.policyNumber !== mortgagee.policyNumber
     );
     setQueuedMortgagees(filterMortgagees);
   };

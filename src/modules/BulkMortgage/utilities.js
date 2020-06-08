@@ -20,7 +20,8 @@ export function formatCreateJob(data, queuedMortgagees) {
   const policies = queuedMortgagees.map(m => ({
     policyNumber: m.policyNumber,
     additionalInterestId: m._id,
-    newBillTo: m.newBillTo
+    newBillTo: m.newBillTo,
+    referenceNumber: m.referenceNumber
   }));
 
   const { name1, name2, mailingAddress } = data;
