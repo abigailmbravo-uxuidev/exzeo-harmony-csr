@@ -129,8 +129,6 @@ export const filterJobs = ({
     filter.push(j => completedByAnswers.includes(j.updatedBy.userId));
   }
 
-  console.log(jobResults);
-
   return jobResults.filter(d => {
     return filter.every(c => {
       return c(d);
