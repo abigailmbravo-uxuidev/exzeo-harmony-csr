@@ -8,7 +8,7 @@ import { render, fireEvent } from '@testing-library/react';
 
 import rootReducer from '../state/reducers';
 
-import { quote, mockPolicy as policy } from '../test-utils';
+import { quote, mockPolicy as policy } from './index.js';
 
 const mockStore = configureStore([thunk]);
 
@@ -137,10 +137,12 @@ export const defaultPolicyWorkflowProps = {
   initializePolicyWorkflow: jestResolve(policy),
   getEnumsForPolicyWorkflow: jestResolve(),
   getPaymentHistory: jestResolve(),
-  setAppError: () => {},
+  getPolicy: jestResolve(policy),
+  updateBillPlan: jestResolve(),
   fetchNotes: jestResolve(),
-  toggleDiary: () => {},
   fetchDiaries: jestResolve(),
+  setAppError: () => {},
+  toggleDiary: () => {},
   diaries: [],
   notes: [],
   initialized: true,

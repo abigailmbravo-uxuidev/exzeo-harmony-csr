@@ -23,7 +23,7 @@ import DiaryModal from './components/DiaryModal';
 import Bootstrap from './components/Bootstrap';
 import Agency from './modules/Agency';
 import { QuoteLanding, QuoteWorkflow } from './modules/Quote';
-import { PolicyWorkflow } from './modules/Policy';
+import { PolicyWorkflow, ReceiptHandler } from './modules/Policy';
 import Finance from './modules/Finance';
 import BulkMortgage from './modules/BulkMortgage';
 import { userResources } from './utilities/userResources';
@@ -143,6 +143,12 @@ class Routes extends Component {
                 path="/"
                 render={props => <SearchPolicy auth={auth} {...props} />}
               />
+
+              <Route
+                path="/receipt"
+                render={props => <ReceiptHandler {...props} />}
+              />
+
               <Route
                 exact
                 path="/agency"
