@@ -332,11 +332,10 @@ export function createTransaction(submitData) {
 export function updateBillPlan(paymentPlan) {
   return async dispatch => {
     try {
-      const policy = await postUpdatedBillPlan(paymentPlan);
-      // TODO: Implement some type of pub/sub for message queue
-      await new Promise(resolve => setTimeout(resolve, 2000));
-      if (policy && policy.policyNumber) {
-        dispatch(getPolicy(policy.policyNumber));
+      const { newTransaction } = await postUpdatedBillPlan(paymentPlan);
+
+      if (newTransaction) {
+        dispatch(getPolicy(newTransaction.policyNumber));
       } else {
         dispatch(
           errorActions.setAppError({ message: 'Could not GET updated Policy' })
@@ -574,11 +573,12 @@ export async function postCreateTransaction(submitData) {
  * @returns {Promise<{}>}
  */
 export async function postUpdatedBillPlan(paymentPlan) {
+  const { policyNumber, billToType, billToId, billPlan } = paymentPlan;
   const config = {
-    service: 'policy-data',
+    service: 'policy-manager',
     method: 'POST',
-    path: 'transaction',
-    data: paymentPlan
+    path: 'policies/updateBillPlan',
+    data: { policyNumber, billToType, billToId, billPlan }
   };
 
   try {
@@ -586,7 +586,7 @@ export async function postUpdatedBillPlan(paymentPlan) {
       config,
       'postUpdatedBillPlan'
     );
-    return response.data && response.data.result ? response.data.result : {};
+    return response?.data?.result || {};
   } catch (error) {
     throw error;
   }
@@ -838,25 +838,6 @@ export function updatePolicy({ data = {}, options = {} }) {
         };
 
         await serviceRunner.callService(transferConfig, 'saveEndorsement');
-      }
-
-      if (options.changeEffectiveDate) {
-        const submitData = {
-          policyID: data.policyID,
-          policyNumber: data.policyNumber,
-          effectiveDate: data.effectiveDate,
-          billingStatus: data.billingStatus,
-          rateCode: data.rateCode,
-          transactionType: data.transactionType
-        };
-        await postCreateTransaction(submitData);
-
-        const noteConfig = {
-          exchangeName: 'harmony',
-          routingKey: 'harmony.note.addNote',
-          data: options.noteData
-        };
-        await serviceRunner.callService(noteConfig, 'addNote');
       }
 
       if (options.cancelPolicy) {

@@ -296,24 +296,21 @@
       }
     }
   }
-
   &.modal-sm {
     .card {
       width: 30%;
       max-width: 26rem;
     }
   }
-
   &.modal-md {
     .card {
       width: 50%;
       max-width: 40rem;
     }
   }
-
   &.modal-lg {
     .card {
-      width: 80%;
+      width: 60%;
       max-width: 60rem;
 
       &.billing-modal {
@@ -333,21 +330,12 @@
       }
     }
   }
-
   &.modal-xl {
     .card {
       width: 80%;
       max-width: 80rem;
     }
   }
-
-  &.modal-lg {
-    .card {
-      width: 60%;
-      max-width: 60rem;
-    }
-  }
-
   &.schedule-date-modal {
     .survey-wrapper {
       display: flex;
@@ -530,6 +518,8 @@
     }
   }
   .card {
+    position: relative;
+
     display: flex;
     align-content: flex-start;
     flex-direction: column;
@@ -538,6 +528,206 @@
     flex-wrap: nowrap;
 
     width: 60%;
+
+    &.electronic-payment-modal {
+      form {
+        > h3 {
+          margin: 0;
+          padding: $padding ($padding * 2);
+          &.success {
+            background-color: rgba($green-darken-01, 0.25);
+            i {
+              color: $green-darken-01;
+            }
+          }
+          &.fail {
+            background-color: rgba($red-darken-02, 0.2);
+            i {
+              color: $red-darken-02;
+            }
+          }
+        }
+      }
+
+      .card-header {
+        button {
+          position: absolute;
+          top: $padding;
+          right: $padding;
+        }
+      }
+      > form {
+        .card-block {
+          h4 {
+            position: relative;
+
+            .checkwrapper {
+              position: absolute;
+              bottom: 0.5rem;
+              left: 12rem;
+
+              width: 34rem;
+            }
+          }
+          .account-type {
+            display: flex;
+            flex-wrap: wrap;
+
+            height: 3.4375rem;
+
+            .label {
+              flex-grow: 0;
+              flex-shrink: 0;
+
+              width: 100%;
+              height: 1.4375rem;
+              margin-bottom: 0.5rem;
+
+              color: $warm-gray-08;
+
+              font-weight: $font-weight-bold;
+              line-height: 1;
+            }
+
+            label {
+              display: flex;
+              align-items: center;
+              flex-grow: 1;
+              flex-shrink: 1;
+              justify-content: center;
+
+              height: 2rem;
+              margin-bottom: 0;
+
+              cursor: pointer;
+              transition: all 0.2s ease-in-out;
+
+              background-color: $warm-gray-02;
+
+              &:first-of-type {
+                border-right: 2px solid $white;
+                border-radius: $border-radius 0 0 $border-radius;
+              }
+              &:last-of-type {
+                border-radius: 0 $border-radius $border-radius 0;
+              }
+            }
+            input[type='radio']:checked,
+            input[type='radio']:not(:checked) {
+              position: absolute;
+              left: -9999px;
+
+              visibility: hidden;
+
+              width: 0;
+              height: 0;
+            }
+            input[name='savings']:checked + label {
+              cursor: default;
+
+              color: $white;
+              background: $bright-blue-darken-04;
+            }
+          }
+          .form-group.radio.segmented {
+            display: flex;
+
+            .segmented-answer-wrapper {
+              > div {
+                flex-grow: 0;
+                flex-shrink: 0;
+
+                label {
+                  display: flex;
+                  flex-direction: column;
+                  flex-grow: 0;
+                  flex-shrink: 0;
+
+                  margin-bottom: 0;
+
+                  color: $warm-gray-08;
+                  border-right: 2px solid white;
+                  > span {
+                    padding: 0.4375rem 1rem;
+
+                    cursor: pointer;
+                    transition: all 0.2s ease-in-out;
+
+                    border: 1px solid transparent;
+                    background-color: $warm-gray-02;
+
+                    font-weight: normal;
+                    line-height: 1;
+
+                    &:hover {
+                      background-color: $warm-gray-01;
+                    }
+                  }
+                }
+                &.selected {
+                  label {
+                    > span {
+                      cursor: default;
+
+                      color: $white;
+                      background-color: $bright-blue-darken-04;
+
+                      &:hover {
+                        color: $white;
+                        background-color: $bright-blue-darken-04;
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+          .form-group {
+            &.ccAmount,
+            &.achAmount {
+              flex-grow: 0;
+              flex-shrink: 0;
+
+              width: 10rem;
+            }
+            &.ccDate {
+              flex-grow: 0;
+              flex-shrink: 0;
+
+              width: 10rem;
+            }
+            &.ccCvv {
+              flex-grow: 0;
+              flex-shrink: 0;
+
+              width: 4rem;
+            }
+            &.ccName {
+              flex-grow: 0;
+              flex-shrink: 0;
+
+              width: 40%;
+            }
+            &.ccState {
+              flex-grow: 0;
+              flex-shrink: 0;
+
+              width: 8rem;
+            }
+            &.ccZip {
+              flex-grow: 0;
+              flex-shrink: 0;
+
+              width: 10rem;
+            }
+            &.achAccountType {
+              flex-grow: 0;
+              flex-shrink: 0;
+            }
+          }
+        }
+      }
+    }
   }
 }
 

@@ -743,9 +743,7 @@ const mock = {
               id: 454337878853231,
               type: '$PAYMENT_HISTORY_TABLE',
               dependencies: [],
-              data: {
-                text: 'Payments'
-              },
+              data: {},
               formData: {}
             }
           ]

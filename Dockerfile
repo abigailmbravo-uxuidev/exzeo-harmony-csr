@@ -1,8 +1,8 @@
-FROM node:10-alpine
+FROM node:12-alpine
 
 LABEL maintainer=Exzeo
 
-RUN apk update && apk --no-cache add bash libc6-compat g++ make python
+RUN apk update && apk --no-cache add bash libc6-compat g++ make python3
 
 ARG NPM_TOKEN
 
