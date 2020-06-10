@@ -233,8 +233,8 @@ const PolicySearch = ({
 
       {!!search.results.length && search.totalPages > 1 && (
         <Pagination
-          pageUp={handlePagination(true)}
-          pageDown={handlePagination(false)}
+          pageUp={() => handlePagination(true)}
+          pageDown={() => handlePagination(false)}
           pageNumber={search.currentPage}
           totalPages={search.totalPages}
         />

@@ -10,18 +10,6 @@ import * as types from './actionTypes';
 import * as errorActions from './error.actions';
 
 /**
- * Adjust loading state
- * @param {boolean} loading
- * @returns {{type: string, loading: boolean}}
- */
-export function toggleLoading(loading) {
-  return {
-    type: types.TOGGLE_LOADING,
-    loading
-  };
-}
-
-/**
  * Reset search state
  * @returns {{type: string}}
  */
@@ -583,7 +571,6 @@ export async function handleDiariesSearch(data) {
 export function handleSearchSubmit(data, searchType) {
   return async dispatch => {
     try {
-      dispatch(toggleLoading(true));
       let searchResults = {};
 
       if (searchType === SEARCH_TYPES.newQuote) {
@@ -617,8 +604,6 @@ export function handleSearchSubmit(data, searchType) {
         errorActions.setAppError(error || { message: 'An error has occurred' })
       );
       return null;
-    } finally {
-      dispatch(toggleLoading(false));
     }
   };
 }

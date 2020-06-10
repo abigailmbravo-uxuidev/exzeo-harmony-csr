@@ -1,26 +1,30 @@
-import React from 'react';
-import { Form, Loader, OnChangeListener } from '@exzeo/core-ui';
+import React, { useState } from 'react';
+import {
+  Form,
+  FormSpy,
+  Loader,
+  OnChangeListener,
+  useForm
+} from '@exzeo/core-ui';
+import { Gandalf } from '@exzeo/core-ui/src/@Harmony';
 
 const SearchBar = ({
   handleSearchSubmit,
   initialValues,
   render,
-  changeSearchType
+  changeSearchType,
+  currentPage
 }) => {
+  const [formValues, setFormValues] = useState(initialValues);
+
   const handlePagination = isNext => {
-    // const {
-    //   formProps: { handleSubmit }
-    // } = this.props;
-    //
-    // return handleSubmit((data, dispatch, props) => {
-    //   // submit function is looking for these two added properties to determine if this is an initial submit or pagination submit.
-    //   const submitData = {
-    //     ...data,
-    //     isNext,
-    //     currentPage: props.currentPage
-    //   };
-    //   props.handleSearchSubmit(submitData, dispatch, props);
-    // });
+    //  console.log(isNext)
+    const submitData = {
+      ...formValues,
+      isNext,
+      currentPage
+    };
+    return handleSearchSubmit(submitData);
   };
 
   const handleChangeSearchType = newValue => {
@@ -41,7 +45,7 @@ const SearchBar = ({
       onSubmit={handleSearchSubmit}
       initialValues={initialValues}
       subscription={{ submitting: true, values: true }}
-      render={({ handleSubmit, submitting, values }) => (
+      render={({ handleSubmit, values }) => (
         <div id="SearchBar">
           <form id="SearchBarForm" onSubmit={handleSubmit}>
             <div className="search-input-wrapper">
@@ -57,6 +61,12 @@ const SearchBar = ({
                 handleChangeSearchType(value);
               }}
             </OnChangeListener>
+            <FormSpy subscription={{}}>
+              {() => {
+                setFormValues(values);
+                return null;
+              }}
+            </FormSpy>
           </form>
         </div>
       )}

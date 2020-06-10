@@ -7,8 +7,7 @@ import { productAnswers } from './constants';
 
 import {
   resetSearch,
-  handleSearchSubmit,
-  toggleLoading
+  handleSearchSubmit
 } from '../../state/actions/search.actions';
 import { getAgencies } from '../../state/actions/service.actions';
 import { clearAppError } from '../../state/actions/error.actions';
@@ -126,7 +125,7 @@ export class SearchPage extends Component {
       : initialValues;
   };
 
-  handleSubmit = async (data, dispatch, props) => {
+  handleSubmit = async data => {
     try {
       this.setState({
         showLoader: true
@@ -149,7 +148,7 @@ export class SearchPage extends Component {
   };
 
   render() {
-    const { agencies, clearAppError, getAgencies, toggleLoading } = this.props;
+    const { agencies, clearAppError, getAgencies } = this.props;
 
     const {
       hasSearched,
@@ -176,7 +175,6 @@ export class SearchPage extends Component {
               getAgencies={getAgencies}
               agencies={agencies}
               handleSearchSubmit={this.handleSubmit}
-              toggleLoading={toggleLoading}
               currentPage={searchResults.currentPage}
               render={({ handlePagination, formProps }) => (
                 <SearchForm
@@ -228,6 +226,5 @@ export default connect(mapStateToProps, {
   getAgencies,
   handleSearchSubmit,
   resetSearch,
-  toggleLoading,
   getEnumsForSearch
 })(SearchPage);
