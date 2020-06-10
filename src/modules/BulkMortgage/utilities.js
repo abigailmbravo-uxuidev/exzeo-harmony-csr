@@ -40,7 +40,6 @@ export function formatCreateJob(data, queuedMortgagees) {
     policies
   };
 }
-
 export function formatMortgagees(result, queuedMortgagees) {
   if (!result || !Array.isArray(result.policies)) return [];
 

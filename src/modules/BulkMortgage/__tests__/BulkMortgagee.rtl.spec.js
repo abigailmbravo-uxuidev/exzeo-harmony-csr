@@ -108,9 +108,7 @@ describe('BulkMortgagee By Policy Testing', () => {
     const props = {
       errorHandler: noop
     };
-    const { getByText, getByTestId } = renderWithForm(
-      <BulkMortgagee {...props} />
-    );
+    const { getByTestId } = renderWithForm(<BulkMortgagee {...props} />);
     await waitForElement(() => [
       getByTestId('policyNumber'),
       getByTestId('search-policy-submit')
@@ -217,9 +215,7 @@ describe('BulkMortgagee By Job Testing', () => {
     const props = {
       errorHandler: noop
     };
-    const { getByText, getByTestId } = renderWithForm(
-      <BulkMortgagee {...props} />
-    );
+    const { getByText } = renderWithForm(<BulkMortgagee {...props} />);
 
     fireEvent.click(getByText('By Job'));
 
@@ -248,7 +244,7 @@ describe('BulkMortgagee By Job Testing', () => {
       expect(getByText('Filter Parameters'));
     });
 
-    fireEvent.change(getByTestId('jobNumber'), {
+    fireEvent.change(getByTestId('jobId'), {
       target: { value: '2e7' }
     });
 
@@ -260,7 +256,7 @@ describe('BulkMortgagee By Job Testing', () => {
       expect(jobWrapper.getByText(/Bank of Tampa/));
     });
 
-    fireEvent.change(getByTestId('jobNumber'), {
+    fireEvent.change(getByTestId('jobId'), {
       target: { value: '3e7' }
     });
 
@@ -287,7 +283,7 @@ describe('BulkMortgagee By Job Testing', () => {
       expect(getByText('Filter Parameters'));
     });
 
-    fireEvent.change(getByTestId('mortgageeName'), {
+    fireEvent.change(getByTestId('name'), {
       target: { value: 'Bank of America' }
     });
 
@@ -299,7 +295,7 @@ describe('BulkMortgagee By Job Testing', () => {
       expect(jobWrapper.getByText(/Bank of America/));
     });
 
-    fireEvent.change(getByTestId('mortgageeName'), {
+    fireEvent.change(getByTestId('name'), {
       target: { value: 'Bank of Miami' }
     });
 
