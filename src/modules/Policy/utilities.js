@@ -139,3 +139,57 @@ export async function fetchAgentsByAgencyCode(agencyCode) {
     throw error;
   }
 }
+
+/**
+ *
+ * @returns {object}
+ * @param data
+ * @param errorHandler
+ */
+export async function rateEffectiveDateChange(data, errorHandler) {
+  try {
+    const transferConfig = {
+      exchangeName: 'harmony',
+      routingKey: 'harmony.policy.rateEffectiveDateChange',
+      data
+    };
+
+    const response = await serviceRunner.callService(
+      transferConfig,
+      'rateEffectiveDateChange'
+    );
+    const {
+      data: {
+        result: { premiumChange, instanceId }
+      }
+    } = response;
+    return { premiumChange, instanceId };
+  } catch (err) {
+    errorHandler(err);
+    return {};
+  }
+}
+
+/**
+ *
+ * @returns {object}
+ * @param data
+ * @param errorHandler
+ */
+export async function saveEffectiveDateChange(data, errorHandler) {
+  try {
+    const transferConfig = {
+      exchangeName: 'harmony',
+      routingKey: 'harmony.policy.saveEffectiveDateChange',
+      data
+    };
+
+    return await serviceRunner.callService(
+      transferConfig,
+      'saveEffectiveDateChange'
+    );
+  } catch (err) {
+    errorHandler(err);
+    return {};
+  }
+}

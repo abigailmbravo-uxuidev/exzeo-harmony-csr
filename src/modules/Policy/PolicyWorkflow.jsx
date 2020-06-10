@@ -227,67 +227,6 @@ export class PolicyWorkflow extends React.Component {
     this.handleToggleRescindCancelModal();
   };
 
-  changeEffectiveDate = async data => {
-    const {
-      zipCodeSettings,
-      policy,
-      getPolicy,
-      summaryLedger,
-      userProfile
-    } = this.props;
-
-    const effectiveDateUTC = date.formatToUTC(
-      date.formatDate(data.effectiveDate, date.FORMATS.SECONDARY),
-      zipCodeSettings.timezone
-    );
-
-    const transactionType = 'Effective Date Change';
-
-    await this.props
-      .updatePolicy({
-        data: {
-          policyID: policy.policyID,
-          policyNumber: policy.policyNumber,
-          effectiveDate: effectiveDateUTC,
-          billingStatus: summaryLedger.status.code,
-          rateCode: policy.rating.rateCode,
-          transactionType
-        },
-        options: {
-          changeEffectiveDate: true,
-          noteData: {
-            companyCode: policy.companyCode,
-            state: policy.state,
-            product: policy.product,
-            number: policy.policyNumber,
-            numberType: 'policyNumber',
-            source: policy.sourceNumber,
-            noteType: 'Policy Note',
-            noteContent: `Effective date has been updated from ${date.formatDate(
-              policy.effectiveDate,
-              'MM-DD-YYYY'
-            )} to ${date.formatDate(
-              data.effectiveDate,
-              'MM-DD-YYYY'
-            )} - Reason: ${data.effectiveDateChangeReason}`,
-            contactType: 'System',
-            createdAt: date.timestamp(),
-            createdBy: {
-              userId: userProfile.userId,
-              userName: `${userProfile.profile.given_name} ${userProfile.profile.family_name}`
-            }
-          }
-        }
-      })
-      .catch(err => {
-        this.props.setAppError(err);
-      });
-    //This gets scheduled so the status may not be changed yet when calling getPolicy. Reference HAR-5228
-    await new Promise(resolve => setTimeout(resolve, 3000));
-    await getPolicy(policy.policyNumber);
-    this.toggleEffectiveDateChangeModal();
-  };
-
   render() {
     const {
       diaries,
@@ -303,7 +242,8 @@ export class PolicyWorkflow extends React.Component {
       zipCodeSettings,
       cancelOptions,
       effectiveDateReasons,
-      endorsementHistory
+      endorsementHistory,
+      summaryLedger
     } = this.props;
 
     const {
@@ -457,14 +397,18 @@ export class PolicyWorkflow extends React.Component {
               {showEffectiveDateChangeModal && (
                 <EffectiveDateModal
                   initialValues={{
+                    policyNumber: policy.policyNumber,
                     effectiveDate: date.formatDate(
                       policy.effectiveDate,
                       date.FORMATS.SECONDARY
                     ),
                     effectiveDateChangeReason: ''
                   }}
+                  currentPremium={summaryLedger.currentPremium}
+                  zipCodeSettings={zipCodeSettings}
                   effectiveDateReasons={effectiveDateReasons}
-                  changeEffectiveDateSubmit={this.changeEffectiveDate}
+                  getPolicy={this.props.getPolicy}
+                  errorHandler={this.props.setAppError}
                   closeModal={this.toggleEffectiveDateChangeModal}
                 />
               )}

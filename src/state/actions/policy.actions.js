@@ -840,25 +840,6 @@ export function updatePolicy({ data = {}, options = {} }) {
         await serviceRunner.callService(transferConfig, 'saveEndorsement');
       }
 
-      if (options.changeEffectiveDate) {
-        const submitData = {
-          policyID: data.policyID,
-          policyNumber: data.policyNumber,
-          effectiveDate: data.effectiveDate,
-          billingStatus: data.billingStatus,
-          rateCode: data.rateCode,
-          transactionType: data.transactionType
-        };
-        await postCreateTransaction(submitData);
-
-        const noteConfig = {
-          exchangeName: 'harmony',
-          routingKey: 'harmony.note.addNote',
-          data: options.noteData
-        };
-        await serviceRunner.callService(noteConfig, 'addNote');
-      }
-
       if (options.cancelPolicy) {
         const submitData = {
           policyNumber: data.policyNumber,
