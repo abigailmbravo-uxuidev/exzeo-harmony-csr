@@ -37,11 +37,23 @@ export async function fetchMortgageesFromPolicies(params) {
 
 /**
  *
- * @returns {Promise<[]>}
- * @param params
+ * @param windowStart
+ * @param windowEnd
+ * @param pageNumber
+ * @param name
+ * @param userName
+ * @param jobId
+ * @returns {Promise<*|{}>}
  */
-export async function getMortgageeJobs({ windowStart, windowEnd, pageNumber }) {
-  const path = `/mortgageeJobs?windowStart=${windowStart}&windowEnd=${windowEnd}&page=${pageNumber}sort=updatedAt`;
+export async function getMortgageeJobs({
+  windowStart,
+  windowEnd,
+  pageNumber,
+  name = '',
+  userName = '',
+  jobId = ''
+}) {
+  const path = `/mortgageeJobs?windowStart=${windowStart}&windowEnd=${windowEnd}&page=${pageNumber}sort=updatedAt&name=${name}&userName=${userName}&jobId=${jobId}`;
   const config = {
     service: 'bulk-mortgage',
     method: 'GET',

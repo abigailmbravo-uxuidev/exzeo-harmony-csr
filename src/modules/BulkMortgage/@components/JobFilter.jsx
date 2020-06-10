@@ -17,23 +17,23 @@ const JobFilter = ({ userList, handleJobSubmit, initialValues }) => {
       onSubmit={handleJobSubmit}
       subscription={{ submitting: true, values: true }}
     >
-      {({ handleSubmit, values, pristine }) => (
+      {({ handleSubmit, pristine }) => (
         <form
           id="SearchByPolicy"
           className="filter-jobs-form search-inputs"
           onSubmit={handleSubmit}
         >
           <Field
-            name="jobNumber"
-            dataTest="jobNumber"
+            name="jobId"
+            dataTest="jobId"
             label="Job Number"
             placeholder="Job Number"
             component={Input}
             styleName="search-input"
           />
           <Field
-            name="completedBy"
-            dataTest="completedBy"
+            name="userName"
+            dataTest="userName"
             label="Completed By"
             placeholder="User Name"
             component={MultiSelectTypeAhead}
@@ -53,8 +53,8 @@ const JobFilter = ({ userList, handleJobSubmit, initialValues }) => {
             errorPosition="left"
           />
           <Field
-            name="mortgageeName"
-            dataTest="mortgageeName"
+            name="name"
+            dataTest="name"
             label="Mortgagee Name"
             placeholder="Mortgagee Name"
             component={Input}

@@ -4,7 +4,6 @@ import { useFetchUsersForJobs } from '../hooks';
 import { connect } from 'react-redux';
 import JobResults from './JobResults';
 import { getMortgageeJobs } from '../data';
-import { filterJobs } from '../utilities';
 import { date } from '@exzeo/core-ui/src';
 import Pagination from '../../Search/components/Pagination';
 
@@ -32,6 +31,7 @@ export const ByJob = ({ userProfile, errorHandler }) => {
 
   const searchMortgageeJobs = async (data, pageNumber) => {
     try {
+      const { jobId, userName, name } = data;
       setShowLoader(true);
       const dateFormat = 'YYYY-MM-DDTHH:mm:ss.SSSS';
 
@@ -51,13 +51,16 @@ export const ByJob = ({ userProfile, errorHandler }) => {
       const { jobs, page, totalJobs, pageSize } = await getMortgageeJobs({
         windowStart,
         windowEnd,
-        pageNumber
+        pageNumber,
+        jobId,
+        userName,
+        name
       });
 
       setCurrentPage(page);
       setTotalPages(Math.ceil(totalJobs / pageSize) || 0);
 
-      setJobResults(filterJobs({ ...data, jobResults: jobs }));
+      setJobResults(jobs);
       setFilterValues(data);
     } catch (error) {
       errorHandler(error);

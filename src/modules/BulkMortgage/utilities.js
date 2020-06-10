@@ -107,36 +107,6 @@ export const isValidRange = value => {
     : 'Not a valid date range';
 };
 
-export const filterJobs = ({
-  jobResults,
-  jobNumber,
-  completedBy,
-  mortgageeName
-}) => {
-  const filter = [];
-  if (jobNumber) {
-    filter.push(j => j._id.includes(jobNumber));
-  }
-  if (mortgageeName) {
-    filter.push(j =>
-      j.additionalInterest.name1
-        .toLocaleLowerCase()
-        .includes(mortgageeName.toLocaleLowerCase())
-    );
-  }
-
-  if (completedBy && completedBy.length > 0) {
-    const completedByAnswers = completedBy.map(c => c.answer);
-    filter.push(j => completedByAnswers.includes(j.updatedBy.userId));
-  }
-
-  return jobResults.filter(d => {
-    return filter.every(c => {
-      return c(d);
-    });
-  });
-};
-
 export const downloadJob = job => {
   const headers = ['Policy Number', 'Mortgagee', 'New Bill To', 'Status'];
 
