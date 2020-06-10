@@ -1,5 +1,5 @@
 import React from 'react';
-import { Form, OnChangeListener } from '@exzeo/core-ui';
+import { Form, Loader, OnChangeListener } from '@exzeo/core-ui';
 
 const SearchBar = ({
   handleSearchSubmit,
@@ -41,7 +41,7 @@ const SearchBar = ({
       onSubmit={handleSearchSubmit}
       initialValues={initialValues}
       subscription={{ submitting: true, values: true }}
-      render={({ handleSubmit, form, values }) => (
+      render={({ handleSubmit, submitting, values }) => (
         <div id="SearchBar">
           <form id="SearchBarForm" onSubmit={handleSubmit}>
             <div className="search-input-wrapper">

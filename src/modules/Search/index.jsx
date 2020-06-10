@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { emptyArray } from '@exzeo/core-ui';
+import { emptyArray, Loader } from '@exzeo/core-ui';
 
 import { SEARCH_CONFIG, SEARCH_TYPES } from '../../constants/search';
 import { productAnswers } from './constants';
@@ -56,7 +56,8 @@ export class SearchPage extends Component {
     searchConfig: SEARCH_TYPES.policy,
     searchReady: false,
     searchResults: initialSearchResults,
-    answers: {}
+    answers: {},
+    showLoader: false
   };
 
   componentDidMount() {
@@ -101,7 +102,8 @@ export class SearchPage extends Component {
       searchType,
       searchConfig: searchType,
       hasSearched: false,
-      searchResults: initialSearchResults
+      searchResults: initialSearchResults,
+      showLoader: false
     });
     this.props.resetSearch();
   };
@@ -126,10 +128,18 @@ export class SearchPage extends Component {
 
   handleSubmit = async (data, dispatch, props) => {
     try {
-      const { handleSearchSubmit } = this.props;
-      const searchResults = await handleSearchSubmit(data, props);
       this.setState({
-        searchResults: searchResults ? searchResults : initialSearchResults
+        showLoader: true
+      });
+      const { handleSearchSubmit } = this.props;
+      const searchResults = await handleSearchSubmit(
+        data,
+        this.state.searchType
+      );
+      this.setState({
+        searchResults: searchResults ? searchResults : initialSearchResults,
+        hasSearched: true,
+        showLoader: false
       });
     } catch (error) {
       if (process.env.NODE_ENV !== 'production') {
@@ -153,6 +163,8 @@ export class SearchPage extends Component {
 
     return (
       <React.Fragment>
+        {this.state.showLoader && <Loader />}
+
         <div className="search">
           {searchReady && (
             <SearchBar
@@ -166,7 +178,7 @@ export class SearchPage extends Component {
               handleSearchSubmit={this.handleSubmit}
               toggleLoading={toggleLoading}
               currentPage={searchResults.currentPage}
-              render={({ changeSearchType, handlePagination, formProps }) => (
+              render={({ handlePagination, formProps }) => (
                 <SearchForm
                   searchTypeOptions={SEARCH_CONFIG[searchConfig].searchOptions}
                   handlePagination={handlePagination}

@@ -67,6 +67,7 @@ export function setSearchResults({
  * Build query string and encodeURI
  * @param firstName
  * @param lastName
+ * @param mailingAddress
  * @param propertyAddress
  * @param companyCode
  * @param state
@@ -576,14 +577,13 @@ export async function handleDiariesSearch(data) {
 /**
  * Main submit handler for Search. Determine which type of search is being requested and kick it off
  * @param {object} data - form data
- * @param {object} props - props passed to search form at time of search
+ * @param {object} searchType
  * @returns {Function}
  */
-export function handleSearchSubmit(data, props) {
+export function handleSearchSubmit(data, searchType) {
   return async dispatch => {
     try {
       dispatch(toggleLoading(true));
-      const { searchType } = props;
       let searchResults = {};
 
       if (searchType === SEARCH_TYPES.newQuote) {
