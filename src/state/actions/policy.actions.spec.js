@@ -348,9 +348,11 @@ describe('Policy State Actions', () => {
     });
 
     it('should call dispatch on updateBillPlan', async () => {
-      httpStub
-        .onCall(0)
-        .returns(Promise.resolve({ data: { result: { policyNumber: '23' } } }));
+      httpStub.onCall(0).returns(
+        Promise.resolve({
+          data: { result: { newTransaction: { policyNumber: '23' } } }
+        })
+      );
 
       await store.dispatch(policyStateActions.updateBillPlan({}));
       sinon.assert.calledTwice(serviceRunner.callService);
