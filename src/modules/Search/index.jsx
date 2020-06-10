@@ -168,7 +168,6 @@ export class SearchPage extends Component {
               currentPage={searchResults.currentPage}
               render={({ changeSearchType, handlePagination, formProps }) => (
                 <SearchForm
-                  changeSearchType={changeSearchType}
                   searchTypeOptions={SEARCH_CONFIG[searchConfig].searchOptions}
                   handlePagination={handlePagination}
                   hasSearched={hasSearched}

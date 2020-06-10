@@ -40,7 +40,6 @@ const PolicySearch = ({
   questions,
   handlePagination,
   search,
-  changeSearchType,
   searchTypeOptions,
   reset
 }) => {
@@ -51,7 +50,7 @@ const PolicySearch = ({
           <Field name="searchType" validate={isRequired}>
             {({ input, meta }) => (
               <Select
-                input={{ ...input, onChange: changeSearchType }}
+                input={{ ...input }}
                 meta={meta}
                 id="searchType"
                 dataTest="searchType"

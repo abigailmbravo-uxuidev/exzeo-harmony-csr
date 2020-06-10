@@ -13,3 +13,9 @@ export const productAnswers = [
   { answer: 'HO3', label: 'HO3' },
   { answer: 'AF3', label: 'AF3' }
 ];
+
+export const SEARCH_TYPE = {
+  policy: 'policy',
+  quote: 'quote',
+  address: 'address'
+};
