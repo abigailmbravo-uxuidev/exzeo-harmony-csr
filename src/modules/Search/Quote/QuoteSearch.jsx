@@ -1,7 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Field } from 'redux-form';
-import { Input, Select, Button, validation, normalize } from '@exzeo/core-ui';
+import {
+  Input,
+  Select,
+  Button,
+  Field,
+  validation,
+  normalize
+} from '@exzeo/core-ui';
 
 import { getAnswers } from '../../../utilities/forms';
 import Pagination from '../components/Pagination';

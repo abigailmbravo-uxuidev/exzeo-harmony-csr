@@ -1,7 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Field } from 'redux-form';
-import { Input, Integer, Button, Select, validation } from '@exzeo/core-ui';
+import {
+  Input,
+  Integer,
+  Button,
+  Select,
+  validation,
+  Field
+} from '@exzeo/core-ui';
 
 const { isAlphaNumeric, isValidChar, isRequired } = validation;
 

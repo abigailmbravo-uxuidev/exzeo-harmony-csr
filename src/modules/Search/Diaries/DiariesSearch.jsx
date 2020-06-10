@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Field } from 'redux-form';
 import {
   Select,
   MultiSelectTypeAhead,
@@ -8,7 +7,8 @@ import {
   Button,
   validation,
   emptyObject,
-  emptyArray
+  emptyArray,
+  Field
 } from '@exzeo/core-ui';
 
 import ResetButton from '../components/ResetButton';
