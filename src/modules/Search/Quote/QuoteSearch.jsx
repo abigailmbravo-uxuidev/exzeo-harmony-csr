@@ -176,8 +176,8 @@ const QuoteSearch = ({
     </div>
     {!!search.results.length && search.totalPages > 1 && (
       <Pagination
-        changePageForward={handlePagination(true)}
-        changePageBack={handlePagination(false)}
+        changePageForward={() => handlePagination(true)}
+        changePageBack={() => handlePagination(false)}
         pageNumber={search.currentPage}
         totalPages={search.totalPages}
       />
