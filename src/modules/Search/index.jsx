@@ -77,7 +77,10 @@ export const SearchPage = ({
     setHasSearched(false);
     setSearchResults(initialSearchResults);
     setShowLoader(false);
-    // this.props.resetSearch();
+  };
+
+  const resetResults = () => {
+    setSearchResults(initialSearchResults);
   };
 
   const setInitialValues = (searchType, searchConfig) => {
@@ -100,7 +103,6 @@ export const SearchPage = ({
   const handleSubmit = async data => {
     try {
       setShowLoader(true);
-
       const searchResults = await handleSearchSubmit(data, searchType);
       setSearchResults(searchResults ? searchResults : initialSearchResults);
       setHasSearched(true);
@@ -126,7 +128,13 @@ export const SearchPage = ({
             agencies={agencies}
             handleSearchSubmit={handleSubmit}
             currentPage={searchResults.currentPage}
-            render={({ handlePagination, formProps, initialValues, form }) => (
+            resetResults={resetResults}
+            render={({
+              handlePagination,
+              formProps,
+              initialValues,
+              resetFormResults
+            }) => (
               <SearchForm
                 {...formProps}
                 searchResults={searchResults}
@@ -137,7 +145,7 @@ export const SearchPage = ({
                 productAnswers={productAnswers}
                 initialValues={initialValues}
                 handleSubmit={handleSubmit}
-                form={form}
+                resetFormResults={resetFormResults}
               />
             )}
           />

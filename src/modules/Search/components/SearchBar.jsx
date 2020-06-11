@@ -6,7 +6,8 @@ const SearchBar = ({
   initialValues,
   render,
   changeSearchType,
-  currentPage
+  currentPage,
+  resetResults
 }) => {
   const [formInstance, setFormInstance] = useState(undefined);
 
@@ -24,6 +25,11 @@ const SearchBar = ({
     changeSearchType(newValue);
   };
 
+  const resetFormResults = () => {
+    resetResults();
+    formInstance.reset();
+  };
+
   return (
     <Form
       onSubmit={handleSearchSubmit}
@@ -39,7 +45,7 @@ const SearchBar = ({
                 formProps: values,
                 initialValues: initialValues,
                 handleSearchSubmit,
-                form
+                resetFormResults
               })}
             </div>
             <OnChangeListener name="searchType">

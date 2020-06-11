@@ -1,4 +1,4 @@
-import React, { Component, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import {
   Select,
@@ -19,7 +19,7 @@ import { useFetchDiaryOptions, useFetchAssigneeAnswers } from '../hooks';
 
 export const DiariesSearch = ({
   submitting,
-  form,
+  resetFormResults,
   searchResults,
   userProfile,
   initialValues,
@@ -117,7 +117,7 @@ export const DiariesSearch = ({
           <span className="count-results">
             <strong>{searchResults.totalRecords}</strong>RESULTS
           </span>
-          <ResetButton reset={form.reset} />
+          <ResetButton reset={resetFormResults} />
           <Button
             className={Button.constants.classNames.success}
             customClass="multi-input"
