@@ -1,12 +1,5 @@
 import React, { useState } from 'react';
-import {
-  Form,
-  FormSpy,
-  Loader,
-  OnChangeListener,
-  useForm
-} from '@exzeo/core-ui';
-import { Gandalf } from '@exzeo/core-ui/src/@Harmony';
+import { Form, FormSpy, OnChangeListener } from '@exzeo/core-ui';
 
 const SearchBar = ({
   handleSearchSubmit,
@@ -15,10 +8,10 @@ const SearchBar = ({
   changeSearchType,
   currentPage
 }) => {
-  const [formValues, setFormValues] = useState(initialValues);
+  const [formInstance, setFormInstance] = useState(initialValues);
 
   const handlePagination = isNext => {
-    //  console.log(isNext)
+    const formValues = formInstance.getState().values;
     const submitData = {
       ...formValues,
       isNext,
@@ -29,15 +22,6 @@ const SearchBar = ({
 
   const handleChangeSearchType = newValue => {
     changeSearchType(newValue);
-
-    // TODO: This was in componentDidMount
-    /*
-     if (searchType === 'diaries') {
-      handleSubmit(handleSearchSubmit)();
-    }
-     */
-
-    // this.clearForm();
   };
 
   return (
@@ -62,8 +46,10 @@ const SearchBar = ({
               }}
             </OnChangeListener>
             <FormSpy subscription={{}}>
-              {() => {
-                setFormValues(values);
+              {({ form }) => {
+                if (!formInstance) {
+                  setFormInstance(form);
+                }
                 return null;
               }}
             </FormSpy>

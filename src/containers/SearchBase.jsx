@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Helmet } from 'react-helmet';
-import { Loader } from '@exzeo/core-ui';
+import { emptyArray } from '@exzeo/core-ui';
 
 import { getUIQuestions } from '../state/actions/questions.actions';
 import Header from '../components/Common/Header';
@@ -42,9 +42,11 @@ SearchBase.propTypes = {
   userProfile: PropTypes.shape().isRequired
 };
 
+const stubProfile = { profile: {} };
 const mapStateToProps = state => ({
   loading: state.search.loading,
-  userProfile: state.authState.userProfile
+  userProfile: state.authState.userProfile || stubProfile,
+  agencies: state.service.agencies || emptyArray
 });
 
 export default connect(mapStateToProps, {

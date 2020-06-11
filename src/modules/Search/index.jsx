@@ -1,17 +1,8 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { emptyArray, Loader } from '@exzeo/core-ui';
+import React, { useEffect, useState } from 'react';
+import { Loader } from '@exzeo/core-ui';
 
 import { SEARCH_CONFIG, SEARCH_TYPES } from '../../constants/search';
 import { productAnswers } from './constants';
-
-import {
-  resetSearch,
-  handleSearchSubmit
-} from '../../state/actions/search.actions';
-import { getAgencies } from '../../state/actions/service.actions';
-import { clearAppError } from '../../state/actions/error.actions';
-import { getEnumsForSearch } from '../../state/actions/list.actions';
 
 import SearchBar from './components/SearchBar';
 import SearchResults from './components/SearchResults';
@@ -48,70 +39,66 @@ const SEARCH_FORMS = {
   [SEARCH_TYPES.diaries]: DiariesSearch
 };
 
-export class SearchPage extends Component {
-  state = {
-    hasSearched: false,
-    searchType: SEARCH_TYPES.policy,
-    searchConfig: SEARCH_TYPES.policy,
-    searchReady: false,
-    searchResults: initialSearchResults,
-    answers: {},
-    showLoader: false
-  };
+// TODO: Move handleSearchSubmit into this component and move the data requests into a data file
+// TODO: Move all formats in the actions into a utilities file
+// TODO: should I convert this to a functional component and move getEnums to a useFetch?
+//TODO: need to Fire submit when search type is diaries. Could do something with useFetch depending on getEnums
+// TODO: replace search.actions and use useReducer / useState
+/*
+ setSearchResults in search.actions
+  currentPage = 1,
+  pageSize = 0,
+  sortBy = '',
+  sortDirection = '',
+  results = [],
+  totalRecords = 0,
+  noResults = true
+ */
+//TODO: could be a good use case for useReducer
+export const SearchPage = ({
+  pathName,
+  agencies,
+  userProfile,
+  handleSearchSubmit,
+  children
+}) => {
+  const [hasSearched, setHasSearched] = useState(false);
+  const [searchType, setSearchType] = useState(SEARCH_TYPES.policy);
+  const [searchConfig, setSearchConfig] = useState(SEARCH_TYPES.policy);
+  const [searchReady, setSearchReady] = useState(false);
+  const [searchResults, setSearchResults] = useState(initialSearchResults);
+  const [showLoader, setShowLoader] = useState(false);
 
-  componentDidMount() {
-    this.setSearchConfig();
-    this.props.getEnumsForSearch();
-  }
-
-  componentWillUnmount() {
-    this.props.resetSearch();
-  }
-
-  setHasSearched = hasSearched => {
-    this.setState({ hasSearched });
-  };
-
-  setSearchConfig = () => {
-    const { pathName } = this.props;
-    // determine which page we are on and setup correct search properties
+  useEffect(() => {
     if (pathName === '/') {
-      this.setState({
-        searchType: SEARCH_TYPES.policy,
-        searchConfig: SEARCH_TYPES.policy,
-        searchReady: true
-      });
+      setConfig(SEARCH_TYPES.policy);
     } else if (pathName === '/agency') {
-      this.setState({
-        searchType: SEARCH_TYPES.agency,
-        searchConfig: SEARCH_TYPES.agency,
-        searchReady: true
-      });
+      setConfig(SEARCH_TYPES.agency);
     } else if (pathName === '/diaries') {
-      this.setState({
-        searchType: SEARCH_TYPES.diaries,
-        searchConfig: SEARCH_TYPES.diaries,
-        searchReady: true
-      });
+      setConfig(SEARCH_TYPES.diaries);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [pathName]);
+
+  const setConfig = searchType => {
+    setSearchType(searchType);
+    setSearchConfig(searchType);
+    setSearchReady(true);
   };
 
-  changeSearchType = searchType => {
-    this.setState({
-      searchType,
-      searchConfig: searchType,
-      hasSearched: false,
-      searchResults: initialSearchResults,
-      showLoader: false
-    });
-    this.props.resetSearch();
+  const changeSearchType = searchType => {
+    setSearchType(searchType);
+    setSearchConfig(searchType);
+    setHasSearched(false);
+    setSearchResults(initialSearchResults);
+    setShowLoader(false);
+    // this.props.resetSearch();
   };
 
-  setInitialValues = (searchType, searchConfig) => {
-    const { userProfile } = this.props;
+  const setInitialValues = (searchType, searchConfig) => {
     const initialValues = SEARCH_CONFIG[searchConfig].initialValues;
 
-    return searchType === 'diaries'
+    return searchType === SEARCH_TYPES.diaries
       ? {
           ...initialValues,
           assignees: [
@@ -125,21 +112,14 @@ export class SearchPage extends Component {
       : initialValues;
   };
 
-  handleSubmit = async data => {
+  const handleSubmit = async data => {
     try {
-      this.setState({
-        showLoader: true
-      });
-      const { handleSearchSubmit } = this.props;
-      const searchResults = await handleSearchSubmit(
-        data,
-        this.state.searchType
-      );
-      this.setState({
-        searchResults: searchResults ? searchResults : initialSearchResults,
-        hasSearched: true,
-        showLoader: false
-      });
+      setShowLoader(true);
+
+      const searchResults = await handleSearchSubmit(data, searchType);
+      setSearchResults(searchResults ? searchResults : initialSearchResults);
+      setHasSearched(true);
+      setShowLoader(false);
     } catch (error) {
       if (process.env.NODE_ENV !== 'production') {
         console.error('Search error: ', error);
@@ -147,84 +127,56 @@ export class SearchPage extends Component {
     }
   };
 
-  render() {
-    const { agencies, clearAppError, getAgencies } = this.props;
+  const SearchForm = SEARCH_FORMS[searchType];
 
-    const {
-      hasSearched,
-      searchConfig,
-      searchReady,
-      searchType,
-      searchResults
-    } = this.state;
+  return (
+    <React.Fragment>
+      {showLoader && <Loader />}
 
-    const SearchForm = SEARCH_FORMS[searchType];
+      <div className="search">
+        {searchReady && (
+          <SearchBar
+            changeSearchType={changeSearchType}
+            initialValues={setInitialValues(searchType, searchConfig)}
+            onSubmitSuccess={() => setHasSearched(true)}
+            searchType={searchType}
+            agencies={agencies}
+            handleSearchSubmit={handleSubmit}
+            currentPage={searchResults.currentPage}
+            render={({ handlePagination, formProps }) => (
+              <SearchForm
+                userProfile={userProfile}
+                searchTypeOptions={SEARCH_CONFIG[searchConfig].searchOptions}
+                handlePagination={handlePagination}
+                hasSearched={hasSearched}
+                productAnswers={productAnswers}
+                {...formProps}
+              />
+            )}
+          />
+        )}
+      </div>
+      <main role="document">
+        <div className="content-wrapper">
+          <div className="dashboard" role="article">
+            <div className="route">
+              <div className="search route-content">
+                <div className="survey-wrapper scroll">
+                  <SearchResults
+                    hasSearched={hasSearched}
+                    searchType={searchType}
+                    search={searchResults}
+                  />
 
-    return (
-      <React.Fragment>
-        {this.state.showLoader && <Loader />}
-
-        <div className="search">
-          {searchReady && (
-            <SearchBar
-              changeSearchType={this.changeSearchType}
-              initialValues={this.setInitialValues(searchType, searchConfig)}
-              onSubmitSuccess={() => this.setHasSearched(true)}
-              searchType={searchType}
-              clearAppError={clearAppError}
-              getAgencies={getAgencies}
-              agencies={agencies}
-              handleSearchSubmit={this.handleSubmit}
-              currentPage={searchResults.currentPage}
-              render={({ handlePagination, formProps }) => (
-                <SearchForm
-                  searchTypeOptions={SEARCH_CONFIG[searchConfig].searchOptions}
-                  handlePagination={handlePagination}
-                  hasSearched={hasSearched}
-                  productAnswers={productAnswers}
-                  {...formProps}
-                />
-              )}
-            />
-          )}
-        </div>
-        <main role="document">
-          <div className="content-wrapper">
-            <div className="dashboard" role="article">
-              <div className="route">
-                <div className="search route-content">
-                  <div className="survey-wrapper scroll">
-                    <SearchResults
-                      hasSearched={hasSearched}
-                      searchType={searchType}
-                      search={searchResults}
-                    />
-
-                    {this.props.children}
-                  </div>
+                  {children}
                 </div>
               </div>
             </div>
           </div>
-        </main>
-      </React.Fragment>
-    );
-  }
-}
-
-// TODO temp fix until Auth is updated
-const stubProfile = { profile: {} };
-const mapStateToProps = state => {
-  return {
-    userProfile: state.authState.userProfile || stubProfile,
-    agencies: state.service.agencies || emptyArray
-  };
+        </div>
+      </main>
+    </React.Fragment>
+  );
 };
 
-export default connect(mapStateToProps, {
-  clearAppError,
-  getAgencies,
-  handleSearchSubmit,
-  resetSearch,
-  getEnumsForSearch
-})(SearchPage);
+export default SearchPage;

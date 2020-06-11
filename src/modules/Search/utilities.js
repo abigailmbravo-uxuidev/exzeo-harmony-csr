@@ -1,0 +1,234 @@
+import { sortDiariesByDate } from '../../utilities/diaries';
+
+/**
+ * Build query string and encodeURI
+ * @param firstName
+ * @param lastName
+ * @param mailingAddress
+ * @param propertyAddress
+ * @param companyCode
+ * @param state
+ * @param product
+ * @param effectiveDate
+ * @param policyNumber
+ * @param quoteNumber
+ * @param status
+ * @param quoteState
+ * @param page
+ * @param pageSize
+ * @param sort
+ * @param sortDirection
+ * @param agencyCode
+ * @param agentCode
+ * @param licenseNumber
+ * @param displayName
+ * @param taxIdNumber
+ * @param primaryPhoneNumber,
+ * @returns {string} querystring
+ */
+export function buildQuerystring({
+  firstName,
+  lastName,
+  mailingAddress,
+  propertyAddress,
+  effectiveDate,
+  policyNumber,
+  quoteNumber,
+  status,
+  quoteState,
+  page,
+  pageSize,
+  sort,
+  sortDirection,
+  companyCode,
+  state,
+  product,
+  agencyCode,
+  agentCode,
+  licenseNumber,
+  displayName,
+  taxIdNumber,
+  primaryPhoneNumber
+}) {
+  const fields = {
+    ...(firstName && { firstName }),
+    ...(lastName && { lastName }),
+    ...(mailingAddress && { mailingAddress }),
+    ...(propertyAddress && { propertyAddress }),
+    ...(effectiveDate && { effectiveDate }),
+    ...(policyNumber && { policyNumber }),
+    ...(quoteNumber && { quoteNumber }),
+    ...(status && { status }),
+    ...(quoteState && { quoteState }),
+    ...(page && { page }),
+    ...(pageSize && { pageSize }),
+    ...(sort && { sort }),
+    ...(sortDirection && { sortDirection }),
+    ...(companyCode && { companyCode }),
+    ...(state && { state }),
+    ...(product && { product }),
+    ...(agencyCode && { agencyCode }),
+    ...(agentCode && { agentCode }),
+    ...(licenseNumber && { licenseNumber }),
+    ...(displayName && { displayName }),
+    ...(taxIdNumber && { taxIdNumber }),
+    ...(primaryPhoneNumber && { primaryPhoneNumber })
+  };
+
+  return encodeURI(
+    Object.keys(fields)
+      .map(key => `${key}=${fields[key]}`)
+      .join('&')
+  );
+}
+
+/**
+ *
+ * @param currentPage
+ * @param isNext
+ * @returns {string|*|number}
+ */
+export function setPageNumber(currentPage, isNext) {
+  if (typeof isNext === 'undefined') {
+    return currentPage || 1;
+  }
+  return isNext ? String(currentPage + 1) : String(currentPage - 1);
+}
+
+/**
+ *
+ * @param currentPage
+ * @param pageSize
+ * @param sortBy
+ * @param sortDirection
+ * @param results
+ * @param totalRecords
+ * @param noResults
+ * @returns {{sortDirection: string, totalRecords: number, noResults: boolean, pageSize: number, sortBy: string, currentPage: number, results: Array}}
+ */
+export function formatSearchResults({
+  currentPage = 1,
+  pageSize = 0,
+  sortBy = '',
+  sortDirection = '',
+  results = [],
+  totalRecords = 0,
+  noResults = true
+}) {
+  return {
+    currentPage,
+    pageSize,
+    sortBy,
+    sortDirection,
+    results,
+    totalRecords,
+    noResults
+  };
+}
+
+/**
+ *
+ * @param results
+ * @returns {{sortDirection: string, totalRecords: number, noResults: boolean, pageSize: number, sortBy: string, currentPage: number, results: Array}}
+ */
+export function formatAddressResults(results) {
+  return formatSearchResults({
+    results: results.IndexResult,
+    totalRecords: results.TotalCount,
+    noResults: !results.TotalCount
+  });
+}
+
+/**
+ *
+ * @param results
+ * @returns {{sortDirection: string, totalRecords: number, noResults: boolean, pageSize: number, sortBy: string, currentPage: number, results: Array}}
+ */
+export function formatQuoteResults(results) {
+  return formatSearchResults({
+    currentPage: results.currentPage,
+    pageSize: results.pageSize,
+    sortBy: results.sort,
+    sortDirection: results.sortDirection === -1 ? 'desc' : 'asc',
+    results: results.quotes,
+    totalRecords: results.totalNumberOfRecords,
+    noResults: !results.totalNumberOfRecords
+  });
+}
+
+/**
+ *
+ * @param results
+ * @returns {{sortDirection: string, totalRecords: number, noResults: boolean, pageSize: number, sortBy: string, currentPage: number, results: Array}}
+ */
+export function formatPolicyResults(results) {
+  return formatSearchResults({
+    currentPage: results.currentPage || 0,
+    pageSize: results.pageSize || 0,
+    sortBy: results.sort || '',
+    sortDirection: results.sortDirection,
+    results: results.policies,
+    totalRecords: results.totalNumberOfRecords,
+    noResults: !results.totalNumberOfRecords
+  });
+}
+
+/**
+ *
+ * @param results
+ * @returns {{sortDirection: string, totalRecords: number, noResults: boolean, pageSize: number, sortBy: string, currentPage: number, results: Array}}
+ */
+export function formatAgentResults(results) {
+  const totalRecords = Array.isArray(results) ? results.length : 0;
+  return formatSearchResults({
+    results,
+    totalRecords,
+    noResults: !totalRecords
+  });
+}
+
+/**
+ *
+ * @param results
+ * @returns {{sortDirection: string, totalRecords: number, noResults: boolean, pageSize: number, sortBy: string, currentPage: number, results: Array}}
+ */
+export function formatAgencyResults(results) {
+  const totalRecords = Array.isArray(results) ? results.length : 0;
+  return formatSearchResults({
+    results,
+    totalRecords,
+    noResults: !totalRecords
+  });
+}
+
+/**
+ *
+ * @param results
+ */
+export function formatDiaryResults(results) {
+  const sortedResults = sortDiariesByDate(results.result);
+
+  return {
+    results: sortedResults,
+    totalRecords: sortedResults.length,
+    noResults: !sortedResults.length
+  };
+}
+
+export function buildAssigneesList(users) {
+  const activeUsers = users.filter(user => !!user.enabled);
+
+  const userList = activeUsers.map(user => ({
+    answer: user.userId,
+    label: `${user.firstName} ${user.lastName}`,
+    type: 'user'
+  }));
+
+  return userList.sort((a, b) => {
+    const userA = a.label.toUpperCase();
+    const userB = b.label.toUpperCase();
+    if (userA > userB) return 1;
+    if (userA < userB) return -1;
+    return 0;
+  });
+}
