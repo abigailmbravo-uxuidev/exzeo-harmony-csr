@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import {
   Select,
@@ -16,10 +16,34 @@ import { STATUS_ANSWERS } from '../../../constants/diaries';
 import { productAnswers } from '../constants';
 import { isValidRange } from './utilities';
 import { useFetchDiaryOptions, useFetchAssigneeAnswers } from '../hooks';
+import { SEARCH_TYPES } from '../../../constants/search';
 
-export const DiariesSearch = ({ submitting, reset, results, userProfile }) => {
+export const DiariesSearch = ({
+  submitting,
+  reset,
+  results,
+  userProfile,
+  initialValues,
+  handleSubmit
+}) => {
   const { diaryReasons } = useFetchDiaryOptions();
   const { assigneeAnswers } = useFetchAssigneeAnswers(userProfile);
+
+  console.log('diaryReasons', diaryReasons);
+  console.log('assigneeAnswers', assigneeAnswers);
+
+  useEffect(() => {
+    if (
+      Array.isArray(assigneeAnswers) &&
+      Array.isArray(diaryReasons) &&
+      diaryReasons.length &&
+      assigneeAnswers.length
+    ) {
+      handleSubmit(initialValues);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [diaryReasons, assigneeAnswers]);
+
   return (
     <React.Fragment>
       <div className="search-inputs fade-in diary">

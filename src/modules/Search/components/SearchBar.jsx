@@ -36,7 +36,9 @@ const SearchBar = ({
               {// render the correct search form based on searchType (declared in Search/index.js)
               render({
                 handlePagination: handlePagination,
-                formProps: values
+                formProps: values,
+                initialValues: initialValues,
+                handleSearchSubmit
               })}
             </div>
             <OnChangeListener name="searchType">

@@ -14,6 +14,8 @@ export const useFetchDiaryOptions = () => {
       setLoaded(false);
       try {
         const diaryOptions = await fetchDiaryOptions();
+
+        console.log(diaryOptions);
         setDiaryOptions(
           diaryOptions && Array.isArray(diaryOptions.reasons)
             ? diaryOptions.reasons

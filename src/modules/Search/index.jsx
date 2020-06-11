@@ -127,15 +127,17 @@ export const SearchPage = ({
             agencies={agencies}
             handleSearchSubmit={handleSubmit}
             currentPage={searchResults.currentPage}
-            render={({ handlePagination, formProps }) => (
+            render={({ handlePagination, formProps, initialValues }) => (
               <SearchForm
+                {...formProps}
                 searchResults={searchResults}
                 userProfile={userProfile}
                 searchTypeOptions={SEARCH_CONFIG[searchConfig].searchOptions}
                 handlePagination={handlePagination}
                 hasSearched={hasSearched}
                 productAnswers={productAnswers}
-                {...formProps}
+                initialValues={initialValues}
+                handleSubmit={handleSubmit}
               />
             )}
           />
