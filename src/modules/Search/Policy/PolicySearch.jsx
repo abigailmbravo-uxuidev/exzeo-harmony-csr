@@ -39,7 +39,7 @@ const PolicySearch = ({
   submitting,
   questions,
   handlePagination,
-  search,
+  searchResults,
   searchTypeOptions,
   reset
 }) => {
@@ -231,12 +231,12 @@ const PolicySearch = ({
         </Button>
       </div>
 
-      {!!search.results.length && search.totalPages > 1 && (
+      {searchResults.results.length && searchResults.totalPages > 1 && (
         <Pagination
           pageUp={() => handlePagination(true)}
           pageDown={() => handlePagination(false)}
-          pageNumber={search.currentPage}
-          totalPages={search.totalPages}
+          pageNumber={searchResults.currentPage}
+          totalPages={searchResults.totalPages}
         />
       )}
     </React.Fragment>
@@ -248,7 +248,7 @@ PolicySearch.propTypes = {
   agencyList: PropTypes.array,
   changeSearchType: PropTypes.func,
   questions: PropTypes.object,
-  search: PropTypes.shape({
+  searchResults: PropTypes.shape({
     results: PropTypes.array,
     totalPages: PropTypes.number,
     currentPage: PropTypes.number

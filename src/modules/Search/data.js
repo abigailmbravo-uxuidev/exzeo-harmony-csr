@@ -388,6 +388,9 @@ export async function handleSearchSubmit(data, searchType) {
     searchResults.companyCode = data.companyCode;
     searchResults.state = data.state;
     searchResults.product = data.product;
+    searchResults.totalPages =
+      Math.ceil(searchResults.totalRecords / RESULTS_PAGE_SIZE) || 0;
+
     // Setting search results in redux for backwards compat with other search types/features - will be removed  when search is refactored into core-ui
     return searchResults;
   } catch (error) {

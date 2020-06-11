@@ -8,7 +8,7 @@ const SearchBar = ({
   changeSearchType,
   currentPage
 }) => {
-  const [formInstance, setFormInstance] = useState(initialValues);
+  const [formInstance, setFormInstance] = useState(undefined);
 
   const handlePagination = isNext => {
     const formValues = formInstance.getState().values;
@@ -29,7 +29,7 @@ const SearchBar = ({
       onSubmit={handleSearchSubmit}
       initialValues={initialValues}
       subscription={{ submitting: true, values: true }}
-      render={({ handleSubmit, values }) => (
+      render={({ handleSubmit, form, values }) => (
         <div id="SearchBar">
           <form id="SearchBarForm" onSubmit={handleSubmit}>
             <div className="search-input-wrapper">
@@ -46,7 +46,7 @@ const SearchBar = ({
               }}
             </OnChangeListener>
             <FormSpy subscription={{}}>
-              {({ form }) => {
+              {() => {
                 if (!formInstance) {
                   setFormInstance(form);
                 }

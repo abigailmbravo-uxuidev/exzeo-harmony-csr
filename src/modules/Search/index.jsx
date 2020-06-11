@@ -40,21 +40,7 @@ const SEARCH_FORMS = {
   [SEARCH_TYPES.diaries]: DiariesSearch
 };
 
-// TODO: Move handleSearchSubmit into this component and move the data requests into a data file
-// TODO: Move all formats in the actions into a utilities file
 //TODO: need to Fire submit when search type is diaries. Could do something with useFetch depending on getEnums
-// TODO: replace search.actions and use useReducer / useState
-/*
- setSearchResults in search.actions
-  currentPage = 1,
-  pageSize = 0,
-  sortBy = '',
-  sortDirection = '',
-  results = [],
-  totalRecords = 0,
-  noResults = true
- */
-//TODO: could be a good use case for useReducer
 export const SearchPage = ({
   pathName,
   agencies,
@@ -143,6 +129,7 @@ export const SearchPage = ({
             currentPage={searchResults.currentPage}
             render={({ handlePagination, formProps }) => (
               <SearchForm
+                searchResults={searchResults}
                 userProfile={userProfile}
                 searchTypeOptions={SEARCH_CONFIG[searchConfig].searchOptions}
                 handlePagination={handlePagination}
@@ -165,7 +152,6 @@ export const SearchPage = ({
                     searchType={searchType}
                     search={searchResults}
                   />
-
                   {children}
                 </div>
               </div>
