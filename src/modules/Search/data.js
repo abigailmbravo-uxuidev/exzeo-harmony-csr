@@ -310,6 +310,7 @@ export async function handleDiariesSearch(data) {
 }
 
 /**
+ *
  * @returns {Promise<*>}
  */
 export async function fetchDiaryOptions() {

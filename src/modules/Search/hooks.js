@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react';
 import { fetchDiaryOptions, getDiaryAssigneeOptions } from './data';
+import { formatDiaryOptions } from './utilities';
 
 /**
- *
- * @returns {{loaded: boolean, diaryOptions: {}}}
+ * Z
+ * @returns {{loaded: boolean, diaryOptions: *[]}}
  */
 export const useFetchDiaryOptions = () => {
   const [diaryOptions, setDiaryOptions] = useState([]);
@@ -14,13 +15,7 @@ export const useFetchDiaryOptions = () => {
       setLoaded(false);
       try {
         const diaryOptions = await fetchDiaryOptions();
-
-        console.log(diaryOptions);
-        setDiaryOptions(
-          diaryOptions && Array.isArray(diaryOptions.reasons)
-            ? diaryOptions.reasons
-            : []
-        );
+        setDiaryOptions(formatDiaryOptions(diaryOptions));
       } catch {
         setDiaryOptions([]);
       }

@@ -16,7 +16,6 @@ import { STATUS_ANSWERS } from '../../../constants/diaries';
 import { productAnswers } from '../constants';
 import { isValidRange } from './utilities';
 import { useFetchDiaryOptions, useFetchAssigneeAnswers } from '../hooks';
-import { SEARCH_TYPES } from '../../../constants/search';
 
 export const DiariesSearch = ({
   submitting,
@@ -26,23 +25,20 @@ export const DiariesSearch = ({
   initialValues,
   handleSubmit
 }) => {
-  const { diaryReasons } = useFetchDiaryOptions();
+  const { diaryOptions } = useFetchDiaryOptions();
   const { assigneeAnswers } = useFetchAssigneeAnswers(userProfile);
-
-  console.log('diaryReasons', diaryReasons);
-  console.log('assigneeAnswers', assigneeAnswers);
 
   useEffect(() => {
     if (
       Array.isArray(assigneeAnswers) &&
-      Array.isArray(diaryReasons) &&
-      diaryReasons.length &&
+      Array.isArray(diaryOptions?.reasons) &&
+      diaryOptions.reasons.length &&
       assigneeAnswers.length
     ) {
       handleSubmit(initialValues);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [diaryReasons, assigneeAnswers]);
+  }, [diaryOptions, assigneeAnswers]);
 
   return (
     <React.Fragment>
@@ -68,7 +64,7 @@ export const DiariesSearch = ({
                 name="reason"
                 dataTest="reason"
                 component={Select}
-                answers={diaryReasons}
+                answers={diaryOptions?.reasons || []}
                 placeholder="Please choose"
                 label="Reason"
                 errorHint
@@ -97,7 +93,11 @@ export const DiariesSearch = ({
                 styleName="assignees"
                 component={MultiSelectTypeAhead}
                 label="Assigned To"
-                answers={assigneeAnswers}
+                answers={
+                  diaryOptions?.tags
+                    ? [...diaryOptions.tags, ...assigneeAnswers]
+                    : assigneeAnswers
+                }
                 errorHint
               />
             </div>
