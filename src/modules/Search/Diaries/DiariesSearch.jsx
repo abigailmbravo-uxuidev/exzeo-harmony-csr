@@ -19,8 +19,8 @@ import { useFetchDiaryOptions, useFetchAssigneeAnswers } from '../hooks';
 
 export const DiariesSearch = ({
   submitting,
-  reset,
-  results,
+  form,
+  searchResults,
   userProfile,
   initialValues,
   handleSubmit
@@ -28,6 +28,7 @@ export const DiariesSearch = ({
   const { diaryOptions } = useFetchDiaryOptions();
   const { assigneeAnswers } = useFetchAssigneeAnswers(userProfile);
 
+  // submit search when answers and options are loaded
   useEffect(() => {
     if (
       Array.isArray(assigneeAnswers) &&
@@ -114,9 +115,9 @@ export const DiariesSearch = ({
             </div>
           </div>
           <span className="count-results">
-            <strong>{results.length}</strong>RESULTS
+            <strong>{searchResults.totalRecords}</strong>RESULTS
           </span>
-          <ResetButton reset={reset} />
+          <ResetButton reset={form.reset} />
           <Button
             className={Button.constants.classNames.success}
             customClass="multi-input"

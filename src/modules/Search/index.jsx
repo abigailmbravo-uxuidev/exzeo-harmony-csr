@@ -40,7 +40,6 @@ const SEARCH_FORMS = {
   [SEARCH_TYPES.diaries]: DiariesSearch
 };
 
-//TODO: need to Fire submit when search type is diaries. Could do something with useFetch depending on getEnums
 export const SearchPage = ({
   pathName,
   agencies,
@@ -127,7 +126,7 @@ export const SearchPage = ({
             agencies={agencies}
             handleSearchSubmit={handleSubmit}
             currentPage={searchResults.currentPage}
-            render={({ handlePagination, formProps, initialValues }) => (
+            render={({ handlePagination, formProps, initialValues, form }) => (
               <SearchForm
                 {...formProps}
                 searchResults={searchResults}
@@ -138,6 +137,7 @@ export const SearchPage = ({
                 productAnswers={productAnswers}
                 initialValues={initialValues}
                 handleSubmit={handleSubmit}
+                form={form}
               />
             )}
           />

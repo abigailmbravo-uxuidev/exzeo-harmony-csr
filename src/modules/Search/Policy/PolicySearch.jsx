@@ -41,7 +41,7 @@ const PolicySearch = ({
   handlePagination,
   searchResults,
   searchTypeOptions,
-  reset
+  form
 }) => {
   return (
     <React.Fragment>
@@ -218,7 +218,7 @@ const PolicySearch = ({
             )}
           </Field>
         </div>
-        <ResetButton reset={reset} />
+        <ResetButton reset={form.reset} />
         <Button
           className={Button.constants.classNames.success}
           customClass="multi-input"
@@ -231,7 +231,7 @@ const PolicySearch = ({
         </Button>
       </div>
 
-      {searchResults.results.length && searchResults.totalPages > 1 && (
+      {!!searchResults.results.length && searchResults.totalPages > 1 && (
         <Pagination
           pageUp={() => handlePagination(true)}
           pageDown={() => handlePagination(false)}

@@ -19,7 +19,7 @@ const NewQuoteSearch = ({
   changeSearchType,
   searchTypeOptions,
   productAnswers,
-  reset
+  form
 }) => (
   <React.Fragment>
     <div className="search-context-sort">
@@ -83,7 +83,7 @@ const NewQuoteSearch = ({
           styleName="state-search"
         />
       </div>
-      <ResetButton reset={reset} />
+      <ResetButton reset={form.reset} />
       <Button
         className={Button.constants.classNames.success}
         customClass="multi-input"

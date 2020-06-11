@@ -38,7 +38,8 @@ const SearchBar = ({
                 handlePagination: handlePagination,
                 formProps: values,
                 initialValues: initialValues,
-                handleSearchSubmit
+                handleSearchSubmit,
+                form
               })}
             </div>
             <OnChangeListener name="searchType">
