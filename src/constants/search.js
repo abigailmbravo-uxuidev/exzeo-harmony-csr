@@ -14,14 +14,16 @@ export const POLICY_INITIAL_VALUES = {
   searchType: SEARCH_TYPES.policy,
   sortBy: 'policyNumber',
   companyCode: 'TTIC',
-  state: 'FL'
+  state: '',
+  product: ''
 };
 
 export const QUOTE_INITIAL_VALUES = {
   searchType: SEARCH_TYPES.quote,
   sortBy: 'quoteNumber',
   companyCode: 'TTIC',
-  state: 'FL'
+  state: '',
+  product: ''
 };
 
 export const AGENCY_INITIAL_VALUES = {

@@ -117,7 +117,9 @@ const QuoteSearch = ({
           label="State"
           component={Select}
           answers={stateAnswers}
-          showPlaceholder={false}
+          showPlaceholder={true}
+          placeholder={'All'}
+          placeholderDisabled={false}
           styleName="state-search"
         />
       </div>
@@ -137,8 +139,10 @@ const QuoteSearch = ({
           label="Product"
           component={Select}
           answers={productAnswers}
-          placeholder="Select..."
           styleName="product-search"
+          showPlaceholder={true}
+          placeholder={'All'}
+          placeholderDisabled={false}
         />
         <div className="form-group quote-state">
           <Field

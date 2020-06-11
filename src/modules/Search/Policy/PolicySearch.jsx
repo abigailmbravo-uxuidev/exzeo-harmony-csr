@@ -143,7 +143,9 @@ const PolicySearch = ({
                 dataTest="state"
                 label="State"
                 answers={stateAnswers}
-                showPlaceholder={false}
+                showPlaceholder={true}
+                placeholder={'All'}
+                placeholderDisabled={false}
                 styleName="state-search"
               />
             )}
@@ -172,7 +174,9 @@ const PolicySearch = ({
                 dataTest="product"
                 label="Product"
                 answers={productAnswers}
-                placeholder="Select..."
+                showPlaceholder={true}
+                placeholder={'All'}
+                placeholderDisabled={false}
                 styleName="product-search"
               />
             )}
