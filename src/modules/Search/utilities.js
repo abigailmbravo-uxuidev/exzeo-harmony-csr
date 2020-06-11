@@ -1,4 +1,5 @@
 import { sortDiariesByDate } from '../../utilities/diaries';
+import { COMPANY_OPTIONS, PRODUCT_OPTIONS, STATE_OPTIONS } from './constants';
 
 /**
  * Build query string and encodeURI
@@ -277,3 +278,50 @@ function removeDuplicates(array, property) {
     );
   });
 }
+
+export const cspConfigForSearch = (userProfile = {}, uri) => {
+  const userResources = (userProfile.resources || []).filter(resource => {
+    return (
+      !resource.conditions &&
+      resource.right === 'READ' &&
+      resource.uri.includes(uri)
+    );
+  });
+
+  const companyCodeMap = {};
+  const stateOptions = [];
+  const productOptions = [];
+  const companyCodeOptions = [];
+  const productOptionMap = {};
+
+  userResources.forEach(resource => {
+    const [companyCode, state, product] = resource.uri.split(':');
+    // we need to pass companyCode to server when creating a quote
+    const resourceKey = `${state}:${product}`;
+    companyCodeMap[resourceKey] = companyCode;
+
+    if (!companyCodeOptions.find(o => o.answer === companyCode)) {
+      companyCodeOptions.push(COMPANY_OPTIONS[companyCode]);
+    }
+    if (!stateOptions.find(o => o.answer === state)) {
+      stateOptions.push(STATE_OPTIONS[state]);
+    }
+    if (!productOptions.find(o => o.answer === product)) {
+      productOptions.push(PRODUCT_OPTIONS[product]);
+    }
+    if (!productOptionMap[state]) {
+      productOptionMap[state] = [];
+    }
+    if (!productOptionMap[state].find(option => option.answer === product)) {
+      productOptionMap[state].push(PRODUCT_OPTIONS[product]);
+    }
+  });
+
+  return {
+    companyCodeMap,
+    companyCodeOptions,
+    stateOptions,
+    productOptions,
+    productOptionMap
+  };
+};

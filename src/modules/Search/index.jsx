@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { Loader } from '@exzeo/core-ui';
 
 import { SEARCH_CONFIG, SEARCH_TYPES } from '../../constants/search';
-import { productAnswers } from './constants';
 
 import SearchBar from './components/SearchBar';
 import SearchResults from './components/SearchResults';
@@ -131,18 +130,17 @@ export const SearchPage = ({
             resetResults={resetResults}
             render={({
               handlePagination,
-              formProps,
+              formValues,
               initialValues,
               resetFormResults
             }) => (
               <SearchForm
-                {...formProps}
+                formValues={formValues}
                 searchResults={searchResults}
                 userProfile={userProfile}
                 searchTypeOptions={SEARCH_CONFIG[searchConfig].searchOptions}
                 handlePagination={handlePagination}
                 hasSearched={hasSearched}
-                productAnswers={productAnswers}
                 initialValues={initialValues}
                 handleSubmit={handleSubmit}
                 resetFormResults={resetFormResults}

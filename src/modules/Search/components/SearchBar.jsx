@@ -42,7 +42,7 @@ const SearchBar = ({
               {// render the correct search form based on searchType (declared in Search/index.js)
               render({
                 handlePagination: handlePagination,
-                formProps: values,
+                formValues: values,
                 initialValues: initialValues,
                 handleSearchSubmit,
                 resetFormResults
