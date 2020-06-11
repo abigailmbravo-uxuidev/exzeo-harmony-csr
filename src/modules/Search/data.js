@@ -2,7 +2,7 @@ import * as serviceRunner from '@exzeo/core-ui/src/@Harmony/Domain/Api/serviceRu
 import { searchData } from '@exzeo/core-ui/src/@Harmony';
 import { date } from '@exzeo/core-ui';
 import { SECONDARY_DATE_FORMAT } from '../../constants/dates';
-import { RESULTS_PAGE_SIZE } from '../../constants/search';
+import { RESULTS_PAGE_SIZE, SEARCH_TYPES } from '../../constants/search';
 import {
   buildAssigneesList,
   buildQuerystring,
@@ -14,8 +14,6 @@ import {
   formatQuoteResults,
   setPageNumber
 } from './utilities';
-import * as errorActions from '../../state/actions/error.actions';
-
 /**
  * Call quote search service
  * @param {object} query
@@ -332,31 +330,67 @@ export async function fetchDiaryOptions() {
   }
 }
 
-export function getDiaryAssigneeOptions(userProfile) {
+export async function getDiaryAssigneeOptions(userProfile) {
   const { resources } = userProfile;
   const query = resources
     .filter(r => r.uri.includes('Diaries'))
     .reduce((acc, val) => `${acc},${val.uri}|${val.right}`, '');
 
-  return async dispatch => {
-    try {
-      const config = {
-        method: 'GET',
-        service: 'security-manager-service',
-        path: `/user?r=${query}`
-      };
-      const response = await serviceRunner.callService(
-        config,
-        'getDiaryAssigneeOptions'
-      );
-      const users =
-        response.data && Array.isArray(response.data.result)
-          ? response.data.result
-          : [];
+  try {
+    const config = {
+      method: 'GET',
+      service: 'security-manager-service',
+      path: `/user?r=${query}`
+    };
+    const response = await serviceRunner.callService(
+      config,
+      'getDiaryAssigneeOptions'
+    );
+    const users =
+      response.data && Array.isArray(response.data.result)
+        ? response.data.result
+        : [];
 
-      return buildAssigneesList(users);
-    } catch (error) {
-      dispatch(errorActions.setAppError);
+    return buildAssigneesList(users);
+  } catch (error) {
+    throw error;
+  }
+}
+
+/**
+ * Main submit handler for Search. Determine which type of search is being requested and kick it off
+ * @param {object} data - form data
+ * @param {object} searchType
+ * @returns {Function}
+ */
+export async function handleSearchSubmit(data, searchType) {
+  try {
+    let searchResults = {};
+
+    if (searchType === SEARCH_TYPES.newQuote) {
+      searchResults = await handleAddressSearch(data);
     }
-  };
+    if (searchType === SEARCH_TYPES.quote) {
+      searchResults = await handleQuoteSearch(data);
+    }
+    if (searchType === SEARCH_TYPES.policy) {
+      searchResults = await handlePolicySearch(data);
+    }
+    if (searchType === SEARCH_TYPES.agent) {
+      searchResults = await handleAgentSearch(data);
+    }
+    if (searchType === SEARCH_TYPES.agency) {
+      searchResults = await handleAgencySearch(data);
+    }
+    if (searchType === SEARCH_TYPES.diaries) {
+      searchResults = await handleDiariesSearch(data);
+    }
+    searchResults.companyCode = data.companyCode;
+    searchResults.state = data.state;
+    searchResults.product = data.product;
+    // Setting search results in redux for backwards compat with other search types/features - will be removed  when search is refactored into core-ui
+    return searchResults;
+  } catch (error) {
+    throw error;
+  }
 }

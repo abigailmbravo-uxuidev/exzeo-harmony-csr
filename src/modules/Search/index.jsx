@@ -13,6 +13,7 @@ import AgencySearch from './Agency';
 import AgentSearch from './Agent';
 import UserSearch from './User';
 import DiariesSearch from './Diaries';
+import { handleSearchSubmit } from './data';
 
 const initialSearchResults = {
   currentPage: 1,
@@ -41,7 +42,6 @@ const SEARCH_FORMS = {
 
 // TODO: Move handleSearchSubmit into this component and move the data requests into a data file
 // TODO: Move all formats in the actions into a utilities file
-// TODO: should I convert this to a functional component and move getEnums to a useFetch?
 //TODO: need to Fire submit when search type is diaries. Could do something with useFetch depending on getEnums
 // TODO: replace search.actions and use useReducer / useState
 /*
@@ -59,8 +59,8 @@ export const SearchPage = ({
   pathName,
   agencies,
   userProfile,
-  handleSearchSubmit,
-  children
+  children,
+  errorHandler
 }) => {
   const [hasSearched, setHasSearched] = useState(false);
   const [searchType, setSearchType] = useState(SEARCH_TYPES.policy);
@@ -121,9 +121,7 @@ export const SearchPage = ({
       setHasSearched(true);
       setShowLoader(false);
     } catch (error) {
-      if (process.env.NODE_ENV !== 'production') {
-        console.error('Search error: ', error);
-      }
+      errorHandler(error);
     }
   };
 

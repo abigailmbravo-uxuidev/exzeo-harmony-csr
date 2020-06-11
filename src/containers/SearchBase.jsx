@@ -5,9 +5,11 @@ import { Helmet } from 'react-helmet';
 import { emptyArray } from '@exzeo/core-ui';
 
 import { getUIQuestions } from '../state/actions/questions.actions';
+
 import Header from '../components/Common/Header';
 import Footer from '../components/Common/Footer';
 import Search from '../modules/Search';
+import { setAppError } from '../state/actions/error.actions';
 
 export class SearchBase extends Component {
   componentDidMount() {
@@ -24,7 +26,11 @@ export class SearchBase extends Component {
           <title>Harmony - CSR Portal</title>
         </Helmet>
         <Header handleLogout={handleLogout} />
-        <Search pathName={location.pathname} userProfile={userProfile}>
+        <Search
+          pathName={location.pathname}
+          userProfile={userProfile}
+          errorHandler={setAppError}
+        >
           <div className="basic-footer">
             <Footer />
           </div>
@@ -50,5 +56,6 @@ const mapStateToProps = state => ({
 });
 
 export default connect(mapStateToProps, {
-  getUIQuestions
+  getUIQuestions,
+  setAppError
 })(SearchBase);
