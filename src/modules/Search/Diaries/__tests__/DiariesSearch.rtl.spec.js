@@ -1,5 +1,4 @@
 import React from 'react';
-import { reduxForm } from 'redux-form';
 
 import {
   renderWithForm,
@@ -7,7 +6,8 @@ import {
   checkSelect,
   checkButton
 } from '../../../../test-utils';
-import DiariesSearch from '../DiariesSearch';
+import { noop } from '@exzeo/core-ui';
+import SearchPage from '../../index';
 
 const fields = [
   {
@@ -55,26 +55,17 @@ const fields = [
 
 describe('Diaries Search Testing', () => {
   const props = {
-    search: { results: [], totalPages: 0, currentPage: 1 },
-    submitting: false,
-    assigneeAnswers: [],
-    userProfile: { userId: '1234' },
-    results: []
+    pathName: '/diaries',
+    agencies: [],
+    userProfile: { profile: { given_name: 'John', family_name: 'Smith' } },
+    children: [],
+    errorHandler: noop
   };
-
-  const SearchForm = reduxForm({
-    form: 'SEARCH_BAR',
-    initialValues: {
-      open: true,
-      dateRange: { min: '', max: '' },
-      assignees: {}
-    }
-  })(DiariesSearch);
 
   const selectFields = fields.filter(({ type }) => type === 'select');
 
   it('POS:Renders and has fields and labels', () => {
-    const { getByTestId } = renderWithForm(<SearchForm {...props} />);
+    const { getByTestId } = renderWithForm(<SearchPage {...props} />);
 
     fields.forEach(field => checkLabel(getByTestId, field));
     selectFields.forEach(({ dataTest, selected }) =>
@@ -85,12 +76,12 @@ describe('Diaries Search Testing', () => {
   });
 
   it('POS:Checks that all fields are working', () => {
-    const { getByTestId } = renderWithForm(<SearchForm {...props} />);
+    const { getByTestId } = renderWithForm(<SearchPage {...props} />);
     selectFields.forEach(field => checkSelect(getByTestId, field));
   });
 
   it('POS:Diary Search Button', () => {
-    const { getByTestId } = renderWithForm(<SearchForm {...props} />);
+    const { getByTestId } = renderWithForm(<SearchPage {...props} />);
     checkButton(getByTestId, {
       dataTest: 'submit',
       text: 'Search',

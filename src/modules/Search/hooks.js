@@ -4,20 +4,25 @@ import { formatDiaryOptions } from './utilities';
 
 /**
  * Z
- * @returns {{loaded: boolean, diaryOptions: *[]}}
+ * @returns {{loaded: boolean, reasons: *[], tags: *[]}}
  */
 export const useFetchDiaryOptions = () => {
-  const [diaryOptions, setDiaryOptions] = useState([]);
+  const [tags, setTags] = useState([]);
+  const [reasons, setReasons] = useState([]);
+
   const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
     const getDiaryOptions = async () => {
       setLoaded(false);
       try {
-        const diaryOptions = await fetchDiaryOptions();
-        setDiaryOptions(formatDiaryOptions(diaryOptions));
+        const result = await fetchDiaryOptions();
+        const { tags, reasons } = formatDiaryOptions(result);
+        setTags(tags);
+        setReasons(reasons);
       } catch {
-        setDiaryOptions([]);
+        setTags([]);
+        setReasons([]);
       }
       setLoaded(true);
     };
@@ -25,7 +30,7 @@ export const useFetchDiaryOptions = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  return { diaryOptions, loaded };
+  return { tags, reasons, loaded };
 };
 
 /**

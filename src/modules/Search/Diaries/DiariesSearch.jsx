@@ -1,5 +1,4 @@
 import React, { useEffect } from 'react';
-import PropTypes from 'prop-types';
 import {
   Select,
   MultiSelectTypeAhead,
@@ -25,21 +24,21 @@ export const DiariesSearch = ({
   initialValues,
   handleSubmit
 }) => {
-  const { diaryOptions } = useFetchDiaryOptions();
+  const { tags, reasons } = useFetchDiaryOptions();
   const { assigneeAnswers } = useFetchAssigneeAnswers(userProfile);
 
   // submit search when answers and options are loaded
   useEffect(() => {
     if (
       Array.isArray(assigneeAnswers) &&
-      Array.isArray(diaryOptions?.reasons) &&
-      diaryOptions.reasons.length &&
-      assigneeAnswers.length
+      assigneeAnswers.length &&
+      reasons.length &&
+      tags.length
     ) {
       handleSubmit(initialValues);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [diaryOptions, assigneeAnswers]);
+  }, [tags, reasons, assigneeAnswers]);
 
   return (
     <React.Fragment>
@@ -65,7 +64,7 @@ export const DiariesSearch = ({
                 name="reason"
                 dataTest="reason"
                 component={Select}
-                answers={diaryOptions?.reasons || []}
+                answers={reasons}
                 placeholder="Please choose"
                 label="Reason"
                 errorHint
@@ -94,11 +93,7 @@ export const DiariesSearch = ({
                 styleName="assignees"
                 component={MultiSelectTypeAhead}
                 label="Assigned To"
-                answers={
-                  diaryOptions?.tags
-                    ? [...diaryOptions.tags, ...assigneeAnswers]
-                    : assigneeAnswers
-                }
+                answers={[...tags, ...assigneeAnswers]}
                 errorHint
               />
             </div>
@@ -134,17 +129,11 @@ export const DiariesSearch = ({
   );
 };
 
-DiariesSearch.propTypes = {
-  initialize: PropTypes.func.isRequired,
-  assigneeAnswers: PropTypes.arrayOf(PropTypes.shape()),
-  initialValues: PropTypes.shape(),
-  submitting: PropTypes.bool
-};
-
 DiariesSearch.defaultProps = {
   assigneeAnswers: emptyArray,
   initialValues: emptyObject,
-  submitting: false
+  submitting: false,
+  searchResults: emptyObject
 };
 
 export default DiariesSearch;
