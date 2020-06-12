@@ -815,7 +815,8 @@
   opacity: 1;
 }
 
-.uppy-Dashboard-dropFilesTitle {
+.uppy-Dashboard-dropFilesTitle,
+.uppy-Dashboard-AddFiles-title {
   margin: 0;
 
   text-align: center;
@@ -833,7 +834,8 @@
   }
 }
 
-.uppy-Dashboard--wide .uppy-Dashboard-dropFilesTitle {
+.uppy-Dashboard--wide .uppy-Dashboard-dropFilesTitle,
+.uppy-Dashboard--wide .uppy-Dashboard-AddFiles-title {
   font-size: $font-size-base !important;
 }
 
