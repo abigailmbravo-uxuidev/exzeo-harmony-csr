@@ -48,7 +48,6 @@ const QuoteSearch = ({
     productOptionMap
   } = cspConfigForSearch(userProfile, 'QuoteData:Quotes:*');
 
-  //TODO: useFetchQuoteState
   const { quoteStateList } = useFetchQuoteState();
 
   return (
