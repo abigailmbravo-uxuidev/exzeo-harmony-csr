@@ -12,7 +12,7 @@ export function buildAssigneesList(users) {
   const activeUsers = users.filter(user => !!user.enabled);
 
   const userList = activeUsers.map(user => ({
-    answer: user.userId,
+    answer: user.username,
     label: `${user.firstName} ${user.lastName}`,
     type: 'user'
   }));

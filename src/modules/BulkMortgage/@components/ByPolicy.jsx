@@ -105,7 +105,12 @@ export const ByPolicy = ({ errorHandler }) => {
         </section>
         <section className="bm-byPolicy search-results-wrapper">
           <SearchByPolicy handleSearch={handleSearchByPolicy} />
-          {hasSearched && mortgageeResults.length === 0 && <NoResults />}
+          {hasSearched && mortgageeResults.length === 0 && (
+            <NoResults
+              body={`Please refine your search or view policies queued below.
+                Please note, cancelled policies are not available in this search.`}
+            />
+          )}
           <MortgageeResults
             showLoader={showLoader}
             results={mortgageeResults}

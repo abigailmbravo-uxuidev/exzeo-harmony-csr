@@ -5,7 +5,7 @@ import {
   Field,
   Form,
   Input,
-  MultiSelectTypeAhead
+  SelectTypeAhead
 } from '@exzeo/core-ui';
 import { isValidRange } from '../utilities';
 
@@ -36,7 +36,7 @@ const JobFilter = ({ userList, handleJobSubmit, initialValues }) => {
             dataTest="userName"
             label="Completed By"
             placeholder="User Name"
-            component={MultiSelectTypeAhead}
+            component={SelectTypeAhead}
             styleName="completedBy"
             answers={userList}
           />

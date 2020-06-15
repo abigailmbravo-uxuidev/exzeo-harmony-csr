@@ -6,9 +6,11 @@ import JobResults from './JobResults';
 import { getMortgageeJobs } from '../data';
 import { date } from '@exzeo/core-ui/src';
 import Pagination from '../../Search/components/Pagination';
+import NoResults from './NoResults';
 
 export const ByJob = ({ userProfile, errorHandler }) => {
   const [jobResults, setJobResults] = useState([]);
+  const [hasSearched, setHasSearched] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
   const [filterValues, setFilterValues] = useState({
@@ -32,6 +34,7 @@ export const ByJob = ({ userProfile, errorHandler }) => {
   const searchMortgageeJobs = async (data, pageNumber) => {
     try {
       const { jobId, userName, name } = data;
+
       setShowLoader(true);
       const dateFormat = 'YYYY-MM-DDTHH:mm:ss.SSSS';
 
@@ -61,9 +64,11 @@ export const ByJob = ({ userProfile, errorHandler }) => {
       setTotalPages(Math.ceil(totalJobs / pageSize) || 0);
 
       setJobResults(jobs);
+      setHasSearched(true);
       setFilterValues(data);
     } catch (error) {
       errorHandler(error);
+      setJobResults([]);
     } finally {
       setShowLoader(false);
     }
@@ -95,6 +100,9 @@ export const ByJob = ({ userProfile, errorHandler }) => {
           />
         )}
         <JobResults results={jobResults} showLoader={showLoader} />
+        {hasSearched && jobResults.length === 0 && (
+          <NoResults body={`Please refine your search`} />
+        )}
       </section>
     </div>
   );
