@@ -8,16 +8,15 @@ import {
   normalize,
   validation,
   noop,
-  emptyObject,
-  emptyArray
+  emptyObject
 } from '@exzeo/core-ui';
 
 import { AgencyTypeAhead, Pagination } from '@exzeo/core-ui/src/@Harmony';
 
-import { getAnswers } from '../../../utilities/forms';
 import { STANDARD_DATE_FORMAT } from '../../../constants/dates';
 import { companyAnswers, stateAnswers, productAnswers } from '../constants';
 import ResetButton from '../components/ResetButton';
+import { useFetchPolicyStatus } from '../hooks';
 
 const {
   isValidNameFormat,
@@ -43,6 +42,8 @@ const PolicySearch = ({
   searchTypeOptions,
   resetFormResults
 }) => {
+  const { statusList } = useFetchPolicyStatus();
+
   return (
     <React.Fragment>
       <div className="search-context-sort">
@@ -190,7 +191,7 @@ const PolicySearch = ({
                   meta={meta}
                   dataTest="policyStatus"
                   label="Policy Status"
-                  answers={getAnswers('policyStatus', questions)}
+                  answers={statusList}
                 />
               )}
             </Field>
@@ -249,7 +250,6 @@ const PolicySearch = ({
 
 PolicySearch.propTypes = {
   handlePagination: PropTypes.func.isRequired,
-  agencyList: PropTypes.array,
   changeSearchType: PropTypes.func,
   questions: PropTypes.object,
   searchResults: PropTypes.shape({
@@ -262,7 +262,6 @@ PolicySearch.propTypes = {
 };
 
 PolicySearch.defaultProps = {
-  agencyList: emptyArray,
   questions: emptyObject,
   changeSearchType: noop
 };

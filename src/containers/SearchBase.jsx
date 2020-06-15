@@ -11,51 +11,28 @@ import Footer from '../components/Common/Footer';
 import Search from '../modules/Search';
 import { setAppError } from '../state/actions/error.actions';
 
-export class SearchBase extends Component {
-  componentDidMount() {
-    const { getUIQuestions } = this.props;
-    getUIQuestions('searchCSR');
-  }
-
-  render() {
-    const { handleLogout, location, userProfile } = this.props;
-
-    return (
-      <div className="app-wrapper csr">
-        <Helmet>
-          <title>Harmony - CSR Portal</title>
-        </Helmet>
-        <Header handleLogout={handleLogout} />
-        <Search
-          pathName={location.pathname}
-          userProfile={userProfile}
-          errorHandler={setAppError}
-        >
-          <div className="basic-footer">
-            <Footer />
-          </div>
-        </Search>
-      </div>
-    );
-  }
-}
-
-SearchBase.propTypes = {
-  auth: PropTypes.shape().isRequired,
-  loading: PropTypes.bool.isRequired,
-  location: PropTypes.shape().isRequired,
-  getUIQuestions: PropTypes.func.isRequired,
-  userProfile: PropTypes.shape().isRequired
+export const SearchBase = ({
+  handleLogout,
+  location,
+  userProfile,
+  errorHandler
+}) => {
+  return (
+    <div className="app-wrapper csr">
+      <Helmet>
+        <title>Harmony - CSR Portal</title>
+      </Helmet>
+      <Header handleLogout={handleLogout} />
+      <Search
+        pathName={location.pathname}
+        userProfile={userProfile}
+        errorHandler={errorHandler}
+      >
+        <div className="basic-footer">
+          <Footer />
+        </div>
+      </Search>
+    </div>
+  );
 };
-
-const stubProfile = { profile: {} };
-const mapStateToProps = state => ({
-  loading: state.search.loading,
-  userProfile: state.authState.userProfile || stubProfile,
-  agencies: state.service.agencies || emptyArray
-});
-
-export default connect(mapStateToProps, {
-  getUIQuestions,
-  setAppError
-})(SearchBase);
+export default SearchBase;

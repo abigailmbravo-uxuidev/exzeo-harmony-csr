@@ -41,7 +41,6 @@ const SEARCH_FORMS = {
 
 export const SearchPage = ({
   pathName,
-  agencies,
   userProfile,
   children,
   errorHandler
@@ -90,8 +89,8 @@ export const SearchPage = ({
           ...initialValues,
           assignees: [
             {
-              answer: userProfile.userId,
-              label: `${userProfile.profile.given_name} ${userProfile.profile.family_name}`,
+              answer: userProfile?.userId,
+              label: `${userProfile?.profile.given_name} ${userProfile?.profile?.family_name}`,
               type: 'user'
             }
           ]
@@ -124,7 +123,6 @@ export const SearchPage = ({
             initialValues={setInitialValues(searchType, searchConfig)}
             onSubmitSuccess={() => setHasSearched(true)}
             searchType={searchType}
-            agencies={agencies}
             handleSearchSubmit={handleSubmit}
             currentPage={searchResults.currentPage}
             resetResults={resetResults}

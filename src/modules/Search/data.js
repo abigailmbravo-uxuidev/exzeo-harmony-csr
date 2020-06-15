@@ -14,6 +14,7 @@ import {
   formatQuoteResults,
   setPageNumber
 } from './utilities';
+
 /**
  * Call quote search service
  * @param {object} query
@@ -353,6 +354,21 @@ export async function getDiaryAssigneeOptions(userProfile) {
         : [];
 
     return buildAssigneesList(users);
+  } catch (error) {
+    throw error;
+  }
+}
+
+/**
+ *
+ * @param step
+ * @returns {Promise<*>}
+ */
+export async function getUIQuestions(step) {
+  try {
+    const data = { step };
+    const response = await serviceRunner.callQuestions(data);
+    return response && response.data ? response.data.data : [];
   } catch (error) {
     throw error;
   }

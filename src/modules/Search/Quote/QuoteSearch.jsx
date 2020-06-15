@@ -10,11 +10,11 @@ import {
   emptyArray
 } from '@exzeo/core-ui';
 
-import { getAnswers } from '../../../utilities/forms';
 import Pagination from '../components/Pagination';
 import ResetButton from '../components/ResetButton';
 import { STANDARD_DATE_FORMAT } from '../../../constants/dates';
 import { cspConfigForSearch } from '../utilities';
+import { useFetchQuoteState } from '../hooks';
 
 const {
   isValidNameFormat,
@@ -34,9 +34,8 @@ const sortByOptions = [
 
 const QuoteSearch = ({
   submitting,
-  questions,
   handlePagination,
-  search,
+  searchResults,
   changeSearchType,
   searchTypeOptions,
   resetFormResults,
@@ -48,6 +47,10 @@ const QuoteSearch = ({
     stateOptions,
     productOptionMap
   } = cspConfigForSearch(userProfile, 'QuoteData:Quotes:*');
+
+  //TODO: useFetchQuoteState
+  const { quoteStateList } = useFetchQuoteState();
+
   return (
     <React.Fragment>
       <div className="search-context-sort">
@@ -159,7 +162,7 @@ const QuoteSearch = ({
               dataTest="quoteState"
               label="Quote Status"
               component={Select}
-              answers={getAnswers('quoteState', questions)}
+              answers={quoteStateList}
             />
           </div>
           <div className="form-group effectiveDate">
@@ -187,12 +190,12 @@ const QuoteSearch = ({
           Search
         </Button>
       </div>
-      {!!search.results.length && search.totalPages > 1 && (
+      {!!searchResults.length && searchResults.totalPages > 1 && (
         <Pagination
           changePageForward={() => handlePagination(true)}
           changePageBack={() => handlePagination(false)}
-          pageNumber={search.currentPage}
-          totalPages={search.totalPages}
+          pageNumber={searchResults.currentPage}
+          totalPages={searchResults.totalPages}
         />
       )}
     </React.Fragment>
@@ -201,9 +204,8 @@ const QuoteSearch = ({
 
 QuoteSearch.propTypes = {
   submitting: PropTypes.bool,
-  questions: PropTypes.object,
   handlePagination: PropTypes.func,
-  search: PropTypes.shape({
+  searchResults: PropTypes.shape({
     results: PropTypes.array,
     totalPages: PropTypes.number,
     currentPage: PropTypes.number
@@ -213,8 +215,7 @@ QuoteSearch.propTypes = {
 };
 
 QuoteSearch.defaultProps = {
-  questions: {},
-  search: {}
+  searchResults: {}
 };
 
 export default QuoteSearch;

@@ -142,7 +142,14 @@ class Routes extends Component {
               <Route
                 exact
                 path="/"
-                render={props => <SearchPolicy auth={auth} {...props} />}
+                render={props => (
+                  <SearchPolicy
+                    userProfile={userProfile}
+                    errorHandler={errorActions.setAppError}
+                    auth={auth}
+                    {...props}
+                  />
+                )}
               />
 
               <Route
@@ -153,12 +160,26 @@ class Routes extends Component {
               <Route
                 exact
                 path="/agency"
-                render={props => <SearchAgency auth={auth} {...props} />}
+                render={props => (
+                  <SearchAgency
+                    userProfile={userProfile}
+                    errorHandler={errorActions.setAppError}
+                    auth={auth}
+                    {...props}
+                  />
+                )}
               />
               <Route
                 exact
                 path="/diaries"
-                render={props => <SearchDiaries auth={auth} {...props} />}
+                render={props => (
+                  <SearchDiaries
+                    userProfile={userProfile}
+                    errorHandler={errorActions.setAppError}
+                    auth={auth}
+                    {...props}
+                  />
+                )}
               />
               <Route
                 exact

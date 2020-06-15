@@ -1,5 +1,9 @@
 import { useEffect, useState } from 'react';
-import { fetchDiaryOptions, getDiaryAssigneeOptions } from './data';
+import {
+  fetchDiaryOptions,
+  getDiaryAssigneeOptions,
+  getUIQuestions
+} from './data';
 import { formatDiaryOptions } from './utilities';
 
 /**
@@ -58,4 +62,52 @@ export const useFetchAssigneeAnswers = userProfile => {
   }, [userProfile]);
 
   return { assigneeAnswers, loaded };
+};
+
+export const useFetchPolicyStatus = () => {
+  const [statusList, setStatusList] = useState([]);
+  const [loaded, setLoaded] = useState(false);
+
+  useEffect(() => {
+    const getPolicyStatusList = async () => {
+      setLoaded(false);
+      try {
+        const questions = await getUIQuestions('searchCSR');
+        const result =
+          questions.find(q => q.name === 'policyStatus')?.answers || [];
+        setStatusList(result);
+      } catch {
+        setStatusList([]);
+      }
+      setLoaded(true);
+    };
+    getPolicyStatusList();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  return { statusList, loaded };
+};
+
+export const useFetchQuoteState = () => {
+  const [quoteStateList, setQuoteStateList] = useState([]);
+  const [loaded, setLoaded] = useState(false);
+
+  useEffect(() => {
+    const getQuoteStateList = async () => {
+      setLoaded(false);
+      try {
+        const questions = await getUIQuestions('searchCSR');
+        const result =
+          questions.find(q => q.name === 'quoteState')?.answers || [];
+        setQuoteStateList(result);
+      } catch {
+        setQuoteStateList([]);
+      }
+      setLoaded(true);
+    };
+    getQuoteStateList();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  return { quoteStateList, loaded };
 };
