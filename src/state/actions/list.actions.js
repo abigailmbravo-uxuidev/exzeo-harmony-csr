@@ -17,8 +17,6 @@ function setEnums(enums) {
  * @param companyCode
  * @param state
  * @param product
- * @param agencyCode
- * @param agentCode
  * @param quoteNumber
  * @returns {Function}
  */

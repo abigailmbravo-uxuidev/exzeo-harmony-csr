@@ -1289,3 +1289,11 @@ table {
     border-bottom: 1px dotted $warm-gray-05;
   }
 }
+.previous-endorsements-scroll {
+  .react-bs-table-bordered {
+    min-height: 4rem;
+    td.react-bs-table-no-data {
+      bottom: 0;
+    }
+  }
+}

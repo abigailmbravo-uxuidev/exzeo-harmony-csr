@@ -82,4 +82,8 @@ export const setRouteAliases = () =>
     .route('POST', '/svc?cancelPolicy')
     .as('cancelPolicy')
     .route('POST', '/svc?aorTransfer')
-    .as('aorTransfer');
+    .as('aorTransfer')
+    .route('POST', '/svc?rateEffectiveDateChange')
+    .as('rateEffectiveDateChange')
+    .route('POST', '/svc?saveEffectiveDateChange')
+    .as('saveEffectiveDateChange');

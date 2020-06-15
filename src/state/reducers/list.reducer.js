@@ -58,55 +58,13 @@ function setAgents(state, action) {
   };
 }
 
-function formatTopAnswers(answers) {
-  if (!answers) return [];
-
-  return answers.map(answer => ({
-    ...answer,
-    // api gives us the zip as a number, backend requires zip to be a string.
-    AIZip: String(answer.AIZip),
-    // api gives us the ID as a number, backend requires ID to be a string.
-    id: String(answer.ID),
-    // format label for typeahead
-    label: `${answer.AIName1}, ${answer.AIAddress1}, ${answer.AICity} ${answer.AIState}, ${answer.AIZip}`
-  }));
-}
-
-function formatAnswers(questions, name) {
-  if (!Array.isArray(questions) || questions.length === 0) return undefined;
-  const selectedQuestion = questions.find(q => q.name === name);
-
-  if (!selectedQuestion) return undefined;
-
-  return formatTopAnswers(selectedQuestion.answers);
-}
-
 function setEnums(state, action) {
-  const mortgagee = formatAnswers(
-    action.additionalInterestQuestions,
-    'mortgagee'
-  );
-
-  const premiumFinance = formatAnswers(
-    action.additionalInterestQuestions,
-    'premiumFinance'
-  );
-
-  const orderAnswers = (action.additionalInterestQuestions || []).find(
-    q => q.name === 'order'
-  );
-
   const appraisers = action.propertyAppraisalQuestions;
 
   const diaryOptions = setDiaryOptions(action);
 
   return {
     ...state,
-    premiumFinance,
-    mortgagee,
-    order: orderAnswers ? orderAnswers.answers : [],
-    agent: action.agent,
-    agency: action.agency,
     appraisers,
     diaryOptions
   };

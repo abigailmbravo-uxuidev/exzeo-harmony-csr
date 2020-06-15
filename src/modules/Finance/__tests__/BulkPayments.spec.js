@@ -9,11 +9,7 @@ import { date } from '@exzeo/core-ui';
 
 import BulkPayments from '../@components/BulkPayments';
 import { getPolicy } from '../data';
-import {
-  mockPaymentOptions,
-  mockPolicy,
-  mockCancelledPolicy
-} from '../../../test-utils';
+import { mockPaymentOptions, mockPolicy } from '../../../test-utils';
 
 jest.mock('../data', () => ({
   __esModule: true,
@@ -247,7 +243,19 @@ describe('BulkPayments testing', () => {
   });
 
   it('Test BulkPayments with cancelled policy', async () => {
-    getPolicy.mockImplementation(() => mockCancelledPolicy);
+    const cancelledPolicy = {
+      ...mockPolicy,
+      summaryLedger: {
+        ...mockPolicy.summaryLedger,
+        status: {
+          ...mockPolicy.summaryLedger.status,
+          displayText: 'Voluntary Cancellation'
+        }
+      },
+      status: 'Cancelled',
+      editingDisabled: false
+    };
+    getPolicy.mockImplementation(() => cancelledPolicy);
 
     const props = {
       errorHandler: jest.fn()

@@ -11,8 +11,6 @@ import {
   fillOutApplication,
   navigateThroughDocusign,
   sendQuote,
-  changeBillTo,
-  searchPolicy,
   searchQoute,
   searchDiary
 } from '../../helpers';
@@ -23,8 +21,7 @@ import {
   mailingBillingTest,
   notesFilesTest,
   quoteSummaryTest,
-  applicationTest,
-  afterDocuSignTest
+  applicationTest
 } from '../../pageTests';
 import {
   coverage,
@@ -71,7 +68,6 @@ describe('Base Path - HO3, create a quote, bind the Policy and make Endorsements
     searchQoute();
 
     // Combine 2 tests with different way of writing the code. As we decided - we will format 2nd or 1st part in the future in order the  whole test be written in one way.
-
     cy.visit('/');
     cy.task('log', 'Search Policy and open')
       .get('@policyNumber')
@@ -91,8 +87,7 @@ describe('Base Path - HO3, create a quote, bind the Policy and make Endorsements
           .then($a => {
             $a.prop('onclick', () => cy.visit($a.prop('dataset').url));
           });
-
-        cy.task('log', 'Effective Date Change');
+        cy.task('log', 'Effective Date Change with updated workflow');
         cy.findDataTag('edit-effective-date')
           .click()
           .findDataTag('effective-date')
@@ -101,7 +96,13 @@ describe('Base Path - HO3, create a quote, bind the Policy and make Endorsements
           .select('Other')
           .findDataTag('modal-submit')
           .click();
-        cy.wait('@postCreateTransaction').then(({ response }) => {
+        cy.wait('@rateEffectiveDateChange').then(({ response }) => {
+          expect(response.body.status, 'Effective Date: status').to.equal(200);
+        });
+
+        cy.findDataTag('modal-submit').click();
+
+        cy.wait('@saveEffectiveDateChange').then(({ response }) => {
           expect(response.body.status, 'Effective Date: status').to.equal(200);
         });
 
