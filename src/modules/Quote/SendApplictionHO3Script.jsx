@@ -1,5 +1,4 @@
 import React from 'react';
-import moment from 'moment-timezone';
 import { date } from '@exzeo/core-ui';
 
 const SendApplicationHO3Script = ({ initialValues }) => {
@@ -52,10 +51,12 @@ const SendApplicationHO3Script = ({ initialValues }) => {
                 <li className="scriptInfo margin bottom">
                   Before:{' '}
                   {Number(
-                    moment
-                      .utc(initialValues.effectiveDate)
-                      .subtract(20, 'years')
-                      .format('YYYY')
+                    date.addDate({
+                      dateString: initialValues.effectiveDate,
+                      addValue: -20,
+                      unit: 'years',
+                      format: 'YYYY'
+                    })
                   )}
                 </li>
                 <li className="scriptInfo">Tile, Slate, Concrete, or Metal</li>
@@ -63,10 +64,12 @@ const SendApplicationHO3Script = ({ initialValues }) => {
                 <li className="scriptInfo margin bottom">
                   Before:{' '}
                   {Number(
-                    moment
-                      .utc(initialValues.effectiveDate)
-                      .subtract(40, 'years')
-                      .format('YYYY')
+                    date.addDate({
+                      dateString: initialValues.effectiveDate,
+                      addValue: -40,
+                      unit: 'years',
+                      format: 'YYYY'
+                    })
                   )}
                 </li>
               </ul>
