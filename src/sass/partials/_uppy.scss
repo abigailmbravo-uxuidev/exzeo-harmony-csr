@@ -823,6 +823,12 @@
   justify-content: center;
 }
 
+.uppy-size--md {
+  div[role='presentation'] {
+    height: 71px !important;
+  }
+}
+
 .uppy-Dashboard-dropFilesTitle,
 .uppy-Dashboard-AddFiles-title {
   margin: 0;
