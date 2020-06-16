@@ -815,6 +815,14 @@
   opacity: 1;
 }
 
+.uppy-Dashboard-AddFiles {
+  display: flex;
+  align-items: center;
+  flex-grow: 1;
+  flex-shrink: 1;
+  justify-content: center;
+}
+
 .uppy-Dashboard-dropFilesTitle,
 .uppy-Dashboard-AddFiles-title {
   margin: 0;
