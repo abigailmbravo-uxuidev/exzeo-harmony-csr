@@ -8,15 +8,16 @@ import {
   normalize,
   validation,
   noop,
-  emptyObject
+  emptyObject,
+  emptyArray
 } from '@exzeo/core-ui';
 
 import { AgencyTypeAhead, Pagination } from '@exzeo/core-ui/src/@Harmony';
 
 import { STANDARD_DATE_FORMAT } from '../../../constants/dates';
-import { companyAnswers, stateAnswers, productAnswers } from '../constants';
 import ResetButton from '../components/ResetButton';
 import { useFetchPolicyStatus } from '../hooks';
+import { cspConfigForSearch } from '../utilities';
 
 const {
   isValidNameFormat,
@@ -36,13 +37,20 @@ const sortByOptions = [
 
 const PolicySearch = ({
   submitting,
-  questions,
   handlePagination,
   searchResults,
   searchTypeOptions,
-  resetFormResults
+  resetFormResults,
+  userProfile,
+  formValues
 }) => {
   const { statusList } = useFetchPolicyStatus();
+
+  const {
+    companyCodeOptions,
+    stateOptions,
+    productOptionMap
+  } = cspConfigForSearch(userProfile, 'PolicyData:Transactions:*');
 
   return (
     <React.Fragment>
@@ -143,7 +151,7 @@ const PolicySearch = ({
                 meta={meta}
                 dataTest="state"
                 label="State"
-                answers={stateAnswers}
+                answers={stateOptions}
                 showPlaceholder={true}
                 placeholder={'All'}
                 placeholderDisabled={false}
@@ -160,7 +168,7 @@ const PolicySearch = ({
                 meta={meta}
                 dataTest="company"
                 label="Company"
-                answers={companyAnswers}
+                answers={companyCodeOptions}
                 showPlaceholder={false}
                 styleName="company-search"
               />
@@ -174,7 +182,7 @@ const PolicySearch = ({
                 meta={meta}
                 dataTest="product"
                 label="Product"
-                answers={productAnswers}
+                answers={productOptionMap[formValues.state] || emptyArray}
                 showPlaceholder={true}
                 placeholder={'All'}
                 placeholderDisabled={false}

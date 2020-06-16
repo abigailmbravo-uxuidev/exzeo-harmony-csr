@@ -280,6 +280,8 @@ function removeDuplicates(array, property) {
 }
 
 export const cspConfigForSearch = (userProfile = {}, uri) => {
+  console.log(userProfile.resources || []);
+
   const userResources = (userProfile.resources || []).filter(resource => {
     return (
       !resource.conditions &&
