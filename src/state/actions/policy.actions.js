@@ -848,7 +848,8 @@ export function updatePolicy({ data = {}, options = {} }) {
             date.formatDate(data.cancel.effectiveDate, date.FORMATS.SECONDARY),
             options.zipCodeSettings.timezone
           ),
-          cancelReason: data.cancel.cancelReason
+          cancelReason: data.cancel.cancelReason,
+          additionalReason: data.cancel.additionalReason
         };
         await cancelPolicy(submitData);
       }
