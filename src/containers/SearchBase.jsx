@@ -1,15 +1,9 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
+import React from 'react';
 import { Helmet } from 'react-helmet';
-import { emptyArray } from '@exzeo/core-ui';
-
-import { getUIQuestions } from '../state/actions/questions.actions';
 
 import Header from '../components/Common/Header';
 import Footer from '../components/Common/Footer';
 import Search from '../modules/Search';
-import { setAppError } from '../state/actions/error.actions';
 
 export const SearchBase = ({
   handleLogout,

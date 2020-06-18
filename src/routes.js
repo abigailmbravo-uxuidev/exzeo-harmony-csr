@@ -27,7 +27,6 @@ import { PolicyWorkflow, ReceiptHandler } from './modules/Policy';
 import Finance from './modules/Finance';
 import BulkMortgage from './modules/BulkMortgage';
 import { userResources } from './utilities/userResources';
-import { emptyArray } from '@exzeo/core-ui';
 
 class Routes extends Component {
   setBackStep = (goToNext, callback) => {

@@ -11,7 +11,6 @@ import {
 } from '@exzeo/core-ui';
 import ResetButton from '../components/ResetButton';
 
-import { companyAnswers, stateAnswers, productAnswers } from '../constants';
 import { cspConfigForSearch } from '../utilities';
 
 const { isValidChar, isRequired } = validation;

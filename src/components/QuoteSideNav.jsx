@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Redirect } from 'react-router-dom';
 import { SideNavigation } from '@exzeo/core-ui/src/@Harmony';
 
 import { toggleDiary, toggleNote } from '../state/actions/ui.actions';
