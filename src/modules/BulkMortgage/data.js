@@ -89,7 +89,7 @@ export async function getUsersForJobs(userProfile) {
       response.data && Array.isArray(response.data.result)
         ? response.data.result
         : [];
-    return buildAssigneesList(users);
+    return buildAssigneesList(users, true);
   } catch (error) {
     throw error;
   }
