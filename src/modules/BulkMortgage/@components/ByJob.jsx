@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import JobFilter from './JobFilter';
 import { useFetchUsersForJobs } from '../hooks';
-import { connect } from 'react-redux';
 import JobResults from './JobResults';
 import { getMortgageeJobs } from '../data';
 import { date } from '@exzeo/core-ui/src';
