@@ -1,7 +1,6 @@
 import React from 'react';
 import { within, wait, waitForElement } from '@testing-library/react';
 import { date, normalize } from '@exzeo/core-ui';
-import 'jest-dom/extend-expect';
 import * as utilities from '../../utilities';
 
 import {
