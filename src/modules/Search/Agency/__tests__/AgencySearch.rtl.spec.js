@@ -1,14 +1,12 @@
 import React from 'react';
-import { reduxForm } from 'redux-form';
 
 import {
   renderWithForm,
   checkLabel,
-  checkTextInput,
   checkSelect,
   checkButton
 } from '../../../../test-utils';
-import AgencySearch from '../AgencySearch';
+import SearchForm from '../../index';
 
 const fields = [
   {
@@ -64,17 +62,8 @@ const fields = [
 
 describe('Agency Search Testing', () => {
   const props = {
-    submitting: false,
-    searchTypeOptions: [
-      { answer: 'agent', label: 'Agent Search' },
-      { answer: 'agency', label: 'Agency Search' }
-    ]
+    pathName: '/agency'
   };
-
-  const SearchForm = reduxForm({
-    form: 'SEARCH_BAR',
-    initialValues: { searchType: 'agency' }
-  })(AgencySearch);
 
   const selectFields = fields.filter(({ type }) => type === 'select');
   const textFields = fields.filter(({ type }) => type === 'text');

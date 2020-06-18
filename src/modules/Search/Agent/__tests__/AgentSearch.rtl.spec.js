@@ -1,14 +1,14 @@
 import React from 'react';
-import { reduxForm } from 'redux-form';
+
+import { fireEvent, wait } from '@testing-library/react';
 
 import {
   renderWithForm,
   checkLabel,
-  checkTextInput,
   checkSelect,
   checkButton
 } from '../../../../test-utils';
-import AgentSearch from '../AgentSearch';
+import SearchForm from '../../index';
 
 const fields = [
   {
@@ -57,25 +57,24 @@ const fields = [
 
 describe('Agent Search Testing', () => {
   const props = {
-    submitting: false,
-    searchTypeOptions: [
-      { answer: 'agent', label: 'Agent Search' },
-      { answer: 'agency', label: 'Agency Search' }
-    ]
+    pathName: '/agency'
   };
-
-  const SearchForm = reduxForm({
-    form: 'SEARCH_BAR',
-    initialValues: { searchType: 'agent' }
-  })(AgentSearch);
 
   const selectFields = fields.filter(({ type }) => type === 'select');
   const textFields = fields.filter(({ type }) => type === 'text');
 
-  it('POS:Renders and has fields and labels', () => {
+  it('POS:Renders and has fields and labels', async () => {
     const { getByPlaceholderText, getByTestId } = renderWithForm(
       <SearchForm {...props} />
     );
+
+    fireEvent.change(getByTestId('searchType'), {
+      target: { value: 'agent' }
+    });
+
+    await wait(() => {
+      expect(getByTestId('searchType').value).toBe('agent');
+    });
 
     fields.forEach(field => checkLabel(getByTestId, field));
     textFields.forEach(({ placeholderText }) =>
@@ -88,18 +87,35 @@ describe('Agent Search Testing', () => {
     );
   });
 
-  it('POS:Checks that all fields are working', () => {
+  it('POS:Checks that all fields are working', async () => {
     const { getByPlaceholderText, getByTestId } = renderWithForm(
       <SearchForm {...props} />
     );
+
+    fireEvent.change(getByTestId('searchType'), {
+      target: { value: 'agent' }
+    });
+
+    await wait(() => {
+      expect(getByTestId('searchType').value).toBe('agent');
+    });
     selectFields.forEach(field => checkSelect(getByTestId, field));
     textFields.forEach(field =>
       expect(getByPlaceholderText(field.placeholderText))
     );
   });
 
-  it('POS:Agent Search Button', () => {
+  it('POS:Agent Search Button', async () => {
     const { getByTestId } = renderWithForm(<SearchForm {...props} />);
+
+    fireEvent.change(getByTestId('searchType'), {
+      target: { value: 'agent' }
+    });
+
+    await wait(() => {
+      expect(getByTestId('searchType').value).toBe('agent');
+    });
+
     checkButton(getByTestId, {
       dataTest: 'submit',
       text: 'Search',
