@@ -8,11 +8,11 @@ export const userResources = defaultMemoize((userProfile = {}) => {
   };
 });
 
-export function buildAssigneesList(users, useUserName) {
+export function buildAssigneesList(users, field) {
   const activeUsers = users.filter(user => !!user.enabled);
 
   const userList = activeUsers.map(user => ({
-    answer: useUserName ? user.username : user.userId,
+    answer: field ? user[field] : user.userId,
     label: `${user.firstName} ${user.lastName}`,
     type: 'user'
   }));
