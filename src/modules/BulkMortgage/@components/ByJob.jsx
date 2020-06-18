@@ -108,8 +108,4 @@ export const ByJob = ({ userProfile, errorHandler }) => {
   );
 };
 
-const mapStateToProps = state => ({
-  userProfile: state.authState.userProfile
-});
-
-export default connect(mapStateToProps)(ByJob);
+export default ByJob;

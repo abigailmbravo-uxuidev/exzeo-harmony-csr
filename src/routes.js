@@ -199,9 +199,10 @@ class Routes extends Component {
                     path="/bulkMortgage"
                     render={props => (
                       <BulkMortgage
+                        {...props}
+                        userProfile={userProfile}
                         errorHandler={errorActions.setAppError}
                         auth={auth}
-                        {...props}
                       />
                     )}
                   />

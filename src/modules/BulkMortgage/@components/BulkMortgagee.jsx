@@ -5,7 +5,7 @@ import { Button } from '@exzeo/core-ui';
 import ByJobTab from './ByJob';
 import ByPolicy from './ByPolicy';
 
-const BulkMortgagee = ({ errorHandler }) => {
+const BulkMortgagee = ({ errorHandler, userProfile }) => {
   const [selectedTab, setSelectedTab] = useState(BULK_MORTGAGE_TYPE.policy);
   return (
     <React.Fragment>
@@ -40,7 +40,10 @@ const BulkMortgagee = ({ errorHandler }) => {
                 <ByPolicy errorHandler={errorHandler} />
               )}
               {selectedTab === BULK_MORTGAGE_TYPE.job && (
-                <ByJobTab errorHandler={errorHandler} />
+                <ByJobTab
+                  errorHandler={errorHandler}
+                  userProfile={userProfile}
+                />
               )}
             </div>
           </section>
