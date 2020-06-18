@@ -64,7 +64,7 @@ export const useFetchAssigneeAnswers = userProfile => {
   return { assigneeAnswers, loaded };
 };
 
-export const useFetchPolicyStatus = () => {
+export function useFetchPolicyStatus() {
   const [statusList, setStatusList] = useState([]);
   const [loaded, setLoaded] = useState(false);
 
@@ -86,9 +86,9 @@ export const useFetchPolicyStatus = () => {
   }, []);
 
   return { statusList, loaded };
-};
+}
 
-export const useFetchQuoteState = () => {
+export function useFetchQuoteState() {
   const [quoteStateList, setQuoteStateList] = useState([]);
   const [loaded, setLoaded] = useState(false);
 
@@ -110,4 +110,4 @@ export const useFetchQuoteState = () => {
   }, []);
 
   return { quoteStateList, loaded };
-};
+}
