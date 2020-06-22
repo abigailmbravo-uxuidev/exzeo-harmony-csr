@@ -10,7 +10,6 @@ import PolicySearch from './Policy';
 import QuoteSearch from './Quote';
 import AgencySearch from './Agency';
 import AgentSearch from './Agent';
-import UserSearch from './User';
 import DiariesSearch from './Diaries';
 import { handleSearchSubmit } from './data';
 
@@ -35,7 +34,6 @@ const SEARCH_FORMS = {
   [SEARCH_TYPES.quote]: QuoteSearch,
   [SEARCH_TYPES.agent]: AgentSearch,
   [SEARCH_TYPES.agency]: AgencySearch,
-  [SEARCH_TYPES.user]: UserSearch,
   [SEARCH_TYPES.diaries]: DiariesSearch
 };
 
