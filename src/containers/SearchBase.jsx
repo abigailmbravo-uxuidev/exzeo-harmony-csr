@@ -9,7 +9,8 @@ export const SearchBase = ({
   handleLogout,
   location,
   userProfile,
-  errorHandler
+  errorHandler,
+  match
 }) => {
   return (
     <div className="app-wrapper csr">
@@ -18,6 +19,7 @@ export const SearchBase = ({
       </Helmet>
       <Header handleLogout={handleLogout} />
       <Search
+        match={match}
         pathName={location.pathname}
         userProfile={userProfile}
         errorHandler={errorHandler}

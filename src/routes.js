@@ -139,7 +139,6 @@ class Routes extends Component {
             {userProfile && <Bootstrap userProfile={userProfile} />}
             <Switch>
               <Route
-                exact
                 path="/"
                 render={props => (
                   <SearchPolicy
