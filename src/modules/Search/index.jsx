@@ -39,7 +39,31 @@ const Search = ({
           />
           <Route
             exact
-            path={`${match.url}/`}
+            path={`/diaries`}
+            render={props => (
+              // <SearchAddress
+              //   {...props}
+              //   createQuote={createQuote}
+              //   userProfile={userProfile}
+              // />
+              <div>Diaries</div>
+            )}
+          />
+          <Route
+            exact
+            path={`/agency`}
+            render={props => (
+              // <SearchAddress
+              //   {...props}
+              //   createQuote={createQuote}
+              //   userProfile={userProfile}
+              // />
+              <div>Agency</div>
+            )}
+          />
+          <Route
+            exact
+            path={`/`}
             render={props => (
               // <SearchPolicy {...props} userProfile={userProfile} />
               <div>SearchPolicy</div>

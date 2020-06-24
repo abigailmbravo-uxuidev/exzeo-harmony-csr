@@ -12,9 +12,7 @@ import LoginPage from './containers/Login';
 import AccessDenied from './containers/AccessDenied';
 import LoggedOut from './containers/LoggedOut';
 import Callback from './containers/Callback';
-import SearchAgency from './containers/SearchAgency';
-import SearchPolicy from './containers/SearchPolicy';
-import SearchDiaries from './containers/SearchDiaries';
+import SearchBase from './containers/SearchBase';
 import NotFoundPage from './containers/NotFound';
 import Reports from './containers/Reports';
 import NoteUploader from './components/NoteUploader';
@@ -139,46 +137,34 @@ class Routes extends Component {
             {userProfile && <Bootstrap userProfile={userProfile} />}
             <Switch>
               <Route
-                path="/"
-                render={props => (
-                  <SearchPolicy
-                    userProfile={userProfile}
-                    errorHandler={errorActions.setAppError}
-                    auth={auth}
-                    {...props}
-                  />
-                )}
-              />
-
-              <Route
                 path="/receipt"
                 render={props => <ReceiptHandler {...props} />}
               />
 
-              <Route
-                exact
-                path="/agency"
-                render={props => (
-                  <SearchAgency
-                    userProfile={userProfile}
-                    errorHandler={errorActions.setAppError}
-                    auth={auth}
-                    {...props}
-                  />
-                )}
-              />
-              <Route
-                exact
-                path="/diaries"
-                render={props => (
-                  <SearchDiaries
-                    userProfile={userProfile}
-                    errorHandler={errorActions.setAppError}
-                    auth={auth}
-                    {...props}
-                  />
-                )}
-              />
+              {/*<Route*/}
+              {/*  exact*/}
+              {/*  path="/agency"*/}
+              {/*  render={props => (*/}
+              {/*    <SearchAgency*/}
+              {/*      userProfile={userProfile}*/}
+              {/*      errorHandler={errorActions.setAppError}*/}
+              {/*      auth={auth}*/}
+              {/*      {...props}*/}
+              {/*    />*/}
+              {/*  )}*/}
+              {/*/>*/}
+              {/*<Route*/}
+              {/*  exact*/}
+              {/*  path="/diaries"*/}
+              {/*  render={props => (*/}
+              {/*    <SearchDiaries*/}
+              {/*      userProfile={userProfile}*/}
+              {/*      errorHandler={errorActions.setAppError}*/}
+              {/*      auth={auth}*/}
+              {/*      {...props}*/}
+              {/*    />*/}
+              {/*  )}*/}
+              {/*/>*/}
               <Route
                 exact
                 path="/quote/new/:companyCode/:stateCode/:product/:propertyId"
@@ -248,6 +234,19 @@ class Routes extends Component {
                 }}
               />
               <Route exact path="/callback" render={() => <Callback />} />
+
+              <Route
+                path="/"
+                render={props => (
+                  <SearchBase
+                    userProfile={userProfile}
+                    errorHandler={errorActions.setAppError}
+                    auth={auth}
+                    {...props}
+                  />
+                )}
+              />
+
               <Route
                 path="*"
                 render={props => <NotFoundPage auth={auth} {...props} />}
