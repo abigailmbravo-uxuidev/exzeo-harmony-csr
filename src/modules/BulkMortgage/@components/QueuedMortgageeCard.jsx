@@ -30,11 +30,11 @@ const QueuedMortgageeCard = ({ result, handleRemove }) => (
         </span>
         <span className="loan-number">
           <strong>Loan Number:</strong>&nbsp;
-          {result.loanNo}
+          {result.referenceNumber}
         </span>
         <span className="make-billTo">
           <strong>Bill To:</strong>&nbsp;
-          {result.makeBillTo || result.currentBillTo ? (
+          {result.newBillTo || result.currentBillTo ? (
             <i className="fa fa-check-square" />
           ) : (
             <i className="fa fa-square-o" />
@@ -52,12 +52,15 @@ const QueuedMortgageeCard = ({ result, handleRemove }) => (
         </Button>
       </div>
       <div className="title">
-        <h4>
-          {result.name1} (Mortgagee {result.order + 1})&nbsp;|&nbsp;
-          <span className="propertyAddress">
-            <Address className="" address={result.mailingAddress} />
-          </span>
-        </h4>
+        {!result.noMortgagee && (
+          <h4>
+            {result.name1} (Mortgagee {result.order + 1})&nbsp;|&nbsp;
+            <span className="propertyAddress">
+              <Address className="" address={result.mailingAddress} />
+            </span>
+          </h4>
+        )}
+        {result.noMortgagee && <h4>No Mortgagee</h4>}
       </div>
     </section>
   </div>

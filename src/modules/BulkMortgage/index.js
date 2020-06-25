@@ -16,7 +16,9 @@ const BulkMortgage = ({ auth, errorHandler }) => {
         <Route
           exact
           path="/bulkMortgage"
-          render={() => <BulkMortgagee errorHandler={errorHandler} />}
+          render={() => (
+            <BulkMortgagee errorHandler={errorHandler} auth={auth} />
+          )}
         />
       </main>
     </div>

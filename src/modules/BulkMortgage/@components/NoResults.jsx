@@ -1,6 +1,6 @@
 import React from 'react';
 
-const NoResults = () => {
+const NoResults = ({ body }) => {
   return (
     <div className="card">
       <div className="card-header">
@@ -8,10 +8,7 @@ const NoResults = () => {
           <i className="fa fa-frown-o " /> No Results Found
         </h4>
       </div>
-      <div className="card-block">
-        Please refine your search or view policies queued below. Please note,
-        cancelled policies are not available in this search.
-      </div>
+      <div className="card-block">{body}</div>
     </div>
   );
 };

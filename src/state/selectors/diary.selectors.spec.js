@@ -1,11 +1,11 @@
-import moment from 'moment-timezone';
-
 import {
   getFormattedDiaries,
   getOpenDiaries,
   getGroupedOpenDiaries,
   isPollingPermitted
 } from './diary.selectors';
+
+import { date } from '@exzeo/core-ui';
 
 describe('Test diary selectors', () => {
   const baseEntry = {
@@ -127,10 +127,11 @@ describe('Test diary selectors', () => {
         entries: [
           {
             ...baseEntry,
-            due: moment
-              .utc()
-              .add(-5, 'd')
-              .format()
+            due: date.addDate({
+              unit: 'd',
+              addValue: -5,
+              format: ''
+            })
           }
         ]
       };
@@ -140,10 +141,7 @@ describe('Test diary selectors', () => {
         entries: [
           {
             ...baseEntry,
-            due: moment
-              .utc()
-              .add(5, 'd')
-              .format()
+            due: date.addDate({ unit: 'd', addValue: 5, format: '' })
           }
         ]
       };
@@ -153,10 +151,7 @@ describe('Test diary selectors', () => {
         entries: [
           {
             ...baseEntry,
-            due: moment
-              .utc()
-              .add(30, 'd')
-              .format()
+            due: date.addDate({ unit: 'd', addValue: 30, format: '' })
           }
         ]
       };

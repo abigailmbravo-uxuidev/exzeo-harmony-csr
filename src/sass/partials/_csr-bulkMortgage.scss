@@ -18,7 +18,7 @@ html body div#root .app-wrapper {
           flex-grow: 0;
           flex-shrink: 0;
 
-          width: 3rem;
+          width: 4rem;
         }
       }
     }
@@ -46,6 +46,65 @@ html body div#root .app-wrapper {
             margin-bottom: $padding * 2;
 
             border-bottom: 1px dashed $blue;
+          }
+          &.by-job {
+            flex-direction: column;
+
+            .bm-byJob {
+              &.mortgagee-wrapper {
+                margin-bottom: $padding;
+
+                border-bottom: 1px dashed $bright-blue-darken-04;
+                form {
+                  display: flex;
+
+                  width: 100%;
+                  padding: 0 $padding;
+
+                  .form-group {
+                    margin-right: $padding;
+
+                    &.dateRange {
+                      .date-range-inputs {
+                        display: flex;
+                        align-items: center;
+
+                        span {
+                          margin: 0 ($padding/2);
+                        }
+                      }
+                    }
+                  }
+
+                  button {
+                    align-self: flex-start;
+
+                    margin-top: 28px;
+                  }
+                }
+              }
+              &.search-results-wrapper {
+                .policy-list {
+                  padding: 0 $padding;
+
+                  .card {
+                    > section {
+                      flex-grow: 1;
+                      flex-shrink: 1;
+
+                      margin: 0 $padding;
+
+                      .details {
+                        .job-id {
+                          flex-grow: 1;
+                          flex-shrink: 1;
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
           }
 
           .bulk-mortgagee-form,
