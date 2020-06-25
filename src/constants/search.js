@@ -131,3 +131,18 @@ export const PRODUCT_ANSWERS = [
   { answer: 'HO3', label: 'HO3' },
   { answer: 'AF3', label: 'AF3' }
 ];
+
+export const SEARCH_TYPE_OPTIONS = [
+  {
+    answer: SEARCH_TYPES.newQuote,
+    label: 'New Quote'
+  },
+  {
+    answer: SEARCH_TYPES.quote,
+    label: 'Quote Search'
+  },
+  {
+    answer: SEARCH_TYPES.policy,
+    label: 'Policy Search'
+  }
+];
