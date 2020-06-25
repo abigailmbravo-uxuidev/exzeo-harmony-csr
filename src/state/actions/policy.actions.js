@@ -400,7 +400,7 @@ export async function fetchPolicy(policyNumber) {
  */
 export async function fetchSummaryLedger(policyNumber) {
   const config = {
-    service: 'summary-ledger',
+    service: 'harmony-data',
     method: 'GET',
     path: `summary-ledgers/${policyNumber}/latest`
   };
