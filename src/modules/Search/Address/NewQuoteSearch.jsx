@@ -41,10 +41,15 @@ const NewQuoteSearch = ({
     productOptionMap
   } = cspConfigForSearch(userProfile, 'QuoteData:Quotes:*');
 
-  const { searchState, loading, handleSearchSubmit } = useAddressSearch();
+  const {
+    searchState,
+    loading,
+    handleSearchSubmit,
+    clearSearchState
+  } = useAddressSearch();
 
   const resetFormResults = form => {
-    //TODO: expose setSearchState from useAddressSearch to reset results
+    clearSearchState();
     form.reset();
   };
 
