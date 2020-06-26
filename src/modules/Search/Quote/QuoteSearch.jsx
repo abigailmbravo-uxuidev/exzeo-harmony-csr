@@ -90,6 +90,7 @@ const QuoteSearch = ({
     >
       {({ form, submitting, handleSubmit, values: { state } }) => (
         <>
+          {searchState.status === 'pending' && <Loader />}
           <div className="search">
             <div id="SearchBar">
               <SearchTypeWatcher history={history} />
@@ -265,8 +266,6 @@ const QuoteSearch = ({
                     <div className="survey-wrapper scroll">
                       <div className="results-wrapper">
                         <div className="quote-list">
-                          {searchState.status === 'pending' && <Loader />}
-
                           {searchState.status === 'resolved' &&
                             (searchState.totalRecords === 0 ? (
                               <NoResults

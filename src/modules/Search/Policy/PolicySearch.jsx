@@ -91,6 +91,7 @@ const PolicySearch = ({ userProfile, history }) => {
     >
       {({ form, submitting, handleSubmit, values: { state } }) => (
         <>
+          {searchState.status === 'pending' && <Loader />}
           <div className="search">
             <div id="SearchBar">
               <SearchTypeWatcher history={history} />
@@ -321,8 +322,6 @@ const PolicySearch = ({ userProfile, history }) => {
                     <div className="survey-wrapper scroll">
                       <div className="results-wrapper">
                         <div className="quote-list">
-                          {searchState.status === 'pending' && <Loader />}
-
                           {searchState.status === 'resolved' &&
                             (searchState.totalRecords === 0 ? (
                               <NoResults

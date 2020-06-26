@@ -61,6 +61,7 @@ const NewQuoteSearch = ({
     >
       {({ form, handleSubmit, values: { companyCode, state, product } }) => (
         <>
+          {loading && <Loader />}
           <div className="search">
             <div id="SearchBar">
               <SearchTypeWatcher history={history} />
@@ -151,7 +152,6 @@ const NewQuoteSearch = ({
                     <div className="survey-wrapper scroll">
                       <div className="results-wrapper">
                         <div className="quote-list">
-                          {loading && <Loader />}
                           {searchState.hasSearched &&
                             (searchState.noResults ? (
                               <NoResults

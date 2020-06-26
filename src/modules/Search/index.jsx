@@ -3,6 +3,7 @@ import { Route } from 'react-router-dom';
 import NewQuoteSearch from './Address';
 import SearchPolicy from './Policy';
 import SearchQuote from './Quote';
+import DiariesSearch from './Diaries/DiariesSearch';
 
 const Search = ({ auth, agency, createQuote, retrieveQuote, userProfile }) => {
   return (
@@ -32,14 +33,7 @@ const Search = ({ auth, agency, createQuote, retrieveQuote, userProfile }) => {
       <Route
         exact
         path={`/diaries`}
-        render={props => (
-          // <SearchAddress
-          //   {...props}
-          //   createQuote={createQuote}
-          //   userProfile={userProfile}
-          // />
-          <div>Diaries</div>
-        )}
+        render={props => <DiariesSearch {...props} userProfile={userProfile} />}
       />
       <Route
         exact
