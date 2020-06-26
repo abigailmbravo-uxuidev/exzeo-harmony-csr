@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Route } from 'react-router-dom';
 import NewQuoteSearch from './Address';
-import { SEARCH_TYPES } from '../../constants/search';
+import SearchPolicy from './Policy';
 
 const Search = ({
   auth,
@@ -63,10 +63,7 @@ const Search = ({
       <Route
         exact
         path={`/`}
-        render={props => (
-          // <SearchPolicy {...props} userProfile={userProfile} />
-          <div>SearchPolicy</div>
-        )}
+        render={props => <SearchPolicy {...props} userProfile={userProfile} />}
       />
     </React.Fragment>
   );

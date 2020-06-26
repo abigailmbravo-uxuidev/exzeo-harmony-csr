@@ -2,13 +2,21 @@ import React from 'react';
 import moment from 'moment';
 import { STANDARD_DATE_FORMAT } from '../../../constants/dates';
 
-function PolicyCard({ handleKeyPress, handleClick, policy }) {
+function PolicyCard({ policy }) {
+  const openPolicy = () => {
+    window.open(`/policy/${policy.policyNumber}/coverage`, '_blank');
+  };
+
   return (
     <div
       tabIndex="0"
-      onKeyPress={handleKeyPress}
+      onKeyPress={event => {
+        if (event.charCode === 13) {
+          openPolicy();
+        }
+      }}
       id={policy.PolicyID}
-      onClick={handleClick}
+      onClick={openPolicy}
       className="card"
       data-test={policy.policyNumber}
       data-url={`/policy/${policy.policyNumber}/coverage`}
