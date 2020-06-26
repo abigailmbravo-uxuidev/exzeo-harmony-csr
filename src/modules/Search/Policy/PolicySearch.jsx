@@ -29,8 +29,6 @@ import {
 import SearchTypeWatcher from '../components/SearchTypeWatcher';
 import Loader from '@exzeo/core-ui/src/Loader/Loader';
 import NoResults from '../components/NoResults';
-import AddressCard from '../components/AddressCard';
-import AddressTip from '../components/AddressTip';
 import { usePolicySearch } from '@exzeo/core-ui/src/@Harmony/Search';
 import PolicyCard from '../components/PolicyCard';
 

@@ -2,15 +2,9 @@ import React from 'react';
 import { Route } from 'react-router-dom';
 import NewQuoteSearch from './Address';
 import SearchPolicy from './Policy';
+import SearchQuote from './Quote';
 
-const Search = ({
-  auth,
-  agency,
-  createQuote,
-  match,
-  retrieveQuote,
-  userProfile
-}) => {
+const Search = ({ auth, agency, createQuote, retrieveQuote, userProfile }) => {
   return (
     <React.Fragment>
       <Route
@@ -28,12 +22,11 @@ const Search = ({
         exact
         path={`/quote`}
         render={props => (
-          // <SearchQuote
-          //   {...props}
-          //   retrieveQuote={retrieveQuote}
-          //   userProfile={userProfile}
-          // />
-          <div>SearchQuote</div>
+          <SearchQuote
+            {...props}
+            retrieveQuote={retrieveQuote}
+            userProfile={userProfile}
+          />
         )}
       />
       <Route

@@ -10,7 +10,7 @@ const SearchTypeWatcher = ({ history }) => {
           if (value === SEARCH_TYPES.newQuote) {
             history.replace('/address');
           } else if (value === SEARCH_TYPES.policy) {
-            history.replace('/policy');
+            history.replace('/');
           } else if (value === SEARCH_TYPES.quote) {
             history.replace('/quote');
           }

@@ -7,14 +7,30 @@ import {
   Field,
   validation,
   normalize,
-  emptyArray
+  emptyArray,
+  Form,
+  noop,
+  FormSpy
 } from '@exzeo/core-ui';
 
-import Pagination from '../components/Pagination';
 import ResetButton from '../components/ResetButton';
 import { STANDARD_DATE_FORMAT } from '../../../constants/dates';
 import { cspConfigForSearch } from '../utilities';
 import { useFetchQuoteState } from '../hooks';
+import {
+  SEARCH_CONFIG,
+  SEARCH_TYPE_OPTIONS,
+  SEARCH_TYPES
+} from '../../../constants/search';
+import SearchTypeWatcher from '../components/SearchTypeWatcher';
+import Loader from '@exzeo/core-ui/src/Loader/Loader';
+import NoResults from '../components/NoResults';
+import PolicyCard from '../components/PolicyCard';
+import QuoteCard from '../components/QuoteCard';
+import { handleNewTab } from '../../../utilities/handleNewTab';
+import { onKeyPressSubmit } from '../components/SearchResults';
+import { useQuoteSearch } from '@exzeo/core-ui/src/@Harmony/Search';
+import { Pagination } from '@exzeo/core-ui/src/@Harmony';
 
 const {
   isValidNameFormat,
@@ -33,171 +49,252 @@ const sortByOptions = [
 ];
 
 const QuoteSearch = ({
-  submitting,
-  handlePagination,
-  searchResults,
   changeSearchType,
-  searchTypeOptions,
-  resetFormResults,
   userProfile,
-  formValues
+  retrieveQuote,
+  history
 }) => {
   const {
     companyCodeOptions,
     stateOptions,
-    productOptionMap
+    productOptionMap,
+    productOptions
   } = cspConfigForSearch(userProfile, 'QuoteData:Quotes:*');
 
   const { quoteStateList } = useFetchQuoteState();
 
+  const {
+    state: searchState,
+    handleSearchSubmit,
+    clearSearchState
+  } = useQuoteSearch();
+
+  const handlePagination = values => page => {
+    handleSearchSubmit({ ...values, page });
+  };
+
+  const handleSelectQuote = async quote => {
+    window.open(`/quote/${quote.quoteNumber}/coverage`, '_blank');
+  };
+
+  const resetFormResults = form => {
+    clearSearchState();
+    form.reset();
+  };
+
   return (
-    <React.Fragment>
-      <div className="search-context-sort">
-        <div className="form-group search-context">
-          <Field
-            name="searchType"
-            dataTest="searchType"
-            label="Search Context"
-            component={Select}
-            id="searchType"
-            validate={isRequired}
-            onChange={changeSearchType}
-            answers={searchTypeOptions}
-            showPlaceholder={false}
-            errorHint
-          />
-        </div>
-        <div className="form-group sortBy">
-          <Field
-            name="sortBy"
-            dataTest="sortBy"
-            label="Sort By"
-            component={Select}
-            answers={sortByOptions}
-            id="sort"
-            showPlaceholder={false}
-            errorHint
-          />
-        </div>
-      </div>
-      <div className="search-inputs fade-in">
-        <div className="search-input-row margin bottom full-width">
-          <Field
-            name="quoteNumber"
-            dataTest="quoteNumber"
-            label="Quote Number"
-            placeholder="Quote No Search"
-            component={Input}
-            styleName="quote-no-search"
-            validate={isAlphaNumeric}
-            errorHint
-          />
-          <Field
-            name="firstName"
-            dataTest="firstName"
-            label="First Name"
-            placeholder="First Name Search"
-            component={Input}
-            styleName="first-name-search"
-            validate={isValidNameFormat}
-            errorHint
-          />
-          <Field
-            name="lastName"
-            dataTest="lastName"
-            label="Last Name"
-            placeholder="Last Name Search"
-            component={Input}
-            styleName="last-name-search"
-            validate={isValidNameFormat}
-            errorHint
-          />
-          <Field
-            name="address"
-            dataTest="address"
-            label="Property Street Address"
-            placeholder="Property Street Address Search"
-            component={Input}
-            styleName="property-search"
-            validate={isValidChar}
-            errorHint
-          />
-          <Field
-            name="state"
-            dataTest="state"
-            label="State"
-            component={Select}
-            answers={stateOptions}
-            showPlaceholder={true}
-            placeholder={'All'}
-            placeholderDisabled={false}
-            styleName="state-search"
-          />
-        </div>
-        <div className="search-input-row">
-          <Field
-            name="companyCode"
-            dataTest="company"
-            label="Company"
-            component={Select}
-            answers={companyCodeOptions}
-            showPlaceholder={false}
-            styleName="company-search"
-          />
-          <Field
-            name="product"
-            dataTest="product"
-            label="Product"
-            component={Select}
-            answers={productOptionMap[formValues.state] || emptyArray}
-            styleName="product-search"
-            showPlaceholder={true}
-            placeholder={'All'}
-            placeholderDisabled={false}
-          />
-          <div className="form-group quote-state">
-            <Field
-              name="quoteState"
-              dataTest="quoteState"
-              label="Quote Status"
-              component={Select}
-              answers={quoteStateList}
-            />
+    <Form
+      initialValues={SEARCH_CONFIG[SEARCH_TYPES.quote].initialValues}
+      subscription={{ submitting: true, values: true }}
+      onSubmit={handleSearchSubmit}
+    >
+      {({ form, submitting, handleSubmit, values: { state } }) => (
+        <>
+          <div className="search">
+            <div id="SearchBar">
+              <SearchTypeWatcher history={history} />
+              <form id="SearchBarForm" onSubmit={handleSubmit}>
+                <div className="search-input-wrapper">
+                  <div className="search-context-sort">
+                    <div className="form-group search-context">
+                      <Field
+                        name="searchType"
+                        dataTest="searchType"
+                        label="Search Context"
+                        component={Select}
+                        id="searchType"
+                        validate={isRequired}
+                        onChange={changeSearchType}
+                        answers={SEARCH_TYPE_OPTIONS}
+                        showPlaceholder={false}
+                        errorHint
+                      />
+                    </div>
+                    <div className="form-group sortBy">
+                      <Field
+                        name="sortBy"
+                        dataTest="sortBy"
+                        label="Sort By"
+                        component={Select}
+                        answers={sortByOptions}
+                        id="sort"
+                        showPlaceholder={false}
+                        errorHint
+                      />
+                    </div>
+                  </div>
+                  <div className="search-inputs fade-in">
+                    <div className="search-input-row margin bottom full-width">
+                      <Field
+                        name="quoteNumber"
+                        dataTest="quoteNumber"
+                        label="Quote Number"
+                        placeholder="Quote No Search"
+                        component={Input}
+                        styleName="quote-no-search"
+                        validate={isAlphaNumeric}
+                        errorHint
+                      />
+                      <Field
+                        name="firstName"
+                        dataTest="firstName"
+                        label="First Name"
+                        placeholder="First Name Search"
+                        component={Input}
+                        styleName="first-name-search"
+                        validate={isValidNameFormat}
+                        errorHint
+                      />
+                      <Field
+                        name="lastName"
+                        dataTest="lastName"
+                        label="Last Name"
+                        placeholder="Last Name Search"
+                        component={Input}
+                        styleName="last-name-search"
+                        validate={isValidNameFormat}
+                        errorHint
+                      />
+                      <Field
+                        name="address"
+                        dataTest="address"
+                        label="Property Street Address"
+                        placeholder="Property Street Address Search"
+                        component={Input}
+                        styleName="property-search"
+                        validate={isValidChar}
+                        errorHint
+                      />
+                      <Field
+                        name="state"
+                        dataTest="state"
+                        label="State"
+                        component={Select}
+                        answers={stateOptions}
+                        showPlaceholder={true}
+                        placeholder={'All'}
+                        placeholderDisabled={false}
+                        styleName="state-search"
+                      />
+                    </div>
+                    <div className="search-input-row">
+                      <Field
+                        name="companyCode"
+                        dataTest="company"
+                        label="Company"
+                        component={Select}
+                        answers={companyCodeOptions}
+                        showPlaceholder={false}
+                        styleName="company-search"
+                      />
+                      <Field
+                        name="product"
+                        dataTest="product"
+                        label="Product"
+                        component={Select}
+                        answers={productOptionMap[state] || productOptions}
+                        styleName="product-search"
+                        showPlaceholder={true}
+                        placeholder={'All'}
+                        placeholderDisabled={false}
+                      />
+                      <div className="form-group quote-state">
+                        <Field
+                          name="quoteState"
+                          dataTest="quoteState"
+                          label="Quote Status"
+                          component={Select}
+                          answers={quoteStateList}
+                        />
+                      </div>
+                      <div className="form-group effectiveDate">
+                        <Field
+                          name="effectiveDate"
+                          dataTest="effectiveDate"
+                          label="Effective Date"
+                          component={Input}
+                          placeholder={STANDARD_DATE_FORMAT}
+                          normalize={normalize.date}
+                          validate={isValidDate}
+                          errorHint
+                        />
+                      </div>
+                    </div>
+                    <ResetButton reset={() => resetFormResults(form)} />
+                    <Button
+                      className={Button.constants.classNames.success}
+                      customClass="multi-input"
+                      type="submit"
+                      disabled={submitting}
+                      data-test="submit"
+                    >
+                      <i className="fa fa-search" />
+                      Search
+                    </Button>
+                  </div>
+                  {searchState.results.length > 0 &&
+                    searchState.totalPages > 1 && (
+                      <FormSpy subscription={{ values: true }}>
+                        {({ values }) => (
+                          <Pagination
+                            pageUp={() =>
+                              handlePagination(values)(
+                                searchState.currentPage + 1
+                              )
+                            }
+                            pageDown={() =>
+                              handlePagination(values)(
+                                searchState.currentPage - 1
+                              )
+                            }
+                            pageNumber={searchState.currentPage}
+                            totalPages={searchState.totalPages}
+                          />
+                        )}
+                      </FormSpy>
+                    )}
+                </div>
+              </form>
+            </div>
           </div>
-          <div className="form-group effectiveDate">
-            <Field
-              name="effectiveDate"
-              dataTest="effectiveDate"
-              label="Effective Date"
-              component={Input}
-              placeholder={STANDARD_DATE_FORMAT}
-              normalize={normalize.date}
-              validate={isValidDate}
-              errorHint
-            />
-          </div>
-        </div>
-        <ResetButton reset={resetFormResults} />
-        <Button
-          className={Button.constants.classNames.success}
-          customClass="multi-input"
-          type="submit"
-          disabled={submitting}
-          data-test="submit"
-        >
-          <i className="fa fa-search" />
-          Search
-        </Button>
-      </div>
-      {!!searchResults.length && searchResults.totalPages > 1 && (
-        <Pagination
-          changePageForward={() => handlePagination(true)}
-          changePageBack={() => handlePagination(false)}
-          pageNumber={searchResults.currentPage}
-          totalPages={searchResults.totalPages}
-        />
+          <main role="document">
+            <div className="content-wrapper">
+              <div className="dashboard" role="article">
+                <div className="route">
+                  <div className="search route-content">
+                    <div className="survey-wrapper scroll">
+                      <div className="results-wrapper">
+                        <div className="quote-list">
+                          {searchState.status === 'pending' && <Loader />}
+
+                          {searchState.status === 'resolved' &&
+                            (searchState.totalRecords === 0 ? (
+                              <NoResults
+                                searchType={SEARCH_TYPES.newQuote}
+                                error={noop}
+                              />
+                            ) : (
+                              <ul className="policy-list">
+                                {searchState.results.map(quote => (
+                                  <QuoteCard
+                                    key={quote._id}
+                                    quote={quote}
+                                    handleClick={() => handleSelectQuote(quote)}
+                                  />
+                                ))}
+                              </ul>
+                            ))}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </main>
+        </>
       )}
-    </React.Fragment>
+    </Form>
   );
 };
 
