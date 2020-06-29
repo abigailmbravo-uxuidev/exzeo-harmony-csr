@@ -1,6 +1,5 @@
 import React from 'react';
-import moment from 'moment';
-import { Button } from '@exzeo/core-ui';
+import { Button, date } from '@exzeo/core-ui';
 
 export const LicenseCard = ({
   license,
@@ -21,7 +20,10 @@ export const LicenseCard = ({
           </strong>{' '}
           |&nbsp;
           <span>
-            {moment.utc(license.licenseEffectiveDate).format('MM/DD/YYYY')}
+            {date.formatDate(
+              license.licenseEffectiveDate,
+              date.FORMATS.PRIMARY
+            )}
           </span>
         </h4>
       </div>

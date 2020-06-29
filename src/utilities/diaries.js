@@ -1,4 +1,3 @@
-import moment from 'moment-timezone';
 import { date } from '@exzeo/core-ui';
 
 /**
@@ -7,12 +6,13 @@ import { date } from '@exzeo/core-ui';
  * @returns {boolean | *}
  */
 export const isUpcoming = dateString => {
-  const sevenDaysOut = moment()
+  const sevenDaysOut = date
+    .moment()
     .utc()
     .add(7, 'd')
     .format(date.FORMATS.SECONDARY);
 
-  return moment(dateString).isAfter(sevenDaysOut, 'd');
+  return date.moment(dateString).isAfter(sevenDaysOut, 'd');
 };
 
 /**
@@ -22,12 +22,12 @@ export const isUpcoming = dateString => {
  */
 export const isDueSoon = dateString => {
   const today = date.currentDay(date.FORMATS.SECONDARY);
-  const sevenDaysOut = moment
+  const sevenDaysOut = date.moment
     .utc()
     .add(7, 'd')
     .format(date.FORMATS.SECONDARY);
 
-  return moment(dateString).isBetween(today, sevenDaysOut, 'd', '[]');
+  return date.moment(dateString).isBetween(today, sevenDaysOut, 'd', '[]');
 };
 
 /**
@@ -38,7 +38,7 @@ export const isDueSoon = dateString => {
 export const isPastDue = dateString => {
   const today = date.currentDay(date.FORMATS.SECONDARY);
 
-  return moment(dateString).isBefore(today, 'd');
+  return date.moment(dateString).isBefore(today, 'd');
 };
 
 /**
@@ -49,7 +49,7 @@ export const isPastDue = dateString => {
 export const isToday = dateString => {
   const today = date.currentDay(date.FORMATS.SECONDARY);
 
-  return moment(dateString).isSame(today, 'd');
+  return date.moment(dateString).isSame(today, 'd');
 };
 
 /**
@@ -118,7 +118,7 @@ export const sortDiariesByDate = (diaries = []) => {
 };
 
 export const addDate = (days, dateString) => {
-  return moment
+  return date.moment
     .utc(dateString)
     .add(days, 'd')
     .format(date.FORMATS.SECONDARY);

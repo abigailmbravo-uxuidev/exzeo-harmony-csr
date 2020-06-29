@@ -13,8 +13,9 @@ import { noop } from '@exzeo/core-ui';
 import * as bulkMortgageData from '../data';
 import topMortgagees from '../../../test-utils/fixtures/topMortgagees';
 import mockPolicies from '../../../test-utils/fixtures/policiesWithMortgagees';
+import { jobs } from '../testJobs';
 
-describe('BulkMortgagee Testing', () => {
+describe('BulkMortgagee By Policy Testing', () => {
   bulkMortgageData.getTopMortgagees = jestResolve(topMortgagees);
   bulkMortgageData.fetchMortgageesFromPolicies = jestResolve(mockPolicies);
 
@@ -107,9 +108,7 @@ describe('BulkMortgagee Testing', () => {
     const props = {
       errorHandler: noop
     };
-    const { getByText, getByTestId } = renderWithForm(
-      <BulkMortgagee {...props} />
-    );
+    const { getByTestId } = renderWithForm(<BulkMortgagee {...props} />);
     await waitForElement(() => [
       getByTestId('policyNumber'),
       getByTestId('search-policy-submit')
@@ -129,6 +128,7 @@ describe('BulkMortgagee Testing', () => {
       getByTestId('mortgagee-0'),
       getByTestId('mortgagee-1')
     ]);
+
     const firstMortgageeCard = within(getByTestId('mortgagee-0'));
 
     expect(firstMortgageeCard.getByText('Mortgagee 1'));
@@ -204,6 +204,107 @@ describe('BulkMortgagee Testing', () => {
 
     await wait(() => {
       getByText(/0 queued/);
+    });
+  });
+});
+
+describe('BulkMortgagee By Job Testing', () => {
+  bulkMortgageData.getMortgageeJobs = jestResolve({ jobs });
+
+  it('Renders BulkMortgagee By Job and check headers / labels', async () => {
+    const props = {
+      errorHandler: noop
+    };
+    const { getByText } = renderWithForm(<BulkMortgagee {...props} />);
+
+    fireEvent.click(getByText('By Job'));
+
+    await wait(() => {
+      expect(getByText('Filter Parameters'));
+      expect(getByText('Job Number'));
+      expect(getByText('Completed By'));
+      expect(getByText('Date Range'));
+      expect(getByText('Mortgagee Name'));
+      expect(getByText('Filter'));
+      expect(getByText('Jobs'));
+    });
+  });
+
+  it('Renders BulkMortgagee By Job filter by Job Number', async () => {
+    const props = {
+      errorHandler: noop
+    };
+    const { getByText, getByTestId } = renderWithForm(
+      <BulkMortgagee {...props} />
+    );
+
+    fireEvent.click(getByText('By Job'));
+
+    await wait(() => {
+      expect(getByText('Filter Parameters'));
+    });
+
+    fireEvent.change(getByTestId('jobId'), {
+      target: { value: '2e7' }
+    });
+
+    fireEvent.click(getByText('Filter'));
+
+    await wait(() => {
+      const jobWrapper = within(getByTestId('job-2e78b038e9dd2f00286cb58a'));
+      expect(jobWrapper.getByText('2e78b038e9dd2f00286cb58a'));
+      expect(jobWrapper.getByText(/Bank of Tampa/));
+    });
+
+    fireEvent.change(getByTestId('jobId'), {
+      target: { value: '3e7' }
+    });
+
+    fireEvent.click(getByText('Filter'));
+
+    await wait(() => {
+      const jobWrapper = within(getByTestId('job-3e78b038e9dd2f00286cb58a'));
+      expect(jobWrapper.getByText('3e78b038e9dd2f00286cb58a'));
+      expect(jobWrapper.getByText(/Bank of Miami/));
+    });
+  });
+
+  it('Renders BulkMortgagee By Job filter by Mortgagee Name', async () => {
+    const props = {
+      errorHandler: noop
+    };
+    const { getByText, getByTestId } = renderWithForm(
+      <BulkMortgagee {...props} />
+    );
+
+    fireEvent.click(getByText('By Job'));
+
+    await wait(() => {
+      expect(getByText('Filter Parameters'));
+    });
+
+    fireEvent.change(getByTestId('name'), {
+      target: { value: 'Bank of America' }
+    });
+
+    fireEvent.click(getByText('Filter'));
+
+    await wait(() => {
+      const jobWrapper = within(getByTestId('job-4e78b038e9dd2f00286cb58a'));
+      expect(jobWrapper.getByText('4e78b038e9dd2f00286cb58a'));
+      expect(jobWrapper.getByText(/Bank of America/));
+    });
+
+    fireEvent.change(getByTestId('name'), {
+      target: { value: 'Bank of Miami' }
+    });
+
+    fireEvent.click(getByText('Filter'));
+
+    await wait(() => {
+      const jobWrapper = within(getByTestId('job-3e78b038e9dd2f00286cb58a'));
+      expect(jobWrapper.getByText('3e78b038e9dd2f00286cb58a'));
+      expect(jobWrapper.getByText(/Bank of Miami/));
     });
   });
 });

@@ -1,6 +1,5 @@
 import React from 'react';
-import moment from 'moment';
-import { STANDARD_DATE_FORMAT } from '../../../constants/dates';
+import { date } from '@exzeo/core-ui';
 
 function PolicyCard({ policy }) {
   const openPolicy = () => {
@@ -33,7 +32,7 @@ function PolicyCard({ policy }) {
           </span>
           <span className="effective-date">
             <strong>Effective Date:</strong>&nbsp;
-            {moment.utc(policy.effectiveDate).format(STANDARD_DATE_FORMAT)}
+            {date.formatDate(policy.effectiveDate, date.FORMATS.PRIMARY)}
           </span>
           <span className="policy-status">
             <strong>Policy Status:</strong>&nbsp;

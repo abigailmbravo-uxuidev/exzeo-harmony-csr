@@ -1,11 +1,13 @@
 export const BULK_MORTGAGE_TYPE = {
   policy: 'policy',
-  mortgagee: 'mortgagee'
+  mortgagee: 'mortgagee',
+  job: 'job'
 };
 
 export const BULK_TYPE_LABEL = {
   [BULK_MORTGAGE_TYPE.policy]: 'By Policy',
-  [BULK_MORTGAGE_TYPE.mortgagee]: 'By Mortgagee'
+  [BULK_MORTGAGE_TYPE.mortgagee]: 'By Mortgagee',
+  [BULK_MORTGAGE_TYPE.job]: 'By Job'
 };
 
 export const INSTRUCTION_ANSWERS = [

@@ -4,16 +4,20 @@ import SearchByPolicy from './SearchByPolicy';
 import MortgageeResults from './MortgageeResults';
 import NoResults from './NoResults';
 import QueuedMortgagees from './QueuedMortgagees';
-import { fetchMortgageesFromPolicies } from '../data';
-import { formatMortgagees } from '../utilities';
-import { Button } from '@exzeo/core-ui';
+import { createBulkMortgageJob, fetchMortgageesFromPolicies } from '../data';
+import { formatCreateJob, formatMortgagees } from '../utilities';
+import { Button, Loader } from '@exzeo/core-ui';
 import { BUTTON_CLASS } from '@exzeo/core-ui/src/Button/Button';
+import AlertModal from '@exzeo/core-ui/src/Modal/AlertModal';
 
 export const ByPolicy = ({ errorHandler }) => {
   const [queuedMortgagees, setQueuedMortgagees] = useState([]);
   const [mortgageeResults, setMortgageeResults] = useState([]);
   const [showLoader, setShowLoader] = useState(false);
   const [hasSearched, setHasSearched] = useState(false);
+  const [showPageLoader, setShowPageLoader] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+  const [completedJobId, setCompletedJobId] = useState('');
 
   const handleSearchByPolicy = async data => {
     try {
@@ -42,9 +46,11 @@ export const ByPolicy = ({ errorHandler }) => {
       m => m._id === mortgagee._id && m.policyNumber === mortgagee.policyNumber
     );
     if (!existingMortgagee) {
+      mortgagee.newBillTo = !!mortgagee.newBillTo;
       setQueuedMortgagees([mortgagee, ...queuedMortgagees]);
       const filterMortgagees = mortgageeResults.filter(
-        m => m._id !== mortgagee._id
+        m =>
+          m._id !== mortgagee._id || m.policyNumber !== mortgagee.policyNumber
       );
       setMortgageeResults(filterMortgagees);
     }
@@ -52,7 +58,7 @@ export const ByPolicy = ({ errorHandler }) => {
 
   const removeFromQueue = mortgagee => {
     const filterMortgagees = queuedMortgagees.filter(
-      m => m._id !== mortgagee._id
+      m => m._id !== mortgagee._id || m.policyNumber !== mortgagee.policyNumber
     );
     setQueuedMortgagees(filterMortgagees);
   };
@@ -61,27 +67,50 @@ export const ByPolicy = ({ errorHandler }) => {
     setQueuedMortgagees([]);
   };
 
-  const handleBulkUpdateSubmit = async () => {
-    /*
-    // TODO: need to grab AI data from the form then grab all policyNumbers and place in array
-     */
+  const handleCreateJobSubmit = async data => {
+    try {
+      setShowPageLoader(true);
+      const { policies, additionalInterest } = formatCreateJob(
+        data,
+        queuedMortgagees
+      );
+      const { job } = await createBulkMortgageJob({
+        policies,
+        additionalInterest
+      });
+
+      setCompletedJobId(job._id);
+      setShowModal(true);
+
+      setQueuedMortgagees([]);
+    } catch (ex) {
+      errorHandler(ex);
+    } finally {
+      setShowPageLoader(false);
+    }
   };
 
   return (
     <React.Fragment>
+      {showPageLoader && <Loader />}
       <div
         className="bm-wrapper by-policy form-group survey-wrapper"
         role="group"
       >
         <section className="bm-byPolicy mortgagee-wrapper">
           <MortgageeForm
-            handleFormSubmit={handleBulkUpdateSubmit}
+            handleFormSubmit={handleCreateJobSubmit}
             errorHandler={errorHandler}
           />
         </section>
         <section className="bm-byPolicy search-results-wrapper">
           <SearchByPolicy handleSearch={handleSearchByPolicy} />
-          {hasSearched && mortgageeResults.length === 0 && <NoResults />}
+          {hasSearched && mortgageeResults.length === 0 && (
+            <NoResults
+              body={`Please refine your search or view policies queued below.
+                Please note, cancelled policies are not available in this search.`}
+            />
+          )}
           <MortgageeResults
             showLoader={showLoader}
             results={mortgageeResults}
@@ -101,11 +130,20 @@ export const ByPolicy = ({ errorHandler }) => {
           className={BUTTON_CLASS.primary}
           type="submit"
           form="BulkMortgagee"
-          disabled={!queuedMortgagees.length}
+          disabled={queuedMortgagees.length === 0}
         >
           Update
         </Button>
       </section>
+      {showModal && (
+        <AlertModal
+          header="Bulk Mortgage Job Submitted"
+          headerIcon="fa-circle Mortgagee"
+          confirmLabel="OK"
+          text={`Job ID: ${completedJobId}`}
+          handleConfirm={() => setShowModal(false)}
+        />
+      )}
     </React.Fragment>
   );
 };

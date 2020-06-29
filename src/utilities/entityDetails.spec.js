@@ -1,11 +1,8 @@
-import moment from 'moment-timezone';
-
-import { STANDARD_DATE_FORMAT } from '../constants/dates';
-
 import * as entityDetails from './entityDetails';
+import { date } from '@exzeo/core-ui';
 
 const getExpectedValue = dateString =>
-  moment.utc(dateString).format(STANDARD_DATE_FORMAT);
+  date.formatDate(dateString, date.FORMATS.PRIMARY);
 
 describe('getProductName', () => {
   it('should return product name HO3', () => {

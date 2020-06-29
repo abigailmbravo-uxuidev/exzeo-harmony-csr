@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 
-import { getTopMortgagees } from './data';
+import { getMortgageeJobs, getTopMortgagees, getUsersForJobs } from './data';
 import { formatTopAnswers } from './utilities';
 
 export const useFetchTopMortgagees = errorHandler => {
@@ -25,4 +25,50 @@ export const useFetchTopMortgagees = errorHandler => {
   }, []);
 
   return { topMortgagees, loaded };
+};
+
+export const useFetchMortgageeJobs = errorHandler => {
+  const [mortgageeJobs, setMortgageeJobs] = useState([]);
+  const [loaded, setLoaded] = useState(false);
+  useEffect(() => {
+    const fetchMortgageeJobs = async () => {
+      setLoaded(false);
+
+      try {
+        const response = await getMortgageeJobs();
+        setMortgageeJobs(response.data);
+      } catch (error) {
+        errorHandler(error);
+      } finally {
+        setLoaded(true);
+      }
+    };
+    fetchMortgageeJobs();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  return { mortgageeJobs, loaded };
+};
+
+export const useFetchUsersForJobs = ({ userProfile, errorHandler }) => {
+  const [userList, setUserList] = useState([]);
+  const [loaded, setLoaded] = useState(false);
+  useEffect(() => {
+    const fetchUsers = async () => {
+      setLoaded(false);
+
+      try {
+        const users = await getUsersForJobs(userProfile);
+        setUserList(users);
+      } catch (error) {
+        errorHandler(error);
+      } finally {
+        setLoaded(true);
+      }
+    };
+    fetchUsers();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  return { userList, loaded };
 };

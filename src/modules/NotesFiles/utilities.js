@@ -1,4 +1,3 @@
-import moment from 'moment-timezone';
 import { date } from '@exzeo/core-ui';
 
 export const mergeNotes = (notes, files) => {
@@ -16,7 +15,7 @@ export const mergeNotes = (notes, files) => {
         contactType: 'system',
         term: getTerm(file.policyNumber),
         createdBy: { userName: 'System', userId: file.createdBy },
-        createdAt: moment.unix(file.createdDate),
+        createdAt: date.moment.unix(file.createdDate),
         noteAttachments: [
           {
             fileType: 'System',
