@@ -48,12 +48,7 @@ const sortByOptions = [
   { answer: 'policyHolders.lastName', label: 'Last Name' }
 ];
 
-const QuoteSearch = ({
-  changeSearchType,
-  userProfile,
-  retrieveQuote,
-  history
-}) => {
+const QuoteSearch = ({ changeSearchType, userProfile, history }) => {
   const {
     companyCodeOptions,
     stateOptions,

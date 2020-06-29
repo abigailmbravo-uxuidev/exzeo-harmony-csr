@@ -18,9 +18,7 @@ import {
 import Loader from '@exzeo/core-ui/src/Loader/Loader';
 import SearchTypeWatcher from '../components/SearchTypeWatcher';
 import AgencyCard from '../components/AgencyCard';
-import { handleNewTab } from '../../../utilities/handleNewTab';
 import { NavLink } from 'react-router-dom';
-import { onKeyPressSubmit } from '../components/SearchResults';
 import { handleAgencySearch } from '../data';
 
 const { isValidChar, isRequired } = validation;
