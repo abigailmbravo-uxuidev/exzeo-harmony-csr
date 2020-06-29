@@ -6,7 +6,7 @@ import {
   checkSelect,
   checkButton
 } from '../../../../test-utils';
-import SearchForm from '../../index';
+import AgencySearch from '../AgencySearch';
 
 const fields = [
   {
@@ -62,7 +62,7 @@ const fields = [
 
 describe('Agency Search Testing', () => {
   const props = {
-    pathName: '/agency'
+    history: {}
   };
 
   const selectFields = fields.filter(({ type }) => type === 'select');
@@ -70,10 +70,11 @@ describe('Agency Search Testing', () => {
 
   it('POS:Renders and has fields and labels', () => {
     const { getByPlaceholderText, getByTestId } = renderWithForm(
-      <SearchForm {...props} />
+      <AgencySearch {...props} />
     );
 
     fields.forEach(field => checkLabel(getByTestId, field));
+
     textFields.forEach(({ placeholderText }) =>
       expect(getByPlaceholderText(placeholderText))
     );
@@ -86,7 +87,7 @@ describe('Agency Search Testing', () => {
 
   it('POS:Checks that all fields are working', () => {
     const { getByPlaceholderText, getByTestId } = renderWithForm(
-      <SearchForm {...props} />
+      <AgencySearch {...props} />
     );
     selectFields.forEach(field => checkSelect(getByTestId, field));
     textFields.forEach(field =>
@@ -95,7 +96,7 @@ describe('Agency Search Testing', () => {
   });
 
   it('POS:Agency Search Button', () => {
-    const { getByTestId } = renderWithForm(<SearchForm {...props} />);
+    const { getByTestId } = renderWithForm(<AgencySearch {...props} />);
     checkButton(getByTestId, {
       dataTest: 'submit',
       text: 'Search',

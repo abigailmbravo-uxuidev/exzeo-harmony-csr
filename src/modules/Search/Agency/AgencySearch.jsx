@@ -27,8 +27,8 @@ const AgencySearch = ({ history }) => {
   const [searchResults, setSearchResults] = useState([]);
 
   const handleSearchSubmit = async data => {
-    const agencies = await handleAgencySearch(data);
-    setSearchResults(agencies);
+    const { results } = await handleAgencySearch(data);
+    setSearchResults(results);
   };
 
   return (

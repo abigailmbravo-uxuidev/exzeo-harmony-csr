@@ -6,9 +6,7 @@ import {
   checkSelect,
   checkButton
 } from '../../../../test-utils';
-import { noop } from '@exzeo/core-ui';
-import SearchPage from '../../index';
-
+import DiariesSearch from '../DiariesSearch';
 const fields = [
   {
     dataTest: 'status',
@@ -55,17 +53,13 @@ const fields = [
 
 describe('Diaries Search Testing', () => {
   const props = {
-    pathName: '/diaries',
-    agencies: [],
-    userProfile: { profile: { given_name: 'John', family_name: 'Smith' } },
-    children: [],
-    errorHandler: noop
+    userProfile: { profile: { given_name: 'John', family_name: 'Smith' } }
   };
 
   const selectFields = fields.filter(({ type }) => type === 'select');
 
   it('POS:Renders and has fields and labels', () => {
-    const { getByTestId } = renderWithForm(<SearchPage {...props} />);
+    const { getByTestId } = renderWithForm(<DiariesSearch {...props} />);
 
     fields.forEach(field => checkLabel(getByTestId, field));
     selectFields.forEach(({ dataTest, selected }) =>
@@ -76,12 +70,12 @@ describe('Diaries Search Testing', () => {
   });
 
   it('POS:Checks that all fields are working', () => {
-    const { getByTestId } = renderWithForm(<SearchPage {...props} />);
+    const { getByTestId } = renderWithForm(<DiariesSearch {...props} />);
     selectFields.forEach(field => checkSelect(getByTestId, field));
   });
 
   it('POS:Diary Search Button', () => {
-    const { getByTestId } = renderWithForm(<SearchPage {...props} />);
+    const { getByTestId } = renderWithForm(<DiariesSearch {...props} />);
     checkButton(getByTestId, {
       dataTest: 'submit',
       text: 'Search',
