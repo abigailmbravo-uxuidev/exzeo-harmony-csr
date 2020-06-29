@@ -135,17 +135,20 @@ const AgencySearch = ({ history }) => {
                     <div className="survey-wrapper scroll">
                       <div className="results-wrapper">
                         <React.Fragment>
-                          <div className="user-list agency-list">
-                            {searchResults.map(agency => (
-                              <AgencyCard
-                                key={agency.agencyCode}
-                                agency={agency}
-                              />
-                            ))}
-                          </div>
+                          {Array.isArray(searchResults) &&
+                            searchResults.length > 0 && (
+                              <div className="user-list agency-list">
+                                {searchResults.map(agency => (
+                                  <AgencyCard
+                                    key={agency.agencyCode}
+                                    agency={agency}
+                                  />
+                                ))}
+                              </div>
+                            )}
                           <div
                             className="btn-divider-wrapper"
-                            data-test="add-agency-no-results"
+                            data-test="add-agency-new"
                           >
                             <NavLink
                               className="btn btn-primary"
