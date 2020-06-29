@@ -4,13 +4,25 @@ import { normalize } from '@exzeo/core-ui';
 import ContactAddress from '../../../components/ContactAddress';
 import { formatUrl } from '../../../utilities/format';
 
-function AgencyCard({ handleKeyPress, handleClick, agency }) {
+function AgencyCard({ agency }) {
+  const openAgency = () => {
+    window.open(`/agency/${agency.agencyCode}/0/overview`, '_blank');
+  };
+
   return (
-    <div className="card-wrapper" onKeyPress={handleKeyPress} tabIndex="0">
+    <div
+      className="card-wrapper"
+      onKeyPress={event => {
+        if (event.charCode === 13) {
+          openAgency();
+        }
+      }}
+      tabIndex="0"
+    >
       <span
         className="fa fa-chevron-right"
         id={`agency-code-${agency.agencyCode}`}
-        onClick={handleClick}
+        onClick={openAgency}
         data-url={`/agency/${agency.agencyCode}/0/overview`}
       />
       <div className="agency contact card">
@@ -21,7 +33,7 @@ function AgencyCard({ handleKeyPress, handleClick, agency }) {
         <div className="contact-details">
           <div className="card-name">
             <h4
-              onClick={handleClick}
+              onClick={openAgency}
               className="agency"
               data-test={agency.agencyCode}
             >

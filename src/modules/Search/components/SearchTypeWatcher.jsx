@@ -6,14 +6,19 @@ const SearchTypeWatcher = ({ history }) => {
   return (
     <OnChangeListener name="searchType">
       {value => {
-        if (value) {
-          if (value === SEARCH_TYPES.newQuote) {
+        switch (value) {
+          case SEARCH_TYPES.newQuote:
             history.replace('/address');
-          } else if (value === SEARCH_TYPES.policy) {
+          case SEARCH_TYPES.newQuote:
+            history.replace('/address');
+          case SEARCH_TYPES.policy:
             history.replace('/');
-          } else if (value === SEARCH_TYPES.quote) {
+          case SEARCH_TYPES.quote:
             history.replace('/quote');
-          }
+          case SEARCH_TYPES.agency:
+            history.replace('/agency');
+          case SEARCH_TYPES.agent:
+            history.replace('/agent');
         }
       }}
     </OnChangeListener>
