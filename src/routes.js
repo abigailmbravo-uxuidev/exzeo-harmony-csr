@@ -90,7 +90,6 @@ class Routes extends Component {
             </button>
           </div>
         </Modal>
-
         {diary && diary.resourceType && (
           <DiaryModal
             diaryOptions={diaryOptions}
@@ -107,7 +106,6 @@ class Routes extends Component {
             entity={diary.entity}
           />
         )}
-
         {note && note.documentId && (
           <NoteUploader
             minimizeNote={minimizeNote}
@@ -142,30 +140,6 @@ class Routes extends Component {
                 render={props => <ReceiptHandler {...props} />}
               />
 
-              {/*<Route*/}
-              {/*  exact*/}
-              {/*  path="/agency"*/}
-              {/*  render={props => (*/}
-              {/*    <SearchAgency*/}
-              {/*      userProfile={userProfile}*/}
-              {/*      errorHandler={errorActions.setAppError}*/}
-              {/*      auth={auth}*/}
-              {/*      {...props}*/}
-              {/*    />*/}
-              {/*  )}*/}
-              {/*/>*/}
-              {/*<Route*/}
-              {/*  exact*/}
-              {/*  path="/diaries"*/}
-              {/*  render={props => (*/}
-              {/*    <SearchDiaries*/}
-              {/*      userProfile={userProfile}*/}
-              {/*      errorHandler={errorActions.setAppError}*/}
-              {/*      auth={auth}*/}
-              {/*      {...props}*/}
-              {/*    />*/}
-              {/*  )}*/}
-              {/*/>*/}
               <Route
                 exact
                 path="/quote/new/:companyCode/:stateCode/:product/:propertyId"
@@ -199,32 +173,32 @@ class Routes extends Component {
                 render={props => <Reports auth={auth} {...props} />}
               />
               {enableBulkMortgage && (
-                <React.Fragment>
-                  <Route
-                    exact
-                    path="/bulkMortgage"
-                    render={props => (
-                      <BulkMortgage
-                        {...props}
-                        userProfile={userProfile}
-                        errorHandler={errorActions.setAppError}
-                        auth={auth}
-                      />
-                    )}
-                  />
-                  <Route
-                    exact
-                    path="/bulkMortgage/byJob"
-                    render={props => (
-                      <BulkMortgage
-                        tab={BULK_MORTGAGE_TYPE.job}
-                        errorHandler={errorActions.setAppError}
-                        auth={auth}
-                        {...props}
-                      />
-                    )}
-                  />
-                </React.Fragment>
+                <Route
+                  exact
+                  path="/bulkMortgage"
+                  render={props => (
+                    <BulkMortgage
+                      {...props}
+                      userProfile={userProfile}
+                      errorHandler={errorActions.setAppError}
+                      auth={auth}
+                    />
+                  )}
+                />
+              )}
+              {enableBulkMortgage && (
+                <Route
+                  exact
+                  path="/bulkMortgage/byJob"
+                  render={props => (
+                    <BulkMortgage
+                      tab={BULK_MORTGAGE_TYPE.job}
+                      errorHandler={errorActions.setAppError}
+                      auth={auth}
+                      {...props}
+                    />
+                  )}
+                />
               )}
               <Route
                 exact
