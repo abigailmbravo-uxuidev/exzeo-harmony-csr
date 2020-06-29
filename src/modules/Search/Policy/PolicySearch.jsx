@@ -353,21 +353,8 @@ const PolicySearch = ({ userProfile, history }) => {
 };
 
 PolicySearch.propTypes = {
-  handlePagination: PropTypes.func.isRequired,
-  changeSearchType: PropTypes.func,
-  questions: PropTypes.object,
-  searchResults: PropTypes.shape({
-    results: PropTypes.array,
-    totalPages: PropTypes.number,
-    currentPage: PropTypes.number
-  }).isRequired,
-  searchTypeOptions: PropTypes.array,
-  submitting: PropTypes.bool
-};
-
-PolicySearch.defaultProps = {
-  questions: emptyObject,
-  changeSearchType: noop
+  userProfile: PropTypes.object,
+  history: PropTypes.object
 };
 
 export default PolicySearch;

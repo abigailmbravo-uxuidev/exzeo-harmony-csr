@@ -29,7 +29,6 @@ export const defaultInitialState = {
     }
   },
   error: {},
-  form: {},
   policyState: {
     policy: {
       policyID: 'test'

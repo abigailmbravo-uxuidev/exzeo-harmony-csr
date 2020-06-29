@@ -5,8 +5,9 @@ import SearchPolicy from './Policy';
 import SearchQuote from './Quote';
 import DiariesSearch from './Diaries/DiariesSearch';
 import AgencySearch from './Agency';
+import AgentSearch from './Agent';
 
-const Search = ({ auth, agency, createQuote, retrieveQuote, userProfile }) => {
+const Search = ({ createQuote, retrieveQuote, userProfile }) => {
   return (
     <React.Fragment>
       <Route
@@ -40,6 +41,11 @@ const Search = ({ auth, agency, createQuote, retrieveQuote, userProfile }) => {
         exact
         path={`/agency`}
         render={props => <AgencySearch {...props} />}
+      />
+      <Route
+        exact
+        path={`/agent`}
+        render={props => <AgentSearch {...props} />}
       />
       <Route
         exact

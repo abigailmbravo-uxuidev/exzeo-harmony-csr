@@ -28,13 +28,7 @@ import { productAnswers } from '../constants';
 
 const { isValidChar, isRequired } = validation;
 
-const NewQuoteSearch = ({
-  submitting,
-  changeSearchType,
-  searchTypeOptions,
-  userProfile,
-  history
-}) => {
+const NewQuoteSearch = ({ userProfile, history }) => {
   const {
     companyCodeOptions,
     stateOptions,
@@ -59,7 +53,12 @@ const NewQuoteSearch = ({
       subscription={{ submitting: true, values: true }}
       onSubmit={handleSearchSubmit}
     >
-      {({ form, handleSubmit, values: { companyCode, state, product } }) => (
+      {({
+        submitting,
+        form,
+        handleSubmit,
+        values: { companyCode, state, product }
+      }) => (
         <>
           {loading && <Loader />}
           <div className="search">
@@ -185,11 +184,8 @@ const NewQuoteSearch = ({
 };
 
 NewQuoteSearch.propTypes = {
-  submitting: PropTypes.bool.isRequired,
-  changeSearchType: PropTypes.func,
-  searchTypeOptions: PropTypes.array
+  history: PropTypes.object,
+  userProfile: PropTypes.object
 };
-
-NewQuoteSearch.defaultProps = {};
 
 export default NewQuoteSearch;

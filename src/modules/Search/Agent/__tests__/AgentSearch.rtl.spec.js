@@ -8,7 +8,7 @@ import {
   checkSelect,
   checkButton
 } from '../../../../test-utils';
-import SearchForm from '../../index';
+import AgentSearch from '../AgentSearch';
 
 const fields = [
   {
@@ -57,7 +57,7 @@ const fields = [
 
 describe('Agent Search Testing', () => {
   const props = {
-    pathName: '/agency'
+    history: {}
   };
 
   const selectFields = fields.filter(({ type }) => type === 'select');
@@ -65,7 +65,7 @@ describe('Agent Search Testing', () => {
 
   it('POS:Renders and has fields and labels', async () => {
     const { getByPlaceholderText, getByTestId } = renderWithForm(
-      <SearchForm {...props} />
+      <AgentSearch {...props} />
     );
 
     fireEvent.change(getByTestId('searchType'), {
@@ -89,7 +89,7 @@ describe('Agent Search Testing', () => {
 
   it('POS:Checks that all fields are working', async () => {
     const { getByPlaceholderText, getByTestId } = renderWithForm(
-      <SearchForm {...props} />
+      <AgentSearch {...props} />
     );
 
     fireEvent.change(getByTestId('searchType'), {
@@ -106,7 +106,7 @@ describe('Agent Search Testing', () => {
   });
 
   it('POS:Agent Search Button', async () => {
-    const { getByTestId } = renderWithForm(<SearchForm {...props} />);
+    const { getByTestId } = renderWithForm(<AgentSearch {...props} />);
 
     fireEvent.change(getByTestId('searchType'), {
       target: { value: 'agent' }

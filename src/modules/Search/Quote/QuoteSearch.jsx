@@ -7,7 +7,6 @@ import {
   Field,
   validation,
   normalize,
-  emptyArray,
   Form,
   noop,
   FormSpy
@@ -25,10 +24,7 @@ import {
 import SearchTypeWatcher from '../components/SearchTypeWatcher';
 import Loader from '@exzeo/core-ui/src/Loader/Loader';
 import NoResults from '../components/NoResults';
-import PolicyCard from '../components/PolicyCard';
 import QuoteCard from '../components/QuoteCard';
-import { handleNewTab } from '../../../utilities/handleNewTab';
-import { onKeyPressSubmit } from '../components/SearchResults';
 import { useQuoteSearch } from '@exzeo/core-ui/src/@Harmony/Search';
 import { Pagination } from '@exzeo/core-ui/src/@Harmony';
 

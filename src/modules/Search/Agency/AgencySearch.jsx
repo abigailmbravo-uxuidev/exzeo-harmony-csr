@@ -37,7 +37,7 @@ const AgencySearch = ({ history }) => {
       subscription={{ submitting: true }}
       onSubmit={handleSearchSubmit}
     >
-      {({ form, submitting, handleSubmit }) => (
+      {({ submitting, handleSubmit }) => (
         <>
           {submitting && <Loader />}
           <div className="search">
@@ -175,9 +175,7 @@ const AgencySearch = ({ history }) => {
 };
 
 AgencySearch.propTypes = {
-  submitting: PropTypes.bool,
-  changeSearchType: PropTypes.func,
-  searchTypeOptions: PropTypes.array
+  history: PropTypes.object
 };
 
 AgencySearch.defaultProps = {};
