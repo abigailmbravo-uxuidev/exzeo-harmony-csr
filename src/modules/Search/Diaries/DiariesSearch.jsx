@@ -8,8 +8,7 @@ import {
   emptyObject,
   emptyArray,
   Field,
-  Form,
-  noop
+  Form
 } from '@exzeo/core-ui';
 
 import ResetButton from '../components/ResetButton';

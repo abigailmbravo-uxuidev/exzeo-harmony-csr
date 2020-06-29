@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import {
   Input,
   Integer,
-  Phone,
   Select,
   Field,
   Button,
@@ -17,8 +16,6 @@ import {
 } from '../../../constants/search';
 import Loader from '@exzeo/core-ui/src/Loader/Loader';
 import SearchTypeWatcher from '../components/SearchTypeWatcher';
-import AgencyCard from '../components/AgencyCard';
-import { NavLink } from 'react-router-dom';
 import { handleAgentSearch } from '../data';
 import { isAlphaNumeric } from '@exzeo/core-ui/src/Utilities';
 import AgentCard from '../components/AgentCard';

@@ -8,8 +8,6 @@ import {
   normalize,
   validation,
   noop,
-  emptyObject,
-  emptyArray,
   Form,
   FormSpy,
   date
