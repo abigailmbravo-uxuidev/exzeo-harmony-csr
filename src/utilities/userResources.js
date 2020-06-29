@@ -1,7 +1,9 @@
 import { defaultMemoize } from 'reselect';
 
-export const userResources = defaultMemoize((userProfile = {}) => {
-  const enableBulkMortgage = userProfile?.profile?.bulkMortgageEnabled;
+export const userResources = defaultMemoize((userProfile = {}, right, uri) => {
+  const enableBulkMortgage = userProfile?.resources.find(r => {
+    return r.right === right && r.uri.includes(uri);
+  });
 
   return {
     enableBulkMortgage
