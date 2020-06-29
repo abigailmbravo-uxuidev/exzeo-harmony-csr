@@ -4,6 +4,7 @@ import NewQuoteSearch from './Address';
 import SearchPolicy from './Policy';
 import SearchQuote from './Quote';
 import DiariesSearch from './Diaries/DiariesSearch';
+import AgencySearch from './Agency';
 
 const Search = ({ auth, agency, createQuote, retrieveQuote, userProfile }) => {
   return (
@@ -38,14 +39,7 @@ const Search = ({ auth, agency, createQuote, retrieveQuote, userProfile }) => {
       <Route
         exact
         path={`/agency`}
-        render={props => (
-          // <SearchAddress
-          //   {...props}
-          //   createQuote={createQuote}
-          //   userProfile={userProfile}
-          // />
-          <div>Agency</div>
-        )}
+        render={props => <AgencySearch {...props} />}
       />
       <Route
         exact
