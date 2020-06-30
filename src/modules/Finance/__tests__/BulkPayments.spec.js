@@ -20,7 +20,6 @@ jest.mock('../data', () => ({
 
 const today = date.toUTC();
 const initialBatchNumber = date.currentDay('YYYYMMDD');
-const yesterday = new Date(new Date().setDate(new Date().getDate() - 1));
 
 describe('BulkPayments testing', () => {
   beforeEach(() => jest.resetModules());
@@ -30,12 +29,9 @@ describe('BulkPayments testing', () => {
       errorHandler: jest.fn()
     };
 
-    const {
-      getByText,
-      getByLabelText,
-      getAllByText,
-      getByPlaceholderText
-    } = render(<BulkPayments {...props} />);
+    const { getByText, getByLabelText, getAllByText } = render(
+      <BulkPayments {...props} />
+    );
 
     // Batch form
     expect(getByText('Bulk Payments'));
@@ -57,7 +53,7 @@ describe('BulkPayments testing', () => {
     expect(getAllByText('Batch Number')[1]);
     expect(getByText(initialBatchNumber));
     expect(getAllByText('Cash Type')[1]);
-    expect(getAllByText('Payment Description'))[1];
+    expect(getAllByText('Payment Description')[1]);
     expect(getAllByText('Payment Received')[1]);
     expect(getAllByText('Policy Number')[1]);
     expect(getAllByText('Policyholder')[1]);
@@ -78,9 +74,7 @@ describe('BulkPayments testing', () => {
       errorHandler: jest.fn()
     };
 
-    const { getByText, getByLabelText, getAllByText } = render(
-      <BulkPayments {...props} />
-    );
+    const { getByText, getByLabelText } = render(<BulkPayments {...props} />);
 
     fireEvent.change(await getByLabelText('Cash Type'), {
       target: { value: 'Paper Deposit' }
@@ -141,13 +135,11 @@ describe('BulkPayments testing', () => {
 
     const {
       property: {
-        physicalAddress: { address1, address2, city, state, zip }
+        physicalAddress: { city, state, zip }
       }
     } = mockPolicy;
 
-    const { getByText, getByLabelText, getAllByText } = render(
-      <BulkPayments {...props} />
-    );
+    const { getByText, getByLabelText } = render(<BulkPayments {...props} />);
 
     await wait(() => [
       getByLabelText('Cash Type'),
@@ -261,9 +253,7 @@ describe('BulkPayments testing', () => {
       errorHandler: jest.fn()
     };
 
-    const { getByText, getByLabelText, getAllByText } = render(
-      <BulkPayments {...props} />
-    );
+    const { getByText, getByLabelText } = render(<BulkPayments {...props} />);
 
     fireEvent.change(await getByLabelText('Cash Type'), {
       target: { value: 'Paper Deposit' }

@@ -315,7 +315,7 @@ describe('Change Effective Date Testing', () => {
       }
     });
 
-    const { getByText, getByTestId, getAllByText } = renderWithForm(
+    const { getByText, getByTestId } = renderWithForm(
       <PolicyWorkflow {...props} />
     );
 

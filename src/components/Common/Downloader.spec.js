@@ -23,7 +23,6 @@ describe('Testing Downloader component', () => {
     const fileName = 'testfile';
     const fileUrl = 'http://test/test.pdf';
     const proxyUrl = `${process.env.REACT_APP_API_URL}/download`;
-    const params = { url: fileUrl };
     const errorHandler = err => null;
     var mockImage = new Blob([JSON.stringify([{ result: 'test' }], null, 2)], {
       type: 'octet/stream'

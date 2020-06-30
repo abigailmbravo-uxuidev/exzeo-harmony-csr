@@ -1,5 +1,5 @@
 import React from 'react';
-import { fireEvent, wait } from '@testing-library/react';
+import { wait } from '@testing-library/react';
 import SearchForm from '../../index';
 import * as hooks from '../../hooks';
 import {

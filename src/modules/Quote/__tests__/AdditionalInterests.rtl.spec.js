@@ -5,10 +5,8 @@ import {
   renderWithForm,
   defaultQuoteWorkflowProps,
   rating,
-  checkHeader,
   checkLabel,
   checkTextInput,
-  checkSelect,
   verifyForm,
   additionalInterest,
   mockServiceRunner,
@@ -527,7 +525,7 @@ describe('Additional Interest Testing', () => {
   });
 
   it('POS:Mortgagee Modal Testing', () => {
-    const { getByText, getAllByText, getByTestId } = renderWithForm(
+    const { getAllByText, getByTestId } = renderWithForm(
       <QuoteWorkflow {...props} />
     );
     openAndCloseModal(getByTestId, 'mortgagee');
@@ -550,7 +548,7 @@ describe('Additional Interest Testing', () => {
   });
 
   it('POS:Additional Insured Modal Testing', () => {
-    const { getByText, getAllByText, getByTestId } = renderWithForm(
+    const { getAllByText, getByTestId } = renderWithForm(
       <QuoteWorkflow {...props} />
     );
 
@@ -567,7 +565,7 @@ describe('Additional Interest Testing', () => {
   });
 
   it('POS:Additional Interest Modal Testing', () => {
-    const { getByText, getAllByText, getByTestId } = renderWithForm(
+    const { getAllByText, getByTestId } = renderWithForm(
       <QuoteWorkflow {...props} />
     );
 
@@ -584,7 +582,7 @@ describe('Additional Interest Testing', () => {
   });
 
   it('POS:Premium Finance Modal Testing', () => {
-    const { getByText, getAllByText, getByTestId } = renderWithForm(
+    const { getAllByText, getByTestId } = renderWithForm(
       <QuoteWorkflow {...props} />
     );
 
@@ -605,7 +603,7 @@ describe('Additional Interest Testing', () => {
   });
 
   it('POS:Bill Payer Modal Testing', () => {
-    const { getByText, getAllByText, getByTestId } = renderWithForm(
+    const { getAllByText, getByTestId } = renderWithForm(
       <QuoteWorkflow {...props} />
     );
 

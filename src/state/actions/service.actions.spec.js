@@ -8,53 +8,6 @@ const middlewares = [];
 const mockStore = configureStore(middlewares);
 
 describe('Service Actions', () => {
-  const baseProps = {
-    endorsementDate: '2017-02-02',
-    zipcodeSettings: { timezone: 'America/New_York' },
-    policy: {
-      policyHolders: [{}, {}],
-      property: { windMitigation: {}, physicalAddress: {} },
-      policyHolderMailingAddress: {},
-      coverageLimits: {
-        dwelling: {},
-        otherStructures: {},
-        personalProperty: {},
-        lossOfUse: {},
-        medicalPayments: {},
-        moldProperty: {},
-        personalLiability: {},
-        moldLiability: {},
-        ordinanceOrLaw: {}
-      },
-      deductibles: {
-        allOtherPerils: {},
-        hurricane: {},
-        sinkhole: {}
-      },
-      coverageOptions: {
-        sinkholePerilCoverage: {},
-        propertyIncidentalOccupanciesMainDwelling: {},
-        propertyIncidentalOccupanciesOtherStructures: {},
-        liabilityIncidentalOccupancies: {},
-        personalPropertyReplacementCost: {}
-      },
-      underwritingAnswers: {
-        rented: {},
-        monthsOccupied: {},
-        noPriorInsuranceSurcharge: {}
-      },
-      rating: {
-        totalPremium: '1',
-        worksheet: {
-          elements: {
-            windMitigationFactors: {}
-          }
-        }
-      }
-    },
-    summaryLedger: { currentPremium: '1' }
-  };
-
   it('should call serviceRequest', () => {
     const initialState = {};
     const store = mockStore(initialState);
@@ -73,7 +26,7 @@ describe('Service Actions', () => {
   it('should clear agent', () => {
     const initialState = { service: { agents: ['Test Agent'] } };
     const store = mockStore(initialState);
-    const agent = serviceActions.clearAgent()(store.dispatch);
+    serviceActions.clearAgent()(store.dispatch);
     expect(store.getActions()[0].type).toEqual(types.SERVICE_REQUEST);
     expect(store.getActions()[0].data).toEqual({ agents: [] });
   });

@@ -1,5 +1,5 @@
 import React from 'react';
-import { within, wait, waitForElement } from '@testing-library/react';
+import { within, waitForElement } from '@testing-library/react';
 import { date, normalize } from '@exzeo/core-ui';
 import * as utilities from '../../utilities';
 
@@ -7,8 +7,7 @@ import {
   renderWithReduxAndRouter,
   mockAgency,
   mockAgents,
-  jestResolve,
-  mockPolicy
+  jestResolve
 } from '../../../../test-utils';
 import Overview from '../index';
 
@@ -124,7 +123,6 @@ describe('Overview testing', () => {
       { state }
     );
 
-    const header = getAllByText('Address');
     const addresses = getAllByText('Address');
     const { mailingAddress: mail, physicalAddress: phys } = mockAgency.branches[
       props.branchCode
