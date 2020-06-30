@@ -10,7 +10,6 @@ import notes from './notes.reducer';
 import policyState from './policy.reducer';
 import questions from './questions.reducer';
 import quoteState from './quote.reducer';
-import search from './search.reducer';
 import service from './service.reducer';
 import ui from './ui.reducer';
 
@@ -23,7 +22,6 @@ const rootReducer = combineReducers({
   questions,
   error,
   quoteState,
-  search,
   agencyState,
   notes,
   diaries,

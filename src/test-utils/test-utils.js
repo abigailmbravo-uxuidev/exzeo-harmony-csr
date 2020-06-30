@@ -19,9 +19,6 @@ export const defaultInitialState = {
   list: {
     diaryOptions: {}
   },
-  search: {
-    results: []
-  },
   service: {
     agencies: [],
     zipCodeSettings: {
