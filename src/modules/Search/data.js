@@ -2,7 +2,7 @@ import * as serviceRunner from '@exzeo/core-ui/src/@Harmony/Domain/Api/serviceRu
 import { searchData } from '@exzeo/core-ui/src/@Harmony';
 import { date } from '@exzeo/core-ui';
 import { SECONDARY_DATE_FORMAT } from '../../constants/dates';
-import { RESULTS_PAGE_SIZE, SEARCH_TYPES } from '../../constants/search';
+import { RESULTS_PAGE_SIZE } from '../../constants/search';
 import {
   buildAssigneesList,
   buildQuerystring,
