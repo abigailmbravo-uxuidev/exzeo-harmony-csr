@@ -8,10 +8,6 @@ import { isPastDue, isToday } from '../../utilities/diaries';
 import logo from '../../img/Harmony.svg';
 import { userResources } from '../../utilities/userResources';
 
-const handleLogout = auth => {
-  auth.logout();
-};
-
 export const getNavLinks = ({ enableBulkMortgage }) => {
   return [
     {
@@ -43,7 +39,7 @@ export const getNavLinks = ({ enableBulkMortgage }) => {
   ];
 };
 
-const Header = ({ auth, authState: { userProfile = {} }, diaries }) => {
+const Header = ({ handleLogout, authState: { userProfile = {} }, diaries }) => {
   const pastDiaries = diaries.filter(diary => {
     const entry = diary.entries[0];
     return (isPastDue(entry.due) || isToday(entry.due)) && entry.open;
