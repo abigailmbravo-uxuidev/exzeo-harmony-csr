@@ -26,7 +26,6 @@ import { QuoteLanding, QuoteWorkflow } from './modules/Quote';
 import { PolicyWorkflow, ReceiptHandler } from './modules/Policy';
 import Finance from './modules/Finance';
 import BulkMortgage from './modules/BulkMortgage';
-import { userResources } from './utilities/userResources';
 import { BULK_MORTGAGE_TYPE } from './modules/BulkMortgage/constants';
 
 class Routes extends Component {
