@@ -61,8 +61,6 @@ class Routes extends Component {
       diaryOptions
     } = this.props;
 
-    const { enableBulkMortgage } = userResources(userProfile);
-
     return (
       <div>
         <Modal
@@ -192,34 +190,30 @@ class Routes extends Component {
                 path="/reports"
                 render={props => <Reports auth={auth} {...props} />}
               />
-              {enableBulkMortgage && (
-                <React.Fragment>
-                  <Route
-                    exact
-                    path="/bulkMortgage"
-                    render={props => (
-                      <BulkMortgage
-                        {...props}
-                        userProfile={userProfile}
-                        errorHandler={errorActions.setAppError}
-                        auth={auth}
-                      />
-                    )}
+              <Route
+                exact
+                path="/bulkMortgage"
+                render={props => (
+                  <BulkMortgage
+                    {...props}
+                    userProfile={userProfile}
+                    errorHandler={errorActions.setAppError}
+                    auth={auth}
                   />
-                  <Route
-                    exact
-                    path="/bulkMortgage/byJob"
-                    render={props => (
-                      <BulkMortgage
-                        tab={BULK_MORTGAGE_TYPE.job}
-                        errorHandler={errorActions.setAppError}
-                        auth={auth}
-                        {...props}
-                      />
-                    )}
+                )}
+              />
+              <Route
+                exact
+                path="/bulkMortgage/byJob"
+                render={props => (
+                  <BulkMortgage
+                    tab={BULK_MORTGAGE_TYPE.job}
+                    errorHandler={errorActions.setAppError}
+                    auth={auth}
+                    {...props}
                   />
-                </React.Fragment>
-              )}
+                )}
+              />
               <Route
                 exact
                 path="/login"
