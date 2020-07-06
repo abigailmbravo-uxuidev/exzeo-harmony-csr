@@ -27,7 +27,8 @@ export const QUOTE_INITIAL_VALUES = {
 };
 
 export const AGENCY_INITIAL_VALUES = {
-  searchType: SEARCH_TYPES.agency
+  searchType: SEARCH_TYPES.agency,
+  page: 1
 };
 
 export const AGENT_INITIAL_VALUES = {
@@ -67,6 +68,12 @@ export const AGENCY_SEARCH_OPTIONS = [
     answer: SEARCH_TYPES.agency,
     label: 'Agency Search'
   }
+];
+
+export const AGENCY_SORT = [
+  { answer: 'displayName', label: 'Agency Name' },
+  { answer: 'agencyCode', label: 'Agency Code' },
+  { answer: 'status', label: 'Status' }
 ];
 
 export const AGENCY_STATUS = [

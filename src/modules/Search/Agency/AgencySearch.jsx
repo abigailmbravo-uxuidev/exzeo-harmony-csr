@@ -8,13 +8,15 @@ import {
   Field,
   Button,
   validation,
-  Form
+  Form,
+  FormSpy
 } from '@exzeo/core-ui';
 import {
   SEARCH_CONFIG,
   AGENCY_SEARCH_OPTIONS,
   SEARCH_TYPES,
-  AGENCY_STATUS
+  AGENCY_STATUS,
+  AGENCY_SORT
 } from '../../../constants/search';
 import Loader from '@exzeo/core-ui/src/Loader/Loader';
 import SearchTypeWatcher from '../components/SearchTypeWatcher';
@@ -23,19 +25,32 @@ import { NavLink } from 'react-router-dom';
 import { handleAgencySearch } from '../data';
 import { cspConfigForSearch } from '../utilities';
 import ResetButton from '../components/ResetButton';
+import { Pagination } from '@exzeo/core-ui/src/@Harmony';
 
 const { isValidChar, isRequired } = validation;
 
 const AgencySearch = ({ history, userProfile }) => {
-  const [searchResults, setSearchResults] = useState([]);
+  const [searchState, setSearchState] = useState({
+    agencies: [],
+    currentPage: 1
+  });
+  const [loading, setLoading] = useState(false);
 
   const handleSearchSubmit = async data => {
-    const { results } = await handleAgencySearch(data);
-    setSearchResults(results);
+    setLoading(true);
+    const { agencies, currentPage, totalPages } = await handleAgencySearch(
+      data
+    );
+    setSearchState({ agencies, currentPage, totalPages });
+    setLoading(false);
+  };
+
+  const handlePagination = values => async page => {
+    await handleSearchSubmit({ ...values, page });
   };
 
   const resetFormResults = form => {
-    setSearchResults([]);
+    setSearchState({ agencies: [], currentPage: 1 });
     form.reset();
   };
 
@@ -52,9 +67,9 @@ const AgencySearch = ({ history, userProfile }) => {
       subscription={{ submitting: true, values: true }}
       onSubmit={handleSearchSubmit}
     >
-      {({ form, submitting, handleSubmit, values: { state } }) => (
+      {({ submitting, form, handleSubmit, values: { state } }) => (
         <>
-          {submitting && <Loader />}
+          {loading && <Loader />}
           <div className="search">
             <div id="SearchBar">
               <SearchTypeWatcher history={history} />
@@ -70,6 +85,16 @@ const AgencySearch = ({ history, userProfile }) => {
                         id="searchType"
                         validate={isRequired}
                         answers={AGENCY_SEARCH_OPTIONS}
+                        showPlaceholder={false}
+                        errorHint
+                      />
+                      <Field
+                        name="sort"
+                        dataTest="sort"
+                        label="Sort By"
+                        component={Select}
+                        id="sort"
+                        answers={AGENCY_SORT}
                         showPlaceholder={false}
                         errorHint
                       />
@@ -175,13 +200,34 @@ const AgencySearch = ({ history, userProfile }) => {
                       className={Button.constants.classNames.success}
                       customClass="multi-input"
                       type="submit"
-                      disabled={submitting}
+                      disabled={submitting || loading}
                       dataTest="submit"
                     >
                       <i className="fa fa-search" />
                       Search
                     </Button>
                   </div>
+                  {searchState.agencies.length > 0 &&
+                    searchState.totalPages > 1 && (
+                      <FormSpy subscription={{ values: true }}>
+                        {({ values }) => (
+                          <Pagination
+                            pageUp={() =>
+                              handlePagination(values)(
+                                searchState.currentPage + 1
+                              )
+                            }
+                            pageDown={() =>
+                              handlePagination(values)(
+                                searchState.currentPage - 1
+                              )
+                            }
+                            pageNumber={searchState.currentPage}
+                            totalPages={searchState.totalPages}
+                          />
+                        )}
+                      </FormSpy>
+                    )}
                 </div>
               </form>
             </div>
@@ -194,10 +240,10 @@ const AgencySearch = ({ history, userProfile }) => {
                     <div className="survey-wrapper scroll">
                       <div className="results-wrapper">
                         <React.Fragment>
-                          {Array.isArray(searchResults) &&
-                            searchResults.length > 0 && (
+                          {Array.isArray(searchState.agencies) &&
+                            searchState.agencies.length > 0 && (
                               <div className="user-list agency-list">
-                                {searchResults.map(agency => (
+                                {searchState.agencies.map(agency => (
                                   <AgencyCard
                                     key={agency.agencyCode}
                                     agency={agency}

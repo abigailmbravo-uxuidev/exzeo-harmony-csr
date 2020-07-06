@@ -191,20 +191,6 @@ export function formatAgentResults(results) {
 /**
  *
  * @param results
- * @returns {{sortDirection: string, totalRecords: number, noResults: boolean, pageSize: number, sortBy: string, currentPage: number, results: Array}}
- */
-export function formatAgencyResults(results) {
-  const totalRecords = Array.isArray(results) ? results.length : 0;
-  return formatSearchResults({
-    results,
-    totalRecords,
-    noResults: !totalRecords
-  });
-}
-
-/**
- *
- * @param results
  */
 export function formatDiaryResults(results) {
   const sortedResults = sortDiariesByDate(results.result);

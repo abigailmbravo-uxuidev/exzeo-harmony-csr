@@ -279,11 +279,22 @@ export async function handleAgencySearch(data) {
       licenseNumber: data.licenseNumber,
       taxIdNumber: data.fein,
       primaryPhoneNumber: data.phone,
-      status: data.status
+      status: data.status,
+      sort: data.sort,
+      page: data.page
     };
 
-    const results = await fetchAgencies(searchQuery);
-    return formatAgencyResults(results);
+    const {
+      agencies,
+      currentPage,
+      totalNumberOfRecords,
+      pageSize
+    } = await fetchAgencies(searchQuery);
+    return {
+      agencies,
+      currentPage,
+      totalPages: Math.ceil(totalNumberOfRecords / pageSize) || 0
+    };
   } catch (error) {
     throw error;
   }
