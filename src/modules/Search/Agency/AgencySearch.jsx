@@ -21,10 +21,12 @@ import SearchTypeWatcher from '../components/SearchTypeWatcher';
 import AgencyCard from '../components/AgencyCard';
 import { NavLink } from 'react-router-dom';
 import { handleAgencySearch } from '../data';
+import { cspConfigForSearch } from '../utilities';
+import ResetButton from '../components/ResetButton';
 
 const { isValidChar, isRequired } = validation;
 
-const AgencySearch = ({ history }) => {
+const AgencySearch = ({ history, userProfile }) => {
   const [searchResults, setSearchResults] = useState([]);
 
   const handleSearchSubmit = async data => {
@@ -32,13 +34,25 @@ const AgencySearch = ({ history }) => {
     setSearchResults(results);
   };
 
+  const resetFormResults = form => {
+    setSearchResults([]);
+    form.reset();
+  };
+
+  const {
+    companyCodeOptions,
+    stateOptions,
+    productOptionMap,
+    productOptions
+  } = cspConfigForSearch(userProfile, 'Agency:Agencies:*');
+
   return (
     <Form
       initialValues={SEARCH_CONFIG[SEARCH_TYPES.agency].initialValues}
-      subscription={{ submitting: true }}
+      subscription={{ submitting: true, values: true }}
       onSubmit={handleSearchSubmit}
     >
-      {({ submitting, handleSubmit }) => (
+      {({ form, submitting, handleSubmit, values: { state } }) => (
         <>
           {submitting && <Loader />}
           <div className="search">
@@ -90,6 +104,39 @@ const AgencySearch = ({ history }) => {
                       validate={isValidChar}
                     />
                     <Field
+                      name="state"
+                      dataTest="state"
+                      label="State"
+                      component={Select}
+                      answers={stateOptions}
+                      showPlaceholder={true}
+                      placeholder={'All'}
+                      placeholderDisabled={false}
+                      styleName="state-search"
+                    />
+                    <Field
+                      name="companyCode"
+                      dataTest="company"
+                      label="Company"
+                      component={Select}
+                      answers={companyCodeOptions}
+                      showPlaceholder={true}
+                      placeholder={'All'}
+                      placeholderDisabled={false}
+                      styleName="company-search"
+                    />
+                    <Field
+                      name="product"
+                      dataTest="product"
+                      label="Product"
+                      component={Select}
+                      answers={productOptionMap[state] || productOptions}
+                      styleName="product-search"
+                      showPlaceholder={true}
+                      placeholder={'All'}
+                      placeholderDisabled={false}
+                    />
+                    <Field
                       name="licenseNumber"
                       dataTest="licenseNumber"
                       component={Input}
@@ -119,11 +166,11 @@ const AgencySearch = ({ history }) => {
                       label="Status"
                       component={Select}
                       id="status"
-                      validate={isRequired}
                       answers={AGENCY_STATUS}
                       showPlaceholder={true}
                       errorHint
                     />
+                    <ResetButton reset={() => resetFormResults(form)} />
                     <Button
                       className={Button.constants.classNames.success}
                       customClass="multi-input"

@@ -40,7 +40,7 @@ const Search = ({ createQuote, retrieveQuote, userProfile }) => {
       <Route
         exact
         path={`/agency`}
-        render={props => <AgencySearch {...props} />}
+        render={props => <AgencySearch {...props} userProfile={userProfile} />}
       />
       <Route
         exact

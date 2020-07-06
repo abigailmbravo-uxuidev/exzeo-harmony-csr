@@ -272,6 +272,7 @@ export async function handleAgencySearch(data) {
     const searchQuery = {
       companyCode: data.companyCode,
       state: data.state,
+      product: data.product,
       displayName: data.displayName,
       agencyCode: data.agencyCode,
       mailingAddress: String(data.address ?? '').trim(),
