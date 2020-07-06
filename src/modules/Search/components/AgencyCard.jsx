@@ -1,13 +1,16 @@
 import React from 'react';
 import { normalize } from '@exzeo/core-ui';
 
-import ContactAddress from '../../../components/ContactAddress';
 import { formatUrl } from '../../../utilities/format';
+
+import Address from './Address';
 
 function AgencyCard({ agency }) {
   const openAgency = () => {
     window.open(`/agency/${agency.agencyCode}/0/overview`, '_blank');
   };
+
+  const companies = new Set(agency.contracts.map(c => c.companyCode));
 
   return (
     <div
@@ -40,15 +43,22 @@ function AgencyCard({ agency }) {
               <span className="agency-code">{agency.agencyCode}</span> |{' '}
               <span className="agency-display-name">{agency.displayName}</span>{' '}
               | <span className="agency-legal-name">{agency.legalName}</span> |{' '}
-              <span className="agency-license">
-                {agency.licenses.map(l => l.licenseNumber).join()}
-              </span>
             </h4>
 
-            <ContactAddress
-              mailingAddress={agency.mailingAddress}
-              status={agency.status}
-            >
+            <div className="contact-address">
+              <Address address={agency.mailingAddress} label="Mailing:" />
+              <Address address={agency.physicalAddress} label="Physical:" />
+              {agency.status && (
+                <span className="additional-data status">
+                  <label>STATUS:&nbsp;</label>
+                  {agency.status}
+                </span>
+              )}
+
+              <span className="additional-data status">
+                <strong>Company:&nbsp;</strong>
+                {Array.from(companies).join(',')}
+              </span>
               {agency.websiteUrl && (
                 <span className="additional-data website">
                   <label>WEBSITE:&nbsp;</label>
@@ -61,7 +71,7 @@ function AgencyCard({ agency }) {
                   </a>
                 </span>
               )}
-            </ContactAddress>
+            </div>
 
             <div className="additional-contacts">
               <ul>
