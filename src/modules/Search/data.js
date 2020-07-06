@@ -277,7 +277,8 @@ export async function handleAgencySearch(data) {
       mailingAddress: String(data.address ?? '').trim(),
       licenseNumber: data.licenseNumber,
       taxIdNumber: data.fein,
-      primaryPhoneNumber: data.phone
+      primaryPhoneNumber: data.phone,
+      status: data.status
     };
 
     const results = await fetchAgencies(searchQuery);

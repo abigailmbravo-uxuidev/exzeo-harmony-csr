@@ -13,7 +13,8 @@ import {
 import {
   SEARCH_CONFIG,
   AGENCY_SEARCH_OPTIONS,
-  SEARCH_TYPES
+  SEARCH_TYPES,
+  AGENCY_STATUS
 } from '../../../constants/search';
 import Loader from '@exzeo/core-ui/src/Loader/Loader';
 import SearchTypeWatcher from '../components/SearchTypeWatcher';
@@ -111,6 +112,17 @@ const AgencySearch = ({ history }) => {
                       placeholder="Phone No Search"
                       label="Agency Phone Number"
                       styleName="agency-phone-search"
+                    />
+                    <Field
+                      name="status"
+                      dataTest="status"
+                      label="Status"
+                      component={Select}
+                      id="status"
+                      validate={isRequired}
+                      answers={AGENCY_STATUS}
+                      showPlaceholder={true}
+                      errorHint
                     />
                     <Button
                       className={Button.constants.classNames.success}

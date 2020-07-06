@@ -69,6 +69,13 @@ export const AGENCY_SEARCH_OPTIONS = [
   }
 ];
 
+export const AGENCY_STATUS = [
+  { answer: 'Active', label: 'Active' },
+  { answer: 'Service Only', label: 'Service Only' },
+  { answer: 'Pending', label: 'Pending' },
+  { answer: 'Terminated', label: 'Terminated' }
+];
+
 export const SEARCH_CONFIG = {
   [SEARCH_TYPES.newQuote]: {
     initialValues: ADDRESS_INITIAL_VALUES,
