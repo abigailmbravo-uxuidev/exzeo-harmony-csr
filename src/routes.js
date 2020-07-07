@@ -27,7 +27,6 @@ import { QuoteLanding, QuoteWorkflow } from './modules/Quote';
 import { PolicyWorkflow } from './modules/Policy';
 import Finance from './modules/Finance';
 import BulkMortgage from './modules/BulkMortgage';
-import { BULK_MORTGAGE_TYPE } from './modules/BulkMortgage/constants';
 
 class Routes extends Component {
   setBackStep = (goToNext, callback) => {
