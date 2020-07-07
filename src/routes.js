@@ -204,18 +204,6 @@ class Routes extends Component {
               />
               <Route
                 exact
-                path="/bulkMortgage/byJob"
-                render={props => (
-                  <BulkMortgage
-                    tab={BULK_MORTGAGE_TYPE.job}
-                    errorHandler={errorActions.setAppError}
-                    auth={auth}
-                    {...props}
-                  />
-                )}
-              />
-              <Route
-                exact
                 path="/login"
                 render={props => <LoginPage auth={auth} {...props} />}
               />
