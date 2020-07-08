@@ -144,6 +144,9 @@ export const defaultPolicyWorkflowProps = {
   initialized: true,
   zipCodeSettings: {
     timezone: 'America/New_York'
+  },
+  userProfile: {
+    resources: []
   }
 };
 

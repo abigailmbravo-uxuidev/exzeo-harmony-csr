@@ -44,7 +44,12 @@ const Header = ({ handleLogout, authState: { userProfile = {} }, diaries }) => {
     const entry = diary.entries[0];
     return (isPastDue(entry.due) || isToday(entry.due)) && entry.open;
   });
-  const { enableBulkMortgage } = userResources(userProfile);
+
+  const { enableBulkMortgage } = userResources(
+    userProfile,
+    'INSERT',
+    'BulkMortgage:MortgageeJobs:*'
+  );
 
   return (
     <header>

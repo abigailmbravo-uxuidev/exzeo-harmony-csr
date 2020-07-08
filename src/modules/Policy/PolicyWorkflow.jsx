@@ -88,6 +88,8 @@ export class PolicyWorkflow extends React.Component {
   };
 
   formInstance = null;
+  customHandlers = {};
+  modalHandlers = {};
 
   customComponents = {
     $BILLING: Billing,
@@ -243,7 +245,13 @@ export class PolicyWorkflow extends React.Component {
       cancelOptions,
       effectiveDateReasons,
       endorsementHistory,
-      summaryLedger
+      summaryLedger,
+      setAppError,
+      toggleDiary,
+      getPolicy,
+      transferAOR,
+      updateBillPlan,
+      userProfile
     } = this.props;
 
     const {
@@ -254,12 +262,6 @@ export class PolicyWorkflow extends React.Component {
       showEffectiveDateChangeModal
     } = this.state;
 
-    const modalHandlers = {
-      showEffectiveDateChangeModal: this.toggleEffectiveDateChangeModal,
-      showReinstatePolicyModal: this.handleToggleReinstateModal,
-      showRescindCancelModal: this.handleToggleRescindCancelModal
-    };
-
     const { currentRouteName, currentStepNumber } = getCurrentStepAndPage(
       location.pathname
     );
@@ -267,19 +269,23 @@ export class PolicyWorkflow extends React.Component {
       gandalfTemplate &&
       ROUTES_NOT_HANDLED_BY_GANDALF.indexOf(currentRouteName) === -1;
     const transformConfig = this.getConfigForJsonTransform(gandalfTemplate);
+
+    // This is how to replicate 'useRef' in a Class component - sets us up for refactoring this component to functional component
+    this.modalHandlers.showEffectiveDateChangeModal = this.toggleEffectiveDateChangeModal;
+    this.modalHandlers.showReinstatePolicyModal = this.handleToggleReinstateModal;
+    this.modalHandlers.showRescindCancelModal = this.handleToggleRescindCancelModal;
     // TODO going to use Context to pass these directly to custom components,
     //  so Gandalf does not need to know about these.
-    const customHandlers = {
-      editingDisabled: policy.editingDisabled,
-      handleSubmit: this.handleGandalfSubmit,
-      history: history,
-      notesSynced: notesSynced,
-      setAppError: this.props.setAppError,
-      toggleDiary: this.props.toggleDiary,
-      getPolicy: this.props.getPolicy,
-      transferAOR: this.props.transferAOR,
-      updateBillPlan: this.props.updateBillPlan
-    };
+    this.customHandlers.editingDisabled = policy.editingDisabled;
+    this.customHandlers.handleSubmit = this.handleGandalfSubmit;
+    this.customHandlers.history = history;
+    this.customHandlers.notesSynced = notesSynced;
+    this.customHandlers.setAppError = setAppError;
+    this.customHandlers.toggleDiary = toggleDiary;
+    this.customHandlers.getPolicy = getPolicy;
+    this.customHandlers.transferAOR = transferAOR;
+    this.customHandlers.updateBillPlan = updateBillPlan;
+    this.customHandlers.userProfile = userProfile;
 
     return (
       <div className="app-wrapper csr policy">
@@ -295,7 +301,7 @@ export class PolicyWorkflow extends React.Component {
             match={match}
             onToggleDiaries={this.handleToggleDiaries}
             showDiaries={showDiaries}
-            modalHandlers={modalHandlers}
+            modalHandlers={this.modalHandlers}
           >
             <React.Fragment>
               {initialized && (
@@ -306,7 +312,7 @@ export class PolicyWorkflow extends React.Component {
                         formId={FORM_ID}
                         currentPage={currentStepNumber}
                         customComponents={this.customComponents}
-                        customHandlers={customHandlers}
+                        customHandlers={this.customHandlers}
                         handleSubmit={this.handleGandalfSubmit}
                         initialValues={policyFormData}
                         options={{
@@ -331,8 +337,8 @@ export class PolicyWorkflow extends React.Component {
                           {({ form, pristine, submitting }) => (
                             <div className="form-footer">
                               <PolicyFooter
-                                history={customHandlers.history}
-                                setAppError={customHandlers.setAppError}
+                                history={history}
+                                setAppError={setAppError}
                                 policyFormData={policyFormData}
                                 timezone={zipCodeSettings.timezone}
                                 currentStep={currentRouteName}
