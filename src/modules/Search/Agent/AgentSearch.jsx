@@ -132,7 +132,10 @@ const AgentSearch = ({ history }) => {
                         <React.Fragment>
                           {Array.isArray(searchResults) &&
                             searchResults.length > 0 && (
-                              <div className="user-list agent-list">
+                              <div
+                                className="user-list agent-list"
+                                data-test="agent-list"
+                              >
                                 {searchResults.map(agent => (
                                   <AgentCard key={agent._id} agent={agent} />
                                 ))}
