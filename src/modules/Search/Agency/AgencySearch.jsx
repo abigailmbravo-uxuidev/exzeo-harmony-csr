@@ -191,6 +191,7 @@ const AgencySearch = ({ history, userProfile }) => {
                       label="Status"
                       component={Select}
                       id="status"
+                      styleName="agency-status-wrapper"
                       answers={AGENCY_STATUS}
                       showPlaceholder={true}
                       errorHint
