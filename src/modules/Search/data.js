@@ -7,7 +7,6 @@ import {
   buildAssigneesList,
   buildQuerystring,
   formatAddressResults,
-  formatAgencyResults,
   formatAgentResults,
   formatDiaryResults,
   formatPolicyResults,
