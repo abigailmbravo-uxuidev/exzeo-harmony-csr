@@ -8,7 +8,8 @@ import {
   emptyObject,
   emptyArray,
   Field,
-  Form
+  Form,
+  noop
 } from '@exzeo/core-ui';
 
 import ResetButton from '../components/ResetButton';
@@ -24,11 +25,13 @@ import {
   handleDiaryKeyPress
 } from '../../../utilities/handleNewTab';
 import DiaryList from '../components/DiaryList';
+import TransferButton from './TransferButton';
 
 export const DiariesSearch = ({ userProfile }) => {
   const [searchResults, setSearchResults] = useState({ results: [] });
   const [searchAssignees, setSearchAssignees] = useState(undefined);
   const [loading, setLoading] = useState(false);
+  const [transfer, setTransfer] = useState(false);
   const { tags, reasons } = useFetchDiaryOptions();
   const { assigneeAnswers } = useFetchAssigneeAnswers(userProfile);
 
@@ -156,6 +159,9 @@ export const DiariesSearch = ({ userProfile }) => {
                       <span className="count-results">
                         <strong>{searchResults.totalRecords}</strong>RESULTS
                       </span>
+                      <TransferButton
+                        toggleTransfer={() => setTransfer(!transfer)}
+                      />
                       <ResetButton reset={() => resetFormResults(form)} />
                       <Button
                         className={Button.constants.classNames.success}
@@ -168,6 +174,9 @@ export const DiariesSearch = ({ userProfile }) => {
                         Search
                       </Button>
                     </div>
+                    {transfer && (
+                      <div className="search-input-row">Transfer Area</div>
+                    )}
                   </div>
                 </div>
               </form>
