@@ -27,19 +27,23 @@ import DiaryList from '../components/DiaryList';
 
 export const DiariesSearch = ({ userProfile }) => {
   const [searchResults, setSearchResults] = useState({ results: [] });
+  const [searchAssignees, setSearchAssignees] = useState(undefined);
   const [loading, setLoading] = useState(false);
   const { tags, reasons } = useFetchDiaryOptions();
   const { assigneeAnswers } = useFetchAssigneeAnswers(userProfile);
 
   const diaryInitialValues = {
     ...SEARCH_CONFIG[SEARCH_TYPES.diaries].initialValues,
-    assignees: [
-      {
-        answer: userProfile?.userId,
-        label: `${userProfile?.profile.given_name} ${userProfile?.profile?.family_name}`,
-        type: 'user'
-      }
-    ]
+    assignees:
+      searchAssignees !== undefined
+        ? searchAssignees
+        : [
+            {
+              answer: userProfile?.userId,
+              label: `${userProfile?.profile.given_name} ${userProfile?.profile?.family_name}`,
+              type: 'user'
+            }
+          ]
   };
 
   // submit search when answers and options are loaded
@@ -57,11 +61,13 @@ export const DiariesSearch = ({ userProfile }) => {
 
   const resetFormResults = form => {
     setSearchResults({ results: [] });
+    setSearchAssignees(undefined);
     form.reset();
   };
 
   const handleDiariesSearchSubmit = async data => {
     setLoading(true);
+    setSearchAssignees(data.assignees || emptyArray);
     const results = await handleDiariesSearch(data);
     setSearchResults(results);
     setLoading(false);
