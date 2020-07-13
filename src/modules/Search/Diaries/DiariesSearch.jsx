@@ -8,7 +8,8 @@ import {
   emptyObject,
   emptyArray,
   Field,
-  Form
+  Form,
+  noop
 } from '@exzeo/core-ui';
 
 import ResetButton from '../components/ResetButton';
@@ -24,6 +25,7 @@ import {
   handleDiaryKeyPress
 } from '../../../utilities/handleNewTab';
 import DiaryList from '../components/DiaryList';
+import NoResults from '../components/NoResults';
 
 export const DiariesSearch = ({ userProfile }) => {
   const [searchResults, setSearchResults] = useState({ results: [] });
@@ -154,7 +156,8 @@ export const DiariesSearch = ({ userProfile }) => {
                         </div>
                       </div>
                       <span className="count-results">
-                        <strong>{searchResults.totalRecords}</strong>RESULTS
+                        <strong>{searchResults.totalRecords || '-'}</strong>
+                        RESULTS
                       </span>
                       <ResetButton reset={() => resetFormResults(form)} />
                       <Button
@@ -180,7 +183,12 @@ export const DiariesSearch = ({ userProfile }) => {
                   <div className="search route-content">
                     <div className="survey-wrapper scroll">
                       <div className="results-wrapper">
-                        <div className="quote-list">
+                        {searchResults.totalRecords === 0 ? (
+                          <NoResults
+                            searchType={SEARCH_TYPES.newQuote}
+                            error={noop}
+                          />
+                        ) : (
                           <DiaryList
                             product={product}
                             handleKeyPress={handleDiaryKeyPress}
@@ -191,7 +199,7 @@ export const DiariesSearch = ({ userProfile }) => {
                             )}
                             diaryReasons={reasons}
                           />
-                        </div>
+                        )}
                       </div>
                     </div>
                   </div>

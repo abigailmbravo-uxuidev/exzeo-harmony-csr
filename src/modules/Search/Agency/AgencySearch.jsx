@@ -9,7 +9,8 @@ import {
   Button,
   validation,
   Form,
-  FormSpy
+  FormSpy,
+  noop
 } from '@exzeo/core-ui';
 import {
   SEARCH_CONFIG,
@@ -26,6 +27,7 @@ import { handleAgencySearch } from '../data';
 import { cspConfigForSearch } from '../utilities';
 import ResetButton from '../components/ResetButton';
 import { Pagination } from '@exzeo/core-ui/src/@Harmony';
+import NoResults from '../components/NoResults';
 
 const { isValidChar, isRequired } = validation;
 
@@ -38,10 +40,13 @@ const AgencySearch = ({ history, userProfile }) => {
 
   const handleSearchSubmit = async data => {
     setLoading(true);
-    const { agencies, currentPage, totalPages } = await handleAgencySearch(
-      data
-    );
-    setSearchState({ agencies, currentPage, totalPages });
+    const {
+      agencies,
+      currentPage,
+      totalPages,
+      totalRecords
+    } = await handleAgencySearch(data);
+    setSearchState({ agencies, currentPage, totalPages, totalRecords });
     setLoading(false);
   };
 
@@ -241,6 +246,12 @@ const AgencySearch = ({ history, userProfile }) => {
                     <div className="survey-wrapper scroll">
                       <div className="results-wrapper">
                         <React.Fragment>
+                          {searchState.totalRecords === 0 && (
+                            <NoResults
+                              searchType={SEARCH_TYPES.agency}
+                              error={noop}
+                            />
+                          )}
                           {Array.isArray(searchState.agencies) &&
                             searchState.agencies.length > 0 && (
                               <div className="user-list agency-list">

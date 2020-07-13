@@ -222,10 +222,10 @@ class Routes extends Component {
                 path="/"
                 render={props => (
                   <SearchBase
+                    {...props}
                     userProfile={userProfile}
                     errorHandler={errorActions.setAppError}
-                    auth={auth}
-                    {...props}
+                    handleLogout={auth.logout}
                   />
                 )}
               />

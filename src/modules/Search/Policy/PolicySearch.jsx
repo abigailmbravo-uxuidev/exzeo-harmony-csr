@@ -319,24 +319,24 @@ const PolicySearch = ({ userProfile, history }) => {
                   <div className="search route-content">
                     <div className="survey-wrapper scroll">
                       <div className="results-wrapper">
-                        <div className="quote-list">
-                          {searchState.status === 'resolved' &&
-                            (searchState.totalRecords === 0 ? (
-                              <NoResults
-                                searchType={SEARCH_TYPES.newQuote}
-                                error={noop}
-                              />
-                            ) : (
-                              <ul className="policy-list">
-                                {searchState.results.map(policy => (
-                                  <PolicyCard
-                                    key={policy.policyID}
-                                    policy={policy}
-                                  />
-                                ))}
-                              </ul>
-                            ))}
-                        </div>
+                        {['resolved', 'rejected'].includes(
+                          searchState.status
+                        ) &&
+                          (searchState.totalRecords === 0 ? (
+                            <NoResults
+                              searchType={SEARCH_TYPES.newQuote}
+                              error={noop}
+                            />
+                          ) : (
+                            <ul className="policy-list">
+                              {searchState.results.map(policy => (
+                                <PolicyCard
+                                  key={policy.policyID}
+                                  policy={policy}
+                                />
+                              ))}
+                            </ul>
+                          ))}
                       </div>
                     </div>
                   </div>
