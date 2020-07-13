@@ -25,6 +25,7 @@ import {
   handleDiaryKeyPress
 } from '../../../utilities/handleNewTab';
 import DiaryList from '../components/DiaryList';
+import NoResults from '../components/NoResults';
 import TransferButton from './TransferButton';
 
 export const DiariesSearch = ({ userProfile }) => {
@@ -157,7 +158,8 @@ export const DiariesSearch = ({ userProfile }) => {
                         </div>
                       </div>
                       <span className="count-results">
-                        <strong>{searchResults.totalRecords}</strong>RESULTS
+                        <strong>{searchResults.totalRecords || '-'}</strong>
+                        RESULTS
                       </span>
                       <TransferButton
                         toggleTransfer={() => setTransfer(!transfer)}
@@ -189,7 +191,12 @@ export const DiariesSearch = ({ userProfile }) => {
                   <div className="search route-content">
                     <div className="survey-wrapper scroll">
                       <div className="results-wrapper">
-                        <div className="quote-list">
+                        {searchResults.totalRecords === 0 ? (
+                          <NoResults
+                            searchType={SEARCH_TYPES.newQuote}
+                            error={noop}
+                          />
+                        ) : (
                           <DiaryList
                             product={product}
                             handleKeyPress={handleDiaryKeyPress}
@@ -200,7 +207,7 @@ export const DiariesSearch = ({ userProfile }) => {
                             )}
                             diaryReasons={reasons}
                           />
-                        </div>
+                        )}
                       </div>
                     </div>
                   </div>

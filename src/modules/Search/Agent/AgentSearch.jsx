@@ -7,7 +7,8 @@ import {
   Field,
   Button,
   validation,
-  Form
+  Form,
+  noop
 } from '@exzeo/core-ui';
 import {
   SEARCH_CONFIG,
@@ -19,15 +20,18 @@ import SearchTypeWatcher from '../components/SearchTypeWatcher';
 import { handleAgentSearch } from '../data';
 import { isAlphaNumeric } from '@exzeo/core-ui/src/Utilities';
 import AgentCard from '../components/AgentCard';
+import NoResults from '../components/NoResults';
 
 const { isValidChar, isRequired } = validation;
 
 const AgentSearch = ({ history }) => {
   const [searchResults, setSearchResults] = useState([]);
+  const [hasSearched, setHasSearched] = useState(false);
 
   const handleSearchSubmit = async data => {
     const { results } = await handleAgentSearch(data);
     setSearchResults(results);
+    setHasSearched(true);
   };
   return (
     <Form
@@ -130,6 +134,12 @@ const AgentSearch = ({ history }) => {
                     <div className="survey-wrapper scroll">
                       <div className="results-wrapper">
                         <React.Fragment>
+                          {hasSearched && searchResults.length === 0 && (
+                            <NoResults
+                              searchType={SEARCH_TYPES.agency}
+                              error={noop}
+                            />
+                          )}
                           {Array.isArray(searchResults) &&
                             searchResults.length > 0 && (
                               <div

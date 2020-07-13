@@ -150,26 +150,24 @@ const NewQuoteSearch = ({ userProfile, history }) => {
                   <div className="search route-content">
                     <div className="survey-wrapper scroll">
                       <div className="results-wrapper">
-                        <div className="quote-list">
-                          {searchState.hasSearched &&
-                            (searchState.noResults ? (
-                              <NoResults
-                                searchType={SEARCH_TYPES.newQuote}
-                                error={noop}
+                        {searchState.hasSearched &&
+                          (searchState.noResults ? (
+                            <NoResults
+                              searchType={SEARCH_TYPES.newQuote}
+                              error={noop}
+                            />
+                          ) : (
+                            searchState.results.map(address => (
+                              <AddressCard
+                                key={address.id}
+                                address={address}
+                                companyCode={companyCode}
+                                state={state}
+                                product={product}
                               />
-                            ) : (
-                              searchState.results.map(address => (
-                                <AddressCard
-                                  key={address.id}
-                                  address={address}
-                                  companyCode={companyCode}
-                                  state={state}
-                                  product={product}
-                                />
-                              ))
-                            ))}
-                          {searchState.hasSearched && <AddressTip />}
-                        </div>
+                            ))
+                          ))}
+                        {searchState.hasSearched && <AddressTip />}
                       </div>
                     </div>
                   </div>

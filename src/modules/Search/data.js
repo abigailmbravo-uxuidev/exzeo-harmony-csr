@@ -292,7 +292,8 @@ export async function handleAgencySearch(data) {
     return {
       agencies,
       currentPage,
-      totalPages: Math.ceil(totalNumberOfRecords / pageSize) || 0
+      totalPages: Math.ceil(totalNumberOfRecords / pageSize) || 0,
+      totalRecords: totalNumberOfRecords
     };
   } catch (error) {
     throw error;

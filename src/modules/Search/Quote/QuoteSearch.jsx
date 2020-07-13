@@ -256,25 +256,24 @@ const QuoteSearch = ({ changeSearchType, userProfile, history }) => {
                   <div className="search route-content">
                     <div className="survey-wrapper scroll">
                       <div className="results-wrapper">
-                        <div className="quote-list">
-                          {searchState.status === 'resolved' &&
-                            (searchState.totalRecords === 0 ? (
-                              <NoResults
-                                searchType={SEARCH_TYPES.newQuote}
-                                error={noop}
+                        {['resolved', 'rejected'].includes(
+                          searchState.status
+                        ) && searchState.totalRecords === 0 ? (
+                          <NoResults
+                            searchType={SEARCH_TYPES.newQuote}
+                            error={noop}
+                          />
+                        ) : (
+                          <ul className="quote-list">
+                            {searchState.results.map(quote => (
+                              <QuoteCard
+                                key={quote._id}
+                                quote={quote}
+                                handleClick={() => handleSelectQuote(quote)}
                               />
-                            ) : (
-                              <ul className="policy-list">
-                                {searchState.results.map(quote => (
-                                  <QuoteCard
-                                    key={quote._id}
-                                    quote={quote}
-                                    handleClick={() => handleSelectQuote(quote)}
-                                  />
-                                ))}
-                              </ul>
                             ))}
-                        </div>
+                          </ul>
+                        )}
                       </div>
                     </div>
                   </div>
