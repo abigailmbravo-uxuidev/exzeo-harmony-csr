@@ -6,9 +6,39 @@
     display: flex;
 
     margin-top: -2px;
-    padding: 0 1rem;
+    padding: 0.5rem 1rem 0;
 
     background: $warm-gray-10;
+
+    .transferSelect {
+      display: flex;
+      align-items: center;
+      flex-grow: 0;
+      flex-shrink: 0;
+      justify-content: center;
+
+      width: 3rem;
+      margin-right: 0.5rem;
+
+      input[type='checkbox'] {
+        margin: 0;
+      }
+
+      label {
+        margin-top: 0.5rem;
+
+        text-align: center;
+        text-transform: uppercase;
+
+        color: $bright-blue-lighten-01;
+
+        font-size: $font-size-xs;
+        line-height: 1;
+      }
+    }
+
+    .transferTo {
+    }
   }
   .search {
     .results-wrapper {

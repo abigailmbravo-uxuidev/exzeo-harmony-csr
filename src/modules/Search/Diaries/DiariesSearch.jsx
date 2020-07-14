@@ -208,8 +208,7 @@ export const DiariesSearch = ({ userProfile }) => {
                         <DiariesTransferWatcher
                           diaries={searchResults.results}
                         />
-                        <div className="form-group transferTo">
-                          <label htmlFor="selectAll">Select All</label>
+                        <div className="form-group transferSelect">
                           <Field
                             name="selectAll"
                             dataTest="selectAll"
@@ -217,6 +216,7 @@ export const DiariesSearch = ({ userProfile }) => {
                             component="input"
                             type="checkbox"
                           />
+                          <label htmlFor="selectAll">Select All</label>
                         </div>
                         <div className="form-group transferTo">
                           <Field
