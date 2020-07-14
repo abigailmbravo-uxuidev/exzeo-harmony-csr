@@ -29,6 +29,7 @@ import Loader from '@exzeo/core-ui/src/Loader/Loader';
 import NoResults from '../components/NoResults';
 import { usePolicySearch } from '@exzeo/core-ui/src/@Harmony/Search';
 import PolicyCard from '../components/PolicyCard';
+import SearchResultsWrapper from '../components/SearchResultsWrapper';
 
 const {
   isValidNameFormat,
@@ -312,38 +313,18 @@ const PolicySearch = ({ userProfile, history }) => {
               </form>
             </div>
           </div>
-          <main role="document">
-            <div className="content-wrapper">
-              <div className="dashboard" role="article">
-                <div className="route">
-                  <div className="search route-content">
-                    <div className="survey-wrapper scroll">
-                      <div className="results-wrapper">
-                        {['resolved', 'rejected'].includes(
-                          searchState.status
-                        ) &&
-                          (searchState.totalRecords === 0 ? (
-                            <NoResults
-                              searchType={SEARCH_TYPES.newQuote}
-                              error={noop}
-                            />
-                          ) : (
-                            <ul className="policy-list">
-                              {searchState.results.map(policy => (
-                                <PolicyCard
-                                  key={policy.policyID}
-                                  policy={policy}
-                                />
-                              ))}
-                            </ul>
-                          ))}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </main>
+          <SearchResultsWrapper>
+            {['resolved', 'rejected'].includes(searchState.status) &&
+              (searchState.totalRecords === 0 ? (
+                <NoResults searchType={SEARCH_TYPES.newQuote} error={noop} />
+              ) : (
+                <ul className="policy-list">
+                  {searchState.results.map(policy => (
+                    <PolicyCard key={policy.policyID} policy={policy} />
+                  ))}
+                </ul>
+              ))}
+          </SearchResultsWrapper>
         </>
       )}
     </Form>

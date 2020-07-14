@@ -25,6 +25,7 @@ import {
 import NoResults from '../components/NoResults';
 import SearchTypeWatcher from '../components/SearchTypeWatcher';
 import { productAnswers } from '../constants';
+import SearchResultsWrapper from '../components/SearchResultsWrapper';
 
 const { isValidChar, isRequired } = validation;
 
@@ -143,38 +144,25 @@ const NewQuoteSearch = ({ userProfile, history }) => {
               </form>
             </div>
           </div>
-          <main role="document">
-            <div className="content-wrapper">
-              <div className="dashboard" role="article">
-                <div className="route">
-                  <div className="search route-content">
-                    <div className="survey-wrapper scroll">
-                      <div className="results-wrapper">
-                        {searchState.hasSearched &&
-                          (searchState.noResults ? (
-                            <NoResults
-                              searchType={SEARCH_TYPES.newQuote}
-                              error={noop}
-                            />
-                          ) : (
-                            searchState.results.map(address => (
-                              <AddressCard
-                                key={address.id}
-                                address={address}
-                                companyCode={companyCode}
-                                state={state}
-                                product={product}
-                              />
-                            ))
-                          ))}
-                        {searchState.hasSearched && <AddressTip />}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
+          <SearchResultsWrapper>
+            <div class="quote-list">
+              {searchState.hasSearched &&
+                (searchState.noResults ? (
+                  <NoResults searchType={SEARCH_TYPES.newQuote} error={noop} />
+                ) : (
+                  searchState.results.map(address => (
+                    <AddressCard
+                      key={address.id}
+                      address={address}
+                      companyCode={companyCode}
+                      state={state}
+                      product={product}
+                    />
+                  ))
+                ))}
+              {searchState.hasSearched && <AddressTip />}
             </div>
-          </main>
+          </SearchResultsWrapper>
         </>
       )}
     </Form>

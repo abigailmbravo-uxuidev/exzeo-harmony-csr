@@ -27,6 +27,7 @@ import NoResults from '../components/NoResults';
 import QuoteCard from '../components/QuoteCard';
 import { useQuoteSearch } from '@exzeo/core-ui/src/@Harmony/Search';
 import { Pagination } from '@exzeo/core-ui/src/@Harmony';
+import SearchResultsWrapper from '../components/SearchResultsWrapper';
 
 const {
   isValidNameFormat,
@@ -249,38 +250,22 @@ const QuoteSearch = ({ changeSearchType, userProfile, history }) => {
               </form>
             </div>
           </div>
-          <main role="document">
-            <div className="content-wrapper">
-              <div className="dashboard" role="article">
-                <div className="route">
-                  <div className="search route-content">
-                    <div className="survey-wrapper scroll">
-                      <div className="results-wrapper">
-                        {['resolved', 'rejected'].includes(
-                          searchState.status
-                        ) && searchState.totalRecords === 0 ? (
-                          <NoResults
-                            searchType={SEARCH_TYPES.newQuote}
-                            error={noop}
-                          />
-                        ) : (
-                          <ul className="quote-list">
-                            {searchState.results.map(quote => (
-                              <QuoteCard
-                                key={quote._id}
-                                quote={quote}
-                                handleClick={() => handleSelectQuote(quote)}
-                              />
-                            ))}
-                          </ul>
-                        )}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </main>
+          <SearchResultsWrapper>
+            {['resolved', 'rejected'].includes(searchState.status) &&
+            searchState.totalRecords === 0 ? (
+              <NoResults searchType={SEARCH_TYPES.newQuote} error={noop} />
+            ) : (
+              <ul className="quote-list">
+                {searchState.results.map(quote => (
+                  <QuoteCard
+                    key={quote._id}
+                    quote={quote}
+                    handleClick={() => handleSelectQuote(quote)}
+                  />
+                ))}
+              </ul>
+            )}
+          </SearchResultsWrapper>
         </>
       )}
     </Form>
