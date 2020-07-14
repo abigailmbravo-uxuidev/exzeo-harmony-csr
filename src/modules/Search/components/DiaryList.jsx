@@ -47,7 +47,7 @@ const DiaryList = ({
         return (
           <>
             {transfer && (
-              <div className="transfer_checkbox_wrapper">
+              <div className="transfer_checkbox_wrapper fade-in">
                 <Field
                   name={`diaries.${_id}`}
                   dataTest={_id}

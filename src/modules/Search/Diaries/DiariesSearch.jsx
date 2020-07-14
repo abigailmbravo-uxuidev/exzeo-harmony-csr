@@ -204,7 +204,7 @@ export const DiariesSearch = ({ userProfile }) => {
                 <form onSubmit={handleSubmit}>
                   <>
                     {transfer && (
-                      <div className="search-input-row">
+                      <div className="search-input-row fade-in">
                         <DiariesTransferWatcher
                           diaries={searchResults.results}
                         />
