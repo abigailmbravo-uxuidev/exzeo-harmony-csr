@@ -218,41 +218,43 @@ export const DiariesSearch = ({ userProfile }) => {
                           />
                           <label htmlFor="selectAll">Select All</label>
                         </div>
-                        <div className="form-group transferTo">
-                          <Field
-                            name="transferTo"
-                            dataTest="transferTo"
-                            styleName="transferTo"
-                            component={SelectTypeAhead}
-                            label="Transfer To"
-                            answers={[...assigneeAnswers]}
-                            errorHint
-                            validate={validation.isRequired}
-                          />
+                        <div className="transfer-control-wrapper">
+                          <div className="form-group transferTo">
+                            <Field
+                              name="transferTo"
+                              dataTest="transferTo"
+                              styleName="transferTo"
+                              component={SelectTypeAhead}
+                              label="Transfer To"
+                              answers={[...assigneeAnswers]}
+                              errorHint
+                              validate={validation.isRequired}
+                            />
+                          </div>
+                          <Button
+                            className={Button.constants.classNames.secondary}
+                            customClass="multi-input"
+                            type="button"
+                            disabled={submitting}
+                            data-test="reset-transfer"
+                            onClick={() => resetTransferForm(form)}
+                          >
+                            Cancel
+                          </Button>
+                          <Button
+                            className={Button.constants.classNames.success}
+                            customClass="multi-input"
+                            type="submit"
+                            disabled={
+                              submitting ||
+                              !Object.values(values.diaries).includes(true)
+                            }
+                            data-test="submit"
+                          >
+                            <i className="fa fa-share" />
+                            Transfer
+                          </Button>
                         </div>
-                        <Button
-                          className={Button.constants.classNames.secondary}
-                          customClass="multi-input"
-                          type="button"
-                          disabled={submitting}
-                          data-test="reset-transfer"
-                          onClick={() => resetTransferForm(form)}
-                        >
-                          Cancel
-                        </Button>
-                        <Button
-                          className={Button.constants.classNames.success}
-                          customClass="multi-input"
-                          type="submit"
-                          disabled={
-                            submitting ||
-                            !Object.values(values.diaries).includes(true)
-                          }
-                          data-test="submit"
-                        >
-                          <i className="fa fa-share" />
-                          Transfer
-                        </Button>
                       </div>
                     )}
                     <SearchResultsWrapper>
