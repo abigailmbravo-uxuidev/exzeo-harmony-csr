@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import classNames from 'classnames';
 import {
   Select,
   MultiSelectTypeAhead,
@@ -196,7 +197,9 @@ export const DiariesSearch = ({ userProfile }) => {
             onSubmit={noop}
           >
             {({ form, submitting, handleSubmit, values }) => (
-              <div className="diary-results-wrapper transfer">
+              <div
+                className={classNames('diary-results-wrapper', { transfer })}
+              >
                 {submitting && <Loader />}
                 <form onSubmit={handleSubmit}>
                   <>
