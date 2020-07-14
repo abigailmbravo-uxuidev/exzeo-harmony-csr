@@ -210,6 +210,7 @@ export const DiariesSearch = ({ userProfile }) => {
                         />
                         <div className="form-group transferSelect">
                           <Field
+                            id="selectAll"
                             name="selectAll"
                             dataTest="selectAll"
                             styleName="selectAll"
