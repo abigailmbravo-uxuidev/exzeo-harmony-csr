@@ -1,0 +1,23 @@
+.diary-results-wrapper {
+  z-index: 10;
+
+  width: 100%;
+  .search-input-row {
+    display: flex;
+
+    margin-top: -2px;
+    padding: 0 1rem;
+
+    background: $warm-gray-10;
+  }
+  .search {
+    .results-wrapper {
+      .results {
+        .transfer_checkbox_wrapper {
+        }
+        .card {
+        }
+      }
+    }
+  }
+}

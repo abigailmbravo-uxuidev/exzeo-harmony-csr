@@ -196,7 +196,7 @@ export const DiariesSearch = ({ userProfile }) => {
             onSubmit={noop}
           >
             {({ form, submitting, handleSubmit, values }) => (
-              <>
+              <div className="diary-results-wrapper">
                 {submitting && <Loader />}
                 <form onSubmit={handleSubmit}>
                   <>
@@ -274,7 +274,7 @@ export const DiariesSearch = ({ userProfile }) => {
                     </SearchResultsWrapper>
                   </>
                 </form>
-              </>
+              </div>
             )}
           </Form>
         </>
