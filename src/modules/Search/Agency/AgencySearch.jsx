@@ -28,6 +28,7 @@ import { cspConfigForSearch } from '../utilities';
 import ResetButton from '../components/ResetButton';
 import { Pagination } from '@exzeo/core-ui/src/@Harmony';
 import NoResults from '../components/NoResults';
+import SearchResultsWrapper from '../components/SearchResultsWrapper';
 
 const { isValidChar, isRequired } = validation;
 
@@ -238,53 +239,32 @@ const AgencySearch = ({ history, userProfile }) => {
               </form>
             </div>
           </div>
-          <main role="document">
-            <div className="content-wrapper">
-              <div className="dashboard" role="article">
-                <div className="route">
-                  <div className="search route-content">
-                    <div className="survey-wrapper scroll">
-                      <div className="results-wrapper">
-                        <React.Fragment>
-                          {searchState.totalRecords === 0 && (
-                            <NoResults
-                              searchType={SEARCH_TYPES.agency}
-                              error={noop}
-                            />
-                          )}
-                          {Array.isArray(searchState.agencies) &&
-                            searchState.agencies.length > 0 && (
-                              <div className="user-list agency-list">
-                                {searchState.agencies.map(agency => (
-                                  <AgencyCard
-                                    key={agency.agencyCode}
-                                    agency={agency}
-                                  />
-                                ))}
-                              </div>
-                            )}
-                          <div
-                            className="btn-divider-wrapper"
-                            data-test="add-agency-new"
-                          >
-                            <NavLink
-                              className="btn btn-primary"
-                              to="/agency/new/0"
-                              activeClassName="active"
-                              target="_blank"
-                              exact
-                            >
-                              + Agency
-                            </NavLink>
-                          </div>
-                        </React.Fragment>
-                      </div>
-                    </div>
+          <SearchResultsWrapper>
+            <React.Fragment>
+              {searchState.totalRecords === 0 && (
+                <NoResults searchType={SEARCH_TYPES.agency} error={noop} />
+              )}
+              {Array.isArray(searchState.agencies) &&
+                searchState.agencies.length > 0 && (
+                  <div className="user-list agency-list">
+                    {searchState.agencies.map(agency => (
+                      <AgencyCard key={agency.agencyCode} agency={agency} />
+                    ))}
                   </div>
-                </div>
+                )}
+              <div className="btn-divider-wrapper" data-test="add-agency-new">
+                <NavLink
+                  className="btn btn-primary"
+                  to="/agency/new/0"
+                  activeClassName="active"
+                  target="_blank"
+                  exact
+                >
+                  + Agency
+                </NavLink>
               </div>
-            </div>
-          </main>
+            </React.Fragment>
+          </SearchResultsWrapper>
         </>
       )}
     </Form>

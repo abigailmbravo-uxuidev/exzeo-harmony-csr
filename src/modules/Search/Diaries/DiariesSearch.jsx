@@ -26,6 +26,7 @@ import {
 } from '../../../utilities/handleNewTab';
 import DiaryList from '../components/DiaryList';
 import NoResults from '../components/NoResults';
+import SearchResultsWrapper from '../components/SearchResultsWrapper';
 import TransferButton from './TransferButton';
 
 export const DiariesSearch = ({ userProfile }) => {
@@ -158,7 +159,7 @@ export const DiariesSearch = ({ userProfile }) => {
                         </div>
                       </div>
                       <span className="count-results">
-                        <strong>{searchResults.totalRecords || '-'}</strong>
+                        <strong>{searchResults.totalRecords}</strong>
                         RESULTS
                       </span>
                       <TransferButton
@@ -184,37 +185,22 @@ export const DiariesSearch = ({ userProfile }) => {
               </form>
             </div>
           </div>
-          <main role="document">
-            <div className="content-wrapper">
-              <div className="dashboard" role="article">
-                <div className="route">
-                  <div className="search route-content">
-                    <div className="survey-wrapper scroll">
-                      <div className="results-wrapper">
-                        {searchResults.totalRecords === 0 ? (
-                          <NoResults
-                            searchType={SEARCH_TYPES.newQuote}
-                            error={noop}
-                          />
-                        ) : (
-                          <DiaryList
-                            product={product}
-                            handleKeyPress={handleDiaryKeyPress}
-                            onItemClick={handleDiaryClick}
-                            clickable
-                            diaries={searchResults.results.filter(d =>
-                              product ? d.resource.product === product : d
-                            )}
-                            diaryReasons={reasons}
-                          />
-                        )}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </main>
+          <SearchResultsWrapper>
+            {searchResults.totalRecords === 0 ? (
+              <NoResults searchType={SEARCH_TYPES.newQuote} error={noop} />
+            ) : (
+              <DiaryList
+                product={product}
+                handleKeyPress={handleDiaryKeyPress}
+                onItemClick={handleDiaryClick}
+                clickable
+                diaries={searchResults.results.filter(d =>
+                  product ? d.resource.product === product : d
+                )}
+                diaryReasons={reasons}
+              />
+            )}
+          </SearchResultsWrapper>
         </>
       )}
     </Form>

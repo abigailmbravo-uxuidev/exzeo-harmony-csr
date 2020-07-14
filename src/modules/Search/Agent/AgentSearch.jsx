@@ -21,6 +21,7 @@ import { handleAgentSearch } from '../data';
 import { isAlphaNumeric } from '@exzeo/core-ui/src/Utilities';
 import AgentCard from '../components/AgentCard';
 import NoResults from '../components/NoResults';
+import SearchResultsWrapper from '../components/SearchResultsWrapper';
 
 const { isValidChar, isRequired } = validation;
 
@@ -126,39 +127,18 @@ const AgentSearch = ({ history }) => {
               </form>
             </div>
           </div>
-          <main role="document">
-            <div className="content-wrapper">
-              <div className="dashboard" role="article">
-                <div className="route">
-                  <div className="search route-content">
-                    <div className="survey-wrapper scroll">
-                      <div className="results-wrapper">
-                        <React.Fragment>
-                          {hasSearched && searchResults.length === 0 && (
-                            <NoResults
-                              searchType={SEARCH_TYPES.agency}
-                              error={noop}
-                            />
-                          )}
-                          {Array.isArray(searchResults) &&
-                            searchResults.length > 0 && (
-                              <div
-                                className="user-list agent-list"
-                                data-test="agent-list"
-                              >
-                                {searchResults.map(agent => (
-                                  <AgentCard key={agent._id} agent={agent} />
-                                ))}
-                              </div>
-                            )}
-                        </React.Fragment>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+          <SearchResultsWrapper>
+            {hasSearched && searchResults.length === 0 && (
+              <NoResults searchType={SEARCH_TYPES.agency} error={noop} />
+            )}
+            {Array.isArray(searchResults) && searchResults.length > 0 && (
+              <div className="user-list agent-list" data-test="agent-list">
+                {searchResults.map(agent => (
+                  <AgentCard key={agent._id} agent={agent} />
+                ))}
               </div>
-            </div>
-          </main>
+            )}
+          </SearchResultsWrapper>
         </>
       )}
     </Form>
