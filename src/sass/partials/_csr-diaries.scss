@@ -12,10 +12,28 @@
   }
   .search {
     .results-wrapper {
-      .results {
+      .results.diary-list {
+        display: flex;
+        flex-wrap: wrap;
+
         .transfer_checkbox_wrapper {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+
+          width: 3rem;
+
+          input[type='checkbox'] {
+            margin: 0;
+          }
         }
         .card {
+          flex-grow: 1;
+          flex-shrink: 1;
+
+          width: calc(100% - 3rem);
+
+          transition: all 0.3s ease-in-out;
         }
       }
     }
