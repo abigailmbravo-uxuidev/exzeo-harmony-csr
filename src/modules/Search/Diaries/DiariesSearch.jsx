@@ -28,6 +28,8 @@ import DiaryList from '../components/DiaryList';
 import NoResults from '../components/NoResults';
 import SearchResultsWrapper from '../components/SearchResultsWrapper';
 import TransferButton from './TransferButton';
+import DiariesTransferWatcher from './DiariesTransferWatcher';
+import SelectTypeAhead from '@exzeo/core-ui/src/TypeAhead/Select';
 
 export const DiariesSearch = ({ userProfile }) => {
   const [searchResults, setSearchResults] = useState({ results: [] });
@@ -67,6 +69,12 @@ export const DiariesSearch = ({ userProfile }) => {
   const resetFormResults = form => {
     setSearchResults({ results: [] });
     setSearchAssignees(undefined);
+    setTransfer(false);
+    form.reset();
+  };
+
+  const resetTransferForm = form => {
+    setTransfer(false);
     form.reset();
   };
 
@@ -177,30 +185,98 @@ export const DiariesSearch = ({ userProfile }) => {
                         Search
                       </Button>
                     </div>
-                    {transfer && (
-                      <div className="search-input-row">Transfer Area</div>
-                    )}
                   </div>
                 </div>
               </form>
             </div>
           </div>
-          <SearchResultsWrapper>
-            {searchResults.totalRecords === 0 ? (
-              <NoResults searchType={SEARCH_TYPES.newQuote} error={noop} />
-            ) : (
-              <DiaryList
-                product={product}
-                handleKeyPress={handleDiaryKeyPress}
-                onItemClick={handleDiaryClick}
-                clickable
-                diaries={searchResults.results.filter(d =>
-                  product ? d.resource.product === product : d
-                )}
-                diaryReasons={reasons}
-              />
+          <Form
+            initialValues={{ diaries: {} }}
+            subscription={{ submitting: true, values: true }}
+            onSubmit={noop}
+          >
+            {({ form, submitting, handleSubmit, values }) => (
+              <>
+                {submitting && <Loader />}
+                <form onSubmit={handleSubmit}>
+                  <>
+                    {transfer && (
+                      <div className="search-input-row">
+                        <DiariesTransferWatcher
+                          diaries={searchResults.results}
+                        />
+                        <div className="form-group transferTo">
+                          <label htmlFor="selectAll">Select All</label>
+                          <Field
+                            name="selectAll"
+                            dataTest="selectAll"
+                            styleName="selectAll"
+                            component="input"
+                            type="checkbox"
+                          />
+                        </div>
+                        <div className="form-group transferTo">
+                          <Field
+                            name="transferTo"
+                            dataTest="transferTo"
+                            styleName="transferTo"
+                            component={SelectTypeAhead}
+                            label="Transfer To"
+                            answers={[...assigneeAnswers]}
+                            errorHint
+                            validate={validation.isRequired}
+                          />
+                        </div>
+                        <Button
+                          className={Button.constants.classNames.secondary}
+                          customClass="multi-input"
+                          type="button"
+                          disabled={submitting}
+                          data-test="reset-transfer"
+                          onClick={() => resetTransferForm(form)}
+                        >
+                          Cancel
+                        </Button>
+                        <Button
+                          className={Button.constants.classNames.success}
+                          customClass="multi-input"
+                          type="submit"
+                          disabled={
+                            submitting ||
+                            !Object.values(values.diaries).includes(true)
+                          }
+                          data-test="submit"
+                        >
+                          <i className="fa fa-share" />
+                          Transfer
+                        </Button>
+                      </div>
+                    )}
+                    <SearchResultsWrapper>
+                      {searchResults.totalRecords === 0 ? (
+                        <NoResults
+                          searchType={SEARCH_TYPES.newQuote}
+                          error={noop}
+                        />
+                      ) : (
+                        <DiaryList
+                          product={product}
+                          handleKeyPress={handleDiaryKeyPress}
+                          onItemClick={handleDiaryClick}
+                          clickable
+                          diaries={searchResults.results.filter(d =>
+                            product ? d.resource.product === product : d
+                          )}
+                          diaryReasons={reasons}
+                          transfer={transfer}
+                        />
+                      )}
+                    </SearchResultsWrapper>
+                  </>
+                </form>
+              </>
             )}
-          </SearchResultsWrapper>
+          </Form>
         </>
       )}
     </Form>
