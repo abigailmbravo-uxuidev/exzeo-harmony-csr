@@ -7,8 +7,7 @@ import {
   validation,
   Field,
   composeValidators,
-  Form,
-  noop
+  Form
 } from '@exzeo/core-ui';
 import ResetButton from '../components/ResetButton';
 
@@ -145,23 +144,26 @@ const NewQuoteSearch = ({ userProfile, history }) => {
             </div>
           </div>
           <SearchResultsWrapper>
-            <div class="quote-list">
-              {searchState.hasSearched &&
-                (searchState.noResults ? (
-                  <NoResults searchType={SEARCH_TYPES.newQuote} error={noop} />
-                ) : (
-                  searchState.results.map(address => (
-                    <AddressCard
-                      key={address.id}
-                      address={address}
-                      companyCode={companyCode}
-                      state={state}
-                      product={product}
-                    />
-                  ))
+            {searchState.hasSearched &&
+            (searchState.noResults || searchState.error) ? (
+              <NoResults
+                searchType={SEARCH_TYPES.newQuote}
+                error={searchState.error}
+              />
+            ) : (
+              <div className="quote-list">
+                {searchState.results.map(address => (
+                  <AddressCard
+                    key={address.id}
+                    address={address}
+                    companyCode={companyCode}
+                    state={state}
+                    product={product}
+                  />
                 ))}
-              {searchState.hasSearched && <AddressTip />}
-            </div>
+              </div>
+            )}
+            {searchState.hasSearched && <AddressTip />}
           </SearchResultsWrapper>
         </>
       )}

@@ -8,7 +8,6 @@ import {
   validation,
   normalize,
   Form,
-  noop,
   FormSpy
 } from '@exzeo/core-ui';
 
@@ -253,7 +252,10 @@ const QuoteSearch = ({ changeSearchType, userProfile, history }) => {
           <SearchResultsWrapper>
             {['resolved', 'rejected'].includes(searchState.status) &&
             searchState.totalRecords === 0 ? (
-              <NoResults searchType={SEARCH_TYPES.newQuote} error={noop} />
+              <NoResults
+                searchType={SEARCH_TYPES.newQuote}
+                error={searchState.error}
+              />
             ) : (
               <ul className="quote-list">
                 {searchState.results.map(quote => (

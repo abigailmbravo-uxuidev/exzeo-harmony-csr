@@ -5,20 +5,21 @@ import {
   Select,
   Field,
   Button,
-  normalize,
   validation,
-  noop,
   Form,
   FormSpy,
   date
 } from '@exzeo/core-ui';
 
-import { AgencyTypeAhead, Pagination } from '@exzeo/core-ui/src/@Harmony';
+import {
+  AgencyTypeAhead,
+  Pagination,
+  POLICY_STATUS_OPTIONS
+} from '@exzeo/core-ui/src/@Harmony';
 
 import { STANDARD_DATE_FORMAT } from '../../../constants/dates';
 import ResetButton from '../components/ResetButton';
-import { useFetchPolicyStatus } from '../hooks';
-import { cspConfigForSearch } from '../utilities';
+import { cspConfigForSearch, normalizeDate } from '../utilities';
 import {
   SEARCH_CONFIG,
   SEARCH_TYPE_OPTIONS,
@@ -48,8 +49,6 @@ const sortByOptions = [
 ];
 
 const PolicySearch = ({ userProfile, history }) => {
-  const { statusList } = useFetchPolicyStatus();
-
   const {
     companyCodeOptions,
     stateOptions,
@@ -88,7 +87,12 @@ const PolicySearch = ({ userProfile, history }) => {
       subscription={{ submitting: true, values: true }}
       onSubmit={handleSubmit}
     >
-      {({ form, submitting, handleSubmit, values: { state } }) => (
+      {({
+        form,
+        submitting,
+        handleSubmit,
+        values: { state, effectiveDate }
+      }) => (
         <>
           {searchState.status === 'pending' && <Loader />}
           <div className="search">
@@ -241,13 +245,17 @@ const PolicySearch = ({ userProfile, history }) => {
                               meta={meta}
                               dataTest="policyStatus"
                               label="Policy Status"
-                              answers={statusList}
+                              answers={POLICY_STATUS_OPTIONS}
                             />
                           )}
                         </Field>
                       </div>
                       <div className="form-group effectiveDate">
-                        <Field name="effectiveDate" validate={isValidDate}>
+                        <Field
+                          name="effectiveDate"
+                          validate={isValidDate}
+                          parse={value => normalizeDate(value, effectiveDate)}
+                        >
                           {({ input, meta }) => (
                             <Input
                               input={input}
@@ -255,9 +263,6 @@ const PolicySearch = ({ userProfile, history }) => {
                               dataTest="effectiveDate"
                               label="Effective Date"
                               placeholder={STANDARD_DATE_FORMAT}
-                              normalize={
-                                normalize.date /* TODO this wont work */
-                              }
                               errorHint
                             />
                           )}
@@ -316,7 +321,10 @@ const PolicySearch = ({ userProfile, history }) => {
           <SearchResultsWrapper>
             {['resolved', 'rejected'].includes(searchState.status) &&
               (searchState.totalRecords === 0 ? (
-                <NoResults searchType={SEARCH_TYPES.newQuote} error={noop} />
+                <NoResults
+                  searchType={SEARCH_TYPES.newQuote}
+                  error={searchState.error}
+                />
               ) : (
                 <ul className="policy-list">
                   {searchState.results.map(policy => (
