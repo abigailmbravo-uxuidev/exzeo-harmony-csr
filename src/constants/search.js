@@ -15,7 +15,8 @@ export const POLICY_INITIAL_VALUES = {
   sortBy: 'policyNumber',
   companyCode: 'TTIC',
   state: '',
-  product: ''
+  product: '',
+  effectiveDate: ''
 };
 
 export const QUOTE_INITIAL_VALUES = {

@@ -62,13 +62,7 @@ const getNavLinks = ({ quoteNumber }) => {
   ];
 };
 
-export const SideNav = ({
-  quoteData,
-  toggleNote,
-  toggleDiary,
-  activateRedirect,
-  activateRedirectLink
-}) => {
+export const SideNav = ({ quoteData, toggleNote, toggleDiary }) => {
   const [showUWPopup, setUWPopup] = useState(false);
   const { companyCode, state, product, quoteNumber } = quoteData;
 
@@ -125,15 +119,11 @@ export const SideNav = ({
 };
 
 SideNav.propTypes = {
-  activateRedirectLink: PropTypes.string,
-  activateRedirect: PropTypes.bool,
   quoteData: PropTypes.shape({})
 };
 
 const mapStateToProps = state => {
   return {
-    activateRedirectLink: state.appState.data.activateRedirectLink,
-    activateRedirect: state.appState.data.activateRedirect,
     quoteData: state.quoteState.quote || {}
   };
 };
