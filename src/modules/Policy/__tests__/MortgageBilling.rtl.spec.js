@@ -21,7 +21,10 @@ describe('Policy: Mortgage / Billing page testing', () => {
     location: {
       pathname: '/policy/12-345-67/billing'
     },
-    policyFormData: defaultPolicyWorkflowProps.policy
+    policyFormData: defaultPolicyWorkflowProps.policy,
+    userProfile: {
+      resources: [{ uri: 'TTIC:FL:HO3:OnlinePayments:*', right: 'INSERT' }]
+    }
   };
 
   describe('Test Online Payments section', () => {

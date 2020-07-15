@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import Modal from 'react-modal';
+import { ReceiptHandler } from '@exzeo/core-ui/src/@Harmony';
 
 import * as appStateActions from './state/actions/appState.actions';
 import * as errorActions from './state/actions/error.actions';
@@ -23,10 +24,9 @@ import DiaryModal from './components/DiaryModal';
 import Bootstrap from './components/Bootstrap';
 import Agency from './modules/Agency';
 import { QuoteLanding, QuoteWorkflow } from './modules/Quote';
-import { PolicyWorkflow, ReceiptHandler } from './modules/Policy';
+import { PolicyWorkflow } from './modules/Policy';
 import Finance from './modules/Finance';
 import BulkMortgage from './modules/BulkMortgage';
-import { userResources } from './utilities/userResources';
 import { BULK_MORTGAGE_TYPE } from './modules/BulkMortgage/constants';
 
 class Routes extends Component {
@@ -60,8 +60,6 @@ class Routes extends Component {
       authState: { userProfile },
       diaryOptions
     } = this.props;
-
-    const { enableBulkMortgage } = userResources(userProfile);
 
     return (
       <div>
@@ -192,34 +190,30 @@ class Routes extends Component {
                 path="/reports"
                 render={props => <Reports auth={auth} {...props} />}
               />
-              {enableBulkMortgage && (
-                <React.Fragment>
-                  <Route
-                    exact
-                    path="/bulkMortgage"
-                    render={props => (
-                      <BulkMortgage
-                        {...props}
-                        userProfile={userProfile}
-                        errorHandler={errorActions.setAppError}
-                        auth={auth}
-                      />
-                    )}
+              <Route
+                exact
+                path="/bulkMortgage"
+                render={props => (
+                  <BulkMortgage
+                    {...props}
+                    userProfile={userProfile}
+                    errorHandler={errorActions.setAppError}
+                    auth={auth}
                   />
-                  <Route
-                    exact
-                    path="/bulkMortgage/byJob"
-                    render={props => (
-                      <BulkMortgage
-                        tab={BULK_MORTGAGE_TYPE.job}
-                        errorHandler={errorActions.setAppError}
-                        auth={auth}
-                        {...props}
-                      />
-                    )}
+                )}
+              />
+              <Route
+                exact
+                path="/bulkMortgage/byJob"
+                render={props => (
+                  <BulkMortgage
+                    tab={BULK_MORTGAGE_TYPE.job}
+                    errorHandler={errorActions.setAppError}
+                    auth={auth}
+                    {...props}
                   />
-                </React.Fragment>
-              )}
+                )}
+              />
               <Route
                 exact
                 path="/login"
