@@ -440,22 +440,31 @@ describe('Bulk Mortgagee By Job Testing', () => {
       expect(jobWrapper.getByText(/5115 Garden Vale Ave, Miami, FL 33624/));
     });
 
-    ////expect(jobWrapper.getByText(/1/)); ///remove
-
     await wait(() => {
       const jobWrapper = within(getByTestId('job-2e78b038e9dd2f00286cb58a'));
       expect(jobWrapper.getByText('2e78b038e9dd2f00286cb58a'));
       expect(jobWrapper.getByText(/Bank of Tampa/));
     });
-    const jobWrapper = within(getByTestId('job-1e78b038e9dd2f00286cb58a'));
-    expect(jobWrapper.getByText(/Completed/)); ////Mark to look at
+
     await wait(() => {
+      const jobWrapper = within(getByTestId('job-1e78b038e9dd2f00286cb58a'));
       expect(jobWrapper.getByText('1e78b038e9dd2f00286cb58a'));
 
+      expect(jobWrapper.getAllByText(/Completed/).length).toBe(3);
+      /*  Found multiple elements with the text: /Completed/
+      The reason the other ones work is because the have the colon at the end to make it unique
+      "Completed By" works below because its expecting all the text to be there
+      Since just Completed matches multiple, it will throw an error if it finds multiple
+      you can use the "getAllByText" to get an array of the matches
+      */
+
+      expect(jobWrapper.getByText(/auth0\|SYSTEMUSER\|0/));
+      /*
+      Certain symbols you will need to escape with the back slash inside of a regex
+       */
+
       expect(jobWrapper.getByText(/Completed By:/));
-      ////expect(jobWrapper.getByText(/auth0|SYSTEMUSER|0/)); ////Mark to look at
       expect(jobWrapper.getByText(/Completed:/));
-      ////expect(jobWrapper.getByText(/03/22/2020 8:47 AM EDT/)); ////Mark to look at
       expect(jobWrapper.getByText(/Policy Mortgagees Updated:/));
       ////expect(jobWrapper.getByText(/1/)); ////remove
       expect(jobWrapper.getByText(/Download Policy CSV/));
