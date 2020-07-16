@@ -286,7 +286,7 @@ describe('Base Path - HO3, create a quote, bind the Policy and make Endorsements
       .findDataTag('ai-modal-submit')
       .click();
 
-    cy.wait('@postCreateTransaction').then(({ response }) => {
+    cy.wait('@addAdditionalInterest').then(({ response }) => {
       expect(response.body.status, 'Add AI: status').to.equal(200);
     });
 

@@ -67,7 +67,8 @@ export function formatMortgagees(result, queuedMortgagees) {
               propertyAddress: p.property.physicalAddress,
               policyNumber: p.policyNumber,
               policyHolderName: `${primaryPolicyHolder.firstName} ${primaryPolicyHolder.lastName}`,
-              currentBillTo: m._id === p.billToId
+              currentBillTo: m._id === p.billToId,
+              identifier: m._id
             });
           }
         });
@@ -80,7 +81,8 @@ export function formatMortgagees(result, queuedMortgagees) {
             propertyAddress: p.property.physicalAddress,
             policyNumber: p.policyNumber,
             policyHolderName: `${primaryPolicyHolder.firstName} ${primaryPolicyHolder.lastName}`,
-            currentBillTo: false
+            currentBillTo: false,
+            identifier: p.policyNumber
           });
         }
       }
@@ -93,7 +95,7 @@ export function setMortgageeInitialValues(results) {
   if (!results || !Array.isArray(results)) return initialValues;
 
   results.forEach(m => {
-    initialValues[m._id] = m;
+    initialValues[m.identifier] = m;
   });
   return initialValues;
 }
