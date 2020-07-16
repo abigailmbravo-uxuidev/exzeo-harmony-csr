@@ -5,7 +5,6 @@ import {
   renderWithForm,
   defaultQuoteWorkflowProps,
   underwritingException,
-  checkButton,
   jestResolve
 } from '../../../test-utils';
 import { QuoteWorkflow } from '../QuoteWorkflow';

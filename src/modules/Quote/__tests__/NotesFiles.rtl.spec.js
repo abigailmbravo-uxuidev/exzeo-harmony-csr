@@ -4,9 +4,7 @@ import { waitForElement, fireEvent, within } from '@testing-library/react';
 import {
   renderWithForm,
   defaultQuoteWorkflowProps,
-  mockServiceRunner,
-  notesResult as result,
-  checkHeader
+  mockServiceRunner
 } from '../../../test-utils';
 import { QuoteWorkflow } from '../QuoteWorkflow';
 

@@ -304,6 +304,7 @@ const mapStateToProps = state => {
   return {
     assigneeAnswers: getDiaryAssigneeAnswers(state),
     diaryReasons: getDiaryReasons(state),
+    diaryOptions: state.list.diaryOptions,
     initialValues: state.ui.diary.selectedDiary || {}
   };
 };

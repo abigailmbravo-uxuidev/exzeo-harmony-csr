@@ -6,9 +6,7 @@ import {
   defaultQuoteWorkflowProps,
   mockServiceRunner,
   underwritingResult as result,
-  checkHeader,
-  checkRadio,
-  checkButton
+  checkRadio
 } from '../../../test-utils';
 import { QuoteWorkflow } from '../QuoteWorkflow';
 

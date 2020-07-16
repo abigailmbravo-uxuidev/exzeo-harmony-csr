@@ -1,15 +1,16 @@
 import React from 'react';
-import { reduxForm } from 'redux-form';
-
+import { wait } from '@testing-library/react';
+import SearchForm from '../../index';
+import * as hooks from '../../hooks';
 import {
   renderWithForm,
   checkLabel,
   checkSelect,
   checkButton,
   mockServiceRunner,
-  mockQuestions
+  mockQuestions,
+  jestResolve
 } from '../../../../test-utils';
-import PolicySearch from '../PolicySearch';
 
 mockServiceRunner([]);
 mockQuestions([]);
@@ -90,50 +91,32 @@ const fields = [
 
 describe('Policy Search Testing', () => {
   const props = {
-    agencyList: [],
-    submitting: false,
-    questions: {
-      diaryAssignees: [
-        {
-          answer: 'auth0|5956365ec2b5082b9e613263',
-          label: 'test user',
-          type: 'user'
-        }
-      ],
-      lists: {},
-      policyStatus: {
-        answers: [
-          { answer: '0', label: 'Policy Issued' },
-          { answer: '1', label: 'In Force' },
-          { answer: '2', label: 'Pending Voluntary Cancellation' },
-          { answer: '3', label: 'Pending Underwriting Cancellation' },
-          { answer: '4', label: 'Pending Underwriting Non-Renewal' },
-          { answer: '8', label: 'Cancelled' },
-          { answer: '9', label: 'Not In Force' }
-        ]
-      }
-    },
-    handlePagination: () => {},
-    search: { results: [] },
-    searchTypeOptions: [
-      { answer: 'address', label: 'New Quote' },
-      { answer: 'quote', label: 'Quote Search' },
-      { answer: 'policy', label: 'Policy Search' }
-    ]
+    pathName: '/'
   };
-
-  const SearchForm = reduxForm({
-    form: 'SEARCH_BAR',
-    initialValues: { searchType: 'policy', sortBy: 'policyNumber' }
-  })(PolicySearch);
 
   const selectFields = fields.filter(({ type }) => type === 'select');
   const textFields = fields.filter(({ type }) => type === 'text');
 
-  it('POS:Renders and has fields and labels', () => {
+  hooks.useFetchPolicyStatus = jestResolve({
+    statusList: [
+      { answer: '0', label: 'Policy Issued' },
+      { answer: '1', label: 'In Force' },
+      { answer: '2', label: 'Pending Voluntary Cancellation' },
+      { answer: '3', label: 'Pending Underwriting Cancellation' },
+      { answer: '4', label: 'Pending Underwriting Non-Renewal' },
+      { answer: '8', label: 'Cancelled' },
+      { answer: '9', label: 'Not In Force' }
+    ]
+  });
+
+  it('POS:Renders and has fields and labels', async () => {
     const { getByPlaceholderText, getByTestId } = renderWithForm(
       <SearchForm {...props} />
     );
+
+    await wait(() => {
+      expect(getByTestId('searchType').value).toBe('policy');
+    });
 
     fields.forEach(field => checkLabel(getByTestId, field));
     textFields.forEach(({ placeholderText }) =>

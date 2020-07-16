@@ -13,9 +13,7 @@ import LoginPage from './containers/Login';
 import AccessDenied from './containers/AccessDenied';
 import LoggedOut from './containers/LoggedOut';
 import Callback from './containers/Callback';
-import SearchAgency from './containers/SearchAgency';
-import SearchPolicy from './containers/SearchPolicy';
-import SearchDiaries from './containers/SearchDiaries';
+import SearchBase from './containers/SearchBase';
 import NotFoundPage from './containers/NotFound';
 import Reports from './containers/Reports';
 import NoteUploader from './components/NoteUploader';
@@ -89,7 +87,6 @@ class Routes extends Component {
             </button>
           </div>
         </Modal>
-
         {diary && diary.resourceType && (
           <DiaryModal
             diaryOptions={diaryOptions}
@@ -106,7 +103,6 @@ class Routes extends Component {
             entity={diary.entity}
           />
         )}
-
         {note && note.documentId && (
           <NoteUploader
             minimizeNote={minimizeNote}
@@ -137,26 +133,10 @@ class Routes extends Component {
             {userProfile && <Bootstrap userProfile={userProfile} />}
             <Switch>
               <Route
-                exact
-                path="/"
-                render={props => <SearchPolicy auth={auth} {...props} />}
-              />
-
-              <Route
                 path="/receipt"
                 render={props => <ReceiptHandler {...props} />}
               />
 
-              <Route
-                exact
-                path="/agency"
-                render={props => <SearchAgency auth={auth} {...props} />}
-              />
-              <Route
-                exact
-                path="/diaries"
-                render={props => <SearchDiaries auth={auth} {...props} />}
-              />
               <Route
                 exact
                 path="/quote/new/:companyCode/:stateCode/:product/:propertyId"
@@ -203,6 +183,18 @@ class Routes extends Component {
               />
               <Route
                 exact
+                path="/bulkMortgage/byJob"
+                render={props => (
+                  <BulkMortgage
+                    {...props}
+                    userProfile={userProfile}
+                    errorHandler={errorActions.setAppError}
+                    auth={auth}
+                  />
+                )}
+              />
+              <Route
+                exact
                 path="/login"
                 render={props => <LoginPage auth={auth} {...props} />}
               />
@@ -225,6 +217,19 @@ class Routes extends Component {
                 }}
               />
               <Route exact path="/callback" render={() => <Callback />} />
+
+              <Route
+                path="/"
+                render={props => (
+                  <SearchBase
+                    {...props}
+                    userProfile={userProfile}
+                    errorHandler={errorActions.setAppError}
+                    handleLogout={auth.logout}
+                  />
+                )}
+              />
+
               <Route
                 path="*"
                 render={props => <NotFoundPage auth={auth} {...props} />}

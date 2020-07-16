@@ -94,13 +94,6 @@ describe('Test diary.actions', () => {
         assignees: []
       };
 
-      const stateObj = [
-        {
-          type: types.SET_DIARIES,
-          diaries: []
-        }
-      ];
-
       httpStub.onCall(0).returns(Promise.resolve({ data: {} }));
       httpStub.onCall(1).returns(Promise.resolve({ data: { result: [] } }));
 

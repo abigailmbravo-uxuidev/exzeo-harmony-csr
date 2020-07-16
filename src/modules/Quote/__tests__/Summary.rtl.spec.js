@@ -4,10 +4,7 @@ import { fireEvent, within } from '@testing-library/react';
 import {
   renderWithForm,
   defaultQuoteWorkflowProps,
-  checkHeader,
   rating,
-  checkTextInput,
-  checkButton,
   clearText,
   checkError,
   mockServiceRunner
