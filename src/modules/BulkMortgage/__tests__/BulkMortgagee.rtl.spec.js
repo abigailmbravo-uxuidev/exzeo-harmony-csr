@@ -126,11 +126,13 @@ describe('BulkMortgagee By Policy Testing', () => {
     fireEvent.click(getByTestId('search-policy-submit'));
 
     await waitForElement(() => [
-      getByTestId('mortgagee-0'),
-      getByTestId('mortgagee-1')
+      getByTestId('mortgagee-5d3774ca92a4b700125909ad'),
+      getByTestId('mortgagee-5d3774ca92a4b700125909ae')
     ]);
 
-    const firstMortgageeCard = within(getByTestId('mortgagee-0'));
+    const firstMortgageeCard = within(
+      getByTestId('mortgagee-5d3774ca92a4b700125909ad')
+    );
 
     expect(firstMortgageeCard.getByText('Mortgagee 1'));
     expect(firstMortgageeCard.getByText('SUNTRUST BANK'));
@@ -145,7 +147,9 @@ describe('BulkMortgagee By Policy Testing', () => {
     expect(firstMortgageeCard.getByText('4019 BRAESGATE LN, TAMPA, FL 33624'));
     expect(firstMortgageeCard.getByText('QUEUE'));
 
-    const secondMortgageeCard = within(getByTestId('mortgagee-1'));
+    const secondMortgageeCard = within(
+      getByTestId('mortgagee-5d3774ca92a4b700125909ae')
+    );
 
     expect(secondMortgageeCard.getByText('Mortgagee 2'));
     expect(secondMortgageeCard.getByText('BANK OF AMERICA'));
@@ -182,11 +186,13 @@ describe('BulkMortgagee By Policy Testing', () => {
 
     fireEvent.click(getByTestId('search-policy-submit'));
     await waitForElement(() => [
-      getByTestId('mortgagee-0'),
-      getByTestId('mortgagee-1')
+      getByTestId('mortgagee-5d3774ca92a4b700125909ad'),
+      getByTestId('mortgagee-5d3774ca92a4b700125909ae')
     ]);
 
-    const firstMortgageeCard = within(getByTestId('mortgagee-0'));
+    const firstMortgageeCard = within(
+      getByTestId('mortgagee-5d3774ca92a4b700125909ad')
+    );
 
     fireEvent.click(firstMortgageeCard.getByText('QUEUE'));
 
@@ -237,26 +243,31 @@ describe('BulkMortgagee By Policy Testing', () => {
 
     fireEvent.click(getByTestId('search-policy-submit'));
     await waitForElement(() => [
-      getByTestId('mortgagee-0'),
-      getByTestId('mortgagee-1')
+      getByTestId('mortgagee-5d3774ca92a4b700125909ad'),
+      getByTestId('mortgagee-5d3774ca92a4b700125909ae')
     ]);
 
-    const firstMortgageeCard = within(getByTestId('mortgagee-0'));
-    const secondMortgageeCard = within(getByTestId('mortgagee-1'));
+    const firstMortgageeCard = within(
+      getByTestId('mortgagee-5d3774ca92a4b700125909ad')
+    );
+    const secondMortgageeCard = within(
+      getByTestId('mortgagee-5d3774ca92a4b700125909ae')
+    );
     //const queuedMortgageeSection = within(getByTestId('queued-mortgagee'));
 
     fireEvent.click(firstMortgageeCard.getByText('QUEUE'));
-    fireEvent.click(secondMortgageeCard.getByText('QUEUE'));
 
     await wait(() => [
       getByTestId('queued-mortgagee-5d3774ca92a4b700125909ad'),
-      getByText(/2 queued/) ////3
+      getByText(/1 queued/) ////3
     ]);
 
-    // await wait(() => [
-    //   queuedMortgageeSection.getByTestId('queued-mortgagee-5d3774ca42313b0012ed6934'),
-    //   getByText(/2 queued/) ////3
-    // ]);
+    fireEvent.click(secondMortgageeCard.getByText('QUEUE'));
+
+    await wait(() => [
+      getByTestId('queued-mortgagee-5d3774ca92a4b700125909ae'),
+      getByText(/2 queued/) ////3
+    ]);
 
     const queuedMortgageeCard1 = within(
       getByTestId('queued-mortgagee-5d3774ca92a4b700125909ad')
