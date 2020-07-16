@@ -337,12 +337,12 @@ export const normalizeDate = (value, previousValue) => {
   )}`;
 };
 
-export const processChunk = async (data, chuckSize, func) => {
-  if (data.length > chuckSize) {
+export const processChunk = async (data, chunkSize, func) => {
+  if (data.length > chunkSize) {
     const result = [];
-    for (let i = 0; i < data.length; i += chuckSize) {
+    for (let i = 0; i < data.length; i += chunkSize) {
       // eslint-disable-next-line no-await-in-loop
-      const res = await func(data.slice(i, i + chuckSize));
+      const res = await func(data.slice(i, i + chunkSize));
       result.push(res.data.result);
     }
     return result;
