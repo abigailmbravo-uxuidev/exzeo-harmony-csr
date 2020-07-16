@@ -117,9 +117,6 @@ describe('BulkMortgagee By Policy Testing', () => {
 
     fireEvent.change(getByTestId('policyNumber'), {
       target: { value: '12-1008954-01' } ////12-1019690-01
-      ////- talk to Mark again about this, why did it work with a different policy id that was there before
-      ////- try it with a new policy id and see if it works, proof of concept to see if we are testing correctly
-      ////- ask Jordan if no real answer from Mark
     });
 
     await wait(() => {
@@ -142,7 +139,7 @@ describe('BulkMortgagee By Policy Testing', () => {
     expect(firstMortgageeCard.getByText('Yes'));
     expect(firstMortgageeCard.getByText('Loan No:')); ////
     expect(firstMortgageeCard.getByText('HO3')); ////
-    ////expect(firstMortgageeCard.getByText('TTIC'));  //// why is this failing?
+    expect(firstMortgageeCard.getByText(/TTIC/)); ////
     expect(firstMortgageeCard.getByText('12-1008954-01'));
     expect(firstMortgageeCard.getByText('Matthew Overton'));
     expect(firstMortgageeCard.getByText('4019 BRAESGATE LN, TAMPA, FL 33624'));
@@ -155,7 +152,7 @@ describe('BulkMortgagee By Policy Testing', () => {
     expect(secondMortgageeCard.getByText('PO BOX 22005, TAMPA, FL 33607'));
     expect(secondMortgageeCard.getByText('Make Bill To'));
     expect(firstMortgageeCard.getByText('HO3')); ////
-    ////expect(firstMortgageeCard.getByText('TTIC'));  //// why is this failing?
+    expect(firstMortgageeCard.getByText(/TTIC/)); ////
     expect(secondMortgageeCard.getByText('12-1008954-01'));
     expect(firstMortgageeCard.getByText('Loan No:')); ////
     expect(firstMortgageeCard.getByText('Matthew Overton'));
@@ -246,15 +243,20 @@ describe('BulkMortgagee By Policy Testing', () => {
 
     const firstMortgageeCard = within(getByTestId('mortgagee-0'));
     const secondMortgageeCard = within(getByTestId('mortgagee-1'));
+    //const queuedMortgageeSection = within(getByTestId('queued-mortgagee'));
 
     fireEvent.click(firstMortgageeCard.getByText('QUEUE'));
     fireEvent.click(secondMortgageeCard.getByText('QUEUE'));
 
     await wait(() => [
       getByTestId('queued-mortgagee-5d3774ca92a4b700125909ad'),
-      ////getByTestId('queued-mortgagee-5d3774ca42313b0012ed6934'), ////
       getByText(/2 queued/) ////3
     ]);
+
+    // await wait(() => [
+    //   queuedMortgageeSection.getByTestId('queued-mortgagee-5d3774ca42313b0012ed6934'),
+    //   getByText(/2 queued/) ////3
+    // ]);
 
     const queuedMortgageeCard1 = within(
       getByTestId('queued-mortgagee-5d3774ca92a4b700125909ad')
@@ -352,15 +354,6 @@ describe('Bulk Mortgagee By Job Testing', () => {
       const jobWrapper = within(getByTestId('job-3e78b038e9dd2f00286cb58a'));
       expect(jobWrapper.getByText('3e78b038e9dd2f00286cb58a'));
       expect(jobWrapper.getByText(/Bank of Miami/));
-      expect(jobWrapper.getByText(/Running/));
-      /////verify all the data on the card
-      ////expect(jobWrapper.getByText(/Completed By:/));
-      expect(jobWrapper.getByText(/Completed:/));
-      expect(jobWrapper.getByText(/5115 Garden Vale Ave, Miami, FL 33624/));
-      expect(jobWrapper.getByText(/Policy Mortgagees Updated:/));
-      //expect(jobWrapper.getByText(/1/));
-      expect(jobWrapper.getByText(/Download Policy CSV/));
-      //expect(jobWrapper.getByText(/5115 Garden Vale Ave, Miami, FL 33624/));
     });
   });
 
@@ -436,19 +429,39 @@ describe('Bulk Mortgagee By Job Testing', () => {
     await wait(() => {
       const jobWrapper = within(getByTestId('job-3e78b038e9dd2f00286cb58a'));
       expect(jobWrapper.getByText('3e78b038e9dd2f00286cb58a'));
+      expect(jobWrapper.getByText(/Running/));
+
+      /////verify all the data on the card
+      expect(jobWrapper.getByText(/Policy Mortgagees Updated:/));
+
+      expect(jobWrapper.getByText(/Download Policy CSV/));
+
       expect(jobWrapper.getByText(/Bank of Miami/));
+      expect(jobWrapper.getByText(/5115 Garden Vale Ave, Miami, FL 33624/));
     });
+
+    ////expect(jobWrapper.getByText(/1/)); ///remove
 
     await wait(() => {
       const jobWrapper = within(getByTestId('job-2e78b038e9dd2f00286cb58a'));
       expect(jobWrapper.getByText('2e78b038e9dd2f00286cb58a'));
       expect(jobWrapper.getByText(/Bank of Tampa/));
     });
-
+    const jobWrapper = within(getByTestId('job-1e78b038e9dd2f00286cb58a'));
+    expect(jobWrapper.getByText(/Completed/)); ////Mark to look at
     await wait(() => {
-      const jobWrapper = within(getByTestId('job-1e78b038e9dd2f00286cb58a'));
       expect(jobWrapper.getByText('1e78b038e9dd2f00286cb58a'));
+
+      expect(jobWrapper.getByText(/Completed By:/));
+      ////expect(jobWrapper.getByText(/auth0|SYSTEMUSER|0/)); ////Mark to look at
+      expect(jobWrapper.getByText(/Completed:/));
+      ////expect(jobWrapper.getByText(/03/22/2020 8:47 AM EDT/)); ////Mark to look at
+      expect(jobWrapper.getByText(/Policy Mortgagees Updated:/));
+      ////expect(jobWrapper.getByText(/1/)); ////remove
+      expect(jobWrapper.getByText(/Download Policy CSV/));
+
       expect(jobWrapper.getByText(/Bank of Canada/));
+      expect(jobWrapper.getByText(/5115 Garden Vale Ave, Tampa, FL 33624/));
     });
 
     await wait(() => {
