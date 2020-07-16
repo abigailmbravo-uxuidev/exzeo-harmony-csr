@@ -532,18 +532,35 @@
     &.electronic-payment-modal {
       form {
         > h3 {
+          display: flex;
+          align-items: center;
+
           margin: 0;
           padding: $padding ($padding * 2);
           &.success {
             background-color: rgba($green-darken-01, 0.25);
             i {
+              margin-right: $padding;
+
               color: $green-darken-01;
             }
           }
           &.fail {
             background-color: rgba($red-darken-02, 0.2);
             i {
+              margin-right: $padding;
+
               color: $red-darken-02;
+            }
+          }
+          span {
+            margin-left: 0.5rem;
+
+            font-size: $font-size-h5;
+            font-weight: $font-weight-normal;
+
+            &:before {
+              content: 'Transaction ID: ';
             }
           }
         }

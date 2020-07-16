@@ -19,7 +19,7 @@ describe('Agent Search Testing', () => {
     cy
       .clickSubmit()
       .wait('@fetchAgents')
-      .get('.agent-list')
+      .findDataTag('agent-list')
       .children()
       .should('exist')
 
@@ -27,7 +27,7 @@ describe('Agent Search Testing', () => {
       .type('{selectall}{backspace}60033', { force: true })
       .clickSubmit()
       .wait('@fetchAgents')
-      .get('.agent-list')
+      .findDataTag('agent-list')
       .children()
       .should('exist')
 
@@ -35,7 +35,7 @@ describe('Agent Search Testing', () => {
       .type('{selectall}{backspace}brian')
       .clickSubmit()
       .wait('@fetchAgents')
-      .get('.agent-list')
+      .findDataTag('agent-list')
       .children()
       .should('exist')
 
@@ -43,7 +43,7 @@ describe('Agent Search Testing', () => {
       .type('{selectall}{backspace}chapman')
       .clickSubmit()
       .wait('@fetchAgents')
-      .get('.agent-list')
+      .findDataTag('agent-list')
       .children()
       .should('exist')
 
@@ -51,7 +51,7 @@ describe('Agent Search Testing', () => {
       .type('{selectall}{backspace}tamiami')
       .clickSubmit()
       .wait('@fetchAgents')
-      .get('.agent-list')
+      .findDataTag('agent-list')
       .children()
       .should('exist')
 
@@ -59,7 +59,7 @@ describe('Agent Search Testing', () => {
       .type('{selectall}{backspace}E079822')
       .clickSubmit()
       .wait('@fetchAgents')
-      .get('.agent-list')
+      .findDataTag('agent-list')
       .children()
       .should('exist'));
 });

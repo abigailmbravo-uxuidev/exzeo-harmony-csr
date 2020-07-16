@@ -128,7 +128,7 @@ export class SearchResults extends Component {
         )}
 
         {hasSearched && searchType === SEARCH_TYPES.agent && !!results.length && (
-          <div className="user-list agent-list">
+          <div className="user-list agent-list" data-test="agent-list">
             {results.map(agent => (
               <AgentCard
                 key={agent._id}
