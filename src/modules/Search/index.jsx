@@ -7,7 +7,7 @@ import DiariesSearch from './Diaries/DiariesSearch';
 import AgencySearch from './Agency';
 import AgentSearch from './Agent';
 
-const Search = ({ createQuote, retrieveQuote, userProfile }) => {
+const Search = ({ createQuote, retrieveQuote, userProfile, errorHandler }) => {
   return (
     <React.Fragment>
       <Route
@@ -35,7 +35,13 @@ const Search = ({ createQuote, retrieveQuote, userProfile }) => {
       <Route
         exact
         path={`/diaries`}
-        render={props => <DiariesSearch {...props} userProfile={userProfile} />}
+        render={props => (
+          <DiariesSearch
+            {...props}
+            userProfile={userProfile}
+            errorHandler={errorHandler}
+          />
+        )}
       />
       <Route
         exact

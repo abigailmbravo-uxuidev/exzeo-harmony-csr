@@ -11,6 +11,7 @@ import {
   formatDiaryResults,
   formatPolicyResults,
   formatQuoteResults,
+  processChunk,
   setPageNumber
 } from './utilities';
 
@@ -152,6 +153,31 @@ export async function fetchDiaries({
 
   try {
     const response = await serviceRunner.callService(config, 'fetchDiaries');
+    return response && response.data ? response.data : [];
+  } catch (error) {
+    throw error;
+  }
+}
+
+/**
+ *
+ * @param diaries
+ * @param assignee
+ * @returns {Promise<void>}
+ */
+export async function transferDiaries({ diaries, assignee }) {
+  const config = {
+    service: 'diaries',
+    method: 'POST',
+    path: '/transfer',
+    data: {
+      diaries,
+      assignee
+    }
+  };
+
+  try {
+    const response = await serviceRunner.callService(config, 'transferDiaries');
     return response && response.data ? response.data : [];
   } catch (error) {
     throw error;
@@ -305,7 +331,7 @@ export async function handleAgencySearch(data) {
  * @param data
  * @returns {Function}
  */
-export async function handleDiariesSearch(data) {
+export async function searchDiaries(data) {
   try {
     const searchQuery = {
       open: data.open === 'true',
@@ -318,6 +344,48 @@ export async function handleDiariesSearch(data) {
 
     const results = await fetchDiaries(searchQuery);
     return formatDiaryResults(results);
+  } catch (error) {
+    throw error;
+  }
+}
+
+/**
+ * Transfer Diaries
+ * @param data
+ * @param diaryResults
+ * @param assigneeAnswers
+ * @returns {Function}
+ */
+export async function handleTransferDiaries(
+  data,
+  diaryResults,
+  assigneeAnswers
+) {
+  try {
+    const diaryIds = Object.keys(data.diaries);
+    const assigneeObj = assigneeAnswers.find(
+      a => String(a.answer) === String(data.transferTo)
+    );
+    const assignee = {
+      id: assigneeObj.answer,
+      displayName: assigneeObj.label,
+      type: assigneeObj.type
+    };
+    const filteredDiaries = diaryResults.filter(d => diaryIds.includes(d._id));
+
+    const selectedDiaries = [];
+
+    filteredDiaries.forEach(({ entries, _id }) => {
+      selectedDiaries.push({
+        entry: entries[0],
+        _id
+      });
+    });
+
+    const response = await processChunk(selectedDiaries, 25, async diaries => {
+      await transferDiaries({ diaries, assignee });
+    });
+    return response;
   } catch (error) {
     throw error;
   }

@@ -336,3 +336,17 @@ export const normalizeDate = (value, previousValue) => {
     8
   )}`;
 };
+
+export const processChunk = async (data, chuckSize, func) => {
+  if (data.length > chuckSize) {
+    const result = [];
+    for (let i = 0; i < data.length; i += chuckSize) {
+      // eslint-disable-next-line no-await-in-loop
+      const res = await func(data.slice(i, i + chuckSize));
+      result.push(res.data.result);
+    }
+    return result;
+  }
+  const response = await func(data);
+  return [response.data.result];
+};

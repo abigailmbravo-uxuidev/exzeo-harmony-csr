@@ -20,7 +20,7 @@ import { isValidRange } from './utilities';
 import { useFetchDiaryOptions, useFetchAssigneeAnswers } from '../hooks';
 import { SEARCH_CONFIG, SEARCH_TYPES } from '../../../constants/search';
 import Loader from '@exzeo/core-ui/src/Loader/Loader';
-import { handleDiariesSearch } from '../data';
+import { handleTransferDiaries, searchDiaries } from '../data';
 import {
   handleDiaryClick,
   handleDiaryKeyPress
@@ -32,7 +32,7 @@ import TransferButton from './TransferButton';
 import DiariesTransferWatcher from './DiariesTransferWatcher';
 import SelectTypeAhead from '@exzeo/core-ui/src/TypeAhead/Select';
 
-export const DiariesSearch = ({ userProfile }) => {
+export const DiariesSearch = ({ userProfile, errorHandler }) => {
   const [searchResults, setSearchResults] = useState({ results: [] });
   const [searchAssignees, setSearchAssignees] = useState(undefined);
   const [loading, setLoading] = useState(false);
@@ -82,9 +82,21 @@ export const DiariesSearch = ({ userProfile }) => {
   const handleDiariesSearchSubmit = async data => {
     setLoading(true);
     setSearchAssignees(data.assignees || emptyArray);
-    const results = await handleDiariesSearch(data);
+    const results = await searchDiaries(data);
     setSearchResults(results);
     setLoading(false);
+  };
+
+  const handleTransferDiariesSubmit = async data => {
+    try {
+      setLoading(true);
+      await handleTransferDiaries(data, searchResults.results, assigneeAnswers);
+    } catch (err) {
+      errorHandler(err);
+    } finally {
+      setLoading(false);
+      setTransfer(false);
+    }
   };
 
   return (
@@ -194,7 +206,7 @@ export const DiariesSearch = ({ userProfile }) => {
           <Form
             initialValues={{ diaries: {} }}
             subscription={{ submitting: true, values: true }}
-            onSubmit={noop}
+            onSubmit={handleTransferDiariesSubmit}
           >
             {({ form, submitting, handleSubmit, values }) => (
               <div
