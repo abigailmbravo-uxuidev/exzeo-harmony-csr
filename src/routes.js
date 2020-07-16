@@ -27,7 +27,6 @@ import { QuoteLanding, QuoteWorkflow } from './modules/Quote';
 import { PolicyWorkflow } from './modules/Policy';
 import Finance from './modules/Finance';
 import BulkMortgage from './modules/BulkMortgage';
-import { BULK_MORTGAGE_TYPE } from './modules/BulkMortgage/constants';
 
 class Routes extends Component {
   setBackStep = (goToNext, callback) => {
@@ -199,18 +198,6 @@ class Routes extends Component {
                     userProfile={userProfile}
                     errorHandler={errorActions.setAppError}
                     auth={auth}
-                  />
-                )}
-              />
-              <Route
-                exact
-                path="/bulkMortgage/byJob"
-                render={props => (
-                  <BulkMortgage
-                    tab={BULK_MORTGAGE_TYPE.job}
-                    errorHandler={errorActions.setAppError}
-                    auth={auth}
-                    {...props}
                   />
                 )}
               />
