@@ -169,7 +169,7 @@ export async function transferDiaries({ diaries, assignee }) {
   const config = {
     service: 'diaries',
     method: 'POST',
-    path: '/transfer',
+    path: '/diaries/transfer',
     data: {
       diaries,
       assignee
