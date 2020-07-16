@@ -797,21 +797,80 @@ export function initializePolicyWorkflow(policyNumber) {
   };
 }
 
-async function updateAdditionalInterest({
-  additionalInterest,
-  policyID,
-  policyNumber,
-  transactionType,
-  dispatch
-}) {
-  const submitData = {
-    ...additionalInterest,
-    policyID,
+/**
+ *
+ * @param {Object} data
+ * @param {Object} data.additionalInterest
+ * @param {Integer} data.policyNumber
+ * @returns {Function}
+ */
+async function addAdditionalInterest({ additionalInterest, policyNumber }) {
+  const data = {
     policyNumber,
-    additionalInterestId: additionalInterest._id,
-    transactionType
+    name1: additionalInterest.name1,
+    name2: additionalInterest.name2,
+    order: Number(additionalInterest.order),
+    phoneNumber: additionalInterest.phoneNumber,
+    mailingAddress: additionalInterest.mailingAddress,
+    referenceNumber: additionalInterest.referenceNumber,
+    type: additionalInterest.type
   };
-  await dispatch(createTransaction(submitData));
+  console.log(typeof data.order);
+  data.mailingAddress.zipExtension = '';
+
+  const config = {
+    service: 'policy-manager',
+    method: 'POST',
+    path: `policies/additionalInterests`,
+    data
+  };
+
+  try {
+    const response = await serviceRunner.callService(
+      config,
+      'addAdditionalInterest'
+    );
+    return response.data && response.data.result ? response.data.result : {};
+  } catch (error) {
+    throw error;
+  }
+}
+
+/**
+ *
+ * @param {Object} data
+ * @param {Object} data.additionalInterest
+ * @param {Integer} data.policyNumber
+ * @returns {Function}
+ */
+async function updateAdditionalInterest({ additionalInterest, policyNumber }) {
+  const data = {
+    name1: additionalInterest.name1,
+    name2: additionalInterest.name2,
+    order: Number(additionalInterest.order),
+    phoneNumber: additionalInterest.phoneNumber,
+    active: additionalInterest.active,
+    mailingAddress: additionalInterest.mailingAddress,
+    referenceNumber: additionalInterest.referenceNumber,
+    type: additionalInterest.type
+  };
+
+  const config = {
+    service: 'policy-manager',
+    method: 'PUT',
+    path: `policies/${policyNumber}/additionalInterests/${additionalInterest._id}`,
+    data
+  };
+
+  try {
+    const response = await serviceRunner.callService(
+      config,
+      'updateAdditionalInterest'
+    );
+    return response.data && response.data.result ? response.data.result : {};
+  } catch (error) {
+    throw error;
+  }
 }
 
 /**
@@ -855,13 +914,27 @@ export function updatePolicy({ data = {}, options = {} }) {
       }
 
       if (data.selectedAI) {
-        await updateAdditionalInterest({
-          additionalInterest: data.selectedAI,
-          policyID: data.policyID,
-          policyNumber: data.policyNumber,
-          transactionType: data.transactionType,
-          dispatch
-        });
+        const { selectedAI, policyID, policyNumber, transactionType } = data;
+        const aiData = {
+          additionalInterest: selectedAI,
+          policyNumber: policyNumber
+        };
+
+        if (transactionType === 'AI Update') {
+          await updateAdditionalInterest(aiData);
+        } else if (transactionType === 'AI Addition') {
+          await addAdditionalInterest(aiData);
+        } else if (
+          transactionType === 'AI Removal' ||
+          transactionType === 'AI Reinstatement'
+        ) {
+          await postCreateTransaction({
+            ...aiData,
+            policyID,
+            additionalInterestId: selectedAI._id,
+            transactionType
+          });
+        }
       }
       dispatch(initializePolicyWorkflow(data.policyNumber));
       return null;
