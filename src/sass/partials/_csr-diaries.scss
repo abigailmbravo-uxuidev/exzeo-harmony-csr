@@ -1,91 +1,107 @@
 .diary-results-wrapper {
   z-index: 10;
 
+  overflow: hidden;
+  flex-direction: column;
+  flex-grow: 0;
+  flex-shrink: 0;
+
   width: 100%;
-  .search-input-row {
+  height: calc(100vh - 12.4375rem);
+  > form {
     display: flex;
+    overflow: hidden;
+    flex-direction: column;
+    flex-grow: 0;
+    flex-shrink: 0;
 
-    margin-top: -2px;
-    padding: 0.5rem 1rem;
+    width: 100%;
+    height: calc(100vh - 12.4375rem);
 
-    background: $warm-gray-10;
-
-    .transferSelect {
+    .search-input-row {
       display: flex;
-      align-items: center;
-      flex-grow: 0;
-      flex-shrink: 0;
-      justify-content: flex-end;
 
-      width: 3rem;
-      margin: 0 0.5rem 0 0;
+      padding: 0.5rem 1rem;
 
-      input[type='checkbox'] {
-        margin: 0;
-      }
+      background: $warm-gray-10;
 
-      label {
-        margin-top: 0.5rem;
-
-        cursor: pointer;
-        text-align: center;
-        text-transform: uppercase;
-
-        color: $bright-blue-lighten-01;
-
-        font-size: $font-size-xs;
-        line-height: 1;
-      }
-    }
-    .transfer-control-wrapper {
-      display: flex;
-      align-items: self-start;
-      flex-grow: 1;
-      flex-shrink: 1;
-
-      padding: 0.375rem $padding;
-
-      border-radius: $border-radius;
-      background: $warm-gray-08;
-      .transferTo {
-        margin: 0 0.5rem 0 0;
-        label {
-          margin-bottom: 0.125rem;
-
-          color: $yellow-lighten-05;
-
-          font-size: $font-size-sm;
-          font-weight: $font-weight-normal;
-        }
-      }
-      button {
-        margin-top: 19px;
-
-        &:first-of-type {
-          margin-right: 0.5rem;
-        }
-      }
-    }
-  }
-  .search {
-    .results-wrapper {
-      .results.diary-list {
+      .transferSelect {
         display: flex;
-        flex-wrap: wrap;
+        align-items: center;
+        flex-grow: 0;
+        flex-shrink: 0;
+        justify-content: flex-end;
 
-        .transfer_checkbox_wrapper {
-          display: flex;
-          align-items: center;
-          justify-content: center;
+        width: 3rem;
+        margin: 0 0.5rem 0 0;
 
-          width: 3rem;
+        input[type='checkbox'] {
+          margin: 0;
+        }
 
-          input[type='checkbox'] {
-            margin: 0;
+        label {
+          margin-top: 0.5rem;
+
+          cursor: pointer;
+          text-align: center;
+          text-transform: uppercase;
+
+          color: $bright-blue-lighten-01;
+
+          font-size: $font-size-xs;
+          line-height: 1;
+        }
+      }
+      .transfer-control-wrapper {
+        display: flex;
+        align-items: self-start;
+        flex-grow: 1;
+        flex-shrink: 1;
+
+        padding: 0.375rem $padding;
+
+        border-radius: $border-radius;
+        background: $warm-gray-08;
+        .transferTo {
+          margin: 0 0.5rem 0 0;
+          label {
+            margin-bottom: 0.125rem;
+
+            color: $yellow-lighten-05;
+
+            font-size: $font-size-sm;
+            font-weight: $font-weight-normal;
           }
         }
-        .card {
-          width: calc(100% - 3rem);
+        button {
+          margin-top: 19px;
+
+          &:first-of-type {
+            margin-right: 0.5rem;
+          }
+        }
+      }
+    }
+    .search {
+      .results-wrapper {
+        .results.diary-list {
+          display: flex;
+          flex-wrap: wrap;
+
+          .transfer_checkbox_wrapper {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            width: 3rem;
+
+            input[type='checkbox'] {
+              margin: 0;
+            }
+          }
+          .card {
+            width: calc(100% - 3rem);
+          }
         }
       }
     }
