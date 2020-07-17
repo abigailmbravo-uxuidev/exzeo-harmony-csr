@@ -8,7 +8,8 @@ import {
   validation,
   Form,
   FormSpy,
-  date
+  date,
+  normalize
 } from '@exzeo/core-ui';
 
 import {
@@ -19,7 +20,7 @@ import {
 
 import { STANDARD_DATE_FORMAT } from '../../../constants/dates';
 import ResetButton from '../components/ResetButton';
-import { cspConfigForSearch, normalizeDate } from '../utilities';
+import { cspConfigForSearch } from '../utilities';
 import {
   SEARCH_CONFIG,
   SEARCH_TYPE_OPTIONS,
@@ -118,7 +119,7 @@ const PolicySearch = ({ userProfile, history }) => {
                       </Field>
                     </div>
                     <div className="form-group sortBy">
-                      <Field name="sortBy">
+                      <Field name="sort">
                         {({ input, meta }) => (
                           <Select
                             input={input}
@@ -176,7 +177,7 @@ const PolicySearch = ({ userProfile, history }) => {
                         )}
                       </Field>
 
-                      <Field name="address" validate={isValidChar}>
+                      <Field name="propertyAddress" validate={isValidChar}>
                         {({ input, meta }) => (
                           <Input
                             input={input}
@@ -238,7 +239,7 @@ const PolicySearch = ({ userProfile, history }) => {
                       </Field>
 
                       <div className="form-group policy-status">
-                        <Field name="policyStatus">
+                        <Field name="status">
                           {({ input, meta }) => (
                             <Select
                               input={input}
@@ -254,7 +255,7 @@ const PolicySearch = ({ userProfile, history }) => {
                         <Field
                           name="effectiveDate"
                           validate={isValidDate}
-                          parse={value => normalizeDate(value, effectiveDate)}
+                          parse={value => normalize.date(value, effectiveDate)}
                         >
                           {({ input, meta }) => (
                             <Input
