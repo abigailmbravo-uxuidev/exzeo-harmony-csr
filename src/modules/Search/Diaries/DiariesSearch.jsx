@@ -109,7 +109,7 @@ export const DiariesSearch = ({ userProfile, errorHandler }) => {
       {({ form, submitting, handleSubmit, values: { product } }) => (
         <>
           {loading && <Loader />}
-          <div className="search">
+          <div className={classNames('search', { transfer })}>
             <div id="SearchBar">
               <form onSubmit={handleSubmit}>
                 <div className="search-input-wrapper">
