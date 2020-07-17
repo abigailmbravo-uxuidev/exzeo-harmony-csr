@@ -80,6 +80,7 @@ export const DiariesSearch = ({ userProfile, errorHandler }) => {
   };
 
   const handleDiariesSearchSubmit = async data => {
+    setTransfer(false);
     setLoading(true);
     setSearchAssignees(data.assignees || emptyArray);
     const results = await searchDiaries(data);
