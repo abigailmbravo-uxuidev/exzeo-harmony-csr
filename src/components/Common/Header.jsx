@@ -34,7 +34,8 @@ export const getNavLinks = ({ enableBulkMortgage }) => {
     {
       id: 'policy',
       path: '/',
-      name: 'Policy'
+      name: 'Policy',
+      activeRoutes: ['/', '/quote', '/address']
     }
   ];
 };
@@ -76,11 +77,20 @@ const Header = ({ handleLogout, authState: { userProfile = {} }, diaries }) => {
             )}
           </NavLink>
           {getNavLinks({ enableBulkMortgage }).map(
-            ({ path, name, id, hidden }) => (
+            ({ path, name, id, hidden, activeRoutes }) => (
               <NavLink
                 key={id}
                 activeClassName="active"
                 exact
+                isActive={(match, location) => {
+                  if (
+                    Array.isArray(activeRoutes) &&
+                    activeRoutes.includes(location.pathname)
+                  ) {
+                    return true;
+                  }
+                  return match;
+                }}
                 to={path}
                 data-test={`${id}-link`}
                 hidden={hidden}
