@@ -205,7 +205,7 @@ export const DiariesSearch = ({ userProfile, errorHandler }) => {
             </div>
           </div>
           <Form
-            initialValues={{ diaries: {} }}
+            initialValues={{ diaries: {}, selectAll: false }}
             subscription={{ submitting: true, values: true }}
             onSubmit={handleTransferDiariesSubmit}
           >
@@ -225,7 +225,7 @@ export const DiariesSearch = ({ userProfile, errorHandler }) => {
                           <Field
                             id="selectAll"
                             name="selectAll"
-                            dataTest="selectAll"
+                            data-test="selectAll"
                             styleName="selectAll"
                             component="input"
                             type="checkbox"
@@ -241,7 +241,6 @@ export const DiariesSearch = ({ userProfile, errorHandler }) => {
                               component={SelectTypeAhead}
                               label="Transfer To"
                               answers={[...assigneeAnswers]}
-                              errorHint
                               validate={validation.isRequired}
                             />
                           </div>
@@ -250,7 +249,7 @@ export const DiariesSearch = ({ userProfile, errorHandler }) => {
                             customClass="multi-input"
                             type="button"
                             disabled={submitting}
-                            data-test="reset-transfer"
+                            data-test="resetTransfer"
                             onClick={() => resetTransferForm(form)}
                           >
                             Cancel
@@ -263,7 +262,7 @@ export const DiariesSearch = ({ userProfile, errorHandler }) => {
                               submitting ||
                               !Object.values(values.diaries).includes(true)
                             }
-                            data-test="submit"
+                            dataTest="submitTransfer"
                           >
                             <i className="fa fa-share" />
                             Transfer

@@ -6,6 +6,7 @@ const TransferButton = ({ toggleTransfer }) => (
     className="btn btn-link btn-reset"
     type="button"
     onClick={toggleTransfer}
+    dataTest="toggleTransfer"
   >
     <i className="fa fa-share" />
     TRANSFER

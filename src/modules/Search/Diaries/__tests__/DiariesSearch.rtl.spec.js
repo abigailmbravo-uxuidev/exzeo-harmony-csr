@@ -4,9 +4,15 @@ import {
   renderWithForm,
   checkLabel,
   checkSelect,
-  checkButton
+  checkButton,
+  jestResolve
 } from '../../../../test-utils';
 import DiariesSearch from '../DiariesSearch';
+import { fireEvent, wait } from '@testing-library/react';
+import * as searchData from '../../data';
+import { noop } from '@exzeo/core-ui';
+import { searchDiaries } from '../../data';
+
 const fields = [
   {
     dataTest: 'status',
@@ -51,7 +57,36 @@ const fields = [
   }
 ];
 
+const diariesOptions = [
+  {
+    tags: [{ answer: 'new_policy', label: 'New Policy', type: 'tag' }],
+    reasons: [
+      {
+        answer: 'information_needed',
+        label: 'Information Needed',
+        dueDate: {
+          offset: 7,
+          path: 'default'
+        },
+        assignee: 'CURRENT_USER'
+      }
+    ]
+  }
+];
+
+const diaryAssignees = [
+  {
+    answer: 'test_user',
+    label: 'Test User',
+    type: 'user'
+  }
+];
+
 describe('Diaries Search Testing', () => {
+  searchData.fetchDiaryOptions = jestResolve(diariesOptions);
+  searchData.getDiaryAssigneeOptions = jestResolve(diaryAssignees);
+  searchData.searchDiaries = jestResolve({ results: [] });
+
   const props = {
     userProfile: { profile: { given_name: 'John', family_name: 'Smith' } }
   };
@@ -85,25 +120,72 @@ describe('Diaries Search Testing', () => {
 });
 
 describe('Transfer Diaries Testing', () => {
+  searchData.fetchDiaryOptions = jestResolve(diariesOptions);
+  searchData.getDiaryAssigneeOptions = jestResolve(diaryAssignees);
+
   const props = {
-    userProfile: { profile: { given_name: 'John', family_name: 'Smith' } }
+    userProfile: { profile: { given_name: 'John', family_name: 'Smith' } },
+    errorHandler: noop
   };
 
-  const selectFields = fields.filter(({ type }) => type === 'select');
+  it('Should toggle the transfer diaries section', async () => {
+    const {
+      getByTestId,
+      getByText,
+      queryAllByText,
+      queryAllByTestId
+    } = renderWithForm(<DiariesSearch {...props} />);
 
-  it('Should toggle the transfer diaries and clear  transfer diaries', () => {
-    const { getByTestId } = renderWithForm(<DiariesSearch {...props} />);
+    await wait(() => [
+      expect(getByText('TRANSFER')),
+      expect(queryAllByText('Select All').length).toBe(0),
+      expect(queryAllByText('Transfer To').length).toBe(0),
+      expect(queryAllByTestId('resetTransfer').length).toBe(0),
+      expect(queryAllByTestId('submitTransfer').length).toBe(0)
+    ]);
+
+    fireEvent.click(getByText('TRANSFER'));
+
+    await wait(() => [
+      expect(queryAllByText('Select All').length).toBe(1),
+      expect(queryAllByText('Transfer To').length).toBe(1),
+      expect(queryAllByTestId('resetTransfer').length).toBe(1),
+      expect(queryAllByTestId('submitTransfer').length).toBe(1)
+    ]);
+
+    fireEvent.click(getByTestId('resetTransfer'));
+
+    await wait(() => [
+      expect(queryAllByText('Select All').length).toBe(0),
+      expect(queryAllByText('Transfer To').length).toBe(0),
+      expect(queryAllByTestId('resetTransfer').length).toBe(0),
+      expect(queryAllByTestId('submitTransfer').length).toBe(0)
+    ]);
   });
 
-  it('Should toggle validate required fields', () => {
-    const { getByTestId } = renderWithForm(<DiariesSearch {...props} />);
-  });
+  it('Should submit transfer diaries: select all', async () => {
+    const {
+      getByTestId,
+      getByText,
+      queryAllByText,
+      queryAllByTestId
+    } = renderWithForm(<DiariesSearch {...props} />);
 
-  it('Should toggle the transfer diaries and toggle select all', () => {
-    const { getByTestId } = renderWithForm(<DiariesSearch {...props} />);
-  });
+    await wait(() => [expect(getByText('TRANSFER'))]);
 
-  it('Should submit transfer diaries', () => {
-    const { getByTestId } = renderWithForm(<DiariesSearch {...props} />);
+    fireEvent.click(getByText('TRANSFER'));
+
+    await wait(() => [
+      expect(queryAllByText('Select All').length).toBe(1),
+      expect(queryAllByText('Transfer To').length).toBe(1),
+      expect(queryAllByTestId('resetTransfer').length).toBe(1),
+      expect(queryAllByTestId('submitTransfer').length).toBe(1)
+    ]);
+
+    fireEvent.click(getByTestId('selectAll'));
+
+    await wait(() => {
+      expect(getByTestId('selectAll').checked).toBe(true);
+    });
   });
 });
