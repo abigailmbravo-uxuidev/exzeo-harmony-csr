@@ -191,9 +191,10 @@ export function formatAgentResults(results) {
 /**
  *
  * @param results
+ * @param product
  */
-export function formatDiaryResults(results) {
-  const sortedResults = sortDiariesByDate(results.result);
+export function formatDiaryResults(results, product) {
+  const sortedResults = sortDiariesByDate(results.result, product);
 
   return {
     results: sortedResults,

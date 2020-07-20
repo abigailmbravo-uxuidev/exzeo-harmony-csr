@@ -317,7 +317,7 @@ export async function handleDiariesSearch(data) {
     };
 
     const results = await fetchDiaries(searchQuery);
-    return formatDiaryResults(results);
+    return formatDiaryResults(results, data.product);
   } catch (error) {
     throw error;
   }
