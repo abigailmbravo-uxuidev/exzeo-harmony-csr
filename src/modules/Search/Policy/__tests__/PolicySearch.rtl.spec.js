@@ -97,18 +97,6 @@ describe('Policy Search Testing', () => {
   const selectFields = fields.filter(({ type }) => type === 'select');
   const textFields = fields.filter(({ type }) => type === 'text');
 
-  hooks.useFetchPolicyStatus = jestResolve({
-    statusList: [
-      { answer: '0', label: 'Policy Issued' },
-      { answer: '1', label: 'In Force' },
-      { answer: '2', label: 'Pending Voluntary Cancellation' },
-      { answer: '3', label: 'Pending Underwriting Cancellation' },
-      { answer: '4', label: 'Pending Underwriting Non-Renewal' },
-      { answer: '8', label: 'Cancelled' },
-      { answer: '9', label: 'Not In Force' }
-    ]
-  });
-
   it('POS:Renders and has fields and labels', async () => {
     const { getByPlaceholderText, getByTestId } = renderWithForm(
       <SearchForm {...props} />
@@ -122,6 +110,7 @@ describe('Policy Search Testing', () => {
     textFields.forEach(({ placeholderText }) =>
       expect(getByPlaceholderText(placeholderText))
     );
+
     selectFields.forEach(({ dataTest, selected }) =>
       expect(getByTestId(dataTest).getAttribute('data-selected')).toEqual(
         selected

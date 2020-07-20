@@ -6,10 +6,11 @@ import {
   Button,
   Field,
   validation,
-  normalize,
   Form,
-  FormSpy
+  FormSpy,
+  normalize
 } from '@exzeo/core-ui';
+import { useQuoteSearch, Pagination } from '@exzeo/core-ui/src/@Harmony';
 
 import ResetButton from '../components/ResetButton';
 import { STANDARD_DATE_FORMAT } from '../../../constants/dates';
@@ -24,8 +25,6 @@ import SearchTypeWatcher from '../components/SearchTypeWatcher';
 import Loader from '@exzeo/core-ui/src/Loader/Loader';
 import NoResults from '../components/NoResults';
 import QuoteCard from '../components/QuoteCard';
-import { useQuoteSearch } from '@exzeo/core-ui/src/@Harmony/Search';
-import { Pagination } from '@exzeo/core-ui/src/@Harmony';
 import SearchResultsWrapper from '../components/SearchResultsWrapper';
 
 const {
@@ -79,7 +78,12 @@ const QuoteSearch = ({ changeSearchType, userProfile, history }) => {
       subscription={{ submitting: true, values: true }}
       onSubmit={handleSearchSubmit}
     >
-      {({ form, submitting, handleSubmit, values: { state } }) => (
+      {({
+        form,
+        submitting,
+        handleSubmit,
+        values: { state, effectiveDate }
+      }) => (
         <>
           {searchState.status === 'pending' && <Loader />}
           <div className="search">
@@ -104,7 +108,7 @@ const QuoteSearch = ({ changeSearchType, userProfile, history }) => {
                     </div>
                     <div className="form-group sortBy">
                       <Field
-                        name="sortBy"
+                        name="sort"
                         dataTest="sortBy"
                         label="Sort By"
                         component={Select}
@@ -148,7 +152,7 @@ const QuoteSearch = ({ changeSearchType, userProfile, history }) => {
                         errorHint
                       />
                       <Field
-                        name="address"
+                        name="propertyAddress"
                         dataTest="address"
                         label="Property Street Address"
                         placeholder="Property Street Address Search"
@@ -206,7 +210,7 @@ const QuoteSearch = ({ changeSearchType, userProfile, history }) => {
                           label="Effective Date"
                           component={Input}
                           placeholder={STANDARD_DATE_FORMAT}
-                          normalize={normalize.date}
+                          parse={value => normalize.date(value, effectiveDate)}
                           validate={isValidDate}
                           errorHint
                         />
