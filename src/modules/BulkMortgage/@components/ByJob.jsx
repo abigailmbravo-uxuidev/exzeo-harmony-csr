@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
+import { date } from '@exzeo/core-ui';
+import { Pagination } from '@exzeo/core-ui/src/@Harmony';
+
 import JobFilter from './JobFilter';
 import { useFetchUsersForJobs } from '../hooks';
 import JobResults from './JobResults';
 import { getMortgageeJobs } from '../data';
-import { date } from '@exzeo/core-ui/src';
-import Pagination from '../../Search/components/Pagination';
 import NoResults from './NoResults';
 
 export const ByJob = ({ userProfile, errorHandler }) => {
@@ -92,8 +93,8 @@ export const ByJob = ({ userProfile, errorHandler }) => {
       <section className="bm-byJob search-results-wrapper">
         {totalPages > 0 && (
           <Pagination
-            changePageForward={handlePagination(true)}
-            changePageBack={handlePagination(false)}
+            pageUp={handlePagination(true)}
+            pageDown={handlePagination(false)}
             pageNumber={currentPage}
             totalPages={totalPages}
           />

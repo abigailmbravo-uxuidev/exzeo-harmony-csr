@@ -1,5 +1,3 @@
-import { baseQuoteResponse } from '../fixtures';
-
 export function retrieveQuote(quoteNumber, apiUrl, token) {
   return cy.request({
     url: apiUrl,
@@ -49,6 +47,22 @@ export function manualBindPolicy(quoteNumber, apiUrl, token) {
         quoteId: quoteNumber,
         force: true
       }
+    }
+  });
+}
+
+export function getToken() {
+  return cy.request({
+    url: `https://${Cypress.env('AUTH0_URL')}/oauth/token`,
+    method: 'POST',
+    body: {
+      grant_type: 'password',
+      username: 'tticcsr',
+      password: 'Password1',
+      audience: Cypress.env('AUTH0_AUDIENCE'),
+      client_id: Cypress.env('AUTH0_CLIENT_ID'),
+      scope: 'openid email profile',
+      client_secret: Cypress.env('AUTH0_CLIENT_SECRET')
     }
   });
 }

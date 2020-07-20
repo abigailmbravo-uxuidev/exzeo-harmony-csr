@@ -4,7 +4,7 @@ import { bool, func, string, shape } from 'prop-types';
 import { Button } from '@exzeo/core-ui';
 import { ShareFooter } from '@exzeo/core-ui/src/@Harmony';
 
-import Footer from '../../components/Common/Footer';
+import Footer from '../../components/Footer';
 
 function QuoteFooter({
   isSubmitDisabled,

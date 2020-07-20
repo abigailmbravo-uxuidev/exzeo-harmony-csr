@@ -5,7 +5,7 @@ import { PolicyHolder } from '@exzeo/core-ui/src/@Harmony';
 
 import PolicyHoldersWatcher from './PolicyHoldersWatcher';
 
-const PolicyHolders = ({ config, initialValues, size, formValues }) => {
+const PolicyHolders = ({ config, initialValues, size }) => {
   const { watchField } = config.extendedProperties;
   return (
     <section

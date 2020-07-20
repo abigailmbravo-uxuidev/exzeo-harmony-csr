@@ -6,6 +6,7 @@ import {
 } from '@exzeo/core-ui/src/@Harmony';
 
 import { doesUserHaveAccess } from '../../../utilities/userResources';
+import { useUser } from '../../../context/user-context';
 
 const PaymentHistorySection = ({
   initialValues,
@@ -13,15 +14,16 @@ const PaymentHistorySection = ({
   setPaymentAdded,
   customHandlers
 }) => {
+  const userProfile = useUser();
   const { companyCode, state, product } = initialValues;
   const enableOnlinePayments = useMemo(() => {
     const onlinePaymentURI = `${companyCode}:${state}:${product}:OnlinePayments:*`;
     return doesUserHaveAccess(
-      customHandlers.userProfile.resources,
+      userProfile.resources,
       onlinePaymentURI,
       'INSERT'
     );
-  }, [customHandlers.userProfile, companyCode, state, product]);
+  }, [userProfile.resources, companyCode, state, product]);
 
   return (
     <PaymentHistoryTable

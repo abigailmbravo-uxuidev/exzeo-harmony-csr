@@ -68,7 +68,9 @@ describe('Base Path - HO3, create a quote, bind the Policy and make Endorsements
     searchQoute();
 
     // Combine 2 tests with different way of writing the code. As we decided - we will format 2nd or 1st part in the future in order the  whole test be written in one way.
-    cy.visit('/');
+    cy.window().then(win => {
+      win.__rrHistory.push('/');
+    });
     cy.task('log', 'Search Policy and open')
       .get('@policyNumber')
       .then(polNum => {
@@ -85,7 +87,10 @@ describe('Base Path - HO3, create a quote, bind the Policy and make Endorsements
           // This makes it so we don't open up a new window
           .findDataTag(polNum)
           .then($a => {
-            $a.prop('onclick', () => cy.visit($a.prop('dataset').url));
+            const url = $a.prop('dataset').url;
+            cy.window().then(win => {
+              win.__rrHistory.push(url);
+            });
           });
         cy.task('log', 'Effective Date Change with updated workflow');
         cy.findDataTag('edit-effective-date')

@@ -1,14 +1,17 @@
 import React from 'react';
 import { fireEvent, wait } from '@testing-library/react';
-import SearchForm from '../../index';
+
 import {
-  renderWithForm,
+  render,
   checkLabel,
   checkSelect,
   checkButton,
-  jestResolve
+  jestResolve,
+  mockServiceRunner
 } from '../../../../test-utils';
-import * as hooks from '../../hooks';
+
+import * as searchData from '../../data';
+import { Search } from '../../index';
 
 const fields = [
   {
@@ -79,41 +82,28 @@ describe('Quote Search Testing', () => {
   const selectFields = fields.filter(({ type }) => type === 'select');
   const textFields = fields.filter(({ type }) => type === 'text');
 
-  hooks.useFetchQuoteState = jestResolve({
-    quoteStateList: [
-      { answer: 'Quote Started', label: 'Quote Started' },
-      { answer: 'Application Started', label: 'Application Started' },
-      { answer: 'Quote Stopped', label: 'Quote Stopped' },
-      { answer: 'Quote Declined', label: 'Quote Declined' },
-      {
-        answer: 'Application Sent DocuSign',
-        label: 'Application Sent DocuSign'
-      },
-      {
-        answer: 'Application Sent Manual',
-        label: 'Application Sent Manual'
-      },
-      { answer: 'Application Obstructed', label: 'Applicaiton Obstructed' },
-      { answer: 'Quote Expired', label: 'Quote Expired' },
-      { answer: 'Documents Received', label: 'Documents Received' },
-      { answer: 'Policy Issued', label: 'Policy Issued' },
-      { answer: 'DocuSign Voided', label: 'DocuSign Voided' },
-      { answer: 'Quote Qualified', label: 'Quote Qualified' },
-      { answer: 'Application Ready', label: 'Application Ready' }
-    ]
-  });
+  searchData.getUIQuestions = jestResolve([
+    {
+      name: 'quoteState',
+      answers: [
+        { answer: 'Quote Started', label: 'Quote Started' },
+        { answer: 'Application Started', label: 'Application Started' }
+      ]
+    }
+  ]);
 
   it('POS:Renders and has fields and labels', async () => {
-    const { getByPlaceholderText, getByTestId } = renderWithForm(
-      <SearchForm {...props} />
+    mockServiceRunner([]);
+    const { getByPlaceholderText, getByTestId, getByLabelText } = render(
+      <Search {...props} />
     );
 
-    fireEvent.change(getByTestId('searchType'), {
+    fireEvent.change(getByLabelText('Search Context'), {
       target: { value: 'quote' }
     });
 
     await wait(() => {
-      expect(getByTestId('searchType').value).toBe('quote');
+      expect(getByLabelText('Search Context')).toHaveValue('quote');
     });
 
     fields.forEach(field => checkLabel(getByTestId, field));
@@ -128,15 +118,16 @@ describe('Quote Search Testing', () => {
   });
 
   it('POS:Checks that all fields are working', async () => {
-    const { getByPlaceholderText, getByTestId } = renderWithForm(
-      <SearchForm {...props} />
+    mockServiceRunner([]);
+    const { getByPlaceholderText, getByTestId, getByLabelText } = render(
+      <Search {...props} />
     );
-    fireEvent.change(getByTestId('searchType'), {
+    fireEvent.change(getByLabelText('Search Context'), {
       target: { value: 'quote' }
     });
 
     await wait(() => {
-      expect(getByTestId('searchType').value).toBe('quote');
+      expect(getByLabelText('Search Context')).toHaveValue('quote');
     });
     selectFields.forEach(field => checkSelect(getByTestId, field));
     textFields.forEach(field =>
@@ -145,14 +136,14 @@ describe('Quote Search Testing', () => {
   });
 
   it('POS:Quote Search Button', async () => {
-    const { getByTestId } = renderWithForm(<SearchForm {...props} />);
+    const { getByTestId, getByLabelText } = render(<Search {...props} />);
 
     fireEvent.change(getByTestId('searchType'), {
       target: { value: 'quote' }
     });
 
     await wait(() => {
-      expect(getByTestId('searchType').value).toBe('quote');
+      expect(getByLabelText('Search Context')).toHaveValue('quote');
     });
 
     checkButton(getByTestId, {

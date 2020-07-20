@@ -5,7 +5,7 @@ const subtractLicenseStartDays = -5;
 const subtractLicenseStartDays2 = -10;
 
 export const createNewDate = addDays => {
-  let today = new Date();
+  const today = new Date();
   const addExpirationDays = addDays;
   today.setDate(today.getDate() + addExpirationDays);
   const yyyy = today.getFullYear();

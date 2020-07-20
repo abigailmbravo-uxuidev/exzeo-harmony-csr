@@ -2,7 +2,7 @@ import React from 'react';
 import { fireEvent } from '@testing-library/react';
 
 import {
-  renderWithReduxAndRouter,
+  render,
   defaultInitialState,
   defaultInitialProps,
   mockServiceRunner
@@ -68,7 +68,7 @@ describe('Notes Testing', () => {
       ]
     };
 
-    const { getByText } = renderWithReduxAndRouter(<Notes {...props} />, {
+    const { getByText } = render(<Notes {...props} />, {
       state
     });
 

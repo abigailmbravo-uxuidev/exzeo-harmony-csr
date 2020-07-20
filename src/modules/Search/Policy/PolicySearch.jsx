@@ -9,29 +9,30 @@ import {
   Form,
   FormSpy,
   date,
-  normalize
+  normalize,
+  Loader
 } from '@exzeo/core-ui';
 
 import {
   AgencyTypeAhead,
   Pagination,
-  POLICY_STATUS_OPTIONS
+  POLICY_STATUS_OPTIONS,
+  usePolicySearch
 } from '@exzeo/core-ui/src/@Harmony';
 
 import { STANDARD_DATE_FORMAT } from '../../../constants/dates';
-import ResetButton from '../components/ResetButton';
-import { cspConfigForSearch } from '../utilities';
 import {
   SEARCH_CONFIG,
   SEARCH_TYPE_OPTIONS,
   SEARCH_TYPES
 } from '../../../constants/search';
-import SearchTypeWatcher from '../components/SearchTypeWatcher';
-import Loader from '@exzeo/core-ui/src/Loader/Loader';
-import NoResults from '../components/NoResults';
-import { usePolicySearch } from '@exzeo/core-ui/src/@Harmony/Search';
-import PolicyCard from '../components/PolicyCard';
-import SearchResultsWrapper from '../components/SearchResultsWrapper';
+
+import { cspConfigForSearch } from '../utilities';
+import SearchTypeWatcher from '../@components/SearchTypeWatcher';
+import NoResults from '../@components/NoResults';
+import PolicyCard from '../@components/PolicyCard';
+import SearchResultsWrapper from '../@components/SearchResultsWrapper';
+import ResetButton from '../@components/ResetButton';
 
 const {
   isValidNameFormat,

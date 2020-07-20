@@ -5,7 +5,7 @@ import { date, format } from '@exzeo/core-ui/src';
 const BillingTable = ({ initialValues }) => {
   const formatBillingInformation = defaultMemoize(initialValues => {
     const { summaryLedger, additionalInterests, policyHolders } = initialValues;
-    let billToName = '';
+    let billToName;
 
     if (initialValues.billToType === 'Additional Interest') {
       const ai =

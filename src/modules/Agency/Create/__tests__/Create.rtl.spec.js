@@ -3,7 +3,7 @@ import { fireEvent, within } from '@testing-library/react';
 
 import {
   defaultCreateAgencyProps,
-  renderWithForm,
+  render,
   mockServiceRunner,
   detailsFields,
   addressFields,
@@ -22,7 +22,7 @@ describe('Testing the Create Agency Page', () => {
   mockServiceRunner([]);
 
   it('POS:Checks Headers and fields', () => {
-    const { getByText, getByTestId } = renderWithForm(<Create {...props} />);
+    const { getByText, getByTestId } = render(<Create {...props} />);
 
     expect(getByText('Details'));
     expect(getByText('Officer'));
@@ -83,7 +83,7 @@ describe('Testing the Create Agency Page', () => {
   });
 
   it('NEG:All Required Fields Error', () => {
-    const { getByTestId } = renderWithForm(<Create {...props} />);
+    const { getByTestId } = render(<Create {...props} />);
 
     const { getByTestId: getByTestIdWithinDetails } = within(
       getByTestId('agency-details')

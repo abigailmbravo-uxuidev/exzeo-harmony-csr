@@ -6,7 +6,7 @@ import { Loader } from '@exzeo/core-ui';
 import { fetchNotes } from '../state/actions/notes.actions';
 import { setAppError } from '../state/actions/error.actions';
 import NoteList from './NoteList';
-import Footer from './Common/Footer';
+import Footer from './Footer';
 
 export class Notes extends Component {
   state = { isLoading: true };
@@ -47,10 +47,7 @@ const mapStateToProps = state => ({
   policy: state.policyState.policy
 });
 
-export default connect(
-  mapStateToProps,
-  {
-    fetchNotes,
-    setAppError
-  }
-)(Notes);
+export default connect(mapStateToProps, {
+  fetchNotes,
+  setAppError
+})(Notes);

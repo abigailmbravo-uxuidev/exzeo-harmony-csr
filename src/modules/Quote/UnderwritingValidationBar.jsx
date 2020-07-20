@@ -2,6 +2,7 @@ import React from 'react';
 import orderBy from 'lodash/orderBy';
 import { Form, Field, date, Button } from '@exzeo/core-ui';
 import { defaultMemoize } from 'reselect';
+import { useUser } from '../../context/user-context';
 
 import UnderwritingExceptions from './UnderwritingExceptions';
 
@@ -50,7 +51,8 @@ const getGroupedUnderwritingExceptions = defaultMemoize(
   }
 );
 
-const UnderwritingValidationBar = ({ userProfile, updateQuote, quoteData }) => {
+const UnderwritingValidationBar = ({ updateQuote, quoteData }) => {
+  const userProfile = useUser();
   const handleFormSubmit = async data => {
     const { info, underwritingReview, fatalError } = data;
 

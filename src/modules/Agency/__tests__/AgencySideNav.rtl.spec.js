@@ -1,5 +1,5 @@
 import React from 'react';
-import { renderWithForm, mockServiceRunner } from '../../../test-utils';
+import { render, mockServiceRunner } from '../../../test-utils';
 
 import AgencySideNav from '../AgencySideNav';
 
@@ -13,7 +13,7 @@ describe('Testing the Agency Side-Nav', () => {
         url: ''
       }
     };
-    const { getByTestId } = renderWithForm(<AgencySideNav {...props} />);
+    const { getByTestId } = render(<AgencySideNav {...props} />);
 
     expect(getByTestId('new-note')).toHaveAttribute('disabled');
   });
@@ -25,7 +25,7 @@ describe('Testing the Agency Side-Nav', () => {
         url: ''
       }
     };
-    const { getByTestId } = renderWithForm(<AgencySideNav {...props} />);
+    const { getByTestId } = render(<AgencySideNav {...props} />);
 
     expect(getByTestId('new-note')).not.toHaveAttribute('disabled');
   });

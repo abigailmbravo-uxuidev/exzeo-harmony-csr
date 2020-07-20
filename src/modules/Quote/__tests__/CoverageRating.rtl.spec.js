@@ -10,7 +10,7 @@ import * as agencyData from '@exzeo/core-ui/src/@Harmony/Agency/data';
 import {
   defaultQuoteWorkflowProps,
   policyHolder,
-  renderWithForm,
+  render,
   searchAgenciesResult,
   searchAgentsResult,
   jestResolve,
@@ -76,7 +76,7 @@ describe('Testing the Coverage/Rating Page', () => {
   ];
 
   it('POS:Checks Header and Labels for all fields', () => {
-    const { getByTestId } = renderWithForm(<QuoteWorkflow {...props} />);
+    const { getByTestId } = render(<QuoteWorkflow {...props} />);
 
     const { getByText: getByTextInsideForm } = within(
       document.getElementById('QuoteWorkflowCSR')
@@ -93,7 +93,7 @@ describe('Testing the Coverage/Rating Page', () => {
   it('POS:Produced By Fields Placeholder', async () => {
     agencyData.searchAgencies = jestResolve([]);
     agencyData.fetchAgentsByAgencyCode = jestResolve([]);
-    const { getByTestId } = renderWithForm(<QuoteWorkflow {...props} />);
+    const { getByTestId } = render(<QuoteWorkflow {...props} />);
     await wait(() =>
       expect(getByTestId('agencyCode_wrapper').textContent).toMatch(
         /Start typing to search.../
@@ -109,9 +109,7 @@ describe('Testing the Coverage/Rating Page', () => {
   it('POS:Produced By Fields', async () => {
     agencyData.searchAgencies = jestResolve(searchAgenciesResult);
     agencyData.fetchAgentsByAgencyCode = jestResolve(searchAgentsResult);
-    const { getByText, getByTestId } = renderWithForm(
-      <QuoteWorkflow {...props} />
-    );
+    const { getByText, getByTestId } = render(<QuoteWorkflow {...props} />);
     const agency = getByTestId('agencyCode_wrapper');
     const agent = getByTestId('agentCode_wrapper');
     await waitForElement(() => getByText(/20000: TEST DEFAULT AGENCY/));
@@ -133,7 +131,7 @@ describe('Testing the Coverage/Rating Page', () => {
   });
 
   it('POS:PolicyHolder Fields', () => {
-    const { getByTestId } = renderWithForm(<QuoteWorkflow {...props} />);
+    const { getByTestId } = render(<QuoteWorkflow {...props} />);
     [
       ...primaryPolicyholderFields,
       ...secondaryPolicyholderFields
@@ -141,7 +139,7 @@ describe('Testing the Coverage/Rating Page', () => {
   });
 
   it('POS:Property Fields', () => {
-    const { getByTestId } = renderWithForm(<QuoteWorkflow {...props} />);
+    const { getByTestId } = render(<QuoteWorkflow {...props} />);
 
     [...propertyFields, ...homeAndLocationFields]
       .filter(({ disabled }) => disabled)
@@ -149,7 +147,7 @@ describe('Testing the Coverage/Rating Page', () => {
   });
 
   it('POS:Coverages Fields', () => {
-    const { getByTestId } = renderWithForm(<QuoteWorkflow {...props} />);
+    const { getByTestId } = render(<QuoteWorkflow {...props} />);
 
     [
       ...coverageFields,
@@ -165,7 +163,7 @@ describe('Testing the Coverage/Rating Page', () => {
   });
 
   it('POS:Wind Mitigation Fields', () => {
-    const { getByTestId } = renderWithForm(<QuoteWorkflow {...props} />);
+    const { getByTestId } = render(<QuoteWorkflow {...props} />);
 
     windFields.forEach(field => {
       if (field.type === 'radio') return checkRadio(getByTestId, field);
@@ -174,7 +172,7 @@ describe('Testing the Coverage/Rating Page', () => {
   });
 
   it('NEG:All Required Fields Error', () => {
-    const { getByTestId } = renderWithForm(<QuoteWorkflow {...props} />);
+    const { getByTestId } = render(<QuoteWorkflow {...props} />);
 
     const checkField = async field => {
       clearText(getByTestId, field);
@@ -202,7 +200,7 @@ describe('Testing the Coverage/Rating Page', () => {
         policyHolders: [...props.quote.policyHolders, policyHolder]
       }
     };
-    const { getByTestId } = renderWithForm(<QuoteWorkflow {...newProps} />);
+    const { getByTestId } = render(<QuoteWorkflow {...newProps} />);
 
     expect(getByTestId('submit')).toBeDisabled();
 
@@ -237,14 +235,14 @@ describe('Testing the Coverage/Rating Page', () => {
         editingDisabled: true
       }
     };
-    const { getByTestId } = renderWithForm(<QuoteWorkflow {...newProps} />);
+    const { getByTestId } = render(<QuoteWorkflow {...newProps} />);
 
     primaryPolicyholderFields.forEach(field => clearText(getByTestId, field));
     expect(getByTestId('submit')).toBeDisabled();
   });
 
   it('POS:Tests button', () => {
-    const { getByText } = renderWithForm(<QuoteWorkflow {...props} />);
+    const { getByText } = render(<QuoteWorkflow {...props} />);
     expect(getByText('Reset').textContent).toMatch(/Reset/);
   });
 
@@ -256,9 +254,7 @@ describe('Testing the Coverage/Rating Page', () => {
         policyHolders: []
       }
     };
-    const { getByText, getByTestId } = renderWithForm(
-      <QuoteWorkflow {...newProps} />
-    );
+    const { getByText, getByTestId } = render(<QuoteWorkflow {...newProps} />);
 
     expect(getByText('Update')).toBeDisabled();
     primaryPolicyholderFields.forEach(({ value, dataTest }) => {
@@ -285,7 +281,7 @@ describe('Testing the Coverage/Rating Page', () => {
         policyHolders: [...props.quote.policyHolders, policyHolder]
       }
     };
-    const { getByTestId } = renderWithForm(<QuoteWorkflow {...newProps} />);
+    const { getByTestId } = render(<QuoteWorkflow {...newProps} />);
 
     await waitForElement(() => [getByTestId('coverageLimits.dwelling.value')]);
 

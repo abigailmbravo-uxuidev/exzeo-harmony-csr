@@ -1,15 +1,12 @@
-// Functions used to navigate each tab of the app
-// import { envelopeIdCheck } from '../../helpers/requests';
-import { envelopeIdCheck, manualBindPolicy } from '../helpers';
+import { envelopeIdCheck, manualBindPolicy, getToken } from '../helpers';
 import {
   user,
   pH1,
   shareQuote,
   addInsured,
   unQuestions,
-  unQuestionsBAD,
-  coverage,
-  agencyDetails
+  agencyDetails,
+  coverage as coverageValues
 } from '../fixtures';
 
 export const navigateThroughNewQuote = (
@@ -33,10 +30,13 @@ export const navigateThroughNewQuote = (
       // This makes it so we don't open up a new window
       .findDataTag(address)
       .then($a => {
-        $a.prop('onclick', () => cy.visit($a.prop('dataset').url));
-        cy.wait('@createQuote')
-          .wait('@retrieveQuote')
-          .wait('@getZipcodeSettings');
+        const url = $a.prop('dataset').url;
+        cy.window().then(win => {
+          win.__rrHistory.push(url);
+          cy.wait('@createQuote')
+            .wait('@retrieveQuote')
+            .wait('@getZipcodeSettings');
+        });
       })
       .findDataTag('propertyAddressDetail')
       .contains(address)
@@ -58,15 +58,15 @@ export const fillOutCoverage = (customerInfo = pH1) => {
     .wait('@updateQuote')
     .then(({ response }) => {
       expect(response.body.status).to.equal(200);
+      cy.contains(customerInfo['policyHolders[0].firstName']).should(
+        'contain.text',
+        `${customerInfo['policyHolders[0].firstName']} ${customerInfo['policyHolders[0].lastName']}`
+      );
     });
-  cy.contains(customerInfo['policyHolders[0].firstName']).should(
-    'contain.text',
-    `${customerInfo['policyHolders[0].firstName']} ${customerInfo['policyHolders[0].lastName']}`
-  );
 };
 
 export const changeCoverageAndAgency = (
-  coverage = coverage,
+  coverage = coverageValues,
   agency = agencyDetails
 ) => {
   return cy
@@ -253,16 +253,19 @@ export const navigateThroughDocusign = () => {
     .should('be.disabled')
     .get('@submittedQuote')
     .then(quote => {
-      const token = localStorage.getItem('id_token');
-      const apiUrl = Cypress.env('API_URL') + '/svc';
-      const { quoteNumber } = quote;
-      envelopeIdCheck(quoteNumber, apiUrl, token).then(response => {
-        expect(response.body.result.envelopeId).to.not.be.empty;
-      });
-      manualBindPolicy(quoteNumber, apiUrl, token).then(response => {
-        cy.wrap(response.body.result.transaction.policyNumber).as(
-          'policyNumber'
-        );
+      getToken().then(response => {
+        const { quoteNumber } = quote;
+        const token = response.body.access_token;
+        const apiUrl = `${Cypress.env('API_URL')}/svc`;
+
+        envelopeIdCheck(quoteNumber, apiUrl, token).then(response => {
+          expect(response.body.result.envelopeId).to.not.be.empty;
+        });
+        manualBindPolicy(quoteNumber, apiUrl, token).then(response => {
+          cy.wrap(response.body.result.transaction.policyNumber).as(
+            'policyNumber'
+          );
+        });
       });
     });
 };
@@ -292,8 +295,10 @@ export const searchPolicy = () => {
 export const searchQoute = () => {
   return cy
     .task('log', 'Searching for the Quote')
-    .get('#logo')
-    .click()
+    .window()
+    .then(win => {
+      win.__rrHistory.push('/');
+    })
     .findDataTag('searchType')
     .select('quote')
     .get('@quoteNumber')
@@ -316,8 +321,10 @@ export const searchDiary = () => {
     .task('log', 'Searching for the Diary')
     .get('@diaryText')
     .then(diaryText => {
-      cy.get('#logo')
-        .click()
+      cy.window()
+        .then(win => {
+          win.__rrHistory.push('/');
+        })
         .findDataTag('diaries-link')
         .click()
         .get('div')

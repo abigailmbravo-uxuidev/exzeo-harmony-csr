@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import Footer from '../../../components/Common/Footer';
+import Footer from '../../../components/Footer';
 
 import TransferModal from './TransferModal';
 import TransferList from './TransferList';

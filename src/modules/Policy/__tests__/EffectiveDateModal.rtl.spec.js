@@ -1,14 +1,16 @@
 import React from 'react';
 import { fireEvent, wait } from '@testing-library/react';
+import { noop } from '@exzeo/core-ui';
+
 import {
-  renderWithForm,
+  render,
   defaultPolicyWorkflowProps,
   mockServiceRunner,
   jestResolve
 } from '../../../test-utils';
+
 import { PolicyWorkflow } from '../PolicyWorkflow';
 import * as data from '../utilities';
-import { noop } from '@exzeo/core-ui';
 
 mockServiceRunner([]);
 
@@ -39,9 +41,7 @@ describe('Change Effective Date Testing', () => {
   };
 
   it('open model, test field values, then test reset values on modal close', async () => {
-    const { getByText, getByTestId } = renderWithForm(
-      <PolicyWorkflow {...props} />
-    );
+    const { getByText, getByTestId } = render(<PolicyWorkflow {...props} />);
 
     fireEvent.click(getByTestId('edit-effective-date'));
     await wait(() => {
@@ -94,9 +94,7 @@ describe('Change Effective Date Testing', () => {
   });
 
   it('should trigger validation errors for effective date and change reasons', async () => {
-    const { getByText, getByTestId } = renderWithForm(
-      <PolicyWorkflow {...props} />
-    );
+    const { getByText, getByTestId } = render(<PolicyWorkflow {...props} />);
 
     fireEvent.click(getByTestId('edit-effective-date'));
     await wait(() => {
@@ -126,9 +124,7 @@ describe('Change Effective Date Testing', () => {
       instanceId: '123',
       premiumChange: 55
     });
-    const { getByText, getByTestId } = renderWithForm(
-      <PolicyWorkflow {...props} />
-    );
+    const { getByText, getByTestId } = render(<PolicyWorkflow {...props} />);
 
     fireEvent.click(getByTestId('edit-effective-date'));
     await wait(() => {
@@ -162,9 +158,7 @@ describe('Change Effective Date Testing', () => {
       instanceId: '123',
       premiumChange: -55
     });
-    const { getByText, getByTestId } = renderWithForm(
-      <PolicyWorkflow {...props} />
-    );
+    const { getByText, getByTestId } = render(<PolicyWorkflow {...props} />);
 
     fireEvent.click(getByTestId('edit-effective-date'));
     await wait(() => {
@@ -198,9 +192,7 @@ describe('Change Effective Date Testing', () => {
       instanceId: '123',
       premiumChange: 0
     });
-    const { getByText, getByTestId } = renderWithForm(
-      <PolicyWorkflow {...props} />
-    );
+    const { getByText, getByTestId } = render(<PolicyWorkflow {...props} />);
 
     fireEvent.click(getByTestId('edit-effective-date'));
     await wait(() => {
@@ -234,9 +226,7 @@ describe('Change Effective Date Testing', () => {
       instanceId: '123',
       premiumChange: 0
     });
-    const { getByText, getByTestId } = renderWithForm(
-      <PolicyWorkflow {...props} />
-    );
+    const { getByText, getByTestId } = render(<PolicyWorkflow {...props} />);
 
     fireEvent.click(getByTestId('edit-effective-date'));
     await wait(() => {
@@ -315,9 +305,7 @@ describe('Change Effective Date Testing', () => {
       }
     });
 
-    const { getByText, getByTestId } = renderWithForm(
-      <PolicyWorkflow {...props} />
-    );
+    const { getByText, getByTestId } = render(<PolicyWorkflow {...props} />);
 
     fireEvent.click(getByTestId('edit-effective-date'));
     await wait(() => {

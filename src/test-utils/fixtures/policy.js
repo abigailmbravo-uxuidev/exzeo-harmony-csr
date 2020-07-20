@@ -300,7 +300,6 @@ export const mockPolicy = {
       endorsementType: 'Deductible Endorsement'
     }
   },
-  editHash: 'e431e8d49ddccc08cd86c02cd8c3fa2fd9eb5631823e11cadcd7a3fe78ebe3b9',
   effectiveDate: '2019-10-03T04:00:00.000Z',
   endDate: '2020-10-03T04:00:00.000Z',
   policyAccountCode: 10000,

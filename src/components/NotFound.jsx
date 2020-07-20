@@ -1,12 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-import Header from '../components/Common/Header';
+import Header from './Header';
 
-const NotFound = function NotFound({ auth }) {
+function NotFound() {
   return (
     <div className="app-wrapper">
-      <Header auth={auth} />
+      <Header />
       <main role="document">
         <div className="route-content">
           <div className="error-content" role="article">
@@ -55,7 +55,7 @@ const NotFound = function NotFound({ auth }) {
       </main>
     </div>
   );
-};
+}
 
 NotFound.propTypes = {
   className: PropTypes.string

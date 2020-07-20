@@ -7,7 +7,7 @@ import {
 } from '@testing-library/react';
 
 import {
-  renderWithForm,
+  render,
   defaultQuoteWorkflowProps,
   rating,
   mockServiceRunner,
@@ -61,7 +61,7 @@ describe('Mailing/Billing Page Testing', () => {
         quoteInputState: 'Initial Data'
       }
     };
-    const { getByText } = renderWithForm(<QuoteWorkflow {...newProps} />);
+    const { getByText } = render(<QuoteWorkflow {...newProps} />);
 
     expect(
       getByText(
@@ -71,7 +71,7 @@ describe('Mailing/Billing Page Testing', () => {
   });
 
   it('POS:Checks Page Headers', async () => {
-    const { getByTestId } = renderWithForm(<QuoteWorkflow {...props} />);
+    const { getByTestId } = render(<QuoteWorkflow {...props} />);
 
     await waitForElement(() => [
       getByTestId('billToId'),
@@ -86,9 +86,7 @@ describe('Mailing/Billing Page Testing', () => {
   });
 
   it('POS:Checks fields', async () => {
-    const { getByTestId, getByText } = renderWithForm(
-      <QuoteWorkflow {...props} />
-    );
+    const { getByTestId, getByText } = render(<QuoteWorkflow {...props} />);
     await waitForElement(() => [
       getByTestId('billToId'),
       getByTestId('billPlan_Annual')
@@ -108,7 +106,7 @@ describe('Mailing/Billing Page Testing', () => {
   });
 
   it('POS:Tests button', () => {
-    const { getByText } = renderWithForm(<QuoteWorkflow {...props} />);
+    const { getByText } = render(<QuoteWorkflow {...props} />);
     expect(getByText('Reset').textContent).toMatch(/Reset/);
   });
 
@@ -125,9 +123,7 @@ describe('Mailing/Billing Page Testing', () => {
     newProps.quote.billToType = 'Policyholder';
     newProps.quote.billPlan = 'Annual';
 
-    const { getByTestId, getByText } = renderWithForm(
-      <QuoteWorkflow {...newProps} />
-    );
+    const { getByTestId, getByText } = render(<QuoteWorkflow {...newProps} />);
     await waitForElement(() => [
       getByTestId('billToId'),
       getByTestId('billPlan_Annual')
@@ -180,9 +176,7 @@ describe('Mailing/Billing Page Testing', () => {
     };
     newProps.quote.sameAsPropertyAddress = false;
 
-    const { getByTestId, getByText } = renderWithForm(
-      <QuoteWorkflow {...newProps} />
-    );
+    const { getByTestId, getByText } = render(<QuoteWorkflow {...newProps} />);
     await waitForElement(() => [
       getByTestId('billToId'),
       getByTestId('billPlan_Annual')

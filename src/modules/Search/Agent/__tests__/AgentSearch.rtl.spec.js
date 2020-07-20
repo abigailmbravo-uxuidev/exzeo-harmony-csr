@@ -3,7 +3,7 @@ import React from 'react';
 import { fireEvent, wait } from '@testing-library/react';
 
 import {
-  renderWithForm,
+  render,
   checkLabel,
   checkSelect,
   checkButton
@@ -64,7 +64,7 @@ describe('Agent Search Testing', () => {
   const textFields = fields.filter(({ type }) => type === 'text');
 
   it('POS:Renders and has fields and labels', async () => {
-    const { getByPlaceholderText, getByTestId } = renderWithForm(
+    const { getByPlaceholderText, getByTestId } = render(
       <AgentSearch {...props} />
     );
 
@@ -88,7 +88,7 @@ describe('Agent Search Testing', () => {
   });
 
   it('POS:Checks that all fields are working', async () => {
-    const { getByPlaceholderText, getByTestId } = renderWithForm(
+    const { getByPlaceholderText, getByTestId } = render(
       <AgentSearch {...props} />
     );
 
@@ -106,7 +106,7 @@ describe('Agent Search Testing', () => {
   });
 
   it('POS:Agent Search Button', async () => {
-    const { getByTestId } = renderWithForm(<AgentSearch {...props} />);
+    const { getByTestId } = render(<AgentSearch {...props} />);
 
     fireEvent.change(getByTestId('searchType'), {
       target: { value: 'agent' }

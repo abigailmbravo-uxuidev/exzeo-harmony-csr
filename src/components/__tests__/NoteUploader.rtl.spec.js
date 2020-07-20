@@ -2,7 +2,7 @@ import React from 'react';
 import { waitForElement } from '@testing-library/react';
 
 import {
-  renderWithForm,
+  render,
   checkLabel,
   checkSelect,
   checkTextInput,
@@ -63,7 +63,7 @@ describe('Note Uploader Testing', () => {
       resourceType: 'Quote'
     };
 
-    const { getByTestId, getByPlaceholderText } = renderWithForm(
+    const { getByTestId, getByPlaceholderText } = render(
       <NoteUploader {...props} />
     );
 

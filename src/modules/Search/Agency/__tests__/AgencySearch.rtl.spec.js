@@ -1,7 +1,7 @@
 import React from 'react';
 
 import {
-  renderWithForm,
+  render,
   checkLabel,
   checkSelect,
   checkButton
@@ -69,7 +69,7 @@ describe('Agency Search Testing', () => {
   const textFields = fields.filter(({ type }) => type === 'text');
 
   it('POS:Renders and has fields and labels', () => {
-    const { getByPlaceholderText, getByTestId } = renderWithForm(
+    const { getByPlaceholderText, getByTestId } = render(
       <AgencySearch {...props} />
     );
 
@@ -86,7 +86,7 @@ describe('Agency Search Testing', () => {
   });
 
   it('POS:Checks that all fields are working', () => {
-    const { getByPlaceholderText, getByTestId } = renderWithForm(
+    const { getByPlaceholderText, getByTestId } = render(
       <AgencySearch {...props} />
     );
     selectFields.forEach(field => checkSelect(getByTestId, field));
@@ -96,7 +96,7 @@ describe('Agency Search Testing', () => {
   });
 
   it('POS:Agency Search Button', () => {
-    const { getByTestId } = renderWithForm(<AgencySearch {...props} />);
+    const { getByTestId } = render(<AgencySearch {...props} />);
     checkButton(getByTestId, {
       dataTest: 'submit',
       text: 'Search',

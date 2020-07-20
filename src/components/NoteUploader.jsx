@@ -397,8 +397,7 @@ NoteUploader.propTypes = {
 };
 
 const mapStateToProps = state => ({
-  notes: state.notes,
-  user: state.authState.userProfile
+  notes: state.notes
 });
 
 export default connect(mapStateToProps, {

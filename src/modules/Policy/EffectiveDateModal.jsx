@@ -95,10 +95,10 @@ const EffectiveDateModal = ({
                 </FormSpy>
                 <Field name="premiumChange">
                   {({ input, meta }) => (
-                    <Field
-                      name="premiumChange"
+                    <Currency
+                      input={input}
+                      meta={meta}
                       label="New Endorsement Amount"
-                      component={Currency}
                       disabled
                       dataTest="premiumChange"
                     />
@@ -106,10 +106,10 @@ const EffectiveDateModal = ({
                 </Field>
                 <Field name="newAnnualPremium">
                   {({ input, meta }) => (
-                    <Field
-                      name="newAnnualPremium"
+                    <Currency
+                      input={input}
+                      meta={meta}
                       label="New Annual Premium"
-                      component={Currency}
                       disabled
                       dataTest="newAnnualPremium"
                     />

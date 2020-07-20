@@ -3,17 +3,17 @@ import PropTypes from 'prop-types';
 import { Helmet } from 'react-helmet';
 import { Route } from 'react-router-dom';
 
-import Header from '../../../components/Common/Header';
+import Header from '../../../components/Header';
 import SideNav from './SideNav';
 import BulkPayments from './BulkPayments';
 
-const Finance = ({ auth, errorHandler }) => {
+const Finance = ({ errorHandler }) => {
   return (
     <div className="app-wrapper csr">
       <Helmet>
         <title>Finance</title>
       </Helmet>
-      <Header auth={auth} />
+      <Header />
       <main role="document" className="policy-advanced">
         <SideNav />
         <Route

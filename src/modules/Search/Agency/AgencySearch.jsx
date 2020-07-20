@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
+import { NavLink } from 'react-router-dom';
 import {
   Input,
   Integer,
@@ -10,8 +11,11 @@ import {
   validation,
   Form,
   FormSpy,
-  noop
+  noop,
+  Loader
 } from '@exzeo/core-ui';
+import { Pagination } from '@exzeo/core-ui/src/@Harmony';
+
 import {
   SEARCH_CONFIG,
   AGENCY_SEARCH_OPTIONS,
@@ -19,16 +23,14 @@ import {
   AGENCY_STATUS,
   AGENCY_SORT
 } from '../../../constants/search';
-import Loader from '@exzeo/core-ui/src/Loader/Loader';
-import SearchTypeWatcher from '../components/SearchTypeWatcher';
-import AgencyCard from '../components/AgencyCard';
-import { NavLink } from 'react-router-dom';
+
 import { handleAgencySearch } from '../data';
 import { cspConfigForSearch } from '../utilities';
-import ResetButton from '../components/ResetButton';
-import { Pagination } from '@exzeo/core-ui/src/@Harmony';
-import NoResults from '../components/NoResults';
-import SearchResultsWrapper from '../components/SearchResultsWrapper';
+import SearchTypeWatcher from '../@components/SearchTypeWatcher';
+import AgencyCard from '../@components/AgencyCard';
+import ResetButton from '../@components/ResetButton';
+import NoResults from '../@components/NoResults';
+import SearchResultsWrapper from '../@components/SearchResultsWrapper';
 
 const { isValidChar, isRequired } = validation;
 

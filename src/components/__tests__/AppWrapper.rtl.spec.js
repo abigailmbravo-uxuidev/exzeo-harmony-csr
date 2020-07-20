@@ -1,12 +1,7 @@
 import React from 'react';
 import { fireEvent, wait } from '@testing-library/react';
 
-import {
-  renderWithReduxAndRouter,
-  renderWithForm,
-  defaultInitialState,
-  quote
-} from '../../test-utils';
+import { render, defaultInitialState, quote } from '../../test-utils';
 import { AppWrapper } from '../AppWrapper';
 
 describe('Testing AppWrapper', () => {
@@ -91,7 +86,7 @@ describe('Testing AppWrapper', () => {
       }
     } = props;
 
-    const { getByText } = renderWithReduxAndRouter(<AppWrapper {...props} />);
+    const { getByText } = render(<AppWrapper {...props} />);
     expect(getByText(product));
     // policyNumber exists in the title and policyDetails
     expect(getByText(policyNumber));
@@ -140,7 +135,7 @@ describe('Testing AppWrapper', () => {
         cancellation: { label, value }
       }
     } = props;
-    const { getByText } = renderWithReduxAndRouter(<AppWrapper {...props} />);
+    const { getByText } = render(<AppWrapper {...props} />);
 
     expect(getByText(label));
     expect(getByText(value));
@@ -172,7 +167,7 @@ describe('Testing AppWrapper', () => {
       }
     } = props;
 
-    const { getByText } = renderWithReduxAndRouter(<AppWrapper {...props} />);
+    const { getByText } = render(<AppWrapper {...props} />);
     expect(getByText(details.product));
     expect(getByText(details.quoteNumber));
     expect(getByText(status));
@@ -205,7 +200,7 @@ describe('Testing AppWrapper', () => {
 
     const state = { ...defaultInitialState, quoteState: { quote } };
 
-    const { getByText } = renderWithForm(<AppWrapper {...props} />, { state });
+    const { getByText } = render(<AppWrapper {...props} />, { state });
     expect(getByText('Coverage / Rating'));
     expect(getByText('Underwriting'));
     expect(getByText('Additional Interests'));
@@ -278,7 +273,7 @@ describe('Testing AppWrapper', () => {
       context: 'policy'
     };
 
-    const { getByText } = renderWithReduxAndRouter(<AppWrapper {...props} />);
+    const { getByText } = render(<AppWrapper {...props} />);
     expect(getByText('Coverage / Rating'));
     expect(getByText('Policyholder / Agent'));
     expect(getByText('Mortgage / Billing'));

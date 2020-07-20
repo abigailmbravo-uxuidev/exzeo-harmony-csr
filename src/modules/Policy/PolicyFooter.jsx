@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button } from '@exzeo/core-ui';
 
-import Footer from '../../components/Common/Footer';
+import Footer from '../../components/Footer';
 import EndorsementForm from './EndorsementForm';
 
 function PolicyFooter({

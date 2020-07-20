@@ -1,4 +1,4 @@
-import { handleNewTab, handleDiaryClick } from './handleNewTab';
+import { handleNewTab } from './handleNewTab';
 
 describe('test handleNewTab', () => {
   window.open = x => x;

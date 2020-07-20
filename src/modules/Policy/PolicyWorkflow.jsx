@@ -202,7 +202,7 @@ export class PolicyWorkflow extends React.Component {
     }));
   };
 
-  reinstatePolicySubmit = async data => {
+  reinstatePolicySubmit = async () => {
     const { policy, summaryLedger, createTransaction, getPolicy } = this.props;
 
     const submitData = {
@@ -216,7 +216,7 @@ export class PolicyWorkflow extends React.Component {
     this.handleToggleReinstateModal();
   };
 
-  rescindCancelSubmit = async data => {
+  rescindCancelSubmit = async () => {
     const {
       policy: { policyNumber },
       getPolicy,
@@ -463,7 +463,6 @@ const mapStateToProps = state => {
     endorsementHistory: getPolicyEndorsementHistory(state),
     policyFormData: getPolicyFormData(state),
     summaryLedger: state.policyState.summaryLedger,
-    userProfile: state.authState.userProfile,
     zipCodeSettings: state.service.getZipcodeSettings || {}
   };
 };

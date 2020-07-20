@@ -1,19 +1,20 @@
 import React from 'react';
+import { noop } from '@exzeo/core-ui';
+
 import {
+  render,
+  jestResolve,
   waitForElement,
   fireEvent,
   wait,
   within
-} from '@testing-library/react';
-
-import { renderWithForm, jestResolve } from '../../../test-utils';
-
-import BulkMortgagee from '../@components/BulkMortgagee';
-import { noop } from '@exzeo/core-ui';
-import * as bulkMortgageData from '../data';
-import topMortgagees from '../../../test-utils/fixtures/topMortgagees';
+} from '../../../test-utils';
 import mockPolicies from '../../../test-utils/fixtures/policiesWithMortgagees';
+import topMortgagees from '../../../test-utils/fixtures/topMortgagees';
+
+import * as bulkMortgageData from '../data';
 import { jobs } from '../testJobs';
+import BulkMortgagee from '../@components/BulkMortgagee';
 
 describe('BulkMortgagee By Policy Testing', () => {
   bulkMortgageData.getTopMortgagees = jestResolve(topMortgagees);
@@ -23,9 +24,7 @@ describe('BulkMortgagee By Policy Testing', () => {
     const props = {
       errorHandler: noop
     };
-    const { getByText, getByTestId } = renderWithForm(
-      <BulkMortgagee {...props} />
-    );
+    const { getByText, getByTestId } = render(<BulkMortgagee {...props} />);
 
     await wait(() => {
       // Page Headers
@@ -62,9 +61,7 @@ describe('BulkMortgagee By Policy Testing', () => {
     const props = {
       errorHandler: noop
     };
-    const { getByText, getByTestId } = renderWithForm(
-      <BulkMortgagee {...props} />
-    );
+    const { getByText, getByTestId } = render(<BulkMortgagee {...props} />);
 
     await waitForElement(() => [getByTestId('mortgage_wrapper')]);
 
@@ -112,7 +109,7 @@ describe('BulkMortgagee By Policy Testing', () => {
     const props = {
       errorHandler: noop
     };
-    const { getByTestId } = renderWithForm(<BulkMortgagee {...props} />);
+    const { getByTestId } = render(<BulkMortgagee {...props} />);
     await waitForElement(() => [getByTestId('policyNumber')]);
     getByTestId('search-policy-submit');
 
@@ -171,9 +168,7 @@ describe('BulkMortgagee By Policy Testing', () => {
     const props = {
       errorHandler: noop
     };
-    const { getByText, getByTestId } = renderWithForm(
-      <BulkMortgagee {...props} />
-    );
+    const { getByText, getByTestId } = render(<BulkMortgagee {...props} />);
     await waitForElement(() => [getByTestId('policyNumber')]);
 
     getByTestId('search-policy-submit');
@@ -229,9 +224,7 @@ describe('BulkMortgagee By Policy Testing', () => {
     const props = {
       errorHandler: noop
     };
-    const { getByText, getByTestId } = renderWithForm(
-      <BulkMortgagee {...props} />
-    );
+    const { getByText, getByTestId } = render(<BulkMortgagee {...props} />);
     await waitForElement(() => [
       getByTestId('policyNumber'),
       getByTestId('search-policy-submit')
@@ -321,7 +314,7 @@ describe('Bulk Mortgagee By Job Testing', () => {
     const props = {
       errorHandler: noop
     };
-    const { getByText } = renderWithForm(<BulkMortgagee {...props} />);
+    const { getByText } = render(<BulkMortgagee {...props} />);
 
     fireEvent.click(getByText('By Job'));
 
@@ -341,9 +334,7 @@ describe('Bulk Mortgagee By Job Testing', () => {
     const props = {
       errorHandler: noop
     };
-    const { getByText, getByTestId } = renderWithForm(
-      <BulkMortgagee {...props} />
-    );
+    const { getByText, getByTestId } = render(<BulkMortgagee {...props} />);
 
     fireEvent.click(getByText('By Job'));
 
@@ -380,9 +371,7 @@ describe('Bulk Mortgagee By Job Testing', () => {
     const props = {
       errorHandler: noop
     };
-    const { getByText, getByTestId } = renderWithForm(
-      <BulkMortgagee {...props} />
-    );
+    const { getByText, getByTestId } = render(<BulkMortgagee {...props} />);
 
     fireEvent.click(getByText('By Job'));
 
@@ -419,9 +408,7 @@ describe('Bulk Mortgagee By Job Testing', () => {
     const props = {
       errorHandler: noop
     };
-    const { getByText, getByTestId } = renderWithForm(
-      <BulkMortgagee {...props} />
-    );
+    const { getByText, getByTestId } = render(<BulkMortgagee {...props} />);
 
     fireEvent.click(getByText('By Job'));
 

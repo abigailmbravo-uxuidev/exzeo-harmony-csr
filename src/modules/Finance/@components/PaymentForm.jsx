@@ -30,6 +30,7 @@ const PaymentForm = ({
 
   const hasPolicy = policy && active && Object.entries(policy).length > 0;
 
+  // TODO #HAR-10247 this shouldn't be here. We have to get rid of this to be able to go into other states
   const normalizePolicyNumber = policyNumber => {
     const bits = policyNumber.split('-');
     const len = bits.length;
@@ -65,7 +66,7 @@ const PaymentForm = ({
     return policyNumber;
   };
 
-  const handlePolicySearch = async (policyNum, reset) => {
+  const handlePolicySearch = async policyNum => {
     if (!policyNum) return false;
     const policyNumber = normalizePolicyNumber(policyNum);
     setLoading(true);
@@ -134,7 +135,7 @@ const PaymentForm = ({
         onSubmit={handlePayment}
         subscription={{ values: true, errors: true, invalid: true }}
       >
-        {({ handleSubmit, form, errors, values }) => (
+        {({ handleSubmit, form, values }) => (
           <form
             id="payment-form"
             onSubmit={async event => {

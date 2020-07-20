@@ -1,5 +1,3 @@
-/* AUTH */
-export const AUTH = 'AUTH';
 /* APP STATE ACTIONS */
 export const APPSTATE_SET = 'APPSTATE_SET';
 export const APPSTATE_ERROR = 'APPSTATE_ERROR';

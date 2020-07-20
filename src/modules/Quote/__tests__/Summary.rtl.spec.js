@@ -2,7 +2,7 @@ import React from 'react';
 import { fireEvent, within } from '@testing-library/react';
 
 import {
-  renderWithForm,
+  render,
   defaultQuoteWorkflowProps,
   rating,
   clearText,
@@ -47,7 +47,7 @@ describe('Summary testing with finished Quote', () => {
   };
 
   it('POS:Checks Headers', () => {
-    renderWithForm(<QuoteWorkflow {...props} />);
+    render(<QuoteWorkflow {...props} />);
 
     const { getByText: getByTextInsideForm } = within(
       document.getElementById('QuoteWorkflowCSR')
@@ -57,7 +57,7 @@ describe('Summary testing with finished Quote', () => {
   });
 
   it('Displays quote details', () => {
-    renderWithForm(<QuoteWorkflow {...props} />);
+    render(<QuoteWorkflow {...props} />);
 
     const { getByText: getByTextInsideForm } = within(
       document.getElementById('QuoteWorkflowCSR')
@@ -75,7 +75,7 @@ describe('Summary testing with finished Quote', () => {
   });
 
   it('POS:Coverage Rating', () => {
-    const { getByText } = renderWithForm(<QuoteWorkflow {...props} />);
+    const { getByText } = render(<QuoteWorkflow {...props} />);
 
     expect(getByText('Yearly Premium'));
     expect(getByText('$9,876'));
@@ -112,7 +112,7 @@ describe('Summary testing with finished Quote', () => {
   });
 
   it('POS:Primary Policyholder Testing', () => {
-    const { getByText } = renderWithForm(<QuoteWorkflow {...props} />);
+    const { getByText } = render(<QuoteWorkflow {...props} />);
 
     expect(getByText('Policyholder Name'));
     expect(getByText('Robert Pollard'));
@@ -125,7 +125,7 @@ describe('Summary testing with finished Quote', () => {
   });
 
   it('POS:Mailing Address', () => {
-    const { getByText } = renderWithForm(<QuoteWorkflow {...props} />);
+    const { getByText } = render(<QuoteWorkflow {...props} />);
 
     expect(getByText('Address'));
     expect(getByText('6666 mailing address'));
@@ -136,7 +136,7 @@ describe('Summary testing with finished Quote', () => {
   });
 
   it('POS:Share Fields', () => {
-    const { getByTestId } = renderWithForm(<QuoteWorkflow {...props} />);
+    const { getByTestId } = render(<QuoteWorkflow {...props} />);
 
     fields.forEach(field => {
       const fieldInput = getByTestId(field.dataTest);
@@ -158,7 +158,7 @@ describe('Summary Testing with Default Quote', () => {
   };
 
   it('POS:Underwriting Violation Error with initial quote data', () => {
-    const { getByText } = renderWithForm(<QuoteWorkflow {...props} />);
+    const { getByText } = render(<QuoteWorkflow {...props} />);
 
     expect(
       getByText('Quote Summary cannot be sent due to Underwriting Validations')
@@ -173,7 +173,7 @@ describe('Summary Testing with Default Quote', () => {
         quoteInputState: 'Underwriting'
       }
     };
-    const { getByText } = renderWithForm(<QuoteWorkflow {...newProps} />);
+    const { getByText } = render(<QuoteWorkflow {...newProps} />);
 
     expect(
       getByText('Quote Summary cannot be sent due to Underwriting Validations')
@@ -189,7 +189,7 @@ describe('Summary Testing with Default Quote', () => {
         blockQuoteSummary: true
       }
     };
-    const { getByText } = renderWithForm(<QuoteWorkflow {...newProps} />);
+    const { getByText } = render(<QuoteWorkflow {...newProps} />);
 
     expect(
       getByText('Quote Summary cannot be sent due to Underwriting Validations')
@@ -204,7 +204,7 @@ describe('Summary Testing with Default Quote', () => {
         quoteInputState: 'Qualified'
       }
     };
-    const { queryByText } = renderWithForm(<QuoteWorkflow {...newProps} />);
+    const { queryByText } = render(<QuoteWorkflow {...newProps} />);
 
     expect(
       queryByText(
@@ -222,7 +222,7 @@ describe('Summary Testing with Default Quote', () => {
         blockQuoteSummary: true
       }
     };
-    const { getByText } = renderWithForm(<QuoteWorkflow {...newProps} />);
+    const { getByText } = render(<QuoteWorkflow {...newProps} />);
 
     expect(
       getByText('Quote Summary cannot be sent due to Underwriting Validations')
@@ -238,7 +238,7 @@ describe('Summary Testing with Default Quote', () => {
       }
     };
 
-    const { queryByText } = renderWithForm(<QuoteWorkflow {...newProps} />);
+    const { queryByText } = render(<QuoteWorkflow {...newProps} />);
 
     expect(
       queryByText(

@@ -3,7 +3,7 @@ import { Button } from '@exzeo/core-ui';
 
 import AgentsCard from './AgentsCard';
 import RemoveAgentModal from './RemoveAgentModal';
-import Footer from '../../../components/Common/Footer';
+import Footer from '../../../components/Footer';
 import AgentModal from '../AgentModal';
 import AddExistingAgentModal from '../ExistingAgentModal';
 import { formatAgent } from '../utilities';

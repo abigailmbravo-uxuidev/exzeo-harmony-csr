@@ -2,7 +2,7 @@ import React from 'react';
 import { fireEvent, wait } from '@testing-library/react';
 import { date } from '@exzeo/core-ui';
 import {
-  renderWithForm,
+  render,
   defaultPolicyWorkflowProps,
   mockServiceRunner
 } from '../../../test-utils';
@@ -41,7 +41,7 @@ describe('CancelType Testing', () => {
         .add(20, 'd')
         .format('YYYY-MM-DD');
 
-      const { getByText, getByLabelText } = renderWithForm(
+      const { getByText, getByLabelText } = render(
         <PolicyWorkflow {...props} />
       );
 
@@ -65,7 +65,7 @@ describe('CancelType Testing', () => {
         .add(20, 'd')
         .format('YYYY-MM-DD');
 
-      const { getByText, getByLabelText } = renderWithForm(
+      const { getByText, getByLabelText } = render(
         <PolicyWorkflow {...props} />
       );
 
@@ -89,7 +89,7 @@ describe('CancelType Testing', () => {
         .add(120, 'd')
         .format('YYYY-MM-DD');
 
-      const { getByText, getByLabelText } = renderWithForm(
+      const { getByText, getByLabelText } = render(
         <PolicyWorkflow {...props} />
       );
 
@@ -113,7 +113,7 @@ describe('CancelType Testing', () => {
         .add(120, 'd')
         .format('YYYY-MM-DD');
 
-      const { getByText, getByLabelText } = renderWithForm(
+      const { getByText, getByLabelText } = render(
         <PolicyWorkflow {...props} />
       );
 
@@ -137,7 +137,7 @@ describe('CancelType Testing', () => {
         .add(45, 'd')
         .format('YYYY-MM-DD');
 
-      const { getByText, getByLabelText } = renderWithForm(
+      const { getByText, getByLabelText } = render(
         <PolicyWorkflow {...props} />
       );
 
@@ -161,7 +161,7 @@ describe('CancelType Testing', () => {
         .add(45, 'd')
         .format('YYYY-MM-DD');
 
-      const { getByText, getByLabelText } = renderWithForm(
+      const { getByText, getByLabelText } = render(
         <PolicyWorkflow {...props} />
       );
 
@@ -185,7 +185,7 @@ describe('CancelType Testing', () => {
         .add(120, 'd')
         .format('YYYY-MM-DD');
 
-      const { getByText, getByLabelText } = renderWithForm(
+      const { getByText, getByLabelText } = render(
         <PolicyWorkflow {...props} />
       );
 
@@ -209,7 +209,7 @@ describe('CancelType Testing', () => {
         .add(120, 'd')
         .format('YYYY-MM-DD');
 
-      const { getByText, getByLabelText } = renderWithForm(
+      const { getByText, getByLabelText } = render(
         <PolicyWorkflow {...props} />
       );
 

@@ -1,10 +1,11 @@
 import React from 'react';
 
 import {
-  renderWithForm,
+  render,
   defaultPolicyWorkflowProps,
   mockServiceRunner,
-  mockQuestions
+  mockQuestions,
+  defaultAuth
 } from '../../../test-utils';
 import { PolicyWorkflow } from '../PolicyWorkflow';
 
@@ -12,7 +13,7 @@ describe('Policy: Mortgage / Billing page testing', () => {
   mockServiceRunner({ paymentOptions: [] });
   mockQuestions({});
 
-  const baseProps = {
+  const props = {
     ...defaultPolicyWorkflowProps,
     match: {
       params: { policyNumber: '12-345-67' },
@@ -28,29 +29,31 @@ describe('Policy: Mortgage / Billing page testing', () => {
   };
 
   describe('Test Online Payments section', () => {
-    it('Has enabled online payments for correct policy statuses', async () => {
-      const props = {
-        ...baseProps,
-        policyFormData: { ...baseProps.policyFormData, status: 'Policy Issued' }
-      };
+    it('Online Payments enabled with correct resources', async () => {
+      const { queryByText } = render(<PolicyWorkflow {...props} />);
 
-      const { getByText } = renderWithForm(<PolicyWorkflow {...props} />);
-
-      expect(getByText(/make electronic payment/i)).not.toBeDisabled();
+      expect(queryByText(/make electronic payment/i)).not.toBeInTheDocument();
     });
 
     it('Has disabled online payments for correct policy statuses', async () => {
-      const props = {
-        ...baseProps,
-        policyFormData: {
-          ...baseProps.policyFormData,
-          status: 'No take payment'
+      const onlinePaymentResource = {
+        uri: 'TTIC:FL:HO3:OnlinePayments:*',
+        right: 'INSERT'
+      };
+      const auth = {
+        ...defaultAuth,
+        userProfile: {
+          ...defaultAuth.userProfile,
+          resources: [
+            ...defaultAuth.userProfile.resources,
+            onlinePaymentResource
+          ]
         }
       };
 
-      const { getByText } = renderWithForm(<PolicyWorkflow {...props} />);
+      const { getByText } = render(<PolicyWorkflow {...props} />, { auth });
 
-      expect(getByText(/make electronic payment/i)).toBeDisabled();
+      expect(getByText(/make electronic payment/i)).toBeInTheDocument();
     });
   });
 });

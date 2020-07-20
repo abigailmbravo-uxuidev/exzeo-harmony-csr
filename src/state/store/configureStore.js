@@ -1,12 +1,11 @@
 /* globals window */
 import { createStore, applyMiddleware, compose } from 'redux';
 import thunk from 'redux-thunk';
-import { enableBatching } from 'redux-batched-actions';
 import rootReducer from '../reducers';
 
 export default function configureStore(initialState) {
   return createStore(
-    enableBatching(rootReducer),
+    rootReducer,
     initialState,
     compose(
       applyMiddleware(thunk),

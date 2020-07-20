@@ -8,11 +8,7 @@ import {
   sortDiariesByDate
 } from '../../utilities/diaries';
 
-import {
-  getDiaries,
-  getUserProfile,
-  getDiaryOptions
-} from './entity.selectors';
+import { getDiaries, getDiaryOptions } from './entity.selectors';
 
 export const getSortedDiariesByDueDate = createSelector(
   [getDiaries],
@@ -83,30 +79,6 @@ export const getOpenDiaries = createSelector(
 
 export const getGroupedOpenDiaries = createSelector([getOpenDiaries], diaries =>
   groupDiaries(diaries)
-);
-
-const REQUIRED_DIARY_RIGHTS = ['READ', 'UPDATE', 'INSERT'];
-
-export const isPollingPermitted = createSelector(
-  [getUserProfile],
-  userProfile => {
-    const { resources } = userProfile;
-    if (!Array.isArray(resources)) return false;
-
-    const diariesResources = [];
-    // find all three 'Diaries' resources ignoring duplicates
-    REQUIRED_DIARY_RIGHTS.forEach(right => {
-      const resource = resources.find(r => {
-        return r.uri.indexOf('Diaries') !== -1 && r.right === right;
-      });
-
-      if (resource) {
-        diariesResources.push(resource);
-      }
-    });
-
-    return diariesResources.length === 3;
-  }
 );
 
 export const getDiaryReasons = createSelector(

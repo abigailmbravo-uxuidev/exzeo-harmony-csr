@@ -13,10 +13,8 @@
 // https://on.cypress.io/configuration
 // ***********************************************************
 
-import './globalHooks';
 import './inputs';
 import './login';
 import './overwrites';
-import './persistLocalStorage';
 import './positiveCheckHelpers';
 import './utils';
