@@ -54,7 +54,8 @@ const QueuedMortgageeCard = ({ result, handleRemove }) => (
       <div className="title">
         {!result.noMortgagee && (
           <h4>
-            {result.name1} (Mortgagee {result.order + 1})&nbsp;|&nbsp;
+            {`${result.name1} ${result.name2 || ''}`} (Mortgagee{' '}
+            {result.order + 1})&nbsp;|&nbsp;
             <span className="propertyAddress">
               <Address className="" address={result.mailingAddress} />
             </span>
