@@ -153,6 +153,8 @@ export const DiariesSearch = ({ userProfile }) => {
                             answers={productAnswers}
                             placeholder="Select..."
                             styleName="product-search"
+                            showPlaceholder={true}
+                            placeholderDisabled={false}
                           />
                         </div>
                       </div>
@@ -186,9 +188,7 @@ export const DiariesSearch = ({ userProfile }) => {
                 handleKeyPress={handleDiaryKeyPress}
                 onItemClick={handleDiaryClick}
                 clickable
-                diaries={searchResults.results.filter(d =>
-                  product ? d.resource.product === product : d
-                )}
+                diaries={searchResults.results}
                 diaryReasons={reasons}
               />
             )}

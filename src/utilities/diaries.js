@@ -107,11 +107,12 @@ export const groupDiaries = diaries => {
 /**
  * Sort diaries in ascending order by due date
  * @param diaries
+ * @param product
  * @returns {Array}
  */
-export const sortDiariesByDate = (diaries = []) => {
+export const sortDiariesByDate = (diaries = [], product) => {
   return diaries
-    .filter(d => d)
+    .filter(d => (product ? d.resource.product === product : d))
     .sort((a, b) => {
       return new Date(a.entries[0].due) - new Date(b.entries[0].due);
     });
