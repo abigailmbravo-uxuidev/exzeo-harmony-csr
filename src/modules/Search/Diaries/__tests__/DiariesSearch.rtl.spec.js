@@ -83,3 +83,27 @@ describe('Diaries Search Testing', () => {
     });
   });
 });
+
+describe('Transfer Diaries Testing', () => {
+  const props = {
+    userProfile: { profile: { given_name: 'John', family_name: 'Smith' } }
+  };
+
+  const selectFields = fields.filter(({ type }) => type === 'select');
+
+  it('Should toggle the transfer diaries and clear  transfer diaries', () => {
+    const { getByTestId } = renderWithForm(<DiariesSearch {...props} />);
+  });
+
+  it('Should toggle validate required fields', () => {
+    const { getByTestId } = renderWithForm(<DiariesSearch {...props} />);
+  });
+
+  it('Should toggle the transfer diaries and toggle select all', () => {
+    const { getByTestId } = renderWithForm(<DiariesSearch {...props} />);
+  });
+
+  it('Should submit transfer diaries', () => {
+    const { getByTestId } = renderWithForm(<DiariesSearch {...props} />);
+  });
+});
