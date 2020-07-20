@@ -154,7 +154,6 @@ export const DiariesSearch = ({ userProfile }) => {
                             placeholder="Select..."
                             styleName="product-search"
                             showPlaceholder={true}
-                            placeholder={'All'}
                             placeholderDisabled={false}
                           />
                         </div>
