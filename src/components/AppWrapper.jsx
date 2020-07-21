@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Helmet } from 'react-helmet';
-import { DetailsHeader } from '@exzeo/core-ui/src/@Harmony';
+import { DetailsHeader, Banner } from '@exzeo/core-ui/src/@Harmony';
 
 import {
   getPolicyDetails,
@@ -48,6 +48,7 @@ export class AppWrapper extends Component {
           <title>{pageTitle}</title>
         </Helmet>
         <Header title={appConfig.title}>
+          {header.banner && <Banner content={header.banner} />}
           <DiaryButton
             onToggleDiaries={onToggleDiaries}
             showDiaries={showDiaries}

@@ -3,6 +3,12 @@ const mock = {
   header: {
     showEffectiveDateButton: true,
     showReinstateButton: true,
+    banner: {
+      className: 'workflow-banner hcpci sc af3 policy',
+      icon: 'af3',
+      title: 'Homeowners Choice',
+      subTitle: 'SC'
+    },
     fields: [
       {
         value: 'policyHolder',
@@ -26,6 +32,11 @@ const mock = {
       },
       { value: 'currentPremium', className: 'premium' }
     ]
+  },
+  disclaimer: {
+    className: 'workflow-disclaimer',
+    displayText:
+      'In Florida, insurance products and services are underwritten by TypTap Insurance Company. In Arkansas, California, Maryland, New Jersey, Ohio, Pennsylvania, South Carolina and Texas insurance products and services are underwritten by Homeowners Choice Property & Casualty Insurance Company, Inc.'
   },
   pages: [
     {

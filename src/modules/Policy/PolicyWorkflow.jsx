@@ -7,7 +7,8 @@ import {
   getConfigForJsonTransform,
   PaymentHistoryTable,
   PolicyBilling,
-  callService
+  callService,
+  Disclaimer
 } from '@exzeo/core-ui/src/@Harmony';
 import { defaultMemoize } from 'reselect';
 
@@ -350,6 +351,11 @@ export class PolicyWorkflow extends React.Component {
                                 handleGandalfSubmit={this.handleGandalfSubmit}
                                 handlePrimaryClick={this.primaryClickHandler}
                               />
+                              {gandalfTemplate.disclaimer && (
+                                <Disclaimer
+                                  content={gandalfTemplate.disclaimer}
+                                />
+                              )}
                             </div>
                           )}
                         </FormSpy>
