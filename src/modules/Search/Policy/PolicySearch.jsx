@@ -216,7 +216,9 @@ const PolicySearch = ({ userProfile, history }) => {
                             dataTest="company"
                             label="Company"
                             answers={companyCodeOptions}
-                            showPlaceholder={false}
+                            showPlaceholder={true}
+                            placeholder={'All'}
+                            placeholderDisabled={false}
                             styleName="company-search"
                           />
                         )}
