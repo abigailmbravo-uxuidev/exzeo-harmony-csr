@@ -4,7 +4,8 @@ import { Loader, FormSpy, remoteSubmit } from '@exzeo/core-ui';
 import {
   AgencyAgentSelect,
   getConfigForJsonTransform,
-  Gandalf
+  Gandalf,
+  Disclaimer
 } from '@exzeo/core-ui/src/@Harmony';
 
 import { defaultMemoize } from 'reselect';
@@ -297,17 +298,22 @@ export class QuoteWorkflow extends React.Component {
                       }}
                     >
                       {({ form, pristine, submitting, values }) => (
-                        <QuoteFooter
-                          currentStep={currentRouteName}
-                          formInstance={form}
-                          isSubmitDisabled={this.isSubmitDisabled(
-                            pristine,
-                            submitting,
-                            values
+                        <>
+                          <QuoteFooter
+                            currentStep={currentRouteName}
+                            formInstance={form}
+                            isSubmitDisabled={this.isSubmitDisabled(
+                              pristine,
+                              submitting,
+                              values
+                            )}
+                            handlePrimaryClick={this.primaryClickHandler}
+                            handleApplicationClick={this.handleRetrieveQuote}
+                          />
+                          {gandalfTemplate.disclaimer && (
+                            <Disclaimer content={gandalfTemplate.disclaimer} />
                           )}
-                          handlePrimaryClick={this.primaryClickHandler}
-                          handleApplicationClick={this.handleRetrieveQuote}
-                        />
+                        </>
                       )}
                     </FormSpy>
 
