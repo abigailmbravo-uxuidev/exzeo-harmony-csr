@@ -40,6 +40,23 @@ header {
       }
     }
 
+    .workflow-banner {
+      display: flex;
+
+      margin: 0 auto;
+      h3 {
+        margin: 0 0 0 $padding;
+
+        color: $white;
+
+        font-size: $font-size-base;
+
+        span {
+          font-weight: $font-weight-normal;
+        }
+      }
+    }
+
     .header-toggle-wrapper {
       position: relative;
 
