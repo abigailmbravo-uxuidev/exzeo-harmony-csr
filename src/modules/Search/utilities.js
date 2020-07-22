@@ -341,12 +341,9 @@ export const processChunk = async (data, chunkSize, func) => {
   if (data.length > chunkSize) {
     const result = [];
     for (let i = 0; i < data.length; i += chunkSize) {
-      // eslint-disable-next-line no-await-in-loop
-      const res = await func(data.slice(i, i + chunkSize));
-      result.push(res.data.result);
+      result.push(func(data.slice(i, i + chunkSize)));
     }
-    return result;
+    return await Promise.all(result);
   }
-  const response = await func(data);
-  return [response.data.result];
+  return await func(data);
 };

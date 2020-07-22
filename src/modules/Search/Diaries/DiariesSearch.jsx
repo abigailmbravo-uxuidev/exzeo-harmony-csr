@@ -34,6 +34,7 @@ import SelectTypeAhead from '@exzeo/core-ui/src/TypeAhead/Select';
 
 export const DiariesSearch = ({ userProfile, errorHandler }) => {
   const [searchResults, setSearchResults] = useState({ results: [] });
+  const [searchParams, setSearchParams] = useState({});
   const [searchAssignees, setSearchAssignees] = useState(undefined);
   const [loading, setLoading] = useState(false);
   const [transfer, setTransfer] = useState(false);
@@ -80,6 +81,7 @@ export const DiariesSearch = ({ userProfile, errorHandler }) => {
   };
 
   const handleDiariesSearchSubmit = async data => {
+    setSearchParams(data);
     setTransfer(false);
     setLoading(true);
     setSearchAssignees(data.assignees || emptyArray);
@@ -92,6 +94,7 @@ export const DiariesSearch = ({ userProfile, errorHandler }) => {
     try {
       setLoading(true);
       await handleTransferDiaries(data, searchResults.results, assigneeAnswers);
+      await handleDiariesSearchSubmit(searchParams);
     } catch (err) {
       errorHandler(err);
     } finally {

@@ -382,9 +382,11 @@ export async function handleTransferDiaries(
       });
     });
 
-    const response = await processChunk(selectedDiaries, 25, async diaries => {
-      await transferDiaries({ diaries, assignee });
-    });
+    const transfer = async diaries => {
+      return await transferDiaries({ diaries, assignee });
+    };
+
+    const response = await processChunk(selectedDiaries, 25, transfer);
     return response;
   } catch (error) {
     throw error;
