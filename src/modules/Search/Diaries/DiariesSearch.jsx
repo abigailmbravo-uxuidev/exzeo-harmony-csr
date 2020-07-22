@@ -185,7 +185,7 @@ export const DiariesSearch = ({ userProfile, errorHandler }) => {
                         RESULTS
                       </span>
                       <TransferButton
-                        toggleTransfer={() => setTransfer(!transfer)}
+                        toggleTransfer={() => setTransfer(true)}
                       />
                       <ResetButton reset={() => resetFormResults(form)} />
                       <Button
