@@ -27,18 +27,20 @@ const MortgageeCard = ({ result, handleQueue }) => (
         )}
         {!result.currentBillTo && (
           <div className="bill-to">
-            <label htmlFor={`${result._id}.newBillTo`}>Make Bill To</label>
+            <label htmlFor={`${result.identifier}.newBillTo`}>
+              Make Bill To
+            </label>
             <Field
-              name={`${result._id}.newBillTo`}
+              name={`${result.identifier}.newBillTo`}
               component="input"
               type="checkbox"
-              data-test={`${result._id}.newBillTo`}
+              data-test={`${result.identifier}.newBillTo`}
             />
           </div>
         )}
         <Field
-          name={`${result._id}.referenceNumber`}
-          dataTest={`${result._id}.referenceNumber`}
+          name={`${result.identifier}.referenceNumber`}
+          dataTest={`${result.identifier}.referenceNumber`}
           label="Loan No:"
           component={Input}
           styleName="loanNo"

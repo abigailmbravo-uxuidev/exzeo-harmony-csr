@@ -12,7 +12,7 @@ export const ADDRESS_INITIAL_VALUES = {
 
 export const POLICY_INITIAL_VALUES = {
   searchType: SEARCH_TYPES.policy,
-  sortBy: 'policyNumber',
+  sort: 'policyNumber',
   companyCode: 'TTIC',
   state: '',
   product: '',

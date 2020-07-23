@@ -180,6 +180,8 @@ export const DiariesSearch = ({ userProfile, errorHandler }) => {
                             answers={productAnswers}
                             placeholder="Select..."
                             styleName="product-search"
+                            showPlaceholder={true}
+                            placeholderDisabled={false}
                           />
                         </div>
                       </div>
