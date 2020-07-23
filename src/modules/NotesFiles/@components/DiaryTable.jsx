@@ -33,7 +33,7 @@ const DiaryExpandColumns = ({ diaries }) => {
       <TableHeaderColumn
         className="reason"
         columnClassName="reason"
-        dataField="reason"
+        dataField="reasonLabel"
         dataSort
       >
         Reason
@@ -187,10 +187,10 @@ class DiaryTable extends Component {
         <TableHeaderColumn
           className="reason"
           columnClassName="reason"
-          dataField="reason"
+          dataField="reasonLabel"
           dataSort
           sortFunc={(a, b, order) =>
-            notesUtils.sortByOrder(a.reason, b.reason, order)
+            notesUtils.sortByOrder(a.reasonLabel, b.reasonLabel, order)
           }
         >
           Reason

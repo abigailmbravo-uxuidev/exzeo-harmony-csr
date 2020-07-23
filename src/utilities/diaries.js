@@ -59,12 +59,12 @@ export const isToday = dateString => {
  */
 export const formatEntry = (entry, reasons = []) => {
   const reasonKeyValue = reasons.find(r => r.answer === entry.reason);
-  const reason = reasonKeyValue ? reasonKeyValue.label : entry.reason;
+  const reasonLabel = reasonKeyValue ? reasonKeyValue.label : entry.reason;
   const due = date.formatDate(entry.due);
   return {
     ...entry,
     due,
-    reason
+    reasonLabel
   };
 };
 

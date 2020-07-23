@@ -56,7 +56,7 @@ const Diaries = ({ diaryLevel, diaries, onToggleDiary }) => {
               <div className="diary-type">{diary.type}</div>
               <div className="diary-reason">
                 <p>
-                  {diary.reason}: <ShortenText text={diary.message} />
+                  {diary.reasonLabel}: <ShortenText text={diary.message} />
                 </p>
               </div>
               <div className="diary-assignee">{diary.assignee.displayName}</div>
