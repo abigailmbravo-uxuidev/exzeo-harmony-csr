@@ -2,6 +2,12 @@
 const mock = {
   header: {
     hideDetailSummary: false,
+    banner: {
+      className: 'workflow-banner ttic fl af3 quote',
+      icon: 'af3',
+      title: 'TypTap',
+      subTitle: 'FL'
+    },
     fields: [
       { value: 'policyHolder', component: 'Section', label: 'Policyholder' },
       { value: 'mailingAddress', component: 'Section' },

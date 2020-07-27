@@ -40,6 +40,51 @@ header {
       }
     }
 
+    .workflow-banner {
+      display: flex;
+      align-items: center;
+
+      margin: 0 auto 0 31rem;
+
+      .icon {
+        width: 3.125rem;
+        height: 2.125rem;
+        &.ho3 {
+          flex-grow: 0;
+          flex-shrink: 0;
+
+          margin-right: $padding/2;
+
+          background-image: url('../../img/TypTap-Home-Insurance-logo-white.svg');
+          background-repeat: no-repeat;
+          background-position: center center;
+          background-size: 100%;
+        }
+        &.af3 {
+          flex-grow: 0;
+          flex-shrink: 0;
+
+          margin-right: $padding/2;
+
+          background-image: url('../../img/TypTap-Flood-Insurance-logo-white.svg');
+          background-repeat: no-repeat;
+          background-position: center center;
+          background-size: 100%;
+        }
+      }
+      h3 {
+        margin: 0 0 0 0.25rem;
+
+        color: $white;
+
+        font-size: $font-size-base;
+
+        span {
+          font-weight: $font-weight-normal;
+        }
+      }
+    }
+
     .header-toggle-wrapper {
       position: relative;
 
