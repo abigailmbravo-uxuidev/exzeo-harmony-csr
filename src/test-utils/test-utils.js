@@ -1,159 +1,39 @@
 import React from 'react';
-import configureStore from 'redux-mock-store';
-import thunk from 'redux-thunk';
-import { BrowserRouter as Router } from 'react-router-dom';
-import { Provider } from 'react-redux';
+import { BrowserRouter, Router } from 'react-router-dom';
+import { createMemoryHistory } from 'history';
 import { createStore, applyMiddleware } from 'redux';
+import { Provider } from 'react-redux';
+import thunk from 'redux-thunk';
+import configureStore from 'redux-mock-store';
 import { render, fireEvent } from '@testing-library/react';
 
 import rootReducer from '../state/reducers';
 
-import { quote, mockPolicy as policy } from './index.js';
+import { defaultInitialState } from './defaultPropsAndState';
 
 const mockStore = configureStore([thunk]);
 
-export const defaultInitialState = {
-  appState: {
-    data: {}
-  },
-  list: {
-    diaryOptions: {}
-  },
-  service: {
-    agencies: [],
-    zipCodeSettings: {
-      timezone: 'America/New_York'
-    }
-  },
-  error: {},
-  policyState: {
-    policy: {
-      policyID: 'test'
-    },
-    summaryLedger: {
-      _id: 'test'
-    },
-    claims: []
-  },
-  quoteState: {},
-  ui: { isLoading: false },
-  notes: {}
-};
 
-export const defaultInitialProps = {
-  match: {
-    params: { quoteNumber: '12-345-67' },
-    path: '/quote/:quoteNumber'
-  }
-};
-
-export const jestResolve = (result = {}, error) =>
-  jest.fn(() => (error ? Promise.reject(result) : Promise.resolve(result)));
-
-export const jestResolveArray = (results = []) => {
-  const jestFunc = jest.fn();
-  results.forEach(r => {
-    jestFunc.mockReturnValueOnce(
-      r.error ? Promise.reject(r) : Promise.resolve(r)
-    );
-  });
-  return jestFunc;
-};
-
-export const defaultQuoteWorkflowProps = {
-  ...defaultInitialProps,
-  history: { replace: x => x },
-  location: { pathname: '' },
-  isLoading: false,
-  quote,
-  retrieveQuote: jestResolve(),
-  verifyQuote: jestResolve(),
-  setAppError: () => {},
-  getZipCodeSettings: jestResolve(),
-  getEnumsForQuoteWorkflow: () => {},
-  updateQuote: jestResolve(),
-  fetchNotes: jestResolve(),
-  toggleDiary: () => {},
-  fetchDiaries: jestResolve(),
-  diaries: [],
-  notes: [],
-  options: {
-    agents: [],
-    mortgagee: [],
-    order: [],
-    uiQuestions: {}
-  }
-};
-
-export const defaultCreateAgencyProps = {
-  orphans: [],
-  initialValues: {
-    status: 'Active',
-    okToPay: true,
-    mailingAddress: {},
-    physicalAddress: {},
-    agentOfRecord: {
-      sameAsMailing: false,
-      licenses: [
-        {
-          state: '',
-          license: '',
-          licenseType: '',
-          licenseEffectiveDate: '',
-          appointed: false
-        }
-      ]
-    }
-  },
-  listAnswersAsKey: {
-    US_states: [
-      {
-        label: 'Florida',
-        answer: 'FL'
-      },
-      {
-        label: 'Maryland',
-        answer: 'MD'
-      },
-      {
-        label: 'New Jersey',
-        answer: 'NJ'
-      }
-    ]
-  },
-  getAgency: jestResolve(),
-  updateAgency: jestResolve(),
-  createAgency: jestResolve()
-};
-
-export const defaultPolicyWorkflowProps = {
-  history: { replace: x => x },
-  location: { pathname: '' },
-  isLoading: false,
-  policy,
-  initializePolicyWorkflow: jestResolve(policy),
-  getEnumsForPolicyWorkflow: jestResolve(),
-  getPaymentHistory: jestResolve(),
-  getPolicy: jestResolve(policy),
-  updateBillPlan: jestResolve(),
-  fetchNotes: jestResolve(),
-  fetchDiaries: jestResolve(),
-  setAppError: () => {},
-  toggleDiary: () => {},
-  diaries: [],
-  claims: [],
-  getClaims: jestResolve(),
-  notes: [],
-  initialized: true,
-  zipCodeSettings: {
-    timezone: 'America/New_York'
-  },
-  userProfile: {
-    resources: []
-  }
-};
+export const customRender = (
+  ui,
+  {
+    route = '/',
+    history = createMemoryHistory({ initialEntries: [route] }),
+    state = defaultInitialState,
+    store = createStore(rootReducer, state, applyMiddleware(thunk))
+  } = {}
+) => ({
+  ...render(
+    <Router history={history}>
+      <Provider store={store}>{ui}</Provider>
+    </Router>
+  )
+});
+export * from '@testing-library/react';
+export { customRender as render };
 
 /**
+ * @deprecated
  * @param {Object} ui - React component to be Rendered
  * @param {Object} [{ state = defaultInitialState, store = mockStore(state) }={}] - The state and store, both optional, to be used.
  * If state is provided but store is not, store will be mocked from the given state.
@@ -163,22 +43,29 @@ export const renderWithReduxAndRouter = (
   { state = defaultInitialState, store = mockStore(state) } = {}
 ) => ({
   ...render(
-    <Router>
+    <BrowserRouter>
       <Provider store={store}>{ui}</Provider>
-    </Router>
+    </BrowserRouter>
   ),
   // Return our mock store, in case we want to do something with it in a test
   store,
   // Provide a function to recreate the internal wrapping of the render function
   // This is useful if we need to rerender within a test
   wrapUi: ui => (
-    <Router>
+    <BrowserRouter>
       <Provider store={store}>{ui}</Provider>
-    </Router>
+    </BrowserRouter>
   )
 });
 
-// This function creates a real store with a form for use with ReduxForm components
+/**
+ * This function creates a real store with a form for use with ReduxForm components
+ * @deprecated
+ * @param ui
+ * @param state
+ * @param store
+ * @returns {{}}
+ */
 export const renderWithForm = (
   ui,
   {
@@ -208,7 +95,7 @@ const parseQueryType = (query, field) => {
 
 /**
  * @param {Object} query - The function from @testing-library/react to be used.
- * @param {regex} [button=/submit/] - The regex used to find the button.
+ * @param {RegExp} [button=/submit/] - The regex used to find the button.
  */
 export const submitForm = (query, button = /submit/) =>
   fireEvent.click(query(button));

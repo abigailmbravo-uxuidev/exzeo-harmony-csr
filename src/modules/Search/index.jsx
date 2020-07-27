@@ -3,7 +3,7 @@ import { Route } from 'react-router-dom';
 import NewQuoteSearch from './Address';
 import SearchPolicy from './Policy';
 import SearchQuote from './Quote';
-import DiariesSearch from './Diaries/DiariesSearch';
+import DiariesSearch from './Diaries';
 import AgencySearch from './Agency';
 import AgentSearch from './Agent';
 
@@ -12,7 +12,7 @@ const Search = ({ createQuote, retrieveQuote, userProfile, errorHandler }) => {
     <React.Fragment>
       <Route
         exact
-        path={`/address`}
+        path="/address"
         render={props => (
           <NewQuoteSearch
             {...props}
@@ -23,7 +23,7 @@ const Search = ({ createQuote, retrieveQuote, userProfile, errorHandler }) => {
       />
       <Route
         exact
-        path={`/quote`}
+        path="/quote"
         render={props => (
           <SearchQuote
             {...props}
@@ -34,7 +34,7 @@ const Search = ({ createQuote, retrieveQuote, userProfile, errorHandler }) => {
       />
       <Route
         exact
-        path={`/diaries`}
+        path="/diaries"
         render={props => (
           <DiariesSearch
             {...props}
@@ -45,17 +45,18 @@ const Search = ({ createQuote, retrieveQuote, userProfile, errorHandler }) => {
       />
       <Route
         exact
-        path={`/agency`}
+        path="/agency"
         render={props => <AgencySearch {...props} userProfile={userProfile} />}
       />
       <Route
         exact
-        path={`/agent`}
-        render={props => <AgentSearch {...props} />}
+        path="/agent"
+        render={props => <AgentSearch {...props} userProfile={userProfile} />}
       />
+
       <Route
         exact
-        path={`/`}
+        path="/"
         render={props => <SearchPolicy {...props} userProfile={userProfile} />}
       />
     </React.Fragment>

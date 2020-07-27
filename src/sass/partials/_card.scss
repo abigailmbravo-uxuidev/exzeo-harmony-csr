@@ -430,13 +430,16 @@ ul {
               }
             }
 
-            ul {
+            ul,
+            dl {
               margin: 0;
               padding: 0;
               list-style: none;
 
               &.diary-entry-list {
-                li {
+                li,
+                dt,
+                dd {
                   display: flex;
                   padding: ($padding/4) 0;
                   color: $warm-gray-08;
@@ -506,9 +509,12 @@ ul {
 
           > div {
             &.card-body {
-              ul {
+              ul,
+              dl {
                 &.diary-entry-list {
-                  li {
+                  li,
+                  dt,
+                  dd {
                     &.data-row {
                       background: rgba($bright-blue, 0.1);
                     }
@@ -526,9 +532,12 @@ ul {
 
           > div {
             &.card-body {
-              ul {
+              ul,
+              dl {
                 &.diary-entry-list {
-                  li {
+                  li,
+                  dt,
+                  dd {
                     &.data-row {
                       background: rgba($bright-blue, 0.1);
                     }

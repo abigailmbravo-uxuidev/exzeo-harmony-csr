@@ -1,15 +1,13 @@
 import React from 'react';
 import { wait } from '@testing-library/react';
 import SearchForm from '../../index';
-import * as hooks from '../../hooks';
 import {
   renderWithForm,
   checkLabel,
   checkSelect,
   checkButton,
   mockServiceRunner,
-  mockQuestions,
-  jestResolve
+  mockQuestions
 } from '../../../../test-utils';
 
 mockServiceRunner([]);

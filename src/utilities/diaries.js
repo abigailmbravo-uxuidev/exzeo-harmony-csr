@@ -55,10 +55,11 @@ export const isToday = dateString => {
 /**
  * format Diary properties
  * @param entry object
+ * @param reasonOptions
  * @returns {object}
  */
-export const formatEntry = (entry, reasons = []) => {
-  const reasonKeyValue = reasons.find(r => r.answer === entry.reason);
+export const formatEntry = (entry, reasonOptions = []) => {
+  const reasonKeyValue = reasonOptions.find(r => r.answer === entry.reason);
   const reasonLabel = reasonKeyValue ? reasonKeyValue.label : entry.reason;
   const due = date.formatDate(entry.due);
   return {

@@ -2,8 +2,6 @@ import RESOURCES from './resources';
 
 export const SEARCH_TYPES = RESOURCES;
 
-export const SEARCH_FORM = 'SEARCH_BAR';
-
 export const ADDRESS_INITIAL_VALUES = {
   searchType: SEARCH_TYPES.newQuote,
   companyCode: 'TTIC',
@@ -35,15 +33,6 @@ export const AGENCY_INITIAL_VALUES = {
 
 export const AGENT_INITIAL_VALUES = {
   searchType: SEARCH_TYPES.agent
-};
-
-export const DIARY_INITIAL_VALUES = {
-  assignees: [],
-  open: 'true',
-  dateRange: {
-    min: '',
-    max: ''
-  }
 };
 
 export const POLICY_SEARCH_OPTIONS = [
@@ -105,16 +94,7 @@ export const SEARCH_CONFIG = {
   [SEARCH_TYPES.agent]: {
     initialValues: AGENT_INITIAL_VALUES,
     searchOptions: AGENCY_SEARCH_OPTIONS
-  },
-  [SEARCH_TYPES.diaries]: {
-    initialValues: DIARY_INITIAL_VALUES,
-    searchOptions: []
   }
-};
-
-export const DEFAULT_SEARCH_PARAMS = {
-  companyCode: 'TTIC',
-  state: 'FL'
 };
 
 export const RESULTS_PAGE_SIZE = 25;
@@ -131,22 +111,6 @@ export const NO_RESULTS_MESSAGES = {
   [SEARCH_TYPES.agency]: DEFAULT_NO_RESULTS_MESSAGE,
   [SEARCH_TYPES.diaries]: DEFAULT_NO_RESULTS_MESSAGE
 };
-
-export const COMPANY_ANSWERS = [
-  { answer: 'TTIC', label: 'TTIC' },
-  { answer: 'HCPC', label: 'HCPC' }
-];
-
-export const STATE_ANSWERS = [
-  { answer: 'FL', label: 'FL' },
-  { answer: 'NJ', label: 'NJ' },
-  { answer: 'SC', label: 'SC' }
-];
-
-export const PRODUCT_ANSWERS = [
-  { answer: 'HO3', label: 'HO3' },
-  { answer: 'AF3', label: 'AF3' }
-];
 
 export const SEARCH_TYPE_OPTIONS = [
   {

@@ -1,354 +1,172 @@
 import React from 'react';
 
 import {
-  renderWithForm,
-  checkLabel,
-  checkSelect,
-  checkButton,
-  jestResolve
+  render,
+  jestResolve,
+  fireEvent,
+  wait,
+  waitForElementToBeRemoved,
+  within
 } from '../../../../test-utils';
-import DiariesSearch from '../DiariesSearch';
-import { fireEvent, wait } from '@testing-library/react';
-import * as searchData from '../../data';
-import { noop } from '@exzeo/core-ui';
 
-const fields = [
-  {
-    dataTest: 'status',
-    type: 'select',
-    label: 'Diary Status',
-    selected: 'true',
-    options: ['Open', 'Closed']
-  },
-  {
-    dataTest: 'reason',
-    type: 'select',
-    label: 'Reason',
-    selected: '',
-    options: [
-      'Please choose',
-      'Information Needed',
-      'Estate',
-      'Death of Only NI',
-      'Other',
-      'Exception',
-      'New Policy',
-      'Occupancy Letter',
-      'Ownership Change',
-      'Renewal Processing',
-      'Underwriting Condition Letter',
-      'Underwriting Review',
-      'Vacant/Unoccupied',
-      'Tenant Occupied',
-      'Refund'
-    ]
-  },
-  {
-    dataTest: 'assignees',
-    type: 'typeahead',
-    label: 'Assigned To',
-    placeholderText: 'Select...'
-  },
-  {
-    dataTest: 'date-range',
-    type: 'date',
-    label: 'Date Range'
-  }
-];
+import * as searchData from '../data';
+import {
+  diaryOptions,
+  assigneeOptions,
+  searchResults,
+  transferResult
+} from '../fixtures.js';
+import DiariesSearch from '../@components/DiariesSearch';
 
-const diariesOptions = [
-  {
-    tags: [{ answer: 'new_policy', label: 'New Policy', type: 'tag' }],
-    reasons: [
-      {
-        answer: 'information_needed',
-        label: 'Information Needed',
-        dueDate: {
-          offset: 7,
-          path: 'default'
-        },
-        assignee: 'CURRENT_USER'
+describe('DiariesSearch and Transfer Testing', () => {
+  describe('Diaries Search tests', () => {
+    searchData.fetchDiaries = jestResolve([]);
+    searchData.fetchDiaryOptions = jestResolve(diaryOptions);
+    searchData.fetchAssigneeOptions = jestResolve(assigneeOptions);
+
+    const props = {
+      userProfile: {
+        userId: '123',
+        profile: { given_name: 'John', family_name: 'Smith' },
+        resources: [
+          { right: 'READ', uri: 'TTIC:FL:HO3:Diaries:DiariesService:*' },
+          { right: 'INSERT', uri: 'TTIC:FL:HO3:Diaries:DiariesService:*' },
+          { right: 'UPDATE', uri: 'TTIC:FL:HO3:Diaries:DiariesService:*' },
+          { right: 'TRANSFER', uri: 'TTIC:FL:HO3:Diaries:DiariesService:*' }
+        ]
       }
-    ]
-  }
-];
+    };
 
-const diaryAssignees = [
-  {
-    answer: 'test_user',
-    label: 'Test User',
-    type: 'user'
-  }
-];
+    it('POS:Renders and has fields and labels to user with access', async () => {
+      const { getByLabelText, getByTestId, getByRole } = render(
+        <DiariesSearch {...props} />
+      );
 
-const searchResults = {
-  results: [
-    {
-      resource: {
-        type: 'Policy',
-        id: '12-1018323-01',
-        companyCode: 'TTIC',
-        state: 'FL',
-        product: 'HO3'
+      // TODO update Loader in core-ui to have a role attribute
+      // await waitForElementToBeRemoved(() => queryByRole('status'));
+      await waitForElementToBeRemoved(() => getByTestId('loader'));
+
+      const statusField = getByLabelText(/diary status/i);
+      expect(statusField).toBeInTheDocument();
+      expect(statusField.value).toEqual('true');
+
+      const reasonField = getByLabelText(/reason/i);
+      expect(reasonField).toBeInTheDocument();
+      expect(reasonField.value).toEqual('');
+
+      expect(getByTestId('assignees_label')).toBeInTheDocument();
+      expect(getByTestId('date-range_label')).toBeInTheDocument();
+
+      expect(within(statusField).queryAllByRole('option').length).toBe(2);
+      expect(within(reasonField).queryAllByRole('option').length).toBe(2);
+
+      expect(getByRole('button', { name: /search/i })).not.toBeDisabled();
+    });
+  });
+
+  describe('Transfer Diaries Testing', () => {
+    searchData.fetchDiaryOptions = jestResolve(diaryOptions);
+    searchData.fetchAssigneeOptions = jestResolve(assigneeOptions);
+    searchData.fetchDiaries = jestResolve(searchResults);
+    searchData.transferDiaries = jestResolve(transferResult);
+
+    const props = {
+      userProfile: {
+        userId: '234',
+        profile: { given_name: 'John', family_name: 'Smith' },
+        resources: [
+          { right: 'READ', uri: 'TTIC:FL:HO3:Diaries:DiariesService:*' },
+          { right: 'INSERT', uri: 'TTIC:FL:HO3:Diaries:DiariesService:*' },
+          { right: 'UPDATE', uri: 'TTIC:FL:HO3:Diaries:DiariesService:*' },
+          { right: 'TRANSFER', uri: 'TTIC:FL:HO3:Diaries:DiariesService:*' }
+        ]
       },
-      _id: '5ea0469e73736000fa461a8d',
-      entries: [
+      errorHandler: x => x
+    };
+
+    it('Should toggle the transfer diaries section', async () => {
+      const {
+        getByTestId,
+        getByText,
+        queryByText,
+        queryByTestId,
+        getByRole
+      } = render(<DiariesSearch {...props} />);
+
+      await waitForElementToBeRemoved(() => getByTestId('loader'));
+
+      const transferButton = getByRole('button', { name: /transfer/i });
+      expect(transferButton).toBeInTheDocument();
+
+      expect(queryByText('Select All')).not.toBeInTheDocument();
+      expect(queryByText('Transfer To')).not.toBeInTheDocument();
+      expect(queryByTestId('reset-transfer')).not.toBeInTheDocument();
+      expect(queryByTestId('submit-transfer')).not.toBeInTheDocument();
+
+      fireEvent.click(transferButton);
+
+      await wait(() => expect(getByText('Select All')).toBeInTheDocument());
+      expect(getByText('Transfer To')).toBeInTheDocument();
+      expect(getByTestId('reset-transfer')).toBeInTheDocument();
+      expect(getByTestId('submit-transfer')).toBeInTheDocument();
+
+      fireEvent.click(getByRole('button', { name: /cancel/i }));
+
+      await wait(() =>
+        expect(queryByText('Select All')).not.toBeInTheDocument()
+      );
+      expect(queryByText('Transfer To')).not.toBeInTheDocument();
+      expect(queryByTestId('reset-transfer')).not.toBeInTheDocument();
+      expect(queryByTestId('submit-transfer')).not.toBeInTheDocument();
+    });
+
+    it('Should submit transfer diaries: select all', async () => {
+      const { getByTestId, getByText, getByLabelText, getByRole } = render(
+        <DiariesSearch {...props} />
+      );
+
+      await waitForElementToBeRemoved(() => getByTestId('loader'));
+
+      const transferButton = getByRole('button', { name: /TRANSFER/ });
+      expect(transferButton).toBeInTheDocument();
+
+      const searchResultsContainer = getByRole('article');
+      const diaryResult = within(searchResultsContainer).getByRole('listitem');
+
+      expect(
+        within(diaryResult).getByText(/12-1018323-01/)
+      ).toBeInTheDocument();
+      expect(
+        within(diaryResult).getByText(/Information Needed/)
+      ).toBeInTheDocument();
+      expect(
+        within(diaryResult).getByText(/Diary entry message!/)
+      ).toBeInTheDocument();
+
+      fireEvent.click(transferButton);
+
+      await wait(() =>
+        expect(getByLabelText('Select All')).toBeInTheDocument()
+      );
+
+      const transferTo = getByTestId('transfer-to_wrapper');
+      await wait(() => expect(getByText(/Start typing to search.../)));
+
+      fireEvent.keyDown(
+        transferTo.querySelector('input:not([type="hidden"])'),
         {
-          open: true,
-          due: '2020-01-01T05:00:00.000Z',
-          _id: '5ea0469e73736000fa461a8e',
-          message: 'PlumbingConcernEvidenceActiveLeak',
-          reason: 'underwriting_review',
-          assignee: {
-            id: 'auth0|5a5f765ac6e7140558a608ab',
-            displayName: 'Mark Dewey',
-            type: 'user'
-          },
-          createdBy: {
-            userId: 'auth0|5b7b242f7fcc57156bdd51f0',
-            userName: 'cvelazquez'
-          },
-          createdAt: '2020-07-23T15:44:56.304Z',
-          updatedAt: '2020-07-23T15:44:56.304Z'
-        },
-        {
-          open: true,
-          due: '2020-01-01T05:00:00.000Z',
-          _id: '5ea0469e73736000fa461a8e',
-          message: 'PlumbingConcernEvidenceActiveLeak',
-          reason: 'underwriting_review',
-          assignee: {
-            id: 'auth0|59562fcbc2b5082b9e61301a',
-            displayName: 'Mark Eads',
-            type: 'user'
-          },
-          createdBy: {
-            userId: 'auth0|5b7b242f7fcc57156bdd51f0',
-            userName: 'cvelazquez'
-          },
-          createdAt: '2020-07-23T15:32:15.953Z',
-          updatedAt: '2020-07-23T15:32:15.953Z'
-        },
-        {
-          open: true,
-          due: '2020-01-01T05:00:00.000Z',
-          _id: '5ea0469e73736000fa461a8e',
-          message: 'PlumbingConcernEvidenceActiveLeak',
-          reason: 'underwriting_review',
-          assignee: {
-            id: 'auth0|5a5f765ac6e7140558a608ab',
-            displayName: 'Mark Dewey',
-            type: 'user'
-          },
-          createdBy: {
-            userId: 'auth0|5b7b242f7fcc57156bdd51f0',
-            userName: 'cvelazquez'
-          },
-          createdAt: '2020-07-23T15:13:06.189Z',
-          updatedAt: '2020-07-23T15:13:06.189Z'
-        },
-        {
-          open: true,
-          due: '2020-01-01T05:00:00.000Z',
-          _id: '5ea0469e73736000fa461a8e',
-          message: 'PlumbingConcernEvidenceActiveLeak',
-          reason: 'underwriting_review',
-          assignee: {
-            id: 'auth0|59562fcbc2b5082b9e61301a',
-            displayName: 'Mark Eads',
-            type: 'user'
-          },
-          createdBy: {
-            userId: 'auth0|5b7b242f7fcc57156bdd51f0',
-            userName: 'cvelazquez'
-          },
-          createdAt: '2020-07-23T15:12:12.046Z',
-          updatedAt: '2020-07-23T15:12:12.046Z'
-        },
-        {
-          open: true,
-          due: '2020-01-01T05:00:00.000Z',
-          _id: '5ea0469e73736000fa461a8e',
-          message: 'PlumbingConcernEvidenceActiveLeak',
-          reason: 'underwriting_review',
-          assignee: {
-            id: 'auth0|5b8021ef80d68e4c21243acb',
-            displayName: 'Alexis Boucher',
-            type: 'user'
-          },
-          createdBy: {
-            userId: 'auth0|5b7b242f7fcc57156bdd51f0',
-            userName: 'cvelazquez'
-          },
-          createdAt: '2020-04-22T13:29:02.219Z',
-          updatedAt: '2020-04-22T13:29:02.219Z'
+          keyCode: 40
         }
-      ],
-      createdAt: '2020-04-22T13:29:02.219Z',
-      updatedAt: '2020-07-23T15:44:56.304Z',
-      __v: 0
-    }
-  ],
-  totalRecords: 1,
-  noResults: false
-};
+      );
 
-const transferResult = {
-  result: {
-    ok: 1,
-    writeErrors: [],
-    writeConcernErrors: [],
-    insertedIds: [],
-    nInserted: 0,
-    nUpserted: 0,
-    nMatched: 1,
-    nModified: 1,
-    nRemoved: 0,
-    upserted: [],
-    lastOp: { ts: '6852699068993372185', t: 1287 }
-  },
-  status: 200,
-  message: 'success'
-};
+      await wait(() => expect(getByText(/Test User/)).toBeInTheDocument());
 
-describe('Diaries Search Testing', () => {
-  searchData.fetchDiaryOptions = jestResolve(diariesOptions);
-  searchData.getDiaryAssigneeOptions = jestResolve(diaryAssignees);
-  searchData.searchDiaries = jestResolve({ results: [] });
+      fireEvent.click(getByLabelText('Select All'));
 
-  const props = {
-    userProfile: {
-      profile: { given_name: 'John', family_name: 'Smith' },
-      resources: [
-        { right: 'READ', uri: 'TTIC:FL:HO3:Diaries:DiariesService:*' },
-        { right: 'INSERT', uri: 'TTIC:FL:HO3:Diaries:DiariesService:*' },
-        { right: 'UPDATE', uri: 'TTIC:FL:HO3:Diaries:DiariesService:*' },
-        { right: 'TRANSFER', uri: 'TTIC:FL:HO3:Diaries:DiariesService:*' }
-      ]
-    }
-  };
+      await wait(() => expect(getByLabelText('Select All').checked).toBe(true));
 
-  const selectFields = fields.filter(({ type }) => type === 'select');
-
-  it('POS:Renders and has fields and labels', () => {
-    const { getByTestId } = renderWithForm(<DiariesSearch {...props} />);
-
-    fields.forEach(field => checkLabel(getByTestId, field));
-    selectFields.forEach(({ dataTest, selected }) =>
-      expect(getByTestId(dataTest).getAttribute('data-selected')).toEqual(
-        selected
-      )
-    );
-  });
-
-  it('POS:Checks that all fields are working', () => {
-    const { getByTestId } = renderWithForm(<DiariesSearch {...props} />);
-    selectFields.forEach(field => checkSelect(getByTestId, field));
-  });
-
-  it('POS:Diary Search Button', () => {
-    const { getByTestId } = renderWithForm(<DiariesSearch {...props} />);
-    checkButton(getByTestId, {
-      dataTest: 'submit',
-      text: 'Search',
-      type: 'submit'
+      // TODO need to decide what we want to assert after clicking this button. Serves no purpose otherwise.
+      expect(getByTestId('submit-transfer')).not.toBeDisabled();
     });
-  });
-});
-
-describe('Transfer Diaries Testing', () => {
-  searchData.fetchDiaryOptions = jestResolve(diariesOptions);
-  searchData.getDiaryAssigneeOptions = jestResolve(diaryAssignees);
-  searchData.searchDiaries = jestResolve(searchResults);
-  searchData.transferDiaries = jestResolve(transferResult);
-
-  const props = {
-    userProfile: {
-      profile: { given_name: 'John', family_name: 'Smith' },
-      resources: [
-        { right: 'READ', uri: 'TTIC:FL:HO3:Diaries:DiariesService:*' },
-        { right: 'INSERT', uri: 'TTIC:FL:HO3:Diaries:DiariesService:*' },
-        { right: 'UPDATE', uri: 'TTIC:FL:HO3:Diaries:DiariesService:*' },
-        { right: 'TRANSFER', uri: 'TTIC:FL:HO3:Diaries:DiariesService:*' }
-      ]
-    },
-    errorHandler: noop
-  };
-
-  it('Should toggle the transfer diaries section', async () => {
-    const {
-      getByTestId,
-      getByText,
-      queryAllByText,
-      queryAllByTestId
-    } = renderWithForm(<DiariesSearch {...props} />);
-
-    await wait(() => [
-      expect(getByText('TRANSFER')),
-      expect(queryAllByText('Select All').length).toBe(0),
-      expect(queryAllByText('Transfer To').length).toBe(0),
-      expect(queryAllByTestId('resetTransfer').length).toBe(0),
-      expect(queryAllByTestId('submitTransfer').length).toBe(0)
-    ]);
-
-    fireEvent.click(getByText('TRANSFER'));
-
-    await wait(() => [
-      expect(queryAllByText('Select All').length).toBe(1),
-      expect(queryAllByText('Transfer To').length).toBe(1),
-      expect(queryAllByTestId('resetTransfer').length).toBe(1),
-      expect(queryAllByTestId('submitTransfer').length).toBe(1)
-    ]);
-
-    fireEvent.click(getByTestId('resetTransfer'));
-
-    await wait(() => [
-      expect(queryAllByText('Select All').length).toBe(0),
-      expect(queryAllByText('Transfer To').length).toBe(0),
-      expect(queryAllByTestId('resetTransfer').length).toBe(0),
-      expect(queryAllByTestId('submitTransfer').length).toBe(0)
-    ]);
-  });
-
-  it('Should submit transfer diaries: select all', async () => {
-    const {
-      getByTestId,
-      getByText,
-      queryAllByText,
-      queryAllByTestId
-    } = renderWithForm(<DiariesSearch {...props} />);
-
-    await wait(() => [
-      expect(getByText('TRANSFER')),
-      expect(getByText(/12-1018323-01/)),
-      expect(getByText(/underwriting_review/)),
-      expect(getByText(/PlumbingConcernEvidenceActiveLeak/))
-    ]);
-
-    fireEvent.click(getByText('TRANSFER'));
-
-    await wait(() => [
-      expect(queryAllByText('Select All').length).toBe(1),
-      expect(queryAllByText('Transfer To').length).toBe(1),
-      expect(queryAllByTestId('resetTransfer').length).toBe(1),
-      expect(queryAllByTestId('submitTransfer').length).toBe(1)
-    ]);
-
-    const transferTo = getByTestId('transferTo_wrapper');
-    await wait(() => expect(getByText(/Start typing to search.../)));
-
-    fireEvent.keyDown(transferTo.querySelector('input:not([type="hidden"])'), {
-      keyCode: 40
-    });
-
-    await wait(() => expect(getByText(/Test User/)));
-
-    fireEvent.click(getByTestId('selectAll'));
-
-    await wait(() => {
-      expect(getByTestId('selectAll').checked).toBe(true);
-    });
-
-    fireEvent.click(getByTestId('submitTransfer'));
   });
 });

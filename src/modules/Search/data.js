@@ -4,15 +4,11 @@ import { date } from '@exzeo/core-ui';
 import { SECONDARY_DATE_FORMAT } from '../../constants/dates';
 import { RESULTS_PAGE_SIZE } from '../../constants/search';
 import {
-  buildAssigneesList,
   buildQuerystring,
   formatAddressResults,
   formatAgentResults,
-  formatDiaryResults,
   formatPolicyResults,
   formatQuoteResults,
-  getCheckedDiaries,
-  processChunk,
   setPageNumber
 } from './utilities';
 
@@ -115,71 +111,6 @@ export async function fetchAgencies(query) {
     return response && response.data && response.data.result
       ? response.data.result
       : [];
-  } catch (error) {
-    throw error;
-  }
-}
-
-/**
- *
- * @param reason
- * @param dueDateMin
- * @param dueDateMax
- * @param assignees
- * @param open
- * @param product
- * @returns {Promise<void>}
- */
-export async function fetchDiaries({
-  reason,
-  dueDateMin,
-  dueDateMax,
-  assignees,
-  open,
-  product
-}) {
-  const config = {
-    service: 'diaries',
-    method: 'POST',
-    path: '/read',
-    data: {
-      assignees: assignees.length === 0 ? null : assignees,
-      dueDateMax,
-      dueDateMin,
-      open,
-      reason,
-      product
-    }
-  };
-
-  try {
-    const response = await serviceRunner.callService(config, 'fetchDiaries');
-    return response && response.data ? response.data : [];
-  } catch (error) {
-    throw error;
-  }
-}
-
-/**
- *
- * @param diaries
- * @param assignee
- * @returns {Promise<void>}
- */
-export async function transferDiaries({ diaries, assignee }) {
-  const config = {
-    service: 'diaries',
-    method: 'POST',
-    path: '/diaries/transfer',
-    data: {
-      diaries,
-      assignee
-    }
-  };
-
-  try {
-    const response = await serviceRunner.callService(config, 'transferDiaries');
-    return response && response.data ? response.data : [];
   } catch (error) {
     throw error;
   }
@@ -322,123 +253,6 @@ export async function handleAgencySearch(data) {
       totalPages: Math.ceil(totalNumberOfRecords / pageSize) || 0,
       totalRecords: totalNumberOfRecords
     };
-  } catch (error) {
-    throw error;
-  }
-}
-
-/**
- * Entry point for DiarySearch form
- * @param data
- * @returns {Function}
- */
-export async function searchDiaries(data) {
-  try {
-    const searchQuery = {
-      open: data.open === 'true',
-      assignees: (data.assignees || []).map(a => a.answer),
-      reason: data.reason,
-      dueDateMin: data.dateRange.min,
-      dueDateMax: data.dateRange.max,
-      product: data.product
-    };
-
-    const results = await fetchDiaries(searchQuery);
-    return formatDiaryResults(results, data.product);
-  } catch (error) {
-    throw error;
-  }
-}
-
-/**
- * Transfer Diaries
- * @param data
- * @param diaryResults
- * @param assigneeAnswers
- * @returns {Function}
- */
-export async function handleTransferDiaries(
-  data,
-  diaryResults,
-  assigneeAnswers
-) {
-  try {
-    const diaryIds = getCheckedDiaries(data.diaries);
-
-    const assigneeObj = assigneeAnswers.find(
-      a => String(a.answer) === String(data.transferTo)
-    );
-    const assignee = {
-      id: assigneeObj.answer,
-      displayName: assigneeObj.label,
-      type: assigneeObj.type
-    };
-    const filteredDiaries = diaryResults.filter(d => diaryIds.includes(d._id));
-
-    const selectedDiaries = [];
-
-    filteredDiaries.forEach(({ entries, _id }) => {
-      selectedDiaries.push({
-        entry: entries[0],
-        _id
-      });
-    });
-
-    const transfer = async diaries => {
-      return await transferDiaries({ diaries, assignee });
-    };
-
-    const response = await processChunk(selectedDiaries, 25, transfer);
-    return response;
-  } catch (error) {
-    throw error;
-  }
-}
-
-/**
- *
- * @returns {Promise<*>}
- */
-export async function fetchDiaryOptions() {
-  try {
-    const config = {
-      service: 'diaries',
-      method: 'GET',
-      path: `diaryOptions`
-    };
-
-    const response = await serviceRunner.callService(
-      config,
-      'fetchDiaryOptions'
-    );
-    return response.data && response.data.result ? response.data.result : [];
-  } catch (error) {
-    throw error;
-  }
-}
-
-export async function getDiaryAssigneeOptions(userProfile) {
-  const { resources } = userProfile;
-  const query = resources
-    .filter(r => r.uri.includes('Diaries'))
-    .reduce((acc, val) => `${acc},${val.uri}|${val.right}`, '');
-
-  try {
-    const config = {
-      method: 'GET',
-      service: 'security-manager-service',
-      path: `/user?r=${query}`
-    };
-    const response = await serviceRunner.callService(
-      config,
-      'getDiaryAssigneeOptions'
-    );
-    const users =
-      response.data && Array.isArray(response.data.result)
-        ? response.data.result
-        : [];
-
-    return buildAssigneesList(users);
   } catch (error) {
     throw error;
   }

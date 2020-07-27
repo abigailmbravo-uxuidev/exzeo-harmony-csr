@@ -16,7 +16,8 @@
   width: 100%;
   height: calc(100vh - 12.0625rem);
   margin-top: -2px;
-  > form {
+  > form,
+  > .results-container {
     display: flex;
     overflow: hidden;
     flex-direction: column;

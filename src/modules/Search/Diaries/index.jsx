@@ -1,3 +1,3 @@
-import DiariesSearch from './DiariesSearch';
+import DiariesSearch from './@components/DiariesSearch';
 
 export default DiariesSearch;
