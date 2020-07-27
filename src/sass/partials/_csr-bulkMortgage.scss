@@ -181,6 +181,7 @@ html body div#root .app-wrapper {
                     p {
                       &.address {
                         margin-bottom: $padding;
+                        text-transform: uppercase;
                       }
                     }
 
@@ -196,6 +197,10 @@ html body div#root .app-wrapper {
 
                         h4 {
                           color: $warm-gray-08;
+                        }
+
+                        h5 {
+                          text-transform: uppercase;
                         }
 
                         .billto-loan-wrapper {
