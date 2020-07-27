@@ -3,20 +3,6 @@ import initialState from './initialState';
 import policyStateReducer from './policy.reducer';
 
 describe('Policy State Reducer', () => {
-  it('should call policyStateReducer GET_POLICY', () => {
-    const state = initialState.policyState;
-    const inputProps = { policyNumber: '123', update: true };
-    const action = {
-      type: types.GET_POLICY,
-      policyState: inputProps
-    };
-
-    expect(policyStateReducer(state, action)).toEqual({
-      ...initialState.policyState,
-      ...inputProps
-    });
-  });
-
   it('should call policyStateReducer SET_POLICY', () => {
     const state = initialState.policyState;
     const inputProps = {

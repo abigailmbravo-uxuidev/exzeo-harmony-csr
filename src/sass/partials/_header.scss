@@ -85,118 +85,168 @@ header {
       }
     }
 
-    .header-toggle-wrapper {
-      position: relative;
-
-      display: none;
-      flex-direction: row-reverse;
+    .header-indicator-wrapper {
+      display: flex;
       flex-grow: 1;
       flex-shrink: 1;
+      justify-content: flex-end;
 
-      &.active-diaries {
+      .claims {
         display: flex;
-        button {
-          position: relative;
+        align-items: center;
+        flex-direction: column;
+        justify-content: flex-end;
 
+        width: 3.5rem;
+        height: 3.75rem;
+        margin-top: -16px;
+        margin-left: 8px;
+        padding: 0.125rem;
+
+        border-right: 1px solid $bright-blue;
+        border-bottom: 1px solid $bright-blue;
+        border-left: 1px solid $bright-blue;
+        border-radius: 0 0 $btn-border-radius $btn-border-radius;
+
+        @include transition(all 0.2s ease-in-out);
+
+        span {
+          color: $bright-blue;
+
+          font-size: $font-size-xs;
+          font-weight: $font-weight-bold;
+
+          @include transition(all 0.2s ease-in-out);
+        }
+
+        #claim-graphic {
+          width: 28px;
+          margin-bottom: 3px;
+
+          fill: $bright-blue;
+          @include transition(all 0.2s ease-in-out);
+        }
+
+        &.open {
+          span {
+            color: $orange-lighten-01;
+          }
+          #claim-graphic {
+            fill: $orange-lighten-01;
+          }
+        }
+      }
+
+      .header-toggle-wrapper {
+        position: relative;
+
+        display: none;
+
+        &.active-diaries {
           display: flex;
-          align-items: center;
-          flex-direction: column;
-
-          width: 3.5rem;
-          height: 3.75rem;
-          margin-top: -($padding * 2);
-          margin-left: $padding;
-          padding: 0;
-
-          border-width: 0;
-
-          .diary-btn-wrapper {
-            position: absolute;
-            top: 0;
-            right: 0;
-            bottom: 0;
-            left: 0;
+          button {
+            position: relative;
 
             display: flex;
             align-items: center;
             flex-direction: column;
-            justify-content: center;
 
-            padding-top: $padding;
+            width: 3.5rem;
+            height: 3.75rem;
+            margin-top: -16px;
+            margin-left: 8px;
+            padding: 0;
 
-            border-right: 1px solid $bright-blue;
-            border-bottom: 1px solid $bright-blue;
-            border-left: 1px solid $bright-blue;
-            border-radius: 0 0 $btn-border-radius $btn-border-radius;
+            border-width: 0;
 
-            &.panel-closed {
-              background-color: $bright-blue-darken-04;
-            }
-
-            &.panel-open {
-              background-color: $white;
-
-              > i {
-                color: $bright-blue-darken-04;
-              }
-
-              > span {
-                color: $bright-blue-darken-04;
-              }
-            }
-
-            > i {
-              position: relative;
+            .diary-btn-wrapper {
+              position: absolute;
+              top: 0;
+              right: 0;
+              bottom: 0;
+              left: 0;
 
               display: flex;
               align-items: center;
+              flex-direction: column;
               justify-content: center;
 
-              width: 2rem;
-              height: 2rem;
-              margin-right: 0;
+              padding-top: $padding;
 
-              color: $bright-blue;
+              border-right: 1px solid $bright-blue;
+              border-bottom: 1px solid $bright-blue;
+              border-left: 1px solid $bright-blue;
+              border-radius: 0 0 $btn-border-radius $btn-border-radius;
 
-              font-size: $font-size-h2;
-
-              > span {
-                position: absolute;
-                top: 0.5rem;
-
-                color: $white;
-
-                font-family: $font-family-base;
-              }
-            }
-
-            span {
-              color: $bright-blue;
-
-              font-size: $font-size-xs;
-
-              i {
-                margin-right: $padding/4;
-
-                color: $bright-blue;
-              }
-            }
-          }
-
-          &:focus,
-          &:hover {
-            color: $bright-blue;
-
-            .dairy-btn-wrapper {
               &.panel-closed {
-                > i {
-                  color: $white !important;
-                }
+                background-color: $bright-blue-darken-04;
               }
 
               &.panel-open {
+                background-color: $white;
+
                 > i {
-                  color: $bright-blue-darken-04 !important;
+                  color: $bright-blue-darken-04;
+                }
+
+                > span {
+                  color: $bright-blue-darken-04;
+                }
+              }
+
+              > i {
+                position: relative;
+
+                display: flex;
+                align-items: center;
+                justify-content: center;
+
+                width: 2rem;
+                height: 2rem;
+                margin-right: 0;
+
+                color: $bright-blue;
+
+                font-size: $font-size-h2;
+
+                > span {
+                  position: absolute;
+                  top: 0.5rem;
+
+                  color: $white;
+
+                  font-family: $font-family-base;
+                }
+              }
+
+              span {
+                color: $bright-blue;
+
+                font-size: $font-size-xs;
+
+                i {
+                  margin-right: $padding/4;
+
+                  color: $bright-blue;
+                }
+              }
+            }
+
+            &:focus,
+            &:hover {
+              color: $bright-blue;
+
+              .dairy-btn-wrapper {
+                &.panel-closed {
+                  > i {
+                    color: $white !important;
+                  }
+                }
+
+                &.panel-open {
+                  > i {
+                    color: $bright-blue-darken-04 !important;
+                  }
                 }
               }
             }
