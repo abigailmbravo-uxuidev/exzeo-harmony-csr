@@ -180,7 +180,9 @@ const QuoteSearch = ({ changeSearchType, userProfile, history }) => {
                         label="Company"
                         component={Select}
                         answers={companyCodeOptions}
-                        showPlaceholder={false}
+                        showPlaceholder={true}
+                        placeholder={'All'}
+                        placeholderDisabled={false}
                         styleName="company-search"
                       />
                       <Field
