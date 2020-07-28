@@ -220,12 +220,3 @@ export function getMailingAddress(mailingAddress) {
     csz: getCityStateZip(mailingAddress)
   };
 }
-
-/**
- * Formatting for currentPremium
- * @param premium
- * @returns {string}
- */
-export function getCurrentPremium(premium) {
-  return premium ? `$ ${normalize.numbers(premium)}` : '--';
-}

@@ -1,5 +1,5 @@
 import React from 'react';
-import { date } from '@exzeo/core-ui';
+import { date, format } from '@exzeo/core-ui';
 
 function QuoteCard({ handleClick, quote }) {
   const firstName =
@@ -40,8 +40,9 @@ function QuoteCard({ handleClick, quote }) {
             {date.formatDate(quote.createdAt)}
           </span>
           <span className="premium">
-            <strong>Premium:</strong>&nbsp; ${' '}
-            {quote.rating ? quote.rating.totalPremium : '-'}
+            <strong>Premium:</strong>&nbsp;
+            {(quote.rating && format.toCurrency(quote.rating.totalPremium)) ||
+              '$ -'}
           </span>
           <span className="effective-date">
             <strong>Effective Date:</strong>&nbsp;

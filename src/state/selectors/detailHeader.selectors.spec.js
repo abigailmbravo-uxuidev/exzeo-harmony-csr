@@ -846,7 +846,7 @@ describe('Detail Header selectors', () => {
       sourceNumber: '12-5148842-01',
       territory: '038-0',
       county: 'ALACHUA',
-      currentPremium: '$ 3,055',
+      currentPremium: '$3,055',
       effectiveDate: '12/04/2018',
       appraisalURI: { label: 'PAS', value: 'http://www.acpafl.org/' },
       mapURI:

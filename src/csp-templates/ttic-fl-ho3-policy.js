@@ -1469,8 +1469,8 @@ const mock = {
                         component: 'selectInteger',
                         label: 'Personal Liability (E)',
                         dataSource: [
-                          { label: '$ 100,000', answer: 100000 },
-                          { label: '$ 300,000', answer: 300000 }
+                          { label: '$100,000', answer: 100000 },
+                          { label: '$300,000', answer: 300000 }
                         ],
                         extendedProperties: { output: 'initial' }
                       },
@@ -1517,9 +1517,9 @@ const mock = {
                         label: 'Mold Property',
                         extendedProperties: { output: 'initial' },
                         dataSource: [
-                          { label: '$ 10,000', answer: 10000 },
-                          { label: '$ 25,000', answer: 25000 },
-                          { label: '$ 50,000', answer: 50000 }
+                          { label: '$10,000', answer: 10000 },
+                          { label: '$25,000', answer: 25000 },
+                          { label: '$50,000', answer: 50000 }
                         ]
                       },
                       formData: {
@@ -1543,8 +1543,8 @@ const mock = {
                         label: 'Mold Liability',
                         extendedProperties: { output: 'initial' },
                         dataSource: [
-                          { label: '$ 50,000', answer: 50000 },
-                          { label: '$ 100,000', answer: 100000 }
+                          { label: '$50,000', answer: 50000 },
+                          { label: '$100,000', answer: 100000 }
                         ]
                       },
                       formData: {
@@ -1568,9 +1568,9 @@ const mock = {
                         label: 'AOP Deductible',
                         extendedProperties: { output: 'initial' },
                         dataSource: [
-                          { label: '$ 500', answer: 500 },
-                          { label: '$ 1,000', answer: 1000 },
-                          { label: '$ 2,500', answer: 2500 }
+                          { label: '$500', answer: 500 },
+                          { label: '$1,000', answer: 1000 },
+                          { label: '$2,500', answer: 2500 }
                         ]
                       },
                       formData: {
