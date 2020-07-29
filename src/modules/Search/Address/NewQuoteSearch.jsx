@@ -33,7 +33,7 @@ const NewQuoteSearch = ({ userProfile, history }) => {
     companyCodeOptions,
     stateOptions,
     productOptionMap
-  } = cspConfigForSearch(userProfile, 'QuoteData:Quotes:*');
+  } = cspConfigForSearch(userProfile, 'QuoteData:Quotes:*', 'READ');
 
   const {
     searchState,

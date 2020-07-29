@@ -6,13 +6,16 @@ import {
   ListBody,
   ListFooter,
   ListContainer,
-  Field
+  Field,
+  noop,
+  OnChangeListener
 } from '@exzeo/core-ui';
 
 import { DUE_STATUS } from '../../../constants/diaries';
 import { formatEntry, getDueStatus } from '../../../utilities/diaries';
 
 const DiaryList = ({
+  checkedDiaries,
   diaries,
   onItemClick,
   clickable,
@@ -47,7 +50,10 @@ const DiaryList = ({
         return (
           <>
             {transfer && (
-              <div className="transfer_checkbox_wrapper fade-in">
+              <div
+                className="transfer_checkbox_wrapper fade-in"
+                key={`checkbox_wrapper_${_id}`}
+              >
                 <Field
                   name={`diaries.${_id}`}
                   dataTest={_id}
@@ -55,15 +61,34 @@ const DiaryList = ({
                   component="input"
                   type="checkbox"
                 />
+                <Field name="selectAll" subscription={{}}>
+                  {({ input: { onChange } }) => (
+                    <OnChangeListener name={`diaries.${_id}`}>
+                      {value => {
+                        if (
+                          checkedDiaries.length === diaries.length - 1 &&
+                          !value
+                        ) {
+                          onChange(false);
+                        } else if (
+                          checkedDiaries.length === diaries.length &&
+                          value
+                        ) {
+                          onChange(true);
+                        }
+                      }}
+                    </OnChangeListener>
+                  )}
+                </Field>
               </div>
             )}
             <ListItem
               key={_id}
               dataTest={`diaries_${_id}`}
               styleName={dueStatus}
-              handleClick={() => (clickable ? onItemClick(id, type) : null)}
+              handleClick={() => (clickable ? onItemClick(id, type) : noop)}
               handleKeyPress={() =>
-                clickable ? handleKeyPress(id, type) : null
+                clickable ? handleKeyPress(id, type) : noop
               }
             >
               <ListHeader>

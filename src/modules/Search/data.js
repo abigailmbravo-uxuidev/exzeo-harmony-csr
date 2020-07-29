@@ -11,6 +11,7 @@ import {
   formatDiaryResults,
   formatPolicyResults,
   formatQuoteResults,
+  getCheckedDiaries,
   processChunk,
   setPageNumber
 } from './utilities';
@@ -362,7 +363,8 @@ export async function handleTransferDiaries(
   assigneeAnswers
 ) {
   try {
-    const diaryIds = Object.keys(data.diaries);
+    const diaryIds = getCheckedDiaries(data.diaries);
+
     const assigneeObj = assigneeAnswers.find(
       a => String(a.answer) === String(data.transferTo)
     );

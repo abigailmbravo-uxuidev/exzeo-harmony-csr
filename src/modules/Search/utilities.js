@@ -205,6 +205,15 @@ export function formatDiaryResults(results, product) {
 
 /**
  *
+ * @param diaries
+ * @returns {string[]}
+ */
+export function getCheckedDiaries(diaries) {
+  return Object.keys(diaries).filter(id => diaries[id]);
+}
+
+/**
+ *
  * @param users
  * @returns {*}
  */
@@ -266,14 +275,53 @@ function removeDuplicates(array, property) {
   });
 }
 
-export const cspConfigForSearch = (userProfile = {}, uri) => {
-  const userResources = (userProfile?.resources || []).filter(resource => {
-    return (
-      !resource.conditions &&
-      resource.right === 'READ' &&
-      resource.uri.includes(uri)
-    );
+/**
+ *
+ * @param resources
+ * @param uri
+ * @param right
+ * @returns {*[]}
+ */
+export const getMatchingResources = (resources = [], uri, right) => {
+  return resources.filter(resource => {
+    if (process.env.NODE_ENV !== 'production') {
+      if (!!resource.conditions) {
+        // As we use this more and more, every way we can slim down the resources array will help with perf.
+        throw new Error(
+          'Please filter out legacy resources in store when user logs in'
+        );
+      }
+    }
+
+    return resource.right === right && resource.uri.includes(uri);
   });
+};
+
+/**
+ *
+ * @param resources
+ * @param uri
+ * @param right
+ * @returns {boolean}
+ */
+export const doesUserHaveAccess = (resources = [], uri, right) => {
+  const matchingResources = getMatchingResources(resources, uri, right);
+
+  return matchingResources.length > 0;
+};
+
+/**
+ *
+ * @param userProfile
+ * @param uri
+ * @returns {{productOptionMap: {}, productOptions: [], stateOptions: [], companyCodeMap: {}, companyCodeOptions: []}}
+ */
+export const cspConfigForSearch = (userProfile = {}, uri, right) => {
+  const userResources = getMatchingResources(
+    userProfile?.resources,
+    uri,
+    right
+  );
 
   const companyCodeMap = {};
   const stateOptions = [];

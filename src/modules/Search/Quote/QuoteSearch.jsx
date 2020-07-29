@@ -49,7 +49,7 @@ const QuoteSearch = ({ changeSearchType, userProfile, history }) => {
     stateOptions,
     productOptionMap,
     productOptions
-  } = cspConfigForSearch(userProfile, 'QuoteData:Quotes:*');
+  } = cspConfigForSearch(userProfile, 'QuoteData:Quotes:*', 'READ');
 
   const { quoteStateList } = useFetchQuoteState();
 

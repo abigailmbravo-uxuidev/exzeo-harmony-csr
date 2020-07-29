@@ -6,7 +6,7 @@ const TransferButton = ({ toggleTransfer }) => (
     className="btn btn-link btn-reset"
     type="button"
     onClick={toggleTransfer}
-    dataTest="toggleTransfer"
+    data-test="toggleTransfer"
   >
     <i className="fa fa-share" />
     TRANSFER
@@ -14,7 +14,7 @@ const TransferButton = ({ toggleTransfer }) => (
 );
 
 TransferButton.propTypes = {
-  reset: PropTypes.func.isRequired
+  toggleTransfer: PropTypes.func.isRequired
 };
 
 export default TransferButton;

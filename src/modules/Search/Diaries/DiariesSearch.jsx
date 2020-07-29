@@ -31,6 +31,7 @@ import SearchResultsWrapper from '../components/SearchResultsWrapper';
 import TransferButton from './TransferButton';
 import DiariesTransferWatcher from './DiariesTransferWatcher';
 import SelectTypeAhead from '@exzeo/core-ui/src/TypeAhead/Select';
+import { doesUserHaveAccess, getCheckedDiaries } from '../utilities';
 
 export const DiariesSearch = ({ userProfile, errorHandler }) => {
   const [searchResults, setSearchResults] = useState({ results: [] });
@@ -171,7 +172,7 @@ export const DiariesSearch = ({ userProfile, errorHandler }) => {
                             errorHint
                           />
                         </div>
-                        <div className="fomr-group product">
+                        <div className="form-group product">
                           <Field
                             name="product"
                             dataTest="product"
@@ -189,9 +190,15 @@ export const DiariesSearch = ({ userProfile, errorHandler }) => {
                         <strong>{searchResults.totalRecords}</strong>
                         RESULTS
                       </span>
-                      <TransferButton
-                        toggleTransfer={() => setTransfer(true)}
-                      />
+                      {doesUserHaveAccess(
+                        userProfile?.resources,
+                        'Diaries',
+                        'TRANSFER'
+                      ) && (
+                        <TransferButton
+                          toggleTransfer={() => setTransfer(true)}
+                        />
+                      )}
                       <ResetButton reset={() => resetFormResults(form)} />
                       <Button
                         className={Button.constants.classNames.success}
@@ -283,6 +290,7 @@ export const DiariesSearch = ({ userProfile, errorHandler }) => {
                         />
                       ) : (
                         <DiaryList
+                          checkedDiaries={getCheckedDiaries(values.diaries)}
                           product={product}
                           handleKeyPress={handleDiaryKeyPress}
                           onItemClick={handleDiaryClick}
