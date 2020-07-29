@@ -1,5 +1,3 @@
-import territoryManagers from './territoryManagers';
-
 export { default as additionalInterest } from './additionalInterest';
 export * from './mockServiceRunnerResults';
 export { default as policyHolder } from './policyHolder';

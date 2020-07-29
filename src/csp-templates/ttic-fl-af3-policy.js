@@ -3,6 +3,12 @@ const mock = {
   header: {
     showEffectiveDateButton: true,
     showReinstateButton: true,
+    banner: {
+      className: 'workflow-banner ttic fl af3 policy',
+      icon: 'af3',
+      title: 'TypTap',
+      subTitle: 'FL'
+    },
     fields: [
       {
         value: 'policyHolder',

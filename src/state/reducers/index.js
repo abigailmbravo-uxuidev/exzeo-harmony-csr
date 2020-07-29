@@ -1,6 +1,5 @@
 /* eslint no-param-reassign:0 */
 import { combineReducers } from 'redux';
-import { reducer as formReducer } from 'redux-form';
 import agencyState from './agency.reducer';
 import appState from './appState.reducer';
 import authState from './auth.reducer';
@@ -11,12 +10,10 @@ import notes from './notes.reducer';
 import policyState from './policy.reducer';
 import questions from './questions.reducer';
 import quoteState from './quote.reducer';
-import search from './search.reducer';
 import service from './service.reducer';
 import ui from './ui.reducer';
 
 const rootReducer = combineReducers({
-  form: formReducer,
   policyState,
   service,
   ui,
@@ -25,7 +22,6 @@ const rootReducer = combineReducers({
   questions,
   error,
   quoteState,
-  search,
   agencyState,
   notes,
   diaries,

@@ -24,14 +24,16 @@ function NoResults({ searchType, error }) {
   }
 
   return (
-    <div className="card">
-      <div className="card-header">
-        <h4>
-          <i className="fa fa-frown-o " /> No Results Found
-        </h4>
-      </div>
-      <div className="card-block">
-        <p>{NO_RESULTS_MESSAGES[searchType]}</p>
+    <div className="results">
+      <div className="card">
+        <div className="card-header">
+          <h4>
+            <i className="fa fa-frown-o " /> No Results Found
+          </h4>
+        </div>
+        <div className="card-block">
+          <p>{NO_RESULTS_MESSAGES[searchType]}</p>
+        </div>
       </div>
     </div>
   );

@@ -5,8 +5,7 @@ import {
   renderWithForm,
   defaultQuoteWorkflowProps,
   mockServiceRunner,
-  notesResult as result,
-  checkHeader
+  notesResult as result
 } from '../../../test-utils';
 
 import NotesFiles from '../index';
@@ -45,7 +44,7 @@ describe('Notes Files Testing', () => {
   };
 
   it('POS:Header and Tab Buttons', async () => {
-    const { getByRole, getByText } = renderWithForm(<NotesFiles {...props} />);
+    const { getByText } = renderWithForm(<NotesFiles {...props} />);
     await waitForElement(() => getByText('Search Table Data'));
 
     expect(getByText('Notes').className).toEqual('btn btn-tab selected');
@@ -110,7 +109,7 @@ describe('Notes Files Testing', () => {
 
   it('POS:Table Sorting', async () => {
     mockServiceRunner(result);
-    const { debug, getByText } = renderWithForm(<NotesFiles {...props} />);
+    const { getByText } = renderWithForm(<NotesFiles {...props} />);
     await waitForElement(() => getByText('Search Table Data'));
 
     expect(getByText('03/21/2019 8:00 PM EDT'));

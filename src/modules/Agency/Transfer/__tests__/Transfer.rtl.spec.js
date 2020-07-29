@@ -220,12 +220,9 @@ describe('Testing the Transfer Page', () => {
     const props = {
       ...defaultProps
     };
-    const { getByTestId, getByText } = renderWithReduxAndRouter(
-      <Transfer {...props} />,
-      {
-        state
-      }
-    );
+    const { getByTestId } = renderWithReduxAndRouter(<Transfer {...props} />, {
+      state
+    });
 
     await waitForElement(() => getByTestId('policyNumber'));
 
@@ -325,12 +322,9 @@ describe('Testing the Transfer Page', () => {
     const props = {
       ...defaultProps
     };
-    const { getByTestId, getByText } = renderWithReduxAndRouter(
-      <Transfer {...props} />,
-      {
-        state
-      }
-    );
+    const { getByTestId } = renderWithReduxAndRouter(<Transfer {...props} />, {
+      state
+    });
 
     await wait(() => {
       expect(getByTestId('stage-transfer')).toBeDisabled();

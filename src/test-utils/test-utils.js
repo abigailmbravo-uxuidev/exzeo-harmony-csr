@@ -19,9 +19,6 @@ export const defaultInitialState = {
   list: {
     diaryOptions: {}
   },
-  search: {
-    results: []
-  },
   service: {
     agencies: [],
     zipCodeSettings: {
@@ -29,7 +26,6 @@ export const defaultInitialState = {
     }
   },
   error: {},
-  form: {},
   policyState: {
     policy: {
       policyID: 'test'

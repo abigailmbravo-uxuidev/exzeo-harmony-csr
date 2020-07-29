@@ -1,10 +1,8 @@
 import React from 'react';
-import { reduxForm } from 'redux-form';
 
 import {
   renderWithForm,
   checkLabel,
-  checkTextInput,
   checkSelect,
   checkButton
 } from '../../../../test-utils';
@@ -64,27 +62,19 @@ const fields = [
 
 describe('Agency Search Testing', () => {
   const props = {
-    submitting: false,
-    searchTypeOptions: [
-      { answer: 'agent', label: 'Agent Search' },
-      { answer: 'agency', label: 'Agency Search' }
-    ]
+    history: {}
   };
-
-  const SearchForm = reduxForm({
-    form: 'SEARCH_BAR',
-    initialValues: { searchType: 'agency' }
-  })(AgencySearch);
 
   const selectFields = fields.filter(({ type }) => type === 'select');
   const textFields = fields.filter(({ type }) => type === 'text');
 
   it('POS:Renders and has fields and labels', () => {
     const { getByPlaceholderText, getByTestId } = renderWithForm(
-      <SearchForm {...props} />
+      <AgencySearch {...props} />
     );
 
     fields.forEach(field => checkLabel(getByTestId, field));
+
     textFields.forEach(({ placeholderText }) =>
       expect(getByPlaceholderText(placeholderText))
     );
@@ -97,7 +87,7 @@ describe('Agency Search Testing', () => {
 
   it('POS:Checks that all fields are working', () => {
     const { getByPlaceholderText, getByTestId } = renderWithForm(
-      <SearchForm {...props} />
+      <AgencySearch {...props} />
     );
     selectFields.forEach(field => checkSelect(getByTestId, field));
     textFields.forEach(field =>
@@ -106,7 +96,7 @@ describe('Agency Search Testing', () => {
   });
 
   it('POS:Agency Search Button', () => {
-    const { getByTestId } = renderWithForm(<SearchForm {...props} />);
+    const { getByTestId } = renderWithForm(<AgencySearch {...props} />);
     checkButton(getByTestId, {
       dataTest: 'submit',
       text: 'Search',

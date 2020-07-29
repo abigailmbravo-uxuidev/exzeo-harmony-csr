@@ -9,7 +9,7 @@ const MortgageeCard = ({ result, handleQueue }) => (
       {!result.noMortgagee && (
         <React.Fragment>
           <h4>Mortgagee {result.order + 1}</h4>
-          <h5>{result.name1}</h5>
+          <h5>{`${result.name1} ${result.name2 || ''}`}</h5>
           <Address address={result.mailingAddress} className="address" />
         </React.Fragment>
       )}

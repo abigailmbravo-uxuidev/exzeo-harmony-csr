@@ -125,7 +125,7 @@ describe('Mailing/Billing Page Testing', () => {
     newProps.quote.billToType = 'Policyholder';
     newProps.quote.billPlan = 'Annual';
 
-    const { getByTestId, getByText, getByLabelText } = renderWithForm(
+    const { getByTestId, getByText } = renderWithForm(
       <QuoteWorkflow {...newProps} />
     );
     await waitForElement(() => [

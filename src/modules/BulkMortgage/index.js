@@ -5,7 +5,7 @@ import { Route } from 'react-router-dom';
 import Header from '../../components/Common/Header';
 import BulkMortgagee from './@components/BulkMortgagee';
 
-const BulkMortgage = ({ auth, errorHandler }) => {
+const BulkMortgage = ({ auth, errorHandler, userProfile }) => {
   return (
     <div className="app-wrapper csr">
       <Helmet>
@@ -17,7 +17,11 @@ const BulkMortgage = ({ auth, errorHandler }) => {
           exact
           path="/bulkMortgage"
           render={() => (
-            <BulkMortgagee errorHandler={errorHandler} auth={auth} />
+            <BulkMortgagee
+              errorHandler={errorHandler}
+              auth={auth}
+              userProfile={userProfile}
+            />
           )}
         />
       </main>
