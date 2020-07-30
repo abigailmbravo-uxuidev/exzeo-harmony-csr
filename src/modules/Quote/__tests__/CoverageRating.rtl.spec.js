@@ -14,7 +14,6 @@ import {
   searchAgenciesResult,
   searchAgentsResult,
   jestResolve,
-  checkHeader,
   checkLabel,
   checkSelect,
   checkTextInput,
@@ -33,7 +32,6 @@ import {
   deductiblesFields,
   discountsFields,
   windFields,
-  checkButton,
   mockServiceRunner
 } from '../../../test-utils';
 import { QuoteWorkflow } from '../QuoteWorkflow';
@@ -258,12 +256,12 @@ describe('Testing the Coverage/Rating Page', () => {
         policyHolders: []
       }
     };
-    const { getByText, getByLabelText, getByTestId } = renderWithForm(
+    const { getByText, getByTestId } = renderWithForm(
       <QuoteWorkflow {...newProps} />
     );
 
     expect(getByText('Update')).toBeDisabled();
-    primaryPolicyholderFields.forEach(({ label, value, dataTest }) => {
+    primaryPolicyholderFields.forEach(({ value, dataTest }) => {
       fireEvent.change(getByTestId(dataTest), {
         target: { value }
       });

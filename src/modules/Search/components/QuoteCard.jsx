@@ -1,7 +1,7 @@
 import React from 'react';
 import { date } from '@exzeo/core-ui';
 
-function QuoteCard({ handleKeyPress, handleClick, quote }) {
+function QuoteCard({ handleClick, quote }) {
   const firstName =
     quote.policyHolders[0] && quote.policyHolders[0].firstName
       ? quote.policyHolders[0].firstName
@@ -14,7 +14,7 @@ function QuoteCard({ handleKeyPress, handleClick, quote }) {
   return (
     <div
       tabIndex="0"
-      onKeyPress={handleKeyPress}
+      onKeyPress={e => e.charCode === 13 && handleClick(quote)}
       id={quote._id}
       data-test={quote.quoteNumber}
       onClick={handleClick}

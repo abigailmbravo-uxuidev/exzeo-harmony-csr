@@ -86,6 +86,32 @@
 
           padding: $padding;
 
+          .agency-address-search {
+            flex-basis: auto;
+
+            width: calc((100vw - 32rem) / 2);
+          }
+
+          .agency-name-search {
+            flex-basis: auto;
+
+            width: calc((100vw - 32rem) / 2);
+          }
+
+          .state-search {
+            margin-right: 0.5rem;
+          }
+
+          .agency-status-wrapper {
+            flex-grow: 1;
+
+            width: auto;
+
+            select {
+              height: 2.35rem;
+            }
+          }
+
           &.diary {
             .search-input-row {
               margin-left: $padding;

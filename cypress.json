@@ -2,7 +2,7 @@
   "projectId": "71ns45",
   "chromeWebSecurity": false,
   "testFiles": "**/**.spec.js",
-  "video": false,
+  "videoUploadOnPasses": false,
   "defaultCommandTimeout": 20000,
   "requestTimeout": 60000,
   "responseTimeout": 60000,

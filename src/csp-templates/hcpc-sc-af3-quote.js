@@ -2,6 +2,12 @@
 const mock = {
   header: {
     hideDetailSummary: false,
+    banner: {
+      className: 'workflow-banner hcpci sc af3 quote',
+      icon: 'af3',
+      title: 'Homeowners Choice',
+      subTitle: 'SC'
+    },
     fields: [
       { value: 'policyHolder', component: 'Section', label: 'Policyholder' },
       { value: 'mailingAddress', component: 'Section' },

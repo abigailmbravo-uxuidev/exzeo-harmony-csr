@@ -24,7 +24,7 @@ describe('Agency Management testing', () => {
     cy.findDataTag('agency-link').click();
     cy.url().should('contain', `/agency`);
     // This makes it so we don't open up a new window
-    cy.findDataTag('add-agency-not-searched').within(() => {
+    cy.findDataTag('add-agency-new').within(() => {
       cy.get('a.btn-primary').then($a => {
         $a.prop('onclick', () => cy.visit('/agency/new/0'));
       });

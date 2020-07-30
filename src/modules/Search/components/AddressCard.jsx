@@ -1,20 +1,25 @@
 import React from 'react';
 
-function AddressCard({
-  handleKeyPress,
-  handleClick,
-  companyCode,
-  address,
-  product
-}) {
+function AddressCard({ companyCode, address, product }) {
+  const createQuote = () => {
+    window.open(
+      `/quote/new/${companyCode}/${address.physicalAddress.state}/${product}/${address.id}`,
+      '_blank'
+    );
+  };
+
   return (
     <div
       tabIndex="0"
-      onKeyPress={handleKeyPress}
+      onKeyPress={event => {
+        if (event.charCode === 13) {
+          createQuote();
+        }
+      }}
       data-test={address.physicalAddress.address1}
       id={address.id}
       className={`card ${address.physicalAddress.address1}`}
-      onClick={handleClick}
+      onClick={createQuote}
       data-url={`/quote/new/${companyCode}/${address.physicalAddress.state}/${product}/${address.id}`}
     >
       <div id={address.physicalAddress.address1} className="icon-name">

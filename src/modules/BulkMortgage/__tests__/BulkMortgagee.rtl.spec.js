@@ -137,7 +137,8 @@ describe('BulkMortgagee By Policy Testing', () => {
     );
 
     expect(firstMortgageeCard.getByText('Mortgagee 1'));
-    expect(firstMortgageeCard.getByText('SUNTRUST BANK'));
+    expect(firstMortgageeCard.getByText(/SUNTRUST BANK/));
+    expect(firstMortgageeCard.getByText(/ISAOA\/ATIMA/));
     expect(firstMortgageeCard.getByText('PO BOX 47047, ATLANTA, GA 30362'));
     expect(firstMortgageeCard.getByText('Current Bill To:'));
     expect(firstMortgageeCard.getByText('Yes'));
@@ -209,6 +210,7 @@ describe('BulkMortgagee By Policy Testing', () => {
     );
     expect(queuedMortgageeCard.getByText('HO3'));
     expect(queuedMortgageeCard.getByText(/SUNTRUST BANK/));
+    expect(queuedMortgageeCard.getByText(/ISAOA\/ATIMA/));
     expect(queuedMortgageeCard.getByText('PO BOX 47047, ATLANTA, GA 30362'));
     expect(queuedMortgageeCard.getByText('Bill To:'));
     expect(queuedMortgageeCard.getByText(/Loan Number/));

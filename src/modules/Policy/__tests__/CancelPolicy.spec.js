@@ -1,8 +1,6 @@
 import React from 'react';
-import { waitForElement, fireEvent, wait } from '@testing-library/react';
+import { fireEvent, wait } from '@testing-library/react';
 import { date } from '@exzeo/core-ui';
-
-import { getPaymentHistory } from '../../../state/actions/policy.actions';
 import {
   renderWithForm,
   defaultPolicyWorkflowProps,

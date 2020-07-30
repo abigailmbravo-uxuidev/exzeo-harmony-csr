@@ -3,7 +3,21 @@ import { normalize } from '@exzeo/core-ui';
 
 import ContactAddress from '../../../components/ContactAddress';
 
-function AgentCard({ handleKeyPress, handleClick, agent }) {
+function AgentCard({ handleKeyPress, agent }) {
+  const openAgent = () => {
+    if (Array.isArray(agent.agencies) && agent.agencies.length > 0) {
+      const agency = agent.agencies[0];
+      const branchCodes =
+        agent.agencies &&
+        agent.agencies.map(agency =>
+          agency.branchCode ? agency.branchCode : 0
+        );
+      window.open(
+        `/agency/${agency.agencyCode}/${branchCodes[0]}/overview`,
+        '_blank'
+      );
+    }
+  };
   const licenseNumbers = agent.licenses.map(l => l.licenseNumber).join();
   return (
     <div
@@ -39,7 +53,7 @@ function AgentCard({ handleKeyPress, handleClick, agent }) {
             <span className="agent-license">{licenseNumbers}&nbsp;</span>
             <span
               className="btn btn-link btn-sm"
-              onClick={handleClick}
+              onClick={openAgent}
               data-url={`/agency/${agent.agencyCode}/0/overview`}
             >
               <i className="fa fa-address-book" />

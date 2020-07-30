@@ -30,21 +30,22 @@ const PaymentHistorySection = ({
       header={
         <h3>
           Payments&nbsp;
-          <OnlinePayment
-            batchID={`${date.moment().format('YYYYMMDD')}-CSR`}
-            enabled={enableOnlinePayments}
-            document={initialValues}
-            onPaymentComplete={() => {
-              customHandlers.getPolicy(initialValues.policyNumber);
-              setPaymentAdded(date.timestamp());
-            }}
-            label={
-              <>
-                <i className="fa fa-credit-card" />
-                Make Electronic Payment
-              </>
-            }
-          />
+          {enableOnlinePayments && (
+            <OnlinePayment
+              batchID={`${date.moment().format('YYYYMMDD')}-CSR`}
+              document={initialValues}
+              onPaymentComplete={() => {
+                customHandlers.getPolicy(initialValues.policyNumber);
+                setPaymentAdded(date.timestamp());
+              }}
+              label={
+                <>
+                  <i className="fa fa-credit-card" />
+                  Make Electronic Payment
+                </>
+              }
+            />
+          )}
         </h3>
       }
     />

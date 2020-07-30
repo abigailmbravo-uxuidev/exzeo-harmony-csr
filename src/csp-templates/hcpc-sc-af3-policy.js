@@ -3,6 +3,12 @@ const mock = {
   header: {
     showEffectiveDateButton: true,
     showReinstateButton: true,
+    banner: {
+      className: 'workflow-banner hcpci sc af3 policy',
+      icon: 'af3',
+      title: 'Homeowners Choice',
+      subTitle: 'SC'
+    },
     fields: [
       {
         value: 'policyHolder',

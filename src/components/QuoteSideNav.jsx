@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Redirect } from 'react-router-dom';
 import { SideNavigation } from '@exzeo/core-ui/src/@Harmony';
 
 import { toggleDiary, toggleNote } from '../state/actions/ui.actions';
@@ -63,13 +62,7 @@ const getNavLinks = ({ quoteNumber }) => {
   ];
 };
 
-export const SideNav = ({
-  quoteData,
-  toggleNote,
-  toggleDiary,
-  activateRedirect,
-  activateRedirectLink
-}) => {
+export const SideNav = ({ quoteData, toggleNote, toggleDiary }) => {
   const [showUWPopup, setUWPopup] = useState(false);
   const { companyCode, state, product, quoteNumber } = quoteData;
 
@@ -99,7 +92,6 @@ export const SideNav = ({
   return (
     <React.Fragment>
       <nav className="site-nav">
-        {activateRedirect && <Redirect to={activateRedirectLink} />}
         <SideNavigation
           navLinks={getNavLinks({ quoteNumber: quoteData.quoteNumber })}
         >
@@ -127,15 +119,11 @@ export const SideNav = ({
 };
 
 SideNav.propTypes = {
-  activateRedirectLink: PropTypes.string,
-  activateRedirect: PropTypes.bool,
   quoteData: PropTypes.shape({})
 };
 
 const mapStateToProps = state => {
   return {
-    activateRedirectLink: state.appState.data.activateRedirectLink,
-    activateRedirect: state.appState.data.activateRedirect,
     quoteData: state.quoteState.quote || {}
   };
 };

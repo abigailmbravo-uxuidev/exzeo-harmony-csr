@@ -1,5 +1,4 @@
 import React from 'react';
-import { reduxForm } from 'redux-form';
 
 import {
   renderWithForm,
@@ -8,7 +7,6 @@ import {
   checkButton
 } from '../../../../test-utils';
 import DiariesSearch from '../DiariesSearch';
-
 const fields = [
   {
     dataTest: 'status',
@@ -55,26 +53,13 @@ const fields = [
 
 describe('Diaries Search Testing', () => {
   const props = {
-    search: { results: [], totalPages: 0, currentPage: 1 },
-    submitting: false,
-    assigneeAnswers: [],
-    userProfile: { userId: '1234' },
-    results: []
+    userProfile: { profile: { given_name: 'John', family_name: 'Smith' } }
   };
-
-  const SearchForm = reduxForm({
-    form: 'SEARCH_BAR',
-    initialValues: {
-      open: true,
-      dateRange: { min: '', max: '' },
-      assignees: {}
-    }
-  })(DiariesSearch);
 
   const selectFields = fields.filter(({ type }) => type === 'select');
 
   it('POS:Renders and has fields and labels', () => {
-    const { getByTestId } = renderWithForm(<SearchForm {...props} />);
+    const { getByTestId } = renderWithForm(<DiariesSearch {...props} />);
 
     fields.forEach(field => checkLabel(getByTestId, field));
     selectFields.forEach(({ dataTest, selected }) =>
@@ -85,12 +70,12 @@ describe('Diaries Search Testing', () => {
   });
 
   it('POS:Checks that all fields are working', () => {
-    const { getByTestId } = renderWithForm(<SearchForm {...props} />);
+    const { getByTestId } = renderWithForm(<DiariesSearch {...props} />);
     selectFields.forEach(field => checkSelect(getByTestId, field));
   });
 
   it('POS:Diary Search Button', () => {
-    const { getByTestId } = renderWithForm(<SearchForm {...props} />);
+    const { getByTestId } = renderWithForm(<DiariesSearch {...props} />);
     checkButton(getByTestId, {
       dataTest: 'submit',
       text: 'Search',
