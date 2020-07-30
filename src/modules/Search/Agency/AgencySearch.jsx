@@ -65,7 +65,7 @@ const AgencySearch = ({ history, userProfile }) => {
     stateOptions,
     productOptionMap,
     productOptions
-  } = cspConfigForSearch(userProfile, 'Agency:Agencies:*');
+  } = cspConfigForSearch(userProfile, 'Agency:Agencies:*', 'READ');
 
   return (
     <Form

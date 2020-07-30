@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import classNames from 'classnames';
 import {
   Select,
   MultiSelectTypeAhead,
@@ -19,7 +20,7 @@ import { isValidRange } from './utilities';
 import { useFetchDiaryOptions, useFetchAssigneeAnswers } from '../hooks';
 import { SEARCH_CONFIG, SEARCH_TYPES } from '../../../constants/search';
 import Loader from '@exzeo/core-ui/src/Loader/Loader';
-import { handleDiariesSearch } from '../data';
+import { handleTransferDiaries, searchDiaries } from '../data';
 import {
   handleDiaryClick,
   handleDiaryKeyPress
@@ -27,11 +28,17 @@ import {
 import DiaryList from '../components/DiaryList';
 import NoResults from '../components/NoResults';
 import SearchResultsWrapper from '../components/SearchResultsWrapper';
+import TransferButton from './TransferButton';
+import DiariesTransferWatcher from './DiariesTransferWatcher';
+import SelectTypeAhead from '@exzeo/core-ui/src/TypeAhead/Select';
+import { doesUserHaveAccess, getCheckedDiaries } from '../utilities';
 
-export const DiariesSearch = ({ userProfile }) => {
+export const DiariesSearch = ({ userProfile, errorHandler }) => {
   const [searchResults, setSearchResults] = useState({ results: [] });
+  const [searchParams, setSearchParams] = useState({});
   const [searchAssignees, setSearchAssignees] = useState(undefined);
   const [loading, setLoading] = useState(false);
+  const [transfer, setTransfer] = useState(false);
   const { tags, reasons } = useFetchDiaryOptions();
   const { assigneeAnswers } = useFetchAssigneeAnswers(userProfile);
 
@@ -65,15 +72,36 @@ export const DiariesSearch = ({ userProfile }) => {
   const resetFormResults = form => {
     setSearchResults({ results: [] });
     setSearchAssignees(undefined);
+    setTransfer(false);
+    form.reset();
+  };
+
+  const resetTransferForm = form => {
+    setTransfer(false);
     form.reset();
   };
 
   const handleDiariesSearchSubmit = async data => {
+    setSearchParams(data);
+    setTransfer(false);
     setLoading(true);
     setSearchAssignees(data.assignees || emptyArray);
-    const results = await handleDiariesSearch(data);
+    const results = await searchDiaries(data);
     setSearchResults(results);
     setLoading(false);
+  };
+
+  const handleTransferDiariesSubmit = async data => {
+    try {
+      setLoading(true);
+      await handleTransferDiaries(data, searchResults.results, assigneeAnswers);
+      await handleDiariesSearchSubmit(searchParams);
+    } catch (err) {
+      errorHandler(err);
+    } finally {
+      setLoading(false);
+      setTransfer(false);
+    }
   };
 
   return (
@@ -85,7 +113,7 @@ export const DiariesSearch = ({ userProfile }) => {
       {({ form, submitting, handleSubmit, values: { product } }) => (
         <>
           {loading && <Loader />}
-          <div className="search">
+          <div className={classNames('search', { transfer })}>
             <div id="SearchBar">
               <form onSubmit={handleSubmit}>
                 <div className="search-input-wrapper">
@@ -144,7 +172,7 @@ export const DiariesSearch = ({ userProfile }) => {
                             errorHint
                           />
                         </div>
-                        <div className="fomr-group product">
+                        <div className="form-group product">
                           <Field
                             name="product"
                             dataTest="product"
@@ -162,6 +190,15 @@ export const DiariesSearch = ({ userProfile }) => {
                         <strong>{searchResults.totalRecords}</strong>
                         RESULTS
                       </span>
+                      {doesUserHaveAccess(
+                        userProfile?.resources,
+                        'Diaries',
+                        'TRANSFER'
+                      ) && (
+                        <TransferButton
+                          toggleTransfer={() => setTransfer(true)}
+                        />
+                      )}
                       <ResetButton reset={() => resetFormResults(form)} />
                       <Button
                         className={Button.constants.classNames.success}
@@ -179,20 +216,98 @@ export const DiariesSearch = ({ userProfile }) => {
               </form>
             </div>
           </div>
-          <SearchResultsWrapper>
-            {searchResults.totalRecords === 0 ? (
-              <NoResults searchType={SEARCH_TYPES.newQuote} error={noop} />
-            ) : (
-              <DiaryList
-                product={product}
-                handleKeyPress={handleDiaryKeyPress}
-                onItemClick={handleDiaryClick}
-                clickable
-                diaries={searchResults.results}
-                diaryReasons={reasons}
-              />
+          <Form
+            initialValues={{ diaries: {}, selectAll: false }}
+            subscription={{ submitting: true, values: true }}
+            onSubmit={handleTransferDiariesSubmit}
+          >
+            {({ form, submitting, handleSubmit, values }) => (
+              <div
+                className={classNames('diary-results-wrapper', { transfer })}
+              >
+                {submitting && <Loader />}
+                <form onSubmit={handleSubmit}>
+                  <>
+                    {transfer && (
+                      <div className="search-input-row fade-in">
+                        <DiariesTransferWatcher
+                          diaries={searchResults.results}
+                        />
+                        <div className="form-group transferSelect">
+                          <Field
+                            id="selectAll"
+                            name="selectAll"
+                            data-test="selectAll"
+                            styleName="selectAll"
+                            component="input"
+                            type="checkbox"
+                          />
+                          <label htmlFor="selectAll">Select All</label>
+                        </div>
+                        <div className="transfer-control-wrapper">
+                          <div className="form-group transferTo">
+                            <Field
+                              name="transferTo"
+                              dataTest="transferTo"
+                              styleName="transferTo"
+                              component={SelectTypeAhead}
+                              label="Transfer To"
+                              answers={[...assigneeAnswers]}
+                              validate={validation.isRequired}
+                            />
+                          </div>
+                          <Button
+                            className={Button.constants.classNames.secondary}
+                            customClass="multi-input"
+                            type="button"
+                            disabled={submitting}
+                            data-test="resetTransfer"
+                            onClick={() => resetTransferForm(form)}
+                          >
+                            Cancel
+                          </Button>
+                          <Button
+                            className={Button.constants.classNames.success}
+                            customClass="multi-input"
+                            type="submit"
+                            disabled={
+                              submitting ||
+                              !Object.values(values.diaries).includes(true)
+                            }
+                            dataTest="submitTransfer"
+                          >
+                            <i className="fa fa-share" />
+                            Transfer
+                          </Button>
+                        </div>
+                      </div>
+                    )}
+                    <SearchResultsWrapper>
+                      {searchResults.totalRecords === 0 ? (
+                        <NoResults
+                          searchType={SEARCH_TYPES.newQuote}
+                          error={noop}
+                        />
+                      ) : (
+                        <DiaryList
+                          checkedDiaries={getCheckedDiaries(values.diaries)}
+                          product={product}
+                          handleKeyPress={handleDiaryKeyPress}
+                          onItemClick={handleDiaryClick}
+                          clickable
+                          diaries={searchResults.results.filter(d =>
+                            product ? d.resource.product === product : d
+                          )}
+                          diaryReasons={reasons}
+                          transfer={transfer}
+                        />
+                      )}
+                    </SearchResultsWrapper>
+                  </>
+                </form>
+              </div>
             )}
-          </SearchResultsWrapper>
+          </Form>
         </>
       )}
     </Form>

@@ -205,6 +205,15 @@ export function formatDiaryResults(results, product) {
 
 /**
  *
+ * @param diaries
+ * @returns {string[]}
+ */
+export function getCheckedDiaries(diaries) {
+  return Object.keys(diaries).filter(id => diaries[id]);
+}
+
+/**
+ *
  * @param users
  * @returns {*}
  */
@@ -266,14 +275,53 @@ function removeDuplicates(array, property) {
   });
 }
 
-export const cspConfigForSearch = (userProfile = {}, uri) => {
-  const userResources = (userProfile?.resources || []).filter(resource => {
-    return (
-      !resource.conditions &&
-      resource.right === 'READ' &&
-      resource.uri.includes(uri)
-    );
+/**
+ *
+ * @param resources
+ * @param uri
+ * @param right
+ * @returns {*[]}
+ */
+export const getMatchingResources = (resources = [], uri, right) => {
+  return resources.filter(resource => {
+    if (process.env.NODE_ENV !== 'production') {
+      if (!!resource.conditions) {
+        // As we use this more and more, every way we can slim down the resources array will help with perf.
+        throw new Error(
+          'Please filter out legacy resources in store when user logs in'
+        );
+      }
+    }
+
+    return resource.right === right && resource.uri.includes(uri);
   });
+};
+
+/**
+ *
+ * @param resources
+ * @param uri
+ * @param right
+ * @returns {boolean}
+ */
+export const doesUserHaveAccess = (resources = [], uri, right) => {
+  const matchingResources = getMatchingResources(resources, uri, right);
+
+  return matchingResources.length > 0;
+};
+
+/**
+ *
+ * @param userProfile
+ * @param uri
+ * @returns {{productOptionMap: {}, productOptions: [], stateOptions: [], companyCodeMap: {}, companyCodeOptions: []}}
+ */
+export const cspConfigForSearch = (userProfile = {}, uri, right) => {
+  const userResources = getMatchingResources(
+    userProfile?.resources,
+    uri,
+    right
+  );
 
   const companyCodeMap = {};
   const stateOptions = [];
@@ -311,4 +359,40 @@ export const cspConfigForSearch = (userProfile = {}, uri) => {
     productOptions,
     productOptionMap
   };
+};
+
+export const normalizeDate = (value, previousValue) => {
+  if (!value) return value;
+  const onlyNums = value.replace(/[^\d]/g, '');
+
+  if (!value || value.length > previousValue.length) {
+    // typing forward
+    if (onlyNums.length === 2) {
+      return `${onlyNums}/`;
+    }
+    if (onlyNums.length === 4) {
+      return `${onlyNums.slice(0, 2)}/${onlyNums.slice(2)}/`;
+    }
+  }
+  if (onlyNums.length <= 2) {
+    return onlyNums;
+  }
+  if (onlyNums.length <= 4) {
+    return `${onlyNums.slice(0, 2)}/${onlyNums.slice(2)}`;
+  }
+  return `${onlyNums.slice(0, 2)}/${onlyNums.slice(2, 4)}/${onlyNums.slice(
+    4,
+    8
+  )}`;
+};
+
+export const processChunk = async (data, chunkSize, func) => {
+  if (data.length > chunkSize) {
+    const result = [];
+    for (let i = 0; i < data.length; i += chunkSize) {
+      result.push(func(data.slice(i, i + chunkSize)));
+    }
+    return await Promise.all(result);
+  }
+  return await func(data);
 };

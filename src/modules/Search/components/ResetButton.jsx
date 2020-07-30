@@ -6,6 +6,7 @@ const ResetButton = ({ reset }) => (
     className="btn btn-link btn-reset"
     type="button"
     onClick={() => reset()}
+    data-test="reset"
   >
     <i className="fa fa-refresh" />
     RESET

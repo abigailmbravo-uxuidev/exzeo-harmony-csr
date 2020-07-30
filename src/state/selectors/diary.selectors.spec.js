@@ -89,7 +89,8 @@ describe('Test diary selectors', () => {
           _id: '5b8051c91ed51f00d4d21d67',
           due: '2018-08-24',
           message: 'rrr',
-          reason: 'Estate',
+          reason: 'estate',
+          reasonLabel: 'Estate',
           type: 'Additional Interest',
           updatedAt: '2018-08-24T18:43:21.939Z',
           assignee: {

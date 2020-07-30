@@ -55,7 +55,7 @@ const PolicySearch = ({ userProfile, history }) => {
     stateOptions,
     productOptionMap,
     productOptions
-  } = cspConfigForSearch(userProfile, 'PolicyData:Transactions:*');
+  } = cspConfigForSearch(userProfile, 'PolicyData:Transactions:*', 'READ');
 
   const {
     state: searchState,
