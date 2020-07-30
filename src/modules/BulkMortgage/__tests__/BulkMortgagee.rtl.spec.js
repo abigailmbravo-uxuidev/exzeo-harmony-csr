@@ -30,31 +30,32 @@ describe('BulkMortgagee By Policy Testing', () => {
     await wait(() => {
       // Page Headers
       expect(getByText('Queued For Update'));
-      expect(getByText('Bulk Mortgagee'));
-      expect(getByText('By Policy'));
-      expect(getByText('By Job'));
-      //Mortgagee Form Labels
-      expect(getByText('Top Mortgagees'));
-      expect(getByText('Clear & Reset Form'));
-      expect(getByText('Name 1'));
-      expect(getByText('Name 2'));
-      expect(getByText('Address 1'));
-      expect(getByText('Address 2'));
-      expect(getByText('City'));
-      expect(getByText('State'));
-      expect(getByText('Zip'));
-      expect(getByText('Instruction'));
-      expect(getByText('Mail Notice'));
-      expect(getByText('Suppress Notice'));
-      //Policy Search Labels
-      const productWrapper = within(getByTestId('product_wrapper'));
-      const searchTypeWrapper = within(getByTestId('searchType_wrapper'));
-      const policyNumberWrapper = within(getByTestId('policyNumber_wrapper'));
-
-      expect(productWrapper.getByText('Product'));
-      expect(searchTypeWrapper.getByText('Search Type'));
-      expect(policyNumberWrapper.getByText('Search'));
     });
+
+    expect(getByText('Bulk Mortgagee'));
+    expect(getByText('By Policy'));
+    expect(getByText('By Job'));
+    //Mortgagee Form Labels
+    expect(getByText('Top Mortgagees'));
+    expect(getByText('Clear & Reset Form'));
+    expect(getByText('Name 1'));
+    expect(getByText('Name 2'));
+    expect(getByText('Address 1'));
+    expect(getByText('Address 2'));
+    expect(getByText('City'));
+    expect(getByText('State'));
+    expect(getByText('Zip'));
+    expect(getByText('Instruction'));
+    expect(getByText('Mail Notice'));
+    expect(getByText('Suppress Notice'));
+    //Policy Search Labels
+    const productWrapper = within(getByTestId('product_wrapper'));
+    const searchTypeWrapper = within(getByTestId('searchType_wrapper'));
+    const policyNumberWrapper = within(getByTestId('policyNumber_wrapper'));
+
+    expect(productWrapper.getByText('Product'));
+    expect(searchTypeWrapper.getByText('Search Type'));
+    expect(policyNumberWrapper.getByText('Search'));
   });
 
   it('Fill out Mortgagee Form', async () => {
@@ -69,8 +70,9 @@ describe('BulkMortgagee By Policy Testing', () => {
 
     await wait(() => {
       getByText('Start typing to search...');
-      expect(getByTestId('mortgage_wrapper'));
     });
+
+    expect(getByTestId('mortgage_wrapper'));
 
     fireEvent.change(getByTestId('name1'), {
       target: { value: "AMERICA'S SERVICING" }
@@ -97,12 +99,13 @@ describe('BulkMortgagee By Policy Testing', () => {
 
     await wait(() => {
       expect(getByTestId('name1').value).toBe("AMERICA'S SERVICING");
-      expect(getByTestId('name2').value).toBe('COMPANY, ISAOA');
-      expect(getByTestId('mailingAddress.address1').value).toBe('PO BOX 5106');
-      expect(getByTestId('mailingAddress.city').value).toBe('SPRINGFIELD');
-      expect(getByTestId('mailingAddress.state').value).toBe('OH');
-      expect(getByTestId('mailingAddress.zip').value).toBe('45501');
     });
+
+    expect(getByTestId('name2').value).toBe('COMPANY, ISAOA');
+    expect(getByTestId('mailingAddress.address1').value).toBe('PO BOX 5106');
+    expect(getByTestId('mailingAddress.city').value).toBe('SPRINGFIELD');
+    expect(getByTestId('mailingAddress.state').value).toBe('OH');
+    expect(getByTestId('mailingAddress.zip').value).toBe('45501');
   });
 
   it('Search Policy', async () => {
@@ -110,10 +113,8 @@ describe('BulkMortgagee By Policy Testing', () => {
       errorHandler: noop
     };
     const { getByTestId } = renderWithForm(<BulkMortgagee {...props} />);
-    await waitForElement(() => [
-      getByTestId('policyNumber'),
-      getByTestId('search-policy-submit')
-    ]);
+    await waitForElement(() => [getByTestId('policyNumber')]);
+    getByTestId('search-policy-submit');
 
     fireEvent.change(getByTestId('policyNumber'), {
       target: { value: '12-1008954-01' }
@@ -126,9 +127,10 @@ describe('BulkMortgagee By Policy Testing', () => {
     fireEvent.click(getByTestId('search-policy-submit'));
 
     await waitForElement(() => [
-      getByTestId('mortgagee-5d3774ca92a4b700125909ad'),
-      getByTestId('mortgagee-5d3774ca92a4b700125909ae')
+      getByTestId('mortgagee-5d3774ca92a4b700125909ad')
     ]);
+
+    getByTestId('mortgagee-5d3774ca92a4b700125909ae');
 
     const firstMortgageeCard = within(
       getByTestId('mortgagee-5d3774ca92a4b700125909ad')
@@ -171,10 +173,9 @@ describe('BulkMortgagee By Policy Testing', () => {
     const { getByText, getByTestId } = renderWithForm(
       <BulkMortgagee {...props} />
     );
-    await waitForElement(() => [
-      getByTestId('policyNumber'),
-      getByTestId('search-policy-submit')
-    ]);
+    await waitForElement(() => [getByTestId('policyNumber')]);
+
+    getByTestId('search-policy-submit');
 
     fireEvent.change(getByTestId('policyNumber'), {
       target: { value: '12-1008954-01' }
@@ -186,9 +187,10 @@ describe('BulkMortgagee By Policy Testing', () => {
 
     fireEvent.click(getByTestId('search-policy-submit'));
     await waitForElement(() => [
-      getByTestId('mortgagee-5d3774ca92a4b700125909ad'),
-      getByTestId('mortgagee-5d3774ca92a4b700125909ae')
+      getByTestId('mortgagee-5d3774ca92a4b700125909ad')
     ]);
+
+    getByTestId('mortgagee-5d3774ca92a4b700125909ae');
 
     const firstMortgageeCard = within(
       getByTestId('mortgagee-5d3774ca92a4b700125909ad')
@@ -197,9 +199,10 @@ describe('BulkMortgagee By Policy Testing', () => {
     fireEvent.click(firstMortgageeCard.getByText('QUEUE'));
 
     await wait(() => [
-      getByTestId('queued-mortgagee-5d3774ca92a4b700125909ad'),
-      getByText(/1 queued/)
+      getByTestId('queued-mortgagee-5d3774ca92a4b700125909ad')
     ]);
+
+    getByText(/1 queued/);
 
     const queuedMortgageeCard = within(
       getByTestId('queued-mortgagee-5d3774ca92a4b700125909ad')
@@ -242,9 +245,10 @@ describe('BulkMortgagee By Policy Testing', () => {
 
     fireEvent.click(getByTestId('search-policy-submit'));
     await waitForElement(() => [
-      getByTestId('mortgagee-5d3774ca92a4b700125909ad'),
-      getByTestId('mortgagee-5d3774ca92a4b700125909ae')
+      getByTestId('mortgagee-5d3774ca92a4b700125909ad')
     ]);
+
+    getByTestId('mortgagee-5d3774ca92a4b700125909ae');
 
     const firstMortgageeCard = within(
       getByTestId('mortgagee-5d3774ca92a4b700125909ad')
@@ -257,16 +261,18 @@ describe('BulkMortgagee By Policy Testing', () => {
     fireEvent.click(firstMortgageeCard.getByText('QUEUE'));
 
     await wait(() => [
-      getByTestId('queued-mortgagee-5d3774ca92a4b700125909ad'),
-      getByText(/1 queued/)
+      getByTestId('queued-mortgagee-5d3774ca92a4b700125909ad')
     ]);
+
+    getByText(/1 queued/);
 
     fireEvent.click(secondMortgageeCard.getByText('QUEUE'));
 
     await wait(() => [
-      getByTestId('queued-mortgagee-5d3774ca92a4b700125909ae'),
-      getByText(/2 queued/)
+      getByTestId('queued-mortgagee-5d3774ca92a4b700125909ae')
     ]);
+
+    getByText(/2 queued/);
 
     const queuedMortgageeCard1 = within(
       getByTestId('queued-mortgagee-5d3774ca92a4b700125909ad')
@@ -319,13 +325,14 @@ describe('Bulk Mortgagee By Job Testing', () => {
 
     await wait(() => {
       expect(getByText('Filter Parameters'));
-      expect(getByText('Job Number'));
-      expect(getByText('Completed By'));
-      expect(getByText('Date Range'));
-      expect(getByText('Mortgagee Name'));
-      expect(getByText('Filter'));
-      expect(getByText('Jobs'));
     });
+
+    expect(getByText('Job Number'));
+    expect(getByText('Completed By'));
+    expect(getByText('Date Range'));
+    expect(getByText('Mortgagee Name'));
+    expect(getByText('Filter'));
+    expect(getByText('Jobs'));
   });
 
   it('Renders Bulk Mortgagee By Job filter by Job Number', async () => {
