@@ -11,6 +11,7 @@ import {
 
 import TransferWatcher from './TransferWatcher';
 import { companyAnswers } from '../../Search/constants';
+import debounce from 'lodash/debounce';
 
 export const TransferFilter = ({
   policyNumberList,
@@ -79,7 +80,7 @@ export const TransferFilter = ({
             </Button>
           </form>
           <TransferWatcher
-            getPoliciesForAgency={getPoliciesForAgency}
+            watchHandler={debounce(getPoliciesForAgency, 500)}
             agencyCode={agencyCode}
             refresh={refresh}
           />

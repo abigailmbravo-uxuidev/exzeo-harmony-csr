@@ -1,26 +1,7 @@
 import { useEffect } from 'react';
 import { useFormState } from '@exzeo/core-ui';
-import debounce from 'lodash/debounce';
 
-const getPolicies = async (
-  getPoliciesForAgency,
-  { policyNumber, state, product, agentCode, agencyCode, companyCode }
-) => {
-  try {
-    await getPoliciesForAgency({
-      policyNumber,
-      state,
-      product,
-      agentCode,
-      agencyCode,
-      companyCode
-    });
-  } catch (error) {}
-};
-
-const debounceFilter = debounce(getPolicies, 500);
-
-const TransferWatcher = ({ getPoliciesForAgency, agencyCode, refresh }) => {
+const TransferWatcher = ({ watchHandler, agencyCode, refresh }) => {
   const {
     policyNumber,
     state,
@@ -30,7 +11,7 @@ const TransferWatcher = ({ getPoliciesForAgency, agencyCode, refresh }) => {
   } = useFormState().values;
 
   useEffect(() => {
-    debounceFilter(getPoliciesForAgency, {
+    watchHandler({
       policyNumber,
       state,
       product,
