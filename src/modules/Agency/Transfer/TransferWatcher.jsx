@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useFormState } from '@exzeo/core-ui';
 
-const TransferWatcher = ({ getPoliciesForAgency, agencyCode, refresh }) => {
+const TransferWatcher = ({ watchHandler, agencyCode, refresh }) => {
   const {
     policyNumber,
     state,
@@ -11,19 +11,14 @@ const TransferWatcher = ({ getPoliciesForAgency, agencyCode, refresh }) => {
   } = useFormState().values;
 
   useEffect(() => {
-    const getPolicies = async () => {
-      try {
-        await getPoliciesForAgency({
-          policyNumber,
-          state,
-          product,
-          agentCode,
-          agencyCode,
-          companyCode
-        });
-      } catch (error) {}
-    };
-    getPolicies();
+    watchHandler({
+      policyNumber,
+      state,
+      product,
+      agentCode,
+      agencyCode,
+      companyCode
+    });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     policyNumber,
