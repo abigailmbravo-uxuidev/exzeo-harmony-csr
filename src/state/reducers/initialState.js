@@ -32,6 +32,7 @@ export default {
     policy: {},
     billingOptions: {},
     cancelOptions: [],
+    claims: [],
     effectiveDateReasons: [],
     endorsementHistory: [],
     paymentHistory: [],

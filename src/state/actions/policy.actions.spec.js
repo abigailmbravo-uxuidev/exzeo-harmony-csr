@@ -1,9 +1,9 @@
+import * as serviceRunner from '@exzeo/core-ui/src/@Harmony/Domain/Api/serviceRunner';
 import configureStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import sinon from 'sinon';
-import * as serviceRunner from '@exzeo/core-ui/src/@Harmony/Domain/Api/serviceRunner';
-import * as types from './actionTypes';
 import * as endorsementUtil from '../../utilities/endorsementModel';
+import * as types from './actionTypes';
 import * as policyStateActions from './policy.actions';
 
 describe('Policy State Actions', () => {
@@ -265,6 +265,7 @@ describe('Policy State Actions', () => {
 
       await store.dispatch(
         policyStateActions.getBillingOptionsForPolicy({
+          policyNumber: '123',
           additionalInterests: [],
           policyHolders: [{}, {}],
           property: { windMitigation: {}, physicalAddress: {} },

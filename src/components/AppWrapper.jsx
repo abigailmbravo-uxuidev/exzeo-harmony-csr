@@ -13,6 +13,7 @@ import PolicySideNav from './PolicySideNav';
 import QuoteSideNav from './QuoteSideNav';
 import Header from './Header';
 import DiaryButton from './DiaryButton';
+import ClaimsIndicator from './ClaimsIndicator';
 
 const CONFIG = {
   policy: {
@@ -28,15 +29,16 @@ const CONFIG = {
 export class AppWrapper extends Component {
   render() {
     const {
-      header,
-      pageTitle,
-      match,
+      claims,
       context,
-      onToggleDiaries,
-      showDiaries,
-      openDiaryCount,
+      header,
       headerDetails,
-      modalHandlers
+      match,
+      modalHandlers,
+      openDiaryCount,
+      onToggleDiaries,
+      pageTitle,
+      showDiaries
     } = this.props;
 
     const appConfig = CONFIG[context];
@@ -48,12 +50,15 @@ export class AppWrapper extends Component {
           <title>{pageTitle}</title>
         </Helmet>
         <Header title={appConfig.title}>
-          {header.banner && <Banner content={header.banner} />}
-          <DiaryButton
-            onToggleDiaries={onToggleDiaries}
-            showDiaries={showDiaries}
-            openDiaryCount={openDiaryCount}
-          />
+          <div className="header-indicator-wrapper">
+            {header.banner && <Banner content={header.banner} />}
+            <ClaimsIndicator claims={claims} />
+            <DiaryButton
+              onToggleDiaries={onToggleDiaries}
+              showDiaries={showDiaries}
+              openDiaryCount={openDiaryCount}
+            />
+          </div>
         </Header>
         <DetailsHeader
           context={context}
@@ -84,6 +89,7 @@ AppWrapper.defaultProps = {
 const mapStateToProps = (state, ownProps) => {
   const selectors = { policy: getPolicyDetails, quote: getQuoteDetails };
   return {
+    claims: state.policyState.claims,
     headerDetails: selectors[ownProps.context](state),
     openDiaryCount: getOpenDiaries(state).length
   };

@@ -1,7 +1,10 @@
 // temporary full path import until we can find a better way to mock network requests
-import { date } from '@exzeo/core-ui/src';
-import { getBillingOptions } from '@exzeo/core-ui/src/@Harmony/Billing/data';
 import * as serviceRunner from '@exzeo/core-ui/src/@Harmony/Domain/Api/serviceRunner';
+import { date } from '@exzeo/core-ui';
+import {
+  getBillingOptions,
+  getClaims as fetchClaims
+} from '@exzeo/core-ui/src/@Harmony';
 import { formatEndorsementData } from '../../modules/Policy/utilities';
 import { convertToRateData } from '../../utilities/endorsementModel';
 import * as types from './actionTypes';
@@ -30,6 +33,18 @@ export function setPolicy(policy, summaryLedger) {
     type: types.SET_POLICY,
     policy,
     summaryLedger
+  };
+}
+
+/**
+ *
+ * @param claims
+ * @returns {{type: string, policy: *, summaryLedger: *}}
+ */
+export function setClaims(claims) {
+  return {
+    type: types.SET_CLAIMS,
+    claims
   };
 }
 
@@ -153,6 +168,27 @@ export function getPolicy(policyNumber) {
  * @param policyNumber
  * @returns {Function}
  */
+export function getClaims(policyNumber) {
+  return async dispatch => {
+    try {
+      const group = policyNumber.split('-');
+      const policyNumberWithoutTerm = group.slice(0, 2).join('-');
+      const response = await fetchClaims(policyNumberWithoutTerm);
+
+      dispatch(setClaims(response.result));
+    } catch (error) {
+      if (process.env.NODE_ENV !== 'production') {
+        console.error('Error fetching claims: ', error);
+      }
+    }
+  };
+}
+
+/**
+ *
+ * @param policyNumber
+ * @returns {Function}
+ */
 export function getSummaryLedger(policyNumber) {
   return async dispatch => {
     try {
@@ -261,7 +297,7 @@ export function addTransaction(submitData) {
 
 /**
  *
- * @param paymentOptions
+ * @param doc
  * @returns {function(*): Promise<any>}
  */
 export function getBillingOptionsForPolicy(doc) {
@@ -764,6 +800,7 @@ export function initializePolicyWorkflow(policyNumber) {
     // TODO: Refactor into one action to dispatch
     try {
       const { summaryLedger, policy } = await dispatch(getPolicy(policyNumber));
+
       dispatch(getEffectiveDateChangeReasons());
       dispatch(getPaymentOptionsApplyPayments());
       dispatch(getEndorsementHistory(policyNumber));

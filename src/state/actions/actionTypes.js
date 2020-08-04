@@ -23,8 +23,8 @@ export const SET_LISTS = 'SET_LISTS';
 export const GET_QUOTE = 'GET_QUOTE';
 /* POLICY */
 export const RESET_POLICY = 'RESET_POLICY';
-export const GET_POLICY = 'GET_POLICY';
 export const SET_POLICY = 'SET_POLICY';
+export const SET_CLAIMS = 'SET_CLAIMS';
 export const SET_SUMMARY_LEDGER = 'SET_SUMMARY_LEDGER';
 export const SET_EFFECTIVE_DATE_CHANGE_REASONS =
   'SET_EFFECTIVE_DATE_CHANGE_REASONS';

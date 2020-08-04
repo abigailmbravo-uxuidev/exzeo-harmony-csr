@@ -6,10 +6,10 @@ export default function policyStateReducer(
   action
 ) {
   switch (action.type) {
-    case types.GET_POLICY:
-      return getPolicy(state, action);
     case types.SET_POLICY:
       return setPolicy(state, action);
+    case types.SET_CLAIMS:
+      return setClaims(state, action);
     case types.SET_SUMMARY_LEDGER:
       return setSummaryLedger(state, action);
     case types.SET_EFFECTIVE_DATE_CHANGE_REASONS:
@@ -33,19 +33,19 @@ export default function policyStateReducer(
   }
 }
 
-function getPolicy(state, action) {
-  return {
-    ...state,
-    ...action.policyState
-  };
-}
-
 function setPolicy(state, action) {
   return {
     ...state,
     policyID: action.policy.policyID,
     policy: action.policy,
     summaryLedger: action.summaryLedger
+  };
+}
+
+function setClaims(state, action) {
+  return {
+    ...state,
+    claims: action.claims
   };
 }
 

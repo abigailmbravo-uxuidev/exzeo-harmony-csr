@@ -32,7 +32,8 @@ export const defaultInitialState = {
     },
     summaryLedger: {
       _id: 'test'
-    }
+    },
+    claims: []
   },
   quoteState: {},
   ui: { isLoading: false },
@@ -140,6 +141,8 @@ export const defaultPolicyWorkflowProps = {
   setAppError: () => {},
   toggleDiary: () => {},
   diaries: [],
+  claims: [],
+  getClaims: jestResolve(),
   notes: [],
   initialized: true,
   zipCodeSettings: {

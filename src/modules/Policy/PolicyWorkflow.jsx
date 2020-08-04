@@ -24,7 +24,8 @@ import {
   initializePolicyWorkflow,
   transferAOR,
   updateBillPlan,
-  updatePolicy
+  updatePolicy,
+  getClaims
 } from '../../state/actions/policy.actions';
 import { toggleDiary } from '../../state/actions/ui.actions';
 import { getDiariesForTable } from '../../state/selectors/diary.selectors';
@@ -134,6 +135,14 @@ export class PolicyWorkflow extends React.Component {
     }
   }
 
+  getAllClaims = () => {
+    const {
+      policy: { policyNumber },
+      getClaims
+    } = this.props;
+    getClaims(policyNumber);
+  };
+
   getTemplate = async () => {
     const { companyCode, state, product } = this.props.policy;
     const templateKey = `${companyCode}:${state}:${product}`;
@@ -231,6 +240,7 @@ export class PolicyWorkflow extends React.Component {
 
   render() {
     const {
+      claims,
       diaries,
       history,
       isLoading,
@@ -286,6 +296,8 @@ export class PolicyWorkflow extends React.Component {
     this.customHandlers.transferAOR = transferAOR;
     this.customHandlers.updateBillPlan = updateBillPlan;
     this.customHandlers.userProfile = userProfile;
+    this.customHandlers.claims = claims;
+    this.customHandlers.getClaims = this.getAllClaims;
 
     return (
       <div className="app-wrapper csr policy">
@@ -438,6 +450,7 @@ export class PolicyWorkflow extends React.Component {
 const mapStateToProps = state => {
   return {
     cancelOptions: state.policyState.cancelOptions,
+    claims: state.policyState.claims,
     diaries: getDiariesForTable(state),
     effectiveDateReasons: getPolicyEffectiveDateReasons(state),
     initialized: !!(
@@ -457,8 +470,9 @@ const mapStateToProps = state => {
 
 export default connect(mapStateToProps, {
   createTransaction,
-  getPolicy,
+  getClaims,
   getEnumsForPolicyWorkflow,
+  getPolicy,
   initializePolicyWorkflow,
   setAppError,
   transferAOR,
