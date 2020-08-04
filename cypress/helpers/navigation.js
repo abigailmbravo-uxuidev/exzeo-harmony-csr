@@ -178,6 +178,10 @@ export const fillOutMailingBilling = (address = user.address1) => {
   return cy
     .task('log', 'Filling out Mailing Billing')
     .goToNav('billing')
+    .wait('@getBillingOptions')
+    .then(({ response }) => {
+      expect(response.body.status).to.equal(200);
+    })
     .findDataTag('Mailing Address')
     .should('have.text', 'Mailing Address')
     .findDataTag('sameAsPropertyAddress')
