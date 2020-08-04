@@ -4,7 +4,7 @@ import { BUTTON_CLASS, BUTTON_SIZE } from '@exzeo/core-ui/src/Button/Button';
 import Address from './Address';
 
 const MortgageeCard = ({ result, handleQueue }) => (
-  <div className="card" data-test={`mortgagee-${result.order}`}>
+  <div className="card" data-test={`mortgagee-${result.identifier}`}>
     <section className="mortgagee-detail">
       {!result.noMortgagee && (
         <React.Fragment>

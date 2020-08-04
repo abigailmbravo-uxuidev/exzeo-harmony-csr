@@ -30,30 +30,32 @@ describe('BulkMortgagee By Policy Testing', () => {
     await wait(() => {
       // Page Headers
       expect(getByText('Queued For Update'));
-      expect(getByText('Bulk Mortgagee'));
-      expect(getByText('By Policy'));
-      //Mortgagee Form Labels
-      expect(getByText('Top Mortgagees'));
-      expect(getByText('Clear & Reset Form'));
-      expect(getByText('Name 1'));
-      expect(getByText('Name 2'));
-      expect(getByText('Address 1'));
-      expect(getByText('Address 2'));
-      expect(getByText('City'));
-      expect(getByText('State'));
-      expect(getByText('Zip'));
-      expect(getByText('Instruction'));
-      expect(getByText('Mail Notice'));
-      expect(getByText('Suppress Notice'));
-      //Policy Search Labels
-      const productWrapper = within(getByTestId('product_wrapper'));
-      const searchTypeWrapper = within(getByTestId('searchType_wrapper'));
-      const policyNumberWrapper = within(getByTestId('policyNumber_wrapper'));
-
-      expect(productWrapper.getByText('Product'));
-      expect(searchTypeWrapper.getByText('Search Type'));
-      expect(policyNumberWrapper.getByText('Search'));
     });
+
+    expect(getByText('Bulk Mortgagee'));
+    expect(getByText('By Policy'));
+    expect(getByText('By Job'));
+    //Mortgagee Form Labels
+    expect(getByText('Top Mortgagees'));
+    expect(getByText('Clear & Reset Form'));
+    expect(getByText('Name 1'));
+    expect(getByText('Name 2'));
+    expect(getByText('Address 1'));
+    expect(getByText('Address 2'));
+    expect(getByText('City'));
+    expect(getByText('State'));
+    expect(getByText('Zip'));
+    expect(getByText('Instruction'));
+    expect(getByText('Mail Notice'));
+    expect(getByText('Suppress Notice'));
+    //Policy Search Labels
+    const productWrapper = within(getByTestId('product_wrapper'));
+    const searchTypeWrapper = within(getByTestId('searchType_wrapper'));
+    const policyNumberWrapper = within(getByTestId('policyNumber_wrapper'));
+
+    expect(productWrapper.getByText('Product'));
+    expect(searchTypeWrapper.getByText('Search Type'));
+    expect(policyNumberWrapper.getByText('Search'));
   });
 
   it('Fill out Mortgagee Form', async () => {
@@ -68,8 +70,9 @@ describe('BulkMortgagee By Policy Testing', () => {
 
     await wait(() => {
       getByText('Start typing to search...');
-      expect(getByTestId('mortgage_wrapper'));
     });
+
+    expect(getByTestId('mortgage_wrapper'));
 
     fireEvent.change(getByTestId('name1'), {
       target: { value: "AMERICA'S SERVICING" }
@@ -96,12 +99,13 @@ describe('BulkMortgagee By Policy Testing', () => {
 
     await wait(() => {
       expect(getByTestId('name1').value).toBe("AMERICA'S SERVICING");
-      expect(getByTestId('name2').value).toBe('COMPANY, ISAOA');
-      expect(getByTestId('mailingAddress.address1').value).toBe('PO BOX 5106');
-      expect(getByTestId('mailingAddress.city').value).toBe('SPRINGFIELD');
-      expect(getByTestId('mailingAddress.state').value).toBe('OH');
-      expect(getByTestId('mailingAddress.zip').value).toBe('45501');
     });
+
+    expect(getByTestId('name2').value).toBe('COMPANY, ISAOA');
+    expect(getByTestId('mailingAddress.address1').value).toBe('PO BOX 5106');
+    expect(getByTestId('mailingAddress.city').value).toBe('SPRINGFIELD');
+    expect(getByTestId('mailingAddress.state').value).toBe('OH');
+    expect(getByTestId('mailingAddress.zip').value).toBe('45501');
   });
 
   it('Search Policy', async () => {
@@ -109,27 +113,28 @@ describe('BulkMortgagee By Policy Testing', () => {
       errorHandler: noop
     };
     const { getByTestId } = renderWithForm(<BulkMortgagee {...props} />);
-    await waitForElement(() => [
-      getByTestId('policyNumber'),
-      getByTestId('search-policy-submit')
-    ]);
+    await waitForElement(() => [getByTestId('policyNumber')]);
+    getByTestId('search-policy-submit');
 
     fireEvent.change(getByTestId('policyNumber'), {
-      target: { value: '12-1019690-01' }
+      target: { value: '12-1008954-01' }
     });
 
     await wait(() => {
-      expect(getByTestId('policyNumber').value).toBe('12-1019690-01');
+      expect(getByTestId('policyNumber').value).toBe('12-1008954-01');
     });
 
     fireEvent.click(getByTestId('search-policy-submit'));
 
     await waitForElement(() => [
-      getByTestId('mortgagee-0'),
-      getByTestId('mortgagee-1')
+      getByTestId('mortgagee-5d3774ca92a4b700125909ad')
     ]);
 
-    const firstMortgageeCard = within(getByTestId('mortgagee-0'));
+    getByTestId('mortgagee-5d3774ca92a4b700125909ae');
+
+    const firstMortgageeCard = within(
+      getByTestId('mortgagee-5d3774ca92a4b700125909ad')
+    );
 
     expect(firstMortgageeCard.getByText('Mortgagee 1'));
     expect(firstMortgageeCard.getByText(/SUNTRUST BANK/));
@@ -137,18 +142,26 @@ describe('BulkMortgagee By Policy Testing', () => {
     expect(firstMortgageeCard.getByText('PO BOX 47047, ATLANTA, GA 30362'));
     expect(firstMortgageeCard.getByText('Current Bill To:'));
     expect(firstMortgageeCard.getByText('Yes'));
+    expect(firstMortgageeCard.getByText('Loan No:'));
+    expect(firstMortgageeCard.getByText('HO3'));
+    expect(firstMortgageeCard.getByText(/TTIC/));
     expect(firstMortgageeCard.getByText('12-1008954-01'));
     expect(firstMortgageeCard.getByText('Matthew Overton'));
     expect(firstMortgageeCard.getByText('4019 BRAESGATE LN, TAMPA, FL 33624'));
     expect(firstMortgageeCard.getByText('QUEUE'));
 
-    const secondMortgageeCard = within(getByTestId('mortgagee-1'));
+    const secondMortgageeCard = within(
+      getByTestId('mortgagee-5d3774ca92a4b700125909ae')
+    );
 
     expect(secondMortgageeCard.getByText('Mortgagee 2'));
     expect(secondMortgageeCard.getByText('BANK OF AMERICA'));
     expect(secondMortgageeCard.getByText('PO BOX 22005, TAMPA, FL 33607'));
     expect(secondMortgageeCard.getByText('Make Bill To'));
+    expect(firstMortgageeCard.getByText('HO3'));
+    expect(firstMortgageeCard.getByText(/TTIC/));
     expect(secondMortgageeCard.getByText('12-1008954-01'));
+    expect(firstMortgageeCard.getByText('Loan No:'));
     expect(firstMortgageeCard.getByText('Matthew Overton'));
     expect(secondMortgageeCard.getByText('4019 BRAESGATE LN, TAMPA, FL 33624'));
     expect(secondMortgageeCard.getByText('QUEUE'));
@@ -161,33 +174,36 @@ describe('BulkMortgagee By Policy Testing', () => {
     const { getByText, getByTestId } = renderWithForm(
       <BulkMortgagee {...props} />
     );
-    await waitForElement(() => [
-      getByTestId('policyNumber'),
-      getByTestId('search-policy-submit')
-    ]);
+    await waitForElement(() => [getByTestId('policyNumber')]);
+
+    getByTestId('search-policy-submit');
 
     fireEvent.change(getByTestId('policyNumber'), {
-      target: { value: '12-1019690-01' }
+      target: { value: '12-1008954-01' }
     });
 
     await wait(() => {
-      expect(getByTestId('policyNumber').value).toBe('12-1019690-01');
+      expect(getByTestId('policyNumber').value).toBe('12-1008954-01');
     });
 
     fireEvent.click(getByTestId('search-policy-submit'));
     await waitForElement(() => [
-      getByTestId('mortgagee-0'),
-      getByTestId('mortgagee-1')
+      getByTestId('mortgagee-5d3774ca92a4b700125909ad')
     ]);
 
-    const firstMortgageeCard = within(getByTestId('mortgagee-0'));
+    getByTestId('mortgagee-5d3774ca92a4b700125909ae');
+
+    const firstMortgageeCard = within(
+      getByTestId('mortgagee-5d3774ca92a4b700125909ad')
+    );
 
     fireEvent.click(firstMortgageeCard.getByText('QUEUE'));
 
     await wait(() => [
-      getByTestId('queued-mortgagee-5d3774ca92a4b700125909ad'),
-      getByText(/1 queued/)
+      getByTestId('queued-mortgagee-5d3774ca92a4b700125909ad')
     ]);
+
+    getByText(/1 queued/);
 
     const queuedMortgageeCard = within(
       getByTestId('queued-mortgagee-5d3774ca92a4b700125909ad')
@@ -208,9 +224,97 @@ describe('BulkMortgagee By Policy Testing', () => {
       getByText(/0 queued/);
     });
   });
+
+  it('Queue 2 policies, check Queue card fields, then remove all from queue', async () => {
+    const props = {
+      errorHandler: noop
+    };
+    const { getByText, getByTestId } = renderWithForm(
+      <BulkMortgagee {...props} />
+    );
+    await waitForElement(() => [
+      getByTestId('policyNumber'),
+      getByTestId('search-policy-submit')
+    ]);
+
+    fireEvent.change(getByTestId('policyNumber'), {
+      target: { value: '12-1008954-01' }
+    });
+
+    await wait(() => {
+      expect(getByTestId('policyNumber').value).toBe('12-1008954-01');
+    });
+
+    fireEvent.click(getByTestId('search-policy-submit'));
+    await waitForElement(() => [
+      getByTestId('mortgagee-5d3774ca92a4b700125909ad')
+    ]);
+
+    getByTestId('mortgagee-5d3774ca92a4b700125909ae');
+
+    const firstMortgageeCard = within(
+      getByTestId('mortgagee-5d3774ca92a4b700125909ad')
+    );
+    const secondMortgageeCard = within(
+      getByTestId('mortgagee-5d3774ca92a4b700125909ae')
+    );
+    //const queuedMortgageeSection = within(getByTestId('queued-mortgagee'));
+
+    fireEvent.click(firstMortgageeCard.getByText('QUEUE'));
+
+    await wait(() => [
+      getByTestId('queued-mortgagee-5d3774ca92a4b700125909ad')
+    ]);
+
+    getByText(/1 queued/);
+
+    fireEvent.click(secondMortgageeCard.getByText('QUEUE'));
+
+    await wait(() => [
+      getByTestId('queued-mortgagee-5d3774ca92a4b700125909ae')
+    ]);
+
+    getByText(/2 queued/);
+
+    const queuedMortgageeCard1 = within(
+      getByTestId('queued-mortgagee-5d3774ca92a4b700125909ad')
+    );
+
+    const queuedMortgageeCard2 = within(
+      getByTestId('queued-mortgagee-5d3774ca92a4b700125909ae')
+    );
+
+    const removeAllWrapper = within(getByTestId('queue-mortgagee'));
+
+    expect(queuedMortgageeCard1.getByText('HO3'));
+    expect(queuedMortgageeCard1.getByText(/SUNTRUST BANK/));
+    expect(queuedMortgageeCard1.getByText('PO BOX 47047, ATLANTA, GA 30362'));
+    expect(queuedMortgageeCard1.getByText('Bill To:'));
+    expect(queuedMortgageeCard1.getByText(/Loan Number/));
+    expect(queuedMortgageeCard1.getByText(/12-1008954-01/));
+    expect(firstMortgageeCard.getByText('Matthew Overton'));
+    expect(queuedMortgageeCard1.getByText('Remove'));
+
+    expect(queuedMortgageeCard2.getByText('HO3'));
+    expect(queuedMortgageeCard2.getByText(/BANK OF AMERICA/));
+    expect(queuedMortgageeCard2.getByText('PO BOX 22005, TAMPA, FL 33607'));
+    expect(queuedMortgageeCard2.getByText('Bill To:'));
+    expect(queuedMortgageeCard2.getByText(/Loan Number/));
+    expect(queuedMortgageeCard2.getByText(/12-1008954-01/));
+    expect(secondMortgageeCard.getByText('Matthew Overton'));
+    expect(queuedMortgageeCard2.getByText('Remove'));
+
+    expect(removeAllWrapper.getByText('Remove All'));
+
+    fireEvent.click(removeAllWrapper.getByText('Remove All'));
+
+    await wait(() => {
+      getByText(/0 queued/);
+    });
+  });
 });
 
-describe('BulkMortgagee By Job Testing', () => {
+describe('Bulk Mortgagee By Job Testing', () => {
   bulkMortgageData.getMortgageeJobs = jestResolve({ jobs });
 
   it('Renders BulkMortgagee By Job and check headers / labels', async () => {
@@ -223,16 +327,17 @@ describe('BulkMortgagee By Job Testing', () => {
 
     await wait(() => {
       expect(getByText('Filter Parameters'));
-      expect(getByText('Job Number'));
-      expect(getByText('Completed By'));
-      expect(getByText('Date Range'));
-      expect(getByText('Mortgagee Name'));
-      expect(getByText('Filter'));
-      expect(getByText('Jobs'));
     });
+
+    expect(getByText('Job Number'));
+    expect(getByText('Completed By'));
+    expect(getByText('Date Range'));
+    expect(getByText('Mortgagee Name'));
+    expect(getByText('Filter'));
+    expect(getByText('Jobs'));
   });
 
-  it('Renders BulkMortgagee By Job filter by Job Number', async () => {
+  it('Renders Bulk Mortgagee By Job filter by Job Number', async () => {
     const props = {
       errorHandler: noop
     };
@@ -271,7 +376,7 @@ describe('BulkMortgagee By Job Testing', () => {
     });
   });
 
-  it('Renders BulkMortgagee By Job filter by Mortgagee Name', async () => {
+  it('Renders Bulk Mortgagee By Job filter by Mortgagee Name', async () => {
     const props = {
       errorHandler: noop
     };
@@ -307,6 +412,93 @@ describe('BulkMortgagee By Job Testing', () => {
       const jobWrapper = within(getByTestId('job-3e78b038e9dd2f00286cb58a'));
       expect(jobWrapper.getByText('3e78b038e9dd2f00286cb58a'));
       expect(jobWrapper.getByText(/Bank of Miami/));
+    });
+  });
+
+  it('Renders Bulk Mortgagee By Job filter by Date Range', async () => {
+    const props = {
+      errorHandler: noop
+    };
+    const { getByText, getByTestId } = renderWithForm(
+      <BulkMortgagee {...props} />
+    );
+
+    fireEvent.click(getByText('By Job'));
+
+    await wait(() => {
+      expect(getByText('Filter Parameters'));
+    });
+
+    fireEvent.change(getByTestId('date-range-start'), {
+      target: { value: '2020-02-19' }
+    });
+    fireEvent.change(getByTestId('date-range-end'), {
+      target: { value: '2020-02-24' }
+    });
+
+    fireEvent.click(getByText('Filter'));
+
+    await wait(() => {
+      const jobWrapper = within(getByTestId('job-4e78b038e9dd2f00286cb58a'));
+      expect(jobWrapper.getByText('4e78b038e9dd2f00286cb58a'));
+      expect(jobWrapper.getByText(/Created/));
+
+      expect(jobWrapper.getByText(/Policy Mortgagees Updated:/));
+      expect(jobWrapper.getByText(/Download Policy CSV/));
+
+      expect(jobWrapper.getByText(/Bank of America/));
+      expect(jobWrapper.getByText(/5115 Garden Vale Ave, Tampa, FL 33624/));
+    });
+
+    await wait(() => {
+      const jobWrapper = within(getByTestId('job-3e78b038e9dd2f00286cb58a'));
+      expect(jobWrapper.getByText('3e78b038e9dd2f00286cb58a'));
+      expect(jobWrapper.getByText(/Running/));
+
+      expect(jobWrapper.getByText(/Policy Mortgagees Updated:/));
+      expect(jobWrapper.getByText(/Download Policy CSV/));
+
+      expect(jobWrapper.getByText(/Bank of Miami/));
+      expect(jobWrapper.getByText(/5115 Garden Vale Ave, Miami, FL 33624/));
+    });
+
+    await wait(() => {
+      const jobWrapper = within(getByTestId('job-2e78b038e9dd2f00286cb58a'));
+      expect(jobWrapper.getByText('2e78b038e9dd2f00286cb58a'));
+      expect(jobWrapper.getByText(/Stopped/));
+
+      expect(jobWrapper.getByText(/Policy Mortgagees Updated:/));
+      expect(jobWrapper.getByText(/Download Policy CSV/));
+
+      expect(jobWrapper.getByText(/Bank of Tampa/));
+      expect(jobWrapper.getByText(/5115 Garden Vale Ave, Tampa, FL 33624/));
+    });
+
+    await wait(() => {
+      const jobWrapper = within(getByTestId('job-1e78b038e9dd2f00286cb58a'));
+      expect(jobWrapper.getByText('1e78b038e9dd2f00286cb58a'));
+      expect(jobWrapper.getAllByText(/Completed/).length).toBe(3);
+
+      expect(jobWrapper.getByText(/Completed By:/));
+      expect(jobWrapper.getByText(/auth0\|SYSTEMUSER\|0/));
+      expect(jobWrapper.getByText(/Completed:/));
+      expect(jobWrapper.getByText(/Policy Mortgagees Updated:/));
+      expect(jobWrapper.getByText(/Download Policy CSV/));
+
+      expect(jobWrapper.getByText(/Bank of Canada/));
+      expect(jobWrapper.getByText(/5115 Garden Vale Ave, Tampa, FL 33624/));
+    });
+
+    await wait(() => {
+      const jobWrapper = within(getByTestId('job-9e78b038e9dd2f00286cb58a'));
+      expect(jobWrapper.getByText('9e78b038e9dd2f00286cb58a'));
+      expect(jobWrapper.getByText(/Stop Requested/));
+
+      expect(jobWrapper.getByText(/Policy Mortgagees Updated:/));
+      expect(jobWrapper.getByText(/Download Policy CSV/));
+
+      expect(jobWrapper.getByText(/Bank of New York/));
+      expect(jobWrapper.getByText(/5115 Garden Vale Ave, Tampa, FL 33624/));
     });
   });
 });
