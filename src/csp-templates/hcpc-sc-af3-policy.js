@@ -1090,8 +1090,7 @@ const mock = {
                         component: 'radio',
                         label: 'Personal Property Repl Cost',
                         segmented: true,
-                        disabled:
-                          '${Math.ceil((it.coverageLimits.building.value || 0) / 4) > (it.coverageLimits.personalProperty.value || 0)}',
+                        validation: ['isValidPersonalProperty'],
                         extendedProperties: {
                           subscribe: true,
                           output: 'values'

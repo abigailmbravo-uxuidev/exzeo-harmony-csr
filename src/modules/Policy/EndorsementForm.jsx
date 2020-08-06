@@ -53,14 +53,13 @@ const EndorsementForm = ({
 }) => {
   let formInstance;
   const [disableReview, setDisableReview] = useState(false);
-
+  const [submitting, setSubmitting] = useState(false);
   const [endorsementState, setCalculateRate] = useState(initialState);
 
   const {
     pristine: parentPristine,
     dirtyFields,
-    values: formValues,
-    invalid: parentInvalid
+    values: formValues
   } = parentFormInstance.getState();
 
   const initialValues = {
@@ -83,9 +82,16 @@ const EndorsementForm = ({
     const {
       values: formValues,
       initialValues,
-      dirtyFields
+      dirtyFields,
+      invalid
     } = parentFormInstance.getState();
 
+    if (invalid) {
+      parentFormInstance.submit();
+      return;
+    }
+
+    setSubmitting(true);
     const originalInitial = getDirtyFieldValues(
       { ...endorsementState.dirtyFields, ...dirtyFields },
       initialValues._TEMP_INITIAL_VALUES
@@ -100,6 +106,8 @@ const EndorsementForm = ({
       formattedData,
       setAppError
     );
+
+    setSubmitting(false);
     if (!rating) return;
     parentFormInstance.initialize({ ...formValues, rating, instanceId });
     setCalculateRate(state => ({
@@ -151,6 +159,7 @@ const EndorsementForm = ({
   }, [parentPristine]);
 
   const handleSaveEndorsement = async data => {
+    setSubmitting(true);
     const { values: formValues } = parentFormInstance.getState();
 
     const endorsementDate = date.formatToUTC(
@@ -162,6 +171,7 @@ const EndorsementForm = ({
 
     setTimeout(formInstance.reset);
     setCalculateRate(initialState);
+    setSubmitting(false);
   };
 
   const isEffectiveDateRange = validation.isDateRange(
@@ -179,9 +189,9 @@ const EndorsementForm = ({
       keepDirtyOnReinitialize
       initialValues={initialValues}
       onSubmit={inSaveState ? handleSaveEndorsement : calculateEndorsementRate}
-      subscription={{ submitting: true, pristine: true, values: true }}
+      subscription={{ values: true }}
     >
-      {({ handleSubmit, submitting }) => (
+      {({ handleSubmit }) => (
         <React.Fragment>
           {!endorsementState.rating && submitting && <Loader />}
           <form
@@ -259,10 +269,9 @@ const EndorsementForm = ({
                   className={Button.constants.classNames.primary}
                   type="submit"
                   disabled={
-                    parentInvalid ||
                     submitting ||
-                    ((parentPristine && !endorsementState.reviewPending) ||
-                      (!parentPristine && disableReview))
+                    (parentPristine && !endorsementState.reviewPending) ||
+                    (!parentPristine && disableReview)
                   }
                   data-test="modal-submit"
                 >
