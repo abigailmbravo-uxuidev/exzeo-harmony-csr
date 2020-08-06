@@ -128,12 +128,6 @@ const mortgageeFields = [
     value: 'test name 1'
   },
   {
-    dataTest: 'phoneNumber',
-    type: 'text',
-    label: 'Phone Number',
-    value: '(123) 123-1231'
-  },
-  {
     dataTest: 'referenceNumber',
     type: 'text',
     label: 'Reference Number',
@@ -141,6 +135,8 @@ const mortgageeFields = [
   }
 ];
 
+// TODO: https://issuecenter.atlassian.net/browse/HAR-7969
+//  the majority of these tests need to be moved into core-ui to strengthen the contract between core-ui and the consuming application.
 describe('Additional Interest Testing', () => {
   const baseRequiredFields = baseAiFields.filter(({ required }) => required);
 
