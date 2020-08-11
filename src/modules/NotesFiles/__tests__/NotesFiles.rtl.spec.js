@@ -115,7 +115,7 @@ describe('Notes Files Testing', () => {
     expect(getByText('03/21/2019 8:00 PM EDT'));
     expect(getByText('AAA user author'));
     expect(getByText('AAA contact'));
-    expect(getByText('AAA content note'));
+    expect(getByText('aaa content note'));
     expect(getByText('04/21/2019 8:00 PM EDT'));
     expect(getByText('ZZZ user author'));
     expect(getByText('ZZZ contact'));
