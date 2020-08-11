@@ -1445,7 +1445,7 @@ const mock = {
                 {
                   id: '65345c40-2b54-4818-9778-d3f01404b16d',
                   type: '$CUSTOM',
-                  dependencies: [],
+                  dependencies: [{ billToId: '' }, { billToId: true }],
                   data: {
                     component: '$ADDRESS',
                     extendedProperties: {
