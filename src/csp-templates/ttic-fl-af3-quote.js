@@ -530,11 +530,11 @@ const mock = {
                         required: true,
                         metaData: {
                           enum: [
-                            { label: '$ 500', answer: 500 },
-                            { label: '$ 1,000', answer: 1000 },
-                            { label: '$ 2,000', answer: 2000 },
-                            { label: '$ 5,000', answer: 5000 },
-                            { label: '$ 10,000', answer: 10000 }
+                            { label: '$500', answer: 500 },
+                            { label: '$1,000', answer: 1000 },
+                            { label: '$2,000', answer: 2000 },
+                            { label: '$5,000', answer: 5000 },
+                            { label: '$10,000', answer: 10000 }
                           ]
                         }
                       },
@@ -565,11 +565,11 @@ const mock = {
                         type: 'integer',
                         metaData: {
                           enum: [
-                            { label: '$ 500', answer: 500 },
-                            { label: '$ 1,000', answer: 1000 },
-                            { label: '$ 2,000', answer: 2000 },
-                            { label: '$ 5,000', answer: 5000 },
-                            { label: '$ 10,000', answer: 10000 }
+                            { label: '$500', answer: 500 },
+                            { label: '$1,000', answer: 1000 },
+                            { label: '$2,000', answer: 2000 },
+                            { label: '$5,000', answer: 5000 },
+                            { label: '$10,000', answer: 10000 }
                           ]
                         }
                       },
@@ -724,7 +724,8 @@ const mock = {
                 {
                   id: '65345c40-2b54-4818-9778-d3f01404b16d',
                   type: '$CUSTOM',
-                  dependencies: [],
+                  dependencies: [{ billToId: '' }, { billToId: true }],
+
                   data: {
                     component: '$ADDRESS',
                     extendedProperties: {

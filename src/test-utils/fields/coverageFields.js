@@ -221,7 +221,7 @@ export const coverageFields = [
     type: 'text',
     required: true,
     label: /Dwelling Limit/,
-    value: '$ 300,000'
+    value: '$300,000'
   },
   {
     dataTest: 'coverageLimits.otherStructures.value',
@@ -235,7 +235,7 @@ export const coverageFields = [
     label: 'Percentage',
     output: {
       label: 'Other Structures Limit',
-      value: '$ 0'
+      value: '$0'
     }
   },
   {
@@ -249,7 +249,7 @@ export const coverageFields = [
     label: 'Percentage',
     output: {
       label: 'Personal Property Limit',
-      value: '$ 0'
+      value: '$0'
     }
   },
   {
@@ -260,8 +260,8 @@ export const coverageFields = [
     dataTest: 'coverageLimits.personalLiability.value',
     type: 'select',
     values: [
-      { value: '100000', label: '$ 100,000' },
-      { value: '300000', label: '$ 300,000' }
+      { value: '100000', label: '$100,000' },
+      { value: '300000', label: '$300,000' }
     ],
     label: 'Personal Liability Limit'
   },
@@ -276,8 +276,8 @@ export const otherCoveragesFields = [
     dataTest: 'coverageLimits.moldProperty.value',
     type: 'select',
     values: [
-      { value: '10000', label: '$ 10,000' },
-      { value: '25000', label: '$ 25,000' }
+      { value: '10000', label: '$10,000' },
+      { value: '25000', label: '$25,000' }
     ],
     label: 'Mold Property'
   },
@@ -285,8 +285,8 @@ export const otherCoveragesFields = [
     dataTest: 'coverageLimits.moldLiability.value',
     type: 'select',
     values: [
-      { value: '50000', label: '$ 50,000' },
-      { value: '100000', label: '$ 100,000' }
+      { value: '50000', label: '$50,000' },
+      { value: '100000', label: '$100,000' }
     ],
     label: 'Mold Liability Limit'
   },
@@ -310,8 +310,8 @@ export const deductiblesFields = [
     dataTest: 'deductibles.allOtherPerils.value',
     type: 'select',
     values: [
-      { value: '500', label: '$ 500' },
-      { value: '1000', label: '$ 1,000' }
+      { value: '500', label: '$500' },
+      { value: '1000', label: '$1,000' }
     ],
     label: 'All Other Perils'
   },
@@ -325,7 +325,7 @@ export const deductiblesFields = [
     label: 'Hurricane Deductible',
     output: {
       label: 'Calculated Hurricane',
-      value: '$ 0'
+      value: '$0'
     }
   },
   {
@@ -338,7 +338,7 @@ export const deductiblesFields = [
     label: 'Sinkhole',
     output: {
       label: 'Calculated Sinkhole',
-      value: '$ 0'
+      value: '$0'
     }
   }
 ];

@@ -128,7 +128,7 @@ export const notesResult = [
     createdBy: { userName: 'AAA user author' },
     noteAttachments: [{ fileUrl: 'foo.com/aaa', fileType: 'AAA filetype' }],
     noteContactType: 'AAA contact',
-    noteContent: 'AAA content note',
+    noteContent: 'aaa content note',
     noteType: 'Quote Note',
     number: '12-345-67',
     numberType: 'quoteNumber',

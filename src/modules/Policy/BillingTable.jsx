@@ -1,6 +1,6 @@
 import React from 'react';
 import { defaultMemoize } from 'reselect';
-import { date } from '@exzeo/core-ui/src';
+import { date, format } from '@exzeo/core-ui/src';
 
 const BillingTable = ({ initialValues }) => {
   const formatBillingInformation = defaultMemoize(initialValues => {
@@ -22,9 +22,9 @@ const BillingTable = ({ initialValues }) => {
       paymentDue: summaryLedger.invoiceDueDate
         ? date.formatDate(summaryLedger.invoiceDueDate, 'MM/DD/YYYY')
         : '-',
-      nextPayment: parseFloat(
-        summaryLedger.noticeAmountDue
-      ).toLocaleString('en', { minimumFractionDigits: 2 })
+      nextPayment: !isNaN(summaryLedger.noticeAmountDue)
+        ? `${format.toCurrency(summaryLedger.noticeAmountDue, 2)}`
+        : '-'
     };
   });
 
@@ -43,7 +43,7 @@ const BillingTable = ({ initialValues }) => {
       <dl>
         <div data-test="nextPayment">
           <dt>Next Payment</dt>
-          <dd>{nextPayment !== 'NaN' ? `$ ${nextPayment}` : '-'}</dd>
+          <dd>{nextPayment}</dd>
         </div>
       </dl>
       <dl>

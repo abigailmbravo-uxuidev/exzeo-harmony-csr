@@ -200,9 +200,7 @@ class DiaryTable extends Component {
           columnClassName="message"
           dataField="message"
           dataSort
-          sortFunc={(a, b, order) =>
-            notesUtils.sortByOrder(a.message, b.message, order)
-          }
+          sortFunc={notesUtils.sortMessage}
         >
           Message
         </TableHeaderColumn>

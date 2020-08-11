@@ -152,8 +152,8 @@ describe('Change Effective Date Testing', () => {
     await wait(() => {
       //edit-effective-date
       expect(getByTestId('modal-submit')).toHaveTextContent(/Update/);
-      expect(getByTestId('premiumChange').value).toBe('$ 55');
-      expect(getByTestId('newAnnualPremium').value).toBe('$ 2,113');
+      expect(getByTestId('premiumChange').value).toBe('$55');
+      expect(getByTestId('newAnnualPremium').value).toBe('$2,113');
     });
   });
 
@@ -188,8 +188,8 @@ describe('Change Effective Date Testing', () => {
     await wait(() => {
       //edit-effective-date
       expect(getByTestId('modal-submit')).toHaveTextContent(/Update/);
-      expect(getByTestId('premiumChange').value).toBe('-$ 55');
-      expect(getByTestId('newAnnualPremium').value).toBe('$ 2,003');
+      expect(getByTestId('premiumChange').value).toBe('-$55');
+      expect(getByTestId('newAnnualPremium').value).toBe('$2,003');
     });
   });
 
@@ -224,8 +224,8 @@ describe('Change Effective Date Testing', () => {
     await wait(() => {
       //edit-effective-date
       expect(getByTestId('modal-submit')).toHaveTextContent(/Update/);
-      expect(getByTestId('premiumChange').value).toBe('$ 0');
-      expect(getByTestId('newAnnualPremium').value).toBe('$ 2,058');
+      expect(getByTestId('premiumChange').value).toBe('$0');
+      expect(getByTestId('newAnnualPremium').value).toBe('$2,058');
     });
   });
 
@@ -261,8 +261,8 @@ describe('Change Effective Date Testing', () => {
     await wait(() => {
       //edit-effective-date
       expect(getByTestId('modal-submit')).toHaveTextContent(/Update/);
-      expect(getByTestId('premiumChange').value).toBe('$ 0');
-      expect(getByTestId('newAnnualPremium').value).toBe('$ 2,058');
+      expect(getByTestId('premiumChange').value).toBe('$0');
+      expect(getByTestId('newAnnualPremium').value).toBe('$2,058');
     });
 
     fireEvent.change(getByTestId('effective-date'), {
@@ -281,8 +281,8 @@ describe('Change Effective Date Testing', () => {
     await wait(() => {
       //edit-effective-date
       expect(getByTestId('modal-submit')).toHaveTextContent(/Update/);
-      expect(getByTestId('premiumChange').value).toBe('$ 0');
-      expect(getByTestId('newAnnualPremium').value).toBe('$ 2,058');
+      expect(getByTestId('premiumChange').value).toBe('$0');
+      expect(getByTestId('newAnnualPremium').value).toBe('$2,058');
     });
 
     fireEvent.change(getByTestId('effective-date-change-reason'), {
@@ -342,8 +342,8 @@ describe('Change Effective Date Testing', () => {
     await wait(() => {
       //edit-effective-date
       expect(getByTestId('modal-submit')).toHaveTextContent(/Update/);
-      expect(getByTestId('premiumChange').value).toBe('$ 0');
-      expect(getByTestId('newAnnualPremium').value).toBe('$ 2,058');
+      expect(getByTestId('premiumChange').value).toBe('$0');
+      expect(getByTestId('newAnnualPremium').value).toBe('$2,058');
     });
 
     fireEvent.click(getByTestId('modal-submit'));

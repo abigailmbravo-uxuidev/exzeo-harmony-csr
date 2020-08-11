@@ -93,7 +93,15 @@ export const sortContactType = (a, b, order) => {
 };
 
 export const sortNoteContent = (a, b, order) => {
-  return sortByOrder(a.noteContent, b.noteContent, order);
+  return sortByOrder(
+    a.noteContent.toLowerCase(),
+    b.noteContent.toLowerCase(),
+    order
+  );
+};
+
+export const sortMessage = (a, b, order) => {
+  return sortByOrder(a.message.toLowerCase(), b.message.toLowerCase(), order);
 };
 
 export const sortFiles = (a, b, order) => {

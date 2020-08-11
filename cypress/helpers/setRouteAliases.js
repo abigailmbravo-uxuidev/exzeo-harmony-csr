@@ -90,4 +90,6 @@ export const setRouteAliases = () =>
     .route('POST', '/svc?rateEffectiveDateChange')
     .as('rateEffectiveDateChange')
     .route('POST', '/svc?saveEffectiveDateChange')
-    .as('saveEffectiveDateChange');
+    .as('saveEffectiveDateChange')
+    .route('POST', '/svc?getBillingOptions')
+    .as('getBillingOptions');
