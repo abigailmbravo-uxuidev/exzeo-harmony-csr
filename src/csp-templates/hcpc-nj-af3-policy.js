@@ -984,11 +984,11 @@ const mock = {
                         component: 'selectInteger',
                         label: 'Building Deductible',
                         dataSource: [
-                          { label: '$ 500', answer: 500 },
-                          { label: '$ 1,000', answer: 1000 },
-                          { label: '$ 2,000', answer: 2000 },
-                          { label: '$ 5,000', answer: 5000 },
-                          { label: '$ 10,000', answer: 10000 }
+                          { label: '$500', answer: 500 },
+                          { label: '$1,000', answer: 1000 },
+                          { label: '$2,000', answer: 2000 },
+                          { label: '$5,000', answer: 5000 },
+                          { label: '$10,000', answer: 10000 }
                         ],
                         extendedProperties: {
                           output: 'initial'
@@ -1015,11 +1015,11 @@ const mock = {
                         component: 'selectInteger',
                         label: 'Personal Property Deductible',
                         dataSource: [
-                          { label: '$ 500', answer: 500 },
-                          { label: '$ 1,000', answer: 1000 },
-                          { label: '$ 2,000', answer: 2000 },
-                          { label: '$ 5,000', answer: 5000 },
-                          { label: '$ 10,000', answer: 10000 }
+                          { label: '$500', answer: 500 },
+                          { label: '$1,000', answer: 1000 },
+                          { label: '$2,000', answer: 2000 },
+                          { label: '$5,000', answer: 5000 },
+                          { label: '$10,000', answer: 10000 }
                         ],
                         extendedProperties: {
                           output: 'initial'
