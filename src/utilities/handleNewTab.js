@@ -32,23 +32,4 @@ export function handleNewTab(resource, type, product) {
   }
 }
 
-export function handleDiaryClick(resourceId, type) {
-  const formattedType = String(type).toLowerCase();
-  if (formattedType === 'quote') {
-    window.open(`/quote/${resourceId}/coverage`, '_blank');
-    // policy
-  } else if (formattedType === 'policy') {
-    window.open(`/policy/${resourceId}/coverage`, '_blank');
-    // agency
-  } else if (formattedType === 'agency' || formattedType === 'agent') {
-    window.open(`/agency/${resourceId}/staff`, '_blank');
-  }
-}
-
-export function handleDiaryKeyPress(event, resourceId, type) {
-  if (event.charCode === 13) {
-    handleDiaryClick(resourceId, type);
-  }
-}
-
 export default handleNewTab;

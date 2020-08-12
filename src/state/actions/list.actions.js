@@ -91,25 +91,3 @@ export function getEnumsForPolicyWorkflow({ companyCode, state, product }) {
     }
   };
 }
-
-/**
- *
- * @param policyNumber
- * @returns {Function}
- */
-export function getEnumsForSearch() {
-  return async dispatch => {
-    try {
-      const diaryOptions = fetchDiaryOptions();
-      const diaryOptionsResponse = await diaryOptions;
-
-      dispatch(
-        setEnums({
-          diaryOptions: diaryOptionsResponse
-        })
-      );
-    } catch (error) {
-      dispatch(setAppError(error));
-    }
-  };
-}

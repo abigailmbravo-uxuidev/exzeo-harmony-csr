@@ -45,36 +45,3 @@ describe('test handleNewTab', () => {
     expect(result);
   });
 });
-
-describe('test handleDiaryClick', () => {
-  window.open = x => x;
-  it('should handleDiaryClick Quote', () => {
-    const result = handleDiaryClick('12-44567878-01', 'Quote');
-    expect(result);
-  });
-
-  it('should handleDiaryClick Policy', () => {
-    const result = handleDiaryClick('12-44567878-01', 'Policy');
-    expect(result);
-  });
-
-  it('should handleDiaryClick Agency', () => {
-    const result = handleDiaryClick('12-44567878-01', 'Agency');
-    expect(result);
-  });
-
-  it('should handleDiaryClick Agent', () => {
-    const result = handleDiaryClick('12-44567878-01', 'Agent');
-    expect(result);
-  });
-});
-
-describe('test handleDiaryKeyPress', () => {
-  it('should handleDiaryKeyPress Quote', () => {
-    const event = {
-      charCode: 13
-    };
-    const result = handleDiaryClick(event, '12-44567878-01', 'Quote');
-    expect(result);
-  });
-});

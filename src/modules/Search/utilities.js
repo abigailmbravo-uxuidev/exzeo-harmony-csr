@@ -1,5 +1,5 @@
-import { sortDiariesByDate } from '../../utilities/diaries';
 import { COMPANY_OPTIONS, PRODUCT_OPTIONS, STATE_OPTIONS } from './constants';
+import { getMatchingResources } from '../../utilities/userResources';
 
 /**
  * Build query string and encodeURI
@@ -190,130 +190,9 @@ export function formatAgentResults(results) {
 
 /**
  *
- * @param results
- * @param product
- */
-export function formatDiaryResults(results, product) {
-  const sortedResults = sortDiariesByDate(results.result, product);
-
-  return {
-    results: sortedResults,
-    totalRecords: sortedResults.length,
-    noResults: !sortedResults.length
-  };
-}
-
-/**
- *
- * @param diaries
- * @returns {string[]}
- */
-export function getCheckedDiaries(diaries) {
-  return Object.keys(diaries).filter(id => diaries[id]);
-}
-
-/**
- *
- * @param users
- * @returns {*}
- */
-export function buildAssigneesList(users) {
-  const activeUsers = users.filter(user => !!user.enabled);
-
-  const userList = activeUsers.map(user => ({
-    answer: user.userId,
-    label: `${user.firstName} ${user.lastName}`,
-    type: 'user'
-  }));
-
-  return userList.sort((a, b) => {
-    const userA = a.label.toUpperCase();
-    const userB = b.label.toUpperCase();
-    if (userA > userB) return 1;
-    if (userA < userB) return -1;
-    return 0;
-  });
-}
-
-/**
- *
- * @param diaryOptions
- * @returns {{reasons: *, tags: *}}
- */
-export function formatDiaryOptions(diaryOptions) {
-  const options = diaryOptions;
-  const diaryReasons = options.reduce((acc, d) => {
-    const reasons = d.reasons;
-    acc.push(...reasons);
-    return acc;
-  }, []);
-
-  const diaryTags = options.reduce((acc, d) => {
-    const tags = d.tags;
-    acc.push(...tags);
-    return acc;
-  }, []);
-
-  return {
-    reasons: removeDuplicates(diaryReasons, 'answer'),
-    tags: removeDuplicates(diaryTags, 'answer')
-  };
-}
-
-/**
- *
- * @param array
- * @param property
- * @returns {*}
- */
-function removeDuplicates(array, property) {
-  return array.filter((obj, position, filteredArray) => {
-    return (
-      filteredArray.map(mapObj => mapObj[property]).indexOf(obj[property]) ===
-      position
-    );
-  });
-}
-
-/**
- *
- * @param resources
- * @param uri
- * @param right
- * @returns {*[]}
- */
-export const getMatchingResources = (resources = [], uri, right) => {
-  return resources.filter(resource => {
-    if (process.env.NODE_ENV !== 'production') {
-      if (!!resource.conditions) {
-        // As we use this more and more, every way we can slim down the resources array will help with perf.
-        throw new Error(
-          'Please filter out legacy resources in store when user logs in'
-        );
-      }
-    }
-
-    return resource.right === right && resource.uri.includes(uri);
-  });
-};
-
-/**
- *
- * @param resources
- * @param uri
- * @param right
- * @returns {boolean}
- */
-export const doesUserHaveAccess = (resources = [], uri, right) => {
-  const matchingResources = getMatchingResources(resources, uri, right);
-
-  return matchingResources.length > 0;
-};
-
-/**
- *
  * @param userProfile
  * @param uri
+ * @param right
  * @returns {{productOptionMap: {}, productOptions: [], stateOptions: [], companyCodeMap: {}, companyCodeOptions: []}}
  */
 export const cspConfigForSearch = (userProfile = {}, uri, right) => {

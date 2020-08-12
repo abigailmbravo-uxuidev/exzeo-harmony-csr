@@ -57,7 +57,7 @@ export const getDiariesForTable = createSelector(
         diaryHistory: d.entries
           .slice(1)
           .map(e => formatEntry(e, diaryOptions.reasons)),
-        dueStatus: getDueStatus(entry.due, entry.open),
+        dueStatus: getDueStatus(d.entries[0].due, entry.open),
         action: {
           diaryId: d._id,
           resourceType: d.resource.type,
@@ -106,32 +106,6 @@ export const isPollingPermitted = createSelector(
     });
 
     return diariesResources.length === 3;
-  }
-);
-
-const getComponentProps = (state, props) => props;
-
-export const getInitialValuesForForm = createSelector(
-  [getDiaries, getComponentProps],
-  (diaries, props) => {
-    const resource = {
-      resourceType: props.resourceType,
-      resourceId: props.resourceId
-    };
-
-    if (props.diaryId) {
-      const selectedDiary = diaries.find(d => d._id === props.diaryId);
-      return selectedDiary
-        ? {
-            ...selectedDiary.entries[0],
-            due: date.formatDate(
-              selectedDiary.entries[0].due,
-              date.FORMATS.SECONDARY
-            )
-          }
-        : { ...resource };
-    }
-    return { ...resource };
   }
 );
 
