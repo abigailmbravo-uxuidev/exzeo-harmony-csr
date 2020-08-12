@@ -69,7 +69,7 @@ function NotesFiles({ options, customHandlers, initialValues }) {
           <Notes
             notes={notes}
             customHandlers={customHandlers}
-            attachmentStatus={selectedTab === NOTE_TYPE.files}
+            showAttachments={selectedTab === NOTE_TYPE.files}
           />
         )}
 

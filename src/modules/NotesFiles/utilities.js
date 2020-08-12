@@ -36,9 +36,9 @@ export const mergeNotes = (notes, files) => {
   return [...upDatedNotes, ...fileNotes];
 };
 
-export const filterNotesByType = (notes, type) => {
+export const filterNotesByType = (notes, showAttachments) => {
   if (!Array.isArray(notes)) return [];
-  return type
+  return showAttachments
     ? notes.filter(n => n.noteAttachments.length > 0)
     : notes.filter(n => n.noteContent);
 };
@@ -59,24 +59,25 @@ export const showCreatedBy = createdBy => (createdBy ? createdBy.userName : '');
 export const attachmentCount = attachments =>
   attachments ? attachments.length : 0;
 
-export const formatNote = note => (note ? note.replace(/\r|\n/g, '<br>') : '');
-
-export const attachmentFilter = cell =>
-  cell.length > 0 ? cell[0].fileName : null;
+export const attachmentFilter = attachment =>
+  attachment.length > 0 ? attachment[0].fileName : null;
 
 export const formatCreatedDate = createdDate =>
   date.formattedLocalDate(createdDate);
 
 export const sortByOrder = (a, b, order) => {
-  return order === 'desc' ? (a > b ? 1 : -1) : a < b ? 1 : -1;
+  if (order === 'desc') {
+    return a > b ? 1 : -1;
+  } else {
+    return a < b ? 1 : -1;
+  }
 };
 
 export const sortByDate = (a, b, order) => {
-  return sortByOrder(
-    date.formattedLocalDate(a),
-    date.formattedLocalDate(b),
-    order
-  );
+  const dateA = date.moment.utc(a).unix();
+  const dateB = date.moment.utc(b).unix();
+
+  return sortByOrder(dateA, dateB, order);
 };
 
 export const sortAuthor = (a, b, order) => {
@@ -92,12 +93,16 @@ export const sortContactType = (a, b, order) => {
   return sortByOrder(a.noteContactType, b.noteContactType, order);
 };
 
+export const formatNote = note => {
+  return note ? note.replace(/[\r\n]/g, '<br>') : '';
+};
+
+const markupRegex = /<(.+?)>/; // Trying to account for various HTML tags at the beginning of the note content
 export const sortNoteContent = (a, b, order) => {
-  return sortByOrder(
-    a.noteContent.toLowerCase(),
-    b.noteContent.toLowerCase(),
-    order
-  );
+  const contentA = a.noteContent.replace(markupRegex, '').toLowerCase();
+  const contentB = b.noteContent.replace(markupRegex, '').toLowerCase();
+
+  return sortByOrder(contentA, contentB, order);
 };
 
 export const sortMessage = (a, b, order) => {

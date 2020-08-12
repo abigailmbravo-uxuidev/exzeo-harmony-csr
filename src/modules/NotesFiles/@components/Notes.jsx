@@ -8,7 +8,7 @@ import { SearchPanel } from './SearchPanel';
 const Notes = props => {
   const {
     notes,
-    attachmentStatus,
+    showAttachments,
     customHandlers: { setAppError }
   } = props;
   const options = {
@@ -34,9 +34,9 @@ const Notes = props => {
   return (
     <BootstrapTable
       className={
-        attachmentStatus ? 'files compact-table' : 'notes compact-table'
+        showAttachments ? 'files compact-table' : 'notes compact-table'
       }
-      data={notesUtils.filterNotesByType(notes, attachmentStatus)}
+      data={notesUtils.filterNotesByType(notes, showAttachments)}
       options={options}
       search
       multiColumnSearch
@@ -83,7 +83,7 @@ const Notes = props => {
         dataField="noteContactType"
         dataSort
         sortFunc={notesUtils.sortContactType}
-        hidden={attachmentStatus}
+        hidden={showAttachments}
       >
         Contact
       </TableHeaderColumn>
@@ -94,7 +94,7 @@ const Notes = props => {
         dataSort
         sortFunc={notesUtils.sortNoteContent}
         dataFormat={notesUtils.formatNote}
-        hidden={attachmentStatus}
+        hidden={showAttachments}
       >
         Note
       </TableHeaderColumn>
