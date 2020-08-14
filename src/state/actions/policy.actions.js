@@ -605,6 +605,54 @@ export async function postCreateTransaction(submitData) {
 
 /**
  *
+ * @param {Object} aiData
+ * @returns {Promise<{}>}
+ */
+export async function removeAdditionalInterest(aiData) {
+  const { policyNumber, additionalInterest } = aiData;
+  const config = {
+    service: 'policy-manager',
+    method: 'PATCH',
+    path: `policies/${policyNumber}/additionalInterests/${additionalInterest._id}/remove`
+  };
+
+  try {
+    const response = await serviceRunner.callService(
+      config,
+      'removeAdditionalInterest'
+    );
+    return response;
+  } catch (error) {
+    throw error;
+  }
+}
+
+/**
+ *
+ * @param {Object} aiData
+ * @returns {Promise<{}>}
+ */
+export async function reinstateAdditionalInterest(aiData) {
+  const { policyNumber, additionalInterest } = aiData;
+  const config = {
+    service: 'policy-manager',
+    method: 'PATCH',
+    path: `policies/${policyNumber}/additionalInterests/${additionalInterest._id}/reinstate`
+  };
+
+  try {
+    const response = await serviceRunner.callService(
+      config,
+      'reinstateAdditionalInterest'
+    );
+    return response;
+  } catch (error) {
+    throw error;
+  }
+}
+
+/**
+ *
  * @param paymentPlan
  * @returns {Promise<{}>}
  */
@@ -852,7 +900,6 @@ async function addAdditionalInterest({ additionalInterest, policyNumber }) {
     referenceNumber: additionalInterest.referenceNumber,
     type: additionalInterest.type
   };
-  console.log(typeof data.order);
   data.mailingAddress.zipExtension = '';
 
   const config = {
@@ -951,7 +998,7 @@ export function updatePolicy({ data = {}, options = {} }) {
       }
 
       if (data.selectedAI) {
-        const { selectedAI, policyID, policyNumber, transactionType } = data;
+        const { selectedAI, policyNumber, transactionType } = data;
         const aiData = {
           additionalInterest: selectedAI,
           policyNumber: policyNumber
@@ -961,16 +1008,10 @@ export function updatePolicy({ data = {}, options = {} }) {
           await updateAdditionalInterest(aiData);
         } else if (transactionType === 'AI Addition') {
           await addAdditionalInterest(aiData);
-        } else if (
-          transactionType === 'AI Removal' ||
-          transactionType === 'AI Reinstatement'
-        ) {
-          await postCreateTransaction({
-            ...aiData,
-            policyID,
-            additionalInterestId: selectedAI._id,
-            transactionType
-          });
+        } else if (transactionType === 'AI Removal') {
+          await removeAdditionalInterest(aiData);
+        } else if (transactionType === 'AI Reinstatement') {
+          await reinstateAdditionalInterest(aiData);
         }
       }
       dispatch(initializePolicyWorkflow(data.policyNumber));
