@@ -47,8 +47,17 @@ export const renderNotes = ({
   </div>
 );
 
-export const validateContentField = value =>
-  value ? undefined : 'Note Content Required';
+export const validateContentField = value => {
+  if (!value) {
+    return 'Note Content Required';
+  }
+
+  if (value.includes('<')) {
+    return "Invalid character. Please remove any '<'";
+  }
+
+  return undefined;
+};
 
 // TODO update Uppy to 1.0 as soon as we can
 const NoteUploader = ({

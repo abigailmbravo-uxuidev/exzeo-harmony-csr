@@ -1,8 +1,7 @@
-import { date } from '@exzeo/core-ui';
+import { date, calculateDecorator } from '@exzeo/core-ui';
 import { formatEntry, getDueStatus } from '../../../utilities/diaries';
-import createDecorator from 'final-form-calculate';
 
-export const transferDiariesCalculator = createDecorator(
+export const transferDiariesCalculator = calculateDecorator(
   {
     field: 'selectAll',
     updates: (value, fieldName, allValues, prevValues) => {
@@ -170,10 +169,8 @@ export function handleDiaryClick(resourceId, type) {
   const formattedType = String(type).toLowerCase();
   if (formattedType === 'quote') {
     window.open(`/quote/${resourceId}/coverage`, '_blank');
-    // policy
   } else if (formattedType === 'policy') {
     window.open(`/policy/${resourceId}/coverage`, '_blank');
-    // agency
   } else if (formattedType === 'agency' || formattedType === 'agent') {
     window.open(`/agency/${resourceId}/staff`, '_blank');
   }
