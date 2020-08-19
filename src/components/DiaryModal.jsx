@@ -68,9 +68,7 @@ export const DiaryModal = ({
       };
 
       submitData.due = date.formatToUTC(due, entity.property.timezone);
-
       const { companyCode, state, product } = entity;
-
       await submitDiary(
         { ...submitData, assignee },
         {
@@ -78,10 +76,11 @@ export const DiaryModal = ({
           state,
           product,
           user,
+          diaryId,
+          sourceNumber,
           resourceType,
           resourceId,
-          diaryId,
-          sourceNumber
+          entity
         }
       );
     } catch (error) {

@@ -1,19 +1,26 @@
 import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import { shape } from 'prop-types';
 import { SectionLoader } from '@exzeo/core-ui';
-
-import { NOTE_TYPE, DIARY_TAB, FILES_TAB, NOTE_TAB } from '../constants';
 import { useFetchNotes } from '../hooks';
-import DiaryTable from './DiaryTable';
-import Notes from './Notes';
+import {
+  NOTE_TYPE,
+  DIARY_TAB,
+  FILES_TAB,
+  NOTE_TAB,
+  POLICY_RESOURCE_TYPE,
+  QUOTE_RESOURCE_TYPE
+} from '../constants';
+import * as notesUtils from '../utilities';
+import NotesTable from './NotesTable';
+import FilesTable from './FilesTable';
+import DiariesTable from './DiariesTable';
 
 function NotesFiles({ options, customHandlers, initialValues }) {
   const [selectedTab, setSelectedTab] = useState(NOTE_TYPE.notes);
-  const [hasMounted, setMounted] = useState(false);
 
   // Check for sourceNumber since PolicyNumber is returned for a quote that is Policy Issued
-  const numbers = initialValues.sourceNumber
+  const sourceNumbers = initialValues.sourceNumber
     ? [initialValues.policyNumber, initialValues.sourceNumber]
     : [initialValues.quoteNumber];
   const numberType = initialValues.sourceNumber
@@ -21,16 +28,20 @@ function NotesFiles({ options, customHandlers, initialValues }) {
     : 'quoteNumber';
 
   const { notes, notesLoaded } = useFetchNotes(
-    numbers,
+    sourceNumbers,
     numberType,
     customHandlers.notesSynced
   );
 
-  if (!notesLoaded && !hasMounted) {
+  const allNotes = notes.filter(n => n.noteContent);
+  const notesWithAttachments = notes.filter(n => n.noteAttachments.length > 0);
+  const diaries = notesUtils.getDiariesForTable(
+    options.diaries,
+    options.diaryOptions
+  );
+
+  if (!notesLoaded) {
     return <SectionLoader />;
-  }
-  if (!hasMounted) {
-    setMounted(true);
   }
 
   return (
@@ -39,6 +50,7 @@ function NotesFiles({ options, customHandlers, initialValues }) {
         <div className="filter-tabs">
           <button
             type="button"
+            name="notes"
             className={classNames('btn btn-tab', {
               selected: selectedTab === NOTE_TYPE.notes
             })}
@@ -48,6 +60,7 @@ function NotesFiles({ options, customHandlers, initialValues }) {
           </button>
           <button
             type="button"
+            name="files"
             className={classNames('btn btn-tab', {
               selected: selectedTab === NOTE_TYPE.files
             })}
@@ -57,6 +70,7 @@ function NotesFiles({ options, customHandlers, initialValues }) {
           </button>
           <button
             type="button"
+            name="diaries"
             className={classNames('btn btn-tab', {
               selected: selectedTab === NOTE_TYPE.diaries
             })}
@@ -65,19 +79,29 @@ function NotesFiles({ options, customHandlers, initialValues }) {
             Diaries
           </button>
         </div>
-        {(selectedTab === NOTE_TAB || selectedTab === FILES_TAB) && (
-          <Notes
-            notes={notes}
-            customHandlers={customHandlers}
-            showAttachments={selectedTab === NOTE_TYPE.files}
+        {selectedTab === NOTE_TAB && (
+          <NotesTable
+            data={allNotes}
+            errorHandler={customHandlers.setAppError}
           />
         )}
-
+        {selectedTab === FILES_TAB && (
+          <FilesTable
+            data={notesWithAttachments}
+            errorHandler={customHandlers.setAppError}
+          />
+        )}
         {selectedTab === DIARY_TAB && (
-          <DiaryTable
-            customHandlers={customHandlers}
-            diaries={options.diaries}
-            entity={initialValues}
+          <DiariesTable
+            data={diaries}
+            toggleDiary={customHandlers.toggleDiary}
+            document={initialValues}
+            sourceNumbers={sourceNumbers}
+            documentType={
+              numberType === 'policyNumber'
+                ? POLICY_RESOURCE_TYPE
+                : QUOTE_RESOURCE_TYPE
+            }
           />
         )}
       </div>
@@ -86,8 +110,9 @@ function NotesFiles({ options, customHandlers, initialValues }) {
 }
 
 NotesFiles.propTypes = {
-  customHandlers: shape({}).isRequired,
-  options: shape({}).isRequired
+  options: PropTypes.shape({}).isRequired,
+  customHandlers: PropTypes.shape({}).isRequired,
+  initialValues: PropTypes.shape({}).isRequired
 };
 
 export default NotesFiles;

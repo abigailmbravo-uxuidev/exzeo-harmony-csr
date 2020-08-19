@@ -85,7 +85,11 @@ describe('Test diary.actions', () => {
         user: { userId: '123', userName: 'Test Guy' },
         resourceType: POLICY_RESOURCE_TYPE,
         resourceId: '12-1005269-02',
-        initialValues: {}
+        initialValues: {},
+        entity: {
+          policyNumber: '123',
+          sourceNumber: '234'
+        }
       };
 
       const data = {

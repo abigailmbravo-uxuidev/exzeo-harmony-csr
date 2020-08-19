@@ -20,7 +20,6 @@ import {
 import { getZipcodeSettings } from '../../state/actions/service.actions';
 import { getEnumsForQuoteWorkflow } from '../../state/actions/list.actions';
 import { getQuoteSelector } from '../../state/selectors/quote.selectors';
-import { getDiariesForTable } from '../../state/selectors/diary.selectors';
 import { UNQUALIFIED_STATE, QUOTE_STATE } from '../../utilities/quoteState';
 
 import App from '../../components/AppWrapper';
@@ -364,7 +363,7 @@ const mapStateToProps = state => {
     quote: getQuoteSelector(state),
     options: state.list,
     isLoading: state.ui.isLoading,
-    diaries: getDiariesForTable(state),
+    diaries: state.diaries,
     notes: state.notes,
     notesSynced: state.ui.notesSynced
   };

@@ -67,7 +67,7 @@ export function submitDiary(data, props) {
       resourceType,
       resourceId,
       diaryId,
-      sourceNumber
+      entity
     } = props;
 
     const userObj = {
@@ -129,8 +129,8 @@ export function submitDiary(data, props) {
           resourceType,
           resourceId:
             resourceType === POLICY_RESOURCE_TYPE
-              ? [resourceId, sourceNumber]
-              : resourceId
+              ? [entity.policyNumber, entity.sourceNumber]
+              : entity.quoteNumber
         })
       );
     } catch (error) {

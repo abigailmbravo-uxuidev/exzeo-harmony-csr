@@ -8,6 +8,14 @@ export const mergeNotes = (notes, files) => {
   const getTerm = number =>
     number && number.includes('-') ? Number(number.split('-').pop()) : 1;
 
+  const formatAttachments = (noteAttachments = []) =>
+    noteAttachments.map(attachment => ({
+      ...attachment,
+      fileName:
+        attachment?.fileName ??
+        attachment.fileUrl.substring(attachment.fileUrl.lastIndexOf('/') + 1)
+    }));
+
   const fileNotes = files.reduce((filtered, file) => {
     if (!fileList.includes(file.fileUrl)) {
       const newNote = {
@@ -30,17 +38,11 @@ export const mergeNotes = (notes, files) => {
   }, []);
 
   const upDatedNotes = notes.map(note => ({
+    ...note,
     term: getTerm(note.number),
-    ...note
+    noteAttachments: formatAttachments(note.noteAttachments)
   }));
   return [...upDatedNotes, ...fileNotes];
-};
-
-export const filterNotesByType = (notes, showAttachments) => {
-  if (!Array.isArray(notes)) return [];
-  return showAttachments
-    ? notes.filter(n => n.noteAttachments.length > 0)
-    : notes.filter(n => n.noteContent);
 };
 
 export const toTitleCase = str => {
@@ -50,17 +52,6 @@ export const toTitleCase = str => {
     .map(s => s.replace(s[0], s[0].toUpperCase()))
     .join(' ');
 };
-
-export const getFileName = a =>
-  a.fileName ? a.fileName : a.fileUrl.substring(a.fileUrl.lastIndexOf('/') + 1);
-
-export const showCreatedBy = createdBy => (createdBy ? createdBy.userName : '');
-
-export const attachmentCount = attachments =>
-  attachments ? attachments.length : 0;
-
-export const attachmentFilter = attachment =>
-  attachment.length > 0 ? attachment[0].fileName : null;
 
 export const formatCreatedDate = createdDate =>
   date.formattedLocalDate(createdDate);
@@ -76,49 +67,25 @@ export const sortByOrder = (a, b, order) => {
 export const sortByDate = (a, b, order) => {
   const dateA = date.moment.utc(a).unix();
   const dateB = date.moment.utc(b).unix();
-
   return sortByOrder(dateA, dateB, order);
 };
 
-export const sortAuthor = (a, b, order) => {
-  if (!a.createdBy || !b.createdBy) return order === 'desc' ? -1 : 1;
-  return sortByOrder(
-    a.createdBy.userName.toLowerCase(),
-    b.createdBy.userName.toLowerCase(),
-    order
-  );
-};
-
-export const sortContactType = (a, b, order) => {
-  return sortByOrder(a.noteContactType, b.noteContactType, order);
-};
-
-export const formatNote = note => {
-  return note ? note.replace(/[\r\n]/g, '<br>') : '';
+export const sortCaseInsensitive = (a, b, order) => {
+  return sortByOrder(a.toLowerCase(), b.toLowerCase(), order);
 };
 
 const markupRegex = /<(.+?)>/; // Trying to account for various HTML tags at the beginning of the note content
 export const sortNoteContent = (a, b, order) => {
-  const contentA = a.noteContent.replace(markupRegex, '').toLowerCase();
-  const contentB = b.noteContent.replace(markupRegex, '').toLowerCase();
+  const contentA = a.replace(markupRegex, '').toLowerCase();
+  const contentB = b.replace(markupRegex, '').toLowerCase();
 
   return sortByOrder(contentA, contentB, order);
 };
 
-export const sortMessage = (a, b, order) => {
-  return sortByOrder(a.message.toLowerCase(), b.message.toLowerCase(), order);
-};
-
 export const sortFiles = (a, b, order) => {
-  const fileA =
-    a.noteAttachments.length > 0 ? getFileName(a.noteAttachments[0]) : '';
-  const fileB =
-    b.noteAttachments.length > 0 ? getFileName(b.noteAttachments[0]) : '';
+  const fileA = a.length > 0 ? a[0].fileName : '';
+  const fileB = b.length > 0 ? b[0].fileName : '';
   return sortByOrder(fileA, fileB, order);
-};
-
-export const sortFileType = (a, b, order) => {
-  return sortByOrder(a.fileType, b.fileType, order);
 };
 
 export const formatNotes = notes => {
@@ -130,5 +97,130 @@ export const formatNotes = notes => {
           ? toTitleCase(n.noteAttachments[0].fileType)
           : ''
     };
+  });
+};
+
+/**
+ * Is date provided more than one week from current date
+ * @param dateString
+ * @returns {boolean | *}
+ */
+export const isUpcoming = dateString => {
+  const sevenDaysOut = date
+    .moment()
+    .utc()
+    .add(7, 'd')
+    .format(date.FORMATS.SECONDARY);
+
+  return date.moment(dateString).isAfter(sevenDaysOut, 'd');
+};
+
+/**
+ * Is date provided within one week from current date
+ * @param dateString
+ * @returns {boolean}
+ */
+export const isDueSoon = dateString => {
+  const today = date.currentDay(date.FORMATS.SECONDARY);
+  const sevenDaysOut = date.moment
+    .utc()
+    .add(7, 'd')
+    .format(date.FORMATS.SECONDARY);
+
+  return date.moment(dateString).isBetween(today, sevenDaysOut, 'd', '[]');
+};
+
+/**
+ * Is date provided past current date
+ * @param dateString
+ * @returns {boolean}
+ */
+export const isPastDue = dateString => {
+  const today = date.currentDay(date.FORMATS.SECONDARY);
+
+  return date.moment(dateString).isBefore(today, 'd');
+};
+
+/**
+ * format Diary properties
+ * @param entry object
+ * @param reasonOptions
+ * @returns {object}
+ */
+export const formatEntry = (entry, reasonOptions = []) => {
+  const reasonKeyValue = reasonOptions.find(r => r.answer === entry.reason);
+  const reasonLabel = reasonKeyValue ? reasonKeyValue.label : entry.reason;
+  const due = date.formatDate(entry.due);
+  return {
+    ...entry,
+    due,
+    reasonLabel
+  };
+};
+
+/**
+ * Get status of diary based on due date
+ * @param due
+ * @param open
+ * @returns {string}
+ */
+export const getDueStatus = (due, open) => {
+  if (!open) return 'closed';
+  else if (isPastDue(due)) return 'pastDue';
+  else if (isDueSoon(due)) return 'dueSoon';
+  else if (isUpcoming(due)) return 'upComing';
+  return 'unknown';
+};
+
+/**
+ * Sort diaries in ascending order by due date
+ * @param diaries
+ * @param product
+ * @returns {Array}
+ */
+export const sortDiariesByDate = (diaries = [], product) => {
+  return diaries
+    .filter(d => (product ? d.resource.product === product : d))
+    .sort((a, b) => {
+      return new Date(a.entries[0].due) - new Date(b.entries[0].due);
+    });
+};
+
+export const getDiariesForTable = (diaries, diaryOptions) => {
+  if (!Array.isArray(diaries) || !Array.isArray(diaryOptions.reasons))
+    return [];
+
+  const sortedDiaries = sortDiariesByDate(diaries);
+
+  const diaryList = sortedDiaries.map(d => {
+    const entry = formatEntry(d.entries[0], diaryOptions.reasons);
+    const diaryHistory = d.entries
+      .slice(1)
+      .map(e => formatEntry(e, diaryOptions.reasons));
+    return {
+      ...entry,
+      // manually setting this value so we have fine grain control over when the rows update
+      rowKey: `${d._id}-${diaryHistory.length > 0 ? 'x' : 'o'}`,
+      diaryId: d._id,
+      createdAt: d.createdAt,
+      resourceType: d.resource.type,
+      resourceId: d.resource.id,
+      diaryHistory,
+      dueStatus: getDueStatus(d.entries[0].due, entry.open),
+      due: d.entries[0].due,
+      dueDateDisplay: date.formatDate(d.entries[0].due, date.FORMATS.PRIMARY),
+      // deprecated - will refactor this out when moving to using context
+      action: {
+        diaryId: d._id,
+        resourceType: d.resource.type,
+        resourceId: d.resource.id,
+        ...d.entries[0],
+        due: date.formatDate(d.entries[0].due, date.FORMATS.SECONDARY)
+      }
+    };
+  });
+
+  return diaryList.sort((a, b) => {
+    return b.open - a.open;
   });
 };

@@ -28,7 +28,6 @@ import {
   getClaims
 } from '../../state/actions/policy.actions';
 import { toggleDiary } from '../../state/actions/ui.actions';
-import { getDiariesForTable } from '../../state/selectors/diary.selectors';
 import {
   getPolicyEffectiveDateReasons,
   getPolicyEndorsementHistory,
@@ -451,7 +450,7 @@ const mapStateToProps = state => {
   return {
     cancelOptions: state.policyState.cancelOptions,
     claims: state.policyState.claims,
-    diaries: getDiariesForTable(state),
+    diaries: state.diaries,
     effectiveDateReasons: getPolicyEffectiveDateReasons(state),
     initialized: !!(
       state.policyState.policy.policyID && state.policyState.summaryLedger._id
