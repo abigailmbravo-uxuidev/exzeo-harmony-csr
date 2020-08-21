@@ -20,7 +20,7 @@ services:
       # auth0
       - REACT_APP_AUTH0_PRIMARY_URL=http://localhost:8383
       - REACT_APP_AUTH0_DOMAIN=ashton-sandbox.auth0.com
-      - REACT_APP_AUTH0_CLIENT_ID=_aVZ55R37kcyZ3NtQcps0bwZ09YYdPLd
+      - REACT_APP_AUTH0_CLIENT_ID=m0OOwB9x7G5j9LNtGZ5pXeUKe9nO2MKD
       - REACT_APP_AUTH0_CONNECTION=ashton-sandbox
       - REACT_APP_AUTH0_AUDIENCE=http://harmony-sandbox
     ports:

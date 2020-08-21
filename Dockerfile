@@ -6,7 +6,7 @@ ARG NPM_TOKEN
 ENV PORT="3000"
 ENV EXTEND_ESLINT="true"
 ENV CYPRESS_BASE_URL="http://localhost:3000"
-ENV CYPRESS_API_URL="http://devapi.harmony-ins.com:8000"
+ENV CYPRESS_API_URL="http://falcon:3000"
 
 # use changes to package.json to force Docker not to use the cache
 # when we change our application's nodejs dependencies:

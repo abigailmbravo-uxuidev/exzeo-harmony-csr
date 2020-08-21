@@ -3,4 +3,4 @@ README.md
 .gitignore
 .git
 documentation
-.env
+.env*
