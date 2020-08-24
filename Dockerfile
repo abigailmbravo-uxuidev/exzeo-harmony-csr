@@ -1,24 +1,27 @@
-FROM node:12-alpine
+FROM cypress/base:12
 
 LABEL maintainer=Exzeo
 
-RUN apk update && apk --no-cache add bash libc6-compat g++ make python3
-
 ARG NPM_TOKEN
+ENV PORT="3000"
+ENV EXTEND_ESLINT="true"
+ENV CYPRESS_BASE_URL="http://localhost:3000"
+ENV CYPRESS_API_URL="http://falcon:3000"
 
+# use changes to package.json to force Docker not to use the cache
+# when we change our application's nodejs dependencies:
 WORKDIR /app
-
-COPY . ./
 
 RUN echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" >> .npmrc
 
-# Install app
-RUN npm ci && \
- mv .default.env .env && \
- npm run build && \
- npm cache clean --force
+COPY package.json package-lock.json /app/
+RUN npm ci
 
-RUN rm -f .npmrc
+COPY . /app
+
+# cleanup
+RUN npm cache clean --force && \
+ rm -f .npmrc
 
 CMD ["npm", "run", "start"]
 

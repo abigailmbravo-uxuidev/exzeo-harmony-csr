@@ -5,18 +5,23 @@ services:
       context: .
       dockerfile: Dockerfile
       args:
-      - NPM_TOKEN=ENTER_NPM_TOKEN_HERE
-    command: npm run server
+      - NPM_TOKEN=ENTER_${NPM_TOKEN}
+    command: npm run start
     container_name: harmony-csr
     environment:
       - PORT=80
-      - API_URL=https://api.harmony-ins.com
-      - AUTH0_PRIMARY_URL=http://devcsr.harmony-ins.com:8383
-      - AQA_SSO_URL=https://www-qa.typtap.com/agency/agents/sso
-      - AUTH0_DOMAIN=ashton-sandbox.auth0.com
-      - AUTH0_CLIENT_ID=_aVZ55R37kcyZ3NtQcps0bwZ09YYdPLd
-      - AUTH0_CONNECTION=ashton-sandbox
-      - AUTH0_AUDIENCE=http://harmony-sandbox
+      - EXTEND_ESLINT=true
       - REACT_APP_VERSION="1.0"
+      # app
+      - REACT_APP_API_URL=https://api.harmony-ins.com
+      - REACT_APP_AQA_SSO_URL=https://www-qa.typtap.com/agency/agents/sso
+      - REACT_APP_REQUEST_SIZE=200mb
+      - REACT_APP_COMPANY_ASSETS_URL=https://assets-qa.typtap.com
+      # auth0
+      - REACT_APP_AUTH0_PRIMARY_URL=http://localhost:8383
+      - REACT_APP_AUTH0_DOMAIN=ashton-sandbox.auth0.com
+      - REACT_APP_AUTH0_CLIENT_ID=m0OOwB9x7G5j9LNtGZ5pXeUKe9nO2MKD
+      - REACT_APP_AUTH0_CONNECTION=ashton-sandbox
+      - REACT_APP_AUTH0_AUDIENCE=http://harmony-sandbox
     ports:
       - "8383:80"
