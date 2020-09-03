@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 import { Loader } from '@exzeo/core-ui';
 
-import { setAppError } from '../../state/actions/error.actions';
-import { createQuote } from '../../state/actions/quote.actions';
-
-export const QuoteLanding = ({ match: { params }, createQuote }) => {
+export const QuoteLanding = ({
+  match: { params },
+  createQuote,
+  errorHandler
+}) => {
   const [quote, setQuote] = useState({});
   useEffect(() => {
     async function initializeQuote() {
@@ -20,7 +20,7 @@ export const QuoteLanding = ({ match: { params }, createQuote }) => {
         );
         setQuote(newQuote);
       } catch (error) {
-        setAppError(error);
+        errorHandler(error);
       }
     }
     initializeQuote();
@@ -42,10 +42,4 @@ export const QuoteLanding = ({ match: { params }, createQuote }) => {
   );
 };
 
-export default connect(
-  null,
-  {
-    createQuote,
-    setAppError
-  }
-)(QuoteLanding);
+export default QuoteLanding;

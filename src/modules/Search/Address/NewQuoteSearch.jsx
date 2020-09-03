@@ -7,24 +7,25 @@ import {
   validation,
   Field,
   composeValidators,
-  Form
+  Form,
+  Loader
 } from '@exzeo/core-ui';
-import ResetButton from '../components/ResetButton';
-
-import { cspConfigForSearch } from '../utilities';
-import AddressTip from '../components/AddressTip';
 import { useAddressSearch } from '@exzeo/core-ui/src/@Harmony/Search';
-import Loader from '@exzeo/core-ui/src/Loader/Loader';
-import AddressCard from '../components/AddressCard';
+
 import {
   SEARCH_CONFIG,
   SEARCH_TYPE_OPTIONS,
   SEARCH_TYPES
 } from '../../../constants/search';
-import NoResults from '../components/NoResults';
-import SearchTypeWatcher from '../components/SearchTypeWatcher';
+
+import { cspConfigForSearch } from '../utilities';
 import { productAnswers } from '../constants';
-import SearchResultsWrapper from '../components/SearchResultsWrapper';
+import ResetButton from '../@components/ResetButton';
+import AddressCard from '../@components/AddressCard';
+import NoResults from '../@components/NoResults';
+import SearchTypeWatcher from '../@components/SearchTypeWatcher';
+import AddressTip from '../@components/AddressTip';
+import SearchResultsWrapper from '../@components/SearchResultsWrapper';
 
 const { isValidChar, isRequired } = validation;
 

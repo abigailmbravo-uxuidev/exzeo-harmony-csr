@@ -2,7 +2,7 @@ import React from 'react';
 import { waitForElement, fireEvent, within } from '@testing-library/react';
 
 import {
-  renderWithForm,
+  render,
   defaultQuoteWorkflowProps,
   mockServiceRunner
 } from '../../../test-utils';
@@ -38,7 +38,7 @@ describe('Notes Files Testing', () => {
   };
 
   it('POS:Header and Tab Buttons', async () => {
-    const { getByText } = renderWithForm(<QuoteWorkflow {...props} />);
+    const { getByText } = render(<QuoteWorkflow {...props} />);
     await waitForElement(() => getByText('Search Table Data'));
 
     const { getByText: getByTextInsideForm } = within(
@@ -53,7 +53,7 @@ describe('Notes Files Testing', () => {
   });
 
   it('POS:Search Input', async () => {
-    const { getByText, getByPlaceholderText } = renderWithForm(
+    const { getByText, getByPlaceholderText } = render(
       <QuoteWorkflow {...props} />
     );
     await waitForElement(() => getByText('Search Table Data'));
@@ -65,16 +65,14 @@ describe('Notes Files Testing', () => {
   });
 
   it('POS:Table Data Testing', async () => {
-    const { getByText } = renderWithForm(<QuoteWorkflow {...props} />);
+    const { getByText } = render(<QuoteWorkflow {...props} />);
     await waitForElement(() => getByText('Search Table Data'));
 
     notesColumns.forEach(col => expect(getByText(col)));
   });
 
   it('POS:Files', async () => {
-    const { getByText, queryByText } = renderWithForm(
-      <QuoteWorkflow {...props} />
-    );
+    const { getByText, queryByText } = render(<QuoteWorkflow {...props} />);
     await waitForElement(() => getByText('Search Table Data'));
 
     fireEvent.click(getByText('Files'));
@@ -84,9 +82,7 @@ describe('Notes Files Testing', () => {
   });
 
   it('POS:Diaries', async () => {
-    const { getByText, queryByText } = renderWithForm(
-      <QuoteWorkflow {...props} />
-    );
+    const { getByText, queryByText } = render(<QuoteWorkflow {...props} />);
     await waitForElement(() => getByText('Search Table Data'));
 
     fireEvent.click(getByText('Diaries'));

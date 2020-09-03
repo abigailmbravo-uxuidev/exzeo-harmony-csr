@@ -143,7 +143,7 @@ export const SideNav = ({
               </Form>
             </li>
           )}
-          {csrLinks(agencyCode, branchCode).map((agentLink, index) => (
+          {csrLinks(agencyCode, branchCode).map(agentLink => (
             <li key={agentLink.key}>
               <span className={agentLink.styleName}>
                 <NavLink

@@ -2,7 +2,7 @@ import React from 'react';
 import { waitForElement, fireEvent, wait } from '@testing-library/react';
 
 import {
-  renderWithForm,
+  render,
   defaultQuoteWorkflowProps,
   mockServiceRunner,
   notesResult as result
@@ -44,7 +44,7 @@ describe('Notes Files Testing', () => {
   };
 
   it('POS:Header and Tab Buttons', async () => {
-    const { getByText } = renderWithForm(<NotesFiles {...props} />);
+    const { getByText } = render(<NotesFiles {...props} />);
     await waitForElement(() => getByText('Search Table Data'));
 
     expect(getByText('Notes').className).toEqual('btn btn-tab selected');
@@ -54,7 +54,7 @@ describe('Notes Files Testing', () => {
   });
 
   it('POS:Search Input', async () => {
-    const { getByText, getByPlaceholderText } = renderWithForm(
+    const { getByText, getByPlaceholderText } = render(
       <NotesFiles {...props} />
     );
     await waitForElement(() => getByText('Search Table Data'));
@@ -66,16 +66,14 @@ describe('Notes Files Testing', () => {
   });
 
   it('POS:Table Data Testing', async () => {
-    const { getByText } = renderWithForm(<NotesFiles {...props} />);
+    const { getByText } = render(<NotesFiles {...props} />);
     await waitForElement(() => getByText('Search Table Data'));
 
     notesColumns.forEach(col => expect(getByText(col)));
   });
 
   it('POS:Files', async () => {
-    const { getByText, queryByText } = renderWithForm(
-      <NotesFiles {...props} />
-    );
+    const { getByText, queryByText } = render(<NotesFiles {...props} />);
     await waitForElement(() => getByText('Search Table Data'));
 
     fireEvent.click(getByText('Files'));
@@ -88,9 +86,7 @@ describe('Notes Files Testing', () => {
   });
 
   it('POS:Diaries', async () => {
-    const { getByText, queryByText } = renderWithForm(
-      <NotesFiles {...props} />
-    );
+    const { getByText, queryByText } = render(<NotesFiles {...props} />);
     await waitForElement(() => getByText('Search Table Data'));
 
     fireEvent.click(getByText('Diaries'));
@@ -109,7 +105,7 @@ describe('Notes Files Testing', () => {
 
   it('POS:Table Sorting', async () => {
     mockServiceRunner(result);
-    const { getByText } = renderWithForm(<NotesFiles {...props} />);
+    const { getByText } = render(<NotesFiles {...props} />);
     await waitForElement(() => getByText('Search Table Data'));
 
     expect(getByText('03/21/2019 8:00 PM EDT'));

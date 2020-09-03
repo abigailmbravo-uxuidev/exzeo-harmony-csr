@@ -74,15 +74,12 @@ OpenDiariesBar.propTypes = {
   toggleDiaryAction: PropTypes.func
 };
 
-const mapStateToProps = (state, ownProps) => {
+const mapStateToProps = state => {
   return {
     diaries: getGroupedOpenDiaries(state)
   };
 };
 
-export default connect(
-  mapStateToProps,
-  {
-    toggleDiaryAction: toggleDiary
-  }
-)(OpenDiariesBar);
+export default connect(mapStateToProps, {
+  toggleDiaryAction: toggleDiary
+})(OpenDiariesBar);

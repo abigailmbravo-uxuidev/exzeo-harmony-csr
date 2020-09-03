@@ -12,9 +12,3 @@
 
 // ** NOTE: Do not write a global after(), it does not execute where you think it will
 // and it's an anti-pattern anyway.
-
-import { AUTH_TOKENS } from '../support/constants';
-
-beforeEach('Reset local storage', () => cy.restoreSession(AUTH_TOKENS));
-
-afterEach('Save local storage', () => cy.persistSession(AUTH_TOKENS));

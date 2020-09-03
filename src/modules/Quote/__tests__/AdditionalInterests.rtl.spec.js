@@ -2,7 +2,7 @@ import React from 'react';
 import { fireEvent, wait, within } from '@testing-library/react';
 
 import {
-  renderWithForm,
+  render,
   defaultQuoteWorkflowProps,
   rating,
   checkLabel,
@@ -176,7 +176,7 @@ describe('Additional Interest Testing', () => {
         rating: {}
       }
     };
-    const { getByText } = renderWithForm(<QuoteWorkflow {...newProps} />);
+    const { getByText } = render(<QuoteWorkflow {...newProps} />);
 
     expect(
       getByText(
@@ -186,7 +186,7 @@ describe('Additional Interest Testing', () => {
   });
 
   it('NEG:Mortgagee Empty Testing', async () => {
-    const { getByTestId } = renderWithForm(<QuoteWorkflow {...props} />);
+    const { getByTestId } = render(<QuoteWorkflow {...props} />);
 
     fireEvent.click(getByTestId('mortgagee'));
     await wait(() => {
@@ -215,9 +215,7 @@ describe('Additional Interest Testing', () => {
   });
 
   it('NEG:Mortgagee Invalid Input Testing', async () => {
-    const { getByText, getByTestId } = renderWithForm(
-      <QuoteWorkflow {...props} />
-    );
+    const { getByText, getByTestId } = render(<QuoteWorkflow {...props} />);
     fireEvent.click(getByText('Mortgagee'));
 
     await wait(() => {
@@ -249,7 +247,7 @@ describe('Additional Interest Testing', () => {
   });
 
   it('NEG:Additional Insured Empty Testing', async () => {
-    const { getByTestId } = renderWithForm(<QuoteWorkflow {...props} />);
+    const { getByTestId } = render(<QuoteWorkflow {...props} />);
 
     fireEvent.click(getByTestId('additionalInsured'));
     await wait(() => {
@@ -278,9 +276,7 @@ describe('Additional Interest Testing', () => {
   });
 
   it('NEG:Additional Insured Invalid Input Testing', async () => {
-    const { getByText, getByTestId } = renderWithForm(
-      <QuoteWorkflow {...props} />
-    );
+    const { getByText, getByTestId } = render(<QuoteWorkflow {...props} />);
     fireEvent.click(getByText('Additional Insured'));
 
     await wait(() => {
@@ -312,7 +308,7 @@ describe('Additional Interest Testing', () => {
   });
 
   it('NEG:Additional Interest Empty Testing', async () => {
-    const { getByTestId } = renderWithForm(<QuoteWorkflow {...props} />);
+    const { getByTestId } = render(<QuoteWorkflow {...props} />);
 
     fireEvent.click(getByTestId('additionalInterest'));
     await wait(() => {
@@ -343,9 +339,7 @@ describe('Additional Interest Testing', () => {
   });
 
   it('NEG:Additional Interest Invalid Input Testing', async () => {
-    const { getByText, getByTestId } = renderWithForm(
-      <QuoteWorkflow {...props} />
-    );
+    const { getByText, getByTestId } = render(<QuoteWorkflow {...props} />);
     fireEvent.click(getByText('Additional Interest'));
 
     await wait(() => {
@@ -377,7 +371,7 @@ describe('Additional Interest Testing', () => {
   });
 
   it('NEG:Premium Finance Empty Testing', async () => {
-    const { getByTestId } = renderWithForm(<QuoteWorkflow {...props} />);
+    const { getByTestId } = render(<QuoteWorkflow {...props} />);
 
     fireEvent.click(getByTestId('premiumFinance'));
     await wait(() => {
@@ -406,9 +400,7 @@ describe('Additional Interest Testing', () => {
   });
 
   it('NEG:Premium Finance Invalid Input Testing', async () => {
-    const { getByText, getByTestId } = renderWithForm(
-      <QuoteWorkflow {...props} />
-    );
+    const { getByText, getByTestId } = render(<QuoteWorkflow {...props} />);
     fireEvent.click(getByText('Premium Finance'));
 
     await wait(() => {
@@ -440,7 +432,7 @@ describe('Additional Interest Testing', () => {
   });
 
   it('NEG:Bill Payer Empty Testing', async () => {
-    const { getByTestId } = renderWithForm(<QuoteWorkflow {...props} />);
+    const { getByTestId } = render(<QuoteWorkflow {...props} />);
 
     fireEvent.click(getByTestId('billPayer'));
     await wait(() => {
@@ -469,9 +461,7 @@ describe('Additional Interest Testing', () => {
   });
 
   it('NEG:Bill Payer Invalid Input Testing', async () => {
-    const { getByText, getByTestId } = renderWithForm(
-      <QuoteWorkflow {...props} />
-    );
+    const { getByText, getByTestId } = render(<QuoteWorkflow {...props} />);
     fireEvent.click(getByText('Bill Payer'));
 
     await wait(() => {
@@ -503,9 +493,7 @@ describe('Additional Interest Testing', () => {
   });
 
   it('POS:Checks Header and Buttons', () => {
-    const { getByText, getByTestId } = renderWithForm(
-      <QuoteWorkflow {...props} />
-    );
+    const { getByText, getByTestId } = render(<QuoteWorkflow {...props} />);
 
     const checkButtonTextIcon = text =>
       expect(getByText(text).previousSibling.className).toEqual('fa fa-plus');
@@ -521,9 +509,7 @@ describe('Additional Interest Testing', () => {
   });
 
   it('POS:Mortgagee Modal Testing', () => {
-    const { getAllByText, getByTestId } = renderWithForm(
-      <QuoteWorkflow {...props} />
-    );
+    const { getAllByText, getByTestId } = render(<QuoteWorkflow {...props} />);
     openAndCloseModal(getByTestId, 'mortgagee');
 
     fireEvent.click(getByTestId('mortgagee'));
@@ -544,9 +530,7 @@ describe('Additional Interest Testing', () => {
   });
 
   it('POS:Additional Insured Modal Testing', () => {
-    const { getAllByText, getByTestId } = renderWithForm(
-      <QuoteWorkflow {...props} />
-    );
+    const { getAllByText, getByTestId } = render(<QuoteWorkflow {...props} />);
 
     openAndCloseModal(getByTestId, 'additionalInsured');
 
@@ -561,9 +545,7 @@ describe('Additional Interest Testing', () => {
   });
 
   it('POS:Additional Interest Modal Testing', () => {
-    const { getAllByText, getByTestId } = renderWithForm(
-      <QuoteWorkflow {...props} />
-    );
+    const { getAllByText, getByTestId } = render(<QuoteWorkflow {...props} />);
 
     openAndCloseModal(getByTestId, 'additionalInterest');
 
@@ -578,9 +560,7 @@ describe('Additional Interest Testing', () => {
   });
 
   it('POS:Premium Finance Modal Testing', () => {
-    const { getAllByText, getByTestId } = renderWithForm(
-      <QuoteWorkflow {...props} />
-    );
+    const { getAllByText, getByTestId } = render(<QuoteWorkflow {...props} />);
 
     openAndCloseModal(getByTestId, 'premiumFinance');
 
@@ -599,9 +579,7 @@ describe('Additional Interest Testing', () => {
   });
 
   it('POS:Bill Payer Modal Testing', () => {
-    const { getAllByText, getByTestId } = renderWithForm(
-      <QuoteWorkflow {...props} />
-    );
+    const { getAllByText, getByTestId } = render(<QuoteWorkflow {...props} />);
 
     openAndCloseModal(getByTestId, 'billPayer');
 
@@ -645,7 +623,7 @@ describe('Additional Interest Testing', () => {
       'Premium Finance 1'
     ];
 
-    const { getByText } = renderWithForm(<QuoteWorkflow {...newProps} />);
+    const { getByRole } = render(<QuoteWorkflow {...newProps} />);
 
     // ...so we know the UI will still organize and sort them correctly, in order
     const labelTexts = document.querySelectorAll(
@@ -655,11 +633,11 @@ describe('Additional Interest Testing', () => {
       expect(label.textContent).toEqual(expectedLabels[i])
     );
     // Check our buttons are all disabled
-    expect(getByText('Mortgagee')).toBeDisabled();
-    expect(getByText('Additional Insured')).toBeDisabled();
-    expect(getByText('Additional Interest')).toBeDisabled();
-    expect(getByText('Premium Finance')).toBeDisabled();
-    expect(getByText('Bill Payer')).toBeDisabled();
+    expect(getByRole('button', { name: 'Mortgagee' })).toBeDisabled();
+    expect(getByRole('button', { name: 'Additional Insured' })).toBeDisabled();
+    expect(getByRole('button', { name: 'Additional Interest' })).toBeDisabled();
+    expect(getByRole('button', { name: 'Premium Finance' })).toBeDisabled();
+    expect(getByRole('button', { name: 'Bill Payer' })).toBeDisabled();
   });
 
   // This test is identical to the one above it except it uses a bill payer
@@ -692,18 +670,19 @@ describe('Additional Interest Testing', () => {
       'Bill Payer 1'
     ];
 
-    const { getByText } = renderWithForm(<QuoteWorkflow {...newProps} />);
+    const { getByRole } = render(<QuoteWorkflow {...newProps} />);
     const labelTexts = document.querySelectorAll(
       '.results.result-cards li.card .card-icon label'
     );
     labelTexts.forEach((label, i) =>
       expect(label.textContent).toEqual(expectedLabels[i])
     );
-    expect(getByText('Mortgagee')).toBeDisabled();
-    expect(getByText('Additional Insured')).toBeDisabled();
-    expect(getByText('Additional Interest')).toBeDisabled();
-    expect(getByText('Premium Finance')).toBeDisabled();
-    expect(getByText('Bill Payer')).toBeDisabled();
+    // Check our buttons are all disabled
+    expect(getByRole('button', { name: 'Mortgagee' })).toBeDisabled();
+    expect(getByRole('button', { name: 'Additional Insured' })).toBeDisabled();
+    expect(getByRole('button', { name: 'Additional Interest' })).toBeDisabled();
+    expect(getByRole('button', { name: 'Premium Finance' })).toBeDisabled();
+    expect(getByRole('button', { name: 'Bill Payer' })).toBeDisabled();
   });
 
   it('POS:All buttons disabled when editingDisabled is true', () => {
@@ -714,12 +693,13 @@ describe('Additional Interest Testing', () => {
         editingDisabled: true
       }
     };
-    const { getByText } = renderWithForm(<QuoteWorkflow {...newProps} />);
+    const { getByRole } = render(<QuoteWorkflow {...newProps} />);
     // Check our buttons are all disabled
-    expect(getByText('Mortgagee')).toBeDisabled();
-    expect(getByText('Additional Insured')).toBeDisabled();
-    expect(getByText('Additional Interest')).toBeDisabled();
-    expect(getByText('Premium Finance')).toBeDisabled();
-    expect(getByText('Bill Payer')).toBeDisabled();
+    // Check our buttons are all disabled
+    expect(getByRole('button', { name: 'Mortgagee' })).toBeDisabled();
+    expect(getByRole('button', { name: 'Additional Insured' })).toBeDisabled();
+    expect(getByRole('button', { name: 'Additional Interest' })).toBeDisabled();
+    expect(getByRole('button', { name: 'Premium Finance' })).toBeDisabled();
+    expect(getByRole('button', { name: 'Bill Payer' })).toBeDisabled();
   });
 });

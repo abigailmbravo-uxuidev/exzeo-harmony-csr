@@ -5,7 +5,7 @@ import { http as axios } from '@exzeo/core-ui';
 import MockAdapter from 'axios-mock-adapter';
 
 import * as serviceRunner from '@exzeo/core-ui/src/@Harmony/Domain/Api/serviceRunner';
-import { mockAgency } from '../../test-utils/fixtures/agency';
+import { mockAgency } from '../../test-utils/fixtures';
 import { fetchAvailableAgencies } from '../../utilities/agency';
 
 import * as agencyActions from './agency.actions';

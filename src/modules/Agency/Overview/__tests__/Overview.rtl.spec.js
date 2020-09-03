@@ -4,7 +4,7 @@ import { date, normalize } from '@exzeo/core-ui';
 import * as utilities from '../../utilities';
 
 import {
-  renderWithReduxAndRouter,
+  render,
   mockAgency,
   mockAgents,
   jestResolve
@@ -105,7 +105,7 @@ describe('Overview testing', () => {
       { label: 'CSR Email', value: mockAgency.customerServiceEmailAddress }
     ];
 
-    const { getByText } = renderWithReduxAndRouter(<Overview {...props} />, {
+    const { getByText } = render(<Overview {...props} />, {
       state
     });
     // Check the header
@@ -118,10 +118,9 @@ describe('Overview testing', () => {
   });
 
   it('POS:Check Address section', async () => {
-    const { getByText, getAllByText } = renderWithReduxAndRouter(
-      <Overview {...props} />,
-      { state }
-    );
+    const { getByText, getAllByText } = render(<Overview {...props} />, {
+      state
+    });
 
     const addresses = getAllByText('Address');
     const { mailingAddress: mail, physicalAddress: phys } = mockAgency.branches[
@@ -151,11 +150,10 @@ describe('Overview testing', () => {
   });
 
   it('POS:Check Cards', () => {
-    const {
-      getByText,
-      getAllByText,
-      getByTestId
-    } = renderWithReduxAndRouter(<Overview {...props} />, { state });
+    const { getByText, getAllByText, getByTestId } = render(
+      <Overview {...props} />,
+      { state }
+    );
     const { principal, contact } = mockAgency.branches[props.branchCode];
     const aor = state.agencyState.agents[0];
 

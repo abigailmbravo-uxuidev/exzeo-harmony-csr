@@ -5,9 +5,7 @@ import { normalize } from '@exzeo/core-ui';
 export const ContactCard = ({
   name,
   phoneNumber,
-  phoneNumberExtension,
   emailAddress,
-  handleClick,
   policyNumber,
   policyHolders,
   icon = 'fa-user-circle'

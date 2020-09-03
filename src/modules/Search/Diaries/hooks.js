@@ -103,7 +103,7 @@ function diariesSearchReducer(state, action) {
   }
 }
 
-export function useDiariesSearch({ userProfile, formApi }) {
+export function useDiariesSearch({ userProfile }) {
   const [state, dispatch] = useReducer(diariesSearchReducer, INITIAL_STATE);
   const [transferActive, setTransferActive] = useState(false);
 

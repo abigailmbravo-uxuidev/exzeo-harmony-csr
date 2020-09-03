@@ -1,4 +1,3 @@
-// @ts-nocheck
 import React, { useState, useEffect } from 'react';
 import _get from 'lodash/get';
 import _isEqual from 'lodash/isEqual';
@@ -216,10 +215,11 @@ const EndorsementForm = ({
                 </div>
                 <Field name="rating.endorsementAmount">
                   {({ input, meta }) => (
-                    <Field
+                    <Currency
+                      input={input}
+                      meta={meta}
                       name="rating.endorsementAmount"
                       label="New End Amount"
-                      component={Currency}
                       disabled
                       dataTest="endorsementAmount"
                     />
@@ -227,10 +227,10 @@ const EndorsementForm = ({
                 </Field>
                 <Field name="rating.newCurrentPremium">
                   {({ input, meta }) => (
-                    <Field
-                      name="rating.newCurrentPremium"
+                    <Currency
+                      input={input}
+                      meta={meta}
                       label="New End Premium"
-                      component={Currency}
                       disabled
                       dataTest="newCurrentPremium"
                     />
@@ -238,10 +238,10 @@ const EndorsementForm = ({
                 </Field>
                 <Field name="rating.newAnnualPremium">
                   {({ input, meta }) => (
-                    <Field
-                      name="rating.newAnnualPremium"
+                    <Currency
+                      input={input}
+                      meta={meta}
                       label="New Annual Premium"
-                      component={Currency}
                       disabled
                       dataTest="newAnnualPremium"
                     />

@@ -22,55 +22,9 @@ import Notes from '../../components/Notes';
 import CreateBranch from './CreateBranch';
 import Transfer from './Transfer';
 
-export const CreateRender = props => <Create auth={props.auth} {...props} />;
-export const ContractsRender = props => (
-  <Contracts auth={props.auth} {...props} />
-);
-
-export const CreateBranchRender = branchCode => props => (
-  <CreateBranch branchCode={branchCode} auth={props.auth} {...props} />
-);
-
-export const OverviewRender = (branchCode, agencyCode) => props => (
-  <Overview
-    branchCode={branchCode}
-    agencyCode={agencyCode}
-    auth={props.auth}
-    {...props}
-  />
-);
-export const AgentsRender = (branchCode, agencyCode) => props => (
-  <Agents
-    branchCode={branchCode}
-    agencyCode={agencyCode}
-    auth={props.auth}
-    {...props}
-  />
-);
-export const TransferRender = (branchCode, agencyCode) => props => (
-  <Transfer
-    branchCode={branchCode}
-    agencyCode={agencyCode}
-    auth={props.auth}
-    {...props}
-  />
-);
-export const NotesRender = agencyCode => props => (
-  <Notes
-    numbers={[agencyCode]}
-    numberType="agencyCode"
-    auth={props.auth}
-    {...props}
-  />
-);
-
 export class Agency extends Component {
   componentDidMount() {
-    const {
-      match: {
-        params: { agencyCode }
-      }
-    } = this.props;
+    const { agencyCode } = this.props.match.params;
     if (agencyCode !== 'new') {
       this.props.getAgency(agencyCode);
       this.props.getAgentsByAgencyCode(agencyCode);
@@ -85,10 +39,10 @@ export class Agency extends Component {
     const {
       agency,
       location,
+      match,
       match: {
         params: { agencyCode, branchCode }
-      },
-      match
+      }
     } = this.props;
 
     return (
@@ -108,36 +62,66 @@ export class Agency extends Component {
             />
           </aside>
           <div className="content-wrapper" data-test="agency-links">
-            <Route exact path="/agency/new/0" render={CreateRender} />
+            <Route
+              exact
+              path="/agency/new/0"
+              render={props => <Create auth={props.auth} {...props} />}
+            />
             <Route
               exact
               path={`/agency/${agencyCode}/${branchCode}/overview`}
-              render={OverviewRender(branchCode, agencyCode)}
+              render={props => (
+                <Overview
+                  branchCode={branchCode}
+                  agencyCode={agencyCode}
+                  {...props}
+                />
+              )}
             />
             <Route
               exact
               path={`/agency/${agencyCode}/${branchCode}/contracts`}
-              render={ContractsRender}
+              render={props => <Contracts {...props} />}
             />
             <Route
               exact
               path={`/agency/${agencyCode}/${branchCode}/agents`}
-              render={AgentsRender(branchCode, agencyCode)}
+              render={props => (
+                <Agents
+                  branchCode={branchCode}
+                  agencyCode={agencyCode}
+                  {...props}
+                />
+              )}
             />
             <Route
               exact
               path={`/agency/${agencyCode}/${branchCode}/transfer`}
-              render={TransferRender(branchCode, agencyCode)}
+              render={props => (
+                <Transfer
+                  branchCode={branchCode}
+                  agencyCode={agencyCode}
+                  {...props}
+                />
+              )}
             />
             <Route
               exact
               path={`/agency/${agencyCode}/${branchCode}/notes`}
-              render={NotesRender(agencyCode)}
+              render={props => (
+                <Notes
+                  numbers={[agencyCode]}
+                  numberType="agencyCode"
+                  {...props}
+                />
+              )}
             />
             <Route
               exact
               path={`/agency/${agencyCode}/0/new`}
-              render={CreateBranchRender(branchCode)}
+              render={props => (
+                <CreateBranch branchCode={branchCode} {...props} />
+              )}
             />
           </div>
         </main>

@@ -9,7 +9,7 @@ import AgentCard from '../components/AgentCard';
 import AgencyContactModal from '../AgencyContactModal';
 import AgencyModal from '../AgencyModal';
 import BranchModal from '../BranchModal';
-import Footer from '../../../components/Common/Footer';
+import Footer from '../../../components/Footer';
 
 import ExistingAgentModal from '../ExistingAgentModal';
 import AgentModal from '../AgentModal';

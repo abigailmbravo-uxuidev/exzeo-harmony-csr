@@ -8,22 +8,23 @@ import {
   Button,
   validation,
   Form,
-  noop
+  noop,
+  Loader
 } from '@exzeo/core-ui';
+
 import {
   SEARCH_CONFIG,
   AGENCY_SEARCH_OPTIONS,
   SEARCH_TYPES
 } from '../../../constants/search';
-import Loader from '@exzeo/core-ui/src/Loader/Loader';
-import SearchTypeWatcher from '../components/SearchTypeWatcher';
-import { handleAgentSearch } from '../data';
-import { isAlphaNumeric } from '@exzeo/core-ui/src/Utilities';
-import AgentCard from '../components/AgentCard';
-import NoResults from '../components/NoResults';
-import SearchResultsWrapper from '../components/SearchResultsWrapper';
 
-const { isValidChar, isRequired } = validation;
+import { handleAgentSearch } from '../data';
+import SearchTypeWatcher from '../@components/SearchTypeWatcher';
+import AgentCard from '../@components/AgentCard';
+import NoResults from '../@components/NoResults';
+import SearchResultsWrapper from '../@components/SearchResultsWrapper';
+
+const { isValidChar, isRequired, isAlphaNumeric } = validation;
 
 const AgentSearch = ({ history }) => {
   const [searchResults, setSearchResults] = useState([]);

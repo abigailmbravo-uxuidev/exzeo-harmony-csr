@@ -8,24 +8,25 @@ import {
   validation,
   Form,
   FormSpy,
-  normalize
+  normalize,
+  Loader
 } from '@exzeo/core-ui';
 import { useQuoteSearch, Pagination } from '@exzeo/core-ui/src/@Harmony';
 
-import ResetButton from '../components/ResetButton';
 import { STANDARD_DATE_FORMAT } from '../../../constants/dates';
-import { cspConfigForSearch } from '../utilities';
-import { useFetchQuoteState } from '../hooks';
 import {
   SEARCH_CONFIG,
   SEARCH_TYPE_OPTIONS,
   SEARCH_TYPES
 } from '../../../constants/search';
-import SearchTypeWatcher from '../components/SearchTypeWatcher';
-import Loader from '@exzeo/core-ui/src/Loader/Loader';
-import NoResults from '../components/NoResults';
-import QuoteCard from '../components/QuoteCard';
-import SearchResultsWrapper from '../components/SearchResultsWrapper';
+
+import { useFetchQuoteState } from '../hooks';
+import { cspConfigForSearch } from '../utilities';
+import ResetButton from '../@components/ResetButton';
+import SearchTypeWatcher from '../@components/SearchTypeWatcher';
+import NoResults from '../@components/NoResults';
+import QuoteCard from '../@components/QuoteCard';
+import SearchResultsWrapper from '../@components/SearchResultsWrapper';
 
 const {
   isValidNameFormat,

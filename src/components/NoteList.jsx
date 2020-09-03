@@ -4,7 +4,7 @@ import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 import { date } from '@exzeo/core-ui';
 
 import DiaryTable from './DiaryTable';
-import Downloader from './Common/Downloader';
+import Downloader from './Downloader';
 
 const NOTE_TABS = ['notes', 'files'];
 const DIARY_TAB = 'diaries';

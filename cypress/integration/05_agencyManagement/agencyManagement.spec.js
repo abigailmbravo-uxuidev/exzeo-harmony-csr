@@ -1,4 +1,4 @@
-import { setRouteAliases } from '../../helpers/setRouteAliases';
+import { setRouteAliases } from '../../helpers';
 import {
   ADD_AGENCY,
   ADD_AGENT,
@@ -25,9 +25,10 @@ describe('Agency Management testing', () => {
     cy.url().should('contain', `/agency`);
     // This makes it so we don't open up a new window
     cy.findDataTag('add-agency-new').within(() => {
-      cy.get('a.btn-primary').then($a => {
-        $a.prop('onclick', () => cy.visit('/agency/new/0'));
-      });
+      cy.get('a.btn-primary');
+    });
+    cy.window().then(win => {
+      win.__rrHistory.push('/agency/new/0');
     });
 
     // Cypress checks an element's visibility with a special algo, and our

@@ -1,7 +1,4 @@
 export default {
-  authState: {
-    userProfile: null
-  },
   appState: {
     data: {
       submitting: false

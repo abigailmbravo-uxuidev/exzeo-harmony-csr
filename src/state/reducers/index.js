@@ -2,7 +2,6 @@
 import { combineReducers } from 'redux';
 import agencyState from './agency.reducer';
 import appState from './appState.reducer';
-import authState from './auth.reducer';
 import diaries from './diaryReducer';
 import error from './error.reducer';
 import list from './list.reducer';
@@ -17,7 +16,6 @@ const rootReducer = combineReducers({
   policyState,
   service,
   ui,
-  authState,
   appState,
   questions,
   error,

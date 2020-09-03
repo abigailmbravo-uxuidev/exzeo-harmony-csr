@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { Button, date } from '@exzeo/core-ui';
 
-import Footer from '../../../components/Common/Footer';
+import Footer from '../../../components/Footer';
 
 import TaxDetail from './TaxDetails';
 import LicenseCard from './LicenseCard';

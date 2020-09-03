@@ -1,4 +1,3 @@
-// @ts-nocheck
 import React from 'react';
 import {
   OnChangeListener,
@@ -8,7 +7,7 @@ import {
 } from '@exzeo/core-ui/src';
 import _get from 'lodash/get';
 
-const EndorsementsWatcherAF3 = ({ formValues, initialValues }) => {
+const EndorsementsWatcherAF3 = ({ formValues }) => {
   return (
     <React.Fragment>
       <Field name="coverageLimits.building.value">

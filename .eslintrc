@@ -17,6 +17,7 @@
     "sinon": true,
     "describe": true,
     "it": true,
+    "assert": true,
     "cy": false,
     "Cypress": false
   },

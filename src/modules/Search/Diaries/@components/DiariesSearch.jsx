@@ -17,10 +17,10 @@ import { SEARCH_TYPES } from '../../../../constants/search';
 import { doesUserHaveAccess } from '../../../../utilities/userResources';
 
 import { productAnswers } from '../../constants';
-import NoResults from '../../components/NoResults';
-import SearchResultsWrapper from '../../components/SearchResultsWrapper';
-import ResetButton from '../../components/ResetButton';
-import Error from '../../components/Error';
+import NoResults from '../../@components/NoResults';
+import SearchResultsWrapper from '../../@components/SearchResultsWrapper';
+import ResetButton from '../../@components/ResetButton';
+import Error from '../../@components/Error';
 
 import { isValidRange, handleDiaryClick } from '../utilities';
 import { useDiariesSearch } from '../hooks';

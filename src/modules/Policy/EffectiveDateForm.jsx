@@ -13,7 +13,7 @@ const EffectiveDateForm = ({
       onSubmit={handleSubmit}
       subscription={{ submitting: true, pristine: true, values: true }}
     >
-      {({ handleSubmit, submitting, pristine, values: formValues }) => (
+      {({ handleSubmit, submitting, pristine }) => (
         <form
           id="EffectiveDateForm"
           className="effective-date"

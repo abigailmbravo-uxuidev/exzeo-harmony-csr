@@ -1,6 +1,4 @@
-import { mockAgency } from '../../test-utils/fixtures/agency';
-import { mockAgencies } from '../../test-utils/fixtures/agencies';
-import { mockAgents } from 'test-utils';
+import { mockAgents, mockAgencies, mockAgency } from 'test-utils';
 
 import {
   getEditModalInitialValues,

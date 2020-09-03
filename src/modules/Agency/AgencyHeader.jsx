@@ -2,7 +2,7 @@ import React from 'react';
 
 import logo from '../../img/Harmony.svg';
 
-export const AgencyHeader = ({ toggleDiaries, showDiaries }) => (
+export const AgencyHeader = () => (
   <header>
     <div role="banner" data-test="agency-header">
       <div className="tab-tag">

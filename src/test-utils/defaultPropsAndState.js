@@ -29,6 +29,26 @@ export const defaultInitialState = {
   notes: {}
 };
 
+export const defaultAuth = {
+  isAuthenticated: true,
+  user: {},
+  userProfile: {
+    entity: {
+      companyCode: 'TTIC',
+      state: 'FL'
+    },
+    appMetadata: { beta: false },
+    resources: []
+  },
+  loading: false,
+  popupOpen: false,
+  getIdTokenClaims: x => x,
+  loginWithRedirect: x => x,
+  getTokenSilently: x => x,
+  getTokenWithPopup: x => x,
+  logout: x => x
+};
+
 export const defaultInitialProps = {
   match: {
     params: { quoteNumber: '12-345-67' },

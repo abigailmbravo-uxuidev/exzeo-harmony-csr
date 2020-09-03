@@ -1,54 +1,57 @@
-import { Component } from 'react';
+import { useMemo, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 import { fetchDiaries } from '../state/actions/diary.actions';
-import { isPollingPermitted } from '../state/selectors/diary.selectors';
+import { useUser } from '../context/user-context';
 
-export class DiaryPolling extends Component {
-  componentDidMount() {
-    if (!this.props.shouldPoll) return;
-    // Set the name of the hidden property and the change event for visibility
-    if (typeof document.hidden !== 'undefined') {
-      // Opera 12.10 and Firefox 18 and later support
-      this.hidden = 'hidden';
-      this.visibilityChange = 'visibilitychange';
-    } else if (typeof document.msHidden !== 'undefined') {
-      this.hidden = 'msHidden';
-      this.visibilityChange = 'msvisibilitychange';
-    } else if (typeof document.webkitHidden !== 'undefined') {
-      this.hidden = 'webkitHidden';
-      this.visibilityChange = 'webkitvisibilitychange';
-    }
-
-    this.fetchDiaries();
-    this.attemptFetchDiaries();
-  }
-
-  componentWillUnmount() {
-    if (this.delegate) clearInterval(this.delegate);
-  }
-
-  attemptFetchDiaries = () => {
-    clearInterval(this.delegate);
-    this.delegate = setInterval(() => {
-      if (!document[this.hidden]) {
-        this.fetchDiaries();
-      }
-    }, 30000);
-  };
-
-  fetchDiaries = () => {
-    const { fetchDiaries, filter } = this.props;
-    fetchDiaries({ ...filter });
-  };
-
-  delegate = () => {};
-
-  render() {
-    return null;
-  }
+let inactiveTabKey;
+if (typeof document.hidden !== 'undefined') {
+  inactiveTabKey = 'hidden';
+} else if (typeof document.msHidden !== 'undefined') {
+  inactiveTabKey = 'msHidden';
+} else if (typeof document.webkitHidden !== 'undefined') {
+  inactiveTabKey = 'webkitHidden';
 }
+
+const REQUIRED_DIARY_RIGHTS = ['READ', 'UPDATE', 'INSERT'];
+const POLLING_TIMEOUT = 30000;
+
+function isPollingPermitted(resources = []) {
+  if (!Array.isArray(resources)) return false;
+
+  const diariesResources = [];
+  // find all three 'Diaries' resources ignoring duplicates
+  REQUIRED_DIARY_RIGHTS.forEach(right => {
+    const resource = resources.find(r => {
+      return r.uri.indexOf('Diaries') !== -1 && r.right === right;
+    });
+
+    if (resource) {
+      diariesResources.push(resource);
+    }
+  });
+
+  return diariesResources.length === 3;
+}
+
+const DiaryPolling = ({ filter, fetchDiaries }) => {
+  const userProfile = useUser();
+  const shouldPoll = useMemo(() => isPollingPermitted(userProfile.resources), [
+    userProfile.resources
+  ]);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (shouldPoll && !document[inactiveTabKey]) {
+        fetchDiaries(filter);
+      }
+    }, POLLING_TIMEOUT);
+    return clearInterval(interval);
+  }, [shouldPoll, fetchDiaries, filter]);
+
+  return null;
+};
 
 DiaryPolling.propTypes = {
   fetchDiaries: PropTypes.func.isRequired,
@@ -62,13 +65,4 @@ DiaryPolling.propTypes = {
   }).isRequired
 };
 
-const mapStateToProps = state => {
-  return {
-    shouldPoll: isPollingPermitted(state)
-  };
-};
-
-export default connect(
-  mapStateToProps,
-  { fetchDiaries }
-)(DiaryPolling);
+export default connect(null, { fetchDiaries })(DiaryPolling);

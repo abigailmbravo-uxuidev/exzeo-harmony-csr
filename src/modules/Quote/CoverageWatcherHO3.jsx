@@ -1,8 +1,7 @@
-// @ts-nocheck
 import React from 'react';
 import { OnBlurListener, Field } from '@exzeo/core-ui/src';
 
-const CoverageWatcherHO3 = ({ formValues }) => {
+const CoverageWatcherHO3 = () => {
   return (
     <Field name="coverageLimits.dwelling.value">
       {({ input: { onChange, value } }) => (

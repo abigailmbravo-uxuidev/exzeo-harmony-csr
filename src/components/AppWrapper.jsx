@@ -11,7 +11,7 @@ import { getOpenDiaries } from '../state/selectors/diary.selectors';
 
 import PolicySideNav from './PolicySideNav';
 import QuoteSideNav from './QuoteSideNav';
-import Header from './Header';
+import WorkflowHeader from './WorkflowHeader';
 import DiaryButton from './DiaryButton';
 import ClaimsIndicator from './ClaimsIndicator';
 
@@ -49,7 +49,7 @@ export class AppWrapper extends Component {
         <Helmet>
           <title>{pageTitle}</title>
         </Helmet>
-        <Header title={appConfig.title}>
+        <WorkflowHeader title={appConfig.title}>
           <div className="header-indicator-wrapper">
             {header.banner && <Banner content={header.banner} />}
             <ClaimsIndicator claims={claims} />
@@ -59,7 +59,7 @@ export class AppWrapper extends Component {
               openDiaryCount={openDiaryCount}
             />
           </div>
-        </Header>
+        </WorkflowHeader>
         <DetailsHeader
           context={context}
           modalHandlers={modalHandlers}

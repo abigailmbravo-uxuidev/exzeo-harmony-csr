@@ -75,7 +75,7 @@ export function submitDiary(data, props) {
       userName: user.userName
     };
 
-    let resource = {};
+    let resource;
     if (
       resourceType === POLICY_RESOURCE_TYPE ||
       resourceType === QUOTE_RESOURCE_TYPE

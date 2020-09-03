@@ -9,14 +9,16 @@ import { render, fireEvent } from '@testing-library/react';
 
 import rootReducer from '../state/reducers';
 
-import { defaultInitialState } from './defaultPropsAndState';
+import { defaultInitialState, defaultAuth } from './defaultPropsAndState';
+import { Auth0Context } from '../context/auth-context';
+import { UserContext } from '../context/user-context';
 
 const mockStore = configureStore([thunk]);
-
 
 export const customRender = (
   ui,
   {
+    auth = defaultAuth,
     route = '/',
     history = createMemoryHistory({ initialEntries: [route] }),
     state = defaultInitialState,
@@ -25,7 +27,11 @@ export const customRender = (
 ) => ({
   ...render(
     <Router history={history}>
-      <Provider store={store}>{ui}</Provider>
+      <Auth0Context.Provider value={auth}>
+        <UserContext.Provider value={auth.userProfile}>
+          <Provider store={store}>{ui}</Provider>
+        </UserContext.Provider>
+      </Auth0Context.Provider>
     </Router>
   )
 });

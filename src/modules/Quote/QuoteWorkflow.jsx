@@ -234,7 +234,6 @@ export class QuoteWorkflow extends React.Component {
       notes,
       options,
       quote,
-      userProfile,
       updateQuote,
       notesSynced
     } = this.props;
@@ -336,7 +335,6 @@ export class QuoteWorkflow extends React.Component {
 
             <UnderwritingValidationBar
               quoteData={quote}
-              userProfile={userProfile}
               updateQuote={updateQuote}
             />
 
@@ -368,8 +366,7 @@ const mapStateToProps = state => {
     isLoading: state.ui.isLoading,
     diaries: getDiariesForTable(state),
     notes: state.notes,
-    notesSynced: state.ui.notesSynced,
-    userProfile: state.authState.userProfile
+    notesSynced: state.ui.notesSynced
   };
 };
 

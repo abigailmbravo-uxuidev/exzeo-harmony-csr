@@ -14,7 +14,7 @@ import Contact from '../Contact';
 import License from '../License';
 
 import history from '../../../history';
-import Footer from '../../../components/Common/Footer';
+import Footer from '../../../components/Footer';
 
 import BranchDetails from './BranchDetails';
 import { DEFAULT_COUNTRY } from '../../../constants/address';
@@ -24,10 +24,7 @@ export const CreateBranch = ({
   listAnswersAsKey,
   initialValues,
   createBranch,
-  agency,
-  match: {
-    params: { branchCode }
-  }
+  agency
 }) => {
   const [formInstance, setFormInstance] = useState(null);
   const [showAddExistingAgentModal, setShowAddExistingAgentModal] = useState(

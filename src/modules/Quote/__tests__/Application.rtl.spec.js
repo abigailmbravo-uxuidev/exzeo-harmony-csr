@@ -2,7 +2,7 @@ import React from 'react';
 import { fireEvent, waitForElement } from '@testing-library/react';
 
 import {
-  renderWithForm,
+  render,
   defaultQuoteWorkflowProps,
   underwritingException,
   jestResolve
@@ -25,7 +25,7 @@ describe('Application Testing', () => {
         underwritingExceptions: [underwritingException]
       }
     };
-    const { getByText } = renderWithForm(<QuoteWorkflow {...newProps} />);
+    const { getByText } = render(<QuoteWorkflow {...newProps} />);
 
     expect(
       getByText('Application cannot be sent due to Underwriting Validations.')
@@ -33,7 +33,7 @@ describe('Application Testing', () => {
   });
 
   it('POS:Tests button', () => {
-    const { getByText } = renderWithForm(<QuoteWorkflow {...props} />);
+    const { getByText } = render(<QuoteWorkflow {...props} />);
     expect(getByText('Send To Docusign').textContent).toMatch(
       /Send To Docusign/
     );
@@ -49,9 +49,7 @@ describe('Application Testing', () => {
         quoteState: 'Application Ready'
       }
     };
-    const { getByText, getByTestId } = renderWithForm(
-      <QuoteWorkflow {...newProps} />
-    );
+    const { getByText, getByTestId } = render(<QuoteWorkflow {...newProps} />);
     fireEvent.click(getByText('Send To Docusign'));
     await waitForElement(() => getByTestId('modal'));
 

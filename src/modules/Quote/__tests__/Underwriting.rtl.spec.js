@@ -2,7 +2,7 @@ import React from 'react';
 import { waitForElement, fireEvent, within } from '@testing-library/react';
 
 import {
-  renderWithForm,
+  render,
   defaultQuoteWorkflowProps,
   mockServiceRunner,
   underwritingResult as result,
@@ -61,9 +61,7 @@ describe('Testing Underwriting', () => {
   };
 
   it('POS:Checks Header and Question Labels', async () => {
-    const { getByText, getByTestId } = renderWithForm(
-      <QuoteWorkflow {...props} />
-    );
+    const { getByText, getByTestId } = render(<QuoteWorkflow {...props} />);
     await waitForElement(() =>
       getByTestId('underwritingAnswers.rented.answer_Occasionally')
     );
@@ -76,7 +74,7 @@ describe('Testing Underwriting', () => {
   });
 
   it('POS:Checks all field labels', async () => {
-    const { getByTestId } = renderWithForm(<QuoteWorkflow {...props} />);
+    const { getByTestId } = render(<QuoteWorkflow {...props} />);
     await waitForElement(() =>
       getByTestId('underwritingAnswers.rented.answer_Occasionally')
     );
@@ -85,14 +83,12 @@ describe('Testing Underwriting', () => {
   });
 
   it('POS:Tests button', () => {
-    const { getByText } = renderWithForm(<QuoteWorkflow {...props} />);
+    const { getByText } = render(<QuoteWorkflow {...props} />);
     expect(getByText('Reset').textContent).toMatch(/Reset/);
   });
 
   it('POS:Checks that the Reset Button/Submit Button work', async () => {
-    const { getByTestId, getByText } = renderWithForm(
-      <QuoteWorkflow {...props} />
-    );
+    const { getByTestId, getByText } = render(<QuoteWorkflow {...props} />);
     await waitForElement(() =>
       getByTestId('underwritingAnswers.rented.answer_Occasionally')
     );

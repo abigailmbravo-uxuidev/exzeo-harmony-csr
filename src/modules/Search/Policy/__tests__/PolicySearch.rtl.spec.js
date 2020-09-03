@@ -1,8 +1,9 @@
 import React from 'react';
-import { wait } from '@testing-library/react';
-import SearchForm from '../../index';
+import { Search } from '../../index';
+
 import {
-  renderWithForm,
+  render,
+  wait,
   checkLabel,
   checkSelect,
   checkButton,
@@ -96,9 +97,7 @@ describe('Policy Search Testing', () => {
   const textFields = fields.filter(({ type }) => type === 'text');
 
   it('POS:Renders and has fields and labels', async () => {
-    const { getByPlaceholderText, getByTestId } = renderWithForm(
-      <SearchForm {...props} />
-    );
+    const { getByPlaceholderText, getByTestId } = render(<Search {...props} />);
 
     await wait(() => {
       expect(getByTestId('searchType').value).toBe('policy');
@@ -117,9 +116,7 @@ describe('Policy Search Testing', () => {
   });
 
   it('POS:Checks that all fields are working', () => {
-    const { getByPlaceholderText, getByTestId } = renderWithForm(
-      <SearchForm {...props} />
-    );
+    const { getByPlaceholderText, getByTestId } = render(<Search {...props} />);
     selectFields.forEach(field => checkSelect(getByTestId, field));
     textFields.forEach(field =>
       expect(getByPlaceholderText(field.placeholderText))
@@ -127,7 +124,7 @@ describe('Policy Search Testing', () => {
   });
 
   it('POS:Policy Search Button', () => {
-    const { getByTestId } = renderWithForm(<SearchForm {...props} />);
+    const { getByTestId } = render(<Search {...props} />);
     checkButton(getByTestId, {
       dataTest: 'submit',
       text: 'Search',

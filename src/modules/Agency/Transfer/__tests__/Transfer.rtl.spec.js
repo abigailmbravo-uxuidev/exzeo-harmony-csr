@@ -1,14 +1,12 @@
 import React from 'react';
+
 import {
+  render,
+  renderWithReduxAndRouter,
   within,
   fireEvent,
   waitForElement,
   wait,
-  getByText as getByTextDocument,
-  queryByText as queryByTextDocument
-} from '@testing-library/react';
-import {
-  renderWithReduxAndRouter,
   mockServiceRunner,
   jestResolve,
   mockAgency,
@@ -77,7 +75,7 @@ describe('Testing the Transfer Page', () => {
     const props = {
       ...defaultProps
     };
-    const { getByText } = renderWithReduxAndRouter(<Transfer {...props} />, {
+    const { getByText } = render(<Transfer {...props} />, {
       state
     });
 
@@ -97,6 +95,7 @@ describe('Testing the Transfer Page', () => {
     const props = {
       ...defaultProps
     };
+    // TODO #HAR-10250 - figure out why this fails when we change to `render`
     const { getByTestId } = renderWithReduxAndRouter(<Transfer {...props} />, {
       state
     });
@@ -144,8 +143,8 @@ describe('Testing the Transfer Page', () => {
     expect(getByTextWithinPolicySelected('10/03/2019'));
 
     fireEvent.click(getByTestId(`${mockPolicy.policyNumber}_selected`));
-    await waitForElement(() =>
-      getByTestId(`${mockPolicy.policyNumber}_filtered`)
+    await wait(() =>
+      expect(getByTestId(`${mockPolicy.policyNumber}_filtered`))
     );
 
     expect(getByTextWithinPolicyFiltered(mockPolicy.policyNumber));
@@ -220,7 +219,7 @@ describe('Testing the Transfer Page', () => {
     const props = {
       ...defaultProps
     };
-    const { getByTestId } = renderWithReduxAndRouter(<Transfer {...props} />, {
+    const { getByTestId } = render(<Transfer {...props} />, {
       state
     });
 
@@ -239,7 +238,7 @@ describe('Testing the Transfer Page', () => {
     const props = {
       ...defaultProps
     };
-    const { getByTestId } = renderWithReduxAndRouter(<Transfer {...props} />, {
+    const { getByTestId } = render(<Transfer {...props} />, {
       state
     });
 
@@ -261,7 +260,7 @@ describe('Testing the Transfer Page', () => {
     const props = {
       ...defaultProps
     };
-    const { getByTestId } = renderWithReduxAndRouter(<Transfer {...props} />, {
+    const { getByTestId } = render(<Transfer {...props} />, {
       state
     });
 
@@ -283,9 +282,12 @@ describe('Testing the Transfer Page', () => {
     const props = {
       ...defaultProps
     };
-    const { getByTestId } = renderWithReduxAndRouter(<Transfer {...props} />, {
-      state
-    });
+    const { getByTestId, getByText, queryByText } = render(
+      <Transfer {...props} />,
+      {
+        state
+      }
+    );
 
     await wait(() => {
       expect(getByTestId('stage-transfer')).toBeDisabled();
@@ -304,15 +306,15 @@ describe('Testing the Transfer Page', () => {
     fireEvent.click(getByTestId('stage-transfer'));
 
     await wait(() => {
-      expect(getByTextDocument(document, 'Agent Receiving Selected Policy'));
+      expect(getByText('Agent Receiving Selected Policy'));
     });
 
     fireEvent.click(getByTestId('cancel'));
 
     await wait(() => {
       expect(
-        queryByTextDocument(document, 'Agent Receiving Selected Policy')
-      ).toEqual(null);
+        queryByText('Agent Receiving Selected Policy')
+      ).not.toBeInTheDocument();
     });
   });
 
@@ -322,7 +324,7 @@ describe('Testing the Transfer Page', () => {
     const props = {
       ...defaultProps
     };
-    const { getByTestId } = renderWithReduxAndRouter(<Transfer {...props} />, {
+    const { getByTestId, getByText } = render(<Transfer {...props} />, {
       state
     });
 
@@ -343,7 +345,7 @@ describe('Testing the Transfer Page', () => {
     fireEvent.click(getByTestId('stage-transfer'));
 
     await wait(() => {
-      expect(getByTextDocument(document, 'Agent Receiving Selected Policy'));
+      expect(getByText('Agent Receiving Selected Policy')).toBeInTheDocument();
     });
 
     const agencyCodeTo = getByTestId('agencyCodeTo_wrapper');
@@ -355,8 +357,8 @@ describe('Testing the Transfer Page', () => {
 
     await wait(() =>
       expect(
-        agencyCodeTo.querySelector('input:not([type="hidden"])').value
-      ).toEqual('20000')
+        agencyCodeTo.querySelector('input:not([type="hidden"])')
+      ).toHaveValue('20000')
     );
 
     fireEvent.change(agentCodeTo.querySelector('input:not([type="hidden"])'), {
@@ -365,8 +367,8 @@ describe('Testing the Transfer Page', () => {
 
     await wait(() =>
       expect(
-        agentCodeTo.querySelector('input:not([type="hidden"])').value
-      ).toEqual('60000')
+        agentCodeTo.querySelector('input:not([type="hidden"])')
+      ).toHaveValue('60000')
     );
 
     expect(fireEvent.click(getByTestId('submit')));
