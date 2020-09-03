@@ -42,13 +42,19 @@ const DiaryPolling = ({ filter, fetchDiaries }) => {
   ]);
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      if (shouldPoll && !document[inactiveTabKey]) {
+    let interval;
+    if (shouldPoll && !document[inactiveTabKey]) {
+      fetchDiaries(filter);
+
+      interval = setInterval(() => {
         fetchDiaries(filter);
-      }
-    }, POLLING_TIMEOUT);
-    return clearInterval(interval);
-  }, [shouldPoll, fetchDiaries, filter]);
+      }, POLLING_TIMEOUT);
+    }
+
+    return () => clearInterval(interval);
+    // Ignoring 'filter' because in all of our current use cases, the filter prop does not change on the same instance of 'DiaryPolling'
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [shouldPoll, fetchDiaries]);
 
   return null;
 };
