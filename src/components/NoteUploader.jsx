@@ -29,6 +29,8 @@ import { NOTE_OPTION_TYPE } from '../constants/notes';
 
 import '@uppy/core/dist/style.min.css';
 
+import { useUser } from '../context/user-context';
+
 export const renderNotes = ({
   input,
   label,
@@ -78,6 +80,7 @@ const NoteUploader = ({
   const [noteOptions, setNoteOptions] = useState({});
   const [minimize, setMinimize] = useState(false);
   const [loaded, setLoaded] = useState(false);
+  const userProfile = useUser();
 
   const uppy = useRef(null);
 
@@ -95,7 +98,7 @@ const NoteUploader = ({
       fieldName: 'files[]',
       headers: {
         accept: 'application/json',
-        authorization: `bearer ${localStorage.getItem('id_token')}`
+        authorization: `bearer ${userProfile.accessToken}`
       }
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps

@@ -84,7 +84,7 @@ export function Auth0Provider({
           if (!(profileResponse || '').data) {
             auth0FromHook.logout({ returnTo: window.location.origin });
           } else {
-            setUserProfile(profileResponse.data);
+            setUserProfile({ ...profileResponse.data, accessToken });
           }
         }
       } catch (error) {
