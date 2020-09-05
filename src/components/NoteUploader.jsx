@@ -18,11 +18,7 @@ import {
 } from '@exzeo/core-ui';
 import { callService } from '@exzeo/core-ui/src/@Harmony';
 
-import {
-  toggleNote,
-  toggleDiary,
-  setNotesSynced
-} from '../state/actions/ui.actions';
+import { toggleNote, setNotesSynced } from '../state/actions/ui.actions';
 import { fetchNotes } from '../state/actions/notes.actions';
 import { setAppError } from '../state/actions/error.actions';
 import { NOTE_OPTION_TYPE } from '../constants/notes';
@@ -71,11 +67,10 @@ const NoteUploader = ({
   documentId,
   sourceId,
   resourceType,
-  fetchNotes,
-  toggleDiary,
+  diariesDispatch,
   toggleNote,
   setNotesSynced,
-  entity
+  document
 }) => {
   const [noteOptions, setNoteOptions] = useState({});
   const [minimize, setMinimize] = useState(false);
@@ -219,28 +214,11 @@ const NoteUploader = ({
     const { openDiary } = data;
     try {
       await callService(noteConfig, 'addNote');
-
-      if (window.location.pathname.includes('/notes')) {
-        const numberType = mapResourceToNumber[resourceType];
-        const numbers =
-          numberType === 'policyNumber'
-            ? [noteData.number, noteData.source]
-            : [noteData.number];
-        // Update notes for Policy components (will be removed once Gandalf is added to Policy.
-        fetchNotes(numbers, numberType);
-        // Let Notes/Files page know to fetch list of notes
-        setNotesSynced();
-      }
+      // Let Notes/Files page know to fetch list of notes
+      setNotesSynced();
 
       if (openDiary) {
-        toggleDiary({
-          companyCode,
-          state,
-          product,
-          resourceType,
-          resourceId: documentId,
-          entity
-        });
+        diariesDispatch({ type: 'makeDiary', document });
       }
     } catch (err) {
       setAppError({ message: err });
@@ -406,7 +384,6 @@ const mapStateToProps = state => ({
 export default connect(mapStateToProps, {
   fetchNotes,
   toggleNote,
-  toggleDiary,
   setAppError,
   setNotesSynced
 })(NoteUploader);

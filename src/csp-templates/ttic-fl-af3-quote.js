@@ -1,5 +1,10 @@
 /* eslint-disable */
 const mock = {
+  meta: {
+    company: 'TTIC',
+    state: 'FL',
+    product: 'AF3'
+  },
   header: {
     hideDetailSummary: false,
     banner: {

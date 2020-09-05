@@ -1,5 +1,10 @@
 /* eslint-disable */
 const mock = {
+  meta: {
+    company: 'HCPC',
+    state: 'SC',
+    product: 'AF3'
+  },
   header: {
     showEffectiveDateButton: true,
     showReinstateButton: true,

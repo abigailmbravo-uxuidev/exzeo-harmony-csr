@@ -6,86 +6,141 @@ import { Search } from 'react-bootstrap-table2-toolkit';
 import * as notesUtils from '../utilities';
 import { DIARY_STATUS_COLOR, DIARY_STATUS } from '../constants';
 
-const DiariesTable = ({
-  data: diaries = [],
-  toggleDiary,
-  document,
-  sourceNumbers,
-  documentType
-}) => {
+const statusFormatter = status => {
+  return (
+    <div className="status-indicator">
+      <span className={DIARY_STATUS_COLOR[status]} />
+      <span className="status-display">{DIARY_STATUS[status]}</span>
+    </div>
+  );
+};
+
+const columns = [
+  {
+    headerClasses: 'due-status',
+    classes: 'due-status',
+    dataField: 'dueStatus',
+    text: 'Status',
+    formatter: statusFormatter,
+    sort: true,
+    sortFunc: (a, b, order, dataField, rowA, rowB) =>
+      notesUtils.sortByDate(rowA.due, rowB.due, order)
+  },
+  {
+    headerClasses: 'due',
+    classes: 'due',
+    dataField: 'due',
+    text: 'Due',
+    formatter: (val, row) => row.dueDateDisplay,
+    sort: true,
+    sortFunc: (a, b, order) => notesUtils.sortByDate(a, b, order)
+  },
+  {
+    headerClasses: 'assignee',
+    classes: 'assignee',
+    dataField: 'assignee.displayName',
+    text: 'Assignee',
+    sort: true
+  },
+  {
+    headerClasses: 'reason',
+    classes: 'reason',
+    dataField: 'reasonLabel',
+    text: 'Reason',
+    sort: true
+  },
+  {
+    headerClasses: 'message',
+    classes: 'message',
+    dataField: 'message',
+    text: 'Message',
+    sort: true,
+    sortFunc: notesUtils.sortCaseInsensitive
+  },
+  {
+    headerClasses: 'updated-at',
+    classes: 'updated-at',
+    dataField: 'updatedAt',
+    text: 'Updated',
+    formatter: val => date.formatDate(val),
+    sort: true,
+    sortFunc: notesUtils.sortByDate
+  },
+  {
+    headerClasses: 'created-by',
+    classes: 'created-by',
+    dataField: 'createdBy.userName',
+    text: 'Updated By',
+    sort: true
+  }
+];
+
+const DiaryExpandColumns = ({ diaries }) => {
+  const columns = [
+    {
+      headerClasses: 'due',
+      classes: 'due',
+      dataField: 'due',
+      text: 'Due'
+    },
+    {
+      headerClasses: 'assignee',
+      classes: 'assignee',
+      dataField: 'assignee.displayName',
+      text: 'Assignee'
+    },
+    {
+      headerClasses: 'reason',
+      classes: 'reason',
+      dataField: 'reasonLabel',
+      text: 'Reason'
+    },
+    {
+      headerClasses: 'message',
+      classes: 'message',
+      dataField: 'message',
+      text: 'Message'
+    },
+    {
+      headerClasses: 'updated-at',
+      classes: 'updated-at',
+      dataField: 'updatedAt',
+      text: 'Updated',
+      formatter: val => date.formatDate(val)
+    },
+    {
+      headerClasses: 'created-by',
+      classes: 'created-by',
+      dataField: 'createdBy.userName',
+      text: 'Updated By'
+    }
+  ];
+
+  return (
+    <BootstrapTable
+      wrapperClass="sub-table"
+      tableHeaderClass="diaries compact-table"
+      keyField="_id"
+      data={diaries}
+      columns={columns}
+      bordered={false}
+      hover
+    />
+  );
+};
+
+const DiariesTable = ({ data: diaries = [], diariesDispatch, document }) => {
   const { SearchBar } = Search;
 
-  const DiaryExpandColumns = ({ diaries }) => {
-    const columns = [
-      {
-        headerClasses: 'due',
-        classes: 'due',
-        dataField: 'due',
-        text: 'Due'
-      },
-      {
-        headerClasses: 'assignee',
-        classes: 'assignee',
-        dataField: 'assignee.displayName',
-        text: 'Assignee'
-      },
-      {
-        headerClasses: 'reason',
-        classes: 'reason',
-        dataField: 'reasonLabel',
-        text: 'Reason'
-      },
-      {
-        headerClasses: 'message',
-        classes: 'message',
-        dataField: 'message',
-        text: 'Message'
-      },
-      {
-        headerClasses: 'updated-at',
-        classes: 'updated-at',
-        dataField: 'updatedAt',
-        text: 'Updated',
-        formatter: val => date.formatDate(val)
-      },
-      {
-        headerClasses: 'created-by',
-        classes: 'created-by',
-        dataField: 'createdBy.userName',
-        text: 'Updated By'
-      }
-    ];
-
-    return (
-      <BootstrapTable
-        wrapperClass="sub-table"
-        tableHeaderClass="diaries compact-table"
-        keyField="_id"
-        data={diaries}
-        columns={columns}
-        bordered={false}
-        hover
-      />
-    );
-  };
-
-  const openDiaryModal = diaryAction => {
-    const { ...selectedDiary } = diaryAction;
-    toggleDiary({
-      resourceType: documentType,
-      resourceId: sourceNumbers,
-      selectedDiary,
-      entity: document
-    });
-  };
-
-  const makeDiaryButton = diaryAction => {
-    return diaryAction.open ? (
+  const makeDiaryButton = diary => {
+    return diary.open ? (
       <Button
         dataTest="open-diaries-modal"
         className={Button.constants.classNames.link}
         customClass="btn-grid-row"
-        onClick={() => openDiaryModal(diaryAction)}
+        onClick={() =>
+          diariesDispatch({ type: 'makeDiary', document, diaryId: diary._id })
+        }
       >
         <i className="fa fa-chevron-circle-up" />
       </Button>
@@ -123,84 +178,14 @@ const DiariesTable = ({
     expandHeaderColumnRenderer: () => 'Actions',
     expandColumnRenderer: ({ expanded, rowKey, expandable }) => {
       const diary = diaries.find(diary => diary.rowKey === rowKey);
-      const { action: diaryAction } = diary;
       return (
         <>
-          {makeDiaryButton(diaryAction)}
+          {makeDiaryButton(diary)}
           {makeExpandButton(expandable, expanded)}
         </>
       );
     }
   };
-
-  const statusFormatter = status => {
-    return (
-      <div className="status-indicator">
-        <span className={DIARY_STATUS_COLOR[status]} />
-        <span className="status-display">{DIARY_STATUS[status]}</span>
-      </div>
-    );
-  };
-
-  const columns = [
-    {
-      headerClasses: 'due-status',
-      classes: 'due-status',
-      dataField: 'dueStatus',
-      text: 'Status',
-      formatter: statusFormatter,
-      sort: true,
-      sortFunc: (a, b, order, dataField, rowA, rowB) =>
-        notesUtils.sortByDate(rowA.due, rowB.due, order)
-    },
-    {
-      headerClasses: 'due',
-      classes: 'due',
-      dataField: 'due',
-      text: 'Due',
-      formatter: (val, row) => row.dueDateDisplay,
-      sort: true,
-      sortFunc: (a, b, order) => notesUtils.sortByDate(a, b, order)
-    },
-    {
-      headerClasses: 'assignee',
-      classes: 'assignee',
-      dataField: 'assignee.displayName',
-      text: 'Assignee',
-      sort: true
-    },
-    {
-      headerClasses: 'reason',
-      classes: 'reason',
-      dataField: 'reasonLabel',
-      text: 'Reason',
-      sort: true
-    },
-    {
-      headerClasses: 'message',
-      classes: 'message',
-      dataField: 'message',
-      text: 'Message',
-      sort: true,
-      sortFunc: notesUtils.sortCaseInsensitive
-    },
-    {
-      headerClasses: 'updated-at',
-      classes: 'updated-at',
-      dataField: 'updatedAt',
-      text: 'Updated',
-      formatter: val => date.formatDate(val),
-      sort: true,
-      sortFunc: notesUtils.sortByDate
-    },
-    {
-      headerClasses: 'created-by',
-      classes: 'created-by',
-      dataField: 'createdBy.userName',
-      text: 'Updated By',
-      sort: true
-    }
-  ];
 
   return (
     <ToolkitProvider keyField="rowKey" data={diaries} columns={columns} search>
@@ -225,7 +210,7 @@ const DiariesTable = ({
 
 DiariesTable.propTypes = {
   data: PropTypes.array.isRequired,
-  toggleDiary: PropTypes.func.isRequired,
+  diariesDispatch: PropTypes.func.isRequired,
   document: PropTypes.object
 };
 

@@ -2,11 +2,14 @@ import React from 'react';
 import { Helmet } from 'react-helmet';
 import Header from './Header';
 import Footer from './Footer';
+import MainNavigation from './MainNavigation';
 
 const Reports = () => {
   return (
     <div className="app-wrapper reports">
-      <Header />
+      <Header>
+        <MainNavigation />
+      </Header>
       <Helmet>
         <title>Harmony - CSR Reports</title>
       </Helmet>

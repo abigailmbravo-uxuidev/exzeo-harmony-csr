@@ -1,4 +1,5 @@
 import { date } from '@exzeo/core-ui';
+import { groupDiaries } from '../../utilities/diaries';
 
 export const mergeNotes = (notes, files) => {
   const fileList = notes
@@ -100,127 +101,23 @@ export const formatNotes = notes => {
   });
 };
 
-/**
- * Is date provided more than one week from current date
- * @param dateString
- * @returns {boolean | *}
- */
-export const isUpcoming = dateString => {
-  const sevenDaysOut = date
-    .moment()
-    .utc()
-    .add(7, 'd')
-    .format(date.FORMATS.SECONDARY);
-
-  return date.moment(dateString).isAfter(sevenDaysOut, 'd');
-};
-
-/**
- * Is date provided within one week from current date
- * @param dateString
- * @returns {boolean}
- */
-export const isDueSoon = dateString => {
-  const today = date.currentDay(date.FORMATS.SECONDARY);
-  const sevenDaysOut = date.moment
-    .utc()
-    .add(7, 'd')
-    .format(date.FORMATS.SECONDARY);
-
-  return date.moment(dateString).isBetween(today, sevenDaysOut, 'd', '[]');
-};
-
-/**
- * Is date provided past current date
- * @param dateString
- * @returns {boolean}
- */
-export const isPastDue = dateString => {
-  const today = date.currentDay(date.FORMATS.SECONDARY);
-
-  return date.moment(dateString).isBefore(today, 'd');
-};
-
-/**
- * format Diary properties
- * @param entry object
- * @param reasonOptions
- * @returns {object}
- */
-export const formatEntry = (entry, reasonOptions = []) => {
-  const reasonKeyValue = reasonOptions.find(r => r.answer === entry.reason);
-  const reasonLabel = reasonKeyValue ? reasonKeyValue.label : entry.reason;
-  const due = date.formatDate(entry.due);
-  return {
-    ...entry,
-    due,
-    reasonLabel
-  };
-};
-
-/**
- * Get status of diary based on due date
- * @param due
- * @param open
- * @returns {string}
- */
-export const getDueStatus = (due, open) => {
-  if (!open) return 'closed';
-  else if (isPastDue(due)) return 'pastDue';
-  else if (isDueSoon(due)) return 'dueSoon';
-  else if (isUpcoming(due)) return 'upComing';
-  return 'unknown';
-};
-
-/**
- * Sort diaries in ascending order by due date
- * @param diaries
- * @param product
- * @returns {Array}
- */
-export const sortDiariesByDate = (diaries = [], product) => {
-  return diaries
-    .filter(d => (product ? d.resource.product === product : d))
-    .sort((a, b) => {
-      return new Date(a.entries[0].due) - new Date(b.entries[0].due);
-    });
-};
-
-export const getDiariesForTable = (diaries, diaryOptions) => {
-  if (!Array.isArray(diaries) || !Array.isArray(diaryOptions.reasons))
-    return [];
-
-  const sortedDiaries = sortDiariesByDate(diaries);
-
-  const diaryList = sortedDiaries.map(d => {
-    const entry = formatEntry(d.entries[0], diaryOptions.reasons);
-    const diaryHistory = d.entries
-      .slice(1)
-      .map(e => formatEntry(e, diaryOptions.reasons));
+export const determineSource = document => {
+  // Allows us to manually pass in a "document" object, for instance when we are in Agency.
+  if (document.sourceType) {
     return {
-      ...entry,
-      // manually setting this value so we have fine grain control over when the rows update
-      rowKey: `${d._id}-${diaryHistory.length > 0 ? 'x' : 'o'}`,
-      diaryId: d._id,
-      createdAt: d.createdAt,
-      resourceType: d.resource.type,
-      resourceId: d.resource.id,
-      diaryHistory,
-      dueStatus: getDueStatus(d.entries[0].due, entry.open),
-      due: d.entries[0].due,
-      dueDateDisplay: date.formatDate(d.entries[0].due, date.FORMATS.PRIMARY),
-      // deprecated - will refactor this out when moving to using context
-      action: {
-        diaryId: d._id,
-        resourceType: d.resource.type,
-        resourceId: d.resource.id,
-        ...d.entries[0],
-        due: date.formatDate(d.entries[0].due, date.FORMATS.SECONDARY)
-      }
+      sourceNumbers: document.sourceNumbers,
+      sourceType: document.sourceType
     };
-  });
+  }
 
-  return diaryList.sort((a, b) => {
-    return b.open - a.open;
-  });
+  // Check for sourceNumber since PolicyNumber is returned for a quote that is Policy Issued
+  const sourceNumbers = document.sourceNumber
+    ? [document.policyNumber, document.sourceNumber]
+    : [document.quoteNumber];
+  const sourceType = document.sourceNumber ? 'policyNumber' : 'quoteNumber';
+
+  return {
+    sourceNumbers,
+    sourceType
+  };
 };

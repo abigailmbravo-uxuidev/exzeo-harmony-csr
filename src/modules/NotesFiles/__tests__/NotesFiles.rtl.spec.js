@@ -8,7 +8,8 @@ import {
   jestResolve,
   screen,
   fireEvent,
-  within
+  within,
+  defaultDiaries
 } from '../../../test-utils';
 import {
   notesResult,
@@ -28,14 +29,11 @@ describe('NotesFiles', () => {
       agents: [],
       mortgagee: [],
       order: [],
-      uiQuestions: {},
-      diaries: [],
-      diaryOptions
+      uiQuestions: {}
     },
     customHandlers: {
       notesSynced: jest.fn(),
-      setAppError: jest.fn(),
-      toggleDiary: jest.fn()
+      setAppError: jest.fn()
     }
   };
 
@@ -231,8 +229,8 @@ describe('NotesFiles', () => {
     // The mock data used in these tests is shaped such that that
     // note_1 sorts by default to to row_1, note_2 to row_2, etc.
     // This makes it easier to test the sorting and formatting of rows of data
-    notesFilesData.fetchNotes = jestResolve({ data: { result: notesResult } }); // 1 file comes from notes fixtures
-    notesFilesData.fetchFiles = jestResolve({ data: { result: filesResult } }); // 3 file come from files fixtures
+    notesFilesData.fetchNotes = jestResolve({ data: { result: notesResult } });
+    notesFilesData.fetchFiles = jestResolve({ data: { result: filesResult } });
 
     const file_1 = notesResult.filter(note => {
       return note.noteAttachments.length > 0;
@@ -318,9 +316,14 @@ describe('NotesFiles', () => {
     // This makes it easier to test the sorting and formatting of rows of data
     notesFilesData.fetchNotes = jestResolve({ data: { result: [] } });
     notesFilesData.fetchFiles = jestResolve({ data: { result: [] } });
-    props.options.diaries = diariesResult;
 
-    render(<NotesFiles {...props} />);
+    render(<NotesFiles {...props} />, {
+      diaries: {
+        ...defaultDiaries,
+        diaries: diariesResult,
+        diaryEnums: diaryOptions
+      }
+    });
 
     await waitForElementToBeRemoved(() => screen.queryByRole('status'));
     const diariesTab = screen.getByText('Diaries');
@@ -861,9 +864,14 @@ describe('NotesFiles', () => {
     // This makes it easier to test the sorting and formatting of rows of data
     notesFilesData.fetchNotes = jestResolve({ data: { result: [] } });
     notesFilesData.fetchFiles = jestResolve({ data: { result: [] } });
-    props.options.diaries = diariesResult;
 
-    render(<NotesFiles {...props} />);
+    render(<NotesFiles {...props} />, {
+      diaries: {
+        ...defaultDiaries,
+        diaries: diariesResult,
+        diaryEnums: diaryOptions
+      }
+    });
 
     await waitForElementToBeRemoved(() => screen.queryByRole('status'));
     const diariesTab = screen.getByText('Diaries');
@@ -1123,9 +1131,14 @@ describe('NotesFiles', () => {
   it('NotesFiles: Diaries table show/hide history works', async () => {
     notesFilesData.fetchNotes = jestResolve({ data: { result: [] } });
     notesFilesData.fetchFiles = jestResolve({ data: { result: [] } });
-    props.options.diaries = diariesResult;
 
-    render(<NotesFiles {...props} />);
+    render(<NotesFiles {...props} />, {
+      diaries: {
+        ...defaultDiaries,
+        diaries: diariesResult,
+        diaryEnums: diaryOptions
+      }
+    });
 
     await waitForElementToBeRemoved(() => screen.queryByRole('status'));
     const diariesTab = screen.getByText('Diaries');

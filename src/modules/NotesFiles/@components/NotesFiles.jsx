@@ -2,43 +2,33 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { SectionLoader } from '@exzeo/core-ui';
+
+import { useDiaries } from '../../../context/diaries-context';
+import { formatDiariesForTable } from '../../Diaries';
+
+import { NOTE_TYPE, DIARY_TAB, FILES_TAB, NOTE_TAB } from '../constants';
 import { useFetchNotes } from '../hooks';
-import {
-  NOTE_TYPE,
-  DIARY_TAB,
-  FILES_TAB,
-  NOTE_TAB,
-  POLICY_RESOURCE_TYPE,
-  QUOTE_RESOURCE_TYPE
-} from '../constants';
-import * as notesUtils from '../utilities';
+import { determineSource } from '../utilities';
 import NotesTable from './NotesTable';
 import FilesTable from './FilesTable';
 import DiariesTable from './DiariesTable';
 
-function NotesFiles({ options, customHandlers, initialValues }) {
+function NotesFiles({ customHandlers, initialValues }) {
   const [selectedTab, setSelectedTab] = useState(NOTE_TYPE.notes);
+  const { diaries, diaryEnums, diariesDispatch } = useDiaries();
 
-  // Check for sourceNumber since PolicyNumber is returned for a quote that is Policy Issued
-  const sourceNumbers = initialValues.sourceNumber
-    ? [initialValues.policyNumber, initialValues.sourceNumber]
-    : [initialValues.quoteNumber];
-  const numberType = initialValues.sourceNumber
-    ? 'policyNumber'
-    : 'quoteNumber';
+  const { sourceNumbers, sourceType } = determineSource(initialValues);
 
   const { notes, notesLoaded } = useFetchNotes(
     sourceNumbers,
-    numberType,
+    sourceType,
+    // TODO this will not be needed once we refactor notes.
     customHandlers.notesSynced
   );
 
   const allNotes = notes.filter(n => n.noteContent);
   const notesWithAttachments = notes.filter(n => n.noteAttachments.length > 0);
-  const diaries = notesUtils.getDiariesForTable(
-    options.diaries,
-    options.diaryOptions
-  );
+  const formattedDiaries = formatDiariesForTable(diaries, diaryEnums);
 
   if (!notesLoaded) {
     return <SectionLoader />;
@@ -93,15 +83,9 @@ function NotesFiles({ options, customHandlers, initialValues }) {
         )}
         {selectedTab === DIARY_TAB && (
           <DiariesTable
-            data={diaries}
-            toggleDiary={customHandlers.toggleDiary}
+            data={formattedDiaries}
+            diariesDispatch={diariesDispatch}
             document={initialValues}
-            sourceNumbers={sourceNumbers}
-            documentType={
-              numberType === 'policyNumber'
-                ? POLICY_RESOURCE_TYPE
-                : QUOTE_RESOURCE_TYPE
-            }
           />
         )}
       </div>
@@ -110,7 +94,6 @@ function NotesFiles({ options, customHandlers, initialValues }) {
 }
 
 NotesFiles.propTypes = {
-  options: PropTypes.shape({}).isRequired,
   customHandlers: PropTypes.shape({}).isRequired,
   initialValues: PropTypes.shape({}).isRequired
 };

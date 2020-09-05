@@ -13,7 +13,6 @@ export default {
   },
   error: {},
   notes: [],
-  diaries: [],
   questions: {
     diaryAssignees: [],
     territoryManagers: [],

@@ -5,7 +5,7 @@ import { useAuth0 } from '../context/auth-context';
 import logo from '../img/Harmony.svg';
 
 const AccessDenied = () => {
-  const { error } = useAuth0();
+  const { error, setError } = useAuth0();
   const history = useHistory();
 
   return (
@@ -26,7 +26,10 @@ const AccessDenied = () => {
           <div className="card-footer">
             <button
               className="btn btn-secondary"
-              onClick={() => history.replace('/logout')}
+              onClick={() => {
+                setError();
+                history.replace('/logout');
+              }}
             >
               <i className="fa fa-sign-in" /> Login
             </button>

@@ -90,6 +90,7 @@ const NotesTable = ({ data: notes = [], errorHandler }) => {
       sortFunc: notesUtils.sortFiles
     }
   ];
+
   return (
     <ToolkitProvider keyField="_id" data={notes} columns={columns} search>
       {props => (

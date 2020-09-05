@@ -1,4 +1,5 @@
 import React from 'react';
+import { connect } from 'react-redux';
 
 const ClaimsIndicator = ({ claims = [] }) => {
   if (!claims.length) {
@@ -27,4 +28,10 @@ const ClaimsIndicator = ({ claims = [] }) => {
   );
 };
 
-export default ClaimsIndicator;
+const mapStateToProps = state => {
+  return {
+    claims: state.policyState.claims
+  };
+};
+
+export default connect(mapStateToProps)(ClaimsIndicator);

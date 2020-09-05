@@ -87,7 +87,7 @@ export const filesResult = [
 ];
 
 export const diaryOptions = {
-  reasons: [
+  reasonOptions: [
     {
       answer: 'information_needed',
       label: 'Information Needed'
