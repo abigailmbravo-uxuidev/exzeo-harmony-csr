@@ -43,11 +43,13 @@ const DiaryPolling = ({ filter, fetchDiaries }) => {
 
   useEffect(() => {
     let interval;
-    if (shouldPoll && !document[inactiveTabKey]) {
+    if (shouldPoll) {
       fetchDiaries(filter);
 
       interval = setInterval(() => {
-        fetchDiaries(filter);
+        if (!document[inactiveTabKey]) {
+          fetchDiaries(filter);
+        }
       }, POLLING_TIMEOUT);
     }
 
