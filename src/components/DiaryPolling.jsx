@@ -56,7 +56,7 @@ const DiaryPolling = ({ filter, fetchDiaries }) => {
     }
 
     return () => clearInterval(interval);
-    // Ignoring 'filter' because in all of our current use cases, the filter prop does not change on the same instance of 'DiaryPolling'
+    // Ignoring 'filter' because in all use cases, the filter prop does not change on the same instance of 'DiaryPolling'
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [doesUserHaveAccess, fetchDiaries]);
 
