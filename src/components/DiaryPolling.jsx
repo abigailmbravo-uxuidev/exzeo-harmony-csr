@@ -5,13 +5,13 @@ import { connect } from 'react-redux';
 import { fetchDiaries } from '../state/actions/diary.actions';
 import { useUser } from '../context/user-context';
 
-let inactiveTabKey;
+let inactiveBrowserTabKey;
 if (typeof document.hidden !== 'undefined') {
-  inactiveTabKey = 'hidden';
+  inactiveBrowserTabKey = 'hidden';
 } else if (typeof document.msHidden !== 'undefined') {
-  inactiveTabKey = 'msHidden';
+  inactiveBrowserTabKey = 'msHidden';
 } else if (typeof document.webkitHidden !== 'undefined') {
-  inactiveTabKey = 'webkitHidden';
+  inactiveBrowserTabKey = 'webkitHidden';
 }
 
 const REQUIRED_DIARY_RIGHTS = ['READ', 'UPDATE', 'INSERT'];
@@ -37,17 +37,19 @@ function isPollingPermitted(resources = []) {
 
 const DiaryPolling = ({ filter, fetchDiaries }) => {
   const userProfile = useUser();
-  const shouldPoll = useMemo(() => isPollingPermitted(userProfile.resources), [
-    userProfile.resources
-  ]);
+  const doesUserHaveAccess = useMemo(
+    () => isPollingPermitted(userProfile.resources),
+    [userProfile.resources]
+  );
 
   useEffect(() => {
     let interval;
-    if (shouldPoll) {
+    if (doesUserHaveAccess) {
       fetchDiaries(filter);
 
       interval = setInterval(() => {
-        if (!document[inactiveTabKey]) {
+        // skip polling if browser tab is "hidden"/inactive
+        if (!document[inactiveBrowserTabKey]) {
           fetchDiaries(filter);
         }
       }, POLLING_TIMEOUT);
@@ -56,7 +58,7 @@ const DiaryPolling = ({ filter, fetchDiaries }) => {
     return () => clearInterval(interval);
     // Ignoring 'filter' because in all of our current use cases, the filter prop does not change on the same instance of 'DiaryPolling'
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [shouldPoll, fetchDiaries]);
+  }, [doesUserHaveAccess, fetchDiaries]);
 
   return null;
 };
