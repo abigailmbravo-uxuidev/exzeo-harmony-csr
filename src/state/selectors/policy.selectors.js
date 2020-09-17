@@ -8,13 +8,10 @@ import {
   getPolicy,
   getSummaryLedger,
   getAgencyPolicies,
-  getEffectiveDateChangeReasons,
-  getEndorsementHistory
+  getEffectiveDateChangeReasons
 } from './entity.selectors';
 import { formattedDate } from '@exzeo/core-ui/src/Utilities';
 import { getZipcodeSettings } from '../actions/service.actions';
-import { PREMIUM_ENDORSEMENTS } from '../../modules/Policy/constants/policy';
-import endorsementUtils from '../../utilities/endorsementModel';
 
 export const getCashDescriptionOptions = createSelector(
   [getPaymentOptions],
@@ -137,24 +134,5 @@ export const getPolicyFormData = createSelector(
     policy.summaryLedger = summaryLedger;
     policy.cancel = cancel;
     return policy;
-  }
-);
-
-export const getPolicyEndorsementHistory = createSelector(
-  [getEndorsementHistory],
-  endorsementHistory => {
-    if (!Array.isArray(endorsementHistory) || !endorsementHistory.length)
-      return defaultArr;
-    return (
-      endorsementHistory &&
-      endorsementHistory.map(endorsement => {
-        endorsement.netChargeFormat = PREMIUM_ENDORSEMENTS.some(
-          pe => pe === endorsement.transactionType
-        )
-          ? endorsementUtils.premiumAmountFormatter(endorsement.netCharge)
-          : '';
-        return endorsement;
-      })
-    );
   }
 );

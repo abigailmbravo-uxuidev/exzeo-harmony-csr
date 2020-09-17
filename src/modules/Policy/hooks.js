@@ -4,7 +4,12 @@ import {
   fetchAgentsByAgencyCode,
   sortPaymentHistoryByDate
 } from './utilities';
-import { getPaymentHistory, getPaymentOptions } from './data';
+import {
+  getPaymentOptions,
+  getPaymentHistory,
+  fetchPastEndorsements,
+  fetchPendingEndorsements
+} from './data';
 
 export const useFetchAgency = agencyCode => {
   const [agency, setAgency] = useState({});
@@ -108,4 +113,27 @@ export const useFetchPaymentHistory = (policyNumber, paymentAdded) => {
   }, [policyNumber, paymentAdded]);
 
   return { paymentHistory, loaded };
+};
+
+export const useFetchEndorsements = policy => {
+  const [endorsements, setEndorsements] = useState({});
+  const [loaded, setLoaded] = useState(false);
+
+  useEffect(() => {
+    const fetchEndorsements = async () => {
+      try {
+        const [pastEndorsements, pendingEndorsements] = await Promise.all([
+          fetchPastEndorsements(policy.policyNumber),
+          fetchPendingEndorsements(policy.policyNumber)
+        ]);
+
+        setEndorsements({ pastEndorsements, pendingEndorsements });
+      } catch (error) {
+        console.error('Error fetching Endorsements');
+      }
+      setLoaded(true);
+    };
+    fetchEndorsements();
+  }, [policy]);
+  return { endorsements, loaded };
 };

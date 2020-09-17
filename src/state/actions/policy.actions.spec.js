@@ -205,23 +205,6 @@ describe('Policy State Actions', () => {
       expect(store.getActions()).toEqual(stateObj);
     });
 
-    it('should call setEndorsementHistory', () => {
-      const endorsementHistory = { endorsementHistory: '1234' };
-
-      const stateObj = [
-        {
-          type: types.SET_ENDORSEMENT_HISTORY,
-          endorsementHistory
-        }
-      ];
-
-      store.dispatch(
-        policyStateActions.setEndorsementHistory(endorsementHistory)
-      );
-
-      expect(store.getActions()).toEqual(stateObj);
-    });
-
     it('should call setCancelOptions', () => {
       const cancelOptions = { cancelOptions: '1234' };
 
@@ -324,17 +307,6 @@ describe('Policy State Actions', () => {
       await store.dispatch(policyStateActions.getPaymentOptionsApplyPayments());
       sinon.assert.calledOnce(serviceRunner.callService);
       const res = [{ paymentOptions: [], type: 'SET_PAYMENT_OPTIONS' }];
-      expect(store.getActions()).toEqual(res);
-    });
-
-    it('should call dispatch on getEndorsementHistory', async () => {
-      httpStub.onCall(0).returns(Promise.resolve({ data: { result: [] } }));
-
-      await store.dispatch(policyStateActions.getEndorsementHistory('234'));
-      sinon.assert.calledOnce(serviceRunner.callService);
-      const res = [
-        { endorsementHistory: { result: [] }, type: 'SET_ENDORSEMENT_HISTORY' }
-      ];
       expect(store.getActions()).toEqual(res);
     });
 

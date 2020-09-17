@@ -569,7 +569,61 @@ th {
     background-color: $table-bg-accent;
 
     &:hover {
-      background-color: $table-bg-hover;
+      background-color: $table-bg-accent;
+    }
+
+    &.future-endorsement {
+      position: relative;
+
+      background: rgba(mix($orange, $yellow, 10%), 0.1);
+
+      &:after {
+        position: absolute;
+        right: 0;
+
+        display: inline-block;
+
+        width: 2rem;
+        height: 1.9375rem;
+
+        content: '';
+
+        background: url(../../img/flag.svg);
+        background-color: rgba($orange, 0.7);
+        background-repeat: no-repeat;
+        background-position: center, center;
+        background-size: 50%;
+      }
+    }
+  }
+
+  > tbody > tr:nth-of-type(even) {
+    background-color: $warm-gray-01;
+
+    &:hover {
+      background-color: $warm-gray-01;
+    }
+
+    &.future-endorsement {
+      background: rgba(mix($orange, $yellow, 40%), 0.2);
+
+      &:after {
+        position: absolute;
+        right: 0;
+
+        display: inline-block;
+
+        width: 2rem;
+        height: 1.9375rem;
+
+        content: '';
+
+        background: url(../../img/flag.svg);
+        background-color: rgba($orange, 1);
+        background-repeat: no-repeat;
+        background-position: center, center;
+        background-size: 50%;
+      }
     }
   }
 }

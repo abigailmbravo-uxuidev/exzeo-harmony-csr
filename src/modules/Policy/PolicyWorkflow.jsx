@@ -87,7 +87,6 @@ const FORM_ID = 'PolicyWorkflowCSR';
 export const PolicyWorkflow = ({
   cancelOptions,
   effectiveDateReasons,
-  endorsementHistory,
   getPolicy,
   history,
   initialized,
@@ -256,8 +255,7 @@ export const PolicyWorkflow = ({
                   options={{
                     ...options,
                     cancelOptions,
-                    zipCodeSettings,
-                    endorsementHistory
+                    zipCodeSettings
                   }} // enums for select/radio fields
                   template={template}
                 >

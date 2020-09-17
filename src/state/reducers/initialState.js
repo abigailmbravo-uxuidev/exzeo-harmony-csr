@@ -30,7 +30,6 @@ export default {
     cancelOptions: [],
     claims: [],
     effectiveDateReasons: [],
-    endorsementHistory: [],
     paymentHistory: [],
     paymentOptions: [],
     summaryLedger: {},

@@ -14,7 +14,6 @@ import {
 import { setNotesSynced, toggleNote } from '../../state/actions/ui.actions';
 import {
   getPolicyEffectiveDateReasons,
-  getPolicyEndorsementHistory,
   getPolicyFormData
 } from '../../state/selectors/policy.selectors';
 
@@ -33,7 +32,6 @@ const mapStateToProps = state => {
     notesSynced: state.ui.notesSynced,
     options: state.list,
     policy: state.policyState.policy,
-    endorsementHistory: getPolicyEndorsementHistory(state),
     policyFormData: getPolicyFormData(state),
     summaryLedger: state.policyState.summaryLedger,
     zipCodeSettings: state.service.getZipcodeSettings || {}

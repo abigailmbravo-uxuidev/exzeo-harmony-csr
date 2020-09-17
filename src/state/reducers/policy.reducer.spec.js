@@ -9,7 +9,6 @@ describe('Policy State Reducer', () => {
       billingOptions: {},
       cancelOptions: [],
       effectiveDateReasons: [],
-      endorsementHistory: [],
       paymentHistory: [],
       paymentOptions: [],
       policy: {},
@@ -35,7 +34,6 @@ describe('Policy State Reducer', () => {
       billingOptions: {},
       cancelOptions: [],
       effectiveDateReasons: [],
-      endorsementHistory: [],
       paymentHistory: [],
       paymentOptions: [],
       policy: {},
@@ -60,7 +58,6 @@ describe('Policy State Reducer', () => {
       billingOptions: {},
       cancelOptions: [],
       effectiveDateReasons: [],
-      endorsementHistory: [],
       paymentHistory: undefined,
       paymentOptions: [],
       policy: {},
@@ -83,7 +80,6 @@ describe('Policy State Reducer', () => {
       effectiveDateReasons: [],
       billingOptions: {},
       cancelOptions: [],
-      endorsementHistory: [],
       paymentHistory: [],
       paymentOptions: [],
       policy: {},
@@ -108,7 +104,6 @@ describe('Policy State Reducer', () => {
       effectiveDateReasons: [],
       billingOptions: {},
       cancelOptions: [],
-      endorsementHistory: [],
       paymentHistory: [],
       paymentOptions: [],
       policy: {},
@@ -126,30 +121,6 @@ describe('Policy State Reducer', () => {
       ...inputProps
     });
   });
-  it('should call policyStateReducer SET_ENDORSEMENT_HISTORY', () => {
-    const state = initialState.policyState;
-    const inputProps = {
-      effectiveDateReasons: [],
-      billingOptions: {},
-      cancelOptions: [],
-      endorsementHistory: [],
-      paymentHistory: [],
-      paymentOptions: [],
-      policy: {},
-      policyID: '',
-      summaryLedger: {}
-    };
-    const action = {
-      type: types.SET_ENDORSEMENT_HISTORY,
-      policyState: inputProps,
-      endorsementHistory: []
-    };
-
-    expect(policyStateReducer(state, action)).toEqual({
-      ...initialState.policyState,
-      ...inputProps
-    });
-  });
 
   it('should call policyStateReducer SET_BILLING_OPTIONS', () => {
     const state = initialState.policyState;
@@ -157,7 +128,6 @@ describe('Policy State Reducer', () => {
       effectiveDateReasons: [],
       billingOptions: {},
       cancelOptions: [],
-      endorsementHistory: [],
       paymentHistory: [],
       paymentOptions: [],
       policy: {},
@@ -182,7 +152,6 @@ describe('Policy State Reducer', () => {
       effectiveDateReasons: [],
       billingOptions: {},
       cancelOptions: [],
-      endorsementHistory: [],
       paymentHistory: [],
       paymentOptions: [],
       policy: {},
@@ -207,7 +176,6 @@ describe('Policy State Reducer', () => {
       effectiveDateReasons: [],
       billingOptions: {},
       cancelOptions: [],
-      endorsementHistory: [],
       paymentHistory: [],
       paymentOptions: [],
       policy: {},

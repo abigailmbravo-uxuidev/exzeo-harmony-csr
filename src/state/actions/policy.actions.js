@@ -110,18 +110,6 @@ export function setPaymentOptions(paymentOptions) {
 
 /**
  *
- * @param endorsementHistory
- * @returns {{type: string, endorsementHistory: *}}
- */
-export function setEndorsementHistory(endorsementHistory) {
-  return {
-    type: types.SET_ENDORSEMENT_HISTORY,
-    endorsementHistory
-  };
-}
-
-/**
- *
  * @param cancelOptions
  * @returns {{type: string, cancelOptions: *}}
  */
@@ -320,22 +308,6 @@ export function getPaymentOptionsApplyPayments() {
     try {
       const paymentOptions = await fetchPaymentOptionsApplyPayments();
       dispatch(setPaymentOptions(paymentOptions));
-    } catch (error) {
-      dispatch(errorActions.setAppError(error));
-    }
-  };
-}
-
-/**
- *
- * @param policyNumber
- * @returns {function(*): Promise<any>}
- */
-export function getEndorsementHistory(policyNumber) {
-  return async dispatch => {
-    try {
-      const endorsementHistory = await fetchEndorsementHistory(policyNumber);
-      dispatch(setEndorsementHistory(endorsementHistory));
     } catch (error) {
       dispatch(errorActions.setAppError(error));
     }
@@ -551,29 +523,6 @@ export async function fetchListOfForms(policy, rating, transactionType) {
     return response.data && response.data.result && response.data.result.forms
       ? response.data.result.forms
       : [];
-  } catch (error) {
-    throw error;
-  }
-}
-
-/**
- *
- * @param policyNumber
- * @returns {Promise<*>}
- */
-export async function fetchEndorsementHistory(policyNumber) {
-  const config = {
-    service: 'policy-data',
-    method: 'GET',
-    path: `transactionDetails/${policyNumber}?endorsement=endorsement`
-  };
-
-  try {
-    const response = await serviceRunner.callService(
-      config,
-      'fetchEndorsementHistory'
-    );
-    return response.data || [];
   } catch (error) {
     throw error;
   }
@@ -851,7 +800,6 @@ export function initializePolicyWorkflow(policyNumber) {
 
       dispatch(getEffectiveDateChangeReasons());
       dispatch(getPaymentOptionsApplyPayments());
-      dispatch(getEndorsementHistory(policyNumber));
       dispatch(
         getZipcodeSettings(
           policy.companyCode,

@@ -111,3 +111,49 @@ export async function postRescindCancellation(policyNumber) {
     throw error;
   }
 }
+
+/**
+ *
+ * @param policyNumber
+ * @returns {Promise<*>}
+ */
+export async function fetchPastEndorsements(policyNumber) {
+  const config = {
+    service: 'policy-data',
+    method: 'GET',
+    path: `transactionDetails/${policyNumber}?endorsement=endorsement`
+  };
+
+  try {
+    const response = await serviceRunner.callService(
+      config,
+      'fetchEndorsementHistory'
+    );
+    return response.data || [];
+  } catch (error) {
+    throw error;
+  }
+}
+
+/**
+ *
+ * @param policyNumber
+ * @returns {Promise<*>}
+ */
+export async function fetchPendingEndorsements(policyNumber) {
+  const config = {
+    service: 'harmony-data',
+    method: 'GET',
+    path: `pendingEndorsements/${policyNumber}`
+  };
+
+  try {
+    const response = await serviceRunner.callService(
+      config,
+      'fetchPendingEndorsements'
+    );
+    return response.data?.pendingEndorsements || [];
+  } catch (error) {
+    throw error;
+  }
+}
