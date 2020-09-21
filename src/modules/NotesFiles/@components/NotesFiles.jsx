@@ -22,6 +22,7 @@ function NotesFiles({ customHandlers, initialValues }) {
     customHandlers.notesSynced
   );
 
+  const timezone = initialValues.property?.timezone ?? 'America/New_York';
   const allNotes = notes.filter(n => n.noteContent);
   const notesWithAttachments = notes.filter(n => n.noteAttachments.length > 0);
 
@@ -69,6 +70,7 @@ function NotesFiles({ customHandlers, initialValues }) {
             data={allNotes}
             sourceType={sourceType}
             errorHandler={customHandlers.setAppError}
+            timezone={timezone}
           />
         )}
         {selectedTab === FILES_TAB && (
@@ -76,6 +78,7 @@ function NotesFiles({ customHandlers, initialValues }) {
             data={notesWithAttachments}
             sourceType={sourceType}
             errorHandler={customHandlers.setAppError}
+            timezone={timezone}
           />
         )}
         {selectedTab === DIARY_TAB && <DiariesTable document={initialValues} />}

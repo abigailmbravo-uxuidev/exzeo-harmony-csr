@@ -55,8 +55,8 @@ export const toTitleCase = str => {
     .join(' ');
 };
 
-export const formatCreatedDate = createdDate =>
-  date.formattedLocalDate(createdDate);
+export const formatCreatedDate = (createdDate, row, idx, timezone) =>
+  date.formattedDate(createdDate, date.FORMATS.PRIMARY_LOCALE, timezone);
 
 export const sortByOrder = (a, b, order) => {
   if (order === 'desc') {

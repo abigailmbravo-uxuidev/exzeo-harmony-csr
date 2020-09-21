@@ -1,5 +1,10 @@
 import { useState, useEffect } from 'react';
-import { fetchAgency, fetchAgentsByAgencyCode } from './utilities';
+import {
+  fetchAgency,
+  fetchAgentsByAgencyCode,
+  sortPaymentHistoryByDate
+} from './utilities';
+import { getPaymentHistory } from './data';
 
 export const useFetchAgency = agencyCode => {
   const [agency, setAgency] = useState({});
@@ -42,4 +47,28 @@ export const useFetchAgents = agencyCode => {
   }, [agencyCode]);
 
   return { agents, loaded };
+};
+
+export const useFetchPaymentHistory = (policyNumber, paymentAdded) => {
+  const [paymentHistory, setPaymentHistory] = useState([]);
+  const [loaded, setLoaded] = useState(false);
+  useEffect(() => {
+    const fetchPaymentHistory = async () => {
+      setLoaded(false);
+
+      try {
+        const response = await getPaymentHistory(policyNumber);
+        const sortedPaymentHistory = sortPaymentHistoryByDate(response);
+
+        setPaymentHistory(sortedPaymentHistory);
+      } catch (error) {
+        console.error('Error fetching Payment History: ', error);
+      }
+      setLoaded(true);
+    };
+
+    fetchPaymentHistory();
+  }, [policyNumber, paymentAdded]);
+
+  return { paymentHistory, loaded };
 };

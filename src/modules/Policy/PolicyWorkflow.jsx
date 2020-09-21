@@ -5,7 +5,6 @@ import {
   ClaimsTable,
   Gandalf,
   getConfigForJsonTransform,
-  PaymentHistoryTable,
   PolicyBilling,
   callService,
   DetailsHeader
@@ -39,6 +38,7 @@ import { DEFAULT_DETAILS, BASE_MAP_URI } from '../../constants/detailHeader';
 
 import NotesFiles from '../NotesFiles';
 import PolicyHolders from '../Quote/PolicyHolders';
+import PaymentHistoryTable from './@components/PaymentHistoryTable';
 import Appraiser from './Appraiser';
 import Billing from './Billing';
 import BillingTable from './BillingTable';

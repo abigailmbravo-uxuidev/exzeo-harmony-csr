@@ -1,6 +1,7 @@
 import * as serviceRunner from '@exzeo/core-ui/src/@Harmony/Domain/Api/serviceRunner';
 import _cloneDeep from 'lodash/cloneDeep';
-import { date, format } from '@exzeo/core-ui/src';
+import { date, format, emptyArray } from '@exzeo/core-ui/src';
+import _orderBy from 'lodash/orderBy';
 
 /**
  *
@@ -192,4 +193,33 @@ export async function saveEffectiveDateChange(data, errorHandler) {
     errorHandler(err);
     return {};
   }
+}
+
+/**
+ * @returns {String}
+ * @param cell
+ */
+export const formatPaymentAmount = (cell = 0) => format.toCurrency(cell, 2);
+
+/**
+ * @returns {String}
+ * @param cell
+ * @param row
+ * @param rowIndex
+ * @param timezone
+ */
+export const formatPaymentDate = (cell, row, rowIndex, timezone) => {
+  return date.formattedDate(cell, 'MM/DD/YYYY zz', timezone);
+};
+
+/**
+ * Sort payment history by date, fall back to createdAt date for ties.
+ * @param paymentHistory
+ * @returns {[Object]}
+ */
+export function sortPaymentHistoryByDate(paymentHistory) {
+  if (!Array.isArray(paymentHistory) || !paymentHistory.length)
+    return emptyArray;
+
+  return _orderBy(paymentHistory, ['date', 'createdAt'], ['desc', 'desc']);
 }

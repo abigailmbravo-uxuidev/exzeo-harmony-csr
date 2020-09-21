@@ -5,7 +5,7 @@ import { Search } from 'react-bootstrap-table2-toolkit';
 import * as notesUtils from '../utilities';
 import Downloader from './Downloader';
 
-const FilesTable = ({ data: files = [], sourceType = '', errorHandler }) => {
+const FilesTable = ({ data: files = [], sourceType = '', errorHandler, timezone }) => {
   const { SearchBar } = Search;
 
   const attachmentUrl = attachments => (
@@ -31,6 +31,7 @@ const FilesTable = ({ data: files = [], sourceType = '', errorHandler }) => {
       dataField: 'createdAt',
       text: 'Created',
       formatter: notesUtils.formatCreatedDate,
+      formatExtraData: timezone,
       sort: true,
       sortFunc: notesUtils.sortByDate
     },
