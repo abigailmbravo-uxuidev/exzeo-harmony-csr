@@ -111,7 +111,7 @@ export const SideNav = ({ quoteData, toggleNote, toggleDiary }) => {
           )}
           <div>
             Property Time
-            <Clock timezone={quoteData.property.timezone} />
+            <Clock timezone={quoteData?.property?.timezone} />
           </div>
         </SideNavigation>
         {showUWPopup && (

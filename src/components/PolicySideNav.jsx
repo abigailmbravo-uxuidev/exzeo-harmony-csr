@@ -144,7 +144,7 @@ export class SideNav extends React.Component {
           </li>
           <div>
             Property Time
-            <Clock timezone={policy.property.timezone} />
+            <Clock timezone={policy?.property?.timezone} />
           </div>
         </SideNavigation>
         <PlusButton newNote={this.newNote} newDiary={this.newDiary} />
