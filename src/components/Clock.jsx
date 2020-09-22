@@ -2,11 +2,7 @@ import React from 'react';
 import { date } from '@exzeo/core-ui';
 
 const Clock = ({ timezone, format }) => {
-  const getTime = () =>
-    date
-      .moment()
-      .tz(timezone)
-      .format(format);
+  const getTime = () => date.moment.tz(undefined, timezone).format(format);
   const [dateString, setDateString] = React.useState(getTime());
   React.useEffect(() => {
     const timeId = setInterval(() => setDateString(getTime()), 1000);
