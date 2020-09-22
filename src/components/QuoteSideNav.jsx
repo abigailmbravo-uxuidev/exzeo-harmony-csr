@@ -109,11 +109,11 @@ export const SideNav = ({ quoteData, toggleNote, toggleDiary }) => {
               </button>
             </li>
           )}
-          <div>
-            Property Time
-            <Clock timezone={quoteData?.property?.timezone} />
-          </div>
         </SideNavigation>
+        <div className="property-time-wrapper">
+          <label>Property Time</label>
+          <Clock timezone={quoteData?.property?.timezone} />
+        </div>
         {showUWPopup && (
           <UWConditions closeButtonHandler={() => setUWPopup(false)} />
         )}
