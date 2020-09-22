@@ -1,5 +1,18 @@
 //vertical tabs
-
+.quote {
+  .site-nav {
+    .property-time-wrapper {
+      background-color: $green-darken-04;
+    }
+  }
+}
+.policy {
+  .site-nav {
+    .property-time-wrapper {
+      background-color: $bright-blue-darken-03;
+    }
+  }
+}
 .site-nav {
   display: flex;
   overflow: hidden;
@@ -23,18 +36,21 @@
     flex-shrink: 0;
     justify-content: flex-end;
 
-    width: 10.875rem;
+    width: 10.125rem;
     height: 4rem;
     margin-bottom: 1rem;
     padding: $padding $padding $padding ($padding * 1.5);
 
-    background-color: $warm-gray-03;
+    color: $white;
+    background-color: rgba($bright-blue-darken-03, 1);
 
     font-size: $font-size-lg;
     label {
       margin: 0;
 
-      font-size: $font-size-xs;
+      color: $white;
+
+      font-size: $font-size-sm;
     }
   }
 
