@@ -1,21 +1,26 @@
 import React from 'react';
-import { moment, DEFAULT_TIME_ZONE } from '@exzeo/core-ui';
+import { date } from '@exzeo/core-ui';
 
-const Clock = ({ timezone }) => {
-  const [date, setDate] = React.useState(moment().tz(timezone));
-
+const Clock = ({ timezone, format }) => {
+  const getTime = () =>
+    date
+      .moment()
+      .tz(timezone)
+      .format(format);
+  const [dateString, setDateString] = React.useState(getTime());
   React.useEffect(() => {
-    const timeId = setInterval(() => setDate(moment().tz(timezone)), 1000);
+    const timeId = setInterval(() => setDateString(getTime()), 1000);
     return function cleanup() {
       clearInterval(timeId);
     };
   });
 
-  return date.toLocaleTimeString();
+  return dateString;
 };
 
 Clock.defaultProps = {
-  timezone: DEFAULT_TIME_ZONE
+  timezone: date.DEFAULT_TIME_ZONE,
+  format: 'h:mm A zz'
 };
 
 export default Clock;
