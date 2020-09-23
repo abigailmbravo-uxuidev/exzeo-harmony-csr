@@ -1,7 +1,7 @@
 import React from 'react';
 import { date } from '@exzeo/core-ui';
 
-const Clock = ({ timezone, format }) => {
+const Clock = ({ timezone = date.DEFAULT_TIME_ZONE, format = 'h:mm A zz' }) => {
   const getTime = () => date.formattedDate(undefined, format, timezone);
   const [dateString, setDateString] = React.useState(getTime());
   React.useEffect(() => {
@@ -12,11 +12,6 @@ const Clock = ({ timezone, format }) => {
   });
 
   return dateString;
-};
-
-Clock.defaultProps = {
-  timezone: date.DEFAULT_TIME_ZONE,
-  format: 'h:mm A zz'
 };
 
 export default Clock;
