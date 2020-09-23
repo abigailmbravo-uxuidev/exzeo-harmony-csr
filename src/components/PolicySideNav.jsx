@@ -110,6 +110,11 @@ export class SideNav extends React.Component {
 
   render() {
     const { policy, setAppError } = this.props;
+
+    const ClockComponent = React.memo(() => (
+      <Clock timezone={policy?.property?.timezone} />
+    ));
+
     return (
       <nav className="site-nav">
         <SideNavigation
@@ -143,10 +148,7 @@ export class SideNav extends React.Component {
             )}
           </li>
         </SideNavigation>
-        <div className="property-time-wrapper">
-          <label>Property Time</label>
-          <Clock timezone={policy?.property?.timezone} />
-        </div>
+        <ClockComponent />
         <PlusButton newNote={this.newNote} newDiary={this.newDiary} />
       </nav>
     );

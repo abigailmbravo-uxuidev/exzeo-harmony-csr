@@ -11,7 +11,12 @@ const Clock = ({ timezone = date.DEFAULT_TIME_ZONE, format = 'h:mm A zz' }) => {
     };
   });
 
-  return dateString;
+  return (
+    <div className="property-time-wrapper">
+      <label>Property Time</label>
+      {dateString}
+    </div>
+  );
 };
 
 export default Clock;

@@ -67,6 +67,10 @@ export const SideNav = ({ quoteData, toggleNote, toggleDiary }) => {
   const [showUWPopup, setUWPopup] = useState(false);
   const { companyCode, state, product, quoteNumber } = quoteData;
 
+  const ClockComponent = React.memo(() => (
+    <Clock timezone={quoteData?.property?.timezone} />
+  ));
+
   function newNote() {
     toggleNote({
       companyCode,
@@ -110,10 +114,7 @@ export const SideNav = ({ quoteData, toggleNote, toggleDiary }) => {
             </li>
           )}
         </SideNavigation>
-        <div className="property-time-wrapper">
-          <label>Property Time</label>
-          <Clock timezone={quoteData?.property?.timezone} />
-        </div>
+        <ClockComponent />
         {showUWPopup && (
           <UWConditions closeButtonHandler={() => setUWPopup(false)} />
         )}
