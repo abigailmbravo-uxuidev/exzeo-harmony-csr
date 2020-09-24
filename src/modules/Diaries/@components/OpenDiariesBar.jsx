@@ -5,7 +5,7 @@ import { useDiaries } from '../../../context/diaries-context';
 import { groupOpenDiaries } from '../utilities';
 
 const OpenDiariesBar = ({ document }) => {
-  const { diaries, diaryEnums, diariesDispatch } = useDiaries();
+  const { diaries, diaryEnums, diariesDispatch, showDiariesBar } = useDiaries();
   const groupedDiaries = useMemo(() => {
     return groupOpenDiaries(diaries, diaryEnums);
   }, [diaries, diaryEnums]);
@@ -18,7 +18,7 @@ const OpenDiariesBar = ({ document }) => {
 
   return (
     count > 0 && (
-      <aside className="open-diaries">
+      <aside className={`open-diaries ${showDiariesBar ? 'open' : ''}`}>
         <header className="open-diaries-header">
           <h4 data-test="open-diaries-header">Open Diaries</h4>
         </header>

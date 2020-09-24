@@ -399,16 +399,18 @@ export class QuoteWorkflow extends React.Component {
               </div>
             </div>
 
-            <UnderwritingValidationBar
-              quoteData={quote}
-              updateQuote={updateQuote}
-            />
+            <div className="sidebar-wrapper">
+              <OpenDiariesBar
+                document={quote}
+                resourceId={quote.quoteNumber}
+                resourceType={QUOTE_RESOURCE_TYPE}
+              />
 
-            <OpenDiariesBar
-              document={quote}
-              resourceId={quote.quoteNumber}
-              resourceType={QUOTE_RESOURCE_TYPE}
-            />
+              <UnderwritingValidationBar
+                quoteData={quote}
+                updateQuote={updateQuote}
+              />
+            </div>
           </App>
         )}
       </div>

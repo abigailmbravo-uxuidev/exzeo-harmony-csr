@@ -64,12 +64,7 @@ const WorkflowWrapper = ({
         </div>
       </Header>
       {subHeader}
-      <main
-        role="document"
-        className={
-          showDiariesBar && openDiaryCount > 0 ? 'diary-open' : 'diary-closed'
-        }
-      >
+      <main role="document">
         {aside}
         {children}
       </main>
