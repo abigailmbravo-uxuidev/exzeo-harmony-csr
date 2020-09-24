@@ -19,4 +19,4 @@ const Clock = ({ timezone = date.DEFAULT_TIME_ZONE, format = 'h:mm A zz' }) => {
   );
 };
 
-export default Clock;
+export default React.memo(Clock);
