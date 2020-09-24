@@ -481,9 +481,9 @@ export class PolicyWorkflow extends React.Component {
                 )}
               </div>
             </div>
-
-            <OpenDiariesBar document={policy} />
-
+            <div className="sidebar-wrapper">
+              <OpenDiariesBar document={policy} />
+            </div>
             {showReinstatePolicyModal && (
               <ReinstatePolicyModal
                 reinstatePolicySubmit={this.reinstatePolicySubmit}

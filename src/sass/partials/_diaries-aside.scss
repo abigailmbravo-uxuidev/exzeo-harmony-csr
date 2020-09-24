@@ -21,9 +21,6 @@
     }
 
     .open-diaries {
-      position: absolute;
-      right: 0;
-
       display: flex;
       overflow: hidden;
       align-self: stretch;
@@ -32,8 +29,8 @@
       flex-shrink: 0;
 
       width: 0;
-      height: calc(100vh - 8.125rem);
-      min-height: calc(100vh - 8.125rem);
+      height: calc(100vh - 8.75rem);
+      min-height: calc(100vh - 8.75rem);
       padding: 0;
 
       border-left: dotted 1px $warm-gray-04;
@@ -222,6 +219,15 @@
         ~ #UnderwritingOverride {
           margin-right: 4rem;
         }
+      }
+    }
+  }
+
+  &.quote {
+    main {
+      .open-diaries {
+        position: absolute;
+        right: 0;
       }
     }
   }
