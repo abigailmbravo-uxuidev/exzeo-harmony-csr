@@ -57,7 +57,10 @@ export const DiaryModal = ({ errorHandler }) => {
         bottom: window.innerHeight - 200
       }}
     >
-      <div className={classNames('new-diary-file', { minimize: minimize })}>
+      <div
+        role="dialog"
+        className={classNames('new-diary-file', { minimize: minimize })}
+      >
         <div className="title-bar">
           <div className="title" data-test="diary-minimize-button">
             <i className="fa fa-th" />

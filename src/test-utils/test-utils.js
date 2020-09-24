@@ -20,6 +20,8 @@ import { DiariesContext } from '../context/diaries-context';
 
 const mockStore = configureStore([thunk]);
 
+export const tl_render = render;
+
 export const customRender = (
   ui,
   {
