@@ -1,35 +1,29 @@
-import React from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { Button } from '@exzeo/core-ui';
-// import { useDiaries } from '../../../context/diaries-context';
-// import { filterOpenDiaries } from '../utilities';
+import { useDiaries } from '../../../context/diaries-context';
+import { filterOpenDiaries } from '../utilities';
 
-const DiaryIndicator = ({
-  diariesDispatch,
-  showDiaries,
-  openDiaryCount
-  // meta
-}) => {
-  // TODO - (Add a ticket before merging if this comment is still here) this can be un-commented after we remove from WorkflowWrapper, which is waiting on some CSS changes.
-  // const {
-  //   showDiariesBar,
-  //   toggleShowDiariesBar,
-  //   diaries,
-  //   diaryEnums,
-  //   getDiaryEnums
-  // } = useDiaries();
-  //
-  // useEffect(() => {
-  //   getDiaryEnums({
-  //     companyCode: meta.companyCode,
-  //     state: meta.state,
-  //     product: meta.product
-  //   });
-  // }, [meta.companyCode, meta.state, meta.product, getDiaryEnums]);
-  //
-  // const openDiaryCount = useMemo(() => {
-  //   const openDiaries = filterOpenDiaries(diaries, diaryEnums);
-  //   return openDiaries.length;
-  // }, [diaries, diaryEnums]);
+const DiaryIndicator = ({ meta }) => {
+  const {
+    showDiariesBar: showDiaries,
+    diaries,
+    diaryEnums,
+    getDiaryEnums,
+    diariesDispatch
+  } = useDiaries();
+
+  useEffect(() => {
+    getDiaryEnums({
+      companyCode: meta.companyCode,
+      state: meta.state,
+      product: meta.product
+    });
+  }, [meta.companyCode, meta.state, meta.product, getDiaryEnums]);
+
+  const openDiaryCount = useMemo(() => {
+    const openDiaries = filterOpenDiaries(diaries, diaryEnums);
+    return openDiaries.length;
+  }, [diaries, diaryEnums]);
 
   return (
     <div
