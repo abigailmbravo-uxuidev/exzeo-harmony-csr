@@ -18,11 +18,11 @@ export function useDiaryPolling(filter) {
   useEffect(() => {
     let interval;
     if (shouldPoll) {
-      getDiaries(pollingFilter, { checkEquality: true });
+      getDiaries(pollingFilter);
 
       interval = setInterval(() => {
         if (!document[INACTIVE_BROWSER_TAB_KEY]) {
-          getDiaries(pollingFilter, { checkEquality: true });
+          getDiaries(pollingFilter, { checkEquality: true, noRetries: true });
         }
       }, POLLING_TIMEOUT);
     }

@@ -25,7 +25,15 @@ export async function fetchDiaries(filter, options) {
     data: { ...filterData, resourceId: resourceIdQuery }
   };
 
-  const response = await serviceRunner.callService(config, 'fetchDiaries');
+  const axiosOptions = {
+    ...(options.noRetries && { retries: 0 })
+  };
+
+  const response = await serviceRunner.callService(
+    config,
+    'fetchDiaries',
+    axiosOptions
+  );
   return response.data.result;
 }
 
