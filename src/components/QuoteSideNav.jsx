@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
-import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { SideNavigation } from '@exzeo/core-ui/src/@Harmony';
 
-import { toggleDiary, toggleNote } from '../state/actions/ui.actions';
+import { toggleNote } from '../state/actions/ui.actions';
 import { QUOTE_RESOURCE_TYPE } from '../constants/diaries';
 
 import PlusButton from './PlusButton';

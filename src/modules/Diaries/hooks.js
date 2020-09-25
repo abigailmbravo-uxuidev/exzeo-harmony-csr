@@ -29,6 +29,7 @@ export function useDiaryPolling(filter) {
 
     return () => clearInterval(interval);
     // Firing this 'on mount' only as the filter should not change within the same instance.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 }
 
