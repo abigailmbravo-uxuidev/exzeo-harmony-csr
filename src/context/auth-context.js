@@ -36,9 +36,10 @@ export function Auth0Provider({
   const history = useHistory();
 
   useEffect(() => {
-    let interval;
     // We don't want to do this during Cypress tests, and its far too complicated to ensure its working during Cypress tests. Also we cannot test this functionality in Cypress either - can't test multiple tabs.
     if (window.Cypress) return;
+
+    let interval;
     if (isAuthenticated) {
       interval = setInterval(async () => {
         const isAuthenticated = await auth0Client.isAuthenticated();
