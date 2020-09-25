@@ -4,7 +4,7 @@ import { date, Button, BootstrapTable, ToolkitProvider } from '@exzeo/core-ui';
 import { Search } from 'react-bootstrap-table2-toolkit';
 import { useDiaries } from '../../../context/diaries-context';
 import * as notesUtils from '../../NotesFiles/utilities';
-import { DIARY_STATUS_COLOR, DIARY_STATUS } from '../constants';
+import { DIARY_STATUS_COLOR, DIARY_STATUS } from '../../../constants/diaries';
 import { formatDiariesForTable } from '../index';
 
 const statusFormatter = status => {
