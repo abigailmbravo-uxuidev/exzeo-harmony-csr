@@ -105,6 +105,24 @@ export const isPastDue = dateString => {
 };
 
 /**
+ * Is date provided today
+ * @param dateString
+ * @returns {boolean}
+ */
+export const isToday = dateString => {
+  const today = date.currentDay(date.FORMATS.SECONDARY);
+
+  return date.moment(dateString).isSame(today, 'd');
+};
+
+export const addDate = (days, dateString) => {
+  return date.moment
+    .utc(dateString)
+    .add(days, 'd')
+    .format(date.FORMATS.SECONDARY);
+};
+
+/**
  * format Diary properties
  * @param entry object
  * @param reasonOptions

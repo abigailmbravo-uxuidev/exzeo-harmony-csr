@@ -2,7 +2,7 @@ import React, { useMemo } from 'react';
 import { NavLink, useHistory } from 'react-router-dom';
 import { useUser } from '../context/user-context';
 import { useDiaries } from '../context/diaries-context';
-import { isPastDue, isToday } from '../utilities/diaries';
+import { isPastDue, isToday } from '../modules/Diaries/utilities';
 import { doesUserHaveAccess } from '../utilities/userResources';
 
 export const getNavLinks = ({ enableBulkMortgage }) => {

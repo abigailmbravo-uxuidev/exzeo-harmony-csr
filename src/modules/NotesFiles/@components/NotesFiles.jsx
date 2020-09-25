@@ -3,19 +3,15 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { SectionLoader } from '@exzeo/core-ui';
 
-import { useDiaries } from '../../../context/diaries-context';
-import { formatDiariesForTable } from '../../Diaries';
-
 import { NOTE_TYPE, DIARY_TAB, FILES_TAB, NOTE_TAB } from '../constants';
 import { useFetchNotes } from '../hooks';
 import { determineSource } from '../utilities';
 import NotesTable from './NotesTable';
 import FilesTable from './FilesTable';
-import DiariesTable from './DiariesTable';
+import DiariesTable from '../../Diaries/@components/DiariesTable';
 
 function NotesFiles({ customHandlers, initialValues }) {
   const [selectedTab, setSelectedTab] = useState(NOTE_TYPE.notes);
-  const { diaries, diaryEnums, diariesDispatch } = useDiaries();
 
   const { sourceNumbers, sourceType } = determineSource(initialValues);
 
@@ -28,7 +24,6 @@ function NotesFiles({ customHandlers, initialValues }) {
 
   const allNotes = notes.filter(n => n.noteContent);
   const notesWithAttachments = notes.filter(n => n.noteAttachments.length > 0);
-  const formattedDiaries = formatDiariesForTable(diaries, diaryEnums);
 
   if (!notesLoaded) {
     return <SectionLoader />;
@@ -81,13 +76,7 @@ function NotesFiles({ customHandlers, initialValues }) {
             errorHandler={customHandlers.setAppError}
           />
         )}
-        {selectedTab === DIARY_TAB && (
-          <DiariesTable
-            data={formattedDiaries}
-            diariesDispatch={diariesDispatch}
-            document={initialValues}
-          />
-        )}
+        {selectedTab === DIARY_TAB && <DiariesTable document={initialValues} />}
       </div>
     </div>
   );

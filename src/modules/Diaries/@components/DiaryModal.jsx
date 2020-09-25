@@ -18,7 +18,7 @@ import classNames from 'classnames';
 
 import { useDiaries } from '../../../context/diaries-context';
 import { useUser } from '../../../context/user-context';
-import { addDate } from '../../../utilities/diaries';
+import { addDate } from '../utilities';
 
 export const DiaryModal = ({ errorHandler }) => {
   const [minimize, setMinimize] = useState(false);

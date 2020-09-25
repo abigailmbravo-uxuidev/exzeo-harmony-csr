@@ -317,6 +317,7 @@ describe('NotesFiles', () => {
     notesFilesData.fetchNotes = jestResolve({ data: { result: [] } });
     notesFilesData.fetchFiles = jestResolve({ data: { result: [] } });
 
+    // TODO: #HAR-10410 move to DiariesTable tests to Diaries module & combine fixtures
     render(<NotesFiles {...props} />, {
       diaries: {
         ...defaultDiaries,

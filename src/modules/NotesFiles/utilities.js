@@ -1,5 +1,4 @@
 import { date } from '@exzeo/core-ui';
-import { groupDiaries } from '../../utilities/diaries';
 
 export const mergeNotes = (notes, files) => {
   const fileList = notes

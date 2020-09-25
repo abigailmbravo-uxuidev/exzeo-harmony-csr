@@ -1,5 +1,5 @@
 import { calculateDecorator, date } from '@exzeo/core-ui';
-import { formatEntry, getDueStatus } from '../../../utilities/diaries';
+import { formatEntry, getDueStatus } from '../../Diaries/utilities';
 
 export const transferDiariesCalculator = calculateDecorator(
   {

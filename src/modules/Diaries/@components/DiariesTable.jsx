@@ -2,9 +2,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { date, Button, BootstrapTable, ToolkitProvider } from '@exzeo/core-ui';
 import { Search } from 'react-bootstrap-table2-toolkit';
-
-import * as notesUtils from '../utilities';
+import { useDiaries } from '../../../context/diaries-context';
+import * as notesUtils from '../../NotesFiles/utilities';
 import { DIARY_STATUS_COLOR, DIARY_STATUS } from '../constants';
+import { formatDiariesForTable } from '../index';
 
 const statusFormatter = status => {
   return (
@@ -129,8 +130,11 @@ const DiaryExpandColumns = ({ diaries }) => {
   );
 };
 
-const DiariesTable = ({ data: diaries = [], diariesDispatch, document }) => {
+const DiariesTable = ({ document }) => {
   const { SearchBar } = Search;
+
+  const { diaries: origDiaries, diaryEnums, diariesDispatch } = useDiaries();
+  const diaries = formatDiariesForTable(origDiaries, diaryEnums);
 
   const makeDiaryButton = diary => {
     return diary.open ? (
@@ -209,8 +213,6 @@ const DiariesTable = ({ data: diaries = [], diariesDispatch, document }) => {
 };
 
 DiariesTable.propTypes = {
-  data: PropTypes.array.isRequired,
-  diariesDispatch: PropTypes.func.isRequired,
   document: PropTypes.object
 };
 
