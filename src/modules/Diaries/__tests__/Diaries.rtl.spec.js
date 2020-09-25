@@ -23,7 +23,7 @@ import DiaryModal from '../@components/DiaryModal.jsx';
 import { diariesResult, diaryOptions } from '../fixtures';
 import * as diariesData from '../data';
 
-// TODO: Talk to Jordan -- split into separate files, use
+// TODO: #HAR-10410 -- use tl_render test to test interactivity between diaryIndicator, OpenDiariesBar, and DiaryModal.
 describe('OpenDiaries Bar', () => {
   it('Diaries Bar displays open diaries', async () => {
     const props = {
@@ -44,7 +44,7 @@ describe('OpenDiaries Bar', () => {
       }
     });
 
-    // Get formatted due dates of mock diaries in ascending
+    // Make mock diaries look the way we expect them to look in order to make assertions
     const openDiariesDueDates = diariesResult
       .filter(d => d.entries[0].open === true)
       .sort()
