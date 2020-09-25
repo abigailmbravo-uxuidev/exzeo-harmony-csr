@@ -112,7 +112,7 @@ function diariesReducer(state, action) {
 
     default: {
       throw new Error(
-        `Unhandled action in DiariesSearch - type: ${action.type}`
+        `Unhandled action in DiariesContext - type: ${action.type}`
       );
     }
   }
@@ -138,7 +138,7 @@ export function DiariesProvider({ children }) {
     showModal,
     error
   } = state;
-  // TODO if we upgrade react-redux, we can get the document from the store instead of having to pass it up here.
+  // TODO when we upgrade react-redux, we can potentially get the document from the store instead of having to pass it up here.
 
   const userProfile = useUser();
 
