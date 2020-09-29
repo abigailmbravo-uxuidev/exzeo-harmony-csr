@@ -101,6 +101,7 @@ export function Auth0Provider({
     <Auth0Context.Provider
       value={{
         error,
+        setError,
         isAuthenticated,
         user,
         userProfile,

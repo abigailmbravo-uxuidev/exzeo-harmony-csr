@@ -49,6 +49,21 @@ export const defaultAuth = {
   logout: x => x
 };
 
+export const defaultDiaries = {
+  diaries: [],
+  diaryEnums: {
+    reasonOptions: [],
+    assigneeOptions: []
+  },
+  getDiaries: x => x,
+  getDiaryEnums: x => x,
+  diariesDispatch: x => x,
+  submitDiary: x => x,
+  showDiariesBar: false,
+  activeDocument: {},
+  selectedDiary: {}
+};
+
 export const defaultInitialProps = {
   match: {
     params: { quoteNumber: '12-345-67' },
@@ -69,9 +84,6 @@ export const defaultQuoteWorkflowProps = {
   getEnumsForQuoteWorkflow: () => {},
   updateQuote: jestResolve(),
   fetchNotes: jestResolve(),
-  toggleDiary: () => {},
-  fetchDiaries: jestResolve(),
-  diaries: [],
   notes: [],
   options: {
     agents: [],
@@ -127,19 +139,21 @@ export const defaultPolicyWorkflowProps = {
   location: { pathname: '' },
   isLoading: false,
   policy,
+  summaryLedger: {
+    status: {}
+  },
   initializePolicyWorkflow: jestResolve(policy),
   getEnumsForPolicyWorkflow: jestResolve(),
   getPaymentHistory: jestResolve(),
   getPolicy: jestResolve(policy),
   updateBillPlan: jestResolve(),
   fetchNotes: jestResolve(),
-  fetchDiaries: jestResolve(),
   setAppError: () => {},
-  toggleDiary: () => {},
   diaries: [],
   claims: [],
   getClaims: jestResolve(),
   notes: [],
+  options: {},
   initialized: true,
   zipCodeSettings: {
     timezone: 'America/New_York'

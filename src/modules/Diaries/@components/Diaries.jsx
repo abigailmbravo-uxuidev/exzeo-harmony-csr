@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { date } from '@exzeo/core-ui';
 
-import ShortenText from './ShortenText';
+import ShortenText from '../../../components/ShortenText';
 
 const DIARY_LEVELS = {
   upComing: {
@@ -27,7 +27,7 @@ const DIARY_LEVELS = {
   }
 };
 
-const Diaries = ({ diaryLevel, diaries, onToggleDiary }) => {
+const Diaries = ({ diaryLevel, diaries, handleClick }) => {
   const severity = DIARY_LEVELS[diaryLevel];
 
   return (
@@ -39,7 +39,7 @@ const Diaries = ({ diaryLevel, diaries, onToggleDiary }) => {
       <div>
         <ul className="fa-ul diary-list">
           {diaries.map(diary => (
-            <li key={diary.diaryId} data-test={severity.sectionClass}>
+            <li key={diary._id} data-test={severity.sectionClass}>
               <div className="diary-header">
                 <i className={severity.listIconClass} aria-hidden="true" />
                 <span className="diary-due-date">
@@ -47,7 +47,7 @@ const Diaries = ({ diaryLevel, diaries, onToggleDiary }) => {
                 </span>
                 <button
                   className="btn btn-link btn-sm"
-                  onClick={() => onToggleDiary(diary)}
+                  onClick={() => handleClick(diary)}
                 >
                   <i className="fa fa-chevron-circle-up" />
                   Open
@@ -70,7 +70,7 @@ const Diaries = ({ diaryLevel, diaries, onToggleDiary }) => {
 
 Diaries.propTypes = {
   diaryLevel: PropTypes.oneOf(['upComing', 'pastDue', 'dueSoon']).isRequired,
-  onToggleDiary: PropTypes.func.isRequired,
+  handleClick: PropTypes.func.isRequired,
   diaries: PropTypes.arrayOf(
     PropTypes.shape({
       _id: PropTypes.string,

@@ -1,16 +1,20 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Loader, FormSpy, remoteSubmit } from '@exzeo/core-ui';
+import { Loader, FormSpy, remoteSubmit, format, date } from '@exzeo/core-ui';
 import {
   AgencyAgentSelect,
   getConfigForJsonTransform,
-  Gandalf
+  Gandalf,
+  DetailsHeader
 } from '@exzeo/core-ui/src/@Harmony';
 
 import { defaultMemoize } from 'reselect';
 
 import { QUOTE_RESOURCE_TYPE } from '../../constants/diaries';
-import { toggleDiary } from '../../state/actions/ui.actions';
+import { STANDARD_DATE_FORMAT } from '../../constants/dates';
+import { DEFAULT_DETAILS, BASE_MAP_URI } from '../../constants/detailHeader';
+import { UNQUALIFIED_STATE, QUOTE_STATE } from '../../utilities/quoteState';
+import * as detailUtils from '../../utilities/documentDetails';
 import { setAppError } from '../../state/actions/error.actions';
 import {
   retrieveQuote,
@@ -20,19 +24,15 @@ import {
 import { getZipcodeSettings } from '../../state/actions/service.actions';
 import { getEnumsForQuoteWorkflow } from '../../state/actions/list.actions';
 import { getQuoteSelector } from '../../state/selectors/quote.selectors';
-import { getDiariesForTable } from '../../state/selectors/diary.selectors';
-import { UNQUALIFIED_STATE, QUOTE_STATE } from '../../utilities/quoteState';
-
-import App from '../../components/AppWrapper';
-import OpenDiariesBar from '../../components/OpenDiariesBar';
-import DiaryPolling from '../../components/DiaryPolling';
+import App from '../../components/WorkflowWrapper';
 import NavigationPrompt from '../../components/NavigationPrompt';
+import QuoteSideNav from '../../components/QuoteSideNav';
+import { OpenDiariesBar } from '../Diaries';
 
 import {
   ROUTES_NOT_HANDLED_BY_GANDALF,
   PAGE_ROUTING
 } from './constants/workflowNavigation';
-
 import Application from './Application';
 import PolicyHolders from './PolicyHolders';
 import NotesFiles from '../NotesFiles';
@@ -55,6 +55,64 @@ const getCurrentStepAndPage = defaultMemoize(pathname => {
   };
 });
 
+const getHeaderDetails = defaultMemoize((quote, appraisalList) => {
+  if (!quote || !quote.quoteNumber) return DEFAULT_DETAILS;
+
+  const {
+    product,
+    quoteNumber,
+    quoteState,
+    policyHolders,
+    policyHolderMailingAddress: pHMA = {},
+    property,
+    effectiveDate,
+    rating = {},
+    policyNumber,
+    endDate
+  } = quote;
+
+  const { constructionType, floodZone, physicalAddress, territory } = property;
+
+  const mapQuery = detailUtils.getMapQuery(physicalAddress);
+
+  const appraisal =
+    (appraisalList || []).find(
+      x => x.label === property.physicalAddress.county
+    ) || {};
+
+  return {
+    constructionType,
+    floodZone,
+    currentPremium: rating.totalPremium
+      ? `${format.toCurrency(rating.totalPremium)}`
+      : '--',
+    territory,
+    county: physicalAddress.county,
+    effectiveDate: date.formattedDate(effectiveDate, STANDARD_DATE_FORMAT),
+    endDate: date.formattedDate(endDate, STANDARD_DATE_FORMAT),
+    appraisalURI: {
+      label: 'PAS',
+      value: appraisal.answer
+    },
+    mapURI: `${BASE_MAP_URI}${mapQuery}`,
+    status: quoteState,
+    details: {
+      product: detailUtils.getProductName(product),
+      quoteNumber
+    },
+    policyHolder: detailUtils.getPrimaryPolicyHolder(policyHolders),
+    mailingAddress: detailUtils.getMailingAddress(pHMA),
+    propertyAddress: {
+      address1: physicalAddress.address1,
+      address2: physicalAddress.address2,
+      csz: detailUtils.getCityStateZip(physicalAddress)
+    },
+    policyNumber,
+    sourcePath: policyNumber ? `/policy/${policyNumber}/coverage` : null,
+    showPolicyLink: quoteState === 'Policy Issued'
+  };
+});
+
 const TEMPLATES = {
   'TTIC:FL:AF3': TTICFLAF3,
   'TTIC:FL:HO3': TTICFLHO3,
@@ -67,7 +125,6 @@ const FORM_ID = 'QuoteWorkflowCSR';
 export class QuoteWorkflow extends React.Component {
   state = {
     gandalfTemplate: null,
-    showDiaries: false,
     applicationSent: false,
     showApplicationModal: false
   };
@@ -177,10 +234,6 @@ export class QuoteWorkflow extends React.Component {
     }
   };
 
-  handleToggleDiaries = () => {
-    this.setState({ showDiaries: !this.state.showDiaries });
-  };
-
   isSubmitDisabled = (pristine, submitting, values) => {
     const { location, quote } = this.props;
     if (quote.editingDisabled || this.state.applicationSent) return true;
@@ -226,7 +279,6 @@ export class QuoteWorkflow extends React.Component {
 
   render() {
     const {
-      diaries,
       history,
       isLoading,
       location,
@@ -238,7 +290,9 @@ export class QuoteWorkflow extends React.Component {
       notesSynced
     } = this.props;
 
-    const { showDiaries, gandalfTemplate } = this.state;
+    const { gandalfTemplate } = this.state;
+
+    const headerDetails = getHeaderDetails(quote, options.appraisers);
     const { currentRouteName, currentStepNumber } = getCurrentStepAndPage(
       location.pathname
     );
@@ -264,14 +318,26 @@ export class QuoteWorkflow extends React.Component {
 
         {quote.quoteNumber && gandalfTemplate && (
           <App
-            header={gandalfTemplate.header}
-            context={match.path.split('/')[1]}
-            resourceType={QUOTE_RESOURCE_TYPE}
-            resourceId={quote.quoteNumber}
+            template={gandalfTemplate}
+            headerTitle="Quote"
             pageTitle={`Q: ${quote.quoteNumber || ''}`}
-            match={match}
-            onToggleDiaries={this.handleToggleDiaries}
-            showDiaries={showDiaries}
+            diaryPollingFilter={{
+              resourceId: quote.quoteNumber,
+              resourceType: QUOTE_RESOURCE_TYPE
+            }}
+            aside={
+              <aside className="content-panel-left">
+                <QuoteSideNav match={match} quote={quote} />
+              </aside>
+            }
+            subHeader={
+              <DetailsHeader
+                context="quote"
+                modalHandlers={this.modalHandlers}
+                detailsFields={gandalfTemplate.header}
+                headerDetails={headerDetails}
+              />
+            }
           >
             <div className="content-wrapper">
               <div className="route-content">
@@ -283,7 +349,7 @@ export class QuoteWorkflow extends React.Component {
                     customHandlers={customHandlers}
                     handleSubmit={this.handleGandalfSubmit}
                     initialValues={quote}
-                    options={{ diaries, notes, ...options }} // enums for select/radio fields
+                    options={{ notes, ...options }} // enums for select/radio fields
                     path={location.pathname}
                     template={gandalfTemplate}
                     transformConfig={transformConfig}
@@ -333,25 +399,18 @@ export class QuoteWorkflow extends React.Component {
               </div>
             </div>
 
-            <UnderwritingValidationBar
-              quoteData={quote}
-              updateQuote={updateQuote}
-            />
-
-            <OpenDiariesBar
-              entity={quote}
-              resourceId={quote.quoteNumber}
-              resourceType={QUOTE_RESOURCE_TYPE}
-            />
-
-            {quote && quote.quoteNumber && (
-              <DiaryPolling
-                filter={{
-                  resourceId: quote.quoteNumber,
-                  resourceType: QUOTE_RESOURCE_TYPE
-                }}
+            <div className="sidebar-wrapper">
+              <OpenDiariesBar
+                document={quote}
+                resourceId={quote.quoteNumber}
+                resourceType={QUOTE_RESOURCE_TYPE}
               />
-            )}
+
+              <UnderwritingValidationBar
+                quoteData={quote}
+                updateQuote={updateQuote}
+              />
+            </div>
           </App>
         )}
       </div>
@@ -364,7 +423,6 @@ const mapStateToProps = state => {
     quote: getQuoteSelector(state),
     options: state.list,
     isLoading: state.ui.isLoading,
-    diaries: getDiariesForTable(state),
     notes: state.notes,
     notesSynced: state.ui.notesSynced
   };
@@ -376,6 +434,5 @@ export default connect(mapStateToProps, {
   verifyQuote,
   getZipCodeSettings: getZipcodeSettings,
   getEnumsForQuoteWorkflow,
-  updateQuote,
-  toggleDiary
+  updateQuote
 })(QuoteWorkflow);

@@ -1,42 +1,38 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { ReceiptHandler } from '@exzeo/core-ui/src/@Harmony';
 
 import { setAppState } from './state/actions/appState.actions';
 import { setAppError, clearAppError } from './state/actions/error.actions';
-import { getDiaryAssigneeOptions } from './state/actions/questions.actions';
 import { createQuote, retrieveQuote } from './state/actions/quote.actions';
 import { useAuth0 } from './context/auth-context';
 import { useUser } from './context/user-context';
 import NotFoundPage from './components/NotFound';
 import Reports from './components/Reports';
 import NoteUploader from './components/NoteUploader';
-import DiaryModal from './components/DiaryModal';
 import ErrorModal from './components/ErrorModal';
+
+import { DiaryModal } from './modules/Diaries';
 import { QuoteLanding, QuoteWorkflow } from './modules/Quote';
 import { Search } from './modules/Search';
 import { PolicyWorkflow } from './modules/Policy';
 import { FinanceWorkflow } from './modules/Finance';
 import { BulkMortgage } from './modules/BulkMortgage';
 import Agency from './modules/Agency';
+import { useDiaries } from './context/diaries-context';
 
 function AuthenticatedApp({
-  ui: { diary, note, minimizeNote, minimizeDiary },
+  ui: { note, minimizeNote },
   setAppError,
   clearAppError,
-  getDiaryAssigneeOptions,
   error,
-  diaryOptions,
   createQuote,
   retrieveQuote
 }) {
   const { logout } = useAuth0();
   const userProfile = useUser();
-
-  useEffect(() => {
-    getDiaryAssigneeOptions(userProfile);
-  });
+  const { showModal: showDiaryModal, diariesDispatch } = useDiaries();
 
   return (
     <div>
@@ -115,22 +111,7 @@ function AuthenticatedApp({
 
         <ErrorModal error={error} handleClose={clearAppError} />
 
-        {diary && diary.resourceType && (
-          <DiaryModal
-            diaryOptions={diaryOptions}
-            minimizeDiary={minimizeDiary}
-            user={userProfile}
-            diaryId={diary.selectedDiary ? diary.selectedDiary.diaryId : null}
-            resourceType={diary.resourceType}
-            resourceId={diary.resourceId}
-            sourceNumber={
-              diary.entity && diary.entity.sourceNumber
-                ? diary.entity.sourceNumber
-                : null
-            }
-            entity={diary.entity}
-          />
-        )}
+        {showDiaryModal && <DiaryModal errorHandler={setAppError} />}
 
         {note && note.documentId && (
           <NoteUploader
@@ -142,8 +123,9 @@ function AuthenticatedApp({
             documentId={note.documentId}
             sourceId={note.sourceNumber}
             resourceType={note.resourceType}
-            entity={note.entity}
+            document={note.entity}
             user={userProfile}
+            diariesDispatch={diariesDispatch}
           />
         )}
       </div>
@@ -153,15 +135,13 @@ function AuthenticatedApp({
 
 const mapStateToProps = state => ({
   error: state.error,
-  ui: state.ui,
-  diaryOptions: state.list.diaryOptions
+  ui: state.ui
 });
 
 export default connect(mapStateToProps, {
   clearAppError,
   setAppError,
   setAppState,
-  getDiaryAssigneeOptions,
   createQuote,
   retrieveQuote
 })(AuthenticatedApp);

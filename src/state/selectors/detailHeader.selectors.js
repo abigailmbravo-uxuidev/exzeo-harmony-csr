@@ -1,7 +1,7 @@
 import { createSelector } from 'reselect';
 import { date, format } from '@exzeo/core-ui';
 
-import * as detailUtils from '../../utilities/entityDetails';
+import * as detailUtils from '../../utilities/documentDetails';
 import { STANDARD_DATE_FORMAT } from '../../constants/dates';
 
 import { getPolicy, getSummaryLedger, getQuote } from './entity.selectors';

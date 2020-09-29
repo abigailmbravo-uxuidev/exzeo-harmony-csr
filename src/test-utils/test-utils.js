@@ -9,16 +9,24 @@ import { render, fireEvent } from '@testing-library/react';
 
 import rootReducer from '../state/reducers';
 
-import { defaultInitialState, defaultAuth } from './defaultPropsAndState';
+import {
+  defaultInitialState,
+  defaultAuth,
+  defaultDiaries
+} from './defaultPropsAndState';
 import { Auth0Context } from '../context/auth-context';
 import { UserContext } from '../context/user-context';
+import { DiariesContext } from '../context/diaries-context';
 
 const mockStore = configureStore([thunk]);
+
+export const tl_render = render;
 
 export const customRender = (
   ui,
   {
     auth = defaultAuth,
+    diaries = defaultDiaries,
     route = '/',
     history = createMemoryHistory({ initialEntries: [route] }),
     state = defaultInitialState,
@@ -27,11 +35,15 @@ export const customRender = (
 ) => ({
   ...render(
     <Router history={history}>
-      <Auth0Context.Provider value={auth}>
-        <UserContext.Provider value={auth.userProfile}>
-          <Provider store={store}>{ui}</Provider>
-        </UserContext.Provider>
-      </Auth0Context.Provider>
+      <Provider store={store}>
+        <Auth0Context.Provider value={auth}>
+          <UserContext.Provider value={auth.userProfile}>
+            <DiariesContext.Provider value={diaries}>
+              {ui}
+            </DiariesContext.Provider>
+          </UserContext.Provider>
+        </Auth0Context.Provider>
+      </Provider>
     </Router>
   )
 });

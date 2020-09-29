@@ -1,136 +1,22 @@
 import React from 'react';
-import { connect } from 'react-redux';
-import { NavLink, Link, useHistory } from 'react-router-dom';
 
-import DiaryPolling from './DiaryPolling';
-import { isPastDue, isToday } from '../utilities/diaries';
 import logo from '../img/Harmony.svg';
-import { userResources } from '../utilities/userResources';
-import { useUser } from '../context/user-context';
+import { useDiaryPolling } from '../modules/Diaries/hooks';
 
-export const getNavLinks = ({ enableBulkMortgage }) => {
-  return [
-    {
-      id: 'bulk-mortgage',
-      path: '/bulkMortgage',
-      name: 'Bulk Mortgage',
-      hidden: !enableBulkMortgage
-    },
-    {
-      id: 'reports',
-      path: '/reports',
-      name: 'Reports'
-    },
-    {
-      id: 'agency',
-      path: '/agency',
-      name: 'Agency'
-    },
-    {
-      id: 'bulk-payments',
-      path: '/finance/payments',
-      name: 'Finance'
-    },
-    {
-      id: 'policy',
-      path: '/',
-      name: 'Policy',
-      activeRoutes: ['/', '/quote', '/address']
-    }
-  ];
-};
-
-const Header = ({ diaries }) => {
-  const userProfile = useUser();
-  const history = useHistory();
-
-  const pastDiaries = diaries.filter(diary => {
-    const entry = diary.entries[0];
-    return (isPastDue(entry.due) || isToday(entry.due)) && entry.open;
-  });
-
-  function handleLogout() {
-    history.replace('/logout');
-  }
-
-  const { enableBulkMortgage } = userResources(
-    userProfile,
-    'INSERT',
-    'BulkMortgage:MortgageeJobs:*'
-  );
+const Header = ({ diaryPollingFilter, title, children }) => {
+  useDiaryPolling(diaryPollingFilter);
 
   return (
     <header>
       <div role="banner">
-        <button className="btn-icon btn-bars">
-          <i className="fa fa-bars" />
-        </button>
-        <Link to="/" id="logo" className="logo">
+        {title}
+        <a href="/" id="logo" className="logo">
           <img src={logo} alt="Harmony" />
-        </Link>
-        <button className="btn-icon btn-ellipsis-v">
-          <i className="fa fa-ellipsis-v" />
-        </button>
-        <nav>
-          <NavLink
-            activeClassName="active"
-            exact
-            to="/diaries"
-            data-test="diaries-link"
-          >
-            Diaries
-            {pastDiaries.length > 0 && (
-              <span className="count-bubble">{pastDiaries.length}</span>
-            )}
-          </NavLink>
-          {getNavLinks({ enableBulkMortgage }).map(
-            ({ path, name, id, hidden, activeRoutes }) => (
-              <NavLink
-                key={id}
-                activeClassName="active"
-                exact
-                isActive={(match, location) => {
-                  if (
-                    Array.isArray(activeRoutes) &&
-                    activeRoutes.includes(location.pathname)
-                  ) {
-                    return true;
-                  }
-                  return match;
-                }}
-                to={path}
-                data-test={`${id}-link`}
-                hidden={hidden}
-              >
-                {name}
-              </NavLink>
-            )
-          )}
-          <div className="user-name">
-            {userProfile ? userProfile.userName : ''}
-          </div>
-          <button tabIndex="0" className="btn btn-action">
-            <i className="fa fa-gear" />
-          </button>
-          <button
-            tabIndex="0"
-            className="btn logout btn-action"
-            type="button"
-            onClick={() => handleLogout()}
-          >
-            <i className="fa fa-sign-out" />
-          </button>
-        </nav>
+        </a>
+        {children}
       </div>
-      {userProfile?.userId && (
-        <DiaryPolling filter={{ assignees: [userProfile.userId] }} />
-      )}
     </header>
   );
 };
 
-const mapStateToProps = state => ({
-  diaries: state.diaries
-});
-
-export default connect(mapStateToProps)(Header);
+export default Header;

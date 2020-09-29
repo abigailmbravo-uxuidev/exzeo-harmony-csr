@@ -1,4 +1,4 @@
-import * as entityDetails from './entityDetails';
+import * as documentDetails from './documentDetails';
 import { date } from '@exzeo/core-ui';
 
 const getExpectedValue = dateString =>
@@ -6,24 +6,24 @@ const getExpectedValue = dateString =>
 
 describe('getProductName', () => {
   it('should return product name HO3', () => {
-    const result = entityDetails.getProductName('HO3');
+    const result = documentDetails.getProductName('HO3');
     expect(result).toEqual('HO3 Homeowners');
   });
 
   it('should return product name AF3', () => {
-    const result = entityDetails.getProductName('AF3');
+    const result = documentDetails.getProductName('AF3');
     expect(result).toEqual('AF3 Flood');
   });
 
   it('should return product name FAKE_PRODUCT', () => {
-    const result = entityDetails.getProductName('FAKE_PRODUCT');
+    const result = documentDetails.getProductName('FAKE_PRODUCT');
     expect(result).toEqual('FAKE_PRODUCT');
   });
 });
 
 describe('getMapQuery', () => {
   it('should return address URI', () => {
-    const result = entityDetails.getMapQuery({
+    const result = documentDetails.getMapQuery({
       _id: '5bb77c3fa0a55800133fb7e4',
       city: 'Wayne',
       zip: '07470',
@@ -44,7 +44,7 @@ describe('getMapQuery', () => {
 
 describe('getCityStateZip', () => {
   it('should return address URI', () => {
-    const result = entityDetails.getCityStateZip({
+    const result = documentDetails.getCityStateZip({
       city: 'Tampa',
       state: 'FL',
       zip: '33607'
@@ -366,7 +366,7 @@ describe('Test getCancellationDate', () => {
       expectedLabel
     ) => {
       test(`PolicyStatus: ${policyStatus} Billing Status: ${summaryLedger.status.displayText}`, () => {
-        const result = entityDetails.getCancellationDate(
+        const result = documentDetails.getCancellationDate(
           summaryLedger,
           policyStatus,
           cancelDate,
@@ -421,7 +421,7 @@ describe('Test getNonPaymentNoticeDate', () => {
     'getNonPaymentNoticeDate',
     (summaryLedger, policyStatus, expectedValue) => {
       test(`PolicyStatus: ${policyStatus} Billing Status: ${summaryLedger.status.displayText}`, () => {
-        const result = entityDetails.getNonPaymentNoticeDate(
+        const result = documentDetails.getNonPaymentNoticeDate(
           summaryLedger,
           policyStatus
         );
@@ -473,7 +473,7 @@ describe('Test getNonPaymentNoticeDate', () => {
     'Test getNonPaymentNoticeDueDate',
     (summaryLedger, policyStatus, expectedValue) => {
       test(`PolicyStatus: ${policyStatus} Billing Status: ${summaryLedger.status.displayText}`, () => {
-        const result = entityDetails.getNonPaymentNoticeDueDate(
+        const result = documentDetails.getNonPaymentNoticeDueDate(
           summaryLedger,
           policyStatus
         );
