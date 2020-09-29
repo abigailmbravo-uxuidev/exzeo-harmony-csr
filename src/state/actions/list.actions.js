@@ -1,6 +1,5 @@
 import * as serviceRunner from '@exzeo/core-ui/src/@Harmony/Domain/Api/serviceRunner';
 import * as listTypes from '../actionTypes/list.actionTypes';
-import { fetchDiaryOptions } from './diary.actions';
 import { setAppError } from './error.actions';
 import { fetchNotes } from './notes.actions';
 
@@ -32,18 +31,15 @@ export function getEnumsForQuoteWorkflow({
       // this pattern sets us up to "parallelize" the network requests in this function. We want to
       // fetch all enums/data needed for the quote workflow in here.
       // 1. assign async function(s) to variable(s) - calls the func
-      const diaryOptions = fetchDiaryOptions(companyCode, state, product);
       const propertyAppraisals = fetchPropertyAppriasals();
 
       // 2. new variable awaits the previous.
-      const diaryOptionsResponse = await diaryOptions;
       const propertyAppraisalsResponse = await propertyAppraisals;
 
       dispatch(
         setEnums({
           propertyAppraisalQuestions:
-            propertyAppraisalsResponse.data.data[0].answers,
-          diaryOptions: diaryOptionsResponse
+            propertyAppraisalsResponse.data.data[0].answers
         })
       );
     } catch (error) {
@@ -73,17 +69,14 @@ export async function fetchPropertyAppriasals() {
 export function getEnumsForPolicyWorkflow({ companyCode, state, product }) {
   return async dispatch => {
     try {
-      const diaryOptions = fetchDiaryOptions(companyCode, state, product);
       const propertyAppraisals = fetchPropertyAppriasals();
 
-      const diaryOptionsResponse = await diaryOptions;
       const propertyAppraisalsResponse = await propertyAppraisals;
 
       dispatch(
         setEnums({
           propertyAppraisalQuestions:
-            propertyAppraisalsResponse.data.data[0].answers,
-          diaryOptions: diaryOptionsResponse
+            propertyAppraisalsResponse.data.data[0].answers
         })
       );
     } catch (error) {

@@ -75,10 +75,12 @@ describe('Summary testing with finished Quote', () => {
   });
 
   it('POS:Coverage Rating', () => {
-    const { getByText } = render(<QuoteWorkflow {...props} />);
+    const { getByText, getByTestId } = render(<QuoteWorkflow {...props} />);
 
     expect(getByText('Yearly Premium'));
-    expect(getByText('$9,876'));
+    expect(getByTestId('Yearly Premium').nextSibling.textContent).toBe(
+      '$9,876'
+    );
     expect(getByText('A. Dwelling'));
     expect(getByText('$100'));
     expect(getByText('B. Other Structures'));
@@ -113,24 +115,29 @@ describe('Summary testing with finished Quote', () => {
 
   it('POS:Primary Policyholder Testing', () => {
     const { getByText } = render(<QuoteWorkflow {...props} />);
-
-    expect(getByText('Policyholder Name'));
-    expect(getByText('Robert Pollard'));
-    expect(getByText('Phone Number'));
-    expect(getByText('(123) 123-1231'));
-    expect(getByText('Email'));
-    expect(getByText('AlienLanes@gbv.com'));
-    expect(getByText('Electronic Delivery'));
-    expect(getByText('No'));
+    const quoteWorkflow = document.querySelector('form#QuoteWorkflowCSR');
+    expect(within(quoteWorkflow).getByText('Policyholder Name'));
+    expect(within(quoteWorkflow).getByText('Robert Pollard'));
+    expect(within(quoteWorkflow).getByText('Phone Number'));
+    expect(within(quoteWorkflow).getByText('(123) 123-1231'));
+    expect(within(quoteWorkflow).getByText('Email'));
+    expect(within(quoteWorkflow).getByText('AlienLanes@gbv.com'));
+    expect(within(quoteWorkflow).getByText('Electronic Delivery'));
+    expect(within(quoteWorkflow).getByText('No'));
   });
 
   it('POS:Mailing Address', () => {
-    const { getByText } = render(<QuoteWorkflow {...props} />);
+    const { getByText, getByTestId } = render(<QuoteWorkflow {...props} />);
+    const quoteWorkflow = document.querySelector('form#QuoteWorkflowCSR');
 
     expect(getByText('Address'));
-    expect(getByText('6666 mailing address'));
+    expect(getByTestId('Address').nextSibling.textContent).toBe(
+      '6666 mailing address'
+    );
     expect(getByText('City/State/Zip'));
-    expect(getByText('TAMPA, FL 98765'));
+    expect(getByTestId('City/State/Zip').nextSibling.textContent).toBe(
+      'TAMPA, FL 98765'
+    );
     expect(getByText('Country'));
     expect(getByText('test country'));
   });

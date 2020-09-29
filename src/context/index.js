@@ -5,6 +5,7 @@ import { BrowserRouter as Router } from 'react-router-dom';
 import configureStore from '../state/store/configureStore';
 import { Auth0Provider } from './auth-context';
 import { UserProvider } from './user-context';
+import { DiariesProvider } from './diaries-context';
 
 const store = configureStore();
 
@@ -28,7 +29,9 @@ function AppProviders({ children }) {
           redirect_uri={process.env.REACT_APP_AUTH0_PRIMARY_URL}
           onRedirectCallback={onRedirectCallback}
         >
-          <UserProvider>{children}</UserProvider>
+          <UserProvider>
+            <DiariesProvider>{children}</DiariesProvider>
+          </UserProvider>
         </Auth0Provider>
       </Provider>
     </Router>

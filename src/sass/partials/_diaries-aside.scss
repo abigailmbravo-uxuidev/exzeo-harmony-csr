@@ -7,30 +7,32 @@
         > i.fa {
           flex-grow: 0;
           flex-shrink: 0;
+
           width: auto;
         }
 
         span {
           flex-grow: 1;
           flex-shrink: 1;
+
           padding-right: ($padding * 2.25);
         }
       }
     }
 
     .open-diaries {
-      position: absolute;
-      right: 0;
       display: flex;
       overflow: hidden;
       align-self: stretch;
       flex-direction: column;
       flex-grow: 0;
       flex-shrink: 0;
-      padding: 0;
-      min-height: calc(100vh - 8.125rem);
+
       width: 0;
-      height: calc(100vh - 8.125rem);
+      height: calc(100vh - 8.75rem);
+      min-height: calc(100vh - 8.75rem);
+      padding: 0;
+
       border-left: dotted 1px $warm-gray-04;
       background: $white;
 
@@ -41,7 +43,9 @@
         align-items: center;
         flex-grow: 0;
         flex-shrink: 0;
+
         height: 3rem;
+
         border-bottom: 1px dotted $warm-gray-04;
         background: $white;
 
@@ -54,21 +58,26 @@
         overflow-y: auto;
         flex-grow: 1;
         flex-shrink: 1;
-        padding: 0 0 0 ($padding * 2);
+
         width: 100%;
+        padding: 0 0 0 ($padding * 2);
 
         section {
           > h5 {
             display: flex;
             align-items: center;
+
             margin: 1rem 0;
-            background: $warm-gray-02;
+
             color: $warm-gray-08;
+            background: $warm-gray-02;
+
             font-size: 14px;
 
             i.fa {
               margin: 0 ($padding * 2) 0 0;
               padding: ($padding * 2);
+
               color: $white;
             }
           }
@@ -80,6 +89,7 @@
 
             li {
               margin-bottom: $padding;
+
               border-bottom: 1px dotted $warm-gray-02;
 
               &:last-of-type {
@@ -89,14 +99,18 @@
               .diary-header {
                 display: flex;
                 align-items: center;
+
                 color: $warm-gray-08;
+
                 font-size: $font-size-sm;
 
                 > i {
                   display: flex;
                   align-items: center;
                   justify-content: center;
+
                   height: 1.125rem;
+
                   font-size: $font-size-base;
                 }
 
@@ -109,6 +123,7 @@
 
                   i {
                     margin-right: $padding;
+
                     color: $bright-blue;
                   }
                 }
@@ -116,25 +131,30 @@
 
               .diary-type {
                 color: $warm-gray-08;
-                font-weight: $font-weight-bold;
+
                 font-size: $font-size-sm;
+                font-weight: $font-weight-bold;
               }
 
               .diary-reason {
                 color: $warm-gray-10;
+
                 font-size: $font-size-sm;
               }
 
               p {
                 margin: 0;
+
                 font-size: $font-size-sm;
               }
 
               .diary-assignee {
                 margin-bottom: $padding;
+
                 color: $warm-gray-08;
-                font-weight: $font-weight-bold;
+
                 font-size: $font-size-sm;
+                font-weight: $font-weight-bold;
               }
             }
           }
@@ -188,25 +208,26 @@
           }
         }
       }
-    }
-    //route specific styles for quote and policy in q & p partial
-    &.diary-open {
-      .open-diaries {
-        width: 240px;
+      //route specific styles for quote and policy in q & p partial
+      &.open {
+        z-index: 100;
+
+        width: 15rem;
+
         box-shadow: -1px 0 2rem 0 rgba($black, 0.125);
+
+        ~ #UnderwritingOverride {
+          margin-right: 4rem;
+        }
       }
     }
+  }
 
-    &.diary-closed {
-      @include transition(all 0.1s ease-in-out);
-
+  &.quote {
+    main {
       .open-diaries {
-        overflow: hidden;
-        margin: 0;
-        padding: 0;
-        width: 0;
-        border-width: 0;
-        box-shadow: 0 0 0 0 rgba($black, 0);
+        position: absolute;
+        right: 0;
       }
     }
   }

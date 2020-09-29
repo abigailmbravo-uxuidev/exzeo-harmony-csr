@@ -1,17 +1,14 @@
 import { useEffect, useReducer, useState } from 'react';
 
-import { processChunk } from '../utilities';
+import { fetchDiaryOptions, fetchAssigneeOptions } from '../../Diaries/data';
 import {
   formatDiaryOptions,
-  formatAssigneesOptions,
-  formatDiariesResults
-} from './utilities';
-import {
-  fetchDiaryOptions,
-  fetchAssigneeOptions,
-  fetchDiaries,
-  transferDiaries
-} from './data';
+  formatAssigneesOptions
+} from '../../Diaries/utilities';
+import { processChunk } from '../utilities';
+
+import { formatDiariesResults } from './utilities';
+import { searchDiaries, transferDiaries } from './data';
 
 const INITIAL_VALUES = {
   assignees: [],
@@ -170,7 +167,7 @@ export function useDiariesSearch({ userProfile }) {
         dueDateMax: values.dateRange.max,
         product: values.product
       };
-      const response = await fetchDiaries(searchQuery);
+      const response = await searchDiaries(searchQuery);
       const result = formatDiariesResults(
         response,
         values.product,

@@ -1,20 +1,22 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Loader, FormSpy, remoteSubmit, date } from '@exzeo/core-ui';
+import { Loader, FormSpy, remoteSubmit, date, format } from '@exzeo/core-ui';
 import {
   ClaimsTable,
   Gandalf,
   getConfigForJsonTransform,
   PaymentHistoryTable,
   PolicyBilling,
-  callService
+  callService,
+  DetailsHeader
 } from '@exzeo/core-ui/src/@Harmony';
 import { defaultMemoize } from 'reselect';
 
-import App from '../../components/AppWrapper';
-import DiaryPolling from '../../components/DiaryPolling';
+import App from '../../components/WorkflowWrapper';
+import PolicySideNav from '../../components/PolicySideNav';
 import NavigationPrompt from '../../components/NavigationPrompt';
-import OpenDiariesBar from '../../components/OpenDiariesBar';
+import { OpenDiariesBar } from '../Diaries';
+import * as detailUtils from '../../utilities/documentDetails';
 import { POLICY_RESOURCE_TYPE } from '../../constants/diaries';
 import { setAppError } from '../../state/actions/error.actions';
 import { getEnumsForPolicyWorkflow } from '../../state/actions/list.actions';
@@ -27,13 +29,13 @@ import {
   updatePolicy,
   getClaims
 } from '../../state/actions/policy.actions';
-import { toggleDiary } from '../../state/actions/ui.actions';
-import { getDiariesForTable } from '../../state/selectors/diary.selectors';
 import {
   getPolicyEffectiveDateReasons,
   getPolicyEndorsementHistory,
   getPolicyFormData
 } from '../../state/selectors/policy.selectors';
+import { STANDARD_DATE_FORMAT } from '../../constants/dates';
+import { DEFAULT_DETAILS, BASE_MAP_URI } from '../../constants/detailHeader';
 
 import NotesFiles from '../NotesFiles';
 import PolicyHolders from '../Quote/PolicyHolders';
@@ -69,6 +71,91 @@ const getCurrentStepAndPage = defaultMemoize(pathname => {
   };
 });
 
+const getHeaderDetails = defaultMemoize(
+  (policy, summaryLedger, appraisalList) => {
+    if (!policy || !policy.policyNumber || !summaryLedger)
+      return DEFAULT_DETAILS;
+
+    const {
+      cancelDate,
+      effectiveDate,
+      endDate,
+      policyHolders,
+      policyHolderMailingAddress: pHMA = {},
+      policyID,
+      policyNumber,
+      product,
+      property,
+      sourceNumber,
+      status
+    } = policy;
+
+    const {
+      currentPremium,
+      status: { displayText }
+    } = summaryLedger;
+
+    const {
+      constructionType,
+      physicalAddress,
+      floodZone,
+      territory
+    } = property;
+
+    const mapQuery = detailUtils.getMapQuery(physicalAddress);
+
+    const appraisal =
+      (appraisalList || []).find(
+        x => x.label === property.physicalAddress.county
+      ) || {};
+
+    return {
+      constructionType,
+      policyID,
+      policyNumber,
+      sourceNumber,
+      territory,
+      floodZone,
+      county: physicalAddress.county,
+      currentPremium: currentPremium
+        ? `${format.toCurrency(currentPremium)}`
+        : '--',
+      effectiveDate: date.formattedDate(effectiveDate, STANDARD_DATE_FORMAT),
+      appraisalURI: {
+        label: 'PAS',
+        value: appraisal.answer
+      },
+      mapURI: `${BASE_MAP_URI}${mapQuery}`,
+      status: `${status} / ${displayText}`,
+      details: {
+        product: detailUtils.getProductName(product)
+      },
+      policyHolder: detailUtils.getPrimaryPolicyHolder(policyHolders),
+      mailingAddress: detailUtils.getMailingAddress(pHMA),
+      propertyAddress: {
+        address1: physicalAddress.address1,
+        address2: physicalAddress.address2,
+        csz: detailUtils.getCityStateZip(physicalAddress)
+      },
+      nonPaymentNoticeDate: detailUtils.getNonPaymentNoticeDate(
+        summaryLedger,
+        status
+      ),
+      nonPaymentNoticeDueDate: detailUtils.getNonPaymentNoticeDueDate(
+        summaryLedger,
+        status
+      ),
+      cancellation: detailUtils.getCancellationDate(
+        summaryLedger,
+        status,
+        cancelDate,
+        endDate
+      ),
+      sourcePath: sourceNumber ? `/quote/${sourceNumber}/coverage` : null
+    };
+  }
+);
+
 const TEMPLATES = {
   'TTIC:FL:AF3': TTICFLAF3,
   'TTIC:FL:HO3': TTICFLHO3,
@@ -85,7 +172,8 @@ export class PolicyWorkflow extends React.Component {
     showReinstatePolicyModal: false,
     showEffectiveDateChangeModal: false,
     showRescindCancelModal: false,
-    isEndorsementCalculated: false
+    isEndorsementCalculated: false,
+    pollingFilter: null
   };
 
   formInstance = null;
@@ -240,38 +328,39 @@ export class PolicyWorkflow extends React.Component {
 
   render() {
     const {
+      cancelOptions,
       claims,
-      diaries,
+      effectiveDateReasons,
+      endorsementHistory,
+      getPolicy,
       history,
+      initialized,
       isLoading,
       location,
       match,
+      notesSynced,
       options,
       policy,
-      notesSynced,
-      initialized,
       policyFormData,
-      zipCodeSettings,
-      cancelOptions,
-      effectiveDateReasons,
-      endorsementHistory,
-      summaryLedger,
       setAppError,
-      toggleDiary,
-      getPolicy,
+      summaryLedger,
       transferAOR,
       updateBillPlan,
-      userProfile
+      zipCodeSettings
     } = this.props;
 
     const {
       gandalfTemplate,
-      showDiaries,
       showReinstatePolicyModal,
       showRescindCancelModal,
       showEffectiveDateChangeModal
     } = this.state;
 
+    const headerDetails = getHeaderDetails(
+      policy,
+      summaryLedger,
+      options.appraisers
+    );
     const { currentRouteName, currentStepNumber } = getCurrentStepAndPage(
       location.pathname
     );
@@ -291,155 +380,144 @@ export class PolicyWorkflow extends React.Component {
     this.customHandlers.history = history;
     this.customHandlers.notesSynced = notesSynced;
     this.customHandlers.setAppError = setAppError;
-    this.customHandlers.toggleDiary = toggleDiary;
     this.customHandlers.getPolicy = getPolicy;
     this.customHandlers.transferAOR = transferAOR;
     this.customHandlers.updateBillPlan = updateBillPlan;
-    this.customHandlers.userProfile = userProfile;
     this.customHandlers.claims = claims;
     this.customHandlers.getClaims = this.getAllClaims;
 
     return (
       <div className="app-wrapper csr policy">
-        {(isLoading || !policy.policyNumber) && <Loader />}
+        {(isLoading || !(initialized && gandalfTemplate)) && <Loader />}
 
-        {policy.policyNumber && gandalfTemplate && (
+        {initialized && gandalfTemplate && (
           <App
-            header={gandalfTemplate.header}
-            context={match.path.split('/')[1]}
-            resourceType={POLICY_RESOURCE_TYPE}
-            resourceId={policy.policyNumber}
+            template={gandalfTemplate}
+            headerTitle="Policy"
             pageTitle={`P: ${policy.policyNumber || ''}`}
-            match={match}
-            onToggleDiaries={this.handleToggleDiaries}
-            showDiaries={showDiaries}
-            modalHandlers={this.modalHandlers}
+            diaryPollingFilter={{
+              resourceId: [policy.policyNumber, policy.sourceNumber],
+              resourceType: POLICY_RESOURCE_TYPE
+            }}
+            aside={
+              <aside className="content-panel-left">
+                <PolicySideNav match={match} policy={policy} />
+              </aside>
+            }
+            subHeader={
+              <DetailsHeader
+                context="policy"
+                modalHandlers={this.modalHandlers}
+                detailsFields={gandalfTemplate.header}
+                headerDetails={headerDetails}
+              />
+            }
           >
-            <React.Fragment>
-              {initialized && (
-                <div className="content-wrapper">
-                  <div className="route-content">
-                    {shouldUseGandalf && (
-                      <Gandalf
-                        formId={FORM_ID}
-                        currentPage={currentStepNumber}
-                        customComponents={this.customComponents}
-                        customHandlers={this.customHandlers}
-                        handleSubmit={this.handleGandalfSubmit}
-                        initialValues={policyFormData}
-                        options={{
-                          diaries,
-                          ...options,
-                          cancelOptions,
-                          zipCodeSettings,
-                          endorsementHistory
-                        }} // enums for select/radio fields
-                        path={location.pathname}
-                        template={gandalfTemplate}
-                        transformConfig={transformConfig}
-                      >
-                        <FormSpy
-                          subscription={{
-                            pristine: true,
-                            submitting: true,
-                            dirtyFields: true,
-                            invalid: true
-                          }}
-                        >
-                          {({ form, pristine, submitting }) => (
-                            <div className="form-footer">
-                              <PolicyFooter
-                                history={history}
-                                setAppError={setAppError}
-                                policyFormData={policyFormData}
-                                timezone={zipCodeSettings.timezone}
-                                currentStep={currentRouteName}
-                                formInstance={form}
-                                isSubmitDisabled={this.isSubmitDisabled(
-                                  pristine,
-                                  submitting
-                                )}
-                                handleGandalfSubmit={this.handleGandalfSubmit}
-                                handlePrimaryClick={this.primaryClickHandler}
-                              />
-                            </div>
-                          )}
-                        </FormSpy>
-                        <FormSpy subscription={{}}>
-                          {({ form }) => {
-                            this.setFormInstance(form);
-                            return null;
-                          }}
-                        </FormSpy>
+            <div className="content-wrapper">
+              <div className="route-content">
+                {shouldUseGandalf && (
+                  <Gandalf
+                    formId={FORM_ID}
+                    currentPage={currentStepNumber}
+                    customComponents={this.customComponents}
+                    customHandlers={this.customHandlers}
+                    handleSubmit={this.handleGandalfSubmit}
+                    initialValues={policyFormData}
+                    options={{
+                      ...options,
+                      cancelOptions,
+                      zipCodeSettings,
+                      endorsementHistory
+                    }} // enums for select/radio fields
+                    path={location.pathname}
+                    template={gandalfTemplate}
+                    transformConfig={transformConfig}
+                  >
+                    <FormSpy
+                      subscription={{
+                        pristine: true,
+                        submitting: true,
+                        dirtyFields: true,
+                        invalid: true
+                      }}
+                    >
+                      {({ form, pristine, submitting }) => (
+                        <div className="form-footer">
+                          <PolicyFooter
+                            history={history}
+                            setAppError={setAppError}
+                            policyFormData={policyFormData}
+                            timezone={zipCodeSettings.timezone}
+                            currentStep={currentRouteName}
+                            formInstance={form}
+                            isSubmitDisabled={this.isSubmitDisabled(
+                              pristine,
+                              submitting
+                            )}
+                            handleGandalfSubmit={this.handleGandalfSubmit}
+                            handlePrimaryClick={this.primaryClickHandler}
+                          />
+                        </div>
+                      )}
+                    </FormSpy>
+                    <FormSpy subscription={{}}>
+                      {({ form }) => {
+                        this.setFormInstance(form);
+                        return null;
+                      }}
+                    </FormSpy>
 
-                        <FormSpy subscription={{ dirty: true, pristine: true }}>
-                          {({ dirty }) => (
-                            <NavigationPrompt
-                              dirty={dirty}
-                              formInstance={this.formInstance}
-                              history={history}
-                            />
-                          )}
-                        </FormSpy>
-                        <div id="modal-anchor" />
-                      </Gandalf>
-                    )}
-                  </div>
-                </div>
-              )}
+                    <FormSpy subscription={{ dirty: true, pristine: true }}>
+                      {({ dirty }) => (
+                        <NavigationPrompt
+                          dirty={dirty}
+                          formInstance={this.formInstance}
+                          history={history}
+                        />
+                      )}
+                    </FormSpy>
+                    <div id="modal-anchor" />
+                  </Gandalf>
+                )}
+              </div>
+            </div>
+            <div className="sidebar-wrapper">
+              <OpenDiariesBar document={policy} />
+            </div>
+            {showReinstatePolicyModal && (
+              <ReinstatePolicyModal
+                reinstatePolicySubmit={this.reinstatePolicySubmit}
+                closeModal={this.handleToggleReinstateModal}
+                policyNumber={policy.policyNumber}
+              />
+            )}
 
-              {initialized && (
-                <OpenDiariesBar
-                  entity={policy}
-                  resourceId={policy.policyNumber}
-                  resourceType={POLICY_RESOURCE_TYPE}
-                />
-              )}
+            {showRescindCancelModal && (
+              <RescindCancelModal
+                rescindCancelSubmit={this.rescindCancelSubmit}
+                closeModal={this.handleToggleRescindCancelModal}
+                policyNumber={policy.policyNumber}
+              />
+            )}
 
-              {showReinstatePolicyModal && (
-                <ReinstatePolicyModal
-                  reinstatePolicySubmit={this.reinstatePolicySubmit}
-                  closeModal={this.handleToggleReinstateModal}
-                  policyNumber={policy.policyNumber}
-                />
-              )}
-
-              {showRescindCancelModal && (
-                <RescindCancelModal
-                  rescindCancelSubmit={this.rescindCancelSubmit}
-                  closeModal={this.handleToggleRescindCancelModal}
-                  policyNumber={policy.policyNumber}
-                />
-              )}
-
-              {showEffectiveDateChangeModal && (
-                <EffectiveDateModal
-                  initialValues={{
-                    policyNumber: policy.policyNumber,
-                    effectiveDate: date.formatDate(
-                      policy.effectiveDate,
-                      date.FORMATS.SECONDARY
-                    ),
-                    effectiveDateChangeReason: ''
-                  }}
-                  currentPremium={summaryLedger.currentPremium}
-                  zipCodeSettings={zipCodeSettings}
-                  effectiveDateReasons={effectiveDateReasons}
-                  getPolicy={this.props.getPolicy}
-                  errorHandler={this.props.setAppError}
-                  closeModal={this.toggleEffectiveDateChangeModal}
-                />
-              )}
-
-              {policy && policy.policyNumber && policy.sourceNumber && (
-                <DiaryPolling
-                  filter={{
-                    resourceId: [policy.policyNumber, policy.sourceNumber],
-                    resourceType: POLICY_RESOURCE_TYPE
-                  }}
-                />
-              )}
-            </React.Fragment>
+            {showEffectiveDateChangeModal && (
+              <EffectiveDateModal
+                initialValues={{
+                  policyNumber: policy.policyNumber,
+                  effectiveDate: date.formatDate(
+                    policy.effectiveDate,
+                    date.FORMATS.SECONDARY
+                  ),
+                  effectiveDateChangeReason: ''
+                }}
+                currentPremium={summaryLedger.currentPremium}
+                zipCodeSettings={zipCodeSettings}
+                effectiveDateReasons={effectiveDateReasons}
+                getPolicy={this.props.getPolicy}
+                errorHandler={this.props.setAppError}
+                closeModal={this.toggleEffectiveDateChangeModal}
+              />
+            )}
           </App>
         )}
       </div>
@@ -451,7 +529,6 @@ const mapStateToProps = state => {
   return {
     cancelOptions: state.policyState.cancelOptions,
     claims: state.policyState.claims,
-    diaries: getDiariesForTable(state),
     effectiveDateReasons: getPolicyEffectiveDateReasons(state),
     initialized: !!(
       state.policyState.policy.policyID && state.policyState.summaryLedger._id
@@ -475,7 +552,6 @@ export default connect(mapStateToProps, {
   initializePolicyWorkflow,
   setAppError,
   transferAOR,
-  toggleDiary,
   updatePolicy,
   updateBillPlan
 })(PolicyWorkflow);

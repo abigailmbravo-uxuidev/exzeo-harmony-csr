@@ -400,6 +400,11 @@
         flex-grow: 0;
         flex-shrink: 0;
 
+        height: calc(100vh - 8.75rem);
+        min-height: calc(100vh - 8.75rem);
+
+        @include transition(all 0.07s ease-in-out);
+
         .underwriting-validation {
           display: flex;
           overflow: hidden;

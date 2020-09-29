@@ -4,7 +4,7 @@ import { noop } from '@exzeo/core-ui';
 
 import {
   render,
-  defaultPolicyWorkflowProps,
+  defaultPolicyWorkflowProps as defaultProps,
   mockServiceRunner,
   jestResolve
 } from '../../../test-utils';
@@ -25,8 +25,9 @@ describe('Change Effective Date Testing', () => {
       { answer: 'Internal User Error', label: 'Internal User Error' },
       { answer: 'Other', label: 'Other' }
     ],
-    ...defaultPolicyWorkflowProps,
+    ...defaultProps,
     summaryLedger: {
+      ...defaultProps.summaryLedger,
       currentPremium: 2058
     },
     match: {
@@ -36,7 +37,7 @@ describe('Change Effective Date Testing', () => {
     location: {
       pathname: '/policy/12-345-67/coverage'
     },
-    policyFormData: defaultPolicyWorkflowProps.policy,
+    policyFormData: defaultProps.policy,
     getPolicy: noop
   };
 
@@ -297,7 +298,7 @@ describe('Change Effective Date Testing', () => {
 
     props.getPolicy = jestResolve({
       policy: {
-        ...defaultPolicyWorkflowProps.policy,
+        ...defaultProps.policy,
         effectiveDate: '2019-03-05'
       },
       summaryLedger: {

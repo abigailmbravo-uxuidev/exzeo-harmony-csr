@@ -1,5 +1,10 @@
 /* eslint-disable */
 const mock = {
+  meta: {
+    company: 'TTIC',
+    state: 'FL',
+    product: 'HO3'
+  },
   header: {
     hideDetailSummary: false,
     banner: {
@@ -1543,8 +1548,7 @@ const mock = {
           dependencies: [
             { blockQuoteSummary: true },
             { quoteInputState: 'Initial Data' },
-            { quoteInputState: 'Underwriting' },
-            { quoteInputState: 'AppStarted' }
+            { quoteInputState: 'Underwriting' }
           ],
           data: {
             className: 'messages',
@@ -1564,6 +1568,10 @@ const mock = {
             },
             {
               quoteInputState: 'Ready',
+              blockQuoteSummary: false
+            },
+            {
+              quoteInputState: 'AppStarted',
               blockQuoteSummary: false
             }
           ],

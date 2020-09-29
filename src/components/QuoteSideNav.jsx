@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
-import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { SideNavigation } from '@exzeo/core-ui/src/@Harmony';
 
-import { toggleDiary, toggleNote } from '../state/actions/ui.actions';
+import { toggleNote } from '../state/actions/ui.actions';
 import { QUOTE_RESOURCE_TYPE } from '../constants/diaries';
 
 import PlusButton from './PlusButton';
@@ -63,9 +62,9 @@ const getNavLinks = ({ quoteNumber }) => {
   ];
 };
 
-export const SideNav = ({ quoteData, toggleNote, toggleDiary }) => {
+export const SideNav = ({ quote, toggleNote }) => {
   const [showUWPopup, setUWPopup] = useState(false);
-  const { companyCode, state, product, quoteNumber } = quoteData;
+  const { companyCode, state, product, quoteNumber } = quote;
 
   function newNote() {
     toggleNote({
@@ -75,18 +74,7 @@ export const SideNav = ({ quoteData, toggleNote, toggleDiary }) => {
       noteType: 'Quote Note',
       documentId: quoteNumber,
       resourceType: QUOTE_RESOURCE_TYPE,
-      entity: quoteData
-    });
-  }
-
-  function newDiary() {
-    toggleDiary({
-      companyCode,
-      state,
-      product,
-      resourceType: QUOTE_RESOURCE_TYPE,
-      resourceId: quoteNumber,
-      entity: quoteData
+      entity: quote
     });
   }
 
@@ -94,10 +82,10 @@ export const SideNav = ({ quoteData, toggleNote, toggleDiary }) => {
     <React.Fragment>
       <nav className="site-nav">
         <SideNavigation
-          navLinks={getNavLinks({ quoteNumber: quoteData.quoteNumber })}
+          navLinks={getNavLinks({ quoteNumber: quote.quoteNumber })}
         >
           <hr className="nav-division" />
-          {product === 'HO3' && ( // TODO temporary fix for CSP specific navigation bar config
+          {product === 'HO3' && ( // TODO #HAR-1032 - temporary fix for CSP specific navigation bar config
             <li>
               <button
                 tabIndex="0"
@@ -114,20 +102,10 @@ export const SideNav = ({ quoteData, toggleNote, toggleDiary }) => {
         {showUWPopup && (
           <UWConditions closeButtonHandler={() => setUWPopup(false)} />
         )}
-        <PlusButton newNote={newNote} newDiary={newDiary} />
+        <PlusButton newNote={newNote} document={quote} />
       </nav>
     </React.Fragment>
   );
 };
 
-SideNav.propTypes = {
-  quoteData: PropTypes.shape({})
-};
-
-const mapStateToProps = state => {
-  return {
-    quoteData: state.quoteState.quote || {}
-  };
-};
-
-export default connect(mapStateToProps, { toggleNote, toggleDiary })(SideNav);
+export default connect(null, { toggleNote })(SideNav);
