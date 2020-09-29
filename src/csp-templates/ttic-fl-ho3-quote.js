@@ -1548,8 +1548,7 @@ const mock = {
           dependencies: [
             { blockQuoteSummary: true },
             { quoteInputState: 'Initial Data' },
-            { quoteInputState: 'Underwriting' },
-            { quoteInputState: 'AppStarted' }
+            { quoteInputState: 'Underwriting' }
           ],
           data: {
             className: 'messages',
@@ -1569,6 +1568,10 @@ const mock = {
             },
             {
               quoteInputState: 'Ready',
+              blockQuoteSummary: false
+            },
+            {
+              quoteInputState: 'AppStarted',
               blockQuoteSummary: false
             }
           ],
