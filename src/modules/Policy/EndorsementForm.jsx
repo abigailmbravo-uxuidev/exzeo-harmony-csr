@@ -203,7 +203,7 @@ const EndorsementForm = ({
           >
             <div className="endo-results-calc">
               {endorsementState.newBillPlan && (
-                <div>
+                <div className="bill-plan title">
                   Your Bill Plan Will Be Changed To{' '}
                   {endorsementState.newBillPlan} Due To This Endorsement
                 </div>
