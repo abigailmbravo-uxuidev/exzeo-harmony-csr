@@ -109,7 +109,6 @@ const EndorsementForm = ({
 
     setSubmitting(false);
     if (!rating) return;
-    console.log(formValues, originalInitial, billPlan);
     parentFormInstance.initialize({ ...formValues, rating, instanceId });
     setCalculateRate(state => ({
       ...state,
