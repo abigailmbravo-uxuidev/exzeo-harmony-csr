@@ -98,7 +98,7 @@ export const SideNav = ({ quote, toggleNote }) => {
             </li>
           )}
         </SideNavigation>
-        <Clock timezone={quoteData?.property?.timezone} />
+        <Clock timezone={quote?.property?.timezone} />
         {showUWPopup && (
           <UWConditions closeButtonHandler={() => setUWPopup(false)} />
         )}
