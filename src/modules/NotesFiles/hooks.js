@@ -26,9 +26,11 @@ export const useFetchNotes = (sourceNumbers, numberType, notesSynced) => {
           await fetchFiles(filesQuery, 'fetchFiles')
         ]);
 
-        const allNotes = files.data
-          ? mergeNotes(notes.data.result, files.data.result)
-          : notes.data.result;
+        const allNotes = mergeNotes(
+          notes.data.result,
+          files.data.result,
+          numberType
+        );
 
         setNotes(formatNotes(allNotes));
       } catch (error) {

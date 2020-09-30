@@ -1,12 +1,14 @@
 import { date } from '@exzeo/core-ui';
 
-export const mergeNotes = (notes, files) => {
+export const mergeNotes = (notes, files, sourceType) => {
   const fileList = notes
     .reduce((list, note) => [...list, ...note.noteAttachments], [])
     .map(n => n.fileUrl);
 
-  const getTerm = number =>
-    number && number.includes('-') ? Number(number.split('-').pop()) : 1;
+  const getTerm = number => {
+    if (sourceType !== 'policyNumber') return null;
+    return number && number.includes('-') ? Number(number.split('-').pop()) : 1;
+  };
 
   const formatAttachments = (noteAttachments = []) =>
     noteAttachments.map(attachment => ({

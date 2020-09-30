@@ -67,12 +67,14 @@ function NotesFiles({ customHandlers, initialValues }) {
         {selectedTab === NOTE_TAB && (
           <NotesTable
             data={allNotes}
+            sourceType={sourceType}
             errorHandler={customHandlers.setAppError}
           />
         )}
         {selectedTab === FILES_TAB && (
           <FilesTable
             data={notesWithAttachments}
+            sourceType={sourceType}
             errorHandler={customHandlers.setAppError}
           />
         )}
