@@ -98,11 +98,11 @@ export const SideNav = ({ quote, toggleNote }) => {
             </li>
           )}
         </SideNavigation>
-        <Clock timezone={quote?.property?.timezone} />
         {showUWPopup && (
           <UWConditions closeButtonHandler={() => setUWPopup(false)} />
         )}
         <PlusButton newNote={newNote} document={quote} />
+        <Clock timezone={quote?.property?.timezone} />
       </nav>
     </React.Fragment>
   );
