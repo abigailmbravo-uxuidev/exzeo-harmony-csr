@@ -19,18 +19,17 @@ export const useFetchNotes = (sourceNumbers, numberType, notesSynced) => {
           };
         });
 
-        const filesQuery = sourceNumbers.map(number => number).join(',');
+        const filesQuery = sourceNumbers.join(',');
 
         const [notes, files] = await Promise.all([
           await fetchNotes(notesQuery, 'fetchNotes'),
-          numberType === 'policyNumber'
-            ? await fetchFiles(filesQuery, 'fetchFiles')
-            : []
+          await fetchFiles(filesQuery, 'fetchFiles')
         ]);
 
         const allNotes = files.data
           ? mergeNotes(notes.data.result, files.data.result)
           : notes.data.result;
+
         setNotes(formatNotes(allNotes));
       } catch (error) {
         console.error('Error fetching notes: ', error);
