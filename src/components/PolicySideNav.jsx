@@ -8,6 +8,7 @@ import { POLICY_RESOURCE_TYPE } from '../constants/diaries';
 
 import PlusButton from './PlusButton';
 import GenerateDocsForm from './GenerateDocsForm';
+import Clock from './Clock';
 
 const getNavLinks = ({ policyNumber }) => [
   {
@@ -89,6 +90,7 @@ export class SideNav extends React.Component {
 
   render() {
     const { policy, setAppError } = this.props;
+
     return (
       <nav className="site-nav">
         <SideNavigation
@@ -123,6 +125,7 @@ export class SideNav extends React.Component {
           </li>
         </SideNavigation>
         <PlusButton newNote={this.newNote} document={policy} />
+        <Clock timezone={policy?.property?.timezone} />
       </nav>
     );
   }

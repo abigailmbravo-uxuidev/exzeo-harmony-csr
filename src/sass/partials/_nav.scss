@@ -1,18 +1,57 @@
 //vertical tabs
-
+.quote {
+  .site-nav {
+    .property-time-wrapper {
+      background-color: $green-darken-04;
+    }
+  }
+}
+.policy {
+  .site-nav {
+    .property-time-wrapper {
+      background-color: $bright-blue-darken-03;
+    }
+  }
+}
 .site-nav {
   display: flex;
   overflow: hidden;
   flex-direction: column;
   flex-grow: 1;
   flex-shrink: 1;
+
   margin: 0 0 $padding ($padding * 2);
 
   hr.nav-division {
     margin: ($padding * 2) 0;
     padding: 0;
+
     border-width: 0;
     border-top: 1px dotted $warm-gray-04;
+  }
+  .property-time-wrapper {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 0;
+    flex-shrink: 0;
+    justify-content: flex-end;
+
+    width: 10.125rem;
+    height: 4rem;
+    margin-bottom: 1rem;
+    padding: $padding $padding $padding ($padding * 1.5);
+
+    color: $white;
+    background-color: rgba($bright-blue-darken-03, 1);
+
+    font-size: $font-size-lg;
+    label {
+      margin: 0;
+
+      color: $white;
+
+      font-size: $font-size-sm;
+    }
   }
 
   ul {
@@ -20,8 +59,10 @@
     overflow-y: auto;
     flex-grow: 1;
     flex-shrink: 1;
+
     margin: 0;
     padding: ($padding * 2) 0;
+
     list-style: none;
 
     .btn {
@@ -46,19 +87,24 @@
 
     li {
       display: flex;
+
       margin: 0;
 
       a {
         display: flex;
         align-items: center;
         flex-grow: 1;
+
         width: 11rem;
-        border-left: ($padding/2) solid rgba($bright-blue, 0);
-        text-decoration: none;
+
         cursor: pointer;
+        text-decoration: none;
+
+        border-left: ($padding/2) solid rgba($bright-blue, 0);
 
         &.btn {
           justify-content: center;
+
           border-width: 1px;
         }
 
@@ -66,11 +112,14 @@
           display: flex;
           align-items: center;
           flex-grow: 1;
-          padding: ($padding * 1.5) 0 ($padding * 1.5) ($padding * 2);
+
           width: 11rem;
-          color: $warm-gray-07;
-          text-decoration: none;
+          padding: ($padding * 1.5) 0 ($padding * 1.5) ($padding * 2);
+
           cursor: pointer;
+          text-decoration: none;
+
+          color: $warm-gray-07;
         }
 
         &.disabled {
@@ -81,26 +130,30 @@
           }
 
           &:hover {
-            border-left: ($padding/2) solid rgba($white, 0);
-            background-color: rgba($white, 0);
             cursor: not-allowed;
 
+            border-left: ($padding/2) solid rgba($white, 0);
+            background-color: rgba($white, 0);
+
             span {
-              color: $warm-gray-04;
               cursor: not-allowed;
+
+              color: $warm-gray-04;
             }
           }
         }
 
         &.active {
-          border-left: ($padding/2) solid $bright-blue-darken-04;
-          background-color: $white;
           cursor: default;
 
+          border-left: ($padding/2) solid $bright-blue-darken-04;
+          background-color: $white;
+
           &:hover {
+            cursor: default;
+
             border-left: ($padding/2) solid $bright-blue-darken-04;
             background-color: $white;
-            cursor: default;
 
             span {
               color: $bright-blue-darken-04;
@@ -113,10 +166,11 @@
         }
 
         &:hover {
+          cursor: pointer;
+          text-decoration: none;
+
           border-left: ($padding/2) solid rgba($bright-blue, 0.2);
           background-color: rgba($white, 0.4);
-          text-decoration: none;
-          cursor: pointer;
 
           &.btn {
             border-width: 1px;
@@ -135,11 +189,12 @@
           color: $warm-gray-04;
 
           &:hover {
+            cursor: not-allowed;
+            text-decoration: none;
+
+            color: $warm-gray-04;
             border-left: ($padding/2) solid rgba($white, 0);
             background-color: rgba($white, 0);
-            color: $warm-gray-04;
-            text-decoration: none;
-            cursor: not-allowed;
           }
 
           span {
@@ -152,18 +207,21 @@
         display: flex;
         overflow: hidden;
         flex-direction: column;
+
         padding: ($padding * 2) ($padding * 2) 0 0;
+
         background: $warm-gray-03;
 
         @include transition(all 0.2s ease-in-out);
 
         &.hidden {
-          padding: 0 ($padding * 2) 0 0;
           height: 0;
+          padding: 0 ($padding * 2) 0 0;
         }
 
         &.show {
           height: auto;
+
           border-top: 1px dotted $warm-gray-04;
           border-bottom: 1px dotted $warm-gray-04;
           border-left: 1px dotted $warm-gray-04;

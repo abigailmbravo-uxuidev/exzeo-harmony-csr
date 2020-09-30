@@ -7,6 +7,7 @@ import { QUOTE_RESOURCE_TYPE } from '../constants/diaries';
 
 import PlusButton from './PlusButton';
 import UWConditions from './UWconditions';
+import Clock from './Clock';
 
 const getNavLinks = ({ quoteNumber }) => {
   return [
@@ -97,6 +98,7 @@ export const SideNav = ({ quote, toggleNote }) => {
             </li>
           )}
         </SideNavigation>
+        <Clock timezone={quote?.property?.timezone} />
         {showUWPopup && (
           <UWConditions closeButtonHandler={() => setUWPopup(false)} />
         )}
