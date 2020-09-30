@@ -701,6 +701,7 @@ table {
 
 .react-bs-table,
 .react-bootstrap-table {
+  overflow-x: auto;
   .table .table {
     background: transparent;
   }
@@ -717,6 +718,10 @@ table {
           border-width: 0;
 
           font-size: $font-size-sm;
+
+          .attachment-wrapper {
+            white-space: nowrap;
+          }
         }
       }
     }
