@@ -104,10 +104,10 @@ export const formatNotes = notes => {
 
 export const determineSource = document => {
   // Allows us to manually pass in a "document" object, for instance when we are in Agency.
-  if (document.sourceType) {
+  if (document.$TYPE) {
     return {
       sourceNumbers: document.sourceNumbers,
-      sourceType: document.sourceType
+      sourceType: document.type
     };
   }
 

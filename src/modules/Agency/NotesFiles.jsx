@@ -17,7 +17,7 @@ const NotesFiles = ({ agencyCode, notesSynced, setAppError }) => {
               <Notes
                 customHandlers={{ setAppError, notesSynced }}
                 initialValues={{
-                  sourceType: 'agencyCode',
+                  $TYPE: 'agencyCode',
                   sourceNumbers: [agencyCode]
                 }}
               />
