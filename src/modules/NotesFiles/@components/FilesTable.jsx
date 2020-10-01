@@ -5,7 +5,7 @@ import { Search } from 'react-bootstrap-table2-toolkit';
 import * as notesUtils from '../utilities';
 import Downloader from './Downloader';
 
-const FilesTable = ({ data: files = [], errorHandler }) => {
+const FilesTable = ({ data: files = [], sourceType = '', errorHandler }) => {
   const { SearchBar } = Search;
 
   const attachmentUrl = attachments => (
@@ -40,7 +40,8 @@ const FilesTable = ({ data: files = [], errorHandler }) => {
       dataField: 'term',
       text: 'Term',
       sort: true,
-      align: 'center'
+      align: 'center',
+      hidden: sourceType !== 'policyNumber'
     },
     {
       headerClasses: 'created-by',
@@ -92,6 +93,7 @@ const FilesTable = ({ data: files = [], errorHandler }) => {
 
 FilesTable.propTypes = {
   data: PropTypes.array.isRequired,
+  sourceType: PropTypes.string,
   errorHandler: PropTypes.func.isRequired
 };
 

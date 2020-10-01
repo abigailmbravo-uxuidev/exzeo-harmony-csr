@@ -5,7 +5,7 @@ import { Search } from 'react-bootstrap-table2-toolkit';
 import * as notesUtils from '../utilities';
 import Downloader from './Downloader';
 
-const NotesTable = ({ data: notes = [], errorHandler }) => {
+const NotesTable = ({ data: notes = [], sourceType = '', errorHandler }) => {
   const { SearchBar } = Search;
 
   const attachmentUrl = attachments => (
@@ -47,7 +47,8 @@ const NotesTable = ({ data: notes = [], errorHandler }) => {
       dataField: 'term',
       text: 'Term',
       sort: true,
-      align: 'center'
+      align: 'center',
+      hidden: sourceType !== 'policyNumber'
     },
     {
       headerClasses: 'created-by',
@@ -115,6 +116,7 @@ const NotesTable = ({ data: notes = [], errorHandler }) => {
 
 NotesTable.propTypes = {
   data: PropTypes.array.isRequired,
+  sourceType: PropTypes.string,
   errorHandler: PropTypes.func.isRequired
 };
 

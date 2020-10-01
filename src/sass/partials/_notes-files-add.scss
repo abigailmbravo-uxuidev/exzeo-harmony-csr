@@ -362,7 +362,8 @@
         }
       }
 
-      .react-bs-table {
+      .react-bootstap-table {
+        overflow-x: auto;
         .note-type {
           display: none;
         }
@@ -377,7 +378,8 @@
       }
     }
 
-    .react-bs-table {
+    .react-bootstrap-table {
+      overflow-x: auto;
       .created-date {
         width: 16%;
         min-width: 9.75rem;
@@ -424,6 +426,7 @@
         span {
           div {
             cursor: pointer;
+            white-space: nowrap;
 
             color: $bright-blue;
 

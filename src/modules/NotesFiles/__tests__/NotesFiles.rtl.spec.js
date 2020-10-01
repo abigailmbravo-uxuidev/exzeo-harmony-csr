@@ -1,6 +1,5 @@
 import React from 'react';
 import { date } from '@exzeo/core-ui';
-import { quote } from '../../../test-utils/fixtures';
 import {
   render,
   wait,
@@ -22,9 +21,7 @@ import NotesFiles from '../@components/NotesFiles';
 
 describe('NotesFiles', () => {
   const props = {
-    initialValues: {
-      sourceNumber: quote
-    },
+    initialValues: { sourceNumber: '22-22222-01' },
     options: {
       agents: [],
       mortgagee: [],
@@ -65,7 +62,7 @@ describe('NotesFiles', () => {
     expect(screen.getByRole('button', { name: /diaries/i })).toBeEnabled();
   });
 
-  it('NotesFiles: Notes table headers are present (no data in table)', async () => {
+  it('NotesFiles: Notes table headers are present for a policy (no data in table)', async () => {
     notesFilesData.fetchNotes = jestResolve({ data: { result: [] } });
     notesFilesData.fetchFiles = jestResolve({ data: { result: [] } });
 
@@ -99,7 +96,6 @@ describe('NotesFiles', () => {
   it('NotesFiles: Files table headers are present (no data in table)', async () => {
     notesFilesData.fetchNotes = jestResolve({ data: { result: [] } });
     notesFilesData.fetchFiles = jestResolve({ data: { result: [] } });
-
     render(<NotesFiles {...props} />);
     await waitForElementToBeRemoved(() => screen.queryByRole('status'));
     const notesTab = screen.getByRole('button', { name: /notes/i });
@@ -1167,5 +1163,28 @@ describe('NotesFiles', () => {
       expect(within(tableBody).getAllByRole('row')).toHaveLength(4)
     );
     expect(screen.queryByText('test content')).not.toBeInTheDocument();
+  });
+
+  it('NotesFiles: Term column is hidden for anything other than a policy', async () => {
+    const updatedProps = {
+      ...props,
+      initialValues: { sourceNumbers: [1111], sourceType: 'somethingCrazy' }
+    };
+
+    notesFilesData.fetchNotes = jestResolve({ data: { result: [] } });
+    notesFilesData.fetchFiles = jestResolve({ data: { result: [] } });
+
+    render(<NotesFiles {...updatedProps} />);
+    await waitForElementToBeRemoved(() => screen.queryByRole('status'));
+    const notesTab = screen.getByRole('button', { name: /notes/i });
+    const filesTab = screen.getByRole('button', { name: /files/i });
+    expect(notesTab).toHaveAttribute('class', 'btn btn-tab selected');
+    expect(screen.queryByLabelText('Term sortable')).not.toBeInTheDocument();
+
+    fireEvent.click(filesTab);
+    await wait(() =>
+      expect(filesTab).toHaveAttribute('class', 'btn btn-tab selected')
+    );
+    expect(screen.queryByLabelText('Term sortable')).not.toBeInTheDocument();
   });
 });
