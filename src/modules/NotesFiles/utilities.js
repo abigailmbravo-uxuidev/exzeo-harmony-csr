@@ -107,7 +107,7 @@ export const determineSource = document => {
   if (document.$TYPE) {
     return {
       sourceNumbers: document.sourceNumbers,
-      sourceType: document.type
+      sourceType: document.$TYPE
     };
   }
 
