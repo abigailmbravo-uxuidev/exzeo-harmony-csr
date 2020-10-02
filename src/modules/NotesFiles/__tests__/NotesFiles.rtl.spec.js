@@ -1168,7 +1168,7 @@ describe('NotesFiles', () => {
   it('NotesFiles: Term column is hidden for anything other than a policy', async () => {
     const updatedProps = {
       ...props,
-      initialValues: { sourceNumbers: [1111], sourceType: 'somethingCrazy' }
+      initialValues: { sourceNumbers: ['1111-01'], $TYPE: 'somethingCrazy' }
     };
 
     notesFilesData.fetchNotes = jestResolve({ data: { result: [] } });
