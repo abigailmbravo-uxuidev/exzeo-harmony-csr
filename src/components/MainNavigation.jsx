@@ -55,8 +55,8 @@ const MainNavigation = () => {
     () =>
       doesUserHaveAccess(
         userProfile.resources,
-        'INSERT',
-        'BulkMortgage:MortgageeJobs:*'
+        'BulkMortgage:MortgageeJobs:*',
+        'INSERT'
       ),
     [userProfile.resources]
   );
