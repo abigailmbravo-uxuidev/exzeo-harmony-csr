@@ -22,8 +22,7 @@ export const downloadFile = (fileUrl, fileName, errorHandler) => {
     });
 };
 
-const Downloader = props => {
-  const { fileName, fileUrl, errorHandler } = props;
+const Downloader = ({ fileName, fileUrl, errorHandler }) => {
   return (
     <div
       className="attachment-wrapper"

@@ -20,7 +20,6 @@ beforeAll(() => {
 afterAll(() => {
   console.error = originalError;
 });
-//
 
 const storage = {};
 

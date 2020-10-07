@@ -14,18 +14,6 @@ export function toggleNote(noteMeta) {
 
 /**
  *
- * @param diaryMeta
- * @returns {{diaryMeta, type: string}}
- */
-export function toggleDiary(diaryMeta = {}) {
-  return {
-    type: types.TOGGLE_DIARY,
-    diaryMeta
-  };
-}
-
-/**
- *
  * @param minimizeNote
  * @returns {{minimizeNote: boolean, type: string}}
  */

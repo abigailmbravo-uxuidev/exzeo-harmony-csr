@@ -2,11 +2,14 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import Header from './Header';
+import MainNavigation from './MainNavigation';
 
 function NotFound() {
   return (
     <div className="app-wrapper">
-      <Header />
+      <Header>
+        <MainNavigation />
+      </Header>
       <main role="document">
         <div className="route-content">
           <div className="error-content" role="article">

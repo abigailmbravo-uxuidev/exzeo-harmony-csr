@@ -10,7 +10,7 @@ import * as serviceRunner from '@exzeo/core-ui/src/@Harmony/Domain/Api/serviceRu
  * @param product
  * @returns {Promise<*>}
  */
-export async function fetchDiaries({
+export async function searchDiaries({
   reason,
   dueDateMin,
   dueDateMax,
@@ -34,57 +34,6 @@ export async function fetchDiaries({
     };
 
     const response = await serviceRunner.callService(config, 'fetchDiaries');
-    return response.data?.result;
-  } catch (error) {
-    throw error;
-  }
-}
-
-/**
- * Get enums as diary options
- * @returns {Promise<*>}
- */
-export async function fetchDiaryOptions() {
-  try {
-    const config = {
-      service: 'diaries',
-      method: 'GET',
-      path: `diaryOptions`
-    };
-
-    const response = await serviceRunner.callService(
-      config,
-      'fetchDiaryOptions'
-    );
-
-    return response.data?.result;
-  } catch (error) {
-    throw error;
-  }
-}
-
-/**
- * Get users as assignee options
- * @param userProfile
- * @returns {Promise<*>}
- */
-export async function fetchAssigneeOptions(userProfile) {
-  const { resources } = userProfile;
-  const query = resources
-    .filter(r => r.uri.includes('Diaries'))
-    .reduce((acc, val) => `${acc},${val.uri}|${val.right}`, '');
-
-  try {
-    const config = {
-      method: 'GET',
-      service: 'security-manager-service',
-      path: `/user?r=${query}`
-    };
-    const response = await serviceRunner.callService(
-      config,
-      'getDiaryAssigneeOptions'
-    );
-
     return response.data?.result;
   } catch (error) {
     throw error;

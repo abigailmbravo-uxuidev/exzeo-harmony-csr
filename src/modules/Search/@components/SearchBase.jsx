@@ -10,9 +10,9 @@ import DiariesSearch from '../Diaries';
 import AgencySearch from '../Agency';
 import AgentSearch from '../Agent';
 import SearchPolicy from '../Policy';
+import MainNavigation from '../../../components/MainNavigation';
 
 export const SearchBase = ({
-  handleLogout,
   userProfile,
   errorHandler,
   createQuote,
@@ -23,7 +23,9 @@ export const SearchBase = ({
       <Helmet>
         <title>Harmony - CSR Portal</title>
       </Helmet>
-      <Header handleLogout={handleLogout} />
+      <Header>
+        <MainNavigation />
+      </Header>
       <Route
         exact
         path="/address"

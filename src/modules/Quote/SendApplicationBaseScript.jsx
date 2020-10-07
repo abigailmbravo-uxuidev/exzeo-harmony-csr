@@ -1,5 +1,5 @@
 import React from 'react';
-import { PRODUCT_DESCRIPTION } from '../../utilities/entityDetails';
+import { PRODUCT_DESCRIPTION } from '../../utilities/documentDetails';
 
 const SendApplicationBaseScript = ({ initialValues, showInspection }) => {
   return (

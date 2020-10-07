@@ -18,7 +18,7 @@ import Create from './Create';
 import Contracts from './Contracts';
 import Agents from './Agents';
 import Overview from './Overview';
-import Notes from '../../components/Notes';
+import Notes from './NotesFiles';
 import CreateBranch from './CreateBranch';
 import Transfer from './Transfer';
 
@@ -108,13 +108,7 @@ export class Agency extends Component {
             <Route
               exact
               path={`/agency/${agencyCode}/${branchCode}/notes`}
-              render={props => (
-                <Notes
-                  numbers={[agencyCode]}
-                  numberType="agencyCode"
-                  {...props}
-                />
-              )}
+              render={props => <Notes {...props} agencyCode={agencyCode} />}
             />
             <Route
               exact

@@ -14,4 +14,33 @@ export const DUE_STATUS = {
   upComing: 'Upcoming'
 };
 
+export const DIARY_STATUS = {
+  pastDue: `OPEN | ${DUE_STATUS.pastDue}`,
+  dueSoon: `OPEN | ${DUE_STATUS.dueSoon}`,
+  upComing: `OPEN | ${DUE_STATUS.upComing}`,
+  closed: 'CLOSED'
+};
+
+export const DIARY_STATUS_COLOR = {
+  pastDue: 'red',
+  dueSoon: 'yellow',
+  upComing: 'green',
+  closed: 'gray'
+};
+
 export const DIARY_TAB = 'diaries';
+
+export const REQUIRED_DIARY_RIGHTS = ['READ', 'UPDATE', 'INSERT'];
+
+export const POLLING_TIMEOUT = 30000;
+
+let inactiveBrowserTab;
+if (typeof document.hidden !== 'undefined') {
+  inactiveBrowserTab = 'hidden';
+} else if (typeof document.msHidden !== 'undefined') {
+  inactiveBrowserTab = 'msHidden';
+} else if (typeof document.webkitHidden !== 'undefined') {
+  inactiveBrowserTab = 'webkitHidden';
+}
+
+export const INACTIVE_BROWSER_TAB_KEY = inactiveBrowserTab;

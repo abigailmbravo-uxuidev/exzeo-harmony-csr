@@ -6,6 +6,7 @@ import { Button } from '@exzeo/core-ui';
 
 import { useUser } from '../../../context/user-context';
 import Header from '../../../components/Header';
+import MainNavigation from '../../../components/MainNavigation';
 import { BULK_MORTGAGE_TYPE, BULK_TYPE_LABEL } from '../constants';
 import ByPolicy from './ByPolicy';
 import ByJobTab from './ByJob';
@@ -19,7 +20,9 @@ const BulkMortgage = ({ errorHandler }) => {
       <Helmet>
         <title>Bulk Mortgage</title>
       </Helmet>
-      <Header />
+      <Header>
+        <MainNavigation />
+      </Header>
       <main role="document" className="bulk-mortgage-main">
         <div className="content-wrapper scroll">
           <div className="bulk-mortgagee-wrapper">

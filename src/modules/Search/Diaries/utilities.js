@@ -1,5 +1,5 @@
-import { date, calculateDecorator } from '@exzeo/core-ui';
-import { formatEntry, getDueStatus } from '../../../utilities/diaries';
+import { calculateDecorator, date } from '@exzeo/core-ui';
+import { formatEntry, getDueStatus } from '../../Diaries/utilities';
 
 export const transferDiariesCalculator = calculateDecorator(
   {
@@ -66,69 +66,6 @@ export function isValidRange(value) {
   return date.moment(min).isSameOrBefore(max)
     ? undefined
     : 'Not a valid date range';
-}
-
-/**
- *
- * @param users
- * @returns {*}
- */
-export function formatAssigneesOptions(users) {
-  const activeUsers = users.filter(user => !!user.enabled);
-
-  const userList = activeUsers.map(user => ({
-    answer: user.userId,
-    label: `${user.firstName} ${user.lastName}`,
-    type: 'user'
-  }));
-
-  return userList.sort((a, b) => {
-    const userA = a.label.toUpperCase();
-    const userB = b.label.toUpperCase();
-    if (userA > userB) return 1;
-    if (userA < userB) return -1;
-    return 0;
-  });
-}
-
-/**
- *
- * @param diaryOptions
- * @returns {{reasons: *, tags: *}}
- */
-export function formatDiaryOptions(diaryOptions) {
-  const options = diaryOptions;
-  const diaryReasons = options.reduce((acc, d) => {
-    const reasons = d.reasons;
-    acc.push(...reasons);
-    return acc;
-  }, []);
-
-  const diaryTags = options.reduce((acc, d) => {
-    const tags = d.tags;
-    acc.push(...tags);
-    return acc;
-  }, []);
-
-  return {
-    reasons: removeDuplicates(diaryReasons, 'answer'),
-    tags: removeDuplicates(diaryTags, 'answer')
-  };
-}
-
-/**
- *
- * @param array
- * @param property
- * @returns {*}
- */
-function removeDuplicates(array, property) {
-  return array.filter((obj, position, filteredArray) => {
-    return (
-      filteredArray.map(mapObj => mapObj[property]).indexOf(obj[property]) ===
-      position
-    );
-  });
 }
 
 /**

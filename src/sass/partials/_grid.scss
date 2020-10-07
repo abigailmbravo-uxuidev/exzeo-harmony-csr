@@ -704,6 +704,22 @@ table {
   .table .table {
     background: transparent;
   }
+  //BOOTSTRAP TABLE 2.0 STYLES
+  .table {
+    > thead,
+    > tbody {
+      > tr {
+        > th,
+        > td {
+          padding: ($padding/2) ($padding * 0.75);
+
+          color: $warm-gray-08;
+          border-width: 0;
+        }
+      }
+    }
+  }
+  //END BOOTSTRAP TABLE 2.0 STYLES
 
   .table-bordered {
     tr {
@@ -1043,6 +1059,349 @@ table {
 }
 //sortable column controls
 /*------------------------------------------------------------------------------------*/
+//New bootstrap table 2.0
+.search {
+  > span {
+    margin: 0 0 0 1rem;
+    margin-bottom: 0.5rem;
+
+    color: $warm-gray-08;
+
+    font-weight: $font-weight-bold;
+  }
+  .search-label {
+    width: 100%;
+  }
+}
+.diaries {
+  .react-bootstrap-table {
+    table {
+      tbody {
+        background-color: $white;
+        tr {
+          border-bottom: 1px dotted $warm-gray-03;
+        }
+      }
+      tbody,
+      thead {
+        tr {
+          display: flex;
+
+          td {
+            flex-grow: 0;
+            flex-shrink: 0;
+          }
+          .due-status {
+            width: 8rem;
+
+            .status-indicator {
+              display: flex;
+
+              span {
+                display: flex;
+                flex-grow: 0;
+                flex-shrink: 0;
+
+                min-width: 4px;
+                min-height: 1rem;
+                margin-right: $padding/2;
+                margin-left: -$padding/2;
+
+                &.gray {
+                  border-radius: 2px;
+                  background: $warm-gray-06;
+                }
+
+                &.red {
+                  border-radius: 2px;
+                  background: $red;
+                }
+
+                &.yellow {
+                  border-radius: 2px;
+                  background: $orange-lighten-01;
+                }
+
+                &.green {
+                  border-radius: 2px;
+                  background: $green-darken-02;
+                }
+
+                &.status-display {
+                  margin-left: 0;
+                }
+              }
+            }
+          }
+          .due {
+            width: 5rem;
+          }
+          .assignee {
+            width: 8rem;
+          }
+          .reason {
+            width: 8rem;
+          }
+          .message {
+            flex-grow: 1;
+            flex-shrink: 1;
+          }
+          .updated-at {
+            width: 8rem;
+          }
+          .created-by {
+            min-width: 9.75rem;
+          }
+          .expand-cell {
+            display: flex;
+            align-items: center;
+
+            width: 3.25rem;
+
+            > span {
+              display: flex;
+              flex-grow: 1;
+              flex-shrink: 0;
+              justify-content: flex-end;
+
+              cursor: pointer;
+
+              color: $bright-blue;
+
+              font-size: $font-size-base;
+
+              @include transition(all 0.1s ease-in-out);
+
+              &:hover {
+                color: $bright-blue-darken-04;
+              }
+            }
+          }
+          .reset-expansion-style {
+            width: 100%;
+            padding: 0;
+            .row-expansion-style {
+              width: 100%;
+              .react-bootstrap-table {
+                table {
+                  margin: 0;
+                  thead {
+                    display: none;
+                  }
+                  tbody {
+                    tr {
+                      margin-right: 3.25rem;
+                      margin-left: 8rem;
+
+                      &:last-of-type {
+                        border-bottom-width: 0;
+                      }
+                      &:hover {
+                        background-color: $white;
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+.react-bootstrap-table {
+  table:not(.table-bordered) {
+    position: relative;
+
+    margin-bottom: 2rem;
+    th,
+    td {
+      &.term {
+        min-width: 3.75rem;
+      }
+      &.created-by {
+        min-width: 9.75rem;
+      }
+      &.note-type {
+        min-width: 5rem;
+      }
+      &.file-type {
+        min-width: 12rem;
+      }
+      &.attachments {
+        min-width: 3.25rem;
+
+        .attachment-wrapper {
+          cursor: pointer;
+          i {
+            color: $bright-blue;
+          }
+          &:hover {
+            i {
+              color: $bright-blue-darken-04;
+            }
+          }
+        }
+      }
+      &.created-date {
+        min-width: 10.25rem;
+      }
+      &.note {
+        p {
+          margin-bottom: 0;
+        }
+      }
+    }
+    thead {
+      th {
+        &.sortable {
+          > span {
+            //sorted by this column
+            &.react-bootstrap-table-sort-order {
+              position: relative;
+
+              margin-left: 0.5rem;
+
+              &:after {
+                position: absolute;
+                top: 0.25rem;
+                left: 0;
+
+                content: '\f0d7';
+
+                color: rgba($warm-gray-08, 0.25);
+
+                font: normal normal normal 1rem $font-family-icon;
+              }
+
+              > .caret {
+                position: absolute;
+                top: -0.25rem;
+
+                margin: 0 !important;
+                padding: 0 !important;
+
+                &:before {
+                  content: '\f0d8';
+
+                  color: rgba($warm-gray-08, 0.625);
+
+                  font: normal normal normal 1rem $font-family-icon;
+                }
+              }
+
+              &.dropup {
+                > .caret {
+                  top: 0.25rem;
+
+                  &:before {
+                    content: '\f0d7';
+
+                    color: rgba($warm-gray-08, 0.625);
+
+                    font: normal normal normal 1rem $font-family-icon;
+                  }
+                }
+                &:after {
+                  position: absolute;
+                  top: -0.25rem;
+                  left: 0;
+
+                  content: '\f0d8';
+
+                  color: rgba($warm-gray-08, 0.25);
+
+                  font: normal normal normal 1rem $font-family-icon;
+                }
+              }
+            }
+            //sortable by this column
+            &.order {
+              position: relative;
+
+              margin-left: 0.5rem;
+
+              > span {
+                position: relative;
+
+                > .caret {
+                  position: absolute;
+                  top: -0.25rem;
+
+                  margin: 0 !important;
+                  padding: 0 !important;
+
+                  &:before {
+                    content: '\f0d8';
+
+                    color: rgba($warm-gray-08, 0.25);
+
+                    font: normal normal normal 1rem $font-family-icon;
+                  }
+                }
+
+                &.dropup {
+                  > .caret {
+                    top: 0.25rem;
+
+                    &:before {
+                      content: '\f0d7';
+
+                      color: rgba($warm-gray-08, 0.25);
+
+                      font: normal normal normal 1rem $font-family-icon;
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+    tbody {
+      tr {
+        td {
+          &.react-bs-table-no-data {
+            position: absolute;
+
+            width: 100%;
+
+            font-style: italic;
+
+            &:before {
+              position: absolute;
+              top: 0.75rem;
+              left: 0;
+
+              width: calc(50% - 5rem);
+              height: 1px;
+
+              content: '';
+
+              border-bottom: 1px dotted $warm-gray-05;
+            }
+            &:after {
+              position: absolute;
+              top: 0.75rem;
+              right: 0;
+
+              width: calc(50% - 5rem);
+              height: 1px;
+
+              content: '';
+
+              border-bottom: 1px dotted $warm-gray-05;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+//end New bootstrap table 2.0
+
 .react-bs-table-container {
   .sort-column {
     display: flex;

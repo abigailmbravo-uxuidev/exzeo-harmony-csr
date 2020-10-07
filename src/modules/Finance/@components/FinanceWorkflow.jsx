@@ -4,6 +4,7 @@ import { Helmet } from 'react-helmet';
 import { Route } from 'react-router-dom';
 
 import Header from '../../../components/Header';
+import MainNavigation from '../../../components/MainNavigation';
 import SideNav from './SideNav';
 import BulkPayments from './BulkPayments';
 
@@ -13,7 +14,9 @@ const Finance = ({ errorHandler }) => {
       <Helmet>
         <title>Finance</title>
       </Helmet>
-      <Header />
+      <Header>
+        <MainNavigation />
+      </Header>
       <main role="document" className="policy-advanced">
         <SideNav />
         <Route

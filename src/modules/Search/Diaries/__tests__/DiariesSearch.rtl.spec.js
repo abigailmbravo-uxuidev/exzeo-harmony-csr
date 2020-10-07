@@ -1,9 +1,9 @@
 import React from 'react';
 
 import {
-  render,
-  jestResolve,
   fireEvent,
+  jestResolve,
+  render,
   wait,
   waitForElementToBeRemoved,
   within
@@ -11,18 +11,19 @@ import {
 
 import * as searchData from '../data';
 import {
-  diaryOptions,
   assigneeOptions,
+  diaryOptions,
   searchResults,
   transferResult
 } from '../fixtures.js';
 import DiariesSearch from '../@components/DiariesSearch';
+import * as diariesData from '../../../Diaries/data';
 
 describe('DiariesSearch and Transfer Testing', () => {
   describe('Diaries Search tests', () => {
-    searchData.fetchDiaries = jestResolve([]);
-    searchData.fetchDiaryOptions = jestResolve(diaryOptions);
-    searchData.fetchAssigneeOptions = jestResolve(assigneeOptions);
+    searchData.searchDiaries = jestResolve([]);
+    diariesData.fetchDiaryOptions = jestResolve(diaryOptions);
+    diariesData.fetchAssigneeOptions = jestResolve(assigneeOptions);
 
     const props = {
       userProfile: {
@@ -38,13 +39,11 @@ describe('DiariesSearch and Transfer Testing', () => {
     };
 
     it('POS:Renders and has fields and labels to user with access', async () => {
-      const { getByLabelText, getByTestId, getByRole } = render(
+      const { getByLabelText, getByTestId, getByRole, queryByRole } = render(
         <DiariesSearch {...props} />
       );
 
-      // TODO update Loader in core-ui to have a role attribute
-      // await waitForElementToBeRemoved(() => queryByRole('status'));
-      await waitForElementToBeRemoved(() => getByTestId('loader'));
+      await waitForElementToBeRemoved(() => queryByRole('status'));
 
       const statusField = getByLabelText(/diary status/i);
       expect(statusField).toBeInTheDocument();
@@ -65,9 +64,9 @@ describe('DiariesSearch and Transfer Testing', () => {
   });
 
   describe('Transfer Diaries Testing', () => {
-    searchData.fetchDiaryOptions = jestResolve(diaryOptions);
-    searchData.fetchAssigneeOptions = jestResolve(assigneeOptions);
-    searchData.fetchDiaries = jestResolve(searchResults);
+    diariesData.fetchDiaryOptions = jestResolve(diaryOptions);
+    diariesData.fetchAssigneeOptions = jestResolve(assigneeOptions);
+    searchData.searchDiaries = jestResolve(searchResults);
     searchData.transferDiaries = jestResolve(transferResult);
 
     const props = {

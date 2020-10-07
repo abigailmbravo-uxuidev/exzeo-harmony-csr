@@ -1,12 +1,22 @@
 import { date } from '@exzeo/core-ui';
 
-export const mergeNotes = (notes, files) => {
+export const mergeNotes = (notes, files, sourceType) => {
   const fileList = notes
     .reduce((list, note) => [...list, ...note.noteAttachments], [])
     .map(n => n.fileUrl);
 
-  const getTerm = number =>
-    number && number.includes('-') ? Number(number.split('-').pop()) : 1;
+  const getTerm = number => {
+    if (sourceType !== 'policyNumber') return null;
+    return number && number.includes('-') ? Number(number.split('-').pop()) : 1;
+  };
+
+  const formatAttachments = (noteAttachments = []) =>
+    noteAttachments.map(attachment => ({
+      ...attachment,
+      fileName:
+        attachment?.fileName ??
+        attachment.fileUrl.substring(attachment.fileUrl.lastIndexOf('/') + 1)
+    }));
 
   const fileNotes = files.reduce((filtered, file) => {
     if (!fileList.includes(file.fileUrl)) {
@@ -30,17 +40,11 @@ export const mergeNotes = (notes, files) => {
   }, []);
 
   const upDatedNotes = notes.map(note => ({
+    ...note,
     term: getTerm(note.number),
-    ...note
+    noteAttachments: formatAttachments(note.noteAttachments)
   }));
   return [...upDatedNotes, ...fileNotes];
-};
-
-export const filterNotesByType = (notes, showAttachments) => {
-  if (!Array.isArray(notes)) return [];
-  return showAttachments
-    ? notes.filter(n => n.noteAttachments.length > 0)
-    : notes.filter(n => n.noteContent);
 };
 
 export const toTitleCase = str => {
@@ -51,19 +55,8 @@ export const toTitleCase = str => {
     .join(' ');
 };
 
-export const getFileName = a =>
-  a.fileName ? a.fileName : a.fileUrl.substring(a.fileUrl.lastIndexOf('/') + 1);
-
-export const showCreatedBy = createdBy => (createdBy ? createdBy.userName : '');
-
-export const attachmentCount = attachments =>
-  attachments ? attachments.length : 0;
-
-export const attachmentFilter = attachment =>
-  attachment.length > 0 ? attachment[0].fileName : null;
-
-export const formatCreatedDate = createdDate =>
-  date.formattedLocalDate(createdDate);
+export const formatCreatedDate = (createdDate, row, idx, timezone) =>
+  date.formattedDate(createdDate, date.FORMATS.PRIMARY_LOCALE, timezone);
 
 export const sortByOrder = (a, b, order) => {
   if (order === 'desc') {
@@ -76,49 +69,25 @@ export const sortByOrder = (a, b, order) => {
 export const sortByDate = (a, b, order) => {
   const dateA = date.moment.utc(a).unix();
   const dateB = date.moment.utc(b).unix();
-
   return sortByOrder(dateA, dateB, order);
 };
 
-export const sortAuthor = (a, b, order) => {
-  if (!a.createdBy || !b.createdBy) return order === 'desc' ? -1 : 1;
-  return sortByOrder(
-    a.createdBy.userName.toLowerCase(),
-    b.createdBy.userName.toLowerCase(),
-    order
-  );
-};
-
-export const sortContactType = (a, b, order) => {
-  return sortByOrder(a.noteContactType, b.noteContactType, order);
-};
-
-export const formatNote = note => {
-  return note ? note.replace(/[\r\n]/g, '<br>') : '';
+export const sortCaseInsensitive = (a, b, order) => {
+  return sortByOrder(a.toLowerCase(), b.toLowerCase(), order);
 };
 
 const markupRegex = /<(.+?)>/; // Trying to account for various HTML tags at the beginning of the note content
 export const sortNoteContent = (a, b, order) => {
-  const contentA = a.noteContent.replace(markupRegex, '').toLowerCase();
-  const contentB = b.noteContent.replace(markupRegex, '').toLowerCase();
+  const contentA = a.replace(markupRegex, '').toLowerCase();
+  const contentB = b.replace(markupRegex, '').toLowerCase();
 
   return sortByOrder(contentA, contentB, order);
 };
 
-export const sortMessage = (a, b, order) => {
-  return sortByOrder(a.message.toLowerCase(), b.message.toLowerCase(), order);
-};
-
 export const sortFiles = (a, b, order) => {
-  const fileA =
-    a.noteAttachments.length > 0 ? getFileName(a.noteAttachments[0]) : '';
-  const fileB =
-    b.noteAttachments.length > 0 ? getFileName(b.noteAttachments[0]) : '';
+  const fileA = a.length > 0 ? a[0].fileName : '';
+  const fileB = b.length > 0 ? b[0].fileName : '';
   return sortByOrder(fileA, fileB, order);
-};
-
-export const sortFileType = (a, b, order) => {
-  return sortByOrder(a.fileType, b.fileType, order);
 };
 
 export const formatNotes = notes => {
@@ -131,4 +100,25 @@ export const formatNotes = notes => {
           : ''
     };
   });
+};
+
+export const determineSource = document => {
+  // Allows us to manually pass in a "document" object, for instance when we are in Agency.
+  if (document.$TYPE) {
+    return {
+      sourceNumbers: document.sourceNumbers,
+      sourceType: document.$TYPE
+    };
+  }
+
+  // Check for sourceNumber since PolicyNumber is returned for a quote that is Policy Issued
+  const sourceNumbers = document.sourceNumber
+    ? [document.policyNumber, document.sourceNumber]
+    : [document.quoteNumber];
+  const sourceType = document.sourceNumber ? 'policyNumber' : 'quoteNumber';
+
+  return {
+    sourceNumbers,
+    sourceType
+  };
 };

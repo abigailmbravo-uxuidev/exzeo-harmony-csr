@@ -1,18 +1,14 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { SideNavigation } from '@exzeo/core-ui/src/@Harmony';
 
-import {
-  toggleNote,
-  toggleDiary,
-  setNotesSynced
-} from '../state/actions/ui.actions';
+import { toggleNote, setNotesSynced } from '../state/actions/ui.actions';
 import { setAppError } from '../state/actions/error.actions';
 import { POLICY_RESOURCE_TYPE } from '../constants/diaries';
 
 import PlusButton from './PlusButton';
 import GenerateDocsForm from './GenerateDocsForm';
+import Clock from './Clock';
 
 const getNavLinks = ({ policyNumber }) => [
   {
@@ -64,21 +60,6 @@ export class SideNav extends React.Component {
     showDocsForm: false
   };
 
-  newDiary = () => {
-    const { toggleDiary, policy } = this.props;
-
-    const { companyCode, state, product, policyNumber } = policy;
-
-    toggleDiary({
-      companyCode,
-      state,
-      product,
-      resourceType: POLICY_RESOURCE_TYPE,
-      resourceId: policyNumber,
-      entity: policy
-    });
-  };
-
   newNote = () => {
     const { toggleNote, policy } = this.props;
 
@@ -109,6 +90,7 @@ export class SideNav extends React.Component {
 
   render() {
     const { policy, setAppError } = this.props;
+
     return (
       <nav className="site-nav">
         <SideNavigation
@@ -142,25 +124,15 @@ export class SideNav extends React.Component {
             )}
           </li>
         </SideNavigation>
-        <PlusButton newNote={this.newNote} newDiary={this.newDiary} />
+        <PlusButton newNote={this.newNote} document={policy} />
+        <Clock timezone={policy?.property?.timezone} />
       </nav>
     );
   }
 }
 
-SideNav.propTypes = {
-  policy: PropTypes.object
-};
-
-const mapStateToProps = state => ({
-  activateRedirectLink: state.appState.data.activateRedirectLink,
-  activateRedirect: state.appState.data.activateRedirect,
-  policy: state.policyState.policy || {}
-});
-
-export default connect(mapStateToProps, {
+export default connect(null, {
   toggleNote,
-  toggleDiary,
   setAppError,
   setNotesSynced
 })(SideNav);

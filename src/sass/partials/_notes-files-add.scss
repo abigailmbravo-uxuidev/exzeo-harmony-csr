@@ -28,7 +28,6 @@
 
   .title-bar {
     display: flex;
-    cursor: grab;
     align-items: center;
     flex-direction: row;
     flex-grow: 0;
@@ -36,6 +35,8 @@
     flex-wrap: nowrap;
 
     height: 2.4375rem;
+
+    cursor: grab;
 
     background: $bright-blue-darken-04;
 
@@ -265,7 +266,9 @@
   top: 9rem;
   bottom: 0;
   left: 12.5rem;
+
   overflow: hidden;
+
   width: 40%;
   min-width: 34rem;
 
@@ -359,7 +362,8 @@
         }
       }
 
-      .react-bs-table {
+      .react-bootstap-table {
+        overflow-x: auto;
         .note-type {
           display: none;
         }
@@ -374,7 +378,8 @@
       }
     }
 
-    .react-bs-table {
+    .react-bootstrap-table {
+      overflow-x: auto;
       .created-date {
         width: 16%;
         min-width: 9.75rem;
@@ -421,6 +426,7 @@
         span {
           div {
             cursor: pointer;
+            white-space: nowrap;
 
             color: $bright-blue;
 
@@ -432,208 +438,14 @@
           }
         }
       }
-    }
 
-    .diaries {
-      > .react-bs-table {
-        table {
-          display: flex;
-          flex-direction: column;
-        }
-
-        > .react-bs-container-body {
-          > .table-striped {
-            > tbody {
-              tr:not(hidden),
-              tr:nth-of-type(even) {
-                border-bottom: 1px dotted $warm-gray-03;
-                background: $white !important;
-
-                &:hover {
-                  background: $white !important;
-                }
-
-                > td {
-                  background: $white !important;
-
-                  &:hover {
-                    background: $white !important;
-                  }
-                }
-              }
-            }
-          }
-        }
-
-        > .react-bs-container-body,
-        > .react-bs-container-header {
-          tbody,
-          thead {
-            tr {
-              display: flex;
-
-              td,
-              th {
-                display: flex;
-                flex-grow: 1;
-                flex-shrink: 1;
-
-                line-height: 1.5;
-
-                &.due-status {
-                  flex-grow: 0;
-                  flex-shrink: 0;
-
-                  width: 8rem;
-
-                  .status-indicator {
-                    display: flex;
-
-                    span {
-                      display: flex;
-                      flex-grow: 0;
-                      flex-shrink: 0;
-
-                      min-width: 4px;
-                      min-height: 1rem;
-                      margin-right: $padding/2;
-                      margin-left: -$padding/2;
-
-                      &.gray {
-                        border-radius: 2px;
-                        background: $warm-gray-06;
-                      }
-
-                      &.red {
-                        border-radius: 2px;
-                        background: $red;
-                      }
-
-                      &.yellow {
-                        border-radius: 2px;
-                        background: $orange-lighten-01;
-                      }
-
-                      &.green {
-                        border-radius: 2px;
-                        background: $green-darken-02;
-                      }
-
-                      &.status-display {
-                        margin-left: 0;
-                      }
-                    }
-                  }
-                }
-
-                &.due {
-                  flex-grow: 0;
-                  flex-shrink: 0;
-
-                  width: 5rem;
-                }
-
-                &.assignee {
-                  flex-grow: 0;
-                  flex-shrink: 0;
-
-                  width: 8rem;
-
-                  white-space: normal;
-                }
-
-                &.reason {
-                  flex-grow: 0;
-                  flex-shrink: 0;
-
-                  width: 8rem;
-
-                  white-space: normal;
-                }
-
-                &.message {
-                  white-space: normal;
-                }
-
-                &.updated-at {
-                  flex-grow: 0;
-                  flex-shrink: 0;
-
-                  width: 5rem;
-                }
-
-                &.created-by {
-                  flex-grow: 0;
-                  flex-shrink: 0;
-
-                  width: 8rem;
-
-                  white-space: normal;
-                }
-
-                &.action {
-                  display: flex;
-                  overflow: visible;
-                  align-items: flex-start;
-                  flex-grow: 0;
-                  flex-shrink: 0;
-
-                  width: 2rem;
-                }
-
-                &.react-bs-table-expand-cell {
-                  display: flex;
-                  align-items: flex-start;
-                  flex-grow: 0;
-                  flex-shrink: 0;
-                  order: 1;
-
-                  width: 2rem;
-
-                  span {
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-
-                    font-size: $font-size-base;
-
-                    @include transition(all 0.1s ease-in-out);
-
-                    i {
-                      color: $bright-blue;
-
-                      font-size: $font-size-base;
-
-                      @include transition(all 0.1s ease-in-out);
-                    }
-
-                    &:hover {
-                      cursor: pointer;
-
-                      color: $bright-blue-darken-04;
-
-                      i {
-                        color: $bright-blue-darken-04;
-                      }
-                    }
-                  }
-                }
-
-                .sub-table {
-                  width: 100%;
-                  margin: ($padding * -0.5) (4rem + ($padding * -0.75))
-                    ($padding * -0.5) (8rem + ($padding * -0.75));
-
-                  .table-header-wrapper {
-                    display: none;
-                  }
-
-                  tr:last-child,
-                  tr:nth-of-type(even):last-child {
-                    border-bottom-width: 0;
-                  }
-                }
-              }
+      .table {
+        > thead,
+        > tbody {
+          > tr {
+            > th,
+            > td {
+              font-size: $font-size-sm;
             }
           }
         }
