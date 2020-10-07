@@ -1,16 +1,16 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { SectionLoader, BootstrapTable } from '@exzeo/core-ui';
-import { useFetchPaymentHistory } from '../hooks';
-import { formatPaymentDate, formatPaymentAmount } from '../utilities';
+import { useFetchPaymentHistory } from './hooks';
+import { formatPaymentDate, formatPaymentAmount } from './utilities';
 //
-function PaymentHistoryTable({ initialValues, paymentAdded, header }) {
+function PaymentHistoryTable({ initialValues, header }) {
   const { policyNumber, property } = initialValues;
   const timezone = property?.timezone ?? 'America/New_York';
 
   const { paymentHistory, loaded } = useFetchPaymentHistory(
     policyNumber,
-    paymentAdded
+    initialValues.summaryLedger?.updatedAt
   );
 
   const columns = [

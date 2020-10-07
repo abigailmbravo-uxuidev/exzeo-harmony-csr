@@ -1,9 +1,16 @@
-// @ts-nocheck
 import React from 'react';
-import { OnChangeListener, OnBlurListener, Field } from '@exzeo/core-ui/src';
+import {
+  OnChangeListener,
+  OnBlurListener,
+  Field,
+  useFormState
+} from '@exzeo/core-ui/src';
 import _get from 'lodash/get';
 
-const EndorsementsWatcherHO3 = ({ formValues, initialValues }) => {
+const EndorsementsWatcherHO3 = ({ initialValues }) => {
+  const { values: formValues } = useFormState({
+    subscription: { values: true }
+  });
   return (
     <React.Fragment>
       <Field name="coverageLimits.dwelling.value">

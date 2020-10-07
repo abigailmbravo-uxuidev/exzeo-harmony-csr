@@ -48,8 +48,7 @@ const EndorsementForm = ({
   parentFormInstance,
   timezone,
   setAppError,
-  history,
-  handlePrimaryClick
+  history
 }) => {
   let formInstance;
   const [disableReview, setDisableReview] = useState(false);
@@ -168,7 +167,7 @@ const EndorsementForm = ({
       timezone
     );
 
-    await handlePrimaryClick({ ...formValues, endorsementDate });
+    await parentFormInstance.submit({ ...formValues, endorsementDate });
 
     setTimeout(formInstance.reset);
     setCalculateRate(initialState);
@@ -288,7 +287,7 @@ const EndorsementForm = ({
               </div>
             </div>
             <OnChangeListener name="endorsementDate">
-              {value => {
+              {() => {
                 if (endorsementState.rating) {
                   setCalculateRate(state => ({
                     ...state,

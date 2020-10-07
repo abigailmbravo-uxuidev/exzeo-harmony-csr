@@ -1,164 +1,79 @@
-import React from 'react';
-import { connect } from 'react-redux';
-import { Loader, FormSpy, remoteSubmit, date, format } from '@exzeo/core-ui';
+import React, {
+  useState,
+  useEffect,
+  useMemo,
+  useCallback,
+  useRef
+} from 'react';
+import { date, Loader } from '@exzeo/core-ui';
 import {
-  ClaimsTable,
+  DetailsHeader,
   Gandalf,
-  getConfigForJsonTransform,
-  PolicyBilling,
-  callService,
-  DetailsHeader
+  AdditionalInterests,
+  AddressSection,
+  DOM_COMPONENT_MAP,
+  Summary
 } from '@exzeo/core-ui/src/@Harmony';
-import { defaultMemoize } from 'reselect';
 
-import App from '../../components/WorkflowWrapper';
+import { POLICY_RESOURCE_TYPE } from '../../constants/diaries';
+import { useWorkflowTemplate } from '../../hooks/workflowTemplates';
+import AppWrapper from '../../components/WorkflowWrapper';
 import SideNav from '../../components/SideNav';
 import NavigationPrompt from '../../components/NavigationPrompt';
+import PolicyHolders from '../../components/PolicyHolders';
+import GenerateDocsForm from '../../components/GenerateDocsForm';
+import Clock from '../../components/Clock';
+import PlusButton from '../../components/PlusButton';
 import { OpenDiariesBar } from '../Diaries';
-import * as detailUtils from '../../utilities/documentDetails';
-import { POLICY_RESOURCE_TYPE } from '../../constants/diaries';
-import { setAppError } from '../../state/actions/error.actions';
-import { getEnumsForPolicyWorkflow } from '../../state/actions/list.actions';
-import {
-  createTransaction,
-  getPolicy,
-  initializePolicyWorkflow,
-  transferAOR,
-  updateBillPlan,
-  updatePolicy,
-  getClaims
-} from '../../state/actions/policy.actions';
-import {
-  getPolicyEffectiveDateReasons,
-  getPolicyEndorsementHistory,
-  getPolicyFormData
-} from '../../state/selectors/policy.selectors';
-import { STANDARD_DATE_FORMAT } from '../../constants/dates';
-import { DEFAULT_DETAILS, BASE_MAP_URI } from '../../constants/detailHeader';
 
-import NotesFiles from '../NotesFiles';
-import PolicyHolders from '../Quote/PolicyHolders';
-import PaymentHistoryTable from './@components/PaymentHistoryTable';
-import Appraiser from './Appraiser';
-import Billing from './Billing';
-import BillingTable from './BillingTable';
-import CancelReason from './CancelReason';
-import CancelType from './CancelType';
-import {
-  PAGE_ROUTING,
-  ROUTES_NOT_HANDLED_BY_GANDALF
-} from './constants/workflowNavigation';
-import EffectiveDateModal from './EffectiveDateModal';
-import EndorsementsMenu from './EndorsementsMenu';
-import EndorsementsWatcherAF3 from './EndorsementsWatcherAF3';
-import EndorsementsWatcherHO3 from './EndorsementsWatcherHO3';
-import PolicyFooter from './PolicyFooter';
-import PolicyholderAgent from './PolicyholderAgent';
-import PreviousEndorsements from './PreviousEndorsements';
+import { PAGE_ROUTING } from './constants/workflowNavigation';
+import { getHeaderDetails, getNavLinks } from './utilities';
 import ReinstatePolicyModal from './ReinstatePolicyModal';
 import RescindCancelModal from './RescindCancelModal';
+import EffectiveDateModal from './EffectiveDateModal';
+import Billing from './Billing';
+import BillingDetails from './BillingDetails';
+import Appraiser from './Appraiser';
+import NotesFiles from '../NotesFiles';
+import PolicyholderAgent from './PolicyholderAgent';
+import CancelType from './CancelType';
+import CancelReason from './CancelReason';
+import PaymentHistoryTable from './PaymentHistoryTable';
+import EndorsementsMenu from './EndorsementsMenu';
+import EndorsementsWatcherHO3 from './EndorsementsWatcherHO3';
+import EndorsementsWatcherAF3 from './EndorsementsWatcherAF3';
+import PreviousEndorsements from './PreviousEndorsements';
+import BillingSection from './BillingSection';
+import Claims from './Claims';
+import PolicyFooter from './PolicyFooter';
 
 import TTICFLAF3 from '../../csp-templates/ttic-fl-af3-policy';
 import TTICFLHO3 from '../../csp-templates/ttic-fl-ho3-policy';
 import HCPCNJAF3 from '../../csp-templates/hcpc-nj-af3-policy';
 import HCPCSCAF3 from '../../csp-templates/hcpc-sc-af3-policy';
-import GenerateDocsForm from '../../components/GenerateDocsForm';
-import { setNotesSynced, toggleNote } from '../../state/actions/ui.actions';
-import Clock from '../../components/Clock';
-import PlusButton from '../../components/PlusButton';
+import { PolicyWorkflowProvider } from './context';
 
-const getCurrentStepAndPage = defaultMemoize(pathname => {
-  const currentRouteName = pathname.split('/')[3];
-  return {
-    currentStepNumber: PAGE_ROUTING[currentRouteName],
-    currentRouteName
-  };
-});
-
-const getHeaderDetails = defaultMemoize(
-  (policy, summaryLedger, appraisalList) => {
-    if (!policy || !policy.policyNumber || !summaryLedger)
-      return DEFAULT_DETAILS;
-
-    const {
-      cancelDate,
-      effectiveDate,
-      endDate,
-      policyHolders,
-      policyHolderMailingAddress: pHMA = {},
-      policyID,
-      policyNumber,
-      product,
-      property,
-      sourceNumber,
-      status
-    } = policy;
-
-    const {
-      currentPremium,
-      status: { displayText }
-    } = summaryLedger;
-
-    const {
-      constructionType,
-      physicalAddress,
-      floodZone,
-      territory
-    } = property;
-
-    const mapQuery = detailUtils.getMapQuery(physicalAddress);
-
-    const appraisal =
-      (appraisalList || []).find(
-        x => x.label === property.physicalAddress.county
-      ) || {};
-
-    return {
-      constructionType,
-      policyID,
-      policyNumber,
-      sourceNumber,
-      territory,
-      floodZone,
-      county: physicalAddress.county,
-      currentPremium: currentPremium
-        ? `${format.toCurrency(currentPremium)}`
-        : '--',
-      effectiveDate: date.formattedDate(effectiveDate, STANDARD_DATE_FORMAT),
-      appraisalURI: {
-        label: 'PAS',
-        value: appraisal.answer
-      },
-      mapURI: `${BASE_MAP_URI}${mapQuery}`,
-      status: `${status} / ${displayText}`,
-      details: {
-        product: detailUtils.getProductName(product)
-      },
-      policyHolder: detailUtils.getPrimaryPolicyHolder(policyHolders),
-      mailingAddress: detailUtils.getMailingAddress(pHMA),
-      propertyAddress: {
-        address1: physicalAddress.address1,
-        address2: physicalAddress.address2,
-        csz: detailUtils.getCityStateZip(physicalAddress)
-      },
-      nonPaymentNoticeDate: detailUtils.getNonPaymentNoticeDate(
-        summaryLedger,
-        status
-      ),
-      nonPaymentNoticeDueDate: detailUtils.getNonPaymentNoticeDueDate(
-        summaryLedger,
-        status
-      ),
-      cancellation: detailUtils.getCancellationDate(
-        summaryLedger,
-        status,
-        cancelDate,
-        endDate
-      ),
-      sourcePath: sourceNumber ? `/quote/${sourceNumber}/coverage` : null
-    };
-  }
-);
+const componentMap = {
+  ...DOM_COMPONENT_MAP,
+  $ADDRESS: AddressSection,
+  $ADDITIONAL_INTERESTS: AdditionalInterests,
+  $SUMMARY: Summary,
+  $BILLING: Billing,
+  $BILLING_DETAILS: BillingDetails,
+  $POLICY_BILLING: BillingSection,
+  $APPRAISER: Appraiser,
+  $NOTES_FILES: NotesFiles,
+  $POLICYHOLDER_AGENT: PolicyholderAgent,
+  $CANCEL_TYPE: CancelType,
+  $CANCEL_REASON: CancelReason,
+  $CLAIMS_TABLE: Claims,
+  $PAYMENT_HISTORY_TABLE: PaymentHistoryTable,
+  $ENDORSEMENTS_MENU: EndorsementsMenu,
+  $ENDORSEMENTS_WATCHER_HO3: EndorsementsWatcherHO3,
+  $ENDORSEMENTS_WATCHER_AF3: EndorsementsWatcherAF3,
+  $PREVIOUS_ENDORSEMENTS: PreviousEndorsements,
+  $POLICYHOLDERS: PolicyHolders
+};
 
 const TEMPLATES = {
   'TTIC:FL:AF3': TTICFLAF3,
@@ -169,180 +84,74 @@ const TEMPLATES = {
 
 const FORM_ID = 'PolicyWorkflowCSR';
 
-export class PolicyWorkflow extends React.Component {
-  state = {
-    gandalfTemplate: null,
-    showDiaries: false,
-    showReinstatePolicyModal: false,
-    showEffectiveDateChangeModal: false,
-    showRescindCancelModal: false,
-    isEndorsementCalculated: false,
-    pollingFilter: null,
-    showDocsForm: false
-  };
+export const PolicyWorkflow = ({
+  cancelOptions,
+  effectiveDateReasons,
+  endorsementHistory,
+  getPolicy,
+  history,
+  initialized,
+  isLoading,
+  match,
+  notesSynced,
+  options,
+  policy,
+  policyFormData,
+  setAppError,
+  summaryLedger,
+  zipCodeSettings,
+  updatePolicy,
+  initializePolicyWorkflow,
+  getEnumsForPolicyWorkflow,
+  updateBillPlan,
+  transferAOR,
+  setNotesSynced,
+  toggleNote
+}) => {
+  const { step, policyNumber } = match.params;
+  const workflowPage = PAGE_ROUTING[step];
+  const template = useWorkflowTemplate(policy, TEMPLATES, setAppError);
 
-  formInstance = null;
-  customHandlers = {};
-  modalHandlers = {};
+  const [showEffectiveDate, setShowEffectiveDate] = useState(false);
+  const [showReinstatePolicy, setShowReinstatePolicy] = useState(false);
+  const [showRescindCancellation, setShowRescindCancellation] = useState(false);
+  const [showDocsForm, setShowDocsForm] = useState(false);
 
-  customComponents = {
-    $BILLING: Billing,
-    $BILLING_TABLE: BillingTable,
-    $APPRAISER: Appraiser,
-    $NOTES_FILES: NotesFiles,
-    $POLICYHOLDER_AGENT: PolicyholderAgent,
-    $CANCEL_TYPE: CancelType,
-    $CANCEL_REASON: CancelReason,
-    $CLAIMS_TABLE: ClaimsTable,
-    $POLICY_BILLING: PolicyBilling,
-    $PAYMENT_HISTORY_TABLE: PaymentHistoryTable,
-    $ENDORSEMENTS_MENU: EndorsementsMenu,
-    $ENDORSEMENTS_WATCHER_HO3: EndorsementsWatcherHO3,
-    $ENDORSEMENTS_WATCHER_AF3: EndorsementsWatcherAF3,
-    $PREVIOUS_ENDORSEMENTS: PreviousEndorsements,
-    $POLICYHOLDERS: PolicyHolders
-  };
+  useEffect(() => {
+    initializePolicyWorkflow(policyNumber);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
-  getConfigForJsonTransform = defaultMemoize(getConfigForJsonTransform);
-
-  componentDidMount() {
-    const {
-      getEnumsForPolicyWorkflow,
-      initializePolicyWorkflow,
-      match: {
-        params: { policyNumber }
-      }
-    } = this.props;
-
-    initializePolicyWorkflow(policyNumber).then(policy => {
+  useEffect(() => {
+    if (policy.policyNumber) {
       getEnumsForPolicyWorkflow(policy);
-    });
-    this.getTemplate();
-  }
-
-  componentDidUpdate(prevProps) {
-    const { policy } = this.props;
-    const { policy: prevPolicy } = prevProps;
-    if ((policy || {}).product !== (prevPolicy || {}).product) {
-      this.getTemplate();
     }
-  }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [policy.policyNumber]);
 
-  getAllClaims = () => {
-    const {
-      policy: { policyNumber },
-      getClaims
-    } = this.props;
-    getClaims(policyNumber);
-  };
+  const navLinks = useMemo(() => getNavLinks(policyNumber), [policyNumber]);
 
-  getTemplate = async () => {
-    const { companyCode, state, product } = this.props.policy;
-    const templateKey = `${companyCode}:${state}:${product}`;
-    this.setState(() => ({ gandalfTemplate: TEMPLATES[templateKey] }));
-  };
+  const headerDetails = useMemo(
+    () => getHeaderDetails(policy, summaryLedger, options.appraisers),
+    [policy, summaryLedger, options.appraisers]
+  );
 
-  handleGandalfSubmit = async values => {
-    const { location, zipCodeSettings } = this.props;
-    const { currentRouteName, currentStepNumber } = getCurrentStepAndPage(
-      location.pathname
-    );
+  const handleSubmit = useCallback(
+    async values => {
+      await updatePolicy({
+        data: values,
+        options: {
+          step,
+          cancelPolicy: workflowPage === PAGE_ROUTING.cancel,
+          endorsePolicy: workflowPage === PAGE_ROUTING.endorsements,
+          zipCodeSettings
+        }
+      });
+    },
+    [workflowPage, updatePolicy, zipCodeSettings, step]
+  );
 
-    await this.props.updatePolicy({
-      data: values,
-      options: {
-        step: currentStepNumber,
-        cancelPolicy: currentRouteName === 'cancel',
-        endorsePolicy: currentRouteName === 'endorsements',
-        zipCodeSettings
-      }
-    });
-  };
-
-  isSubmitDisabled = (pristine, submitting) => {
-    const { policy } = this.props;
-    if (policy.editingDisabled) return true;
-    return pristine || submitting;
-  };
-
-  primaryClickHandler = () => {
-    remoteSubmit(FORM_ID);
-  };
-
-  setFormInstance = formInstance => {
-    this.formInstance = formInstance;
-  };
-
-  handleToggleReinstateModal = () => {
-    this.setState(state => ({
-      showReinstatePolicyModal: !state.showReinstatePolicyModal
-    }));
-  };
-
-  handleToggleRescindCancelModal = () => {
-    this.setState(state => ({
-      showRescindCancelModal: !state.showRescindCancelModal
-    }));
-  };
-
-  toggleEffectiveDateChangeModal = () => {
-    this.setState(state => ({
-      showEffectiveDateChangeModal: !state.showEffectiveDateChangeModal
-    }));
-  };
-
-  reinstatePolicySubmit = async () => {
-    const { policy, summaryLedger, createTransaction, getPolicy } = this.props;
-
-    const submitData = {
-      policyID: policy.policyID,
-      policyNumber: policy.policyNumber,
-      billingStatus: summaryLedger.status.code,
-      transactionType: 'Reinstatement'
-    };
-    await createTransaction(submitData);
-    await getPolicy(policy.policyNumber);
-    this.handleToggleReinstateModal();
-  };
-
-  rescindCancelSubmit = async () => {
-    const {
-      policy: { policyNumber },
-      getPolicy,
-      setAppError
-    } = this.props;
-
-    const config = {
-      exchangeName: 'harmony',
-      routingKey: 'harmony.policy.rescindCancellation',
-      data: { policyNumber }
-    };
-
-    await callService(config, 'rescindCancellation').catch(err => {
-      setAppError(err);
-      this.handleToggleRescindCancelModal();
-    });
-
-    await getPolicy(policyNumber);
-    this.handleToggleRescindCancelModal();
-  };
-
-  generateDoc = () => {
-    this.setState(prevState => {
-      return { showDocsForm: !prevState.showDocsForm };
-    });
-  };
-
-  updateNotes = () => {
-    const { setNotesSynced } = this.props;
-    return () => {
-      setNotesSynced();
-    };
-  };
-
-  newNote = () => {
-    const { toggleNote, policy } = this.props;
-
+  const newNote = () => {
     const { companyCode, state, product, policyNumber, sourceNumber } = policy;
 
     toggleNote({
@@ -357,124 +166,38 @@ export class PolicyWorkflow extends React.Component {
     });
   };
 
-  getPolicyNavLinks = policyNumber => [
-    {
-      key: 'coverage',
-      to: `/policy/${policyNumber}/coverage`,
-      label: <span>Coverage / Rating</span>,
-      className: 'coverage',
-      exact: true
-    },
-    {
-      key: 'policyholder',
-      to: `/policy/${policyNumber}/policyHolder`,
-      label: <span>Policyholder / Agent</span>,
-      className: 'policyholder',
-      exact: true
-    },
-    {
-      key: 'billing',
-      to: `/policy/${policyNumber}/billing`,
-      label: <span>Mortgage / Billing</span>,
-      className: 'billing',
-      exact: true
-    },
-    {
-      key: 'notes',
-      to: `/policy/${policyNumber}/notes`,
-      label: <span>Notes / Files / Diaries</span>,
-      className: 'notes',
-      exact: true
-    },
-    {
-      key: 'cancel',
-      to: `/policy/${policyNumber}/cancel`,
-      label: <span>Cancel Policy</span>,
-      className: 'cancel',
-      exact: true
-    },
-    {
-      key: 'endorsements',
-      to: `/policy/${policyNumber}/endorsements`,
-      label: <span>Endorsements</span>,
-      className: 'endorsements',
-      exact: true
-    }
-  ];
+  const modalHandlers = {
+    showEffectiveDateChangeModal: () => setShowEffectiveDate(s => !s),
+    showReinstatePolicyModal: () => setShowReinstatePolicy(s => !s),
+    showRescindCancelModal: () => setShowRescindCancellation(s => !s)
+  };
 
-  render() {
-    const {
-      cancelOptions,
-      claims,
-      effectiveDateReasons,
-      endorsementHistory,
-      getPolicy,
-      history,
-      initialized,
-      isLoading,
-      location,
-      match,
-      notesSynced,
-      options,
-      policy,
-      policyFormData,
-      setAppError,
-      summaryLedger,
-      transferAOR,
-      updateBillPlan,
-      zipCodeSettings
-    } = this.props;
-    const { policyNumber, sourceNumber } = policy;
+  const customHandlers = useRef({
+    notesSynced,
+    setAppError
+  });
 
-    const {
-      gandalfTemplate,
-      showReinstatePolicyModal,
-      showRescindCancelModal,
-      showEffectiveDateChangeModal
-    } = this.state;
+  useEffect(() => {
+    customHandlers.current.notesSynced = notesSynced;
+  }, [notesSynced]);
 
-    const headerDetails = getHeaderDetails(
-      policy,
-      summaryLedger,
-      options.appraisers
-    );
-    const { currentRouteName, currentStepNumber } = getCurrentStepAndPage(
-      location.pathname
-    );
-    const shouldUseGandalf =
-      gandalfTemplate &&
-      ROUTES_NOT_HANDLED_BY_GANDALF.indexOf(currentRouteName) === -1;
-    const transformConfig = this.getConfigForJsonTransform(gandalfTemplate);
-    const navLinks = this.getPolicyNavLinks(policyNumber);
-
-    // This is how to replicate 'useRef' in a Class component - sets us up for refactoring this component to functional component
-    this.modalHandlers.showEffectiveDateChangeModal = this.toggleEffectiveDateChangeModal;
-    this.modalHandlers.showReinstatePolicyModal = this.handleToggleReinstateModal;
-    this.modalHandlers.showRescindCancelModal = this.handleToggleRescindCancelModal;
-    // TODO going to use Context to pass these directly to custom components,
-    //  so Gandalf does not need to know about these.
-    this.customHandlers.editingDisabled = policy.editingDisabled;
-    this.customHandlers.handleSubmit = this.handleGandalfSubmit;
-    this.customHandlers.history = history;
-    this.customHandlers.notesSynced = notesSynced;
-    this.customHandlers.setAppError = setAppError;
-    this.customHandlers.getPolicy = getPolicy;
-    this.customHandlers.transferAOR = transferAOR;
-    this.customHandlers.updateBillPlan = updateBillPlan;
-    this.customHandlers.claims = claims;
-    this.customHandlers.getClaims = this.getAllClaims;
-
-    return (
+  return (
+    <PolicyWorkflowProvider
+      setAppError={setAppError}
+      getPolicy={getPolicy}
+      updateBillPlan={updateBillPlan}
+      transferAOR={transferAOR}
+    >
       <div className="app-wrapper csr policy">
-        {(isLoading || !(initialized && gandalfTemplate)) && <Loader />}
+        {(isLoading || (!initialized && template)) && <Loader />}
 
-        {initialized && gandalfTemplate && (
-          <App
-            template={gandalfTemplate}
+        {initialized && template && (
+          <AppWrapper
+            template={template}
             headerTitle="Policy"
-            pageTitle={`P: ${policyNumber || ''}`}
+            pageTitle={`P: ${policy.policyNumber || ''}`}
             diaryPollingFilter={{
-              resourceId: [policyNumber, sourceNumber],
+              resourceId: [policy.policyNumber, policy.sourceNumber],
               resourceType: POLICY_RESOURCE_TYPE
             }}
             aside={
@@ -485,7 +208,7 @@ export class PolicyWorkflow extends React.Component {
                       aria-label="open-btn"
                       className="btn btn-primary btn-sm btn-block"
                       data-test="generate-document-btn"
-                      onClick={this.generateDoc}
+                      onClick={() => setShowDocsForm(s => !s)}
                     >
                       <i className="fa fa-plus" />
                       Document
@@ -493,121 +216,89 @@ export class PolicyWorkflow extends React.Component {
                   </li>
                   <li
                     className={
-                      this.state.showDocsForm
+                      showDocsForm
                         ? 'document-panel show'
                         : 'document-panel hidden'
                     }
                   >
-                    {this.state.showDocsForm && (
+                    {showDocsForm && (
                       <GenerateDocsForm
                         policy={policy}
-                        updateNotes={this.updateNotes}
+                        updateNotes={() => setNotesSynced()}
                         errorHandler={setAppError}
                       />
                     )}
                   </li>
                 </SideNav>
-                <PlusButton newNote={this.newNote} document={policy} />
-                <Clock timezone={policy?.property?.timezone} />
+                <PlusButton newNote={newNote} document={policy} />
+                <Clock timezone={policy.property?.timezone} />
               </>
             }
             subHeader={
               <DetailsHeader
                 context="policy"
-                modalHandlers={this.modalHandlers}
-                detailsFields={gandalfTemplate.header}
+                modalHandlers={modalHandlers}
+                detailsFields={template.header}
                 headerDetails={headerDetails}
               />
             }
           >
             <div className="content-wrapper">
               <div className="route-content">
-                {shouldUseGandalf && (
-                  <Gandalf
-                    formId={FORM_ID}
-                    currentPage={currentStepNumber}
-                    customComponents={this.customComponents}
-                    customHandlers={this.customHandlers}
-                    handleSubmit={this.handleGandalfSubmit}
-                    initialValues={policyFormData}
-                    options={{
-                      ...options,
-                      cancelOptions,
-                      zipCodeSettings,
-                      endorsementHistory
-                    }} // enums for select/radio fields
-                    path={location.pathname}
-                    template={gandalfTemplate}
-                    transformConfig={transformConfig}
-                  >
-                    <FormSpy
-                      subscription={{
-                        pristine: true,
-                        submitting: true,
-                        dirtyFields: true,
-                        invalid: true
-                      }}
-                    >
-                      {({ form, pristine, submitting }) => (
-                        <div className="form-footer">
-                          <PolicyFooter
-                            history={history}
-                            setAppError={setAppError}
-                            policyFormData={policyFormData}
-                            timezone={zipCodeSettings.timezone}
-                            currentStep={currentRouteName}
-                            formInstance={form}
-                            isSubmitDisabled={this.isSubmitDisabled(
-                              pristine,
-                              submitting
-                            )}
-                            handleGandalfSubmit={this.handleGandalfSubmit}
-                            handlePrimaryClick={this.primaryClickHandler}
-                          />
-                        </div>
-                      )}
-                    </FormSpy>
-                    <FormSpy subscription={{}}>
-                      {({ form }) => {
-                        this.setFormInstance(form);
-                        return null;
-                      }}
-                    </FormSpy>
-
-                    <FormSpy subscription={{ dirty: true, pristine: true }}>
-                      {({ dirty }) => (
-                        <NavigationPrompt
-                          dirty={dirty}
-                          formInstance={this.formInstance}
-                          history={history}
-                        />
-                      )}
-                    </FormSpy>
-                    <div id="modal-anchor" />
-                  </Gandalf>
-                )}
+                <Gandalf
+                  formId={FORM_ID}
+                  currentPage={workflowPage}
+                  componentMap={componentMap}
+                  customHandlers={customHandlers.current}
+                  handleSubmit={handleSubmit}
+                  manualSubmit={handleSubmit}
+                  initialValues={policyFormData}
+                  options={{
+                    ...options,
+                    cancelOptions,
+                    zipCodeSettings,
+                    endorsementHistory
+                  }} // enums for select/radio fields
+                  template={template}
+                >
+                  <div className="form-footer">
+                    <PolicyFooter
+                      editingDisabled={policy.editingDisabled}
+                      timezone={zipCodeSettings.timezone}
+                      history={history}
+                      errorHandler={setAppError}
+                      policyFormData={policyFormData}
+                      manualSubmit={handleSubmit}
+                      workflowPage={workflowPage}
+                    />
+                  </div>
+                  <NavigationPrompt history={history} />
+                  <div id="modal-anchor" />
+                </Gandalf>
               </div>
             </div>
             <div className="sidebar-wrapper">
               <OpenDiariesBar document={policy} />
             </div>
-            {showReinstatePolicyModal && (
+            {showReinstatePolicy && (
               <ReinstatePolicyModal
-                reinstatePolicySubmit={this.reinstatePolicySubmit}
-                closeModal={this.handleToggleReinstateModal}
-                policyNumber={policy.policyNumber}
+                policy={policy}
+                getPolicy={getPolicy}
+                errorHandler={setAppError}
+                closeModal={() => setShowReinstatePolicy(false)}
               />
             )}
 
-            {showRescindCancelModal && (
+            {showRescindCancellation && (
               <RescindCancelModal
-                rescindCancelSubmit={this.rescindCancelSubmit}
-                closeModal={this.handleToggleRescindCancelModal}
                 policyNumber={policy.policyNumber}
+                getPolicy={getPolicy}
+                errorHandler={setAppError}
+                closeModal={() => setShowRescindCancellation(false)}
               />
             )}
 
-            {showEffectiveDateChangeModal && (
+            {showEffectiveDate && (
               <EffectiveDateModal
                 initialValues={{
                   policyNumber: policy.policyNumber,
@@ -620,47 +311,16 @@ export class PolicyWorkflow extends React.Component {
                 currentPremium={summaryLedger.currentPremium}
                 zipCodeSettings={zipCodeSettings}
                 effectiveDateReasons={effectiveDateReasons}
-                getPolicy={this.props.getPolicy}
-                errorHandler={this.props.setAppError}
-                closeModal={this.toggleEffectiveDateChangeModal}
+                getPolicy={getPolicy}
+                errorHandler={setAppError}
+                closeModal={() => setShowEffectiveDate(false)}
               />
             )}
-          </App>
+          </AppWrapper>
         )}
       </div>
-    );
-  }
-}
-
-const mapStateToProps = state => {
-  return {
-    cancelOptions: state.policyState.cancelOptions,
-    claims: state.policyState.claims,
-    effectiveDateReasons: getPolicyEffectiveDateReasons(state),
-    initialized: !!(
-      state.policyState.policy.policyID && state.policyState.summaryLedger._id
-    ),
-    isLoading: state.ui.isLoading,
-    notesSynced: state.ui.notesSynced,
-    options: state.list,
-    policy: state.policyState.policy,
-    endorsementHistory: getPolicyEndorsementHistory(state),
-    policyFormData: getPolicyFormData(state),
-    summaryLedger: state.policyState.summaryLedger,
-    zipCodeSettings: state.service.getZipcodeSettings || {}
-  };
+    </PolicyWorkflowProvider>
+  );
 };
 
-export default connect(mapStateToProps, {
-  createTransaction,
-  getClaims,
-  getEnumsForPolicyWorkflow,
-  getPolicy,
-  initializePolicyWorkflow,
-  setAppError,
-  transferAOR,
-  updatePolicy,
-  updateBillPlan,
-  setNotesSynced,
-  toggleNote
-})(PolicyWorkflow);
+export default PolicyWorkflow;

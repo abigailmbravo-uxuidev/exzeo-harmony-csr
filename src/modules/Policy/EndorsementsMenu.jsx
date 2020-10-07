@@ -9,12 +9,7 @@ const scrollToView = elementName => {
   }
 };
 
-const GoToMenu = props => {
-  const {
-    config: {
-      extendedProperties: { links }
-    }
-  } = props;
+const GoToMenu = ({ links }) => {
   return (
     <div className="endo-jump-menu">
       {Array.isArray(links) &&

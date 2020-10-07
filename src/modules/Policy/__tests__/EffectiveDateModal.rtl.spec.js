@@ -9,7 +9,7 @@ import {
   jestResolve
 } from '../../../test-utils';
 
-import { PolicyWorkflow } from '../PolicyWorkflow';
+import PolicyWorkflow from '../PolicyWorkflow';
 import * as data from '../utilities';
 
 mockServiceRunner([]);
@@ -31,7 +31,7 @@ describe('Change Effective Date Testing', () => {
       currentPremium: 2058
     },
     match: {
-      params: { policyNumber: '12-345-67' },
+      params: { policyNumber: '12-345-67', step: 'coverage' },
       path: '/policy/:policyNumber/coverage'
     },
     location: {

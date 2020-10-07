@@ -3,11 +3,16 @@ import {
   OnChangeListener,
   OnBlurListener,
   Field,
+  useFormState,
   date
-} from '@exzeo/core-ui/src';
+} from '@exzeo/core-ui';
 import _get from 'lodash/get';
 
-const EndorsementsWatcherAF3 = ({ formValues }) => {
+const EndorsementsWatcherAF3 = () => {
+  const { values: formValues } = useFormState({
+    subscription: { values: true }
+  });
+
   return (
     <React.Fragment>
       <Field name="coverageLimits.building.value">

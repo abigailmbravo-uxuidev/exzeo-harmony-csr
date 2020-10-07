@@ -2,7 +2,7 @@ import React from 'react';
 import { defaultMemoize } from 'reselect';
 import { date, format } from '@exzeo/core-ui/src';
 
-const BillingTable = ({ initialValues }) => {
+const BillingDetails = ({ initialValues }) => {
   const formatBillingInformation = defaultMemoize(initialValues => {
     const { summaryLedger, additionalInterests, policyHolders } = initialValues;
     let billToName;
@@ -68,4 +68,4 @@ const BillingTable = ({ initialValues }) => {
   );
 };
 
-export default BillingTable;
+export default BillingDetails;

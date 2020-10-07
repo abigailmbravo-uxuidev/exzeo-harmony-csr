@@ -1,5 +1,4 @@
 import { mockPolicy as policy, quote } from './fixtures';
-import { jestResolve } from './mockServiceRunner';
 
 export const defaultInitialState = {
   appState: {
@@ -67,7 +66,7 @@ export const defaultDiaries = {
 export const defaultInitialProps = {
   match: {
     params: { quoteNumber: '12-345-67' },
-    path: '/quote/:quoteNumber'
+    path: '/quote/:quoteNumber/:step'
   }
 };
 
@@ -77,13 +76,13 @@ export const defaultQuoteWorkflowProps = {
   location: { pathname: '' },
   isLoading: false,
   quote,
-  retrieveQuote: jestResolve(),
-  verifyQuote: jestResolve(),
+  retrieveQuote: async (x = {}) => x,
+  verifyQuote: async (x = {}) => x,
   setAppError: () => {},
-  getZipCodeSettings: jestResolve(),
-  getEnumsForQuoteWorkflow: () => {},
-  updateQuote: jestResolve(),
-  fetchNotes: jestResolve(),
+  getZipCodeSettings: async (x = {}) => x,
+  getEnumsForQuoteWorkflow: async (x = {}) => x,
+  updateQuote: async (x = {}) => x,
+  fetchNotes: async (x = {}) => x,
   notes: [],
   options: {
     agents: [],
@@ -129,9 +128,9 @@ export const defaultCreateAgencyProps = {
       }
     ]
   },
-  getAgency: jestResolve(),
-  updateAgency: jestResolve(),
-  createAgency: jestResolve()
+  getAgency: async (x = {}) => x,
+  updateAgency: async (x = {}) => x,
+  createAgency: async (x = {}) => x
 };
 
 export const defaultPolicyWorkflowProps = {
@@ -142,16 +141,16 @@ export const defaultPolicyWorkflowProps = {
   summaryLedger: {
     status: {}
   },
-  initializePolicyWorkflow: jestResolve(policy),
-  getEnumsForPolicyWorkflow: jestResolve(),
-  getPaymentHistory: jestResolve(),
-  getPolicy: jestResolve(policy),
-  updateBillPlan: jestResolve(),
-  fetchNotes: jestResolve(),
+  initializePolicyWorkflow: async () => policy,
+  getEnumsForPolicyWorkflow: async (x = {}) => x,
+  getPaymentHistory: async (x = {}) => x,
+  getPolicy: async () => policy,
+  updateBillPlan: async (x = {}) => x,
+  fetchNotes: async (x = {}) => x,
   setAppError: () => {},
   diaries: [],
   claims: [],
-  getClaims: jestResolve(),
+  getClaims: async (x = {}) => x,
   notes: [],
   options: {},
   initialized: true,

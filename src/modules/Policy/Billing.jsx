@@ -1,43 +1,37 @@
-import React, { useState } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 
-import { Payment, PolicyBilling } from '@exzeo/core-ui/src/@Harmony';
-import PaymentHistorySection from './@components/PaymentHistorySection';
+import ManualPayment from './ManualPayment';
+import BillingSection from './BillingSection';
+import PaymentHistorySection from './PaymentHistorySection';
+import { usePolicyWorkflow } from './context';
 
-const Billing = ({ initialValues, config, customHandlers }) => {
-  const [paymentAdded, setPaymentAdded] = useState(0);
+const Billing = ({ initialValues, billingClassName, billingHeader }) => {
+  const { getPolicy, setAppError, updateBillPlan } = usePolicyWorkflow();
 
   return (
     <React.Fragment>
-      <Payment
-        getPolicy={customHandlers.getPolicy}
-        errorHandler={customHandlers.setAppError}
+      <ManualPayment
+        getPolicy={getPolicy}
+        errorHandler={setAppError}
         initialValues={initialValues}
-        setPaymentAdded={setPaymentAdded}
       />
-      <PolicyBilling
-        formValues={initialValues}
-        updateBillPlan={customHandlers.updateBillPlan}
-        className={config.extendedProperties.billingClassName}
-        header={config.extendedProperties.billingHeader}
+      <BillingSection
+        initialValues={initialValues}
+        updateBillPlan={updateBillPlan}
+        className={billingClassName}
+        header={billingHeader}
       />
       <PaymentHistorySection
         initialValues={initialValues}
-        customHandlers={customHandlers}
-        setPaymentAdded={setPaymentAdded}
-        paymentAdded={paymentAdded}
+        getPolicy={getPolicy}
       />
     </React.Fragment>
   );
 };
 
 Billing.propTypes = {
-  initialValues: PropTypes.object.isRequired,
-  config: PropTypes.object.isRequired,
-  formInstance: PropTypes.object.isRequired,
-  customHandlers: PropTypes.shape({
-    updateBillPlan: PropTypes.func.isRequired
-  })
+  initialValues: PropTypes.object.isRequired
 };
 
 export default Billing;

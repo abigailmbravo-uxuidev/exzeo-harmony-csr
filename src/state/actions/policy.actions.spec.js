@@ -119,7 +119,7 @@ describe('Policy State Actions', () => {
       const rate = { message: "You're approved" };
       sandbox
         .stub(endorsementUtil, 'convertToRateData')
-        .callsFake((...args) => ({ policyNumber: '1234' }));
+        .callsFake(() => ({ policyNumber: '1234' }));
       httpStub.onCall(0).returns(Promise.resolve({ data: { result: rate } }));
 
       const response = await store.dispatch(

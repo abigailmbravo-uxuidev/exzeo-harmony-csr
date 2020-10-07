@@ -2,12 +2,16 @@ import * as serviceRunner from '@exzeo/core-ui/src/@Harmony/Domain/Api/serviceRu
 import _cloneDeep from 'lodash/cloneDeep';
 import { date, format, emptyArray } from '@exzeo/core-ui/src';
 import _orderBy from 'lodash/orderBy';
+import { BASE_MAP_URI, DEFAULT_DETAILS } from '../../constants/detailHeader';
+import * as detailUtils from '../../utilities/documentDetails';
+import { STANDARD_DATE_FORMAT } from '../../constants/dates';
+import React from 'react';
 
 /**
  *
- * @returns {object}
  * @param data
  * @param errorHandler
+ * @returns {object}
  */
 export async function rateEndorsement(data, errorHandler) {
   try {
@@ -35,9 +39,9 @@ export async function rateEndorsement(data, errorHandler) {
 
 /**
  *
- * @returns {object}
  * @param data
  * @param timezone
+ * @returns {object}
  */
 export function formatEndorsementData(data, timezone) {
   const calculatedData = _cloneDeep(data);
@@ -143,9 +147,9 @@ export async function fetchAgentsByAgencyCode(agencyCode) {
 
 /**
  *
- * @returns {object}
  * @param data
  * @param errorHandler
+ * @returns {object}
  */
 export async function rateEffectiveDateChange(data, errorHandler) {
   try {
@@ -173,9 +177,9 @@ export async function rateEffectiveDateChange(data, errorHandler) {
 
 /**
  *
- * @returns {object}
  * @param data
  * @param errorHandler
+ * @returns {object}
  */
 export async function saveEffectiveDateChange(data, errorHandler) {
   try {
@@ -196,8 +200,8 @@ export async function saveEffectiveDateChange(data, errorHandler) {
 }
 
 /**
- * @returns {String}
  * @param cell
+ * @returns {String}
  */
 export const formatPaymentAmount = (cell = 0) => format.toCurrency(cell, 2);
 
@@ -208,9 +212,22 @@ export const formatPaymentAmount = (cell = 0) => format.toCurrency(cell, 2);
  * @param rowIndex
  * @param timezone
  */
-export const formatPaymentDate = (cell, row, rowIndex, timezone) => {
+export function formatPaymentDate(cell, row, rowIndex, timezone) {
   return date.formattedDate(cell, 'MM/DD/YYYY zz', timezone);
-};
+}
+
+/**
+ * @returns {String}
+ * @param cell
+ */
+export const formatPrimaryDate = cell =>
+  cell ? date.formatDate(cell, date.FORMATS.PRIMARY) : '';
+
+/**
+ * @returns {String}
+ * @param cell
+ */
+export const formatClaimType = cell => (cell ? `Cat: ${cell}` : 'Daily');
 
 /**
  * Sort payment history by date, fall back to createdAt date for ties.
@@ -223,3 +240,132 @@ export function sortPaymentHistoryByDate(paymentHistory) {
 
   return _orderBy(paymentHistory, ['date', 'createdAt'], ['desc', 'desc']);
 }
+
+/**
+ *
+ * @param policy
+ * @param summaryLedger
+ * @param appraisalList
+ * @returns {{constructionType: *, propertyAddress: {address2: *, address1: *, csz: string}, floodZone: *, policyNumber: *, county: *, sourceNumber: *, nonPaymentNoticeDueDate: (*|string), cancellation: ({showReinstatement: boolean, label: string, value: *}|{showRescindCancel: boolean, label: string, value: *}|{showRescindCancel: boolean, label: string, value: *}|{label: string, value: *}|{}), policyID: *, mailingAddress: *, appraisalURI: {label: string, value: *}, details: {product: string}, mapURI: string, nonPaymentNoticeDate: (*|string), effectiveDate: string, sourcePath: (string|null), territory: *, currentPremium: (string|string), status: string, policyHolder: *}|{premium: {}, cancellation: {}, mailingAddress: {}, propertyAddress: {}, property: {}, details: {}, policyHolder: {}}}
+ */
+export function getHeaderDetails(policy, summaryLedger, appraisalList) {
+  if (!policy?.policyNumber || !summaryLedger) return DEFAULT_DETAILS;
+
+  const {
+    cancelDate,
+    effectiveDate,
+    endDate,
+    policyHolders,
+    policyHolderMailingAddress: pHMA = {},
+    policyID,
+    policyNumber,
+    product,
+    property,
+    sourceNumber,
+    status
+  } = policy;
+
+  const {
+    currentPremium,
+    status: { displayText }
+  } = summaryLedger;
+
+  const { constructionType, physicalAddress, floodZone, territory } = property;
+
+  const mapQuery = detailUtils.getMapQuery(physicalAddress);
+
+  const appraisal =
+    (appraisalList || []).find(
+      x => x.label === property.physicalAddress.county
+    ) || {};
+
+  return {
+    constructionType,
+    policyID,
+    policyNumber,
+    sourceNumber,
+    territory,
+    floodZone,
+    county: physicalAddress.county,
+    currentPremium: currentPremium
+      ? `${format.toCurrency(currentPremium)}`
+      : '--',
+    effectiveDate: date.formattedDate(effectiveDate, STANDARD_DATE_FORMAT),
+    appraisalURI: {
+      label: 'PAS',
+      value: appraisal.answer
+    },
+    mapURI: `${BASE_MAP_URI}${mapQuery}`,
+    status: `${status} / ${displayText}`,
+    details: {
+      product: detailUtils.getProductName(product)
+    },
+    policyHolder: detailUtils.getPrimaryPolicyHolder(policyHolders),
+    mailingAddress: detailUtils.getMailingAddress(pHMA),
+    propertyAddress: {
+      address1: physicalAddress.address1,
+      address2: physicalAddress.address2,
+      csz: detailUtils.getCityStateZip(physicalAddress)
+    },
+    nonPaymentNoticeDate: detailUtils.getNonPaymentNoticeDate(
+      summaryLedger,
+      status
+    ),
+    nonPaymentNoticeDueDate: detailUtils.getNonPaymentNoticeDueDate(
+      summaryLedger,
+      status
+    ),
+    cancellation: detailUtils.getCancellationDate(
+      summaryLedger,
+      status,
+      cancelDate,
+      endDate
+    ),
+    sourcePath: sourceNumber ? `/quote/${sourceNumber}/coverage` : null
+  };
+}
+
+export const getNavLinks = policyNumber => [
+  {
+    key: 'coverage',
+    to: `/policy/${policyNumber}/coverage`,
+    label: <span>Coverage / Rating</span>,
+    className: 'coverage',
+    exact: true
+  },
+  {
+    key: 'policyholder',
+    to: `/policy/${policyNumber}/policyHolder`,
+    label: <span>Policyholder / Agent</span>,
+    className: 'policyholder',
+    exact: true
+  },
+  {
+    key: 'billing',
+    to: `/policy/${policyNumber}/billing`,
+    label: <span>Mortgage / Billing</span>,
+    className: 'billing',
+    exact: true
+  },
+  {
+    key: 'notes',
+    to: `/policy/${policyNumber}/notes`,
+    label: <span>Notes / Files / Diaries</span>,
+    className: 'notes',
+    exact: true
+  },
+  {
+    key: 'cancel',
+    to: `/policy/${policyNumber}/cancel`,
+    label: <span>Cancel Policy</span>,
+    className: 'cancel',
+    exact: true
+  },
+  {
+    key: 'endorsements',
+    to: `/policy/${policyNumber}/endorsements`,
+    label: <span>Endorsements</span>,
+    className: 'endorsements',
+    exact: true
+  }
+];

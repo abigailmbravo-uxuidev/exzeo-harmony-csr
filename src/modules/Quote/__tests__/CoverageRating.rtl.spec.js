@@ -1,13 +1,11 @@
 import React from 'react';
+import * as agencyData from '@exzeo/core-ui/src/@Harmony/Agency/data';
+
 import {
   fireEvent,
   waitForElement,
   wait,
-  within
-} from '@testing-library/react';
-import * as agencyData from '@exzeo/core-ui/src/@Harmony/Agency/data';
-
-import {
+  within,
   defaultQuoteWorkflowProps,
   policyHolder,
   render,
@@ -59,7 +57,8 @@ describe('Testing the Coverage/Rating Page', () => {
       agencyCode: 20000,
       agentCode: 60000
     },
-    location: { pathname: '/quote/12-345-67/coverage' }
+    location: { pathname: '/quote/12-345-67/coverage' },
+    match: { params: { step: 'coverage' } }
   };
 
   const allFields = [
@@ -83,8 +82,6 @@ describe('Testing the Coverage/Rating Page', () => {
     );
 
     pageHeaders.forEach(header => expect(getByTextInsideForm(header.text)));
-    // TODO: COLIN -- Check if this is supposed to be disabled
-    // expect(getByTestId('removeSecondary')).toBeDisabled();
     allFields
       .filter(field => field.visible !== false)
       .forEach(field => checkLabel(getByTestId, field));
@@ -93,7 +90,9 @@ describe('Testing the Coverage/Rating Page', () => {
   it('POS:Produced By Fields Placeholder', async () => {
     agencyData.searchAgencies = jestResolve([]);
     agencyData.fetchAgentsByAgencyCode = jestResolve([]);
+
     const { getByTestId } = render(<QuoteWorkflow {...props} />);
+
     await wait(() =>
       expect(getByTestId('agencyCode_wrapper').textContent).toMatch(
         /Start typing to search.../
@@ -109,6 +108,7 @@ describe('Testing the Coverage/Rating Page', () => {
   it('POS:Produced By Fields', async () => {
     agencyData.searchAgencies = jestResolve(searchAgenciesResult);
     agencyData.fetchAgentsByAgencyCode = jestResolve(searchAgentsResult);
+
     const { getByText, getByTestId } = render(<QuoteWorkflow {...props} />);
     const agency = getByTestId('agencyCode_wrapper');
     const agent = getByTestId('agentCode_wrapper');
@@ -171,27 +171,6 @@ describe('Testing the Coverage/Rating Page', () => {
     });
   });
 
-  it('NEG:All Required Fields Error', () => {
-    const { getByTestId } = render(<QuoteWorkflow {...props} />);
-
-    const checkField = async field => {
-      clearText(getByTestId, field);
-      fireEvent.blur(getByTestId(field.dataTest));
-      await wait(() => {
-        checkError(getByTestId, field);
-      });
-    };
-
-    allFields
-      .filter(
-        ({ required, disabled, type }) =>
-          required && !disabled && type === 'text'
-      )
-      .forEach(field => {
-        checkField(field);
-      });
-  });
-
   it('POS:Remove Secondary Policyholder button works correctly when toggled twice', async () => {
     const newProps = {
       ...props,
@@ -242,35 +221,70 @@ describe('Testing the Coverage/Rating Page', () => {
   });
 
   it('POS:Tests button', () => {
-    const { getByText } = render(<QuoteWorkflow {...props} />);
-    expect(getByText('Reset').textContent).toMatch(/Reset/);
+    const { getByRole } = render(<QuoteWorkflow {...props} />);
+    expect(getByRole('button', { name: 'Reset' })).toBeInTheDocument();
   });
 
-  it('POS:Checks that the Reset Button works', () => {
+  it('POS:Checks that the Reset Button works', async () => {
     const newProps = {
       ...props,
-      quoteData: {
-        ...props.quoteData,
+      quote: {
+        ...props.quote,
         policyHolders: []
       }
     };
-    const { getByText, getByTestId } = render(<QuoteWorkflow {...newProps} />);
+    const { getByText, queryByRole, getByRole } = render(
+      <QuoteWorkflow {...newProps} />
+    );
+    await wait(() => {
+      expect(queryByRole('status')).not.toBeInTheDocument();
+    });
 
     expect(getByText('Update')).toBeDisabled();
-    primaryPolicyholderFields.forEach(({ value, dataTest }) => {
-      fireEvent.change(getByTestId(dataTest), {
-        target: { value }
-      });
+
+    const primaryPHSection = within(
+      getByRole('region', { name: 'primary policyholder info' })
+    );
+
+    const firstNameField = primaryPHSection.getByLabelText('First Name');
+    const lastNameField = primaryPHSection.getByLabelText('Last Name');
+    const phoneField = primaryPHSection.getByLabelText('Primary Phone');
+    const emailField = primaryPHSection.getByLabelText('Email Address');
+
+    fireEvent.change(firstNameField, {
+      target: { value: 'Nonya' }
     });
-    expect(getByText('Update')).not.toBeDisabled();
-    fireEvent.click(getByText('Reset'));
-    waitForElement(() => {
-      primaryPolicyholderFields.forEach(({ dataTest }) =>
-        expect(getByTestId(dataTest).value).toEqual('')
+    fireEvent.change(lastNameField, {
+      target: { value: 'Business' }
+    });
+    fireEvent.change(phoneField, {
+      target: { value: '2352457293' }
+    });
+    fireEvent.change(emailField, {
+      target: { value: 'n@b.com' }
+    });
+
+    await wait(() => {
+      expect(primaryPHSection.getByLabelText('Email Address')).toHaveValue(
+        'n@b.com'
       );
     });
 
-    expect(getByText('Update')).toBeDisabled();
+    expect(getByText('Update')).not.toBeDisabled();
+
+    fireEvent.click(getByText('Reset'));
+
+    await wait(() => {
+      expect(primaryPHSection.getByLabelText('First Name')).toHaveValue('');
+    });
+
+    primaryPolicyholderFields.forEach(({ label }) =>
+      expect(primaryPHSection.getByLabelText(label).value).toEqual('')
+    );
+
+    await wait(() => {
+      expect(getByText('Update')).toBeDisabled();
+    });
   });
 
   it('POS:Check Conditional Options coverageLimits.personalProperty 500,000 or greater', async () => {
@@ -281,24 +295,28 @@ describe('Testing the Coverage/Rating Page', () => {
         policyHolders: [...props.quote.policyHolders, policyHolder]
       }
     };
-    const { getByTestId } = render(<QuoteWorkflow {...newProps} />);
+    const { getByTestId, queryByRole } = render(
+      <QuoteWorkflow {...newProps} />
+    );
 
-    await waitForElement(() => [getByTestId('coverageLimits.dwelling.value')]);
+    await wait(() => {
+      expect(queryByRole('status')).not.toBeInTheDocument();
+    });
 
     await wait(() => {
       expect(
         getByTestId('coverageLimits.personalProperty.value_0')
       ).not.toBeDisabled();
-      expect(
-        getByTestId('coverageLimits.personalProperty.value_25')
-      ).not.toBeDisabled();
-      expect(
-        getByTestId('coverageLimits.personalProperty.value_35')
-      ).not.toBeDisabled();
-      expect(
-        getByTestId('coverageLimits.personalProperty.value_50')
-      ).not.toBeDisabled();
     });
+    expect(
+      getByTestId('coverageLimits.personalProperty.value_25')
+    ).not.toBeDisabled();
+    expect(
+      getByTestId('coverageLimits.personalProperty.value_35')
+    ).not.toBeDisabled();
+    expect(
+      getByTestId('coverageLimits.personalProperty.value_50')
+    ).not.toBeDisabled();
 
     fireEvent.change(getByTestId('coverageLimits.dwelling.value'), {
       target: { value: '2000000' }
@@ -308,15 +326,36 @@ describe('Testing the Coverage/Rating Page', () => {
       expect(
         getByTestId('coverageLimits.personalProperty.value_0')
       ).not.toBeDisabled();
-      expect(
-        getByTestId('coverageLimits.personalProperty.value_25')
-      ).not.toBeDisabled();
-      expect(
-        getByTestId('coverageLimits.personalProperty.value_35')
-      ).toBeDisabled();
-      expect(
-        getByTestId('coverageLimits.personalProperty.value_50')
-      ).toBeDisabled();
     });
+    expect(
+      getByTestId('coverageLimits.personalProperty.value_25')
+    ).not.toBeDisabled();
+    expect(
+      getByTestId('coverageLimits.personalProperty.value_35')
+    ).toBeDisabled();
+    expect(
+      getByTestId('coverageLimits.personalProperty.value_50')
+    ).toBeDisabled();
+  });
+
+  it('NEG:All Required Fields Error', () => {
+    const { getByTestId } = render(<QuoteWorkflow {...props} />);
+
+    const checkField = async field => {
+      clearText(getByTestId, field);
+      fireEvent.blur(getByTestId(field.dataTest));
+      await wait(() => {
+        checkError(getByTestId, field);
+      });
+    };
+
+    allFields
+      .filter(
+        ({ required, disabled, type }) =>
+          required && !disabled && type === 'text'
+      )
+      .forEach(field => {
+        checkField(field);
+      });
   });
 });

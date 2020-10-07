@@ -5,14 +5,16 @@ import { PolicyHolder } from '@exzeo/core-ui/src/@Harmony';
 
 import PolicyHoldersWatcher from './PolicyHoldersWatcher';
 
-const PolicyHolders = ({ config, initialValues, size }) => {
-  const { watchField } = config.extendedProperties;
+const PolicyHolders = ({ initialValues, size, watchField }) => {
   return (
     <section
       className={classNames('policyholder-component', size)}
       data-test="section-policyholder"
     >
-      <section className="primary-policy view-col-6">
+      <section
+        className="primary-policy view-col-6"
+        aria-label="primary policyholder info"
+      >
         <PolicyHolder
           fieldPrefix="policyHolders[0]"
           title="Primary Policyholder"
@@ -20,7 +22,10 @@ const PolicyHolders = ({ config, initialValues, size }) => {
           showSecondaryPhone
         />
       </section>
-      <section className="secondary-policy view-col-6">
+      <section
+        className="secondary-policy view-col-6"
+        aria-label="secondary policyholder info"
+      >
         <PolicyHolder
           fieldPrefix="policyHolders[1]"
           title="Secondary Policyholder"

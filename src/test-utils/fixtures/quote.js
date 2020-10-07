@@ -6,6 +6,7 @@ export default {
   agentCode: 60000,
   companyCode: 'TTIC',
   state: 'FL',
+  product: 'HO3',
   coverageLimits: {
     dwelling: { amount: 100 },
     lossOfUse: { amount: 666 },
@@ -27,9 +28,7 @@ export default {
   quoteInputState: 'Initial Data',
   underwritingExceptions: [],
   quoteNumber: '12-345-67',
-  product: 'HO3',
   effectiveDate: '2019-05-23T04:00:00.000Z',
-
   deductibles: {
     allOtherPerils: {
       amount: 22,

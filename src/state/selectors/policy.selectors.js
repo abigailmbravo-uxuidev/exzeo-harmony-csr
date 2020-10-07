@@ -1,10 +1,6 @@
 import { createSelector } from 'reselect';
-import sortBy from 'lodash/sortBy';
-import cloneDeep from 'lodash/cloneDeep';
 import orderBy from 'lodash/orderBy';
 import { date } from '@exzeo/core-ui';
-
-import { applyAdditionalInterestRanking } from '../../utilities/additionalInterests';
 
 import {
   getPaymentHistory,
@@ -53,18 +49,6 @@ export const getCashTypeAnswers = createSelector(
 );
 
 const defaultArr = [];
-export const getSortedAdditionalInterests = createSelector(
-  [getPolicy],
-  policy => {
-    if (!policy.additionalInterests) return defaultArr;
-
-    const additionalInterests = cloneDeep(policy.additionalInterests);
-
-    applyAdditionalInterestRanking(additionalInterests, true);
-
-    return sortBy(additionalInterests, ['sortInactive', 'rank', 'order']);
-  }
-);
 
 export const getFormattedPaymentHistory = createSelector(
   [getPaymentHistory],
@@ -150,7 +134,6 @@ export const getPolicyFormData = createSelector(
     };
 
     policy.removeSecondary = false;
-    policy._TEMP_INITIAL_VALUES = cloneDeep(policy);
     policy.summaryLedger = summaryLedger;
     policy.cancel = cancel;
     return policy;

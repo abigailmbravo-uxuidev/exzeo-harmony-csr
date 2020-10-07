@@ -31,7 +31,6 @@ export const Contact = ({ showTitle, fieldPrefix }) => (
             label="First Name"
             styleName="firstName"
             dataTest="firstName"
-            component={Input}
           />
         )}
       </Field>
@@ -43,7 +42,6 @@ export const Contact = ({ showTitle, fieldPrefix }) => (
             label="Last Name"
             styleName="lastName"
             dataTest="lastName"
-            component={Input}
           />
         )}
       </Field>

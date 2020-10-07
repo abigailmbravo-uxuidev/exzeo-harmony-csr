@@ -4,7 +4,7 @@ import {
   fetchAgentsByAgencyCode,
   sortPaymentHistoryByDate
 } from './utilities';
-import { getPaymentHistory } from './data';
+import { getPaymentHistory, getPaymentOptions } from './data';
 
 export const useFetchAgency = agencyCode => {
   const [agency, setAgency] = useState({});
@@ -47,6 +47,43 @@ export const useFetchAgents = agencyCode => {
   }, [agencyCode]);
 
   return { agents, loaded };
+};
+
+export const useFetchPaymentOptions = () => {
+  const [paymentOptions, setPaymentOptions] = useState({});
+  const [loaded, setLoaded] = useState(false);
+  useEffect(() => {
+    const fetchPaymentOptions = async () => {
+      setLoaded(false);
+
+      try {
+        const response = await getPaymentOptions();
+
+        const cashDescriptions = {};
+        const cashTypes = response.map(res => {
+          const description = res.paymentDescription.map(desc => ({
+            answer: desc,
+            label: desc
+          }));
+          cashDescriptions[res.paymentType] = description;
+
+          return {
+            answer: res.paymentType,
+            label: res.paymentType
+          };
+        });
+
+        setPaymentOptions({ cashTypes, cashDescriptions });
+      } catch (error) {
+        console.error('Error fetching Payment Options: ', error);
+      }
+      setLoaded(true);
+    };
+
+    fetchPaymentOptions();
+  }, []);
+
+  return { paymentOptions, loaded };
 };
 
 export const useFetchPaymentHistory = (policyNumber, paymentAdded) => {

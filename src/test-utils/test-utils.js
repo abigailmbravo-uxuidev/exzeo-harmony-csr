@@ -22,31 +22,43 @@ const mockStore = configureStore([thunk]);
 
 export const tl_render = render;
 
+export const Harness = ({
+  auth = defaultAuth,
+  diaries = defaultDiaries,
+  history,
+  state = defaultInitialState,
+  store = createStore(rootReducer, state, applyMiddleware(thunk))
+}) => ({ children }) => (
+  <Router history={history}>
+    <Provider store={store}>
+      <Auth0Context.Provider value={auth}>
+        <UserContext.Provider value={auth.userProfile}>
+          <DiariesContext.Provider value={diaries}>
+            {children}
+          </DiariesContext.Provider>
+        </UserContext.Provider>
+      </Auth0Context.Provider>
+    </Provider>
+  </Router>
+);
+
 export const customRender = (
   ui,
   {
-    auth = defaultAuth,
-    diaries = defaultDiaries,
+    auth,
+    diaries,
     route = '/',
     history = createMemoryHistory({ initialEntries: [route] }),
-    state = defaultInitialState,
-    store = createStore(rootReducer, state, applyMiddleware(thunk))
+    state,
+    store
   } = {}
-) => ({
-  ...render(
-    <Router history={history}>
-      <Provider store={store}>
-        <Auth0Context.Provider value={auth}>
-          <UserContext.Provider value={auth.userProfile}>
-            <DiariesContext.Provider value={diaries}>
-              {ui}
-            </DiariesContext.Provider>
-          </UserContext.Provider>
-        </Auth0Context.Provider>
-      </Provider>
-    </Router>
-  )
-});
+) => {
+  const Wrapper = Harness({ auth, diaries, history, state, store });
+  return {
+    ...render(ui, { wrapper: Wrapper })
+  };
+};
+
 export * from '@testing-library/react';
 export { customRender as render };
 

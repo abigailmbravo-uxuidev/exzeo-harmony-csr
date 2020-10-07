@@ -7,6 +7,4 @@ export const PAGE_ROUTING = {
   endorsements: 5
 };
 
-export const ROUTES_NOT_HANDLED_BY_GANDALF = [];
-
 export const ROUTES_NOT_USING_FOOTER = ['coverage'];

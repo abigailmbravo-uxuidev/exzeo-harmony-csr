@@ -12,7 +12,8 @@ import { QuoteWorkflow } from '../QuoteWorkflow';
 describe('Application Testing', () => {
   const props = {
     ...defaultQuoteWorkflowProps,
-    location: { pathname: '/quote/12-345-67/application' }
+    location: { pathname: '/quote/12-345-67/application' },
+    match: { params: { step: 'application' } }
   };
 
   it('POS:Shows error with underwriting exceptions', () => {

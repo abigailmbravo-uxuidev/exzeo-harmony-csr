@@ -13,18 +13,9 @@ function setEnums(enums) {
 
 /**
  *
- * @param companyCode
- * @param state
- * @param product
- * @param quoteNumber
  * @returns {Function}
  */
-export function getEnumsForQuoteWorkflow({
-  companyCode,
-  state,
-  product,
-  quoteNumber
-}) {
+export function getEnumsForQuoteWorkflow({ quoteNumber }) {
   return async dispatch => {
     try {
       dispatch(fetchNotes([quoteNumber], 'quoteNumber'));
@@ -63,10 +54,9 @@ export async function fetchPropertyAppriasals() {
 
 /**
  *
- * @param policyNumber
  * @returns {Function}
  */
-export function getEnumsForPolicyWorkflow({ companyCode, state, product }) {
+export function getEnumsForPolicyWorkflow() {
   return async dispatch => {
     try {
       const propertyAppraisals = fetchPropertyAppriasals();
