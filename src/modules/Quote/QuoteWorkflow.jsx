@@ -26,8 +26,9 @@ import { getEnumsForQuoteWorkflow } from '../../state/actions/list.actions';
 import { getQuoteSelector } from '../../state/selectors/quote.selectors';
 import App from '../../components/WorkflowWrapper';
 import NavigationPrompt from '../../components/NavigationPrompt';
-import QuoteSideNav from '../../components/QuoteSideNav';
+import SideNav from '../../components/SideNav';
 import { OpenDiariesBar } from '../Diaries';
+import { toggleNote } from '../../state/actions/ui.actions';
 
 import {
   ROUTES_NOT_HANDLED_BY_GANDALF,
@@ -46,6 +47,9 @@ import TTICFLAF3 from '../../csp-templates/ttic-fl-af3-quote';
 import TTICFLHO3 from '../../csp-templates/ttic-fl-ho3-quote';
 import HCPCNJAF3 from '../../csp-templates/hcpc-nj-af3-quote';
 import HCPCSCAF3 from '../../csp-templates/hcpc-sc-af3-quote';
+import PlusButton from '../../components/PlusButton';
+import Clock from '../../components/Clock';
+import UWConditions from '../../components/UWconditions';
 
 const getCurrentStepAndPage = defaultMemoize(pathname => {
   const currentRouteName = pathname.split('/')[3];
@@ -126,7 +130,8 @@ export class QuoteWorkflow extends React.Component {
   state = {
     gandalfTemplate: null,
     applicationSent: false,
-    showApplicationModal: false
+    showApplicationModal: false,
+    showUWPopup: false
   };
 
   formInstance = null;
@@ -277,6 +282,39 @@ export class QuoteWorkflow extends React.Component {
     this.setState({ showApplicationModal });
   };
 
+  setShowUWPopup = showUWPopup => {
+    this.setState({ showUWPopup });
+  };
+
+  newNote = () => {
+    const { toggleNote, quote } = this.props;
+
+    const { companyCode, state, product, quoteNumber } = quote;
+
+    toggleNote({
+      companyCode,
+      state,
+      product,
+      noteType: 'Quote Note',
+      documentId: quoteNumber,
+      resourceType: QUOTE_RESOURCE_TYPE,
+      entity: quote
+    });
+  };
+
+  uwButton = (
+    <li>
+      <button
+        tabIndex="0"
+        aria-label="open-btn form-newNote"
+        className="btn btn-secondary btn-xs btn-block"
+        onClick={() => this.setShowUWPopup(true)}
+      >
+        Underwriting Conditions
+      </button>
+    </li>
+  );
+
   render() {
     const {
       history,
@@ -291,6 +329,8 @@ export class QuoteWorkflow extends React.Component {
     } = this.props;
 
     const { gandalfTemplate } = this.state;
+    const underwritingConditions =
+      gandalfTemplate?.meta?.underwritingConditions;
 
     const headerDetails = getHeaderDetails(quote, options.appraisers);
     const { currentRouteName, currentStepNumber } = getCurrentStepAndPage(
@@ -312,10 +352,10 @@ export class QuoteWorkflow extends React.Component {
       showApplicationModal: this.state.showApplicationModal,
       toggleDiary: this.props.toggleDiary
     };
+
     return (
       <div className="app-wrapper csr quote">
         {(isLoading || !quote.quoteNumber) && <Loader />}
-
         {quote.quoteNumber && gandalfTemplate && (
           <App
             template={gandalfTemplate}
@@ -327,7 +367,17 @@ export class QuoteWorkflow extends React.Component {
             }}
             aside={
               <aside className="content-panel-left">
-                <QuoteSideNav match={match} quote={quote} />
+                <SideNav documentType="quote" number={quote?.quoteNumber}>
+                  {underwritingConditions && this.uwButton}
+                  <PlusButton newNote={this.newNote} document={quote} />
+                  <Clock timezone={quote?.property?.timezone} />
+                  {this.state.showUWPopup && (
+                    <UWConditions
+                      closePopup={() => this.setShowUWPopup(false)}
+                      conditions={underwritingConditions}
+                    />
+                  )}
+                </SideNav>
               </aside>
             }
             subHeader={
@@ -434,5 +484,6 @@ export default connect(mapStateToProps, {
   verifyQuote,
   getZipCodeSettings: getZipcodeSettings,
   getEnumsForQuoteWorkflow,
-  updateQuote
+  updateQuote,
+  toggleNote // todo -- not working :(
 })(QuoteWorkflow);
