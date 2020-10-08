@@ -29,7 +29,7 @@ export const filterCSPList = (entities = []) => {
  * @returns {[]}
  */
 export const groupPolicyByAgentCode = array => {
-  let sorted = {};
+  const sorted = {};
   for (let i = 0, max = array.length; i < max; i++) {
     if (sorted[String(array[i].agentCode)] === undefined) {
       sorted[String(array[i].agentCode)] = [];
