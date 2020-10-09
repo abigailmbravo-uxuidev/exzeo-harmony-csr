@@ -39,7 +39,8 @@ const initialState = {
   rating: null,
   endorsementDate: null,
   instanceId: null,
-  hasEndorsementDateChanged: false
+  hasEndorsementDateChanged: false,
+  newBillPlan: undefined
 };
 
 const EndorsementForm = ({
@@ -101,7 +102,7 @@ const EndorsementForm = ({
       timezone
     );
 
-    const { rating, instanceId } = await rateEndorsement(
+    const { rating, instanceId, billPlan } = await rateEndorsement(
       formattedData,
       setAppError
     );
@@ -117,7 +118,8 @@ const EndorsementForm = ({
       instanceId,
       originalInitial,
       reviewPending: true,
-      hasEndorsementDateChanged: false
+      hasEndorsementDateChanged: false,
+      newBillPlan: billPlan === formValues.billPlan ? null : billPlan
     }));
   }
 
@@ -199,6 +201,12 @@ const EndorsementForm = ({
             onSubmit={handleSubmit}
           >
             <div className="endo-results-calc">
+              {endorsementState.newBillPlan && (
+                <div className="bill-plan title">
+                  Your Bill Plan Will Be Changed To{' '}
+                  {endorsementState.newBillPlan} Due To This Endorsement
+                </div>
+              )}
               <div className="flex-parent">
                 <div className="form-group endorsement-date-wrapper">
                   <Field name="endorsementDate" validate={isEffectiveDateRange}>

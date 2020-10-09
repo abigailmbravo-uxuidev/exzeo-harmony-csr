@@ -1112,6 +1112,11 @@ section {
   border-top: 1px dotted $warm-gray-04;
   background: $warm-gray-01;
 
+  .bill-plan {
+    display: flex;
+    justify-content: center;
+  }
+
   .endorsement-date-wrapper {
     flex-grow: 0;
     flex-shrink: 0;

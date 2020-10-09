@@ -23,10 +23,10 @@ export async function rateEndorsement(data, errorHandler) {
     );
     const {
       data: {
-        result: { rating, instanceId }
+        result: { rating, instanceId, billPlan }
       }
     } = response;
-    return { rating, instanceId };
+    return { rating, instanceId, billPlan };
   } catch (err) {
     errorHandler(err);
     return {};
