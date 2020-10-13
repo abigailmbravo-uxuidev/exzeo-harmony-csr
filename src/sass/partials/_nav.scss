@@ -1,12 +1,20 @@
 //vertical tabs
 .quote {
   .property-time-wrapper {
-    background-color: $green-darken-04;
+    background: linear-gradient(
+      90deg,
+      rgba($green-darken-04, 1) 96%,
+      rgba($bright-blue-darken-04, 1) 100%
+    );
   }
 }
 .policy {
   .property-time-wrapper {
-    background-color: $bright-blue-darken-03;
+    background: linear-gradient(
+      90deg,
+      rgba($bright-blue-darken-03, 1) 96%,
+      rgba($bright-blue-darken-04, 1) 100%
+    );
   }
 }
 .property-time-wrapper {
@@ -23,7 +31,8 @@
   padding: $padding $padding $padding ($padding * 1.5);
 
   color: $white;
-  background-color: rgba($bright-blue-darken-03, 1);
+  border-radius: 4px 0 0 4px;
+  box-shadow: $card-box-shadow;
 
   font-size: $font-size-lg;
   label {
