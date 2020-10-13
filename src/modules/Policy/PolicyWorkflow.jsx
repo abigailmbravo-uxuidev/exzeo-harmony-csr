@@ -357,6 +357,51 @@ export class PolicyWorkflow extends React.Component {
     });
   };
 
+  getPolicyNavLinks = policyNumber => [
+    {
+      key: 'coverage',
+      to: `/policy/${policyNumber}/coverage`,
+      label: <span>Coverage / Rating</span>,
+      className: 'coverage',
+      exact: true
+    },
+    {
+      key: 'policyholder',
+      to: `/policy/${policyNumber}/policyHolder`,
+      label: <span>Policyholder / Agent</span>,
+      className: 'policyholder',
+      exact: true
+    },
+    {
+      key: 'billing',
+      to: `/policy/${policyNumber}/billing`,
+      label: <span>Mortgage / Billing</span>,
+      className: 'billing',
+      exact: true
+    },
+    {
+      key: 'notes',
+      to: `/policy/${policyNumber}/notes`,
+      label: <span>Notes / Files / Diaries</span>,
+      className: 'notes',
+      exact: true
+    },
+    {
+      key: 'cancel',
+      to: `/policy/${policyNumber}/cancel`,
+      label: <span>Cancel Policy</span>,
+      className: 'cancel',
+      exact: true
+    },
+    {
+      key: 'endorsements',
+      to: `/policy/${policyNumber}/endorsements`,
+      label: <span>Endorsements</span>,
+      className: 'endorsements',
+      exact: true
+    }
+  ];
+
   render() {
     const {
       cancelOptions,
@@ -379,6 +424,7 @@ export class PolicyWorkflow extends React.Component {
       updateBillPlan,
       zipCodeSettings
     } = this.props;
+    const { policyNumber, sourceNumber } = policy;
 
     const {
       gandalfTemplate,
@@ -399,6 +445,7 @@ export class PolicyWorkflow extends React.Component {
       gandalfTemplate &&
       ROUTES_NOT_HANDLED_BY_GANDALF.indexOf(currentRouteName) === -1;
     const transformConfig = this.getConfigForJsonTransform(gandalfTemplate);
+    const navLinks = this.getPolicyNavLinks(policyNumber);
 
     // This is how to replicate 'useRef' in a Class component - sets us up for refactoring this component to functional component
     this.modalHandlers.showEffectiveDateChangeModal = this.toggleEffectiveDateChangeModal;
@@ -425,14 +472,14 @@ export class PolicyWorkflow extends React.Component {
           <App
             template={gandalfTemplate}
             headerTitle="Policy"
-            pageTitle={`P: ${policy.policyNumber || ''}`}
+            pageTitle={`P: ${policyNumber || ''}`}
             diaryPollingFilter={{
-              resourceId: [policy.policyNumber, policy.sourceNumber],
+              resourceId: [policyNumber, sourceNumber],
               resourceType: POLICY_RESOURCE_TYPE
             }}
             aside={
               <aside className="content-panel-left">
-                <SideNav documentType="policy" number={policy?.policyNumber}>
+                <SideNav navLinks={navLinks}>
                   <li>
                     <button
                       aria-label="open-btn"

@@ -302,6 +302,59 @@ export class QuoteWorkflow extends React.Component {
     });
   };
 
+  getQuoteNavLinks = quoteNumber => {
+    return [
+      {
+        key: 'coverage',
+        to: `/quote/${quoteNumber}/coverage`,
+        label: <span>Coverage / Rating</span>,
+        className: 'coverage',
+        exact: true
+      },
+      {
+        key: 'underwriting',
+        to: `/quote/${quoteNumber}/underwriting`,
+        label: <span>Underwriting</span>,
+        className: 'underwriting',
+        exact: true
+      },
+      {
+        key: 'additionalInterests',
+        to: `/quote/${quoteNumber}/additionalInterests`,
+        label: <span>Additional Interests</span>,
+        className: 'additionalInterests',
+        exact: true
+      },
+      {
+        key: 'billing',
+        to: `/quote/${quoteNumber}/billing`,
+        label: <span>Mailing / Billing</span>,
+        className: 'billing',
+        exact: true
+      },
+      {
+        key: 'notes',
+        to: `/quote/${quoteNumber}/notes`,
+        label: <span>Notes / Files / Diaries</span>,
+        className: 'notes',
+        exact: true
+      },
+      {
+        key: 'summary',
+        to: `/quote/${quoteNumber}/summary`,
+        label: <span>Quote Summary</span>,
+        className: 'quote-summary'
+      },
+      {
+        key: 'application',
+        to: `/quote/${quoteNumber}/application`,
+        label: <span>Application</span>,
+        className: 'application',
+        exact: true
+      }
+    ];
+  };
+
   uwButton = (
     <li>
       <button
@@ -327,6 +380,7 @@ export class QuoteWorkflow extends React.Component {
       updateQuote,
       notesSynced
     } = this.props;
+    const { quoteNumber } = quote;
 
     const { gandalfTemplate } = this.state;
     const underwritingConditions =
@@ -340,6 +394,8 @@ export class QuoteWorkflow extends React.Component {
       gandalfTemplate &&
       ROUTES_NOT_HANDLED_BY_GANDALF.indexOf(currentRouteName) === -1;
     const transformConfig = this.getConfigForJsonTransform(gandalfTemplate);
+    const navLinks = this.getQuoteNavLinks(quoteNumber);
+
     // TODO going to use Context to pass these directly to custom components,
     //  so Gandalf does not need to know about these.
     const customHandlers = {
@@ -355,19 +411,19 @@ export class QuoteWorkflow extends React.Component {
 
     return (
       <div className="app-wrapper csr quote">
-        {(isLoading || !quote.quoteNumber) && <Loader />}
-        {quote.quoteNumber && gandalfTemplate && (
+        {(isLoading || !quoteNumber) && <Loader />}
+        {quoteNumber && gandalfTemplate && (
           <App
             template={gandalfTemplate}
             headerTitle="Quote"
-            pageTitle={`Q: ${quote.quoteNumber || ''}`}
+            pageTitle={`Q: ${quoteNumber || ''}`}
             diaryPollingFilter={{
-              resourceId: quote.quoteNumber,
+              resourceId: quoteNumber,
               resourceType: QUOTE_RESOURCE_TYPE
             }}
             aside={
               <aside className="content-panel-left">
-                <SideNav documentType="quote" number={quote?.quoteNumber}>
+                <SideNav navLinks={navLinks}>
                   {underwritingConditions && this.uwButton}
                   <PlusButton newNote={this.newNote} document={quote} />
                   <Clock timezone={quote?.property?.timezone} />
