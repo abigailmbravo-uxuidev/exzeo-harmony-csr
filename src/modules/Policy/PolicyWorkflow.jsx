@@ -506,9 +506,9 @@ export class PolicyWorkflow extends React.Component {
                       />
                     )}
                   </li>
-                  <PlusButton newNote={this.newNote} document={policy} />
-                  <Clock timezone={policy?.property?.timezone} />
                 </SideNav>
+                <PlusButton newNote={this.newNote} document={policy} />
+                <Clock timezone={policy?.property?.timezone} />
               </aside>
             }
             subHeader={

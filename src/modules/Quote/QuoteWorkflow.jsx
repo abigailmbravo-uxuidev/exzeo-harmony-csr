@@ -425,15 +425,15 @@ export class QuoteWorkflow extends React.Component {
               <aside className="content-panel-left">
                 <SideNav navLinks={navLinks}>
                   {underwritingConditions && this.uwButton}
-                  <PlusButton newNote={this.newNote} document={quote} />
-                  <Clock timezone={quote?.property?.timezone} />
-                  {this.state.showUWPopup && (
-                    <UWConditions
-                      closePopup={() => this.setShowUWPopup(false)}
-                      conditions={underwritingConditions}
-                    />
-                  )}
                 </SideNav>
+                <PlusButton newNote={this.newNote} document={quote} />
+                <Clock timezone={quote?.property?.timezone} />
+                {this.state.showUWPopup && (
+                  <UWConditions
+                    closePopup={() => this.setShowUWPopup(false)}
+                    conditions={underwritingConditions}
+                  />
+                )}
               </aside>
             }
             subHeader={

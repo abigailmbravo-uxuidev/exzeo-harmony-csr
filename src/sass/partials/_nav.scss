@@ -1,16 +1,37 @@
 //vertical tabs
 .quote {
-  .site-nav {
-    .property-time-wrapper {
-      background-color: $green-darken-04;
-    }
+  .property-time-wrapper {
+    background-color: $green-darken-04;
   }
 }
 .policy {
-  .site-nav {
-    .property-time-wrapper {
-      background-color: $bright-blue-darken-03;
-    }
+  .property-time-wrapper {
+    background-color: $bright-blue-darken-03;
+  }
+}
+.property-time-wrapper {
+  display: flex;
+  align-self: flex-end;
+  flex-direction: column;
+  flex-grow: 0;
+  flex-shrink: 0;
+  justify-content: flex-end;
+
+  width: 11rem;
+  height: 4rem;
+  margin-bottom: 1rem;
+  padding: $padding $padding $padding ($padding * 1.5);
+
+  color: $white;
+  background-color: rgba($bright-blue-darken-03, 1);
+
+  font-size: $font-size-lg;
+  label {
+    margin: 0;
+
+    color: $white;
+
+    font-size: $font-size-sm;
   }
 }
 .site-nav {
@@ -28,30 +49,6 @@
 
     border-width: 0;
     border-top: 1px dotted $warm-gray-04;
-  }
-  .property-time-wrapper {
-    display: flex;
-    flex-direction: column;
-    flex-grow: 0;
-    flex-shrink: 0;
-    justify-content: flex-end;
-
-    width: 10.125rem;
-    height: 4rem;
-    margin-bottom: 1rem;
-    padding: $padding $padding $padding ($padding * 1.5);
-
-    color: $white;
-    background-color: rgba($bright-blue-darken-03, 1);
-
-    font-size: $font-size-lg;
-    label {
-      margin: 0;
-
-      color: $white;
-
-      font-size: $font-size-sm;
-    }
   }
 
   ul {
