@@ -478,7 +478,7 @@ export class PolicyWorkflow extends React.Component {
               resourceType: POLICY_RESOURCE_TYPE
             }}
             aside={
-              <aside className="content-panel-left">
+              <>
                 <SideNav navLinks={navLinks}>
                   <li>
                     <button
@@ -509,7 +509,7 @@ export class PolicyWorkflow extends React.Component {
                 </SideNav>
                 <PlusButton newNote={this.newNote} document={policy} />
                 <Clock timezone={policy?.property?.timezone} />
-              </aside>
+              </>
             }
             subHeader={
               <DetailsHeader

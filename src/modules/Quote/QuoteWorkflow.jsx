@@ -422,7 +422,7 @@ export class QuoteWorkflow extends React.Component {
               resourceType: QUOTE_RESOURCE_TYPE
             }}
             aside={
-              <aside className="content-panel-left">
+              <>
                 <SideNav navLinks={navLinks}>
                   {underwritingConditions && this.uwButton}
                 </SideNav>
@@ -434,7 +434,7 @@ export class QuoteWorkflow extends React.Component {
                     conditions={underwritingConditions}
                   />
                 )}
-              </aside>
+              </>
             }
             subHeader={
               <DetailsHeader
@@ -541,5 +541,5 @@ export default connect(mapStateToProps, {
   getZipCodeSettings: getZipcodeSettings,
   getEnumsForQuoteWorkflow,
   updateQuote,
-  toggleNote // todo -- not working :(
+  toggleNote
 })(QuoteWorkflow);
