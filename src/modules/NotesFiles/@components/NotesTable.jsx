@@ -5,7 +5,12 @@ import { Search } from 'react-bootstrap-table2-toolkit';
 import * as notesUtils from '../utilities';
 import Downloader from './Downloader';
 
-const NotesTable = ({ data: notes = [], sourceType = '', errorHandler, timezone }) => {
+const NotesTable = ({
+  data: notes = [],
+  sourceType = '',
+  errorHandler,
+  timezone
+}) => {
   const { SearchBar } = Search;
 
   const attachmentUrl = attachments => (
