@@ -12,7 +12,7 @@ import {
 import { defaultMemoize } from 'reselect';
 
 import App from '../../components/WorkflowWrapper';
-import PolicySideNav from '../../components/PolicySideNav';
+import SideNav from '../../components/SideNav';
 import NavigationPrompt from '../../components/NavigationPrompt';
 import { OpenDiariesBar } from '../Diaries';
 import * as detailUtils from '../../utilities/documentDetails';
@@ -62,6 +62,10 @@ import TTICFLAF3 from '../../csp-templates/ttic-fl-af3-policy';
 import TTICFLHO3 from '../../csp-templates/ttic-fl-ho3-policy';
 import HCPCNJAF3 from '../../csp-templates/hcpc-nj-af3-policy';
 import HCPCSCAF3 from '../../csp-templates/hcpc-sc-af3-policy';
+import GenerateDocsForm from '../../components/GenerateDocsForm';
+import { setNotesSynced, toggleNote } from '../../state/actions/ui.actions';
+import Clock from '../../components/Clock';
+import PlusButton from '../../components/PlusButton';
 
 const getCurrentStepAndPage = defaultMemoize(pathname => {
   const currentRouteName = pathname.split('/')[3];
@@ -173,7 +177,8 @@ export class PolicyWorkflow extends React.Component {
     showEffectiveDateChangeModal: false,
     showRescindCancelModal: false,
     isEndorsementCalculated: false,
-    pollingFilter: null
+    pollingFilter: null,
+    showDocsForm: false
   };
 
   formInstance = null;
@@ -254,10 +259,6 @@ export class PolicyWorkflow extends React.Component {
     });
   };
 
-  handleToggleDiaries = () => {
-    this.setState({ showDiaries: !this.state.showDiaries });
-  };
-
   isSubmitDisabled = (pristine, submitting) => {
     const { policy } = this.props;
     if (policy.editingDisabled) return true;
@@ -326,6 +327,81 @@ export class PolicyWorkflow extends React.Component {
     this.handleToggleRescindCancelModal();
   };
 
+  generateDoc = () => {
+    this.setState(prevState => {
+      return { showDocsForm: !prevState.showDocsForm };
+    });
+  };
+
+  updateNotes = () => {
+    const { setNotesSynced } = this.props;
+    return () => {
+      setNotesSynced();
+    };
+  };
+
+  newNote = () => {
+    const { toggleNote, policy } = this.props;
+
+    const { companyCode, state, product, policyNumber, sourceNumber } = policy;
+
+    toggleNote({
+      companyCode,
+      state,
+      product,
+      noteType: 'Policy Note',
+      documentId: policyNumber,
+      sourceNumber,
+      resourceType: POLICY_RESOURCE_TYPE,
+      entity: policy
+    });
+  };
+
+  getPolicyNavLinks = policyNumber => [
+    {
+      key: 'coverage',
+      to: `/policy/${policyNumber}/coverage`,
+      label: <span>Coverage / Rating</span>,
+      className: 'coverage',
+      exact: true
+    },
+    {
+      key: 'policyholder',
+      to: `/policy/${policyNumber}/policyHolder`,
+      label: <span>Policyholder / Agent</span>,
+      className: 'policyholder',
+      exact: true
+    },
+    {
+      key: 'billing',
+      to: `/policy/${policyNumber}/billing`,
+      label: <span>Mortgage / Billing</span>,
+      className: 'billing',
+      exact: true
+    },
+    {
+      key: 'notes',
+      to: `/policy/${policyNumber}/notes`,
+      label: <span>Notes / Files / Diaries</span>,
+      className: 'notes',
+      exact: true
+    },
+    {
+      key: 'cancel',
+      to: `/policy/${policyNumber}/cancel`,
+      label: <span>Cancel Policy</span>,
+      className: 'cancel',
+      exact: true
+    },
+    {
+      key: 'endorsements',
+      to: `/policy/${policyNumber}/endorsements`,
+      label: <span>Endorsements</span>,
+      className: 'endorsements',
+      exact: true
+    }
+  ];
+
   render() {
     const {
       cancelOptions,
@@ -348,6 +424,7 @@ export class PolicyWorkflow extends React.Component {
       updateBillPlan,
       zipCodeSettings
     } = this.props;
+    const { policyNumber, sourceNumber } = policy;
 
     const {
       gandalfTemplate,
@@ -368,6 +445,7 @@ export class PolicyWorkflow extends React.Component {
       gandalfTemplate &&
       ROUTES_NOT_HANDLED_BY_GANDALF.indexOf(currentRouteName) === -1;
     const transformConfig = this.getConfigForJsonTransform(gandalfTemplate);
+    const navLinks = this.getPolicyNavLinks(policyNumber);
 
     // This is how to replicate 'useRef' in a Class component - sets us up for refactoring this component to functional component
     this.modalHandlers.showEffectiveDateChangeModal = this.toggleEffectiveDateChangeModal;
@@ -394,15 +472,44 @@ export class PolicyWorkflow extends React.Component {
           <App
             template={gandalfTemplate}
             headerTitle="Policy"
-            pageTitle={`P: ${policy.policyNumber || ''}`}
+            pageTitle={`P: ${policyNumber || ''}`}
             diaryPollingFilter={{
-              resourceId: [policy.policyNumber, policy.sourceNumber],
+              resourceId: [policyNumber, sourceNumber],
               resourceType: POLICY_RESOURCE_TYPE
             }}
             aside={
-              <aside className="content-panel-left">
-                <PolicySideNav match={match} policy={policy} />
-              </aside>
+              <>
+                <SideNav navLinks={navLinks}>
+                  <li>
+                    <button
+                      aria-label="open-btn"
+                      className="btn btn-primary btn-sm btn-block"
+                      data-test="generate-document-btn"
+                      onClick={this.generateDoc}
+                    >
+                      <i className="fa fa-plus" />
+                      Document
+                    </button>
+                  </li>
+                  <li
+                    className={
+                      this.state.showDocsForm
+                        ? 'document-panel show'
+                        : 'document-panel hidden'
+                    }
+                  >
+                    {this.state.showDocsForm && (
+                      <GenerateDocsForm
+                        policy={policy}
+                        updateNotes={this.updateNotes}
+                        errorHandler={setAppError}
+                      />
+                    )}
+                  </li>
+                </SideNav>
+                <PlusButton newNote={this.newNote} document={policy} />
+                <Clock timezone={policy?.property?.timezone} />
+              </>
             }
             subHeader={
               <DetailsHeader
@@ -553,5 +660,7 @@ export default connect(mapStateToProps, {
   setAppError,
   transferAOR,
   updatePolicy,
-  updateBillPlan
+  updateBillPlan,
+  setNotesSynced,
+  toggleNote
 })(PolicyWorkflow);

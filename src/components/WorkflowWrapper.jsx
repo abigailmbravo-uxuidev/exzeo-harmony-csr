@@ -36,7 +36,7 @@ const WorkflowWrapper = ({
       </Header>
       {subHeader}
       <main role="document">
-        {aside}
+        <aside className="content-panel-left">{aside}</aside>
         {children}
       </main>
     </React.Fragment>
