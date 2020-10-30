@@ -52,9 +52,7 @@ export class GenerateDocsForm extends Component {
       const {
         data: { result }
       } = await callService(config, 'getDocumentPacketFiles');
-      if (window.location.pathname.includes('/notes')) {
-        updateNotes();
-      }
+      if (window.location.pathname.includes('/notes')) updateNotes();
       const { fileName, fileUrl } = result[0];
 
       // GET the file
