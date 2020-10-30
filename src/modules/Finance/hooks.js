@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+
 import { getPaymentOptions } from './data';
 
 export const useFetchPaymentOptions = errorHandler => {
