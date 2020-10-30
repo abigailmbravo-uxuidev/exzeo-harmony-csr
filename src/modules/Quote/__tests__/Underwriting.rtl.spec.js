@@ -57,7 +57,8 @@ mockServiceRunner(result);
 describe('Testing Underwriting', () => {
   const props = {
     ...defaultQuoteWorkflowProps,
-    location: { pathname: '/quote/12-345-67/underwriting' }
+    location: { pathname: '/quote/12-345-67/underwriting' },
+    match: { params: { step: 'underwriting' } }
   };
 
   it('POS:Checks Header and Question Labels', async () => {

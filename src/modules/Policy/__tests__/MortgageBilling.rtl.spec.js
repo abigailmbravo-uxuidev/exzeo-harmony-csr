@@ -7,7 +7,7 @@ import {
   mockQuestions,
   defaultAuth
 } from '../../../test-utils';
-import { PolicyWorkflow } from '../PolicyWorkflow';
+import PolicyWorkflow from '../PolicyWorkflow';
 
 describe('Policy: Mortgage / Billing page testing', () => {
   mockServiceRunner({ paymentOptions: [] });
@@ -16,7 +16,7 @@ describe('Policy: Mortgage / Billing page testing', () => {
   const props = {
     ...defaultPolicyWorkflowProps,
     match: {
-      params: { policyNumber: '12-345-67' },
+      params: { policyNumber: '12-345-67', step: 'billing' },
       path: '/policy/:policyNumber/billing'
     },
     location: {
@@ -51,7 +51,9 @@ describe('Policy: Mortgage / Billing page testing', () => {
         }
       };
 
-      const { getByText } = render(<PolicyWorkflow {...props} />, { auth });
+      const { getByText } = render(<PolicyWorkflow {...props} />, {
+        auth
+      });
 
       expect(getByText(/make electronic payment/i)).toBeInTheDocument();
     });

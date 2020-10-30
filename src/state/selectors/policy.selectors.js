@@ -1,10 +1,6 @@
 import { createSelector } from 'reselect';
-import sortBy from 'lodash/sortBy';
-import cloneDeep from 'lodash/cloneDeep';
 import orderBy from 'lodash/orderBy';
 import { date } from '@exzeo/core-ui';
-
-import { applyAdditionalInterestRanking } from '../../utilities/additionalInterests';
 
 import {
   getPaymentHistory,
@@ -12,13 +8,10 @@ import {
   getPolicy,
   getSummaryLedger,
   getAgencyPolicies,
-  getEffectiveDateChangeReasons,
-  getEndorsementHistory
+  getEffectiveDateChangeReasons
 } from './entity.selectors';
 import { formattedDate } from '@exzeo/core-ui/src/Utilities';
 import { getZipcodeSettings } from '../actions/service.actions';
-import { PREMIUM_ENDORSEMENTS } from '../../modules/Policy/constants/policy';
-import endorsementUtils from '../../utilities/endorsementModel';
 
 export const getCashDescriptionOptions = createSelector(
   [getPaymentOptions],
@@ -53,18 +46,6 @@ export const getCashTypeAnswers = createSelector(
 );
 
 const defaultArr = [];
-export const getSortedAdditionalInterests = createSelector(
-  [getPolicy],
-  policy => {
-    if (!policy.additionalInterests) return defaultArr;
-
-    const additionalInterests = cloneDeep(policy.additionalInterests);
-
-    applyAdditionalInterestRanking(additionalInterests, true);
-
-    return sortBy(additionalInterests, ['sortInactive', 'rank', 'order']);
-  }
-);
 
 export const getFormattedPaymentHistory = createSelector(
   [getPaymentHistory],
@@ -150,28 +131,8 @@ export const getPolicyFormData = createSelector(
     };
 
     policy.removeSecondary = false;
-    policy._TEMP_INITIAL_VALUES = cloneDeep(policy);
     policy.summaryLedger = summaryLedger;
     policy.cancel = cancel;
     return policy;
-  }
-);
-
-export const getPolicyEndorsementHistory = createSelector(
-  [getEndorsementHistory],
-  endorsementHistory => {
-    if (!Array.isArray(endorsementHistory) || !endorsementHistory.length)
-      return defaultArr;
-    return (
-      endorsementHistory &&
-      endorsementHistory.map(endorsement => {
-        endorsement.netChargeFormat = PREMIUM_ENDORSEMENTS.some(
-          pe => pe === endorsement.transactionType
-        )
-          ? endorsementUtils.premiumAmountFormatter(endorsement.netCharge)
-          : '';
-        return endorsement;
-      })
-    );
   }
 );

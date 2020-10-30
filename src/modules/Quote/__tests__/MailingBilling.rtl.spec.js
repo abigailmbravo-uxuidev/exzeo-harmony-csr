@@ -1,13 +1,11 @@
 import React from 'react';
-import {
-  waitForElement,
-  fireEvent,
-  within,
-  wait
-} from '@testing-library/react';
 
 import {
   render,
+  waitForElement,
+  fireEvent,
+  within,
+  wait,
   defaultQuoteWorkflowProps,
   rating,
   mockServiceRunner,
@@ -43,9 +41,10 @@ const billingFields = [
 ];
 
 describe('Mailing/Billing Page Testing', () => {
-  const props = {
+  const baseProps = {
     ...defaultQuoteWorkflowProps,
     location: { pathname: '/quote/12-345-67/billing' },
+    match: { params: { step: 'billing' } },
     quote: {
       ...defaultQuoteWorkflowProps.quote,
       quoteInputState: 'Qualified',
@@ -54,14 +53,14 @@ describe('Mailing/Billing Page Testing', () => {
   };
 
   it("Shows a warning message when page can't be accessed due to quote input state ", () => {
-    const newProps = {
-      ...props,
+    const props = {
+      ...baseProps,
       quote: {
-        ...props.quote,
+        ...baseProps.quote,
         quoteInputState: 'Initial Data'
       }
     };
-    const { getByText } = render(<QuoteWorkflow {...newProps} />);
+    const { getByText } = render(<QuoteWorkflow {...props} />);
 
     expect(
       getByText(
@@ -71,6 +70,7 @@ describe('Mailing/Billing Page Testing', () => {
   });
 
   it('POS:Checks Page Headers', async () => {
+    const props = { ...baseProps };
     const { getByTestId } = render(<QuoteWorkflow {...props} />);
 
     await waitForElement(() => [
@@ -86,6 +86,7 @@ describe('Mailing/Billing Page Testing', () => {
   });
 
   it('POS:Checks fields', async () => {
+    const props = { ...baseProps };
     const { getByTestId, getByText } = render(<QuoteWorkflow {...props} />);
     await waitForElement(() => [
       getByTestId('billToId'),
@@ -105,57 +106,54 @@ describe('Mailing/Billing Page Testing', () => {
     });
   });
 
-  it('POS:Tests button', () => {
-    const { getByText } = render(<QuoteWorkflow {...props} />);
-    expect(getByText('Reset').textContent).toMatch(/Reset/);
-  });
-
   it('POS:Checks that the Reset Button works', async () => {
-    const newProps = {
-      ...props,
-      quoteData: {
-        ...props.quoteData
+    const props = {
+      ...baseProps,
+      quote: {
+        ...baseProps.quote,
+        sameAsPropertyAddress: false,
+        billToId: 'ab1234',
+        billToType: 'Policyholder',
+        billPlan: 'Annual'
       }
     };
 
-    newProps.quote.sameAsPropertyAddress = false;
-    newProps.quote.billToId = 'ab1234';
-    newProps.quote.billToType = 'Policyholder';
-    newProps.quote.billPlan = 'Annual';
-
-    const { getByTestId, getByText } = render(<QuoteWorkflow {...newProps} />);
-    await waitForElement(() => [
-      getByTestId('billToId'),
-      getByTestId('billPlan_Annual')
-    ]);
+    const { getByTestId, getByText, queryByRole, getByRole } = render(
+      <QuoteWorkflow {...props} />
+    );
 
     await wait(() => {
-      expect(getByText('Update')).toBeDisabled();
+      expect(queryByRole('status')).not.toBeInTheDocument();
     });
+
+    expect(getByTestId('billToId')).toBeInTheDocument();
+    expect(getByTestId('billPlan_Annual')).toBeInTheDocument();
+    expect(getByText('Update')).toBeDisabled();
+    const updateButton = getByRole('button', { name: 'Update' });
 
     fireEvent.change(getByTestId('policyHolderMailingAddress.address1'), {
       target: { value: 'New Address' }
     });
 
     await wait(() => {
-      expect(getByText('Update')).not.toBeDisabled();
+      expect(updateButton).not.toBeDisabled();
     });
 
-    fireEvent.click(getByText('Reset'));
+    fireEvent.click(getByRole('button', { name: 'Reset' }));
 
     await wait(() => {
       expect(getByTestId('policyHolderMailingAddress.address1').value).toEqual(
         '6666 mailing address'
       );
-      expect(getByText('Update')).toBeDisabled();
+      expect(updateButton).toBeDisabled();
     });
   });
 
   it('POS:Checks that Same As Property Address Button works', async () => {
-    const newProps = {
-      ...props,
-      quoteData: {
-        ...props.quoteData,
+    const props = {
+      ...baseProps,
+      quote: {
+        ...baseProps.quote,
         policyHolderMailingAddress: {
           address1: '',
           address2: '',
@@ -167,16 +165,7 @@ describe('Mailing/Billing Page Testing', () => {
       }
     };
 
-    newProps.quote.policyHolderMailingAddress = {
-      address1: '',
-      address2: '',
-      city: '',
-      state: '',
-      zip: ''
-    };
-    newProps.quote.sameAsPropertyAddress = false;
-
-    const { getByTestId, getByText } = render(<QuoteWorkflow {...newProps} />);
+    const { getByTestId, getByText } = render(<QuoteWorkflow {...props} />);
     await waitForElement(() => [
       getByTestId('billToId'),
       getByTestId('billPlan_Annual')
@@ -208,19 +197,19 @@ describe('Mailing/Billing Page Testing', () => {
 
       expect(getByText('Update')).not.toBeDisabled();
       expect(getByTestId('policyHolderMailingAddress.address1').value).toEqual(
-        newProps.quote.property.physicalAddress.address1
+        props.quote.property.physicalAddress.address1
       );
 
       expect(getByTestId('policyHolderMailingAddress.city').value).toEqual(
-        newProps.quote.property.physicalAddress.city
+        props.quote.property.physicalAddress.city
       );
 
       expect(getByTestId('policyHolderMailingAddress.state').value).toEqual(
-        newProps.quote.property.physicalAddress.state
+        props.quote.property.physicalAddress.state
       );
 
       expect(getByTestId('policyHolderMailingAddress.zip').value).toEqual(
-        newProps.quote.property.physicalAddress.zip
+        props.quote.property.physicalAddress.zip
       );
     });
 
@@ -249,12 +238,12 @@ describe('Mailing/Billing Page Testing', () => {
         'data-value',
         'true'
       );
-
-      expect(getByText('Update')).not.toBeDisabled();
-      expect(getByTestId('policyHolderMailingAddress.address1').value).toEqual(
-        newProps.quote.property.physicalAddress.address1
-      );
     });
+
+    expect(getByText('Update')).not.toBeDisabled();
+    expect(getByTestId('policyHolderMailingAddress.address1').value).toEqual(
+      props.quote.property.physicalAddress.address1
+    );
 
     fireEvent.change(getByTestId('policyHolderMailingAddress.address1'), {
       target: { value: 'This is A New Address' }
@@ -265,22 +254,22 @@ describe('Mailing/Billing Page Testing', () => {
         'data-value',
         'false'
       );
-
-      expect(getByTestId('policyHolderMailingAddress.address1').value).toEqual(
-        'This is A New Address'
-      );
-
-      expect(getByTestId('policyHolderMailingAddress.city').value).toEqual(
-        newProps.quote.property.physicalAddress.city
-      );
-
-      expect(getByTestId('policyHolderMailingAddress.state').value).toEqual(
-        newProps.quote.property.physicalAddress.state
-      );
-
-      expect(getByTestId('policyHolderMailingAddress.zip').value).toEqual(
-        newProps.quote.property.physicalAddress.zip
-      );
     });
+
+    expect(getByTestId('policyHolderMailingAddress.address1').value).toEqual(
+      'This is A New Address'
+    );
+
+    expect(getByTestId('policyHolderMailingAddress.city').value).toEqual(
+      props.quote.property.physicalAddress.city
+    );
+
+    expect(getByTestId('policyHolderMailingAddress.state').value).toEqual(
+      props.quote.property.physicalAddress.state
+    );
+
+    expect(getByTestId('policyHolderMailingAddress.zip').value).toEqual(
+      props.quote.property.physicalAddress.zip
+    );
   });
 });

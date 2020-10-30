@@ -14,9 +14,9 @@ import NoteUploader from './components/NoteUploader';
 import ErrorModal from './components/ErrorModal';
 
 import { DiaryModal } from './modules/Diaries';
-import { QuoteLanding, QuoteWorkflow } from './modules/Quote';
+import { QuoteLanding, QuoteWorkflowContainer } from './modules/Quote';
 import { Search } from './modules/Search';
-import { PolicyWorkflow } from './modules/Policy';
+import { PolicyWorkflowContainer } from './modules/Policy';
 import { FinanceWorkflow } from './modules/Finance';
 import { BulkMortgage } from './modules/BulkMortgage';
 import Agency from './modules/Agency';
@@ -50,12 +50,12 @@ function AuthenticatedApp({
             )}
           />
           <Route
-            path="/quote/:quoteNumber"
-            render={props => <QuoteWorkflow {...props} />}
+            path="/quote/:quoteNumber/:step"
+            render={props => <QuoteWorkflowContainer {...props} />}
           />
           <Route
-            path="/policy/:policyNumber"
-            render={props => <PolicyWorkflow {...props} />}
+            path="/policy/:policyNumber/:step"
+            render={props => <PolicyWorkflowContainer {...props} />}
           />
           <Route
             path="/agency/:agencyCode/:branchCode"

@@ -7,7 +7,3 @@ export const PAGE_ROUTING = {
   summary: 5,
   application: 6
 };
-
-export const ROUTES_NOT_HANDLED_BY_GANDALF = [];
-
-export const ROUTES_NOT_USING_FOOTER = [];

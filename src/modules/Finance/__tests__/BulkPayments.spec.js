@@ -141,11 +141,9 @@ describe('BulkPayments testing', () => {
 
     const { getByText, getByLabelText } = render(<BulkPayments {...props} />);
 
-    await wait(() => [
-      getByLabelText('Cash Type'),
-      getByLabelText('Payment Description'),
-      getByLabelText('Batch Number')
-    ]);
+    await wait(() => getByLabelText('Cash Type'));
+    getByLabelText('Payment Description');
+    getByLabelText('Batch Number');
 
     fireEvent.change(getByLabelText('Cash Type'), {
       target: { value: 'Paper Deposit' }
@@ -168,8 +166,8 @@ describe('BulkPayments testing', () => {
 
     await wait(() => {
       expect(getByText(/start/i)).toBeDisabled();
-      expect(getByText(/stop/i)).toBeEnabled();
     });
+    expect(getByText(/stop/i)).toBeEnabled();
 
     getByLabelText('Policy Number').focus();
 
@@ -179,26 +177,24 @@ describe('BulkPayments testing', () => {
 
     getByLabelText('Policy Number').blur();
 
-    await wait(() => [
-      document.querySelector('.policy-details'),
-      getByText(mockPolicy.product),
-      getByText(mockPolicy.companyCode),
-      getByText(`| ${mockPolicy.policyNumber}`),
-      getByText('Open Policy'),
-      getByText('Balance Due:'),
-      getByText(mockPolicy.summaryLedger.balance),
-      getByText(
-        `${mockPolicy.policyHolders[0].firstName} ${mockPolicy.policyHolders[0].lastName}`
-      ),
-      getByText(`| ${mockPolicy.property.physicalAddress.address1},`),
-      getByText(`${city}, ${state} ${zip}`),
-      getByText('Effective Date:'),
-      getByText(date.formattedDate(mockPolicy.effectiveDate, 'MM/DD/YYYY')),
-      getByText('Policy Status:'),
-      getByText(mockPolicy.status),
-      getByText('Billing Status:'),
-      getByText(mockPolicy.summaryLedger.status.displayText)
-    ]);
+    await wait(() => document.querySelector('.policy-details'));
+    getByText(mockPolicy.product);
+    getByText(mockPolicy.companyCode);
+    getByText(`| ${mockPolicy.policyNumber}`);
+    getByText('Open Policy');
+    getByText('Balance Due:');
+    getByText(mockPolicy.summaryLedger.balance);
+    getByText(
+      `${mockPolicy.policyHolders[0].firstName} ${mockPolicy.policyHolders[0].lastName}`
+    );
+    getByText(`| ${mockPolicy.property.physicalAddress.address1},`);
+    getByText(`${city}, ${state} ${zip}`);
+    getByText('Effective Date:');
+    getByText(date.formattedDate(mockPolicy.effectiveDate, 'MM/DD/YYYY'));
+    getByText('Policy Status:');
+    getByText(mockPolicy.status);
+    getByText('Billing Status:');
+    getByText(mockPolicy.summaryLedger.status.displayText);
 
     expect(getByText('Open Policy').href).toBeDefined();
 
@@ -208,30 +204,28 @@ describe('BulkPayments testing', () => {
 
     fireEvent.click(getByText(/apply/i));
 
-    await waitForElement(() => [
-      expect(getByLabelText('Policy Number').value).toBe(''),
-      expect(getByLabelText('Amount').value).toBe(''),
-      expect(getByText('1 entries totaling')),
-      expect(getByText('$ 200.00')),
-      expect(getByText('Download')).toBeEnabled()
-    ]);
+    await wait(() => expect(getByLabelText('Policy Number')).toHaveValue(''));
+    expect(getByLabelText('Amount')).toHaveValue('');
+    expect(getByText('1 entries totaling'));
+    expect(getByText('$ 200.00'));
+    expect(getByText('Download')).toBeEnabled();
 
     // check Stop button
     fireEvent.click(getByText(/stop/i));
 
     await wait(() => {
-      expect(getByLabelText('Cash Date').value).toBe(
+      expect(getByLabelText('Cash Date')).toHaveValue(
         today.format('YYYY-MM-DD')
       );
-      expect(getByLabelText('Batch Number').value).toBe(initialBatchNumber);
-      expect(getByLabelText('Cash Type'));
-      expect(getByLabelText('Cash Type').children[0].text).toBe(
-        'Please Select...'
-      );
-      expect(getByText(/start/i)).toBeDisabled();
-      expect(getByText(/stop/i)).toBeDisabled();
-      expect(getByText('Download')).toBeDisabled();
     });
+    expect(getByLabelText('Batch Number')).toHaveValue(initialBatchNumber);
+    expect(getByLabelText('Cash Type'));
+    expect(getByLabelText('Cash Type').children[0].text).toBe(
+      'Please Select...'
+    );
+    expect(getByText(/start/i)).toBeDisabled();
+    expect(getByText(/stop/i)).toBeDisabled();
+    expect(getByText('Download')).toBeDisabled();
   });
 
   it('Test BulkPayments with cancelled policy', async () => {

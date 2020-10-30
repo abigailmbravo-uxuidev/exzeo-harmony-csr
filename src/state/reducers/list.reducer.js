@@ -6,8 +6,6 @@ export default function listReducer(state = initialState.list, action) {
   switch (action.type) {
     case types.SET_AGENTS:
       return setAgents(state, action);
-    case listTypes.SET_ZIP_SETTINGS:
-      return setZipCodeSettings(state, action);
     case listTypes.SET_ENUMS:
       return setEnums(state, action);
     default:
@@ -35,12 +33,5 @@ function setEnums(state, action) {
   return {
     ...state,
     appraisers
-  };
-}
-
-function setZipCodeSettings(state, action) {
-  return {
-    ...state,
-    zipCodeSettings: action.zipCodeSettings
   };
 }

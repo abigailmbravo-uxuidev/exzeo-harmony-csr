@@ -2,15 +2,10 @@ import React, { useMemo } from 'react';
 import { date as dateUtils } from '@exzeo/core-ui';
 import { OnlinePayment } from '@exzeo/core-ui/src/@Harmony';
 import PaymentHistoryTable from './PaymentHistoryTable';
-import { doesUserHaveAccess } from '../../../utilities/userResources';
-import { useUser } from '../../../context/user-context';
+import { doesUserHaveAccess } from '../../utilities/userResources';
+import { useUser } from '../../context/user-context';
 
-const PaymentHistorySection = ({
-  initialValues,
-  paymentAdded,
-  setPaymentAdded,
-  customHandlers
-}) => {
+const PaymentHistorySection = ({ initialValues, getPolicy }) => {
   const userProfile = useUser();
   const { companyCode, state, product, property } = initialValues;
 
@@ -33,7 +28,6 @@ const PaymentHistorySection = ({
   return (
     <PaymentHistoryTable
       initialValues={initialValues}
-      paymentAdded={paymentAdded}
       header={
         <h3>
           Payments&nbsp;
@@ -42,8 +36,7 @@ const PaymentHistorySection = ({
               batchID={`${date}-CSR`}
               document={initialValues}
               onPaymentComplete={() => {
-                customHandlers.getPolicy(initialValues.policyNumber);
-                setPaymentAdded(dateUtils.timestamp());
+                getPolicy(initialValues.policyNumber);
               }}
               label={
                 <>

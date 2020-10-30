@@ -63,58 +63,6 @@ describe('Test policy selectors', () => {
     });
   });
 
-  describe('Test getSortedAdditionalInterests', () => {
-    it('should return an empty array if there is no policy', () => {
-      const state = {
-        policyState: {
-          policy: { _id: '1234-5678' }
-        }
-      };
-
-      const result = policySelectors.getSortedAdditionalInterests(state);
-      expect(result).toEqual([]);
-    });
-
-    it('should return sorted additionalInterests', () => {
-      const additionalInterest1 = {
-        active: true,
-        type: 'Additional Interest',
-        order: 0
-      };
-      const additionalInterest2 = { active: true, type: 'Mortgagee', order: 2 };
-      const additionalInterest3 = {
-        active: false,
-        type: 'Mortgagee',
-        order: 1
-      };
-      const additionalInterest4 = { active: true, type: 'Mortgagee', order: 0 };
-      const state = {
-        policyState: {
-          policy: {
-            _id: '1234',
-            additionalInterests: [
-              { ...additionalInterest1 },
-              { ...additionalInterest2 },
-              { ...additionalInterest3 },
-              { ...additionalInterest4 }
-            ]
-          }
-        }
-      };
-
-      // Mortgagees should be first, Additional Interest after (rank: 3)
-      const expectedResult = [
-        { ...additionalInterest4, rank: 1, sortInactive: false },
-        { ...additionalInterest2, rank: 1, sortInactive: false },
-        { ...additionalInterest1, rank: 3, sortInactive: false },
-        { ...additionalInterest3, rank: 1, sortInactive: true }
-      ];
-
-      const result = policySelectors.getSortedAdditionalInterests(state);
-      expect(result).toEqual(expectedResult);
-    });
-  });
-
   describe('Test getFormattedPaymentHistory', () => {
     it('should return an empty array if there is no paymentHistory', () => {
       const state = {

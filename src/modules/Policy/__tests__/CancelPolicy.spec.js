@@ -6,7 +6,7 @@ import {
   defaultPolicyWorkflowProps,
   mockServiceRunner
 } from '../../../test-utils';
-import { PolicyWorkflow } from '../PolicyWorkflow';
+import PolicyWorkflow from '../PolicyWorkflow';
 
 mockServiceRunner([]);
 
@@ -14,7 +14,7 @@ describe('CancelType Testing', () => {
   const props = {
     ...defaultPolicyWorkflowProps,
     match: {
-      params: { policyNumber: '12-345-67' },
+      params: { policyNumber: '12-345-67', step: 'cancel' },
       path: '/policy/:policyNumber/cancel'
     },
     location: {

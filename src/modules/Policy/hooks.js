@@ -4,7 +4,12 @@ import {
   fetchAgentsByAgencyCode,
   sortPaymentHistoryByDate
 } from './utilities';
-import { getPaymentHistory } from './data';
+import {
+  getPaymentOptions,
+  getPaymentHistory,
+  fetchPastEndorsements,
+  fetchPendingEndorsements
+} from './data';
 
 export const useFetchAgency = agencyCode => {
   const [agency, setAgency] = useState({});
@@ -49,6 +54,43 @@ export const useFetchAgents = agencyCode => {
   return { agents, loaded };
 };
 
+export const useFetchPaymentOptions = () => {
+  const [paymentOptions, setPaymentOptions] = useState({});
+  const [loaded, setLoaded] = useState(false);
+  useEffect(() => {
+    const fetchPaymentOptions = async () => {
+      setLoaded(false);
+
+      try {
+        const response = await getPaymentOptions();
+
+        const cashDescriptions = {};
+        const cashTypes = response.map(res => {
+          const description = res.paymentDescription.map(desc => ({
+            answer: desc,
+            label: desc
+          }));
+          cashDescriptions[res.paymentType] = description;
+
+          return {
+            answer: res.paymentType,
+            label: res.paymentType
+          };
+        });
+
+        setPaymentOptions({ cashTypes, cashDescriptions });
+      } catch (error) {
+        console.error('Error fetching Payment Options: ', error);
+      }
+      setLoaded(true);
+    };
+
+    fetchPaymentOptions();
+  }, []);
+
+  return { paymentOptions, loaded };
+};
+
 export const useFetchPaymentHistory = (policyNumber, paymentAdded) => {
   const [paymentHistory, setPaymentHistory] = useState([]);
   const [loaded, setLoaded] = useState(false);
@@ -71,4 +113,27 @@ export const useFetchPaymentHistory = (policyNumber, paymentAdded) => {
   }, [policyNumber, paymentAdded]);
 
   return { paymentHistory, loaded };
+};
+
+export const useFetchEndorsements = policy => {
+  const [endorsements, setEndorsements] = useState({});
+  const [loaded, setLoaded] = useState(false);
+
+  useEffect(() => {
+    const fetchEndorsements = async () => {
+      try {
+        const [pastEndorsements, pendingEndorsements] = await Promise.all([
+          fetchPastEndorsements(policy.policyNumber),
+          fetchPendingEndorsements(policy.policyNumber)
+        ]);
+
+        setEndorsements({ pastEndorsements, pendingEndorsements });
+      } catch (error) {
+        console.error('Error fetching Endorsements');
+      }
+      setLoaded(true);
+    };
+    fetchEndorsements();
+  }, [policy]);
+  return { endorsements, loaded };
 };

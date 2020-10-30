@@ -1,19 +1,32 @@
-import { Button, Field, Form, Loader, Modal, validation } from '@exzeo/core-ui';
-import PropTypes from 'prop-types';
 import React from 'react';
+import { Button, Field, Form, Loader, Modal, validation } from '@exzeo/core-ui';
+
+import { postRescindCancellation } from './data';
 
 const RescindCancelModal = ({
-  rescindCancelSubmit,
+  policyNumber,
+  getPolicy,
   closeModal,
-  policyNumber
+  errorHandler
 }) => {
+  const handleSubmit = async () => {
+    try {
+      await postRescindCancellation(policyNumber);
+      await getPolicy(policyNumber);
+    } catch (error) {
+      errorHandler(error);
+    } finally {
+      closeModal();
+    }
+  };
+
   return (
     <Modal
       size={Modal.sizes.medium}
       className="reinstate-policy"
       header={<h4>Rescind Cancellation</h4>}
     >
-      <Form onSubmit={rescindCancelSubmit}>
+      <Form onSubmit={handleSubmit}>
         {({ handleSubmit, submitting, pristine }) => (
           <form
             id="rescind-cancel-form"
@@ -56,11 +69,6 @@ const RescindCancelModal = ({
       </Form>
     </Modal>
   );
-};
-
-RescindCancelModal.propTypes = {
-  handleCancel: PropTypes.func,
-  onSubmit: PropTypes.func
 };
 
 export default RescindCancelModal;

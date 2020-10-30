@@ -33,13 +33,6 @@ export function setEndorsementDate(effectiveDate, endPolicyDate) {
   return endDate;
 }
 
-export function premiumAmountFormatter(cell) {
-  return Number(cell).toLocaleString('en-US', {
-    style: 'currency',
-    currency: 'USD'
-  });
-}
-
 export const calculatePercentage = (oldFigure, newFigure) => {
   if (oldFigure === 0 || newFigure === 0) return 0;
   return (oldFigure / newFigure) * 100;
@@ -176,7 +169,6 @@ export default {
   convertToRateData,
   initializeEndorsementForm,
   generateModel,
-  premiumAmountFormatter,
   setEndorsementDate,
   setPercentageOfValue
 };

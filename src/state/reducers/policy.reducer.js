@@ -16,8 +16,6 @@ export default function policyStateReducer(
       return setEffectiveDateChangeReasons(state, action);
     case types.SET_PAYMENT_HISTORY:
       return setPaymentHistory(state, action);
-    case types.SET_ENDORSEMENT_HISTORY:
-      return setEndorsementHistory(state, action);
     case types.SET_BILLING_OPTIONS:
       return setBillingOptions(state, action);
     case types.SET_CANCEL_OPTIONS:
@@ -67,13 +65,6 @@ function setPaymentHistory(state, action) {
   return {
     ...state,
     paymentHistory: action.paymentHistory
-  };
-}
-
-function setEndorsementHistory(state, action) {
-  return {
-    ...state,
-    endorsementHistory: action.endorsementHistory
   };
 }
 

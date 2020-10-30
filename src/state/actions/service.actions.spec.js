@@ -60,7 +60,7 @@ describe('Service Actions', () => {
         '00001',
         '12000000000000001'
       )(store.dispatch)
-      .then(result => {
+      .then(() => {
         expect(store.getActions()[0].type).toEqual(types.SERVICE_REQUEST);
       });
   });

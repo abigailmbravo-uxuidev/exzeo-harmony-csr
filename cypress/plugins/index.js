@@ -13,9 +13,9 @@
 
 // Format: module.exports = (on, config) => { on('<event>', (arg1, arg2) => { plugin stuff here }})
 
-module.exports = (on, config) => {
+module.exports = on => {
   on('task', {
-    log (message) {
+    log(message) {
       console.log(message);
       return null;
     }

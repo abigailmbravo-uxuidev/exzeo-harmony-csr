@@ -33,9 +33,7 @@ export const navigateThroughNewQuote = (
         const url = $a.prop('dataset').url;
         cy.window().then(win => {
           win.__rrHistory.push(url);
-          cy.wait('@createQuote')
-            .wait('@retrieveQuote')
-            .wait('@getZipcodeSettings');
+          cy.wait('@createQuote').wait('@retrieveQuote');
         });
       })
       .findDataTag('propertyAddressDetail')
@@ -103,16 +101,10 @@ export const changeCoverageAndAgency = (
     })
     .findDataTag('agencyCode_wrapper')
     .contains(agency.agencyDetails.code)
-    .should(
-      'have.text',
-      `${agency.agencyDetails.code}: ${agency.agencyDetails.name}`
-    )
+    .should('contain.text', agency.agencyDetails.code)
     .findDataTag('agentCode_wrapper')
     .contains(agency.agentDetails.code)
-    .should(
-      'have.text',
-      `${agency.agentDetails.code}: ${agency.agentDetails.name}`
-    );
+    .should('contain.text', agency.agentDetails.code);
 };
 
 export const fillOutUnderwriting = (
@@ -176,7 +168,7 @@ export const fillOutAdditionalInterests = (
 
 export const fillOutMailingBilling = (address = user.address1) => {
   return cy
-    .task('log', 'Filling out Mailing Billing')
+    .task('log', 'Filling out Mailing BillingAndPayments')
     .goToNav('billing')
     .wait('@getBillingOptions')
     .then(({ response }) => {

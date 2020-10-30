@@ -86,8 +86,8 @@ export const ADD_PAYMENT = {
 };
 
 export const SWITCH_AOR = {
-  firstName: 'ANDRES',
-  lastName: 'G VILLALON JR',
+  firstName: 'WALLY',
+  lastName: 'WAGONER',
   agencyName: 'TYPTAP MANAGEMENT COMPANY',
   mailingAddress: {
     address1: '5300 W CYPRESS ST'

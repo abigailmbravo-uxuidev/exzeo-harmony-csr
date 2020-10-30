@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import { Prompt } from 'react-router-dom';
-import { Alert, Button } from '@exzeo/core-ui';
+import { Alert, Button, useFormState, useForm } from '@exzeo/core-ui';
 
-const NavigationPrompt = ({ dirty, formInstance, history }) => {
+const NavigationPrompt = ({ history }) => {
   const [nextLocation, setLocation] = useState('');
   const [blockNavigation, setBlockNavigation] = useState(false);
+  const { dirty } = useFormState({ subscription: { dirty: true } });
+  const formInstance = useForm();
 
   function stopNavigation(nextLocation) {
     // checking for 'dirty' at the time this function is called, which will be AFTER the current render cycle

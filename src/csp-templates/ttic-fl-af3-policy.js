@@ -1,5 +1,5 @@
 /* eslint-disable */
-const mock = {
+export default {
   meta: {
     company: 'TTIC',
     state: 'FL',
@@ -44,45 +44,45 @@ const mock = {
       step: {},
       components: [
         {
-          id: 1,
-          type: '$SECTION',
-          dependencies: [],
+          id: '85f29af6-3a83-4686-ae5a-cf36eaf5e9a7',
+          component: '$SECTION',
+          dependencies: '',
           data: {
             className: 'coverage-rating'
           },
           formData: {},
           children: [
             {
-              id: 2,
-              type: '$SECTION',
-              dependencies: [],
+              id: 'a6a9c459-5f2a-4005-b259-777cc2b223ac',
+              component: '$SECTION',
+              dependencies: '',
               data: {
                 className: 'coverage-premium'
               },
               formData: {},
               children: [
                 {
-                  id: 3,
-                  type: '$TITLE',
-                  dependencies: [],
+                  id: '74bf1df6-fa6f-48b0-a591-22ab235899f9',
+                  component: '$TITLE',
+                  dependencies: '',
                   data: {
                     text: 'Coverage and Premium'
                   },
                   formData: {}
                 },
                 {
-                  id: 4,
-                  type: '$SECTION',
-                  dependencies: [],
+                  id: '37f6701a-dd0a-47b1-847b-e2540296b47c',
+                  component: '$SECTION',
+                  dependencies: '',
                   data: {
                     className: 'row'
                   },
                   formData: {},
                   children: [
                     {
-                      id: 5,
-                      type: '$SECTION',
-                      dependencies: [],
+                      id: 'fad5ff0a-a21a-43a4-8672-f87d4c33315d',
+                      component: '$SECTION',
+                      dependencies: '',
                       data: {
                         className: 'coverage table',
                         size: '4'
@@ -90,9 +90,9 @@ const mock = {
                       formData: {},
                       children: [
                         {
-                          id: 6,
-                          type: '$ENTITY_DETAILS',
-                          dependencies: [],
+                          id: '54bfec49-c566-4275-b7d6-50d7f735f80d',
+                          component: '$ENTITY_DETAILS',
+                          dependencies: '',
                           data: {
                             extendedProperties: {
                               className: 'coverage',
@@ -136,9 +136,9 @@ const mock = {
                       ]
                     },
                     {
-                      id: 7,
-                      type: '$SECTION',
-                      dependencies: [],
+                      id: 'dd689172-a5e6-4e4a-ac34-67d0ecc5b7f9',
+                      component: '$SECTION',
+                      dependencies: '',
                       data: {
                         className: 'coverage table',
                         size: '4'
@@ -146,9 +146,9 @@ const mock = {
                       formData: {},
                       children: [
                         {
-                          id: 8,
-                          type: '$ENTITY_DETAILS',
-                          dependencies: [],
+                          id: '45da2e71-42ca-4c3b-8f3b-db7bb305b912',
+                          component: '$ENTITY_DETAILS',
+                          dependencies: '',
                           data: {
                             extendedProperties: {
                               className: 'coverage',
@@ -192,9 +192,9 @@ const mock = {
                       ]
                     },
                     {
-                      id: 9,
-                      type: '$SECTION',
-                      dependencies: [],
+                      id: 'f12ef8bf-308b-44f7-bc5a-b50b99974af7',
+                      component: '$SECTION',
+                      dependencies: '',
                       data: {
                         className: 'coverage table',
                         size: '4'
@@ -202,9 +202,9 @@ const mock = {
                       formData: {},
                       children: [
                         {
-                          id: 10,
-                          type: '$ENTITY_DETAILS',
-                          dependencies: [],
+                          id: '4d332b38-07a2-47ce-81f0-2a60b26fd846',
+                          component: '$ENTITY_DETAILS',
+                          dependencies: '',
                           data: {
                             extendedProperties: {
                               className: 'coverage',
@@ -241,9 +241,9 @@ const mock = {
                   ]
                 },
                 {
-                  id: 11,
-                  type: '$SECTION',
-                  dependencies: [],
+                  id: 'c841f598-74cd-4e3b-893a-7199740d4bde',
+                  component: '$SECTION',
+                  dependencies: '',
                   data: {
                     className: 'row'
                   },
@@ -251,8 +251,8 @@ const mock = {
                   children: [
                     {
                       id: 12,
-                      type: '$SECTION',
-                      dependencies: [],
+                      component: '$SECTION',
+                      dependencies: '',
                       data: {
                         className: 'deductible table',
                         size: '4'
@@ -261,8 +261,8 @@ const mock = {
                       children: [
                         {
                           id: 13,
-                          type: '$ENTITY_DETAILS',
-                          dependencies: [],
+                          component: '$ENTITY_DETAILS',
+                          dependencies: '',
                           data: {
                             extendedProperties: {
                               className: 'deductible',
@@ -308,8 +308,8 @@ const mock = {
                     },
                     {
                       id: 14,
-                      type: '$SECTION',
-                      dependencies: [],
+                      component: '$SECTION',
+                      dependencies: '',
                       data: {
                         className: 'premium table',
                         size: '4'
@@ -318,8 +318,8 @@ const mock = {
                       children: [
                         {
                           id: 15,
-                          type: '$ENTITY_DETAILS',
-                          dependencies: [],
+                          component: '$ENTITY_DETAILS',
+                          dependencies: '',
                           data: {
                             extendedProperties: {
                               className: 'premium',
@@ -372,8 +372,8 @@ const mock = {
                     },
                     {
                       id: 16,
-                      type: '$SECTION',
-                      dependencies: [],
+                      component: '$SECTION',
+                      dependencies: '',
                       data: {
                         className: 'billing table',
                         size: '4'
@@ -382,9 +382,9 @@ const mock = {
                       children: [
                         {
                           id: 17,
-                          type: '$BILLING_TABLE',
+                          component: '$BILLING_DETAILS',
                           size: '4',
-                          dependencies: [],
+                          dependencies: '',
                           data: {},
                           formData: {},
                           children: []
@@ -397,8 +397,8 @@ const mock = {
             },
             {
               id: 4497775432943353,
-              type: '$SECTION',
-              dependencies: [],
+              component: '$SECTION',
+              dependencies: '',
               data: {
                 className: 'claims'
               },
@@ -406,8 +406,8 @@ const mock = {
               children: [
                 {
                   id: 4497775432943354,
-                  type: '$TITLE',
-                  dependencies: [],
+                  component: '$TITLE',
+                  dependencies: '',
                   data: {
                     text: 'Claims'
                   },
@@ -416,8 +416,8 @@ const mock = {
                 },
                 {
                   id: 4497775432943355,
-                  type: '$CLAIMS_TABLE',
-                  dependencies: [],
+                  component: '$CLAIMS_TABLE',
+                  dependencies: '',
                   data: {},
                   formData: {}
                 }
@@ -425,8 +425,8 @@ const mock = {
             },
             {
               id: 18,
-              type: '$SECTION',
-              dependencies: [],
+              component: '$SECTION',
+              dependencies: '',
               data: {
                 className: 'home-location-af3'
               },
@@ -434,8 +434,8 @@ const mock = {
               children: [
                 {
                   id: 19,
-                  type: '$TITLE',
-                  dependencies: [],
+                  component: '$TITLE',
+                  dependencies: '',
                   data: {
                     text: 'Home and Location'
                   },
@@ -444,8 +444,8 @@ const mock = {
                 },
                 {
                   id: 20,
-                  type: '$ENTITY_DETAILS',
-                  dependencies: [],
+                  component: '$ENTITY_DETAILS',
+                  dependencies: '',
                   data: {
                     extendedProperties: {
                       className: 'home-and-location-1',
@@ -482,8 +482,8 @@ const mock = {
                 },
                 {
                   id: 22,
-                  type: '$ENTITY_DETAILS',
-                  dependencies: [],
+                  component: '$ENTITY_DETAILS',
+                  dependencies: '',
                   data: {
                     extendedProperties: {
                       className: 'home-and-location-2',
@@ -532,8 +532,8 @@ const mock = {
       components: [
         {
           id: 230340305495959,
-          type: '$SECTION',
-          dependencies: [],
+          component: '$SECTION',
+          dependencies: '',
           data: {
             className: 'policyholder-agent'
           },
@@ -541,12 +541,10 @@ const mock = {
           children: [
             {
               id: 32393759439222,
-              type: '$POLICYHOLDER_AGENT',
-              dependencies: [],
+              component: '$POLICYHOLDER_AGENT',
+              dependencies: '',
               data: {
-                extendedProperties: {
-                  subscribe: true
-                }
+                subscribe: true
               },
               formData: {},
               children: []
@@ -561,15 +559,15 @@ const mock = {
       components: [
         {
           id: 5101254,
-          type: '$SECTION',
-          dependencies: [],
+          component: '$SECTION',
+          dependencies: '',
           data: {},
           formData: {},
           children: [
             {
               id: 5152019255,
-              type: '$TITLE',
-              dependencies: [],
+              component: '$TITLE',
+              dependencies: '',
               data: {
                 text: 'History'
               },
@@ -578,8 +576,8 @@ const mock = {
             },
             {
               id: 515255,
-              type: '$NOTES_FILES',
-              dependencies: [],
+              component: '$NOTES_FILES',
+              dependencies: '',
               data: {},
               formData: {},
               children: []
@@ -594,8 +592,8 @@ const mock = {
       components: [
         {
           id: 1,
-          type: '$SECTION',
-          dependencies: [],
+          component: '$SECTION',
+          dependencies: '',
           data: {
             className: 'mortgage-billing'
           },
@@ -603,10 +601,9 @@ const mock = {
           children: [
             {
               id: 10,
-              type: '$CUSTOM',
-              dependencies: [],
+              component: '$BILLING',
+              dependencies: '',
               data: {
-                component: '$BILLING',
                 extendedProperties: {
                   billingHeader: 'Billing',
                   billingClassName: 'billing',
@@ -619,17 +616,16 @@ const mock = {
             },
             {
               id: 11,
-              type: '$TITLE',
-              dependencies: [],
+              component: '$TITLE',
+              dependencies: '',
               data: { text: 'Additional Interests' },
               formData: {}
             },
             {
               id: 12,
-              type: '$CUSTOM',
-              dependencies: [{ 'rating.worksheet': true }],
+              component: '$ADDITIONAL_INTERESTS',
+              dependencies: '${!!(it.rating || {}).worksheet}',
               data: {
-                component: '$ADDITIONAL_INTERESTS',
                 extendedProperties: {
                   isPolicy: true,
                   types: [
@@ -655,8 +651,8 @@ const mock = {
       components: [
         {
           id: 100100,
-          type: '$SECTION',
-          dependencies: [],
+          component: '$SECTION',
+          dependencies: '',
           data: {
             className: 'cancel'
           },
@@ -664,8 +660,8 @@ const mock = {
           children: [
             {
               id: 100101,
-              type: '$TITLE',
-              dependencies: [],
+              component: '$TITLE',
+              dependencies: '',
               data: {
                 text: 'Cancel Policy'
               },
@@ -674,47 +670,36 @@ const mock = {
             },
             {
               id: 100102,
-              type: '$CANCEL_TYPE',
-              dependencies: [],
+              component: '$CANCEL_TYPE',
+              dependencies: '',
               data: {
-                extendedProperties: {
-                  subscribe: true
-                }
+                subscribe: true
               },
               formData: {},
               children: []
             },
             {
               id: 1001023,
-              type: '$INPUT',
+              component: 'date',
               path: 'cancel.effectiveDate',
-              dependencies: [],
+              dependencies: '',
               data: {
-                component: 'date',
                 label: 'Effective Date',
                 size: '2',
                 extendedProperties: {},
                 validation: ['isValidDate']
               },
               formData: {
-                path: 'effectiveDate',
-                type: 'string',
-                required: true,
-                metaData: {
-                  format: 'date-time'
-                  // also need min-date for underwriting
-                }
+                required: true
               },
               children: []
             },
             {
               id: 1001024,
-              type: '$CANCEL_REASON',
-              dependencies: [],
+              component: '$CANCEL_REASON',
+              dependencies: '',
               data: {
-                extendedProperties: {
-                  subscribe: true
-                }
+                subscribe: true
               },
               formData: {},
               children: []
@@ -723,8 +708,8 @@ const mock = {
         },
         {
           id: 54543543353,
-          type: '$SECTION',
-          dependencies: [],
+          component: '$SECTION',
+          dependencies: '',
           data: {
             className: 'payments'
           },
@@ -732,8 +717,8 @@ const mock = {
           children: [
             {
               id: 4543543353,
-              type: '$TITLE',
-              dependencies: [],
+              component: '$TITLE',
+              dependencies: '',
               data: {
                 text: 'Payments'
               },
@@ -741,8 +726,8 @@ const mock = {
             },
             {
               id: 54543543353,
-              type: '$SECTION',
-              dependencies: [],
+              component: '$SECTION',
+              dependencies: '',
               data: {
                 className: 'billing',
                 size: '10',
@@ -752,12 +737,10 @@ const mock = {
               children: [
                 {
                   id: 20,
-                  type: '$POLICY_BILLING',
-                  dependencies: [],
+                  component: '$POLICY_BILLING',
+                  dependencies: '',
                   data: {
-                    extendedProperties: {
-                      subscribe: true
-                    }
+                    subscribe: true
                   },
                   formData: {},
                   children: []
@@ -766,11 +749,10 @@ const mock = {
             },
             {
               id: 454333335323,
-              type: '$INPUT',
+              component: 'text',
               path: 'cancel.equityDate',
-              dependencies: [],
+              dependencies: '',
               data: {
-                component: 'text',
                 label: 'Equity Date',
                 size: '2',
                 disabled: true
@@ -780,8 +762,8 @@ const mock = {
             },
             {
               id: 454337878853231,
-              type: '$PAYMENT_HISTORY_TABLE',
-              dependencies: [],
+              component: '$PAYMENT_HISTORY_TABLE',
+              dependencies: '',
               data: {},
               formData: {}
             }
@@ -789,8 +771,8 @@ const mock = {
         },
         {
           id: 5497775432943353,
-          type: '$SECTION',
-          dependencies: [],
+          component: '$SECTION',
+          dependencies: '',
           data: {
             className: 'claims'
           },
@@ -798,8 +780,8 @@ const mock = {
           children: [
             {
               id: 5497775432943354,
-              type: '$TITLE',
-              dependencies: [],
+              component: '$TITLE',
+              dependencies: '',
               data: {
                 text: 'Claims'
               },
@@ -808,8 +790,8 @@ const mock = {
             },
             {
               id: 5497775432943355,
-              type: '$CLAIMS_TABLE',
-              dependencies: [],
+              component: '$CLAIMS_TABLE',
+              dependencies: '',
               data: {},
               formData: {}
             }
@@ -819,12 +801,14 @@ const mock = {
     },
     {
       name: 'endorsements',
-      step: {},
+      step: {
+        outputType: 'initial'
+      },
       components: [
         {
           id: 34895439847239847,
-          type: '$SECTION',
-          dependencies: [],
+          component: '$SECTION',
+          dependencies: '',
           data: {
             className: 'endorsements'
           },
@@ -832,11 +816,11 @@ const mock = {
           children: [
             {
               id: 34895439847239848,
-              type: '$ENDORSEMENTS_MENU',
-              dependencies: [],
+              component: '$ENDORSEMENTS_MENU',
+              dependencies: '',
               data: {
+                subscribe: true,
                 extendedProperties: {
-                  subscribe: true,
                   links: [
                     { id: 'coverage-scroll-section', label: 'Coverage' },
                     { id: 'home-scroll-section', label: 'Home / Location' },
@@ -853,20 +837,18 @@ const mock = {
             },
             {
               id: 44895439847239848,
-              type: '$ENDORSEMENTS_WATCHER_AF3',
-              dependencies: [],
+              component: '$ENDORSEMENTS_WATCHER_AF3',
+              dependencies: '',
               data: {
-                extendedProperties: {
-                  subscribe: true
-                }
+                subscribe: true
               },
               formData: {},
               children: []
             },
             {
               id: '5435535-fdsfdsf-234324324324-sss',
-              type: '$SECTION',
-              dependencies: [],
+              component: '$SECTION',
+              dependencies: '',
               data: {
                 id: 'coverage-scroll-section',
                 className: 'coverage-scroll'
@@ -875,8 +857,8 @@ const mock = {
               children: [
                 {
                   id: '398ce68d-234324324324-4354353-34895439847239849',
-                  type: '$TITLE',
-                  dependencies: [],
+                  component: '$TITLE',
+                  dependencies: '',
                   data: {
                     text: 'Coverage'
                   },
@@ -885,8 +867,8 @@ const mock = {
                 },
                 {
                   id: '398ce68d-234324324324-',
-                  type: '$SECTION',
-                  dependencies: [],
+                  component: '$SECTION',
+                  dependencies: '',
                   data: {
                     className: 'coverage-left',
                     size: '6'
@@ -895,8 +877,8 @@ const mock = {
                   children: [
                     {
                       id: '398ce68d-234324324324-33344',
-                      type: '$SECTION',
-                      dependencies: [],
+                      component: '$SECTION',
+                      dependencies: '',
                       data: {
                         className: 'form-group labels',
                         size: '12'
@@ -905,8 +887,8 @@ const mock = {
                       children: [
                         {
                           id: '398ce68d-234324324324-22222',
-                          type: '$LABEL',
-                          dependencies: [],
+                          component: '$LABEL',
+                          dependencies: '',
                           data: {
                             text: 'Current'
                           },
@@ -915,8 +897,8 @@ const mock = {
                         },
                         {
                           id: '398ce68d-234324324324-22222233',
-                          type: '$LABEL',
-                          dependencies: [],
+                          component: '$LABEL',
+                          dependencies: '',
                           data: {
                             text: 'New'
                           },
@@ -927,11 +909,10 @@ const mock = {
                     },
                     {
                       id: '398ce68d-839c-4a49-bbf2-4545454543',
-                      type: '$INPUT',
+                      component: 'currency',
                       path: 'coverageLimits.building.value',
-                      dependencies: [],
+                      dependencies: '',
                       data: {
-                        component: 'currency',
                         label: 'Building Limit',
                         validation: ['isBuildingRange'],
                         extendedProperties: {
@@ -939,27 +920,21 @@ const mock = {
                           displayRange: true,
                           min: 'coverageLimits.building.minAmount',
                           max: 'coverageLimits.building.maxAmount',
-                          output: 'initial'
+                          output:
+                            '${format.toCurrency(it.initialValues.coverageLimits.building.value)}'
                         }
                       },
                       formData: {
-                        path: 'coverageLimits.building.value',
-                        type: 'integer',
-                        required: true,
-                        metaData: {
-                          target:
-                            '${format.toCurrency(it._TEMP_INITIAL_VALUES.coverageLimits.building.value)}'
-                        }
+                        required: true
                       },
                       children: []
                     },
                     {
                       id: '398ce68d-839c-4a49-bbf2-11111113',
-                      type: '$INPUT',
+                      component: 'currency',
                       path: 'coverageLimits.personalProperty.value',
-                      dependencies: [],
+                      dependencies: '',
                       data: {
-                        component: 'currency',
                         label: 'Personal Property Limit',
                         validation: ['isPersonalPropertyRange'],
                         extendedProperties: {
@@ -967,28 +942,23 @@ const mock = {
                           displayRange: true,
                           min: 'coverageLimits.personalProperty.minAmount',
                           max: 'coverageLimits.personalProperty.maxAmount',
-                          output: 'initial'
+                          output:
+                            '${format.toCurrency(it.initialValues.coverageLimits.personalProperty.value)}'
                         }
                       },
                       formData: {
-                        type: 'integer',
-                        required: true,
-                        metaData: {
-                          target:
-                            '${format.toCurrency(it._TEMP_INITIAL_VALUES.coverageLimits.personalProperty.value)}'
-                        }
+                        required: true
                       },
                       children: []
                     },
                     {
                       id: '498ce68d-839c-4a49-bbf2-92fcc275da49',
-                      type: '$INPUT',
+                      component: 'selectInteger',
                       path: 'deductibles.buildingDeductible.value',
-                      dependencies: [],
+                      dependencies: '',
                       data: {
-                        component: 'selectInteger',
                         label: 'Building Deductible',
-                        dataSource: [
+                        options: [
                           { label: '$500', answer: 500 },
                           { label: '$1,000', answer: 1000 },
                           { label: '$2,000', answer: 2000 },
@@ -996,30 +966,24 @@ const mock = {
                           { label: '$10,000', answer: 10000 }
                         ],
                         extendedProperties: {
-                          output: 'initial'
+                          output:
+                            '${format.toCurrency(it.initialValues.deductibles.buildingDeductible.value)}'
                         }
                       },
                       formData: {
-                        path: 'deductibles.buildingDeductible.value',
-                        type: 'integer',
-                        required: true,
-                        metaData: {
-                          target:
-                            '${format.toCurrency(it._TEMP_INITIAL_VALUES.deductibles.buildingDeductible.value)}'
-                        }
+                        required: true
                       },
                       children: []
                     },
                     {
                       id: '498ce68d-839c-4a49-bbf2-455427875685',
-                      type: '$INPUT',
+                      component: 'selectInteger',
                       path: 'deductibles.personalPropertyDeductible.value',
-                      dependencies: [],
+                      dependencies: '',
                       data: {
                         disabled: true,
-                        component: 'selectInteger',
                         label: 'Personal Property Deductible',
-                        dataSource: [
+                        options: [
                           { label: '$500', answer: 500 },
                           { label: '$1,000', answer: 1000 },
                           { label: '$2,000', answer: 2000 },
@@ -1027,17 +991,12 @@ const mock = {
                           { label: '$10,000', answer: 10000 }
                         ],
                         extendedProperties: {
-                          output: 'initial'
+                          output:
+                            '${format.toCurrency(it.initialValues.deductibles.personalPropertyDeductible.value)}'
                         }
                       },
                       formData: {
-                        path: 'deductibles.personalPropertyDeductible.value',
-                        type: 'integer',
-                        required: true,
-                        metaData: {
-                          target:
-                            '${format.toCurrency(it._TEMP_INITIAL_VALUES.deductibles.personalPropertyDeductible.value)}'
-                        }
+                        required: true
                       },
                       children: []
                     }
@@ -1045,8 +1004,8 @@ const mock = {
                 },
                 {
                   id: '54864c4a69c6-4354355435354353',
-                  type: '$SECTION',
-                  dependencies: [],
+                  component: '$SECTION',
+                  dependencies: '',
                   data: {
                     className: 'coverage-right',
                     size: '6'
@@ -1055,8 +1014,8 @@ const mock = {
                   children: [
                     {
                       id: '398ce68d-234324324324-33345',
-                      type: '$SECTION',
-                      dependencies: [],
+                      component: '$SECTION',
+                      dependencies: '',
                       data: {
                         className: 'form-group labels',
                         size: '12'
@@ -1065,8 +1024,8 @@ const mock = {
                       children: [
                         {
                           id: '398ce68d-234324324324-22225',
-                          type: '$LABEL',
-                          dependencies: [],
+                          component: '$LABEL',
+                          dependencies: '',
                           data: {
                             text: 'Current'
                           },
@@ -1075,8 +1034,8 @@ const mock = {
                         },
                         {
                           id: '398ce68d-234324324324-22222235',
-                          type: '$LABEL',
-                          dependencies: [],
+                          component: '$LABEL',
+                          dependencies: '',
                           data: {
                             text: 'New'
                           },
@@ -1087,77 +1046,62 @@ const mock = {
                     },
                     {
                       id: 'b141e258-5074-4ba1-90bc-54864c4a69c6',
-                      type: '$INPUT',
+                      component: 'radio',
                       path:
                         'coverageOptions.personalPropertyReplacementCost.answer',
-                      dependencies: [],
+                      dependencies: '',
                       data: {
-                        component: 'radio',
                         label: 'Personal Property Repl Cost',
                         segmented: true,
                         validation: ['isValidPersonalProperty'],
+                        subscribe: true,
+                        options: [
+                          { label: 'No', answer: false },
+                          { label: 'Yes', answer: true }
+                        ],
                         extendedProperties: {
-                          subscribe: true,
-                          output: 'values'
+                          output:
+                            '${format.boolToYesNo(it.initialValues.coverageOptions.personalPropertyReplacementCost.answer)}'
                         }
                       },
                       formData: {
-                        path:
-                          'coverageOptions.personalPropertyReplacementCost.answer',
-                        type: 'boolean',
-                        required: true,
-                        metaData: {
-                          enum: [
-                            { label: 'No', answer: false },
-                            { label: 'Yes', answer: true }
-                          ],
-                          target:
-                            '${format.boolToYesNo(it._TEMP_INITIAL_VALUES.coverageOptions.personalPropertyReplacementCost.answer)}'
-                        }
+                        required: true
                       },
                       children: []
                     },
                     {
                       id: '398ce444467768d-839c-4a490890-cc275da53',
-                      type: '$INPUT',
+                      component: 'currency',
                       path: 'coverageLimits.increasedCompliance.value',
-                      dependencies: [],
+                      dependencies: '',
                       data: {
                         disabled: true,
-                        component: 'currency',
                         label: 'Increased Cost of Compliance Limit',
-                        extendedProperties: { output: 'initial' }
+                        extendedProperties: {
+                          output:
+                            '${format.toCurrency(it.initialValues.coverageLimits.increasedCompliance.value)}'
+                        }
                       },
                       formData: {
-                        path: 'coverageLimits.increasedCompliance.value',
-                        type: 'integer',
-                        required: true,
-                        metaData: {
-                          target:
-                            '${format.toCurrency(it._TEMP_INITIAL_VALUES.coverageLimits.increasedCompliance.value)}'
-                        }
+                        required: true
                       },
                       children: []
                     },
                     {
                       id: '398ce68d-839c-4a49-bbf2-92fcc275da53',
-                      type: '$INPUT',
+                      component: 'currency',
                       path: 'coverageLimits.lossOfUse.amount',
-                      dependencies: [],
+                      dependencies: '',
                       data: {
                         disabled: true,
-                        component: 'currency',
                         label: 'Loss of Use Limit',
-                        extendedProperties: { output: 'initial' }
+                        extendedProperties: {
+                          output:
+                            '${format.toCurrency(it.initialValues.coverageLimits.lossOfUse.amount)}'
+                        }
                       },
                       formData: {
-                        path: 'coverageLimits.lossOfUse.amount',
-                        type: 'integer',
-                        required: true,
-                        metaData: {
-                          target:
-                            '${format.toCurrency(it._TEMP_INITIAL_VALUES.coverageLimits.lossOfUse.amount)}'
-                        }
+                        required: true
                       },
                       children: []
                     }
@@ -1168,8 +1112,8 @@ const mock = {
             {
               name: 'HomeLocation',
               id: '598d0d15-42dc-4059-ad09-751dedb3c613',
-              type: '$SECTION',
-              dependencies: [],
+              component: '$SECTION',
+              dependencies: '',
               data: {
                 id: 'home-scroll-section',
                 className: 'home-location-scroll'
@@ -1178,8 +1122,8 @@ const mock = {
               children: [
                 {
                   id: '386a6cf2-afe0-40da-8c79-751dedb3v678',
-                  type: '$TITLE',
-                  dependencies: [],
+                  component: '$TITLE',
+                  dependencies: '',
                   data: {
                     text: 'Home / Location'
                   },
@@ -1188,8 +1132,8 @@ const mock = {
                 },
                 {
                   id: '598d0d15-42dc-4059-ad09-741deda4c613',
-                  type: '$SECTION',
-                  dependencies: [],
+                  component: '$SECTION',
+                  dependencies: '',
                   data: {
                     className: 'home-location-left',
                     size: '6'
@@ -1198,8 +1142,8 @@ const mock = {
                   children: [
                     {
                       id: '398ce68d-234324324324-33347',
-                      type: '$SECTION',
-                      dependencies: [],
+                      component: '$SECTION',
+                      dependencies: '',
                       data: {
                         className: 'form-group labels',
                         size: '12'
@@ -1208,8 +1152,8 @@ const mock = {
                       children: [
                         {
                           id: '398ce68d-234324324324-22999',
-                          type: '$LABEL',
-                          dependencies: [],
+                          component: '$LABEL',
+                          dependencies: '',
                           data: {
                             text: 'Current'
                           },
@@ -1218,8 +1162,8 @@ const mock = {
                         },
                         {
                           id: '398ce68d-234324324324-22222999',
-                          type: '$LABEL',
-                          dependencies: [],
+                          component: '$LABEL',
+                          dependencies: '',
                           data: {
                             text: 'New'
                           },
@@ -1230,36 +1174,32 @@ const mock = {
                     },
                     {
                       id: '741deda4c333-0ed7-4538-910a-598d0999',
-                      type: '$INPUT',
+                      component: 'number',
                       path: 'property.yearBuilt',
-                      dependencies: [],
+                      dependencies: '',
                       data: {
-                        component: 'number',
                         label: 'Year Home Built',
                         size: '12',
                         validation: ['isNumbersOnly'],
-                        thousandSeparator: false
+                        extendedProperties: {
+                          thousandSeparator: false,
+                          output: '${it.initialValues.property.yearBuilt}'
+                        }
                       },
                       formData: {
-                        path: 'property.yearBuilt',
-                        required: true,
-                        metaData: {
-                          target:
-                            '${it._TEMP_INITIAL_VALUES.property.yearBuilt}'
-                        }
+                        required: true
                       },
                       children: []
                     },
                     {
                       id: 'f5f12822-09c8-42e6-9cb0-87a49960d11a',
-                      type: '$INPUT',
+                      component: 'select',
                       path: 'property.constructionType',
-                      dependencies: [],
+                      dependencies: '',
                       data: {
-                        component: 'select',
                         label: 'Construction',
                         size: '12',
-                        dataSource: [
+                        options: [
                           {
                             label: 'Masonry',
                             answer: 'MASONRY'
@@ -1284,28 +1224,26 @@ const mock = {
                             label: 'Superior',
                             answer: 'SUPERIOR'
                           }
-                        ]
+                        ],
+                        extendedProperties: {
+                          output:
+                            '${it.initialValues.property.constructionType || " "}'
+                        }
                       },
                       formData: {
-                        path: 'property.yearBuilt',
-                        required: true,
-                        metaData: {
-                          target:
-                            '${it._TEMP_INITIAL_VALUES.property.constructionType || " "}'
-                        }
+                        required: true
                       },
                       children: []
                     },
                     {
                       id: 'f5f12822-09c8-42e6-9cb0-97b49960d11a',
-                      type: '$INPUT',
+                      component: 'select',
                       path: 'property.residenceType',
-                      dependencies: [],
+                      dependencies: '',
                       data: {
-                        component: 'select',
                         label: 'Residence Type',
                         size: '12',
-                        dataSource: [
+                        options: [
                           {
                             label: 'Single Family',
                             answer: 'SINGLE FAMILY'
@@ -1314,43 +1252,38 @@ const mock = {
                             label: 'Commercial',
                             answer: 'COMMERCIAL'
                           }
-                        ]
+                        ],
+                        extendedProperties: {
+                          output: '${it.initialValues.property.residenceType}'
+                        }
                       },
                       formData: {
-                        path: 'property.residenceType',
-                        required: true,
-                        metaData: {
-                          target:
-                            '${it._TEMP_INITIAL_VALUES.property.residenceType}'
-                        }
+                        required: true
                       },
                       children: []
                     },
                     {
                       id: '40808340-4da2-5b17-ab38-c0a969562032',
-                      type: '$INPUT',
+                      component: 'number',
                       path: 'property.squareFeet',
-                      dependencies: [],
+                      dependencies: '',
                       data: {
-                        component: 'number',
                         label: 'Sq. Ft. of Home',
-                        size: '12'
-                      },
-                      formData: {
-                        path: 'property.squareFeet',
-                        metaData: {
-                          target:
-                            '${it._TEMP_INITIAL_VALUES.property.squareFeet ? format.appendUnit(it._TEMP_INITIAL_VALUES.property.squareFeet, "") : " "}'
+                        size: '12',
+                        extendedProperties: {
+                          output:
+                            '${it.initialValues.property.squareFeet ? format.appendUnit(it.initialValues.property.squareFeet, "") : " "}'
                         }
                       },
+                      formData: {},
                       children: []
                     }
                   ]
                 },
                 {
                   id: '598d0d15-42dc-4059-ad09-741deda3b502',
-                  type: '$SECTION',
-                  dependencies: [],
+                  component: '$SECTION',
+                  dependencies: '',
                   data: {
                     className: 'home-location-right',
                     size: '6'
@@ -1359,8 +1292,8 @@ const mock = {
                   children: [
                     {
                       id: '44448ce68d-234324324324-33347',
-                      type: '$SECTION',
-                      dependencies: [],
+                      component: '$SECTION',
+                      dependencies: '',
                       data: {
                         className: 'form-group labels',
                         size: '12'
@@ -1369,8 +1302,8 @@ const mock = {
                       children: [
                         {
                           id: '4448ce68d-234324324324-22999',
-                          type: '$LABEL',
-                          dependencies: [],
+                          component: '$LABEL',
+                          dependencies: '',
                           data: {
                             text: 'Current'
                           },
@@ -1379,8 +1312,8 @@ const mock = {
                         },
                         {
                           id: '4448ce68d-234324324324-22222999',
-                          type: '$LABEL',
-                          dependencies: [],
+                          component: '$LABEL',
+                          dependencies: '',
                           data: {
                             text: 'New'
                           },
@@ -1391,40 +1324,37 @@ const mock = {
                     },
                     {
                       id: '75f752a8-8f5e-4d81-b3f2-435435435dd',
-                      type: '$INPUT',
+                      component: 'select',
                       path: 'property.floodterritory',
-                      dependencies: [],
+                      dependencies: '',
                       data: {
-                        component: 'select',
                         label: 'Territory',
                         size: '12',
-                        dataSource: [
+                        options: [
                           { answer: '15000' },
                           { answer: '25000' },
                           { answer: '35000' },
                           { answer: '45000' }
-                        ]
+                        ],
+                        extendedProperties: {
+                          output:
+                            '${it.initialValues.property.floodterritory || " "}'
+                        }
                       },
                       formData: {
-                        path: 'property.floodterritory',
-                        required: true,
-                        metaData: {
-                          target:
-                            '${it._TEMP_INITIAL_VALUES.property.floodterritory || " "}'
-                        }
+                        required: true
                       },
                       children: []
                     },
                     {
                       id: '75f752a8-44465678-4d81-b3f2-554654687444',
-                      type: '$INPUT',
+                      component: 'select',
                       path: 'property.FEMAfloodZone',
-                      dependencies: [],
+                      dependencies: '',
                       data: {
-                        component: 'select',
                         label: 'FEMA Flood Zone',
                         size: '12',
-                        dataSource: [
+                        options: [
                           { answer: 'A' },
                           { answer: 'A1' },
                           { answer: 'A10' },
@@ -1501,66 +1431,55 @@ const mock = {
                           { answer: 'X' },
                           { answer: 'X500' },
                           { answer: 'Z' }
-                        ]
-                      },
-                      formData: {
-                        path: 'property.FEMAfloodZone',
-                        metaData: {
-                          target:
-                            '${it._TEMP_INITIAL_VALUES.property.FEMAfloodZone || " "}'
+                        ],
+                        extendedProperties: {
+                          output:
+                            '${it.initialValues.property.FEMAfloodZone || " "}'
                         }
                       },
+                      formData: {},
                       children: []
                     },
                     {
                       id: '75f752a8-8f5e-4d81-b3f2-228a446444sd7dd',
-                      type: '$INPUT',
+                      component: 'select',
                       path: 'property.floodZone',
-                      dependencies: [],
+                      dependencies: '',
                       data: {
-                        component: 'select',
                         label: 'Flood Zone',
                         size: '12',
-                        dataSource: [
+                        options: [
                           { answer: 'A' },
                           { answer: 'B' },
                           { answer: 'C' },
                           { answer: 'V' },
                           { answer: 'X' },
                           { answer: 'Z' }
-                        ]
+                        ],
+                        extendedProperties: {
+                          output: '${it.initialValues.property.floodZone}'
+                        }
                       },
                       formData: {
-                        path: 'property.floodZone',
-                        required: true,
-                        metaData: {
-                          target:
-                            '${it._TEMP_INITIAL_VALUES.property.floodZone}'
-                        }
+                        required: true
                       },
                       children: []
                     },
                     {
                       id: '75f752a8-44465678-4d81-b3f2-55465468788',
-                      type: '$INPUT',
+                      component: 'text',
                       path: 'underwritingAnswers.elevationDifference.answer',
-                      dependencies: [],
+                      dependencies: '',
                       data: {
-                        component: 'text',
                         disabled: true,
                         label: 'BFE Indicator',
                         size: '12',
                         extendedProperties: {
-                          output: 'initial'
+                          output:
+                            '${it.initialValues.underwritingAnswers.elevationDifference.answer || " "}'
                         }
                       },
-                      formData: {
-                        path: 'underwritingAnswers.elevationDifference.answer',
-                        metaData: {
-                          target:
-                            '${it._TEMP_INITIAL_VALUES.underwritingAnswers.elevationDifference.answer || " "}'
-                        }
-                      },
+                      formData: {},
                       children: []
                     }
                   ]
@@ -1570,8 +1489,8 @@ const mock = {
             {
               name: 'PreviousEndorsements',
               id: '598d0d15-42dc-4059-ad09-751fddb3b512',
-              type: '$SECTION',
-              dependencies: [],
+              component: '$SECTION',
+              dependencies: '',
               data: {
                 className: 'previous-endorsements-scroll'
               },
@@ -1579,12 +1498,10 @@ const mock = {
               children: [
                 {
                   id: '598d0a99-42dc-4059-ad09-751fddb3b512',
-                  type: '$PREVIOUS_ENDORSEMENTS',
-                  dependencies: [],
+                  component: '$PREVIOUS_ENDORSEMENTS',
+                  dependencies: '',
                   data: {
-                    extendedProperties: {
-                      subscribe: true
-                    }
+                    subscribe: true
                   },
                   formData: {},
                   children: []
@@ -1594,8 +1511,8 @@ const mock = {
             {
               name: 'PolicyHolder',
               id: '598d0d15-42dc-4059-ad09-64jddb3b512',
-              type: '$SECTION',
-              dependencies: [],
+              component: '$SECTION',
+              dependencies: '',
               data: {
                 id: 'policyholder-scroll-section',
                 className: 'policyholder-scroll'
@@ -1605,10 +1522,9 @@ const mock = {
                 {
                   name: 'Policyholders',
                   id: '64jddda3b512-3716-475e-9762-42dcdds',
-                  type: '$CUSTOM',
-                  dependencies: [],
+                  component: '$POLICYHOLDERS',
+                  dependencies: '',
                   data: {
-                    component: '$POLICYHOLDERS',
                     extendedProperties: {
                       watchField: 'removeSecondary'
                     }
@@ -1621,8 +1537,8 @@ const mock = {
             {
               name: 'Addresses',
               id: '598d0d15-42dc-4059-ad09-64jddb3b655',
-              type: '$SECTION',
-              dependencies: [],
+              component: '$SECTION',
+              dependencies: '',
               data: {
                 id: 'address-scroll-section',
                 className: 'address-scroll'
@@ -1632,8 +1548,8 @@ const mock = {
                 {
                   name: 'MailingAddress',
                   id: '8811f280-424d-41d8-bf2b-534d6339f8f8',
-                  type: '$SECTION',
-                  dependencies: [],
+                  component: '$SECTION',
+                  dependencies: '',
                   data: {
                     size: '12'
                   },
@@ -1641,8 +1557,8 @@ const mock = {
                   children: [
                     {
                       id: '88fdde5d-9032-48aa-994d-1f4bf3cd1fa6',
-                      type: '$TITLE',
-                      dependencies: [],
+                      component: '$TITLE',
+                      dependencies: '',
                       data: {
                         text: 'Mailing Address'
                       },
@@ -1651,10 +1567,9 @@ const mock = {
                     },
                     {
                       id: '65345c40-2b54-4818-9778-d3f01404b16d',
-                      type: '$CUSTOM',
-                      dependencies: [],
+                      component: '$ADDRESS',
+                      dependencies: '',
                       data: {
-                        component: '$ADDRESS',
                         extendedProperties: {
                           fieldPrefix: 'policyHolderMailingAddress'
                         }
@@ -1667,8 +1582,8 @@ const mock = {
                 {
                   name: 'PropertyAddress',
                   id: '9911f280-424d-41d8-bf2b-534d6339f8f8',
-                  type: '$SECTION',
-                  dependencies: [],
+                  component: '$SECTION',
+                  dependencies: '',
                   data: {
                     size: '12'
                   },
@@ -1676,8 +1591,8 @@ const mock = {
                   children: [
                     {
                       id: 'cefdde5d-9032-48aa-994d-1f4bf3cd1fa6',
-                      type: '$TITLE',
-                      dependencies: [],
+                      component: '$TITLE',
+                      dependencies: '',
                       data: {
                         text: 'Property Address'
                       },
@@ -1686,10 +1601,9 @@ const mock = {
                     },
                     {
                       id: '65345c40-2b54-4818-9778-6dce86b6efdd',
-                      type: '$CUSTOM',
-                      dependencies: [],
+                      component: '$ADDRESS',
+                      dependencies: '',
                       data: {
-                        component: '$ADDRESS',
                         extendedProperties: {
                           fieldPrefix: 'property.physicalAddress'
                         }
@@ -1707,5 +1621,3 @@ const mock = {
     }
   ]
 };
-
-export default mock;

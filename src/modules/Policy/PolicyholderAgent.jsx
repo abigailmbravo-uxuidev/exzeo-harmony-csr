@@ -2,14 +2,16 @@ import React, { useState } from 'react';
 import { ModalPortal, SectionLoader } from '@exzeo/core-ui';
 
 import { useFetchAgents, useFetchAgency } from './hooks';
+import { usePolicyWorkflow } from './context';
 import AgencyCard from './AgencyCard';
 import AgentCard from './AgentCard';
 import ContactCard from './ContactCard';
 import PolicyholderCard from './PolicyholderCard';
 import TransferAORModal from './TransferAORModal';
 
-const PolicyholderAgent = ({ customHandlers, initialValues }) => {
+const PolicyholderAgent = ({ initialValues }) => {
   const [showTransferAOR, setShowTransferAOR] = useState(false);
+  const { transferAOR } = usePolicyWorkflow();
   const { agents, loaded: agentsLoaded } = useFetchAgents(
     initialValues.agencyCode
   );
@@ -23,7 +25,7 @@ const PolicyholderAgent = ({ customHandlers, initialValues }) => {
   );
 
   const submitTransferAOR = async data => {
-    await customHandlers.transferAOR({
+    await transferAOR({
       agencyCode: data.agencyCode,
       agentCode: data.agentCode,
       policyNumber: initialValues.policyNumber
@@ -47,7 +49,7 @@ const PolicyholderAgent = ({ customHandlers, initialValues }) => {
           <TransferAORModal
             initialValues={initialValues}
             closeModal={() => setShowTransferAOR(false)}
-            submitTransferAOR={submitTransferAOR}
+            handleSubmit={submitTransferAOR}
           />
         </ModalPortal>
       )}
@@ -56,8 +58,8 @@ const PolicyholderAgent = ({ customHandlers, initialValues }) => {
         {policyHolders &&
           policyHolders.map((policyHolder, index) => (
             <PolicyholderCard
+              key={policyHolder._id}
               policyHolder={policyHolder}
-              key={index}
               label={`Policyholder ${index + 1}`}
               policyHolderMailingAddress={policyHolderMailingAddress}
               subject={`${policyNumber}%20${policyHolders[0].firstName}%20${policyHolders[0].lastName}`}
@@ -71,7 +73,6 @@ const PolicyholderAgent = ({ customHandlers, initialValues }) => {
             className="btn btn-link btn-sm"
             data-test="edit-aor"
             onClick={() => setShowTransferAOR(true)}
-            disabled={false}
           >
             <i className="fa fa-exchange" />
             Change AOR

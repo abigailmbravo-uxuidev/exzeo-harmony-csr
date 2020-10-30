@@ -2,9 +2,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Modal, Button } from '@exzeo/core-ui/src';
 
-import TransferAORForm from './TransferAORForm';
+import { Form, Loader } from '@exzeo/core-ui';
+import { AgencyAgentSelect } from '@exzeo/core-ui/src/@Harmony';
 
-const TransferAORModal = ({ initialValues, closeModal, submitTransferAOR }) => {
+const TransferAORModal = ({ initialValues, closeModal, handleSubmit }) => {
   return (
     <Modal
       size={Modal.sizes.medium}
@@ -15,32 +16,48 @@ const TransferAORModal = ({ initialValues, closeModal, submitTransferAOR }) => {
         </h4>
       }
     >
-      <TransferAORForm
+      <Form
+        keepDirtyOnReinitialize
         initialValues={initialValues}
-        handleSubmit={submitTransferAOR}
-        className="card-block"
+        onSubmit={handleSubmit}
+        subscription={{ submitting: true, values: true }}
       >
-        {({ submitting }) => (
-          <div className="card-footer">
-            <Button
-              className={Button.constants.classNames.secondary}
-              onClick={closeModal}
-              disabled={submitting}
-              data-test="modal-cancel"
-            >
-              Cancel
-            </Button>
-            <Button
-              className={Button.constants.classNames.primary}
-              type="submit"
-              disabled={submitting}
-              data-test="modal-submit"
-            >
-              Send
-            </Button>
-          </div>
+        {({ handleSubmit, submitting, values: formValues }) => (
+          <form
+            id="TransferAORForm"
+            className="application"
+            onSubmit={handleSubmit}
+          >
+            {submitting && <Loader />}
+            <div className="card-block aor">
+              <AgencyAgentSelect
+                initialValues={initialValues}
+                formValues={formValues}
+                size="12"
+                statuses={['Active', 'Service Only', 'Pending']}
+              />
+            </div>
+            <div className="card-footer">
+              <Button
+                className={Button.constants.classNames.secondary}
+                onClick={closeModal}
+                disabled={submitting}
+                data-test="modal-cancel"
+              >
+                Cancel
+              </Button>
+              <Button
+                className={Button.constants.classNames.primary}
+                type="submit"
+                disabled={submitting}
+                data-test="modal-submit"
+              >
+                Send
+              </Button>
+            </div>
+          </form>
         )}
-      </TransferAORForm>
+      </Form>
     </Modal>
   );
 };

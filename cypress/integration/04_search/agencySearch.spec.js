@@ -1,6 +1,6 @@
 import { setRouteAliases } from '../../helpers';
 
-describe('Policy Search testing', () => {
+describe('Agency Search testing', () => {
   const selectAgencySearch = () => cy.findDataTag('agency-link').click();
 
   before('Login', () => cy.login());
@@ -34,32 +34,8 @@ describe('Policy Search testing', () => {
       .children()
       .should('exist')
 
-      .findDataTag('address')
-      .type('{selectall}{backspace}123')
-      .clickSubmit()
-      .wait('@fetchAgencies')
-      .get('.agency-list')
-      .children()
-      .should('exist')
-
-      .findDataTag('displayName')
-      .type('{selectall}{backspace}advantage')
-      .clickSubmit()
-      .wait('@fetchAgencies')
-      .get('.agency-list')
-      .children()
-      .should('exist')
-
       .findDataTag('licenseNumber')
       .type('{selectall}{backspace}L070378')
-      .clickSubmit()
-      .wait('@fetchAgencies')
-      .get('.agency-list')
-      .children()
-      .should('exist')
-
-      .findDataTag('fein')
-      .type('{selectall}{backspace}593696', { force: true })
       .clickSubmit()
       .wait('@fetchAgencies')
       .get('.agency-list')
