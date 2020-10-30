@@ -218,7 +218,8 @@ export const cspConfigForSearch = (userProfile = {}, uri, right) => {
       companyCodeOptions.push(COMPANY_OPTIONS[companyCode]);
     }
     if (!stateOptions.find(o => o.answer === state)) {
-      stateOptions.push(STATE_OPTIONS[state]);
+      const options = STATE_OPTIONS[state];
+      options && stateOptions.push(options);
     }
     if (!productOptions.find(o => o.answer === product)) {
       productOptions.push(PRODUCT_OPTIONS[product]);
