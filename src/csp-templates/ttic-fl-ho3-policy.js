@@ -1555,10 +1555,7 @@ export default {
                         }
                       },
                       formData: {
-                        path: 'coverageOptions.sinkholePerilCoverage.answer',
-                        type: 'integer',
-                        required: true,
-                        metaData: {}
+                        required: true
                       },
                       children: []
                     }
@@ -1625,9 +1622,6 @@ export default {
                         }
                       },
                       formData: {
-                        path:
-                          'coverageOptions.personalPropertyReplacementCost.answer',
-                        type: 'boolean',
                         required: true
                       },
                       children: []
@@ -1649,10 +1643,7 @@ export default {
                         ]
                       },
                       formData: {
-                        path: 'coverageLimits.ordinanceOrLaw.value',
-                        type: 'integer',
-                        required: true,
-                        metaData: {}
+                        required: true
                       },
                       children: []
                     },
@@ -1675,9 +1666,6 @@ export default {
                         }
                       },
                       formData: {
-                        path:
-                          'coverageOptions.propertyIncidentalOccupanciesMainDwelling.answer',
-                        type: 'boolean',
                         required: true
                       },
                       children: []
@@ -1701,9 +1689,6 @@ export default {
                         }
                       },
                       formData: {
-                        path:
-                          'coverageOptions.propertyIncidentalOccupanciesOtherStructures.answer',
-                        type: 'boolean',
                         required: true
                       },
                       children: []
@@ -1772,10 +1757,7 @@ export default {
                         ]
                       },
                       formData: {
-                        path: 'underwritingAnswers.rented.answer',
-                        type: 'integer',
-                        required: true,
-                        metaData: {}
+                        required: true
                       },
                       children: []
                     },
@@ -1798,10 +1780,7 @@ export default {
                         ]
                       },
                       formData: {
-                        path: 'underwritingAnswers.monthsOccupied.answer',
-                        type: 'integer',
-                        required: true,
-                        metaData: {}
+                        required: true
                       },
                       children: []
                     },
@@ -2021,10 +2000,7 @@ export default {
                     }
                   },
                   formData: {
-                    path:
-                      'property.windMitigation.floridaBuildingCodeWindSpeed',
-                    required: true,
-                    metaData: {}
+                    required: true
                   },
                   children: []
                 },
@@ -2070,10 +2046,7 @@ export default {
                     }
                   },
                   formData: {
-                    path:
-                      'property.windMitigation.floridaBuildingCodeWindSpeedDesign',
-                    required: true,
-                    metaData: {}
+                    required: true
                   },
                   children: []
                 },
@@ -2262,11 +2235,7 @@ export default {
                     }
                   },
                   formData: {
-                    type: 'integer',
-                    path:
-                      'rating.worksheet.elements.windMitigationFactors.windMitigationDiscount',
-                    required: true,
-                    metaData: {}
+                    required: true
                   },
                   children: []
                 }
@@ -2350,9 +2319,7 @@ export default {
                         }
                       },
                       formData: {
-                        path: 'property.yearBuilt',
-                        required: true,
-                        metaData: {}
+                        required: true
                       },
                       children: []
                     },
@@ -2396,9 +2363,7 @@ export default {
                         }
                       },
                       formData: {
-                        path: 'property.yearBuilt',
-                        required: true,
-                        metaData: {}
+                        required: true
                       },
                       children: []
                     },
@@ -2457,9 +2422,7 @@ export default {
                         }
                       },
                       formData: {
-                        path: 'property.protectionClass',
-                        required: true,
-                        metaData: {}
+                        required: true
                       },
                       children: []
                     },
@@ -2490,9 +2453,7 @@ export default {
                         }
                       },
                       formData: {
-                        path: 'property.buildingCodeEffectivenessGrading',
-                        required: true,
-                        metaData: {}
+                        required: true
                       },
                       children: []
                     },
@@ -2515,9 +2476,7 @@ export default {
                         }
                       },
                       formData: {
-                        path: 'property.familyUnits',
-                        required: true,
-                        metaData: {}
+                        required: true
                       },
                       children: []
                     },
@@ -2542,9 +2501,7 @@ export default {
                         }
                       },
                       formData: {
-                        path: 'property.floodZone',
-                        required: true,
-                        metaData: {}
+                        required: true
                       },
                       children: []
                     }
@@ -2607,9 +2564,7 @@ export default {
                         }
                       },
                       formData: {
-                        path: 'property.distanceToTidalWater',
-                        required: true,
-                        metaData: {}
+                        required: true
                       },
                       children: []
                     },
@@ -2627,10 +2582,7 @@ export default {
                             '${it.initialValues.property.distanceToFireHydrant ? format.appendUnitMaxDigits(it.initialValues.property.distanceToFireHydrant, "", 2) : " "}'
                         }
                       },
-                      formData: {
-                        path: 'property.distanceToFireHydrant',
-                        metaData: {}
-                      },
+                      formData: {},
                       children: []
                     },
                     {
@@ -2647,10 +2599,7 @@ export default {
                             '${it.initialValues.property.distanceToFireStation ? format.appendUnitMaxDigits(it.initialValues.property.distanceToFireStation, "", 2): " "}'
                         }
                       },
-                      formData: {
-                        path: 'property.distanceToFireStation',
-                        metaData: {}
-                      },
+                      formData: {},
                       children: []
                     },
                     {
@@ -2676,9 +2625,7 @@ export default {
                         }
                       },
                       formData: {
-                        path: 'property.residenceType',
-                        required: true,
-                        metaData: {}
+                        required: true
                       },
                       children: []
                     },
@@ -2713,10 +2660,7 @@ export default {
                             '${it.initialValues.property.yearOfRoof || " "}'
                         }
                       },
-                      formData: {
-                        path: 'property.yearOfRoof',
-                        metaData: {}
-                      },
+                      formData: {},
                       children: []
                     }
                   ]
