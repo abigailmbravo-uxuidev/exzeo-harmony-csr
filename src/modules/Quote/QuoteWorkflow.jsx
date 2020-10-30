@@ -86,7 +86,7 @@ export const QuoteWorkflow = ({
 }) => {
   const { step, quoteNumber } = match.params;
   const workflowPage = PAGE_ROUTING[step];
-  const template = useWorkflowTemplate(quote, TEMPLATES, setAppError);
+  const template = useWorkflowTemplate(quote, 'quote', TEMPLATES, setAppError);
   const [showUWPopup, setShowUWPopup] = useState(false);
   useEffect(() => {
     retrieveQuote({ quoteNumber });

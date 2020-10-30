@@ -109,7 +109,12 @@ export const PolicyWorkflow = ({
 }) => {
   const { step, policyNumber } = match.params;
   const workflowPage = PAGE_ROUTING[step];
-  const template = useWorkflowTemplate(policy, TEMPLATES, setAppError);
+  const template = useWorkflowTemplate(
+    policy,
+    'policy',
+    TEMPLATES,
+    setAppError
+  );
 
   const [showEffectiveDate, setShowEffectiveDate] = useState(false);
   const [showReinstatePolicy, setShowReinstatePolicy] = useState(false);

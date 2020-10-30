@@ -3,6 +3,7 @@ import * as serviceRunner from '@exzeo/core-ui/src/@Harmony/Domain/Api/serviceRu
 
 export function useWorkflowTemplate(
   { companyCode, state, product },
+  documentType,
   templates,
   errorHandler
 ) {
@@ -21,8 +22,8 @@ export function useWorkflowTemplate(
               companyCode,
               state,
               product,
-              application: 'consumer',
-              document: 'quote'
+              documentType,
+              application: 'harmony-csr'
             }
           };
 
@@ -42,7 +43,7 @@ export function useWorkflowTemplate(
     if (companyCode && state && product) {
       getTemplate();
     }
-  }, [companyCode, state, product, templates, errorHandler]);
+  }, [companyCode, state, product, documentType, templates, errorHandler]);
 
   return template;
 }
