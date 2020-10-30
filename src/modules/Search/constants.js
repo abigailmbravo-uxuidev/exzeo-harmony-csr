@@ -6,7 +6,8 @@ export const companyAnswers = [
 export const stateAnswers = [
   { answer: 'FL', label: 'FL' },
   { answer: 'NJ', label: 'NJ' },
-  { answer: 'SC', label: 'SC' }
+  { answer: 'SC', label: 'SC' },
+  { answer: 'GA', label: 'GA' }
 ];
 
 export const productAnswers = [
@@ -27,7 +28,8 @@ export const COMPANY_OPTIONS = {
 export const STATE_OPTIONS = {
   FL: { answer: 'FL', label: 'FL' },
   SC: { answer: 'SC', label: 'SC' },
-  NJ: { answer: 'NJ', label: 'NJ' }
+  NJ: { answer: 'NJ', label: 'NJ' },
+  GA: { answer: 'GA', label: 'GA' }
 };
 
 export const PRODUCT_OPTIONS = {
