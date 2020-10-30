@@ -612,7 +612,8 @@ export default {
               },
               formData: {
                 required: true
-              }
+              },
+              children: []
             },
             {
               id: 11,
@@ -686,17 +687,10 @@ export default {
               data: {
                 label: 'Effective Date',
                 size: '2',
-                extendedProperties: {},
                 validation: ['isValidDate']
               },
               formData: {
-                path: 'effectiveDate',
-                type: 'string',
-                required: true,
-                metaData: {
-                  format: 'date-time'
-                  // also need min-date for underwriting
-                }
+                required: true
               },
               children: []
             },
@@ -807,7 +801,9 @@ export default {
     },
     {
       name: 'endorsements',
-      step: {},
+      step: {
+        outputType: 'initial'
+      },
       components: [
         {
           id: 34895439847239847,
@@ -924,17 +920,12 @@ export default {
                           displayRange: true,
                           min: 'coverageLimits.building.minAmount',
                           max: 'coverageLimits.building.maxAmount',
-                          output: 'initial'
+                          output:
+                            '${format.toCurrency(it.initialValues.coverageLimits.building.value)}'
                         }
                       },
                       formData: {
-                        path: 'coverageLimits.building.value',
-                        type: 'integer',
-                        required: true,
-                        metaData: {
-                          target:
-                            '${format.toCurrency(it.initialValues.coverageLimits.building.value)}'
-                        }
+                        required: true
                       },
                       children: []
                     },
@@ -951,16 +942,12 @@ export default {
                           displayRange: true,
                           min: 'coverageLimits.personalProperty.minAmount',
                           max: 'coverageLimits.personalProperty.maxAmount',
-                          output: 'initial'
+                          output:
+                            '${format.toCurrency(it.initialValues.coverageLimits.personalProperty.value)}'
                         }
                       },
                       formData: {
-                        type: 'integer',
-                        required: true,
-                        metaData: {
-                          target:
-                            '${format.toCurrency(it.initialValues.coverageLimits.personalProperty.value)}'
-                        }
+                        required: true
                       },
                       children: []
                     },
@@ -979,17 +966,12 @@ export default {
                           { label: '$10,000', answer: 10000 }
                         ],
                         extendedProperties: {
-                          output: 'initial'
+                          output:
+                            '${format.toCurrency(it.initialValues.deductibles.buildingDeductible.value)}'
                         }
                       },
                       formData: {
-                        path: 'deductibles.buildingDeductible.value',
-                        type: 'integer',
-                        required: true,
-                        metaData: {
-                          target:
-                            '${format.toCurrency(it.initialValues.deductibles.buildingDeductible.value)}'
-                        }
+                        required: true
                       },
                       children: []
                     },
@@ -1009,17 +991,12 @@ export default {
                           { label: '$10,000', answer: 10000 }
                         ],
                         extendedProperties: {
-                          output: 'initial'
+                          output:
+                            '${format.toCurrency(it.initialValues.deductibles.personalPropertyDeductible.value)}'
                         }
                       },
                       formData: {
-                        path: 'deductibles.personalPropertyDeductible.value',
-                        type: 'integer',
-                        required: true,
-                        metaData: {
-                          target:
-                            '${format.toCurrency(it.initialValues.deductibles.personalPropertyDeductible.value)}'
-                        }
+                        required: true
                       },
                       children: []
                     }
@@ -1078,23 +1055,17 @@ export default {
                         segmented: true,
                         validation: ['isValidPersonalProperty'],
                         subscribe: true,
+                        options: [
+                          { label: 'No', answer: false },
+                          { label: 'Yes', answer: true }
+                        ],
                         extendedProperties: {
-                          output: 'values'
+                          output:
+                            '${format.boolToYesNo(it.initialValues.coverageOptions.personalPropertyReplacementCost.answer)}'
                         }
                       },
                       formData: {
-                        path:
-                          'coverageOptions.personalPropertyReplacementCost.answer',
-                        component: 'boolean',
-                        required: true,
-                        metaData: {
-                          enum: [
-                            { label: 'No', answer: false },
-                            { label: 'Yes', answer: true }
-                          ],
-                          target:
-                            '${format.boolToYesNo(it.initialValues.coverageOptions.personalPropertyReplacementCost.answer)}'
-                        }
+                        required: true
                       },
                       children: []
                     },
@@ -1106,16 +1077,13 @@ export default {
                       data: {
                         disabled: true,
                         label: 'Increased Cost of Compliance Limit',
-                        extendedProperties: { output: 'initial' }
-                      },
-                      formData: {
-                        path: 'coverageLimits.increasedCompliance.value',
-                        type: 'integer',
-                        required: true,
-                        metaData: {
-                          target:
+                        extendedProperties: {
+                          output:
                             '${format.toCurrency(it.initialValues.coverageLimits.increasedCompliance.value)}'
                         }
+                      },
+                      formData: {
+                        required: true
                       },
                       children: []
                     },
@@ -1127,16 +1095,13 @@ export default {
                       data: {
                         disabled: true,
                         label: 'Loss of Use Limit',
-                        extendedProperties: { output: 'initial' }
-                      },
-                      formData: {
-                        path: 'coverageLimits.lossOfUse.amount',
-                        type: 'integer',
-                        required: true,
-                        metaData: {
-                          target:
+                        extendedProperties: {
+                          output:
                             '${format.toCurrency(it.initialValues.coverageLimits.lossOfUse.amount)}'
                         }
+                      },
+                      formData: {
+                        required: true
                       },
                       children: []
                     }
@@ -1217,15 +1182,12 @@ export default {
                         size: '12',
                         validation: ['isNumbersOnly'],
                         extendedProperties: {
-                          thousandSeparator: false
+                          thousandSeparator: false,
+                          output: '${it.initialValues.property.yearBuilt}'
                         }
                       },
                       formData: {
-                        path: 'property.yearBuilt',
-                        required: true,
-                        metaData: {
-                          target: '${it.initialValues.property.yearBuilt}'
-                        }
+                        required: true
                       },
                       children: []
                     },
@@ -1262,15 +1224,14 @@ export default {
                             label: 'Superior',
                             answer: 'SUPERIOR'
                           }
-                        ]
-                      },
-                      formData: {
-                        path: 'property.yearBuilt',
-                        required: true,
-                        metaData: {
-                          target:
+                        ],
+                        extendedProperties: {
+                          output:
                             '${it.initialValues.property.constructionType || " "}'
                         }
+                      },
+                      formData: {
+                        required: true
                       },
                       children: []
                     },
@@ -1291,14 +1252,13 @@ export default {
                             label: 'Commercial',
                             answer: 'COMMERCIAL'
                           }
-                        ]
+                        ],
+                        extendedProperties: {
+                          output: '${it.initialValues.property.residenceType}'
+                        }
                       },
                       formData: {
-                        path: 'property.residenceType',
-                        required: true,
-                        metaData: {
-                          target: '${it.initialValues.property.residenceType}'
-                        }
+                        required: true
                       },
                       children: []
                     },
@@ -1309,15 +1269,13 @@ export default {
                       dependencies: '',
                       data: {
                         label: 'Sq. Ft. of Home',
-                        size: '12'
-                      },
-                      formData: {
-                        path: 'property.squareFeet',
-                        metaData: {
-                          target:
+                        size: '12',
+                        extendedProperties: {
+                          output:
                             '${it.initialValues.property.squareFeet ? format.appendUnit(it.initialValues.property.squareFeet, "") : " "}'
                         }
                       },
+                      formData: {},
                       children: []
                     }
                   ]
@@ -1377,15 +1335,14 @@ export default {
                           { answer: '25000' },
                           { answer: '35000' },
                           { answer: '45000' }
-                        ]
-                      },
-                      formData: {
-                        path: 'property.floodterritory',
-                        required: true,
-                        metaData: {
-                          target:
+                        ],
+                        extendedProperties: {
+                          output:
                             '${it.initialValues.property.floodterritory || " "}'
                         }
+                      },
+                      formData: {
+                        required: true
                       },
                       children: []
                     },
@@ -1474,15 +1431,13 @@ export default {
                           { answer: 'X' },
                           { answer: 'X500' },
                           { answer: 'Z' }
-                        ]
-                      },
-                      formData: {
-                        path: 'property.FEMAfloodZone',
-                        metaData: {
-                          target:
+                        ],
+                        extendedProperties: {
+                          output:
                             '${it.initialValues.property.FEMAfloodZone || " "}'
                         }
                       },
+                      formData: {},
                       children: []
                     },
                     {
@@ -1500,14 +1455,13 @@ export default {
                           { answer: 'V' },
                           { answer: 'X' },
                           { answer: 'Z' }
-                        ]
+                        ],
+                        extendedProperties: {
+                          output: '${it.initialValues.property.floodZone}'
+                        }
                       },
                       formData: {
-                        path: 'property.floodZone',
-                        required: true,
-                        metaData: {
-                          target: '${it.initialValues.property.floodZone}'
-                        }
+                        required: true
                       },
                       children: []
                     },
@@ -1521,16 +1475,11 @@ export default {
                         label: 'BFE Indicator',
                         size: '12',
                         extendedProperties: {
-                          output: 'initial'
-                        }
-                      },
-                      formData: {
-                        path: 'underwritingAnswers.elevationDifference.answer',
-                        metaData: {
-                          target:
+                          output:
                             '${it.initialValues.underwritingAnswers.elevationDifference.answer || " "}'
                         }
                       },
+                      formData: {},
                       children: []
                     }
                   ]

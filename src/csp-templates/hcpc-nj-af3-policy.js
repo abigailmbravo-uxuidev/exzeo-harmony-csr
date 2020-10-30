@@ -241,7 +241,7 @@ export default {
                   ]
                 },
                 {
-                  id: 11,
+                  id: '615dd701-dace-4be3-b517-bfb9ec63c67b',
                   component: '$SECTION',
                   dependencies: '',
                   data: {
@@ -250,7 +250,7 @@ export default {
                   formData: {},
                   children: [
                     {
-                      id: 12,
+                      id: '57da59b3-8fc0-4a27-a131-3ebe2f569f13',
                       component: '$SECTION',
                       dependencies: '',
                       data: {
@@ -260,7 +260,7 @@ export default {
                       formData: {},
                       children: [
                         {
-                          id: 13,
+                          id: 'caba505e-c656-407d-ab67-637c3724967d',
                           component: '$ENTITY_DETAILS',
                           dependencies: '',
                           data: {
@@ -307,7 +307,7 @@ export default {
                       ]
                     },
                     {
-                      id: 14,
+                      id: 'e80bda26-541f-4d01-9e12-f1743235e9e4',
                       component: '$SECTION',
                       dependencies: '',
                       data: {
@@ -317,7 +317,7 @@ export default {
                       formData: {},
                       children: [
                         {
-                          id: 15,
+                          id: '44fc71a0-3b18-400c-a4cd-496f7c00d0b7',
                           component: '$ENTITY_DETAILS',
                           dependencies: '',
                           data: {
@@ -371,7 +371,7 @@ export default {
                       ]
                     },
                     {
-                      id: 16,
+                      id: '1aa4514e-1753-485a-bd6d-a085cdc135a8',
                       component: '$SECTION',
                       dependencies: '',
                       data: {
@@ -381,7 +381,7 @@ export default {
                       formData: {},
                       children: [
                         {
-                          id: 17,
+                          id: '9d224258-844c-4c3d-aabe-aafc637bc7bf',
                           component: '$BILLING_DETAILS',
                           size: '4',
                           dependencies: '',
@@ -396,7 +396,7 @@ export default {
               ]
             },
             {
-              id: 4497775432943353,
+              id: '18882ce4-3df7-4ec6-8ac6-80b5a54a77c4',
               component: '$SECTION',
               dependencies: '',
               data: {
@@ -405,7 +405,7 @@ export default {
               formData: {},
               children: [
                 {
-                  id: 4497775432943354,
+                  id: '9fb704ee-95d3-4616-a625-a1201e6fc0ba',
                   component: '$TITLE',
                   dependencies: '',
                   data: {
@@ -415,7 +415,7 @@ export default {
                   children: []
                 },
                 {
-                  id: 4497775432943355,
+                  id: 'c9e03fe1-6151-44be-9a38-59d5781cf7b0',
                   component: '$CLAIMS_TABLE',
                   dependencies: '',
                   data: {},
@@ -424,7 +424,7 @@ export default {
               ]
             },
             {
-              id: 18,
+              id: '3c063266-5cb6-4508-b802-230e91d477cd',
               component: '$SECTION',
               dependencies: '',
               data: {
@@ -433,7 +433,7 @@ export default {
               formData: {},
               children: [
                 {
-                  id: 19,
+                  id: 'cd2ad55e-20b9-493b-97f7-8ad715230681',
                   component: '$TITLE',
                   dependencies: '',
                   data: {
@@ -443,7 +443,7 @@ export default {
                   children: []
                 },
                 {
-                  id: 20,
+                  id: '8425a15f-af57-4dac-b174-bb581942b73e',
                   component: '$ENTITY_DETAILS',
                   dependencies: '',
                   data: {
@@ -481,7 +481,7 @@ export default {
                   children: []
                 },
                 {
-                  id: 22,
+                  id: 'e8309d85-336c-4c2f-9bba-ac445215fda4',
                   component: '$ENTITY_DETAILS',
                   dependencies: '',
                   data: {
@@ -531,7 +531,7 @@ export default {
       step: {},
       components: [
         {
-          id: 230340305495959,
+          id: '453b6c5d-2aa3-4f66-8e23-f1a8731c5044',
           component: '$SECTION',
           dependencies: '',
           data: {
@@ -540,7 +540,7 @@ export default {
           formData: {},
           children: [
             {
-              id: 32393759439222,
+              id: '00eaa508-7d80-4bae-9ae1-2dd53d5ae30b',
               component: '$POLICYHOLDER_AGENT',
               dependencies: '',
               data: {
@@ -558,14 +558,14 @@ export default {
       step: {},
       components: [
         {
-          id: 5101254,
+          id: '73a77412-f251-41cb-95e6-a3b5c82f2def',
           component: '$SECTION',
           dependencies: '',
           data: {},
           formData: {},
           children: [
             {
-              id: 5152019255,
+              id: '7d50b8b4-af1f-47af-8292-8bfe57ea6cf2',
               component: '$TITLE',
               dependencies: '',
               data: {
@@ -575,7 +575,7 @@ export default {
               children: []
             },
             {
-              id: 515255,
+              id: '56feb02f-5d0c-43d7-9349-d2249a1a4a8c',
               component: '$NOTES_FILES',
               dependencies: '',
               data: {},
@@ -591,7 +591,7 @@ export default {
       step: {},
       components: [
         {
-          id: 1,
+          id: '9a6ba957-ef5b-47c7-84cd-693ede552baf',
           component: '$SECTION',
           dependencies: '',
           data: {
@@ -600,7 +600,7 @@ export default {
           formData: {},
           children: [
             {
-              id: 10,
+              id: '0536d1da-7a60-4167-bcb0-e4d087fc5003',
               component: '$BILLING',
               dependencies: '',
               data: {
@@ -612,17 +612,19 @@ export default {
               },
               formData: {
                 required: true
-              }
+              },
+              children: []
             },
             {
-              id: 11,
+              id: '7d91b246-e86f-4442-bbfa-e5c07213aa92',
               component: '$TITLE',
               dependencies: '',
               data: { text: 'Additional Interests' },
-              formData: {}
+              formData: {},
+              children: []
             },
             {
-              id: 12,
+              id: 'b77075d6-23cf-4516-882a-a26ca7437726',
               component: '$ADDITIONAL_INTERESTS',
               dependencies: '${!!(it.rating || {}).worksheet}',
               data: {
@@ -650,7 +652,7 @@ export default {
       step: {},
       components: [
         {
-          id: 100100,
+          id: '4d340ee6-9a95-4b94-a6ae-8fc8eb9f06eb',
           component: '$SECTION',
           dependencies: '',
           data: {
@@ -659,7 +661,7 @@ export default {
           formData: {},
           children: [
             {
-              id: 100101,
+              id: 'f91951d6-896e-4631-9ee6-b5edc8529583',
               component: '$TITLE',
               dependencies: '',
               data: {
@@ -669,7 +671,7 @@ export default {
               children: []
             },
             {
-              id: 100102,
+              id: '34b19cf2-b854-4de4-9405-c760d7ac8a27',
               component: '$CANCEL_TYPE',
               dependencies: '',
               data: {
@@ -679,29 +681,22 @@ export default {
               children: []
             },
             {
-              id: 1001023,
+              id: 'fa948972-b51c-4f78-9207-e1ba3cb86c83',
               component: 'date',
               path: 'cancel.effectiveDate',
               dependencies: '',
               data: {
                 label: 'Effective Date',
                 size: '2',
-                extendedProperties: {},
                 validation: ['isValidDate']
               },
               formData: {
-                path: 'effectiveDate',
-                component: 'string',
-                required: true,
-                metaData: {
-                  format: 'date-time'
-                  // also need min-date for underwriting
-                }
+                required: true
               },
               children: []
             },
             {
-              id: 1001024,
+              id: '27441252-8798-4049-ac44-305396fd3ac9',
               component: '$CANCEL_REASON',
               dependencies: '',
               data: {
@@ -713,7 +708,7 @@ export default {
           ]
         },
         {
-          id: 54543543353,
+          id: '9521a2a8-b97d-4db6-99d8-0cb50629fc47',
           component: '$SECTION',
           dependencies: '',
           data: {
@@ -722,7 +717,7 @@ export default {
           formData: {},
           children: [
             {
-              id: 4543543353,
+              id: '177acf79-0e88-4690-87f9-2b05614e0e12',
               component: '$TITLE',
               dependencies: '',
               data: {
@@ -731,7 +726,7 @@ export default {
               formData: {}
             },
             {
-              id: 54543543353,
+              id: 'c825c442-ce99-454b-be89-330207dbaeef',
               component: '$SECTION',
               dependencies: '',
               data: {
@@ -742,7 +737,7 @@ export default {
               formData: {},
               children: [
                 {
-                  id: 20,
+                  id: 'df291d56-5d68-4912-a046-d9be516e6e3b',
                   component: '$POLICY_BILLING',
                   dependencies: '',
                   data: {
@@ -754,7 +749,7 @@ export default {
               ]
             },
             {
-              id: 454333335323,
+              id: 'f122cc63-6e65-40b8-9ffc-22fb45ab57ed',
               component: 'text',
               path: 'cancel.equityDate',
               dependencies: '',
@@ -767,7 +762,7 @@ export default {
               children: []
             },
             {
-              id: 454337878853231,
+              id: 'e62ecd54-1605-47e8-95f7-607a0c345c73',
               component: '$PAYMENT_HISTORY_TABLE',
               dependencies: '',
               data: {},
@@ -776,7 +771,7 @@ export default {
           ]
         },
         {
-          id: 5497775432943353,
+          id: 'fdeb143b-39c5-43aa-87df-97537ca4d80c',
           component: '$SECTION',
           dependencies: '',
           data: {
@@ -785,7 +780,7 @@ export default {
           formData: {},
           children: [
             {
-              id: 5497775432943354,
+              id: '06359215-3a4a-4954-b097-365409918562',
               component: '$TITLE',
               dependencies: '',
               data: {
@@ -795,7 +790,7 @@ export default {
               children: []
             },
             {
-              id: 5497775432943355,
+              id: '27e1628b-69ab-4bc6-8fc8-7e13dcc67238',
               component: '$CLAIMS_TABLE',
               dependencies: '',
               data: {},
@@ -807,10 +802,12 @@ export default {
     },
     {
       name: 'endorsements',
-      step: {},
+      step: {
+        outputType: 'initial'
+      },
       components: [
         {
-          id: 34895439847239847,
+          id: '4bf11790-93cb-4ace-a4bb-621110f4f3f0',
           component: '$SECTION',
           dependencies: '',
           data: {
@@ -819,7 +816,7 @@ export default {
           formData: {},
           children: [
             {
-              id: 34895439847239848,
+              id: 'bab66b0d-d688-410f-bd2c-3339f376fc85',
               component: '$ENDORSEMENTS_MENU',
               dependencies: '',
               data: {
@@ -840,7 +837,7 @@ export default {
               children: []
             },
             {
-              id: 44895439847239848,
+              id: '576d5d9e-6fc9-4340-b05c-75cbcfe5a7c2',
               component: '$ENDORSEMENTS_WATCHER_AF3',
               dependencies: '',
               data: {
@@ -850,7 +847,7 @@ export default {
               children: []
             },
             {
-              id: '5435535-fdsfdsf-234324324324-sss',
+              id: '63f3a539-bc63-4982-8b42-5d7c4b5ff015',
               component: '$SECTION',
               dependencies: '',
               data: {
@@ -860,7 +857,7 @@ export default {
               formData: {},
               children: [
                 {
-                  id: '398ce68d-234324324324-4354353-34895439847239849',
+                  id: 'f810c140-e7ed-4a80-a406-80dc4fda8a78',
                   component: '$TITLE',
                   dependencies: '',
                   data: {
@@ -870,7 +867,7 @@ export default {
                   children: []
                 },
                 {
-                  id: '398ce68d-234324324324-',
+                  id: '49839b4c-dfc6-4b37-b638-f5ebdae673fb',
                   component: '$SECTION',
                   dependencies: '',
                   data: {
@@ -880,7 +877,7 @@ export default {
                   formData: {},
                   children: [
                     {
-                      id: '398ce68d-234324324324-33344',
+                      id: '398a2218-c9d8-41dd-815d-60f70aeb1e3c',
                       component: '$SECTION',
                       dependencies: '',
                       data: {
@@ -890,7 +887,7 @@ export default {
                       formData: {},
                       children: [
                         {
-                          id: '398ce68d-234324324324-22222',
+                          id: 'ad36c963-281b-4d08-84b9-018043c230f6',
                           component: '$LABEL',
                           dependencies: '',
                           data: {
@@ -900,7 +897,7 @@ export default {
                           children: []
                         },
                         {
-                          id: '398ce68d-234324324324-22222233',
+                          id: 'd1584103-d110-45a5-b13e-ad1be66270d1',
                           component: '$LABEL',
                           dependencies: '',
                           data: {
@@ -912,7 +909,7 @@ export default {
                       ]
                     },
                     {
-                      id: '398ce68d-839c-4a49-bbf2-4545454543',
+                      id: '0ad5b801-7ef3-4fa8-bd7e-f7662d6266e1',
                       component: 'currency',
                       path: 'coverageLimits.building.value',
                       dependencies: '',
@@ -924,22 +921,17 @@ export default {
                           displayRange: true,
                           min: 'coverageLimits.building.minAmount',
                           max: 'coverageLimits.building.maxAmount',
-                          output: 'initial'
+                          output:
+                            '${format.toCurrency(it.initialValues.coverageLimits.building.value)}'
                         }
                       },
                       formData: {
-                        path: 'coverageLimits.building.value',
-                        type: 'integer',
-                        required: true,
-                        metaData: {
-                          target:
-                            '${format.toCurrency(it.initialValues.coverageLimits.building.value)}'
-                        }
+                        required: true
                       },
                       children: []
                     },
                     {
-                      id: '398ce68d-839c-4a49-bbf2-11111113',
+                      id: '8b148561-6cd7-4407-8d6e-7c162298e8e0',
                       component: 'currency',
                       path: 'coverageLimits.personalProperty.value',
                       dependencies: '',
@@ -951,16 +943,12 @@ export default {
                           displayRange: true,
                           min: 'coverageLimits.personalProperty.minAmount',
                           max: 'coverageLimits.personalProperty.maxAmount',
-                          output: 'initial'
+                          output:
+                            '${format.toCurrency(it.initialValues.coverageLimits.personalProperty.value)}'
                         }
                       },
                       formData: {
-                        type: 'integer',
-                        required: true,
-                        metaData: {
-                          target:
-                            '${format.toCurrency(it.initialValues.coverageLimits.personalProperty.value)}'
-                        }
+                        required: true
                       },
                       children: []
                     },
@@ -979,17 +967,12 @@ export default {
                           { label: '$10,000', answer: 10000 }
                         ],
                         extendedProperties: {
-                          output: 'initial'
+                          output:
+                            '${format.toCurrency(it.initialValues.deductibles.buildingDeductible.value)}'
                         }
                       },
                       formData: {
-                        path: 'deductibles.buildingDeductible.value',
-                        type: 'integer',
-                        required: true,
-                        metaData: {
-                          target:
-                            '${format.toCurrency(it.initialValues.deductibles.buildingDeductible.value)}'
-                        }
+                        required: true
                       },
                       children: []
                     },
@@ -1009,24 +992,19 @@ export default {
                           { label: '$10,000', answer: 10000 }
                         ],
                         extendedProperties: {
-                          output: 'initial'
+                          output:
+                            '${format.toCurrency(it.initialValues.deductibles.personalPropertyDeductible.value)}'
                         }
                       },
                       formData: {
-                        path: 'deductibles.personalPropertyDeductible.value',
-                        type: 'integer',
-                        required: true,
-                        metaData: {
-                          target:
-                            '${format.toCurrency(it.initialValues.deductibles.personalPropertyDeductible.value)}'
-                        }
+                        required: true
                       },
                       children: []
                     }
                   ]
                 },
                 {
-                  id: '54864c4a69c6-4354355435354353',
+                  id: '6da5b6e8-1f74-4ff8-96fc-3eedca99c189',
                   component: '$SECTION',
                   dependencies: '',
                   data: {
@@ -1036,7 +1014,7 @@ export default {
                   formData: {},
                   children: [
                     {
-                      id: '398ce68d-234324324324-33345',
+                      id: 'e49f2a14-a572-44d1-bb1e-0871d0fe3d1c',
                       component: '$SECTION',
                       dependencies: '',
                       data: {
@@ -1046,7 +1024,7 @@ export default {
                       formData: {},
                       children: [
                         {
-                          id: '398ce68d-234324324324-22225',
+                          id: '63534a2f-e506-47d7-9878-8285f03277bd',
                           component: '$LABEL',
                           dependencies: '',
                           data: {
@@ -1056,7 +1034,7 @@ export default {
                           children: []
                         },
                         {
-                          id: '398ce68d-234324324324-22222235',
+                          id: '1bf19c7a-99e6-4b34-9c71-76847e23db5a',
                           component: '$LABEL',
                           dependencies: '',
                           data: {
@@ -1078,44 +1056,35 @@ export default {
                         segmented: true,
                         validation: ['isValidPersonalProperty'],
                         subscribe: true,
+                        options: [
+                          { label: 'No', answer: false },
+                          { label: 'Yes', answer: true }
+                        ],
                         extendedProperties: {
-                          output: 'values'
+                          output:
+                            '${format.boolToYesNo(it.initialValues.coverageOptions.personalPropertyReplacementCost.answer)}'
                         }
                       },
                       formData: {
-                        path:
-                          'coverageOptions.personalPropertyReplacementCost.answer',
-                        type: 'boolean',
-                        required: true,
-                        metaData: {
-                          enum: [
-                            { label: 'No', answer: false },
-                            { label: 'Yes', answer: true }
-                          ],
-                          target:
-                            '${format.boolToYesNo(it.initialValues.coverageOptions.personalPropertyReplacementCost.answer)}'
-                        }
+                        required: true
                       },
                       children: []
                     },
                     {
-                      id: '398ce444467768d-839c-4a490890-cc275da53',
+                      id: '616e5119-e341-4030-b008-8a3fb54936d6',
                       component: 'currency',
                       path: 'coverageLimits.increasedCompliance.value',
                       dependencies: '',
                       data: {
                         disabled: true,
                         label: 'Increased Cost of Compliance Limit',
-                        extendedProperties: { output: 'initial' }
-                      },
-                      formData: {
-                        path: 'coverageLimits.increasedCompliance.value',
-                        type: 'integer',
-                        required: true,
-                        metaData: {
-                          target:
+                        extendedProperties: {
+                          output:
                             '${format.toCurrency(it.initialValues.coverageLimits.increasedCompliance.value)}'
                         }
+                      },
+                      formData: {
+                        required: true
                       },
                       children: []
                     },
@@ -1127,16 +1096,13 @@ export default {
                       data: {
                         disabled: true,
                         label: 'Loss of Use Limit',
-                        extendedProperties: { output: 'initial' }
-                      },
-                      formData: {
-                        path: 'coverageLimits.lossOfUse.amount',
-                        type: 'integer',
-                        required: true,
-                        metaData: {
-                          target:
+                        extendedProperties: {
+                          output:
                             '${format.toCurrency(it.initialValues.coverageLimits.lossOfUse.amount)}'
                         }
+                      },
+                      formData: {
+                        required: true
                       },
                       children: []
                     }
@@ -1156,7 +1122,7 @@ export default {
               formData: {},
               children: [
                 {
-                  id: '386a6cf2-afe0-40da-8c79-751dedb3v678',
+                  id: '37f8a7e3-2d2e-43bf-a083-683296be3837',
                   component: '$TITLE',
                   dependencies: '',
                   data: {
@@ -1176,7 +1142,7 @@ export default {
                   formData: {},
                   children: [
                     {
-                      id: '398ce68d-234324324324-33347',
+                      id: '24920796-1634-4bc3-a524-84f45fb23512',
                       component: '$SECTION',
                       dependencies: '',
                       data: {
@@ -1186,7 +1152,7 @@ export default {
                       formData: {},
                       children: [
                         {
-                          id: '398ce68d-234324324324-22999',
+                          id: 'c7371574-aa7d-46b3-8073-554e8ec3baaf',
                           component: '$LABEL',
                           dependencies: '',
                           data: {
@@ -1196,7 +1162,7 @@ export default {
                           children: []
                         },
                         {
-                          id: '398ce68d-234324324324-22222999',
+                          id: '05854ba0-3ae6-431b-9cc7-0dc09888786b',
                           component: '$LABEL',
                           dependencies: '',
                           data: {
@@ -1208,7 +1174,7 @@ export default {
                       ]
                     },
                     {
-                      id: '741deda4c333-0ed7-4538-910a-598d0999',
+                      id: '9156b290-0ae9-4777-ad37-1afcf4b790c8',
                       component: 'number',
                       path: 'property.yearBuilt',
                       dependencies: '',
@@ -1217,15 +1183,12 @@ export default {
                         size: '12',
                         validation: ['isNumbersOnly'],
                         extendedProperties: {
-                          thousandSeparator: false
+                          thousandSeparator: false,
+                          output: '${it.initialValues.property.yearBuilt}'
                         }
                       },
                       formData: {
-                        path: 'property.yearBuilt',
-                        required: true,
-                        metaData: {
-                          target: '${it.initialValues.property.yearBuilt}'
-                        }
+                        required: true
                       },
                       children: []
                     },
@@ -1262,15 +1225,14 @@ export default {
                             label: 'Superior',
                             answer: 'SUPERIOR'
                           }
-                        ]
-                      },
-                      formData: {
-                        path: 'property.yearBuilt',
-                        required: true,
-                        metaData: {
-                          target:
+                        ],
+                        extendedProperties: {
+                          output:
                             '${it.initialValues.property.constructionType || " "}'
                         }
+                      },
+                      formData: {
+                        required: true
                       },
                       children: []
                     },
@@ -1291,14 +1253,13 @@ export default {
                             label: 'Commercial',
                             answer: 'COMMERCIAL'
                           }
-                        ]
+                        ],
+                        extendedProperties: {
+                          output: '${it.initialValues.property.residenceType}'
+                        }
                       },
                       formData: {
-                        path: 'property.residenceType',
-                        required: true,
-                        metaData: {
-                          target: '${it.initialValues.property.residenceType}'
-                        }
+                        required: true
                       },
                       children: []
                     },
@@ -1309,15 +1270,13 @@ export default {
                       dependencies: '',
                       data: {
                         label: 'Sq. Ft. of Home',
-                        size: '12'
-                      },
-                      formData: {
-                        path: 'property.squareFeet',
-                        metaData: {
-                          target:
+                        size: '12',
+                        extendedProperties: {
+                          output:
                             '${it.initialValues.property.squareFeet ? format.appendUnit(it.initialValues.property.squareFeet, "") : " "}'
                         }
                       },
+                      formData: {},
                       children: []
                     }
                   ]
@@ -1333,7 +1292,7 @@ export default {
                   formData: {},
                   children: [
                     {
-                      id: '44448ce68d-234324324324-33347',
+                      id: 'e3401045-3626-4000-94c0-90710adbfbd3',
                       component: '$SECTION',
                       dependencies: '',
                       data: {
@@ -1343,7 +1302,7 @@ export default {
                       formData: {},
                       children: [
                         {
-                          id: '4448ce68d-234324324324-22999',
+                          id: '7ca36516-889a-4a44-ade5-0bde4112948a',
                           component: '$LABEL',
                           dependencies: '',
                           data: {
@@ -1353,7 +1312,7 @@ export default {
                           children: []
                         },
                         {
-                          id: '4448ce68d-234324324324-22222999',
+                          id: '5d2af2aa-57b2-4627-b397-f6d807aaab99',
                           component: '$LABEL',
                           dependencies: '',
                           data: {
@@ -1365,7 +1324,7 @@ export default {
                       ]
                     },
                     {
-                      id: '75f752a8-8f5e-4d81-b3f2-435435435dd',
+                      id: '7b7b0a1f-7810-46c9-9bf7-2b6203262bd2',
                       component: 'select',
                       path: 'property.floodterritory',
                       dependencies: '',
@@ -1377,20 +1336,19 @@ export default {
                           { answer: '25000' },
                           { answer: '35000' },
                           { answer: '45000' }
-                        ]
-                      },
-                      formData: {
-                        path: 'property.floodterritory',
-                        required: true,
-                        metaData: {
-                          target:
+                        ],
+                        extendedProperties: {
+                          output:
                             '${it.initialValues.property.floodterritory || " "}'
                         }
+                      },
+                      formData: {
+                        required: true
                       },
                       children: []
                     },
                     {
-                      id: '75f752a8-44465678-4d81-b3f2-554654687444',
+                      id: 'a7b6cdb0-56c6-4fa9-8839-bb76f11994e2',
                       component: 'select',
                       path: 'property.FEMAfloodZone',
                       dependencies: '',
@@ -1474,19 +1432,17 @@ export default {
                           { answer: 'X' },
                           { answer: 'X500' },
                           { answer: 'Z' }
-                        ]
-                      },
-                      formData: {
-                        path: 'property.FEMAfloodZone',
-                        metaData: {
-                          target:
+                        ],
+                        extendedProperties: {
+                          output:
                             '${it.initialValues.property.FEMAfloodZone || " "}'
                         }
                       },
+                      formData: {},
                       children: []
                     },
                     {
-                      id: '75f752a8-8f5e-4d81-b3f2-228a446444sd7dd',
+                      id: '9ebcffe3-4d93-4085-a9a7-25b808bd9cfd',
                       component: 'select',
                       path: 'property.floodZone',
                       dependencies: '',
@@ -1500,19 +1456,18 @@ export default {
                           { answer: 'V' },
                           { answer: 'X' },
                           { answer: 'Z' }
-                        ]
+                        ],
+                        extendedProperties: {
+                          output: '${it.initialValues.property.floodZone}'
+                        }
                       },
                       formData: {
-                        path: 'property.floodZone',
-                        required: true,
-                        metaData: {
-                          target: '${it.initialValues.property.floodZone}'
-                        }
+                        required: true
                       },
                       children: []
                     },
                     {
-                      id: '75f752a8-44465678-4d81-b3f2-55465468788',
+                      id: '1ca83ac9-5763-4102-9617-e2636d8f304a',
                       component: 'text',
                       path: 'underwritingAnswers.elevationDifference.answer',
                       dependencies: '',
@@ -1521,16 +1476,11 @@ export default {
                         label: 'BFE Indicator',
                         size: '12',
                         extendedProperties: {
-                          output: 'initial'
-                        }
-                      },
-                      formData: {
-                        path: 'underwritingAnswers.elevationDifference.answer',
-                        metaData: {
-                          target:
+                          output:
                             '${it.initialValues.underwritingAnswers.elevationDifference.answer || " "}'
                         }
                       },
+                      formData: {},
                       children: []
                     }
                   ]
@@ -1561,7 +1511,7 @@ export default {
             },
             {
               name: 'PolicyHolder',
-              id: '598d0d15-42dc-4059-ad09-64jddb3b512',
+              id: '55828fd4-7e9c-4e69-bd69-e659770ed538',
               component: '$SECTION',
               dependencies: '',
               data: {
@@ -1572,7 +1522,7 @@ export default {
               children: [
                 {
                   name: 'Policyholders',
-                  id: '64jddda3b512-3716-475e-9762-42dcdds',
+                  id: 'afba653c-96cb-4c05-823e-ab32e7b8b952',
                   component: '$POLICYHOLDERS',
                   dependencies: '',
                   data: {
@@ -1587,7 +1537,7 @@ export default {
             },
             {
               name: 'Addresses',
-              id: '598d0d15-42dc-4059-ad09-64jddb3b655',
+              id: '2e4513dc-0211-435b-886e-7137ad3f70aa',
               component: '$SECTION',
               dependencies: '',
               data: {

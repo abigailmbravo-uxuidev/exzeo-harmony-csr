@@ -63,13 +63,7 @@ export default {
                 validation: ['minEffectiveDate', 'isValidDate']
               },
               formData: {
-                path: 'effectiveDate',
-                type: 'string',
-                required: true,
-                metaData: {
-                  format: 'date-time'
-                  // also need min-date for underwriting
-                }
+                required: true
               },
               children: []
             },
@@ -498,8 +492,6 @@ export default {
                 }
               },
               formData: {
-                path: 'coverageLimits.dwelling.value',
-                type: 'integer',
                 required: true
               },
               children: []
@@ -524,8 +516,6 @@ export default {
                 }
               },
               formData: {
-                path: 'coverageLimits.otherStructures.value',
-                type: 'integer',
                 required: true
               },
               children: []
@@ -572,8 +562,6 @@ export default {
                 ]
               },
               formData: {
-                path: 'coverageLimits.personalProperty.value',
-                type: 'integer',
                 required: true
               },
               children: []
@@ -591,8 +579,6 @@ export default {
                 }
               },
               formData: {
-                path: 'coverageLimits.lossOfUse.value',
-                type: 'integer',
                 required: true
               },
               children: []
@@ -604,18 +590,14 @@ export default {
               dependencies: '',
               data: {
                 label: 'Personal Liability Limit',
-                segmented: true
+                segmented: true,
+                output: [
+                  { label: '$100,000', answer: 100000 },
+                  { label: '$300,000', answer: 300000 }
+                ]
               },
               formData: {
-                path: 'coverageLimits.personalLiability.value',
-                type: 'integer',
-                required: true,
-                metaData: {
-                  enum: [
-                    { label: '$100,000', answer: 100000 },
-                    { label: '$300,000', answer: 300000 }
-                  ]
-                }
+                required: true
               },
               children: []
             },
@@ -632,8 +614,6 @@ export default {
                 }
               },
               formData: {
-                path: 'coverageLimits.medicalPayments.value',
-                type: 'integer',
                 required: true
               },
               children: []
@@ -668,19 +648,15 @@ export default {
               dependencies: '',
               data: {
                 label: 'Mold Property',
-                size: '12'
+                size: '12',
+                options: [
+                  { label: '$10,000', answer: 10000 },
+                  { label: '$25,000', answer: 25000 },
+                  { label: '$50,000', answer: 50000 }
+                ]
               },
               formData: {
-                path: 'coverageLimits.moldProperty.value',
-                type: 'integer',
-                required: true,
-                metaData: {
-                  enum: [
-                    { label: '$10,000', answer: 10000 },
-                    { label: '$25,000', answer: 25000 },
-                    { label: '$50,000', answer: 50000 }
-                  ]
-                }
+                required: true
               },
               children: []
             },
@@ -691,18 +667,14 @@ export default {
               dependencies: '',
               data: {
                 label: 'Mold Liability Limit',
-                size: '12'
+                size: '12',
+                options: [
+                  { label: '$50,000', answer: 50000 },
+                  { label: '$100,000', answer: 100000 }
+                ]
               },
               formData: {
-                path: 'coverageLimits.moldLiability.value',
-                type: 'integer',
-                required: true,
-                metaData: {
-                  enum: [
-                    { label: '$50,000', answer: 50000 },
-                    { label: '$100,000', answer: 100000 }
-                  ]
-                }
+                required: true
               },
               children: []
             },
@@ -715,6 +687,10 @@ export default {
                 label: 'Personal Property Replacement Cost',
                 segmented: true,
                 disabled: '${it.coverageLimits.personalProperty.value < 25}',
+                options: [
+                  { label: 'No', answer: false },
+                  { label: 'Yes', answer: true }
+                ],
                 extendedProperties: {
                   watchFields: [
                     {
@@ -726,15 +702,7 @@ export default {
                 }
               },
               formData: {
-                path: 'coverageOptions.personalPropertyReplacementCost.answer',
-                type: 'boolean',
-                required: true,
-                metaData: {
-                  enum: [
-                    { label: 'No', answer: false },
-                    { label: 'Yes', answer: true }
-                  ]
-                }
+                required: true
               },
               children: []
             },
@@ -744,18 +712,14 @@ export default {
               path: 'coverageLimits.ordinanceOrLaw.value',
               dependencies: '',
               data: {
-                label: 'Ordinance or Law Coverage Limit'
+                label: 'Ordinance or Law Coverage Limit',
+                options: [
+                  { label: '25% of Dwelling Limit', answer: 25 },
+                  { label: '50% of Dwelling Limit', answer: 50 }
+                ]
               },
               formData: {
-                path: 'coverageLimits.ordinanceOrLaw.value',
-                type: 'integer',
-                required: true,
-                metaData: {
-                  enum: [
-                    { label: '25% of Dwelling Limit', answer: 25 },
-                    { label: '50% of Dwelling Limit', answer: 50 }
-                  ]
-                }
+                required: true
               },
               children: []
             }
@@ -788,19 +752,15 @@ export default {
               path: 'deductibles.allOtherPerils.value',
               dependencies: '',
               data: {
-                label: 'All Other Perils'
+                label: 'All Other Perils',
+                options: [
+                  { label: '$500', answer: 500 },
+                  { label: '$1,000', answer: 1000 },
+                  { label: '$2,500', answer: 2500 }
+                ]
               },
               formData: {
-                path: 'deductibles.allOtherPerils.value',
-                type: 'integer',
-                required: true,
-                metaData: {
-                  enum: [
-                    { label: '$500', answer: 500 },
-                    { label: '$1,000', answer: 1000 },
-                    { label: '$2,500', answer: 2500 }
-                  ]
-                }
+                required: true
               },
               children: []
             },
@@ -811,6 +771,11 @@ export default {
               dependencies: '',
               data: {
                 label: 'Hurricane Deductible',
+                options: [
+                  { label: '2% of Dwelling Limit', answer: 2 },
+                  { label: '5% of Dwelling Limit', answer: 5 },
+                  { label: '10% of Dwelling Limit', answer: 10 }
+                ],
                 extendedProperties: {
                   output:
                     '${format.toCurrency(Math.ceil(((it.deductibles.hurricane.value / 100) * it.coverageLimits.dwelling.value)))}',
@@ -818,17 +783,7 @@ export default {
                 }
               },
               formData: {
-                path: 'deductibles.hurricane.value',
-                type: 'integer',
-                required: true,
-                metaData: {
-                  enum: [
-                    { label: '2% of Dwelling Limit', answer: 2 },
-                    { label: '5% of Dwelling Limit', answer: 5 },
-                    { label: '10% of Dwelling Limit', answer: 10 }
-                  ]
-                  // target: '${Math.ceil(((it.deductibles.hurricane.value / 100) * it.coverageLimits.dwelling.value))}'
-                }
+                required: true
               },
               children: []
             },
@@ -850,8 +805,6 @@ export default {
                 }
               },
               formData: {
-                path: 'coverageOptions.sinkholePerilCoverage.answer',
-                type: 'integer',
                 required: true
               },
               children: []
@@ -887,19 +840,13 @@ export default {
               data: {
                 segmented: true,
                 label: 'Burglar Alarm',
-                size: '12'
+                size: '12',
+                options: [
+                  { label: 'No', answer: false },
+                  { label: 'Yes', answer: true }
+                ]
               },
-              formData: {
-                path: 'property.burglarAlarm',
-                type: 'boolean',
-                metaData: {
-                  enum: [
-                    { label: 'No', answer: false },
-                    { label: 'Yes', answer: true }
-                  ]
-                },
-                children: []
-              },
+              formData: {},
               children: []
             },
             {
@@ -910,19 +857,13 @@ export default {
               data: {
                 segmented: true,
                 label: 'Fire Alarm',
-                size: '12'
+                size: '12',
+                options: [
+                  { label: 'No', answer: false },
+                  { label: 'Yes', answer: true }
+                ]
               },
-              formData: {
-                path: 'property.fireAlarm',
-                type: 'boolean',
-                metaData: {
-                  enum: [
-                    { label: 'No', answer: false },
-                    { label: 'Yes', answer: true }
-                  ]
-                },
-                children: []
-              },
+              formData: {},
               children: []
             },
             {
@@ -933,20 +874,15 @@ export default {
               data: {
                 segmented: true,
                 label: 'Sprinkler',
-                size: '12'
+                size: '12',
+                options: [
+                  { label: 'N', answer: 'N' },
+                  { label: 'A', answer: 'A' },
+                  { label: 'B', answer: 'B' }
+                ]
               },
               formData: {
-                path: 'property.sprinkler',
-                type: 'string',
-                required: true,
-                metaData: {
-                  enum: [
-                    { label: 'N', answer: 'N' },
-                    { label: 'A', answer: 'A' },
-                    { label: 'B', answer: 'B' }
-                  ]
-                },
-                children: []
+                required: true
               },
               children: []
             }
@@ -980,19 +916,15 @@ export default {
               data: {
                 component: 'select',
                 label: 'Roof Covering',
-                size: '6'
+                size: '6',
+                options: [
+                  { label: 'Non-FBC', answer: 'Non-FBC' },
+                  { label: 'FBC', answer: 'FBC' },
+                  { label: 'Other', answer: 'Other' }
+                ]
               },
               formData: {
-                path: 'property.windMitigation.roofCovering',
-                type: 'string',
-                required: true,
-                metaData: {
-                  enum: [
-                    { label: 'Non-FBC', answer: 'Non-FBC' },
-                    { label: 'FBC', answer: 'FBC' },
-                    { label: 'Other', answer: 'Other' }
-                  ]
-                }
+                required: true
               },
               children: []
             },
@@ -1008,7 +940,6 @@ export default {
                 validation: ['isNumbersOnly']
               },
               formData: {
-                path: 'property.windMitigation.floridaBuildingCodeWindSpeed',
                 required: true
               },
               children: []
@@ -1021,22 +952,18 @@ export default {
               data: {
                 component: 'select',
                 label: 'Roof Deck Attachment',
-                size: '6'
+                size: '6',
+                options: [
+                  { label: 'A', answer: 'A' },
+                  { label: 'B', answer: 'B' },
+                  { label: 'C', answer: 'C' },
+                  { label: 'D', answer: 'D' },
+                  { label: 'Concrete', answer: 'Concrete' },
+                  { label: 'Other', answer: 'Other' }
+                ]
               },
               formData: {
-                path: 'property.windMitigation.roofDeckAttachment',
-                type: 'integer',
-                required: true,
-                metaData: {
-                  enum: [
-                    { label: 'A', answer: 'A' },
-                    { label: 'B', answer: 'B' },
-                    { label: 'C', answer: 'C' },
-                    { label: 'D', answer: 'D' },
-                    { label: 'Concrete', answer: 'Concrete' },
-                    { label: 'Other', answer: 'Other' }
-                  ]
-                }
+                required: true
               },
               children: []
             },
@@ -1053,8 +980,6 @@ export default {
                 validation: ['isNumbersOnly']
               },
               formData: {
-                path:
-                  'property.windMitigation.floridaBuildingCodeWindSpeedDesign',
                 required: true
               },
               children: []
@@ -1067,21 +992,17 @@ export default {
               data: {
                 component: 'select',
                 label: 'Roof to Wall Attachment',
-                size: '6'
+                size: '6',
+                options: [
+                  { label: 'Toe Nails', answer: 'Toe Nails' },
+                  { label: 'Clips', answer: 'Clips' },
+                  { label: 'Single Wraps', answer: 'Single Wraps' },
+                  { label: 'Double Wraps', answer: 'Double Wraps' },
+                  { label: 'Other', answer: 'Other' }
+                ]
               },
               formData: {
-                path: 'property.windMitigation.roofToWallConnection',
-                type: 'string',
-                required: true,
-                metaData: {
-                  enum: [
-                    { label: 'Toe Nails', answer: 'Toe Nails' },
-                    { label: 'Clips', answer: 'Clips' },
-                    { label: 'Single Wraps', answer: 'Single Wraps' },
-                    { label: 'Double Wraps', answer: 'Double Wraps' },
-                    { label: 'Other', answer: 'Other' }
-                  ]
-                }
+                required: true
               },
               children: []
             },
@@ -1094,20 +1015,16 @@ export default {
                 component: 'select',
                 label: 'Terrain',
                 size: '6',
-                segmented: true
+                segmented: true,
+                options: [
+                  { label: 'B', answer: 'B' },
+                  { label: 'C', answer: 'C' },
+                  { label: 'HVHZ', answer: 'HVHZ' },
+                  { label: 'Other', answer: 'Other' }
+                ]
               },
               formData: {
-                path: 'property.windMitigation.terrain',
-                type: 'string',
-                required: true,
-                metaData: {
-                  enum: [
-                    { label: 'B', answer: 'B' },
-                    { label: 'C', answer: 'C' },
-                    { label: 'HVHZ', answer: 'HVHZ' },
-                    { label: 'Other', answer: 'Other' }
-                  ]
-                }
+                required: true
               },
               children: []
             },
@@ -1119,20 +1036,16 @@ export default {
               data: {
                 component: 'select',
                 label: 'Roof Geometry',
-                size: '6'
+                size: '6',
+                options: [
+                  { label: 'Flat', answer: 'Flat' },
+                  { label: 'Gable', answer: 'Gable' },
+                  { label: 'Hip', answer: 'Hip' },
+                  { label: 'Other', answer: 'Other' }
+                ]
               },
               formData: {
-                path: 'property.windMitigation.roofGeometry',
-                type: 'string',
-                required: true,
-                metaData: {
-                  enum: [
-                    { label: 'Flat', answer: 'Flat' },
-                    { label: 'Gable', answer: 'Gable' },
-                    { label: 'Hip', answer: 'Hip' },
-                    { label: 'Other', answer: 'Other' }
-                  ]
-                }
+                required: true
               },
               children: []
             },
@@ -1144,19 +1057,15 @@ export default {
               data: {
                 component: 'select',
                 label: 'Internal Pressure Design',
-                size: '6'
+                size: '6',
+                options: [
+                  { label: 'Enclosed', answer: 'Enclosed' },
+                  { label: 'Partial', answer: 'Partial' },
+                  { label: 'Other', answer: 'Other' }
+                ]
               },
               formData: {
-                path: 'property.windMitigation.internalPressureDesign',
-                type: 'string',
-                required: true,
-                metaData: {
-                  enum: [
-                    { label: 'Enclosed', answer: 'Enclosed' },
-                    { label: 'Partial', answer: 'Partial' },
-                    { label: 'Other', answer: 'Other' }
-                  ]
-                }
+                required: true
               },
               children: []
             },
@@ -1169,19 +1078,15 @@ export default {
                 component: 'radio',
                 label: 'Secondary Water Resistance (SWR)',
                 size: '6',
-                segmented: true
+                segmented: true,
+                options: [
+                  { label: 'Yes', answer: 'Yes' },
+                  { label: 'No', answer: 'No' },
+                  { label: 'Other', answer: 'Other' }
+                ]
               },
               formData: {
-                path: 'property.windMitigation.secondaryWaterResistance',
-                type: 'string',
-                required: true,
-                metaData: {
-                  enum: [
-                    { label: 'Yes', answer: 'Yes' },
-                    { label: 'No', answer: 'No' },
-                    { label: 'Other', answer: 'Other' }
-                  ]
-                }
+                required: true
               },
               children: []
             },
@@ -1194,19 +1099,15 @@ export default {
                 component: 'radio',
                 label: 'Wind Borne Debris Region (WBDR)',
                 size: '6',
-                segmented: true
+                segmented: true,
+                options: [
+                  { label: 'Yes', answer: 'Yes' },
+                  { label: 'No', answer: 'No' },
+                  { label: 'Other', answer: 'Other' }
+                ]
               },
               formData: {
-                path: 'property.windMitigation.windBorneDebrisRegion',
-                type: 'string',
-                required: true,
-                metaData: {
-                  enum: [
-                    { label: 'Yes', answer: 'Yes' },
-                    { label: 'No', answer: 'No' },
-                    { label: 'Other', answer: 'Other' }
-                  ]
-                }
+                required: true
               },
               children: []
             },
@@ -1218,21 +1119,16 @@ export default {
               data: {
                 component: 'select',
                 label: 'Opening Protection:',
-                size: '6'
+                size: '6',
+                options: [
+                  { label: 'None', answer: 'None' },
+                  { label: 'Basic', answer: 'Basic' },
+                  { label: 'Hurricane', answer: 'Hurricane' },
+                  { label: 'Other', answer: 'Other' }
+                ]
               },
               formData: {
-                path: 'property.windMitigation.openingProtection',
-                type: 'string',
-                required: true,
-                metaData: {
-                  enum: [
-                    { label: 'None', answer: 'None' },
-                    { label: 'Basic', answer: 'Basic' },
-                    { label: 'Hurricane', answer: 'Hurricane' },
-                    { label: 'Other', answer: 'Other' }
-                  ]
-                },
-                children: []
+                required: true
               },
               children: []
             },

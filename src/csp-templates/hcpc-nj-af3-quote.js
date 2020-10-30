@@ -61,8 +61,6 @@ export default {
                 validation: ['minEffectiveDate', 'isValidDate']
               },
               formData: {
-                path: 'effectiveDate',
-                type: 'string',
                 required: true
               },
               children: []
@@ -356,8 +354,6 @@ export default {
                     }
                   },
                   formData: {
-                    path: 'coverageLimits.building.value',
-                    type: 'integer',
                     required: true
                   },
                   children: []
@@ -375,10 +371,7 @@ export default {
                         '${format.toCurrency(it.coverageLimits.increasedCompliance.value)}'
                     }
                   },
-                  formData: {
-                    path: 'coverageLimits.increasedCompliance.value',
-                    type: 'integer'
-                  },
+                  formData: {},
                   children: []
                 },
                 {
@@ -397,8 +390,6 @@ export default {
                     }
                   },
                   formData: {
-                    path: 'coverageLimits.personalProperty.value',
-                    type: 'integer',
                     required: true
                   },
                   children: []
@@ -416,10 +407,7 @@ export default {
                         '${format.toCurrency(it.coverageLimits.lossOfUse.value)}'
                     }
                   },
-                  formData: {
-                    path: 'coverageLimits.lossOfUse.value',
-                    type: 'integer'
-                  },
+                  formData: {},
                   children: []
                 },
                 {
@@ -440,9 +428,6 @@ export default {
                     ]
                   },
                   formData: {
-                    path:
-                      'coverageOptions.personalPropertyReplacementCost.answer',
-                    type: 'boolean',
                     required: true
                   },
                   children: []
@@ -488,21 +473,17 @@ export default {
                       dependencies: '',
                       data: {
                         label: 'Building Deductible',
-                        size: '12'
+                        size: '12',
+                        options: [
+                          { label: '$500', answer: 500 },
+                          { label: '$1,000', answer: 1000 },
+                          { label: '$2,000', answer: 2000 },
+                          { label: '$5,000', answer: 5000 },
+                          { label: '$10,000', answer: 10000 }
+                        ]
                       },
                       formData: {
-                        path: 'deductibles.buildingDeductible.value',
-                        type: 'integer',
-                        required: true,
-                        metaData: {
-                          enum: [
-                            { label: '$500', answer: 500 },
-                            { label: '$1,000', answer: 1000 },
-                            { label: '$2,000', answer: 2000 },
-                            { label: '$5,000', answer: 5000 },
-                            { label: '$10,000', answer: 10000 }
-                          ]
-                        }
+                        required: true
                       },
                       children: []
                     },
@@ -515,6 +496,13 @@ export default {
                         label: 'Personal Property Deductible',
                         size: '12',
                         disabled: true,
+                        options: [
+                          { label: '$500', answer: 500 },
+                          { label: '$1,000', answer: 1000 },
+                          { label: '$2,000', answer: 2000 },
+                          { label: '$5,000', answer: 5000 },
+                          { label: '$10,000', answer: 10000 }
+                        ],
                         extendedProperties: {
                           watchFields: [
                             {
@@ -525,19 +513,7 @@ export default {
                           ]
                         }
                       },
-                      formData: {
-                        path: 'deductibles.personalPropertyDeductible.value',
-                        type: 'integer',
-                        metaData: {
-                          enum: [
-                            { label: '$500', answer: 500 },
-                            { label: '$1,000', answer: 1000 },
-                            { label: '$2,000', answer: 2000 },
-                            { label: '$5,000', answer: 5000 },
-                            { label: '$10,000', answer: 10000 }
-                          ]
-                        }
-                      },
+                      formData: {},
                       children: []
                     }
                   ]

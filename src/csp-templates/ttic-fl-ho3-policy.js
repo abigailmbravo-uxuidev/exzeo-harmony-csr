@@ -1076,13 +1076,7 @@ export default {
                 validation: ['isValidDate']
               },
               formData: {
-                path: 'effectiveDate',
-                type: 'string',
-                required: true,
-                metaData: {
-                  format: 'date-time'
-                  // also need min-date for underwriting
-                }
+                required: true
               },
               children: []
             },
@@ -1310,10 +1304,7 @@ export default {
                         }
                       },
                       formData: {
-                        path: 'coverageLimits.dwelling.value',
-                        type: 'integer',
-                        required: true,
-                        metaData: {}
+                        required: true
                       },
                       children: []
                     },
@@ -1331,10 +1322,7 @@ export default {
                         }
                       },
                       formData: {
-                        path: 'coverageLimits.otherStructures.amount',
-                        type: 'integer',
-                        required: true,
-                        metaData: {}
+                        required: true
                       },
                       children: []
                     },
@@ -1357,10 +1345,7 @@ export default {
                         }
                       },
                       formData: {
-                        path: 'coverageLimits.otherStructures.value',
-                        type: 'integer',
-                        required: true,
-                        metaData: {}
+                        required: true
                       },
                       children: []
                     },
@@ -1378,10 +1363,7 @@ export default {
                         }
                       },
                       formData: {
-                        path: 'coverageLimits.personalProperty.amount',
-                        type: 'integer',
-                        required: true,
-                        metaData: {}
+                        required: true
                       },
                       children: []
                     },
@@ -1404,10 +1386,7 @@ export default {
                         }
                       },
                       formData: {
-                        path: 'coverageLimits.personalProperty.value',
-                        type: 'integer',
-                        required: true,
-                        metaData: {}
+                        required: true
                       },
                       children: []
                     },
@@ -1425,10 +1404,7 @@ export default {
                         }
                       },
                       formData: {
-                        path: 'coverageLimits.lossOfUse.amount',
-                        type: 'integer',
-                        required: true,
-                        metaData: {}
+                        required: true
                       },
                       children: []
                     },
@@ -1449,10 +1425,7 @@ export default {
                         }
                       },
                       formData: {
-                        path: 'coverageLimits.personalLiability.value',
-                        type: 'integer',
-                        required: true,
-                        metaData: {}
+                        required: true
                       },
                       children: []
                     },
@@ -1470,10 +1443,7 @@ export default {
                         }
                       },
                       formData: {
-                        path: 'coverageLimits.medicalPayments.amount',
-                        type: 'integer',
-                        required: true,
-                        metaData: {}
+                        required: true
                       },
                       children: []
                     },
@@ -1495,10 +1465,7 @@ export default {
                         ]
                       },
                       formData: {
-                        path: 'coverageLimits.moldProperty.value',
-                        type: 'integer',
-                        required: true,
-                        metaData: {}
+                        required: true
                       },
                       children: []
                     },
@@ -1519,10 +1486,7 @@ export default {
                         ]
                       },
                       formData: {
-                        path: 'coverageLimits.moldLiability.value',
-                        type: 'integer',
-                        required: true,
-                        metaData: {}
+                        required: true
                       },
                       children: []
                     },
@@ -1544,10 +1508,7 @@ export default {
                         ]
                       },
                       formData: {
-                        path: 'deductibles.allOtherPerils.value',
-                        type: 'integer',
-                        required: true,
-                        metaData: {}
+                        required: true
                       },
                       children: []
                     },
@@ -1654,6 +1615,10 @@ export default {
                       data: {
                         label: 'Personal Property Repl Cost',
                         segmented: true,
+                        options: [
+                          { label: 'No', answer: false },
+                          { label: 'Yes', answer: true }
+                        ],
                         extendedProperties: {
                           output:
                             '${format.boolToYesNo(it.initialValues.coverageOptions.personalPropertyReplacementCost.answer)}'
@@ -1663,13 +1628,7 @@ export default {
                         path:
                           'coverageOptions.personalPropertyReplacementCost.answer',
                         type: 'boolean',
-                        required: true,
-                        metaData: {
-                          enum: [
-                            { label: 'No', answer: false },
-                            { label: 'Yes', answer: true }
-                          ]
-                        }
+                        required: true
                       },
                       children: []
                     },
@@ -1706,6 +1665,10 @@ export default {
                       data: {
                         label: 'Incidental Occ Main',
                         segmented: true,
+                        options: [
+                          { label: 'No', answer: false },
+                          { label: 'Yes', answer: true }
+                        ],
                         extendedProperties: {
                           output:
                             '${format.boolToYesNo(it.initialValues.coverageOptions.propertyIncidentalOccupanciesMainDwelling.answer)}'
@@ -1715,13 +1678,7 @@ export default {
                         path:
                           'coverageOptions.propertyIncidentalOccupanciesMainDwelling.answer',
                         type: 'boolean',
-                        required: true,
-                        metaData: {
-                          enum: [
-                            { label: 'No', answer: false },
-                            { label: 'Yes', answer: true }
-                          ]
-                        }
+                        required: true
                       },
                       children: []
                     },
@@ -1734,6 +1691,10 @@ export default {
                       data: {
                         label: 'Incidental Occ Other',
                         segmented: true,
+                        options: [
+                          { label: 'No', answer: false },
+                          { label: 'Yes', answer: true }
+                        ],
                         extendedProperties: {
                           output:
                             '${format.boolToYesNo(it.initialValues.coverageOptions.propertyIncidentalOccupanciesOtherStructures.answer)}'
@@ -1743,13 +1704,7 @@ export default {
                         path:
                           'coverageOptions.propertyIncidentalOccupanciesOtherStructures.answer',
                         type: 'boolean',
-                        required: true,
-                        metaData: {
-                          enum: [
-                            { label: 'No', answer: false },
-                            { label: 'Yes', answer: true }
-                          ]
-                        }
+                        required: true
                       },
                       children: []
                     },
@@ -1763,22 +1718,17 @@ export default {
                         disabled: true,
                         label: 'Incidental Occ Liability',
                         segmented: true,
+                        options: [
+                          { label: 'No', answer: false },
+                          { label: 'Yes', answer: true }
+                        ],
                         extendedProperties: {
                           output:
                             '${format.boolToYesNo(it.initialValues.coverageOptions.liabilityIncidentalOccupancies.answer)}'
                         }
                       },
                       formData: {
-                        path:
-                          'coverageOptions.liabilityIncidentalOccupancies.answer',
-                        type: 'boolean',
-                        required: true,
-                        metaData: {
-                          enum: [
-                            { label: 'No', answer: false },
-                            { label: 'Yes', answer: true }
-                          ]
-                        }
+                        required: true
                       },
                       children: []
                     },
@@ -1790,21 +1740,17 @@ export default {
                       data: {
                         label: 'Townhouse / Rowhouse',
                         segmented: true,
+                        options: [
+                          { label: 'No', answer: false },
+                          { label: 'Yes', answer: true }
+                        ],
                         extendedProperties: {
                           output:
                             '${format.boolToYesNo(it.initialValues.property.townhouseRowhouse)}'
                         }
                       },
                       formData: {
-                        path: 'property.townhouseRowhouse',
-                        type: 'boolean',
-                        required: true,
-                        metaData: {
-                          enum: [
-                            { label: 'No', answer: false },
-                            { label: 'Yes', answer: true }
-                          ]
-                        }
+                        required: true
                       },
                       children: []
                     },
@@ -1868,22 +1814,17 @@ export default {
                       data: {
                         label: 'No Prior Insurance',
                         segmented: true,
+                        options: [
+                          { label: 'No', answer: 'No' },
+                          { label: 'Yes', answer: 'Yes' }
+                        ],
                         extendedProperties: {
                           output:
                             '${it.initialValues.underwritingAnswers.noPriorInsuranceSurcharge.answer}'
                         }
                       },
                       formData: {
-                        path:
-                          'underwritingAnswers.noPriorInsuranceSurcharge.answer',
-                        type: 'boolean',
-                        required: true,
-                        metaData: {
-                          enum: [
-                            { label: 'No', answer: 'No' },
-                            { label: 'Yes', answer: 'Yes' }
-                          ]
-                        }
+                        required: true
                       },
                       children: []
                     },
@@ -1895,21 +1836,17 @@ export default {
                       data: {
                         label: 'Burglar Alarm',
                         segmented: true,
+                        options: [
+                          { label: 'No', answer: false },
+                          { label: 'Yes', answer: true }
+                        ],
                         extendedProperties: {
                           output:
                             '${format.boolToYesNo(it.initialValues.property.burglarAlarm)}'
                         }
                       },
                       formData: {
-                        path: 'property.burglarAlarm',
-                        type: 'boolean',
-                        required: true,
-                        metaData: {
-                          enum: [
-                            { label: 'No', answer: false },
-                            { label: 'Yes', answer: true }
-                          ]
-                        }
+                        required: true
                       },
                       children: []
                     },
@@ -1921,21 +1858,17 @@ export default {
                       data: {
                         label: 'Fire Alarm',
                         segmented: true,
+                        options: [
+                          { label: 'No', answer: false },
+                          { label: 'Yes', answer: true }
+                        ],
                         extendedProperties: {
                           output:
                             '${format.boolToYesNo(it.initialValues.property.fireAlarm)}'
                         }
                       },
                       formData: {
-                        path: 'property.fireAlarm',
-                        type: 'boolean',
-                        required: true,
-                        metaData: {
-                          enum: [
-                            { label: 'No', answer: false },
-                            { label: 'Yes', answer: true }
-                          ]
-                        }
+                        required: true
                       },
                       children: []
                     },
@@ -1947,22 +1880,18 @@ export default {
                       data: {
                         label: 'Sprinkler',
                         segmented: true,
+                        options: [
+                          { label: 'No', answer: 'N' },
+                          { label: 'A', answer: 'A' },
+                          { label: 'B', answer: 'B' }
+                        ],
                         extendedProperties: {
                           output:
                             '${it.initialValues.property.sprinkler === "N" ? "No" : it.initialValues.property.sprinkler}'
                         }
                       },
                       formData: {
-                        path: 'property.sprinkler',
-                        type: 'boolean',
-                        required: true,
-                        metaData: {
-                          enum: [
-                            { label: 'No', answer: 'N' },
-                            { label: 'A', answer: 'A' },
-                            { label: 'B', answer: 'B' }
-                          ]
-                        }
+                        required: true
                       },
                       children: []
                     }
@@ -2062,22 +1991,18 @@ export default {
                   data: {
                     label: 'Roof Covering',
                     size: '6',
+                    options: [
+                      { label: 'Non-FBC', answer: 'Non-FBC' },
+                      { label: 'FBC', answer: 'FBC' },
+                      { label: 'Other', answer: 'Other' }
+                    ],
                     extendedProperties: {
                       output:
                         '${it.initialValues.property.windMitigation.roofCovering}'
                     }
                   },
                   formData: {
-                    path: 'property.windMitigation.roofCovering',
-                    type: 'string',
-                    required: true,
-                    metaData: {
-                      enum: [
-                        { label: 'Non-FBC', answer: 'Non-FBC' },
-                        { label: 'FBC', answer: 'FBC' },
-                        { label: 'Other', answer: 'Other' }
-                      ]
-                    }
+                    required: true
                   },
                   children: []
                 },
@@ -2111,25 +2036,21 @@ export default {
                   data: {
                     label: 'Roof Deck Attachment',
                     size: '6',
+                    options: [
+                      { label: 'A', answer: 'A' },
+                      { label: 'B', answer: 'B' },
+                      { label: 'C', answer: 'C' },
+                      { label: 'D', answer: 'D' },
+                      { label: 'Concrete', answer: 'Concrete' },
+                      { label: 'Other', answer: 'Other' }
+                    ],
                     extendedProperties: {
                       output:
                         '${it.initialValues.property.windMitigation.roofDeckAttachment}'
                     }
                   },
                   formData: {
-                    path: 'property.windMitigation.roofDeckAttachment',
-                    type: 'string',
-                    required: true,
-                    metaData: {
-                      enum: [
-                        { label: 'A', answer: 'A' },
-                        { label: 'B', answer: 'B' },
-                        { label: 'C', answer: 'C' },
-                        { label: 'D', answer: 'D' },
-                        { label: 'Concrete', answer: 'Concrete' },
-                        { label: 'Other', answer: 'Other' }
-                      ]
-                    }
+                    required: true
                   },
                   children: []
                 },
@@ -2164,24 +2085,20 @@ export default {
                   data: {
                     label: 'Roof to Wall Attachment',
                     size: '6',
+                    options: [
+                      { label: 'Toe Nails', answer: 'Toe Nails' },
+                      { label: 'Clips', answer: 'Clips' },
+                      { label: 'Single Wraps', answer: 'Single Wraps' },
+                      { label: 'Double Wraps', answer: 'Double Wraps' },
+                      { label: 'Other', answer: 'Other' }
+                    ],
                     extendedProperties: {
                       output:
                         '${it.initialValues.property.windMitigation.roofToWallConnection}'
                     }
                   },
                   formData: {
-                    path: 'property.windMitigation.roofToWallConnection',
-                    type: 'string',
-                    required: true,
-                    metaData: {
-                      enum: [
-                        { label: 'Toe Nails', answer: 'Toe Nails' },
-                        { label: 'Clips', answer: 'Clips' },
-                        { label: 'Single Wraps', answer: 'Single Wraps' },
-                        { label: 'Double Wraps', answer: 'Double Wraps' },
-                        { label: 'Other', answer: 'Other' }
-                      ]
-                    }
+                    required: true
                   },
                   children: []
                 },
@@ -2194,23 +2111,19 @@ export default {
                     label: 'Terrain',
                     size: '6',
                     segmented: true,
+                    options: [
+                      { label: 'B', answer: 'B' },
+                      { label: 'C', answer: 'C' },
+                      { label: 'HVHZ', answer: 'HVHZ' },
+                      { label: 'Other', answer: 'Other' }
+                    ],
                     extendedProperties: {
                       output:
                         '${it.initialValues.property.windMitigation.terrain}'
                     }
                   },
                   formData: {
-                    path: 'property.windMitigation.terrain',
-                    type: 'string',
-                    required: true,
-                    metaData: {
-                      enum: [
-                        { label: 'B', answer: 'B' },
-                        { label: 'C', answer: 'C' },
-                        { label: 'HVHZ', answer: 'HVHZ' },
-                        { label: 'Other', answer: 'Other' }
-                      ]
-                    }
+                    required: true
                   },
                   children: []
                 },
@@ -2222,23 +2135,19 @@ export default {
                   data: {
                     label: 'Roof Geometry',
                     size: '6',
+                    options: [
+                      { label: 'Flat', answer: 'Flat' },
+                      { label: 'Gable', answer: 'Gable' },
+                      { label: 'Hip', answer: 'Hip' },
+                      { label: 'Other', answer: 'Other' }
+                    ],
                     extendedProperties: {
                       output:
                         '${it.initialValues.property.windMitigation.roofGeometry}'
                     }
                   },
                   formData: {
-                    path: 'property.windMitigation.roofGeometry',
-                    type: 'string',
-                    required: true,
-                    metaData: {
-                      enum: [
-                        { label: 'Flat', answer: 'Flat' },
-                        { label: 'Gable', answer: 'Gable' },
-                        { label: 'Hip', answer: 'Hip' },
-                        { label: 'Other', answer: 'Other' }
-                      ]
-                    }
+                    required: true
                   },
                   children: []
                 },
@@ -2250,22 +2159,18 @@ export default {
                   data: {
                     label: 'Internal Pressure Design',
                     size: '6',
+                    options: [
+                      { label: 'Enclosed', answer: 'Enclosed' },
+                      { label: 'Partial', answer: 'Partial' },
+                      { label: 'Other', answer: 'Other' }
+                    ],
                     extendedProperties: {
                       output:
                         '${it.initialValues.property.windMitigation.internalPressureDesign}'
                     }
                   },
                   formData: {
-                    path: 'property.windMitigation.internalPressureDesign',
-                    type: 'string',
-                    required: true,
-                    metaData: {
-                      enum: [
-                        { label: 'Enclosed', answer: 'Enclosed' },
-                        { label: 'Partial', answer: 'Partial' },
-                        { label: 'Other', answer: 'Other' }
-                      ]
-                    }
+                    required: true
                   },
                   children: []
                 },
@@ -2278,22 +2183,18 @@ export default {
                     label: 'Secondary Water Resistance (SWR)',
                     size: '6',
                     segmented: true,
+                    options: [
+                      { label: 'Yes', answer: 'Yes' },
+                      { label: 'No', answer: 'No' },
+                      { label: 'Other', answer: 'Other' }
+                    ],
                     extendedProperties: {
                       output:
                         '${it.initialValues.property.windMitigation.secondaryWaterResistance}'
                     }
                   },
                   formData: {
-                    path: 'property.windMitigation.secondaryWaterResistance',
-                    type: 'string',
-                    required: true,
-                    metaData: {
-                      enum: [
-                        { label: 'Yes', answer: 'Yes' },
-                        { label: 'No', answer: 'No' },
-                        { label: 'Other', answer: 'Other' }
-                      ]
-                    }
+                    required: true
                   },
                   children: []
                 },
@@ -2306,22 +2207,18 @@ export default {
                     label: 'Wind Borne Debris Region (WBDR)',
                     size: '6',
                     segmented: true,
+                    options: [
+                      { label: 'Yes', answer: 'Yes' },
+                      { label: 'No', answer: 'No' },
+                      { label: 'Other', answer: 'Other' }
+                    ],
                     extendedProperties: {
                       output:
                         '${it.initialValues.property.windMitigation.windBorneDebrisRegion}'
                     }
                   },
                   formData: {
-                    path: 'property.windMitigation.windBorneDebrisRegion',
-                    type: 'string',
-                    required: true,
-                    metaData: {
-                      enum: [
-                        { label: 'Yes', answer: 'Yes' },
-                        { label: 'No', answer: 'No' },
-                        { label: 'Other', answer: 'Other' }
-                      ]
-                    }
+                    required: true
                   },
                   children: []
                 },
@@ -2333,24 +2230,19 @@ export default {
                   data: {
                     label: 'Opening Protection',
                     size: '6',
+                    options: [
+                      { label: 'None', answer: 'None' },
+                      { label: 'Basic', answer: 'Basic' },
+                      { label: 'Hurricane', answer: 'Hurricane' },
+                      { label: 'Other', answer: 'Other' }
+                    ],
                     extendedProperties: {
                       output:
                         '${it.initialValues.property.windMitigation.openingProtection}'
                     }
                   },
                   formData: {
-                    path: 'property.windMitigation.openingProtection',
-                    type: 'string',
-                    required: true,
-                    metaData: {
-                      enum: [
-                        { label: 'None', answer: 'None' },
-                        { label: 'Basic', answer: 'Basic' },
-                        { label: 'Hurricane', answer: 'Hurricane' },
-                        { label: 'Other', answer: 'Other' }
-                      ]
-                    },
-                    children: []
+                    required: true
                   },
                   children: []
                 },
