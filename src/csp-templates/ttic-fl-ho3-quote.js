@@ -591,7 +591,7 @@ export default {
               data: {
                 label: 'Personal Liability Limit',
                 segmented: true,
-                output: [
+                options: [
                   { label: '$100,000', answer: 100000 },
                   { label: '$300,000', answer: 300000 }
                 ]
